@@ -1,0 +1,76 @@
+// ==================================================================================
+// = NAS2D
+// = Copyright © 2008 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software as long under the terms of the zlib license.
+// = 
+// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// ==================================================================================
+
+#ifndef _NAS_SDL_RENDERER_
+#define _NAS_SDL_RENDERER_
+
+#include "NAS2D/Renderer/Renderer.h"
+
+#include "SDL/SDL.h"
+
+/**
+ * \class SDL_Renderer
+ * \brief SDL Renderer.
+ *
+ * Implements all Renderer functions with the SDL API.
+ */
+class SDL_Renderer : public Renderer
+{
+public:
+	SDL_Renderer();
+	SDL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BPP, bool fullscreen, bool vsync);
+
+	~SDL_Renderer();
+
+	void setApplicationTitle(const std::string& title);
+	
+	void drawImage(Image& image, int x, int y, float scale);
+	void drawSubImage(Image& image, int rasterX, int rasterY, int imgX, int imgY, int imgWidth, int imgHeight);
+
+	void drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale);
+	void drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a);
+	void drawImageRepeated(Image& image, int x, int y, int w, int h);
+
+	void drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint);
+
+	void drawPixel(int x, int y, int r, int g, int b, int a);
+	void drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a, int line_width);
+	void drawBox(int x, int y, int width, int height, int r, int g, int b, int a);
+	void drawBoxFilled(int x, int y, int width, int height, int r, int g, int b, int a);
+	void drawCircle(int cx, int cy, int radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y);
+
+	void drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a);
+	void drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a);
+
+	void imageDesaturate(Image& image);
+
+	void clearScreen(int r, int g, int b);
+
+    unsigned int getPixelColor(Image& src, int x, int y);
+	bool isPixelTransparent(Image& src, int x, int y);
+    
+	int getWidth();
+	int getHeight();
+
+	bool valid() const;
+
+	void update();
+private:
+	SDL_Renderer(const SDL_Renderer&);				// Intentionally left undefined;
+	SDL_Renderer& operator=(const SDL_Renderer&);	// Intentionally left undefined;
+
+	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
+
+	void buildDisplayModeList();
+
+	SDL_Surface *mScreen;		/**< Primary screen surface. */
+};
+
+#endif

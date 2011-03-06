@@ -1,0 +1,5 @@
+<!--Automatically generated Configuration file. This is best left untouched.-->
+<configuration>
+    <graphics screenwidth="800" screenheight="600" bitdepth="32" fullscreen="false" vsync="true" texturequality="good" renderer="OGL" />
+    <audio mixrate="22050" channels="2" sfxvolume="10" musicvolume="100" bufferlength="1024" mixer="SDL" />
+</configuration>

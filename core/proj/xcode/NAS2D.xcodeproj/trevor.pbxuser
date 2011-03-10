@@ -57,16 +57,8 @@
 			PBXWorkspaceStateSaveDate = 321340919;
 		};
 		perUserProjectItems = {
-			695B3B0413274681003E937A /* XCBuildMessageTextBookmark */ = 695B3B0413274681003E937A /* XCBuildMessageTextBookmark */;
-			695B3B0513274681003E937A /* PBXTextBookmark */ = 695B3B0513274681003E937A /* PBXTextBookmark */;
-			695B3B1C13274813003E937A /* PBXTextBookmark */ = 695B3B1C13274813003E937A /* PBXTextBookmark */;
-			695B3B26132749CB003E937A /* PBXTextBookmark */ = 695B3B26132749CB003E937A /* PBXTextBookmark */;
 			695B3B27132749CB003E937A /* PBXTextBookmark */ = 695B3B27132749CB003E937A /* PBXTextBookmark */;
-			695B3B28132749CB003E937A /* PBXTextBookmark */ = 695B3B28132749CB003E937A /* PBXTextBookmark */;
-			695B3B2D13274A57003E937A /* PBXTextBookmark */ = 695B3B2D13274A57003E937A /* PBXTextBookmark */;
-			695B3BCF13274D58003E937A /* PBXTextBookmark */ = 695B3BCF13274D58003E937A /* PBXTextBookmark */;
-			695B3C3513274F42003E937A /* PBXTextBookmark */ = 695B3C3513274F42003E937A /* PBXTextBookmark */;
-			695B3C3713274F68003E937A /* PBXTextBookmark */ = 695B3C3713274F68003E937A /* PBXTextBookmark */;
+			695B3CEE132750BF003E937A /* PBXTextBookmark */ = 695B3CEE132750BF003E937A /* PBXTextBookmark */;
 		};
 		sourceControlManager = 695B3A69132745E7003E937A /* Source Control */;
 		userBuildSettings = {
@@ -93,58 +85,6 @@
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
 	};
-	695B3A8013274631003E937A /* Common.h */ = {
-		isa = PBXFileReference;
-		fileEncoding = 4;
-		lastKnownFileType = sourcecode.c.h;
-		name = Common.h;
-		path = /Users/trevor/Development/nas2d/core/include/Common.h;
-		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1123, 520}}";
-			sepNavSelRange = "{663, 0}";
-			sepNavVisRange = "{562, 504}";
-		};
-	};
-	695B3B0413274681003E937A /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "NAS2D/Renderer/Primitives.h: No such file or directory";
-		fRef = 695B3A8013274631003E937A /* Common.h */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 17;
-		rType = 1;
-	};
-	695B3B0513274681003E937A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 695B3A8013274631003E937A /* Common.h */;
-		name = "Common.h: 18";
-		rLen = 0;
-		rLoc = 663;
-		rType = 0;
-		vrLen = 504;
-		vrLoc = 562;
-	};
-	695B3B1C13274813003E937A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 695B3A8013274631003E937A /* Common.h */;
-		name = "Common.h: 18";
-		rLen = 0;
-		rLoc = 663;
-		rType = 0;
-		vrLen = 504;
-		vrLoc = 562;
-	};
-	695B3B26132749CB003E937A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 695B3A8013274631003E937A /* Common.h */;
-		name = "Common.h: 18";
-		rLen = 0;
-		rLoc = 663;
-		rType = 0;
-		vrLen = 504;
-		vrLoc = 562;
-	};
 	695B3B27132749CB003E937A /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */;
@@ -155,47 +95,7 @@
 		vrLen = 142;
 		vrLoc = 0;
 	};
-	695B3B28132749CB003E937A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */;
-		name = "NAS2D_Prefix.pch: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 142;
-		vrLoc = 0;
-	};
-	695B3B2D13274A57003E937A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */;
-		name = "NAS2D_Prefix.pch: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 142;
-		vrLoc = 0;
-	};
-	695B3BCF13274D58003E937A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */;
-		name = "NAS2D_Prefix.pch: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 142;
-		vrLoc = 0;
-	};
-	695B3C3513274F42003E937A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */;
-		name = "NAS2D_Prefix.pch: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 142;
-		vrLoc = 0;
-	};
-	695B3C3713274F68003E937A /* PBXTextBookmark */ = {
+	695B3CEE132750BF003E937A /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */;
 		name = "NAS2D_Prefix.pch: 1";

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		695B3AE513274631003E937A /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 695B3AA513274631003E937A /* Common.cpp */; };
 		695B3AE613274631003E937A /* Configuration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 695B3AA613274631003E937A /* Configuration.cpp */; };
-		695B3AE713274631003E937A /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 695B3AA713274631003E937A /* Documentation.h */; };
 		695B3AE813274631003E937A /* EventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 695B3AA813274631003E937A /* EventHandler.cpp */; };
 		695B3AE913274631003E937A /* Filesystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 695B3AA913274631003E937A /* Filesystem.cpp */; };
 		695B3AEA13274631003E937A /* FpsCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 695B3AAA13274631003E937A /* FpsCounter.cpp */; };
@@ -42,20 +41,43 @@
 		695B3BB113274CB6003E937A /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB013274CB6003E937A /* SDL_mixer.framework */; };
 		695B3BB313274CB6003E937A /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB213274CB6003E937A /* SDL_ttf.framework */; };
 		695B3BB513274CB6003E937A /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB413274CB6003E937A /* SDL.framework */; };
-		695B3BFF13274F1A003E937A /* NAS2D in CopyFiles */ = {isa = PBXBuildFile; fileRef = 695B3BD413274F1A003E937A /* NAS2D */; };
+		695B3BFF13274F1A003E937A /* NAS2D in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 695B3BD413274F1A003E937A /* NAS2D */; };
+		695B3CB313275060003E937A /* Physfs.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAA13274CB6003E937A /* Physfs.framework */; };
+		695B3CB413275060003E937A /* SDL_gfx.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAC13274CB6003E937A /* SDL_gfx.framework */; };
+		695B3CB513275060003E937A /* SDL_image.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAE13274CB6003E937A /* SDL_image.framework */; };
+		695B3CB613275060003E937A /* SDL_mixer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB013274CB6003E937A /* SDL_mixer.framework */; };
+		695B3CB713275060003E937A /* SDL_ttf.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB213274CB6003E937A /* SDL_ttf.framework */; };
+		695B3CB813275060003E937A /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB413274CB6003E937A /* SDL.framework */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		695B3C3613274F42003E937A /* CopyFiles */ = {
+		695B3C3613274F42003E937A /* Copy Headers With Directories */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Headers;
 			dstSubfolderSpec = 1;
 			files = (
-				695B3BFF13274F1A003E937A /* NAS2D in CopyFiles */,
+				695B3BFF13274F1A003E937A /* NAS2D in Copy Headers With Directories */,
 			);
+			name = "Copy Headers With Directories";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		695B3CBE13275068003E937A /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				695B3CB313275060003E937A /* Physfs.framework in Copy Frameworks */,
+				695B3CB413275060003E937A /* SDL_gfx.framework in Copy Frameworks */,
+				695B3CB513275060003E937A /* SDL_image.framework in Copy Frameworks */,
+				695B3CB613275060003E937A /* SDL_mixer.framework in Copy Frameworks */,
+				695B3CB713275060003E937A /* SDL_ttf.framework in Copy Frameworks */,
+				695B3CB813275060003E937A /* SDL.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -68,7 +90,6 @@
 		32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAS2D_Prefix.pch; sourceTree = "<group>"; };
 		695B3AA513274631003E937A /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
 		695B3AA613274631003E937A /* Configuration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Configuration.cpp; sourceTree = "<group>"; };
-		695B3AA713274631003E937A /* Documentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Documentation.h; path = ../../src/Documentation.h; sourceTree = "<group>"; };
 		695B3AA813274631003E937A /* EventHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventHandler.cpp; sourceTree = "<group>"; };
 		695B3AA913274631003E937A /* Filesystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filesystem.cpp; sourceTree = "<group>"; };
 		695B3AAA13274631003E937A /* FpsCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FpsCounter.cpp; sourceTree = "<group>"; };
@@ -168,7 +189,6 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				695B3AA713274631003E937A /* Documentation.h */,
 				695B3BD413274F1A003E937A /* NAS2D */,
 				695B3AA413274631003E937A /* src */,
 			);
@@ -282,7 +302,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				695B3AE713274631003E937A /* Documentation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,7 +316,8 @@
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
-				695B3C3613274F42003E937A /* CopyFiles */,
+				695B3C3613274F42003E937A /* Copy Headers With Directories */,
+				695B3CBE13275068003E937A /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -411,6 +431,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NAS2D_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/Physfs.framework/Headers\"",
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_gfx.framework/Headers\"",
@@ -420,6 +441,7 @@
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL.framework/Headers\"",
 				);
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "@executable_path/../Frameworks";
 				PRODUCT_NAME = NAS2D;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -440,6 +462,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NAS2D_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/Physfs.framework/Headers\"",
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_gfx.framework/Headers\"",
@@ -449,6 +472,7 @@
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL.framework/Headers\"",
 				);
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "@executable_path/../Frameworks";
 				PRODUCT_NAME = NAS2D;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -463,9 +487,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"";
 			};
 			name = Debug;
@@ -478,8 +502,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
 				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"";
 			};
 			name = Release;

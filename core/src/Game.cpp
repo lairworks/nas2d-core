@@ -66,6 +66,8 @@ Game::Game(const string& appTitle, const string& argv_0, const string& configPat
 	Singleton<Renderer>::get().setApplicationTitle(appTitle);
 
 	Singleton<Mixer>::instantiateDerived(new SDL_Mixer());
+	
+	Singleton<EventHandler>::instantiateDerived(new EventHandler());
 
 	cout << "Subsystems initialized." << endl << endl;
 	cout << "===================================" << endl << endl;
@@ -81,6 +83,7 @@ Game::~Game()
 	cout << "Shutting down..." << endl;
 
 	// Destroy all of our various components in reverse order.
+	Singleton<EventHandler>::clean();
 	Singleton<Mixer>::clean();
 	Singleton<Renderer>::clean();
 	Singleton<Configuration>::clean();

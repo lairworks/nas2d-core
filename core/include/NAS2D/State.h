@@ -45,11 +45,6 @@ protected:
 	virtual void onMouseButtonDown(SDL_Event& event) {}
 	virtual void onMouseButtonUp(SDL_Event& event) {}
 	virtual void onMouseMotion(SDL_Event& event) {}
-
-	EventHandler& handler() { return mEventHandler; }
-
-private:
-	EventHandler	mEventHandler;
 };
 
 

@@ -73,9 +73,9 @@ bool StateManager::update()
 		{
 			setState(nextState);
 
-			mActiveState->handler().event(SDL_QUIT).connect(this, &StateManager::handleQuit);
+			Singleton<EventHandler>::get().event(SDL_QUIT).connect(this, &StateManager::handleQuit);
 		}
-		mActiveState->handler().pump();
+		Singleton<EventHandler>::get().pump();
 	}
 
 	return mActive;

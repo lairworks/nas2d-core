@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\depend\win32\include\;..\..\include\"
+				AdditionalIncludeDirectories="..\..\..\depend\win32\include\;..\..\include\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;TIXML_USE_STL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -109,7 +109,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\depend\win32\include\;..\..\include\"
+				AdditionalIncludeDirectories="..\..\..\depend\win32\include\;..\..\include\"
 				PreprocessorDefinitions="WIN32;_LIB;TIXML_USE_STL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

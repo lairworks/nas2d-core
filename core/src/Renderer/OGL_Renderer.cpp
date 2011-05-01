@@ -220,10 +220,13 @@ void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, i
 		1.0f, 1.0f,
 		0.0f, 1.0f
 	};
+    
+    // Because OGL is complicated we took care of subImages in the Image class.
+    Image *subImage = new Image(&image, x, y, width, height);
 	
 	glColor4ub(255, 255, 255, 255);
 	
-	drawVertexArray(image, vertices, texture);
+	drawVertexArray(*subImage, vertices, texture);
 }
 
 

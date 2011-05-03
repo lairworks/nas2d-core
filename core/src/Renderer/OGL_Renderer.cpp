@@ -214,19 +214,35 @@ void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, i
 		static_cast<GLfloat>(rasterX), static_cast<GLfloat>(rasterY + height)
 	};
 
+    /**
+     * Coord pairs:
+     * x
+     * y
+     * x + width
+     * y
+     * x + width
+     * y + height
+     * x
+     * y + height
+     */
 	GLfloat texture[8] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.getWidth()), 
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.getHeight()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.getWidth()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.getWidth()),
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.getHeight()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.getWidth()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.getWidth()),
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.getHeight()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.getHeight()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.getWidth()), 
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.getHeight()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.getHeight())
+
 	};
     
     // Because OGL is complicated we took care of subImages in the Image class.
-    Image *subImage = new Image(&image, x, y, width, height);
+    //Image *subImage = new Image(&image, x, y, width, height);
 	
 	glColor4ub(255, 255, 255, 255);
 	
-	drawVertexArray(*subImage, vertices, texture);
+	drawVertexArray(image, vertices, texture);
 }
 
 

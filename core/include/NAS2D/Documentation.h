@@ -25,15 +25,16 @@
  * 
  * \section design-elements NAS2D Design Elements
  * 
- * NAS2D is broken up into several 'modules', each implementing specific functionality.
+ * NAS2D is broken up into several 'modules', each implementing specific functionality. This documentation currently covers use of the
+ * Core module.
  *
  * \section getting-started Getting Things Rolling
  * 
- * After setting up your project and environment, the first thing you'll want to do is instantiate a Game object. The Game object
- * is the easy way to get all facilities instantiated and enter into a main game loop.
+ * After setting up your project and environment, the first thing you'll want to do is instantiate a Game object. The Game
+ * object takes care of getting all utilities started and functional.
  * 
- * Assuming all of that went smoothly, the \c Game::go() function is called with a pointer to a State object and starts the main
- * game loop.
+ * After creating a Game object, the \c Game::go() function is called with a pointer to a state object and starts the main
+ * game loop. See State on how to derive new states.
  * 
  * The framework runs as a hybrid event-driven application (hybrid in that it doesn't wait for events but responds to them).
  * The \c Event System (implemented as an Observer Pattern loosely modeled on Qt's signals/slots implementation) handles all

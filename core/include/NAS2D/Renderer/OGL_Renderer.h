@@ -69,7 +69,7 @@ public:
 	bool valid() const;
 
 	void update();
-	
+
 private:
 	/**
 	 * \typedef	TextureArray

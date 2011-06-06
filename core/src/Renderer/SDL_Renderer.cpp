@@ -411,7 +411,7 @@ void SDL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	SDL_putenv("SDL_VIDEO_CENTERED=center");
 
 	// Set the app title to blank until the client sets it.
-	setApplicationTitle("");
+	setApplicationTitle(" ");
 
 	// Initialize SDL's Video Subsystems.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)

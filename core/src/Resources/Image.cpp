@@ -28,7 +28,8 @@ using namespace std;
  * If the load fails, a default image is stored indicating an error condition.
  */
 Image::Image(const string& filePath):	Resource(filePath),
-										mPixels(NULL)
+										mPixels(NULL),
+										mTextureId(0)
 {
 	load();
 }
@@ -46,7 +47,8 @@ Image::Image(const string& filePath):	Resource(filePath),
  * If the load fails, a default image is stored indicating an error condition.
  */
 Image::Image(Image *src, int x, int y, int width, int height) :	Resource(src->getName()),
-																mPixels(NULL)
+																mPixels(NULL),
+																mTextureId(0)
 {
 	loadFromSource(src, x, y, width, height);
 }
@@ -62,7 +64,8 @@ Image::Image(Image *src, int x, int y, int width, int height) :	Resource(src->ge
  *			an image file supported by SDL_Image.
  */
 Image::Image(void *buffer, int size):	Resource("Default Image"),
-										mPixels(NULL)
+										mPixels(NULL),
+										mTextureId(0)
 {
 
 	createSurface((char*)buffer, size);
@@ -77,7 +80,8 @@ Image::Image(void *buffer, int size):	Resource("Default Image"),
  * instantiating an Image should be for testing purposes or to indicate an
  * error condition.		
  */
-Image::Image() :	mPixels(NULL)
+Image::Image() :	mPixels(NULL),
+					mTextureId(0)
 {
 	loadDefault();
 }
@@ -89,7 +93,8 @@ Image::Image() :	mPixels(NULL)
  * \param	src		A reference to an Image Resource.
  */
 Image::Image(const Image &src):	Resource(src.mResourceName),
-								mPixels(NULL)
+								mPixels(NULL),
+								mTextureId(src.mTextureId)
 {
 	// Create a new SDL_Surface from the source Image surface.
 	mPixels = SDL_CreateRGBSurface(src.mPixels->flags, src.mPixels->w, src.mPixels->h, src.mPixels->format->BitsPerPixel, src.mPixels->format->Rmask, src.mPixels->format->Gmask, src.mPixels->format->Bmask, src.mPixels->format->Amask);
@@ -143,6 +148,8 @@ Image& Image::operator=(const Image& rhs)
 		mErrorDescription = "";
 		mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 	}
+
+	mTextureId = rhs.mTextureId;
 
 	return *this;
 }

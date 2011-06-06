@@ -52,6 +52,14 @@ public:
 	int getHeight() const;
 
 	const Rectangle_2d& getRect() const;
+	
+	unsigned int getTexutreId() { return mTextureId; }
+
+protected:
+	friend class OGL_Renderer;
+
+	// Used for OpenGL modes -- pollutes the interface but is almost a necessary evil.
+	void setTextureId(unsigned int id) { mTextureId = id; }
 
 private:
 	void load();
@@ -67,6 +75,8 @@ private:
 	SDL_Surface *mPixels;	/**< SDL_Surface containing the Pixel Data. */
 
 	Rectangle_2d	mRect;
+
+	unsigned int	mTextureId;	/**< Internal TextureID when in OpenGL mode. */
 };
 
 /**

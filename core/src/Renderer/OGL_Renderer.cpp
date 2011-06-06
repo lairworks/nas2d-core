@@ -137,7 +137,7 @@ bool OGL_Renderer::drawVertexArray(Image& image, GLfloat vertexArray[], GLfloat 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
+
 	return true;
 }
 
@@ -173,13 +173,16 @@ bool OGL_Renderer::drawVertexArrayText(GLuint texture, GLfloat vertexArray[], GL
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	
+
 	return true;
 }
 
 
 void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
 {
+	glLoadIdentity();
+	glPushMatrix();
+
 	//std::vector<std::pair<int, int>> *vertex;
 	GLfloat vertices[8] = {
 		static_cast<GLfloat>(x), static_cast<GLfloat>(y),
@@ -196,8 +199,9 @@ void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
 	};
 	
 	glColor4ub(255, 255, 255, 255);
-	
 	drawVertexArray(image, vertices, texture, scale);
+
+	glPopMatrix();
 }
 
 
@@ -207,6 +211,9 @@ void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
  */
 void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height)
 {
+	glLoadIdentity();
+	glPushMatrix();
+
 	GLfloat vertices[8] = {
 		static_cast<GLfloat>(rasterX), static_cast<GLfloat>(rasterY),
 		static_cast<GLfloat>(rasterX + width), static_cast<GLfloat>(rasterY),
@@ -243,6 +250,8 @@ void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, i
 	glColor4ub(255, 255, 255, 255);
 	
 	drawVertexArray(image, vertices, texture);
+
+	glPopMatrix();
 }
 
 
@@ -285,6 +294,9 @@ void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 
 void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a)
 {
+	glLoadIdentity();
+	glPushMatrix();
+
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
@@ -303,11 +315,16 @@ void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, 
 	};
 	
 	drawVertexArray(image, vertices, texture);
+
+	glPopMatrix();
 }
 
 
 void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 {
+	glLoadIdentity();
+	glPushMatrix();
+
 	glColor4ub(255, 255, 255, 255);
 	GLfloat vertices[8] = {
 		static_cast<GLfloat>(x), static_cast<GLfloat>(y),
@@ -324,11 +341,16 @@ void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 	};
 		
 	drawVertexArray(image, vertices, texture, 1.0f, true);
+
+	glPopMatrix();
 }
 
 
 void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint)
 {
+	glLoadIdentity();
+	glPushMatrix();
+
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if(dstPoint.x > destination.getWidth() || dstPoint.y > destination.getHeight())
 		return;
@@ -388,6 +410,8 @@ void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, 
 	// Reset viewport and unbind
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	glDeleteFramebuffersEXT(1, &myFBO);
+
+	glPopMatrix();
 }
 
 
@@ -779,6 +803,8 @@ inline GLuint OGL_Renderer::getTextureId(Image& image)
 		it->second.second = mTimer.ms();	// Set time stamp.
 	}
 
+	image.setTextureId(textureId);
+
 	return textureId;
 }
 
@@ -1003,13 +1029,11 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	SDL_putenv("SDL_VIDEO_CENTERED=center");
 
 	// Set the app title to blank until the client sets it.
-	setApplicationTitle("");
+	setApplicationTitle(" ");
 
 	// Initialize SDL's Video Subsystems.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 		throw Exception(701, "Error starting SDL Video Library", SDL_GetError());
-
-	SDL_WM_SetCaption("Zombie Splash", "Zombie Splash");
 
 	// Set up our Video Surface flags and build onto it with the
 	// Config class. We should probably throw this into a private

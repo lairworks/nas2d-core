@@ -38,7 +38,7 @@ public:
 	/**
 	 * Gets a full description of the Exception.
 	 */
-	const std::string& getDescription() const 			{ return mErrorBrief; }
+	const std::string& getDescription() const 			{ return mErrorDescription; }
 
 	/**
 	 * Gets an Exception ID.

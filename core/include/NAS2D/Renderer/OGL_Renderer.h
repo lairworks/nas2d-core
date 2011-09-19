@@ -111,7 +111,8 @@ private:
 	TextureArray		mTextureArray;			/**< Internal array of GL Texture ID and time stamp. */
 	
 	unsigned int		mTextureTarget;			/**< COMMENT ME! */
-	unsigned int		mVertexBufferObject;	/**< COMMENT ME! */
+	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
+	//	GLfloat				mTextureBufferObject;
 
 	bool				mRequirementsMet;		/**< Flag indicating that all extensions requirements have been met. */
 };	

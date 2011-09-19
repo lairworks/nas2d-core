@@ -67,10 +67,6 @@ OGL_Renderer::OGL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BP
 	// Set our LetterBox height to 15% of the screen's height.
 	mLetterBoxHeight = (int)((mScreen->h) * 0.15);
 	
-	mVertexBufferObject = 0;
-	
-	glGenBuffers(1, &mVertexBufferObject);
-	
 }
 
 
@@ -87,7 +83,7 @@ OGL_Renderer::~OGL_Renderer()
 		mTextureArray.clear();
 	}
 	
-	glDeleteBuffers(1, &mVertexBufferObject);
+	//glDeleteBuffers(1, &mVertexBufferObject);
 
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
@@ -100,23 +96,40 @@ void OGL_Renderer::setApplicationTitle(const std::string& title)
 
 
 bool OGL_Renderer::drawVertexArray(Image& image, GLfloat vertexArray[], GLfloat textureCoord[], float scale = 1.0f, bool repeat = false)
-{
-	GLfloat vertices[8];
-	memcpy(vertices, vertexArray, sizeof(vertices));
+{ 	
+//	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(texture), vertices, GL_STATIC_DRAW);
+//	
+//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+//	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(texture), texture);
+//	
+//	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
+//	
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//	glEnable(mTextureTarget);
+//	glBindTexture(mTextureTarget, getTextureId(image));
+//	
+//	if(repeat)
+//	{
+//		// the texture wraps over at the edges (repeat)
+//		glTexParameterf( mTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT );
+//		glTexParameterf( mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT );
+//	}
+//	
+//	glVertexPointer(2, GL_FLOAT, 0, 0);
+//	glTexCoordPointer(2, GL_FLOAT, 0, (GLvoid*)(sizeof(vertices)));
+//	
+//	glDrawArrays(GL_QUADS, 0, 4);
+//	
+//	glDisable(mTextureTarget);
+//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//	glDisableClientState(GL_VERTEX_ARRAY);
+//	
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//
+//	return true;
 	
-	GLfloat texture[8];
-	memcpy(texture, textureCoord, sizeof(texture));
-	
-	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(texture), NULL, GL_STATIC_DRAW);
-	
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(texture), texture);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(mTextureTarget);
 	glBindTexture(mTextureTarget, getTextureId(image));
 	
@@ -127,8 +140,11 @@ bool OGL_Renderer::drawVertexArray(Image& image, GLfloat vertexArray[], GLfloat 
 		glTexParameterf( mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT );
 	}
 	
-	glVertexPointer(2, GL_FLOAT, 0, 0);
-	glTexCoordPointer(2, GL_FLOAT, 0, (GLvoid*)(sizeof(vertices)));
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glVertexPointer(3, GL_FLOAT, 0, vertexArray);
+	glTexCoordPointer(3, GL_FLOAT, 0, textureCoord);
 	
 	glDrawArrays(GL_QUADS, 0, 4);
 	
@@ -136,35 +152,52 @@ bool OGL_Renderer::drawVertexArray(Image& image, GLfloat vertexArray[], GLfloat 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 	return true;
 }
 
 
 bool OGL_Renderer::drawVertexArrayText(GLuint texture, GLfloat vertexArray[], GLfloat textureCoord[], float scale = 1.0f)
 {
-	GLfloat vertices[8];
-	memcpy(vertices, vertexArray, sizeof(vertices));
+//	GLfloat vertices[8];
+//	memcpy(vertices, vertexArray, sizeof(vertices));
+//	
+//	GLfloat textureArray[8];
+//	memcpy(textureArray, textureCoord, sizeof(textureArray));
+//	
+//	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(textureArray), NULL, GL_STATIC_DRAW);
+//	
+//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+//	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(textureArray), textureArray);
+//	
+//	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
+//	
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//	glEnable(mTextureTarget);
+//	glBindTexture(mTextureTarget, texture);
+//	
+//	glVertexPointer(2, GL_FLOAT, 0, 0);
+//	glTexCoordPointer(2, GL_FLOAT, 0, (GLvoid*)(sizeof(vertices)));
+//	
+//	glDrawArrays(GL_QUADS, 0, 4);
+//	
+//	glDisable(mTextureTarget);
+//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//	glDisableClientState(GL_VERTEX_ARRAY);
+//	
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//
+//	return true;
 	
-	GLfloat textureArray[8];
-	memcpy(textureArray, textureCoord, sizeof(textureArray));
-	
-	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(textureArray), NULL, GL_STATIC_DRAW);
-	
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(textureArray), textureArray);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(mTextureTarget);
 	glBindTexture(mTextureTarget, texture);
 	
-	glVertexPointer(2, GL_FLOAT, 0, 0);
-	glTexCoordPointer(2, GL_FLOAT, 0, (GLvoid*)(sizeof(vertices)));
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glVertexPointer(3, GL_FLOAT, 0, vertexArray);
+	glTexCoordPointer(3, GL_FLOAT, 0, textureCoord);
 	
 	glDrawArrays(GL_QUADS, 0, 4);
 	
@@ -172,8 +205,6 @@ bool OGL_Renderer::drawVertexArrayText(GLuint texture, GLfloat vertexArray[], GL
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 	return true;
 }
 

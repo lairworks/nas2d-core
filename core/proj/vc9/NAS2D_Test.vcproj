@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="GLee.lib physfs.lib SDL.lib SDLmain.lib SDL_gfx.lib SDL_image.lib SDL_mixer.lib SDL_ttf.lib opengl32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\depend\win32\lib"
+				AdditionalLibraryDirectories="..\..\..\depend\win32\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -186,6 +186,114 @@
 				RelativePath="..\..\..\NAS2D_Test\main.cpp"
 				>
 			</File>
+			<Filter
+				Name="nas2d"
+				>
+				<File
+					RelativePath="..\..\src\Common.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Configuration.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\EventHandler.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Filesystem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Resources\Font.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\FpsCounter.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Game.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Resources\Image.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\MersenneTwister.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Resources\Music.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\NAS2D.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Renderer\OGL_Renderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Renderer\Renderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Resources\Resource.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Mixer\SDL_Mixer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Renderer\SDL_Renderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Resources\Sound.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Resources\Sprite.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\StateManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Timer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tinyxml\tinystr.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tinyxml\tinyxml.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tinyxml\tinyxmlerror.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tinyxml\tinyxmlparser.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Trig.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\XmlAttributeParser.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"

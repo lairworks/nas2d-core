@@ -95,11 +95,10 @@ private:
 	
 	void buildDisplayModeList();
 	
-	bool drawVertexArray(Image& image, GLfloat vertexArray[], GLfloat textureCoord[], float scale, bool repeat);
-	bool drawVertexArrayText(GLuint texture, GLfloat vertexArray[], GLfloat textureCoord[], float scale);
+	void drawVertexArray(GLuint textureId, GLfloat vertexArray[], GLfloat textureCoord[], float scale, bool repeat);
 
-	inline GLuint getTextureId(Image& image);
-	unsigned int generateTexture(SDL_Surface *src);
+	GLuint getTextureId(Image& image);
+	GLuint generateTexture(SDL_Surface *src);
 	inline void updateTextures();
 	
 	GLenum getTextureFormat(SDL_Surface *src);

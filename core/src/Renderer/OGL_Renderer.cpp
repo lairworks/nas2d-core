@@ -95,142 +95,56 @@ void OGL_Renderer::setApplicationTitle(const std::string& title)
 }
 
 
-bool OGL_Renderer::drawVertexArray(Image& image, GLfloat vertexArray[], GLfloat textureCoord[], float scale = 1.0f, bool repeat = false)
+void OGL_Renderer::drawVertexArray(GLuint textureId, GLfloat vertexArray[], GLfloat textureCoord[], float scale = 1.0f, bool repeat = false)
 { 	
-//	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(texture), vertices, GL_STATIC_DRAW);
-//	
-//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-//	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(texture), texture);
-//	
-//	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-//	
-//	glEnableClientState(GL_VERTEX_ARRAY);
-//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-//	glEnable(mTextureTarget);
-//	glBindTexture(mTextureTarget, getTextureId(image));
-//	
-//	if(repeat)
-//	{
-//		// the texture wraps over at the edges (repeat)
-//		glTexParameterf( mTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT );
-//		glTexParameterf( mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT );
-//	}
-//	
-//	glVertexPointer(2, GL_FLOAT, 0, 0);
-//	glTexCoordPointer(2, GL_FLOAT, 0, (GLvoid*)(sizeof(vertices)));
-//	
-//	glDrawArrays(GL_QUADS, 0, 4);
-//	
-//	glDisable(mTextureTarget);
-//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-//	glDisableClientState(GL_VERTEX_ARRAY);
-//	
-//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//	return true;
+	glBindTexture(mTextureTarget, textureId);
 	
-	glEnable(mTextureTarget);
-	glBindTexture(mTextureTarget, getTextureId(image));
-	
+	// Set repeat mode.
 	if(repeat)
 	{
-		// the texture wraps over at the edges (repeat)
-		glTexParameterf( mTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameterf( mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT );
+		glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	glVertexPointer(3, GL_FLOAT, 0, vertexArray);
-	glTexCoordPointer(3, GL_FLOAT, 0, textureCoord);
+	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
+	glTexCoordPointer(2, GL_FLOAT, 0, textureCoord);
 	
 	glDrawArrays(GL_QUADS, 0, 4);
 	
-	glDisable(mTextureTarget);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
-	return true;
-}
-
-
-bool OGL_Renderer::drawVertexArrayText(GLuint texture, GLfloat vertexArray[], GLfloat textureCoord[], float scale = 1.0f)
-{
-//	GLfloat vertices[8];
-//	memcpy(vertices, vertexArray, sizeof(vertices));
-//	
-//	GLfloat textureArray[8];
-//	memcpy(textureArray, textureCoord, sizeof(textureArray));
-//	
-//	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(textureArray), NULL, GL_STATIC_DRAW);
-//	
-//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-//	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(textureArray), textureArray);
-//	
-//	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
-//	
-//	glEnableClientState(GL_VERTEX_ARRAY);
-//	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-//	glEnable(mTextureTarget);
-//	glBindTexture(mTextureTarget, texture);
-//	
-//	glVertexPointer(2, GL_FLOAT, 0, 0);
-//	glTexCoordPointer(2, GL_FLOAT, 0, (GLvoid*)(sizeof(vertices)));
-//	
-//	glDrawArrays(GL_QUADS, 0, 4);
-//	
-//	glDisable(mTextureTarget);
-//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-//	glDisableClientState(GL_VERTEX_ARRAY);
-//	
-//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//	return true;
-	
-	glEnable(mTextureTarget);
-	glBindTexture(mTextureTarget, texture);
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	
-	glVertexPointer(3, GL_FLOAT, 0, vertexArray);
-	glTexCoordPointer(3, GL_FLOAT, 0, textureCoord);
-	
-	glDrawArrays(GL_QUADS, 0, 4);
-	
-	glDisable(mTextureTarget);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	
-	return true;
+	if(repeat)
+	{
+		glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
 }
 
 
 void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
 {
-	glLoadIdentity();
 	glPushMatrix();
 
-	//std::vector<std::pair<int, int>> *vertex;
-	GLfloat vertices[8] = {
-		static_cast<GLfloat>(x), static_cast<GLfloat>(y),
-		static_cast<GLfloat>(x + image.getWidth()), static_cast<GLfloat>(y),
-		static_cast<GLfloat>(x + image.getWidth()), static_cast<GLfloat>(y + image.getHeight()),
-		static_cast<GLfloat>(x), static_cast<GLfloat>(y + image.getHeight())
-	};
+	GLfloat verts[8] =	{
+							static_cast<GLfloat>(x), static_cast<GLfloat>(y),
+							static_cast<GLfloat>(x + image.getWidth()), static_cast<GLfloat>(y),
+							static_cast<GLfloat>(x + image.getWidth()), static_cast<GLfloat>(y + image.getHeight()),
+							static_cast<GLfloat>(x), static_cast<GLfloat>(y + image.getHeight())
+						};
 	
-	GLfloat texture[8] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-	};
+	GLfloat tex[8] =	{
+							0.0f, 0.0f,
+							1.0f, 0.0f,
+							1.0f, 1.0f,
+							0.0f, 1.0f
+						};
 	
 	glColor4ub(255, 255, 255, 255);
-	drawVertexArray(image, vertices, texture, scale);
+	drawVertexArray(getTextureId(image), verts, tex, scale);
 
 	glPopMatrix();
 }
@@ -242,7 +156,6 @@ void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
  */
 void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height)
 {
-	glLoadIdentity();
 	glPushMatrix();
 
 	GLfloat vertices[8] = {
@@ -280,7 +193,7 @@ void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, i
 	
 	glColor4ub(255, 255, 255, 255);
 	
-	drawVertexArray(image, vertices, texture);
+	drawVertexArray(getTextureId(image), vertices, texture);
 
 	glPopMatrix();
 }
@@ -288,7 +201,6 @@ void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, i
 
 void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale)
 {
-	glLoadIdentity();									// Reset The Current Modelview Matrix
 	glPushMatrix();
 
 	int imgHalfW = (image.getWidth() >> 1);
@@ -318,14 +230,13 @@ void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 		0.0f, 1.0f
 	};
 	
-	drawVertexArray(image, vertices, texture, scale);
+	drawVertexArray(getTextureId(image), vertices, texture, scale);
 	glPopMatrix();
 }
 
 
 void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a)
 {
-	glLoadIdentity();
 	glPushMatrix();
 
 	glColor4ub(r, g, b, a);
@@ -345,7 +256,7 @@ void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, 
 		0.0f, 1.0f
 	};
 	
-	drawVertexArray(image, vertices, texture);
+	drawVertexArray(getTextureId(image), vertices, texture);
 
 	glPopMatrix();
 }
@@ -353,7 +264,6 @@ void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, 
 
 void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 {
-	glLoadIdentity();
 	glPushMatrix();
 
 	glColor4ub(255, 255, 255, 255);
@@ -371,7 +281,7 @@ void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 		0.0f, 1.0f
 	};
 		
-	drawVertexArray(image, vertices, texture, 1.0f, true);
+	drawVertexArray(getTextureId(image), vertices, texture, 1.0f, true);
 
 	glPopMatrix();
 }
@@ -379,7 +289,6 @@ void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 
 void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint)
 {
-	glLoadIdentity();
 	glPushMatrix();
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
@@ -388,7 +297,7 @@ void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, 
 
 	Image subImage(&source, srcRect.x, srcRect.y, srcRect.w, srcRect.h);
 	
-	glEnable(mTextureTarget);
+	//glEnable(mTextureTarget);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	
 	// Bind our destination texture.
@@ -433,7 +342,7 @@ void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, 
 	};
 	
 	// Render our quad
-	drawVertexArray(subImage, vertices, texture);
+	drawVertexArray(getTextureId(subImage), vertices, texture);
 	
 	// Bind our destination texture again
 	glBindTexture(mTextureTarget, getTextureId(destination));
@@ -477,22 +386,30 @@ void OGL_Renderer::imageDesaturate(Image& image)
 
 void OGL_Renderer::drawPixel(int x, int y, int r, int g, int b, int a)
 {
+	glDisable(mTextureTarget);
+
 	glColor4ub(r, g, b, a);
 
 	glBegin(GL_POINTS);
 		glVertex2f(static_cast<float>(x) + 0.5f, static_cast<float>(y) + 0.5f);
 	glEnd();
+
+	glEnable(mTextureTarget);
 }
 
 
 void OGL_Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a, int line_width = 1)
 {	
+	glDisable(mTextureTarget);
+	
 	glColor4ub(r, g, b, a);
 
 	glBegin(GL_LINES);
 		glVertex2f(static_cast<float>(x) + 0.5f, static_cast<float>(y) + 0.5f);
 		glVertex2f(static_cast<float>(x2) + 0.5f, static_cast<float>(y2) + 0.5f);
 	glEnd();
+
+	glEnable(mTextureTarget);
 }
 
 
@@ -503,6 +420,8 @@ void OGL_Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, i
  */
 void OGL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
 {
+	glDisable(mTextureTarget);
+
 	glColor4ub(r, g, b, a);
 
 	float theta = PI_2 / static_cast<float>(num_segments);
@@ -528,11 +447,15 @@ void OGL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, i
 		y = s * t + c * y;
 	}
 	glEnd();
+
+	glEnable(mTextureTarget);
 }
 
 
 void OGL_Renderer::drawBox(int x, int y, int width, int height, int r, int g, int b, int a)
 {	
+	glDisable(mTextureTarget);
+
 	glColor4ub(r, g, b, a);
 
 	glBegin(GL_LINE_LOOP);
@@ -541,11 +464,15 @@ void OGL_Renderer::drawBox(int x, int y, int width, int height, int r, int g, in
 		glVertex2i((x + width), (y + height));
 		glVertex2i(x, (y + height));
 	glEnd();
+
+	glEnable(mTextureTarget);
 }
 
 
 void OGL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int g, int b, int a)
 {
+	glDisable(mTextureTarget);
+
 	glColor4ub(r, g, b, a);
 
 	glBegin(GL_QUADS);
@@ -554,6 +481,8 @@ void OGL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int
 		glVertex2i((x + width), (y + height));
 		glVertex2i(x, (y + height));
 	glEnd();
+
+	glEnable(mTextureTarget);
 }
 
 
@@ -593,11 +522,9 @@ void OGL_Renderer::drawText(Font& font, const string& text, int x, int y, int r,
 		0.0f, 1.0f
 	};
 	
-	if(drawVertexArrayText(texId, vertices, texture))
-	{
-		glDeleteTextures(1, &texId);
-	}
+	drawVertexArray(texId, vertices, texture);
 
+	glDeleteTextures(1, &texId);
 	SDL_FreeSurface(textSurface);
 
 	return;
@@ -617,7 +544,7 @@ void OGL_Renderer::drawTextClamped(Font& font, const string& text, int rasterX, 
 	if(!textSurface)
 	{
 		cout << "(ERR) Renderer Error: Unable to render Font '" << font.getName() << "': " << TTF_GetError() << "." << endl;
-		glDisable(mTextureTarget);
+		//glDisable(mTextureTarget);
 		return;
 	}
 
@@ -650,11 +577,9 @@ void OGL_Renderer::drawTextClamped(Font& font, const string& text, int rasterX, 
 		0.0f, 1.0f
 	};
 	
-	if(drawVertexArrayText(texId, vertices, texture))
-	{
-		glDeleteTextures(1, &texId);
-	}
-
+	drawVertexArray(texId, vertices, texture);
+	
+	glDeleteTextures(1, &texId);
 	SDL_FreeSurface(clampedSurface);
 	return;
 }
@@ -808,6 +733,9 @@ void OGL_Renderer::getError()
 	
 	stringstream str;
 	str << errStr << endl;
+
+	cout << str;
+
 	pushMessage(str.str());
 }
 
@@ -877,7 +805,7 @@ GLenum OGL_Renderer::getTextureFormat(SDL_Surface *src)
 }
 
 
-unsigned int OGL_Renderer::generateTexture(SDL_Surface *src)
+GLuint OGL_Renderer::generateTexture(SDL_Surface *src)
 {
 	GLuint texId = 0;
 
@@ -914,19 +842,14 @@ unsigned int OGL_Renderer::generateTexture(SDL_Surface *src)
 	else
 		cout << "Image is not truecolor." << std::endl;
 
+
+	glTexImage2D(mTextureTarget, 0, nColors, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
+
 	glTexParameteri(mTextureTarget, GL_TEXTURE_MIN_FILTER, TEXTURE_FILTER);
 	glTexParameteri(mTextureTarget, GL_TEXTURE_MAG_FILTER, TEXTURE_FILTER);
-	
-//	if(!mNPOTSupported)
-//	{
-//		
-//		glTexParameteri(mTextureTarget, GL_GENERATE_MIPMAP, GL_TRUE);
-//		glTexImage2D(mTextureTarget, 0, nColors, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
-//	}
-//	else
-//	{
-		glTexImage2D(mTextureTarget, 0, nColors, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
-//	}
+	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 
 	return texId;
 }
@@ -989,13 +912,13 @@ void OGL_Renderer::checkExtensions()
 	if(extensionExists("GL_ARB_texture_non_power_of_two"))
 	{
 		cout << "\t\t- GL_ARB_texture_non_power_of_two" << endl;
-		OGL_Renderer::mTextureTarget = GL_TEXTURE_2D;
+		mTextureTarget = GL_TEXTURE_2D;
 		mRequirementsMet = true;
 	}
 	else if(extensionExists("GL_ARB_texture_rectangle"))
 	{
 		cout << "\t\t- GL_ARB_texture_rectangle" << endl;
-		OGL_Renderer::mTextureTarget = GL_TEXTURE_RECTANGLE_ARB;
+		mTextureTarget = GL_TEXTURE_RECTANGLE_ARB;
 		mRequirementsMet = true;
 	}
 	else
@@ -1008,36 +931,32 @@ void OGL_Renderer::checkExtensions()
 
 void OGL_Renderer::initGL()
 {
-	
-	// Finish setting up OGL state.
-	glShadeModel(GL_SMOOTH);
-
 	glClearColor(0, 0, 0, 0);
+	glClear(GL_COLOR_BUFFER_BIT);
 
 	glViewport(0, 0, mScreen->w, mScreen->h);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	
-	glDisable(GL_DEPTH_TEST);
-
-	glClear(GL_COLOR_BUFFER_BIT);
-	//glDepthFunc(GL_NEVER);
-
-	//glMatrixMode(GL_TEXTURE);
-	//glLoadIdentity();
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glOrtho(0.0, (double)mScreen->w, (double)mScreen->h, 0.0, -1.0, 1.0);
+	glOrtho(0.0, (GLdouble)mScreen->w, (GLdouble)mScreen->h, 0.0, -1.0, 1.0);
+
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+
+	glShadeModel(GL_SMOOTH);
+
 	glEnable(GL_COLOR_MATERIAL);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glPushMatrix();
+	glDisable(GL_DEPTH_TEST);
+	glEnable(mTextureTarget);
 
 	// Spit out system graphics information.
 	const SDL_VideoInfo* mVideoInfo = SDL_GetVideoInfo();
@@ -1111,7 +1030,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 
 /**
- * Gets wether or not the OpenGL Renderer is in a valid state
+ * Gets whether or not the OpenGL Renderer is in a valid state
  * for rendering.
  * 
  * On most systems with halfway decent GPU hardware this check

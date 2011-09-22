@@ -109,7 +109,7 @@ private:
 	unsigned int		mLastResourceCheck;		/**< Tick count from last resource check. */
 	TextureArray		mTextureArray;			/**< Internal array of GL Texture ID and time stamp. */
 	
-	unsigned int		mTextureTarget;			/**< COMMENT ME! */
+	GLuint				mTextureTarget;			/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */
 	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
 	//	GLfloat				mTextureBufferObject;
 

@@ -36,7 +36,7 @@ GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 OGL_Renderer::OGL_Renderer():	Renderer("OGL Renderer"),
 								mScreen(0),
 								mLastResourceCheck(0),
-								//mTextureTarget(0),
+								mTextureTarget(0),
 								//mVertexBufferObject(0),
 								mRequirementsMet(false)
 {
@@ -56,7 +56,7 @@ OGL_Renderer::OGL_Renderer():	Renderer("OGL Renderer"),
 
 OGL_Renderer::OGL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BPP, bool fullscreen, bool vsync):	Renderer("OGL Renderer"),
 																							mLastResourceCheck(0),
-																							//mTextureTarget(0),
+																							mTextureTarget(0),
 																							//mVertexBufferObject(0),
 																							mRequirementsMet(false)
 {
@@ -734,7 +734,7 @@ void OGL_Renderer::getError()
 	stringstream str;
 	str << errStr << endl;
 
-	cout << str;
+	cout << str.str();
 
 	pushMessage(str.str());
 }
@@ -947,7 +947,6 @@ void OGL_Renderer::initGL()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-
 	glShadeModel(GL_SMOOTH);
 
 	glEnable(GL_COLOR_MATERIAL);
@@ -956,7 +955,6 @@ void OGL_Renderer::initGL()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glDisable(GL_DEPTH_TEST);
-	glEnable(mTextureTarget);
 
 	// Spit out system graphics information.
 	const SDL_VideoInfo* mVideoInfo = SDL_GetVideoInfo();
@@ -970,7 +968,10 @@ void OGL_Renderer::initGL()
 
 	cout << "\tVideo Driver: " << mDriverName << endl;
 	cout << "\tVideo Hardware Memory: " << mVideoInfo->video_mem << endl;
+
 	checkExtensions();
+	if(mRequirementsMet)
+		glEnable(mTextureTarget);
 }
 
 

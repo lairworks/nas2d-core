@@ -81,7 +81,7 @@ public:
 	 */
 	bool isDirectory(const std::string& path) const
 	{
-		return (PHYSFS_isDirectory(path.c_str()) == 0) ? false : true;
+		return PHYSFS_isDirectory(path.c_str()) != 0;
 	}
 
 
@@ -92,7 +92,7 @@ public:
 	 */
 	bool exists(const std::string& fileName) const
 	{
-		return (PHYSFS_exists(fileName.c_str()) == 0) ? false : true;
+		return PHYSFS_exists(fileName.c_str()) != 0;
 	}
 
 

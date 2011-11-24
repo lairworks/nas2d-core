@@ -63,14 +63,14 @@ void SDL_Renderer::setApplicationTitle(const std::string& title)
 }
 
 
-unsigned int SDL_Renderer::getPixelColor(Image& src, int x, int y)
+unsigned int SDL_Renderer::pixelColor(Image& src, int x, int y)
 {
-	SDL_LockSurface(src.getPixels());
-    int bpp = src.getPixels()->format->BytesPerPixel;
+	SDL_LockSurface(src.pixels());
+    int bpp = src.pixels()->format->BytesPerPixel;
     /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8 *)src.getPixels()->pixels + y * src.getPixels()->pitch + x * bpp;
+    Uint8 *p = (Uint8 *)src.pixels()->pixels + y * src.pixels()->pitch + x * bpp;
 
-	SDL_UnlockSurface(src.getPixels());
+	SDL_UnlockSurface(src.pixels());
 
 	switch(bpp)
 	{
@@ -98,22 +98,22 @@ unsigned int SDL_Renderer::getPixelColor(Image& src, int x, int y)
 }
 
 
-bool SDL_Renderer::isPixelTransparent(Image& src, int x, int y)
+bool SDL_Renderer::pixelTransparent(Image& src, int x, int y)
 {
 	Uint8 r, g, b, a;
-	SDL_GetRGBA(getPixelColor(src, x, y), src.getPixels()->format, &r, &g, &b, &a);
+	SDL_GetRGBA(pixelColor(src, x, y), src.pixels()->format, &r, &g, &b, &a);
 
 	return (a == 0);
 }
 
 
-int SDL_Renderer::getWidth()
+int SDL_Renderer::width()
 {
 	return mScreen->w;
 }
 
 
-int SDL_Renderer::getHeight()
+int SDL_Renderer::height()
 {
 	return mScreen->h;
 }
@@ -133,10 +133,10 @@ void SDL_Renderer::buildDisplayModeList()
 void SDL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
 {
 	if(scale != 1.0f)
-		return drawImageStretched(image, x, y, static_cast<int>(image.getWidth() * scale), static_cast<int>(image.getHeight() * scale), 255, 255, 255, 255);
+		return drawImageStretched(image, x, y, static_cast<int>(image.width() * scale), static_cast<int>(image.height() * scale), 255, 255, 255, 255);
 
-	SDL_Rect blitRect = {x, y, image.getWidth(), image.getHeight()};
-	SDL_BlitSurface(image.getPixels(), NULL, mScreen, &blitRect);
+	SDL_Rect blitRect = {x, y, image.width(), image.height()};
+	SDL_BlitSurface(image.pixels(), NULL, mScreen, &blitRect);
 }
 
 
@@ -145,7 +145,7 @@ void SDL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int imgX
 	SDL_Rect blitRect = {rasterX, rasterY, imgWidth, imgHeight};
 	SDL_Rect grabRect = {imgX, imgY, imgWidth, imgHeight};
 
-	SDL_BlitSurface(image.getPixels(), &grabRect, mScreen, &blitRect);
+	SDL_BlitSurface(image.pixels(), &grabRect, mScreen, &blitRect);
 }
 
 /**
@@ -153,12 +153,12 @@ void SDL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int imgX
  */
 void SDL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale)
 {
-	SDL_Surface* rotated = rotozoomSurface(image.getPixels(), -degrees, scale, TEXTURE_FILTER_TYPE);
+	SDL_Surface* rotated = rotozoomSurface(image.pixels(), -degrees, scale, TEXTURE_FILTER_TYPE);
 
 	if(rotated)
 	{
-		int offsetX = (rotated->w >> 1) - (image.getWidth() >> 1);
-		int offsetY = (rotated->h >> 1) - (image.getHeight() >> 1);
+		int offsetX = (rotated->w >> 1) - (image.width() >> 1);
+		int offsetY = (rotated->h >> 1) - (image.height() >> 1);
 
 		SDL_Rect blitRect = {x - offsetX, y - offsetY, rotated->w, rotated->h};
 		SDL_BlitSurface(rotated, NULL, mScreen, &blitRect);
@@ -170,10 +170,10 @@ void SDL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 
 void SDL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a)
 {
-	double zoomedWidth = (static_cast<double>(w) / static_cast<double>(image.getWidth()));
-	double zoomedHeight = (static_cast<double>(h) / static_cast<double>(image.getHeight()));
+	double zoomedWidth = (static_cast<double>(w) / static_cast<double>(image.width()));
+	double zoomedHeight = (static_cast<double>(h) / static_cast<double>(image.height()));
 
-	SDL_Surface* zoomed = zoomSurface(image.getPixels(), zoomedWidth, zoomedHeight, TEXTURE_FILTER_TYPE);
+	SDL_Surface* zoomed = zoomSurface(image.pixels(), zoomedWidth, zoomedHeight, TEXTURE_FILTER_TYPE);
 	if(zoomed)
 	{
 		SDL_Rect blitRect = {x, y, zoomed->w, zoomed->h};
@@ -186,8 +186,8 @@ void SDL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, 
 
 void SDL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 {
-	int imageWidth = image.getWidth();
-	int imageHeight = image.getHeight();
+	int imageWidth = image.width();
+	int imageHeight = image.height();
 
 	if(imageWidth == 0 || imageHeight == 0)
 		return;
@@ -219,7 +219,7 @@ void SDL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 			srcRect.x = srcX; srcRect.y = srcY;
 			srcRect.w = dw;   srcRect.h = dh;
 
-			SDL_BlitSurface(image.getPixels(), &srcRect, mScreen, &dstRect);
+			SDL_BlitSurface(image.pixels(), &srcRect, mScreen, &dstRect);
 		}
 	}
 }
@@ -231,7 +231,7 @@ void SDL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, 
 	SDL_Rect sRect = { srcRect.x, srcRect.y, srcRect.w, srcRect.h };
 	SDL_Rect dRect = { dstPoint.x, dstPoint.y, 0, 0 };
 
-	SDL_BlitSurface(source.getPixels(), &sRect, destination.getPixels(), &dRect);
+	SDL_BlitSurface(source.pixels(), &sRect, destination.pixels(), &dRect);
 }
 
 
@@ -284,14 +284,14 @@ void SDL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int
 
 void SDL_Renderer::drawText(Font& font, const string& text, int x, int y, int r, int g, int b, int a)
 {
-	if(!font.isLoaded() || text.empty())
+	if(!font.loaded() || text.empty())
 		return;
 
 	SDL_Color color = {r, g, b, 0};
 	SDL_Rect blitRect = {x, y, 0, 0};
 
 	SDL_Surface *text_surface;
-	if(!(text_surface = TTF_RenderText_Blended(font.getFont(), text.c_str(), color)))
+	if(!(text_surface = TTF_RenderText_Blended(font.font(), text.c_str(), color)))
 	{
 		pushMessage(SDL_GetError());
 	}
@@ -305,7 +305,7 @@ void SDL_Renderer::drawText(Font& font, const string& text, int x, int y, int r,
 
 void SDL_Renderer::drawTextClamped(Font& font, const string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
 {
-	if(!font.isLoaded() || text.empty())
+	if(!font.loaded() || text.empty())
 		return;
 
 	SDL_Color color = {r, g, b, 0};
@@ -314,7 +314,7 @@ void SDL_Renderer::drawTextClamped(Font& font, const string& text, int rasterX, 
 	SDL_Rect clipRect = {x, y, w, h};
 
 	SDL_Surface *text_surface;
-	if(!(text_surface = TTF_RenderText_Blended(font.getFont(), text.c_str(), color)))
+	if(!(text_surface = TTF_RenderText_Blended(font.font(), text.c_str(), color)))
 	{
 		pushMessage(SDL_GetError());
 	}
@@ -377,26 +377,26 @@ void SDL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, i
 }
 
 
-void SDL_Renderer::imageDesaturate(Image& image)
+void SDL_Renderer::desaturate(Image& image)
 {
 	#if defined(_DEBUG)
-		if(!image.isLoaded())
+		if(!image.loaded())
 		{
 			stringstream str;
-			str << "Image '" << image.getName() << "' is not loaded and cannot be desaturated. " << image.getErrorMessage();
+			str << "Image '" << image.name() << "' is not loaded and cannot be desaturated. " << image.errorMessage();
 			pushMessage(str.str());
 			return;
 		}
 	#endif
 
-	SDL_Surface *surface = image.getPixels();
-	for(int y = 0; y < image.getHeight(); y++)
+	SDL_Surface *surface = image.pixels();
+	for(int y = 0; y < image.height(); y++)
 	{
-		for(int x = 0; x < image.getWidth(); x++)
+		for(int x = 0; x < image.width(); x++)
 		{
 			Uint8 r, g, b, a;
 
-			SDL_GetRGBA(getPixelColor(image, x, y), surface->format, &r, &g, &b, &a);
+			SDL_GetRGBA(pixelColor(image, x, y), surface->format, &r, &g, &b, &a);
 
 			Uint8 grey = (r + g + b) / 3;
 

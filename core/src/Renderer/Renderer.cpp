@@ -204,19 +204,19 @@ void Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 void Renderer::drawImageRect(int x, int y, int w, int h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
 	// Draw the center area if it's defined.
-	drawImageRepeated(center, x + topLeft.getWidth(), y + topLeft.getHeight(), w - topRight.getWidth() - topLeft.getWidth(), h - topLeft.getHeight() - bottomLeft.getHeight());
+	drawImageRepeated(center, x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height());
 
 	// Draw the sides
-	drawImageRepeated(top, x + topLeft.getWidth(), y, w - topLeft.getWidth() - topRight.getWidth(), top.getHeight());
-	drawImageRepeated(bottom, x + bottomLeft.getWidth(), y + h - bottom.getHeight(), w - bottomLeft.getWidth() - bottomRight.getWidth(), bottom.getHeight());
-	drawImageRepeated(left, x, y + topLeft.getHeight(), left.getWidth(), h - topLeft.getHeight() - bottomLeft.getHeight());
-	drawImageRepeated(right, x + w - right.getWidth(), y + topRight.getHeight(), right.getWidth(), h - topRight.getHeight() - bottomRight.getHeight());
+	drawImageRepeated(top, x + topLeft.width(), y, w - topLeft.width() - topRight.width(), top.height());
+	drawImageRepeated(bottom, x + bottomLeft.width(), y + h - bottom.height(), w - bottomLeft.width() - bottomRight.width(), bottom.height());
+	drawImageRepeated(left, x, y + topLeft.height(), left.width(), h - topLeft.height() - bottomLeft.height());
+	drawImageRepeated(right, x + w - right.width(), y + topRight.height(), right.width(), h - topRight.height() - bottomRight.height());
 
 	// Draw the corners
 	drawImage(topLeft, x, y);
-	drawImage(topRight, x + w - topRight.getWidth(), y);
-	drawImage(bottomLeft, x, y + h - bottomLeft.getHeight());
-	drawImage(bottomRight, x + w - bottomRight.getWidth(), y + h - bottomRight.getHeight());
+	drawImage(topRight, x + w - topRight.width(), y);
+	drawImage(bottomLeft, x, y + h - bottomLeft.height());
+	drawImage(bottomRight, x + w - bottomRight.width(), y + h - bottomRight.height());
 }
 
 
@@ -480,7 +480,7 @@ void Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int g, 
  * \param x		X-Coordinate of the pixel to inspect.
  * \param y		Y-Coordinate of the pixel to inspect.
  */
-unsigned int Renderer::getPixelColor(Image& src, int x, int y)
+unsigned int Renderer::pixelColor(Image& src, int x, int y)
 {
 	return 0;
 }
@@ -493,7 +493,7 @@ unsigned int Renderer::getPixelColor(Image& src, int x, int y)
  * \param x		X-Coordinate of the pixel to inspect.
  * \param y		Y-Coordinate of the pixel to inspect.
  */
-bool Renderer::isPixelTransparent(Image& src, int x, int y)
+bool Renderer::pixelTransparent(Image& src, int x, int y)
 {
 	return true;
 }
@@ -503,7 +503,7 @@ bool Renderer::isPixelTransparent(Image& src, int x, int y)
 /**
  * Returns the primary display's Width.
  */
-int Renderer::getWidth()
+int Renderer::width()
 {
 	return 0;
 }
@@ -512,7 +512,7 @@ int Renderer::getWidth()
 /**
  * Returns the primary display's Height.
  */
-int Renderer::getHeight()
+int Renderer::height()
 {
 	return 0;
 }
@@ -523,25 +523,25 @@ int Renderer::getHeight()
  */
 Point_2d Renderer::getScreenResolution()
 {
-	return Point_2d(getWidth(), getHeight());
+	return Point_2d(width(), height());
 }
 
 
 /**
  * Gets the center X-Coordinate of the screen.
  */
-int Renderer::getScreenCenterX()
+int Renderer::screenCenterX()
 {
-	return getWidth() >> 1;
+	return width() >> 1;
 }
 
 
 /**
  * Gets the center Y-Coordinate of the screen.
  */
-int  Renderer::getScreenCenterY()
+int Renderer::screenCenterY()
 {
-	return getHeight() >> 1;
+	return height() >> 1;
 }
 
 
@@ -683,7 +683,7 @@ void Renderer::drawTextShadowClamped(Font& font, const string& text, int rasterX
  * 
  * \param	image	A reference to an Image Resource.
  */
-void Renderer::imageDesaturate(Image& image)
+void Renderer::desaturate(Image& image)
 {}
 
 
@@ -748,7 +748,7 @@ void Renderer::update()
 	}
 
 	if(mCurrentFade > 0.0f)
-		drawBoxFilled(0, 0, getWidth(), getHeight(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), (int)mCurrentFade);
+		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), (int)mCurrentFade);
 }
 
 

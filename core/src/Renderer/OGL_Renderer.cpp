@@ -131,9 +131,9 @@ void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
 
 	GLfloat verts[8] =	{
 							static_cast<GLfloat>(x), static_cast<GLfloat>(y),
-							static_cast<GLfloat>(x + image.getWidth()), static_cast<GLfloat>(y),
-							static_cast<GLfloat>(x + image.getWidth()), static_cast<GLfloat>(y + image.getHeight()),
-							static_cast<GLfloat>(x), static_cast<GLfloat>(y + image.getHeight())
+							static_cast<GLfloat>(x + image.width()), static_cast<GLfloat>(y),
+							static_cast<GLfloat>(x + image.width()), static_cast<GLfloat>(y + image.height()),
+							static_cast<GLfloat>(x), static_cast<GLfloat>(y + image.height())
 						};
 	
 	GLfloat tex[8] =	{
@@ -177,14 +177,14 @@ void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, i
      * y + height
      */
 	GLfloat texture[8] = {
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.getWidth()), 
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.getHeight()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.getWidth()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.getWidth()),
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.getHeight()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.getWidth()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.getWidth()),
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.getHeight()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.getHeight()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.getWidth()), 
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.getHeight()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.getHeight())
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()), 
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()), 
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
 
 	};
     
@@ -203,8 +203,8 @@ void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 {
 	glPushMatrix();
 
-	int imgHalfW = (image.getWidth() >> 1);
-	int imgHalfH = (image.getHeight() >> 1);
+	int imgHalfW = (image.width() >> 1);
+	int imgHalfH = (image.height() >> 1);
 
 	float tX = imgHalfW * scale;
 	float tY = imgHalfH * scale;
@@ -292,7 +292,7 @@ void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, 
 	glPushMatrix();
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if(dstPoint.x > destination.getWidth() || dstPoint.y > destination.getHeight())
+	if(dstPoint.x > destination.width() || dstPoint.y > destination.height())
 		return;
 
 	Image subImage(&source, srcRect.x, srcRect.y, srcRect.w, srcRect.h);
@@ -306,8 +306,8 @@ void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, 
 	// Check for the need to clip the source texture.
 	Rectangle_2d clipRect;
 	
-	(dstPoint.x + srcRect.w) > destination.getWidth() ? clipRect.w = srcRect.w - ((dstPoint.x + srcRect.w) - destination.getWidth()) : clipRect.w = srcRect.w;
-	(dstPoint.y + srcRect.h) > destination.getHeight() ? clipRect.h = srcRect.h - ((dstPoint.y + srcRect.h) - destination.getHeight()) : clipRect.h = srcRect.h;
+	(dstPoint.x + srcRect.w) > destination.width() ? clipRect.w = srcRect.w - ((dstPoint.x + srcRect.w) - destination.width()) : clipRect.w = srcRect.w;
+	(dstPoint.y + srcRect.h) > destination.height() ? clipRect.h = srcRect.h - ((dstPoint.y + srcRect.h) - destination.height()) : clipRect.h = srcRect.h;
 
 	// Ignore this call of the clipping rect is smaller than 1 pixel in any dimension.
 	if(clipRect.w < 1 || clipRect.h < 1)
@@ -328,10 +328,10 @@ void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, 
 	// height (which puts us at the top of the screen) and subtract our y-position.
 	glColor4ub(255, 255, 255, 255);
 	GLfloat vertices[8] = {
-		static_cast<GLfloat>(dstPoint.x), static_cast<GLfloat>((destination.getHeight() - dstPoint.y)),
-		static_cast<GLfloat>(dstPoint.x), static_cast<GLfloat>((destination.getHeight() - dstPoint.y) - clipRect.h),
-		static_cast<GLfloat>(dstPoint.x + clipRect.w), static_cast<GLfloat>((destination.getHeight() - dstPoint.y) - clipRect.h),
-		static_cast<GLfloat>(dstPoint.x + clipRect.w), static_cast<GLfloat>((destination.getHeight() - dstPoint.y))
+		static_cast<GLfloat>(dstPoint.x), static_cast<GLfloat>((destination.height() - dstPoint.y)),
+		static_cast<GLfloat>(dstPoint.x), static_cast<GLfloat>((destination.height() - dstPoint.y) - clipRect.h),
+		static_cast<GLfloat>(dstPoint.x + clipRect.w), static_cast<GLfloat>((destination.height() - dstPoint.y) - clipRect.h),
+		static_cast<GLfloat>(dstPoint.x + clipRect.w), static_cast<GLfloat>((destination.height() - dstPoint.y))
 	};
 	
 	GLfloat texture[8] = {
@@ -355,26 +355,26 @@ void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, 
 }
 
 
-void OGL_Renderer::imageDesaturate(Image& image)
+void OGL_Renderer::desaturate(Image& image)
 {
 	#if defined(_DEBUG)
-		if(!image.isLoaded())
+		if(!image.loaded())
 		{
 			stringstream str;
-			str << "Image '" << image.getName() << "' is not loaded and cannot be desaturated. " << image.getErrorMessage();
+			str << "Image '" << image.name() << "' is not loaded and cannot be desaturated. " << image.errorMessage();
 			pushMessage(str.str());
 			return;
 		}
 	#endif
 
-	SDL_Surface *surface = image.getPixels();
-	for(int y = 0; y < image.getHeight(); y++)
+	SDL_Surface *surface = image.pixels();
+	for(int y = 0; y < image.height(); y++)
 	{
-		for(int x = 0; x < image.getWidth(); x++)
+		for(int x = 0; x < image.width(); x++)
 		{
 			Uint8 r, g, b, a;
 
-			SDL_GetRGBA(getPixelColor(image, x, y), surface->format, &r, &g, &b, &a);
+			SDL_GetRGBA(pixelColor(image, x, y), surface->format, &r, &g, &b, &a);
 
 			Uint8 grey = (r + g + b) / 3;
 
@@ -489,17 +489,17 @@ void OGL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int
 void OGL_Renderer::drawText(Font& font, const string& text, int x, int y, int r, int g, int b, int a)
 {
 	// Protect against a NULL font object being passed in.
-	if(!font.isLoaded())
+	if(!font.loaded())
 		return;
 	else if(text.empty())
 		return;
 
 	SDL_Color Color = {r, g, b};
-	SDL_Surface *textSurface = TTF_RenderText_Blended(font.getFont(), text.c_str(), Color);
+	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
 	if(!textSurface)
 	{
 		stringstream str;
-		str << "Renderer: Unable to render Font '" << font.getName() << "': " << TTF_GetError() << "." << endl;
+		str << "Renderer: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
 		pushMessage(str.str());
 		return;
 	}
@@ -534,16 +534,16 @@ void OGL_Renderer::drawText(Font& font, const string& text, int x, int y, int r,
 void OGL_Renderer::drawTextClamped(Font& font, const string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
 {
 	// Protect against a NULL font object being passed in.
-	if(!font.isLoaded())
+	if(!font.loaded())
 		return;
 	else if(text.empty())
 		return;
 
 	SDL_Color Color = {r, g, b};
-	SDL_Surface *textSurface = TTF_RenderText_Blended(font.getFont(), text.c_str(), Color);
+	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
 	if(!textSurface)
 	{
-		cout << "(ERR) Renderer Error: Unable to render Font '" << font.getName() << "': " << TTF_GetError() << "." << endl;
+		cout << "(ERR) Renderer Error: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
 		//glDisable(mTextureTarget);
 		return;
 	}
@@ -603,14 +603,14 @@ void OGL_Renderer::update()
 }
 
 
-unsigned int OGL_Renderer::getPixelColor(Image& src, int x, int y)
+unsigned int OGL_Renderer::pixelColor(Image& src, int x, int y)
 {
-	SDL_LockSurface(src.getPixels());
-    int bpp = src.getPixels()->format->BytesPerPixel;
+	SDL_LockSurface(src.pixels());
+    int bpp = src.pixels()->format->BytesPerPixel;
     /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8*)src.getPixels()->pixels + y * src.getPixels()->pitch + x * bpp;
+    Uint8 *p = (Uint8*)src.pixels()->pixels + y * src.pixels()->pitch + x * bpp;
 
-	SDL_UnlockSurface(src.getPixels());
+	SDL_UnlockSurface(src.pixels());
 
 	switch(bpp)
 	{
@@ -635,25 +635,25 @@ unsigned int OGL_Renderer::getPixelColor(Image& src, int x, int y)
 }
 
 
-bool OGL_Renderer::isPixelTransparent(Image& src, int x, int y)
+bool OGL_Renderer::pixelTransparent(Image& src, int x, int y)
 {
-	SDL_Surface *surface = src.getPixels();
+	SDL_Surface *surface = src.pixels();
 
 	Uint8 r, g, b, a;
 
-	SDL_GetRGBA(getPixelColor(src, x, y), surface->format, &r, &g, &b, &a);
+	SDL_GetRGBA(pixelColor(src, x, y), surface->format, &r, &g, &b, &a);
 	
 	return (a == 0);
 }
 
 
-int OGL_Renderer::getWidth()
+int OGL_Renderer::width()
 {
     return mScreen->w;
 }
 
 
-int OGL_Renderer::getHeight()
+int OGL_Renderer::height()
 {
     return mScreen->h;
 }
@@ -753,7 +753,7 @@ inline GLuint OGL_Renderer::getTextureId(Image& image)
 
 	if(it == mTextureArray.end())
 	{
-		textureId = generateTexture(image.getPixels());
+		textureId = generateTexture(image.pixels());
 		mTextureArray[image.id()] = std::pair<GLuint, int>(textureId, mTimer.ms());
 	}
 	else
@@ -762,7 +762,7 @@ inline GLuint OGL_Renderer::getTextureId(Image& image)
 		it->second.second = mTimer.ms();	// Set time stamp.
 	}
 
-	image.setTextureId(textureId);
+	image.textureId(textureId);
 
 	return textureId;
 }

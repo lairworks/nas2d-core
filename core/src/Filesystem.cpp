@@ -159,7 +159,7 @@ bool Filesystem::addToSearchPath(const string& pathName) const
 /**
  * Returns a list of directories in the Search Path.
  */
-StringList Filesystem::getSearchPath() const
+StringList Filesystem::searchPath() const
 {
 	StringList searchPath;
 
@@ -177,9 +177,9 @@ StringList Filesystem::getSearchPath() const
  *
  * \note	This function will also return the names of any directories in a specified search path
  */
-StringList Filesystem::enumerateDir(const std::string& dir) const
+StringList Filesystem::directoryList(const std::string& dir) const
 {
-	return enumerateDir(dir, string(""));
+	return directoryList(dir, string(""));
 }
 
 
@@ -191,7 +191,7 @@ StringList Filesystem::enumerateDir(const std::string& dir) const
  *
  * \note	This function will also return the names of any directories in a specified search path
  */
-StringList Filesystem::enumerateDir(const string& dir, const string& filter) const
+StringList Filesystem::directoryList(const string& dir, const string& filter) const
 {
 	char **rc = PHYSFS_enumerateFiles(dir.c_str());
 
@@ -222,13 +222,16 @@ StringList Filesystem::enumerateDir(const string& dir, const string& filter) con
 
 /**
  * Deletes a specified file.
+ * 
+ * \note	This function is not named 'delete' due to
+ *			language limitations.
  */
-bool Filesystem::deleteFile(const string& filename) const
+bool Filesystem::del(const string& filename) const
 {
 	if(PHYSFS_delete(filename.c_str()) == 0)
 	{
-		mErrorMessages.push_back(getLastError());
-		cout << "Unable to delete '" << filename << "':" << getLastError() << endl;
+		mErrorMessages.push_back(lastError());
+		cout << "Unable to delete '" << filename << "':" << lastError() << endl;
 		return false;
 	}
 
@@ -236,7 +239,7 @@ bool Filesystem::deleteFile(const string& filename) const
 }
 
 
-File Filesystem::getFile(const std::string& fileName) const
+File Filesystem::open(const std::string& fileName) const
 {
 	if(mVerbose) cout << "Attempting to load '" << fileName << endl;
 
@@ -255,7 +258,7 @@ File Filesystem::getFile(const std::string& fileName) const
 	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
 	if(len < 0 || len > UINT_MAX)
 	{
-		mErrorMessages.push_back("Filesystem::getFile(): Attempting to load a file that's too big.");
+		mErrorMessages.push_back("Filesystem::open(): Attempting to load a file that's too big.");
 		cout << mErrorMessages.back() << endl;
 		closeFile(myFile);
 		return File();
@@ -288,6 +291,58 @@ File Filesystem::getFile(const std::string& fileName) const
 	if(mVerbose) cout << "Loaded '" << fileName << "' successfully." << endl;
 
 	return file;
+}
+
+
+/**
+ * Creates a new directory within the primary search path.
+ *
+ * \return Returns \c true if successful. Otherwise, returns \c false.
+ */
+bool Filesystem::makeDirectory(const std::string& dirPath) const
+{
+	return (PHYSFS_mkdir(dirPath.c_str()) == 0) ? false : true;
+}
+
+
+/**
+ * Determines if a given path is a directory rather than a file.
+ */
+bool Filesystem::isDirectory(const std::string& path) const
+{
+	return PHYSFS_isDirectory(path.c_str()) != 0;
+}
+
+
+/**
+ * Checks for the existence of a file.
+ *
+ * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
+ */
+bool Filesystem::exists(const std::string& fileName) const
+{
+	return PHYSFS_exists(fileName.c_str()) != 0;
+}
+
+
+/**
+ * Returns the last error that occurred.
+ */
+string Filesystem::lastError() const
+{
+	return mErrorMessages.back();
+}
+
+
+/*
+ * Toggles Verbose Mode.
+ *
+ * When Verbose mode is off, only critical messages are displayed.
+ * Verbose Mode is generally useful for debugging purposes.
+ */
+void Filesystem::toggleVerbose() const
+{
+	mVerbose ? mVerbose = false : mVerbose = true;
 }
 
 
@@ -382,7 +437,7 @@ bool Filesystem::closeFile(PHYSFS_File *file) const
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::writeFile(const File& file, bool overwrite) const
+bool Filesystem::write(const File& file, bool overwrite) const
 {
 	if(file.empty())
 	{
@@ -424,14 +479,32 @@ bool Filesystem::writeFile(const File& file, bool overwrite) const
 }
 
 
+/**
+ * Gets the current User path.
+ */
+string Filesystem::userPath() const
+{
+	return PHYSFS_getUserDir();
+}
+
+
+/**
+ * Gets the base data path.
+ */
+string Filesystem::dataPath() const
+{
+	return mDataPath;
+}
+
+
 /*
  * Convenience function to get the working directory of a file.
  *
- * \path	fileName	A reference to a \c const \c string containing a file path.
+ * \path	fileName	A file path.
  *
  * \note	File paths should not have any trailing '/' characters.
  */
-string Filesystem::getWorkingDir(const string& fileName) const
+string Filesystem::workingPath(const string& fileName) const
 {
 
 	if(!fileName.empty())
@@ -443,13 +516,13 @@ string Filesystem::getWorkingDir(const string& fileName) const
 	}
 	else
 	{
-		mErrorMessages.push_back("Filesystem::getWorkingDir() was given an empty string.");
+		mErrorMessages.push_back("Filesystem::getworkingPath() was given an empty string.");
 		cout << mErrorMessages.back();
 		return string();
 	}
 }
 
-std::string Filesystem::getFileExtension(const std::string path)
+std::string Filesystem::extension(const std::string path)
 {
 	int num = path.find_last_of(".");
 	if (num >= 0)

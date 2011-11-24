@@ -194,7 +194,7 @@ void Configuration::writeConfig()
 	TiXmlPrinter printer;
 	doc->Accept(&printer);
 
-	Singleton<Filesystem>::get().writeFile(File(printer.Str(), "config.xml"));
+	Singleton<Filesystem>::get().write(File(printer.Str(), "config.xml"));
 
 
 	delete doc;
@@ -209,7 +209,7 @@ void Configuration::writeConfig()
  */
 bool Configuration::readConfig(const string& filePath)
 {
-	File xmlFile = Singleton<Filesystem>::get().getFile(filePath);
+	File xmlFile = Singleton<Filesystem>::get().open(filePath);
 
 	TiXmlElement  *xmlRootElement;
 

@@ -79,14 +79,6 @@ std::string toUppercase(const std::string& str)
 }
 
 
-template <typename T>
-bool from_string(T& t, const std::string& s, std::ios_base& (*f)(std::ios_base&))
-{
-	std::istringstream iss(s);
-	return !(iss >> f >> t).fail();
-}
-
-
 /**
  * Clamps an \c int value to a specified range.
  *

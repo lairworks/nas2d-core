@@ -48,15 +48,15 @@ public:
 	~Font() { TTF_CloseFont(mFont); mFont = NULL; }
 
 
-	int getWidth(const std::string& str) const;
+	int width(const std::string& str) const;
 
-	int getHeight() const;
+	int height() const;
 
-	const std::string& getFontName() const;
+	const std::string& fontName() const;
 
-	void setStyle(FontStyle style = STYLE_NORMAL);
+	void style(FontStyle style = STYLE_NORMAL);
 
-	TTF_Font *getFont() const;	/**< Should this be private and just friend the Renderer class? */
+	TTF_Font *font() const;	/**< Should this be private and just friend the Renderer class? */
 
 protected:
 

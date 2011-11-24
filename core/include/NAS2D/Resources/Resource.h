@@ -28,42 +28,21 @@ class Resource
 {
 public:
 
-	Resource(const std::string& filePath):	mResourceName(filePath),
-											mErrorDescription(""),
-											mIsLoaded(false),
-											mId(mMt.random_int())
-										
-	{}
-	
-	Resource():	mResourceName(""),
-				mErrorDescription("Resource Default Construction."),
-				mIsLoaded(false)
-	{}
+	Resource(const std::string& filePath);
+	Resource();
+	virtual ~Resource();
 
-	virtual ~Resource() {};
+	const std::string& name() const;
 
-	/**
-	 * Returns the name of the Resource as a file name with directory path.
-	 */
-	const std::string& getName() const { return mResourceName; }
+	const std::string& errorMessage() const;
 
-	/**
-	 * Returns the last error message.
-	 */
-	const std::string& getErrorMessage() const { return mErrorDescription; }
+	bool loaded() const;
 
-	/**
-	 * Returns true if this Resource loaded properly.
-	 */
-	bool isLoaded() const { return mIsLoaded; }
-
-	int id() const { return mId; }
+	int id() const;
 
 protected:
-	std::string mResourceName;		/**< File path and internal identifier. */
-	std::string mErrorDescription;	/**< Internal Error Message. */
-	
-	bool mIsLoaded;					/**< Flag indicating whether or not this Resource has loaded properly. */
+	void errorMessage(const std::string& message);
+	void loaded(bool loaded);
 
 private:
 	/**
@@ -76,6 +55,11 @@ private:
 	 *			call this function.
 	 */
 	virtual void load() = 0;
+
+	std::string mResourceName;		/**< File path and internal identifier. */
+	std::string mErrorDescription;	/**< Internal Error Message. */
+	
+	bool mIsLoaded;					/**< Flag indicating whether or not this Resource has loaded properly. */
 
 	static MersenneTwister mMt;
 

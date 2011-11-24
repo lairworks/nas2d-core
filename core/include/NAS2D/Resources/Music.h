@@ -26,13 +26,17 @@
  *
  *  Derived from the Resource class.
  */
-class Music : public Resource
+class Music: public Resource
 {
 public:
 
 	Music(const std::string& filePath);
 
-	Mix_Music *getMusic() const;			/**< Should this be private and just friend the Mixer class? */
+protected:
+	friend class Mixer;
+	friend class SDL_Mixer;
+
+	Mix_Music *music() const;			/**< Internal function used only by Mixer classes. */
 
 private:
 	void load();

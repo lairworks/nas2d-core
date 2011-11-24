@@ -20,6 +20,8 @@ using namespace std;
 StateManager::StateManager():	mActiveState(NULL),
 								mActive(true)
 {
+	// Ensure that all quit messages are handled in some way even if a State object doesn't.
+	Singleton<EventHandler>::get().event(SDL_QUIT).connect(this, &StateManager::handleQuit);
 }
 
 
@@ -70,11 +72,8 @@ bool StateManager::update()
 		if(!nextState)
 			mActive = false;	
 		else if(nextState != mActiveState)
-		{
 			setState(nextState);
 
-			Singleton<EventHandler>::get().event(SDL_QUIT).connect(this, &StateManager::handleQuit);
-		}
 		Singleton<EventHandler>::get().pump();
 	}
 

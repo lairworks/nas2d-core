@@ -41,81 +41,29 @@ public:
 
 	void init(const std::string& argv_0, const std::string& startPath);
 
-	File getFile(const std::string& fileName) const;
-
-	/**
-	 * Gets the current User path.
-	 */
-	std::string getUserPath() const { return PHYSFS_getUserDir(); }
-
-	/**
-	 * Gets the base data path.
-	 */
-	std::string getDataPath() const { return mDataPath; }
-
-	std::string getWorkingDir(const std::string& fileName) const;
-	
+	std::string userPath() const;
+	std::string dataPath() const;
+	std::string workingPath(const std::string& fileName) const;
+	StringList searchPath() const;
 	bool addToSearchPath(const std::string& pathName) const;
 
-	StringList getSearchPath() const;
+	StringList directoryList(const std::string& dir) const;
+	StringList directoryList(const std::string& dir, const std::string& filter) const;
 
-	StringList enumerateDir(const std::string& dir) const;
-	StringList enumerateDir(const std::string& dir, const std::string& filter) const;
+	File open(const std::string& fileName) const;
+	bool write(const File& file, bool overwrite = true) const;
+	bool del(const std::string& path) const;
+	bool exists(const std::string& fileName) const;
 
-	bool writeFile(const File& file, bool overwrite = true) const;
-	bool deleteFile(const std::string& filename) const;
+	std::string extension(const std::string path);
 
-	/**
-	 * Creates a new directory within the primary search path.
-	 *
-	 * \return Returns \c true if successful. Otherwise, returns \c false.
-	 */
-	bool makeDirectory(const std::string& dirPath) const
-	{
-		return (PHYSFS_mkdir(dirPath.c_str()) == 0) ? false : true;
-	}
+	bool isDirectory(const std::string& path) const;
+	bool makeDirectory(const std::string& dirPath) const;
 
 
-	/**
-	 * Determines if a given path is a directory rather than a file.
-	 */
-	bool isDirectory(const std::string& path) const
-	{
-		return PHYSFS_isDirectory(path.c_str()) != 0;
-	}
-
-
-	/**
-	 * Checks for the existence of a file.
-	 *
-	 * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
-	 */
-	bool exists(const std::string& fileName) const
-	{
-		return PHYSFS_exists(fileName.c_str()) != 0;
-	}
-
-
-	/**
-	 * Returns the last error that occurred.
-	 */
-	std::string getLastError() const
-	{
-		return mErrorMessages.back();
-	}
-
-
-	/*
-	 * Toggles Verbose Mode.
-	 *
-	 * When Verbose mode is off, only critical messages are displayed.
-	 * Verbose Mode is generally useful for debugging purposes.
-	 */
-	void toggleVerbose() const { mVerbose = !mVerbose; } // Will this work as expected on all platforms?
-
+	std::string lastError() const;
+	void toggleVerbose() const;
 	void debug();
-
-	std::string getFileExtension(const std::string path);
 
 private:
 	Filesystem(const Filesystem&);				// Intentionally left undefined.

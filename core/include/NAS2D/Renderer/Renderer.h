@@ -124,7 +124,7 @@ public:
 	virtual void drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a = 255);
 	void drawTextShadowClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int distance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
 
-	virtual void imageDesaturate(Image& image);
+	virtual void desaturate(Image& image);
 
 	void setFadeColor(const Color_4ub& color);
 	void fadeIn(int delayTime);
@@ -138,16 +138,16 @@ public:
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);
     
-	virtual unsigned int getPixelColor(Image& src, int x, int y);
-	virtual bool isPixelTransparent(Image& src, int x, int y);
+	virtual unsigned int pixelColor(Image& src, int x, int y);
+	virtual bool pixelTransparent(Image& src, int x, int y);
 
-	virtual int getWidth();
-	virtual int getHeight();
+	virtual int width();
+	virtual int height();
 
 	Point_2d getScreenResolution();
 
-	int getScreenCenterX();
-	int getScreenCenterY();
+	int screenCenterX();
+	int screenCenterY();
 	
 	virtual void buildDisplayModeList();
 	const DisplayModes& getDisplayModes() const { return mDisplayModes; }

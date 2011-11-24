@@ -46,7 +46,7 @@ Image::Image(const string& filePath):	Resource(filePath),
  *
  * If the load fails, a default image is stored indicating an error condition.
  */
-Image::Image(Image *src, int x, int y, int width, int height) :	Resource(src->getName()),
+Image::Image(Image *src, int x, int y, int width, int height) :	Resource(src->name()),
 																mPixels(NULL),
 																mTextureId(0)
 {
@@ -92,7 +92,7 @@ Image::Image() :	mPixels(NULL),
  * 
  * \param	src		A reference to an Image Resource.
  */
-Image::Image(const Image &src):	Resource(src.mResourceName),
+Image::Image(const Image &src):	Resource(src.name()),
 								mPixels(NULL),
 								mTextureId(src.mTextureId)
 {
@@ -111,8 +111,8 @@ Image::Image(const Image &src):	Resource(src.mResourceName),
 		SDL_BlitSurface(src.mPixels, NULL, mPixels, NULL);
 		SDL_SetAlpha(src.mPixels, SDL_SRCALPHA, src.mPixels->format->Amask);
 
-		mIsLoaded = true;
-		mErrorDescription = "";
+		loaded(true);
+		errorMessage("");
 		mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 	}
 }
@@ -144,8 +144,8 @@ Image& Image::operator=(const Image& rhs)
 		SDL_BlitSurface(rhs.mPixels, NULL, mPixels, NULL);
 		SDL_SetAlpha(rhs.mPixels, SDL_SRCALPHA, rhs.mPixels->format->Amask);
 
-		mIsLoaded = true;
-		mErrorDescription = "";
+		loaded(true);
+		errorMessage("");
 		mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 	}
 
@@ -167,16 +167,17 @@ void Image::loadDefault()
 
 	if(!mPixels)
 	{
-		mErrorDescription = SDL_GetError();
+		errorMessage(SDL_GetError());
 		mPixels = NULL;
 		mRect = Rectangle_2d(0, 0, 0, 0);
-		mIsLoaded = false;
+		loaded(false);
 
 		return;
 	}
 
 	mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
-	mIsLoaded = true;
+	loaded(true);
+	errorMessage("");
 }
 
 /**
@@ -187,10 +188,10 @@ void Image::loadDefault()
  */
 void Image::load()
 {
-	File imageFile = Singleton<Filesystem>::get().getFile(mResourceName);
+	File imageFile = Singleton<Filesystem>::get().open(name());
 	if(imageFile.size() == 0)
 	{
-		mErrorDescription = Singleton<Filesystem>::get().getLastError();
+		errorMessage(Singleton<Filesystem>::get().lastError());
 		loadDefault();
 		return;
 	}
@@ -214,9 +215,9 @@ void Image::loadFromSource(Image *src, int x, int y, int width, int height)
 	}
 
 	// Make sure our source Image has actually loaded itself.
-	if(!src->isLoaded())
+	if(!src->loaded())
 	{
-		cout << "Image resource used a source Image that hasn't properly loaded: " << src->getErrorMessage() << endl;
+		cout << "Image resource used a source Image that hasn't properly loaded: " << src->errorMessage() << endl;
 		loadDefault();
 		return;
 	}
@@ -225,25 +226,25 @@ void Image::loadFromSource(Image *src, int x, int y, int width, int height)
 	if(mPixels)
 		SDL_FreeSurface(mPixels);
 	
-	mPixels = SDL_CreateRGBSurface(src->getPixels()->flags, width, height, src->getPixels()->format->BitsPerPixel, src->getPixels()->format->Rmask, src->getPixels()->format->Gmask, src->getPixels()->format->Bmask, src->getPixels()->format->Amask);
+	mPixels = SDL_CreateRGBSurface(src->pixels()->flags, width, height, src->pixels()->format->BitsPerPixel, src->pixels()->format->Rmask, src->pixels()->format->Gmask, src->pixels()->format->Bmask, src->pixels()->format->Amask);
 	if(!mPixels)
 	{
-		cout << "Failed to create Image from source Image '" << src->getName() << "': " << SDL_GetError() << endl;
+		cout << "Failed to create Image from source Image '" << src->name() << "': " << SDL_GetError() << endl;
 		loadDefault();
 		return;
 	}
 
 	// Turn off source alpha blending so that the alpha data is copied properly.
-	SDL_SetAlpha(src->getPixels(), 0, src->getPixels()->format->Amask); 
+	SDL_SetAlpha(src->pixels(), 0, src->pixels()->format->Amask); 
 
 	SDL_Rect grabRect = {x, y, width, height};
-	SDL_BlitSurface(src->getPixels(), &grabRect, mPixels, NULL);
-	SDL_SetAlpha(src->getPixels(), SDL_SRCALPHA, src->getPixels()->format->Amask); 
+	SDL_BlitSurface(src->pixels(), &grabRect, mPixels, NULL);
+	SDL_SetAlpha(src->pixels(), SDL_SRCALPHA, src->pixels()->format->Amask); 
 	
 	mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 	
-	mIsLoaded = true;
-	mErrorDescription = "";
+	loaded(true);
+	errorMessage("");
 }
 
 
@@ -260,7 +261,7 @@ void Image::createSurface(const char* data, int dataLength)
 	if(!tmpSurface)
 	{		
 		// Get the error message, set mPixels with a visual error image and return.
-		mErrorDescription = SDL_GetError();
+		errorMessage(SDL_GetError());
 		loadDefault();
 		return;
 	}
@@ -275,22 +276,22 @@ void Image::createSurface(const char* data, int dataLength)
 	if(!mPixels)
 	{		
 		// Get the error message, set mPixels with a visual error image and return.
-		mErrorDescription = SDL_GetError();
+		errorMessage(SDL_GetError());
 		loadDefault();
 		return;
 	}
 
 	mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 
-	mIsLoaded = true;
-	mErrorDescription = "";
+	loaded(true);
+	errorMessage("");
 }
 
 
 /**
  * Returns the pixel data used in the Image Resource.
  */
-SDL_Surface *Image::getPixels()
+SDL_Surface *Image::pixels()
 {
 	return mPixels;
 }
@@ -299,7 +300,7 @@ SDL_Surface *Image::getPixels()
 /**
  * Gets the width in pixels of the image.
  */
-int Image::getWidth() const
+int Image::width() const
 {
 	return mRect.w;
 }
@@ -308,7 +309,7 @@ int Image::getWidth() const
 /**
  * Gets the height in pixels of the image.
  */
-int Image::getHeight() const
+int Image::height() const
 {
 	return mRect.h;
 }
@@ -316,8 +317,9 @@ int Image::getHeight() const
 
 /**
  * Gets a reference to a const Rectangle_2d.
- */
-const Rectangle_2d& Image::getRect() const
+
+const Rectangle_2d& Image::rect() const
 {
 	return mRect;
 }
+*/

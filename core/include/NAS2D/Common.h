@@ -32,7 +32,11 @@ std::string toLowercase(const std::string& str);
 std::string toUppercase(const std::string& str);
 
 template <typename T>
-bool from_string(T& t, const std::string& s, std::ios_base& (*f)(std::ios_base&));
+bool from_string(T& t, const std::string& s, std::ios_base& (*f)(std::ios_base&))
+{
+	std::istringstream iss(s);
+	return !(iss >> f >> t).fail();
+}
 
 /**
  * \typedef StringList

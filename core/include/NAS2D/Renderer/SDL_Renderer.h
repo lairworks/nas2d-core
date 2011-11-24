@@ -49,15 +49,15 @@ public:
 	void drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a);
 	void drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a);
 
-	void imageDesaturate(Image& image);
+	void desaturate(Image& image);
 
 	void clearScreen(int r, int g, int b);
 
-    unsigned int getPixelColor(Image& src, int x, int y);
-	bool isPixelTransparent(Image& src, int x, int y);
+    unsigned int pixelColor(Image& src, int x, int y);
+	bool pixelTransparent(Image& src, int x, int y);
     
-	int getWidth();
-	int getHeight();
+	int width();
+	int height();
 
 	bool valid() const;
 

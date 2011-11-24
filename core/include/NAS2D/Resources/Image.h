@@ -46,20 +46,20 @@ public:
 	/// Frees pixel data and cleans up after itself.
 	~Image() { SDL_FreeSurface(mPixels); }
 
-	SDL_Surface *getPixels();
+	int width() const;
+	int height() const;
 
-	int getWidth() const;
-	int getHeight() const;
-
-	const Rectangle_2d& getRect() const;
-	
-	unsigned int getTexutreId() { return mTextureId; }
+	unsigned int texutreId() { return mTextureId; }
 
 protected:
+	friend class Renderer;
+	friend class SDL_Renderer;
 	friend class OGL_Renderer;
 
+	SDL_Surface *pixels();
+
 	// Used for OpenGL modes -- pollutes the interface but is almost a necessary evil.
-	void setTextureId(unsigned int id) { mTextureId = id; }
+	void textureId(unsigned int id) { mTextureId = id; }
 
 private:
 	void load();
@@ -72,18 +72,20 @@ private:
 	 *			as necessary. This will likely require a modification to the SDL Renderer that stores 'SDL_Surfaces'
 	 *			in a similar manner to the way the OpenGL Renderer stores references to OGL Textures.
 	 */
-	SDL_Surface *mPixels;	/**< SDL_Surface containing the Pixel Data. */
+	SDL_Surface		*mPixels;	/**< SDL_Surface containing the Pixel Data. */
 
-	Rectangle_2d	mRect;
+	Rectangle_2d	mRect;		/**< Used to store width/height information about the image. */
 
 	unsigned int	mTextureId;	/**< Internal TextureID when in OpenGL mode. */
 };
+
 
 /**
  * \typedef	ImageListPtr
  * \brief	A vector if pointers to Image.
  */
 typedef std::vector<Image*> ImageListPtr;
+
 
 /**
  * \typedef	ImageList

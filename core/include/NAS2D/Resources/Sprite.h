@@ -43,14 +43,14 @@ public:
 
 	void update(int x, int y);
 
-	void setAlpha(int alpha) { mAlpha = clamp(alpha, 0, 255); }
+	void alpha(int alpha) { mAlpha = clamp(alpha, 0, 255); }
 
-	Image* getCurrentFrameImage();
+	//Image* getCurrentFrameImage();
 
-	int getWidth();
-	int getHeight();
-	int getOriginX(int x);
-	int getOriginY(int y);
+	int width();
+	int height();
+	int originX(int x);
+	int originY(int y);
 
 	void debug();
 

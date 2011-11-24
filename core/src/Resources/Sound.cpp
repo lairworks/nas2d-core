@@ -20,10 +20,10 @@ Sound::Sound(const string& filePath):	Resource(filePath),
 
 void Sound::load()
 {
-	File soundFile = Singleton<Filesystem>::get().getFile(mResourceName);
+	File soundFile = Singleton<Filesystem>::get().open(name());
 	if(soundFile.empty())
 	{
-		mErrorDescription = Singleton<Filesystem>::get().getLastError();
+		errorMessage(Singleton<Filesystem>::get().lastError());
 		return;
 	}
 
@@ -31,14 +31,14 @@ void Sound::load()
 	if(!mChunk) 
 	{
 		// Get the error message and return false.
-		mErrorDescription = Mix_GetError();
+		errorMessage(Mix_GetError());
 		return;
 	}
 
-	mIsLoaded = true;
+	loaded(true);
 }
 
-Mix_Chunk *Sound::getSound() const
+Mix_Chunk *Sound::sound() const
 {
 	return mChunk;
 }

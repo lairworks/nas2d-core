@@ -12,7 +12,6 @@
 #define _NAS_MIXER_
 
 #include "NAS2D/Exception.h"
-#include "NAS2D/Callbacks.h"
 #include "NAS2D/Common.h"
 #include "NAS2D/Configuration.h"
 #include "NAS2D/Singleton.h"
@@ -31,14 +30,6 @@
 class Mixer
 {
 public:
-	/**
-	 * \typedef	NotifyCallback
-	 * 
-	 * A callback prototype to get called when an 'intro' section from a two part
-	 * audio track is finished playing.
-	 */
-	typedef Callback_No_Params_No_Return NotifyCallback;
-	
 	/**
 	 * C'Tor
 	 */

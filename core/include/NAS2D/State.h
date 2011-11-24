@@ -36,15 +36,6 @@ protected:
 
 	virtual void initialize() = 0;
 	virtual State* update() = 0;
-
-	// Keyhandling functions
-	virtual void onKeyDown(SDL_Event& event) {}
-	virtual void onKeyUp(SDL_Event& event) {}
-
-	// Mouse Handling Functions
-	virtual void onMouseButtonDown(SDL_Event& event) {}
-	virtual void onMouseButtonUp(SDL_Event& event) {}
-	virtual void onMouseMotion(SDL_Event& event) {}
 };
 
 

@@ -251,13 +251,13 @@ void Sprite::update(int x, int y)
  *
  * \warning	Returned pointer is owned by the Sprite. Do
  *			not free it.
- */
-Image* Sprite::getCurrentFrameImage()
+
+Image* Sprite::currentFrameImage()
 {
 	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
 	return frame->mFrameImage;
 }
-
+ */
 
 /**
  * Parses a Sprite XML Definition File.
@@ -275,7 +275,7 @@ bool Sprite::parseXml(const string& filePath)
 		return false;
 	}
 
-	File xmlFile = Singleton<Filesystem>::get().getFile(filePath);
+	File xmlFile = Singleton<Filesystem>::get().open(filePath);
 
 	// Load the file
 	if(xmlFile.size() == 0)
@@ -396,7 +396,7 @@ bool Sprite::parseImageSheets(TiXmlElement *root)
 			// If an <imagesheet> with 'id' doesn't exist in our list, add it.
 			if(mSpriteSheets.find(toLowercase(id)) == mSpriteSheets.end())
 			{
-				std::string fileStr = Singleton<Filesystem>::get().getWorkingDir(mSpriteName);
+				std::string fileStr = Singleton<Filesystem>::get().workingPath(mSpriteName);
 				fileStr += src;
 				if(!Singleton<Filesystem>::get().exists(fileStr))
 				{
@@ -497,7 +497,7 @@ void Sprite::parseFrames(TiXmlNode *node, const string& action)
 				addDefaultFrame(frameList);
 				continue;
 			}
-			else if(!mSpriteSheets.find(sheetid)->second->isLoaded())
+			else if(!mSpriteSheets.find(sheetid)->second->loaded())
 			{
 				cout << "<frame> definition in Sprite '" << mSpriteName << "' references an <imagesheet> that couldn't load its source image at row " << frameNode->Row() << "." << endl;
 				addDefaultFrame(frameList);
@@ -524,7 +524,7 @@ void Sprite::parseFrames(TiXmlNode *node, const string& action)
 				addDefaultFrame(frameList);
 				continue;
 			}
-			else if( x < 0 || x > mSpriteSheets.find(sheetid)->second->getWidth())
+			else if( x < 0 || x > mSpriteSheets.find(sheetid)->second->width())
 			{
 				cout << "Value 'x' in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << " contains a value that is out of bounds." << endl;
 				addDefaultFrame(frameList);
@@ -541,7 +541,7 @@ void Sprite::parseFrames(TiXmlNode *node, const string& action)
 				addDefaultFrame(frameList);
 				continue;
 			}
-			else if( y < 0 || y > mSpriteSheets.find(sheetid)->second->getHeight())
+			else if( y < 0 || y > mSpriteSheets.find(sheetid)->second->height())
 			{
 				cout << "Value 'y' in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << " contains a value that is out of bounds." << endl;
 				addDefaultFrame(frameList);
@@ -563,7 +563,7 @@ void Sprite::parseFrames(TiXmlNode *node, const string& action)
 				addDefaultFrame(frameList);
 				continue;
 			}
-			else if(width + x > mSpriteSheets.find(sheetid)->second->getWidth())
+			else if(width + x > mSpriteSheets.find(sheetid)->second->width())
 			{
 				cout << "'x' + 'width' value exceeds dimensions of specified sprite sheet. Sprite '" << mSpriteName << "',  Row " << frameNode->Row() << "." << endl;
 				addDefaultFrame(frameList);
@@ -585,7 +585,7 @@ void Sprite::parseFrames(TiXmlNode *node, const string& action)
 				addDefaultFrame(frameList);
 				continue;
 			}
-			else if(height + y > mSpriteSheets.find(sheetid)->second->getHeight())
+			else if(height + y > mSpriteSheets.find(sheetid)->second->height())
 			{
 				cout << "'y' + 'height' value exceeds dimensions of specified sprite sheet. Sprite '" << mSpriteName << "',  Row " << frameNode->Row() << "." << endl;
 				addDefaultFrame(frameList);
@@ -648,7 +648,7 @@ void Sprite::parseFrames(TiXmlNode *node, const string& action)
 void Sprite::addDefaultFrame(FrameList &frmList, unsigned int frmDelay)
 {
 	Image *tmpImage = new Image();
-	frmList.push_back(new spriteFrame(tmpImage, 0, 0, tmpImage->getWidth(), tmpImage->getHeight(), tmpImage->getWidth() / 2, tmpImage->getHeight() / 2, frmDelay));
+	frmList.push_back(new spriteFrame(tmpImage, 0, 0, tmpImage->width(), tmpImage->height(), tmpImage->width() / 2, tmpImage->height() / 2, frmDelay));
 	delete tmpImage;
 }
 
@@ -682,7 +682,7 @@ void Sprite::debug()
 	SheetContainer::iterator sheetIt = mSpriteSheets.begin();
 	while(sheetIt != mSpriteSheets.end())
 	{
-		cout << "   " << sheetIt->first << ": '" << sheetIt->second->getName() << "'" << endl;
+		cout << "   " << sheetIt->first << ": '" << sheetIt->second->name() << "'" << endl;
 		sheetIt++;
 	}
 
@@ -700,28 +700,28 @@ void Sprite::debug()
 }
 
 
-int Sprite::getWidth()
+int Sprite::width()
 {
 	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
 	return frame->mWidth;
 }
 
 
-int Sprite::getHeight()
+int Sprite::height()
 {
 	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
 	return frame->mHeight;
 }
 
 
-int Sprite::getOriginX(int x)
+int Sprite::originX(int x)
 {
 	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
 	return x - frame->mAnchorX;
 }
 
 
-int Sprite::getOriginY(int y)
+int Sprite::originY(int y)
 {
 	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
 	return y - frame->mAnchorY;
@@ -746,8 +746,8 @@ int Sprite::getOriginY(int y)
  * \param	d	Length of time milliseconds to display this spriteFrame during animation playback.
  */
 Sprite::spriteFrame::spriteFrame(Image *src, int x, int y, int w, int h, int aX, int aY, int d) :	mFrameImage(new Image(src, x, y, w, h) ),
-																									mWidth(mFrameImage->getWidth()),
-																									mHeight(mFrameImage->getHeight()),
+																									mWidth(mFrameImage->width()),
+																									mHeight(mFrameImage->height()),
 																									mAnchorX(aX), mAnchorY(aY),
 																									mFrameDelay(d)
 {}

@@ -50,11 +50,11 @@ Font::Font():	Resource("Default Font"),
  */
 void Font::load()
 {
-	mFontBuffer = Singleton<Filesystem>::get().getFile(mResourceName);
+	mFontBuffer = Singleton<Filesystem>::get().open(name());
 
 	if(mFontBuffer.size() == 0)
 	{
-		mErrorDescription = Singleton<Filesystem>::get().getLastError();
+		errorMessage(Singleton<Filesystem>::get().lastError());
 		//mFont = NULL;
 		return;
 	}
@@ -63,7 +63,7 @@ void Font::load()
 	if(!mFont)
 	{		
 		// Get the error message and return false. 
-		mErrorDescription = TTF_GetError();
+		errorMessage(TTF_GetError());
 		//mFont = NULL;
 		return;
 	}
@@ -74,7 +74,7 @@ void Font::load()
 	
 	mFontName = buildName();
 
-	mIsLoaded = true;
+	loaded(true);
 }
 
 
@@ -83,7 +83,7 @@ void Font::load()
  *
  * \param	str		Reference to a std::string to get the width of.
  */
-int Font::getWidth(const string& str) const
+int Font::width(const string& str) const
 {
 	if(mFont == NULL)
 		return 0;
@@ -100,7 +100,7 @@ int Font::getWidth(const string& str) const
 /**
  * Returns the height in pixels of the font.
  */
-int Font::getHeight() const
+int Font::height() const
 {
 	return mHeight;
 }
@@ -113,7 +113,7 @@ int Font::getHeight() const
  *			hide this functionality somehow or wrap the TTF_Font
  *			structure to something somewhat more generic.
  */
-TTF_Font *Font::getFont() const
+TTF_Font *Font::font() const
 {
 	return mFont;
 }
@@ -122,7 +122,7 @@ TTF_Font *Font::getFont() const
 /**
  * Returns the typeface name.
  */
-const std::string& Font::getFontName() const
+const std::string& Font::fontName() const
 {
 	return mFontName;
 }
@@ -154,7 +154,7 @@ std::string Font::buildName()
  * \param	style	Sets the style of the font. Can be STYLE_NORMAL (default),
 					STYLE_BOLD, STYLE_ITALIC or STYLE_UNDERLINE.
  */
-void Font::setStyle(FontStyle style)
+void Font::style(FontStyle style)
 {
 	switch(style)
 	{

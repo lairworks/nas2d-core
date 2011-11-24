@@ -79,10 +79,10 @@ void SDL_Mixer::playSound(Sound& sound)
 	if(mActAsNull)
 		return;
 
-	if(!sound.isLoaded())
+	if(!sound.loaded())
 		return;
 
-	Mix_PlayChannel(-1, sound.getSound(), 0);
+	Mix_PlayChannel(-1, sound.sound(), 0);
 }
 
 
@@ -109,11 +109,11 @@ void SDL_Mixer::playMusic(Music& music)
 	if(mActAsNull)
 		return;
 
-	if(!music.isLoaded())
+	if(!music.loaded())
 		return;
 
 	Mix_HookMusicFinished(NULL);
-	Mix_PlayMusic(music.getMusic(), -1);
+	Mix_PlayMusic(music.music(), -1);
 	mMusicStopped = false;
 	mBody = NULL;
 }
@@ -124,16 +124,16 @@ void SDL_Mixer::playMusic(Music& intro, Music& loop)
 	if(mActAsNull)
 		return;
 
-	if(!intro.isLoaded())
+	if(!intro.loaded())
 		return;
-	if(!loop.isLoaded())
+	if(!loop.loaded())
 		return;
 
 	mBody = &loop;
 
 	Mix_HookMusicFinished(notifyMixer);
 
-	Mix_PlayMusic(intro.getMusic(), 1);
+	Mix_PlayMusic(intro.music(), 1);
 	mMusicStopped = false;
 }
 
@@ -164,7 +164,7 @@ void SDL_Mixer::fadeInMusic(Music& music, int loops, int delay)
 	if(mActAsNull)
 		return;
 
-	Mix_FadeInMusic(music.getMusic(), loops, delay);
+	Mix_FadeInMusic(music.music(), loops, delay);
 }
 
 

@@ -35,7 +35,11 @@ public:
 
 	Sound(const std::string& filePath);
 
-	Mix_Chunk *getSound() const;			/**< Should this be private and just friend the Mixer class? */
+protected:
+	friend class Mixer;
+	friend class SDL_Mixer;
+
+	Mix_Chunk *sound() const;			/**< Internal function only used by the Mixer. */
 
 private:
 	void load();

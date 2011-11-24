@@ -23,10 +23,10 @@ Music::Music(const string& filePath):	Resource(filePath),
 
 void Music::load()
 {
-	mMusicBuffer = Singleton<Filesystem>::get().getFile(mResourceName);
+	mMusicBuffer = Singleton<Filesystem>::get().open(name());
 	if(mMusicBuffer.empty())
 	{
-		mErrorDescription = Singleton<Filesystem>::get().getLastError();
+		errorMessage(Singleton<Filesystem>::get().lastError());
 		return;
 	}
 
@@ -34,16 +34,16 @@ void Music::load()
 	if(!mMusic) 
 	{
 		// Get the error message and return false.
-		mErrorDescription = Mix_GetError();
+		errorMessage(Mix_GetError());
 		return;
 	}
 	
-	mIsLoaded = true;
-	mErrorDescription = "";
+	loaded(true);
+	errorMessage("");
 }
 
 
-Mix_Music *Music::getMusic() const
+Mix_Music *Music::music() const
 {
 	return mMusic;
 }

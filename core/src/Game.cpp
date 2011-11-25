@@ -1,9 +1,9 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 New Age Software
+// = Copyright © 2008 - 2011 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software as long under the terms of the zlib license.
+// = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
@@ -38,10 +38,10 @@ Game::Game(const string& appTitle, const string& argv_0, const string& configPat
 	Singleton<Filesystem>::get().init(argv_0, "data");
 
 	Configuration& cf = Singleton<Configuration>::get();
-	cf.loadConfig(configPath);
+	cf.load(configPath);
 
 	// Instantiate the Renderer object
-	if(cf.getRenderer() == "OGL")
+	if(cf.renderer() == "OGL")
 	{
 		Singleton<Renderer>::instantiateDerived(new OGL_Renderer());
 
@@ -53,8 +53,8 @@ Game::Game(const string& appTitle, const string& argv_0, const string& configPat
 		{
 			cout << "Unable to create an OpenGL Renderer. Switching to Software Mode instead." << endl;
 
-			Singleton<Configuration>::get().setRenderer("SDL");
-			Singleton<Configuration>::get().saveConfig();
+			Singleton<Configuration>::get().renderer("SDL");
+			Singleton<Configuration>::get().save();
 			
 			Singleton<Renderer>::clean();
 			Singleton<Renderer>::instantiateDerived(new SDL_Renderer());

@@ -1,9 +1,9 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 New Age Software
+// = Copyright © 2008 - 2011 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software as long under the terms of the zlib license.
+// = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
@@ -44,9 +44,9 @@ OGL_Renderer::OGL_Renderer():	Renderer("OGL Renderer"),
 	
 	Configuration& cf = Singleton<Configuration>::get();
 
-	TEXTURE_FILTER = cf.getGraphicsTextureQuality();
+	TEXTURE_FILTER = cf.graphicsTextureQuality();
 
-	initVideo(cf.getGraphicsWidth(), cf.getGraphicsHeight(), cf.getGraphicsColorDepth(), cf.isGraphicsFullscreen(), cf.isVsyncEnabled());
+	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
 
 	// Set our LetterBox height to 15% of the screen's height.
 	mLetterBoxHeight = (int)((mScreen->h) * 0.15);

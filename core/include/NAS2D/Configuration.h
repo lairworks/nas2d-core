@@ -1,9 +1,9 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 New Age Software
+// = Copyright © 2008 - 2011 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software as long under the terms of the zlib license.
+// = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
@@ -53,77 +53,68 @@ public:
 	Configuration();
 	~Configuration();
 
-	void saveConfig();
-
-	void loadConfig(const std::string& filePath);
+	void save();
+	void load(const std::string& filePath);
 
 	// Video Options
-	int getGraphicsWidth() const;
-	int getGraphicsHeight() const;
-	int getGraphicsColorDepth() const;
-	GraphicsQuality getGraphicsTextureQuality() const;
-	bool isGraphicsFullscreen() const;
-	bool isVsyncEnabled() const;
+	int graphicsWidth() const;
+	int graphicsHeight() const;
+	int graphicsColorDepth() const;
+	GraphicsQuality graphicsTextureQuality() const;
 
-	void setGraphicsWidth(int width);
-	void setGraphicsHeight(int height);
-	void setGraphicsColorDepth(int bpp);
-	void setGraphicsTextureQuality(const std::string& quality);
-	void setGraphicsFullscreen(bool isFullscreen);
-	void setGraphicsVSync(bool isVsync);
+	bool fullscreen() const;
+	void fullscreen(bool isFullscreen);
 
-	void setRenderer(const std::string& renderer);
-	std::string getRenderer() const;
+	bool vsync() const;
+	void vsync(bool isVsync);
+
+	void graphicsWidth(int width);
+	void graphicsHeight(int height);
+	void graphicsColorDepth(int bpp);
+	void graphicsTextureQuality(const std::string& quality);
+
+	void renderer(const std::string& renderer);
+	std::string renderer() const;
 
 	// Audio Options
-	int getAudioMixRate() const;
-	int getAudioStereoChannels() const;
-	int getAudioSfxVolume() const;
-	int getAudioMusicVolume() const;
-	int getAudioBufferSize() const;
+	int audioMixRate() const;
+	int audioStereoChannels() const;
+	int audioSfxVolume() const;
+	int audioMusicVolume() const;
+	int audioBufferSize() const;
+	const std::string& mixer() const;
 
-	void setAudioMixRate(int mixrate);
-	void setAudioStereoChannels(int channels);
-	void setAudioSfxVolume(int volume);
-	void setAudioMusicVolume(int volume);
-	void setAudioBufferSize(int size);
-	void setAudioMixer(const std::string& mixer);
+	void audioMixRate(int mixrate);
+	void audioStereoChannels(int channels);
+	void audioSfxVolume(int volume);
+	void audioMusicVolume(int volume);
+	void audioBufferSize(int size);
+	void mixer(const std::string& mixer);
 
-	// GUI Options
-	//std::string getGuiOption(const std::string& key);
-	//AbsCoordinate getGuiPosition(const std::string& key);
-
-	//void setGuiOption(const std::string& key, const std::string& value);
-	//void setGuiPosition(const std::string& key, const AbsCoordinate& position);
-
-	//void clearGuiOption(const std::string& key);
-	//void clearGuiPosition(const std::string& key);
+	void option(const std::string option, const std::string& value, bool overwrite = true);
+	const std::string& option(const std::string& key);
+	void deleteOption(const std::string option);
 
 	void setDefaultValues();
 
 	bool optionChanged() const { return mOptionChanged; }
 
 private:
+	typedef std::map<std::string, std::string> Options;
+	
 	Configuration(const Configuration&);			// Intentionally left undefined.
 	Configuration& operator=(const Configuration&);	// Intentionally left undefined.
 
-	//typedef std::map<string, string> GuiOptionTable;
-	//typedef std::map<string, AbsCoordinate> GuiPositionTable;
-
-	void writeConfig();
 	bool readConfig(const std::string& filePath);
 
 	void parseGraphics(TiXmlNode *node);
 	void parseAudio(TiXmlNode *node);
 
-	//bool parseGuiOptions(TiXmlNode *node);
-	//bool parseGuiOption(TiXmlNode *node);
-	//bool parseGuiPosition(TiXmlNode *node);
-
-	//GuiOptionTable		mGuiOptions;					/**< Table of GUI Options. */
-	//GuiPositionTable	mGuiPositions;					/**< Table of GUI Positions. */
+	void parseOptions(TiXmlNode *node);
 
 	TiXmlDocument		*mConfigFile;					/**<  */
+
+	Options				mOptions;						/**< Options table containing option/value pairs. */
 
 	int					mScreenWidth, mScreenHeight;	/**< Screen Resolution */
 	int					mScreenBpp;						/**< Color Depth */

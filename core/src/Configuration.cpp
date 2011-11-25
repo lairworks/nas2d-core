@@ -1,9 +1,9 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 New Age Software
+// = Copyright © 2008 - 2011 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software as long under the terms of the zlib license.
+// = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
@@ -65,7 +65,7 @@ Configuration::Configuration():	mConfigFile(new TiXmlDocument()),
 Configuration::~Configuration()
 {
 	if(mOptionChanged)
-		writeConfig();
+		save();
 
 	if(mConfigFile)
 	{
@@ -82,7 +82,7 @@ Configuration::~Configuration()
  *
  * \param	filePath	A string indicating the file to load and process for configuration.
  */
-void Configuration::loadConfig(const std::string& filePath)
+void Configuration::load(const std::string& filePath)
 {
 	cout << "Initializing Configuration..." << endl;
 	
@@ -95,31 +95,8 @@ void Configuration::loadConfig(const std::string& filePath)
 }
 
 
-/**
- * Sets default values for all important values.
- */
-void Configuration::setDefaultValues()
+void Configuration::save()
 {
-	mScreenWidth = GRAPHICS_WIDTH;
-	mScreenHeight = GRAPHICS_HEIGHT;
-	mScreenBpp = GRAPHICS_BITDEPTH;
-	mFullScreen = GRAPHICS_FULLSCREEN;
-	mTextureQuality = GRAPHICS_TEXTURE_QUALITY;
-	
-	mMixRate = AUDIO_MEDIUM_QUALITY;
-	mStereoChannels = AUDIO_STEREO;
-	mSfxVolume = AUDIO_SFX_VOLUME;
-	mMusicVolume = AUDIO_MUSIC_VOLUME;
-	mBufferLength = AUDIO_BUFFER_SIZE;
-}
-
-
-/**
- * Writes all stored values to disk.
- */
-void Configuration::writeConfig()
-{
-
 	TiXmlDocument *doc = new TiXmlDocument();
 
 	TiXmlComment *comment = new TiXmlComment("Automatically generated Configuration file. This is best left untouched.");
@@ -160,46 +137,55 @@ void Configuration::writeConfig()
 	audio->SetAttribute("mixer", mMixerName);
 	root->LinkEndChild(audio);
 
-	/*
-	// GUI Options
-	TiXmlElement *gui_options = new TiXmlElement("gui-options");
-	root->LinkEndChild(gui_options);
+	// Options
+	TiXmlElement *options = new TiXmlElement("options");
+	root->LinkEndChild(options);
     
 	// Iterate through the gui options list
-	GuiOptionTable::iterator optIt = mGuiOptions.begin();
-	while(optIt != mGuiOptions.end())
+	Options::iterator optIt = mOptions.begin();
+	while(optIt != mOptions.end())
 	{
 		TiXmlElement *option = new TiXmlElement("option");
 		option->SetAttribute("name", optIt->first);
 		option->SetAttribute("value", optIt->second);
-		gui_options->LinkEndChild(option);
+		options->LinkEndChild(option);
 		optIt++;
 	}
 
-	// Iterate through the gui positions list
-	GuiPositionTable::iterator posIt = mGuiPositions.begin();
-	while(posIt != mGuiPositions.end())
-	{
-		TiXmlElement *position = new TiXmlElement("position");
-		position->SetAttribute("name", posIt->first);
-		position->SetAttribute("x", posIt->second.first);
-		position->SetAttribute("y", posIt->second.second);
-		gui_options->LinkEndChild(position);
-		posIt++;
-	}
-	*/
-	
-	
 	// Write out the XML file.
 	TiXmlPrinter printer;
 	doc->Accept(&printer);
 
 	Singleton<Filesystem>::get().write(File(printer.Str(), "config.xml"));
 
-
 	delete doc;
 	doc = 0;
 }
+
+
+/**
+ * Sets default values for all important values.
+ */
+void Configuration::setDefaultValues()
+{
+	mScreenWidth = GRAPHICS_WIDTH;
+	mScreenHeight = GRAPHICS_HEIGHT;
+	mScreenBpp = GRAPHICS_BITDEPTH;
+	mFullScreen = GRAPHICS_FULLSCREEN;
+	mTextureQuality = GRAPHICS_TEXTURE_QUALITY;
+	
+	mMixRate = AUDIO_MEDIUM_QUALITY;
+	mStereoChannels = AUDIO_STEREO;
+	mSfxVolume = AUDIO_SFX_VOLUME;
+	mMusicVolume = AUDIO_MUSIC_VOLUME;
+	mBufferLength = AUDIO_BUFFER_SIZE;
+}
+
+
+/**
+ * Writes all stored values to disk.
+ */
+
 
 
 /**
@@ -255,6 +241,10 @@ bool Configuration::readConfig(const string& filePath)
 			{
 				parseAudio(xmlNode);
 			}
+			else if(xmlNode->ValueStr() == "options")
+			{
+				parseOptions(xmlNode);
+			}
 			else if(xmlNode->ValueStr() == "gui-options")
 			{
 				//if(!parseGuiOptions(xmlNode))
@@ -271,13 +261,6 @@ bool Configuration::readConfig(const string& filePath)
 }
 
 
-void Configuration::saveConfig()
-{
-	cout << "Saving configuration changes." << endl;
-	writeConfig();
-}
-
-
 /**
  * Parse the <graphics> tab.
  *
@@ -287,25 +270,25 @@ void Configuration::parseGraphics(TiXmlNode *node)
 {
 	XmlAttributeParser parser;
 
-	mScreenWidth = parser.getIntAttribute(node, "screenwidth");
-	mScreenHeight = parser.getIntAttribute(node, "screenheight");
-	mScreenBpp = parser.getIntAttribute(node, "bitdepth");
+	mScreenWidth = parser.intAttribute(node, "screenwidth");
+	mScreenHeight = parser.intAttribute(node, "screenheight");
+	mScreenBpp = parser.intAttribute(node, "bitdepth");
 
-	string fs = parser.getStringAttribute(node, "fullscreen");
-	(toLowercase(fs) == "true") ? mFullScreen = true : mFullScreen = false;
+	string fs = parser.stringAttribute(node, "fullscreen");
+	(toLowercase(fs) == "true") ? fullscreen(true) : fullscreen(false);
 
 
-	string vsync = parser.getStringAttribute(node, "vsync");
-	if(toLowercase(vsync) != "true" && toLowercase(vsync) != "false")
-		setGraphicsVSync(true);
+	string vSync = parser.stringAttribute(node, "vsync");
+	if(toLowercase(vSync) != "true" && toLowercase(vSync) != "false")
+		vsync(true);
 	else
-		toLowercase(vsync) == "true" ? mVSync = true : mVSync = false;
+		toLowercase(vSync) == "true" ? vsync(true) : vsync(false);
 
-	mRendererName = parser.getStringAttribute(node, "renderer");
+	mRendererName = parser.stringAttribute(node, "renderer");
 	if(toLowercase(mRendererName) != "sdl" && toLowercase(mRendererName) != "ogl")
-		setRenderer(GRAPHICS_RENDERER);
+		renderer(GRAPHICS_RENDERER);
 
-	setGraphicsTextureQuality(parser.getStringAttribute(node, "texturequality"));
+	graphicsTextureQuality(parser.stringAttribute(node, "texturequality"));
 }
 
 /**
@@ -318,228 +301,119 @@ void Configuration::parseAudio(TiXmlNode *node)
 {
 	XmlAttributeParser parser;
 
-	mMixRate = parser.getIntAttribute(node, "mixrate");
+	mMixRate = parser.intAttribute(node, "mixrate");
 	if(mMixRate == 0)
-		setAudioMixRate(AUDIO_MEDIUM_QUALITY);
+		audioMixRate(AUDIO_MEDIUM_QUALITY);
 
-	mStereoChannels = parser.getIntAttribute(node, "channels");
+	mStereoChannels = parser.intAttribute(node, "channels");
 	if(mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
-		setAudioStereoChannels(AUDIO_STEREO);
+		audioStereoChannels(AUDIO_STEREO);
 
-	mSfxVolume = parser.getIntAttribute(node, "sfxvolume");
+	mSfxVolume = parser.intAttribute(node, "sfxvolume");
 	if(mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
-		setAudioSfxVolume(AUDIO_SFX_VOLUME);
+		audioSfxVolume(AUDIO_SFX_VOLUME);
 
 
-	mMusicVolume = parser.getIntAttribute(node, "musicvolume");
+	mMusicVolume = parser.intAttribute(node, "musicvolume");
 	if(mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
-		setAudioSfxVolume(AUDIO_MUSIC_VOLUME);
+		audioSfxVolume(AUDIO_MUSIC_VOLUME);
 
 
-	mBufferLength = parser.getIntAttribute(node, "bufferlength");
+	audioBufferSize(parser.intAttribute(node, "bufferlength"));
 
 
-	mMixerName = parser.getStringAttribute(node, "mixer");
-	if(mMixerName != "SDL")
-		setAudioMixer(AUDIO_MIXER);
+	mixer(parser.stringAttribute(node, "mixer"));
+	if(mixer() != "SDL")
+		mixer(AUDIO_MIXER);
 }
 
 
-/*
-bool Configuration::parseGuiOptions(TiXmlNode *node)
+/**
+ * Parses program options from an XML node.
+ */
+void Configuration::parseOptions(TiXmlNode *node)
 {
+	XmlAttributeParser parser;
+
 	TiXmlNode *xmlNode = 0;
 	while(xmlNode = node->IterateChildren(xmlNode))
 	{
 		if(xmlNode->ValueStr() == "option")
 		{
-			parseGuiOption(xmlNode);
-				//return false;
-		}
-		else if(xmlNode->ValueStr() == "position")
-		{
-			parseGuiPosition(xmlNode);
-				//return false;
-		}
-		else
-			cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in configuration file on row " << xmlNode->Row() << "." << endl;
-	}
+			// Ensure that there is an 'option' attribute.
+			string option = parser.stringAttribute(node, "name");
 
-	return true;
-}
-
-
-bool Configuration::parseGuiOption(TiXmlNode *node)
-{
-	// ===========================================
-	// Option Name
-	// ===========================================
-	const char *name = node->ToElement()->Attribute("name");
-	if(name == NULL)
-	{
-		cout << "Attribute 'name' in tag '<option>' contains invalid data on row " << node->Row() << " in file '" << mConfigFile->ValueStr() << "'." << endl;
-		return false;
-	}
-	if(strlen(name) < 1)
-	{
-		cout << "Attribute 'name' in tag '<option>' is empty." << endl;
-		return false;
-	}
-
-	// ===========================================
-	// Option Value
-	// ===========================================
-	const char *value = node->ToElement()->Attribute("value");
-	if(value == NULL)
-	{
-		Logger::log << Logger::warning() << "Attribute 'value' in tag '<option>' contains invalid data on row " << node->Row() << " in file '" << mConfigFile->ValueStr() << "'." << endl;
-		return false;
-	}
-	if(strlen(value) < 1)
-	{
-		Logger::log << Logger::warning() << "Attribute 'value' in tag '<option>' is empty." << endl;
-		return false;
-	}
-
-	setGuiOption(name, value);
-
-	return true;
-}
-
-
-bool Configuration::parseGuiPosition(TiXmlNode *node)
-{
-	int x = 0, y = 0;
-
-	int result = TIXML_SUCCESS;
-
-	// ===========================================
-	// Position Name
-	// ===========================================
-	const char *name = node->ToElement()->Attribute("name");
-	if(name == NULL)
-	{
-		Logger::log << Logger::warning() << "Attribute 'name' in tag '<position>' contains invalid data on row " << node->Row() << " in file '" << mConfigFile->ValueStr() << "'." << endl;
-		return false;
-	}
-	if(strlen(name) < 1)
-	{
-		Logger::log << Logger::warning() << "Attribute 'name' in tag '<position>' is empty." << endl;
-		return false;
-	}
-
-	// ===========================================
-	// Position X Value
-	// ===========================================
-	result = node->ToElement()->QueryIntAttribute("x", &x);
-	if(result != TIXML_SUCCESS)
-	{
-		if(result == TIXML_NO_ATTRIBUTE)
-		{
-			Logger::log << Logger::warning() << "Tag '<position>' is missing attribute 'x' on row " << node->Row() << "." << endl;
-			return false;
-		}
-		else if(result == TIXML_WRONG_TYPE)
-		{
-			Logger::log << Logger::warning() << "Attribute 'x' in tag '<position>' contains invalid data on row " << node->Row() << "." << endl;
-			return false;
+			if(!option.empty())
+				mOptions[option] = parser.stringAttribute(node, "value");
+			else
+				cout << "Option tag is missing a name attribute on row " << xmlNode->Row() << "." << endl;
 		}
 		else
-		{
-			Logger::log << Logger::error() << "Unspecified error." << endl;
-			return false;
-		}
+			cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in configuration on row " << xmlNode->Row() << "." << endl;
 	}
-
-	// ===========================================
-	// Position Y Value
-	// ===========================================
-	result = node->ToElement()->QueryIntAttribute("y", &y);
-	if(result != TIXML_SUCCESS)
-	{
-		if(result == TIXML_NO_ATTRIBUTE)
-		{
-			Logger::log << Logger::warning() << "Tag '<position>' is missing attribute 'y' on row " << node->Row() << "." << endl;
-			return false;
-		}
-		else if(result == TIXML_WRONG_TYPE)
-		{
-			Logger::log << Logger::warning() << "Attribute 'y' in tag '<position>' contains invalid data on row " << node->Row() << "." << endl;
-			return false;
-		}
-		else
-		{
-			Logger::log << Logger::error() << "Unspecified error." << endl;
-			return false;
-		}
-	}
-
-	setGuiPosition(name, AbsCoordinate(x, y));
-
-	return true;
 }
-*/
+
 
 /**
- * Returns screen Width.
+ * Gets screen Width.
  */
-int Configuration::getGraphicsWidth() const
+int Configuration::graphicsWidth() const
 {
 	return mScreenWidth;
 }
 
 
 /**
- * Returns screen Height.
+ * Gets screen Height.
  */
-int Configuration::getGraphicsHeight() const
+int Configuration::graphicsHeight() const
 {
 	return mScreenHeight;
 }
 
 
 /**
- * Returns Color Depth.
+ * Gets Color Depth.
  */
-int Configuration::getGraphicsColorDepth() const
+int Configuration::graphicsColorDepth() const
 {
 	return mScreenBpp;
 }
 
 
 /**
- * Returns texture render quality.
+ * Gets texture render quality.
  *
  * \note	Equivalent to GL_NEAREST or GL_LINEAR
  */
-GraphicsQuality Configuration::getGraphicsTextureQuality() const
+GraphicsQuality Configuration::graphicsTextureQuality() const
 {
 	return mTextureQuality;
 }
 
 
 /**
- * Returns true if fullscreen mode is requested.
+ * Gets true if fullscreen mode is requested.
  */
-bool Configuration::isGraphicsFullscreen() const
+bool Configuration::fullscreen() const
 {
 	return mFullScreen;
 }
 
 
 /**
- * Returns true if vsync mode is requested.
+ * Gets true if vsync mode is requested.
  */
-bool Configuration::isVsyncEnabled() const
+bool Configuration::vsync() const
 {
 	return mVSync;
 }
 
 
 /**
- * Returns the name of a Renderer.
+ * Gets the name of a Renderer.
  */
-std::string Configuration::getRenderer() const
+std::string Configuration::renderer() const
 {
 	return mRendererName;
 }
@@ -548,54 +422,63 @@ std::string Configuration::getRenderer() const
 /**
  * Sets the Renderer driver to use.
  */
-void Configuration::setRenderer(const string& renderer)
+void Configuration::renderer(const string& renderer)
 {
 	mRendererName = renderer;
 }
 
 
 /**
- * Returns the Audio Rate that should be used by the Mixer.
+ * Gets the Audio Rate that should be used by the Mixer.
  */
-int Configuration::getAudioMixRate() const
+int Configuration::audioMixRate() const
 {
 	return mMixRate;
 }
 
 
 /**
- * Returns Stereo or Mono
+ * Gets Stereo or Mono
  */
-int Configuration::getAudioStereoChannels() const
+int Configuration::audioStereoChannels() const
 {
 	return mStereoChannels;
 }
 
 
 /**
- * Returns the Volume Level for Sound Effects.
+ * Gets the Volume Level for Sound Effects.
  */
-int Configuration::getAudioSfxVolume() const
+int Configuration::audioSfxVolume() const
 {
 	return mSfxVolume;
 }
 
 
 /**
- * Returns the Volume Level for Music.
+ * Gets the Volume Level for Music.
  */
-int Configuration::getAudioMusicVolume() const
+int Configuration::audioMusicVolume() const
 {
 	return mMusicVolume;
 }
 
 
 /**
- * Returns the audio Buffer Length.
+ * Gets the audio Buffer Length.
  */
-int Configuration::getAudioBufferSize() const
+int Configuration::audioBufferSize() const
 {
 	return mBufferLength;
+}
+
+
+/**
+ * Gets name of the audio mixer.
+ */
+const string& Configuration::mixer() const
+{
+	return mMixerName;
 }
 
 
@@ -604,7 +487,7 @@ int Configuration::getAudioBufferSize() const
  *
  * \todo	Needs proper value and error checking.
  */
-void Configuration::setGraphicsWidth(int width)
+void Configuration::graphicsWidth(int width)
 {
 	mScreenWidth = width;
 	mOptionChanged = true;
@@ -616,7 +499,7 @@ void Configuration::setGraphicsWidth(int width)
  *
  * \todo	Needs proper value and error checking.
  */
-void Configuration::setGraphicsHeight(int height)
+void Configuration::graphicsHeight(int height)
 {
 	mScreenHeight = height;
 	mOptionChanged = true;
@@ -628,7 +511,7 @@ void Configuration::setGraphicsHeight(int height)
  *
  * \todo	Needs proper value and error checking.
  */
-void Configuration::setGraphicsColorDepth(int bpp)
+void Configuration::graphicsColorDepth(int bpp)
 {
 	mScreenBpp = bpp;
 	mOptionChanged = true;
@@ -643,7 +526,7 @@ void Configuration::setGraphicsColorDepth(int bpp)
  * \note	If the specified quality is not one of the two valid choices,
  *			GRAPHICS_FAST is used instead.
  */
-void Configuration::setGraphicsTextureQuality(const string& quality)
+void Configuration::graphicsTextureQuality(const string& quality)
 {
 	if(toLowercase(quality) == "fast")
 		mTextureQuality = GRAPHICS_FAST;
@@ -659,7 +542,7 @@ void Configuration::setGraphicsTextureQuality(const string& quality)
 /**
  * Toggles between windowed and fullscreen mode.
  */
-void Configuration::setGraphicsFullscreen(bool isFullscreen)
+void Configuration::fullscreen(bool isFullscreen)
 {
 	mFullScreen = isFullscreen;
 	mOptionChanged = true;
@@ -669,7 +552,7 @@ void Configuration::setGraphicsFullscreen(bool isFullscreen)
 /**
  * Toggles the use of Vertical Sync.
  */
-void Configuration::setGraphicsVSync(bool isVsync)
+void Configuration::vsync(bool isVsync)
 {
 	mVSync = isVsync;
 	mOptionChanged = true;
@@ -683,7 +566,7 @@ void Configuration::setGraphicsVSync(bool isVsync)
  * 
  * \note	If the specified mixrate is not one of the three valid values, AUDIO_MEDIUM_QUALITY will be used instead.
  */
-void Configuration::setAudioMixRate(int mixrate)
+void Configuration::audioMixRate(int mixrate)
 {
 	if(mixrate != AUDIO_LOW_QUALITY || mixrate != AUDIO_MEDIUM_QUALITY || mixrate != AUDIO_HIGH_QUALITY)
 		mixrate = AUDIO_MEDIUM_QUALITY;
@@ -698,7 +581,7 @@ void Configuration::setAudioMixRate(int mixrate)
  *
  * \todo	Needs proper value and error checking.
  */
-void Configuration::setAudioMixer(const std::string& mixer)
+void Configuration::mixer(const std::string& mixer)
 {
 	mMixerName = mixer;
 	mOptionChanged = true;
@@ -710,7 +593,7 @@ void Configuration::setAudioMixer(const std::string& mixer)
  * 
  * \param	channels	Number of audio channels. Can either be AUDIO_MONO or AUDIO_STEREO.
  */
-void Configuration::setAudioStereoChannels(int channels)
+void Configuration::audioStereoChannels(int channels)
 {
 	mStereoChannels = clamp(channels, AUDIO_MONO, AUDIO_STEREO);
 	mOptionChanged = true;
@@ -722,7 +605,7 @@ void Configuration::setAudioStereoChannels(int channels)
  * 
  * \param	volume	Sound volume. Can be anywhere between AUDIO_SFX_MIN_VOLUME and AUDIO_SFX_MAX_VOLUME.
  */
-void Configuration::setAudioSfxVolume(int volume)
+void Configuration::audioSfxVolume(int volume)
 {
 	mSfxVolume = clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
 	mOptionChanged = true;
@@ -734,7 +617,7 @@ void Configuration::setAudioSfxVolume(int volume)
  * 
  * \param	volume	Music volume. Can be anywhere between AUDIO_MUSIC_MIN_VOLUME and AUDIO_MUSIC_MAX_VOLUME.
  */
-void Configuration::setAudioMusicVolume(int volume)
+void Configuration::audioMusicVolume(int volume)
 {
 	mMusicVolume = clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
 	mOptionChanged = true;
@@ -748,12 +631,70 @@ void Configuration::setAudioMusicVolume(int volume)
  *					cause noticable lag while setting it too low can cause popping and
  *					crackling. A good all-around value is 1024.
  */
-void Configuration::setAudioBufferSize(int size)
+void Configuration::audioBufferSize(int size)
 {
 	mBufferLength = size;
 	mOptionChanged = true;
 }
 
+
+/**
+ * Sets a program option.
+ * 
+ * \param	option		Name of the option.
+ * \param	value		Value of the option.
+ * \param	overwrite	Overwrites an existing option's value. Default is \c true.
+ * 
+ * \note	Option values are stored and read as strings. How the program
+ *			interprets the data contained in value is up to the programmer.
+ */
+void Configuration::option(const string option, const string& value, bool overwrite)
+{
+	if(!overwrite && mOptions.find(option) != mOptions.end())
+		return;
+		
+	mOptions[option] = value;
+	mOptionChanged = true;
+}
+
+
+/**
+ * Gets an option's value.
+ * 
+ * \note	If the option was not defined when loading the configuration
+ *			file, calling this function will create the option with an
+ *			empty value.
+ * 
+ * \note	Option values are stored and read as strings. How the program
+ *			interprets the data contained in value is up to the programmer.
+ */
+const std::string& Configuration::option(const std::string& key)
+{
+	if(mOptions.find(key) != mOptions.end())
+		mOptionChanged = true;
+
+	return mOptions[key];
+}
+
+
+/**
+ * Erases an option.
+ * 
+ * \param	option	Name of the option to erase.
+ * 
+ * \note	It is safe to call this function if the named
+ *			option has not been defined.
+ */
+void Configuration::deleteOption(const std::string option)
+{
+	Options::iterator it = mOptions.find(option);
+	
+	if(it != mOptions.end())
+	{
+		mOptions.erase(it);
+		mOptionChanged = true;
+	}
+}
 
 
 /**

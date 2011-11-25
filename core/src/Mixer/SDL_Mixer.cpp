@@ -1,9 +1,9 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 New Age Software
+// = Copyright © 2008 - 2011 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software as long under the terms of the zlib license.
+// = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
@@ -42,8 +42,8 @@ SDL_Mixer::SDL_Mixer():	Mixer("SDL Mixer"),
 SDL_Mixer::~SDL_Mixer()
 {
 	// Save current volume levels in the Configuration.
-	Singleton<Configuration>::get().setAudioSfxVolume(Mix_Volume(-1, -1));
-	Singleton<Configuration>::get().setAudioMusicVolume(Mix_VolumeMusic(-1));
+	Singleton<Configuration>::get().audioSfxVolume(Mix_Volume(-1, -1));
+	Singleton<Configuration>::get().audioMusicVolume(Mix_VolumeMusic(-1));
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
@@ -61,7 +61,7 @@ void SDL_Mixer::init()
 	}
 	
     // Initialize the Audio Mixer
-    if(Mix_OpenAudio(Singleton<Configuration>::get().getAudioMixRate(), MIX_DEFAULT_FORMAT, Singleton<Configuration>::get().getAudioStereoChannels(), Singleton<Configuration>::get().getAudioBufferSize()))
+    if(Mix_OpenAudio(Singleton<Configuration>::get().audioMixRate(), MIX_DEFAULT_FORMAT, Singleton<Configuration>::get().audioStereoChannels(), Singleton<Configuration>::get().audioBufferSize()))
 	{
 		cout << "\tAudio driver not initialized: " << SDL_GetError() << endl;
 		cout << "\tSetting to NULL mode. No audio will be played." << endl;
@@ -69,8 +69,8 @@ void SDL_Mixer::init()
 		return;
 	}
 
-	setSfxVolume(Singleton<Configuration>::get().getAudioSfxVolume());
-	setMusVolume(Singleton<Configuration>::get().getAudioMusicVolume());
+	setSfxVolume(Singleton<Configuration>::get().audioSfxVolume());
+	setMusVolume(Singleton<Configuration>::get().audioMusicVolume());
 }
 
 

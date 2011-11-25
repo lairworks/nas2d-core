@@ -1,9 +1,9 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 New Age Software
+// = Copyright © 2008 - 2011 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software as long under the terms of the zlib license.
+// = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
@@ -19,10 +19,10 @@
 class XmlAttributeParser
 {
 public:
-	int getIntAttribute(TiXmlNode* node, const std::string& attribute);
-	float getFloatAttribute(TiXmlNode* node, const std::string& attribute);
-	double getDoubleAttribute(TiXmlNode* node, const std::string& attribute);
-	std::string getStringAttribute(TiXmlNode* node, const std::string& attribute);
+	int intAttribute(TiXmlNode* node, const std::string& attribute);
+	float floatAttribute(TiXmlNode* node, const std::string& attribute);
+	double doubleAttribute(TiXmlNode* node, const std::string& attribute);
+	std::string stringAttribute(TiXmlNode* node, const std::string& attribute);
 
 	const StringList& getMessages() const { return mMessages; }
 

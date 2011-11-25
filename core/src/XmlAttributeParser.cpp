@@ -1,9 +1,9 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 New Age Software
+// = Copyright © 2008 - 2011 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software as long under the terms of the zlib license.
+// = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
@@ -23,7 +23,7 @@ using namespace std;
  * \return	The value contained in the attribute. If the attribute wasn't
  *			found, this will return 0.
  */
-int XmlAttributeParser::getIntAttribute(TiXmlNode* node, const std::string& attribute)
+int XmlAttributeParser::intAttribute(TiXmlNode* node, const std::string& attribute)
 {
 	int returnValue = 0;
 
@@ -59,7 +59,7 @@ int XmlAttributeParser::getIntAttribute(TiXmlNode* node, const std::string& attr
  * \return	The value contained in the attribute. If the attribute wasn't
  *			found, this will return 0.0f.
  */
-float XmlAttributeParser::getFloatAttribute(TiXmlNode* node, const std::string& attribute)
+float XmlAttributeParser::floatAttribute(TiXmlNode* node, const std::string& attribute)
 {
 	float returnValue = 0.0f;
 
@@ -95,7 +95,7 @@ float XmlAttributeParser::getFloatAttribute(TiXmlNode* node, const std::string& 
  * \return	The value contained in the attribute. If the attribute wasn't
  *			found, this will return 0.0.
  */
-double XmlAttributeParser::getDoubleAttribute(TiXmlNode* node, const std::string& attribute)
+double XmlAttributeParser::doubleAttribute(TiXmlNode* node, const std::string& attribute)
 {
 	double returnValue = 0.0;
 
@@ -129,15 +129,15 @@ double XmlAttributeParser::getDoubleAttribute(TiXmlNode* node, const std::string
  * \param	attribute	The name of the attribute to look for.
  * 
  * \return	The value contained in the attribute. If the attribute wasn't
- *			found, this will return 0.
+ *			found, this will return an empty string.
  */
-string XmlAttributeParser::getStringAttribute(TiXmlNode* node, const std::string& attribute)
+string XmlAttributeParser::stringAttribute(TiXmlNode* node, const std::string& attribute)
 {
 	const char *returnValue = node->ToElement()->Attribute(attribute.c_str());
 	if(returnValue == NULL)
 	{
 		cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;
-		return false;
+		return "";
 	}
 
 	return returnValue;

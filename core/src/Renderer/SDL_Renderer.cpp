@@ -1,9 +1,9 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 New Age Software
+// = Copyright © 2008 - 2011 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software as long under the terms of the zlib license.
+// = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
@@ -27,9 +27,9 @@ SDL_Renderer::SDL_Renderer():	Renderer("SDL Renderer"),
 	cout << "Starting " << mRendererName << "..." << endl;
 
 	Configuration& cf = Singleton<Configuration>::get();
-	initVideo(cf.getGraphicsWidth(), cf.getGraphicsHeight(), cf.getGraphicsColorDepth(), cf.isGraphicsFullscreen(), cf.isVsyncEnabled());
+	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
 
-	if(cf.getGraphicsTextureQuality() == GRAPHICS_FAST)
+	if(cf.graphicsTextureQuality() == GRAPHICS_FAST)
 		TEXTURE_FILTER_TYPE = 0;
 	else
 		TEXTURE_FILTER_TYPE = 1;

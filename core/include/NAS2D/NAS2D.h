@@ -8,7 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Callbacks.h"
 #include "NAS2D/Common.h"
 #include "NAS2D/Configuration.h"
 #include "NAS2D/EventHandler.h"

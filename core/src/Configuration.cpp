@@ -340,11 +340,11 @@ void Configuration::parseOptions(TiXmlNode *node)
 	{
 		if(xmlNode->ValueStr() == "option")
 		{
-			// Ensure that there is an 'option' attribute.
-			string option = parser.stringAttribute(node, "name");
+			// Ensure that there is a 'name' attribute.
+			string option = parser.stringAttribute(xmlNode, "name");
 
 			if(!option.empty())
-				mOptions[option] = parser.stringAttribute(node, "value");
+				mOptions[option] = parser.stringAttribute(xmlNode, "value");
 			else
 				cout << "Option tag is missing a name attribute on row " << xmlNode->Row() << "." << endl;
 		}

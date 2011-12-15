@@ -58,6 +58,8 @@ public:
 	Rectangle_2d(): x(0), y(0), w(0), h(0) {}
 	Rectangle_2d(int x, int y, int w, int h): x(x), y(y), w(w), h(h) {}
 
+	bool operator==(const Rectangle_2d& rect) { return (x == rect.x) && (y == rect.y) && (w == rect.w) && (h == rect.h); }
+
 	int x, y, w, h;
 };
 
@@ -71,6 +73,8 @@ class Point_2d
 public:
 	Point_2d(): x(0), y(0) {}
 	Point_2d(int x, int y): x(x), y(y) {}
+
+	bool operator==(const Point_2d& pt) { return (x == pt.x) && (y == pt.y); }
 
 	int x, y;
 };

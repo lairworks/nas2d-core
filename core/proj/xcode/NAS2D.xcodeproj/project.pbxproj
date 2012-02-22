@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		692872511417486200F20BEB /* Callbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 6928723E1417486200F20BEB /* Callbacks.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		692872521417486200F20BEB /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 6928723F1417486200F20BEB /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		692872531417486200F20BEB /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 692872401417486200F20BEB /* Configuration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		692872541417486200F20BEB /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 692872411417486200F20BEB /* Documentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -117,7 +116,6 @@
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAS2D_Prefix.pch; sourceTree = "<group>"; };
-		6928723E1417486200F20BEB /* Callbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Callbacks.h; path = ../../include/NAS2D/Callbacks.h; sourceTree = "<group>"; };
 		6928723F1417486200F20BEB /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../../include/NAS2D/Common.h; sourceTree = "<group>"; };
 		692872401417486200F20BEB /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configuration.h; path = ../../include/NAS2D/Configuration.h; sourceTree = "<group>"; };
 		692872411417486200F20BEB /* Documentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Documentation.h; path = ../../include/NAS2D/Documentation.h; sourceTree = "<group>"; };
@@ -287,7 +285,6 @@
 				692872651417487100F20BEB /* Renderer */,
 				692872661417487100F20BEB /* Resources */,
 				692872671417487100F20BEB /* tinyxml */,
-				6928723E1417486200F20BEB /* Callbacks.h */,
 				6928723F1417486200F20BEB /* Common.h */,
 				692872401417486200F20BEB /* Configuration.h */,
 				692872411417486200F20BEB /* Documentation.h */,
@@ -383,7 +380,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				692872511417486200F20BEB /* Callbacks.h in Headers */,
 				692872521417486200F20BEB /* Common.h in Headers */,
 				692872531417486200F20BEB /* Configuration.h in Headers */,
 				692872541417486200F20BEB /* Documentation.h in Headers */,

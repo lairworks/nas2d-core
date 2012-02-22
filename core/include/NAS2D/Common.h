@@ -12,6 +12,7 @@
 #define _NAS_COMMON_
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 

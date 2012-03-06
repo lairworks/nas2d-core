@@ -405,8 +405,8 @@ void OGL_Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, i
 	glColor4ub(r, g, b, a);
 
 	glBegin(GL_LINES);
-		glVertex2f(static_cast<float>(x) + 0.5f, static_cast<float>(y) + 0.5f);
-		glVertex2f(static_cast<float>(x2) + 0.5f, static_cast<float>(y2) + 0.5f);
+		glVertex2f(static_cast<float>(x) - 0.5f, static_cast<float>(y) + 0.5f);
+		glVertex2f(static_cast<float>(x2) - 0.5f, static_cast<float>(y2) + 0.5f);
 	glEnd();
 
 	glEnable(mTextureTarget);

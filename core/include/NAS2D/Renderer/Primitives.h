@@ -76,6 +76,9 @@ public:
 
 	bool operator==(const Point_2d& pt) { return (x == pt.x) && (y == pt.y); }
 
+	Point_2d operator+(const Point_2d& pt) { return Point_2d(x + pt.x, y + pt.y); }
+	Point_2d operator-(const Point_2d& pt) { return Point_2d(x - pt.x, y - pt.y); }
+
 	int x, y;
 };
 

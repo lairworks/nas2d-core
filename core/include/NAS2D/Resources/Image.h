@@ -39,6 +39,7 @@ public:
 	Image(Image *src, int x, int y, int width, int height);
 	Image(void *buffer, int size);
 	Image(const Image &src);
+	Image(int x, int y);
 	Image();
 
 	Image& operator=(const Image& rhs);

@@ -88,6 +88,35 @@ Image::Image() :	mPixels(NULL),
 
 
 /**
+ * Create a blank Image of X, Y dimensions.
+ * 
+ * \param	x	Width of the Image.
+ * \param	y	Height of the Image.
+ * 
+ * \warning	Assumes that a Renderer object has been successfully
+ *			created with a valid screen surface. Safe to construct
+ *			but Image will not work properly if a Renderer object
+ *			has not been properly instatiated.
+ */
+Image::Image(int x, int y):	mPixels(NULL),
+							mTextureId(0)
+{
+	SDL_Surface* sfc = SDL_GetVideoSurface();
+
+	if(sfc)
+	{
+		mPixels = SDL_CreateRGBSurface(sfc->flags, x, y, sfc->format->BitsPerPixel, sfc->format->Rmask, sfc->format->Gmask, sfc->format->Bmask, sfc->format->Amask);
+		mRect.w = mPixels->w;
+		mRect.h = mPixels->h;
+	}
+	else
+	{
+		errorMessage("Unable to create image.");
+	}
+}
+
+
+/**
  * Copy C'tor.
  * 
  * \param	src		A reference to an Image Resource.

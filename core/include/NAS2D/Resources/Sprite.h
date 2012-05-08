@@ -20,7 +20,7 @@
 #ifndef _NAS_SPRITE_
 #define _NAS_SPRITE_
 
-#define SPRITE_VERSION "0.99"
+extern const std::string SPRITE_VERSION;
 
 /**
  * \class Sprite
@@ -45,8 +45,6 @@ public:
 
 	void alpha(int alpha) { mAlpha = clamp(alpha, 0, 255); }
 
-	//Image* getCurrentFrameImage();
-
 	int width();
 	int height();
 	int originX(int x);
@@ -55,40 +53,54 @@ public:
 	void debug();
 
 private:
+
+	Sprite() {} // Explicitly declared private.
+
 	/**
-	 * \struct	spriteFrame
-	 * \brief	Contains all information necessary for animation frames of a Sprite.
-	 * \note	Opted to use a struct instead of a class as all members are publicly exposed.
+	 * \class	spriteFrame
+	 * \brief	Contains 
 	 */
 	struct spriteFrame
 	{
-		spriteFrame(Image *src, int x, int y, int w, int h, int aX, int aY, int d);
+	public:
+		spriteFrame(const string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
 		spriteFrame(const spriteFrame &spriteframe);
 
 		spriteFrame& operator=(const spriteFrame &rhs);
 
-		~spriteFrame();
+		~spriteFrame() {}
 
-		Image	*mFrameImage;
+		const string& sheetId() const { return mSheetId; }
+		
+		int anchorX() const { return mAnchorX; }
+		int anchorY() const { return mAnchorY; }
+		
+		int width() const { return mWidth; }
+		int height() const { return mHeight; }
+		
+		int frameDelay() const { return mFrameDelay; }
+
+	private:
+		string	mSheetId;
 
 		int		mAnchorX, mAnchorY;
-		unsigned int	mWidth, mHeight;
-		unsigned int	mFrameDelay;
+		int		mWidth, mHeight;
+		int		mFrameDelay;
 	};
 
 	typedef std::vector<spriteFrame*>		FrameList;
 	typedef std::map<string, FrameList>		ActionList;
-	typedef std::map<string, Image*>		SheetContainer;
+	typedef std::map<string, Image>			SheetContainer;
 
-	bool parseXml(const std::string& filePath);
-	bool parseImageSheets(TiXmlElement *root);
+	void parseXml(const std::string& filePath);
+	void parseImageSheets(TiXmlElement *root);
 	bool parseActions(TiXmlElement *root);
 	void parseFrames(TiXmlNode *node, const std::string& action);
 
 	void addDefaultFrame(FrameList &frmList, unsigned int frmDelay = 25);
 	void addDefaultAction();
 
-	Timer				*mTimer;			/**< Internal time keeper. */
+	Timer				mTimer;				/**< Internal time keeper. */
 
 	TiXmlDocument		*mDocXml;			/**< XML Document Object. */
 
@@ -99,8 +111,8 @@ private:
 	std::string			mErrorMessage;		/**< The last error that occured with this Sprite. */
 	std::string			mCurrentAction;		/**< The current Action being performed. */
 
-	unsigned int				mCurrentFrame;		/**< The current frame index in the current Action's frame list. */
-	unsigned int				mLastFrameTick;		/**< The last tick in which the frame was updated. */
+	unsigned int		mCurrentFrame;		/**< The current frame index in the current Action's frame list. */
+	unsigned int		mLastFrameTick;		/**< The last tick in which the frame was updated. */
 
 	int					mAlpha;				/**< Alpha value to draw the sprite. */
 

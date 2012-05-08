@@ -112,7 +112,7 @@ private:
 
 	void parseOptions(TiXmlNode *node);
 
-	TiXmlDocument		*mConfigFile;					/**<  */
+	TiXmlDocument		*mConfigFile;					/**< XML Document. */
 
 	Options				mOptions;						/**< Options table containing option/value pairs. */
 

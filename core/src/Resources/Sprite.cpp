@@ -9,10 +9,35 @@
 // ==================================================================================
 
 #include "NAS2D/Resources/Sprite.h"
+#include "NAS2D/XmlAttributeParser.h"
 
 #include <iostream>
 
 using namespace std;
+
+
+const string SPRITE_VERSION("0.99");
+const string DEFAULT_ACTION("default");
+
+const int FRAME_PAUSE = -1;
+
+string endTag(int row, const string& name)
+{
+	stringstream str;
+	str << " (Row: " << row << ", '" << name << "')";
+	return str.str();
+}
+
+
+Sprite::Sprite():	mSpriteName("Default Constructed"),
+					mCurrentAction(DEFAULT_ACTION),
+					mCurrentFrame(0),
+					mLastFrameTick(0),
+					mAlpha(255),
+					mPaused(false)
+{
+	addDefaultAction();
+}
 
 /**
  * Constructor.
@@ -20,91 +45,30 @@ using namespace std;
  * \param renderer		A pointer to a Renderer object.
  * \param filePath		A string containing the file path of the Sprite definition file to use.
  */
-Sprite::Sprite(const string& filePath):	mTimer(new Timer()),
-										mDocXml(new TiXmlDocument()),
-										mSpriteName(filePath),
-										mErrorMessage(""),
-										mCurrentAction("default"),
+Sprite::Sprite(const string& filePath):	mSpriteName(filePath),
+										mCurrentAction(DEFAULT_ACTION),
 										mCurrentFrame(0),
 										mLastFrameTick(0),
 										mAlpha(255),
 										mPaused(false)
 {
-	if(!parseXml(filePath))
-		cout << "Sprite '" << filePath << "' not loaded: " << mErrorMessage << endl;
-	//else
-		//cout << "Loaded Sprite '" << filePath << "' successfully." << endl;
-
-	play("default");
+	addDefaultAction();
+	parseXml(filePath);
 }
 
 
 /**
- * Clean up memory allocated for animation frames and such.
+ * Copy C'tor
  */
-Sprite::~Sprite()
-{
-	ActionList::iterator actionIt = mActions.begin();
-	while(actionIt != mActions.end())
-	{
-		for(size_t i = 0; i < actionIt->second.size(); i++)
-		{
-			delete actionIt->second[i];
-			actionIt->second[i] = NULL;
-		}
-
-		actionIt++;
-	}
-
-	SheetContainer::iterator sheetIt = mSpriteSheets.begin();
-	for(sheetIt; sheetIt != mSpriteSheets.end(); sheetIt++)
-	{
-		delete sheetIt->second;
-		sheetIt->second = NULL;
-	}
-
-	delete mTimer;
-	mTimer = NULL;
-
-	if(mDocXml)
-	{
-		delete mDocXml;
-		mDocXml = NULL;
-	}
-}
-
-
-/**
- * Copy Constructor
- */
-Sprite::Sprite(const Sprite &sprite):	mTimer(new Timer()),
-										mDocXml(NULL),
+Sprite::Sprite(const Sprite &sprite):	mImageSheets(sprite.mImageSheets),
+										mActions(sprite.mActions),
 										mSpriteName(sprite.mSpriteName),
-										mErrorMessage(sprite.mErrorMessage),
 										mCurrentAction(sprite.mCurrentAction),
 										mCurrentFrame(sprite.mCurrentFrame),
 										mLastFrameTick(sprite.mLastFrameTick),
+										mAlpha(sprite.mAlpha),
 										mPaused(sprite.mPaused)
-{
-
-	// Copy frame lists. Note that we don't need to copy the list of
-	// frame sheets as the sprite frames are already loaded and we can
-	// simply copy them.
-	ActionList::const_iterator actionIt = sprite.mActions.begin();
-	while(actionIt != sprite.mActions.end())
-	{
-		FrameList frameList;
-		for(size_t i = 0; i < actionIt->second.size(); i++)
-			frameList.push_back(new spriteFrame(*actionIt->second[i]));
-
-		//Logger::log << "Adding " << frameList.size() << " frames to action '" << actionIt->first << "'." << endl;
-		mActions[actionIt->first] = frameList;
-		actionIt++;
-	}
-
-	play(mCurrentAction);
-
-}
+{}
 
 
 /**
@@ -112,52 +76,14 @@ Sprite::Sprite(const Sprite &sprite):	mTimer(new Timer()),
  */
 Sprite& Sprite::operator=(const Sprite &rhs)
 {
-	if(mTimer)
-		delete mTimer;
-	mTimer = new Timer;
-
-	if(mDocXml)
-		delete mDocXml;
-	mDocXml = NULL;
-	
-	mSpriteName = rhs.mSpriteName;
-	mErrorMessage = rhs.mErrorMessage;
-	mCurrentAction = rhs.mCurrentAction;
-	mCurrentFrame = rhs.mCurrentFrame;
-	mLastFrameTick = rhs.mLastFrameTick;
-	mPaused = rhs.mPaused;
-
-	// Free memory from old action list if one exists.
-	if(mActions.size() > 0)
-	{
-		ActionList::iterator actionIt = mActions.begin();
-		while(actionIt != mActions.begin())
-		{
-			for(size_t i = 0; i < actionIt->second.size(); i++)
-			{
-				delete actionIt->second[i];
-				actionIt->second[i] = NULL;
-			}
-
-			actionIt++;
-		}
-	}
-
-	// Copy actions and their associated frames from the provided Sprite.
-	ActionList::const_iterator actionIt = rhs.mActions.begin();
-	while(actionIt != rhs.mActions.end())
-	{
-		FrameList frameList;
-		for(size_t i = 0; i < actionIt->second.size(); i++)
-			frameList.push_back(new spriteFrame(*actionIt->second[i]));
-
-		//Logger::log << "Adding " << frameList.size() << " frames to action '" << actionIt->first << "'." << endl;
-		mActions[actionIt->first] = frameList;
-
-		actionIt++;
-	}
-
-	play(mCurrentAction);
+	mImageSheets	= rhs.mImageSheets;
+	mActions		= rhs.mActions;
+	mSpriteName		= rhs.mSpriteName;
+	mCurrentAction	= rhs.mCurrentAction;
+	mCurrentFrame	= rhs.mCurrentFrame;
+	mLastFrameTick	= rhs.mLastFrameTick;
+	mAlpha			= rhs.mAlpha;
+	mPaused			= rhs.mPaused;
 
 	return *this;
 }
@@ -166,7 +92,9 @@ Sprite& Sprite::operator=(const Sprite &rhs)
 /**
  * Plays an action animation.
  *
- * \param action	Name of the action to use for animation.
+ * \param	action	Name of the action to use for animation. Action's are not
+ *			case sensitive. "Case", "caSe", "CASE", etc. will all be viewed
+ *			as identical.
  *
  * \note	If the named action doesn't exist, a warning message will
  *			be written to the log and the default action will be used
@@ -174,182 +102,148 @@ Sprite& Sprite::operator=(const Sprite &rhs)
  */
 void Sprite::play(const string& action)
 {
-	string actionString = toLowercase(action);
-
-	// Check the list for the action.
-	ActionList::iterator actionIt = mActions.find(actionString);
+	// Set the current frame list to the defined action. If action
+	// isn't found, set to default and reset frame counter.
+	ActionList::iterator actionIt = mActions.find(toLowercase(action));
 	if(actionIt == mActions.end())
 	{
-		cout << "Action '" << action << "' does not exist in Sprite '" << mSpriteName << "'." << endl;
-		// set the current action to default.
-		mCurrentAction = "default";
-		// Reset the current frame counter.
+		cout << "Named action '" << action << "' is not defined in '" << name() << "'." << endl;
+		mCurrentAction = DEFAULT_ACTION;
 		mCurrentFrame = 0;
-		return;
 	}
-	// If the named action is the current action.
-	else if(mCurrentAction == actionString)
+	else if(mCurrentAction == toLowercase(action))
 	{
-		//mPlayingAction = &actionIt->second;
-		return;
+		// Reset the frame counter.
+		mCurrentFrame = 0;
 	}
-	// Set the current action to the named action.
 	else
 	{
+		// Set the current action to the named action.
 		mCurrentFrame = 0;	
-		mCurrentAction = actionString;
+		mCurrentAction = toLowercase(action);
 	}
+
+	resume();
 }
 
 
 /**
  * Pauses animation for this Sprite.
  */
-void Sprite::pause(bool pause)
+void Sprite::pause()
 {
-	mPaused = pause;
+	mPaused = true;
+}
+
+/**
+ * Resumes the action of the Sprite.
+ */
+void Sprite::resume()
+{
+	mPaused = false;
 }
 
 
 /**
- * Instructs the Sprite to update itself.
+ * Updates the Sprite and draws it to the screen at specified coordinaes.
  *
- * Updates the internal state of the Sprite, pushing forward
- * animation frames as necessary.
- *
- * \param x	X-Screen Coordinate to render the Sprite.
- * \param y	X-Screen Coordinate to render the Sprite.
+ * \param	x	X-Screen Coordinate to render the Sprite.
+ * \param	y	X-Screen Coordinate to render the Sprite.
  */
 void Sprite::update(int x, int y)
 {
-	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame]; // Not as safe as at() but a good bit faster.
+	SpriteFrame frame = mActions[mCurrentAction][mCurrentFrame];
 
-	if(!mPaused)
+	if(!mPaused && (frame.frameDelay() != FRAME_PAUSE))
 	{
-		// Draw frame
-		Singleton<Renderer>::get().drawImage(*frame->mFrameImage, x - frame->mAnchorX, y - frame->mAnchorY);
-
-		unsigned int currentTick = mTimer->ms();
-		if(currentTick - mLastFrameTick > frame->mFrameDelay)
+		unsigned int currentTick = mTimer.ms();
+		if(currentTick - mLastFrameTick > frame.frameDelay())
 		{
 			mLastFrameTick = currentTick;
 			mCurrentFrame++;
 		}
 
 		// Check that our frame count is within bounds.
-		if(mCurrentFrame > mActions[mCurrentAction].size() - 1)
+		if(mCurrentFrame >= mActions[mCurrentAction].size())
+		{
 			mCurrentFrame = 0;
+			mFrameCallback.emit();		// Notifiy any frame listeners that the animation sequence has completed.
+		}
 	}
-	else
-		Singleton<Renderer>::get().drawImage(*frame->mFrameImage, x - frame->mAnchorX, y - frame->mAnchorY);
+
+	Singleton<Renderer>::get().drawSubImage(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height());
 
 }
 
-
-/**
- * Gets a pointer to the current frame image.
- *
- * \warning	Returned pointer is owned by the Sprite. Do
- *			not free it.
-
-Image* Sprite::currentFrameImage()
-{
-	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
-	return frame->mFrameImage;
-}
- */
 
 /**
  * Parses a Sprite XML Definition File.
  *
  * \param filePath	File path of the sprite XML definition file.
- *
- * \return	True on success. False when if an error occurs.
  */
-bool Sprite::parseXml(const string& filePath)
+void Sprite::parseXml(const string& filePath)
 {
-	if(!Singleton<Filesystem>::get().exists(filePath))
+	Filesystem& fs = Singleton<Filesystem>::get();
+
+	if(!fs.exists(filePath))
 	{
 		cout << "Sprite file '" << filePath << "' doesn't exist." << endl;
 		addDefaultAction();
-		return false;
+		return;
 	}
 
-	File xmlFile = Singleton<Filesystem>::get().open(filePath);
+	File xmlFile = fs.open(filePath);
 
 	// Load the file
 	if(xmlFile.size() == 0)
 	{
-		cout << "Sprite file '" << filePath << "' is empty!" << endl;
+		cout << "Sprite file '" << filePath << "' is empty." << endl;
 		addDefaultAction();
-		return false;
+		return;
 	}
 
-	TiXmlElement  *spriteRootElement = 0;
+	TiXmlDocument docXml;
+	TiXmlElement *xmlRootElement = 0;
 
 	// Load the XML document and handle any errors if occuring
-	mDocXml->Parse(xmlFile.raw_bytes(), 0, TIXML_DEFAULT_ENCODING);
-	if(mDocXml->Error())
+	docXml.Parse(xmlFile.raw_bytes(), 0, TIXML_DEFAULT_ENCODING);
+	if(docXml.Error())
 	{
-		cout << "Sprite definition error in '" << filePath << "' at Row " << mDocXml->ErrorRow() << ", Column " << mDocXml->ErrorCol() << ": " << mDocXml->ErrorDesc() << endl;
+		cout << "Malformed XML. Row: " << docXml.ErrorRow() << " Column: " << docXml.ErrorCol() << ": " << docXml.ErrorDesc() << " (" << name() << ")" << endl;
 		addDefaultAction();
-		return false;
+		return;
 	}
 	else
 	{
-		// Check that we're using an XML Document.
-		if(mDocXml->ToDocument() != 0)
+		// Find the Sprite node.
+		xmlRootElement = docXml.FirstChildElement("sprite");
+		if(!xmlRootElement)
 		{
-			// We've got ourselves a document, find the Sprite node.
-			spriteRootElement = mDocXml->FirstChildElement("sprite");
-			
-			// Validate the node
-			if (spriteRootElement == 0)
-			{
-				cout << "ERROR: '" << filePath << "' doesn't contain a '<sprite>' tag!" << endl;
-				addDefaultAction();
-				return false;
-			}
-		} 
-		else 
-		{
-			cout << "Sprite parsing train wrecked."  << endl;
+			cout << "Specified file '" << filePath << "' doesn't contain a <sprite> tag." << endl;
 			addDefaultAction();
-			return false;
+			return;
 		}
 
-		// Get Sprite Version
-		const char *versionString = spriteRootElement->Attribute("version");
-		if(versionString == NULL)
+		// Get the Sprite version.
+		XmlAttributeParser parser;
+		string versionString = parser.stringAttribute(xmlRootElement, "version");
+		if(versionString != SPRITE_VERSION)
 		{
-			cout << "ERROR: Unable to determine sprite version." << endl;
-			addDefaultAction();
-			return false;
-		}
-		std::string vsnStr = versionString;
-		if(vsnStr != SPRITE_VERSION)
-		{
-			cout << "ERROR: Sprite format is version '" << versionString <<"'. Expected version '" << SPRITE_VERSION << "'." << endl;
-			addDefaultAction();
-			return false;
-		}
+			if(versionString.empty())
+				cout << "Sprite file '" << filePath << "' doesn't define a version." << endl;
+			else
+				cout << "Sprite version mismatch (" << versionString <<") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
 			
-        
-		// NOTE:
-		// Parse through all image sheets within the Sprite definition so that a user
-		// can define a spritesheet wherever they want to within the XML definition.
-		if(!parseImageSheets(spriteRootElement))
-			return false;
-		if(!parseActions(spriteRootElement))
-			return false;
+			addDefaultAction();
+		}
 
-		return true;
+		// Note:
+		// Here instead of going through each element and calling a processing function to handle
+		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
+		// image sheets anywhere in the sprite file.
+		parseImageSheets(xmlRootElement);
+		parseActions(xmlRootElement);
 	}
-	
-	// This should never be reached but just in case, add a default frame.
-	throw Exception(0, "Sprite XML Processing", "An unexpected code path was followed during XML processing.");
-	//addDefaultAction();
-	//return false;
 }
 
 
@@ -359,102 +253,107 @@ bool Sprite::parseXml(const string& filePath)
  *
  * \todo	Make use of mErrorMessage.
  */
-bool Sprite::parseImageSheets(TiXmlElement *root)
+void Sprite::parseImageSheets(TiXmlElement *root)
 {
+	XmlAttributeParser parser;
+
 	// Iterate through all child elements of <sprite> to find all <imagesheet> tags
-	// then push them into a list of imagesheet's identified by a string constant.
-	TiXmlNode *xmlNode = 0;
+	// then push them into a list of imagesheet's identified by a string id.
+	TiXmlNode* xmlNode = 0;
 	while(xmlNode = root->IterateChildren(xmlNode))
 	{
 		if(xmlNode->ValueStr() == "imagesheet")
 		{
-			const char *id = xmlNode->ToElement()->Attribute("id");
-			const char *src = xmlNode->ToElement()->Attribute("src");
+			string id = parser.stringAttribute(xmlNode, "id");
+			string src = parser.stringAttribute(xmlNode, "src");
 
-			// Check that <imagesheet> has all expected attributes and that they aren't zero-length.
-			if(id == NULL)
+			if(id.empty())
 			{
-				cout << "<imagesheet> definition in Sprite '" << mSpriteName << "' is missing exected attribute 'id' on row " << xmlNode->Row() << "." << endl;
-				return false;
-			}
-			else if(strlen(id) == 0)
-			{
-				cout << "<imagesheet> definition in Sprite '" << mSpriteName << "' has a zero-length value in attribute 'id' on row " << xmlNode->Row() << "." <<  endl;
-				return false;
-			}
-			else if(src == NULL)
-			{
-				cout << "<imagesheet> definition in Sprite '" << mSpriteName << "' is missing exected attribute 'src' on row " << xmlNode->Row() << "." << endl;
-				return false;
-			}
-			else if(strlen(src) == 0)
-			{
-				cout << "<imagesheet> definition in Sprite '" << mSpriteName << "' has a zero-length value in attribute 'src' on row " << xmlNode->Row() << "." << endl;
-				return false;
+				cout << "Zero-length 'id' value in Imagesheet definition." << endTag(xmlNode->Row(), name()) << endl;
+				return;
 			}
 
-			// If an <imagesheet> with 'id' doesn't exist in our list, add it.
-			if(mSpriteSheets.find(toLowercase(id)) == mSpriteSheets.end())
+			if(src.empty())
 			{
-				std::string fileStr = Singleton<Filesystem>::get().workingPath(mSpriteName);
-				fileStr += src;
-				if(!Singleton<Filesystem>::get().exists(fileStr))
-				{
-					cout << "Couldn't find '" << fileStr << "'." << endl;
-					mSpriteSheets[toLowercase(id)] = new Image();
-				}
-				else
-				{
-					if(mSpriteSheets.find(id) != mSpriteSheets.end())
-						delete mSpriteSheets[id];
-
-					mSpriteSheets[id] = new Image(fileStr);
-				}
+				cout << "Zero-length 'src' value in Imagesheet definition." << endTag(xmlNode->Row(), name()) << endl;
+				return;
 			}
-			else
-				cout << "<imagesheet> redefinition in Sprite '" << mSpriteName << "'on row " << xmlNode->Row() << ", <imagesheet id='" << id << "' src='" << src << "' />. This <imagesheet> tag will be ignored." << endl;
+
+			addImageSheet(id, src, xmlNode);
 		}
 	}
-
-	return true;
 }
+
+
+/**
+ * Adds an image sheet to the Sprite.
+ * 
+ * \note	Imagesheet ID's are not case sensitive. "Case", "caSe",
+ *			"CASE", etc. will all be viewed as identical.
+ * 
+ * \param	id		String ID for the image sheet.
+ * \param	src		Image sheet file path.
+ * \param	node	XML Node (for error information).
+ */
+void Sprite::addImageSheet(const string& id, const string& src, TiXmlNode* node)
+{
+	Filesystem& fs = Singleton<Filesystem>::get();
+
+	// Search for an image sheet with 'id'. If not found, add it.
+	if(mImageSheets.find(toLowercase(id)) == mImageSheets.end())
+	{
+		string imagePath = fs.workingPath(mSpriteName);
+		imagePath += src;
+		if(!fs.exists(imagePath))
+		{
+			cout << "Couldn't find '" << imagePath << "' defined in sprite file '" << name() << "'." << endl;
+			mImageSheets[toLowercase(id)]; // Add a default image
+		}
+		else
+		{
+			mImageSheets[id] = Image(imagePath);
+		}
+	}
+	else
+	{
+		cout << "Image-sheet redefinition '" << id << "'." << endTag(node->Row(), name()) << ". Imagesheet ignored." << endl;
+	}
+}
+
 
 
 /**
  * Parses through and interpretes <action> tags within a Sprite
  * XML Definition File.
  * 
- * \todo	Make use of mErrorMessage.
+ * \note	Action names are not case sensitive. "Case", "caSe",
+ *			"CASE", etc. will all be viewed as identical.
  */
-bool Sprite::parseActions(TiXmlElement *root)
+void Sprite::parseActions(TiXmlElement *root)
 {
-	// Iterate through all child elements of <sprite> to find all <imagesheet> tags
-	// then push them into a list of imagesheet's identified by a string constant.
+	XmlAttributeParser parser;
+
+	// Iterate through all child elements of <sprite> to find all <action> tags
+	// then push them into a list of actions identified by a string id.
 	TiXmlNode *actionNode = 0;
 	while(actionNode = root->IterateChildren(actionNode))
 	{
 		if(actionNode->ValueStr() == "action")
 		{
-			const char *name = actionNode->ToElement()->Attribute("name");
-			if(name == NULL)
+			string action_name = parser.stringAttribute(actionNode, "name");
+
+			if(action_name.empty())
 			{
-				cout << "<action> definition in Sprite '" << mSpriteName << "' is missing exected attribute 'name' on row " << actionNode->Row() << "." << endl;
-				return false;
-			}
-			else if(strlen(name) == 0)
-			{
-				cout << "<action> definition in Sprite '" << mSpriteName << "' has a zero-length value in attribute 'name' on row " << actionNode->Row() << "." << endl;
-				return false;
+				cout << "Zero-length 'name' value in Action definition." << endTag(actionNode->Row(), name()) << endl;
+				continue;
 			}
 
-			if(mActions.find(toLowercase(name)) == mActions.end())
-				parseFrames(actionNode, name);
+			if(mActions.find(toLowercase(action_name)) == mActions.end())
+				parseFrames(action_name, actionNode);
 			else
-				cout << "Multiple definitions of action '" << name << "' on row " << actionNode->Row() << "." << endl;
+				cout << "Redefinition of action '" << action_name << "'. First definition will be used." << endTag(actionNode->Row(), name()) << endl;
 		}
 	}
-
-	return true;
 }
 
 
@@ -463,193 +362,108 @@ bool Sprite::parseActions(TiXmlElement *root)
  *
  * \todo	Make use of mErrorMessage.
  */
-void Sprite::parseFrames(TiXmlNode *node, const string& action)
+void Sprite::parseFrames(const std::string& action, TiXmlNode *node)
 {
-	TiXmlNode *frameNode = 0;
-
+	XmlAttributeParser parser;
+	
 	FrameList frameList;
 
+	TiXmlNode *frameNode = 0;
 	while(frameNode = node->IterateChildren(frameNode))
 	{
+		int currentRow = frameNode->Row();
+		
 		if(frameNode->ValueStr() == "frame")
 		{
-			int width = 0, height = 0, anchorx = 0, anchory = 0, delay = 0;
-
-			// ===========================================
-			// Image Sheet ID
-			// ===========================================
-			const char *sheetid = frameNode->ToElement()->Attribute("sheetid");
-			if(sheetid == NULL)
+			// Imagesheet ID
+			string sheetId = toLowercase(parser.stringAttribute(frameNode, "sheetid")); // normalized
+			if(!validateSheetId(sheetId, currentRow))
 			{
-				cout << "<action> definition in Sprite '" << mSpriteName << "' is missing exected attribute 'name' on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			else if(strlen(sheetid) == 0)
-			{
-				cout << "<action> definition in Sprite '" << mSpriteName << "' has a zero-length value in attribute 'name' on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			else if(mSpriteSheets.find(sheetid) == mSpriteSheets.end())
-			{
-				cout << "<frame> definition in Sprite '" << mSpriteName << "' references an undefined <imagesheet> '" << sheetid << "' at row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			else if(!mSpriteSheets.find(sheetid)->second->loaded())
-			{
-				cout << "<frame> definition in Sprite '" << mSpriteName << "' references an <imagesheet> that couldn't load its source image at row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
 				continue;
 			}
 
-			// ===========================================
 			// Delay Value
-			// ===========================================
-			if(frameNode->ToElement()->QueryIntAttribute("delay", &delay) != TIXML_SUCCESS)
-			{
-				cout << "Invalid 'delay' value in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
+			int delay = parser.intAttribute(frameNode, "delay");
 
-			// ===========================================
 			// X-Coordinate
-			// ===========================================
-			int x = 0;
-			if(frameNode->ToElement()->QueryIntAttribute("x", &x) != TIXML_SUCCESS)
+			int x = parser.intAttribute(frameNode, "x");
+			if( x < 0 || x > mImageSheets.find(sheetId)->second.width())
 			{
-				cout << "Invalid 'x' value in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			else if( x < 0 || x > mSpriteSheets.find(sheetid)->second->width())
-			{
-				cout << "Value 'x' in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << " contains a value that is out of bounds." << endl;
-				addDefaultFrame(frameList);
+				cout << "Value 'x' is out of bounds." << endTag(currentRow, name()) << endl;
 				continue;
 			}
 
-			// ===========================================
 			// Y-Coordinate
-			// ===========================================
-			int y = 0;
-			if(frameNode->ToElement()->QueryIntAttribute("y", &y) != TIXML_SUCCESS)
+			int y = parser.intAttribute(frameNode, "y");
+			if(y < 0 || y > mImageSheets.find(sheetId)->second.height())
 			{
-				cout << "Invalid 'y' value in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			else if( y < 0 || y > mSpriteSheets.find(sheetid)->second->height())
-			{
-				cout << "Value 'y' in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << " contains a value that is out of bounds." << endl;
-				addDefaultFrame(frameList);
+				cout << "Value 'y' is out of bounds." << endTag(currentRow, name()) << endl;
 				continue;
 			}
 			
-			// ===========================================
 			// Width
-			// ===========================================
-			if(frameNode->ToElement()->QueryIntAttribute("width", &width) != TIXML_SUCCESS)
+			int width = parser.intAttribute(frameNode, "width");
+			if(width < 1)
 			{
-				cout << "Invalid 'width' value in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
+				width = 1;
+				cout << "'width' value must be non-zero. Defaulting to 1." << endTag(currentRow, name()) << endl;
 			}
-			else if(width < 1)
+			else if(x + width > mImageSheets.find(sheetId)->second.width())
 			{
-				cout << "'width' value must be larger than 1. Sprite '" << mSpriteName << "',  Row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			else if(width + x > mSpriteSheets.find(sheetid)->second->width())
-			{
-				cout << "'x' + 'width' value exceeds dimensions of specified sprite sheet. Sprite '" << mSpriteName << "',  Row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
+				cout << "'x' + 'width' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
 				continue;
 			}
 			
-			// ===========================================
 			// Height
-			// ===========================================
-			if(frameNode->ToElement()->QueryIntAttribute("height", &height) != TIXML_SUCCESS)
+			int height = parser.intAttribute(frameNode, "height");
+			if(height < 1)
 			{
-				cout << "Invalid 'height' value in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
+				height = 1;
+				cout << "'height' value must be non-zero. Defaulting to 1." << endTag(currentRow, name()) << endl;
 			}
-			else if(height < 1)
+			else if(y + height > mImageSheets.find(sheetId)->second.height())
 			{
-				cout << "'width' value must be larger than 1. Sprite '" << mSpriteName << "',  Row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			else if(height + y > mSpriteSheets.find(sheetid)->second->height())
-			{
-				cout << "'y' + 'height' value exceeds dimensions of specified sprite sheet. Sprite '" << mSpriteName << "',  Row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			
-			// ===========================================
-			// Anchor X-Coordinate
-			// ===========================================
-			if(frameNode->ToElement()->QueryIntAttribute("anchorx", &anchorx) != TIXML_SUCCESS)
-			{
-				cout << "Invalid 'anchorx' value in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
-				continue;
-			}
-			
-			// ===========================================
-			// Anchor X-Coordinate
-			// ===========================================
-			if(frameNode->ToElement()->QueryIntAttribute("anchory", &anchory) != TIXML_SUCCESS)
-			{
-				cout << "Invalid 'anchory' value in Sprite '" << mSpriteName << "' in <frame> tag on row " << frameNode->Row() << "." << endl;
-				addDefaultFrame(frameList);
+				cout << "'y' + 'height' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
 				continue;
 			}
 
-			frameList.push_back(new spriteFrame(mSpriteSheets[sheetid], x, y, width, height, anchorx, anchory, delay));
+			// Anchor Coordinates
+			int anchorx	= parser.intAttribute(frameNode, "anchorx");
+			int anchory	= parser.intAttribute(frameNode, "anchory");
+
+			frameList.push_back(SpriteFrame(sheetId, x, y, width, height, anchorx, anchory, delay));
 		}
 		else
-			cout << "Unexpected child node '<" << frameNode->Value() << ">' found in <action> on row " << frameNode->Row() << "." << endl;
+			cout << "Unexpected tag '<" << frameNode->Value() << ">'." << endTag(currentRow, name()) << endl;
 	}
 
 	// Add the frame list to the action container.
 	if(frameList.size() > 0)
-	{
 		mActions[toLowercase(action)] = frameList;
-	}
 	else
-	{
-		cout << "Action '" << action << "' contains no frames!" << endl;
-
-		for(size_t i = 0; i < frameList.size(); i++)
-		{
-			delete frameList[i];
-			frameList[i] = NULL;
-		}
-	}
+		cout << "Action '" << action << "' contains no valid frames. (" << name() << ")" << endl;
 }
 
 
-/**
- *	Adds a default frame image to a frame list.
- *
- * \param	frmList		A reference to a FrameList.
- * \param	frmDelay	Frame delay, in miliseconds. Default: 25.
- *
- * \note	This function does not check for validity of parameters
- *			passed in.
- */
-void Sprite::addDefaultFrame(FrameList &frmList, unsigned int frmDelay)
+bool Sprite::validateSheetId(const std::string& sheetId, int row)
 {
-	Image *tmpImage = new Image();
-	frmList.push_back(new spriteFrame(tmpImage, 0, 0, tmpImage->width(), tmpImage->height(), tmpImage->width() / 2, tmpImage->height() / 2, frmDelay));
-	delete tmpImage;
+	if(sheetId.empty())
+	{
+		cout << "Frame definition has a zero-length 'name' value. Frame is being ignored." << endTag(row, name()) << endl;
+		return false;
+	}
+	else if(mImageSheets.find(sheetId) == mImageSheets.end())
+	{
+		cout << "Frame definition references an undefined imagesheet '" << sheetId << "'." << endTag(row, name()) << endl;
+		return false;
+	}
+	else if(!mImageSheets.find(sheetId)->second.loaded())
+	{
+		cout << "Frame definition references an imagesheet that failed to load." << endTag(row, name()) << endl;
+		return false;
+	}
+
+	return true;
 }
 
 
@@ -663,8 +477,13 @@ void Sprite::addDefaultAction()
 {
 	if(mActions.find("default") == mActions.end())
 	{
+		mImageSheets["default"];
+
+		int width = mImageSheets["default"].width();
+		int height = mImageSheets["default"].height();
+
 		FrameList frameList;
-		addDefaultFrame(frameList);
+		frameList.push_back(SpriteFrame("default", 0, 0, width, height, width / 2, height / 2, -1));
 		mActions["default"] = frameList;
 	}
 }
@@ -676,55 +495,51 @@ void Sprite::addDefaultAction()
 void Sprite::debug()
 {
 	cout << endl;
-	cout << "=== Sprite Info: " << mSpriteName << " ===" << endl;
-	cout << "Sheets: " << mSpriteSheets.size() << endl;
+	cout << "=== Sprite Info: " << name() << " ===" << endl;
+	cout << "Sheets: " << mImageSheets.size() << endl;
 	
-	SheetContainer::iterator sheetIt = mSpriteSheets.begin();
-	while(sheetIt != mSpriteSheets.end())
+	SheetList::iterator sheetIt = mImageSheets.begin();
+	while(sheetIt != mImageSheets.end())
 	{
-		cout << "   " << sheetIt->first << ": '" << sheetIt->second->name() << "'" << endl;
+		cout << "   " << sheetIt->first << ": '" << sheetIt->second.name() << "'" << endl;
 		sheetIt++;
 	}
 
-	cout << "Actions: " << mActions.size() << endl;
+	cout << endl << endl << "Actions: " << mActions.size() << endl;
 	
 	unsigned int frameCount = 0;
 	ActionList::iterator actionIt = mActions.begin();
 	while(actionIt != mActions.end())
 	{
+		cout << "   " << actionIt->first << endl;
 		frameCount += actionIt->second.size();
 		actionIt++;
 	}
-	cout << "Frames: " << frameCount << endl;
-	cout << endl;
+	cout << endl << endl << "Frames: " << frameCount << endl << endl;
 }
 
 
 int Sprite::width()
 {
-	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
-	return frame->mWidth;
+	return mActions[mCurrentAction][mCurrentFrame].width();
 }
 
 
 int Sprite::height()
 {
-	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
-	return frame->mHeight;
+	return mActions[mCurrentAction][mCurrentFrame].height();
 }
 
 
 int Sprite::originX(int x)
 {
-	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
-	return x - frame->mAnchorX;
+	return x - mActions[mCurrentAction][mCurrentFrame].anchorX();
 }
 
 
 int Sprite::originY(int y)
 {
-	spriteFrame *frame = mActions[mCurrentAction][mCurrentFrame];
-	return y - frame->mAnchorY;
+	return y - mActions[mCurrentAction][mCurrentFrame].anchorY();
 }
 
 
@@ -736,7 +551,7 @@ int Sprite::originY(int y)
 /**
  * Constructor
  *
- * \param	src	A pointer to a source Image to copy from.
+ * \param	sId	Sprite sheet ID.
  * \param	x	X-Coordinte of the area to copy from the source Image object.
  * \param	y	Y-Coordinte of the area to copy from the source Image object.
  * \param	w	Width of the area to copy from the source Image object.
@@ -745,51 +560,36 @@ int Sprite::originY(int y)
  * \param	aY	Y-Axis of the Anchor Point for this spriteFrame.
  * \param	d	Length of time milliseconds to display this spriteFrame during animation playback.
  */
-Sprite::spriteFrame::spriteFrame(Image *src, int x, int y, int w, int h, int aX, int aY, int d) :	mFrameImage(new Image(src, x, y, w, h) ),
-																									mWidth(mFrameImage->width()),
-																									mHeight(mFrameImage->height()),
-																									mAnchorX(aX), mAnchorY(aY),
-																									mFrameDelay(d)
+Sprite::SpriteFrame::SpriteFrame(const string& sId, int x, int y, int w, int h, int aX, int aY, int d):	mSheetId(sId),
+																										mFrameDelay(d),
+																										mAnchorX(aX),
+																										mAnchorY(aY),
+																										mRect(x, y, w, h)
 {}
 
 
 /**
- * Copy Constructor
+ * Copy C'tor
  */
-Sprite::spriteFrame::spriteFrame(const spriteFrame &spriteframe) :	mFrameImage(new Image(*spriteframe.mFrameImage)),
-																	mWidth(spriteframe.mWidth),
-																	mHeight(spriteframe.mHeight),
-																	mAnchorX(spriteframe.mAnchorX),
-																	mAnchorY(spriteframe.mAnchorY),
-																	mFrameDelay(spriteframe.mFrameDelay)
+Sprite::SpriteFrame::SpriteFrame(const SpriteFrame &sf):	mSheetId(sf.mSheetId),
+															mFrameDelay(sf.mFrameDelay),
+															mAnchorX(sf.mAnchorX),
+															mAnchorY(sf.mAnchorY),
+															mRect(sf.mRect)
 {}
 
 
 /**
  * Assignment Operator
  */
-Sprite::spriteFrame& Sprite::spriteFrame::operator=(const spriteFrame &rhs)
+Sprite::SpriteFrame& Sprite::SpriteFrame::operator=(const SpriteFrame &rhs)
 {
-	if(mFrameImage)
-		delete mFrameImage;
-
-	mFrameImage = new Image(*rhs.mFrameImage);
-
-	mWidth = rhs.mWidth;
-	mHeight = rhs.mHeight;
+	mSheetId = rhs.mSheetId;
+	mFrameDelay = rhs.mFrameDelay;
 	mAnchorX = rhs.mAnchorX;
 	mAnchorY = rhs.mAnchorY;
-	mFrameDelay = rhs.mFrameDelay;
+	mRect = rhs.mRect;
 	
 	return *this;
 }
 
-
-/**
- * Free memory allocated for the sprite frame.
- */
-Sprite::spriteFrame::~spriteFrame()
-{
-	delete mFrameImage;
-	mFrameImage = NULL;
-}

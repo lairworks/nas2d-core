@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Filesystem.h"
+#include "NAS2D/sigslot.h"
 
 #include "NAS2D/Resources/Image.h"
 #include "NAS2D/Renderer/Renderer.h"
@@ -29,17 +30,25 @@ extern const std::string SPRITE_VERSION;
  * The Sprite Class is a self-contained group of Image Resource's that displays
  * Image's at a specified screen coordinate in sequence to display an animation.
  */
-class Sprite
+class Sprite: public sigslot::has_slots<>
 {
 public:
+	typedef sigslot::signal0<> Callback;
+
+	Sprite();
 	Sprite(const std::string& filePath);
 	Sprite(const Sprite &sprite);
-	~Sprite();
+	
+	/**
+	 * D'tor
+	 */
+	~Sprite() {}
 
 	Sprite& operator=(const Sprite &rhs);
 
 	void play(const std::string& action);
-	void pause(bool pause);
+	void pause();
+	void resume();
 
 	void update(int x, int y);
 
@@ -52,67 +61,79 @@ public:
 
 	void debug();
 
-private:
+	/**
+	 * Returns a reference to the frame listener signal slot.
+	 */
+	Callback& frameCallback() { return mFrameCallback; }
 
-	Sprite() {} // Explicitly declared private.
+protected:
+	const std::string& name() const { return mSpriteName; }
+
+private:
 
 	/**
 	 * \class	spriteFrame
 	 * \brief	Contains 
 	 */
-	struct spriteFrame
+	struct SpriteFrame
 	{
 	public:
-		spriteFrame(const string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
-		spriteFrame(const spriteFrame &spriteframe);
+		SpriteFrame(const string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
+		SpriteFrame(const SpriteFrame &spriteframe);
 
-		spriteFrame& operator=(const spriteFrame &rhs);
+		SpriteFrame& operator=(const SpriteFrame &rhs);
 
-		~spriteFrame() {}
+		~SpriteFrame() {}
 
 		const string& sheetId() const { return mSheetId; }
 		
 		int anchorX() const { return mAnchorX; }
 		int anchorY() const { return mAnchorY; }
 		
-		int width() const { return mWidth; }
-		int height() const { return mHeight; }
-		
+		int width() const { return mRect.w; }
+		int height() const { return mRect.h; }
+		int x() const { return mRect.x; }
+		int y() const { return mRect.y; }
+
 		int frameDelay() const { return mFrameDelay; }
 
 	private:
-		string	mSheetId;
 
-		int		mAnchorX, mAnchorY;
-		int		mWidth, mHeight;
-		int		mFrameDelay;
+		string			mSheetId;
+
+		int				mFrameDelay;
+		int				mAnchorX, mAnchorY;
+
+		Rectangle_2d	mRect;
 	};
 
-	typedef std::vector<spriteFrame*>		FrameList;
-	typedef std::map<string, FrameList>		ActionList;
-	typedef std::map<string, Image>			SheetContainer;
+	typedef std::vector<SpriteFrame>	FrameList;
+	typedef std::map<string, FrameList>	ActionList;
+	typedef std::map<string, Image>		SheetList;
 
 	void parseXml(const std::string& filePath);
 	void parseImageSheets(TiXmlElement *root);
-	bool parseActions(TiXmlElement *root);
-	void parseFrames(TiXmlNode *node, const std::string& action);
+	void addImageSheet(const std::string& id, const std::string& src, TiXmlNode* node);
 
-	void addDefaultFrame(FrameList &frmList, unsigned int frmDelay = 25);
+	void parseActions(TiXmlElement *root);
+	void parseFrames(const std::string& action, TiXmlNode *node);
+
+	bool validateSheetId(const std::string& sheetId, int row);
+
 	void addDefaultAction();
 
 	Timer				mTimer;				/**< Internal time keeper. */
 
-	TiXmlDocument		*mDocXml;			/**< XML Document Object. */
-
-	SheetContainer		mSpriteSheets;		/**< Collection of sprite sheets. */
+	SheetList			mImageSheets;		/**< Imagesheets */
 	ActionList			mActions;			/**< A list of Actions and their associated Frames. */
 
 	std::string			mSpriteName;		/**< Name of this Sprite. */
-	std::string			mErrorMessage;		/**< The last error that occured with this Sprite. */
 	std::string			mCurrentAction;		/**< The current Action being performed. */
 
 	unsigned int		mCurrentFrame;		/**< The current frame index in the current Action's frame list. */
 	unsigned int		mLastFrameTick;		/**< The last tick in which the frame was updated. */
+
+	Callback			mFrameCallback;		/**< Callback to signal a listener whenever an animation sequence completes. */
 
 	int					mAlpha;				/**< Alpha value to draw the sprite. */
 

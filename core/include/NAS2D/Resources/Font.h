@@ -21,20 +21,6 @@
 
 
 /**
- * \enum	FontStyle
- *
- * Used to set the style of the font.
- */
-enum FontStyle
-{
-	STYLE_NORMAL,
-	STYLE_BOLD,
-	STYLE_ITALIC,
-	STYLE_UNDERLINE
-};
-
-
-/**
  *  \class Font
  *  \brief Font Resource.
  *
@@ -44,21 +30,25 @@ class Font: public Resource
 {
 public:
 	Font();
-	Font(const std::string& filePath, unsigned int ptSize = 12);
-	~Font() { TTF_CloseFont(mFont); mFont = NULL; }
-
+	Font(const std::string& filePath, int ptSize = 12);
+	~Font();
 
 	int width(const std::string& str) const;
-
 	int height() const;
 
-	const std::string& fontName() const;
+	const std::string& typefaceName() const;
 
-	void style(FontStyle style = STYLE_NORMAL);
-
-	TTF_Font *font() const;	/**< Should this be private and just friend the Renderer class? */
+	void bold();
+	void italic();
+	void underline();
+	void normal();
 
 protected:
+	friend class Renderer;
+	friend class SDL_Renderer;
+	friend class OGL_Renderer;
+
+	TTF_Font *font() const;
 
 private:
 	// explicitly disallow copy construction/assignment operator
@@ -66,7 +56,6 @@ private:
 	Font& operator=(const Font& font);
 
 	void load();
-	std::string buildName();
 
 	TTF_Font		*mFont;			/**< True Type Font. */
 
@@ -74,7 +63,7 @@ private:
 	int				mPtSize;		/**< Point Size to load the Font in. */
 
 	File			mFontBuffer;	/**< Persistent memory buffer for TTF_Font. */
-	std::string		mFontName;
+	std::string		mFontName;		/**< Full typeface name. */
 };
 
 #endif

@@ -762,8 +762,6 @@ inline GLuint OGL_Renderer::getTextureId(Image& image)
 		it->second.second = mTimer.ms();	// Set time stamp.
 	}
 
-	image.textureId(textureId);
-
 	return textureId;
 }
 

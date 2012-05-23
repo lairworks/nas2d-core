@@ -429,7 +429,7 @@ void SDL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	// Set up our Video Surface flags and build onto it with the
 	// Config class. We should probably throw this into a private
 	// function which builds the flags list and returns a Uint32.
-	Uint32 sdlFlags;
+	Uint32 sdlFlags = 0;
 	sdlFlags = SDL_HWSURFACE|SDL_HWACCEL;
 	//sdlFlags = SDL_SWSURFACE;
 	if(fullscreen)

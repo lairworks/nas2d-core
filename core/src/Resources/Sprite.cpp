@@ -157,7 +157,7 @@ void Sprite::update(int x, int y)
 	if(!mPaused && (frame.frameDelay() != FRAME_PAUSE))
 	{
 		unsigned int currentTick = mTimer.ms();
-		if(currentTick - mLastFrameTick > frame.frameDelay())
+		if(static_cast<int>(currentTick - mLastFrameTick) > frame.frameDelay())
 		{
 			mLastFrameTick = currentTick;
 			mCurrentFrame++;

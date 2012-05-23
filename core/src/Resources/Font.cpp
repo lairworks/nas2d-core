@@ -12,6 +12,9 @@
 
 using namespace std;
 
+string buildName(TTF_Font*);
+void toggleFontStyle(TTF_Font*, int);
+
 /**
  * Primary method of instantiating a font.
  *
@@ -19,10 +22,10 @@ using namespace std;
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-Font::Font(const std::string& filePath, unsigned int ptSize):	Resource(filePath),
-																mFont(NULL),
-																mHeight(0),
-																mPtSize(ptSize)
+Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
+														mFont(NULL),
+														mHeight(0),
+														mPtSize(ptSize)
 {
 	load();
 }
@@ -36,8 +39,19 @@ Font::Font(const std::string& filePath, unsigned int ptSize):	Resource(filePath)
 Font::Font():	Resource("Default Font"),
 				mFont(NULL),
 				mHeight(0),
-				mPtSize(0)
+				mPtSize(0),
+				mFontName("Default Font")
 {
+}
+
+
+/**
+ * D'tor
+ */
+Font::~Font()
+{
+	TTF_CloseFont(mFont);
+	mFont = NULL;
 }
 
 
@@ -64,15 +78,12 @@ void Font::load()
 	{		
 		// Get the error message and return false. 
 		errorMessage(TTF_GetError());
-		//mFont = NULL;
 		return;
 	}
 
 	mHeight = TTF_FontHeight(mFont);
 
-	//TTF_SetFontStyle(mFont, TTF_STYLE_BOLD);
-	
-	mFontName = buildName();
+	mFontName = buildName(mFont);
 
 	loaded(true);
 }
@@ -109,8 +120,8 @@ int Font::height() const
 /**
  * Returns an SDL TTF_Font object.
  *
- * \todo	This is mostly a design issue but I'd like to somehow
- *			hide this functionality somehow or wrap the TTF_Font
+ * \todo	This is mostly a design issue but I'd like to hide
+ *			this functionality somehow or wrap the TTF_Font
  *			structure to something somewhat more generic.
  */
 TTF_Font *Font::font() const
@@ -122,64 +133,79 @@ TTF_Font *Font::font() const
 /**
  * Returns the typeface name.
  */
-const std::string& Font::fontName() const
+const string& Font::typefaceName() const
 {
 	return mFontName;
 }
 
 
 /**
- * Build Font Name with Family Name and Style Name.
- *
- * This function is called interally to create a Font name based on
- * Font family and Font style.
+ * Toggles Bold style.
  */
-std::string Font::buildName()
+void Font::bold()
+{
+	toggleFontStyle(mFont, TTF_STYLE_BOLD);
+}
+
+
+/**
+ * Toggles Italic style.
+ */
+void Font::italic()
+{
+	toggleFontStyle(mFont, TTF_STYLE_ITALIC);
+}
+
+
+/**
+ * Toggles Underline style.
+ */
+void Font::underline()
+{
+	toggleFontStyle(mFont, TTF_STYLE_UNDERLINE);
+}
+
+
+/**
+ * Resets all font styling.
+ */
+void Font::normal()
+{
+	TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
+}
+
+
+
+// ==================================================================================
+// = Unexposed module-level functions defined here that don't need to be part of the
+// = API interface.
+// ==================================================================================
+
+/*
+ * Builds a typeface name given a TTF_Font.
+ */
+string buildName(TTF_Font* font)
 {
 	// Build Font Name with Family Name and Style Name.
-	string fontFamily = TTF_FontFaceFamilyName(mFont);
-	string fontStyle = TTF_FontFaceStyleName(mFont);
+	string fontFamily = TTF_FontFaceFamilyName(font);
+	string fontStyle = TTF_FontFaceStyleName(font);
 
 	// If Font style is regular, just use the family name.
-	if(fontStyle == "Regular")
+	if(toLowercase(fontStyle) == "regular")
 		return fontFamily;
 	else
 		return fontFamily + " " + fontStyle;
 }
 
 
-/**
- * Sets the style of the font to use for rendering.
- *
- * \param	style	Sets the style of the font. Can be STYLE_NORMAL (default),
-					STYLE_BOLD, STYLE_ITALIC or STYLE_UNDERLINE.
- */
-void Font::style(FontStyle style)
+/* 
+ * Toggles a font style for a given TTF_Font.
+ */ 
+void toggleFontStyle(TTF_Font* font, int fontStyle)
 {
-	switch(style)
-	{
-		case STYLE_NORMAL:
-			if(mFont)
-				TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
-			break;
+	// Defend against NULL pointers.
+	if(!font)
+		return;
 
-		case STYLE_BOLD:
-			if(mFont)
-				TTF_SetFontStyle(mFont, TTF_STYLE_BOLD);
-			break;
-
-		case STYLE_ITALIC:
-			if(mFont)
-				TTF_SetFontStyle(mFont, TTF_STYLE_ITALIC);
-			break;
-
-		case STYLE_UNDERLINE:
-			if(mFont)
-				TTF_SetFontStyle(mFont, TTF_STYLE_UNDERLINE);
-			break;
-
-		default:
-			cout << "Attempted to set an unknown font style." << endl;
-			break;
-	}
+	TTF_SetFontStyle(font, TTF_GetFontStyle(font) ^ fontStyle);
 }

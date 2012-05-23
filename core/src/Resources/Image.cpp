@@ -28,8 +28,7 @@ using namespace std;
  * If the load fails, a default image is stored indicating an error condition.
  */
 Image::Image(const string& filePath):	Resource(filePath),
-										mPixels(NULL),
-										mTextureId(0)
+										mPixels(NULL)
 {
 	load();
 }
@@ -47,8 +46,7 @@ Image::Image(const string& filePath):	Resource(filePath),
  * If the load fails, a default image is stored indicating an error condition.
  */
 Image::Image(Image *src, int x, int y, int width, int height) :	Resource(src->name()),
-																mPixels(NULL),
-																mTextureId(0)
+																mPixels(NULL)
 {
 	loadFromSource(src, x, y, width, height);
 }
@@ -64,8 +62,7 @@ Image::Image(Image *src, int x, int y, int width, int height) :	Resource(src->na
  *			an image file supported by SDL_Image.
  */
 Image::Image(void *buffer, int size):	Resource("Default Image"),
-										mPixels(NULL),
-										mTextureId(0)
+										mPixels(NULL)
 {
 
 	createSurface((char*)buffer, size);
@@ -80,8 +77,7 @@ Image::Image(void *buffer, int size):	Resource("Default Image"),
  * instantiating an Image should be for testing purposes or to indicate an
  * error condition.		
  */
-Image::Image() :	mPixels(NULL),
-					mTextureId(0)
+Image::Image() :	mPixels(NULL)
 {
 	loadDefault();
 }
@@ -98,8 +94,7 @@ Image::Image() :	mPixels(NULL),
  *			but Image will not work properly if a Renderer object
  *			has not been properly instatiated.
  */
-Image::Image(int x, int y):	mPixels(NULL),
-							mTextureId(0)
+Image::Image(int x, int y):	mPixels(NULL)
 {
 	SDL_Surface* sfc = SDL_GetVideoSurface();
 
@@ -122,8 +117,7 @@ Image::Image(int x, int y):	mPixels(NULL),
  * \param	src		A reference to an Image Resource.
  */
 Image::Image(const Image &src):	Resource(src.name()),
-								mPixels(NULL),
-								mTextureId(src.mTextureId)
+								mPixels(NULL)
 {
 	// Create a new SDL_Surface from the source Image surface.
 	mPixels = SDL_CreateRGBSurface(src.mPixels->flags, src.mPixels->w, src.mPixels->h, src.mPixels->format->BitsPerPixel, src.mPixels->format->Rmask, src.mPixels->format->Gmask, src.mPixels->format->Bmask, src.mPixels->format->Amask);
@@ -144,6 +138,15 @@ Image::Image(const Image &src):	Resource(src.name()),
 		errorMessage("");
 		mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 	}
+}
+
+/**
+ * D'tor
+ */
+Image::~Image()
+{
+	if(mPixels)
+		SDL_FreeSurface(mPixels);
 }
 
 
@@ -177,8 +180,6 @@ Image& Image::operator=(const Image& rhs)
 		errorMessage("");
 		mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 	}
-
-	mTextureId = rhs.mTextureId;
 
 	return *this;
 }

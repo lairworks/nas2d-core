@@ -26,10 +26,10 @@
  *  \class Sound
  *  \brief Sound Resource.
  *
- *  Derived from the Resource class.
+ *  Represents a Sound.
  */
 
-class Sound : public Resource
+class Sound: public Resource
 {
 public:
 
@@ -43,6 +43,7 @@ protected:
 
 private:
 	void load();
-	Mix_Chunk *mChunk;
+
+	Mix_Chunk	*mChunk;
 };
 #endif

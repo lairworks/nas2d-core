@@ -28,11 +28,9 @@ class Rectangle_2d;
  * \class Image
  * \brief Image Class
  *
- * \param char Path to an image file.
- *
  * Stores an image as a representation of pixels in memory.
  */
-class Image : public Resource
+class Image: public Resource
 {
 public:
 	Image(const std::string& filePath);
@@ -44,13 +42,10 @@ public:
 
 	Image& operator=(const Image& rhs);
 
-	/// Frees pixel data and cleans up after itself.
-	~Image() { SDL_FreeSurface(mPixels); }
+	~Image();
 
 	int width() const;
 	int height() const;
-
-	unsigned int texutreId() { return mTextureId; }
 
 protected:
 	friend class Renderer;
@@ -58,9 +53,6 @@ protected:
 	friend class OGL_Renderer;
 
 	SDL_Surface *pixels();
-
-	// Used for OpenGL modes -- pollutes the interface but is almost a necessary evil.
-	void textureId(unsigned int id) { mTextureId = id; }
 
 private:
 	void load();
@@ -77,7 +69,6 @@ private:
 
 	Rectangle_2d	mRect;		/**< Used to store width/height information about the image. */
 
-	unsigned int	mTextureId;	/**< Internal TextureID when in OpenGL mode. */
 };
 
 

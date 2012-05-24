@@ -26,7 +26,7 @@ SDL_Renderer::SDL_Renderer():	Renderer("SDL Renderer"),
 {
 	cout << "Starting " << mRendererName << "..." << endl;
 
-	Configuration& cf = Singleton<Configuration>::get();
+	Configuration& cf = Utility<Configuration>::get();
 	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
 
 	if(cf.graphicsTextureQuality() == GRAPHICS_FAST)

@@ -64,11 +64,11 @@ Font::~Font()
  */
 void Font::load()
 {
-	mFontBuffer = Singleton<Filesystem>::get().open(name());
+	mFontBuffer = Utility<Filesystem>::get().open(name());
 
 	if(mFontBuffer.size() == 0)
 	{
-		errorMessage(Singleton<Filesystem>::get().lastError());
+		errorMessage(Utility<Filesystem>::get().lastError());
 		//mFont = NULL;
 		return;
 	}

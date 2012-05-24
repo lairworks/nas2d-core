@@ -10,32 +10,32 @@
 
 #include "NAS2D/Configuration.h"
 #include "NAS2D/Filesystem.h"
-#include "NAS2D/Singleton.h"
+#include "NAS2D/Utility.h"
 #include "NAS2D/XmlAttributeParser.h"
 
 // Set some basic constants.
-#define AUDIO_LOW_QUALITY			11025
-#define AUDIO_MEDIUM_QUALITY		22050
-#define AUDIO_HIGH_QUALITY			44100
-#define AUDIO_CHANNELS				16
-#define AUDIO_SFX_MIN_VOLUME		0
-#define AUDIO_SFX_MAX_VOLUME		128
-#define AUDIO_SFX_VOLUME			128
-#define AUDIO_MUSIC_MIN_VOLUME		0
-#define AUDIO_MUSIC_MAX_VOLUME		128
-#define AUDIO_MUSIC_VOLUME			100
-#define AUDIO_BUFFER_SIZE			1024
-#define AUDIO_MONO					1
-#define AUDIO_STEREO				2
-#define	AUDIO_MIXER					"SDL"
+const int				AUDIO_LOW_QUALITY			= 11025;
+const int				AUDIO_MEDIUM_QUALITY		= 22050;
+const int				AUDIO_HIGH_QUALITY			= 44100;
+const int				AUDIO_CHANNELS				= 16;
+const int				AUDIO_SFX_MIN_VOLUME		= 0;
+const int				AUDIO_SFX_MAX_VOLUME		= 128;
+const int				AUDIO_SFX_VOLUME			= 128;
+const int				AUDIO_MUSIC_MIN_VOLUME		= 0;
+const int				AUDIO_MUSIC_MAX_VOLUME		= 128;
+const int				AUDIO_MUSIC_VOLUME			= 100;
+const int				AUDIO_BUFFER_SIZE			= 1024;
+const int				AUDIO_MONO					= 1;
+const int				AUDIO_STEREO				= 2;
+const string			AUDIO_MIXER					= "SDL";
 
-#define GRAPHICS_WIDTH				800
-#define GRAPHICS_HEIGHT				600
-#define GRAPHICS_BITDEPTH			32
-#define GRAPHICS_RENDERER			"OGL"
-#define GRAPHICS_VSYNC				"false"
-#define GRAPHICS_TEXTURE_QUALITY	GRAPHICS_GOOD
-#define GRAPHICS_FULLSCREEN			false
+const int				GRAPHICS_WIDTH				= 800;
+const int				GRAPHICS_HEIGHT				= 600;
+const int				GRAPHICS_BITDEPTH			= 32;
+const string			GRAPHICS_RENDERER			= "OGL";
+const string			GRAPHICS_VSYNC				= "false";
+const GraphicsQuality	GRAPHICS_TEXTURE_QUALITY	= GRAPHICS_GOOD;
+const bool				GRAPHICS_FULLSCREEN			= false;
 
 
 /**
@@ -156,7 +156,7 @@ void Configuration::save()
 	TiXmlPrinter printer;
 	doc->Accept(&printer);
 
-	Singleton<Filesystem>::get().write(File(printer.Str(), "config.xml"));
+	Utility<Filesystem>::get().write(File(printer.Str(), "config.xml"));
 
 	delete doc;
 	doc = 0;
@@ -195,7 +195,7 @@ void Configuration::setDefaultValues()
  */
 bool Configuration::readConfig(const string& filePath)
 {
-	File xmlFile = Singleton<Filesystem>::get().open(filePath);
+	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
 	TiXmlElement  *xmlRootElement;
 

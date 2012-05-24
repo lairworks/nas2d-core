@@ -23,10 +23,10 @@ Music::Music(const string& filePath):	Resource(filePath),
 
 void Music::load()
 {
-	mMusicBuffer = Singleton<Filesystem>::get().open(name());
+	mMusicBuffer = Utility<Filesystem>::get().open(name());
 	if(mMusicBuffer.empty())
 	{
-		errorMessage(Singleton<Filesystem>::get().lastError());
+		errorMessage(Utility<Filesystem>::get().lastError());
 		return;
 	}
 

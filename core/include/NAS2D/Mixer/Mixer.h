@@ -14,7 +14,7 @@
 #include "NAS2D/Exception.h"
 #include "NAS2D/Common.h"
 #include "NAS2D/Configuration.h"
-#include "NAS2D/Singleton.h"
+#include "NAS2D/Utility.h"
 
 #include "NAS2D/Resources/Sound.h"
 #include "NAS2D/Resources/Music.h"

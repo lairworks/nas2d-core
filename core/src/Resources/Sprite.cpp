@@ -171,7 +171,7 @@ void Sprite::update(int x, int y)
 		}
 	}
 
-	Singleton<Renderer>::get().drawSubImage(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height());
+	Utility<Renderer>::get().drawSubImage(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height());
 
 }
 
@@ -183,7 +183,7 @@ void Sprite::update(int x, int y)
  */
 void Sprite::parseXml(const string& filePath)
 {
-	Filesystem& fs = Singleton<Filesystem>::get();
+	Filesystem& fs = Utility<Filesystem>::get();
 
 	if(!fs.exists(filePath))
 	{
@@ -297,7 +297,7 @@ void Sprite::parseImageSheets(TiXmlElement *root)
  */
 void Sprite::addImageSheet(const string& id, const string& src, TiXmlNode* node)
 {
-	Filesystem& fs = Singleton<Filesystem>::get();
+	Filesystem& fs = Utility<Filesystem>::get();
 
 	// Search for an image sheet with 'id'. If not found, add it.
 	if(mImageSheets.find(toLowercase(id)) == mImageSheets.end())

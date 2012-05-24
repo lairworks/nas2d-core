@@ -18,7 +18,7 @@
  */
 void notifyMixer()
 {
-	static_cast<SDL_Mixer&>(Singleton<Mixer>::get()).updateTwoPartTrackState();
+	static_cast<SDL_Mixer&>(Utility<Mixer>::get()).updateTwoPartTrackState();
 }
 
 
@@ -42,8 +42,8 @@ SDL_Mixer::SDL_Mixer():	Mixer("SDL Mixer"),
 SDL_Mixer::~SDL_Mixer()
 {
 	// Save current volume levels in the Configuration.
-	Singleton<Configuration>::get().audioSfxVolume(Mix_Volume(-1, -1));
-	Singleton<Configuration>::get().audioMusicVolume(Mix_VolumeMusic(-1));
+	Utility<Configuration>::get().audioSfxVolume(Mix_Volume(-1, -1));
+	Utility<Configuration>::get().audioMusicVolume(Mix_VolumeMusic(-1));
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
@@ -61,7 +61,7 @@ void SDL_Mixer::init()
 	}
 	
     // Initialize the Audio Mixer
-    if(Mix_OpenAudio(Singleton<Configuration>::get().audioMixRate(), MIX_DEFAULT_FORMAT, Singleton<Configuration>::get().audioStereoChannels(), Singleton<Configuration>::get().audioBufferSize()))
+    if(Mix_OpenAudio(Utility<Configuration>::get().audioMixRate(), MIX_DEFAULT_FORMAT, Utility<Configuration>::get().audioStereoChannels(), Utility<Configuration>::get().audioBufferSize()))
 	{
 		cout << "\tAudio driver not initialized: " << SDL_GetError() << endl;
 		cout << "\tSetting to NULL mode. No audio will be played." << endl;
@@ -69,8 +69,8 @@ void SDL_Mixer::init()
 		return;
 	}
 
-	setSfxVolume(Singleton<Configuration>::get().audioSfxVolume());
-	setMusVolume(Singleton<Configuration>::get().audioMusicVolume());
+	setSfxVolume(Utility<Configuration>::get().audioSfxVolume());
+	setMusVolume(Utility<Configuration>::get().audioMusicVolume());
 }
 
 

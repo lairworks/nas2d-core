@@ -20,10 +20,10 @@ Sound::Sound(const string& filePath):	Resource(filePath),
 
 void Sound::load()
 {
-	File soundFile = Singleton<Filesystem>::get().open(name());
+	File soundFile = Utility<Filesystem>::get().open(name());
 	if(soundFile.empty())
 	{
-		errorMessage(Singleton<Filesystem>::get().lastError());
+		errorMessage(Utility<Filesystem>::get().lastError());
 		return;
 	}
 

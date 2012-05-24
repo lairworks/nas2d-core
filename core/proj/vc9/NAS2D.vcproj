@@ -324,10 +324,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\include\NAS2D\Singleton.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\NAS2D\State.h"
 				>
 			</File>
@@ -341,6 +337,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\NAS2D\Trig.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\NAS2D\Utility.h"
 				>
 			</File>
 			<File

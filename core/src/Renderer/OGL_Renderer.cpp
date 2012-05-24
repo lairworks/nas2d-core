@@ -42,7 +42,7 @@ OGL_Renderer::OGL_Renderer():	Renderer("OGL Renderer"),
 {
 	cout << "Starting " << mRendererName << "..." << endl;
 	
-	Configuration& cf = Singleton<Configuration>::get();
+	Configuration& cf = Utility<Configuration>::get();
 
 	TEXTURE_FILTER = cf.graphicsTextureQuality();
 
@@ -150,10 +150,6 @@ void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
 }
 
 
-/**
- * \todo	Currently this function doesn't actually render a sub image of a larger image. Instead,
- *			it just stretches the texture across the entire surface of the quad.
- */
 void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height)
 {
 	glPushMatrix();

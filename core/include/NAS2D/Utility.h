@@ -8,31 +8,33 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_SINGLETON_
-#define _NAS_SINGLETON_
+#ifndef _NAS_UTILITY_SINGLETON_
+#define _NAS_UTILITY_SINGLETON_
 
 /**
- * \class Singleton
- * \brief A simple implementation of the Singleton pattern.
+ * \class	Utility
+ * \brief	A simple singleton type class used specifically for handling single
+ *			instances of utility classes (like configuration, renderer, mixer, etc.)
+ *			where only one instance should only ever be created for an application.
  *
- * This is a very basic implementation of the Singleton pattern used for getting
- * Singleton's to the core utilities in LoM.
+ * This is a very basic implementation of the single pattern used for getting references
+ * to single instance classes like Renderer, Mixer, Configuration, Filesystem, etc.
  *
- * \warning	This class is \a not thread safe. Singletons must be instantiated
+ * \warning	This class is \a not thread safe. All utilities must be instantiated
  *			from the main thread of any application that uses them.
  *
- * \note	\c Singleton offers only basic exception safety. If an exception occurs
+ * \note	\c Utility offers only basic exception safety. If an exception occurs
  *			during instantiation of its internal type the exception will not be
  *			caught. In general practice using any of the core utility classes, an
  *			exception being thrown indicates a serious error that must be
  *			address by the client.
  *
- * \warning	\c Singleton offers a static member method \c Singleton::clean(). This
+ * \warning	\c Utility offers a static member method \c Utility::clean(). This
  *			should \a only \a ever be used when nothing is using the instance of
- *			T (e.g., at the end of a program.
+ *			T (e.g., at the end of a program.)
  */
 template<typename T>
-class Singleton
+class Utility
 {
 public:
 	
@@ -54,7 +56,7 @@ public:
 	 *
 	 * \note	This function expects that the parameter T is created in
 	 *			the function call (e.g.,
-	 *			\c Singleton<T>::instantiateDerived(new T()).
+	 *			\c Utility<T>::instantiateDerived(new T()).
 	 *
 	 * \warning	This function is only intended to be used in very special
 	 *			cases where the caller needs to instantiate an object that
@@ -63,7 +65,7 @@ public:
 	 * \warning	If the caller needs a derived type T, this function must
 	 *			be called before \c Singleton::get();
 	 *
-	 * \warning	Singleton takes ownership of whatever pointer is based into
+	 * \warning	Utility takes ownership of whatever pointer is passed into
 	 *			this function. Deleting it outside of the Singleton yields
 	 *			undefined behavior.
 	 */
@@ -98,15 +100,15 @@ public:
 	}
 
 private:
-	Singleton<T>() {};		// Intentionally left undefined.
-	~Singleton() {};		// Intentionally left undefined.
+	Utility<T>() {};	// Explicitly declared private.
+	~Utility() {};		// Explicitly declared private.
 
-	Singleton<T>(const Singleton& s);				// Intentionally left undefined.
-	Singleton<T>& operator=(const Singleton& s);	// Intentionally left undefined.
+	Utility<T>(const Utility& s);				// Explicitly declared private.
+	Utility<T>& operator=(const Utility& s);	// Explicitly declared private.
 
 	static T* mInstance;	/**< Internal instance of type T. */
 };
 
-template<typename T> T* Singleton<T>::mInstance = 0;
+template<typename T> T* Utility<T>::mInstance = 0;
 
 #endif

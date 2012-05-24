@@ -14,7 +14,7 @@
 #include "NAS2D/Common.h"
 #include "NAS2D/Configuration.h"
 #include "NAS2D/Exception.h"
-#include "NAS2D/Singleton.h"
+#include "NAS2D/Utility.h"
 #include "NAS2D/Timer.h"
 
 #include "NAS2D/Renderer/Primitives.h"

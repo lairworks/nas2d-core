@@ -13,7 +13,7 @@
 #include "NAS2D/Exception.h"
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Game.h"
-#include "NAS2D/Singleton.h"
+#include "NAS2D/Utility.h"
 
 #include "NAS2D/Mixer/SDL_Mixer.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
@@ -35,39 +35,39 @@ Game::Game(const string& appTitle, const string& argv_0, const string& configPat
 
 	cout << "Initializing subsystems:" << endl;	
 
-	Singleton<Filesystem>::get().init(argv_0, "data");
+	Utility<Filesystem>::get().init(argv_0, "data");
 
-	Configuration& cf = Singleton<Configuration>::get();
+	Configuration& cf = Utility<Configuration>::get();
 	cf.load(configPath);
 
 	// Instantiate the Renderer object
 	if(cf.renderer() == "OGL")
 	{
-		Singleton<Renderer>::instantiateDerived(new OGL_Renderer());
+		Utility<Renderer>::instantiateDerived(new OGL_Renderer());
 
 		// We all know how much I *hate* casting but this is one case where it's actually
 		// necessary so that we can ensure that LoM stays in a stable state. Also, the cast
 		// should never fail but this is one of those 'just in case' deals.
-		OGL_Renderer* ogl = dynamic_cast<OGL_Renderer*>(&Singleton<Renderer>::get());
+		OGL_Renderer* ogl = dynamic_cast<OGL_Renderer*>(&Utility<Renderer>::get());
 		if(!ogl || !ogl->valid())
 		{
 			cout << "Unable to create an OpenGL Renderer. Switching to Software Mode instead." << endl;
 
-			Singleton<Configuration>::get().renderer("SDL");
-			Singleton<Configuration>::get().save();
+			Utility<Configuration>::get().renderer("SDL");
+			Utility<Configuration>::get().save();
 			
-			Singleton<Renderer>::clean();
-			Singleton<Renderer>::instantiateDerived(new SDL_Renderer());
+			Utility<Renderer>::clean();
+			Utility<Renderer>::instantiateDerived(new SDL_Renderer());
 		}
 	}
 	else
-		Singleton<Renderer>::instantiateDerived(new SDL_Renderer());
+		Utility<Renderer>::instantiateDerived(new SDL_Renderer());
 
-	Singleton<Renderer>::get().setApplicationTitle(appTitle);
+	Utility<Renderer>::get().setApplicationTitle(appTitle);
 
-	Singleton<Mixer>::instantiateDerived(new SDL_Mixer());
+	Utility<Mixer>::instantiateDerived(new SDL_Mixer());
 	
-	Singleton<EventHandler>::instantiateDerived(new EventHandler());
+	Utility<EventHandler>::instantiateDerived(new EventHandler());
 
 	cout << "Subsystems initialized." << endl << endl;
 	cout << "===================================" << endl << endl;
@@ -83,16 +83,15 @@ Game::~Game()
 	cout << "Shutting down..." << endl;
 
 	// Destroy all of our various components in reverse order.
-	Singleton<EventHandler>::clean();
-	Singleton<Mixer>::clean();
-	Singleton<Renderer>::clean();
-	Singleton<Configuration>::clean();
-	Singleton<Filesystem>::clean();
+	Utility<EventHandler>::clean();
+	Utility<Mixer>::clean();
+	Utility<Renderer>::clean();
+	Utility<Configuration>::clean();
+	Utility<Filesystem>::clean();
 
-	cout << endl << "Game Object has been Terminated." << endl;
+	cout << endl << "Game object has been terminated." << endl;
 
 	// Shut down all SDL subsystems.
-	/** \todo	Find a same place for this. */
 	SDL_Quit();
 }
 
@@ -105,7 +104,7 @@ Game::~Game()
  */
 void Game::mount(const string& path)
 {
-	Singleton<Filesystem>::get().addToSearchPath(path);
+	Utility<Filesystem>::get().addToSearchPath(path);
 }
 
 
@@ -128,7 +127,7 @@ void Game::go(State *state)
 	// Game Loop
 	while(stateManager.update())
 	{
-		Singleton<Renderer>::get().update();
-		Singleton<Mixer>::get().update();
+		Utility<Renderer>::get().update();
+		Utility<Mixer>::get().update();
 	}
 }

@@ -10,7 +10,7 @@
 
 #include "NAS2D/Common.h"
 #include "NAS2D/Filesystem.h"
-#include "NAS2D/Singleton.h"
+#include "NAS2D/Utility.h"
 
 #include "NAS2D/Renderer/Primitives.h"
 
@@ -218,10 +218,10 @@ void Image::loadDefault()
  */
 void Image::load()
 {
-	File imageFile = Singleton<Filesystem>::get().open(name());
+	File imageFile = Utility<Filesystem>::get().open(name());
 	if(imageFile.size() == 0)
 	{
-		errorMessage(Singleton<Filesystem>::get().lastError());
+		errorMessage(Utility<Filesystem>::get().lastError());
 		loadDefault();
 		return;
 	}

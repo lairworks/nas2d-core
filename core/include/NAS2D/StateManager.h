@@ -12,7 +12,7 @@
 #define _NAS_STATE_MANAGER_
 
 #include "State.h"
-#include "NAS2D/Singleton.h"
+#include "NAS2D/Utility.h"
 
 /**
  * \class	StateManager

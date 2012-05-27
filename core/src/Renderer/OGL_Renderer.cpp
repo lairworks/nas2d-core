@@ -398,11 +398,22 @@ void OGL_Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, i
 {	
 	glDisable(mTextureTarget);
 	
-	glColor4ub(r, g, b, a);
+	
 
-	glBegin(GL_LINES);
-		glVertex2f(static_cast<float>(x) - 0.5f, static_cast<float>(y) + 0.5f);
-		glVertex2f(static_cast<float>(x2) - 0.5f, static_cast<float>(y2) + 0.5f);
+//	glBegin(GL_LINES);
+//		glVertex2f(static_cast<float>(x) - 0.5f, static_cast<float>(y) + 0.5f);
+//		glVertex2f(static_cast<float>(x2) - 0.5f, static_cast<float>(y2) + 0.5f);
+//	glEnd();
+	glBegin(GL_TRIANGLE_STRIP);
+	glColor4ub(255, 255, 255, 1);
+	glVertex2f( static_cast<float>(x), static_cast<float>(y) + 1.0f);
+	glVertex2f( static_cast<float>(x2), static_cast<float>(y2) + 1.0f);
+	glColor4ub(r, g, b, a);
+	glVertex2f( static_cast<float>(x) - 0.5f, static_cast<float>(y) + 0.5f);
+	glVertex2f( static_cast<float>(x2) - 0.5f, static_cast<float>(y2) + 0.5f);
+	glColor4ub(255, 255, 255, 1);
+	glVertex2f( static_cast<float>(x), static_cast<float>(y));
+	glVertex2f( static_cast<float>(x2), static_cast<float>(y2));
 	glEnd();
 
 	glEnable(mTextureTarget);
@@ -452,14 +463,19 @@ void OGL_Renderer::drawBox(int x, int y, int width, int height, int r, int g, in
 {	
 	glDisable(mTextureTarget);
 
-	glColor4ub(r, g, b, a);
+	//glColor4ub(r, g, b, a);
 
-	glBegin(GL_LINE_LOOP);
-		glVertex2i(x /*+ 0.5f*/, y);
-		glVertex2i((x + width), y);
-		glVertex2i((x + width), (y + height));
-		glVertex2i(x, (y + height));
-	glEnd();
+//	glBegin(GL_LINE_LOOP);
+//		glVertex2i(x /*+ 0.5f*/, y);
+//		glVertex2i((x + width), y);
+//		glVertex2i((x + width), (y + height));
+//		glVertex2i(x, (y + height));
+//	glEnd();
+	
+	drawLine(x, y, x + width, y, r, g, b, a);
+	drawLine(x + width, y, x + width, y + height, r, g, b, a);
+	drawLine(x + width, y + height, x, y + height, r, g, b, a);
+	drawLine(x, y + height, x, y, r, g, b, a);
 
 	glEnable(mTextureTarget);
 }

@@ -21,7 +21,7 @@ StateManager::StateManager():	mActiveState(NULL),
 								mActive(true)
 {
 	// Ensure that all quit messages are handled in some way even if a State object doesn't.
-	Utility<EventHandler>::get().event(SDL_QUIT).connect(this, &StateManager::handleQuit);
+	Utility<EventHandler>::get().quit().connect(this, &StateManager::handleQuit);
 }
 
 
@@ -81,7 +81,7 @@ bool StateManager::update()
 }
 
 
-void StateManager::handleQuit(SDL_Event& event)
+void StateManager::handleQuit()
 {
 	mActive = false;
 }

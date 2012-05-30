@@ -33,7 +33,7 @@ public:
 	bool update();
 
 private:
-	void handleQuit(SDL_Event& event);
+	void handleQuit();
 
 	State			*mActiveState;
 	bool			mActive;

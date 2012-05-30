@@ -423,6 +423,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Event"
+				>
+				<File
+					RelativePath="..\..\include\NAS2D\Event\KeyMap.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\NAS2D\Event\MouseButtons.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

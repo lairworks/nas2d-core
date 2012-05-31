@@ -30,6 +30,7 @@ class Music: public Resource
 {
 public:
 
+	Music();
 	Music(const std::string& filePath);
 
 protected:

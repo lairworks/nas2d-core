@@ -14,6 +14,12 @@
 
 using namespace std;
 
+
+Music::Music():	Resource(),
+				mMusic(0)
+{}
+
+
 Music::Music(const string& filePath):	Resource(filePath),
 										mMusic(0)
 {

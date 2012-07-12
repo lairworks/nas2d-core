@@ -44,22 +44,22 @@ public:
 
 	std::string userPath() const;
 	std::string dataPath() const;
-	std::string workingPath(const std::string& fileName) const;
+	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
-	bool addToSearchPath(const std::string& pathName) const;
+	bool addToSearchPath(const std::string& path) const;
 
 	StringList directoryList(const std::string& dir) const;
 	StringList directoryList(const std::string& dir, const std::string& filter) const;
 
-	File open(const std::string& fileName) const;
+	File open(const std::string& filename) const;
 	bool write(const File& file, bool overwrite = true) const;
 	bool del(const std::string& path) const;
-	bool exists(const std::string& fileName) const;
+	bool exists(const std::string& filename) const;
 
 	std::string extension(const std::string path);
 
 	bool isDirectory(const std::string& path) const;
-	bool makeDirectory(const std::string& dirPath) const;
+	bool makeDirectory(const std::string& path) const;
 
 
 	std::string lastError() const;

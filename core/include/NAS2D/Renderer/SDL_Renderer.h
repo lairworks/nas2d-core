@@ -32,8 +32,9 @@ public:
 	void setApplicationTitle(const std::string& title);
 	
 	void drawImage(Image& image, int x, int y, float scale);
-	void drawSubImage(Image& image, int rasterX, int rasterY, int imgX, int imgY, int imgWidth, int imgHeight);
+	void drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height);
 
+	void drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees);
 	void drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale);
 	void drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a);
 	void drawImageRepeated(Image& image, int x, int y, int w, int h);

@@ -12,8 +12,8 @@
 
 using namespace std;
 
-Sound::Sound(const string& filePath):	Resource(filePath),
-										mChunk(0)
+Sound::Sound(const std::string& filePath):	Resource(filePath),
+											mChunk(0)
 { 
 	load();
 }

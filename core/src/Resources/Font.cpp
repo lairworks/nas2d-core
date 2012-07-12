@@ -94,7 +94,7 @@ void Font::load()
  *
  * \param	str		Reference to a std::string to get the width of.
  */
-int Font::width(const string& str) const
+int Font::width(const std::string& str) const
 {
 	if(mFont == NULL)
 		return 0;
@@ -133,7 +133,7 @@ TTF_Font *Font::font() const
 /**
  * Returns the typeface name.
  */
-const string& Font::typefaceName() const
+const std::string& Font::typefaceName() const
 {
 	return mFontName;
 }

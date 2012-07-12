@@ -81,9 +81,9 @@ public:
 	 * List of display modes.
 	 */
 	typedef std::vector<DisplayMode> DisplayModes;
-	
+
 	Renderer();
-	
+
 	virtual ~Renderer();
 
 	const std::string& getName();
@@ -93,8 +93,9 @@ public:
 	virtual void setApplicationTitle(const std::string& title);
 
 	virtual void drawImage(Image& image, int x, int y, float scale = 1.0f);
-	virtual void drawSubImage(Image& image, int rasterX, int rasterY, int imgX, int imgY, int imgWidth, int imgHeight);
+	virtual void drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height);
 
+	virtual void drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees);
 	void drawImageRotated(Image& image, int x, int y, float degrees, Color_4ub color = COLOR_NORMAL, float scale = 1.0f);
 	virtual void drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale = 1.0f);
 
@@ -112,11 +113,11 @@ public:
 
 	void drawLine(int x, int y, int x2, int y2, const Color_4ub& color = COLOR_WHITE, int line_width = 1);
 	virtual void drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a = 255, int line_width = 1);
-	
+
 	void drawBox(const Rectangle_2d& rect, int r, int g, int b, int a = 255);
 	virtual void drawBox(int x, int y, int w, int h, int r, int g, int b, int a = 255);
 	virtual void drawBoxFilled(int x, int y, int width, int height, int r, int g, int b, int a = 255);
-	
+
 	virtual void drawCircle(int cx, int cy, int radius, int r, int g, int b, int a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f) {}
 
 	virtual void drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a = 255);
@@ -137,7 +138,7 @@ public:
 
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);
-    
+
 	virtual unsigned int pixelColor(Image& src, int x, int y);
 	virtual bool pixelTransparent(Image& src, int x, int y);
 
@@ -148,7 +149,7 @@ public:
 
 	int screenCenterX();
 	int screenCenterY();
-	
+
 	virtual void buildDisplayModeList();
 	const DisplayModes& getDisplayModes() const { return mDisplayModes; }
 
@@ -159,7 +160,7 @@ public:
 
 protected:
 	Renderer(const std::string& rendererName);
-	
+
 	virtual void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync) {}
 
 	void pushMessage(const std::string& str);

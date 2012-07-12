@@ -55,10 +55,10 @@ OGL_Renderer::OGL_Renderer():	Renderer("OGL Renderer"),
 
 
 OGL_Renderer::OGL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BPP, bool fullscreen, bool vsync):	Renderer("OGL Renderer"),
-																							mLastResourceCheck(0),
-																							mTextureTarget(0),
-																							//mVertexBufferObject(0),
-																							mRequirementsMet(false)
+																													mLastResourceCheck(0),
+																													mTextureTarget(0),
+																													//mVertexBufferObject(0),
+																													mRequirementsMet(false)
 {
 	cout << "Starting " << mRendererName << "..." << endl;
 
@@ -183,12 +183,55 @@ void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, i
         static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
 
 	};
-    
-    // Because OGL is complicated we took care of subImages in the Image class.
-    //Image *subImage = new Image(&image, x, y, width, height);
-	
+
 	glColor4ub(255, 255, 255, 255);
-	
+	drawVertexArray(getTextureId(image), vertices, texture);
+
+	glPopMatrix();
+}
+
+
+void OGL_Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees)
+{
+	glPushMatrix();
+
+	// Find center point of the image.
+	float tX = static_cast<float>(width / 2);
+	float tY = static_cast<float>(height / 2);
+
+	// Adjust the translation so that images appear where expected.
+	glTranslatef(static_cast<float>(rasterX + tX), static_cast<float>(rasterY + tY), 0.0f);
+	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+
+	GLfloat vertices[8] =	{	-tX, -tY,
+								tX, -tY,
+								tX, tY,
+								-tX, tY	};
+
+    /**
+     * Coord pairs:
+     * x
+     * y
+     * x + width
+     * y
+     * x + width
+     * y + height
+     * x
+     * y + height
+     */
+	GLfloat texture[8] = {
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()), 
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height()),
+		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()), 
+        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
+
+	};
+
+	glColor4ub(255, 255, 255, 255);
 	drawVertexArray(getTextureId(image), vertices, texture);
 
 	glPopMatrix();
@@ -199,32 +242,33 @@ void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 {
 	glPushMatrix();
 
-	int imgHalfW = (image.width() >> 1);
-	int imgHalfH = (image.height() >> 1);
+	// Find center point of the image.
+	int imgHalfW = (image.width() / 2);
+	int imgHalfH = (image.height() / 2);
 
 	float tX = imgHalfW * scale;
 	float tY = imgHalfH * scale;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef((GLfloat)(x + imgHalfW), (GLfloat)(y + imgHalfH), 0.0f);
+	glTranslatef(static_cast<float>(x + imgHalfW), static_cast<float>(y + imgHalfH), 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	GLfloat vertices[8] = {
-		-tX, -tY,
-		tX, -tY,
-		tX, tY,
-		-tX, tY
-	};
+	GLfloat vertices[8] =	{
+								-tX, -tY,
+								tX, -tY,
+								tX, tY,
+								-tX, tY
+							};
 	
-	GLfloat texture[8] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-	};
+	GLfloat texture[8] =	{
+								0.0f, 0.0f,
+								1.0f, 0.0f,
+								1.0f, 1.0f,
+								0.0f, 1.0f
+							};
 	
 	drawVertexArray(getTextureId(image), vertices, texture, scale);
 	glPopMatrix();
@@ -398,23 +442,21 @@ void OGL_Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, i
 {	
 	glDisable(mTextureTarget);
 	
-	
+	GLfloat verts[12] =	{
+							static_cast<float>(x), static_cast<float>(y) + 1.0f,
+							static_cast<float>(x2), static_cast<float>(y2) + 1.0f,
+							static_cast<float>(x) - 0.5f, static_cast<float>(y) + 0.5f,
+							static_cast<float>(x2) - 0.5f, static_cast<float>(y2) + 0.5f,
+							static_cast<float>(x), static_cast<float>(y),
+							static_cast<float>(x2), static_cast<float>(y2)
+						};
 
-//	glBegin(GL_LINES);
-//		glVertex2f(static_cast<float>(x) - 0.5f, static_cast<float>(y) + 0.5f);
-//		glVertex2f(static_cast<float>(x2) - 0.5f, static_cast<float>(y2) + 0.5f);
-//	glEnd();
-	glBegin(GL_TRIANGLE_STRIP);
-	glColor4ub(255, 255, 255, 1);
-	glVertex2f( static_cast<float>(x), static_cast<float>(y) + 1.0f);
-	glVertex2f( static_cast<float>(x2), static_cast<float>(y2) + 1.0f);
 	glColor4ub(r, g, b, a);
-	glVertex2f( static_cast<float>(x) - 0.5f, static_cast<float>(y) + 0.5f);
-	glVertex2f( static_cast<float>(x2) - 0.5f, static_cast<float>(y2) + 0.5f);
-	glColor4ub(255, 255, 255, 1);
-	glVertex2f( static_cast<float>(x), static_cast<float>(y));
-	glVertex2f( static_cast<float>(x2), static_cast<float>(y2));
-	glEnd();
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, verts);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glColor4ub(255, 255, 255, 255);
 
 	glEnable(mTextureTarget);
 }
@@ -439,21 +481,36 @@ void OGL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, i
 	float x = static_cast<float>(radius);
 	float y = 0;
 
-	int segments = num_segments;
-	if(segments < 4)	
-		segments = static_cast<int>(10.0f * sqrtf(x)); // Note, I used X because it's already the Radius cast to a float.
+	GLfloat* verts = new GLfloat[num_segments * 2]; // Two coords per vertex
 
-	glBegin(GL_LINE_LOOP);
-	for(int ii = 0; ii < segments; ii++)
+	// During each iteration of the for loop, two indecies are accessed
+	// so we need to be sure that we step two index places for each loop.
+	for(int i = 0; i < num_segments * 2; i += 2)
 	{
-		glVertex2f(x * scale_x + cx, y * scale_y + cy);
+		verts[i]		= x * scale_x + cx;
+		verts[i + 1]	= y * scale_y + cy;
 
 		// Apply the rotation matrix
 		t = x;
 		x = c * x - s * y;
 		y = s * t + c * y;
 	}
-	glEnd();
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, verts);
+	glDrawArrays(GL_LINE_LOOP, 0, num_segments);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	
+	/**
+	 * \todo	I really hate the alloc's/dealloc's that are done in this function.
+				We may want to consider forcing circles to be within a certain range
+				of num_segments and provide arrays for them with the correct number
+				of elements. Will increase code length but will eliminate the memory
+				fudging.
+	 */
+	delete [] verts;
+	verts = 0;
 
 	glEnable(mTextureTarget);
 }
@@ -498,7 +555,7 @@ void OGL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int
 }
 
 
-void OGL_Renderer::drawText(Font& font, const string& text, int x, int y, int r, int g, int b, int a)
+void OGL_Renderer::drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a)
 {
 	// Protect against a NULL font object being passed in.
 	if(!font.loaded())
@@ -543,7 +600,7 @@ void OGL_Renderer::drawText(Font& font, const string& text, int x, int y, int r,
 }
 
 
-void OGL_Renderer::drawTextClamped(Font& font, const string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
+void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
 {
 	// Protect against a NULL font object being passed in.
 	if(!font.loaded())
@@ -894,7 +951,7 @@ inline void OGL_Renderer::updateTextures()
  * Checks for expected extensions and prints warning messages
  * if the video driver doesn't support the extension.
  */
-bool OGL_Renderer::extensionExists(const string& extension)
+bool OGL_Renderer::extensionExists(const std::string& extension)
 {
 	std::istringstream iss(std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS))));
 

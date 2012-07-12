@@ -118,7 +118,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\include;..\..\depend\win32\include"
+				AdditionalIncludeDirectories="..\..\..\depend\win32\include;..\..\..\core\include\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;TIXML_USE_STL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -139,7 +139,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="GLee.lib physfs.lib SDL.lib SDLmain.lib SDL_gfx.lib SDL_image.lib SDL_mixer.lib SDL_ttf.lib opengl32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\depend\win32\lib"
+				AdditionalLibraryDirectories="..\..\..\depend\win32\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -166,7 +166,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;.\release\$(ProjectName).exe&quot; &quot;..\..\$(ProjectName).exe&quot;"
+				CommandLine="copy &quot;.\release\$(ProjectName).exe&quot; &quot;..\..\..\$(ProjectName).exe&quot;"
 			/>
 		</Configuration>
 	</Configurations>

@@ -19,10 +19,23 @@
 using namespace std;
 
 
-const int MAX_MESSAGE_PROCESSING = 10;	/**< Maximum number of events to process each frame. */
+const int MAX_MESSAGE_PROCESSING = 10;	/**
+										 * Maximum number of events to process each frame.
+										 * 
+										 * \todo	Make this configurable?
+										 */
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::ActivateEventCallback for paramter listing.
  */
 EventHandler::ActivateEventCallback& EventHandler::activate()
 {
@@ -31,7 +44,16 @@ EventHandler::ActivateEventCallback& EventHandler::activate()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::JoystickAxisMotionEventCallback for paramter listing.
  */
 EventHandler::JoystickAxisMotionEventCallback& EventHandler::joystickAxisMotion()
 {
@@ -41,7 +63,16 @@ EventHandler::JoystickAxisMotionEventCallback& EventHandler::joystickAxisMotion(
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::JoystickBallMotionEventCallback for paramter listing.
  */
 EventHandler::JoystickBallMotionEventCallback& EventHandler::joystickBallMotion()
 {
@@ -51,7 +82,16 @@ EventHandler::JoystickBallMotionEventCallback& EventHandler::joystickBallMotion(
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::JoystickButtonEventCallback for paramter listing.
  */
 EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonUp()
 {
@@ -61,7 +101,16 @@ EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonUp()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::JoystickButtonEventCallback for paramter listing.
  */
 EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonDown()
 {
@@ -71,7 +120,16 @@ EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonDown()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::JoystickHatMotionEventCallback for paramter listing.
  */
 EventHandler::JoystickHatMotionEventCallback& EventHandler::joystickHatMotion()
 {
@@ -80,7 +138,16 @@ EventHandler::JoystickHatMotionEventCallback& EventHandler::joystickHatMotion()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::KeyEventCallback for paramter listing.
  */
 EventHandler::KeyEventCallback& EventHandler::keyUp()
 {
@@ -89,7 +156,16 @@ EventHandler::KeyEventCallback& EventHandler::keyUp()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::KeyEventCallback for paramter listing.
  */
 EventHandler::KeyEventCallback& EventHandler::keyDown()
 {
@@ -98,7 +174,16 @@ EventHandler::KeyEventCallback& EventHandler::keyDown()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::MouseButtonEventCallback for paramter listing.
  */
 EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonUp()
 {
@@ -107,7 +192,16 @@ EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonUp()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::MouseButtonEventCallback for paramter listing.
  */
 EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonDown()
 {
@@ -116,7 +210,16 @@ EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonDown()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::MouseMotionEventCallback for paramter listing.
  */
 EventHandler::MouseMotionEventCallback& EventHandler::mouseMotion()
 {
@@ -125,7 +228,16 @@ EventHandler::MouseMotionEventCallback& EventHandler::mouseMotion()
 
 
 /**
+ * \brief Gets the handler slot associated with this event.
  * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::QuitEventCallback for paramter listing.
  */
 EventHandler::QuitEventCallback& EventHandler::quit()
 {
@@ -154,7 +266,7 @@ void EventHandler::pump()
 				break;
 
 			case SDL_KEYUP:
-				mKeyDownEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
+				mKeyUpEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
@@ -174,9 +286,9 @@ void EventHandler::pump()
 				if(event.button.button == SDL_BUTTON_WHEELDOWN)
 				{}
 				else if(event.button.button == SDL_BUTTON_WHEELUP)
-					mMouseButtonDownEvent(BUTTON_WHEELUP, event.button.x, event.button.y);
+					mMouseButtonUpEvent(BUTTON_WHEELUP, event.button.x, event.button.y);
 				else
-					mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+					mMouseButtonUpEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
 				break;
 
 			case SDL_JOYAXISMOTION:

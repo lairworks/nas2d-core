@@ -30,7 +30,7 @@ public:
 
 	/**
 	 * \typedef	ActivateEventCallback
-	 * \brief	Fired whenever the application gains or loses focus.
+	 * \brief	Triggered whenever the application gains or loses focus.
 	 * 
 	 * The callback function expects one bool paramter.
 	 * 
@@ -165,7 +165,7 @@ public:
 
 	/**
 	 * \typedef	QuitEventCallback
-	 * \brief	Fired whenever a Quit message is posted.
+	 * \brief	Triggered whenever a Quit message is posted.
 	 * 
 	 * A Quit callback function requires no paramters.
 	 * 
@@ -205,9 +205,9 @@ private:
 	ActivateEventCallback				mActivateEvent;
 	JoystickAxisMotionEventCallback		mJoystickAxisMotionEvent;
 	JoystickBallMotionEventCallback		mJoystickBallMotionEvent;
-	JoystickHatMotionEventCallback		mJoystickHatMotionEvent;
 	JoystickButtonEventCallback			mJoystickButtonUpEvent;
 	JoystickButtonEventCallback			mJoystickButtonDownEvent;
+	JoystickHatMotionEventCallback		mJoystickHatMotionEvent;
 	KeyEventCallback					mKeyUpEvent;
 	KeyEventCallback					mKeyDownEvent;
 	MouseButtonEventCallback			mMouseButtonUpEvent;

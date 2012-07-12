@@ -27,6 +27,8 @@ bool isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b);
 int clamp(int x, int a, int b);
 float clamp(float x, float a, float b);
 
+int divideUp(int a, int b);
+
 
 // String functions & types
 std::string toLowercase(const std::string& str);

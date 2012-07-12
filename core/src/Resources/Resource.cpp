@@ -15,10 +15,10 @@ using namespace std;
 MersenneTwister Resource::mMt = MersenneTwister();
 
 
-Resource::Resource(const string& filePath):		mResourceName(filePath),
-												mErrorDescription(""),
-												mIsLoaded(false),
-												mId(mMt.random_int())
+Resource::Resource(const std::string& filePath):	mResourceName(filePath),
+													mErrorDescription(""),
+													mIsLoaded(false),
+													mId(mMt.random_int())
 									
 {}
 
@@ -36,7 +36,7 @@ Resource::~Resource()
 /**
  * Returns the name of the Resource as a file name with directory path.
  */
-const string& Resource::name() const
+const std::string& Resource::name() const
 {
 	return mResourceName;
 }
@@ -45,7 +45,7 @@ const string& Resource::name() const
 /**
  * Returns the last error message.
  */
-const string& Resource::errorMessage() const
+const std::string& Resource::errorMessage() const
 {
 	return mErrorDescription;
 }

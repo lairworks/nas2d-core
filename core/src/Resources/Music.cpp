@@ -20,8 +20,8 @@ Music::Music():	Resource(),
 {}
 
 
-Music::Music(const string& filePath):	Resource(filePath),
-										mMusic(0)
+Music::Music(const std::string& filePath):	Resource(filePath),
+											mMusic(0)
 {
 	load();
 }

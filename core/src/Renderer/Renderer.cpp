@@ -50,16 +50,16 @@ Renderer::Renderer():	mLetterBoxHeight(0),
  * 
  * This c'tor is not public and can't be invoked externally.
  */
-Renderer::Renderer(const string& rendererName):	mLetterBoxHeight(0),
-												mCinematic(false),
-												mLetterbox(false),
-												mRendererName(rendererName),
-												mFadeColor(COLOR_BLACK),
-												mFade(Renderer::FADE_NONE),
-												mFadeStep(0.0f),
-												mCurrentFade(0.0f),
-												mCurrentTick(0),
-												mLastTick(0)
+Renderer::Renderer(const std::string& rendererName):	mLetterBoxHeight(0),
+														mCinematic(false),
+														mLetterbox(false),
+														mRendererName(rendererName),
+														mFadeColor(COLOR_BLACK),
+														mFade(Renderer::FADE_NONE),
+														mFadeStep(0.0f),
+														mCurrentFade(0.0f),
+														mCurrentTick(0),
+														mLastTick(0)
 {
 }
 
@@ -110,12 +110,27 @@ void Renderer::drawImage(Image& image, int x, int y, float scale)
  * \param	image		A refernece to an Image Resource.
  * \param	rasterX		X-Coordinate to draw the Image at.
  * \param	rasterY		Y-Coordinate to draw the Image at.
- * \param	imgX		X-Coordinate of the area to start getting pixel data from.
- * \param	imgY		Y-Coordinate of the area to start getting pixel data from.
- * \param	imgWidth	Width of the area to start getting pixel data from.
- * \param	imgHeight	Height of the area to start getting pixel data from.
+ * \param	x			X-Coordinate of the area to start getting pixel data from.
+ * \param	y			Y-Coordinate of the area to start getting pixel data from.
+ * \param	width		Width of the area to start getting pixel data from.
+ * \param	height		Height of the area to start getting pixel data from.
  */
-void Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int imgX, int imgY, int imgWidth, int imgHeight)
+void Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height)
+{}
+
+/**
+ * Draws a portion of a given Image to the screen.
+ *
+ * \param	image		A refernece to an Image Resource.
+ * \param	rasterX		X-Coordinate to draw the Image at.
+ * \param	rasterY		Y-Coordinate to draw the Image at.
+ * \param	x			X-Coordinate of the area to start getting pixel data from.
+ * \param	y			Y-Coordinate of the area to start getting pixel data from.
+ * \param	width		Width of the area to start getting pixel data from.
+ * \param	height		Height of the area to start getting pixel data from.
+ * \param	degrees		Angle of rotation in degrees.
+ */
+void Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees)
 {}
 
 
@@ -362,7 +377,7 @@ void Renderer::toggleCinematicMode()
 /**
  * Returns a description of the last error message, if any.
  */
-const string& Renderer::getLastError()
+const std::string& Renderer::getLastError()
 {
 	return mMessages.back();
 }
@@ -555,7 +570,7 @@ void Renderer::buildDisplayModeList()
 /**
  * Returns the name of the Renderer.
  */
-const string& Renderer::getName()
+const std::string& Renderer::getName()
 {
 	return mRendererName;
 }
@@ -564,7 +579,7 @@ const string& Renderer::getName()
 /**
  * Returns the name of the driver as named by the operating system.
  */
-const string& Renderer::getDriverName()
+const std::string& Renderer::getDriverName()
 {
 	return mDriverName;
 }
@@ -604,7 +619,7 @@ void Renderer::debug()
  * \param b			Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawText(Font& font, const string& text, int x, int y, int r, int g, int b, int a)
+void Renderer::drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a)
 {}
 
 
@@ -624,7 +639,7 @@ void Renderer::drawText(Font& font, const string& text, int x, int y, int r, int
  * \param b			Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextClamped(Font& font, const string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
+void Renderer::drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
 {}
 
 
@@ -644,7 +659,7 @@ void Renderer::drawTextClamped(Font& font, const string& text, int rasterX, int 
  * \param sb		Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextShadow(Font& font, const string& text, int x, int y, int distance, int r, int g, int b, int sr, int sg, int sb, int a )
+void Renderer::drawTextShadow(Font& font, const std::string& text, int x, int y, int distance, int r, int g, int b, int sr, int sg, int sb, int a )
 {
 	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
 	drawText(font, text, x, y, r, g, b, a);
@@ -671,7 +686,7 @@ void Renderer::drawTextShadow(Font& font, const string& text, int x, int y, int 
  * \param sb		Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextShadowClamped(Font& font, const string& text, int rasterX, int rasterY, int x, int y, int w, int h, int distance, int r, int g, int b, int sr, int sg, int sb, int a)
+void Renderer::drawTextShadowClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int distance, int r, int g, int b, int sr, int sg, int sb, int a)
 {
 	drawTextClamped(font, text, rasterX + distance, rasterY + distance, x, y, w, h, sr, sg, sb, a);
 	drawTextClamped(font, text, rasterX, rasterY, x, y, w, h, r, g, b, a);

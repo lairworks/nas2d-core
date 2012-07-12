@@ -8,8 +8,8 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_UTILITY_SINGLETON_
-#define _NAS_UTILITY_SINGLETON_
+#ifndef _NAS_UTILITY_
+#define _NAS_UTILITY_
 
 /**
  * \class	Utility
@@ -63,10 +63,10 @@ public:
 	 *			derives from type T.
 	 *
 	 * \warning	If the caller needs a derived type T, this function must
-	 *			be called before \c Singleton::get();
+	 *			be called before \c Utility::get();
 	 *
 	 * \warning	Utility takes ownership of whatever pointer is passed into
-	 *			this function. Deleting it outside of the Singleton yields
+	 *			this function. Deleting it outside of the Utility yields
 	 *			undefined behavior.
 	 */
 	static void instantiateDerived(T* t)
@@ -100,9 +100,8 @@ public:
 	}
 
 private:
-	Utility<T>() {};	// Explicitly declared private.
-	~Utility() {};		// Explicitly declared private.
-
+	Utility<T>() {};							// Explicitly declared private.
+	~Utility() {};								// Explicitly declared private.
 	Utility<T>(const Utility& s);				// Explicitly declared private.
 	Utility<T>& operator=(const Utility& s);	// Explicitly declared private.
 

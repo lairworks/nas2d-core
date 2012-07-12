@@ -21,7 +21,7 @@ const string DEFAULT_ACTION("default");
 
 const int FRAME_PAUSE = -1;
 
-string endTag(int row, const string& name)
+string endTag(int row, const std::string& name)
 {
 	stringstream str;
 	str << " (Row: " << row << ", '" << name << "')";
@@ -45,12 +45,13 @@ Sprite::Sprite():	mSpriteName("Default Constructed"),
  * \param renderer		A pointer to a Renderer object.
  * \param filePath		A string containing the file path of the Sprite definition file to use.
  */
-Sprite::Sprite(const string& filePath):	mSpriteName(filePath),
-										mCurrentAction(DEFAULT_ACTION),
-										mCurrentFrame(0),
-										mLastFrameTick(0),
-										mAlpha(255),
-										mPaused(false)
+Sprite::Sprite(const std::string& filePath):	mSpriteName(filePath),
+												mCurrentAction(DEFAULT_ACTION),
+												mCurrentFrame(0),
+												mLastFrameTick(0),
+												mAlpha(255),
+												mRotationAngle(0.0f),
+												mPaused(false)
 {
 	addDefaultAction();
 	parseXml(filePath);
@@ -100,7 +101,7 @@ Sprite& Sprite::operator=(const Sprite &rhs)
  *			be written to the log and the default action will be used
  *			instead.
  */
-void Sprite::play(const string& action)
+void Sprite::play(const std::string& action)
 {
 	// Set the current frame list to the defined action. If action
 	// isn't found, set to default and reset frame counter.
@@ -171,8 +172,32 @@ void Sprite::update(int x, int y)
 		}
 	}
 
-	Utility<Renderer>::get().drawSubImage(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height());
+	//Utility<Renderer>::get().drawSubImage(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height());
 
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height(), mRotationAngle);
+
+}
+
+
+/**
+ * Sets the rotation angle of the Sprite.
+ * 
+ * \param	angle	Angle of rotation in degrees.
+ */
+void Sprite::rotation(float angle)
+{
+	mRotationAngle = angle;
+}
+
+
+/**
+ * Gets the rotation angle of the Sprite.
+ * 
+ * \return	Angle of rotation in degrees.
+ */
+float Sprite::rotation() const
+{
+	return mRotationAngle;
 }
 
 
@@ -181,7 +206,7 @@ void Sprite::update(int x, int y)
  *
  * \param filePath	File path of the sprite XML definition file.
  */
-void Sprite::parseXml(const string& filePath)
+void Sprite::parseXml(const std::string& filePath)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
@@ -295,7 +320,7 @@ void Sprite::parseImageSheets(TiXmlElement *root)
  * \param	src		Image sheet file path.
  * \param	node	XML Node (for error information).
  */
-void Sprite::addImageSheet(const string& id, const string& src, TiXmlNode* node)
+void Sprite::addImageSheet(const std::string& id, const std::string& src, TiXmlNode* node)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
@@ -560,7 +585,7 @@ int Sprite::originY(int y)
  * \param	aY	Y-Axis of the Anchor Point for this spriteFrame.
  * \param	d	Length of time milliseconds to display this spriteFrame during animation playback.
  */
-Sprite::SpriteFrame::SpriteFrame(const string& sId, int x, int y, int w, int h, int aX, int aY, int d):	mSheetId(sId),
+Sprite::SpriteFrame::SpriteFrame(const std::string& sId, int x, int y, int w, int h, int aX, int aY, int d):	mSheetId(sId),
 																										mFrameDelay(d),
 																										mAnchorX(aX),
 																										mAnchorY(aY),

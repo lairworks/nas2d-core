@@ -193,7 +193,7 @@ void Configuration::setDefaultValues()
  *
  * \param filePath	Name of an XML Configuration file to be read.
  */
-bool Configuration::readConfig(const string& filePath)
+bool Configuration::readConfig(const std::string& filePath)
 {
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
@@ -422,7 +422,7 @@ std::string Configuration::renderer() const
 /**
  * Sets the Renderer driver to use.
  */
-void Configuration::renderer(const string& renderer)
+void Configuration::renderer(const std::string& renderer)
 {
 	mRendererName = renderer;
 }
@@ -476,7 +476,7 @@ int Configuration::audioBufferSize() const
 /**
  * Gets name of the audio mixer.
  */
-const string& Configuration::mixer() const
+const std::string& Configuration::mixer() const
 {
 	return mMixerName;
 }
@@ -526,7 +526,7 @@ void Configuration::graphicsColorDepth(int bpp)
  * \note	If the specified quality is not one of the two valid choices,
  *			GRAPHICS_FAST is used instead.
  */
-void Configuration::graphicsTextureQuality(const string& quality)
+void Configuration::graphicsTextureQuality(const std::string& quality)
 {
 	if(toLowercase(quality) == "fast")
 		mTextureQuality = GRAPHICS_FAST;
@@ -648,7 +648,7 @@ void Configuration::audioBufferSize(int size)
  * \note	Option values are stored and read as strings. How the program
  *			interprets the data contained in value is up to the programmer.
  */
-void Configuration::option(const string option, const string& value, bool overwrite)
+void Configuration::option(const std::string option, const std::string& value, bool overwrite)
 {
 	if(!overwrite && mOptions.find(option) != mOptions.end())
 		return;

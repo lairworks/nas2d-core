@@ -29,7 +29,7 @@
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Intitial data path. Defaults to 'data'.
  */
-Game::Game(const string& appTitle, const string& argv_0, const string& configPath, const string& dataPath)
+Game::Game(const std::string& appTitle, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
 {
 	cout << "Compiled on " << __DATE__ << " at " << __TIME__ << endl << endl;
 
@@ -102,7 +102,7 @@ Game::~Game()
  * 
  * \param	path	Path to add to the search path.
  */
-void Game::mount(const string& path)
+void Game::mount(const std::string& path)
 {
 	Utility<Filesystem>::get().addToSearchPath(path);
 }

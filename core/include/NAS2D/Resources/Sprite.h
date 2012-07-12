@@ -52,6 +52,9 @@ public:
 
 	void update(int x, int y);
 
+	void rotation(float angle);
+	float rotation() const;
+
 	void alpha(int alpha) { mAlpha = clamp(alpha, 0, 255); }
 
 	int width();
@@ -78,14 +81,14 @@ private:
 	struct SpriteFrame
 	{
 	public:
-		SpriteFrame(const string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
+		SpriteFrame(const std::string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
 		SpriteFrame(const SpriteFrame &spriteframe);
 
 		SpriteFrame& operator=(const SpriteFrame &rhs);
 
 		~SpriteFrame() {}
 
-		const string& sheetId() const { return mSheetId; }
+		const std::string& sheetId() const { return mSheetId; }
 		
 		int anchorX() const { return mAnchorX; }
 		int anchorY() const { return mAnchorY; }
@@ -136,6 +139,8 @@ private:
 	Callback			mFrameCallback;		/**< Callback to signal a listener whenever an animation sequence completes. */
 
 	int					mAlpha;				/**< Alpha value to draw the sprite. */
+
+	float				mRotationAngle;		/**< Angle of rotation in degrees. */
 
 	bool				mPaused;			/**< Indicate whether or not the animation for this Sprite is paused. */
 };

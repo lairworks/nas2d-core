@@ -27,8 +27,8 @@ using namespace std;
  *
  * If the load fails, a default image is stored indicating an error condition.
  */
-Image::Image(const string& filePath):	Resource(filePath),
-										mPixels(NULL)
+Image::Image(const std::string& filePath):	Resource(filePath),
+											mPixels(NULL)
 {
 	load();
 }
@@ -106,7 +106,7 @@ Image::Image(int x, int y):	mPixels(NULL)
 	}
 	else
 	{
-		errorMessage("Unable to create image.");
+		errorMessage("Video surface not available. Unable to create image.");
 	}
 }
 

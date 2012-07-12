@@ -148,8 +148,39 @@ void SDL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int imgX
 	SDL_BlitSurface(image.pixels(), &grabRect, mScreen, &blitRect);
 }
 
+
 /**
- * Note that this version of the rotate function is <I>slow</I>
+ * Software version of this function is <i>SLOW</i>!
+ */
+void SDL_Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees)
+{
+	SDL_Surface* s = SDL_CreateRGBSurface(mScreen->flags, width, height, mScreen->format->BitsPerPixel, mScreen->format->Rmask, mScreen->format->Gmask, mScreen->format->Bmask, mScreen->format->Amask);
+
+	if(!s)
+		return;
+
+	SDL_Rect grabRect = {x, y, width, height};
+	SDL_BlitSurface(image.pixels(), &grabRect, s, NULL);
+
+	SDL_Surface* rotated = rotozoomSurface(s, -degrees, 1.0f, TEXTURE_FILTER_TYPE);
+	if(rotated)
+	{
+		int offsetX = (rotated->w / 2) - (width / 2);
+		int offsetY = (rotated->h / 2) - (height / 2);
+
+		SDL_Rect blitRect = {rasterX - offsetX, rasterY - offsetY, rotated->w, rotated->h};
+		SDL_BlitSurface(rotated, NULL, mScreen, &blitRect);
+
+		SDL_FreeSurface(rotated);
+	}
+
+	SDL_FreeSurface(s);
+	s = NULL;
+}
+
+
+/**
+ * Software version of this function is <i>slow</i>!
  */
 void SDL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale)
 {
@@ -282,7 +313,7 @@ void SDL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int
 }
 
 
-void SDL_Renderer::drawText(Font& font, const string& text, int x, int y, int r, int g, int b, int a)
+void SDL_Renderer::drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a)
 {
 	if(!font.loaded() || text.empty())
 		return;
@@ -303,7 +334,7 @@ void SDL_Renderer::drawText(Font& font, const string& text, int x, int y, int r,
 }
 
 
-void SDL_Renderer::drawTextClamped(Font& font, const string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
+void SDL_Renderer::drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
 {
 	if(!font.loaded() || text.empty())
 		return;

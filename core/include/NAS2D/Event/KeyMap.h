@@ -179,7 +179,7 @@ enum KeyCode
 
 
 /**
- * \enum KeyMod
+ * \enum KeyModifier
  * \brief Key Modifiers
  *
  * \note	Mapped directly from SDL's keyboard scan code

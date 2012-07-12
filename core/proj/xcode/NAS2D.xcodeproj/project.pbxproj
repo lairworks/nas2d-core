@@ -19,7 +19,6 @@
 		6928725B1417486200F20BEB /* MersenneTwister.h in Headers */ = {isa = PBXBuildFile; fileRef = 692872481417486200F20BEB /* MersenneTwister.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6928725C1417486200F20BEB /* NAS2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 692872491417486200F20BEB /* NAS2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6928725D1417486200F20BEB /* sigslot.h in Headers */ = {isa = PBXBuildFile; fileRef = 6928724A1417486200F20BEB /* sigslot.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6928725E1417486200F20BEB /* Singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6928724B1417486200F20BEB /* Singleton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6928725F1417486200F20BEB /* State.h in Headers */ = {isa = PBXBuildFile; fileRef = 6928724C1417486200F20BEB /* State.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		692872601417486200F20BEB /* StateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6928724D1417486200F20BEB /* StateManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		692872611417486200F20BEB /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6928724E1417486200F20BEB /* Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -73,6 +72,7 @@
 		695B3CB613275060003E937A /* SDL_mixer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB013274CB6003E937A /* SDL_mixer.framework */; };
 		695B3CB713275060003E937A /* SDL_ttf.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB213274CB6003E937A /* SDL_ttf.framework */; };
 		695B3CB813275060003E937A /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB413274CB6003E937A /* SDL.framework */; };
+		69BBC9941572B80E00A5CBC8 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BBC9931572B80E00A5CBC8 /* Utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -128,7 +128,6 @@
 		692872481417486200F20BEB /* MersenneTwister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MersenneTwister.h; path = ../../include/NAS2D/MersenneTwister.h; sourceTree = "<group>"; };
 		692872491417486200F20BEB /* NAS2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NAS2D.h; path = ../../include/NAS2D/NAS2D.h; sourceTree = "<group>"; };
 		6928724A1417486200F20BEB /* sigslot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sigslot.h; path = ../../include/NAS2D/sigslot.h; sourceTree = "<group>"; };
-		6928724B1417486200F20BEB /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Singleton.h; path = ../../include/NAS2D/Singleton.h; sourceTree = "<group>"; };
 		6928724C1417486200F20BEB /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = State.h; path = ../../include/NAS2D/State.h; sourceTree = "<group>"; };
 		6928724D1417486200F20BEB /* StateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateManager.h; path = ../../include/NAS2D/StateManager.h; sourceTree = "<group>"; };
 		6928724E1417486200F20BEB /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timer.h; path = ../../include/NAS2D/Timer.h; sourceTree = "<group>"; };
@@ -172,6 +171,7 @@
 		695B3BB013274CB6003E937A /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL_mixer.framework; sourceTree = "<absolute>"; };
 		695B3BB213274CB6003E937A /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL_ttf.framework; sourceTree = "<absolute>"; };
 		695B3BB413274CB6003E937A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL.framework; sourceTree = "<absolute>"; };
+		69BBC9931572B80E00A5CBC8 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../include/NAS2D/Utility.h; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* NAS2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NAS2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -281,6 +281,7 @@
 		6928723D1417484300F20BEB /* NAS2D */ = {
 			isa = PBXGroup;
 			children = (
+				69BBC9931572B80E00A5CBC8 /* Utility.h */,
 				692872641417487100F20BEB /* Mixer */,
 				692872651417487100F20BEB /* Renderer */,
 				692872661417487100F20BEB /* Resources */,
@@ -297,7 +298,6 @@
 				692872481417486200F20BEB /* MersenneTwister.h */,
 				692872491417486200F20BEB /* NAS2D.h */,
 				6928724A1417486200F20BEB /* sigslot.h */,
-				6928724B1417486200F20BEB /* Singleton.h */,
 				6928724C1417486200F20BEB /* State.h */,
 				6928724D1417486200F20BEB /* StateManager.h */,
 				6928724E1417486200F20BEB /* Timer.h */,
@@ -392,10 +392,10 @@
 				6928725B1417486200F20BEB /* MersenneTwister.h in Headers */,
 				6928725C1417486200F20BEB /* NAS2D.h in Headers */,
 				6928725D1417486200F20BEB /* sigslot.h in Headers */,
-				6928725E1417486200F20BEB /* Singleton.h in Headers */,
 				6928725F1417486200F20BEB /* State.h in Headers */,
 				692872601417486200F20BEB /* StateManager.h in Headers */,
 				692872611417486200F20BEB /* Timer.h in Headers */,
+				69BBC9941572B80E00A5CBC8 /* Utility.h in Headers */,
 				692872621417486200F20BEB /* Trig.h in Headers */,
 				692872631417486200F20BEB /* XmlAttributeParser.h in Headers */,
 			);
@@ -431,7 +431,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0410;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "NAS2D" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -544,7 +544,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = NAS2D;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -579,7 +579,7 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = NAS2D;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

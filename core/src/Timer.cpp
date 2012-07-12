@@ -22,9 +22,17 @@ Timer::Timer(): mLastTick(0)
 
 
 /**
- * Gets the current tick count in miliseconds.
+ * Resets the timer.
  */
-unsigned int Timer::ms() const
+void Timer::reset()
+{
+	
+}
+
+/**
+ * Gets the current tick count.
+ */
+int Timer::tick()
 {
 	mLastTick = SDL_GetTicks();
 	return mLastTick;
@@ -32,27 +40,17 @@ unsigned int Timer::ms() const
 
 
 /**
- * Gets the current tick count in seconds.
- */
-unsigned int Timer::s() const
-{
-	mLastTick = SDL_GetTicks();
-	return mLastTick / 1000;
-}
-
-
-/**
  * Gets the change in time since the last update.
  */
-unsigned int Timer::delta() const
+float Timer::delta()
 {
 	int tick = SDL_GetTicks();
-	int delta = tick - mLastTick;
-
+	float delta = tick - mLastTick;
+	
 	if(delta < 0)
 		delta = 0;
-
+	
 	mLastTick = tick;
-
+	
 	return delta;
 }

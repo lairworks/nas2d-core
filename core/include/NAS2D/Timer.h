@@ -26,6 +26,12 @@ class Timer
 {
 public:
 	Timer();
+	
+	void reset();
+	
+	int tick();
+	
+	float delta();
 
 	unsigned int ms() const;
 	unsigned int s() const;

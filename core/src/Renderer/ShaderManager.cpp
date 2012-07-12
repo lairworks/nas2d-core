@@ -7,3 +7,8 @@
 //
 
 #include "NAS2D/Renderer/ShaderManager.h"
+
+ShaderManager::ShaderManager()
+{
+	
+}

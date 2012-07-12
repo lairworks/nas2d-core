@@ -12,3 +12,9 @@
 #include <iostream>
 
 #endif /* defined(__NAS2D__ShaderManager__) */
+
+
+class ShaderManager
+{
+	
+};

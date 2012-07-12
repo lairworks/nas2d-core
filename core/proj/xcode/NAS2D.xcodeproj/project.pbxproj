@@ -25,11 +25,9 @@
 		692872621417486200F20BEB /* Trig.h in Headers */ = {isa = PBXBuildFile; fileRef = 6928724F1417486200F20BEB /* Trig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		692872631417486200F20BEB /* XmlAttributeParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 692872501417486200F20BEB /* XmlAttributeParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		692872681417487100F20BEB /* Mixer in Resources */ = {isa = PBXBuildFile; fileRef = 692872641417487100F20BEB /* Mixer */; };
-		692872691417487100F20BEB /* Renderer in Resources */ = {isa = PBXBuildFile; fileRef = 692872651417487100F20BEB /* Renderer */; };
 		6928726A1417487100F20BEB /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 692872661417487100F20BEB /* Resources */; };
 		6928726B1417487100F20BEB /* tinyxml in Resources */ = {isa = PBXBuildFile; fileRef = 692872671417487100F20BEB /* tinyxml */; };
 		6928726C1417487B00F20BEB /* Mixer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 692872641417487100F20BEB /* Mixer */; };
-		6928726D1417488100F20BEB /* Renderer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 692872651417487100F20BEB /* Renderer */; };
 		6928726E1417488300F20BEB /* Resources in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 692872661417487100F20BEB /* Resources */; };
 		6928726F1417488700F20BEB /* tinyxml in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 692872671417487100F20BEB /* tinyxml */; };
 		695B3AE513274631003E937A /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 695B3AA513274631003E937A /* Common.cpp */; };
@@ -72,6 +70,8 @@
 		695B3CB613275060003E937A /* SDL_mixer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB013274CB6003E937A /* SDL_mixer.framework */; };
 		695B3CB713275060003E937A /* SDL_ttf.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB213274CB6003E937A /* SDL_ttf.framework */; };
 		695B3CB813275060003E937A /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB413274CB6003E937A /* SDL.framework */; };
+		698DF8E415AEA0450002670A /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 698DF8E215AEA0450002670A /* ShaderManager.cpp */; };
+		698DF8F215AEA0B80002670A /* Renderer in Resources */ = {isa = PBXBuildFile; fileRef = 698DF8F115AEA0B80002670A /* Renderer */; };
 		69BBC9941572B80E00A5CBC8 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BBC9931572B80E00A5CBC8 /* Utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
@@ -85,7 +85,6 @@
 			dstSubfolderSpec = 1;
 			files = (
 				6928726C1417487B00F20BEB /* Mixer in Copy Headers With Directories */,
-				6928726D1417488100F20BEB /* Renderer in Copy Headers With Directories */,
 				6928726E1417488300F20BEB /* Resources in Copy Headers With Directories */,
 				6928726F1417488700F20BEB /* tinyxml in Copy Headers With Directories */,
 			);
@@ -134,7 +133,6 @@
 		6928724F1417486200F20BEB /* Trig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Trig.h; path = ../../include/NAS2D/Trig.h; sourceTree = "<group>"; };
 		692872501417486200F20BEB /* XmlAttributeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlAttributeParser.h; path = ../../include/NAS2D/XmlAttributeParser.h; sourceTree = "<group>"; };
 		692872641417487100F20BEB /* Mixer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Mixer; path = ../../include/NAS2D/Mixer; sourceTree = "<group>"; };
-		692872651417487100F20BEB /* Renderer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Renderer; path = ../../include/NAS2D/Renderer; sourceTree = "<group>"; };
 		692872661417487100F20BEB /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../../include/NAS2D/Resources; sourceTree = "<group>"; };
 		692872671417487100F20BEB /* tinyxml */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tinyxml; path = ../../include/NAS2D/tinyxml; sourceTree = "<group>"; };
 		695B3AA513274631003E937A /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
@@ -171,6 +169,8 @@
 		695B3BB013274CB6003E937A /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL_mixer.framework; sourceTree = "<absolute>"; };
 		695B3BB213274CB6003E937A /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL_ttf.framework; sourceTree = "<absolute>"; };
 		695B3BB413274CB6003E937A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL.framework; sourceTree = "<absolute>"; };
+		698DF8E215AEA0450002670A /* ShaderManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
+		698DF8F115AEA0B80002670A /* Renderer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Renderer; path = ../../include/NAS2D/Renderer; sourceTree = "<group>"; };
 		69BBC9931572B80E00A5CBC8 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../include/NAS2D/Utility.h; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* NAS2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NAS2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -281,9 +281,9 @@
 		6928723D1417484300F20BEB /* NAS2D */ = {
 			isa = PBXGroup;
 			children = (
+				698DF8F115AEA0B80002670A /* Renderer */,
 				69BBC9931572B80E00A5CBC8 /* Utility.h */,
 				692872641417487100F20BEB /* Mixer */,
-				692872651417487100F20BEB /* Renderer */,
 				692872661417487100F20BEB /* Resources */,
 				692872671417487100F20BEB /* tinyxml */,
 				6928723F1417486200F20BEB /* Common.h */,
@@ -345,6 +345,7 @@
 				695B3AB113274631003E937A /* OGL_Renderer.cpp */,
 				695B3AB213274631003E937A /* Renderer.cpp */,
 				695B3AB313274631003E937A /* SDL_Renderer.cpp */,
+				698DF8E215AEA0450002670A /* ShaderManager.cpp */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -460,9 +461,9 @@
 			files = (
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
 				692872681417487100F20BEB /* Mixer in Resources */,
-				692872691417487100F20BEB /* Renderer in Resources */,
 				6928726A1417487100F20BEB /* Resources in Resources */,
 				6928726B1417487100F20BEB /* tinyxml in Resources */,
+				698DF8F215AEA0B80002670A /* Renderer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,6 +500,7 @@
 				695B3AFD13274631003E937A /* tinyxmlparser.cpp in Sources */,
 				695B3AFE13274631003E937A /* Trig.cpp in Sources */,
 				695B3AFF13274631003E937A /* XmlAttributeParser.cpp in Sources */,
+				698DF8E415AEA0450002670A /* ShaderManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

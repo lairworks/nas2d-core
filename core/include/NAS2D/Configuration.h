@@ -12,7 +12,7 @@
 #define _NAS_CONFIGURATION_
 
 #ifdef __APPLE__
-#include <OpenGL/OpenGL.h>
+#include <OpenGL/gl.h>
 #elif WIN32
 #include <windows.h>
 #include "GLee.h"

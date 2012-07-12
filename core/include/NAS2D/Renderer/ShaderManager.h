@@ -11,8 +11,33 @@
 
 #include <iostream>
 
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
+#elif defined(WIN32)
+#include "GLee.h"
+#else
+#include "SDL/SDL_opengl.h"
+#endif
+
 class ShaderManager
 {
+public:
+	ShaderManager();
+	~ShaderManager();
+	
+	void loadShader(std::string& src, GLuint shader);
+	void attachShader(GLuint shader);
+	
+protected:
+	int compileShader(GLuint shader);
+	void printLog(GLuint obj);
+	
+private:
+	GLuint mShaderProgram;
+	
+	GLuint mFragShader;
+	GLuint mVertShader;
 	
 };
 

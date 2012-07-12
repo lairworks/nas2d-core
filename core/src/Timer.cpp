@@ -54,3 +54,18 @@ float Timer::delta()
 	
 	return delta;
 }
+
+unsigned int Timer::ms() const
+{
+	
+}
+
+unsigned int Timer::s() const
+{
+	
+}
+
+unsigned int Timer::delta() const
+{
+	
+}

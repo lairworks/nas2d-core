@@ -432,7 +432,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "NAS2D" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -521,6 +521,7 @@
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -528,12 +529,9 @@
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework\"",
 				);
 				FRAMEWORK_VERSION = A;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NAS2D_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/Physfs.framework/Headers\"",
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_gfx.framework/Headers\"",
@@ -544,7 +542,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
@@ -554,6 +552,7 @@
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -567,7 +566,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NAS2D_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/Physfs.framework/Headers\"",
 					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_gfx.framework/Headers\"",
@@ -578,8 +576,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LLVM_LTO = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;

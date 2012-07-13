@@ -254,6 +254,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\Renderer\ShaderManager.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\Resources\Sound.cpp"
 					>
 				</File>

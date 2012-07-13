@@ -134,7 +134,6 @@ private:
 	std::string			mCurrentAction;		/**< The current Action being performed. */
 
 	unsigned int		mCurrentFrame;		/**< The current frame index in the current Action's frame list. */
-	unsigned int		mLastFrameTick;		/**< The last tick in which the frame was updated. */
 
 	Callback			mFrameCallback;		/**< Callback to signal a listener whenever an animation sequence completes. */
 

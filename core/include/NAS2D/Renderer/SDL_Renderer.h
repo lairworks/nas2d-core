@@ -25,7 +25,7 @@ class SDL_Renderer : public Renderer
 {
 public:
 	SDL_Renderer();
-	SDL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BPP, bool fullscreen, bool vsync);
+	//SDL_Renderer(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
 
 	~SDL_Renderer();
 
@@ -39,7 +39,7 @@ public:
 	void drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a);
 	void drawImageRepeated(Image& image, int x, int y, int w, int h);
 
-	void drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint);
+	void drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint);
 
 	void drawPixel(int x, int y, int r, int g, int b, int a);
 	void drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a, int line_width);
@@ -50,12 +50,7 @@ public:
 	void drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a);
 	void drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a);
 
-	void desaturate(Image& image);
-
 	void clearScreen(int r, int g, int b);
-
-    unsigned int pixelColor(Image& src, int x, int y);
-	bool pixelTransparent(Image& src, int x, int y);
     
 	int width();
 	int height();

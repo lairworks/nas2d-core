@@ -18,21 +18,25 @@
 
 /**
  * \class FpsCounter
- * \brief Frames Per Second Class
+ * \brief Implements a basic FPS Counter.
+ * 
+ * FPS values are only approximates. As the FPS count gets higher, the
+ * returned value becomes a more average count.
  */
 class FpsCounter
 {
 public:
 	FpsCounter();
 
-	unsigned int getFps();
+	unsigned int fps();
 
 private:
-	inline int update();
 
-	std::vector<unsigned int>	mFrameTimes;	/**< An array to store frame times. */
-	unsigned int				mFrameLastTick;	/**< Difference between the current frame and the last frame. */
-	unsigned int				mFrameCount;	/**< Frame Count. */
+	unsigned int	mCurrentTick;
+	unsigned int	mLastTick;
+	unsigned int	mDelta;
+
+	unsigned int	mLastDelta;
 };
 
 #endif

@@ -18,6 +18,15 @@
 #include "NAS2D/Resources/errorImage.h"
 
 
+#if defined(__APPLE__)
+	#include "SDL_gfx/SDL_gfxPrimitives.h"
+#elif defined(WIN32)
+	#include "SDL/SDL_gfxPrimitives.h"
+#else
+	#include "SDL/SDL_gfxPrimitives.h"
+#endif
+
+
 using namespace std;
 
 /**
@@ -346,10 +355,87 @@ int Image::height() const
 
 
 /**
- * Gets a reference to a const Rectangle_2d.
-
+ * Gets a reference to a Rectangle_2d that represents the area of the Image.
+ */
 const Rectangle_2d& Image::rect() const
 {
 	return mRect;
 }
-*/
+
+
+/**
+ * Gets the color of a pixel at a given coordinate.
+ * 
+ * \param	x	X-Coordinate of the pixel to check.
+ * \param	y	Y-Coordinate of the pixel to check.
+ * 
+ * \note	This function is generally slow. Avoid overuse
+ *			as there will be performance penalties.
+ */
+Color_4ub Image::pixelColor(int x, int y) const
+{
+	return pixelColor(x, y, mPixels);
+}
+
+
+Color_4ub Image::pixelColor(int x, int y, SDL_Surface* src) const
+{
+	SDL_LockSurface(src);
+    int bpp = src->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to retrieve */
+    Uint8 *p = (Uint8*)src->pixels + y * src->pitch + x * bpp;
+
+	unsigned int c = 0;
+
+	switch(bpp)
+	{
+		case 1:
+			c = *p;
+			break;
+
+		case 2:
+			c = *(Uint16 *)p;
+			break;
+
+		case 3:
+			if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+				c = p[0] << 16 | p[1] << 8 | p[2];
+			else
+				c = p[0] | p[1] << 8 | p[2] << 16;
+			break;
+
+		case 4:
+			c = *(Uint32*)p;
+			break;
+
+		default:
+			break;       /* shouldn't happen, but avoids warnings */
+	}
+
+	Uint8 r, g, b, a;
+
+	SDL_GetRGBA(c, src->format, &r, &g, &b, &a);
+
+	SDL_UnlockSurface(src);
+
+	return Color_4ub(r, g, b, a);
+}
+
+
+/**
+ * Permanently desaturates the Image.
+ */
+void Image::desaturate()
+{
+	Color_4ub color;
+	for(int y = 0; y < mPixels->h; y++)
+	{
+		for(int x = 0; x < mPixels->w; x++)
+		{
+			color = pixelColor(x, y);
+			unsigned char grey = static_cast<unsigned char>((color.red() + color.green() + color.blue()) / 3);
+			pixelRGBA(mPixels, x, y, grey, grey, grey, color.alpha());
+		}
+	}
+}
+

@@ -422,8 +422,6 @@ bool Filesystem::closeFile(PHYSFS_File *file) const
 	// file again every CLOSE_ATTEMPT_TIMEOUT seconds at least CLOSE_MAX_ATTEMPTS
 	// times before giving up.
 	Timer t;
-	int currentTick = t.s();
-	int lastAttempt = currentTick;
 	int attempts = 0;
 
 	while((attempts < CLOSE_MAX_ATTEMPTS))
@@ -434,12 +432,14 @@ bool Filesystem::closeFile(PHYSFS_File *file) const
 			return true;
 		}
 
-		while(currentTick - lastAttempt < CLOSE_ATTEMPT_TIMEOUT)
-			currentTick = t.s();
+		while(t.accumulator() < CLOSE_ATTEMPT_TIMEOUT)
+		{}
 
-		if(mVerbose) cout << "Unable to close file handle: " << PHYSFS_getLastError() << ". Will attempt to close " << CLOSE_MAX_ATTEMPTS - attempts << " time(s)." << endl;
+		t.reset();
 
-		lastAttempt = currentTick;
+		if(mVerbose)
+			cout << "Unable to close file handle: " << PHYSFS_getLastError() << ". Will attempt to close " << CLOSE_MAX_ATTEMPTS - attempts << " more time(s)." << endl;
+
 		attempts++;
 	}
 

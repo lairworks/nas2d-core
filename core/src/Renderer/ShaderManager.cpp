@@ -64,14 +64,15 @@ int ShaderManager::compileShader(GLuint shader)
 
 void ShaderManager::printLog(GLuint obj)
 {
+	/*
 
 	int infologLength = 0;
 	int maxLength;
 		
 	if(glIsShader(obj))
-		glGetShaderiv(obj,GL_INFO_LOG_LENGTH,&maxLength);
+		glGetShaderiv(obj, GL_INFO_LOG_LENGTH, &maxLength);
 	else
-		glGetProgramiv(obj,GL_INFO_LOG_LENGTH,&maxLength);
+		glGetProgramiv(obj, GL_INFO_LOG_LENGTH, &maxLength);
 		
 	char infoLog[maxLength];
 		
@@ -82,4 +83,6 @@ void ShaderManager::printLog(GLuint obj)
 		
 	if (infologLength > 0)
 		printf("%s\n",infoLog);
+	
+	*/
 }

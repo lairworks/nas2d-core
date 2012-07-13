@@ -10,63 +10,33 @@
 
 #include "NAS2D/FpsCounter.h"
 
-const size_t FRAME_VALUES = 32;		/**
-									 * Defines the number of values to store when calculating
-									 * FPS. The higher the number, the smoother the change in
-									 * FPS count.
-									 *	 
-									 * \todo	Make this a configurable paramter?
-									 */
-
 
 /**
  * Basic Constructor
  */
-FpsCounter::FpsCounter() :	mFrameLastTick(SDL_GetTicks()),
-							mFrameCount(0)
-{
-	mFrameTimes.resize(FRAME_VALUES);
-}
+FpsCounter::FpsCounter():	mCurrentTick(0),
+							mLastTick(0),
+							mDelta(0),
+							mLastDelta(0)
+{}
 
 
 /**
  * Returns an approximate FPS value.
  */
-unsigned int FpsCounter::getFps()
+unsigned int FpsCounter::fps()
 {
-	return update();
-}
+	mCurrentTick = SDL_GetTicks();
 
+	unsigned int d = mCurrentTick - mLastTick;
+	mLastTick = mCurrentTick;
 
-/**
- * Calculate FPS.
- *
- * Calculates an approximate FPS value and returns it as an integer.
- */
-inline int FpsCounter::update()
-{
-	Uint32 frameTimesIndex;		// Index in frame value array.
-	frameTimesIndex = mFrameCount % FRAME_VALUES;
-
-	Uint32 currentTick;
-	currentTick = SDL_GetTicks();
-
-	// Store Value in array
-	mFrameTimes.at(frameTimesIndex) = currentTick - mFrameLastTick;
-	mFrameLastTick = currentTick;
-	mFrameCount++;
+	mDelta = d * 0.05 + mLastDelta * 0.95;
+	mLastDelta = d;
 	
-	// Get an average of all values.
-	int framesPerSecond = 0;
-	for(size_t i = 0; i < FRAME_VALUES; i++)
-		framesPerSecond += mFrameTimes[i];
+	// Avoid a division by 0
+	if(mDelta == 0)
+		return 0;
 
-	framesPerSecond = framesPerSecond / FRAME_VALUES;
-
-	// Calculate FPS value.
-	/// \todo Document magic number.
-	if(framesPerSecond != 0)
-		framesPerSecond = 1000 / framesPerSecond;
-
-	return framesPerSecond;
+	return 1000 / mDelta;
 }

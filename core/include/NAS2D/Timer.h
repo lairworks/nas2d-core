@@ -14,32 +14,27 @@
 
 /**
  * \class Timer
- * \brief Convenience class to return high-resolution timer values.
- *
- * Provides functions to get system ticks in Miliseconds or in Seconds.
- *
- * \todo	Should we add in functions to calculate delta times for framerate
- *			independant animation or is that too specific for what this class
- *			should be used for?
+ * \brief Implements a basic timer class getting.
  */
 class Timer
 {
 public:
 	Timer();
 	
+	unsigned int tick() const;
+	unsigned int delta();
+
+	unsigned int accumulator();
+	void adjust_accumulator(unsigned int a);
+
 	void reset();
-	
-	int tick();
-	
-	float delta();
-
-	unsigned int ms() const;
-	unsigned int s() const;
-
-	unsigned int delta() const;
 
 private:
-	mutable unsigned int	mLastTick;
+	
+	unsigned int	mCurrentTick;
+	unsigned int	mLastTick;
+
+	unsigned int	mAccumulator;
 };
 
 

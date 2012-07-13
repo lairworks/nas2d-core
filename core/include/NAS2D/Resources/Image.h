@@ -47,6 +47,12 @@ public:
 	int width() const;
 	int height() const;
 
+	const Rectangle_2d& rect() const;
+
+	Color_4ub pixelColor(int x, int y) const;
+
+	void desaturate();
+
 protected:
 	friend class Renderer;
 	friend class SDL_Renderer;
@@ -61,11 +67,13 @@ private:
 
 	void createSurface(const char *data, int dataLength);
 
+	Color_4ub pixelColor(int x, int y, SDL_Surface* src) const; // internal version
+
 	/** \todo	This may be better off as a straight-up char* buffer which can be converted by the renderers
 	 *			as necessary. This will likely require a modification to the SDL Renderer that stores 'SDL_Surfaces'
 	 *			in a similar manner to the way the OpenGL Renderer stores references to OGL Textures.
 	 */
-	SDL_Surface		*mPixels;	/**< SDL_Surface containing the Pixel Data. */
+	SDL_Surface*	mPixels;	/**< SDL_Surface containing the Pixel Data. */
 
 	Rectangle_2d	mRect;		/**< Used to store width/height information about the image. */
 

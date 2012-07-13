@@ -36,13 +36,15 @@ SDL_Renderer::SDL_Renderer():	Renderer("SDL Renderer"),
 }
 
 
-SDL_Renderer::SDL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BPP, bool fullscreen, bool vsync):	Renderer("SDL Renderer"),
+/*
+SDL_Renderer::SDL_Renderer(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync):	Renderer("SDL Renderer"),
 																													mScreen(NULL)
 {
 	cout << "Starting " << mRendererName << "..." << endl;
 
 	initVideo(ResX, ResY, BPP, fullscreen, vsync);
 }
+*/
 
 
 SDL_Renderer::~SDL_Renderer()
@@ -60,50 +62,6 @@ SDL_Renderer::~SDL_Renderer()
 void SDL_Renderer::setApplicationTitle(const std::string& title)
 {
 	SDL_WM_SetCaption(title.c_str(), title.c_str());
-}
-
-
-unsigned int SDL_Renderer::pixelColor(Image& src, int x, int y)
-{
-	SDL_LockSurface(src.pixels());
-    int bpp = src.pixels()->format->BytesPerPixel;
-    /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8 *)src.pixels()->pixels + y * src.pixels()->pitch + x * bpp;
-
-	SDL_UnlockSurface(src.pixels());
-
-	switch(bpp)
-	{
-		case 1:
-			return *p;
-
-		case 2:
-			return *(Uint16 *)p;
-
-		case 3:
-			if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-				return p[0] << 16 | p[1] << 8 | p[2];
-			else
-				return p[0] | p[1] << 8 | p[2] << 16;
-
-		case 4:
-			return *(Uint32 *)p;
-
-		default:
-			// We should never ever get here. If we do, then we've got
-			// a real problem.
-			assert(bpp == 1 || bpp == 2 || bpp == 3 || bpp == 4);
-			return 0;
-	}
-}
-
-
-bool SDL_Renderer::pixelTransparent(Image& src, int x, int y)
-{
-	Uint8 r, g, b, a;
-	SDL_GetRGBA(pixelColor(src, x, y), src.pixels()->format, &r, &g, &b, &a);
-
-	return (a == 0);
 }
 
 
@@ -256,13 +214,12 @@ void SDL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 }
 
 
-void SDL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint)
+void SDL_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint)
 {
 	// Blit the source surface to the destination surface.
-	SDL_Rect sRect = { srcRect.x, srcRect.y, srcRect.w, srcRect.h };
 	SDL_Rect dRect = { dstPoint.x, dstPoint.y, 0, 0 };
 
-	SDL_BlitSurface(source.pixels(), &sRect, destination.pixels(), &dRect);
+	SDL_BlitSurface(source.pixels(), NULL, destination.pixels(), &dRect);
 }
 
 
@@ -404,35 +361,6 @@ void SDL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, i
 		plotY = y * scale_y + cy;
 
 		drawLine(static_cast<int>(plotX) , static_cast<int>(plotY), static_cast<int>(prvX), static_cast<int>(prvY), r, g, b, a);
-	}
-}
-
-
-void SDL_Renderer::desaturate(Image& image)
-{
-	#if defined(_DEBUG)
-		if(!image.loaded())
-		{
-			stringstream str;
-			str << "Image '" << image.name() << "' is not loaded and cannot be desaturated. " << image.errorMessage();
-			pushMessage(str.str());
-			return;
-		}
-	#endif
-
-	SDL_Surface *surface = image.pixels();
-	for(int y = 0; y < image.height(); y++)
-	{
-		for(int x = 0; x < image.width(); x++)
-		{
-			Uint8 r, g, b, a;
-
-			SDL_GetRGBA(pixelColor(image, x, y), surface->format, &r, &g, &b, &a);
-
-			Uint8 grey = (r + g + b) / 3;
-
-			pixelRGBA(surface, x, y, grey, grey, grey, a);
-		}
 	}
 }
 

@@ -39,8 +39,7 @@ Renderer::Renderer():	mLetterBoxHeight(0),
 						mFade(Renderer::FADE_NONE),
 						mFadeStep(0.0f),
 						mCurrentFade(0.0f),
-						mCurrentTick(0),
-						mLastTick(0)
+						mTickDelta(0)
 {
 }
 
@@ -58,8 +57,7 @@ Renderer::Renderer(const std::string& rendererName):	mLetterBoxHeight(0),
 														mFade(Renderer::FADE_NONE),
 														mFadeStep(0.0f),
 														mCurrentFade(0.0f),
-														mCurrentTick(0),
-														mLastTick(0)
+														mTickDelta(0)
 {
 }
 
@@ -275,7 +273,7 @@ void Renderer::drawImageRect(int x, int y, int w, int h, ImageList &images)
  * \param	destination	A reference to the destination Image.
  * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
  */
-void Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint)
+void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint)
 {}
 
 
@@ -489,33 +487,6 @@ void Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int g, 
 
 
 /**
- * Gets the RGBA color of a pixel at X, Y in an Image as an unsigned 32-Bit Integer.
- *
- * \param src	A reference to an Image.
- * \param x		X-Coordinate of the pixel to inspect.
- * \param y		Y-Coordinate of the pixel to inspect.
- */
-unsigned int Renderer::pixelColor(Image& src, int x, int y)
-{
-	return 0;
-}
-
-
-/**
- * Determines if a pixel at X, Y in an Image as completely transparent.
- *
- * \param src	A reference to an Image.
- * \param x		X-Coordinate of the pixel to inspect.
- * \param y		Y-Coordinate of the pixel to inspect.
- */
-bool Renderer::pixelTransparent(Image& src, int x, int y)
-{
-	return true;
-}
-
-
-
-/**
  * Returns the primary display's Width.
  */
 int Renderer::width()
@@ -694,15 +665,6 @@ void Renderer::drawTextShadowClamped(Font& font, const std::string& text, int ra
 
 
 /**
- * Permanently desaturates a given Image.
- * 
- * \param	image	A reference to an Image Resource.
- */
-void Renderer::desaturate(Image& image)
-{}
-
-
-/**
  * Clears the screen with a given Color_4ub.
  *
  * \param color	A reference to a Color_4ub.
@@ -733,12 +695,11 @@ void Renderer::clearScreen(int r, int g, int b)
  */
 void Renderer::update()
 {
-	mLastTick = mCurrentTick;
-	mCurrentTick = mTimer.ms();
+	mTickDelta = mTimer.delta();
 
 	if(mFade != Renderer::FADE_NONE)
 	{
-		float fade = (mCurrentTick - mLastTick) * mFadeStep;
+		float fade = mTickDelta * mFadeStep;
 
 		if(mFade == Renderer::FADE_IN)
 		{

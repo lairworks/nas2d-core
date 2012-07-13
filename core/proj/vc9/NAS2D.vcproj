@@ -272,6 +272,10 @@
 					RelativePath="..\..\src\Renderer\SDL_Renderer.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\src\Renderer\ShaderManager.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -376,6 +380,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\NAS2D\Renderer\SDL_Renderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\NAS2D\Renderer\ShaderManager.h"
 					>
 				</File>
 			</Filter>

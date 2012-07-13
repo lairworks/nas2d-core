@@ -12,33 +12,41 @@
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
 #if defined(__APPLE__)
-	#include "SDL_gfx/SDL_gfxPrimitives.h"
 	#include "SDL_ttf/SDL_ttf.h"
 	#include <OpenGL/OpenGL.h>
 	#include <GLUT/glut.h>
 #elif defined(WIN32)
 	#include "GLee.h"
 	#include "SDL/SDL_opengl.h"
-	#include "SDL/SDL_gfxPrimitives.h"
 #else
 	#include "SDL/SDL_opengl.h"
 #endif
 
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
-// Life of generated OpenGL Textures in Miliseconds
-const unsigned int TEXTURE_EXPIRE_TIME = 30000;	// Roughly 30 seconds
+/**
+ * Life of generated OpenGL Textures in Miliseconds. Roughly 30 seconds
+ */
+ const unsigned int TEXTURE_EXPIRE_TIME = 30000;
+
+/**
+ * Texture coordinate pairs. Default coordinates encompassing the entire texture.
+ */
+GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f };
+
+GLfloat POINT_VERTEX_ARRAY[2] = { 0 };
+
 
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 
+
 OGL_Renderer::OGL_Renderer():	Renderer("OGL Renderer"),
 								mScreen(0),
-								mLastResourceCheck(0),
-								mTextureTarget(0),
+								mTextureTarget(0)
 								//mVertexBufferObject(0),
-								mRequirementsMet(false)
 {
 	cout << "Starting " << mRendererName << "..." << endl;
 	
@@ -54,7 +62,8 @@ OGL_Renderer::OGL_Renderer():	Renderer("OGL Renderer"),
 }
 
 
-OGL_Renderer::OGL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BPP, bool fullscreen, bool vsync):	Renderer("OGL Renderer"),
+/*
+OGL_Renderer::OGL_Renderer(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync):	Renderer("OGL Renderer"),
 																													mLastResourceCheck(0),
 																													mTextureTarget(0),
 																													//mVertexBufferObject(0),
@@ -68,6 +77,7 @@ OGL_Renderer::OGL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BP
 	mLetterBoxHeight = (int)((mScreen->h) * 0.15);
 	
 }
+*/
 
 
 OGL_Renderer::~OGL_Renderer()
@@ -95,7 +105,7 @@ void OGL_Renderer::setApplicationTitle(const std::string& title)
 }
 
 
-void OGL_Renderer::drawVertexArray(GLuint textureId, GLfloat vertexArray[], GLfloat textureCoord[], float scale = 1.0f, bool repeat = false)
+void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords = true, bool repeat = false)
 { 	
 	glBindTexture(mTextureTarget, textureId);
 	
@@ -109,8 +119,13 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, GLfloat vertexArray[], GLfl
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
-	glTexCoordPointer(2, GL_FLOAT, 0, textureCoord);
+	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
+
+	// Choose from the default texture coordinates or from a custom set.
+	if(defaultTextureCoords)
+		glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
+	else
+		glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordArray);
 	
 	glDrawArrays(GL_QUADS, 0, 4);
 	
@@ -125,69 +140,51 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, GLfloat vertexArray[], GLfl
 }
 
 
+/**
+ * Used internally to fill the vertex array with quad vertex information.
+ */
+void OGL_Renderer::fillVertexArray(int x, int y, int w, int h)
+{
+	mVertexArray[0] = static_cast<GLfloat>(x),		mVertexArray[1] = static_cast<GLfloat>(y);
+	mVertexArray[2] = static_cast<GLfloat>(x + w),	mVertexArray[3] = static_cast<GLfloat>(y);
+	mVertexArray[4] = static_cast<GLfloat>(x + w),	mVertexArray[5] = static_cast<GLfloat>(y + h);
+	mVertexArray[6] = static_cast<GLfloat>(x),		mVertexArray[7] = static_cast<GLfloat>(y + h);
+}
+
+
+/**
+ * Used internally to fill the texture coordinate array with quad vertex information.
+ */
+void OGL_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
+{
+	mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(y);
+	mTextureCoordArray[2] = static_cast<GLfloat>(u),	mTextureCoordArray[3] = static_cast<GLfloat>(y);
+	mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(v);
+	mTextureCoordArray[6] = static_cast<GLfloat>(x),	mTextureCoordArray[7] = static_cast<GLfloat>(v);
+}
+
+
 void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
 {
-	glPushMatrix();
-
-	GLfloat verts[8] =	{
-							static_cast<GLfloat>(x), static_cast<GLfloat>(y),
-							static_cast<GLfloat>(x + image.width()), static_cast<GLfloat>(y),
-							static_cast<GLfloat>(x + image.width()), static_cast<GLfloat>(y + image.height()),
-							static_cast<GLfloat>(x), static_cast<GLfloat>(y + image.height())
-						};
-	
-	GLfloat tex[8] =	{
-							0.0f, 0.0f,
-							1.0f, 0.0f,
-							1.0f, 1.0f,
-							0.0f, 1.0f
-						};
+	fillVertexArray(x, y, image.width(), image.height());
 	
 	glColor4ub(255, 255, 255, 255);
-	drawVertexArray(getTextureId(image), verts, tex, scale);
-
-	glPopMatrix();
+	drawVertexArray(getTextureId(image));
 }
 
 
 void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height)
 {
-	glPushMatrix();
+	fillVertexArray(rasterX, rasterY, width, height);
 
-	GLfloat vertices[8] = {
-		static_cast<GLfloat>(rasterX), static_cast<GLfloat>(rasterY),
-		static_cast<GLfloat>(rasterX + width), static_cast<GLfloat>(rasterY),
-		static_cast<GLfloat>(rasterX + width), static_cast<GLfloat>(rasterY + height),
-		static_cast<GLfloat>(rasterX), static_cast<GLfloat>(rasterY + height)
-	};
-
-    /**
-     * Coord pairs:
-     * x
-     * y
-     * x + width
-     * y
-     * x + width
-     * y + height
-     * x
-     * y + height
-     */
-	GLfloat texture[8] = {
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()), 
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()), 
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
-
-	};
+	fillTextureArray(	static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()),
+						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
+						static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
+						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
+					);
 
 	glColor4ub(255, 255, 255, 255);
-	drawVertexArray(getTextureId(image), vertices, texture);
-
-	glPopMatrix();
+	drawVertexArray(getTextureId(image), false);
 }
 
 
@@ -203,36 +200,16 @@ void OGL_Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, i
 	glTranslatef(static_cast<float>(rasterX + tX), static_cast<float>(rasterY + tY), 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	GLfloat vertices[8] =	{	-tX, -tY,
-								tX, -tY,
-								tX, tY,
-								-tX, tY	};
+	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
-    /**
-     * Coord pairs:
-     * x
-     * y
-     * x + width
-     * y
-     * x + width
-     * y + height
-     * x
-     * y + height
-     */
-	GLfloat texture[8] = {
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()), 
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height()),
-		static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()), 
-        static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
-
-	};
+	fillTextureArray(	static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()),
+						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
+						static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
+						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
+					);
 
 	glColor4ub(255, 255, 255, 255);
-	drawVertexArray(getTextureId(image), vertices, texture);
+	drawVertexArray(getTextureId(image), false);
 
 	glPopMatrix();
 }
@@ -256,171 +233,78 @@ void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	GLfloat vertices[8] =	{
-								-tX, -tY,
-								tX, -tY,
-								tX, tY,
-								-tX, tY
-							};
+	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 	
-	GLfloat texture[8] =	{
-								0.0f, 0.0f,
-								1.0f, 0.0f,
-								1.0f, 1.0f,
-								0.0f, 1.0f
-							};
-	
-	drawVertexArray(getTextureId(image), vertices, texture, scale);
+	drawVertexArray(getTextureId(image));
 	glPopMatrix();
 }
 
 
 void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a)
 {
-	glPushMatrix();
-
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	GLfloat vertices[8] = {
-		static_cast<GLfloat>(x), static_cast<GLfloat>(y),
-		static_cast<GLfloat>(x + w), static_cast<GLfloat>(y),
-		static_cast<GLfloat>(x + w), static_cast<GLfloat>(y + h),
-		static_cast<GLfloat>(x), static_cast<GLfloat>(y + h)
-	};
+	fillVertexArray(x, y, w, h);
 	
-	GLfloat texture[8] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-	};
-	
-	drawVertexArray(getTextureId(image), vertices, texture);
-
-	glPopMatrix();
+	drawVertexArray(getTextureId(image));
 }
 
 
 void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 {
-	glPushMatrix();
-
 	glColor4ub(255, 255, 255, 255);
-	GLfloat vertices[8] = {
-		static_cast<GLfloat>(x), static_cast<GLfloat>(y),
-		static_cast<GLfloat>(x + w), static_cast<GLfloat>(y),
-		static_cast<GLfloat>(x + w), static_cast<GLfloat>(y + h),
-		static_cast<GLfloat>(x), static_cast<GLfloat>(y + h)
-	};
-		
-	GLfloat texture[8] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-	};
-		
-	drawVertexArray(getTextureId(image), vertices, texture, 1.0f, true);
 
-	glPopMatrix();
+	fillVertexArray(x, y, w, h);
+	
+	drawVertexArray(getTextureId(image), true, true);
 }
 
 
-void OGL_Renderer::drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint)
+void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint)
 {
-	glPushMatrix();
-
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if(dstPoint.x > destination.width() || dstPoint.y > destination.height())
 		return;
 
-	Image subImage(&source, srcRect.x, srcRect.y, srcRect.w, srcRect.h);
-	
-	//glEnable(mTextureTarget);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	
+
 	// Bind our destination texture.
 	glBindTexture(mTextureTarget, getTextureId(destination));
-	
+
 	// Check for the need to clip the source texture.
 	Rectangle_2d clipRect;
-	
-	(dstPoint.x + srcRect.w) > destination.width() ? clipRect.w = srcRect.w - ((dstPoint.x + srcRect.w) - destination.width()) : clipRect.w = srcRect.w;
-	(dstPoint.y + srcRect.h) > destination.height() ? clipRect.h = srcRect.h - ((dstPoint.y + srcRect.h) - destination.height()) : clipRect.h = srcRect.h;
+
+	(dstPoint.x + source.width()) > destination.width() ? clipRect.w = source.width() - ((dstPoint.x +source.width()) - destination.width()) : clipRect.w = source.width();
+	(dstPoint.y + source.height()) > destination.height() ? clipRect.h = source.height() - ((dstPoint.y + source.height()) - destination.height()) : clipRect.h = source.height();
 
 	// Ignore this call of the clipping rect is smaller than 1 pixel in any dimension.
 	if(clipRect.w < 1 || clipRect.h < 1)
 		return;
-	
+
 	// Create a framebuffer object
 	GLuint myFBO;
 	glGenFramebuffersEXT(1, &myFBO);
-	
+
 	// Bind the framebuffer object 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, myFBO);
-	
+
 	// Attach a texture to the FBO 
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mTextureTarget, getTextureId(destination), 0);
-	
-	// Position to draw our quad in the FBO
-	// The Y-Position was getting reversed, to solve this, we take the texture
-	// height (which puts us at the top of the screen) and subtract our y-position.
+
 	glColor4ub(255, 255, 255, 255);
-	GLfloat vertices[8] = {
-		static_cast<GLfloat>(dstPoint.x), static_cast<GLfloat>((destination.height() - dstPoint.y)),
-		static_cast<GLfloat>(dstPoint.x), static_cast<GLfloat>((destination.height() - dstPoint.y) - clipRect.h),
-		static_cast<GLfloat>(dstPoint.x + clipRect.w), static_cast<GLfloat>((destination.height() - dstPoint.y) - clipRect.h),
-		static_cast<GLfloat>(dstPoint.x + clipRect.w), static_cast<GLfloat>((destination.height() - dstPoint.y))
-	};
-	
-	GLfloat texture[8] = {
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f
-	};
-	
-	// Render our quad
-	drawVertexArray(getTextureId(subImage), vertices, texture);
-	
+
+	// Flip the Y axis to keep images drawing correctly.
+	fillVertexArray(dstPoint.x, destination.height() - dstPoint.y, clipRect.w, -clipRect.h);
+
+	drawVertexArray(getTextureId(source));
+
 	// Bind our destination texture again
 	glBindTexture(mTextureTarget, getTextureId(destination));
-	
+
 	// Reset viewport and unbind
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	glDeleteFramebuffersEXT(1, &myFBO);
-
-	glPopMatrix();
-}
-
-
-void OGL_Renderer::desaturate(Image& image)
-{
-	#if defined(_DEBUG)
-		if(!image.loaded())
-		{
-			stringstream str;
-			str << "Image '" << image.name() << "' is not loaded and cannot be desaturated. " << image.errorMessage();
-			pushMessage(str.str());
-			return;
-		}
-	#endif
-
-	SDL_Surface *surface = image.pixels();
-	for(int y = 0; y < image.height(); y++)
-	{
-		for(int x = 0; x < image.width(); x++)
-		{
-			Uint8 r, g, b, a;
-
-			SDL_GetRGBA(pixelColor(image, x, y), surface->format, &r, &g, &b, &a);
-
-			Uint8 grey = (r + g + b) / 3;
-
-			pixelRGBA(surface, x, y, grey, grey, grey, a);
-		}
-	}
 }
 
 
@@ -430,9 +314,12 @@ void OGL_Renderer::drawPixel(int x, int y, int r, int g, int b, int a)
 
 	glColor4ub(r, g, b, a);
 
-	glBegin(GL_POINTS);
-		glVertex2f(static_cast<float>(x) + 0.5f, static_cast<float>(y) + 0.5f);
-	glEnd();
+	POINT_VERTEX_ARRAY[0] = static_cast<float>(x) + 0.5f; POINT_VERTEX_ARRAY[1] = static_cast<float>(y) + 0.5f;
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
+	glDrawArrays(GL_POINTS, 0, 1);
+	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glEnable(mTextureTarget);
 }
@@ -520,19 +407,16 @@ void OGL_Renderer::drawBox(int x, int y, int width, int height, int r, int g, in
 {	
 	glDisable(mTextureTarget);
 
-	//glColor4ub(r, g, b, a);
+	glColor4ub(r, g, b, a);
 
-//	glBegin(GL_LINE_LOOP);
-//		glVertex2i(x /*+ 0.5f*/, y);
-//		glVertex2i((x + width), y);
-//		glVertex2i((x + width), (y + height));
-//		glVertex2i(x, (y + height));
-//	glEnd();
+	fillVertexArray(x, y, width, height);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
+
+	glDrawArrays(GL_LINE_LOOP, 0, 4);
 	
-	drawLine(x, y, x + width, y, r, g, b, a);
-	drawLine(x + width, y, x + width, y + height, r, g, b, a);
-	drawLine(x + width, y + height, x, y + height, r, g, b, a);
-	drawLine(x, y + height, x, y, r, g, b, a);
+	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glEnable(mTextureTarget);
 }
@@ -544,12 +428,8 @@ void OGL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int
 
 	glColor4ub(r, g, b, a);
 
-	glBegin(GL_QUADS);
-		glVertex2i(x, y);
-		glVertex2i((x + width), y);
-		glVertex2i((x + width), (y + height));
-		glVertex2i(x, (y + height));
-	glEnd();
+	fillVertexArray(x, y, width, height);
+	drawVertexArray(0);
 
 	glEnable(mTextureTarget);
 }
@@ -577,21 +457,10 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, int x, int y, i
 	GLuint texId = generateTexture(textSurface);
 
 	glColor4ub(255, 255, 255, a);
-	GLfloat vertices[8] = {
-		static_cast<GLfloat>(x), static_cast<GLfloat>(y),
-		static_cast<GLfloat>(x + textSurface->w), static_cast<GLfloat>(y),
-		static_cast<GLfloat>(x + textSurface->w), static_cast<GLfloat>(y + textSurface->h),
-		static_cast<GLfloat>(x), static_cast<GLfloat>(y + textSurface->h)
-	};
 	
-	GLfloat texture[8] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-	};
-	
-	drawVertexArray(texId, vertices, texture);
+	fillVertexArray(x, y, textSurface->w, textSurface->h);
+
+	drawVertexArray(texId);
 
 	glDeleteTextures(1, &texId);
 	SDL_FreeSurface(textSurface);
@@ -632,21 +501,10 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, int rast
 	GLuint texId = generateTexture(clampedSurface);
 
 	glColor4ub(255, 255, 255, a);
-	GLfloat vertices[8] = {
-		static_cast<GLfloat>(rasterX), static_cast<GLfloat>(rasterY),
-		static_cast<GLfloat>(rasterX + clampedSurface->w), static_cast<GLfloat>(rasterY),
-		static_cast<GLfloat>(rasterX + clampedSurface->w), static_cast<GLfloat>(rasterY + clampedSurface->h),
-		static_cast<GLfloat>(rasterX), static_cast<GLfloat>(rasterY + clampedSurface->h)
-	};
+
+	fillVertexArray(rasterX, rasterY, clampedSurface->w, clampedSurface->h);
 	
-	GLfloat texture[8] = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-	};
-	
-	drawVertexArray(texId, vertices, texture);
+	drawVertexArray(texId);
 	
 	glDeleteTextures(1, &texId);
 	SDL_FreeSurface(clampedSurface);
@@ -656,7 +514,7 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, int rast
 
 void OGL_Renderer::clearScreen(int r, int g, int b)
 {
-	glClearColor((GLclampf)r / 255, (GLclampf)g / 255, (GLclampf)b / 255, 0.0 );
+	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0 );
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -669,50 +527,6 @@ void OGL_Renderer::update()
 
 	Renderer::update();
 	SDL_GL_SwapBuffers();
-}
-
-
-unsigned int OGL_Renderer::pixelColor(Image& src, int x, int y)
-{
-	SDL_LockSurface(src.pixels());
-    int bpp = src.pixels()->format->BytesPerPixel;
-    /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8*)src.pixels()->pixels + y * src.pixels()->pitch + x * bpp;
-
-	SDL_UnlockSurface(src.pixels());
-
-	switch(bpp)
-	{
-		case 1:
-			return *p;
-
-		case 2:
-			return *(Uint16 *)p;
-
-		case 3:
-			if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-				return p[0] << 16 | p[1] << 8 | p[2];
-			else
-				return p[0] | p[1] << 8 | p[2] << 16;
-
-		case 4:
-			return *(Uint32*)p;
-
-		default:
-			return 0;       /* shouldn't happen, but avoids warnings */
-	}
-}
-
-
-bool OGL_Renderer::pixelTransparent(Image& src, int x, int y)
-{
-	SDL_Surface *surface = src.pixels();
-
-	Uint8 r, g, b, a;
-
-	SDL_GetRGBA(pixelColor(src, x, y), surface->format, &r, &g, &b, &a);
-	
-	return (a == 0);
 }
 
 
@@ -823,12 +637,12 @@ inline GLuint OGL_Renderer::getTextureId(Image& image)
 	if(it == mTextureArray.end())
 	{
 		textureId = generateTexture(image.pixels());
-		mTextureArray[image.id()] = std::pair<GLuint, int>(textureId, mTimer.ms());
+		mTextureArray[image.id()] = std::pair<GLuint, int>(textureId, mTimer.tick());
 	}
 	else
 	{
 		textureId = it->second.first;
-		it->second.second = mTimer.ms();	// Set time stamp.
+		it->second.second = mTimer.tick();	// Set time stamp.
 	}
 
 	return textureId;
@@ -917,7 +731,6 @@ GLuint OGL_Renderer::generateTexture(SDL_Surface *src)
 	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-
 	return texId;
 }
 
@@ -929,14 +742,18 @@ GLuint OGL_Renderer::generateTexture(SDL_Surface *src)
  */
 inline void OGL_Renderer::updateTextures()
 {
-	int currentTick = mTimer.ms();
-	if((currentTick - mLastResourceCheck) > TEXTURE_EXPIRE_TIME)
+	if(mTimer.accumulator() > TEXTURE_EXPIRE_TIME)
 	{
+		mTimer.reset();
 		map<int, pair<GLuint, int> >::iterator i = mTextureArray.begin();
 		while(i != mTextureArray.end())
 		{
-			if((currentTick - i->second.second) > TEXTURE_EXPIRE_TIME)
+			if((mTimer.tick() - i->second.second) > TEXTURE_EXPIRE_TIME)
 			{
+				#if defined(_DEBUG)
+				cout << "DEBUG: OGL_Renderer::updateTextures() - Deleting texture ID (" << i->second.first << ")" << endl;
+				#endif
+
 				glDeleteTextures(1, &i->second.first);
 				mTextureArray.erase(i++);
 			}
@@ -971,7 +788,7 @@ bool OGL_Renderer::extensionExists(const std::string& extension)
 }
 
 
-void OGL_Renderer::checkExtensions()
+bool OGL_Renderer::checkExtensions()
 {
 	cout << "\tOpenGL Extensions:" << endl;
 	
@@ -980,19 +797,16 @@ void OGL_Renderer::checkExtensions()
 	{
 		cout << "\t\t- GL_ARB_texture_non_power_of_two" << endl;
 		mTextureTarget = GL_TEXTURE_2D;
-		mRequirementsMet = true;
+		return true;
 	}
 	else if(extensionExists("GL_ARB_texture_rectangle"))
 	{
 		cout << "\t\t- GL_ARB_texture_rectangle" << endl;
 		mTextureTarget = GL_TEXTURE_RECTANGLE_ARB;
-		mRequirementsMet = true;
+		return true;
 	}
 	else
-	{
-		mRequirementsMet = false;
-	}
-
+		return false;
 }
 
 
@@ -1001,12 +815,14 @@ void OGL_Renderer::initGL()
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+
 	glViewport(0, 0, mScreen->w, mScreen->h);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+
 
 	glOrtho(0.0, (GLdouble)mScreen->w, (GLdouble)mScreen->h, 0.0, -1.0, 1.0);
 
@@ -1036,9 +852,10 @@ void OGL_Renderer::initGL()
 	cout << "\tVideo Driver: " << mDriverName << endl;
 	cout << "\tVideo Hardware Memory: " << mVideoInfo->video_mem << endl;
 
-	checkExtensions();
-	if(mRequirementsMet)
-		glEnable(mTextureTarget);
+	if(!checkExtensions())
+		throw Exception(0, "Graphics Requirements Not Met", "Your graphics driver does not meet the minimum requirements.");
+
+	glEnable(mTextureTarget);
 }
 
 
@@ -1053,11 +870,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 		throw Exception(701, "Error starting SDL Video Library", SDL_GetError());
 
-	// Set up our Video Surface flags and build onto it with the
-	// Config class. We should probably throw this into a private
-	// function which builds the flags list and returns a unsigned int32.
 	Uint32 sdlFlags = SDL_OPENGL;
-	//sdlFlags = SDL_HWSURFACE|SDL_HWACCEL|SDL_OPENGL;
 
 	if(fullscreen)
 		sdlFlags = sdlFlags|SDL_FULLSCREEN;
@@ -1094,20 +907,4 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	buildDisplayModeList();
 	initGL();
-}
-
-
-/**
- * Gets whether or not the OpenGL Renderer is in a valid state
- * for rendering.
- * 
- * On most systems with halfway decent GPU hardware this check
- * is not necessary but it's good to check that the renderer will
- * be in a stable state and, if not, exit gracefully or find
- * another way to handle the problem.
- */
-bool OGL_Renderer::valid() const
-{
-	// This feels like a hack... it's just not as clean as I think it could be.
-	return mRequirementsMet;
 }

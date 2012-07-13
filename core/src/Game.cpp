@@ -49,7 +49,7 @@ Game::Game(const std::string& appTitle, const std::string& argv_0, const std::st
 		// necessary so that we can ensure that LoM stays in a stable state. Also, the cast
 		// should never fail but this is one of those 'just in case' deals.
 		OGL_Renderer* ogl = dynamic_cast<OGL_Renderer*>(&Utility<Renderer>::get());
-		if(!ogl || !ogl->valid())
+		if(!ogl)
 		{
 			cout << "Unable to create an OpenGL Renderer. Switching to Software Mode instead." << endl;
 

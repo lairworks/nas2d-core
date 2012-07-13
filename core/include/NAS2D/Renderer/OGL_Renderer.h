@@ -31,7 +31,8 @@ class OGL_Renderer: public Renderer
 {
 public:
 	OGL_Renderer();
-	OGL_Renderer(unsigned int ResX, unsigned int ResY, unsigned int BPP, bool fullscreen, bool vsync);
+	
+	//OGL_Renderer(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
 
 	~OGL_Renderer();
 
@@ -46,7 +47,7 @@ public:
 
 	void drawImageRepeated(Image& image, int x, int y, int w, int h);
 
-	void drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint);
+	void drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint);
 
 	void drawPixel(int x, int y, int r, int g, int b, int a);
 	void drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a, int line_width);
@@ -57,17 +58,10 @@ public:
 	void drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a);
 	void drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a);
 
-	void desaturate(Image& image);
-
 	void clearScreen(int r, int g, int b);
-
-    unsigned int pixelColor(Image& src, int x, int y);
-	bool pixelTransparent(Image& src, int x, int y);
     
 	int width();
 	int height();
-
-	bool valid() const;
 
 	void update();
 
@@ -91,12 +85,15 @@ private:
 
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
-	void checkExtensions();
+	bool checkExtensions();
 	bool extensionExists(const std::string& extension);
 	
 	void buildDisplayModeList();
 	
-	void drawVertexArray(GLuint textureId, GLfloat vertexArray[], GLfloat textureCoord[], float scale, bool repeat);
+	void fillVertexArray(int x, int y, int w, int h);
+	void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
+	
+	void drawVertexArray(GLuint textureId, bool defaultTextureCoords, bool repeat);
 
 	GLuint getTextureId(Image& image);
 	GLuint generateTexture(SDL_Surface *src);
@@ -106,15 +103,15 @@ private:
 
 	void getError();
 	
-	SDL_Surface			*mScreen;				/**< Primary screen surface. */
-	unsigned int		mLastResourceCheck;		/**< Tick count from last resource check. */
-	TextureArray		mTextureArray;			/**< Internal array of GL Texture ID and time stamp. */
-	
-	GLuint				mTextureTarget;			/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */
-	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
-	//	GLfloat				mTextureBufferObject;
+	SDL_Surface			*mScreen;					/**< Primary screen surface. */
+	TextureArray		mTextureArray;				/**< Internal array of GL Texture ID and time stamp. */
 
-	bool				mRequirementsMet;		/**< Flag indicating that all extensions requirements have been met. */
+	GLfloat				mVertexArray[8];			/**< Vertex array for quad drawing functions (all blitter functions). */
+	GLfloat				mTextureCoordArray[8];		/**< Texture coordinate arrawy for quad drawing functions (all blitter functions). */
+	
+	GLuint				mTextureTarget;				/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */
+	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
+	//	GLfloat				mTextureBufferObject;	/**< COMMENT ME! */
 };	
 
 #endif

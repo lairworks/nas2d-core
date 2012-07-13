@@ -16,56 +16,61 @@
 /**
  * C'tor
  */
-Timer::Timer(): mLastTick(0)
+Timer::Timer():	mCurrentTick(0),
+				mLastTick(0),
+				mAccumulator(0)
 {
+}
+
+/**
+ * Gets the current tick.
+ */
+unsigned int Timer::tick() const
+{
+	return SDL_GetTicks();
 }
 
 
 /**
- * Resets the timer.
+ * Gets the difference in time since the last call to delta().
+ */
+unsigned int Timer::delta()
+{
+	mLastTick = mCurrentTick;
+	mCurrentTick = SDL_GetTicks();
+
+	return mCurrentTick - mLastTick;
+}
+
+
+/**
+ * Updates the Accumulator value.
+ * 
+ * \return	Returns an accumulator value.
+ */
+unsigned int Timer::accumulator()
+{
+	mAccumulator += delta();
+
+	return mAccumulator;
+}
+
+
+/**
+ * Adjusts the Accumulator value by a given amount.
+ * 
+ * \param	a	Amount to adjust the Accumulator by.
+ */
+void Timer::adjust_accumulator(unsigned int a)
+{
+	mAccumulator -= a;
+}
+
+
+/**
+ * Resets the accumulator.
  */
 void Timer::reset()
 {
-	
-}
-
-/**
- * Gets the current tick count.
- */
-int Timer::tick()
-{
-	mLastTick = SDL_GetTicks();
-	return mLastTick;
-}
-
-
-/**
- * Gets the change in time since the last update.
- */
-float Timer::delta()
-{
-	int tick = SDL_GetTicks();
-	float delta = tick - mLastTick;
-	
-	if(delta < 0)
-		delta = 0;
-	
-	mLastTick = tick;
-	
-	return delta;
-}
-
-unsigned int Timer::ms() const
-{
-	
-}
-
-unsigned int Timer::s() const
-{
-	
-}
-
-unsigned int Timer::delta() const
-{
-	
+	mAccumulator = 0;
 }

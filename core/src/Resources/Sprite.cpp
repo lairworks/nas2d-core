@@ -32,8 +32,8 @@ string endTag(int row, const std::string& name)
 Sprite::Sprite():	mSpriteName("Default Constructed"),
 					mCurrentAction(DEFAULT_ACTION),
 					mCurrentFrame(0),
-					mLastFrameTick(0),
 					mAlpha(255),
+					mRotationAngle(0.0f),
 					mPaused(false)
 {
 	addDefaultAction();
@@ -48,7 +48,6 @@ Sprite::Sprite():	mSpriteName("Default Constructed"),
 Sprite::Sprite(const std::string& filePath):	mSpriteName(filePath),
 												mCurrentAction(DEFAULT_ACTION),
 												mCurrentFrame(0),
-												mLastFrameTick(0),
 												mAlpha(255),
 												mRotationAngle(0.0f),
 												mPaused(false)
@@ -66,7 +65,6 @@ Sprite::Sprite(const Sprite &sprite):	mImageSheets(sprite.mImageSheets),
 										mSpriteName(sprite.mSpriteName),
 										mCurrentAction(sprite.mCurrentAction),
 										mCurrentFrame(sprite.mCurrentFrame),
-										mLastFrameTick(sprite.mLastFrameTick),
 										mAlpha(sprite.mAlpha),
 										mPaused(sprite.mPaused)
 {}
@@ -82,7 +80,6 @@ Sprite& Sprite::operator=(const Sprite &rhs)
 	mSpriteName		= rhs.mSpriteName;
 	mCurrentAction	= rhs.mCurrentAction;
 	mCurrentFrame	= rhs.mCurrentFrame;
-	mLastFrameTick	= rhs.mLastFrameTick;
 	mAlpha			= rhs.mAlpha;
 	mPaused			= rhs.mPaused;
 
@@ -157,10 +154,11 @@ void Sprite::update(int x, int y)
 
 	if(!mPaused && (frame.frameDelay() != FRAME_PAUSE))
 	{
-		unsigned int currentTick = mTimer.ms();
-		if(static_cast<int>(currentTick - mLastFrameTick) > frame.frameDelay())
+		int accumulator = mTimer.accumulator();
+		while(frame.frameDelay() > 0 && accumulator >= frame.frameDelay())
 		{
-			mLastFrameTick = currentTick;
+			mTimer.adjust_accumulator(frame.frameDelay());
+			accumulator -= frame.frameDelay();
 			mCurrentFrame++;
 		}
 
@@ -172,10 +170,7 @@ void Sprite::update(int x, int y)
 		}
 	}
 
-	//Utility<Renderer>::get().drawSubImage(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height());
-
 	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height(), mRotationAngle);
-
 }
 
 

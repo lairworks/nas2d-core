@@ -106,7 +106,7 @@ public:
 	void drawImageRect(int x, int y, int w, int h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
 	void drawImageRect(int x, int y, int w, int h, ImageList& images);
 
-	virtual void drawImageToImage(Image& source, const Rectangle_2d& srcRect, Image& destination, const Point_2d& dstPoint);
+	virtual void drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint);
 
 	void drawPixel(int x, int y, const Color_4ub& color = COLOR_WHITE);
 	virtual void drawPixel(int x, int y, int r, int g, int b, int a = 255);
@@ -125,8 +125,6 @@ public:
 	virtual void drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a = 255);
 	void drawTextShadowClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int distance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
 
-	virtual void desaturate(Image& image);
-
 	void setFadeColor(const Color_4ub& color);
 	void fadeIn(int delayTime);
 	void fadeOut(int delayTime);
@@ -138,9 +136,6 @@ public:
 
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);
-
-	virtual unsigned int pixelColor(Image& src, int x, int y);
-	virtual bool pixelTransparent(Image& src, int x, int y);
 
 	virtual int width();
 	virtual int height();
@@ -201,13 +196,12 @@ private:
 		FADE_OUT
 	};
 
-	Color_4ub			mFadeColor;			/**< Fade Color. */
-	FadeType			mFade;				/**< Fade State. */
-	float				mFadeStep;			/**< Amount of fading to do per milisecond. */
-	float				mCurrentFade;		/**< Current fade amount. */
+	Color_4ub			mFadeColor;		/**< Fade Color. */
+	FadeType			mFade;			/**< Fade State. */
+	float				mFadeStep;		/**< Amount of fading to do per milisecond. */
+	float				mCurrentFade;	/**< Current fade amount. */
 
-	int					mCurrentTick;		/**< Current tick in miliseconds. */
-	int					mLastTick;			/**< Last tick in miliseconds. */
+	int					mTickDelta;		/**< Current tick in miliseconds. */
 };
 
 #endif

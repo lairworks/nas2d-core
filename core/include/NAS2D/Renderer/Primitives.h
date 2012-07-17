@@ -60,6 +60,8 @@ public:
 
 	bool operator==(const Rectangle_2d& rect) { return (x == rect.x) && (y == rect.y) && (w == rect.w) && (h == rect.h); }
 
+	void operator()(int _x, int _y, int _w, int _h) { x = _x; y = _y; w = _w; h = _h; }
+
 	int x, y, w, h;
 };
 
@@ -80,6 +82,25 @@ public:
 	Point_2d operator-(const Point_2d& pt) { return Point_2d(x - pt.x, y - pt.y); }
 
 	int x, y;
+};
+
+
+/**
+ * \struct	Point_2df
+ * \brief	Basic 2D point implemented with floats.
+ */
+class Point_2df
+{
+public:
+	Point_2df(): x(0.0f), y(0.0f) {}
+	Point_2df(float x, float y): x(x), y(y) {}
+
+	bool operator==(const Point_2df& pt) { return (x == pt.x) && (y == pt.y); }
+
+	Point_2df operator+(const Point_2df& pt) { return Point_2df(x + pt.x, y + pt.y); }
+	Point_2df operator-(const Point_2df& pt) { return Point_2df(x - pt.x, y - pt.y); }
+
+	float x, y;
 };
 
 

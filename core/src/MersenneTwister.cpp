@@ -242,10 +242,11 @@ double MersenneTwister::genrand_real3(void)
     /* divided by 2^32 */
 }
 
+
 /**
  * Generates a random real number on [0,1) with 53-bit precision.
  *
- * \return a random 53-bit real number on [0,1)
+ * \return	A random 53-bit real number on [0,1)
  */
 double MersenneTwister::genrand_res53(void)
 { 
@@ -254,9 +255,9 @@ double MersenneTwister::genrand_res53(void)
 } 
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
+
 /**
  * Print interesting information about the Mersenne Twister.
- *
  */
 void MersenneTwister::print(void)
 {

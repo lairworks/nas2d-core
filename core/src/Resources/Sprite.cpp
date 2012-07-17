@@ -154,11 +154,9 @@ void Sprite::update(int x, int y)
 
 	if(!mPaused && (frame.frameDelay() != FRAME_PAUSE))
 	{
-		int accumulator = mTimer.accumulator();
-		while(frame.frameDelay() > 0 && accumulator >= frame.frameDelay())
+		while(frame.frameDelay() > 0 && mTimer.accumulator() >= frame.frameDelay())
 		{
 			mTimer.adjust_accumulator(frame.frameDelay());
-			accumulator -= frame.frameDelay();
 			mCurrentFrame++;
 		}
 

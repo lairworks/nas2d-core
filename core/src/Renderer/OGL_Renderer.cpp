@@ -143,13 +143,23 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords =
 /**
  * Used internally to fill the vertex array with quad vertex information.
  */
-void OGL_Renderer::fillVertexArray(int x, int y, int w, int h)
+void OGL_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
 	mVertexArray[0] = static_cast<GLfloat>(x),		mVertexArray[1] = static_cast<GLfloat>(y);
 	mVertexArray[2] = static_cast<GLfloat>(x + w),	mVertexArray[3] = static_cast<GLfloat>(y);
 	mVertexArray[4] = static_cast<GLfloat>(x + w),	mVertexArray[5] = static_cast<GLfloat>(y + h);
 	mVertexArray[6] = static_cast<GLfloat>(x),		mVertexArray[7] = static_cast<GLfloat>(y + h);
 }
+
+/**
+ * Convenience interface function to aid in code readability by
+ * performing inline type casting.
+ */
+inline void OGL_Renderer::fillVertexArray(int x, int y, int w, int h)
+{
+	fillVertexArray(static_cast<GLfloat>(x), static_cast<GLfloat>(y), static_cast<GLfloat>(w), static_cast<GLfloat>(h));
+}
+
 
 
 /**
@@ -161,6 +171,16 @@ void OGL_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 	mTextureCoordArray[2] = static_cast<GLfloat>(u),	mTextureCoordArray[3] = static_cast<GLfloat>(y);
 	mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(v);
 	mTextureCoordArray[6] = static_cast<GLfloat>(x),	mTextureCoordArray[7] = static_cast<GLfloat>(v);
+}
+
+
+/**
+ * Convenience interface function to aid in code readability by
+ * performing inline type casting.
+ */
+inline void OGL_Renderer::fillTextureArray(int x, int y, int u, int v)
+{
+	fillTextureArray(static_cast<GLfloat>(x), static_cast<GLfloat>(y), static_cast<GLfloat>(u), static_cast<GLfloat>(v));
 }
 
 
@@ -207,6 +227,8 @@ void OGL_Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, i
 						static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
 						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
 					);
+
+
 
 	glColor4ub(255, 255, 255, 255);
 	drawVertexArray(getTextureId(image), false);

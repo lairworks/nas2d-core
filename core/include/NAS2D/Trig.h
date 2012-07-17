@@ -22,10 +22,10 @@ extern const float RAD2DEG;
  *
  * Built with directional vectors in mind.
  */
-struct Vec2f
+struct Vec_2f
 {
-	Vec2f(): x(0.0f), y(0.0f) {}
-	Vec2f(float x, float y): x(x), y(y) {}
+	Vec_2f(): x(0.0f), y(0.0f) {}
+	Vec_2f(float x, float y): x(x), y(y) {}
 
 	float x, y;
 };
@@ -35,7 +35,7 @@ class Point_2d;
 float degToRad(float degree);
 float radToDeg(float rad);
 float angleFromPoints(float x, float y, float x2, float y2);
-Vec2f getDirectionVector(float angle);
+Vec_2f getDirectionVector(float angle);
 
 bool lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r);
 

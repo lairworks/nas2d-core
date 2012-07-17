@@ -68,10 +68,11 @@ void Timer::adjust_accumulator(unsigned int a)
 
 
 /**
- * Resets the accumulator.
+ * Resets the accumulator and updates the tick counter.
  */
 void Timer::reset()
 {
+	delta();
 	mAccumulator = 0;
 }
 

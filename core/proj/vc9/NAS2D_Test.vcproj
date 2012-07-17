@@ -186,6 +186,14 @@
 				RelativePath="..\..\..\NAS2D_Test\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\NAS2D_Test\Player.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\NAS2D_Test\Zombie.cpp"
+				>
+			</File>
 			<Filter
 				Name="nas2d"
 				>
@@ -235,6 +243,10 @@
 				</File>
 				<File
 					RelativePath="..\..\src\Renderer\OGL_Renderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\Random.cpp"
 					>
 				</File>
 				<File
@@ -306,6 +318,14 @@
 			>
 			<File
 				RelativePath="..\..\..\NAS2D_Test\GameState.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\NAS2D_Test\Player.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\NAS2D_Test\Zombie.h"
 				>
 			</File>
 		</Filter>

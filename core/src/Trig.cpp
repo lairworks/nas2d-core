@@ -62,9 +62,9 @@ float angleFromPoints(float x, float y, float x2, float y2)
 /**
  * Gets a directional vector from an angle in degrees.
  */
-Vec2f getDirectionVector(float angle)
+Vec_2f getDirectionVector(float angle)
 {
-	return Vec2f(sin(degToRad(angle)), -cos(degToRad(angle)));
+	return Vec_2f(sin(degToRad(angle)), -cos(degToRad(angle)));
 }
 
 

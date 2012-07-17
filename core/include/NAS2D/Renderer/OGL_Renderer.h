@@ -90,8 +90,11 @@ private:
 	
 	void buildDisplayModeList();
 	
-	void fillVertexArray(int x, int y, int w, int h);
+	void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 	void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
+
+	inline void fillVertexArray(int x, int y, int w, int h);
+	inline void fillTextureArray(int x, int y, int u, int v);
 	
 	void drawVertexArray(GLuint textureId, bool defaultTextureCoords, bool repeat);
 

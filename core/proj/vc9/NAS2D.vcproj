@@ -186,6 +186,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\Random.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\StateManager.cpp"
 				>
 			</File>
@@ -321,6 +325,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\NAS2D\NAS2D.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\NAS2D\Random.h"
 				>
 			</File>
 			<File

@@ -72,10 +72,21 @@
 		695B3CB813275060003E937A /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB413274CB6003E937A /* SDL.framework */; };
 		698DF8E415AEA0450002670A /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 698DF8E215AEA0450002670A /* ShaderManager.cpp */; };
 		698DF8F215AEA0B80002670A /* Renderer in Resources */ = {isa = PBXBuildFile; fileRef = 698DF8F115AEA0B80002670A /* Renderer */; };
+		69AAEF9315AF802400DC00AC /* Renderer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 698DF8F115AEA0B80002670A /* Renderer */; };
 		69BBC9941572B80E00A5CBC8 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BBC9931572B80E00A5CBC8 /* Utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		69AAEFC415AF818700DC00AC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69AAEFC015AF818600DC00AC /* NAS2D_Test.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 69AAEF9F15AF818600DC00AC;
+			remoteInfo = NAS2D_Test;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		695B3C3613274F42003E937A /* Copy Headers With Directories */ = {
@@ -84,6 +95,7 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 1;
 			files = (
+				69AAEF9315AF802400DC00AC /* Renderer in Copy Headers With Directories */,
 				6928726C1417487B00F20BEB /* Mixer in Copy Headers With Directories */,
 				6928726E1417488300F20BEB /* Resources in Copy Headers With Directories */,
 				6928726F1417488700F20BEB /* tinyxml in Copy Headers With Directories */,
@@ -171,6 +183,7 @@
 		695B3BB413274CB6003E937A /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL.framework; sourceTree = "<absolute>"; };
 		698DF8E215AEA0450002670A /* ShaderManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
 		698DF8F115AEA0B80002670A /* Renderer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Renderer; path = ../../include/NAS2D/Renderer; sourceTree = "<group>"; };
+		69AAEFC015AF818600DC00AC /* NAS2D_Test.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = NAS2D_Test.xcodeproj; path = NAS2D_Test/NAS2D_Test/NAS2D_Test.xcodeproj; sourceTree = "<group>"; };
 		69BBC9931572B80E00A5CBC8 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../include/NAS2D/Utility.h; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* NAS2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NAS2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +221,7 @@
 		0867D691FE84028FC02AAC07 /* NAS2D */ = {
 			isa = PBXGroup;
 			children = (
+				69AAEFC015AF818600DC00AC /* NAS2D_Test.xcodeproj */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
@@ -374,6 +388,14 @@
 			path = tinyxml;
 			sourceTree = "<group>";
 		};
+		69AAEFC115AF818600DC00AC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69AAEFC515AF818700DC00AC /* NAS2D_Test.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -447,12 +469,28 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* NAS2D */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 69AAEFC115AF818600DC00AC /* Products */;
+					ProjectRef = 69AAEFC015AF818600DC00AC /* NAS2D_Test.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* NAS2D */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		69AAEFC515AF818700DC00AC /* NAS2D_Test.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = NAS2D_Test.app;
+			remoteRef = 69AAEFC415AF818700DC00AC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8DC2EF520486A6940098B216 /* Resources */ = {

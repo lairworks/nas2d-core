@@ -1,0 +1,346 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		69AAEFA415AF818600DC00AC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFA315AF818600DC00AC /* Cocoa.framework */; };
+		69AAEFAE15AF818600DC00AC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69AAEFAC15AF818600DC00AC /* InfoPlist.strings */; };
+		69AAEFB015AF818600DC00AC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AAEFAF15AF818600DC00AC /* main.m */; };
+		69AAEFB415AF818600DC00AC /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 69AAEFB215AF818600DC00AC /* Credits.rtf */; };
+		69AAEFC715AF819E00DC00AC /* NAS2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFC615AF819E00DC00AC /* NAS2D.framework */; };
+		69AAEFCA15AF81B200DC00AC /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFC815AF81B200DC00AC /* GLUT.framework */; };
+		69AAEFCB15AF81B200DC00AC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFC915AF81B200DC00AC /* OpenGL.framework */; };
+		69AAEFD215AF81C600DC00AC /* Physfs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFCC15AF81C600DC00AC /* Physfs.framework */; };
+		69AAEFD315AF81C600DC00AC /* SDL_gfx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFCD15AF81C600DC00AC /* SDL_gfx.framework */; };
+		69AAEFD415AF81C600DC00AC /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFCE15AF81C600DC00AC /* SDL_image.framework */; };
+		69AAEFD515AF81C600DC00AC /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFCF15AF81C600DC00AC /* SDL_mixer.framework */; };
+		69AAEFD615AF81C600DC00AC /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFD015AF81C600DC00AC /* SDL_ttf.framework */; };
+		69AAEFD715AF81C600DC00AC /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFD115AF81C600DC00AC /* SDL.framework */; };
+		69AAEFDB15AF81FB00DC00AC /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69AAEFD815AF81FB00DC00AC /* GameState.cpp */; };
+		69AAEFDC15AF81FB00DC00AC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69AAEFDA15AF81FB00DC00AC /* main.cpp */; };
+		69AAEFE015AF824300DC00AC /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 69AAEFDE15AF824300DC00AC /* SDLMain.m */; };
+		69AAEFE115AF824300DC00AC /* SDLMain.nib in Resources */ = {isa = PBXBuildFile; fileRef = 69AAEFDF15AF824300DC00AC /* SDLMain.nib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		69AAEF9F15AF818600DC00AC /* NAS2D_Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NAS2D_Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69AAEFA315AF818600DC00AC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		69AAEFA615AF818600DC00AC /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		69AAEFA715AF818600DC00AC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		69AAEFA815AF818600DC00AC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		69AAEFAB15AF818600DC00AC /* NAS2D_Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NAS2D_Test-Info.plist"; sourceTree = "<group>"; };
+		69AAEFAD15AF818600DC00AC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		69AAEFAF15AF818600DC00AC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		69AAEFB115AF818600DC00AC /* NAS2D_Test-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NAS2D_Test-Prefix.pch"; sourceTree = "<group>"; };
+		69AAEFB315AF818600DC00AC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		69AAEFC615AF819E00DC00AC /* NAS2D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NAS2D.framework; path = ../../build/Release/NAS2D.framework; sourceTree = "<group>"; };
+		69AAEFC815AF81B200DC00AC /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		69AAEFC915AF81B200DC00AC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		69AAEFCC15AF81C600DC00AC /* Physfs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Physfs.framework; path = ../../../../../../dependencies/macos/Framework/Physfs.framework; sourceTree = "<group>"; };
+		69AAEFCD15AF81C600DC00AC /* SDL_gfx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_gfx.framework; path = ../../../../../../dependencies/macos/Framework/SDL_gfx.framework; sourceTree = "<group>"; };
+		69AAEFCE15AF81C600DC00AC /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = ../../../../../../dependencies/macos/Framework/SDL_image.framework; sourceTree = "<group>"; };
+		69AAEFCF15AF81C600DC00AC /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = ../../../../../../dependencies/macos/Framework/SDL_mixer.framework; sourceTree = "<group>"; };
+		69AAEFD015AF81C600DC00AC /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = ../../../../../../dependencies/macos/Framework/SDL_ttf.framework; sourceTree = "<group>"; };
+		69AAEFD115AF81C600DC00AC /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../dependencies/macos/Framework/SDL.framework; sourceTree = "<group>"; };
+		69AAEFD815AF81FB00DC00AC /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = ../../../../../../NAS2D_Test/GameState.cpp; sourceTree = "<group>"; };
+		69AAEFD915AF81FB00DC00AC /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = ../../../../../../NAS2D_Test/GameState.h; sourceTree = "<group>"; };
+		69AAEFDA15AF81FB00DC00AC /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../../../../NAS2D_Test/main.cpp; sourceTree = "<group>"; };
+		69AAEFDD15AF824300DC00AC /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
+		69AAEFDE15AF824300DC00AC /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
+		69AAEFDF15AF824300DC00AC /* SDLMain.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = SDLMain.nib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		69AAEF9C15AF818600DC00AC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69AAEFD215AF81C600DC00AC /* Physfs.framework in Frameworks */,
+				69AAEFD315AF81C600DC00AC /* SDL_gfx.framework in Frameworks */,
+				69AAEFD415AF81C600DC00AC /* SDL_image.framework in Frameworks */,
+				69AAEFD515AF81C600DC00AC /* SDL_mixer.framework in Frameworks */,
+				69AAEFD615AF81C600DC00AC /* SDL_ttf.framework in Frameworks */,
+				69AAEFD715AF81C600DC00AC /* SDL.framework in Frameworks */,
+				69AAEFCA15AF81B200DC00AC /* GLUT.framework in Frameworks */,
+				69AAEFCB15AF81B200DC00AC /* OpenGL.framework in Frameworks */,
+				69AAEFC715AF819E00DC00AC /* NAS2D.framework in Frameworks */,
+				69AAEFA415AF818600DC00AC /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		69AAEF9415AF818600DC00AC = {
+			isa = PBXGroup;
+			children = (
+				69AAEFA915AF818600DC00AC /* NAS2D_Test */,
+				69AAEFA215AF818600DC00AC /* Frameworks */,
+				69AAEFA015AF818600DC00AC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		69AAEFA015AF818600DC00AC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69AAEF9F15AF818600DC00AC /* NAS2D_Test.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69AAEFA215AF818600DC00AC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69AAEFCC15AF81C600DC00AC /* Physfs.framework */,
+				69AAEFCD15AF81C600DC00AC /* SDL_gfx.framework */,
+				69AAEFCE15AF81C600DC00AC /* SDL_image.framework */,
+				69AAEFCF15AF81C600DC00AC /* SDL_mixer.framework */,
+				69AAEFD015AF81C600DC00AC /* SDL_ttf.framework */,
+				69AAEFD115AF81C600DC00AC /* SDL.framework */,
+				69AAEFC815AF81B200DC00AC /* GLUT.framework */,
+				69AAEFC915AF81B200DC00AC /* OpenGL.framework */,
+				69AAEFC615AF819E00DC00AC /* NAS2D.framework */,
+				69AAEFA315AF818600DC00AC /* Cocoa.framework */,
+				69AAEFA515AF818600DC00AC /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		69AAEFA515AF818600DC00AC /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69AAEFA615AF818600DC00AC /* AppKit.framework */,
+				69AAEFA715AF818600DC00AC /* CoreData.framework */,
+				69AAEFA815AF818600DC00AC /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		69AAEFA915AF818600DC00AC /* NAS2D_Test */ = {
+			isa = PBXGroup;
+			children = (
+				69AAEFDD15AF824300DC00AC /* SDLMain.h */,
+				69AAEFDE15AF824300DC00AC /* SDLMain.m */,
+				69AAEFDF15AF824300DC00AC /* SDLMain.nib */,
+				69AAEFD815AF81FB00DC00AC /* GameState.cpp */,
+				69AAEFD915AF81FB00DC00AC /* GameState.h */,
+				69AAEFDA15AF81FB00DC00AC /* main.cpp */,
+				69AAEFAA15AF818600DC00AC /* Supporting Files */,
+			);
+			path = NAS2D_Test;
+			sourceTree = "<group>";
+		};
+		69AAEFAA15AF818600DC00AC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				69AAEFAB15AF818600DC00AC /* NAS2D_Test-Info.plist */,
+				69AAEFAC15AF818600DC00AC /* InfoPlist.strings */,
+				69AAEFAF15AF818600DC00AC /* main.m */,
+				69AAEFB115AF818600DC00AC /* NAS2D_Test-Prefix.pch */,
+				69AAEFB215AF818600DC00AC /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		69AAEF9E15AF818600DC00AC /* NAS2D_Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 69AAEFBD15AF818600DC00AC /* Build configuration list for PBXNativeTarget "NAS2D_Test" */;
+			buildPhases = (
+				69AAEF9B15AF818600DC00AC /* Sources */,
+				69AAEF9C15AF818600DC00AC /* Frameworks */,
+				69AAEF9D15AF818600DC00AC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NAS2D_Test;
+			productName = NAS2D_Test;
+			productReference = 69AAEF9F15AF818600DC00AC /* NAS2D_Test.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		69AAEF9615AF818600DC00AC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Trevor Allen";
+			};
+			buildConfigurationList = 69AAEF9915AF818600DC00AC /* Build configuration list for PBXProject "NAS2D_Test" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 69AAEF9415AF818600DC00AC;
+			productRefGroup = 69AAEFA015AF818600DC00AC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				69AAEF9E15AF818600DC00AC /* NAS2D_Test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		69AAEF9D15AF818600DC00AC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69AAEFAE15AF818600DC00AC /* InfoPlist.strings in Resources */,
+				69AAEFB415AF818600DC00AC /* Credits.rtf in Resources */,
+				69AAEFE115AF824300DC00AC /* SDLMain.nib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		69AAEF9B15AF818600DC00AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69AAEFB015AF818600DC00AC /* main.m in Sources */,
+				69AAEFDB15AF81FB00DC00AC /* GameState.cpp in Sources */,
+				69AAEFDC15AF81FB00DC00AC /* main.cpp in Sources */,
+				69AAEFE015AF824300DC00AC /* SDLMain.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		69AAEFAC15AF818600DC00AC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				69AAEFAD15AF818600DC00AC /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		69AAEFB215AF818600DC00AC /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				69AAEFB315AF818600DC00AC /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		69AAEFBB15AF818600DC00AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		69AAEFBC15AF818600DC00AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		69AAEFBE15AF818600DC00AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../build/Release\"",
+					"\"$(SRCROOT)/../../../../../../dependencies/macos/Framework\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NAS2D_Test/NAS2D_Test-Prefix.pch";
+				INFOPLIST_FILE = "NAS2D_Test/NAS2D_Test-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		69AAEFBF15AF818600DC00AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../build/Release\"",
+					"\"$(SRCROOT)/../../../../../../dependencies/macos/Framework\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NAS2D_Test/NAS2D_Test-Prefix.pch";
+				INFOPLIST_FILE = "NAS2D_Test/NAS2D_Test-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		69AAEF9915AF818600DC00AC /* Build configuration list for PBXProject "NAS2D_Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69AAEFBB15AF818600DC00AC /* Debug */,
+				69AAEFBC15AF818600DC00AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		69AAEFBD15AF818600DC00AC /* Build configuration list for PBXNativeTarget "NAS2D_Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69AAEFBE15AF818600DC00AC /* Debug */,
+				69AAEFBF15AF818600DC00AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 69AAEF9615AF818600DC00AC /* Project object */;
+}

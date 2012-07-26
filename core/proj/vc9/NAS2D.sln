@@ -8,15 +8,20 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Release Gold|Win32 = Release Gold|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Debug|Win32.ActiveCfg = Debug|Win32
 		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Debug|Win32.Build.0 = Debug|Win32
+		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Release Gold|Win32.ActiveCfg = Release Gold|Win32
+		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Release Gold|Win32.Build.0 = Release Gold|Win32
 		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Release|Win32.ActiveCfg = Release|Win32
 		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Release|Win32.Build.0 = Release|Win32
 		{3FB4BCA8-38F2-4D80-A335-E89DF8AC53B0}.Debug|Win32.ActiveCfg = Debug|Win32
 		{3FB4BCA8-38F2-4D80-A335-E89DF8AC53B0}.Debug|Win32.Build.0 = Debug|Win32
+		{3FB4BCA8-38F2-4D80-A335-E89DF8AC53B0}.Release Gold|Win32.ActiveCfg = Release Gold|Win32
+		{3FB4BCA8-38F2-4D80-A335-E89DF8AC53B0}.Release Gold|Win32.Build.0 = Release Gold|Win32
 		{3FB4BCA8-38F2-4D80-A335-E89DF8AC53B0}.Release|Win32.ActiveCfg = Release|Win32
 		{3FB4BCA8-38F2-4D80-A335-E89DF8AC53B0}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection

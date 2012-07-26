@@ -75,18 +75,3 @@ void Timer::reset()
 	delta();
 	mAccumulator = 0;
 }
-
-unsigned int Timer::ms() const
-{
-	
-}
-
-unsigned int Timer::s() const
-{
-	
-}
-
-unsigned int Timer::delta() const
-{
-	
-}

@@ -77,6 +77,7 @@ public:
 	Point_2d(int x, int y): x(x), y(y) {}
 
 	bool operator==(const Point_2d& pt) { return (x == pt.x) && (y == pt.y); }
+	void operator()(int _x, int _y) { x = _x; y = _y; }
 
 	Point_2d operator+(const Point_2d& pt) { return Point_2d(x + pt.x, y + pt.y); }
 	Point_2d operator-(const Point_2d& pt) { return Point_2d(x - pt.x, y - pt.y); }
@@ -96,6 +97,7 @@ public:
 	Point_2df(float x, float y): x(x), y(y) {}
 
 	bool operator==(const Point_2df& pt) { return (x == pt.x) && (y == pt.y); }
+	void operator()(float _x, float _y) { x = _x; y = _y; }
 
 	Point_2df operator+(const Point_2df& pt) { return Point_2df(x + pt.x, y + pt.y); }
 	Point_2df operator-(const Point_2df& pt) { return Point_2df(x - pt.x, y - pt.y); }

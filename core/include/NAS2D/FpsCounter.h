@@ -36,7 +36,8 @@ private:
 	unsigned int	mLastTick;
 	unsigned int	mDelta;
 
-	unsigned int	mLastDelta;
+	unsigned int	mArrayIndex;
+	unsigned int	mAccumulator;
 };
 
 #endif

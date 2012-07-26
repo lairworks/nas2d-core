@@ -121,6 +121,7 @@ void Sprite::play(const std::string& action)
 		mCurrentAction = toLowercase(action);
 	}
 
+	mTimer.reset();
 	resume();
 }
 

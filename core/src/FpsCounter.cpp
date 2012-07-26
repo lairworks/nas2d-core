@@ -11,13 +11,17 @@
 #include "NAS2D/FpsCounter.h"
 
 
+const unsigned int FPS_COUNTS_SIZE = 10;
+unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };
+
 /**
  * Basic Constructor
  */
 FpsCounter::FpsCounter():	mCurrentTick(0),
 							mLastTick(0),
 							mDelta(0),
-							mLastDelta(0)
+							mArrayIndex(0),
+							mAccumulator(0)
 {}
 
 
@@ -26,17 +30,24 @@ FpsCounter::FpsCounter():	mCurrentTick(0),
  */
 unsigned int FpsCounter::fps()
 {
+	mLastTick = mCurrentTick;
 	mCurrentTick = SDL_GetTicks();
 
-	unsigned int d = mCurrentTick - mLastTick;
-	mLastTick = mCurrentTick;
-
-	mDelta = d * 0.05 + mLastDelta * 0.95;
-	mLastDelta = d;
+	mDelta = mCurrentTick - mLastTick;
 	
 	// Avoid a division by 0
 	if(mDelta == 0)
-		return 0;
+		mDelta = 1;
 
-	return 1000 / mDelta;
+	// Using a modulus here to eliminate maintenance overhead
+	FPS_COUNTS[mArrayIndex] = 1000 / mDelta;
+	mArrayIndex++;
+	if(mArrayIndex >= FPS_COUNTS_SIZE)
+		mArrayIndex = 0;
+
+	mAccumulator = 0;
+	for(unsigned int i = 0; i < FPS_COUNTS_SIZE; i++)
+		mAccumulator += FPS_COUNTS[i];
+
+	return mAccumulator / FPS_COUNTS_SIZE;
 }

@@ -12,15 +12,16 @@
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
 #if defined(__APPLE__)
-	#include "SDL_ttf/SDL_ttf.h"
 	#include <OpenGL/OpenGL.h>
-	#include <GLUT/glut.h>
 #elif defined(WIN32)
 	#include "GLee.h"
 	#include "SDL/SDL_opengl.h"
 #else
 	#include "SDL/SDL_opengl.h"
 #endif
+
+#include "ft2build.h"
+#include FT_FREETYPE_H
 
 #include <iostream>
 #include <math.h>
@@ -465,27 +466,11 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, int x, int y, i
 	else if(text.empty())
 		return;
 
-	SDL_Color Color = {r, g, b};
-//	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
-//	if(!textSurface)
-//	{
-//		stringstream str;
-//		str << "Renderer: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
-//		pushMessage(str.str());
-//		return;
-//	}
-//
-//	// Create a texture from the text surface, render it, and free it.
-//	GLuint texId = generateTexture(textSurface);
-//
-//	glColor4ub(255, 255, 255, a);
-//	
-//	fillVertexArray(x, y, textSurface->w, textSurface->h);
-//
-//	drawVertexArray(texId);
-//
-//	glDeleteTextures(1, &texId);
-//	SDL_FreeSurface(textSurface);
+	glColor4ub(r, g, b, a);
+	
+	fillVertexArray(x, y, font.width(text), font.height());
+
+	drawVertexArray(font.texture(text));
 
 	return;
 }
@@ -917,15 +902,12 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
-
+	mScreen = 0;
 	mScreen = SDL_SetVideoMode(resX, resY, bpp, sdlFlags);
 	if(mScreen == 0)
 		throw Exception(702, "Error setting Video Mode", SDL_GetError());
 
 	SDL_ShowCursor(false);
-
-	if(TTF_Init() < 0)
-		throw Exception(703, "Error starting TrueType Library", TTF_GetError());
 
 	buildDisplayModeList();
 	initGL();

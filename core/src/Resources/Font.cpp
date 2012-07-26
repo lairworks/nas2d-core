@@ -102,13 +102,66 @@ void Font::load()
 	//std::printf("%li", mFont->num_glyphs);  << ?????
 
 	// Should check for NULL font and set to invalid state if face is NULL.
-	cout << mFont->num_glyphs << endl;
+	cout << "Font Name: " << name() << endl;
+	cout << "Num of Glyphs: " << mFont->num_glyphs << endl;
+	cout << "Flags: " << mFont->face_flags << endl;
 
-	//mHeight = TTF_FontHeight(mFont);
+	mHeight = (mFont->bbox.yMax - mFont->bbox.yMin)/64;
+	cout << "Font Height: " << mHeight << endl;
+	err = FT_Set_Char_Size(
+							 mFont,    /* handle to face object           */
+							 0,       /* char_width in 1/64th of points  */
+							 mPtSize*64,   /* char_height in 1/64th of points */
+							 72,     /* horizontal device resolution    */
+							 72 );   /* vertical device resolution      */
+	
+	mFontGlyphSlot = mFont->glyph;
 
 	mFontName = buildName(mFont);
 
 	loaded(true);
+}
+
+GLuint Font::texture(const std::string& str)
+{
+	int w = 0;
+	int h = 0;
+	int x = 0;
+	
+	const char* text;
+	
+	for(text = str.c_str(); *text; text++) {
+		if(FT_Load_Char(mFont, *text, FT_LOAD_RENDER))
+			continue;
+		
+		
+		w += mFontGlyphSlot->bitmap.width;
+		h = std::max(h, mFontGlyphSlot->bitmap.rows);
+	}
+	
+	if (!mFontTexture) {
+		glGenTextures(1, &mFontTexture);
+	}
+	glBindTexture(GL_TEXTURE_2D, mFontTexture);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
+	
+	for(text = str.c_str(); *text; text++) {
+		if(FT_Load_Char(mFont, *text, FT_LOAD_RENDER))
+			continue;
+		
+		glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, mFontGlyphSlot->bitmap.width, mFontGlyphSlot->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, mFontGlyphSlot->bitmap.buffer);
+		
+		x += mFontGlyphSlot->bitmap.width;
+		}
+	return mFontTexture;
 }
 
 
@@ -122,12 +175,15 @@ int Font::width(const std::string& str) const
 	if(mFont == NULL)
 		return 0;
 
-	int width = 0;
+	int totalWidth = 0;
+	
+	for (const char* i = str.c_str(); *i; i++)
+	{
+		/* load glyph image into the slot (erase previous one) */
+		totalWidth += mFontGlyphSlot->bitmap.width;
+	}
 
-//	if(TTF_SizeText(mFont, str.c_str(), &width, NULL))
-//		return 0;
-
-	return width;
+	return totalWidth;
 }
 
 

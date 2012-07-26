@@ -15,6 +15,11 @@ using namespace std;
 string buildName(FT_Face);
 void toggleFontStyle(FT_Face, int);
 
+
+FT_Library Font::mFontLib;
+bool Font::mFontLibInited = false;
+
+
 /**
  * Primary method of instantiating a font.
  *
@@ -27,10 +32,16 @@ Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
 														mHeight(0),
 														mPtSize(ptSize)
 {
-	mError = FT_Init_FreeType( &mFontLib );
-	if ( mError )
+	
+	if(!Font::mFontLibInited)
 	{
-		errorMessage("FreeType Font Library failed to initialize.");
+		int err = FT_Init_FreeType(&Font::mFontLib);
+		if(err)
+		{
+			errorMessage("FreeType Font Library failed to initialize.");
+		}
+
+		mFontLibInited = true;
 	}
 	load();
 }
@@ -47,11 +58,6 @@ Font::Font():	Resource("Default Font"),
 				mPtSize(0),
 				mFontName("Default Font")
 {
-	mError = FT_Init_FreeType( &mFontLib );
-	if ( mError )
-	{
-		errorMessage("FreeType Font Library failed to initialize.");
-	}
 }
 
 
@@ -60,7 +66,7 @@ Font::Font():	Resource("Default Font"),
  */
 Font::~Font()
 {
-	mFont = NULL;
+	FT_Done_Face(mFont);
 }
 
 
@@ -78,25 +84,25 @@ void Font::load()
 	if(mFontBuffer.size() == 0)
 	{
 		errorMessage(Utility<Filesystem>::get().lastError());
-		//mFont = NULL;
 		return;
 	}
 	
-	
-	mError = FT_New_Face( mFontLib,
-						name().c_str(),
-						0,
-						&mFont );
-	if ( mError == FT_Err_Unknown_File_Format )
+	int err = FT_New_Memory_Face(mFontLib, reinterpret_cast<const FT_Byte*>(mFontBuffer.bytes().c_str()), mFontBuffer.size(), 0, &mFont);
+											// ^^^ DANGEROUS CAST!!!!
+
+	if(err == FT_Err_Unknown_File_Format)
 	{
-		errorMessage("Unknown font file format!");
+		errorMessage("Unknown font file format.");
 	}
-	else if ( mError )
+	else if(err)
 	{
-		errorMessage("Font file could not be read!");
+		errorMessage("Font file could not be read.");
 	}
 	
-	std::printf("%li", mFont->num_glyphs);
+	//std::printf("%li", mFont->num_glyphs);  << ?????
+
+	// Should check for NULL font and set to invalid state if face is NULL.
+	cout << mFont->num_glyphs << endl;
 
 	//mHeight = TTF_FontHeight(mFont);
 
@@ -212,6 +218,7 @@ string buildName(FT_Face font)
 //		return fontFamily;
 //	else
 //		return fontFamily + " " + fontStyle;
+	return "";
 }
 
 

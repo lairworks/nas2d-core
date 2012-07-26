@@ -13,15 +13,8 @@
 
 #include "Resource.h"
 
-#ifdef __APPLE__
-#include <ft2build.h>
-#else
-#include "SDL/SDL_ttf.h"
-#endif
-
+#include "ft2build.h"
 #include FT_FREETYPE_H
-
-static FT_Library mFontLib;
 
 
 /**
@@ -61,17 +54,18 @@ private:
 
 	void load();
 
-	FT_Face			mFont;			/**< True Type Font. */
-	//FT_Glyph		mFontGlyph;
-	FT_BBox			mFontBounds;
+	FT_Face				mFont;			/**< True Type Font. */
+	//FT_Glyph			mFontGlyph;
+	FT_BBox				mFontBounds;
 
-	int				mHeight;		/**< Font Height. */
-	int				mPtSize;		/**< Point Size to load the Font in. */
+	static FT_Library	mFontLib;
+	static bool			mFontLibInited;
 
-	File			mFontBuffer;	/**< Persistent memory buffer for TTF_Font. */
-	std::string		mFontName;		/**< Full typeface name. */
-	
-	int				mError;
+	int					mHeight;		/**< Font Height. */
+	int					mPtSize;		/**< Point Size to load the Font in. */
+
+	File				mFontBuffer;	/**< Persistent memory buffer for TTF_Font. */
+	std::string			mFontName;		/**< Full typeface name. */
 };
 
 #endif

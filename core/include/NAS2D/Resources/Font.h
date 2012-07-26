@@ -14,10 +14,14 @@
 #include "Resource.h"
 
 #ifdef __APPLE__
-#include "SDL_ttf/SDL_ttf.h"
+#include <ft2build.h>
 #else
 #include "SDL/SDL_ttf.h"
 #endif
+
+#include FT_FREETYPE_H
+
+static FT_Library mFontLib;
 
 
 /**
@@ -48,7 +52,7 @@ protected:
 	friend class SDL_Renderer;
 	friend class OGL_Renderer;
 
-	TTF_Font *font() const;
+	FT_Face font() const;
 
 private:
 	// explicitly disallow copy construction/assignment operator
@@ -57,13 +61,17 @@ private:
 
 	void load();
 
-	TTF_Font		*mFont;			/**< True Type Font. */
+	FT_Face			mFont;			/**< True Type Font. */
+	//FT_Glyph		mFontGlyph;
+	FT_BBox			mFontBounds;
 
 	int				mHeight;		/**< Font Height. */
 	int				mPtSize;		/**< Point Size to load the Font in. */
 
 	File			mFontBuffer;	/**< Persistent memory buffer for TTF_Font. */
 	std::string		mFontName;		/**< Full typeface name. */
+	
+	int				mError;
 };
 
 #endif

@@ -12,8 +12,8 @@
 
 using namespace std;
 
-string buildName(TTF_Font*);
-void toggleFontStyle(TTF_Font*, int);
+string buildName(FT_Face);
+void toggleFontStyle(FT_Face, int);
 
 /**
  * Primary method of instantiating a font.
@@ -27,6 +27,11 @@ Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
 														mHeight(0),
 														mPtSize(ptSize)
 {
+	mError = FT_Init_FreeType( &mFontLib );
+	if ( mError )
+	{
+		errorMessage("FreeType Font Library failed to initialize.");
+	}
 	load();
 }
 
@@ -42,6 +47,11 @@ Font::Font():	Resource("Default Font"),
 				mPtSize(0),
 				mFontName("Default Font")
 {
+	mError = FT_Init_FreeType( &mFontLib );
+	if ( mError )
+	{
+		errorMessage("FreeType Font Library failed to initialize.");
+	}
 }
 
 
@@ -50,7 +60,6 @@ Font::Font():	Resource("Default Font"),
  */
 Font::~Font()
 {
-	TTF_CloseFont(mFont);
 	mFont = NULL;
 }
 
@@ -72,16 +81,24 @@ void Font::load()
 		//mFont = NULL;
 		return;
 	}
-
-	mFont = TTF_OpenFontRW(SDL_RWFromConstMem(mFontBuffer.raw_bytes(), mFontBuffer.size()), 0, mPtSize);
-	if(!mFont)
-	{		
-		// Get the error message and return false. 
-		errorMessage(TTF_GetError());
-		return;
+	
+	
+	mError = FT_New_Face( mFontLib,
+						name().c_str(),
+						0,
+						&mFont );
+	if ( mError == FT_Err_Unknown_File_Format )
+	{
+		errorMessage("Unknown font file format!");
 	}
+	else if ( mError )
+	{
+		errorMessage("Font file could not be read!");
+	}
+	
+	std::printf("%li", mFont->num_glyphs);
 
-	mHeight = TTF_FontHeight(mFont);
+	//mHeight = TTF_FontHeight(mFont);
 
 	mFontName = buildName(mFont);
 
@@ -101,8 +118,8 @@ int Font::width(const std::string& str) const
 
 	int width = 0;
 
-	if(TTF_SizeText(mFont, str.c_str(), &width, NULL))
-		return 0;
+//	if(TTF_SizeText(mFont, str.c_str(), &width, NULL))
+//		return 0;
 
 	return width;
 }
@@ -124,7 +141,7 @@ int Font::height() const
  *			this functionality somehow or wrap the TTF_Font
  *			structure to something somewhat more generic.
  */
-TTF_Font *Font::font() const
+FT_Face Font::font() const
 {
 	return mFont;
 }
@@ -144,7 +161,7 @@ const std::string& Font::typefaceName() const
  */
 void Font::bold()
 {
-	toggleFontStyle(mFont, TTF_STYLE_BOLD);
+	//toggleFontStyle(mFont, TTF_STYLE_BOLD);
 }
 
 
@@ -153,7 +170,7 @@ void Font::bold()
  */
 void Font::italic()
 {
-	toggleFontStyle(mFont, TTF_STYLE_ITALIC);
+	//toggleFontStyle(mFont, TTF_STYLE_ITALIC);
 }
 
 
@@ -162,7 +179,7 @@ void Font::italic()
  */
 void Font::underline()
 {
-	toggleFontStyle(mFont, TTF_STYLE_UNDERLINE);
+	//toggleFontStyle(mFont, TTF_STYLE_UNDERLINE);
 }
 
 
@@ -171,7 +188,7 @@ void Font::underline()
  */
 void Font::normal()
 {
-	TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
+	//TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
 }
 
 
@@ -184,28 +201,28 @@ void Font::normal()
 /*
  * Builds a typeface name given a TTF_Font.
  */
-string buildName(TTF_Font* font)
+string buildName(FT_Face font)
 {
 	// Build Font Name with Family Name and Style Name.
-	string fontFamily = TTF_FontFaceFamilyName(font);
-	string fontStyle = TTF_FontFaceStyleName(font);
-
-	// If Font style is regular, just use the family name.
-	if(toLowercase(fontStyle) == "regular")
-		return fontFamily;
-	else
-		return fontFamily + " " + fontStyle;
+//	string fontFamily = TTF_FontFaceFamilyName(font);
+//	string fontStyle = TTF_FontFaceStyleName(font);
+//
+//	// If Font style is regular, just use the family name.
+//	if(toLowercase(fontStyle) == "regular")
+//		return fontFamily;
+//	else
+//		return fontFamily + " " + fontStyle;
 }
 
 
 /* 
  * Toggles a font style for a given TTF_Font.
  */ 
-void toggleFontStyle(TTF_Font* font, int fontStyle)
+void toggleFontStyle(FT_Face font, int fontStyle)
 {
 	// Defend against NULL pointers.
 	if(!font)
 		return;
 
-	TTF_SetFontStyle(font, TTF_GetFontStyle(font) ^ fontStyle);
+	//TTF_SetFontStyle(font, TTF_GetFontStyle(font) ^ fontStyle);
 }

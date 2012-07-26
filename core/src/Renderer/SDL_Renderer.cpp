@@ -278,16 +278,16 @@ void SDL_Renderer::drawText(Font& font, const std::string& text, int x, int y, i
 	SDL_Color color = {r, g, b, 0};
 	SDL_Rect blitRect = {x, y, 0, 0};
 
-	SDL_Surface *text_surface;
-	if(!(text_surface = TTF_RenderText_Blended(font.font(), text.c_str(), color)))
-	{
-		pushMessage(SDL_GetError());
-	}
-	else
-	{
-		SDL_BlitSurface(text_surface, NULL, mScreen, &blitRect);
-		SDL_FreeSurface(text_surface);
-	}
+//	SDL_Surface *text_surface;
+//	if(!(text_surface = TTF_RenderText_Blended(font.font(), text.c_str(), color)))
+//	{
+//		pushMessage(SDL_GetError());
+//	}
+//	else
+//	{
+//		SDL_BlitSurface(text_surface, NULL, mScreen, &blitRect);
+//		SDL_FreeSurface(text_surface);
+//	}
 }
 
 
@@ -301,16 +301,16 @@ void SDL_Renderer::drawTextClamped(Font& font, const std::string& text, int rast
 	SDL_Rect blitRect = {rasterX, rasterY, w, h};
 	SDL_Rect clipRect = {x, y, w, h};
 
-	SDL_Surface *text_surface;
-	if(!(text_surface = TTF_RenderText_Blended(font.font(), text.c_str(), color)))
-	{
-		pushMessage(SDL_GetError());
-	}
-	else
-	{
-		SDL_BlitSurface(text_surface, &clipRect, mScreen, &blitRect);
-		SDL_FreeSurface(text_surface);
-	}
+//	SDL_Surface *text_surface;
+//	if(!(text_surface = TTF_RenderText_Blended(font.font(), text.c_str(), color)))
+//	{
+//		pushMessage(SDL_GetError());
+//	}
+//	else
+//	{
+//		SDL_BlitSurface(text_surface, &clipRect, mScreen, &blitRect);
+//		SDL_FreeSurface(text_surface);
+//	}
 }
 
 
@@ -408,6 +408,6 @@ void SDL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	
 	buildDisplayModeList();
 
-	if (TTF_Init() < 0)
-		throw Exception(1323, "Error starting TrueType Library", TTF_GetError());
+//	if (TTF_Init() < 0)
+//		throw Exception(1323, "Error starting TrueType Library", TTF_GetError());
 }

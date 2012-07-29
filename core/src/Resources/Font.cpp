@@ -12,13 +12,8 @@
 
 using namespace std;
 
-string buildName(FT_Face);
-void toggleFontStyle(FT_Face, int);
-
-
-FT_Library Font::mFontLib;
-bool Font::mFontLibInited = false;
-
+string buildName(TTF_Font*);
+void toggleFontStyle(TTF_Font*, int);
 
 /**
  * Primary method of instantiating a font.
@@ -32,17 +27,6 @@ Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
 														mHeight(0),
 														mPtSize(ptSize)
 {
-	
-	if(!Font::mFontLibInited)
-	{
-		int err = FT_Init_FreeType(&Font::mFontLib);
-		if(err)
-		{
-			errorMessage("FreeType Font Library failed to initialize.");
-		}
-
-		mFontLibInited = true;
-	}
 	load();
 }
 
@@ -66,7 +50,8 @@ Font::Font():	Resource("Default Font"),
  */
 Font::~Font()
 {
-	FT_Done_Face(mFont);
+	TTF_CloseFont(mFont);
+	mFont = NULL;
 }
 
 
@@ -84,84 +69,23 @@ void Font::load()
 	if(mFontBuffer.size() == 0)
 	{
 		errorMessage(Utility<Filesystem>::get().lastError());
+		//mFont = NULL;
 		return;
 	}
-	
-	int err = FT_New_Memory_Face(mFontLib, reinterpret_cast<const FT_Byte*>(mFontBuffer.bytes().c_str()), mFontBuffer.size(), 0, &mFont);
-											// ^^^ DANGEROUS CAST!!!!
 
-	if(err == FT_Err_Unknown_File_Format)
-	{
-		errorMessage("Unknown font file format.");
+	mFont = TTF_OpenFontRW(SDL_RWFromConstMem(mFontBuffer.raw_bytes(), mFontBuffer.size()), 0, mPtSize);
+	if(!mFont)
+	{		
+		// Get the error message and return false. 
+		errorMessage(TTF_GetError());
+		return;
 	}
-	else if(err)
-	{
-		errorMessage("Font file could not be read.");
-	}
-	
-	//std::printf("%li", mFont->num_glyphs);  << ?????
 
-	// Should check for NULL font and set to invalid state if face is NULL.
-	cout << "Font Name: " << name() << endl;
-	cout << "Num of Glyphs: " << mFont->num_glyphs << endl;
-	cout << "Flags: " << mFont->face_flags << endl;
-
-	mHeight = (mFont->bbox.yMax - mFont->bbox.yMin)/64;
-	cout << "Font Height: " << mHeight << endl;
-	err = FT_Set_Char_Size(
-							 mFont,    /* handle to face object           */
-							 0,       /* char_width in 1/64th of points  */
-							 mPtSize*64,   /* char_height in 1/64th of points */
-							 72,     /* horizontal device resolution    */
-							 72 );   /* vertical device resolution      */
-	
-	mFontGlyphSlot = mFont->glyph;
+	mHeight = TTF_FontHeight(mFont);
 
 	mFontName = buildName(mFont);
 
 	loaded(true);
-}
-
-GLuint Font::texture(const std::string& str)
-{
-	int w = 0;
-	int h = 0;
-	int x = 0;
-	
-	const char* text;
-	
-	for(text = str.c_str(); *text; text++) {
-		if(FT_Load_Char(mFont, *text, FT_LOAD_RENDER))
-			continue;
-		
-		
-		w += mFontGlyphSlot->bitmap.width;
-		h = std::max(h, mFontGlyphSlot->bitmap.rows);
-	}
-	
-	if (!mFontTexture) {
-		glGenTextures(1, &mFontTexture);
-	}
-	glBindTexture(GL_TEXTURE_2D, mFontTexture);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
-	
-	for(text = str.c_str(); *text; text++) {
-		if(FT_Load_Char(mFont, *text, FT_LOAD_RENDER))
-			continue;
-		
-		glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, mFontGlyphSlot->bitmap.width, mFontGlyphSlot->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, mFontGlyphSlot->bitmap.buffer);
-		
-		x += mFontGlyphSlot->bitmap.width;
-		}
-	return mFontTexture;
 }
 
 
@@ -175,15 +99,12 @@ int Font::width(const std::string& str) const
 	if(mFont == NULL)
 		return 0;
 
-	int totalWidth = 0;
-	
-	for (const char* i = str.c_str(); *i; i++)
-	{
-		/* load glyph image into the slot (erase previous one) */
-		totalWidth += mFontGlyphSlot->bitmap.width;
-	}
+	int width = 0;
 
-	return totalWidth;
+	if(TTF_SizeText(mFont, str.c_str(), &width, NULL))
+		return 0;
+
+	return width;
 }
 
 
@@ -203,7 +124,7 @@ int Font::height() const
  *			this functionality somehow or wrap the TTF_Font
  *			structure to something somewhat more generic.
  */
-FT_Face Font::font() const
+TTF_Font *Font::font() const
 {
 	return mFont;
 }
@@ -223,7 +144,7 @@ const std::string& Font::typefaceName() const
  */
 void Font::bold()
 {
-	//toggleFontStyle(mFont, TTF_STYLE_BOLD);
+	toggleFontStyle(mFont, TTF_STYLE_BOLD);
 }
 
 
@@ -232,7 +153,7 @@ void Font::bold()
  */
 void Font::italic()
 {
-	//toggleFontStyle(mFont, TTF_STYLE_ITALIC);
+	toggleFontStyle(mFont, TTF_STYLE_ITALIC);
 }
 
 
@@ -241,7 +162,7 @@ void Font::italic()
  */
 void Font::underline()
 {
-	//toggleFontStyle(mFont, TTF_STYLE_UNDERLINE);
+	toggleFontStyle(mFont, TTF_STYLE_UNDERLINE);
 }
 
 
@@ -250,7 +171,7 @@ void Font::underline()
  */
 void Font::normal()
 {
-	//TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
+	TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
 }
 
 
@@ -263,29 +184,28 @@ void Font::normal()
 /*
  * Builds a typeface name given a TTF_Font.
  */
-string buildName(FT_Face font)
+string buildName(TTF_Font* font)
 {
 	// Build Font Name with Family Name and Style Name.
-//	string fontFamily = TTF_FontFaceFamilyName(font);
-//	string fontStyle = TTF_FontFaceStyleName(font);
-//
-//	// If Font style is regular, just use the family name.
-//	if(toLowercase(fontStyle) == "regular")
-//		return fontFamily;
-//	else
-//		return fontFamily + " " + fontStyle;
-	return "";
+	string fontFamily = TTF_FontFaceFamilyName(font);
+	string fontStyle = TTF_FontFaceStyleName(font);
+
+	// If Font style is regular, just use the family name.
+	if(toLowercase(fontStyle) == "regular")
+		return fontFamily;
+	else
+		return fontFamily + " " + fontStyle;
 }
 
 
 /* 
  * Toggles a font style for a given TTF_Font.
  */ 
-void toggleFontStyle(FT_Face font, int fontStyle)
+void toggleFontStyle(TTF_Font* font, int fontStyle)
 {
 	// Defend against NULL pointers.
 	if(!font)
 		return;
 
-	//TTF_SetFontStyle(font, TTF_GetFontStyle(font) ^ fontStyle);
+	TTF_SetFontStyle(font, TTF_GetFontStyle(font) ^ fontStyle);
 }

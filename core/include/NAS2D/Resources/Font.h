@@ -13,18 +13,11 @@
 
 #include "Resource.h"
 
-#if defined(__APPLE__)
-#include "SDL/SDL_opengl.h"
-#elif defined(WIN32)
-#include "GLee.h"
-#include "SDL/SDL_opengl.h"
+#ifdef __APPLE__
+#include "SDL_ttf/SDL_ttf.h"
 #else
-#include "SDL/SDL_opengl.h"
+#include "SDL/SDL_ttf.h"
 #endif
-
-#include "ft2build.h"
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
 
 
 /**
@@ -44,7 +37,6 @@ public:
 	int height() const;
 
 	const std::string& typefaceName() const;
-	GLuint texture(const std::string& str);
 
 	void bold();
 	void italic();
@@ -56,7 +48,7 @@ protected:
 	friend class SDL_Renderer;
 	friend class OGL_Renderer;
 
-	FT_Face font() const;
+	TTF_Font *font() const;
 
 private:
 	// explicitly disallow copy construction/assignment operator
@@ -65,22 +57,13 @@ private:
 
 	void load();
 
-	FT_Face				mFont;			/**< True Type Font. */
-	FT_GlyphSlot		mFontGlyphSlot;
-	FT_BBox				mFontBounds;
-	FT_UInt				mFontGlyphIndex;
-	FT_Glyph			*mFontGlyph;
+	TTF_Font		*mFont;			/**< True Type Font. */
 
-	static FT_Library	mFontLib;
-	static bool			mFontLibInited;
+	int				mHeight;		/**< Font Height. */
+	int				mPtSize;		/**< Point Size to load the Font in. */
 
-	int					mHeight;		/**< Font Height. */
-	int					mPtSize;		/**< Point Size to load the Font in. */
-
-	File				mFontBuffer;	/**< Persistent memory buffer for TTF_Font. */
-	std::string			mFontName;		/**< Full typeface name. */
-	
-	GLuint				mFontTexture;
+	File			mFontBuffer;	/**< Persistent memory buffer for TTF_Font. */
+	std::string		mFontName;		/**< Full typeface name. */
 };
 
 #endif

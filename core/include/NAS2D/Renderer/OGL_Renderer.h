@@ -16,6 +16,8 @@
 
 #include "SDL/SDL.h"
 
+#include "ShaderManager.h"
+
 #include <map>
 
 
@@ -115,6 +117,8 @@ private:
 	GLuint				mTextureTarget;				/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */
 	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
 	//	GLfloat				mTextureBufferObject;	/**< COMMENT ME! */
+	
+	ShaderManager		*mShaderManager;
 };	
 
 #endif

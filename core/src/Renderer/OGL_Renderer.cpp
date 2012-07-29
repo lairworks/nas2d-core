@@ -878,6 +878,8 @@ void OGL_Renderer::initGL()
 		throw Exception(0, "Graphics Requirements Not Met", "Your graphics driver does not meet the minimum requirements.");
 
 	glEnable(mTextureTarget);
+	
+	mShaderManager = new ShaderManager();
 }
 
 

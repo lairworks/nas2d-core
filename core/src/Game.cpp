@@ -17,59 +17,46 @@
 
 #include "NAS2D/Mixer/SDL_Mixer.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
-#include "NAS2D/Renderer/SDL_Renderer.h"
 
 
 /**
  * Starts the engine by initializing all of the engine sub components and
  * setting up any default values should they be needed.
  *
- * \param	appTitle	The title that should be used for the game window.
+ * \param	title		The title that should be used for the game window.
  * \param	argv_0		argv[0] from main()'s argument list. Necessary for Linux compatibility.
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Intitial data path. Defaults to 'data'.
  */
-Game::Game(const std::string& appTitle, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
+Game::Game(const std::string& title, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
 {
-	cout << "Compiled on " << __DATE__ << " at " << __TIME__ << endl << endl;
+	cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << endl << endl;
 
-	cout << "Initializing subsystems:" << endl;	
+	cout << "Initializing subsystems..." << endl << endl;	
 
-	Utility<Filesystem>::get().init(argv_0, "data");
+	Utility<Filesystem>::get().init(argv_0, dataPath);
 
 	Configuration& cf = Utility<Configuration>::get();
 	cf.load(configPath);
 
-	// Instantiate the Renderer object
-	if(cf.renderer() == "OGL")
-	{
-		Utility<Renderer>::instantiateDerived(new OGL_Renderer());
-
-		// We all know how much I *hate* casting but this is one case where it's actually
-		// necessary so that we can ensure that LoM stays in a stable state. Also, the cast
-		// should never fail but this is one of those 'just in case' deals.
-		OGL_Renderer* ogl = dynamic_cast<OGL_Renderer*>(&Utility<Renderer>::get());
-		if(!ogl)
-		{
-			cout << "Unable to create an OpenGL Renderer. Switching to Software Mode instead." << endl;
-
-			Utility<Configuration>::get().renderer("SDL");
-			Utility<Configuration>::get().save();
-			
-			Utility<Renderer>::clean();
-			Utility<Renderer>::instantiateDerived(new SDL_Renderer());
-		}
-	}
-	else
-		Utility<Renderer>::instantiateDerived(new SDL_Renderer());
-
-	Utility<Renderer>::get().setApplicationTitle(appTitle);
-
 	Utility<Mixer>::instantiateDerived(new SDL_Mixer());
 	
-	Utility<EventHandler>::instantiateDerived(new EventHandler());
+	cout << "Initializing Event Handler... ";
+	Utility<EventHandler>::get();
+	cout << "done." << endl << endl;
 
-	cout << "Subsystems initialized." << endl << endl;
+	try
+	{
+		Utility<Renderer>::instantiateDerived(new OGL_Renderer());
+	}
+	catch(...)
+	{
+		throw Exception(0, "OpenGL Renderer", "Unable to create a Renderer.");
+	}
+
+	SDL_WM_SetCaption(title.c_str(), title.c_str());
+
+	cout << endl << "Subsystems initialized." << endl << endl;
 	cout << "===================================" << endl << endl;
 }
 
@@ -120,7 +107,7 @@ void Game::go(State *state)
 {
 	cout << "** GAME STATE START **" << endl << endl;
 
-	StateManager	stateManager;
+	StateManager stateManager;
 
 	stateManager.setState(state);
 

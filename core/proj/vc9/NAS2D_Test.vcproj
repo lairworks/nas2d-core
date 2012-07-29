@@ -346,10 +346,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\Renderer\SDL_Renderer.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\Renderer\ShaderManager.cpp"
 					>
 				</File>

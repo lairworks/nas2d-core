@@ -82,15 +82,6 @@ Renderer::~Renderer()
 
 
 /**
- * Sets the title used for the application window.
- * 
- * \param	title	A \c std::string to use for the window title.
- */
-void Renderer::setApplicationTitle(const std::string& title)
-{}
-
-
-/**
  * Draws an Image to the screen.
  *
  * \param	image	A reference to an Image Resource.

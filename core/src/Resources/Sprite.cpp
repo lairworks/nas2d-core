@@ -155,7 +155,7 @@ void Sprite::update(int x, int y)
 
 	if(!mPaused && (frame.frameDelay() != FRAME_PAUSE))
 	{
-		while(frame.frameDelay() > 0 && mTimer.accumulator() >= frame.frameDelay())
+		while(frame.frameDelay() > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay())
 		{
 			mTimer.adjust_accumulator(frame.frameDelay());
 			mCurrentFrame++;

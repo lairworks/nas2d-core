@@ -11,7 +11,7 @@
 #ifndef __NAS2D__ShaderManager__
 #define __NAS2D__ShaderManager__
 
-#include <iostream>
+#include "NAS2D/Common.h"
 
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
@@ -22,13 +22,22 @@
 #include "SDL/SDL_opengl.h"
 #endif
 
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+
+/**
+ * Document me!
+ */
 class ShaderManager
 {
 public:
 	ShaderManager();
 	~ShaderManager();
 	
-	void loadShader(std::string& src, GLuint shader);
+	void loadShader(const std::string& src, GLuint shader);
 	void attachShader(GLuint shader);
 	
 protected:
@@ -36,11 +45,13 @@ protected:
 	void printLog(GLuint obj);
 	
 private:
-	GLuint mShaderProgram;
+
+	GLuint		mShaderProgram;
 	
-	GLuint mFragShader;
-	GLuint mVertShader;
-	
+	GLuint		mFragShader;
+	GLuint		mVertShader;
+
+	StringList	mShaderList;
 };
 
 #endif /* defined(__NAS2D__ShaderManager__) */

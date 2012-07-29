@@ -28,17 +28,6 @@ const unsigned int	CLOSE_ATTEMPT_TIMEOUT		= 5;	// Seconds
 
 
 /**
- * Initializes the Filesystem class, sets up PhysicsFS and sets any necessary
- * platform directory strings.
- */
-Filesystem::Filesystem(const std::string& argv_0, const std::string& startPath):	mVerbose(false)
-{
-
-	init(argv_0, startPath);
-}
-
-
-/**
  * Default c'tor.
  */
 Filesystem::Filesystem(): mVerbose(false)
@@ -61,6 +50,7 @@ Filesystem::~Filesystem()
  */
 void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 {
+	cout << "Initializing Filesystem... ";
 	// Throw an exception if PhysFS couldn't start properly.
 	if(PHYSFS_init(argv_0.c_str()) == 0)
 		throw Exception(602, "Filesystem::Filesystem(): Unable to initialize PhysFS!", PHYSFS_getLastError());
@@ -77,7 +67,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 		mDataPath = basePath + mStartPath + mDirSeparator;
 
 	if(PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
-		cout << "Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << endl;
+		cout << endl << "Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << endl;
 
 	PHYSFS_setWriteDir(mDataPath.c_str());
 
@@ -104,6 +94,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 #else
 	#error Filesystem support for this platform has not been developed.
 #endif
+	cout << "done." << endl;
 }
 
 

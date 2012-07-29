@@ -21,6 +21,7 @@
 #endif
 
 #include <vector>
+#include <map>
 
 class Rectangle_2d;
 
@@ -34,12 +35,10 @@ class Image: public Resource
 {
 public:
 	Image(const std::string& filePath);
-	Image(Image *src, int x, int y, int width, int height);
-	Image(void *buffer, int size);
-	Image(const Image &src);
 	Image(int x, int y);
 	Image();
 
+	Image(const Image &src);
 	Image& operator=(const Image& rhs);
 
 	~Image();
@@ -55,28 +54,44 @@ public:
 
 protected:
 	friend class Renderer;
-	friend class SDL_Renderer;
 	friend class OGL_Renderer;
 
-	SDL_Surface *pixels();
+	unsigned int texture_id() const;
 
 private:
+
+	struct ImageInfo
+	{
+		ImageInfo(): textureId(0), w(0), h(0) {}
+		ImageInfo(unsigned int id, int w, int h): textureId(id), w(w), h(h) {}
+		
+		void operator()(unsigned int id, int w, int h) { textureId = id; w = w; h = h; }
+
+		unsigned int textureId;
+		int w;
+		int h;
+	};
+
+	typedef std::map<std::string, ImageInfo> TextureIdMap;
+	typedef std::map<unsigned int, int> ReferenceCountMap;
+
 	void load();
 	void loadDefault();
-	void loadFromSource(Image *src, int x, int y, int width, int height);
+	void generateTexture(SDL_Surface *src);
 
-	void createSurface(const char *data, int dataLength);
+	bool checkTextureId();
 
 	Color_4ub pixelColor(int x, int y, SDL_Surface* src) const; // internal version
 
-	/** \todo	This may be better off as a straight-up char* buffer which can be converted by the renderers
-	 *			as necessary. This will likely require a modification to the SDL Renderer that stores 'SDL_Surfaces'
-	 *			in a similar manner to the way the OpenGL Renderer stores references to OGL Textures.
-	 */
-	SDL_Surface*	mPixels;	/**< SDL_Surface containing the Pixel Data. */
+	Rectangle_2d	mRect;			/**< Used to store width/height information about the image. */
 
-	Rectangle_2d	mRect;		/**< Used to store width/height information about the image. */
+	unsigned int	mTextureId;		/**< OpenGL Texture ID. */
 
+
+	static TextureIdMap			_IdMap;		/*< Lookup table for OpenGL Texture ID's. */
+	static ReferenceCountMap	_RefMap;	/*< Lookup table for OpenGL Texture ID reference counts. */
+
+	static int					_Arbitrary;	/*< Counter for arbitrary image ID's. */
 };
 
 

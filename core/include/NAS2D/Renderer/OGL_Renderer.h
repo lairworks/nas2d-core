@@ -38,8 +38,6 @@ public:
 
 	~OGL_Renderer();
 
-	void setApplicationTitle(const std::string& title);
-	
 	void drawImage(Image& image, int x, int y, float scale);
 	void drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height);
 
@@ -99,12 +97,6 @@ private:
 	inline void fillTextureArray(int x, int y, int u, int v);
 	
 	void drawVertexArray(GLuint textureId, bool defaultTextureCoords, bool repeat);
-
-	GLuint getTextureId(Image& image);
-	GLuint generateTexture(SDL_Surface *src);
-	inline void updateTextures();
-	
-	GLenum getTextureFormat(SDL_Surface *src);
 
 	void getError();
 	

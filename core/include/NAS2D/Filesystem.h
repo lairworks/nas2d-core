@@ -36,7 +36,6 @@
 class Filesystem
 {
 public:
-	Filesystem(const std::string& argv_0, const std::string& startPath);
 	Filesystem();
 	~Filesystem();
 

@@ -90,8 +90,6 @@ public:
 	const std::string& getDriverName();
 	const std::string& getLastError();
 
-	virtual void setApplicationTitle(const std::string& title);
-
 	virtual void drawImage(Image& image, int x, int y, float scale = 1.0f);
 	virtual void drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height);
 

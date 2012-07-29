@@ -44,6 +44,8 @@ protected:
 	void errorMessage(const std::string& message);
 	void loaded(bool loaded);
 
+	void name(const std::string& name);
+
 private:
 	/**
 	 * Performs the necessary operations to load a Resource.

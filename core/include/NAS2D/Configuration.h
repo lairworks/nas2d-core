@@ -73,8 +73,6 @@ public:
 	void graphicsColorDepth(int bpp);
 	void graphicsTextureQuality(const std::string& quality);
 
-	void renderer(const std::string& renderer);
-	std::string renderer() const;
 
 	// Audio Options
 	int audioMixRate() const;
@@ -122,7 +120,6 @@ private:
 
 	bool				mFullScreen;					/**< Screen Mode */
 	bool				mVSync;							/**< Vertical Sync */
-	std::string			mRendererName;					/**< Renderer to use. */
 
     int					mMixRate;						/**< */
 	int					mStereoChannels;				/**< Either AUDIO_STEREO or AUDIO_MONO */

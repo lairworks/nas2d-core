@@ -51,10 +51,11 @@ SDL_Mixer::~SDL_Mixer()
 
 void SDL_Mixer::init()
 {
+	cout << "Initializing Mixer... ";
 	// Initialize SDL's Audio Subsystems.
 	if(SDL_Init(SDL_INIT_AUDIO) < 0)
 	{
-		cout << "\tAudio driver not initialized: " << SDL_GetError() << endl;
+		cout << endl << "\tAudio driver not initialized: " << SDL_GetError() << endl;
 		cout << "\tSetting to NULL mode. No audio will be played." << endl;
 		mActAsNull = true;
 		return;
@@ -63,7 +64,7 @@ void SDL_Mixer::init()
     // Initialize the Audio Mixer
     if(Mix_OpenAudio(Utility<Configuration>::get().audioMixRate(), MIX_DEFAULT_FORMAT, Utility<Configuration>::get().audioStereoChannels(), Utility<Configuration>::get().audioBufferSize()))
 	{
-		cout << "\tAudio driver not initialized: " << SDL_GetError() << endl;
+		cout << endl << "\tAudio driver not initialized: " << SDL_GetError() << endl;
 		cout << "\tSetting to NULL mode. No audio will be played." << endl;
 		mActAsNull = true;
 		return;
@@ -71,6 +72,8 @@ void SDL_Mixer::init()
 
 	setSfxVolume(Utility<Configuration>::get().audioSfxVolume());
 	setMusVolume(Utility<Configuration>::get().audioMusicVolume());
+
+	cout << "done." << endl;
 }
 
 

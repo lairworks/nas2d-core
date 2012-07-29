@@ -43,6 +43,15 @@ const std::string& Resource::name() const
 
 
 /**
+ * Sets the name of the resource.
+ */
+void Resource::name(const std::string& name)
+{
+	mResourceName = name;
+}
+
+
+/**
  * Returns the last error message.
  */
 const std::string& Resource::errorMessage() const

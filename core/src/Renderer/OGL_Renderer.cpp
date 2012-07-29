@@ -12,9 +12,7 @@
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
 #if defined(__APPLE__)
-	#include "SDL_ttf/SDL_ttf.h"
 	#include <OpenGL/OpenGL.h>
-	#include <GLUT/glut.h>
 #elif defined(WIN32)
 	#include "GLee.h"
 	#include "SDL/SDL_opengl.h"
@@ -43,12 +41,12 @@ GLfloat POINT_VERTEX_ARRAY[2] = { 0 };
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 
 
-OGL_Renderer::OGL_Renderer():	Renderer("OGL Renderer"),
+OGL_Renderer::OGL_Renderer():	Renderer("OpenGL Renderer"),
 								mScreen(0),
 								mTextureTarget(0)
 								//mVertexBufferObject(0),
 {
-	cout << "Starting " << mRendererName << "..." << endl;
+	cout << "Starting " << mRendererName << ":" << endl;
 	
 	Configuration& cf = Utility<Configuration>::get();
 
@@ -96,12 +94,8 @@ OGL_Renderer::~OGL_Renderer()
 	//glDeleteBuffers(1, &mVertexBufferObject);
 
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
-}
 
-
-void OGL_Renderer::setApplicationTitle(const std::string& title)
-{
-	SDL_WM_SetCaption(title.c_str(), title.c_str());
+	delete mShaderManager;
 }
 
 
@@ -116,8 +110,8 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords =
 		glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
 	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
 
@@ -129,8 +123,8 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords =
 	
 	glDrawArrays(GL_QUADS, 0, 4);
 	
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
+	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glDisableClientState(GL_VERTEX_ARRAY);
 	
 	if(repeat)
 	{
@@ -189,7 +183,7 @@ void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
 	fillVertexArray(x, y, image.width(), image.height());
 	
 	glColor4ub(255, 255, 255, 255);
-	drawVertexArray(getTextureId(image));
+	drawVertexArray(image.texture_id());
 }
 
 
@@ -204,7 +198,7 @@ void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, i
 					);
 
 	glColor4ub(255, 255, 255, 255);
-	drawVertexArray(getTextureId(image), false);
+	drawVertexArray(image.texture_id(), false);
 }
 
 
@@ -231,7 +225,7 @@ void OGL_Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, i
 
 
 	glColor4ub(255, 255, 255, 255);
-	drawVertexArray(getTextureId(image), false);
+	drawVertexArray(image.texture_id(), false);
 
 	glPopMatrix();
 }
@@ -257,7 +251,7 @@ void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 	
-	drawVertexArray(getTextureId(image));
+	drawVertexArray(image.texture_id());
 	glPopMatrix();
 }
 
@@ -269,7 +263,7 @@ void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, 
 
 	fillVertexArray(x, y, w, h);
 	
-	drawVertexArray(getTextureId(image));
+	drawVertexArray(image.texture_id());
 }
 
 
@@ -279,7 +273,7 @@ void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 
 	fillVertexArray(x, y, w, h);
 	
-	drawVertexArray(getTextureId(image), true, true);
+	drawVertexArray(image.texture_id(), true, true);
 }
 
 
@@ -292,7 +286,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	// Bind our destination texture.
-	glBindTexture(mTextureTarget, getTextureId(destination));
+	glBindTexture(mTextureTarget, destination.texture_id());
 
 	// Check for the need to clip the source texture.
 	Rectangle_2d clipRect;
@@ -312,17 +306,17 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, myFBO);
 
 	// Attach a texture to the FBO 
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mTextureTarget, getTextureId(destination), 0);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mTextureTarget, destination.texture_id(), 0);
 
 	glColor4ub(255, 255, 255, 255);
 
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x, destination.height() - dstPoint.y, clipRect.w, -clipRect.h);
 
-	drawVertexArray(getTextureId(source));
+	drawVertexArray(source.texture_id());
 
 	// Bind our destination texture again
-	glBindTexture(mTextureTarget, getTextureId(destination));
+	glBindTexture(mTextureTarget, destination.texture_id());
 
 	// Reset viewport and unbind
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
@@ -338,10 +332,10 @@ void OGL_Renderer::drawPixel(int x, int y, int r, int g, int b, int a)
 
 	POINT_VERTEX_ARRAY[0] = static_cast<float>(x) + 0.5f; POINT_VERTEX_ARRAY[1] = static_cast<float>(y) + 0.5f;
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
 	glDrawArrays(GL_POINTS, 0, 1);
-	glDisableClientState(GL_VERTEX_ARRAY);
+	//glDisableClientState(GL_VERTEX_ARRAY);
 
 	glEnable(mTextureTarget);
 }
@@ -361,10 +355,10 @@ void OGL_Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, i
 						};
 
 	glColor4ub(r, g, b, a);
-	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, verts);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glColor4ub(255, 255, 255, 255);
 
 	glEnable(mTextureTarget);
@@ -405,9 +399,9 @@ void OGL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, i
 		y = s * t + c * y;
 	}
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, verts);
-	glDrawArrays(GL_LINE_LOOP, 0, num_segments);
+	//glDrawArrays(GL_LINE_LOOP, 0, num_segments);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	
@@ -433,12 +427,12 @@ void OGL_Renderer::drawBox(int x, int y, int width, int height, int r, int g, in
 
 	fillVertexArray(x, y, width, height);
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
 
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 	
-	glDisableClientState(GL_VERTEX_ARRAY);
+	//glDisableClientState(GL_VERTEX_ARRAY);
 
 	glEnable(mTextureTarget);
 }
@@ -475,9 +469,55 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, int x, int y, i
 		return;
 	}
 
-	// Create a texture from the text surface, render it, and free it.
-	GLuint texId = generateTexture(textSurface);
 
+	// Detect which order the pixel data is in to properly feed OGL.
+	GLint nColors = textSurface->format->BytesPerPixel;
+	
+	/**
+	 * \todo	When compiling in nightmare mode with Visual Studio, it indicated that \c textureFormat could be potentially
+	 *			uninitialized should nColors be anything other than '3' or '4' (24 bit and 32 bit color modes, respectively).
+	 *			The only other expected values would be '2' (16 bit color mode) or '1' (8 bit color mode). While in practice
+	 *			neither of these cases is likely to show up, it's extremely important that textureFormat is initialized to a
+	 *			good default value that will work for generally all modes or one that will at least not cause a crash.
+	 */
+	GLenum textureFormat = 0;
+	if(nColors == 4)
+	{
+		if(textSurface->format->Rmask == 0x000000ff)
+			textureFormat = GL_RGBA;
+		else
+			textureFormat = GL_BGRA;
+	}
+	else if(nColors == 3)     // no alpha channel
+	{
+		if(textSurface->format->Rmask == 0x000000ff)
+			textureFormat = GL_RGB;
+		else
+			textureFormat = GL_BGR;
+	}
+	else
+	{
+		cout << "Image must be 16-, 24- or 32-bit." << std::endl;
+		return;
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
+											// or can we set it once in the Renderer?
+
+	// Create a texture from the text surface, render it, and free it.
+	GLuint texId = 0;
+	glGenTextures(1, &texId);
+	glBindTexture(GL_TEXTURE_2D, texId);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, nColors, textSurface->w, textSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, textSurface->pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+
+	// =================
 	glColor4ub(255, 255, 255, a);
 	
 	fillVertexArray(x, y, textSurface->w, textSurface->h);
@@ -486,8 +526,6 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, int x, int y, i
 
 	glDeleteTextures(1, &texId);
 	SDL_FreeSurface(textSurface);
-
-	return;
 }
 
 
@@ -500,36 +538,36 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, int rast
 		return;
 
 	SDL_Color Color = {r, g, b};
-	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
-	if(!textSurface)
-	{
-		cout << "(ERR) Renderer Error: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
-		//glDisable(mTextureTarget);
-		return;
-	}
-
-	// Create a new surface at the clamped size, blit to it and free
-	// the originally generated text surface.
-	SDL_Surface *clampedSurface = SDL_CreateRGBSurface(textSurface->flags, w, h, textSurface->format->BitsPerPixel, textSurface->format->Rmask, textSurface->format->Gmask, textSurface->format->Bmask, textSurface->format->Amask);
-	SDL_SetAlpha(textSurface, 0, textSurface->format->alpha); 
-	SDL_Rect grabRect = {x, y, w, h};
-	SDL_BlitSurface(textSurface, &grabRect, clampedSurface, NULL);
-	SDL_SetAlpha(clampedSurface, SDL_SRCALPHA, clampedSurface->format->alpha);
-	SDL_FreeSurface(textSurface);
-	textSurface = NULL;
-
-
-	// Create a texture from the clamped surface, render it, and free it.
-	GLuint texId = generateTexture(clampedSurface);
-
-	glColor4ub(255, 255, 255, a);
-
-	fillVertexArray(rasterX, rasterY, clampedSurface->w, clampedSurface->h);
-	
-	drawVertexArray(texId);
-	
-	glDeleteTextures(1, &texId);
-	SDL_FreeSurface(clampedSurface);
+//	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
+//	if(!textSurface)
+//	{
+//		cout << "(ERR) Renderer Error: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
+//		//glDisable(mTextureTarget);
+//		return;
+//	}
+//
+//	// Create a new surface at the clamped size, blit to it and free
+//	// the originally generated text surface.
+//	SDL_Surface *clampedSurface = SDL_CreateRGBSurface(textSurface->flags, w, h, textSurface->format->BitsPerPixel, textSurface->format->Rmask, textSurface->format->Gmask, textSurface->format->Bmask, textSurface->format->Amask);
+//	SDL_SetAlpha(textSurface, 0, textSurface->format->alpha); 
+//	SDL_Rect grabRect = {x, y, w, h};
+//	SDL_BlitSurface(textSurface, &grabRect, clampedSurface, NULL);
+//	SDL_SetAlpha(clampedSurface, SDL_SRCALPHA, clampedSurface->format->alpha);
+//	SDL_FreeSurface(textSurface);
+//	textSurface = NULL;
+//
+//
+//	// Create a texture from the clamped surface, render it, and free it.
+//	GLuint texId = generateTexture(clampedSurface);
+//
+//	glColor4ub(255, 255, 255, a);
+//
+//	fillVertexArray(rasterX, rasterY, clampedSurface->w, clampedSurface->h);
+//	
+//	drawVertexArray(texId);
+//	
+//	glDeleteTextures(1, &texId);
+//	SDL_FreeSurface(clampedSurface);
 	return;
 }
 
@@ -544,8 +582,6 @@ void OGL_Renderer::clearScreen(int r, int g, int b)
 void OGL_Renderer::update()
 {
 	getError();
-
-	updateTextures();
 
 	Renderer::update();
 	SDL_GL_SwapBuffers();
@@ -646,147 +682,6 @@ void OGL_Renderer::getError()
 
 
 /**
- * Gets a TextureID from our array of GL Texture's.
- */
-inline GLuint OGL_Renderer::getTextureId(Image& image)
-{
-	GLuint textureId = 0;
-
-	// Here we use the address of an image as its identifier. The address should never
-	// change during the lifetime of the image (at least that's the assumption).
-	TextureArray::iterator it = mTextureArray.find(image.id());
-
-	if(it == mTextureArray.end())
-	{
-		textureId = generateTexture(image.pixels());
-		mTextureArray[image.id()] = std::pair<GLuint, int>(textureId, mTimer.tick());
-	}
-	else
-	{
-		textureId = it->second.first;
-		it->second.second = mTimer.tick();	// Set time stamp.
-	}
-
-	return textureId;
-}
-
-
-/**
- * Gets the Determines the TextureFormat from an Image.
- */
-GLenum OGL_Renderer::getTextureFormat(SDL_Surface *src)
-{
-	// Detect which order the pixel data is in to properly feed OGL.
-	GLint nColors = src->format->BytesPerPixel;
-	
-	/**
-	 * \todo	When compiling in nightmare mode with Visual Studio, it indicated that \c textureFormat could be potentially
-	 *			uninitialized should nColors be anything other than '3' or '4' (24 bit and 32 bit color modes, respectively).
-	 *			The only other expected values would be '2' (16 bit color mode) or '1' (8 bit color mode). While in practice
-	 *			neither of these cases is likely to show up, it's extremely important that textureFormat is initialized to a
-	 *			good default value that will work for generally all modes or one that will at least not cause a crash.
-	 */
-	GLenum textureFormat;
-	if(nColors == 4)
-	{
-		if(src->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGBA;
-		else
-			textureFormat = GL_BGRA;
-	}
-	else if(nColors == 3)     // no alpha channel
-	{
-		if(src->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGB;
-		else
-			textureFormat = GL_BGR;
-	}
-	else
-		cout << "Image is not truecolor." << std::endl;
-	
-	return textureFormat;
-}
-
-
-GLuint OGL_Renderer::generateTexture(SDL_Surface *src)
-{
-	GLuint texId = 0;
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	
-	glGenTextures(1, &texId);
-	glBindTexture(mTextureTarget, texId);
-
-	// Detect which order the pixel data is in to properly feed OGL.
-	GLint nColors = src->format->BytesPerPixel;
-	
-	/**
-	 * \todo	When compiling in nightmare mode with Visual Studio, it indicated that \c textureFormat could be potentially
-	 *			uninitialized should nColors be anything other than '3' or '4' (24 bit and 32 bit color modes, respectively).
-	 *			The only other expected values would be '2' (16 bit color mode) or '1' (8 bit color mode). While in practice
-	 *			neither of these cases is likely to show up, it's extremely important that textureFormat is initialized to a
-	 *			good default value that will work for generally all modes or one that will at least not cause a crash.
-	 */
-	GLenum textureFormat;
-	if(nColors == 4)
-	{
-		if(src->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGBA;
-		else
-			textureFormat = GL_BGRA;
-	}
-	else if(nColors == 3)     // no alpha channel
-	{
-		if(src->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGB;
-		else
-			textureFormat = GL_BGR;
-	}
-	else
-		cout << "Image is not truecolor." << std::endl;
-
-
-	glTexImage2D(mTextureTarget, 0, nColors, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
-
-	glTexParameteri(mTextureTarget, GL_TEXTURE_MIN_FILTER, TEXTURE_FILTER);
-	glTexParameteri(mTextureTarget, GL_TEXTURE_MAG_FILTER, TEXTURE_FILTER);
-	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	return texId;
-}
-
-
-/**
- * Checks through the list of textures and removes any textures
- * that haven't been accessed for more than TEXTURE_EXPIRE_TIME
- * minutes.
- */
-inline void OGL_Renderer::updateTextures()
-{
-	if(mTimer.accumulator() > TEXTURE_EXPIRE_TIME)
-	{
-		mTimer.reset();
-		map<int, pair<GLuint, int> >::iterator i = mTextureArray.begin();
-		while(i != mTextureArray.end())
-		{
-			if((mTimer.tick() - i->second.second) > TEXTURE_EXPIRE_TIME)
-			{
-				#if defined(_DEBUG)
-				cout << "DEBUG: OGL_Renderer::updateTextures() - Deleting texture ID (" << i->second.first << ")" << endl;
-				#endif
-
-				glDeleteTextures(1, &i->second.first);
-				mTextureArray.erase(i++);
-			}
-			else
-				++i;
-		}
-	}
-}
-
-
-/**
  * Checks for expected extensions and prints warning messages
  * if the video driver doesn't support the extension.
  */
@@ -865,21 +760,19 @@ void OGL_Renderer::initGL()
 	const SDL_VideoInfo* mVideoInfo = SDL_GetVideoInfo();
 	cout << "\t- OpenGL System Info -" << endl;
 
-	char videoDriverName[256];
-	if(SDL_VideoDriverName(videoDriverName, 256) != NULL)
-		mDriverName = videoDriverName;
-	else
-		mDriverName = "UNSPECIFIED";
+	mDriverName = (char*)glGetString(GL_RENDERER);
 
-	cout << "\tVideo Driver: " << mDriverName << endl;
-	cout << "\tVideo Hardware Memory: " << mVideoInfo->video_mem << endl;
+	cout << "\tVendor: " << glGetString(GL_VENDOR) << endl;
+	cout << "\tRenderer: " << mDriverName << endl;
+	cout << "\tDriver Version: " << glGetString(GL_VERSION) << endl;
 
 	if(!checkExtensions())
 		throw Exception(0, "Graphics Requirements Not Met", "Your graphics driver does not meet the minimum requirements.");
 
 	glEnable(mTextureTarget);
-	
-	mShaderManager = new ShaderManager();
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 
@@ -888,7 +781,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	SDL_putenv("SDL_VIDEO_CENTERED=center");
 
 	// Set the app title to blank until the client sets it.
-	setApplicationTitle(" ");
+	//setApplicationTitle(" ");
 
 	// Initialize SDL's Video Subsystems.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -919,7 +812,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
-
+	mScreen = 0;
 	mScreen = SDL_SetVideoMode(resX, resY, bpp, sdlFlags);
 	if(mScreen == 0)
 		throw Exception(702, "Error setting Video Mode", SDL_GetError());
@@ -931,4 +824,5 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	buildDisplayModeList();
 	initGL();
+	mShaderManager = new ShaderManager();
 }

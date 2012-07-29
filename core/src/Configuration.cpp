@@ -32,7 +32,6 @@ const string			AUDIO_MIXER					= "SDL";
 const int				GRAPHICS_WIDTH				= 800;
 const int				GRAPHICS_HEIGHT				= 600;
 const int				GRAPHICS_BITDEPTH			= 32;
-const string			GRAPHICS_RENDERER			= "OGL";
 const string			GRAPHICS_VSYNC				= "false";
 const GraphicsQuality	GRAPHICS_TEXTURE_QUALITY	= GRAPHICS_GOOD;
 const bool				GRAPHICS_FULLSCREEN			= false;
@@ -47,7 +46,6 @@ Configuration::Configuration():	mConfigFile(new TiXmlDocument()),
 								mScreenBpp(GRAPHICS_BITDEPTH),
 								mTextureQuality(GRAPHICS_TEXTURE_QUALITY),
 								mFullScreen(false),
-								mRendererName(GRAPHICS_RENDERER),
 								mMixRate(AUDIO_MEDIUM_QUALITY),
 								mStereoChannels(AUDIO_STEREO),
 								mSfxVolume(AUDIO_SFX_VOLUME),
@@ -84,14 +82,17 @@ Configuration::~Configuration()
  */
 void Configuration::load(const std::string& filePath)
 {
-	cout << "Initializing Configuration..." << endl;
+	cout << "Initializing Configuration... ";
 	
 	// Read in the Config File.
 	if(!readConfig(filePath))
 	{
 		mOptionChanged = true;
-		cout << "Unable to read '" << filePath << "'. Using default options." << endl;
+		cout << endl << "Unable to read '" << filePath << "'. Using default options." << endl;
 	}
+	else
+		cout << "done." << endl;
+
 }
 
 
@@ -125,7 +126,6 @@ void Configuration::save()
 	else if(mTextureQuality == GL_LINEAR)
 		graphics->SetAttribute("texturequality", "good");
 
-	graphics->SetAttribute("renderer", mRendererName);
 	root->LinkEndChild(graphics);
 
 	TiXmlElement *audio = new TiXmlElement("audio");
@@ -284,10 +284,6 @@ void Configuration::parseGraphics(TiXmlNode *node)
 	else
 		toLowercase(vSync) == "true" ? vsync(true) : vsync(false);
 
-	mRendererName = parser.stringAttribute(node, "renderer");
-	if(toLowercase(mRendererName) != "sdl" && toLowercase(mRendererName) != "ogl")
-		renderer(GRAPHICS_RENDERER);
-
 	graphicsTextureQuality(parser.stringAttribute(node, "texturequality"));
 }
 
@@ -407,24 +403,6 @@ bool Configuration::fullscreen() const
 bool Configuration::vsync() const
 {
 	return mVSync;
-}
-
-
-/**
- * Gets the name of a Renderer.
- */
-std::string Configuration::renderer() const
-{
-	return mRendererName;
-}
-
-
-/**
- * Sets the Renderer driver to use.
- */
-void Configuration::renderer(const std::string& renderer)
-{
-	mRendererName = renderer;
 }
 
 

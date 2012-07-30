@@ -26,10 +26,9 @@ ShaderManager::ShaderManager()
 	mShaderProgram = glCreateProgram();
 	
 	// Read in the shader source code
-	cout << "\t\tBuilding shaders... ";
-	loadShader("shaders/helloworld/helloworld.frag", mFragShader);
-	loadShader("shaders/helloworld/helloworld.vert", mVertShader);
-	cout << "done." << endl;
+	cout << "\t\tBuilding shaders:" << endl;
+	loadShader("shaders/helloworld/helloworld_frag.shader", mFragShader);
+	loadShader("shaders/helloworld/helloworld_vert.shader", mVertShader);
 
 	cout << "\t\tAvailable Shaders:" << endl;
 	for(size_t i = 0; i < mShaderList.size(); i++)

@@ -57,17 +57,19 @@ protected:
 	friend class OGL_Renderer;
 
 	unsigned int texture_id() const;
+	unsigned int fbo_id();
 
 private:
 
 	struct ImageInfo
 	{
-		ImageInfo(): textureId(0), w(0), h(0) {}
-		ImageInfo(unsigned int id, int w, int h): textureId(id), w(w), h(h) {}
+		ImageInfo(): textureId(0), fboId(0), w(0), h(0) {}
+		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): textureId(id), fboId(fbo_id), w(w), h(h) {}
 		
-		void operator()(unsigned int id, int w, int h) { textureId = id; w = w; h = h; }
+		void operator()(unsigned int id, unsigned int fbo_id, int w, int h) { textureId = id; fboId = fbo_id; w = w; h = h; }
 
 		unsigned int textureId;
+		unsigned int fboId;
 		int w;
 		int h;
 	};

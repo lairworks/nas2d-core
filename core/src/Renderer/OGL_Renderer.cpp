@@ -251,9 +251,8 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	if(clipRect.w < 1 || clipRect.h < 1)
 		return;
 
-	// Create a framebuffer object
-	GLuint fbo = 0;
-	glGenFramebuffersEXT(1, &fbo);
+
+	unsigned int fbo = destination.fbo_id();
 
 	// Bind the framebuffer object 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
@@ -271,7 +270,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	// Reset viewport and unbind
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-	glDeleteFramebuffersEXT(1, &fbo);
+
 }
 
 

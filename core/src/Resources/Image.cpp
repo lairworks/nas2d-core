@@ -108,6 +108,11 @@ Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+	// Add generated texture id to texture ID map.
+	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
+	// Increment texture id reference count.
+	Image::_RefMap[texture_id()] ++;
+
 	delete [] buffer;
 }
 
@@ -144,7 +149,15 @@ Image::~Image()
 		TextureIdMap::iterator it = Image::_IdMap.find(name());
 
 		if(it != Image::_IdMap.end())
+		{
+			if(it->second.fboId != 0)
+			{
+				unsigned int fbo = it->second.fboId;
+				glDeleteFramebuffersEXT(1, &fbo);
+			}
+
 			Image::_IdMap.erase(it);
+		}
 	}
 
 }
@@ -231,7 +244,7 @@ void Image::load()
 	generateTexture(tmpSurface);
 
 	// Add generated texture id to texture ID map.
-	Image::_IdMap[name()] = ImageInfo(texture_id(), mRect.w, mRect.h);
+	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
 	// Increment texture id reference count.
 	Image::_RefMap[texture_id()] ++;
 
@@ -354,6 +367,29 @@ const Rectangle_2d& Image::rect() const
 unsigned int Image::texture_id() const
 {
 	return mTextureId;
+}
+
+
+unsigned int Image::fbo_id()
+{
+	// Create a framebuffer object
+	TextureIdMap::iterator it = Image::_IdMap.find(name());
+
+	// This texture was never generated, return a safe value.
+	if(it == Image::_IdMap.end())
+		return 0;
+
+	// Check that there isn't already an FBO attached to this Image.
+	if(it->second.fboId != 0)
+		return it->second.fboId;
+
+	// Image doesn't have an FBO attached to it, generate one.
+	GLuint fbo = 0;
+	glGenFramebuffersEXT(1, &fbo);
+
+	it->second.fboId = fbo;
+
+	return fbo;
 }
 
 

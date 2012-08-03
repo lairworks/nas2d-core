@@ -27,8 +27,8 @@ ShaderManager::ShaderManager()
 	
 	// Read in the shader source code
 	cout << "\t\tBuilding shaders:" << endl;
-	loadShader("shaders/helloworld/helloworld_frag.shader", mFragShader);
-	loadShader("shaders/helloworld/helloworld_vert.shader", mVertShader);
+//	loadShader("shaders/helloworld/helloworld_frag.shader", mFragShader);
+//	loadShader("shaders/helloworld/helloworld_vert.shader", mVertShader);
 
 	cout << "\t\tAvailable Shaders:" << endl;
 	for(size_t i = 0; i < mShaderList.size(); i++)
@@ -47,7 +47,7 @@ void ShaderManager::loadShader(const string& src, GLuint shader)
 	File f = Utility<Filesystem>::get().open(src);
 	const GLchar* c = f.raw_bytes();
 	int len = strlen(f.raw_bytes());
-	glShaderSource(shader, 1, &c, &len);
+	glShaderSource(shader, 1, &c, NULL);
 	
 	if(compileShader(shader) != -1)
 	{
@@ -93,21 +93,13 @@ int ShaderManager::compileShader(GLuint shader)
 
 void ShaderManager::printLog(GLuint obj)
 {
-	int infologLength = 0;
-	int maxLength = 0;
-		
-	if(glIsShader(obj))
-		glGetShaderiv(obj, GL_INFO_LOG_LENGTH, &maxLength);
-	else
-		glGetProgramiv(obj, GL_INFO_LOG_LENGTH, &maxLength);
-
-	//char infoLog[maxLength];   <<< This is not valid C/C++... how did this compile?
-		
-	if(glIsShader(obj))
-		;//glGetShaderInfoLog(obj, maxLength, &maxLength, infoLog);
-	else
-		;//glGetProgramInfoLog(obj, maxLength, &maxLength, infoLog);
-		
-	//if(infologLength > 0)
-	//	printf("%s\n",infoLog);
+	vector<char> infoLog;
+	GLint infoLen;
+	glGetShaderiv(obj, GL_INFO_LOG_LENGTH, &infoLen);
+	infoLog.resize(infoLen);
+	
+	std::cerr << "GLSL Shader: Shader contains errors, please validate this shader!" << std::endl;
+	glGetShaderInfoLog(obj, sizeof(infoLog), &infoLen, &infoLog[0]);
+	
+	std::cerr << string(infoLog.begin(), infoLog.end()) << std::endl;
 }

@@ -19,7 +19,7 @@
 
 
 #if defined(__APPLE__)
-	#include <OpenGL/OpenGL.h>
+	#include <SDL/SDL_opengl.h>
 	#include "SDL_gfx/SDL_gfxPrimitives.h"
 #elif defined(WIN32)
 	#include "GLee.h"
@@ -153,7 +153,7 @@ Image::~Image()
 			if(it->second.fboId != 0)
 			{
 				unsigned int fbo = it->second.fboId;
-				glDeleteFramebuffersEXT(1, &fbo);
+				glDeleteBuffers(1, &fbo);
 			}
 
 			Image::_IdMap.erase(it);
@@ -385,7 +385,7 @@ unsigned int Image::fbo_id()
 
 	// Image doesn't have an FBO attached to it, generate one.
 	GLuint fbo = 0;
-	glGenFramebuffersEXT(1, &fbo);
+	glGenBuffers(1, &fbo);
 
 	it->second.fboId = fbo;
 

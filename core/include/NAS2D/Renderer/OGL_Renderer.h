@@ -14,6 +14,8 @@
 
 #include "Renderer.h"
 
+#include <OpenGL/OpenGL.h>
+
 #include "SDL/SDL.h"
 
 #include "ShaderManager.h"
@@ -95,6 +97,9 @@ private:
 	GLuint				mTextureTarget;				/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */
 	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
 	//	GLfloat				mTextureBufferObject;	/**< COMMENT ME! */
+	
+	GLuint				mFontShaderFrag;
+	GLuint				mFontShaderVert;
 	
 	ShaderManager		*mShaderManager;
 };	

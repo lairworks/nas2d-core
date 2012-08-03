@@ -44,7 +44,6 @@ GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 OGL_Renderer::OGL_Renderer():	Renderer("OpenGL Renderer"),
 								mScreen(0),
 								mTextureTarget(0)
-								//mVertexBufferObject(0),
 {
 	cout << "Starting " << mRendererName << ":" << endl;
 	
@@ -66,7 +65,7 @@ OGL_Renderer::~OGL_Renderer()
 
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
-	delete mShaderManager;
+	//delete mShaderManager;
 }
 
 
@@ -405,68 +404,83 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, int x, int y, i
 	else if(text.empty())
 		return;
 
-	SDL_Color Color = {r, g, b};
-	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
-	if(!textSurface)
-	{
-		stringstream str;
-		str << "Renderer: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
-		pushMessage(str.str());
-		return;
-	}
+//	SDL_Color Color = {r, g, b};
+//	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
+//	if(!textSurface)
+//	{
+//		stringstream str;
+//		str << "Renderer: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
+//		pushMessage(str.str());
+//		return;
+//	}
+//
+//
+//	// Detect which order the pixel data is in to properly feed OGL.
+//	GLint nColors = textSurface->format->BytesPerPixel;
+//	
+//	GLenum textureFormat = 0;
+//	if(nColors == 4)
+//	{
+//		if(textSurface->format->Rmask == 0x000000ff)
+//			textureFormat = GL_RGBA;
+//		else
+//			textureFormat = GL_BGRA;
+//	}
+//	else if(nColors == 3)     // no alpha channel
+//	{
+//		if(textSurface->format->Rmask == 0x000000ff)
+//			textureFormat = GL_RGB;
+//		else
+//			textureFormat = GL_BGR;
+//	}
+//	else
+//	{
+//		cout << "Image must be 16-, 24- or 32-bit." << std::endl;
+//		return;
+//	}
+//
+//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
+//											// or can we set it once in the Renderer?
+//
+//	// Create a texture from the text surface, render it, and free it.
+//	GLuint texId = 0;
+//	glGenTextures(1, &texId);
+//	glBindTexture(GL_TEXTURE_2D, texId);
+//
+//	glTexImage2D(GL_TEXTURE_2D, 0, nColors, textSurface->w, textSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, textSurface->pixels);
+//
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 
-	// Detect which order the pixel data is in to properly feed OGL.
-	GLint nColors = textSurface->format->BytesPerPixel;
+//	// =================
+//	glColor4ub(r, g, b, a);
+//	
+//	fillVertexArray(x, y, textSurface->w, textSurface->h);
+//
+//	drawVertexArray(texId);
+//
+//	glDeleteTextures(1, &texId);
+//	SDL_FreeSurface(textSurface);
+//
+//	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 	
-	GLenum textureFormat = 0;
-	if(nColors == 4)
-	{
-		if(textSurface->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGBA;
-		else
-			textureFormat = GL_BGRA;
-	}
-	else if(nColors == 3)     // no alpha channel
-	{
-		if(textSurface->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGB;
-		else
-			textureFormat = GL_BGR;
-	}
-	else
-	{
-		cout << "Image must be 16-, 24- or 32-bit." << std::endl;
-		return;
-	}
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
-											// or can we set it once in the Renderer?
-
-	// Create a texture from the text surface, render it, and free it.
-	GLuint texId = 0;
-	glGenTextures(1, &texId);
-	glBindTexture(GL_TEXTURE_2D, texId);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, nColors, textSurface->w, textSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, textSurface->pixels);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-
 	// =================
 	glColor4ub(r, g, b, a);
+	int advX = x;
+	for(string::size_type i = 0; i < text.size(); ++i)
+    {
+        int ch = int(text[i]);
+		fillVertexArray(advX, y, font.getGlyphWidth(ch), font.height());
 	
-	fillVertexArray(x, y, textSurface->w, textSurface->h);
-
-	drawVertexArray(texId);
-
-	glDeleteTextures(1, &texId);
-	SDL_FreeSurface(textSurface);
-
+		drawVertexArray(font.texture(ch));
+		advX += font.getGlyphWidth(ch);
+	}
+	
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+	
 }
 
 
@@ -478,76 +492,76 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, int rast
 	else if(text.empty())
 		return;
 
-	SDL_Color Color = {r, g, b};
-	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
-	if(!textSurface)
-	{
-		cout << "(ERR) Renderer Error: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
-		//glDisable(mTextureTarget);
-		return;
-	}
-
-	// Create a new surface at the clamped size, blit to it and free
-	// the originally generated text surface.
-	SDL_Surface *clampedSurface = SDL_CreateRGBSurface(textSurface->flags, w, h, textSurface->format->BitsPerPixel, textSurface->format->Rmask, textSurface->format->Gmask, textSurface->format->Bmask, textSurface->format->Amask);
-	SDL_SetAlpha(textSurface, 0, textSurface->format->alpha); 
-	SDL_Rect grabRect = {x, y, w, h};
-	SDL_BlitSurface(textSurface, &grabRect, clampedSurface, NULL);
-	SDL_SetAlpha(clampedSurface, SDL_SRCALPHA, clampedSurface->format->alpha);
-	SDL_FreeSurface(textSurface);
-	textSurface = NULL;
-
-
-	// Detect which order the pixel data is in to properly feed OGL.
-	GLint nColors = textSurface->format->BytesPerPixel;
-	
-	GLenum textureFormat = 0;
-	if(nColors == 4)
-	{
-		if(textSurface->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGBA;
-		else
-			textureFormat = GL_BGRA;
-	}
-	else if(nColors == 3)     // no alpha channel
-	{
-		if(textSurface->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGB;
-		else
-			textureFormat = GL_BGR;
-	}
-	else
-	{
-		cout << "Image must be 16-, 24- or 32-bit." << std::endl;
-		return;
-	}
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
-											// or can we set it once in the Renderer?
-
-	// Create a texture from the text surface, render it, and free it.
-	GLuint texId = 0;
-	glGenTextures(1, &texId);
-	glBindTexture(GL_TEXTURE_2D, texId);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, nColors, textSurface->w, textSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, textSurface->pixels);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-
-	glColor4ub(r, g, b, a);
-
-	fillVertexArray(rasterX, rasterY, clampedSurface->w, clampedSurface->h);
-	
-	drawVertexArray(texId);
-	
-	glDeleteTextures(1, &texId);
-	SDL_FreeSurface(clampedSurface);
-
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+//	SDL_Color Color = {r, g, b};
+//	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
+//	if(!textSurface)
+//	{
+//		cout << "(ERR) Renderer Error: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
+//		//glDisable(mTextureTarget);
+//		return;
+//	}
+//
+//	// Create a new surface at the clamped size, blit to it and free
+//	// the originally generated text surface.
+//	SDL_Surface *clampedSurface = SDL_CreateRGBSurface(textSurface->flags, w, h, textSurface->format->BitsPerPixel, textSurface->format->Rmask, textSurface->format->Gmask, textSurface->format->Bmask, textSurface->format->Amask);
+//	SDL_SetAlpha(textSurface, 0, textSurface->format->alpha); 
+//	SDL_Rect grabRect = {x, y, w, h};
+//	SDL_BlitSurface(textSurface, &grabRect, clampedSurface, NULL);
+//	SDL_SetAlpha(clampedSurface, SDL_SRCALPHA, clampedSurface->format->alpha);
+//	SDL_FreeSurface(textSurface);
+//	textSurface = NULL;
+//
+//
+//	// Detect which order the pixel data is in to properly feed OGL.
+//	GLint nColors = textSurface->format->BytesPerPixel;
+//	
+//	GLenum textureFormat = 0;
+//	if(nColors == 4)
+//	{
+//		if(textSurface->format->Rmask == 0x000000ff)
+//			textureFormat = GL_RGBA;
+//		else
+//			textureFormat = GL_BGRA;
+//	}
+//	else if(nColors == 3)     // no alpha channel
+//	{
+//		if(textSurface->format->Rmask == 0x000000ff)
+//			textureFormat = GL_RGB;
+//		else
+//			textureFormat = GL_BGR;
+//	}
+//	else
+//	{
+//		cout << "Image must be 16-, 24- or 32-bit." << std::endl;
+//		return;
+//	}
+//
+//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
+//											// or can we set it once in the Renderer?
+//
+//	// Create a texture from the text surface, render it, and free it.
+//	GLuint texId = 0;
+//	glGenTextures(1, &texId);
+//	glBindTexture(GL_TEXTURE_2D, texId);
+//
+//	glTexImage2D(GL_TEXTURE_2D, 0, nColors, textSurface->w, textSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, textSurface->pixels);
+//
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//
+//
+//	glColor4ub(r, g, b, a);
+//
+//	fillVertexArray(rasterX, rasterY, clampedSurface->w, clampedSurface->h);
+//	
+//	drawVertexArray(texId);
+//	
+//	glDeleteTextures(1, &texId);
+//	SDL_FreeSurface(clampedSurface);
+//
+//	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -750,6 +764,9 @@ void OGL_Renderer::initGL()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	//		mShaderManager->loadShader("shaders/font/font.frag", mFontShaderFrag);
+	//	mShaderManager->loadShader("shaders/font/font.vert", mFontShaderVert);
 }
 
 
@@ -800,6 +817,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 		throw Exception(703, "Error starting TrueType Library", TTF_GetError());
 
 	buildDisplayModeList();
+	//mShaderManager = new ShaderManager();
 	initGL();
-	mShaderManager = new ShaderManager();
 }

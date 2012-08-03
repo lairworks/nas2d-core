@@ -10,6 +10,8 @@
 
 #include "NAS2D/Resources/Font.h"
 
+#include <OpenGL/OpenGL.h>
+
 using namespace std;
 
 string buildName(TTF_Font*);
@@ -50,7 +52,7 @@ Font::Font():	Resource("Default Font"),
  */
 Font::~Font()
 {
-	TTF_CloseFont(mFont);
+	//TTF_CloseFont(mFont);
 	mFont = NULL;
 }
 
@@ -64,28 +66,99 @@ Font::~Font()
  */
 void Font::load()
 {
-	mFontBuffer = Utility<Filesystem>::get().open(name());
-
-	if(mFontBuffer.size() == 0)
+//	mFontBuffer = Utility<Filesystem>::get().open(name());
+//
+//	if(mFontBuffer.size() == 0)
+//	{
+//		errorMessage(Utility<Filesystem>::get().lastError());
+//		//mFont = NULL;
+//		return;
+//	}
+//
+//	mFont = TTF_OpenFontRW(SDL_RWFromConstMem(mFontBuffer.raw_bytes(), mFontBuffer.size()), 0, mPtSize);
+//	if(!mFont)
+//	{		
+//		// Get the error message and return false. 
+//		errorMessage(TTF_GetError());
+//		return;
+//	}
+//
+//	mHeight = TTF_FontHeight(mFont);
+//
+//	mFontName = buildName(mFont);
+	
+	FT_Library library; //Create a freetype library instance
+	
+    if (FT_Init_FreeType(&library)) {
+        std::cerr << "Could not initialize the freetype library" << std::endl;
+    }
+	
+	std::string tmp = "data/" + name();
+	
+	
+    //Now we attempt to load the font information
+    if(FT_New_Face(library, tmp.c_str(), 0, &mFont)) {
+        std::cerr << "Could not load the specified font:\t" << name() << std::endl;
+    }
+	
+	mHeight = mFont->height/64;
+	
+    //FreeType uses heights which are one 64th of the size in pixels so
+    //we set our font height by multiplying by 64. The 96x96 is the dots per inch
+    FT_Set_Char_Size(mFont, (int)mPtSize * 64, (int)mPtSize * 64, 96, 96);
+	
+// Generate 128 textures (each character gets its own texture)
+	GLuint m_textureID;
+	for (int i = 0; i < 127; i++)
 	{
-		errorMessage(Utility<Filesystem>::get().lastError());
-		//mFont = NULL;
-		return;
+		glGenTextures(1, &m_textureID);
+		mTextures.push_back(m_textureID);
 	}
-
-	mFont = TTF_OpenFontRW(SDL_RWFromConstMem(mFontBuffer.raw_bytes(), mFontBuffer.size()), 0, mPtSize);
-	if(!mFont)
-	{		
-		// Get the error message and return false. 
-		errorMessage(TTF_GetError());
-		return;
-	}
-
-	mHeight = TTF_FontHeight(mFont);
-
-	mFontName = buildName(mFont);
+	
+    for (int ch = 0; ch < 127; ++ch)
+    {
+        if (!generateCharacterTexture(ch, mFont))
+        {
+            std::cerr << "Could not generate the texture for character: " << ch << std::endl;
+        }
+    }
 
 	loaded(true);
+}
+
+bool Font::generateCharacterTexture(unsigned char ch, FT_Face fontInfo)
+{
+    if(FT_Load_Glyph(fontInfo, FT_Get_Char_Index(fontInfo, ch), FT_LOAD_DEFAULT))
+    {
+        return false;
+    }
+	
+  	FT_Glyph glyph;
+    if(FT_Get_Glyph(fontInfo->glyph, &glyph))
+    {
+        return false;
+    }
+	
+    if (FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1))
+    {
+        return false;
+    }
+	
+    FT_BitmapGlyph bitmapGlyph = (FT_BitmapGlyph) glyph;
+	
+    int width = (bitmapGlyph->bitmap.width) ? bitmapGlyph->bitmap.width : 16;
+    int rows = (bitmapGlyph->bitmap.rows) ? bitmapGlyph->bitmap.rows : 16;
+	
+    glBindTexture(GL_TEXTURE_2D, mTextures[ch]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, rows, 0,
+                 GL_ALPHA, GL_UNSIGNED_BYTE, bitmapGlyph->bitmap.buffer);
+	
+    mGlyphDimensions[ch] = std::make_pair(width, rows);
+    mGlyphPositions[ch] = std::make_pair(bitmapGlyph->left, bitmapGlyph->top);
+    mGlyphAdvances[ch] = fontInfo->glyph->advance.x / 64;
+    return true;
 }
 
 
@@ -98,11 +171,31 @@ int Font::width(const std::string& str) const
 {
 	if(mFont == NULL)
 		return 0;
-
+	
 	int width = 0;
 
-	if(TTF_SizeText(mFont, str.c_str(), &width, NULL))
-		return 0;
+	for(int i = 0; i < str.size(); i++)
+	{
+		if(FT_Load_Glyph(mFont, FT_Get_Char_Index(mFont, str[i]), FT_LOAD_DEFAULT))
+		{
+			return false;
+		}
+		
+		FT_Glyph glyph;
+		if(FT_Get_Glyph(mFont->glyph, &glyph))
+		{
+			return false;
+		}
+		
+		if (FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1))
+		{
+			return false;
+		}
+		
+		FT_BitmapGlyph bitmapGlyph = (FT_BitmapGlyph) glyph;
+		
+		width += bitmapGlyph->bitmap.width;
+	}
 
 	return width;
 }
@@ -124,9 +217,36 @@ int Font::height() const
  *			this functionality somehow or wrap the TTF_Font
  *			structure to something somewhat more generic.
  */
-TTF_Font *Font::font() const
+FT_Face &Font::font()
 {
 	return mFont;
+}
+
+/**
+ * Returns an OpenGL Texture.
+ *
+ */
+GLuint Font::texture(char ch) const
+{
+	return mTextures[ch];
+}
+
+/**
+ * Returns an OpenGL Texture.
+ *
+ */
+int Font::getGlyphWidth(char ch)
+{
+	return mGlyphDimensions[ch].first;
+}
+
+/**
+ * Returns an OpenGL Texture.
+ *
+ */
+int Font::getGlyphHeight(char ch)
+{
+	return mGlyphDimensions[ch].second;
 }
 
 
@@ -144,7 +264,7 @@ const std::string& Font::typefaceName() const
  */
 void Font::bold()
 {
-	toggleFontStyle(mFont, TTF_STYLE_BOLD);
+//	toggleFontStyle(mFont, TTF_STYLE_BOLD);
 }
 
 
@@ -153,7 +273,7 @@ void Font::bold()
  */
 void Font::italic()
 {
-	toggleFontStyle(mFont, TTF_STYLE_ITALIC);
+//	toggleFontStyle(mFont, TTF_STYLE_ITALIC);
 }
 
 
@@ -162,7 +282,7 @@ void Font::italic()
  */
 void Font::underline()
 {
-	toggleFontStyle(mFont, TTF_STYLE_UNDERLINE);
+//	toggleFontStyle(mFont, TTF_STYLE_UNDERLINE);
 }
 
 
@@ -171,7 +291,7 @@ void Font::underline()
  */
 void Font::normal()
 {
-	TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
+//	TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
 }
 
 

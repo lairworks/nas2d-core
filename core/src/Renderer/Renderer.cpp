@@ -89,7 +89,7 @@ Renderer::~Renderer()
  * \param	y		Y-Coordinate of the Image to draw.
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImage(Image& image, int x, int y, float scale)
+void Renderer::drawImage(Image& image, float x, float y, float scale)
 {}
 
 
@@ -104,7 +104,7 @@ void Renderer::drawImage(Image& image, int x, int y, float scale)
  * \param	width		Width of the area to start getting pixel data from.
  * \param	height		Height of the area to start getting pixel data from.
  */
-void Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height)
+void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
 {}
 
 /**
@@ -119,7 +119,7 @@ void Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, int y
  * \param	height		Height of the area to start getting pixel data from.
  * \param	degrees		Angle of rotation in degrees.
  */
-void Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees)
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees)
 {}
 
 
@@ -133,7 +133,7 @@ void Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, int x
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImageRotated(Image& image, int x, int y, float degrees, Color_4ub color, float scale)
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, Color_4ub color, float scale)
 {
 	drawImageRotated(image, x, y, degrees, color.red(), color.green(), color.blue(), color.alpha(), scale);
 }
@@ -152,7 +152,7 @@ void Renderer::drawImageRotated(Image& image, int x, int y, float degrees, Color
  * \param	a		Alpha value to draw the image at (0 - 255).
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale)
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale)
 {}
 
 
@@ -166,7 +166,7 @@ void Renderer::drawImageRotated(Image& image, int x, int y, float degrees, int r
  * \param	h		Height to use for drawing the Image.
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, Color_4ub color)
+void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color)
 {
 	drawImageStretched(image, x, y, w, h, color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -185,7 +185,7 @@ void Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, Colo
  * \param	b		Blue value to tint the image at (0 - 255).
  * \param	a		Alpha value to draw the image at (0 - 255).
  */
-void Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a)
+void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
 {}
 
 
@@ -198,14 +198,14 @@ void Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, int 
  * \param	w		Comment me!
  * \param	h		Comment me!
  */
-void Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
+void Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
 {}
 
 
 /**
  * Comment me!
  */
-void Renderer::drawImageRect(int x, int y, int w, int h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
+void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
 	// Draw the center area if it's defined.
 	drawImageRepeated(center, x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height());
@@ -248,7 +248,7 @@ void Renderer::drawImageRect(int x, int y, int w, int h, Image& topLeft, Image& 
  * \param	h		Height of the image rect.
  * \param	images	A set of 9 images used to draw the image rect.
  */
-void Renderer::drawImageRect(int x, int y, int w, int h, ImageList &images)
+void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &images)
 {
 	// We need 9 images in order to render a rectangle, one for each corner, one for each edge and one for the background.
 	if(images.size() == 9)
@@ -264,8 +264,22 @@ void Renderer::drawImageRect(int x, int y, int w, int h, ImageList &images)
  * \param	destination	A reference to the destination Image.
  * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
  */
-void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint)
+void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {}
+
+
+/**
+ * Draws a source image to a destination image.
+ * 
+ * \param	source		A reference to a source Image.
+ * \param	srcRect		A source retangle to grab from the source Image.
+ * \param	destination	A reference to the destination Image.
+ * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
+ */
+void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint)
+{
+	drawImageToImage(source, destination, Point_2df(dstPoint.x, dstPoint.y));
+}
 
 
 /**
@@ -285,7 +299,7 @@ void Renderer::setFadeColor(const Color_4ub& color)
  * \param	delayTime	Time in miliseconds the fade should last. A value of 0
  *						will instantly fade the screen in.
  */
-void Renderer::fadeIn(int delay)
+void Renderer::fadeIn(float delay)
 {
 	if(delay == 0)
 	{
@@ -295,7 +309,7 @@ void Renderer::fadeIn(int delay)
 	}
 
 	mFade = Renderer::FADE_IN;
-	mFadeStep = 255.0f / static_cast<float>(delay);
+	mFadeStep = 255.0f /delay;
 }
 
 
@@ -305,7 +319,7 @@ void Renderer::fadeIn(int delay)
  * \param	delayTime	Time in miliseconds the fade should last. A value of 0
  *						will instantly fade the screen in.
  */
-void Renderer::fadeOut(int delay)
+void Renderer::fadeOut(float delay)
 {
 	if(delay == 0)
 	{
@@ -315,7 +329,7 @@ void Renderer::fadeOut(int delay)
 	}
 
 	mFade = Renderer::FADE_OUT;
-	mFadeStep = 255.0f / static_cast<float>(delay);
+	mFadeStep = 255.0f / delay;
 }
 
 
@@ -379,7 +393,7 @@ const std::string& Renderer::getLastError()
  * \param	y		Y-Coordinate of the pixel to draw.
  * \param	color	A references to a Color_4ub.
  */
-void Renderer::drawPixel(int x, int y, const Color_4ub& color)
+void Renderer::drawPixel(float x, float y, const Color_4ub& color)
 {
 	drawPixel(x, y, color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -395,7 +409,7 @@ void Renderer::drawPixel(int x, int y, const Color_4ub& color)
  * \param	b	Blue Color Value. Must be between 0 - 255.
  * \param	a	Alpha Value. Must be between 0 - 255. Defaults to 255.
  */
-void Renderer::drawPixel(int x, int y, int r, int g, int b, int a)
+void Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 {}
 
 
@@ -408,7 +422,7 @@ void Renderer::drawPixel(int x, int y, int r, int g, int b, int a)
  * \param	y2		Y-Coordinate of the end of the line.
  * \param	color	A reference to a Color_4ub.
  */
-void Renderer::drawLine(int x, int y, int x2, int y2, const Color_4ub& color, int line_width)
+void Renderer::drawLine(float x, float y, float x2, float y2, const Color_4ub& color, int line_width)
 {
 	drawLine(x, y, x2, y2, color.red(), color.green(), color.blue(), color.alpha(), line_width);
 }
@@ -426,7 +440,7 @@ void Renderer::drawLine(int x, int y, int x2, int y2, const Color_4ub& color, in
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255. Defaults to 255.
  */
-void Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a, int line_width)
+void Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width)
 {}
 
 
@@ -440,6 +454,21 @@ void Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
 void Renderer::drawBox(const Rectangle_2d& rect, int r, int g, int b, int a)
+{
+	drawBox(static_cast<float>(rect.x), static_cast<float>(rect.y), static_cast<float>(rect.w), static_cast<float>(rect.h), r, g, b, a);
+}
+
+
+/**
+ * Draws a hollow box on the primary surface.
+ *
+ * \param	rect	A reference to a Rectangle_2df defining the box dimensions.
+ * \param	r		Red Color Value. Must be between 0 - 255.
+ * \param	g		Green Color Value. Must be between 0 - 255.
+ * \param	b		Blue Color Value. Must be between 0 - 255.
+ * \param	a		Alpha Value. Must be between 0 - 255.
+ */
+void Renderer::drawBox(const Rectangle_2df& rect, int r, int g, int b, int a)
 {
 	drawBox(rect.x, rect.y, rect.w, rect.h, r, g, b, a);
 }
@@ -457,12 +486,42 @@ void Renderer::drawBox(const Rectangle_2d& rect, int r, int g, int b, int a)
  * \param	b	Blue Color Value. Must be between 0 - 255.
  * \param	a	Alhpa value to use. Must be between 0 (completely transparent) - 255 (completely opaque).
  */
-void Renderer::drawBox(int x, int y, int w, int h, int r, int g, int b, int a)
+void Renderer::drawBox(float x, float y, float w, float h, int r, int g, int b, int a)
 {}
 
 
 /**
- * Fills a given area with a solid color on the primary surface.
+ * Fills a given area with a solid color.
+ *
+ * \param	rect	A reference to a Rectangle_2df defining the box dimensions.
+ * \param	r		Red Color Value. Must be between 0 - 255.
+ * \param	g		Green Color Value. Must be between 0 - 255.
+ * \param	b		Blue Color Value. Must be between 0 - 255.
+ * \param	a		Alpha Value. Must be between 0 - 255.
+ */
+void Renderer::drawBoxFilled(const Rectangle_2d& rect, int r, int g, int b, int a)
+{
+	drawBoxFilled(static_cast<float>(rect.x), static_cast<float>(rect.y), static_cast<float>(rect.w), static_cast<float>(rect.h), r, g, b, a);
+}
+
+
+/**
+ * Fills a given area with a solid color.
+ *
+ * \param	rect	A reference to a Rectangle_2df defining the box dimensions.
+ * \param	r		Red Color Value. Must be between 0 - 255.
+ * \param	g		Green Color Value. Must be between 0 - 255.
+ * \param	b		Blue Color Value. Must be between 0 - 255.
+ * \param	a		Alpha Value. Must be between 0 - 255.
+ */
+void Renderer::drawBoxFilled(const Rectangle_2df& rect, int r, int g, int b, int a)
+{
+	drawBoxFilled(rect.x, rect.y, rect.w, rect.h, r, g, b, a);
+}
+
+
+/**
+ * Fills a given area with a solid color.
  *
  * \param	x	X-Coordinate of the area to fill.
  * \param	y	Y-Coordinate of the area to fill.
@@ -473,52 +532,70 @@ void Renderer::drawBox(int x, int y, int w, int h, int r, int g, int b, int a)
  * \param	b	Blue Color Value. Must be between 0 - 255.
  * \param	a	Alpha value. Must be between 0 - 255.
  */
-void Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int g, int b, int a)
+void Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
+{}
+
+
+/**
+ * Draws a circle.
+ * 
+ * \param	cx				X-Coordinate of the center of the circle.
+ * \param	cy				Y-Coordinate of the center of the circle.
+ * \param	radius			Radius of the circle.
+ * \param	r				Red Color Value. Must be between 0 - 255.
+ * \param	g				Green Color Value. Must be between 0 - 255.
+ * \param	b				Blue Color Value. Must be between 0 - 255.
+ * \param	a				Alpha value. Must be between 0 - 255.
+ * \param	num_segments	Number of segments to use to draw the circle. The higher the number, the smoother the circle will appear.
+ * \param	scale_x			Width scale of the circle. Used to draw ellipses.
+ * \param	scale_y			Height scale of the circle. Used to draw ellipses.
+ */
+void Renderer::drawCircle(float x, float y, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
 {}
 
 
 /**
  * Returns the primary display's Width.
  */
-int Renderer::width()
+float Renderer::width()
 {
-	return 0;
+	return 0.0f;
 }
 
 
 /**
  * Returns the primary display's Height.
  */
-int Renderer::height()
+float Renderer::height()
 {
-	return 0;
+	return 0.0f;
 }
 
 
 /**
  * Gets the current screen resolution as a Point_2d.
  */
-Point_2d Renderer::getScreenResolution()
+Point_2df Renderer::getScreenResolution()
 {
-	return Point_2d(width(), height());
+	return Point_2df(width(), height());
 }
 
 
 /**
  * Gets the center X-Coordinate of the screen.
  */
-int Renderer::screenCenterX()
+float Renderer::screenCenterX()
 {
-	return width() >> 1;
+	return width() / 2;
 }
 
 
 /**
  * Gets the center Y-Coordinate of the screen.
  */
-int Renderer::screenCenterY()
+float Renderer::screenCenterY()
 {
-	return height() >> 1;
+	return height() / 2;
 }
 
 
@@ -581,7 +658,7 @@ void Renderer::debug()
  * \param b			Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a)
+void Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
 {}
 
 
@@ -601,7 +678,7 @@ void Renderer::drawText(Font& font, const std::string& text, int x, int y, int r
  * \param b			Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
+void Renderer::drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
 {}
 
 
@@ -621,7 +698,7 @@ void Renderer::drawTextClamped(Font& font, const std::string& text, int rasterX,
  * \param sb		Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextShadow(Font& font, const std::string& text, int x, int y, int distance, int r, int g, int b, int sr, int sg, int sb, int a )
+void Renderer::drawTextShadow(Font& font, const std::string& text, float x, float y, int distance, int r, int g, int b, int sr, int sg, int sb, int a )
 {
 	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
 	drawText(font, text, x, y, r, g, b, a);
@@ -648,7 +725,7 @@ void Renderer::drawTextShadow(Font& font, const std::string& text, int x, int y,
  * \param sb		Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextShadowClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int distance, int r, int g, int b, int sr, int sg, int sb, int a)
+void Renderer::drawTextShadowClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int distance, int r, int g, int b, int sr, int sg, int sb, int a)
 {
 	drawTextClamped(font, text, rasterX + distance, rasterY + distance, x, y, w, h, sr, sg, sb, a);
 	drawTextClamped(font, text, rasterX, rasterY, x, y, w, h, r, g, b, a);

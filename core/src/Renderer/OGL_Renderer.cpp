@@ -96,16 +96,6 @@ void OGL_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 	mVertexArray[6] = static_cast<GLfloat>(x + w),	mVertexArray[7] = static_cast<GLfloat>(y);
 }
 
-/**
- * Convenience interface function to aid in code readability by
- * performing inline type casting.
- */
-inline void OGL_Renderer::fillVertexArray(int x, int y, int w, int h)
-{
-	fillVertexArray(static_cast<GLfloat>(x), static_cast<GLfloat>(y), static_cast<GLfloat>(w), static_cast<GLfloat>(h));
-}
-
-
 
 /**
  * Used internally to fill the texture coordinate array with quad vertex information.
@@ -119,55 +109,45 @@ void OGL_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 }
 
 
-/**
- * Convenience interface function to aid in code readability by
- * performing inline type casting.
- */
-inline void OGL_Renderer::fillTextureArray(int x, int y, int u, int v)
+void OGL_Renderer::drawImage(Image& image, float x, float y, float scale = 1.0f)
 {
-	fillTextureArray(static_cast<GLfloat>(x), static_cast<GLfloat>(y), static_cast<GLfloat>(u), static_cast<GLfloat>(v));
-}
-
-
-void OGL_Renderer::drawImage(Image& image, int x, int y, float scale = 1.0f)
-{
-	fillVertexArray(x, y, image.width(), image.height());
+	fillVertexArray(x, y, static_cast<float>(image.width()), static_cast<float>(image.height()));
 	drawVertexArray(image.texture_id());
 }
 
 
-void OGL_Renderer::drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height)
+void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
 {
 	fillVertexArray(rasterX, rasterY, width, height);
 
-	fillTextureArray(	static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()),
-						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
-						static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
-						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
+	fillTextureArray(	x / image.width(),
+						y / image.height(),
+						x / image.width() + width / image.width(),
+						y / image.height() + height / image.height()
 					);
 
 	drawVertexArray(image.texture_id(), false);
 }
 
 
-void OGL_Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees)
+void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees)
 {
 	glPushMatrix();
 
 	// Find center point of the image.
-	float tX = static_cast<float>(width / 2);
-	float tY = static_cast<float>(height / 2);
+	float tX = width / 2.0f;
+	float tY = height / 2.0f;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(static_cast<float>(rasterX + tX), static_cast<float>(rasterY + tY), 0.0f);
+	glTranslatef(rasterX + tX, rasterY + tY, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
-	fillTextureArray(	static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()),
-						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()),
-						static_cast<GLfloat>(x) / static_cast<GLfloat>(image.width()) + static_cast<GLfloat>(width) / static_cast<GLfloat>(image.width()),
-						static_cast<GLfloat>(y) / static_cast<GLfloat>(image.height()) + static_cast<GLfloat>(height) / static_cast<GLfloat>(image.height())
+	fillTextureArray(	x / image.width(),
+						y / image.height(),
+						x / image.width() + width / image.width(),
+						y / image.height() + height / image.height()
 					);
 
 	drawVertexArray(image.texture_id(), false);
@@ -176,7 +156,7 @@ void OGL_Renderer::drawSubImageRotated(Image& image, int rasterX, int rasterY, i
 }
 
 
-void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale)
+void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale)
 {
 	glPushMatrix();
 
@@ -188,7 +168,7 @@ void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 	float tY = imgHalfH * scale;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(static_cast<float>(x + imgHalfW), static_cast<float>(y + imgHalfH), 0.0f);
+	glTranslatef(x + imgHalfW, y + imgHalfH, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	glColor4ub(r, g, b, a);
@@ -203,7 +183,7 @@ void OGL_Renderer::drawImageRotated(Image& image, int x, int y, float degrees, i
 }
 
 
-void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a)
+void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
 {
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -214,7 +194,7 @@ void OGL_Renderer::drawImageStretched(Image& image, int x, int y, int w, int h, 
 }
 
 
-void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
+void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
 {
 	fillVertexArray(x, y, w, h);
 
@@ -229,7 +209,7 @@ void OGL_Renderer::drawImageRepeated(Image& image, int x, int y, int w, int h)
 }
 
 
-void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint)
+void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if(dstPoint.x > destination.width() || dstPoint.y > destination.height())
@@ -273,13 +253,13 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 }
 
 
-void OGL_Renderer::drawPixel(int x, int y, int r, int g, int b, int a)
+void OGL_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 {
 	glDisable(mTextureTarget);
 
 	glColor4ub(r, g, b, a);
 
-	POINT_VERTEX_ARRAY[0] = static_cast<float>(x) + 0.5f; POINT_VERTEX_ARRAY[1] = static_cast<float>(y) + 0.5f;
+	POINT_VERTEX_ARRAY[0] = x + 0.5f; POINT_VERTEX_ARRAY[1] = y + 0.5f;
 
 	//glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
@@ -292,17 +272,17 @@ void OGL_Renderer::drawPixel(int x, int y, int r, int g, int b, int a)
 }
 
 
-void OGL_Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a, int line_width = 1)
+void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
 {	
 	glDisable(mTextureTarget);
 	
 	GLfloat verts[12] =	{
-							static_cast<float>(x), static_cast<float>(y) + 1.0f,
-							static_cast<float>(x2), static_cast<float>(y2) + 1.0f,
-							static_cast<float>(x) - 0.5f, static_cast<float>(y) + 0.5f,
-							static_cast<float>(x2) - 0.5f, static_cast<float>(y2) + 0.5f,
-							static_cast<float>(x), static_cast<float>(y),
-							static_cast<float>(x2), static_cast<float>(y2)
+							x, y + 1.0f,
+							x2, y2 + 1.0f,
+							x - 0.5f, y + 0.5f,
+							x2 - 0.5f, y2 + 0.5f,
+							x, y,
+							x2, y2
 						};
 
 	glColor4ub(r, g, b, a);
@@ -321,7 +301,7 @@ void OGL_Renderer::drawLine(int x, int y, int x2, int y2, int r, int g, int b, i
  *
  * Modified to support X/Y scaling to draw an ellipse.
  */
-void OGL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
+void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
 {
 	glDisable(mTextureTarget);
 
@@ -332,7 +312,7 @@ void OGL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, i
 	float s = sinf(theta);
 	float t;
 
-	float x = static_cast<float>(radius);
+	float x = radius;
 	float y = 0;
 
 	GLfloat* verts = new GLfloat[num_segments * 2]; // Two coords per vertex
@@ -369,7 +349,7 @@ void OGL_Renderer::drawCircle(int cx, int cy, int radius, int r, int g, int b, i
 }
 
 
-void OGL_Renderer::drawBox(int x, int y, int width, int height, int r, int g, int b, int a)
+void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
 {	
 	glColor4ub(r, g, b, a);
 	glDisable(mTextureTarget);
@@ -383,7 +363,7 @@ void OGL_Renderer::drawBox(int x, int y, int width, int height, int r, int g, in
 }
 
 
-void OGL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int g, int b, int a)
+void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
 {
 	glColor4ub(r, g, b, a);
 	glDisable(mTextureTarget);
@@ -396,7 +376,7 @@ void OGL_Renderer::drawBoxFilled(int x, int y, int width, int height, int r, int
 }
 
 
-void OGL_Renderer::drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a)
+void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
 {
 	// Protect against a NULL font object being passed in.
 	if(!font.loaded())
@@ -484,7 +464,7 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, int x, int y, i
 }
 
 
-void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a)
+void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
 {
 	// Protect against a NULL font object being passed in.
 	if(!font.loaded())
@@ -581,15 +561,15 @@ void OGL_Renderer::update()
 }
 
 
-int OGL_Renderer::width()
+float OGL_Renderer::width()
 {
-    return mScreen->w;
+    return static_cast<float>(mScreen->w);
 }
 
 
-int OGL_Renderer::height()
+float OGL_Renderer::height()
 {
-    return mScreen->h;
+    return static_cast<float>(mScreen->h);
 }
 
 

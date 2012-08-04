@@ -159,7 +159,7 @@ void Sprite::resume()
  * \param	x	X-Screen Coordinate to render the Sprite.
  * \param	y	X-Screen Coordinate to render the Sprite.
  */
-void Sprite::update(int x, int y)
+void Sprite::update(float x, float y)
 {
 	SpriteFrame frame = mActions[mCurrentAction][mCurrentFrame];
 

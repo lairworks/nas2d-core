@@ -90,42 +90,47 @@ public:
 	const std::string& getDriverName();
 	const std::string& getLastError();
 
-	virtual void drawImage(Image& image, int x, int y, float scale = 1.0f);
-	virtual void drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height);
+	virtual void drawImage(Image& image, float x, float y, float scale = 1.0f);
+	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
 
-	virtual void drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees);
-	void drawImageRotated(Image& image, int x, int y, float degrees, Color_4ub color = COLOR_NORMAL, float scale = 1.0f);
-	virtual void drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale = 1.0f);
+	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees);
+	void drawImageRotated(Image& image, float x, float y, float degrees, Color_4ub color = COLOR_NORMAL, float scale = 1.0f);
+	virtual void drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale = 1.0f);
 
-	void drawImageStretched(Image& image, int x, int y, int w, int h, Color_4ub color = COLOR_NORMAL);
-	virtual void drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a);
+	void drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color = COLOR_NORMAL);
+	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a);
 
-	virtual void drawImageRepeated(Image& image, int x, int y, int w, int h);
-	void drawImageRect(int x, int y, int w, int h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
-	void drawImageRect(int x, int y, int w, int h, ImageList& images);
+	virtual void drawImageRepeated(Image& image, float x, float y, float w, float h);
+	void drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
+	void drawImageRect(float x, float y, float w, float h, ImageList& images);
 
-	virtual void drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint);
+	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint);
+	void drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint);
 
-	void drawPixel(int x, int y, const Color_4ub& color = COLOR_WHITE);
-	virtual void drawPixel(int x, int y, int r, int g, int b, int a = 255);
+	void drawPixel(float x, float y, const Color_4ub& color = COLOR_WHITE);
+	virtual void drawPixel(float x, float y, int r, int g, int b, int a = 255);
 
-	void drawLine(int x, int y, int x2, int y2, const Color_4ub& color = COLOR_WHITE, int line_width = 1);
-	virtual void drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a = 255, int line_width = 1);
+	void drawLine(float x, float y, float x2, float y2, const Color_4ub& color = COLOR_WHITE, int line_width = 1);
+	virtual void drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a = 255, int line_width = 1);
 
 	void drawBox(const Rectangle_2d& rect, int r, int g, int b, int a = 255);
-	virtual void drawBox(int x, int y, int w, int h, int r, int g, int b, int a = 255);
-	virtual void drawBoxFilled(int x, int y, int width, int height, int r, int g, int b, int a = 255);
+	void drawBox(const Rectangle_2df& rect, int r, int g, int b, int a = 255);
+	virtual void drawBox(float x, float y, float w, float h, int r, int g, int b, int a = 255);
 
-	virtual void drawCircle(int cx, int cy, int radius, int r, int g, int b, int a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f) {}
+	void drawBoxFilled(const Rectangle_2d& rect, int r, int g, int b, int a = 255);
+	void drawBoxFilled(const Rectangle_2df& rect, int r, int g, int b, int a = 255);
+	virtual void drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a = 255);
 
-	virtual void drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a = 255);
-	void drawTextShadow(Font& font, const std::string& text, int x, int y, int sDistance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
-	virtual void drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a = 255);
-	void drawTextShadowClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int distance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
+	virtual void drawCircle(float x, float y, float radius, int r, int g, int b, int a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f);
+
+	virtual void drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a = 255);
+	void drawTextShadow(Font& font, const std::string& text, float x, float y, int sDistance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
+	virtual void drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a = 255);
+	void drawTextShadowClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int distance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
 
 	void setFadeColor(const Color_4ub& color);
-	void fadeIn(int delayTime);
-	void fadeOut(int delayTime);
+	void fadeIn(float delayTime);
+	void fadeOut(float delayTime);
 	bool isFading() const;
 	bool isFaded() const;
 
@@ -135,13 +140,13 @@ public:
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);
 
-	virtual int width();
-	virtual int height();
+	virtual float width();
+	virtual float height();
 
-	Point_2d getScreenResolution();
+	Point_2df getScreenResolution();
 
-	int screenCenterX();
-	int screenCenterY();
+	float screenCenterX();
+	float screenCenterY();
 
 	virtual void buildDisplayModeList();
 	const DisplayModes& getDisplayModes() const { return mDisplayModes; }

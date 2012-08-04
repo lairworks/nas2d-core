@@ -14,7 +14,7 @@
 
 /**
  * \class	Color_4ub
- * \brief	Represents a color in standard RGBA format.
+ * \brief	RGBA Color.
  * 
  * RGBA values can only be between 0 and 255.
  */
@@ -33,6 +33,8 @@ public:
 											mA(static_cast<unsigned char>(a))
 	{}
 
+	void operator()(int r, int g, int b, int a) { red(r); green(g); blue(b); alpha(a); }
+
 	int red() const { return static_cast<int>(mR); }
 	int green() const { return static_cast<int>(mG); }
 	int blue() const { return static_cast<int>(mB); }
@@ -50,7 +52,7 @@ private:
 
 /**
  * \struct	Rectangle_2d
- * \brief	Basic 2D rectangle.
+ * \brief	2D rectangle.
  */
 class Rectangle_2d
 {
@@ -67,8 +69,26 @@ public:
 
 
 /**
+ * \struct	Rectangle_2df
+ * \brief	Floating point 2D Rectangle.
+ */
+class Rectangle_2df
+{
+public:
+	Rectangle_2df(): x(0), y(0), w(0), h(0) {}
+	Rectangle_2df(float x, float y, float w, float h): x(x), y(y), w(w), h(h) {}
+
+	bool operator==(const Rectangle_2df& rect) { return (x == rect.x) && (y == rect.y) && (w == rect.w) && (h == rect.h); }
+
+	void operator()(float _x, float _y, float _w, float _h) { x = _x; y = _y; w = _w; h = _h; }
+
+	float x, y, w, h;
+};
+
+
+/**
  * \struct	Point_2d
- * \brief	Basic 2D point.
+ * \brief	2D point.
  */
 class Point_2d
 {
@@ -88,7 +108,7 @@ public:
 
 /**
  * \struct	Point_2df
- * \brief	Basic 2D point implemented with floats.
+ * \brief	Floating point 2D Point.
  */
 class Point_2df
 {

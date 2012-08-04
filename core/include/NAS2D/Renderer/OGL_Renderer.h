@@ -40,30 +40,30 @@ public:
 
 	~OGL_Renderer();
 
-	void drawImage(Image& image, int x, int y, float scale);
-	void drawSubImage(Image& image, int rasterX, int rasterY, int x, int y, int width, int height);
+	void drawImage(Image& image, float x, float y, float scale);
+	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
 
-	void drawSubImageRotated(Image& image, int rasterX, int rasterY, int x, int y, int width, int height, float degrees);
-	void drawImageRotated(Image& image, int x, int y, float degrees, int r, int g, int b, int a, float scale);
-	void drawImageStretched(Image& image, int x, int y, int w, int h, int r, int g, int b, int a);
+	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees);
+	void drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale);
+	void drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a);
 
-	void drawImageRepeated(Image& image, int x, int y, int w, int h);
+	void drawImageRepeated(Image& image, float x, float y, float w, float h);
 
-	void drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint);
+	void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint);
 
-	void drawPixel(int x, int y, int r, int g, int b, int a);
-	void drawLine(int x, int y, int x2, int y2, int r, int g, int b, int a, int line_width);
-	void drawBox(int x, int y, int width, int height, int r, int g, int b, int a);
-	void drawBoxFilled(int x, int y, int width, int height, int r, int g, int b, int a);
-	void drawCircle(int cx, int cy, int radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y);
+	void drawPixel(float x, float y, int r, int g, int b, int a);
+	void drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width);
+	void drawBox(float x, float y, float width, float height, int r, int g, int b, int a);
+	void drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a);
+	void drawCircle(float x, float y, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y);
 
-	void drawText(Font& font, const std::string& text, int x, int y, int r, int g, int b, int a);
-	void drawTextClamped(Font& font, const std::string& text, int rasterX, int rasterY, int x, int y, int w, int h, int r, int g, int b, int a);
+	void drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a);
+	void drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a);
 
 	void clearScreen(int r, int g, int b);
     
-	int width();
-	int height();
+	float width();
+	float height();
 
 	void update();
 
@@ -82,9 +82,6 @@ private:
 	void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 	void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
 
-	inline void fillVertexArray(int x, int y, int w, int h);
-	inline void fillTextureArray(int x, int y, int u, int v);
-	
 	void drawVertexArray(GLuint textureId, bool defaultTextureCoords);
 
 	void getError();

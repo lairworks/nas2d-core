@@ -50,7 +50,7 @@ public:
 	void pause();
 	void resume();
 
-	void update(int x, int y);
+	void update(float x, float y);
 
 	void rotation(float angle);
 	float rotation() const;

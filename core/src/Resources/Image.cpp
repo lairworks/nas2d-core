@@ -77,8 +77,8 @@ Image::Image():	Resource(DEFAULT_IMAGE_NAME),
 /**
  * Create a blank Image of X, Y dimensions.
  * 
- * \param	x	Width of the Image.
- * \param	y	Height of the Image.
+ * \param	w	Width of the Image.
+ * \param	h	Height of the Image.
  */
 Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
 							mTextureId(0)

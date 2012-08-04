@@ -16,26 +16,15 @@ extern const float PI_2;
 extern const float DEG2RAD;
 extern const float RAD2DEG;
 
-/**
- * \struct Vec2f
- * \brief	Contains two values.
- *
- * Built with directional vectors in mind.
- */
-struct Vec_2f
-{
-	Vec_2f(): x(0.0f), y(0.0f) {}
-	Vec_2f(float x, float y): x(x), y(y) {}
-
-	float x, y;
-};
 
 class Point_2d;
+class Point_2df;
+
 
 float degToRad(float degree);
 float radToDeg(float rad);
 float angleFromPoints(float x, float y, float x2, float y2);
-Vec_2f getDirectionVector(float angle);
+Point_2df getDirectionVector(float angle);
 
 bool lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r);
 

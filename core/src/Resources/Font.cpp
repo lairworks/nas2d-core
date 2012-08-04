@@ -10,12 +10,19 @@
 
 #include "NAS2D/Resources/Font.h"
 
-#include <OpenGL/OpenGL.h>
+#if defined(__APPLE__)
+	#include <OpenGL/OpenGL.h>
+#elif defined(WIN32)
+	#include "GLee.h"
+	#include "SDL/SDL_opengl.h"
+#else
+	#include "SDL/SDL_opengl.h"
+#endif
 
 using namespace std;
 
-string buildName(TTF_Font*);
-void toggleFontStyle(TTF_Font*, int);
+//string buildName(TTF_Font*);
+//void toggleFontStyle(TTF_Font*, int);
 
 /**
  * Primary method of instantiating a font.
@@ -89,17 +96,30 @@ void Font::load()
 	
 	FT_Library library; //Create a freetype library instance
 	
-    if (FT_Init_FreeType(&library)) {
+    if(FT_Init_FreeType(&library))
         std::cerr << "Could not initialize the freetype library" << std::endl;
-    }
-	
-	std::string tmp = "data/" + name();
+
+
+    /*	std::string tmp = "data/" + name();
 	
 	
     //Now we attempt to load the font information
-    if(FT_New_Face(library, tmp.c_str(), 0, &mFont)) {
+
+	Stop using function that directly access the filesystem, this violates
+	filesystem security and breaks the virtual fileystems paradigm, e.g.,
+	on Win32, it can't find the file because it can't read properly from
+	relative paths.
+
+	if(FT_New_Face(library, tmp.c_str(), 0, &mFont)) {
         std::cerr << "Could not load the specified font:\t" << name() << std::endl;
     }
+	*/
+
+	File fontFile = Utility<Filesystem>::get().open(name());
+
+	const FT_Byte* stream = (const unsigned char*)fontFile.bytes().c_str(); // hate having to cast like this. Yuck!
+
+	FT_New_Memory_Face(library, stream, fontFile.size(), 0, &mFont);
 	
 	mHeight = mFont->height/64;
 	
@@ -125,6 +145,7 @@ void Font::load()
 
 	loaded(true);
 }
+
 
 bool Font::generateCharacterTexture(unsigned char ch, FT_Face fontInfo)
 {
@@ -174,7 +195,7 @@ int Font::width(const std::string& str) const
 	
 	int width = 0;
 
-	for(int i = 0; i < str.size(); i++)
+	for(int i = 0; i < static_cast<int>(str.size()); i++)
 	{
 		if(FT_Load_Glyph(mFont, FT_Get_Char_Index(mFont, str[i]), FT_LOAD_DEFAULT))
 		{
@@ -307,14 +328,16 @@ void Font::normal()
 string buildName(TTF_Font* font)
 {
 	// Build Font Name with Family Name and Style Name.
-	string fontFamily = TTF_FontFaceFamilyName(font);
-	string fontStyle = TTF_FontFaceStyleName(font);
+	//string fontFamily = TTF_FontFaceFamilyName(font);
+	//string fontStyle = TTF_FontFaceStyleName(font);
 
 	// If Font style is regular, just use the family name.
-	if(toLowercase(fontStyle) == "regular")
-		return fontFamily;
-	else
-		return fontFamily + " " + fontStyle;
+	//if(toLowercase(fontStyle) == "regular")
+	//	return fontFamily;
+	//else
+	//	return fontFamily + " " + fontStyle;
+
+	return "";
 }
 
 
@@ -327,5 +350,5 @@ void toggleFontStyle(TTF_Font* font, int fontStyle)
 	if(!font)
 		return;
 
-	TTF_SetFontStyle(font, TTF_GetFontStyle(font) ^ fontStyle);
+	//TTF_SetFontStyle(font, TTF_GetFontStyle(font) ^ fontStyle);
 }

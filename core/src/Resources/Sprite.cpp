@@ -21,6 +21,8 @@ const string DEFAULT_ACTION("default");
 
 const int FRAME_PAUSE = -1;
 
+
+// Adds a row/name tag to the end of messages.
 string endTag(int row, const std::string& name)
 {
 	stringstream str;
@@ -29,6 +31,14 @@ string endTag(int row, const std::string& name)
 }
 
 
+/**
+ * Default c'tor.
+ * 
+ * Provided to allow sprites to be used in STL containers.
+ * 
+ * \warning	Generally speaking, Sprites should not be instantiated
+ *			with the default c'tor.
+ */
 Sprite::Sprite():	mSpriteName("Default Constructed"),
 					mCurrentAction(DEFAULT_ACTION),
 					mCurrentFrame(0),
@@ -39,11 +49,11 @@ Sprite::Sprite():	mSpriteName("Default Constructed"),
 	addDefaultAction();
 }
 
+
 /**
- * Constructor.
+ * C'tor.
  *
- * \param renderer		A pointer to a Renderer object.
- * \param filePath		A string containing the file path of the Sprite definition file to use.
+ * \param filePath	File path of the Sprite definition file.
  */
 Sprite::Sprite(const std::string& filePath):	mSpriteName(filePath),
 												mCurrentAction(DEFAULT_ACTION),

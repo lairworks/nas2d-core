@@ -14,7 +14,7 @@
 
 #include "Renderer.h"
 
-#include <OpenGL/OpenGL.h>
+//#include <OpenGL/OpenGL.h>  <<< really????
 
 #include "SDL/SDL.h"
 
@@ -98,8 +98,8 @@ private:
 	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
 	//	GLfloat				mTextureBufferObject;	/**< COMMENT ME! */
 	
-	GLuint				mFontShaderFrag;
-	GLuint				mFontShaderVert;
+	unsigned int		mFontShaderFrag;
+	unsigned int		mFontShaderVert;
 	
 	ShaderManager		*mShaderManager;
 };	

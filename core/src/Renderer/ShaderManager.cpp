@@ -42,7 +42,7 @@ ShaderManager::~ShaderManager()
 }
 
 
-void ShaderManager::loadShader(const string& src, GLuint shader)
+void ShaderManager::loadShader(const std::string& src, GLuint shader)
 {
 	File f = Utility<Filesystem>::get().open(src);
 	const GLchar* c = f.raw_bytes();

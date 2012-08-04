@@ -813,8 +813,8 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	SDL_ShowCursor(false);
 
-	if(TTF_Init() < 0)
-		throw Exception(703, "Error starting TrueType Library", TTF_GetError());
+	//if(TTF_Init() < 0)
+	//	throw Exception(703, "Error starting TrueType Library", TTF_GetError());
 
 	buildDisplayModeList();
 	//mShaderManager = new ShaderManager();

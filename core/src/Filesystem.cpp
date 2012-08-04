@@ -326,7 +326,7 @@ bool Filesystem::isDirectory(const std::string& path) const
 /**
  * Checks for the existence of a file.
  * 
- * \param	path	File path to check.
+ * \param	filename	File path to check.
  *
  * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
  */

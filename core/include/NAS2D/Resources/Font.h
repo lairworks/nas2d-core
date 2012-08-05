@@ -18,10 +18,7 @@
 #include FT_GLYPH_H
 
 #ifdef __APPLE__
-#include <FreeType/freetype.h>		// This include method is deprecated as per FT docs:
-#include <FreeType/ftglyph.h>		// http://www.freetype.org/freetype2/docs/tutorial/step1.html
-#include <FreeType/ftoutln.h>
-#include <FreeType/fttrigon.h>
+#include "SDL_ttf/SDL_ttf.h"
 #else
 #include "SDL/SDL_ttf.h"
 #endif

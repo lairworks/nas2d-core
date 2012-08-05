@@ -453,7 +453,13 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float 
 	for(string::size_type i = 0; i < text.size(); ++i)
     {
         int ch = int(text[i]);
-		fillVertexArray(advX, y, font.getGlyphWidth(ch), font.height());
+		if(isspace(ch))
+		{
+			advX += font.getGlyphWidth(ch);
+			continue;
+		}
+			
+		fillVertexArray(advX, y, font.getGlyphWidth(ch), font.getGlyphHeight(ch));
 	
 		drawVertexArray(font.texture(ch));
 		advX += font.getGlyphWidth(ch);
@@ -771,8 +777,8 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	if (vsync)
 	{
 		vsync = false;
-		//const GLint VBL = 1;
-		//CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
+		const GLint VBL = 1;
+		CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
 	}
 #endif
 	if(vsync)

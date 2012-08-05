@@ -11,7 +11,7 @@
 #include "NAS2D/Resources/Font.h"
 
 #if defined(__APPLE__)
-	#include <OpenGL/OpenGL.h>
+	#include <SDL/SDL_opengl.h>
 #elif defined(WIN32)
 	#include "GLee.h"
 	#include "SDL/SDL_opengl.h"
@@ -135,7 +135,7 @@ void Font::load()
 		mTextures.push_back(m_textureID);
 	}
 	
-    for (int ch = 0; ch < 127; ++ch)
+    for (int ch = 32; ch < 128; ++ch)
     {
         if (!generateCharacterTexture(ch, mFont))
         {
@@ -149,36 +149,46 @@ void Font::load()
 
 bool Font::generateCharacterTexture(unsigned char ch, FT_Face fontInfo)
 {
-    if(FT_Load_Glyph(fontInfo, FT_Get_Char_Index(fontInfo, ch), FT_LOAD_DEFAULT))
-    {
-        return false;
-    }
+	if(FT_Get_Char_Index(mFont, ch) != 0 || !isspace(ch))
+	{
+		if(FT_Load_Glyph(fontInfo, FT_Get_Char_Index(fontInfo, ch), FT_LOAD_DEFAULT))
+		{
+			std::cout << "Failed to load glyph for char: " << ch << "." << endl;
+			return false;
+		}
 	
-  	FT_Glyph glyph;
-    if(FT_Get_Glyph(fontInfo->glyph, &glyph))
-    {
-        return false;
-    }
+		FT_Glyph glyph;
+		if(FT_Get_Glyph(fontInfo->glyph, &glyph))
+		{
+			std::cout << "Failed to get glyph for char: " << ch << "." << endl;
+			return false;
+		}
 	
-    if (FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1))
-    {
-        return false;
-    }
+		if (FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1))
+		{
+			std::cout << "Failed to load bitmap for char: " << ch << "." << endl;
+			return false;
+		}
 	
-    FT_BitmapGlyph bitmapGlyph = (FT_BitmapGlyph) glyph;
+		FT_BitmapGlyph bitmapGlyph = (FT_BitmapGlyph) glyph;
 	
-    int width = (bitmapGlyph->bitmap.width) ? bitmapGlyph->bitmap.width : 16;
-    int rows = (bitmapGlyph->bitmap.rows) ? bitmapGlyph->bitmap.rows : 16;
+		int width = (bitmapGlyph->bitmap.width) ? bitmapGlyph->bitmap.width : 16;
+		int rows = (bitmapGlyph->bitmap.rows) ? bitmapGlyph->bitmap.rows : 16;
 	
-    glBindTexture(GL_TEXTURE_2D, mTextures[ch]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, rows, 0,
+		glBindTexture(GL_TEXTURE_2D, mTextures[ch]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, rows, 0,
                  GL_ALPHA, GL_UNSIGNED_BYTE, bitmapGlyph->bitmap.buffer);
 	
-    mGlyphDimensions[ch] = std::make_pair(width, rows);
-    mGlyphPositions[ch] = std::make_pair(bitmapGlyph->left, bitmapGlyph->top);
-    mGlyphAdvances[ch] = fontInfo->glyph->advance.x / 64;
+		mGlyphDimensions[ch] = std::make_pair(width, rows);
+		mGlyphPositions[ch] = std::make_pair(bitmapGlyph->left, bitmapGlyph->top);
+		mGlyphAdvances[ch] = fontInfo->glyph->advance.x / 64;
+	}
+	else
+		printf("Char:\t%c\tIndex:\t%i\n", ch, FT_Get_Char_Index(mFont, ch));
     return true;
 }
 

@@ -546,7 +546,7 @@ void Configuration::vsync(bool isVsync)
  */
 void Configuration::audioMixRate(int mixrate)
 {
-	if(mixrate != AUDIO_LOW_QUALITY || mixrate != AUDIO_MEDIUM_QUALITY || mixrate != AUDIO_HIGH_QUALITY)
+	if(mixrate != AUDIO_LOW_QUALITY && mixrate != AUDIO_MEDIUM_QUALITY && mixrate != AUDIO_HIGH_QUALITY)
 		mixrate = AUDIO_MEDIUM_QUALITY;
 
 	mMixRate = mixrate;

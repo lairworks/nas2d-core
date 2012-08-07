@@ -17,12 +17,6 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
-#ifdef __APPLE__
-#include "SDL_ttf/SDL_ttf.h"
-#else
-#include "SDL/SDL_ttf.h"
-#endif
-
 #include <map>
 
 
@@ -41,6 +35,8 @@ public:
 
 	int width(const std::string& str) const;
 	int height() const;
+
+	static bool isSpace(char c);
 
 	const std::string& typefaceName() const;
 
@@ -61,7 +57,7 @@ protected:
 
 private:
 	typedef std::vector<unsigned int> TextureList;
-	typedef std::map<char, std::pair<int, int> > CharIntPairMap; // Find a more descriptive name for this.
+	typedef std::vector<Rectangle_2d> KerningMetrics;
 	typedef std::map<char, int> CharIntMap; // Find a more descriptive name for this.
 
 	// explicitly disallow copy construction/assignment operator
@@ -69,7 +65,7 @@ private:
 	Font& operator=(const Font& font);
 
 	void load();
-	bool generateCharacterTexture(unsigned char ch, FT_Face fontInfo);
+	bool generateCharacterTexture(int ch);
 
 	//	TTF_Font		*mFont;			/**< True Type Font. */
 	FT_Face			mFont;
@@ -81,8 +77,7 @@ private:
 	std::string		mFontName;			/**< Full typeface name. */
 
 	TextureList		mTextures;			/**< Store room for the character textures. */
-	CharIntPairMap	mGlyphDimensions;	/**<  */
-	CharIntPairMap	mGlyphPositions;	/**<  */
+	KerningMetrics	mGlyphMetrics;		/**< Glyph kerning metrics. */
 	CharIntMap		mGlyphAdvances;		/**<  */
 };
 

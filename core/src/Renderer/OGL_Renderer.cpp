@@ -378,82 +378,18 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, in
 
 void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
 {
-	// Protect against a NULL font object being passed in.
-	if(!font.loaded())
-		return;
-	else if(text.empty())
+	// Ignore if font isn't loaded or string is empty
+	if(!font.loaded() || text.empty())
 		return;
 
-//	SDL_Color Color = {r, g, b};
-//	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
-//	if(!textSurface)
-//	{
-//		stringstream str;
-//		str << "Renderer: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
-//		pushMessage(str.str());
-//		return;
-//	}
-//
-//
-//	// Detect which order the pixel data is in to properly feed OGL.
-//	GLint nColors = textSurface->format->BytesPerPixel;
-//	
-//	GLenum textureFormat = 0;
-//	if(nColors == 4)
-//	{
-//		if(textSurface->format->Rmask == 0x000000ff)
-//			textureFormat = GL_RGBA;
-//		else
-//			textureFormat = GL_BGRA;
-//	}
-//	else if(nColors == 3)     // no alpha channel
-//	{
-//		if(textSurface->format->Rmask == 0x000000ff)
-//			textureFormat = GL_RGB;
-//		else
-//			textureFormat = GL_BGR;
-//	}
-//	else
-//	{
-//		cout << "Image must be 16-, 24- or 32-bit." << std::endl;
-//		return;
-//	}
-//
-//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
-//											// or can we set it once in the Renderer?
-//
-//	// Create a texture from the text surface, render it, and free it.
-//	GLuint texId = 0;
-//	glGenTextures(1, &texId);
-//	glBindTexture(GL_TEXTURE_2D, texId);
-//
-//	glTexImage2D(GL_TEXTURE_2D, 0, nColors, textSurface->w, textSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, textSurface->pixels);
-//
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-
-//	// =================
-//	glColor4ub(r, g, b, a);
-//	
-//	fillVertexArray(x, y, textSurface->w, textSurface->h);
-//
-//	drawVertexArray(texId);
-//
-//	glDeleteTextures(1, &texId);
-//	SDL_FreeSurface(textSurface);
-//
-//	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
-	
 	// =================
 	glColor4ub(r, g, b, a);
 	int advX = x;
+	char ch = 0;
 	for(string::size_type i = 0; i < text.size(); ++i)
     {
-        int ch = int(text[i]);
-		if(isspace(ch))
+        ch = text[i];
+		if(Font::isSpace(ch))
 		{
 			advX += font.getGlyphWidth(ch);
 			continue;

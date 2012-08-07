@@ -21,6 +21,23 @@
 
 using namespace std;
 
+
+const int ASCII_CHARACTER_COUNT			= 128;
+const int ASCII_START_CODE				= 32;
+const int ASCII_LAST_CHAR				= 127; // code 128 is DELETE, so ignore it
+const int CHAR_COUNT					= ASCII_LAST_CHAR - ASCII_START_CODE;
+
+const int ASCII_SPACE					= 32; // Scan code for ASCII space is 32
+
+const int DEFAULT_SPACING				= 16;
+
+
+bool Font::isSpace(char c)
+{
+	return static_cast<int>(c) == ASCII_SPACE;
+}
+
+
 //string buildName(TTF_Font*);
 //void toggleFontStyle(TTF_Font*, int);
 
@@ -73,47 +90,10 @@ Font::~Font()
  */
 void Font::load()
 {
-//	mFontBuffer = Utility<Filesystem>::get().open(name());
-//
-//	if(mFontBuffer.size() == 0)
-//	{
-//		errorMessage(Utility<Filesystem>::get().lastError());
-//		//mFont = NULL;
-//		return;
-//	}
-//
-//	mFont = TTF_OpenFontRW(SDL_RWFromConstMem(mFontBuffer.raw_bytes(), mFontBuffer.size()), 0, mPtSize);
-//	if(!mFont)
-//	{		
-//		// Get the error message and return false. 
-//		errorMessage(TTF_GetError());
-//		return;
-//	}
-//
-//	mHeight = TTF_FontHeight(mFont);
-//
-//	mFontName = buildName(mFont);
-	
 	FT_Library library; //Create a freetype library instance
 	
     if(FT_Init_FreeType(&library))
         std::cerr << "Could not initialize the freetype library" << std::endl;
-
-
-    /*	std::string tmp = "data/" + name();
-	
-	
-    //Now we attempt to load the font information
-
-	Stop using function that directly access the filesystem, this violates
-	filesystem security and breaks the virtual fileystems paradigm, e.g.,
-	on Win32, it can't find the file because it can't read properly from
-	relative paths.
-
-	if(FT_New_Face(library, tmp.c_str(), 0, &mFont)) {
-        std::cerr << "Could not load the specified font:\t" << name() << std::endl;
-    }
-	*/
 
 	File fontFile = Utility<Filesystem>::get().open(name());
 
@@ -121,74 +101,75 @@ void Font::load()
 
 	FT_New_Memory_Face(library, stream, fontFile.size(), 0, &mFont);
 	
-	mHeight = mFont->height/64;
+	mHeight = mFont->height / 64;
 	
     //FreeType uses heights which are one 64th of the size in pixels so
     //we set our font height by multiplying by 64. The 96x96 is the dots per inch
-    FT_Set_Char_Size(mFont, (int)mPtSize * 64, (int)mPtSize * 64, 96, 96);
+    FT_Set_Char_Size(mFont, mPtSize * 64, mPtSize * 64, 96, 96);
 	
-// Generate 128 textures (each character gets its own texture)
-	GLuint m_textureID;
-	for (int i = 0; i < 127; i++)
+	// Generate 128 textures (each character gets its own texture)
+	GLuint *_textureID = new GLuint[CHAR_COUNT];
+	glGenTextures(CHAR_COUNT, _textureID);
+	
+	mTextures.resize(CHAR_COUNT);
+	mGlyphMetrics.resize(CHAR_COUNT);
+	
+
+	for(int i = ASCII_START_CODE; i < ASCII_LAST_CHAR; ++i)
 	{
-		glGenTextures(1, &m_textureID);
-		mTextures.push_back(m_textureID);
+		mTextures[i - ASCII_START_CODE] = _textureID[i - ASCII_START_CODE];
+
+		if(!generateCharacterTexture(i))
+			std::cerr << "Could not generate the texture for character: " << (char)i << std::endl;
 	}
-	
-    for (int ch = 32; ch < 128; ++ch)
-    {
-        if (!generateCharacterTexture(ch, mFont))
-        {
-            std::cerr << "Could not generate the texture for character: " << ch << std::endl;
-        }
-    }
+
+	delete [] _textureID;
 
 	loaded(true);
 }
 
 
-bool Font::generateCharacterTexture(unsigned char ch, FT_Face fontInfo)
+bool Font::generateCharacterTexture(int ch)
 {
-	if(FT_Get_Char_Index(mFont, ch) != 0 || !isspace(ch))
+	if(FT_Get_Char_Index(mFont, ch) != 0 /*&& !isSpace(ch)*/)
 	{
-		if(FT_Load_Glyph(fontInfo, FT_Get_Char_Index(fontInfo, ch), FT_LOAD_DEFAULT))
+		if(FT_Load_Glyph(mFont, FT_Get_Char_Index(mFont, ch), FT_LOAD_DEFAULT))
 		{
-			std::cout << "Failed to load glyph for char: " << ch << "." << endl;
+			std::cout << "Failed to load glyph for '" << (char)ch << "'." << endl;
 			return false;
 		}
 	
 		FT_Glyph glyph;
-		if(FT_Get_Glyph(fontInfo->glyph, &glyph))
+		if(FT_Get_Glyph(mFont->glyph, &glyph))
 		{
-			std::cout << "Failed to get glyph for char: " << ch << "." << endl;
+			std::cout << "Failed to get glyph for char: " << (char)ch << "." << endl;
 			return false;
 		}
 	
-		if (FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1))
+		if(FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1))
 		{
-			std::cout << "Failed to load bitmap for char: " << ch << "." << endl;
+			std::cout << "Failed to load bitmap for char: " << (char)ch << "." << endl;
 			return false;
 		}
 	
-		FT_BitmapGlyph bitmapGlyph = (FT_BitmapGlyph) glyph;
+		FT_BitmapGlyph bitmapGlyph = (FT_BitmapGlyph)glyph; // This is akin to reinterpret_cast, not safe and possibly not correct.
 	
-		int width = (bitmapGlyph->bitmap.width) ? bitmapGlyph->bitmap.width : 16;
-		int rows = (bitmapGlyph->bitmap.rows) ? bitmapGlyph->bitmap.rows : 16;
+		int width = (bitmapGlyph->bitmap.width) ? bitmapGlyph->bitmap.width : DEFAULT_SPACING;
+		int rows = (bitmapGlyph->bitmap.rows) ? bitmapGlyph->bitmap.rows : DEFAULT_SPACING;
 	
-		glBindTexture(GL_TEXTURE_2D, mTextures[ch]);
+		glBindTexture(GL_TEXTURE_2D, mTextures[ch - ASCII_START_CODE]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, rows, 0,
-                 GL_ALPHA, GL_UNSIGNED_BYTE, bitmapGlyph->bitmap.buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, rows, 0, GL_ALPHA, GL_UNSIGNED_BYTE, bitmapGlyph->bitmap.buffer);
 	
-		mGlyphDimensions[ch] = std::make_pair(width, rows);
-		mGlyphPositions[ch] = std::make_pair(bitmapGlyph->left, bitmapGlyph->top);
-		mGlyphAdvances[ch] = fontInfo->glyph->advance.x / 64;
+		mGlyphMetrics[ch - ASCII_START_CODE](bitmapGlyph->left, bitmapGlyph->top, width, rows);
+		mGlyphAdvances[ch] = mFont->glyph->advance.x / 64;
 	}
 	else
-		printf("Char:\t%c\tIndex:\t%i\n", ch, FT_Get_Char_Index(mFont, ch));
+		cout << "Char:\t" << (char)ch << "\tIndex:\t" << FT_Get_Char_Index(mFont, ch) << endl;
+
     return true;
 }
 
@@ -205,27 +186,15 @@ int Font::width(const std::string& str) const
 	
 	int width = 0;
 
-	for(int i = 0; i < static_cast<int>(str.size()); i++)
+	for(size_t i = 0; i < str.size(); i++)
 	{
-		if(FT_Load_Glyph(mFont, FT_Get_Char_Index(mFont, str[i]), FT_LOAD_DEFAULT))
-		{
-			return false;
-		}
+		#if defined(_DEBUG)
+		int c = static_cast<int>(str[i]);
+		width += mGlyphMetrics[c - ASCII_START_CODE].w;
+		#else
+		width += mGlyphMetrics[static_cast<int>(str[i])].w;
+		#endif
 		
-		FT_Glyph glyph;
-		if(FT_Get_Glyph(mFont->glyph, &glyph))
-		{
-			return false;
-		}
-		
-		if (FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1))
-		{
-			return false;
-		}
-		
-		FT_BitmapGlyph bitmapGlyph = (FT_BitmapGlyph) glyph;
-		
-		width += bitmapGlyph->bitmap.width;
 	}
 
 	return width;
@@ -259,7 +228,7 @@ FT_Face &Font::font()
  */
 GLuint Font::texture(char ch) const
 {
-	return mTextures[ch];
+	return mTextures[static_cast<int>(ch) - ASCII_START_CODE];
 }
 
 /**
@@ -268,7 +237,7 @@ GLuint Font::texture(char ch) const
  */
 int Font::getGlyphWidth(char ch)
 {
-	return mGlyphDimensions[ch].first;
+	return mGlyphMetrics[static_cast<int>(ch) - ASCII_START_CODE].w;
 }
 
 /**
@@ -277,7 +246,7 @@ int Font::getGlyphWidth(char ch)
  */
 int Font::getGlyphHeight(char ch)
 {
-	return mGlyphDimensions[ch].second;
+	return mGlyphMetrics[static_cast<int>(ch) - ASCII_START_CODE].h;
 }
 
 
@@ -323,42 +292,4 @@ void Font::underline()
 void Font::normal()
 {
 //	TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
-}
-
-
-
-// ==================================================================================
-// = Unexposed module-level functions defined here that don't need to be part of the
-// = API interface.
-// ==================================================================================
-
-/*
- * Builds a typeface name given a TTF_Font.
- */
-string buildName(TTF_Font* font)
-{
-	// Build Font Name with Family Name and Style Name.
-	//string fontFamily = TTF_FontFaceFamilyName(font);
-	//string fontStyle = TTF_FontFaceStyleName(font);
-
-	// If Font style is regular, just use the family name.
-	//if(toLowercase(fontStyle) == "regular")
-	//	return fontFamily;
-	//else
-	//	return fontFamily + " " + fontStyle;
-
-	return "";
-}
-
-
-/* 
- * Toggles a font style for a given TTF_Font.
- */ 
-void toggleFontStyle(TTF_Font* font, int fontStyle)
-{
-	// Defend against NULL pointers.
-	if(!font)
-		return;
-
-	//TTF_SetFontStyle(font, TTF_GetFontStyle(font) ^ fontStyle);
 }

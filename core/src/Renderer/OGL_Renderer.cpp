@@ -678,6 +678,7 @@ void OGL_Renderer::initGL()
 	cout << "\tVendor: " << glGetString(GL_VENDOR) << endl;
 	cout << "\tRenderer: " << mDriverName << endl;
 	cout << "\tDriver Version: " << glGetString(GL_VERSION) << endl;
+	cout << "\tGLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 
 	if(!checkExtensions())
 		throw Exception(0, "Graphics Requirements Not Met", "Your graphics driver does not meet the minimum requirements.");
@@ -709,7 +710,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 		sdlFlags = sdlFlags|SDL_FULLSCREEN;
 
 #ifdef __APPLE__
-	
 	if (vsync)
 	{
 		vsync = false;

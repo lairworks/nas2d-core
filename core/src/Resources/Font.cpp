@@ -168,7 +168,7 @@ bool Font::generateCharacterTexture(int ch)
 		mGlyphAdvances[ch] = mFont->glyph->advance.x / 64;
 	}
 	else
-		cout << "Char:\t" << (char)ch << "\tIndex:\t" << FT_Get_Char_Index(mFont, ch) << endl;
+		cout << "WARNING! Bitmap missing for Char:\t" << (char)ch << endl;
 
     return true;
 }
@@ -192,7 +192,7 @@ int Font::width(const std::string& str) const
 		int c = static_cast<int>(str[i]);
 		width += mGlyphMetrics[c - ASCII_START_CODE].w;
 		#else
-		width += mGlyphMetrics[static_cast<int>(str[i])].w;
+		width += mGlyphMetrics[static_cast<int>(str[i]) - ASCII_START_CODE].w;
 		#endif
 		
 	}

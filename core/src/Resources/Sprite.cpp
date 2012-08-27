@@ -76,6 +76,7 @@ Sprite::Sprite(const Sprite &sprite):	mImageSheets(sprite.mImageSheets),
 										mCurrentAction(sprite.mCurrentAction),
 										mCurrentFrame(sprite.mCurrentFrame),
 										mAlpha(sprite.mAlpha),
+										mRotationAngle(sprite.mRotationAngle),
 										mPaused(sprite.mPaused)
 {}
 
@@ -91,6 +92,7 @@ Sprite& Sprite::operator=(const Sprite &rhs)
 	mCurrentAction	= rhs.mCurrentAction;
 	mCurrentFrame	= rhs.mCurrentFrame;
 	mAlpha			= rhs.mAlpha;
+	mRotationAngle	= rhs.mRotationAngle;
 	mPaused			= rhs.mPaused;
 
 	return *this;

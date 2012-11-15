@@ -18,6 +18,8 @@
 #include <GLUT/glut.h>
 #elif defined(WIN32)
 #include "GLee.h"
+#define NO_SDL_GLEXT
+#include "SDL/SDL_opengl.h"
 #else
 #include "SDL/SDL_opengl.h"
 #endif

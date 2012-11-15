@@ -14,7 +14,6 @@
 #if defined(__APPLE__)
 	#include <OpenGL/OpenGL.h>
 #elif defined(WIN32)
-	#include "GLee.h"
 	#include "SDL/SDL_opengl.h"
 #else
 	#include "SDL/SDL_opengl.h"
@@ -33,19 +32,19 @@ using namespace std;
 /**
  * Texture coordinate pairs. Default coordinates encompassing the entire texture.
  */
- GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f };
+GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f };
 
-GLfloat POINT_VERTEX_ARRAY[2] = { 0 };
+GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 
 
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 
 
-OGL_Renderer::OGL_Renderer():	Renderer("OpenGL Renderer"),
-								mScreen(0),
-								mTextureTarget(0)
+OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title),
+														mWindow(NULL),
+														mTextureTarget(0)
 {
-	cout << "Starting " << mRendererName << ":" << endl;
+	cout << "Starting " << name() << ":" << endl;
 	
 	Configuration& cf = Utility<Configuration>::get();
 
@@ -54,7 +53,7 @@ OGL_Renderer::OGL_Renderer():	Renderer("OpenGL Renderer"),
 	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
 
 	// Set our LetterBox height to 15% of the screen's height.
-	mLetterBoxHeight = (int)((mScreen->h) * 0.15);
+	mLetterBoxHeight = (int)((width()) * 0.15);
 	
 }
 
@@ -63,6 +62,8 @@ OGL_Renderer::~OGL_Renderer()
 {
 	//glDeleteBuffers(1, &mVertexBufferObject);
 
+	SDL_GL_DeleteContext(mContext);
+	SDL_DestroyWindow(mWindow);
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	//delete mShaderManager;
@@ -90,7 +91,7 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords =
  */
 void OGL_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-	mVertexArray[0] = static_cast<GLfloat>(x),		mVertexArray[1] = static_cast<GLfloat>(y);
+	mVertexArray[0] = static_cast<GLfloat>(x),		mVertexArray[1] = static_cast<GLfloat>(y);	
 	mVertexArray[2] = static_cast<GLfloat>(x),		mVertexArray[3] = static_cast<GLfloat>(y + h);
 	mVertexArray[4] = static_cast<GLfloat>(x + w),	mVertexArray[5] = static_cast<GLfloat>(y + h);
 	mVertexArray[6] = static_cast<GLfloat>(x + w),	mVertexArray[7] = static_cast<GLfloat>(y);
@@ -350,13 +351,23 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 
 
 void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
-{	
+{
+
+	GLenum e = 0;
+
 	glColor4ub(r, g, b, a);
 	glDisable(mTextureTarget);
 
+	e = glGetError();
+
 	fillVertexArray(x, y, width, height);
+	e = glGetError();
+
 	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
+	e = glGetError();
+
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
+	e = glGetError();
 
 	glEnable(mTextureTarget);
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
@@ -378,31 +389,37 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, in
 
 void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
 {
+/*
+
 	// Ignore if font isn't loaded or string is empty
 	if(!font.loaded() || text.empty())
 		return;
 
-	// =================
 	glColor4ub(r, g, b, a);
-	int advX = x;
-	char ch = 0;
-	for(string::size_type i = 0; i < text.size(); ++i)
+
+void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
+
+fillVertexArray(rasterX, rasterY, width, height);
+
+fillTextureArray(	x / image.width(),
+					y / image.height(),
+					x / image.width() + width / image.width(),
+					y / image.height() + height / image.height()
+				);
+drawVertexArray(image.texture_id(), false);
+
+	int rasterX = x;
+	int rasterY = y;
+	Font::GlyphMetrics metrics = {0};
+	for(size_t i = 0; i < text.size(); i++)
     {
-        ch = text[i];
-		if(Font::isSpace(ch))
-		{
-			advX += font.getGlyphWidth(ch);
-			continue;
-		}
-			
-		fillVertexArray(advX, y, font.getGlyphWidth(ch), font.getGlyphHeight(ch));
-	
-		drawVertexArray(font.texture(ch));
-		advX += font.getGlyphWidth(ch);
+		metrics = font.glyphMetrics(text[i]);
+		fillVertexArray(rasterX, rasterY, width, height);
+		rasterX += metrics.advance;
 	}
 	
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
-	
+*/
 }
 
 
@@ -414,76 +431,7 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, float ra
 	else if(text.empty())
 		return;
 
-//	SDL_Color Color = {r, g, b};
-//	SDL_Surface *textSurface = TTF_RenderText_Blended(font.font(), text.c_str(), Color);
-//	if(!textSurface)
-//	{
-//		cout << "(ERR) Renderer Error: Unable to render Font '" << font.name() << "': " << TTF_GetError() << "." << endl;
-//		//glDisable(mTextureTarget);
-//		return;
-//	}
-//
-//	// Create a new surface at the clamped size, blit to it and free
-//	// the originally generated text surface.
-//	SDL_Surface *clampedSurface = SDL_CreateRGBSurface(textSurface->flags, w, h, textSurface->format->BitsPerPixel, textSurface->format->Rmask, textSurface->format->Gmask, textSurface->format->Bmask, textSurface->format->Amask);
-//	SDL_SetAlpha(textSurface, 0, textSurface->format->alpha); 
-//	SDL_Rect grabRect = {x, y, w, h};
-//	SDL_BlitSurface(textSurface, &grabRect, clampedSurface, NULL);
-//	SDL_SetAlpha(clampedSurface, SDL_SRCALPHA, clampedSurface->format->alpha);
-//	SDL_FreeSurface(textSurface);
-//	textSurface = NULL;
-//
-//
-//	// Detect which order the pixel data is in to properly feed OGL.
-//	GLint nColors = textSurface->format->BytesPerPixel;
-//	
-//	GLenum textureFormat = 0;
-//	if(nColors == 4)
-//	{
-//		if(textSurface->format->Rmask == 0x000000ff)
-//			textureFormat = GL_RGBA;
-//		else
-//			textureFormat = GL_BGRA;
-//	}
-//	else if(nColors == 3)     // no alpha channel
-//	{
-//		if(textSurface->format->Rmask == 0x000000ff)
-//			textureFormat = GL_RGB;
-//		else
-//			textureFormat = GL_BGR;
-//	}
-//	else
-//	{
-//		cout << "Image must be 16-, 24- or 32-bit." << std::endl;
-//		return;
-//	}
-//
-//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
-//											// or can we set it once in the Renderer?
-//
-//	// Create a texture from the text surface, render it, and free it.
-//	GLuint texId = 0;
-//	glGenTextures(1, &texId);
-//	glBindTexture(GL_TEXTURE_2D, texId);
-//
-//	glTexImage2D(GL_TEXTURE_2D, 0, nColors, textSurface->w, textSurface->h, 0, textureFormat, GL_UNSIGNED_BYTE, textSurface->pixels);
-//
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//
-//
-//	glColor4ub(r, g, b, a);
-//
-//	fillVertexArray(rasterX, rasterY, clampedSurface->w, clampedSurface->h);
-//	
-//	drawVertexArray(texId);
-//	
-//	glDeleteTextures(1, &texId);
-//	SDL_FreeSurface(clampedSurface);
-//
-//	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+	// please finish me
 }
 
 
@@ -499,19 +447,26 @@ void OGL_Renderer::update()
 	getError();
 
 	Renderer::update();
-	SDL_GL_SwapBuffers();
+	//SDL_GL_SwapBuffers();
+	SDL_GL_SwapWindow(mWindow);
 }
 
 
 float OGL_Renderer::width()
 {
-    return static_cast<float>(mScreen->w);
+    //return static_cast<float>(mScreen->w);
+	int n = 0;
+	SDL_GetWindowSize(mWindow, &n, NULL);
+	return static_cast<float>(n);
 }
 
 
 float OGL_Renderer::height()
 {
-    return static_cast<float>(mScreen->h);
+    //return static_cast<float>(mScreen->h);
+	int n = 0;
+	SDL_GetWindowSize(mWindow, NULL, &n);
+	return static_cast<float>(n);
 }
 
 
@@ -648,14 +603,14 @@ void OGL_Renderer::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 
-	glViewport(0, 0, mScreen->w, mScreen->h);
+	//glViewport(0, 0, mScreen->w, mScreen->h);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glOrtho(0.0, (GLdouble)mScreen->w, (GLdouble)mScreen->h, 0.0, -1.0, 1.0);
+	glOrtho(0.0, (GLdouble)width(), (GLdouble)height(), 0.0, -1.0, 1.0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -670,13 +625,12 @@ void OGL_Renderer::initGL()
 	glDisable(GL_DEPTH_TEST);
 
 	// Spit out system graphics information.
-	const SDL_VideoInfo* mVideoInfo = SDL_GetVideoInfo();
 	cout << "\t- OpenGL System Info -" << endl;
 
-	mDriverName = (char*)glGetString(GL_RENDERER);
+	driverName((char*)glGetString(GL_RENDERER));
 
 	cout << "\tVendor: " << glGetString(GL_VENDOR) << endl;
-	cout << "\tRenderer: " << mDriverName << endl;
+	cout << "\tRenderer: " << driverName() << endl;
 	cout << "\tDriver Version: " << glGetString(GL_VERSION) << endl;
 	cout << "\tGLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 
@@ -695,43 +649,51 @@ void OGL_Renderer::initGL()
 
 void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
 {
-	SDL_putenv("SDL_VIDEO_CENTERED=center");
-
-	// Set the app title to blank until the client sets it.
-	//setApplicationTitle(" ");
-
 	// Initialize SDL's Video Subsystems.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 		throw Exception(701, "Error starting SDL Video Library", SDL_GetError());
 
-	Uint32 sdlFlags = SDL_OPENGL;
+
+	// Setup OpenGL parameters
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.
+
+	if(vsync)
+		SDL_GL_SetSwapInterval(1);
+
+	// Anti-aliasing... need to test this.
+	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+
+	Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 	if(fullscreen)
-		sdlFlags = sdlFlags|SDL_FULLSCREEN;
+		sdlFlags = sdlFlags | SDL_WINDOW_FULLSCREEN;
+
+	mWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
+
+	if(!mWindow)
+		throw Exception(0, "Window Creation Failed", "Unable to create a window.");
+
+	mContext = SDL_GL_CreateContext(mWindow);
+
+
+	void* ptr = SDL_GL_GetProcAddress("glDrawArrays");
 
 #ifdef __APPLE__
 	if (vsync)
 	{
+
+		// FIXME: The SDL 2.0 method above may work fine which would allow us to pull this code.
+		
 		vsync = false;
 		const GLint VBL = 1;
 		CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
 	}
 #endif
-	if(vsync)
-		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
-
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
-	mScreen = 0;
-	mScreen = SDL_SetVideoMode(resX, resY, bpp, sdlFlags);
-	if(mScreen == 0)
-		throw Exception(702, "Error setting Video Mode", SDL_GetError());
 
 	SDL_ShowCursor(false);
 

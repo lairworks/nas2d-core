@@ -13,9 +13,13 @@
 
 #include "Resource.h"
 
-#include "ft2build.h"
-#include FT_FREETYPE_H
-#include FT_GLYPH_H
+#ifdef __APPLE__
+#include "SDL_ttf/SDL_ttf.h"
+#else
+#include "GLee.h"
+#define NO_SDL_GLEXT
+#include "SDL/SDL_ttf.h"
+#endif
 
 #include <map>
 
@@ -35,8 +39,7 @@ public:
 
 	int width(const std::string& str) const;
 	int height() const;
-
-	static bool isSpace(char c);
+	int ascent() const;
 
 	const std::string& typefaceName() const;
 
@@ -47,38 +50,57 @@ public:
 
 protected:
 	friend class Renderer;
-	friend class SDL_Renderer;
 	friend class OGL_Renderer;
 
-	FT_Face &font();
-	unsigned int texture(char ch) const;
-	int getGlyphWidth(char ch);
-	int getGlyphHeight(char ch);
+	struct GlyphMetrics
+	{
+		float uvX, uvY;	// Texture coordinates.
+		int minX, minY;
+		int maxX, maxY;
+		int advance;
+	};
+
+	const Font::GlyphMetrics& glyphMetrics(int glyph) const;
+	unsigned int textureId() const;
 
 private:
-	typedef std::vector<unsigned int> TextureList;
-	typedef std::vector<Rectangle_2d> KerningMetrics;
-	typedef std::map<char, int> CharIntMap; // Find a more descriptive name for this.
+	struct FontInfo
+	{
+		FontInfo(): textureId(0), fontSize(0) {}
+		FontInfo(unsigned int id, unsigned int fontSize): textureId(id), fontSize(fontSize) {}
+		
+		void operator()(unsigned int id, unsigned int size) { textureId = id; fontSize = size; }
+
+		unsigned int textureId;
+		unsigned int fontSize;
+	};
+
+	typedef std::map<std::string, FontInfo> TextureIdMap;
+	typedef std::map<unsigned int, int> ReferenceCountMap;
+	typedef std::vector<GlyphMetrics> GlyphMetricsList;
 
 	// explicitly disallow copy construction/assignment operator
+	// (Why??)
 	Font(const Font &font);
 	Font& operator=(const Font& font);
 
 	void load();
-	bool generateCharacterTexture(int ch);
 
-	//	TTF_Font		*mFont;			/**< True Type Font. */
-	FT_Face			mFont;
+	void generateGlyphMap(TTF_Font* ft);
+	void generateTexture(SDL_Surface *src);
 
-	int				mHeight;			/**< Font Height. */
-	int				mPtSize;			/**< Point Size to load the Font in. */
+	int					mHeight;		/**< Font Height. */
+	int					mAscent;		/**< Height of each glyph relative to the baseline. */
+	int					mPtSize;		/**< Point Size to load the Font in. */
 
-	File			mFontBuffer;		/**< Persistent memory buffer for TTF_Font. */
-	std::string		mFontName;			/**< Full typeface name. */
+	unsigned int		mTextureId;		/**< OpenGL Texture ID. */
 
-	TextureList		mTextures;			/**< Store room for the character textures. */
-	KerningMetrics	mGlyphMetrics;		/**< Glyph kerning metrics. */
-	CharIntMap		mGlyphAdvances;		/**<  */
+	std::string			mFontName;		/**< Full typeface name. */
+
+	GlyphMetricsList	mGlyphMetrics;	/**< Metrics for each glyph. */
+
+	static TextureIdMap			_IdMap;		/*< Lookup table for OpenGL Texture ID's. */
+	static ReferenceCountMap	_RefMap;	/*< Lookup table for OpenGL Texture ID reference counts. */
 };
 
 #endif

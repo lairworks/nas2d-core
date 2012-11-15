@@ -11,13 +11,11 @@
 #ifndef _NAS_OGL_RENDERER_
 #define _NAS_OGL_RENDERER_
 
-
-#include "Renderer.h"
-
-//#include <OpenGL/OpenGL.h>  <<< really????
-
+#include "Glee.h"
+#define NO_SDL_GLEXT
 #include "SDL/SDL.h"
 
+#include "Renderer.h"
 #include "ShaderManager.h"
 
 #include <map>
@@ -34,7 +32,7 @@
 class OGL_Renderer: public Renderer
 {
 public:
-	OGL_Renderer();
+	OGL_Renderer(const std::string title);
 	
 	//OGL_Renderer(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
 
@@ -86,9 +84,11 @@ private:
 
 	void getError();
 	
-	SDL_Surface			*mScreen;					/**< Primary screen surface. */
+	SDL_Window*			mWindow;					/**< Primary window. */
+	SDL_GLContext		mContext;					/**< Primary OpenGL render context. */
+	//SDL_Renderer*		mRenderer;					/**< SDL2 Renderer object associated with the OGL Context/Window. */
 
-	GLfloat				mVertexArray[8];			/**< Vertex array for quad drawing functions (all blitter functions). */
+	GLfloat				mVertexArray[12];			/**< Vertex array for quad drawing functions (all blitter functions). */
 	GLfloat				mTextureCoordArray[8];		/**< Texture coordinate arrawy for quad drawing functions (all blitter functions). */
 	
 	GLuint				mTextureTarget;				/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */

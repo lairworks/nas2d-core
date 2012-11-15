@@ -10,6 +10,8 @@
 
 #include "NAS2D/FpsCounter.h"
 
+#include "SDL/SDL.h"
+
 
 const unsigned int FPS_COUNTS_SIZE = 10;
 unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };

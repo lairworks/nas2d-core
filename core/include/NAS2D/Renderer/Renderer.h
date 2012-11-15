@@ -86,9 +86,12 @@ public:
 
 	virtual ~Renderer();
 
-	const std::string& getName();
-	const std::string& getDriverName();
-	const std::string& getLastError();
+	const std::string& name();
+	const std::string& driverName();
+	const std::string& lastError();
+
+	const std::string& title();
+	void title(const std::string& title);
 
 	virtual void drawImage(Image& image, float x, float y, float scale = 1.0f);
 	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
@@ -157,16 +160,16 @@ public:
 
 
 protected:
-	Renderer(const std::string& rendererName);
+	Renderer(const std::string& rendererName, const std::string& appTitle);
 
 	virtual void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync) {}
 
 	void pushMessage(const std::string& str);
 
+	void driverName(const std::string& name);
+
 	Timer				mTimer;				/**< Internal Timer. */
 
-	std::string			mRendererName;		/**< Internal name of the Renderer. */
-	std::string			mDriverName;		/**< OS Driver name */
 	StringList			mMessages;			/**< List of messages. */
 	DisplayModes		mDisplayModes;		/**< List of Screen resolutions. */
 
@@ -198,6 +201,10 @@ private:
 		FADE_IN,
 		FADE_OUT
 	};
+
+	std::string			mRendererName;	/**< Internal name of the Renderer. */
+	std::string			mDriverName;	/**< OS Driver name */
+	std::string			mTitle;			/**< Title to use for the application. */
 
 	Color_4ub			mFadeColor;		/**< Fade Color. */
 	FadeType			mFade;			/**< Fade State. */

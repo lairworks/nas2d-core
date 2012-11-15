@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="GLee.lib physfs.lib SDL.lib SDLmain.lib SDL_gfx.lib SDL_image.lib SDL_mixer.lib freetype2410ST_D.lib opengl32.lib"
+				AdditionalDependencies="GLee.lib physfs.lib SDL.lib SDLmain.lib SDL_gfx.lib SDL_image.lib SDL_mixer.lib SDL_ttf.lib opengl32.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\depend\win32\lib"
 				GenerateDebugInformation="true"
@@ -137,7 +137,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="GLee.lib physfs.lib SDL.lib SDLmain.lib SDL_gfx.lib SDL_image.lib SDL_mixer.lib freetype2410ST.lib opengl32.lib"
+				AdditionalDependencies="GLee.lib physfs.lib SDL.lib SDLmain.lib SDL_gfx.lib SDL_image.lib SDL_mixer.lib SDL_ttf.lib opengl32.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\depend\win32\lib"
 				GenerateDebugInformation="true"
@@ -219,7 +219,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="GLee.lib physfs.lib SDL.lib SDLmain.lib SDL_gfx.lib SDL_image.lib SDL_mixer.lib freetype2410ST.lib opengl32.lib"
+				AdditionalDependencies="GLee.lib physfs.lib SDL.lib SDLmain.lib SDL_gfx.lib SDL_image.lib SDL_mixer.lib SDL_ttf.lib opengl32.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\depend\win32\lib"
 				GenerateDebugInformation="false"

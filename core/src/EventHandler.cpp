@@ -270,25 +270,19 @@ void EventHandler::pump()
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
-				// Hack to get wheel mouse motions to behave with SDL input. This will produce weird behavior for
-				// mice with real buttons for id's 4 and 5.
-				if(event.button.button == SDL_BUTTON_WHEELDOWN)
-					mMouseButtonDownEvent(BUTTON_WHEELDOWN, event.button.x, event.button.y);
-				else if(event.button.button == SDL_BUTTON_WHEELUP)
-				{}
-				else
-					mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+				mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
 				break;
 
 			case SDL_MOUSEBUTTONUP:
-				// Hack to get wheel mouse motions to behave with SDL input. This will produce weird behavior for
-				// mice with real buttons for id's 4 and 5.
-				if(event.button.button == SDL_BUTTON_WHEELDOWN)
-				{}
-				else if(event.button.button == SDL_BUTTON_WHEELUP)
-					mMouseButtonUpEvent(BUTTON_WHEELUP, event.button.x, event.button.y);
+				mMouseButtonUpEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+				break;
+
+			case SDL_MOUSEWHEEL:
+				/// \todo Currently only expects y-axis wheel movements.
+				if(event.wheel.y < 0)
+					mMouseButtonUpEvent(BUTTON_WHEELUP, event.wheel.x, event.wheel.y);
 				else
-					mMouseButtonUpEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+					mMouseButtonUpEvent(BUTTON_WHEELDOWN, event.wheel.x, event.wheel.y);
 				break;
 
 			case SDL_JOYAXISMOTION:
@@ -311,8 +305,13 @@ void EventHandler::pump()
 				mJoystickButtonUpEvent(event.jbutton.which, event.jbutton.button);
 				break;
 
-			case SDL_ACTIVEEVENT:
-				mActivateEvent(event.active.gain != 0); // SDL states that gain will be either 1 (true) or 0 (false).
+			case SDL_WINDOWEVENT:
+				/// \todo	This is very incomplete. Update to include the other window events.
+				if(event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+					mActivateEvent(true);
+				else
+					mActivateEvent(false);
+
 				break;
 
 			case SDL_QUIT:

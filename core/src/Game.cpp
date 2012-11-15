@@ -47,14 +47,12 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 
 	try
 	{
-		Utility<Renderer>::instantiateDerived(new OGL_Renderer());
+		Utility<Renderer>::instantiateDerived(new OGL_Renderer(title));
 	}
 	catch(...)
 	{
 		throw Exception(0, "OpenGL Renderer", "Unable to create a Renderer.");
 	}
-
-	SDL_WM_SetCaption(title.c_str(), title.c_str());
 
 	cout << endl << "Subsystems initialized." << endl << endl;
 	cout << "===================================" << endl << endl;

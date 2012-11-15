@@ -9,37 +9,37 @@
 // ==================================================================================
 
 #include "NAS2D/Resources/Font.h"
+#include "NAS2D/Exception.h"
 
 #if defined(__APPLE__)
 	#include <SDL/SDL_opengl.h>
+	#include "SDL_ttf/SDL_ttf.h"
 #elif defined(WIN32)
-	#include "GLee.h"
 	#include "SDL/SDL_opengl.h"
+	#include "SDL/SDL_ttf.h"
 #else
 	#include "SDL/SDL_opengl.h"
+	#include "SDL/SDL_gfxPrimitives.h"
+	#include "SDL/SDL_ttf.h"
 #endif
+
+#include <math.h>
 
 using namespace std;
 
+string buildName(TTF_Font*);
 
-const int ASCII_CHARACTER_COUNT			= 128;
-const int ASCII_START_CODE				= 32;
-const int ASCII_LAST_CHAR				= 127; // code 128 is DELETE, so ignore it
-const int CHAR_COUNT					= ASCII_LAST_CHAR - ASCII_START_CODE;
+const int	ASCII_TABLE_COUNT	= 256;
 
-const int ASCII_SPACE					= 32; // Scan code for ASCII space is 32
-
-const int DEFAULT_SPACING				= 16;
+Font::TextureIdMap Font::_IdMap;
+Font::ReferenceCountMap Font::_RefMap;
 
 
-bool Font::isSpace(char c)
+unsigned nextPowerOf2(unsigned n)
 {
-	return static_cast<int>(c) == ASCII_SPACE;
+	return (unsigned)pow(2, ceil(log((float)n) / log(2.0f)));
 }
 
-
-//string buildName(TTF_Font*);
-//void toggleFontStyle(TTF_Font*, int);
 
 /**
  * Primary method of instantiating a font.
@@ -49,9 +49,10 @@ bool Font::isSpace(char c)
  *
  */
 Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
-														mFont(NULL),
 														mHeight(0),
-														mPtSize(ptSize)
+														mAscent(0),
+														mPtSize(ptSize),
+														mTextureId(0)
 {
 	load();
 }
@@ -63,9 +64,10 @@ Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
  * Fonts instantiated with this constructor are not valid for use.
  */
 Font::Font():	Resource("Default Font"),
-				mFont(NULL),
 				mHeight(0),
+				mAscent(0),
 				mPtSize(0),
+				mTextureId(0),
 				mFontName("Default Font")
 {
 }
@@ -75,10 +77,7 @@ Font::Font():	Resource("Default Font"),
  * D'tor
  */
 Font::~Font()
-{
-	//TTF_CloseFont(mFont);
-	mFont = NULL;
-}
+{}
 
 
 /**
@@ -90,87 +89,176 @@ Font::~Font()
  */
 void Font::load()
 {
-	FT_Library library; //Create a freetype library instance
-	
-    if(FT_Init_FreeType(&library))
-        std::cerr << "Could not initialize the freetype library" << std::endl;
-
-	File fontFile = Utility<Filesystem>::get().open(name());
-
-	const FT_Byte* stream = (const unsigned char*)fontFile.bytes().c_str(); // hate having to cast like this. Yuck!
-
-	FT_New_Memory_Face(library, stream, fontFile.size(), 0, &mFont);
-	
-	mHeight = mFont->height / 64;
-	
-    //FreeType uses heights which are one 64th of the size in pixels so
-    //we set our font height by multiplying by 64. The 96x96 is the dots per inch
-    FT_Set_Char_Size(mFont, mPtSize * 64, mPtSize * 64, 96, 96);
-	
-	// Generate 128 textures (each character gets its own texture)
-	GLuint *_textureID = new GLuint[CHAR_COUNT];
-	glGenTextures(CHAR_COUNT, _textureID);
-	
-	mTextures.resize(CHAR_COUNT);
-	mGlyphMetrics.resize(CHAR_COUNT);
-	
-
-	for(int i = ASCII_START_CODE; i < ASCII_LAST_CHAR; ++i)
+	if(TTF_WasInit() == 0)
 	{
-		mTextures[i - ASCII_START_CODE] = _textureID[i - ASCII_START_CODE];
-
-		if(!generateCharacterTexture(i))
-			std::cerr << "Could not generate the texture for character: " << (char)i << std::endl;
+		if(TTF_Init() == -1)
+		{
+			cout << "Unable to initialize truetype library: " << TTF_GetError() << endl;
+			return;
+		}
 	}
 
-	delete [] _textureID;
+	File fontBuffer = Utility<Filesystem>::get().open(name());
+
+	if(fontBuffer.empty())
+	{
+		errorMessage(Utility<Filesystem>::get().lastError());
+		return;
+	}
+
+	// Attempt to load the font.
+	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0, mPtSize);
+	if(!font)
+	{		
+		errorMessage(TTF_GetError());
+		return;
+	}
+
+	mHeight = TTF_FontHeight(font);
+	mAscent = TTF_FontAscent(font);
+	mFontName = buildName(font);
+
+	generateGlyphMap(font);
+	TTF_CloseFont(font);
 
 	loaded(true);
 }
 
 
-bool Font::generateCharacterTexture(int ch)
-{
-	if(FT_Get_Char_Index(mFont, ch) != 0 /*&& !isSpace(ch)*/)
-	{
-		if(FT_Load_Glyph(mFont, FT_Get_Char_Index(mFont, ch), FT_LOAD_DEFAULT))
-		{
-			std::cout << "Failed to load glyph for '" << (char)ch << "'." << endl;
-			return false;
-		}
-	
-		FT_Glyph glyph;
-		if(FT_Get_Glyph(mFont->glyph, &glyph))
-		{
-			std::cout << "Failed to get glyph for char: " << (char)ch << "." << endl;
-			return false;
-		}
-	
-		if(FT_Glyph_To_Bitmap(&glyph, ft_render_mode_normal, 0, 1))
-		{
-			std::cout << "Failed to load bitmap for char: " << (char)ch << "." << endl;
-			return false;
-		}
-	
-		FT_BitmapGlyph bitmapGlyph = (FT_BitmapGlyph)glyph; // This is akin to reinterpret_cast, not safe and possibly not correct.
-	
-		int width = (bitmapGlyph->bitmap.width) ? bitmapGlyph->bitmap.width : DEFAULT_SPACING;
-		int rows = (bitmapGlyph->bitmap.rows) ? bitmapGlyph->bitmap.rows : DEFAULT_SPACING;
-	
-		glBindTexture(GL_TEXTURE_2D, mTextures[ch - ASCII_START_CODE]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, rows, 0, GL_ALPHA, GL_UNSIGNED_BYTE, bitmapGlyph->bitmap.buffer);
-	
-		mGlyphMetrics[ch - ASCII_START_CODE](bitmapGlyph->left, bitmapGlyph->top, width, rows);
-		mGlyphAdvances[ch] = mFont->glyph->advance.x / 64;
-	}
-	else
-		cout << "WARNING! Bitmap missing for Char:\t" << (char)ch << endl;
+/**
+ * Generates a glyph map of all ASCII standard characters from 0 - 255.
+ */
+void Font::generateGlyphMap(TTF_Font* ft)
+{	
+	int largest_width = 0;
 
-    return true;
+	// Go through each glyph and determine how much space we need in the texture.
+	for(int i = 0; i < ASCII_TABLE_COUNT; i++)
+	{
+		GlyphMetrics metrics;
+
+		TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
+		if(metrics.advance > largest_width)
+			largest_width = metrics.advance;
+
+		mGlyphMetrics.push_back(metrics);
+	}
+
+	int glyphSize = nextPowerOf2(largest_width);
+	int textureSize = glyphSize * 16; // glyph map contains 16 rows and 16 columns.
+
+	//cout << "Largest Width: " << largest_width << " Nearest Po2: " << nextPowerOf2(largest_width) << endl;
+
+	unsigned int rmask = 0xff000000, gmask = 0x00ff0000, bmask = 0x0000ff00, amask = 0x000000ff;
+	if(SDL_BYTEORDER == SDL_LIL_ENDIAN)
+	{
+		rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
+	}
+
+	SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, 32, rmask, gmask, bmask, amask);
+
+	SDL_Color white = { 255, 255, 255 };
+	for(int row = 0; row < 16; row++)
+	{
+		for(int col = 0; col < 16; col++)
+		{
+			int glyph = (row * 16) + col;
+			
+			mGlyphMetrics[glyph].uvX = (float)(col * glyphSize) / (float)textureSize;
+			mGlyphMetrics[glyph].uvY = (float)(row * glyphSize) / (float)textureSize;
+			
+			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
+			if(!srf)
+			{
+				#if defined(_DEBUG)
+				cout << TTF_GetError() << endl;
+				#endif
+			}
+			else
+			{
+				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
+				SDL_Rect rect = { col * glyphSize, row * glyphSize, 0, 0 };
+				SDL_BlitSurface(srf, NULL, glyphMap, &rect);
+				SDL_FreeSurface(srf);
+			}
+		}
+	}
+
+	//SDL_SetAlpha(glyphMap, SDL_SRCALPHA, glyphMap->format->alpha);
+	
+	SDL_SaveBMP(glyphMap, "glyphmap.bmp");
+
+	generateTexture(glyphMap);
+	
+	// Add generated texture id to texture ID map.
+	//Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
+	// Increment texture id reference count.
+	//Image::_RefMap[texture_id()] ++;
+	SDL_FreeSurface(glyphMap);
+}
+
+
+/**
+ * Generates a new OpenGL texture from an SDL_Surface.
+ * 
+ * \param	src	Pointer to an SDL_Surface.
+ * 
+ * \note	This function assumes that the image is unique and
+ *			has not been loaded. Does no resource management.
+ * 
+ * \note	Code bloat.
+ */
+void Font::generateTexture(SDL_Surface *src)
+{
+	// Our surfaces should always be 32bit for font generation. Anything else
+	// throws an exception.
+	GLenum textureFormat = 0;
+	switch(src->format->BytesPerPixel)
+	{
+		case 4: 
+			if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+				textureFormat = GL_BGRA;
+			else
+				textureFormat = GL_RGBA;
+			break;
+
+		default:
+			throw Exception(0, "Font Generation", "Font generation failed.");
+	};
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
+											// or can we set it once in the Renderer?
+
+	glGenTextures(1, &mTextureId);
+	glBindTexture(GL_TEXTURE_2D, mTextureId);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, src->format->BytesPerPixel, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+}
+
+
+/**
+ * Gets the texture ID for the font.
+ */
+unsigned int Font::textureId() const
+{
+	return mTextureId;
+}
+
+
+/**
+ * Gets the metrics for a given glyph.
+ * 
+ * \param	glyph	Glyph index. Valid values are 0 - 255.
+ */
+const Font::GlyphMetrics& Font::glyphMetrics(int glyph) const
+{
+	int g = clamp(0, 255, glyph);
+	return mGlyphMetrics[g];
 }
 
 
@@ -181,21 +269,12 @@ bool Font::generateCharacterTexture(int ch)
  */
 int Font::width(const std::string& str) const
 {
-	if(mFont == NULL)
+	if(str.empty())
 		return 0;
-	
-	int width = 0;
 
+	int width = 0;
 	for(size_t i = 0; i < str.size(); i++)
-	{
-		#if defined(_DEBUG)
-		int c = static_cast<int>(str[i]);
-		width += mGlyphMetrics[c - ASCII_START_CODE].w;
-		#else
-		width += mGlyphMetrics[static_cast<int>(str[i]) - ASCII_START_CODE].w;
-		#endif
-		
-	}
+		width += mGlyphMetrics[str[i]].advance + mGlyphMetrics[i].minX;
 
 	return width;
 }
@@ -211,42 +290,11 @@ int Font::height() const
 
 
 /**
- * Returns an SDL TTF_Font object.
- *
- * \todo	This is mostly a design issue but I'd like to hide
- *			this functionality somehow or wrap the TTF_Font
- *			structure to something somewhat more generic.
+ * Returns the height in pixels of the font.
  */
-FT_Face &Font::font()
+int Font::ascent() const
 {
-	return mFont;
-}
-
-/**
- * Returns an OpenGL Texture.
- *
- */
-GLuint Font::texture(char ch) const
-{
-	return mTextures[static_cast<int>(ch) - ASCII_START_CODE];
-}
-
-/**
- * Returns an OpenGL Texture.
- *
- */
-int Font::getGlyphWidth(char ch)
-{
-	return mGlyphMetrics[static_cast<int>(ch) - ASCII_START_CODE].w;
-}
-
-/**
- * Returns an OpenGL Texture.
- *
- */
-int Font::getGlyphHeight(char ch)
-{
-	return mGlyphMetrics[static_cast<int>(ch) - ASCII_START_CODE].h;
+	return mAscent;
 }
 
 
@@ -264,7 +312,7 @@ const std::string& Font::typefaceName() const
  */
 void Font::bold()
 {
-//	toggleFontStyle(mFont, TTF_STYLE_BOLD);
+
 }
 
 
@@ -273,7 +321,7 @@ void Font::bold()
  */
 void Font::italic()
 {
-//	toggleFontStyle(mFont, TTF_STYLE_ITALIC);
+
 }
 
 
@@ -282,7 +330,7 @@ void Font::italic()
  */
 void Font::underline()
 {
-//	toggleFontStyle(mFont, TTF_STYLE_UNDERLINE);
+
 }
 
 
@@ -291,5 +339,28 @@ void Font::underline()
  */
 void Font::normal()
 {
-//	TTF_SetFontStyle(mFont, TTF_STYLE_NORMAL);
+
+}
+
+
+
+// ==================================================================================
+// = Unexposed module-level functions defined here that don't need to be part of the
+// = API interface.
+// ==================================================================================
+
+/*
+ * Builds a typeface name given a TTF_Font.
+ */
+string buildName(TTF_Font* font)
+{
+	// Build Font Name with Family Name and Style Name.
+	string fontFamily = TTF_FontFaceFamilyName(font);
+	string fontStyle = TTF_FontFaceStyleName(font);
+
+	// If Font style is regular, just use the family name.
+	if(toLowercase(fontStyle) == "regular")
+		return fontFamily;
+	else
+		return fontFamily + " " + fontStyle;
 }

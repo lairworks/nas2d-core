@@ -194,6 +194,7 @@ public:
 
 	MouseButtonEventCallback&			mouseButtonUp();
 	MouseButtonEventCallback&			mouseButtonDown();
+	
 	MouseMotionEventCallback&			mouseMotion();
 
 	QuitEventCallback&					quit();

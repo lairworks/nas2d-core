@@ -12,11 +12,12 @@
 #define _NAS_IMAGERESOURCE_
 
 #include "Resource.h"
-#include "SDL/SDL.h"
 
 #ifdef __APPLE__
 #include "SDL_image/SDL_image.h"
 #else
+#include "GLee.h"
+#define NO_SDL_GLEXT
 #include "SDL/SDL_image.h"
 #endif
 
@@ -99,7 +100,7 @@ private:
 
 /**
  * \typedef	ImageListPtr
- * \brief	A vector if pointers to Image.
+ * \brief	A list of pointers to Image objects.
  */
 typedef std::vector<Image*> ImageListPtr;
 

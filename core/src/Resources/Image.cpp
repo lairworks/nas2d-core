@@ -22,9 +22,7 @@
 	#include <SDL/SDL_opengl.h>
 	#include "SDL_gfx/SDL_gfxPrimitives.h"
 #elif defined(WIN32)
-	#include "GLee.h"
 	#include "SDL/SDL_opengl.h"
-	#include "SDL/SDL_gfxPrimitives.h"
 #else
 	#include "SDL/SDL_opengl.h"
 	#include "SDL/SDL_gfxPrimitives.h"
@@ -304,17 +302,18 @@ void Image::generateTexture(SDL_Surface *src)
 	GLenum textureFormat = 0;
 	if(nColors == 4)
 	{
-		if(src->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGBA;
-		else
+		if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
 			textureFormat = GL_BGRA;
+		else
+			textureFormat = GL_RGBA;
+
 	}
 	else if(nColors == 3)     // no alpha channel
 	{
-		if(src->format->Rmask == 0x000000ff)
-			textureFormat = GL_RGB;
-		else
+		if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
 			textureFormat = GL_BGR;
+		else
+			textureFormat = GL_RGB;
 	}
 	else
 	{

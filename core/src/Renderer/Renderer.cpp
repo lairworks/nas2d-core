@@ -49,15 +49,16 @@ Renderer::Renderer():	mLetterBoxHeight(0),
  * 
  * This c'tor is not public and can't be invoked externally.
  */
-Renderer::Renderer(const std::string& rendererName):	mLetterBoxHeight(0),
-														mCinematic(false),
-														mLetterbox(false),
-														mRendererName(rendererName),
-														mFadeColor(COLOR_BLACK),
-														mFade(Renderer::FADE_NONE),
-														mFadeStep(0.0f),
-														mCurrentFade(0.0f),
-														mTickDelta(0)
+Renderer::Renderer(const std::string& rendererName, const std::string& appTitle):	mLetterBoxHeight(0),
+																					mCinematic(false),
+																					mLetterbox(false),
+																					mRendererName(rendererName),
+																					mTitle(appTitle),
+																					mFadeColor(COLOR_BLACK),
+																					mFade(Renderer::FADE_NONE),
+																					mFadeStep(0.0f),
+																					mCurrentFade(0.0f),
+																					mTickDelta(0)
 {
 }
 
@@ -380,7 +381,7 @@ void Renderer::toggleCinematicMode()
 /**
  * Returns a description of the last error message, if any.
  */
-const std::string& Renderer::getLastError()
+const std::string& Renderer::lastError()
 {
 	return mMessages.back();
 }
@@ -609,7 +610,7 @@ void Renderer::buildDisplayModeList()
 /**
  * Returns the name of the Renderer.
  */
-const std::string& Renderer::getName()
+const std::string& Renderer::name()
 {
 	return mRendererName;
 }
@@ -618,9 +619,39 @@ const std::string& Renderer::getName()
 /**
  * Returns the name of the driver as named by the operating system.
  */
-const std::string& Renderer::getDriverName()
+const std::string& Renderer::driverName()
 {
 	return mDriverName;
+}
+
+
+/**
+ * Sets the driver name.
+ * 
+ * \note	Internal function used only by derived
+ *			renderer types.
+ */
+void Renderer::driverName(const std::string& name)
+{
+	mDriverName = name;
+}
+
+
+/**
+ * Returns the title of the application window.
+ */
+const std::string& Renderer::title()
+{
+	return mTitle;
+}
+
+
+/**
+ * Sets the title of the application window.
+ */
+void Renderer::title(const std::string& title)
+{
+	mTitle = title;
 }
 
 

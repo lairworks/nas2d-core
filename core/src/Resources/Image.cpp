@@ -134,15 +134,14 @@ Image::Image(const Image &src):	Resource(src.name()),
  */
 Image::~Image()
 {
-
 	// decrement texture id reference count.
-	Image::_RefMap[mTextureId] --;
+	Image::_RefMap[texture_id()] --;
 
 	// if texture id reference count is 0, delete the texture.
-	if(Image::_RefMap[mTextureId] < 1)
+	if(Image::_RefMap[texture_id()] < 1)
 	{
 		glDeleteTextures(1, &mTextureId);
-		Image::_RefMap.erase(Image::_RefMap.find(mTextureId));
+		Image::_RefMap.erase(Image::_RefMap.find(texture_id()));
 
 		TextureIdMap::iterator it = Image::_IdMap.find(name());
 
@@ -157,7 +156,6 @@ Image::~Image()
 			Image::_IdMap.erase(it);
 		}
 	}
-
 }
 
 

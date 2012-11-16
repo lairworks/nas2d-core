@@ -41,6 +41,8 @@ public:
 	int height() const;
 	int ascent() const;
 
+	int ptSize() const;
+
 	const std::string& typefaceName() const;
 
 	void bold();
@@ -55,13 +57,15 @@ protected:
 	struct GlyphMetrics
 	{
 		float uvX, uvY;	// Texture coordinates.
+		float uvW, uvH; // Texture coordinates.
 		int minX, minY;
 		int maxX, maxY;
 		int advance;
 	};
 
+	const int glyphCellSize() const;
 	const Font::GlyphMetrics& glyphMetrics(int glyph) const;
-	unsigned int textureId() const;
+	unsigned int texture_id() const;
 
 private:
 	struct FontInfo
@@ -89,15 +93,17 @@ private:
 	void generateGlyphMap(TTF_Font* ft);
 	void generateTexture(SDL_Surface *src);
 
-	int					mHeight;		/**< Font Height. */
-	int					mAscent;		/**< Height of each glyph relative to the baseline. */
-	int					mPtSize;		/**< Point Size to load the Font in. */
+	int					mHeight;			/**< Font Height. */
+	int					mAscent;			/**< Height of each glyph relative to the baseline. */
+	int					mPtSize;			/**< Point Size to load the Font in. */
 
-	unsigned int		mTextureId;		/**< OpenGL Texture ID. */
+	int					mGlyphCellSize;		/**< Size in pixels of each cell that glyphs occupy. */
 
-	std::string			mFontName;		/**< Full typeface name. */
+	unsigned int		mTextureId;			/**< OpenGL Texture ID. */
 
-	GlyphMetricsList	mGlyphMetrics;	/**< Metrics for each glyph. */
+	std::string			mFontName;			/**< Full typeface name. */
+
+	GlyphMetricsList	mGlyphMetrics;		/**< Metrics for each glyph. */
 
 	static TextureIdMap			_IdMap;		/*< Lookup table for OpenGL Texture ID's. */
 	static ReferenceCountMap	_RefMap;	/*< Lookup table for OpenGL Texture ID reference counts. */

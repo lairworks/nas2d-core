@@ -384,47 +384,39 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, in
 
 void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
 {
-/*
-
 	// Ignore if font isn't loaded or string is empty
 	if(!font.loaded() || text.empty())
 		return;
 
 	glColor4ub(r, g, b, a);
 
-void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
+	int offset = 0;
+	int	cellSize = font.glyphCellSize();
+	Font::GlyphMetrics gm;
 
-fillVertexArray(rasterX, rasterY, width, height);
 
-fillTextureArray(	x / image.width(),
-					y / image.height(),
-					x / image.width() + width / image.width(),
-					y / image.height() + height / image.height()
-				);
-drawVertexArray(image.texture_id(), false);
-
-	int rasterX = x;
-	int rasterY = y;
-	Font::GlyphMetrics metrics = {0};
 	for(size_t i = 0; i < text.size(); i++)
-    {
-		metrics = font.glyphMetrics(text[i]);
-		fillVertexArray(rasterX, rasterY, width, height);
-		rasterX += metrics.advance;
+	{
+		gm = font.glyphMetrics(static_cast<int>(text[i]));
+
+		fillVertexArray(x + offset, y, cellSize, cellSize);
+		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
+
+		drawVertexArray(font.texture_id(), false);
+		offset += gm.advance;
 	}
 	
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
-*/
 }
 
 
 void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
 {
-	// Protect against a NULL font object being passed in.
-	if(!font.loaded())
+	// Ignore if font isn't loaded or string is empty
+	if(!font.loaded() || text.empty())
 		return;
-	else if(text.empty())
-		return;
+
+	drawText(font, text, rasterX, rasterY, r, g, b, a); // replace with appropriate drawing code.
 
 	// please finish me
 }

@@ -30,9 +30,16 @@ using namespace std;
 string buildName(TTF_Font*);
 
 const int	ASCII_TABLE_COUNT	= 256;
+const int	ASCII_TABLE_FIRST	= 0;
+const int	ASCII_TABLE_LAST	= 255;
+
+const int	BITS_32				= 32;
 
 Font::TextureIdMap Font::_IdMap;
 Font::ReferenceCountMap Font::_RefMap;
+
+
+void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 
 
 unsigned nextPowerOf2(unsigned n)
@@ -77,7 +84,23 @@ Font::Font():	Resource("Default Font"),
  * D'tor
  */
 Font::~Font()
-{}
+{
+	// decrement texture id reference count.
+	Font::_RefMap[texture_id()] --;
+
+	// if texture id reference count is 0, delete the texture.
+	if(Font::_RefMap[texture_id()] < 1)
+	{
+		glDeleteTextures(1, &mTextureId);
+		Font::_RefMap.erase(Font::_RefMap.find(texture_id()));
+
+		TextureIdMap::iterator it = Font::_IdMap.find(name());
+		if(it != Font::_IdMap.end())
+		{
+			Font::_IdMap.erase(it);
+		}
+	}
+}
 
 
 /**
@@ -144,18 +167,15 @@ void Font::generateGlyphMap(TTF_Font* ft)
 		mGlyphMetrics.push_back(metrics);
 	}
 
-	int glyphSize = nextPowerOf2(largest_width);
-	int textureSize = glyphSize * 16; // glyph map contains 16 rows and 16 columns.
+	mGlyphCellSize = nextPowerOf2(largest_width);
+	int textureSize = mGlyphCellSize * 16; // glyph map contains 16 rows and 16 columns.
 
 	//cout << "Largest Width: " << largest_width << " Nearest Po2: " << nextPowerOf2(largest_width) << endl;
 
-	unsigned int rmask = 0xff000000, gmask = 0x00ff0000, bmask = 0x0000ff00, amask = 0x000000ff;
-	if(SDL_BYTEORDER == SDL_LIL_ENDIAN)
-	{
-		rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
-	}
+	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
+	setupMasks(rmask, gmask, bmask, amask);
 
-	SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, 32, rmask, gmask, bmask, amask);
+	SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
 
 	SDL_Color white = { 255, 255, 255 };
 	for(int row = 0; row < 16; row++)
@@ -163,10 +183,19 @@ void Font::generateGlyphMap(TTF_Font* ft)
 		for(int col = 0; col < 16; col++)
 		{
 			int glyph = (row * 16) + col;
-			
-			mGlyphMetrics[glyph].uvX = (float)(col * glyphSize) / (float)textureSize;
-			mGlyphMetrics[glyph].uvY = (float)(row * glyphSize) / (float)textureSize;
-			
+
+			mGlyphMetrics[glyph].uvX = (float)(col * mGlyphCellSize) / (float)textureSize;
+			mGlyphMetrics[glyph].uvY = (float)(row * mGlyphCellSize) / (float)textureSize;
+			mGlyphMetrics[glyph].uvW = mGlyphMetrics[glyph].uvX + (float)(mGlyphCellSize) / (float)textureSize;
+			mGlyphMetrics[glyph].uvH = mGlyphMetrics[glyph].uvY + (float)(mGlyphCellSize) / (float)textureSize;
+
+			// HACK HACK HACK!
+			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
+			// This is here only to prevent the message until I find the time to put in something
+			// less bad.
+			if(glyph == 0)
+				continue;
+
 			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
 			if(!srf)
 			{
@@ -177,7 +206,7 @@ void Font::generateGlyphMap(TTF_Font* ft)
 			else
 			{
 				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
-				SDL_Rect rect = { col * glyphSize, row * glyphSize, 0, 0 };
+				SDL_Rect rect = { col * mGlyphCellSize, row * mGlyphCellSize, 0, 0 };
 				SDL_BlitSurface(srf, NULL, glyphMap, &rect);
 				SDL_FreeSurface(srf);
 			}
@@ -191,9 +220,8 @@ void Font::generateGlyphMap(TTF_Font* ft)
 	generateTexture(glyphMap);
 	
 	// Add generated texture id to texture ID map.
-	//Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
-	// Increment texture id reference count.
-	//Image::_RefMap[texture_id()] ++;
+	Font::_IdMap[name()] = FontInfo(texture_id(), ptSize());
+	Font::_RefMap[texture_id()] ++;
 	SDL_FreeSurface(glyphMap);
 }
 
@@ -237,9 +265,18 @@ void Font::generateTexture(SDL_Surface *src)
 /**
  * Gets the texture ID for the font.
  */
-unsigned int Font::textureId() const
+unsigned int Font::texture_id() const
 {
 	return mTextureId;
+}
+
+
+/**
+ * Returns the size of a glyph's cell.
+ */
+const int Font::glyphCellSize() const
+{
+	return mGlyphCellSize;
 }
 
 
@@ -250,7 +287,7 @@ unsigned int Font::textureId() const
  */
 const Font::GlyphMetrics& Font::glyphMetrics(int glyph) const
 {
-	int g = clamp(0, 255, glyph);
+	int g = clamp(glyph, ASCII_TABLE_FIRST, ASCII_TABLE_LAST);
 	return mGlyphMetrics[g];
 }
 
@@ -288,6 +325,15 @@ int Font::height() const
 int Font::ascent() const
 {
 	return mAscent;
+}
+
+
+/**
+ * Returns the font's pt size.
+ */
+int Font::ptSize() const
+{
+	return mPtSize;
 }
 
 
@@ -356,4 +402,18 @@ string buildName(TTF_Font* font)
 		return fontFamily;
 	else
 		return fontFamily + " " + fontStyle;
+}
+
+
+
+void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
+{
+	if(SDL_BYTEORDER == SDL_LIL_ENDIAN)
+	{
+		rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
+	}
+	else
+	{
+		rmask = 0xff000000; gmask = 0x00ff0000; bmask = 0x0000ff00; amask = 0x000000ff;
+	}
 }

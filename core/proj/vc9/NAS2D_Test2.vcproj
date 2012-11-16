@@ -426,151 +426,143 @@
 				Name="nas2d"
 				>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Common.h"
+					RelativePath="..\..\include\NAS2D\Common.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Configuration.h"
+					RelativePath="..\..\include\NAS2D\Configuration.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Documentation.h"
+					RelativePath="..\..\include\NAS2D\Documentation.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Resources\errorImage.h"
+					RelativePath="..\..\include\NAS2D\Resources\errorImage.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\EventHandler.h"
+					RelativePath="..\..\include\NAS2D\EventHandler.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Exception.h"
+					RelativePath="..\..\include\NAS2D\Exception.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\File.h"
+					RelativePath="..\..\include\NAS2D\File.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Filesystem.h"
+					RelativePath="..\..\include\NAS2D\Filesystem.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Resources\Font.h"
+					RelativePath="..\..\include\NAS2D\Resources\Font.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\FpsCounter.h"
+					RelativePath="..\..\include\NAS2D\FpsCounter.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Game.h"
+					RelativePath="..\..\include\NAS2D\Game.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Resources\Image.h"
+					RelativePath="..\..\include\NAS2D\Resources\Image.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Event\KeyMap.h"
+					RelativePath="..\..\include\NAS2D\Event\KeyMap.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\KeyTranslator.h"
+					RelativePath="..\..\include\NAS2D\KeyTranslator.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\MersenneTwister.h"
+					RelativePath="..\..\include\NAS2D\MersenneTwister.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Mixer\Mixer.h"
+					RelativePath="..\..\include\NAS2D\Mixer\Mixer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Event\MouseButtons.h"
+					RelativePath="..\..\include\NAS2D\Event\MouseButtons.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Resources\Music.h"
+					RelativePath="..\..\include\NAS2D\Resources\Music.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\NAS2D.h"
+					RelativePath="..\..\include\NAS2D\NAS2D.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Renderer\OGL_Renderer.h"
+					RelativePath="..\..\include\NAS2D\Renderer\OGL_Renderer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Renderer\Primitives.h"
+					RelativePath="..\..\include\NAS2D\Renderer\Primitives.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Random.h"
+					RelativePath="..\..\include\NAS2D\Random.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Renderer\Renderer.h"
+					RelativePath="..\..\include\NAS2D\Renderer\Renderer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Resources\Resource.h"
+					RelativePath="..\..\include\NAS2D\Resources\Resource.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Mixer\SDL_Mixer.h"
+					RelativePath="..\..\include\NAS2D\Mixer\SDL_Mixer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Renderer\ShaderManager.h"
+					RelativePath="..\..\include\NAS2D\Renderer\ShaderManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\sigslot.h"
+					RelativePath="..\..\include\NAS2D\sigslot.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Resources\Sound.h"
+					RelativePath="..\..\include\NAS2D\Resources\Sound.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Resources\Sprite.h"
+					RelativePath="..\..\include\NAS2D\Resources\Sprite.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\State.h"
+					RelativePath="..\..\include\NAS2D\State.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\StateManager.h"
+					RelativePath="..\..\include\NAS2D\StateManager.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Timer.h"
+					RelativePath="..\..\include\NAS2D\Timer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\tinyxml\tinystr.h"
+					RelativePath="..\..\include\NAS2D\Trig.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\tinyxml\tinyxml.h"
+					RelativePath="..\..\include\NAS2D\Utility.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\include\NAS2D\Trig.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\include\NAS2D\Utility.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\include\NAS2D\XmlAttributeParser.h"
+					RelativePath="..\..\include\NAS2D\XmlAttributeParser.h"
 					>
 				</File>
 			</Filter>

@@ -49,9 +49,13 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 	{
 		Utility<Renderer>::instantiateDerived(new OGL_Renderer(title));
 	}
+	catch(Exception e)
+	{
+		throw Exception(0, "OpenGL Renderer", "Unable to create a Renderer:\n\n" + e.getDescription());
+	}
 	catch(...)
 	{
-		throw Exception(0, "OpenGL Renderer", "Unable to create a Renderer.");
+		throw Exception(0, "OpenGL Renderer", "Unhandled exception occured while creating a Renderer.");
 	}
 
 	cout << endl << "Subsystems initialized." << endl << endl;

@@ -30,6 +30,11 @@ using namespace std;
  const unsigned int TEXTURE_EXPIRE_TIME = 30000;
 
 /**
+ * Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging.
+ */
+GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
+
+/**
  * Texture coordinate pairs. Default coordinates encompassing the entire texture.
  */
 GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f };
@@ -352,22 +357,12 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 
 void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
 {
-
-	GLenum e = 0;
-
 	glColor4ub(r, g, b, a);
 	glDisable(mTextureTarget);
 
-	e = glGetError();
-
 	fillVertexArray(x, y, width, height);
-	e = glGetError();
-
 	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
-	e = glGetError();
-
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
-	e = glGetError();
 
 	glEnable(mTextureTarget);
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
@@ -641,6 +636,10 @@ void OGL_Renderer::initGL()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glVertexPointer(2, GL_FLOAT, 0, DEFAULT_VERTEX_COORDS);
+	glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
+
 	
 	//		mShaderManager->loadShader("shaders/font/font.frag", mFontShaderFrag);
 	//	mShaderManager->loadShader("shaders/font/font.vert", mFontShaderVert);
@@ -655,7 +654,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 
 	// Setup OpenGL parameters
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -676,9 +675,18 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	mWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
 
 	if(!mWindow)
+	{
+		cout << "EXCEPTION: Could not create a Window: " << SDL_GetError() << endl;
 		throw Exception(0, "Window Creation Failed", "Unable to create a window.");
+	}
 
 	mContext = SDL_GL_CreateContext(mWindow);
+
+	if(!mContext)
+	{
+		cout << "EXCEPTION: Could not create an OpenGL Context: " << SDL_GetError() << endl;
+		throw Exception(0, "Can't create OGL Context", "Unable to create an OpenGL Context.\n" + string(SDL_GetError()));
+	}
 
 
 	void* ptr = SDL_GL_GetProcAddress("glDrawArrays");

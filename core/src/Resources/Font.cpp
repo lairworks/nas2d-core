@@ -210,21 +210,12 @@ void Font::generateGlyphMap(TTF_Font* ft)
  */
 void Font::generateTexture(SDL_Surface *src)
 {
-	// Our surfaces should always be 32bit for font generation. Anything else
-	// throws an exception.
-	GLenum textureFormat = 0;
-	switch(src->format->BytesPerPixel)
+	// Surface must always be 32-Bit, anything else should be treated as an error.
+	if(src->format->BytesPerPixel < 4)
 	{
-		case 4: 
-			if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-				textureFormat = GL_BGRA;
-			else
-				textureFormat = GL_RGBA;
-			break;
-
-		default:
-			throw Exception(0, "Font Generation", "Font generation failed.");
-	};
+		cout << "EXCEPTION: Could not create font, pixel format is not 32 bit." << endl;
+		throw Exception(0, "Font Generation", "Font generation failed.");
+	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
 											// or can we set it once in the Renderer?
@@ -232,7 +223,9 @@ void Font::generateTexture(SDL_Surface *src)
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, src->format->BytesPerPixel, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
+	GLenum textureFormat = 0;
+	SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

@@ -86,7 +86,7 @@ private:
 
 	Color_4ub pixelColor(int x, int y, SDL_Surface* src) const; // internal version
 
-	Rectangle_2d	mRect;			/**< Used to store width/height information about the image. */
+	Rectangle_2d	mRect;			/**< Width/Height information about the Image. */
 
 	unsigned int	mTextureId;		/**< OpenGL Texture ID. */
 

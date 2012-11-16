@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Common.h"
+#include "NAS2D/Exception.h"
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
@@ -99,16 +100,15 @@ Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
 	GLenum textureFormat = 0;
 	SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
 
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, w, h, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	// Add generated texture id to texture ID map.
+	// Update resource management.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
-	// Increment texture id reference count.
 	Image::_RefMap[texture_id()] ++;
 
 	delete [] buffer;
@@ -231,6 +231,7 @@ void Image::load()
 	if(!tmpSurface)
 	{		
 		// loading failed, log a message, set a default image and return.
+		cout << "Unable to load image '" << name() << "': " << SDL_GetError() << endl;
 		errorMessage(SDL_GetError());
 		loadDefault();
 		return;
@@ -292,33 +293,20 @@ void Image::generateTexture(SDL_Surface *src)
 	// Detect which order the pixel data is in to properly feed OGL.
 	GLint nColors = src->format->BytesPerPixel;
 	
-	/**
-	 * \todo	When compiling in nightmare mode with Visual Studio, it indicated that \c textureFormat could be potentially
-	 *			uninitialized should nColors be anything other than '3' or '4' (24 bit and 32 bit color modes, respectively).
-	 *			The only other expected values would be '2' (16 bit color mode) or '1' (8 bit color mode). While in practice
-	 *			neither of these cases is likely to show up, it's extremely important that textureFormat is initialized to a
-	 *			good default value that will work for generally all modes or one that will at least not cause a crash.
-	 */
 	GLenum textureFormat = 0;
-	if(nColors == 4)
+	switch(src->format->BytesPerPixel)
 	{
-		if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-			textureFormat = GL_BGRA;
-		else
-			textureFormat = GL_RGBA;
+		case 4:
+			SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
+			break;
+		case 3:
+			SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGR : textureFormat = GL_RGB;
+			break;
 
-	}
-	else if(nColors == 3)     // no alpha channel
-	{
-		if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-			textureFormat = GL_BGR;
-		else
-			textureFormat = GL_RGB;
-	}
-	else
-	{
-		cout << "Image must be 16-, 24- or 32-bit." << std::endl;
-		return;
+		default:
+			cout << "EXCEPTION: Only 24- and 32-bit images are supported." << std::endl;
+			throw Exception(0, "Unsupported Bit Depth", "Only 24- and 32-bit images are supported.");
+			break;
 	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
@@ -327,7 +315,7 @@ void Image::generateTexture(SDL_Surface *src)
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, nColors, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

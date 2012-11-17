@@ -48,8 +48,6 @@ extern const Color_4ub COLOR_NORMAL;
  *
  * Provides a standard Renderer interface. The base Renderer can be used
  * but will act as a NULL interface.
- * 
- * \todo	Add support for color-keyed images.
  */
 class Renderer
 {

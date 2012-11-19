@@ -25,9 +25,31 @@
  * distinct modes of operation. Using them is pretty straightforward although
  * there are a few requirements.
  * 
- * First and foremost, your custom state will derive from State. State has several
- * virtual functions that should generally be overridden for your own use. Below is
- * a State template.
+ * First and foremost, your custom state will derive from State. State has two
+ * pure virtual functions that you need to override:
+ * 
+ * \code
+ * void initialize() and
+ * State* update
+ * \endcode
+ * 
+ * \section state-init Initializing the State
+ * 
+ * After the State is constructed, the \c initialize() function is called. This only
+ * happens once and is usually where event hooks are setup. Also, any GUI layouts
+ * and other initialization that is inappapropriate to do in a constructor are done
+ * in this function.
+ * 
+ * \section state-update State Updates
+ * 
+ * Updates to the State are done once every frame via the \c update() function. Updates
+ * include logic, drawing, event handling, state changes, etc.
+ *
+ * \section state-template Base Template
+ * 
+ * The following is a template State object. Use this as a starting point for build
+ * your own States. This is about as much boiler plate code as you'll need to start
+ * a new State object:
  * 
  * \code
  * class MyState: public State
@@ -40,11 +62,6 @@
  * 
  * 	void initialize() {}
  * 	State* update() {}
- * 
- * 	void onKeyDown(SDL_Event& event) {}
- * 	void onMouseMove(SDL_Event& event) {}
- * 
- * 	void onQuit(SDL_Event& event) {}
  * 
  * private:
  * 
@@ -65,7 +82,29 @@ public:
 protected:
 	friend class StateManager;
 
+	/**
+	 * Called immediately after the State is constructed.
+	 * 
+	 * All derived State objects must override this function.
+	 * 
+	 * The initialize() function is called immediately after construction
+	 * of the State object. Use it for one-time initialization of any
+	 * members, event hooks, etc.
+	 */
 	virtual void initialize() = 0;
+
+	/**
+	 * Called once every frame.
+	 * 
+	 * All derived states must override this function.
+	 * 
+	 * As this function is called every frame, this is generally
+	 * where you will be doing most of your logic updates, drawing,
+	 * etc.
+	 * 
+	 * \return	A pointer to a State object. NULL to terminate the
+	 *			NAS2D application.
+	 */
 	virtual State* update() = 0;
 };
 

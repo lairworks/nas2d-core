@@ -223,10 +223,8 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	// Bind our destination texture.
 	glBindTexture(mTextureTarget, destination.texture_id());
 
-	// Check for the need to clip the source texture.
 	Rectangle_2d clipRect;
 
 	(dstPoint.x + source.width()) > destination.width() ? clipRect.w = source.width() - ((dstPoint.x + source.width()) - destination.width()) : clipRect.w = source.width();
@@ -239,21 +237,14 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	unsigned int fbo = destination.fbo_id();
 
-	// Bind the framebuffer object 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-
-	// Attach a texture to the FBO 
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mTextureTarget, destination.texture_id(), 0);
 
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x, destination.height() - dstPoint.y, clipRect.w, -clipRect.h);
 
 	drawVertexArray(source.texture_id());
-
-	// Bind our destination texture again
 	glBindTexture(mTextureTarget, destination.texture_id());
-
-	// Reset viewport and unbind
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 }
@@ -267,10 +258,8 @@ void OGL_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 
 	POINT_VERTEX_ARRAY[0] = x + 0.5f; POINT_VERTEX_ARRAY[1] = y + 0.5f;
 
-	//glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
 	glDrawArrays(GL_POINTS, 0, 1);
-	//glDisableClientState(GL_VERTEX_ARRAY);
 
 	glEnable(mTextureTarget);
 
@@ -342,10 +331,9 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	
 	/**
 	 * \todo	I really hate the alloc's/dealloc's that are done in this function.
-				We may want to consider forcing circles to be within a certain range
-				of num_segments and provide arrays for them with the correct number
-				of elements. Will increase code length but will eliminate the memory
-				fudging.
+				We should consider a basic array lookup table approach which will
+				eliminate the alloc/dealloc overhead (at the cost of increased code
+				size).
 	 */
 	delete [] verts;
 	verts = 0;

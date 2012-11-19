@@ -261,7 +261,6 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
  * Draws a source image to a destination image.
  * 
  * \param	source		A reference to a source Image.
- * \param	srcRect		A source retangle to grab from the source Image.
  * \param	destination	A reference to the destination Image.
  * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
  */
@@ -273,7 +272,6 @@ void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2
  * Draws a source image to a destination image.
  * 
  * \param	source		A reference to a source Image.
- * \param	srcRect		A source retangle to grab from the source Image.
  * \param	destination	A reference to the destination Image.
  * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
  */
@@ -297,8 +295,8 @@ void Renderer::setFadeColor(const Color_4ub& color)
 /**
  * Non-blocking screen fade.
  *
- * \param	delayTime	Time in miliseconds the fade should last. A value of 0
- *						will instantly fade the screen in.
+ * \param	delay	Time in miliseconds the fade should last. A value of 0
+ *					will instantly fade the screen in.
  */
 void Renderer::fadeIn(float delay)
 {
@@ -317,8 +315,8 @@ void Renderer::fadeIn(float delay)
 /**
  * Non-blocking screen fade.
  *
- * \param	delayTime	Time in miliseconds the fade should last. A value of 0
- *						will instantly fade the screen in.
+ * \param	delay	Time in miliseconds the fade should last. A value of 0
+ *					will instantly fade the screen in.
  */
 void Renderer::fadeOut(float delay)
 {
@@ -416,12 +414,13 @@ void Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 
 /**
  * Draws a line from (x, y) - (x2, y2) on the primary surface.
- *
- * \param	x		X-Coordinate of the start of the line.
- * \param	y		Y-Coordinate of the start of the line.
- * \param	x2		X-Coordinate of the end of the line.
- * \param	y2		Y-Coordinate of the end of the line.
- * \param	color	A reference to a Color_4ub.
+ * 
+ * \param	x			X-Coordinate of the start of the line.
+ * \param	y			Y-Coordinate of the start of the line.
+ * \param	x2			X-Coordinate of the end of the line.
+ * \param	y2			Y-Coordinate of the end of the line.
+ * \param	color		A reference to a Color_4ub.
+ * \param	line_width	Width, in pixels, of the line to draw.
  */
 void Renderer::drawLine(float x, float y, float x2, float y2, const Color_4ub& color, int line_width)
 {
@@ -432,14 +431,15 @@ void Renderer::drawLine(float x, float y, float x2, float y2, const Color_4ub& c
 /**
  * Draws a line from (x, y) - (x2, y2) on the primary surface.
  *
- * \param	x		X-Coordinate of the start of the line.
- * \param	y		Y-Coordinate of the start of the line.
- * \param	x2		X-Coordinate of the end of the line.
- * \param	y2		Y-Coordinate of the end of the line.
- * \param	r		Red Color Value. Must be between 0 - 255.
- * \param	g		Green Color Value. Must be between 0 - 255.
- * \param	b		Blue Color Value. Must be between 0 - 255.
- * \param	a		Alpha Value. Must be between 0 - 255. Defaults to 255.
+ * \param	x			X-Coordinate of the start of the line.
+ * \param	y			Y-Coordinate of the start of the line.
+ * \param	x2			X-Coordinate of the end of the line.
+ * \param	y2			Y-Coordinate of the end of the line.
+ * \param	r			Red Color Value. Must be between 0 - 255.
+ * \param	g			Green Color Value. Must be between 0 - 255.
+ * \param	b			Blue Color Value. Must be between 0 - 255.
+ * \param	a			Alpha Value. Must be between 0 - 255. Defaults to 255.
+ * \param	line_width	Width, in pixels, of the line to draw.
  */
 void Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width)
 {}
@@ -524,14 +524,14 @@ void Renderer::drawBoxFilled(const Rectangle_2df& rect, int r, int g, int b, int
 /**
  * Fills a given area with a solid color.
  *
- * \param	x	X-Coordinate of the area to fill.
- * \param	y	Y-Coordinate of the area to fill.
- * \param	w	Width, in pixels, of the area to fill.
- * \param	h	Height, in pixels, of the area to fill.
- * \param	r	Red Color Value. Must be between 0 - 255.
- * \param	g	Green Color Value. Must be between 0 - 255.
- * \param	b	Blue Color Value. Must be between 0 - 255.
- * \param	a	Alpha value. Must be between 0 - 255.
+ * \param	x		X-Coordinate of the area to fill.
+ * \param	y		Y-Coordinate of the area to fill.
+ * \param	width	Width, in pixels, of the area to fill.
+ * \param	height	Height, in pixels, of the area to fill.
+ * \param	r		Red Color Value. Must be between 0 - 255.
+ * \param	g		Green Color Value. Must be between 0 - 255.
+ * \param	b		Blue Color Value. Must be between 0 - 255.
+ * \param	a		Alpha value. Must be between 0 - 255.
  */
 void Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
 {}
@@ -540,8 +540,8 @@ void Renderer::drawBoxFilled(float x, float y, float width, float height, int r,
 /**
  * Draws a circle.
  * 
- * \param	cx				X-Coordinate of the center of the circle.
- * \param	cy				Y-Coordinate of the center of the circle.
+ * \param	x				X-Coordinate of the center of the circle.
+ * \param	y				Y-Coordinate of the center of the circle.
  * \param	radius			Radius of the circle.
  * \param	r				Red Color Value. Must be between 0 - 255.
  * \param	g				Green Color Value. Must be between 0 - 255.

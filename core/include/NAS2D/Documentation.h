@@ -13,9 +13,7 @@
 /**
  * \mainpage
  * 
- * \note This is still a work in progress.
- * 
- * NAS2D is the open-source, object oriented 2D framework that powers <I>The Legend of Mazzeroth</I>. It's a flexible, extensible, genre agnostic, easy to use framework for building 2D games.
+ * NAS2D is the open-source, object oriented 2D framework that powers <I>The Legend of Mazzeroth</I> and <I>SpaceGame</I>. It's a flexible, extensible, genre agnostic, easy to use framework for building 2D games.
  * 
  * \section overview A General Overview
  * 

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test", "NAS2D_Test.vc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test2", "NAS2D_Test2.vcproj", "{8178F14D-20B8-42DE-BBC7-D4B16AAA2F22}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test3_Blending", "NAS2D_Test3_Blending.vcproj", "{FBEB58A6-844F-46DE-9F16-D560B2AADB93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -32,6 +34,12 @@ Global
 		{8178F14D-20B8-42DE-BBC7-D4B16AAA2F22}.Release Gold|Win32.Build.0 = Release|Win32
 		{8178F14D-20B8-42DE-BBC7-D4B16AAA2F22}.Release|Win32.ActiveCfg = Release|Win32
 		{8178F14D-20B8-42DE-BBC7-D4B16AAA2F22}.Release|Win32.Build.0 = Release|Win32
+		{FBEB58A6-844F-46DE-9F16-D560B2AADB93}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FBEB58A6-844F-46DE-9F16-D560B2AADB93}.Debug|Win32.Build.0 = Debug|Win32
+		{FBEB58A6-844F-46DE-9F16-D560B2AADB93}.Release Gold|Win32.ActiveCfg = Release|Win32
+		{FBEB58A6-844F-46DE-9F16-D560B2AADB93}.Release Gold|Win32.Build.0 = Release|Win32
+		{FBEB58A6-844F-46DE-9F16-D560B2AADB93}.Release|Win32.ActiveCfg = Release|Win32
+		{FBEB58A6-844F-46DE-9F16-D560B2AADB93}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

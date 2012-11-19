@@ -22,23 +22,6 @@
 class File
 {
 public:
-	/**
-	 * Default Constructor
-	 */
-	File()
-	{}
-
-	/**
-	 * Constructor
-	 * 
-	 * \param	byteStream	A stream of bytes stored in a \c std::string object.
-	 * \param	fileName	The full name of the file including path.
-	 */
-	File(const std::string& byteStream, const std::string& fileName):	mByteStream(byteStream), mFileName(fileName)
-	{}
-
-	~File()
-	{}
 
 	typedef char byte;
 	typedef const char const_byte;
@@ -48,10 +31,32 @@ public:
 	typedef std::string::reverse_iterator reverse_iterator;
 	typedef std::string ByteStream;
 
+
+	/**
+	 * Default C'tor
+	 */
+	File()
+	{}
+
+	/**
+	 * C'tor
+	 * 
+	 * \param	stream	A ByteStream representing the file.
+	 * \param	name	The full name of the file including path.
+	 */
+	File(const ByteStream& stream, const std::string& name):	mByteStream(stream), mFileName(name)
+	{}
+
+	/**
+	 * D'tor
+	 */
+	~File()
+	{}
+
 	/**
 	 * Gets a reference to the internal ByteStream.
 	 *
-	 * \note	This gets a \c non- const reference to the internal \c ByteStream
+	 * \note	This gets a \c non-const reference to the internal \c ByteStream
 	 *			so that modifications can be made as necessary.
 	 */
 	ByteStream& bytes() { return mByteStream; }
@@ -76,9 +81,39 @@ public:
 
 
 	/**
-	 * Gets the size, in bytes, of the file.
+	 * Gets the size, in bytes, of the File.
 	 */
 	size_t size() const { return mByteStream.size(); }
+
+
+	/**
+	 * Gets the size, in bytes, of the File.
+	 */
+	size_t length() const { return size(); }
+
+	/**
+	 * Resizes the File.
+	 * 
+	 * \param	size	Number of bytes to resize the File to.
+	 * 
+	 * \warning		Providing a size parameter smaller than the current File
+	 *				will truncate the existing data. There is no way to
+	 *				recover the data once the File is resized.
+	 */
+	void resize(int size) { mByteStream.resize(size); }
+
+
+	/**
+	 * Resizes the File.
+	 * 
+	 * \param	size	Number of bytes to resize the File to.
+	 * \param	b		Byte value to use to fill any additional bytes gained after resizing. 
+	 * 
+	 * \warning		Providing a size parameter smaller than the current File
+	 *				will truncate the existing data. There is no way to
+	 *				recover the data once the File is resized.
+	 */
+	void resize(int size, byte b) { mByteStream.resize(size, b); }
 
 	bool empty() const { return mByteStream.empty(); }
 

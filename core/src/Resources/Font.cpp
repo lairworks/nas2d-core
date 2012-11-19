@@ -213,9 +213,7 @@ void Font::generateGlyphMap(TTF_Font* ft)
 		}
 	}
 
-	//SDL_SetAlpha(glyphMap, SDL_SRCALPHA, glyphMap->format->alpha);
-	
-	SDL_SaveBMP(glyphMap, "glyphmap.bmp");
+	//SDL_SaveBMP(glyphMap, "glyphmap.bmp");
 
 	generateTexture(glyphMap);
 	

@@ -54,7 +54,8 @@ int Image::_Arbitrary = 0;
  * If the load fails, a default image is stored indicating an error condition.
  */
 Image::Image(const std::string& filePath):	Resource(filePath),
-											mTextureId(0)
+											mTextureId(0),
+											mPixels(NULL)
 {
 	load();
 }
@@ -69,7 +70,8 @@ Image::Image(const std::string& filePath):	Resource(filePath),
  * error condition.		
  */
 Image::Image():	Resource(DEFAULT_IMAGE_NAME),
-				mTextureId(0)
+				mTextureId(0),
+				mPixels(NULL)
 {}
 
 
@@ -80,7 +82,8 @@ Image::Image():	Resource(DEFAULT_IMAGE_NAME),
  * \param	h	Height of the Image.
  */
 Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
-							mTextureId(0)
+							mTextureId(0),
+							mPixels(NULL)
 {
 	stringstream str;
 	str << _Arbitrary++;
@@ -95,7 +98,7 @@ Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
 
-	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (w * h))] (); // 3 = R G B channels
+	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (w * h))] (); // 4 = R G B A channels
 
 	GLenum textureFormat = 0;
 	SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
@@ -122,7 +125,8 @@ Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
  */
 Image::Image(const Image &src):	Resource(src.name()),
 								mRect(src.mRect),
-								mTextureId(src.mTextureId)
+								mTextureId(src.mTextureId),
+								mPixels(src.mPixels)
 {
 	loaded(src.loaded());
 	Image::_RefMap[mTextureId] ++;
@@ -155,6 +159,8 @@ Image::~Image()
 
 			Image::_IdMap.erase(it);
 		}
+
+		SDL_FreeSurface(mPixels); // be sure to free memory after all references are gone.
 	}
 }
 
@@ -169,6 +175,7 @@ Image& Image::operator=(const Image& rhs)
 	name(rhs.name());
 	mRect = rhs.rect();
 	mTextureId = rhs.mTextureId;
+	mPixels = rhs.mPixels;
 	loaded(rhs.loaded());
 	Image::_RefMap[mTextureId] ++;
 
@@ -225,8 +232,10 @@ void Image::load()
 	}
 
 	// Create a temporary surface and ensure that the image loaded properly.
-	SDL_Surface *tmpSurface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
-	if(!tmpSurface)
+	//SDL_Surface *tmpSurface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
+	mPixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
+	//if(!tmpSurface)
+	if(!mPixels)
 	{		
 		// loading failed, log a message, set a default image and return.
 		cout << "Unable to load image '" << name() << "': " << SDL_GetError() << endl;
@@ -235,10 +244,10 @@ void Image::load()
 		return;
 	}
 
-	mRect = Rectangle_2d(0, 0, tmpSurface->w, tmpSurface->h);
+	mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 
 	// Generate OpenGL Texture from SDL_Surface
-	generateTexture(tmpSurface);
+	generateTexture(mPixels);
 
 	// Add generated texture id to texture ID map.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
@@ -246,8 +255,7 @@ void Image::load()
 	Image::_RefMap[texture_id()] ++;
 
 	// Free SDL_Surface as we no longer need it.
-	SDL_FreeSurface(tmpSurface);
-
+	//SDL_FreeSurface(tmpSurface);
 
 	loaded(true);
 	errorMessage("");
@@ -264,17 +272,18 @@ void Image::loadDefault()
 	if(checkTextureId())
 		return;
 
-	SDL_Surface* s = IMG_Load_RW(SDL_RWFromMem(errorImg, ERRORIMG_LEN), 1);
+	//SDL_Surface* s = IMG_Load_RW(SDL_RWFromMem(errorImg, ERRORIMG_LEN), 1);
 
-	if(!s)
+	mPixels = IMG_Load_RW(SDL_RWFromMem(errorImg, ERRORIMG_LEN), 1);
+	if(!mPixels)
 	{
 		cout << "Unable to generate default texture." << endl;
 		return;
 	}
 
-	generateTexture(s);
+	generateTexture(mPixels);
 
-	SDL_FreeSurface(s);
+	//SDL_FreeSurface(s);
 }
 
 
@@ -384,23 +393,22 @@ unsigned int Image::fbo_id()
  * \param	x	X-Coordinate of the pixel to check.
  * \param	y	Y-Coordinate of the pixel to check.
  * 
- * \note	This function is generally slow. Avoid overuse
- *			as there will be performance penalties.
+ * \note	This function works by storing a local copy
+ *			of the generated SDL_Surface instead of
+ *			freeing it after creating an OpenGL texture.
+ *			This is a brute force and memory inefficient
+ *			method and will change in the future.
  */
 Color_4ub Image::pixelColor(int x, int y) const
 {
-	//return pixelColor(x, y, mPixels);
-	return Color_4ub();
-}
+	// Ensure we're only ever reading within the bounds of the pixel data.
+	if(x < 0 || x > width() || y < 0 || y > height())
+		return Color_4ub(0, 0, 0, 255);
 
-
-Color_4ub Image::pixelColor(int x, int y, SDL_Surface* src) const
-{
-	/*
-	SDL_LockSurface(src);
-    int bpp = src->format->BytesPerPixel;
+	SDL_LockSurface(mPixels);
+    int bpp = mPixels->format->BytesPerPixel;
     // Here p is the address to the pixel we want to retrieve
-    Uint8 *p = (Uint8*)src->pixels + y * src->pitch + x * bpp;
+    Uint8 *p = (Uint8*)mPixels->pixels + y * mPixels->pitch + x * bpp;
 
 	unsigned int c = 0;
 
@@ -431,19 +439,21 @@ Color_4ub Image::pixelColor(int x, int y, SDL_Surface* src) const
 
 	Uint8 r, g, b, a;
 
-	SDL_GetRGBA(c, src->format, &r, &g, &b, &a);
+	SDL_GetRGBA(c, mPixels->format, &r, &g, &b, &a);
 
-	SDL_UnlockSurface(src);
+	SDL_UnlockSurface(mPixels);
 
 	return Color_4ub(r, g, b, a);
-	*/
 
-	return Color_4ub(0, 0, 0, 255);
+	//return Color_4ub(0, 0, 0, 255);
 }
 
 
 /**
  * Permanently desaturates the Image.
+ * 
+ * \note	This is currently a stub function that has no effect.
+ *			Expect functionality in NAS2D 1.1.
  */
 void Image::desaturate()
 {

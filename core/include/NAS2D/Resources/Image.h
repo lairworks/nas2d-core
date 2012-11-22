@@ -84,11 +84,11 @@ private:
 
 	bool checkTextureId();
 
-	Color_4ub pixelColor(int x, int y, SDL_Surface* src) const; // internal version
-
 	Rectangle_2d	mRect;			/**< Width/Height information about the Image. */
 
 	unsigned int	mTextureId;		/**< OpenGL Texture ID. */
+
+	SDL_Surface*	mPixels;		/**< Copy of pixel data in ordinary memory. */
 
 
 	static TextureIdMap			_IdMap;		/*< Lookup table for OpenGL Texture ID's. */

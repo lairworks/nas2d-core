@@ -199,6 +199,10 @@ public:
 
 	QuitEventCallback&					quit();
 
+	void grabMouse();
+	void releaseMouse();
+	void warpMouse(int x, int y);
+
 	void pump();
 
 private:

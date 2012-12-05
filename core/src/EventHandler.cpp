@@ -12,6 +12,9 @@
 
 #include "SDL/sdl.h"
 
+// UGLY ASS HACK for mouse window grabbing
+#include "NAS2D/Renderer/OGL_Renderer.h"
+
 
 #include <iostream>
 
@@ -242,6 +245,45 @@ EventHandler::MouseMotionEventCallback& EventHandler::mouseMotion()
 EventHandler::QuitEventCallback& EventHandler::quit()
 {
 	return mQuitEvent;
+}
+
+
+/**
+ * Grabs exclusive mouse input.
+ * 
+ * \todo	Decide of the EventHandler is an appropriate place
+ *			for this series of functions.
+ */
+void EventHandler::grabMouse()
+{
+	if(_window)
+		SDL_SetWindowGrab(_window, SDL_TRUE);
+}
+
+
+/**
+ * Releases exclusive mouse input.
+ * 
+ * \todo	Decide of the EventHandler is an appropriate place
+ *			for this series of functions.
+ */
+void EventHandler::releaseMouse()
+{
+	if(_window)
+		SDL_SetWindowGrab(_window, SDL_FALSE);
+}
+
+
+/**
+ * Sets the mouse pointer to a specified location within the application window.
+ * 
+ * \todo	Decide of the EventHandler is an appropriate place
+ *			for this series of functions.
+ */
+void EventHandler::warpMouse(int x, int y)
+{
+	if(_window)
+		SDL_WarpMouseInWindow(_window, x, y);
 }
 
 

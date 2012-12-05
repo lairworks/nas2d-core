@@ -24,6 +24,7 @@
 
 using namespace std;
 
+
 /**
  * Life of generated OpenGL Textures in Miliseconds. Roughly 30 seconds
  */
@@ -43,6 +44,13 @@ GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 
 
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
+
+
+
+// UGLY ASS HACK!
+// Until I do this properly, for now I'm leaving this as a global
+// so that we can handle mouse input grabbing.
+SDL_Window* _window = NULL;
 
 
 OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title),
@@ -69,6 +77,7 @@ OGL_Renderer::~OGL_Renderer()
 
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
+	_window == NULL;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	//delete mShaderManager;
@@ -659,6 +668,8 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 		cout << "EXCEPTION: Could not create a Window: " << SDL_GetError() << endl;
 		throw Exception(0, "Window Creation Failed", "Unable to create a window.");
 	}
+	
+	_window = mWindow;
 
 	mContext = SDL_GL_CreateContext(mWindow);
 

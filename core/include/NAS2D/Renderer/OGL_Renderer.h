@@ -20,6 +20,7 @@
 
 #include <map>
 
+extern SDL_Window* _window;
 
 /**
  * \class OGL_Renderer

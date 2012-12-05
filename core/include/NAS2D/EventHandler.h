@@ -202,6 +202,7 @@ public:
 	void grabMouse();
 	void releaseMouse();
 	void warpMouse(int x, int y);
+	void mouseRelativeMode(bool rel);
 
 	void pump();
 

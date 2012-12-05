@@ -15,7 +15,6 @@
 // UGLY ASS HACK for mouse window grabbing
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
-
 #include <iostream>
 
 
@@ -251,6 +250,10 @@ EventHandler::QuitEventCallback& EventHandler::quit()
 /**
  * Grabs exclusive mouse input.
  * 
+ * \param	update	True if mouse position should be updated while
+ *					in exclusive grab, otherwise don't update position.
+ *					Default true.
+ * 
  * \todo	Decide of the EventHandler is an appropriate place
  *			for this series of functions.
  */
@@ -284,6 +287,20 @@ void EventHandler::warpMouse(int x, int y)
 {
 	if(_window)
 		SDL_WarpMouseInWindow(_window, x, y);
+}
+
+
+/**
+ * Sets mouse updates to relative or absolute mostion.
+ * 
+ * \param	rel		True for relative mode. False for absolute mode.
+ * 
+ * \todo	Decide of the EventHandler is an appropriate place
+ *			for this series of functions.
+ */
+void EventHandler::mouseRelativeMode(bool rel)
+{
+	rel ? SDL_SetRelativeMouseMode(SDL_TRUE) : SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
 

@@ -341,6 +341,9 @@ bool Filesystem::exists(const std::string& filename) const
  */
 string Filesystem::lastError() const
 {
+	if(mErrorMessages.empty())
+		return "";
+
 	return mErrorMessages.back();
 }
 

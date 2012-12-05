@@ -69,18 +69,6 @@ public:
 	 */
 	virtual void playMusic(Music& music) {}
 
-	/**
-	 * Starts playing a two part Music track.
-	 * 
-	 * Two part audio tracks are comprised of two parts: the 'intro' section which is played once
-	 * and the 'body' section which is played immediatly after the 'intro' section ends.
-	 * 
-	 * \param	intro	A reference to a Music Resource that serves as the 'intro' section of a two part audio track.
-	 * \param	body	A reference to a Music Resource that serves as the 'body' section of a two part audio track.
-	 * 
-	 * \note	The 'body' secton of a a two part audio track will loop indefinitely.
-	 */
-	virtual void playMusic(Music& intro, Music& body) {}
 
 	/**
 	 * Stops all playing music.
@@ -143,11 +131,6 @@ public:
 	 * Sets the music volume.
 	 */
 	void setMusVolume(int level) {};
-
-	/**
-	 * Updates the Mixer state.
-	 */
-	virtual void update() {}
 
 	/**
 	 * Gets the name of the derived Mixer.

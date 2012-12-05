@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/StateManager.h"
+#include "NAS2D/Mixer/Mixer.h"
 
 #include <iostream>
 
@@ -38,22 +39,24 @@ StateManager::~StateManager()
 /**
  * \brief	Sets the StateManager to run specified State.
  *
- * \note	State objects are destroyed when setting a new state so cross-state
- *			values will need to be saved upon destruction in the overloaded
- *			finalize() function.
- *
- * \param	state	Pointer to a new State.
+ * \param	state	A pointer to a State.
  * 
+ * \note	Passing a NULL pointer to this function will effectively
+ *			terminate the application.
+ * 
+ * \warning	The pointer given to the StateManager becomes owned by
+ *			the StateManager.
  */
 void StateManager::setState(State* state)
 {
 	if(!state)
 		return;
 
-	// Destroy the current state
+	Utility<Mixer>::get().stopAllAudio();
+
 	if(mActiveState != NULL)
 		delete mActiveState;
-	
+
 	// Initialize the new one
 	mActiveState = state;
 	mActiveState->initialize();
@@ -67,14 +70,22 @@ bool StateManager::update()
 {
 	if(mActiveState)
 	{
-		State *nextState = mActiveState->update();
+		State* nextState = mActiveState->update();
 
 		if(!nextState)
+		{
 			mActive = false;	
+		}
 		else if(nextState != mActiveState)
+		{
 			setState(nextState);
+		}
 
 		Utility<EventHandler>::get().pump();
+	}
+	else
+	{
+		mActive = false;
 	}
 
 	return mActive;

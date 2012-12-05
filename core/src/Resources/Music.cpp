@@ -15,24 +15,52 @@
 using namespace std;
 
 
+/**
+ * Default c'tor.
+ */
 Music::Music():	Resource(),
-				mMusic(0)
+				mMusic(NULL)
 {}
 
 
+/**
+ * C'tor.
+ * 
+ * \param filePath	Path of the music file to load.
+ */
 Music::Music(const std::string& filePath):	Resource(filePath),
-											mMusic(0)
+											mMusic(NULL)
 {
 	load();
 }
 
 
+/**
+ * D'tor.
+ */
+Music::~Music()
+{
+	if(mMusic)
+	{
+		Mix_FreeMusic(mMusic);
+		mMusic = NULL;
+	}
+}
+
+
+/**
+ * Attempts to load a specified music file.
+ * 
+ * \note	This function is called internally during
+ *			instantiation.
+ */
 void Music::load()
 {
 	mMusicBuffer = Utility<Filesystem>::get().open(name());
 	if(mMusicBuffer.empty())
 	{
-		errorMessage(Utility<Filesystem>::get().lastError());
+		//errorMessage(Utility<Filesystem>::get().lastError());
+		cout << "(ERROR) Music::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
 	}
 
@@ -40,7 +68,8 @@ void Music::load()
 	if(!mMusic) 
 	{
 		// Get the error message and return false.
-		errorMessage(Mix_GetError());
+		//errorMessage(Mix_GetError());
+		cout << "(ERROR) Music::load(): " << Mix_GetError() << endl;
 		return;
 	}
 	
@@ -49,6 +78,12 @@ void Music::load()
 }
 
 
+/**
+ * Retrieves a pointer to an SDL_Mixer Mix_Music.
+ * 
+ * \note	This function is accessible by the Mixer
+ *			only.
+ */
 Mix_Music *Music::music() const
 {
 	return mMusic;

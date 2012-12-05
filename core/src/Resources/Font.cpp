@@ -163,6 +163,12 @@ void Font::generateGlyphMap(TTF_Font* ft)
 		TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
 		if(metrics.advance > largest_width)
 			largest_width = metrics.advance;
+		
+		if(metrics.minX + metrics.maxX > largest_width)
+			largest_width = metrics.minX + metrics.maxX;
+
+		if(metrics.minY + metrics.maxY > largest_width)
+			largest_width = metrics.minY + metrics.maxY;
 
 		mGlyphMetrics.push_back(metrics);
 	}

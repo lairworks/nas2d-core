@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="NAS2D_Test3_Blending"
-	ProjectGUID="{FBEB58A6-844F-46DE-9F16-D560B2AADB93}"
-	RootNamespace="NAS2D_Test3_Blending"
+	Name="NAS2D_Test4_Mixer"
+	ProjectGUID="{ADC95DF4-EB1F-4CB5-AFE4-B3BBD35340E5}"
+	RootNamespace="NAS2D_Test4_Mixer"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -118,7 +118,6 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\include;..\..\..\depend\win32\include;..\..\include\NAS2D\tinyxml"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -137,9 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="GLee.lib physfs.lib SDL2.lib SDL2main.lib SDL2_image.lib SDL2_mixer.lib SDL2_ttf.lib opengl32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\..\depend\win32\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -179,15 +176,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\NAS2D_Test3_Blending\NAS2D_Test3_Blending.cpp"
+				RelativePath="..\..\..\NAS2D_Test4_Mixer\NAS2D_Test4_Mixer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\NAS2D_Test3_Blending\Test3State.cpp"
+				RelativePath="..\..\..\NAS2D_Test4_Mixer\Test4State.cpp"
 				>
 			</File>
 			<Filter
-				Name="nas2d"
+				Name="NAS2D"
 				>
 				<File
 					RelativePath="..\..\src\Common.cpp"
@@ -309,160 +306,16 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\NAS2D_Test3_Blending\Test3State.h"
+				RelativePath="..\..\..\NAS2D_Test4_Mixer\Test4State.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\NAS2D_Test4_Mixer\Test4State1.h"
 				>
 			</File>
 			<Filter
-				Name="nas2d"
+				Name="NAS2D"
 				>
-				<File
-					RelativePath="..\..\include\NAS2D\Common.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Configuration.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Documentation.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Resources\errorImage.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\EventHandler.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Exception.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\File.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Filesystem.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Resources\Font.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\FpsCounter.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Game.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Resources\Image.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Event\KeyMap.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\KeyTranslator.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\MersenneTwister.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Mixer\Mixer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Event\MouseButtons.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Resources\Music.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\NAS2D.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Renderer\OGL_Renderer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Renderer\Primitives.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Random.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Renderer\Renderer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Resources\Resource.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Mixer\SDL_Mixer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Renderer\ShaderManager.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\sigslot.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Resources\Sound.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Resources\Sprite.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\State.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\StateManager.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Timer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\tinyxml\tinystr.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\tinyxml\tinyxml.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Trig.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\Utility.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\NAS2D\XmlAttributeParser.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

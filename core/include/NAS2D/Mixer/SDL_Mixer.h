@@ -45,7 +45,6 @@ public:
 
 	// Music Functions
 	void playMusic(Music& music);
-	void playMusic(Music& intro, Music& loop);
 	void stopMusic();
 	void pauseMusic();
 	void resumeMusic();
@@ -60,26 +59,13 @@ public:
 	void mute();
 	void unmute();
 
-	void update();
-
-protected:
-	friend void notifyMixer();
-	
-	void updateTwoPartTrackState();
-
 private:
 	SDL_Mixer(const SDL_Mixer&);			// Intentionally left undefined;
 	SDL_Mixer& operator=(const SDL_Mixer&);	// Intentionally left undefined;
 
 	void init();
-	
-	bool		mIsMuted;		/**< Flag indicating that the mixer is in a muted state. */
+
 	bool		mActAsNull;		/**< Act as a NULL mixer in the event of an audio failure. */
-	bool		mMusicStopped;	/**< Flag indicating that the stopMusic function was called. */
-
-	bool		mIntroFinished;	/**< Flag indicating that the 'intro' section of a two part music track is finished playing. */
-
-	Music*		mBody;			/**< Pointer to the 'body' section of a two part music track. */
 };
 
 #endif

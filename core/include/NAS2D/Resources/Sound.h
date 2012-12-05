@@ -33,7 +33,10 @@ class Sound: public Resource
 {
 public:
 
+	Sound();
 	Sound(const std::string& filePath);
+
+	~Sound();
 
 protected:
 	friend class Mixer;

@@ -33,6 +33,8 @@ public:
 	Music();
 	Music(const std::string& filePath);
 
+	~Music();
+
 protected:
 	friend class Mixer;
 	friend class SDL_Mixer;

@@ -12,25 +12,12 @@
 
 #include <iostream>
 
-/**
- * This function is called when a music track stops playing. It's used only when a
- * two-part audio track is set.
- */
-void notifyMixer()
-{
-	static_cast<SDL_Mixer&>(Utility<Mixer>::get()).updateTwoPartTrackState();
-}
-
 
 /*
  * C'tor.
  */
 SDL_Mixer::SDL_Mixer():	Mixer("SDL Mixer"),
-						mIsMuted(false),
-						mActAsNull(false),
-						mMusicStopped(false),
-						mIntroFinished(false),
-						mBody(NULL)
+						mActAsNull(false)
 {
 	init();
 }
@@ -44,6 +31,8 @@ SDL_Mixer::~SDL_Mixer()
 	// Save current volume levels in the Configuration.
 	Utility<Configuration>::get().audioSfxVolume(Mix_Volume(-1, -1));
 	Utility<Configuration>::get().audioMusicVolume(Mix_VolumeMusic(-1));
+
+	stopAllAudio();
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
@@ -64,7 +53,7 @@ void SDL_Mixer::init()
     // Initialize the Audio Mixer
     if(Mix_OpenAudio(Utility<Configuration>::get().audioMixRate(), MIX_DEFAULT_FORMAT, Utility<Configuration>::get().audioStereoChannels(), Utility<Configuration>::get().audioBufferSize()))
 	{
-		cout << endl << "\tAudio driver not initialized: " << SDL_GetError() << endl;
+		cout << endl << "\tAudio driver not initialized: " << Mix_GetError() << endl;
 		cout << "\tSetting to NULL mode. No audio will be played." << endl;
 		mActAsNull = true;
 		return;
@@ -115,37 +104,13 @@ void SDL_Mixer::playMusic(Music& music)
 	if(!music.loaded())
 		return;
 
-	Mix_HookMusicFinished(NULL);
-	Mix_PlayMusic(music.music(), -1);
-	mMusicStopped = false;
-	mBody = NULL;
-}
-
-
-void SDL_Mixer::playMusic(Music& intro, Music& loop)
-{
-	if(mActAsNull)
-		return;
-
-	if(!intro.loaded())
-		return;
-	if(!loop.loaded())
-		return;
-
-	mBody = &loop;
-
-	Mix_HookMusicFinished(notifyMixer);
-
-	Mix_PlayMusic(intro.music(), 1);
-	mMusicStopped = false;
+	Mix_PlayMusic(music.music(), 0);
 }
 
 
 void SDL_Mixer::stopMusic()
 {
 	Mix_HaltMusic();
-	mMusicStopped = true;
-	mBody = NULL;
 }
 
 
@@ -205,8 +170,6 @@ void SDL_Mixer::mute()
 
 	setMusVolume(0);
 	setSfxVolume(0);
-
-	mIsMuted = true;
 }
 
 
@@ -217,28 +180,5 @@ void SDL_Mixer::unmute()
 
 	setMusVolume(Mix_VolumeMusic(-1));
 	setSfxVolume(Mix_Volume(-1, -1));
-
-	mIsMuted = false;
 }
 
-
-/**
- * Used internally for the SDL_Mixer.
- * 
- * Changes the state of the SDL_Mixer so it knows to start playing
- * the 'body' section of a two part track.
- */
-void SDL_Mixer::updateTwoPartTrackState()
-{
-	mIntroFinished = true;
-}
-
-
-void SDL_Mixer::update()
-{
-	if(mIntroFinished)
-	{
-		playMusic(*mBody);
-		mIntroFinished = false;
-	}
-}

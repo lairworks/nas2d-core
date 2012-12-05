@@ -12,32 +12,73 @@
 
 using namespace std;
 
+
+/**
+ * Default C'tor.
+ */
+Sound::Sound(): Resource(),
+				mChunk(NULL)
+{}
+
+/**
+ * C'tor.
+ * 
+ * \param	filePath	File path of the sound file to load.
+ */
 Sound::Sound(const std::string& filePath):	Resource(filePath),
-											mChunk(0)
+											mChunk(NULL)
 { 
 	load();
 }
 
+
+/**
+ * D'tor.
+ */
+Sound::~Sound()
+{
+	if(mChunk)
+	{
+		Mix_FreeChunk(mChunk);
+		mChunk = NULL;
+	}
+}
+
+
+/**
+ * Attempts to load a specified sound file.
+ * 
+ * \note	This function is called internally during
+ *			instantiation.
+ */
 void Sound::load()
 {
 	File soundFile = Utility<Filesystem>::get().open(name());
 	if(soundFile.empty())
 	{
-		errorMessage(Utility<Filesystem>::get().lastError());
+		//errorMessage(Utility<Filesystem>::get().lastError());
+		cout << "(ERROR) Sound::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
 	}
 
 	mChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), soundFile.size()), 0);
-	if(!mChunk) 
+	if(!mChunk)
 	{
-		// Get the error message and return false.
-		errorMessage(Mix_GetError());
+		//errorMessage(Mix_GetError());
+		cout << "(ERROR) Sound::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
 	}
 
 	loaded(true);
 }
 
+
+/**
+ * Retrieves a pointer to an SDL_Mixer Mix_Chunk.
+ * 
+ * \note	This function is accessible by the Mixer
+ *			only.
+ */
 Mix_Chunk *Sound::sound() const
 {
 	return mChunk;

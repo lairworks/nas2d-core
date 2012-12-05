@@ -117,6 +117,5 @@ void Game::go(State *state)
 	while(stateManager.update())
 	{
 		Utility<Renderer>::get().update();
-		Utility<Mixer>::get().update();
 	}
 }

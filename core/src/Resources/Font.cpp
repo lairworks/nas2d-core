@@ -35,8 +35,7 @@ const int	ASCII_TABLE_LAST	= 255;
 
 const int	BITS_32				= 32;
 
-Font::TextureIdMap Font::_IdMap;
-Font::ReferenceCountMap Font::_RefMap;
+Font::FontMap Font::_FontMap;
 
 
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
@@ -85,20 +84,19 @@ Font::Font():	Resource("Default Font"),
  */
 Font::~Font()
 {
-	// decrement texture id reference count.
-	Font::_RefMap[texture_id()] --;
+	// Is this check necessary?
+	FontMap::iterator it = Font::_FontMap.find(name());
+	if(it == Font::_FontMap.end())
+		return;
+
+	it->second.ref_count--;
 
 	// if texture id reference count is 0, delete the texture.
-	if(Font::_RefMap[texture_id()] < 1)
+	if(it->second.ref_count < 1)
 	{
 		glDeleteTextures(1, &mTextureId);
-		Font::_RefMap.erase(Font::_RefMap.find(texture_id()));
 
-		TextureIdMap::iterator it = Font::_IdMap.find(name());
-		if(it != Font::_IdMap.end())
-		{
-			Font::_IdMap.erase(it);
-		}
+		Font::_FontMap.erase(it);
 	}
 }
 
@@ -116,7 +114,7 @@ void Font::load()
 	{
 		if(TTF_Init() == -1)
 		{
-			cout << "Unable to initialize truetype library: " << TTF_GetError() << endl;
+			cout << "(ERROR) Font::load(): " << TTF_GetError() << endl;
 			return;
 		}
 	}
@@ -125,15 +123,15 @@ void Font::load()
 
 	if(fontBuffer.empty())
 	{
-		errorMessage(Utility<Filesystem>::get().lastError());
+		cout << "(ERROR) Font::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
 	}
 
 	// Attempt to load the font.
 	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0, mPtSize);
 	if(!font)
-	{		
-		errorMessage(TTF_GetError());
+	{
+		cout << "(ERROR) Font::load(): " << TTF_GetError() << endl;
 		return;
 	}
 
@@ -205,9 +203,7 @@ void Font::generateGlyphMap(TTF_Font* ft)
 			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
 			if(!srf)
 			{
-				#if defined(_DEBUG)
-				cout << TTF_GetError() << endl;
-				#endif
+				cout << "(ERROR) Font::generateGlyphMap(): " << TTF_GetError() << endl;
 			}
 			else
 			{
@@ -224,8 +220,8 @@ void Font::generateGlyphMap(TTF_Font* ft)
 	generateTexture(glyphMap);
 	
 	// Add generated texture id to texture ID map.
-	Font::_IdMap[name()] = FontInfo(texture_id(), ptSize());
-	Font::_RefMap[texture_id()] ++;
+	Font::_FontMap[name()] = FontInfo(texture_id(), ptSize());
+	Font::_FontMap[name()].ref_count++;
 	SDL_FreeSurface(glyphMap);
 }
 

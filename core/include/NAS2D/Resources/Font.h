@@ -77,14 +77,13 @@ private:
 
 		unsigned int textureId;
 		unsigned int fontSize;
+		int ref_count;
 	};
 
-	typedef std::map<std::string, FontInfo> TextureIdMap;
-	typedef std::map<unsigned int, int> ReferenceCountMap;
+	typedef std::map<std::string, FontInfo> FontMap;
 	typedef std::vector<GlyphMetrics> GlyphMetricsList;
 
 	// explicitly disallow copy construction/assignment operator
-	// (Why??)
 	Font(const Font &font);
 	Font& operator=(const Font& font);
 
@@ -105,8 +104,7 @@ private:
 
 	GlyphMetricsList	mGlyphMetrics;		/**< Metrics for each glyph. */
 
-	static TextureIdMap			_IdMap;		/*< Lookup table for OpenGL Texture ID's. */
-	static ReferenceCountMap	_RefMap;	/*< Lookup table for OpenGL Texture ID reference counts. */
+	static FontMap		_FontMap;		/*< Lookup table for OpenGL Texture ID's. */
 };
 
 #endif

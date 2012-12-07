@@ -16,21 +16,19 @@ MersenneTwister Resource::mMt = MersenneTwister();
 
 
 Resource::Resource(const std::string& filePath):	mResourceName(filePath),
-													mErrorDescription(""),
 													mIsLoaded(false),
 													mId(mMt.random_int())
 									
 {}
 
-Resource::Resource():	mResourceName(""),
-						mErrorDescription("Resource Default Construction."),
+Resource::Resource():	mResourceName("Default Resource"),
 						mIsLoaded(false),
 						mId(mMt.random_int())
 {}
 
 
 Resource::~Resource()
-{};
+{}
 
 
 /**
@@ -48,29 +46,6 @@ const std::string& Resource::name() const
 void Resource::name(const std::string& name)
 {
 	mResourceName = name;
-}
-
-
-/**
- * Returns the last error message.
- */
-const std::string& Resource::errorMessage() const
-{
-	return mErrorDescription;
-}
-
-
-/**
- * Sets the current error message.
- * 
- * \note	This is an internal function only and is provided for use
- *			by derived Resource types.
- * 
- * \param	message		Error message.
- */
-void Resource::errorMessage(const std::string& message)
-{
-	mErrorDescription = message;
 }
 
 

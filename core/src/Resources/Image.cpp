@@ -41,7 +41,6 @@ const string ARBITRARY_IMAGE_NAME	= "Arbitrary Image ";
 
 
 Image::TextureIdMap Image::_IdMap;
-Image::ReferenceCountMap Image::_RefMap;
 int Image::_Arbitrary = 0;
 
 
@@ -112,7 +111,7 @@ Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
 
 	// Update resource management.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
-	Image::_RefMap[texture_id()] ++;
+	Image::_IdMap[name()].ref_count++;
 
 	delete [] buffer;
 }
@@ -129,7 +128,7 @@ Image::Image(const Image &src):	Resource(src.name()),
 								mPixels(src.mPixels)
 {
 	loaded(src.loaded());
-	Image::_RefMap[mTextureId] ++;
+	Image::_IdMap[name()].ref_count++;
 }
 
 
@@ -138,29 +137,31 @@ Image::Image(const Image &src):	Resource(src.name()),
  */
 Image::~Image()
 {
-	// decrement texture id reference count.
-	Image::_RefMap[texture_id()] --;
+	// Is this check necessary?
+	TextureIdMap::iterator it = Image::_IdMap.find(name());
+	if(it == Image::_IdMap.end())
+		return;
 
+	it->second.ref_count--;
+	
 	// if texture id reference count is 0, delete the texture.
-	if(Image::_RefMap[texture_id()] < 1)
+	if(it->second.ref_count < 1)
 	{
 		glDeleteTextures(1, &mTextureId);
-		Image::_RefMap.erase(Image::_RefMap.find(texture_id()));
 
-		TextureIdMap::iterator it = Image::_IdMap.find(name());
-
-		if(it != Image::_IdMap.end())
+		if(it->second.fboId != 0)
 		{
-			if(it->second.fboId != 0)
-			{
-				unsigned int fbo = it->second.fboId;
-				glDeleteBuffers(1, &fbo);
-			}
-
-			Image::_IdMap.erase(it);
+			unsigned int fbo = it->second.fboId;
+			glDeleteBuffers(1, &fbo);
 		}
 
-		SDL_FreeSurface(mPixels); // be sure to free memory after all references are gone.
+		Image::_IdMap.erase(it);
+
+		if(mPixels)
+		{
+			SDL_FreeSurface(mPixels); // be sure to free memory after all references are gone.
+			mPixels = NULL;
+		}
 	}
 }
 
@@ -177,7 +178,7 @@ Image& Image::operator=(const Image& rhs)
 	mTextureId = rhs.mTextureId;
 	mPixels = rhs.mPixels;
 	loaded(rhs.loaded());
-	Image::_RefMap[mTextureId] ++;
+	Image::_IdMap[name()].ref_count++;
 
 	return *this;
 }
@@ -201,7 +202,7 @@ bool Image::checkTextureId()
 	{
 		mTextureId = it->second.textureId;
 		mRect(0, 0, it->second.w, it->second.h);
-		Image::_RefMap[mTextureId] ++;
+		Image::_IdMap[name()].ref_count++;
 		loaded(true);
 		return true;
 	}
@@ -227,7 +228,7 @@ void Image::load()
 	File imageFile = Utility<Filesystem>::get().open(name());
 	if(imageFile.size() == 0)
 	{
-		cout << Utility<Filesystem>::get().lastError() << endl;
+		cout << "(ERROR) Image::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
 	}
 
@@ -238,8 +239,7 @@ void Image::load()
 	if(!mPixels)
 	{		
 		// loading failed, log a message, set a default image and return.
-		cout << "Unable to load image '" << name() << "': " << SDL_GetError() << endl;
-		errorMessage(SDL_GetError());
+		cout << "(ERROR) Image::load(): " << SDL_GetError() << endl;
 		loadDefault();
 		return;
 	}
@@ -251,14 +251,9 @@ void Image::load()
 
 	// Add generated texture id to texture ID map.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
-	// Increment texture id reference count.
-	Image::_RefMap[texture_id()] ++;
-
-	// Free SDL_Surface as we no longer need it.
-	//SDL_FreeSurface(tmpSurface);
+	Image::_IdMap[name()].ref_count++;
 
 	loaded(true);
-	errorMessage("");
 }
 
 

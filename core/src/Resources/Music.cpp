@@ -15,11 +15,13 @@
 using namespace std;
 
 
+Music::MusicReferenceMap Music::_RefMap;
+
 /**
  * Default c'tor.
  */
-Music::Music():	Resource(),
-				mMusic(NULL)
+Music::Music():	Resource()//,
+				//mMusic(NULL)
 {}
 
 
@@ -28,10 +30,43 @@ Music::Music():	Resource(),
  * 
  * \param filePath	Path of the music file to load.
  */
-Music::Music(const std::string& filePath):	Resource(filePath),
-											mMusic(NULL)
+Music::Music(const std::string& filePath):	Resource(filePath)//,
+											//mMusic(NULL)
 {
 	load();
+}
+
+
+/**
+ * Copy c'tor.
+ */
+Music::Music(const Music& _m): Resource(_m.name())
+{
+	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
+	if(it != Music::_RefMap.end())
+	{
+		it->second.ref_count++;
+	}
+
+	loaded(_m.loaded());
+}
+
+
+/**
+ * Copy operator.
+ */
+Music& Music::operator=(const Music& _m)
+{
+	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
+	if(it != Music::_RefMap.end())
+	{
+		it->second.ref_count++;
+	}
+
+	name(_m.name());
+	loaded(_m.loaded());
+
+	return *this;
 }
 
 
@@ -40,10 +75,33 @@ Music::Music(const std::string& filePath):	Resource(filePath),
  */
 Music::~Music()
 {
-	if(mMusic)
+	// Is this check necessary?
+	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
+	if(it->second.music == NULL)
+		return;
+
+	it->second.ref_count--;
+
+	// No more references to this resource.
+	if(it->second.ref_count < 1)
 	{
-		Mix_FreeMusic(mMusic);
-		mMusic = NULL;
+		#if defined(_DEBUG)	
+		cout << "(INFO) Freeing resources for: " << name() << endl;
+		#endif
+	
+		if(it->second.music)
+		{
+			Mix_FreeMusic(it->second.music);
+			it->second.music = NULL;
+		}
+
+		if(it->second.buffer)
+		{
+			delete it->second.buffer;
+			it->second.buffer = NULL;
+		}
+
+		_RefMap.erase(it);
 	}
 }
 
@@ -56,25 +114,39 @@ Music::~Music()
  */
 void Music::load()
 {
-	mMusicBuffer = Utility<Filesystem>::get().open(name());
-	if(mMusicBuffer.empty())
+	// Check the reference map to see if we've already loaded this file.
+	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
+	if(it != Music::_RefMap.end())
 	{
-		//errorMessage(Utility<Filesystem>::get().lastError());
-		cout << "(ERROR) Music::load(): " << Utility<Filesystem>::get().lastError() << endl;
+		it->second.ref_count++;
+		loaded(true);
 		return;
 	}
 
-	mMusic = Mix_LoadMUS_RW(SDL_RWFromConstMem(mMusicBuffer.raw_bytes(), mMusicBuffer.size()));
-	if(!mMusic) 
+	// File was not previously loaded, load it.
+	Music::_RefMap[name()].buffer = new File(Utility<Filesystem>::get().open(name()));
+	it = Music::_RefMap.find(name());
+
+	// Empty File
+	if(it->second.buffer->empty())
 	{
-		// Get the error message and return false.
-		//errorMessage(Mix_GetError());
-		cout << "(ERROR) Music::load(): " << Mix_GetError() << endl;
+		cout << "(ERROR) Music::load(): " << Utility<Filesystem>::get().lastError() << endl;
+		Music::_RefMap.erase(it);
 		return;
 	}
-	
+
+	// Load failed
+	it->second.music = Mix_LoadMUS_RW(SDL_RWFromConstMem(it->second.buffer->raw_bytes(), it->second.buffer->size()));
+	if(!it->second.music) 
+	{
+		cout << "(ERROR) Music::load(): " << Mix_GetError() << endl;
+		Music::_RefMap.erase(it);
+		return;
+	}
+
+	it->second.ref_count++;
+
 	loaded(true);
-	errorMessage("");
 }
 
 
@@ -86,5 +158,11 @@ void Music::load()
  */
 Mix_Music *Music::music() const
 {
-	return mMusic;
+	MusicReferenceMap::iterator it = _RefMap.find(name());
+
+	if(it == _RefMap.end())
+		return NULL;
+
+	return it->second.music;
 }
+

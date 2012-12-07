@@ -34,14 +34,11 @@ public:
 
 	const std::string& name() const;
 
-	const std::string& errorMessage() const;
-
 	bool loaded() const;
 
 	int id() const;
 
 protected:
-	void errorMessage(const std::string& message);
 	void loaded(bool loaded);
 
 	void name(const std::string& name);
@@ -59,7 +56,6 @@ private:
 	virtual void load() = 0;
 
 	std::string mResourceName;		/**< File path and internal identifier. */
-	std::string mErrorDescription;	/**< Internal Error Message. */
 	
 	bool mIsLoaded;					/**< Flag indicating whether or not this Resource has loaded properly. */
 

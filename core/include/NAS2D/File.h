@@ -53,6 +53,23 @@ public:
 	~File()
 	{}
 
+
+	/**
+	 * Copy c'tor
+	 */
+	File(const File& _f):	mByteStream(_f.mByteStream), mFileName(_f.mFileName)
+	{}
+
+
+	/**
+	 * Copy operator.
+	 */
+	File& operator=(const File& _f)
+	{
+		mByteStream = _f.mByteStream;
+		mFileName = _f.mFileName;
+	}
+
 	/**
 	 * Gets a reference to the internal ByteStream.
 	 *

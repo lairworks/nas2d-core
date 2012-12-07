@@ -20,6 +20,8 @@
 #include "SDL/SDL_mixer.h"
 #endif
 
+#include <map>
+
 /**
  *  \class Music
  *  \brief Music Resource.
@@ -33,6 +35,9 @@ public:
 	Music();
 	Music(const std::string& filePath);
 
+	Music(const Music& _m);
+	Music& operator=(const Music& _m);
+
 	~Music();
 
 protected:
@@ -42,9 +47,28 @@ protected:
 	Mix_Music *music() const;			/**< Internal function used only by Mixer classes. */
 
 private:
+	struct MusicInfo
+	{
+		MusicInfo(): buffer(NULL), music(NULL), ref_count(0)
+		{}
+
+		File*		buffer;
+		Mix_Music*	music;
+		int			ref_count;
+	};
+
+	typedef std::map<std::string, MusicInfo> MusicReferenceMap;
+
+
 	void load();
 
-	File		mMusicBuffer;			/**< Persistent memory buffer for Mix_Music. */
-	Mix_Music	*mMusic;
+
+	//File		mMusicBuffer;			/**< Persistent memory buffer for Mix_Music. */
+	//Mix_Music	*mMusic;
+
+
+
+	static MusicReferenceMap			_RefMap;		/*< Lookup table for music resource references. */
 };
+
 #endif

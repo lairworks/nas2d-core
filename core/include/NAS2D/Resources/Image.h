@@ -64,8 +64,8 @@ private:
 
 	struct ImageInfo
 	{
-		ImageInfo(): textureId(0), fboId(0), w(0), h(0) {}
-		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): textureId(id), fboId(fbo_id), w(w), h(h) {}
+		ImageInfo(): textureId(0), fboId(0), w(0), h(0), ref_count(0) {}
+		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): textureId(id), fboId(fbo_id), w(w), h(h), ref_count(0) {}
 		
 		void operator()(unsigned int id, unsigned int fbo_id, int w, int h) { textureId = id; fboId = fbo_id; w = w; h = h; }
 
@@ -73,10 +73,11 @@ private:
 		unsigned int fboId;
 		int w;
 		int h;
+
+		int ref_count;
 	};
 
 	typedef std::map<std::string, ImageInfo> TextureIdMap;
-	typedef std::map<unsigned int, int> ReferenceCountMap;
 
 	void load();
 	void loadDefault();
@@ -90,10 +91,7 @@ private:
 
 	SDL_Surface*	mPixels;		/**< Copy of pixel data in ordinary memory. */
 
-
 	static TextureIdMap			_IdMap;		/*< Lookup table for OpenGL Texture ID's. */
-	static ReferenceCountMap	_RefMap;	/*< Lookup table for OpenGL Texture ID reference counts. */
-
 	static int					_Arbitrary;	/*< Counter for arbitrary image ID's. */
 };
 

@@ -12,7 +12,7 @@
 #include "NAS2D/Exception.h"
 
 #if defined(__APPLE__)
-	#include <SDL/SDL_opengl.h>
+	#include <SDL2/SDL_opengl.h>
 	#include "SDL_ttf/SDL_ttf.h"
 #elif defined(WIN32)
 	#include "SDL/SDL_opengl.h"

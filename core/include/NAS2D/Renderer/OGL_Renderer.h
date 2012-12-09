@@ -11,9 +11,15 @@
 #ifndef _NAS_OGL_RENDERER_
 #define _NAS_OGL_RENDERER_
 
+#ifdef _WIN32
 #include "Glee.h"
+#endif
 #define NO_SDL_GLEXT
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
 #include "SDL/SDL.h"
+#endif
 
 #include "Renderer.h"
 #include "ShaderManager.h"

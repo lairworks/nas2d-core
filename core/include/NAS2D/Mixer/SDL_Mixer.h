@@ -13,7 +13,11 @@
 
 #include "Mixer.h"
 
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
 #include "SDL/SDL.h"
+#endif
 
 #ifdef __APPLE__
 #include "SDL_mixer/SDL_mixer.h"

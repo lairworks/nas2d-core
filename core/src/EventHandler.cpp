@@ -10,7 +10,11 @@
 
 #include "NAS2D/EventHandler.h"
 
-#include "SDL/sdl.h"
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
+#include "SDL/SDL.h"
+#endif
 
 // UGLY ASS HACK for mouse window grabbing
 #include "NAS2D/Renderer/OGL_Renderer.h"

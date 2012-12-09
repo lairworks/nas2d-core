@@ -11,7 +11,11 @@
 #ifndef _NAS_STATE_
 #define _NAS_STATE_
 
-#include "SDL/sdl.h"
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
+#include "SDL/SDL.h"
+#endif
 
 #include "NAS2D/EventHandler.h"
 #include "NAS2D/sigslot.h"

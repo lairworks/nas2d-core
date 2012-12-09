@@ -10,8 +10,11 @@
 
 #include "NAS2D/FpsCounter.h"
 
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
 #include "SDL/SDL.h"
-
+#endif
 
 const unsigned int FPS_COUNTS_SIZE = 10;
 unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };

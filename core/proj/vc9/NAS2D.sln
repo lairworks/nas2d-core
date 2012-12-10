@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D", "NAS2D.vcproj", "{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test", "NAS2D_Test.vcproj", "{3FB4BCA8-38F2-4D80-A335-E89DF8AC53B0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test", "..\..\..\NAS2D_Test\proj\vc9\NAS2D_Test.vcproj", "{3FB4BCA8-38F2-4D80-A335-E89DF8AC53B0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test2", "NAS2D_Test2.vcproj", "{8178F14D-20B8-42DE-BBC7-D4B16AAA2F22}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test2", "..\..\..\NAS2D_Test2\proj\vc9\NAS2D_Test2.vcproj", "{8178F14D-20B8-42DE-BBC7-D4B16AAA2F22}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test3_Blending", "NAS2D_Test3_Blending.vcproj", "{FBEB58A6-844F-46DE-9F16-D560B2AADB93}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test3_Blending", "..\..\..\NAS2D_Test3_Blending\proj\vc9\NAS2D_Test3_Blending.vcproj", "{FBEB58A6-844F-46DE-9F16-D560B2AADB93}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test4_Mixer", "NAS2D_Test4_Mixer.vcproj", "{ADC95DF4-EB1F-4CB5-AFE4-B3BBD35340E5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test4_Mixer", "..\..\..\NAS2D_Test4_Mixer\proj\vc9\NAS2D_Test4_Mixer.vcproj", "{ADC95DF4-EB1F-4CB5-AFE4-B3BBD35340E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

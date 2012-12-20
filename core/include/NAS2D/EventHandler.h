@@ -164,6 +164,27 @@ public:
 	typedef sigslot::signal4<int, int, int, int>	MouseMotionEventCallback;
 
 	/**
+	 * \typedef	MouseWheelEventCallback
+	 * \brief	Mouse wheel events generate two values: x and y
+	 *			motion values.
+	 * 
+	 * The callback function expects two int parameters.
+	 * 
+	 * \code
+	 * void function(int x, int y);
+	 * \endcode
+	 * 
+	 * \arg	\c x:		Change along the X-Axis.
+	 * \arg	\c y:		Change along the Y-Axis.
+	 * 
+	 * \note	The value given in the axis parameters is the value
+	 * 			of a single 'click' of the mouse wheel. This may be
+	 * 			more than one (on Windows this value is typical 120,
+	 * 			not 1).
+	 */
+	typedef sigslot::signal2<int, int>	MouseWheelEventCallback;
+
+	/**
 	 * \typedef	QuitEventCallback
 	 * \brief	Triggered whenever a Quit message is posted.
 	 * 
@@ -194,8 +215,8 @@ public:
 
 	MouseButtonEventCallback&			mouseButtonUp();
 	MouseButtonEventCallback&			mouseButtonDown();
-	
 	MouseMotionEventCallback&			mouseMotion();
+	MouseWheelEventCallback&			mouseWheel();
 
 	QuitEventCallback&					quit();
 
@@ -219,6 +240,7 @@ private:
 	MouseButtonEventCallback			mMouseButtonUpEvent;
 	MouseButtonEventCallback			mMouseButtonDownEvent;
 	MouseMotionEventCallback			mMouseMotionEvent;
+	MouseWheelEventCallback				mMouseWheelEvent;
 	QuitEventCallback					mQuitEvent;
 
 };

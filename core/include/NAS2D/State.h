@@ -51,7 +51,7 @@
  *
  * \section state-template Base Template
  * 
- * The following is a template State object. Use this as a starting point for build
+ * The following is a template State object. Use this as a starting point for building
  * your own States. This is about as much boiler plate code as you'll need to start
  * a new State object:
  * 
@@ -72,6 +72,9 @@
  * 	State* mReturnState;
  * };
  * \endcode
+ * 
+ * Note that the pointer to a State object as a member of the template class
+ * is not required but recommended as a best practice for handling state switches.
  *
  * \note	The State class has twp functions ('initialize()', 'upate()') that all
  *			derived State objects must override.

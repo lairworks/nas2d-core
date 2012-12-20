@@ -243,6 +243,24 @@ EventHandler::MouseMotionEventCallback& EventHandler::mouseMotion()
  * connect(this, &Object::function);
  * \endcode
  * 
+ * See EventHandler::MouseWheelEventCallback for paramter listing.
+ */
+EventHandler::MouseWheelEventCallback& EventHandler::mouseWheel()
+{
+	return mMouseWheelEvent; 
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
  * See EventHandler::QuitEventCallback for paramter listing.
  */
 EventHandler::QuitEventCallback& EventHandler::quit()
@@ -341,11 +359,7 @@ void EventHandler::pump()
 				break;
 
 			case SDL_MOUSEWHEEL:
-				/// \todo Currently only expects y-axis wheel movements.
-				if(event.wheel.y < 0)
-					mMouseButtonUpEvent(BUTTON_WHEELUP, event.wheel.x, event.wheel.y);
-				else
-					mMouseButtonUpEvent(BUTTON_WHEELDOWN, event.wheel.x, event.wheel.y);
+				mMouseWheelEvent(event.wheel.x, event.wheel.y);
 				break;
 
 			case SDL_JOYAXISMOTION:

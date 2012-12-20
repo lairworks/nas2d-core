@@ -13,54 +13,17 @@
 /**
  * \mainpage
  * 
- * NAS2D is the open-source, object oriented 2D framework that powers <I>The Legend of Mazzeroth</I> and <I>SpaceGame</I>. It's a flexible, extensible, genre agnostic, easy to use framework for building 2D games.
+ * NAS2D is an open source, object oriented 2D game development framework written in C++. It was designed to make the development of games easier by providing a high-level interface. It handles the low-level tasks of setting up the video display, input, sound mixing, file loading, etc.
  * 
- * \section overview A General Overview
+ * By using well known and well tested low-level libraries, NAS2D brings you all the power you need to develop the games you want. It even comes with all of its dependencies packaged up for you so you don't have to waste time scouring the web for external API's.
  * 
- * NAS2D was designed with modularity, simplicity and portability in mind. To those ends, NAS2D provides a simple, consistent and intuitive interface.
+ * NAS2D's use of popular low level libraries also allows it to be highly portable. It's developed and officially supported on Windows and MacOS X and has been tested with success on Linux and BSD.
  * 
- * \section design-elements NAS2D Design Elements
+ * \section overview Obtaining NAS2D
  * 
- * NAS2D is broken up into several 'modules', each implementing specific functionality. This documentation currently covers use of the Core module.
- *
- * \section getting-started Getting Things Rolling
+ * Visit the <a href="http://nas2d.newagesoftware.org/download.php">Download</a> section on NAS2D's home page to get developer packages for your platform and IDE of choice.
  * 
+ * \section design-elements Learning to Use NAS2D
  * 
- * \section state-machine StateManager and the Finite State Machine Model
- * 
- * The Finite State Machine Model is a commonly used model to control logical states in games. They can be implemented in many different ways and in NAS2D's case the states are used to organize game logic into distinct units. In the initial code for NAS2D, SplashScreenState is an example of a Finite State which handles a 'splash screen' of sorts. It draws a background image on the screen, draws some text and adds some Windows to the GUI (the windows are built-in UI types.)
- * 
- * To that end, all game states should be implemented as an object that derives from State (defined in src/State.h). Derived states are generally stored in the src/Game/ folder to make it easy to find them.
- * 
- * When a State object is derived, it needs to implement the following virtual functions:
- * 
- * \code
- * void initialize();
- * State* update();
- * \endcode
- * 
- * The initialize() function is used to initialize any member variables that the state declares (such as Image, Font, Sound, Music, etc.). It is called after the State is constructed and after it is added to a StateManager.
- * 
- * The update() function is called every frame by the StateManager. This is the function where game logic should be implemented. It must return a pointer to a State object. Generally the 'this' pointer is returned. A new State can be returned (e.g., return new GameState()) or NULL can be returned. Returning NULL will cause the game to shut down and quit.
- * 
- * \section filesystem The Filesystem
- * The \c Filesystem in NAS2D is implemented virtually. This means that we define where the program will look for its files, where it's allowed to write files and how the file system appears to the program. It also lets us pack all the files up into ZIP archives and load them dynamically that way -- it's all transparent to the user and to the program.
- * 
- * The service is started by the \c Game object as a \c Singleton. Whenever \c Filesystem services are needed one should request a reference to it using the Singleton object: \c Singleton<Filesystem>::get()
- * 
- * \note The Filesystem expects file paths to use the forward slash '/' character instead of the backslash '\' character that's used in Windows. This is to keep things portable.
- * 
- * \section resources Resources and Assets
- * All art assets like sound, music, images, fonts and animated sprites are called Resources. They are all derived from a Resource object.
- * 
- * All resources can be initialized as a copy of another matching Resource:
- * 
- * \code
- * Image image1("graphics/sys/splash.png");
- * Image image2(image1);
- * Image image3;
- * image3 = image1;
- * \endcode
- * 
- * NAS2D is designed in such a way that it's unnecessary to work with resources using raw pointers. These objects are passed to the various utility classes by reference. They all provide default constructors and usually provide additional construtors so that they can be effectively used in initializer lists.
+ * This document was originally intended to be a crash course in using NAS2D. We've since set up a wiki which provides examples and tutorials for beginners as well as in-depth articles about the design decisions behind some of NAS2D's more advanced features. Head over to the wiki to get started: <a href="http://nas2d.newagesoftware.org/wiki/">http://nas2d.newagesoftware.org/wiki/</a>
  */

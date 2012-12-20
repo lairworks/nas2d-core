@@ -412,8 +412,37 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, float ra
 	// Ignore if font isn't loaded or string is empty
 	if(!font.loaded() || text.empty())
 		return;
+	
+	glColor4ub(r, g, b, a);
+	
+	int offset = 0;
+	int	cellSize = font.glyphCellSize();
+	Font::GlyphMetrics gm;
 
-	drawText(font, text, rasterX, rasterY, r, g, b, a); // replace with appropriate drawing code.
+	for(int i = 0; i < text.size(); i++)
+	{
+		gm = font.glyphMetrics(static_cast<int>(text[i]));
+		int temp = (w - (x + offset));
+		
+		if(x + offset + gm.advance <= w)
+		{
+			fillVertexArray(rasterX + x + offset, rasterY + y, cellSize, cellSize);
+			fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
+			cout << "Ins:\t" << x + offset + gm.advance << "\t" << text[i]<< "\t" << temp << "\t" << gm.advance << "\t" << temp - gm.advance << "\t" << x + offset + (temp - gm.advance) << endl;
+		}
+		else if(x + offset + (gm.advance - temp) <= w && temp > 0)
+		{
+			fillVertexArray(rasterX + x + offset, rasterY + y, cellSize, cellSize);
+			fillTextureArray(gm.uvX, gm.uvY, static_cast<float>(temp)/static_cast<float>(cellSize), gm.uvH);
+			cout << "Out:\t" << gm.uvX << "\t" << gm.uvW << "\t" << gm.uvY << "\t" << gm.uvH << "\t" << static_cast<float>(temp)/static_cast<float>(cellSize) << endl;
+		}
+		
+		drawVertexArray(font.texture_id(), false);
+		offset += gm.advance;
+	}
+	
+	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+	//drawText(font, text, rasterX, rasterY, r, g, b, a); // replace with appropriate drawing code.
 
 	// please finish me
 }

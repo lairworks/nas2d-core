@@ -14,7 +14,7 @@
 #include "Resource.h"
 
 #ifdef __APPLE__
-#include "SDL_ttf/SDL_ttf.h"
+#include "SDL2_ttf/SDL_ttf.h"
 #else
 #include "GLee.h"
 #define NO_SDL_GLEXT

@@ -11,7 +11,7 @@
 #include "NAS2D/FpsCounter.h"
 
 #ifdef __APPLE__
-#include <SDL2/SDL.h>
+#include "SDL2/SDL.h"
 #else
 #include "SDL/SDL.h"
 #endif

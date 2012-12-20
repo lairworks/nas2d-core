@@ -10,40 +10,32 @@
 		695B3B8213274C9A003E937A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8113274C9A003E937A /* GLUT.framework */; };
 		695B3B8413274C9A003E937A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8313274C9A003E937A /* OpenGL.framework */; };
 		695B3BAB13274CB6003E937A /* Physfs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAA13274CB6003E937A /* Physfs.framework */; };
-		695B3BAD13274CB6003E937A /* SDL_gfx.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAC13274CB6003E937A /* SDL_gfx.framework */; };
-		695B3BAF13274CB6003E937A /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAE13274CB6003E937A /* SDL_image.framework */; };
-		695B3BB113274CB6003E937A /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB013274CB6003E937A /* SDL_mixer.framework */; };
-		695B3BB313274CB6003E937A /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB213274CB6003E937A /* SDL_ttf.framework */; };
 		695B3CB313275060003E937A /* Physfs.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAA13274CB6003E937A /* Physfs.framework */; };
-		695B3CB413275060003E937A /* SDL_gfx.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAC13274CB6003E937A /* SDL_gfx.framework */; };
-		695B3CB513275060003E937A /* SDL_image.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BAE13274CB6003E937A /* SDL_image.framework */; };
-		695B3CB613275060003E937A /* SDL_mixer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB013274CB6003E937A /* SDL_mixer.framework */; };
-		695B3CB713275060003E937A /* SDL_ttf.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3BB213274CB6003E937A /* SDL_ttf.framework */; };
-		69BD4D231673F4DE009EEBE2 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0A1673F4DE009EEBE2 /* Common.h */; };
-		69BD4D241673F4DE009EEBE2 /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0B1673F4DE009EEBE2 /* Configuration.h */; };
-		69BD4D251673F4DE009EEBE2 /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0C1673F4DE009EEBE2 /* Documentation.h */; };
+		69BD4D231673F4DE009EEBE2 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0A1673F4DE009EEBE2 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D241673F4DE009EEBE2 /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0B1673F4DE009EEBE2 /* Configuration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D251673F4DE009EEBE2 /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0C1673F4DE009EEBE2 /* Documentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D261673F4DE009EEBE2 /* Event in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D0D1673F4DE009EEBE2 /* Event */; };
-		69BD4D271673F4DE009EEBE2 /* EventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0E1673F4DE009EEBE2 /* EventHandler.h */; };
-		69BD4D281673F4DE009EEBE2 /* Exception.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0F1673F4DE009EEBE2 /* Exception.h */; };
-		69BD4D291673F4DE009EEBE2 /* File.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D101673F4DE009EEBE2 /* File.h */; };
-		69BD4D2A1673F4DE009EEBE2 /* Filesystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D111673F4DE009EEBE2 /* Filesystem.h */; };
-		69BD4D2B1673F4DE009EEBE2 /* FpsCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D121673F4DE009EEBE2 /* FpsCounter.h */; };
-		69BD4D2C1673F4DE009EEBE2 /* Game.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D131673F4DE009EEBE2 /* Game.h */; };
-		69BD4D2D1673F4DE009EEBE2 /* KeyTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D141673F4DE009EEBE2 /* KeyTranslator.h */; };
-		69BD4D2E1673F4DE009EEBE2 /* MersenneTwister.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D151673F4DE009EEBE2 /* MersenneTwister.h */; };
+		69BD4D271673F4DE009EEBE2 /* EventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0E1673F4DE009EEBE2 /* EventHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D281673F4DE009EEBE2 /* Exception.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0F1673F4DE009EEBE2 /* Exception.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D291673F4DE009EEBE2 /* File.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D101673F4DE009EEBE2 /* File.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D2A1673F4DE009EEBE2 /* Filesystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D111673F4DE009EEBE2 /* Filesystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D2B1673F4DE009EEBE2 /* FpsCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D121673F4DE009EEBE2 /* FpsCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D2C1673F4DE009EEBE2 /* Game.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D131673F4DE009EEBE2 /* Game.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D2D1673F4DE009EEBE2 /* KeyTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D141673F4DE009EEBE2 /* KeyTranslator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D2E1673F4DE009EEBE2 /* MersenneTwister.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D151673F4DE009EEBE2 /* MersenneTwister.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D2F1673F4DE009EEBE2 /* Mixer in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D161673F4DE009EEBE2 /* Mixer */; };
-		69BD4D301673F4DE009EEBE2 /* NAS2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D171673F4DE009EEBE2 /* NAS2D.h */; };
-		69BD4D311673F4DE009EEBE2 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D181673F4DE009EEBE2 /* Random.h */; };
+		69BD4D301673F4DE009EEBE2 /* NAS2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D171673F4DE009EEBE2 /* NAS2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D311673F4DE009EEBE2 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D181673F4DE009EEBE2 /* Random.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D321673F4DE009EEBE2 /* Renderer in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D191673F4DE009EEBE2 /* Renderer */; };
 		69BD4D331673F4DE009EEBE2 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D1A1673F4DE009EEBE2 /* Resources */; };
-		69BD4D341673F4DE009EEBE2 /* sigslot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1B1673F4DE009EEBE2 /* sigslot.h */; };
-		69BD4D351673F4DE009EEBE2 /* State.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1C1673F4DE009EEBE2 /* State.h */; };
-		69BD4D361673F4DE009EEBE2 /* StateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1D1673F4DE009EEBE2 /* StateManager.h */; };
-		69BD4D371673F4DE009EEBE2 /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1E1673F4DE009EEBE2 /* Timer.h */; };
+		69BD4D341673F4DE009EEBE2 /* sigslot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1B1673F4DE009EEBE2 /* sigslot.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D351673F4DE009EEBE2 /* State.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1C1673F4DE009EEBE2 /* State.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D361673F4DE009EEBE2 /* StateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1D1673F4DE009EEBE2 /* StateManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D371673F4DE009EEBE2 /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1E1673F4DE009EEBE2 /* Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D381673F4DE009EEBE2 /* tinyxml in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D1F1673F4DE009EEBE2 /* tinyxml */; };
-		69BD4D391673F4DE009EEBE2 /* Trig.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D201673F4DE009EEBE2 /* Trig.h */; };
-		69BD4D3A1673F4DE009EEBE2 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D211673F4DE009EEBE2 /* Utility.h */; };
-		69BD4D3B1673F4DE009EEBE2 /* XmlAttributeParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D221673F4DE009EEBE2 /* XmlAttributeParser.h */; };
+		69BD4D391673F4DE009EEBE2 /* Trig.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D201673F4DE009EEBE2 /* Trig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D3A1673F4DE009EEBE2 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D211673F4DE009EEBE2 /* Utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69BD4D3B1673F4DE009EEBE2 /* XmlAttributeParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D221673F4DE009EEBE2 /* XmlAttributeParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D5D1673F4FA009EEBE2 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3C1673F4FA009EEBE2 /* Common.cpp */; };
 		69BD4D5E1673F4FA009EEBE2 /* Configuration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3D1673F4FA009EEBE2 /* Configuration.cpp */; };
 		69BD4D5F1673F4FA009EEBE2 /* EventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3E1673F4FA009EEBE2 /* EventHandler.cpp */; };
@@ -75,6 +67,17 @@
 		69BD4D791673F4FA009EEBE2 /* XmlAttributeParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D5C1673F4FA009EEBE2 /* XmlAttributeParser.cpp */; };
 		69BD4D8C1673FB23009EEBE2 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BD4D8A1673FAF4009EEBE2 /* SDL2.framework */; };
 		69BD4D8D1673FB42009EEBE2 /* SDL2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69BD4D8A1673FAF4009EEBE2 /* SDL2.framework */; };
+		69CE7A0816747F8100BFAD1C /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A0216747F5300BFAD1C /* SDL2_image.framework */; };
+		69CE7A0916747F8100BFAD1C /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A0316747F5300BFAD1C /* SDL2_mixer.framework */; };
+		69CE7A0A16747F8100BFAD1C /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A0416747F5300BFAD1C /* SDL2_ttf.framework */; };
+		69CE7A0B16747F8700BFAD1C /* SDL2_image.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A0216747F5300BFAD1C /* SDL2_image.framework */; };
+		69CE7A0C16747F8700BFAD1C /* SDL2_mixer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A0316747F5300BFAD1C /* SDL2_mixer.framework */; };
+		69CE7A0D16747F8700BFAD1C /* SDL2_ttf.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A0416747F5300BFAD1C /* SDL2_ttf.framework */; };
+		69CE7A2A167486FD00BFAD1C /* Event in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D0D1673F4DE009EEBE2 /* Event */; };
+		69CE7A2B1674870600BFAD1C /* Mixer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D161673F4DE009EEBE2 /* Mixer */; };
+		69CE7A2C1674870A00BFAD1C /* Renderer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D191673F4DE009EEBE2 /* Renderer */; };
+		69CE7A2D1674870E00BFAD1C /* Resources in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D1A1673F4DE009EEBE2 /* Resources */; };
+		69CE7A2E1674871300BFAD1C /* tinyxml in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D1F1673F4DE009EEBE2 /* tinyxml */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -86,6 +89,11 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 1;
 			files = (
+				69CE7A2A167486FD00BFAD1C /* Event in Copy Headers With Directories */,
+				69CE7A2B1674870600BFAD1C /* Mixer in Copy Headers With Directories */,
+				69CE7A2C1674870A00BFAD1C /* Renderer in Copy Headers With Directories */,
+				69CE7A2D1674870E00BFAD1C /* Resources in Copy Headers With Directories */,
+				69CE7A2E1674871300BFAD1C /* tinyxml in Copy Headers With Directories */,
 			);
 			name = "Copy Headers With Directories";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,11 +105,10 @@
 			dstSubfolderSpec = 10;
 			files = (
 				695B3CB313275060003E937A /* Physfs.framework in Copy Frameworks */,
-				695B3CB413275060003E937A /* SDL_gfx.framework in Copy Frameworks */,
-				695B3CB513275060003E937A /* SDL_image.framework in Copy Frameworks */,
-				695B3CB613275060003E937A /* SDL_mixer.framework in Copy Frameworks */,
 				69BD4D8D1673FB42009EEBE2 /* SDL2.framework in Copy Frameworks */,
-				695B3CB713275060003E937A /* SDL_ttf.framework in Copy Frameworks */,
+				69CE7A0B16747F8700BFAD1C /* SDL2_image.framework in Copy Frameworks */,
+				69CE7A0C16747F8700BFAD1C /* SDL2_mixer.framework in Copy Frameworks */,
+				69CE7A0D16747F8700BFAD1C /* SDL2_ttf.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -117,10 +124,6 @@
 		695B3B8113274C9A003E937A /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		695B3B8313274C9A003E937A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		695B3BAA13274CB6003E937A /* Physfs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Physfs.framework; path = /Users/trevor/Development/dependencies/macos/Framework/Physfs.framework; sourceTree = "<absolute>"; };
-		695B3BAC13274CB6003E937A /* SDL_gfx.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_gfx.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL_gfx.framework; sourceTree = "<absolute>"; };
-		695B3BAE13274CB6003E937A /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL_image.framework; sourceTree = "<absolute>"; };
-		695B3BB013274CB6003E937A /* SDL_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_mixer.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL_mixer.framework; sourceTree = "<absolute>"; };
-		695B3BB213274CB6003E937A /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_ttf.framework; path = /Users/trevor/Development/dependencies/macos/Framework/SDL_ttf.framework; sourceTree = "<absolute>"; };
 		69BD4D0A1673F4DE009EEBE2 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../../include/NAS2D/Common.h; sourceTree = "<group>"; };
 		69BD4D0B1673F4DE009EEBE2 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configuration.h; path = ../../include/NAS2D/Configuration.h; sourceTree = "<group>"; };
 		69BD4D0C1673F4DE009EEBE2 /* Documentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Documentation.h; path = ../../include/NAS2D/Documentation.h; sourceTree = "<group>"; };
@@ -176,6 +179,9 @@
 		69BD4D5B1673F4FA009EEBE2 /* Trig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trig.cpp; sourceTree = "<group>"; };
 		69BD4D5C1673F4FA009EEBE2 /* XmlAttributeParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XmlAttributeParser.cpp; sourceTree = "<group>"; };
 		69BD4D8A1673FAF4009EEBE2 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../dependencies/macos/Framework/SDL2.framework; sourceTree = "<group>"; };
+		69CE7A0216747F5300BFAD1C /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../dependencies/macos/Framework/SDL2_image.framework; sourceTree = "<group>"; };
+		69CE7A0316747F5300BFAD1C /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../dependencies/macos/Framework/SDL2_mixer.framework; sourceTree = "<group>"; };
+		69CE7A0416747F5300BFAD1C /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../dependencies/macos/Framework/SDL2_ttf.framework; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* NAS2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NAS2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -191,10 +197,9 @@
 				695B3B8213274C9A003E937A /* GLUT.framework in Frameworks */,
 				695B3B8413274C9A003E937A /* OpenGL.framework in Frameworks */,
 				695B3BAB13274CB6003E937A /* Physfs.framework in Frameworks */,
-				695B3BAD13274CB6003E937A /* SDL_gfx.framework in Frameworks */,
-				695B3BAF13274CB6003E937A /* SDL_image.framework in Frameworks */,
-				695B3BB113274CB6003E937A /* SDL_mixer.framework in Frameworks */,
-				695B3BB313274CB6003E937A /* SDL_ttf.framework in Frameworks */,
+				69CE7A0816747F8100BFAD1C /* SDL2_image.framework in Frameworks */,
+				69CE7A0916747F8100BFAD1C /* SDL2_mixer.framework in Frameworks */,
+				69CE7A0A16747F8100BFAD1C /* SDL2_ttf.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,15 +256,14 @@
 		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				69CE7A0216747F5300BFAD1C /* SDL2_image.framework */,
+				69CE7A0316747F5300BFAD1C /* SDL2_mixer.framework */,
+				69CE7A0416747F5300BFAD1C /* SDL2_ttf.framework */,
 				69BD4D8A1673FAF4009EEBE2 /* SDL2.framework */,
 				695B3B8113274C9A003E937A /* GLUT.framework */,
 				695B3B8313274C9A003E937A /* OpenGL.framework */,
 				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
 				695B3BAA13274CB6003E937A /* Physfs.framework */,
-				695B3BAC13274CB6003E937A /* SDL_gfx.framework */,
-				695B3BAE13274CB6003E937A /* SDL_image.framework */,
-				695B3BB013274CB6003E937A /* SDL_mixer.framework */,
-				695B3BB213274CB6003E937A /* SDL_ttf.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -390,6 +394,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69BD4D301673F4DE009EEBE2 /* NAS2D.h in Headers */,
 				69BD4D231673F4DE009EEBE2 /* Common.h in Headers */,
 				69BD4D241673F4DE009EEBE2 /* Configuration.h in Headers */,
 				69BD4D251673F4DE009EEBE2 /* Documentation.h in Headers */,
@@ -401,7 +406,6 @@
 				69BD4D2C1673F4DE009EEBE2 /* Game.h in Headers */,
 				69BD4D2D1673F4DE009EEBE2 /* KeyTranslator.h in Headers */,
 				69BD4D2E1673F4DE009EEBE2 /* MersenneTwister.h in Headers */,
-				69BD4D301673F4DE009EEBE2 /* NAS2D.h in Headers */,
 				69BD4D311673F4DE009EEBE2 /* Random.h in Headers */,
 				69BD4D341673F4DE009EEBE2 /* sigslot.h in Headers */,
 				69BD4D351673F4DE009EEBE2 /* State.h in Headers */,
@@ -540,23 +544,15 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework\"",
+					"\"$(SRCROOT)/Frameworks\"",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NAS2D_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
-				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/Physfs.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_gfx.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_image.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_mixer.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_ttf.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL2.framework/Headers\"",
-					"/usr/local/include/**",
-				);
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks/\"/**";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@rpath";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -566,6 +562,7 @@
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -580,24 +577,16 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework\"",
+					"\"$(SRCROOT)/Frameworks\"",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NAS2D_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
-				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/Physfs.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_gfx.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_image.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_mixer.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL_ttf.framework/Headers\"",
-					"\"$(SRCROOT)/../../../../dependencies/macos/Framework/SDL2.framework/Headers\"",
-					"/usr/local/include/**",
-				);
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks/\"/**";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@rpath";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -607,6 +596,7 @@
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

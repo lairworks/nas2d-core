@@ -16,6 +16,8 @@
 
 #if defined(__linux__)
 #include "physfs.h"
+#elif __APPLE__
+#include "Physfs/physfs.h"
 #else
 #include "physfs/physfs.h"
 #endif

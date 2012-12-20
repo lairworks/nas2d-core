@@ -12,8 +12,8 @@
 #include "NAS2D/Exception.h"
 
 #if defined(__APPLE__)
-	#include <SDL2/SDL_opengl.h>
-	#include "SDL_ttf/SDL_ttf.h"
+	#include "SDL2/SDL_opengl.h"
+	#include "SDL2_ttf/SDL_ttf.h"
 #elif defined(WIN32)
 	#include "SDL/SDL_opengl.h"
 	#include "SDL/SDL_ttf.h"

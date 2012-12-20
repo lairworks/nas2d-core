@@ -20,7 +20,7 @@
 #endif
 
 #ifdef __APPLE__
-#include "SDL_mixer/SDL_mixer.h"
+#include "SDL2_mixer/SDL_mixer.h"
 
 #else
 #include "SDL/SDL_mixer.h"

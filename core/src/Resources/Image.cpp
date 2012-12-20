@@ -21,7 +21,6 @@
 
 #if defined(__APPLE__)
 	#include <SDL2/SDL_opengl.h>
-	#include "SDL_gfx/SDL_gfxPrimitives.h"
 #elif defined(WIN32)
 	#include "SDL/SDL_opengl.h"
 #else

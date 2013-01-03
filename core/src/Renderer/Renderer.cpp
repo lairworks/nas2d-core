@@ -309,6 +309,8 @@ void Renderer::fadeIn(float delay)
 
 	mFade = Renderer::FADE_IN;
 	mFadeStep = 255.0f /delay;
+
+	mTimer.delta();	// clear timer
 }
 
 
@@ -329,6 +331,8 @@ void Renderer::fadeOut(float delay)
 
 	mFade = Renderer::FADE_OUT;
 	mFadeStep = 255.0f / delay;
+
+	mTimer.delta(); // clear timer
 }
 
 

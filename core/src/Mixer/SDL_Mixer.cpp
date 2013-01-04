@@ -104,7 +104,7 @@ void SDL_Mixer::playMusic(Music& music)
 	if(!music.loaded())
 		return;
 
-	Mix_PlayMusic(music.music(), 0);
+	Mix_PlayMusic(music.music(), -1);
 }
 
 

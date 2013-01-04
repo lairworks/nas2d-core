@@ -400,7 +400,7 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float 
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
 		drawVertexArray(font.texture_id(), false);
-		offset += gm.advance;
+		offset += gm.advance + gm.minX;
 	}
 	
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.

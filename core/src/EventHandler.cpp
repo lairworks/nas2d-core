@@ -155,7 +155,7 @@ EventHandler::JoystickHatMotionEventCallback& EventHandler::joystickHatMotion()
  * 
  * See EventHandler::KeyEventCallback for paramter listing.
  */
-EventHandler::KeyEventCallback& EventHandler::keyUp()
+EventHandler::KeyUpEventCallback& EventHandler::keyUp()
 {
 	return mKeyUpEvent;
 }
@@ -173,7 +173,7 @@ EventHandler::KeyEventCallback& EventHandler::keyUp()
  * 
  * See EventHandler::KeyEventCallback for paramter listing.
  */
-EventHandler::KeyEventCallback& EventHandler::keyDown()
+EventHandler::KeyDownEventCallback& EventHandler::keyDown()
 {
 	return mKeyDownEvent;
 }
@@ -343,9 +343,7 @@ void EventHandler::pump()
 				break;
 
 			case SDL_KEYDOWN:
-				if(event.key.repeat != 0)
-					break;
-				mKeyDownEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
+				mKeyDownEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod), event.key.repeat != 0 ? true : false);
 				break;
 
 			case SDL_KEYUP:

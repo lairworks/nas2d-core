@@ -113,20 +113,39 @@ public:
 	typedef sigslot::signal3<int, int, int>			JoystickHatMotionEventCallback;
 
 	/**
-	 * \typedef	KeyEventCallback
-	 * \brief	Keyboard key eventsgenerate two values: Keyboard
+	 * \typedef	KeyDownEventCallback
+	 * \brief	Keyboard key down events generate three values: Keyboard
+	 *			scan code, key modifier and a repeat flag.
+	 * 
+	 * The callback function expects one KeyCode paramter, one KeyModifier paramter
+	 * and one bool parameter.
+	 * 
+	 * \code
+	 * void function(KeyCode key, KeyModifier mod, bool repeat);
+	 * \endcode
+	 * 
+	 * \arg \c key		KeyCode representing a key on the keyboard.
+	 * \arg \c mod		Keyboard modifier.
+	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
+	 */
+	typedef sigslot::signal3<KeyCode, KeyModifier, bool>	KeyDownEventCallback;
+
+	/**
+	 * \typedef	KeyUpEventCallback
+	 * \brief	Keyboard key up events generate two values: Keyboard
 	 *			scan code and key modifier.
 	 * 
 	 * The callback function expects one KeyCode paramter and one KeyModifier paramter.
 	 * 
 	 * \code
-	 * void function(KeyCode key, KeyModifier mod);
+	 * void function(KeyCode key, KeyModifier mod, bool repeat);
 	 * \endcode
 	 * 
-	 * \arg \c key	KeyCode representing a key on the keyboard.
-	 * \arg \c mod	explanation
+	 * \arg \c key		KeyCode representing a key on the keyboard.
+	 * \arg \c mod		Keyboard modifier.
+	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
 	 */
-	typedef sigslot::signal2<KeyCode, KeyModifier>	KeyEventCallback;
+	typedef sigslot::signal2<KeyCode, KeyModifier>	KeyUpEventCallback;
 
 	/**
 	 * \typedef	MouseButtonEventCallback
@@ -210,8 +229,8 @@ public:
 	JoystickButtonEventCallback&		joystickButtonDown();
 	JoystickHatMotionEventCallback&		joystickHatMotion();
 
-	KeyEventCallback&					keyUp();
-	KeyEventCallback&					keyDown();
+	KeyUpEventCallback&					keyUp();
+	KeyDownEventCallback&				keyDown();
 
 	MouseButtonEventCallback&			mouseButtonUp();
 	MouseButtonEventCallback&			mouseButtonDown();
@@ -235,8 +254,8 @@ private:
 	JoystickButtonEventCallback			mJoystickButtonUpEvent;
 	JoystickButtonEventCallback			mJoystickButtonDownEvent;
 	JoystickHatMotionEventCallback		mJoystickHatMotionEvent;
-	KeyEventCallback					mKeyUpEvent;
-	KeyEventCallback					mKeyDownEvent;
+	KeyUpEventCallback					mKeyUpEvent;
+	KeyDownEventCallback				mKeyDownEvent;
 	MouseButtonEventCallback			mMouseButtonUpEvent;
 	MouseButtonEventCallback			mMouseButtonDownEvent;
 	MouseMotionEventCallback			mMouseMotionEvent;

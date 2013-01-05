@@ -343,6 +343,8 @@ void EventHandler::pump()
 				break;
 
 			case SDL_KEYDOWN:
+				if(event.key.repeat != 0)
+					break;
 				mKeyDownEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
 				break;
 

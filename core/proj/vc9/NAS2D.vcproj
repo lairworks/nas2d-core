@@ -288,10 +288,6 @@
 				Name="tinyxml"
 				>
 				<File
-					RelativePath="..\..\src\tinyxml\tinystr.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\tinyxml\tinyxml.cpp"
 					>
 				</File>
@@ -497,10 +493,6 @@
 			<Filter
 				Name="tinyxml"
 				>
-				<File
-					RelativePath="..\..\include\NAS2D\tinyxml\tinystr.h"
-					>
-				</File>
 				<File
 					RelativePath="..\..\include\NAS2D\tinyxml\tinyxml.h"
 					>

@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2012 New Age Software
+// = Copyright ï¿½ 2008 - 2012 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -43,7 +43,7 @@ public:
 	void attachShader(GLuint shader);
 	
 protected:
-	int compileShader(GLuint shader);
+	void compileShader(GLuint shader);
 	void printLog(GLuint obj);
 	
 private:

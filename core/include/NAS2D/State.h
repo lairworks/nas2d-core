@@ -18,7 +18,7 @@
 #endif
 
 #include "NAS2D/EventHandler.h"
-#include "NAS2D/sigslot.h"
+#include "NAS2D/Signal.h"
 
 /**
  * \class	State
@@ -79,7 +79,7 @@
  * \note	The State class has twp functions ('initialize()', 'upate()') that all
  *			derived State objects must override.
  */
-class State: public sigslot::has_slots<>
+class State
 {
 public:
 	State() {}

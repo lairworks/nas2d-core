@@ -26,7 +26,6 @@
 		69BD4D311673F4DE009EEBE2 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D181673F4DE009EEBE2 /* Random.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D321673F4DE009EEBE2 /* Renderer in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D191673F4DE009EEBE2 /* Renderer */; };
 		69BD4D331673F4DE009EEBE2 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D1A1673F4DE009EEBE2 /* Resources */; };
-		69BD4D341673F4DE009EEBE2 /* sigslot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1B1673F4DE009EEBE2 /* sigslot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D351673F4DE009EEBE2 /* State.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1C1673F4DE009EEBE2 /* State.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D361673F4DE009EEBE2 /* StateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1D1673F4DE009EEBE2 /* StateManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D371673F4DE009EEBE2 /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1E1673F4DE009EEBE2 /* Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -73,11 +72,8 @@
 		69F2C1F416980D1A007FAB38 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */; };
 		69F2C1F516980D1A007FAB38 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */; };
 		69F2C1F616980D1A007FAB38 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1F116980D1A007FAB38 /* SDL2.framework */; };
-		69F2C1F716980D28007FAB38 /* Physfs.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1ED16980D1A007FAB38 /* Physfs.framework */; };
-		69F2C1F816980D28007FAB38 /* SDL2_image.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */; };
-		69F2C1F916980D28007FAB38 /* SDL2_mixer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */; };
-		69F2C1FA16980D28007FAB38 /* SDL2_ttf.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */; };
-		69F2C1FB16980D28007FAB38 /* SDL2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1F116980D1A007FAB38 /* SDL2.framework */; };
+		69F2C243169BE2F0007FAB38 /* Delegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 69F2C241169BE2F0007FAB38 /* Delegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69F2C244169BE2F0007FAB38 /* Signal.h in Headers */ = {isa = PBXBuildFile; fileRef = 69F2C242169BE2F0007FAB38 /* Signal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -96,21 +92,6 @@
 				69CE7A2E1674871300BFAD1C /* tinyxml in Copy Headers With Directories */,
 			);
 			name = "Copy Headers With Directories";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		695B3CBE13275068003E937A /* Copy Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				69F2C1F716980D28007FAB38 /* Physfs.framework in Copy Frameworks */,
-				69F2C1F816980D28007FAB38 /* SDL2_image.framework in Copy Frameworks */,
-				69F2C1F916980D28007FAB38 /* SDL2_mixer.framework in Copy Frameworks */,
-				69F2C1FA16980D28007FAB38 /* SDL2_ttf.framework in Copy Frameworks */,
-				69F2C1FB16980D28007FAB38 /* SDL2.framework in Copy Frameworks */,
-			);
-			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -140,7 +121,6 @@
 		69BD4D181673F4DE009EEBE2 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Random.h; path = ../../include/NAS2D/Random.h; sourceTree = "<group>"; };
 		69BD4D191673F4DE009EEBE2 /* Renderer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Renderer; path = ../../include/NAS2D/Renderer; sourceTree = "<group>"; };
 		69BD4D1A1673F4DE009EEBE2 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../../include/NAS2D/Resources; sourceTree = "<group>"; };
-		69BD4D1B1673F4DE009EEBE2 /* sigslot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sigslot.h; path = ../../include/NAS2D/sigslot.h; sourceTree = "<group>"; };
 		69BD4D1C1673F4DE009EEBE2 /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = State.h; path = ../../include/NAS2D/State.h; sourceTree = "<group>"; };
 		69BD4D1D1673F4DE009EEBE2 /* StateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateManager.h; path = ../../include/NAS2D/StateManager.h; sourceTree = "<group>"; };
 		69BD4D1E1673F4DE009EEBE2 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timer.h; path = ../../include/NAS2D/Timer.h; sourceTree = "<group>"; };
@@ -182,6 +162,8 @@
 		69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		69F2C1F116980D1A007FAB38 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		69F2C241169BE2F0007FAB38 /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delegate.h; sourceTree = "<group>"; };
+		69F2C242169BE2F0007FAB38 /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Signal.h; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* NAS2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NAS2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -217,11 +199,6 @@
 		0867D691FE84028FC02AAC07 /* NAS2D */ = {
 			isa = PBXGroup;
 			children = (
-				69F2C1ED16980D1A007FAB38 /* Physfs.framework */,
-				69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */,
-				69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */,
-				69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */,
-				69F2C1F116980D1A007FAB38 /* SDL2.framework */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
@@ -261,6 +238,11 @@
 		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				69F2C1ED16980D1A007FAB38 /* Physfs.framework */,
+				69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */,
+				69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */,
+				69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */,
+				69F2C1F116980D1A007FAB38 /* SDL2.framework */,
 				695B3B8113274C9A003E937A /* GLUT.framework */,
 				695B3B8313274C9A003E937A /* OpenGL.framework */,
 				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
@@ -289,6 +271,8 @@
 		6928723D1417484300F20BEB /* NAS2D */ = {
 			isa = PBXGroup;
 			children = (
+				69F2C241169BE2F0007FAB38 /* Delegate.h */,
+				69F2C242169BE2F0007FAB38 /* Signal.h */,
 				69BD4D0A1673F4DE009EEBE2 /* Common.h */,
 				69BD4D0B1673F4DE009EEBE2 /* Configuration.h */,
 				69BD4D0C1673F4DE009EEBE2 /* Documentation.h */,
@@ -306,7 +290,6 @@
 				69BD4D181673F4DE009EEBE2 /* Random.h */,
 				69BD4D191673F4DE009EEBE2 /* Renderer */,
 				69BD4D1A1673F4DE009EEBE2 /* Resources */,
-				69BD4D1B1673F4DE009EEBE2 /* sigslot.h */,
 				69BD4D1C1673F4DE009EEBE2 /* State.h */,
 				69BD4D1D1673F4DE009EEBE2 /* StateManager.h */,
 				69BD4D1E1673F4DE009EEBE2 /* Timer.h */,
@@ -407,7 +390,8 @@
 				69BD4D2D1673F4DE009EEBE2 /* KeyTranslator.h in Headers */,
 				69BD4D2E1673F4DE009EEBE2 /* MersenneTwister.h in Headers */,
 				69BD4D311673F4DE009EEBE2 /* Random.h in Headers */,
-				69BD4D341673F4DE009EEBE2 /* sigslot.h in Headers */,
+				69F2C243169BE2F0007FAB38 /* Delegate.h in Headers */,
+				69F2C244169BE2F0007FAB38 /* Signal.h in Headers */,
 				69BD4D351673F4DE009EEBE2 /* State.h in Headers */,
 				69BD4D361673F4DE009EEBE2 /* StateManager.h in Headers */,
 				69BD4D371673F4DE009EEBE2 /* Timer.h in Headers */,
@@ -429,7 +413,6 @@
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
 				695B3C3613274F42003E937A /* Copy Headers With Directories */,
-				695B3CBE13275068003E937A /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -552,7 +535,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks/\"/**";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -586,7 +570,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
 				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Frameworks/\"/**";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "@executable_path/../Frameworks";
+				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CPLUSPLUSFLAGS = (

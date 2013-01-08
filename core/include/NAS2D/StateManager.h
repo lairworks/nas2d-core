@@ -22,7 +22,7 @@
  * \note	StateManager handles distribution of input and system events to
  *			both State objects and to the Gui.
  */
-class StateManager: public sigslot::has_slots<>
+class StateManager
 {
 public:
 	// Constructor & destructor

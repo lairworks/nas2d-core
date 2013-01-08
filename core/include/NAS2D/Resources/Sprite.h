@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Filesystem.h"
-#include "NAS2D/sigslot.h"
+#include "NAS2D/Signal.h"
 
 #include "NAS2D/Resources/Image.h"
 #include "NAS2D/Renderer/Renderer.h"
@@ -30,10 +30,10 @@ extern const std::string SPRITE_VERSION;
  * The Sprite Class is a self-contained group of Image Resource's that displays
  * Image's at a specified screen coordinate in sequence to display an animation.
  */
-class Sprite: public sigslot::has_slots<>
+class Sprite
 {
 public:
-	typedef sigslot::signal0<> Callback;
+	typedef Gallant::Signal0<> Callback;
 
 	Sprite();
 	Sprite(const std::string& filePath);

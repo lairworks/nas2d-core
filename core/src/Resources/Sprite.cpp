@@ -177,7 +177,7 @@ void Sprite::update(float x, float y)
 		if(mCurrentFrame >= mActions[mCurrentAction].size())
 		{
 			mCurrentFrame = 0;
-			mFrameCallback.emit();		// Notifiy any frame listeners that the animation sequence has completed.
+			mFrameCallback.Emit();		// Notifiy any frame listeners that the animation sequence has completed.
 		}
 	}
 

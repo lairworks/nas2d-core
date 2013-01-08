@@ -538,15 +538,12 @@ void OGL_Renderer::getError()
 		case GL_INVALID_ENUM:
 			errStr += "Invalid Enumerator.";
 			break;
+		case GL_INVALID_VALUE:
+			errStr += "Invalid Value.";
+			break;
 		case GL_INVALID_OPERATION:
 			errStr += "Invalid Operation.";
-			break;
-		case GL_STACK_OVERFLOW:
-			errStr += "Stack Overflow.";
-			break;
-		case GL_STACK_UNDERFLOW:
-			errStr += "Stack Underflow.";
-			break;
+			break; 
 		case GL_OUT_OF_MEMORY:
 			errStr += "Out of Memory.";
 			break;
@@ -672,8 +669,10 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 
 	// Setup OpenGL parameters
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.

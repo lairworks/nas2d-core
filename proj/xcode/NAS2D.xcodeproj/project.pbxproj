@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		695B3B8213274C9A003E937A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8113274C9A003E937A /* GLUT.framework */; };
 		695B3B8413274C9A003E937A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8313274C9A003E937A /* OpenGL.framework */; };
+		69AF4BFF169E5A3A00D8AC0F /* Delegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 69AF4BFD169E5A3A00D8AC0F /* Delegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69AF4C00169E5A3A00D8AC0F /* Signal.h in Headers */ = {isa = PBXBuildFile; fileRef = 69AF4BFE169E5A3A00D8AC0F /* Signal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D231673F4DE009EEBE2 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0A1673F4DE009EEBE2 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D241673F4DE009EEBE2 /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0B1673F4DE009EEBE2 /* Configuration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D251673F4DE009EEBE2 /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0C1673F4DE009EEBE2 /* Documentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -72,8 +74,6 @@
 		69F2C1F416980D1A007FAB38 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */; };
 		69F2C1F516980D1A007FAB38 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */; };
 		69F2C1F616980D1A007FAB38 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1F116980D1A007FAB38 /* SDL2.framework */; };
-		69F2C243169BE2F0007FAB38 /* Delegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 69F2C241169BE2F0007FAB38 /* Delegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69F2C244169BE2F0007FAB38 /* Signal.h in Headers */ = {isa = PBXBuildFile; fileRef = 69F2C242169BE2F0007FAB38 /* Signal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -104,6 +104,8 @@
 		32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAS2D_Prefix.pch; sourceTree = "<group>"; };
 		695B3B8113274C9A003E937A /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		695B3B8313274C9A003E937A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		69AF4BFD169E5A3A00D8AC0F /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Delegate.h; path = ../../include/NAS2D/Delegate.h; sourceTree = "<group>"; };
+		69AF4BFE169E5A3A00D8AC0F /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Signal.h; path = ../../include/NAS2D/Signal.h; sourceTree = "<group>"; };
 		69BD4D0A1673F4DE009EEBE2 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../../include/NAS2D/Common.h; sourceTree = "<group>"; };
 		69BD4D0B1673F4DE009EEBE2 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configuration.h; path = ../../include/NAS2D/Configuration.h; sourceTree = "<group>"; };
 		69BD4D0C1673F4DE009EEBE2 /* Documentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Documentation.h; path = ../../include/NAS2D/Documentation.h; sourceTree = "<group>"; };
@@ -162,8 +164,6 @@
 		69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		69F2C1F116980D1A007FAB38 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = Frameworks/SDL2.framework; sourceTree = "<group>"; };
-		69F2C241169BE2F0007FAB38 /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delegate.h; sourceTree = "<group>"; };
-		69F2C242169BE2F0007FAB38 /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Signal.h; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* NAS2D.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NAS2D.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -271,8 +271,8 @@
 		6928723D1417484300F20BEB /* NAS2D */ = {
 			isa = PBXGroup;
 			children = (
-				69F2C241169BE2F0007FAB38 /* Delegate.h */,
-				69F2C242169BE2F0007FAB38 /* Signal.h */,
+				69AF4BFD169E5A3A00D8AC0F /* Delegate.h */,
+				69AF4BFE169E5A3A00D8AC0F /* Signal.h */,
 				69BD4D0A1673F4DE009EEBE2 /* Common.h */,
 				69BD4D0B1673F4DE009EEBE2 /* Configuration.h */,
 				69BD4D0C1673F4DE009EEBE2 /* Documentation.h */,
@@ -390,11 +390,11 @@
 				69BD4D2D1673F4DE009EEBE2 /* KeyTranslator.h in Headers */,
 				69BD4D2E1673F4DE009EEBE2 /* MersenneTwister.h in Headers */,
 				69BD4D311673F4DE009EEBE2 /* Random.h in Headers */,
-				69F2C243169BE2F0007FAB38 /* Delegate.h in Headers */,
-				69F2C244169BE2F0007FAB38 /* Signal.h in Headers */,
 				69BD4D351673F4DE009EEBE2 /* State.h in Headers */,
 				69BD4D361673F4DE009EEBE2 /* StateManager.h in Headers */,
 				69BD4D371673F4DE009EEBE2 /* Timer.h in Headers */,
+				69AF4BFF169E5A3A00D8AC0F /* Delegate.h in Headers */,
+				69AF4C00169E5A3A00D8AC0F /* Signal.h in Headers */,
 				69BD4D391673F4DE009EEBE2 /* Trig.h in Headers */,
 				69BD4D3A1673F4DE009EEBE2 /* Utility.h in Headers */,
 				69BD4D3B1673F4DE009EEBE2 /* XmlAttributeParser.h in Headers */,

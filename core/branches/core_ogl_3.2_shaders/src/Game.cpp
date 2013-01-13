@@ -16,7 +16,7 @@
 #include "NAS2D/Utility.h"
 
 #include "NAS2D/Mixer/SDL_Mixer.h"
-#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Renderer/OGL_Core_Renderer.h"
 
 
 /**
@@ -47,7 +47,7 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 
 	try
 	{
-		Utility<Renderer>::instantiateDerived(new OGL_Renderer(title));
+		Utility<Renderer>::instantiateDerived(new OGL_Core_Renderer(title));
 	}
 	catch(Exception e)
 	{

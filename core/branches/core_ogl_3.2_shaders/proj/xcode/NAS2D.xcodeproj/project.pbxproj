@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		695B3B8213274C9A003E937A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8113274C9A003E937A /* GLUT.framework */; };
 		695B3B8413274C9A003E937A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8313274C9A003E937A /* OpenGL.framework */; };
+		6979575E16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6979575D16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp */; };
 		69BD4D231673F4DE009EEBE2 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0A1673F4DE009EEBE2 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D241673F4DE009EEBE2 /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0B1673F4DE009EEBE2 /* Configuration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D251673F4DE009EEBE2 /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0C1673F4DE009EEBE2 /* Documentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -44,7 +45,6 @@
 		69BD4D651673F4FA009EEBE2 /* SDL_Mixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D451673F4FA009EEBE2 /* SDL_Mixer.cpp */; };
 		69BD4D661673F4FA009EEBE2 /* NAS2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D461673F4FA009EEBE2 /* NAS2D.cpp */; };
 		69BD4D671673F4FA009EEBE2 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D471673F4FA009EEBE2 /* Random.cpp */; };
-		69BD4D681673F4FA009EEBE2 /* OGL_Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D491673F4FA009EEBE2 /* OGL_Renderer.cpp */; };
 		69BD4D691673F4FA009EEBE2 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D4A1673F4FA009EEBE2 /* Renderer.cpp */; };
 		69BD4D6A1673F4FA009EEBE2 /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D4B1673F4FA009EEBE2 /* ShaderManager.cpp */; };
 		69BD4D6B1673F4FA009EEBE2 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D4D1673F4FA009EEBE2 /* Font.cpp */; };
@@ -104,6 +104,7 @@
 		32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAS2D_Prefix.pch; sourceTree = "<group>"; };
 		695B3B8113274C9A003E937A /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		695B3B8313274C9A003E937A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		6979575D16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OGL_Core_Renderer.cpp; sourceTree = "<group>"; };
 		69BD4D0A1673F4DE009EEBE2 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../../include/NAS2D/Common.h; sourceTree = "<group>"; };
 		69BD4D0B1673F4DE009EEBE2 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configuration.h; path = ../../include/NAS2D/Configuration.h; sourceTree = "<group>"; };
 		69BD4D0C1673F4DE009EEBE2 /* Documentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Documentation.h; path = ../../include/NAS2D/Documentation.h; sourceTree = "<group>"; };
@@ -139,7 +140,6 @@
 		69BD4D451673F4FA009EEBE2 /* SDL_Mixer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDL_Mixer.cpp; sourceTree = "<group>"; };
 		69BD4D461673F4FA009EEBE2 /* NAS2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NAS2D.cpp; sourceTree = "<group>"; };
 		69BD4D471673F4FA009EEBE2 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
-		69BD4D491673F4FA009EEBE2 /* OGL_Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OGL_Renderer.cpp; sourceTree = "<group>"; };
 		69BD4D4A1673F4FA009EEBE2 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		69BD4D4B1673F4FA009EEBE2 /* ShaderManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
 		69BD4D4D1673F4FA009EEBE2 /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
@@ -338,7 +338,7 @@
 		69BD4D481673F4FA009EEBE2 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
-				69BD4D491673F4FA009EEBE2 /* OGL_Renderer.cpp */,
+				6979575D16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp */,
 				69BD4D4A1673F4FA009EEBE2 /* Renderer.cpp */,
 				69BD4D4B1673F4FA009EEBE2 /* ShaderManager.cpp */,
 			);
@@ -484,7 +484,6 @@
 				69BD4D651673F4FA009EEBE2 /* SDL_Mixer.cpp in Sources */,
 				69BD4D661673F4FA009EEBE2 /* NAS2D.cpp in Sources */,
 				69BD4D671673F4FA009EEBE2 /* Random.cpp in Sources */,
-				69BD4D681673F4FA009EEBE2 /* OGL_Renderer.cpp in Sources */,
 				69BD4D691673F4FA009EEBE2 /* Renderer.cpp in Sources */,
 				69BD4D6A1673F4FA009EEBE2 /* ShaderManager.cpp in Sources */,
 				69BD4D6B1673F4FA009EEBE2 /* Font.cpp in Sources */,
@@ -502,6 +501,7 @@
 				69BD4D771673F4FA009EEBE2 /* tinyxmlparser.cpp in Sources */,
 				69BD4D781673F4FA009EEBE2 /* Trig.cpp in Sources */,
 				69BD4D791673F4FA009EEBE2 /* XmlAttributeParser.cpp in Sources */,
+				6979575E16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

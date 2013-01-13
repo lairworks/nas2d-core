@@ -17,7 +17,7 @@
 #endif
 
 // UGLY ASS HACK for mouse window grabbing
-#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Renderer/OGL_Core_Renderer.h"
 
 #include <iostream>
 

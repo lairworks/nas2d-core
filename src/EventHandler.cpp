@@ -405,6 +405,27 @@ void EventHandler::pump()
 
 
 /**
+ * Used to disconnect all connected signal handlers.
+ */
+void EventHandler::disconnectAll()
+{
+	mActivateEvent.Clear();
+	mJoystickAxisMotionEvent.Clear();
+	mJoystickBallMotionEvent.Clear();
+	mJoystickButtonUpEvent.Clear();
+	mJoystickButtonDownEvent.Clear();
+	mJoystickHatMotionEvent.Clear();
+	mKeyUpEvent.Clear();
+	mKeyDownEvent.Clear();
+	mMouseButtonUpEvent.Clear();
+	mMouseButtonDownEvent.Clear();
+	mMouseMotionEvent.Clear();
+	mMouseWheelEvent.Clear();
+	mQuitEvent.Clear();
+}
+
+
+/**
  * Posts a quit event to the event system.
  */
 void postQuitEvent()

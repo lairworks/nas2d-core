@@ -32,7 +32,10 @@ StateManager::StateManager():	mActiveState(NULL),
 StateManager::~StateManager()
 {
 	if(mActiveState)
+	{
+		Utility<EventHandler>::get().disconnectAll();
 		delete mActiveState;
+	}
 }
 
 
@@ -55,7 +58,10 @@ void StateManager::setState(State* state)
 	Utility<Mixer>::get().stopAllAudio();
 
 	if(mActiveState != NULL)
+	{
+		Utility<EventHandler>::get().disconnectAll();
 		delete mActiveState;
+	}
 
 	// Initialize the new one
 	mActiveState = state;

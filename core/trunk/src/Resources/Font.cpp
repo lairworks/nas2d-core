@@ -299,7 +299,7 @@ const Font::GlyphMetrics& Font::glyphMetrics(int glyph) const
  */
 int Font::width(const std::string& str) const
 {
-	if(str.empty())
+	if(str.empty() || mGlyphMetrics.empty())
 		return 0;
 
 	int width = 0;

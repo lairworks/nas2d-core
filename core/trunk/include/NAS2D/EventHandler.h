@@ -246,6 +246,8 @@ public:
 
 	void pump();
 
+	void disconnectAll();
+
 private:
 
 	ActivateEventCallback				mActivateEvent;

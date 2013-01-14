@@ -13,7 +13,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
-#include "glee/GLee.h"
+#include "GLee.h"
 #elif __APPLE__
 #include "SDL2/SDL_opengl.h"
 #endif
@@ -214,7 +214,7 @@ private:
 		
         std::cerr << string(infoLog.begin(), infoLog.end()) << std::endl;
 #ifdef _WIN32
-        MessageBox(NULL, string(infoLog.begin(), infoLog.end()).c_str(), "Error", MB_OK);
+        //MessageBox(NULL, string(infoLog.begin(), infoLog.end()).c_str(), "Error", MB_OK);
 #endif
 		
     }

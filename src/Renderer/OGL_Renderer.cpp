@@ -43,6 +43,11 @@ GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0
 GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 
 
+/**
+ * Color value array for four verts. Defaults to white or normal color.
+ */
+GLfloat COLOR_VERTEX_ARRAY[16] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 
 
@@ -77,7 +82,7 @@ OGL_Renderer::~OGL_Renderer()
 
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
-	_window == NULL;
+	_window = NULL;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	//delete mShaderManager;
@@ -349,6 +354,41 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 
 	glEnable(mTextureTarget);
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+}
+
+
+void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4)
+{
+	glEnableClientState(GL_COLOR_ARRAY);
+	glDisable(mTextureTarget);
+
+	COLOR_VERTEX_ARRAY[0] = r1 / 255.0f;
+	COLOR_VERTEX_ARRAY[1] = g1 / 255.0f;
+	COLOR_VERTEX_ARRAY[2] = b1 / 255.0f;
+	COLOR_VERTEX_ARRAY[3] = a1 / 255.0f;
+
+	COLOR_VERTEX_ARRAY[4] = r2 / 255.0f;
+	COLOR_VERTEX_ARRAY[5] = g2 / 255.0f;
+	COLOR_VERTEX_ARRAY[6] = b2 / 255.0f;
+	COLOR_VERTEX_ARRAY[7] = a2 / 255.0f;
+
+	COLOR_VERTEX_ARRAY[8] = r3 / 255.0f;
+	COLOR_VERTEX_ARRAY[9] = g3 / 255.0f;
+	COLOR_VERTEX_ARRAY[10] = b3 / 255.0f;
+	COLOR_VERTEX_ARRAY[11] = a3 / 255.0f;
+
+	COLOR_VERTEX_ARRAY[12] = r4 / 255.0f;
+	COLOR_VERTEX_ARRAY[13] = g4 / 255.0f;
+	COLOR_VERTEX_ARRAY[14] = b4 / 255.0f;
+	COLOR_VERTEX_ARRAY[15] = a4 / 255.0f;
+
+
+	fillVertexArray(x, y, w, h);
+	glColorPointer(4, GL_FLOAT, 0, COLOR_VERTEX_ARRAY);
+	drawVertexArray(0);
+
+	glEnable(mTextureTarget);
+	glDisableClientState(GL_COLOR_ARRAY);
 }
 
 

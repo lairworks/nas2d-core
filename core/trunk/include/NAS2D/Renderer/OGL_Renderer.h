@@ -62,6 +62,8 @@ public:
 	void drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a);
 	void drawCircle(float x, float y, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y);
 
+	void drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4);
+
 	void drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a);
 	void drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a);
 

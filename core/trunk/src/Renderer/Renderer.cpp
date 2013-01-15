@@ -560,6 +560,67 @@ void Renderer::drawCircle(float x, float y, float radius, int r, int g, int b, i
 
 
 /**
+ * Draws a rectangular area with a color gradient.
+ * 
+ * Each point of the rectangular area can be given a different color value to
+ * produce a variety of effects. The vertex orders are as follows:
+ * 
+ * 1-----4
+ * |     |
+ * |     |
+ * 2-----3
+ * 
+ * \param	x	X-Position of the rectangular area to draw.
+ * \param	y	Y-Position of the rectangular area to draw.
+ * \param	w	Width of the rectangular area to draw.
+ * \param	h	Height of the rectangular area to draw.
+ * \param	r1	Red value for point 1.
+ * \param	g1	Green value for point 1.
+ * \param	b1	Blue value for point 1.
+ * \param	a1	Alpha value for point 1.
+ * \param	r2	Red value for point 2.
+ * \param	g2	Green value for point 2.
+ * \param	b2	Blue value for point 2.
+ * \param	a2	Alpha value for point 2.
+ * \param	r3	Red value for point 3.
+ * \param	g3	Green value for point 3.
+ * \param	b3	Blue value for point 3.
+ * \param	a3	Alpha value for point 3.
+ * \param	r4	Red value for point 4.
+ * \param	g4	Green value for point 4.
+ * \param	b4	Blue value for point 4.
+ * \param	a4	Alpha value for point 4.
+ */
+void Renderer::drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4)
+{}
+
+
+/**
+ * Draws a rectangular area with a color gradient.
+ * 
+ * Each point of the rectangular area can be given a different color value to
+ * produce a variety of effects. The vertex orders are as follows:
+ * 
+ * 1-----4
+ * |     |
+ * |     |
+ * 2-----3
+ * 
+ * \param	x	X-Position of the rectangular area to draw.
+ * \param	y	Y-Position of the rectangular area to draw.
+ * \param	w	Width of the rectangular area to draw.
+ * \param	h	Height of the rectangular area to draw.
+ * \param	c1	A Color_4ub color value used for point 1.
+ * \param	c2	A Color_4ub color value used for point 2.
+ * \param	c3	A Color_4ub color value used for point 3.
+ * \param	c4	A Color_4ub color value used for point 4.
+ */
+void Renderer::drawGradient(float x, float y, float w, float h, const Color_4ub& c1, const Color_4ub& c2, const Color_4ub& c3, const Color_4ub& c4)
+{
+	drawGradient(x, y, w, h, c1.red(), c1.green(), c1.blue(), c1.alpha(), c2.red(), c2.green(), c2.blue(), c2.alpha(), c3.red(), c3.green(), c3.blue(), c3.alpha(), c4.red(), c4.green(), c4.blue(), c4.alpha());
+}
+
+/**
  * Returns the primary display's Width.
  */
 float Renderer::width()

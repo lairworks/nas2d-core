@@ -55,7 +55,7 @@ public:
 
 protected:
 	friend class Renderer;
-	friend class OGL_Renderer;
+	friend class OGL_Core_Renderer;
 
 	unsigned int texture_id() const;
 	unsigned int fbo_id();

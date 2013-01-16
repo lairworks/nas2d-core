@@ -26,8 +26,7 @@ ShaderManager::ShaderManager()
 	
 	mShaderProgram = glCreateProgram();
 	
-//	loadShader("../shaders/helloworld_frag.fragmentshader", mFragShader);
-//	loadShader("../shaders/helloworld_vert.vertexshader", mVertShader);
+	loadShader("shaders/v_shader.shader", "shaders/f_shader.shader");
 	
 	cout << "done.\n";
 }
@@ -39,44 +38,71 @@ ShaderManager::~ShaderManager()
 }
 
 
-void ShaderManager::loadShader(const std::string& src, GLuint shader)
+void ShaderManager::loadShader(const std::string& vertexShader, const std::string& fragShader)
 {
-	File f = Utility<Filesystem>::get().open(src);
-	const GLchar* c = f.raw_bytes();
-	glShaderSource(shader, 1, &c, NULL);
+	File v = Utility<Filesystem>::get().open(vertexShader);
+	const GLchar* c = v.raw_bytes();
+	glShaderSource(mVertShader, 1, &c, NULL);
+	glCompileShader(mVertShader);
+	printShaderInfoLog(mVertShader);
+	glAttachShader(mShaderProgram, mVertShader);
 	
-	compileShader(shader);
-	attachShader(shader);
+	File f = Utility<Filesystem>::get().open(fragShader);
+	const GLchar* t = f.raw_bytes();
+	glShaderSource(mFragShader, 1, &t, NULL);
+	glCompileShader(mFragShader);
+	printShaderInfoLog(mFragShader);
+	glAttachShader(mShaderProgram, mFragShader);
+	
+	if (!mShaderProgram) {
+		mShaderProgram = glCreateProgram();
+	}
+	
 	glLinkProgram(mShaderProgram);
-	mShaderList.push_back(src);
-	
+	GLint status;
+	glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &status);
+	printProgramInfoLog(mShaderProgram);
+	mShaderProgramList.push_back(mShaderProgram);
 	
 	glUseProgram(mShaderProgram);
 }
 
-
-void ShaderManager::attachShader(GLuint shader)
+GLuint ShaderManager::getShaderProgram()
 {
-	glAttachShader(mShaderProgram, shader);
+	return mShaderProgram;
 }
 
 
-void ShaderManager::compileShader(GLuint shader)
+void ShaderManager::printShaderInfoLog(GLuint obj)
 {
-	glCompileShader(shader);
-	printLog(shader);
+    int infologLength = 0;
+    int charsWritten  = 0;
+    char *infoLog;
+	
+    glGetShaderiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+	
+    if (infologLength > 0)
+    {
+        infoLog = (char *)malloc(infologLength);
+        glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
+        printf("%s\n",infoLog);
+        free(infoLog);
+    }
 }
 
-
-void ShaderManager::printLog(GLuint obj)
+void ShaderManager::printProgramInfoLog(GLuint obj)
 {
-	GLint result;
-	glGetShaderiv(obj, GL_COMPILE_STATUS, &result);
-	if (result == GL_FALSE)
-	{
-		char infoLog[1024];
-		glGetShaderInfoLog(obj, 1024, NULL, infoLog);
-		cout << "The shader at " << mShaderProgram << " failed to compile with the following error:\n"
-		<< infoLog << "\n";
-	}
+    int infologLength = 0;
+    int charsWritten  = 0;
+    char *infoLog;
+	
+    glGetProgramiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+	
+    if (infologLength > 0)
+    {
+        infoLog = (char *)malloc(infologLength);
+        glGetProgramInfoLog(obj, infologLength, &charsWritten, infoLog);
+        printf("%s\n",infoLog);
+        free(infoLog);
+    }
 }

@@ -39,12 +39,14 @@ public:
 	ShaderManager();
 	~ShaderManager();
 	
-	void loadShader(const std::string& src, GLuint shader);
+	void loadShader(const std::string& vertexShader, const std::string& fragShader);
 	void attachShader(GLuint shader);
+	GLuint getShaderProgram();
 	
 protected:
 	void compileShader(GLuint shader);
-	void printLog(GLuint obj);
+	void printShaderInfoLog(GLuint obj);
+	void printProgramInfoLog(GLuint obj);
 	
 private:
 
@@ -53,7 +55,7 @@ private:
 	GLuint		mFragShader;
 	GLuint		mVertShader;
 
-	StringList	mShaderList;
+	std::vector<GLuint>	mShaderProgramList;
 };
 
 #endif /* defined(__NAS2D__ShaderManager__) */

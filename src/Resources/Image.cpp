@@ -227,7 +227,7 @@ void Image::load()
 	File imageFile = Utility<Filesystem>::get().open(name());
 	if(imageFile.size() == 0)
 	{
-		cout << "(ERROR) Image::load(): " << Utility<Filesystem>::get().lastError() << endl;
+		//cout << "(ERROR) Image::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
 	}
 

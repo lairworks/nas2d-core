@@ -253,7 +253,7 @@ File Filesystem::open(const std::string& filename) const
 	if(!myFile)
 	{
 		mErrorMessages.push_back(PHYSFS_getLastError());
-		cout << "Unable to load '" << filename << "'. " << mErrorMessages.back() << "." << endl;
+		cout << "Filesystem::open(): Unable to load '" << filename << "'. " << mErrorMessages.back() << "." << endl;
 		closeFile(myFile);
 		return File();
 	}
@@ -407,7 +407,7 @@ bool Filesystem::closeFile(PHYSFS_File *file) const
 {
 	if(!file)
 	{
-		mErrorMessages.push_back("Filesystem::closeFile(): attempted to pass a NULL parameter.");
+		//mErrorMessages.push_back("Filesystem::closeFile(): attempted to pass a NULL parameter.");
 		return false;
 	}
 

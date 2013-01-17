@@ -83,12 +83,19 @@ Configuration::~Configuration()
 void Configuration::load(const std::string& filePath)
 {
 	cout << "Initializing Configuration... ";
+
+	mConfigPath = filePath;
 	
+	if(!Utility<Filesystem>::get().exists(filePath))
+	{
+		cout << "configuration file '" << filePath << "' does not exist. Using default options." << endl;
+		mOptionChanged = true;
+	}
 	// Read in the Config File.
-	if(!readConfig(filePath))
+	else if(!readConfig(filePath))
 	{
 		mOptionChanged = true;
-		cout << endl << "Unable to read '" << filePath << "'. Using default options." << endl;
+		cout << "unable to process '" << filePath << "'. Using default options." << endl;
 	}
 	else
 		cout << "done." << endl;
@@ -156,7 +163,7 @@ void Configuration::save()
 	TiXmlPrinter printer;
 	doc->Accept(&printer);
 
-	Utility<Filesystem>::get().write(File(printer.Str(), "config.xml"));
+	Utility<Filesystem>::get().write(File(printer.Str(), mConfigPath));
 
 	delete doc;
 	doc = 0;

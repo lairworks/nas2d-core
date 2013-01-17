@@ -129,6 +129,8 @@ private:
 	unsigned int		mBufferLength;					/**< Audio Buffer Length */
 	std::string			mMixerName;						/**< Renderer to use. */
 
+	std::string			mConfigPath;					/**< Path for the config file. */
+
 	bool				mOptionChanged;					/**< Flags whether or not an option was changed. */
 };
 #endif

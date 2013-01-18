@@ -77,7 +77,7 @@ Music::~Music()
 {
 	// Is this check necessary?
 	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
-	if(it->second.music == NULL)
+	if(it == Music::_RefMap.end() || it->second.music == NULL)
 		return;
 
 	it->second.ref_count--;
@@ -85,10 +85,6 @@ Music::~Music()
 	// No more references to this resource.
 	if(it->second.ref_count < 1)
 	{
-		#if defined(_DEBUG)	
-		cout << "(INFO) Freeing resources for: " << name() << endl;
-		#endif
-	
 		if(it->second.music)
 		{
 			Mix_FreeMusic(it->second.music);

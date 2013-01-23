@@ -36,7 +36,8 @@ class Image: public Resource
 {
 public:
 	Image(const std::string& filePath);
-	Image(int x, int y);
+	Image(void* buffer, int bytesPerPixel, int width, int height);
+	Image(int width, int height);
 	Image();
 
 	Image(const Image &src);
@@ -81,7 +82,7 @@ private:
 
 	void load();
 	void loadDefault();
-	void generateTexture(SDL_Surface *src);
+	void generateTexture(void* buffer, int bytesPerPixel, int width, int height);
 
 	bool checkTextureId();
 

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D", "NAS2D.vcproj", "{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Test5_Editor", "..\..\..\..\nas2d-tests\NAS2D_Test5_Editor\proj\vc9\NAS2D_Test5_Editor\NAS2D_Test5_Editor.vcproj", "{AE1BE422-43C7-4AB9-94E5-45329578F022}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -18,12 +16,6 @@ Global
 		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Release Gold|Win32.Build.0 = Release Gold|Win32
 		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Release|Win32.ActiveCfg = Release|Win32
 		{ECEA0F1E-EA7A-4FF0-85B6-268BB56E1653}.Release|Win32.Build.0 = Release|Win32
-		{AE1BE422-43C7-4AB9-94E5-45329578F022}.Debug|Win32.ActiveCfg = Debug|Win32
-		{AE1BE422-43C7-4AB9-94E5-45329578F022}.Debug|Win32.Build.0 = Debug|Win32
-		{AE1BE422-43C7-4AB9-94E5-45329578F022}.Release Gold|Win32.ActiveCfg = Release|Win32
-		{AE1BE422-43C7-4AB9-94E5-45329578F022}.Release Gold|Win32.Build.0 = Release|Win32
-		{AE1BE422-43C7-4AB9-94E5-45329578F022}.Release|Win32.ActiveCfg = Release|Win32
-		{AE1BE422-43C7-4AB9-94E5-45329578F022}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

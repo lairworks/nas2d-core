@@ -76,43 +76,65 @@ Image::Image():	Resource(DEFAULT_IMAGE_NAME),
 /**
  * Create a blank Image of X, Y dimensions.
  * 
- * \param	w	Width of the Image.
- * \param	h	Height of the Image.
+ * \param	width	Width of the Image.
+ * \param	height	Height of the Image.
  */
-Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
-							mTextureId(0),
-							mPixels(NULL)
+Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
+										mTextureId(0),
+										mPixels(NULL)
 {
 	stringstream str;
 	str << _Arbitrary++;
 
 	name(ARBITRARY_IMAGE_NAME + str.str());
+	mRect(0, 0, width, height);
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
-											// or can we set it once in the Renderer?
-
-	mRect(0, 0, w, h);
-
-	glGenTextures(1, &mTextureId);
-	glBindTexture(GL_TEXTURE_2D, mTextureId);
-
-	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (w * h))] (); // 4 = R G B A channels
-
-	GLenum textureFormat = 0;
-	SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
-
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, w, h, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	// MAGIC NUMBER: 4 == 4 1-byte color channels (RGBA)
+	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (width * height))] ();
+	generateTexture(buffer, 4, width, height);
 
 	// Update resource management.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
 	Image::_IdMap[name()].ref_count++;
 
 	delete [] buffer;
+}
+
+
+/**
+ * Create an Image from a raw data buffer.
+ * 
+ * \param	buffer	Pointer to a data buffer.
+ * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
+ * \param	width	Width of the Image.
+ * \param	height	Height of the Image.
+ */
+Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
+																		mTextureId(0),
+																		mPixels(NULL)
+{
+	if(buffer == NULL)
+		throw Exception(0, "Bad Data", "Attempted to construct an Image with a NULL pixel buffer.");
+	if(bytesPerPixel != 3 && bytesPerPixel != 4)
+	{
+		#if defined(_DEBUG)
+		cout << "(EXCEPTION) Image::Image(void*, int, int, int): " << "bytesPerPixel: " << bytesPerPixel << " W: " << width << " H: " << height << endl;
+		#endif
+
+		throw Exception(0, "Unsupported Image", "Attempted to construct an Image less than 24-bit. Images must be 24- or 32-bit.");
+	}
+
+	stringstream str;
+	str << _Arbitrary++;
+
+	name(ARBITRARY_IMAGE_NAME + str.str());
+
+	mRect(0, 0, width, height);
+	generateTexture(buffer, bytesPerPixel, width, height);
+
+	// Update resource management.
+	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
+	Image::_IdMap[name()].ref_count++;
 }
 
 
@@ -246,7 +268,7 @@ void Image::load()
 	mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
 
 	// Generate OpenGL Texture from SDL_Surface
-	generateTexture(mPixels);
+	generateTexture(mPixels->pixels, mPixels->format->BytesPerPixel, mPixels->w, mPixels->h);
 
 	// Add generated texture id to texture ID map.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
@@ -266,8 +288,6 @@ void Image::loadDefault()
 	if(checkTextureId())
 		return;
 
-	//SDL_Surface* s = IMG_Load_RW(SDL_RWFromMem(errorImg, ERRORIMG_LEN), 1);
-
 	mPixels = IMG_Load_RW(SDL_RWFromMem(errorImg, ERRORIMG_LEN), 1);
 	if(!mPixels)
 	{
@@ -275,9 +295,7 @@ void Image::loadDefault()
 		return;
 	}
 
-	generateTexture(mPixels);
-
-	//SDL_FreeSurface(s);
+	generateTexture(mPixels->pixels, mPixels->format->BytesPerPixel, mPixels->w, mPixels->h);
 }
 
 
@@ -289,13 +307,10 @@ void Image::loadDefault()
  * \note	This function assumes that the image is unique and
  *			has not been loaded. Does no resource management.
  */
-void Image::generateTexture(SDL_Surface *src)
+void Image::generateTexture(void *buffer, int bytesPerPixel, int width, int height)
 {
-	// Detect which order the pixel data is in to properly feed OGL.
-	GLint nColors = src->format->BytesPerPixel;
-	
 	GLenum textureFormat = 0;
-	switch(src->format->BytesPerPixel)
+	switch(bytesPerPixel)
 	{
 		case 4:
 			SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
@@ -316,7 +331,7 @@ void Image::generateTexture(SDL_Surface *src)
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -438,8 +453,6 @@ Color_4ub Image::pixelColor(int x, int y) const
 	SDL_UnlockSurface(mPixels);
 
 	return Color_4ub(r, g, b, a);
-
-	//return Color_4ub(0, 0, 0, 255);
 }
 
 

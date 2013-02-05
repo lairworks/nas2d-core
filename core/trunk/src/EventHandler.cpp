@@ -32,6 +32,13 @@ const int MAX_MESSAGE_PROCESSING = 10;	/**
 										 */
 
 /**
+ * Default c'tor.
+ */
+EventHandler::EventHandler()
+{}
+
+
+/**
  * \brief Gets the handler slot associated with this event.
  * 
  * To connect an event handler to this event, call the 'connect()'

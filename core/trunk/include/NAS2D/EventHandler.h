@@ -215,11 +215,7 @@ public:
 	 */
 	typedef Gallant::Signal0<>						QuitEventCallback;
 
-	/**
-	 * Default c'tor.
-	 */
-	EventHandler()
-	{}
+	EventHandler();
 
 	ActivateEventCallback&				activate();
 

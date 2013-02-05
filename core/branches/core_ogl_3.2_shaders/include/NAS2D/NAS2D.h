@@ -25,7 +25,7 @@
 
 #include "NAS2D/Mixer/SDL_Mixer.h"
 
-#include "NAS2D/Renderer/OGL_Core_Renderer.h"
+#include "NAS2D/Renderer/OGL_Renderer_3_2.h"
 
 #include "NAS2D/Resources/Font.h"
 #include "NAS2D/Resources/Image.h"

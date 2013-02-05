@@ -80,7 +80,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(OutDir)\$(ProjectName)_d.lib&quot; &quot;..\..\..\bin\win32\$(ProjectName)_d.lib&quot;"
+				CommandLine="copy &quot;$(OutDir)\$(ProjectName)_d.lib&quot; &quot;..\..\..\..\..\bin\win32\$(ProjectName)_d.lib&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -336,6 +336,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\Renderer\OGL_Renderer_3_2.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\Renderer\Renderer.cpp"
 					>
 				</File>
@@ -443,6 +447,10 @@
 				>
 				<File
 					RelativePath="..\..\include\NAS2D\Renderer\OGL_Renderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\NAS2D\Renderer\OGL_Renderer_3_2.h"
 					>
 				</File>
 				<File

@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Trig.h"
-#include "NAS2D/Renderer/OGL_Core_Renderer.h"
+#include "NAS2D/Renderer/OGL_Renderer_3_2.h"
 
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
@@ -26,35 +26,20 @@
 using namespace std;
 
 
-/**
- * Life of generated OpenGL Textures in Miliseconds. Roughly 30 seconds
- */
-const unsigned int TEXTURE_EXPIRE_TIME = 30000;
-
-/**
- * Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging.
- */
-GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 1.0f, 1.0f,  1.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
-
-/**
- * Texture coordinate pairs. Default coordinates encompassing the entire texture.
- */
-GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f };
-
-GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
-
-
-GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
+extern GLfloat DEFAULT_VERTEX_COORDS[8];
+extern GLfloat DEFAULT_TEXTURE_COORDS[8];
+extern GLfloat POINT_VERTEX_ARRAY[2];
+extern GraphicsQuality TEXTURE_FILTER;
 
 
 
 // UGLY ASS HACK!
 // Until I do this properly, for now I'm leaving this as a global
 // so that we can handle mouse input grabbing.
-SDL_Window* _window = NULL;
+//SDL_Window* _window = NULL; << Defined in OGL_Renderer.cpp
 
 
-OGL_Core_Renderer::OGL_Core_Renderer(const std::string title):	Renderer("OpenGL Renderer", title),
+OGL_Renderer_3_2::OGL_Renderer_3_2(const std::string title):	Renderer("OpenGL Renderer", title),
 mWindow(NULL),
 mTextureTarget(0)
 {
@@ -72,25 +57,25 @@ mTextureTarget(0)
 }
 
 
-OGL_Core_Renderer::~OGL_Core_Renderer()
+OGL_Renderer_3_2::~OGL_Renderer_3_2()
 {
 	//glDeleteBuffers(1, &mVertexBufferObject);
 
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
-	_window == NULL;
+	_window = NULL;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	//delete mShaderManager;
 }
 
-void OGL_Core_Renderer::clearScreen(int r, int g, int b)
+void OGL_Renderer_3_2::clearScreen(int r, int g, int b)
 {
 	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0 );
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void OGL_Core_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords)
+void OGL_Renderer_3_2::drawVertexArray(GLuint textureId, bool defaultTextureCoords)
 {
 	clearScreen(0, 0, 0);
 	glEnable(GL_BLEND);
@@ -131,7 +116,7 @@ void OGL_Core_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoo
 /**
  * Used internally to fill the vertex array with quad vertex information.
  */
-void OGL_Core_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
+void OGL_Renderer_3_2::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
 //	cout << "Vertices Array:\n"; 
 //	for (int i = 0; i < sizeof(mVertexArrayData); i++) {
@@ -161,7 +146,7 @@ void OGL_Core_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat
 /**
  * Used internally to fill the texture coordinate array with quad vertex information.
  */
-void OGL_Core_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
+void OGL_Renderer_3_2::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 {
 	mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(y);
 	mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(v);
@@ -175,7 +160,7 @@ void OGL_Core_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloa
 }
 
 
-void OGL_Core_Renderer::drawImage(Image& image, float x, float y, float scale = 1.0f)
+void OGL_Renderer_3_2::drawImage(Image& image, float x, float y, float scale = 1.0f)
 {
 	fillVertexArray(x, y, static_cast<float>(image.width()), static_cast<float>(image.height()));
 	fillTextureArray(x, y, image.width(), image.height());
@@ -183,7 +168,7 @@ void OGL_Core_Renderer::drawImage(Image& image, float x, float y, float scale = 
 }
 
 
-void OGL_Core_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
+void OGL_Renderer_3_2::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
 {
 	fillVertexArray(rasterX, rasterY, width, height);
 
@@ -197,7 +182,7 @@ void OGL_Core_Renderer::drawSubImage(Image& image, float rasterX, float rasterY,
 }
 
 
-void OGL_Core_Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees)
+void OGL_Renderer_3_2::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees)
 {
 	//glPushMatrix();
 
@@ -223,7 +208,7 @@ void OGL_Core_Renderer::drawSubImageRotated(Image& image, float rasterX, float r
 }
 
 
-void OGL_Core_Renderer::drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale)
+void OGL_Renderer_3_2::drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale)
 {
 	//glPushMatrix();
 
@@ -250,14 +235,14 @@ void OGL_Core_Renderer::drawImageRotated(Image& image, float x, float y, float d
 }
 
 
-void OGL_Core_Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
+void OGL_Renderer_3_2::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
 {
 	fillVertexArray(x, y, w, h);
 	drawVertexArray(image.texture_id());
 }
 
 
-void OGL_Core_Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
+void OGL_Renderer_3_2::drawImageRepeated(Image& image, float x, float y, float w, float h)
 {
 	fillVertexArray(x, y, w, h);
 
@@ -272,7 +257,7 @@ void OGL_Core_Renderer::drawImageRepeated(Image& image, float x, float y, float 
 }
 
 
-void OGL_Core_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
+void OGL_Renderer_3_2::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if(dstPoint.x > destination.width() || dstPoint.y > destination.height())
@@ -307,7 +292,7 @@ void OGL_Core_Renderer::drawImageToImage(Image& source, Image& destination, cons
 }
 
 
-void OGL_Core_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
+void OGL_Renderer_3_2::drawPixel(float x, float y, int r, int g, int b, int a)
 {
 	//glDisable(mTextureTarget);
 
@@ -324,7 +309,7 @@ void OGL_Core_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 }
 
 
-void OGL_Core_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
+void OGL_Renderer_3_2::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
 {
 	//glDisable(mTextureTarget);
 
@@ -353,7 +338,7 @@ void OGL_Core_Renderer::drawLine(float x, float y, float x2, float y2, int r, in
  *
  * Modified to support X/Y scaling to draw an ellipse.
  */
-void OGL_Core_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
+void OGL_Renderer_3_2::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
 {
 	//glDisable(mTextureTarget);
 
@@ -400,7 +385,7 @@ void OGL_Core_Renderer::drawCircle(float cx, float cy, float radius, int r, int 
 }
 
 
-void OGL_Core_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
+void OGL_Renderer_3_2::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
 {
 	fillVertexArray(x, y, width, height);
 	
@@ -431,7 +416,7 @@ void OGL_Core_Renderer::drawBox(float x, float y, float width, float height, int
 }
 
 
-void OGL_Core_Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
+void OGL_Renderer_3_2::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
 {
 	//glColor4ub(r, g, b, a);
 	//glDisable(mTextureTarget);
@@ -444,7 +429,7 @@ void OGL_Core_Renderer::drawBoxFilled(float x, float y, float width, float heigh
 }
 
 
-void OGL_Core_Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
+void OGL_Renderer_3_2::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
 {
 	// Ignore if font isn't loaded or string is empty
 	if(!font.loaded() || text.empty())
@@ -472,7 +457,7 @@ void OGL_Core_Renderer::drawText(Font& font, const std::string& text, float x, f
 }
 
 
-void OGL_Core_Renderer::drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
+void OGL_Renderer_3_2::drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
 {
 	// Ignore if font isn't loaded or string is empty
 	if(!font.loaded() || text.empty())
@@ -513,16 +498,16 @@ void OGL_Core_Renderer::drawTextClamped(Font& font, const std::string& text, flo
 }
 
 
-void OGL_Core_Renderer::update()
+void OGL_Renderer_3_2::update()
 {
-	getError();
+	//getError();
 	Renderer::update();
 	//SDL_GL_SwapBuffers();
 	SDL_GL_SwapWindow(mWindow);
 }
 
 
-float OGL_Core_Renderer::width()
+float OGL_Renderer_3_2::width()
 {
     //return static_cast<float>(mScreen->w);
 	int n = 0;
@@ -531,7 +516,7 @@ float OGL_Core_Renderer::width()
 }
 
 
-float OGL_Core_Renderer::height()
+float OGL_Renderer_3_2::height()
 {
     //return static_cast<float>(mScreen->h);
 	int n = 0;
@@ -540,7 +525,7 @@ float OGL_Core_Renderer::height()
 }
 
 
-void OGL_Core_Renderer::buildDisplayModeList()
+void OGL_Renderer_3_2::buildDisplayModeList()
 {
 	mDisplayModes.push_back(DisplayMode(640, 480));
 	mDisplayModes.push_back(DisplayMode(800, 600));
@@ -550,7 +535,9 @@ void OGL_Core_Renderer::buildDisplayModeList()
 	mDisplayModes.push_back(DisplayMode(1440, 900));
 }
 
+
 #define printOpenGLError() printOglError(__FILE__, __LINE__)
+
 
 int printOglError(char *file, int line)
 {
@@ -563,13 +550,15 @@ int printOglError(char *file, int line)
     glErr = glGetError();
     while (glErr != GL_NO_ERROR)
     {
-        printf("glError in file %s @ line %d: %s\n", file, line, gluErrorString(glErr));
+        //printf("glError in file %s @ line %d: %s\n", file, line, gluErrorString(glErr));
         retCode = 1;
         glErr = glGetError();
     }
     return retCode;
 }
-void OGL_Core_Renderer::getError()
+
+
+void OGL_Renderer_3_2::getError()
 {
 
 	std::string errStr = "OpenGL Error: ";
@@ -609,7 +598,7 @@ void OGL_Core_Renderer::getError()
  * Checks for expected extensions and prints warning messages
  * if the video driver doesn't support the extension.
  */
-bool OGL_Core_Renderer::extensionExists(const std::string& extension)
+bool OGL_Renderer_3_2::extensionExists(const std::string& extension)
 {
 	std::istringstream iss(std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS))));
 
@@ -629,7 +618,7 @@ bool OGL_Core_Renderer::extensionExists(const std::string& extension)
 }
 
 
-bool OGL_Core_Renderer::checkExtensions()
+bool OGL_Renderer_3_2::checkExtensions()
 {
 	cout << "\tOpenGL Extensions:" << endl;
 
@@ -645,7 +634,7 @@ bool OGL_Core_Renderer::checkExtensions()
 }
 
 
-void OGL_Core_Renderer::initGL()
+void OGL_Renderer_3_2::initGL()
 {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -689,7 +678,7 @@ void OGL_Core_Renderer::initGL()
 }
 
 
-void OGL_Core_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
+void OGL_Renderer_3_2::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
 {
 	// Initialize SDL's Video Subsystems.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)

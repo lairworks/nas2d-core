@@ -26,11 +26,6 @@ using namespace std;
 
 
 /**
- * Life of generated OpenGL Textures in Miliseconds. Roughly 30 seconds
- */
- const unsigned int TEXTURE_EXPIRE_TIME = 30000;
-
-/**
  * Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging.
  */
 GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
@@ -77,7 +72,7 @@ OGL_Renderer::~OGL_Renderer()
 
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
-	_window == NULL;
+	_window = NULL;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	//delete mShaderManager;

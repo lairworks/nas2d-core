@@ -16,7 +16,8 @@
 #include "NAS2D/Utility.h"
 
 #include "NAS2D/Mixer/SDL_Mixer.h"
-#include "NAS2D/Renderer/OGL_Core_Renderer.h"
+#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Renderer/OGL_Renderer_3_2.h"
 
 
 /**
@@ -47,11 +48,20 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 
 	try
 	{
-		Utility<Renderer>::instantiateDerived(new OGL_Core_Renderer(title));
+		Utility<Renderer>::instantiateDerived(new OGL_Renderer_3_2(title));
 	}
 	catch(Exception e)
 	{
-		throw Exception(0, "OpenGL Renderer", "Unable to create a Renderer:\n\n" + e.getDescription());
+		// Attempt to create a 3.2 context failed, so fall back on a 2.1 context.
+		try
+		{
+			Utility<Renderer>::clean();
+			Utility<Renderer>::instantiateDerived(new OGL_Renderer(title));
+		}
+		catch(Exception e)
+		{
+			throw Exception(0, "OpenGL Renderer", "Unable to create a Renderer:\n\n" + e.getDescription());
+		}
 	}
 	catch(...)
 	{

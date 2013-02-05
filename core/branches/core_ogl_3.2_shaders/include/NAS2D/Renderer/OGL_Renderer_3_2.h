@@ -8,8 +8,8 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_OGL_CORE_RENDERER_
-#define _NAS_OGL_CORE_RENDERER_
+#ifndef _NAS_OGL_Renderer_3_2_
+#define _NAS_OGL_Renderer_3_2_
 
 #ifdef _WIN32
 #include "Glee.h"
@@ -25,28 +25,28 @@
 #include "ShaderManager.h"
 
 #include <map>
-#include "../glm/glm.hpp"
-#include "../glm/gtc/matrix_transform.hpp"
-#include "../glm/gtc/type_ptr.hpp"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 extern SDL_Window* _window;
 
 /**
- * \class OGL_Core_Renderer
+ * \class OGL_Renderer_3_2
  * \brief OpenGL Renderer.
  *
  * Implements all Renderer functions with the SDL_opengl API.
  * Note: The use of glBegin()->glEnd() calls is now deprecated in OGL3. If we can switch
  * to a non-immediate mode methodollogy it may help us when splitting towards a pure 3D renderer.
  */
-class OGL_Core_Renderer: public Renderer
+class OGL_Renderer_3_2: public Renderer
 {
 public:
-	OGL_Core_Renderer(const std::string title);
+	OGL_Renderer_3_2(const std::string title);
 
-	//OGL_Core_Renderer(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
+	//OGL_Renderer_3_2(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
 
-	~OGL_Core_Renderer();
+	~OGL_Renderer_3_2();
 
 	void drawImage(Image& image, float x, float y, float scale);
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
@@ -77,8 +77,8 @@ public:
 
 private:
 
-	OGL_Core_Renderer(const OGL_Core_Renderer&);				// Intentionally left undefined;
-	OGL_Core_Renderer& operator=(const OGL_Core_Renderer&);	// Intentionally left undefined;
+	OGL_Renderer_3_2(const OGL_Renderer_3_2&);				// Intentionally left undefined;
+	OGL_Renderer_3_2& operator=(const OGL_Renderer_3_2&);	// Intentionally left undefined;
 
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);

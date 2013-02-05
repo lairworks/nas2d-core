@@ -52,7 +52,8 @@ public:
 
 protected:
 	friend class Renderer;
-	friend class OGL_Core_Renderer;
+	friend class OGL_Renderer;
+	friend class OGL_Renderer_3_2;
 
 	struct GlyphMetrics
 	{

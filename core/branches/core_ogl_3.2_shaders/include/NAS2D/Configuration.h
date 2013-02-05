@@ -12,14 +12,14 @@
 #define _NAS_CONFIGURATION_
 
 #ifdef __APPLE__
-#include <OpenGL/gl.h>
+#include <OpenGL/gl3.h>
 #elif WIN32
 #include "GLee.h"
 #define NO_SDL_GLEXT
 #include <windows.h>
 #include "SDL/SDL_opengl.h"
 #else
-#include <GL/gl.h>
+#include <GL/gl3.h>
 #endif
 
 #include <map>

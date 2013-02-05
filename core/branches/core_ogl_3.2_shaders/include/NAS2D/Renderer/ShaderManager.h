@@ -14,7 +14,8 @@
 #include "NAS2D/Common.h"
 
 #if defined(__APPLE__)
-#include <OpenGL/gl.h>
+#include <OpenGL/OpenGL.h>
+#include <OpenGL/gl3.h>
 #include <GLUT/glut.h>
 #elif defined(WIN32)
 #include "GLee.h"
@@ -39,14 +40,23 @@ public:
 	ShaderManager();
 	~ShaderManager();
 	
-	void loadShader(const std::string& vertexShader, const std::string& fragShader);
-	void attachShader(GLuint shader);
+	void loadDefaultShaders();
+	
 	GLuint getShaderProgram();
 	
 protected:
+	void getShaderSource(GLuint shader, const GLchar* src);
 	void compileShader(GLuint shader);
+	
+	void loadShader(GLenum type, const std::string& shaderFile);
+	void attachShader(GLuint shader);
+	
+	void linkProgram(GLuint program);
+	
 	void printShaderInfoLog(GLuint obj);
 	void printProgramInfoLog(GLuint obj);
+	void validateProgram(GLuint program);
+	void getError();
 	
 private:
 
@@ -54,6 +64,8 @@ private:
 	
 	GLuint		mFragShader;
 	GLuint		mVertShader;
+	
+	GLint		mPositionAttribute;
 
 	std::vector<GLuint>	mShaderProgramList;
 };

@@ -17,18 +17,11 @@ using namespace std;
 
 ShaderManager::ShaderManager()
 {
-	cout << "\tInitializing Shader Manager... ";
-	mFragShader = glCreateShader(GL_FRAGMENT_SHADER);
-	mVertShader = glCreateShader(GL_VERTEX_SHADER);
-
-	if(mFragShader == 0 || mVertShader == 0)
-		cout << endl << "\t\tShaders unavailable." << endl;
+	cout << "\n\tInitializing Shader Manager... ";
 	
-	mShaderProgram = glCreateProgram();
+	loadDefaultShaders();
 	
-	loadShader("shaders/v_shader.shader", "shaders/f_shader.shader");
-	
-	cout << "done.\n";
+	cout << "\tdone.\n";
 }
 
 
@@ -37,34 +30,57 @@ ShaderManager::~ShaderManager()
 	
 }
 
-
-void ShaderManager::loadShader(const std::string& vertexShader, const std::string& fragShader)
+void ShaderManager::loadDefaultShaders()
 {
-	File v = Utility<Filesystem>::get().open(vertexShader);
-	const GLchar* c = v.raw_bytes();
-	glShaderSource(mVertShader, 1, &c, NULL);
-	glCompileShader(mVertShader);
-	printShaderInfoLog(mVertShader);
-	glAttachShader(mShaderProgram, mVertShader);
+	cout << "\n\t\tLoading default shaders... ";
+	mShaderProgram = glCreateProgram();
+	getError();
 	
-	File f = Utility<Filesystem>::get().open(fragShader);
-	const GLchar* t = f.raw_bytes();
-	glShaderSource(mFragShader, 1, &t, NULL);
-	glCompileShader(mFragShader);
-	printShaderInfoLog(mFragShader);
-	glAttachShader(mShaderProgram, mFragShader);
+	loadShader(GL_VERTEX_SHADER, "shaders/v_shader.shader");
+	loadShader(GL_FRAGMENT_SHADER, "shaders/f_shader.shader");
 	
-	if (!mShaderProgram) {
-		mShaderProgram = glCreateProgram();
+	linkProgram(mShaderProgram);
+	validateProgram(mShaderProgram);
+	cout << "done.\n";
+}
+
+
+void ShaderManager::loadShader(GLenum shaderType, const std::string& shaderFile)
+{
+	GLuint shader = glCreateShader(shaderType);
+	getError();
+	File v = Utility<Filesystem>::get().open(shaderFile);
+	getShaderSource(shader, v.raw_bytes());
+	compileShader(shader);
+	glAttachShader(mShaderProgram, shader);
+	
+	if (shaderType == GL_FRAGMENT_SHADER) {
+		glBindFragDataLocation(mShaderProgram, 0, "fragColor");
 	}
-	
+}
+
+void ShaderManager::getShaderSource(GLuint shader, const GLchar* src)
+{
+	glShaderSource(shader, 1, &src, NULL);
+	getError();
+}
+void ShaderManager::compileShader(GLuint shader)
+{
+	glCompileShader(shader);
+	getError();
+	printShaderInfoLog(shader);
+}
+
+void ShaderManager::linkProgram(GLuint program)
+{
 	glLinkProgram(mShaderProgram);
+	getError();
+	
 	GLint status;
 	glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &status);
-	printProgramInfoLog(mShaderProgram);
-	mShaderProgramList.push_back(mShaderProgram);
+	getError();
 	
-	glUseProgram(mShaderProgram);
+	printProgramInfoLog(mShaderProgram);
 }
 
 GLuint ShaderManager::getShaderProgram()
@@ -80,11 +96,13 @@ void ShaderManager::printShaderInfoLog(GLuint obj)
     char *infoLog;
 	
     glGetShaderiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+	getError();
 	
     if (infologLength > 0)
     {
         infoLog = (char *)malloc(infologLength);
         glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
+		getError();
         printf("%s\n",infoLog);
         free(infoLog);
     }
@@ -97,12 +115,73 @@ void ShaderManager::printProgramInfoLog(GLuint obj)
     char *infoLog;
 	
     glGetProgramiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+	getError();
 	
     if (infologLength > 0)
     {
         infoLog = (char *)malloc(infologLength);
         glGetProgramInfoLog(obj, infologLength, &charsWritten, infoLog);
+		getError();
         printf("%s\n",infoLog);
         free(infoLog);
     }
+}
+
+void ShaderManager::validateProgram(GLuint program)
+{
+    GLint logLength;
+    
+    glValidateProgram(program);
+    getError();
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+    getError();
+    if (logLength > 0)
+    {
+        GLchar *log = (char *)malloc(logLength);
+        glGetProgramInfoLog(program, logLength, &logLength, log);
+        getError();
+        cout << "Program validation produced errors:\n" << log << endl;
+        free(log);
+    }
+    
+    GLint status;
+    glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
+    getError();
+    if (0 == status)
+    {
+        cout << "Failed to link shader program" << endl;;
+    }
+}
+
+void ShaderManager::getError()
+{
+	
+	std::string errStr = "OpenGL Error: ";
+	
+	switch(glGetError())
+	{
+		case GL_NO_ERROR:
+			return;
+			break;
+		case GL_INVALID_ENUM:
+			errStr += "Invalid Enumerator.";
+			break;
+		case GL_INVALID_VALUE:
+			errStr += "Invalid Value.";
+			break;
+		case GL_INVALID_OPERATION:
+			errStr += "Invalid Operation.";
+			break;
+		case GL_OUT_OF_MEMORY:
+			errStr += "Out of Memory.";
+			break;
+		default:
+			errStr += "Unknown Error Code.";
+			break;
+	}
+	
+	stringstream str;
+	str << errStr << endl;
+	
+	cout << str.str();
 }

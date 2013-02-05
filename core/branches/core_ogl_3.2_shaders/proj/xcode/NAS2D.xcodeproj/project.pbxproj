@@ -67,6 +67,8 @@
 		69CE7A2C1674870A00BFAD1C /* Renderer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D191673F4DE009EEBE2 /* Renderer */; };
 		69CE7A2D1674870E00BFAD1C /* Resources in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D1A1673F4DE009EEBE2 /* Resources */; };
 		69CE7A2E1674871300BFAD1C /* tinyxml in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D1F1673F4DE009EEBE2 /* tinyxml */; };
+		69DD5BD616A7530C009CA543 /* glm in Resources */ = {isa = PBXBuildFile; fileRef = 69DD5BD516A7530C009CA543 /* glm */; };
+		69DD5BD816A75371009CA543 /* glm in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69DD5BD516A7530C009CA543 /* glm */; };
 		69F2C1F216980D1A007FAB38 /* Physfs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1ED16980D1A007FAB38 /* Physfs.framework */; };
 		69F2C1F316980D1A007FAB38 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */; };
 		69F2C1F416980D1A007FAB38 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */; };
@@ -90,6 +92,7 @@
 				69CE7A2C1674870A00BFAD1C /* Renderer in Copy Headers With Directories */,
 				69CE7A2D1674870E00BFAD1C /* Resources in Copy Headers With Directories */,
 				69CE7A2E1674871300BFAD1C /* tinyxml in Copy Headers With Directories */,
+				69DD5BD816A75371009CA543 /* glm in Copy Headers With Directories */,
 			);
 			name = "Copy Headers With Directories";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -157,6 +160,7 @@
 		69BD4D5A1673F4FA009EEBE2 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		69BD4D5B1673F4FA009EEBE2 /* Trig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trig.cpp; sourceTree = "<group>"; };
 		69BD4D5C1673F4FA009EEBE2 /* XmlAttributeParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XmlAttributeParser.cpp; sourceTree = "<group>"; };
+		69DD5BD516A7530C009CA543 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
 		69F2C1ED16980D1A007FAB38 /* Physfs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Physfs.framework; path = Frameworks/Physfs.framework; sourceTree = "<group>"; };
 		69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
@@ -295,6 +299,7 @@
 				69BD4D1E1673F4DE009EEBE2 /* Timer.h */,
 				69BD4D1F1673F4DE009EEBE2 /* tinyxml */,
 				69BD4D201673F4DE009EEBE2 /* Trig.h */,
+				69DD5BD516A7530C009CA543 /* glm */,
 				69BD4D211673F4DE009EEBE2 /* Utility.h */,
 				69BD4D221673F4DE009EEBE2 /* XmlAttributeParser.h */,
 			);
@@ -463,6 +468,7 @@
 				69BD4D321673F4DE009EEBE2 /* Renderer in Resources */,
 				69BD4D331673F4DE009EEBE2 /* Resources in Resources */,
 				69BD4D381673F4DE009EEBE2 /* tinyxml in Resources */,
+				69DD5BD616A7530C009CA543 /* glm in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

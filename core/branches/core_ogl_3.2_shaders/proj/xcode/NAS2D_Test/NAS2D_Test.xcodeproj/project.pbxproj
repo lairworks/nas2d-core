@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		69AAEFA415AF818600DC00AC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFA315AF818600DC00AC /* Cocoa.framework */; };
-		69AAEFAE15AF818600DC00AC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69AAEFAC15AF818600DC00AC /* InfoPlist.strings */; };
-		69AAEFB415AF818600DC00AC /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 69AAEFB215AF818600DC00AC /* Credits.rtf */; };
 		69AAEFCA15AF81B200DC00AC /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFC815AF81B200DC00AC /* GLUT.framework */; };
 		69AAEFCB15AF81B200DC00AC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AAEFC915AF81B200DC00AC /* OpenGL.framework */; };
 		69CE7A18167485D900BFAD1C /* Physfs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A13167485D900BFAD1C /* Physfs.framework */; };
@@ -17,10 +15,6 @@
 		69CE7A1A167485D900BFAD1C /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A15167485D900BFAD1C /* SDL2_mixer.framework */; };
 		69CE7A1B167485D900BFAD1C /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A16167485D900BFAD1C /* SDL2_ttf.framework */; };
 		69CE7A1C167485D900BFAD1C /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A17167485D900BFAD1C /* SDL2.framework */; };
-		69CE7A241674861A00BFAD1C /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69CE7A1D1674861A00BFAD1C /* GameState.cpp */; };
-		69CE7A251674861A00BFAD1C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69CE7A1F1674861A00BFAD1C /* main.cpp */; };
-		69CE7A261674861A00BFAD1C /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69CE7A201674861A00BFAD1C /* Player.cpp */; };
-		69CE7A271674861A00BFAD1C /* Zombie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69CE7A221674861A00BFAD1C /* Zombie.cpp */; };
 		69CE7A291674863600BFAD1C /* NAS2D.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69CE7A281674863600BFAD1C /* NAS2D.framework */; };
 		69CE7A30167487EB00BFAD1C /* NAS2D.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69CE7A281674863600BFAD1C /* NAS2D.framework */; };
 		69CE7A31167487EB00BFAD1C /* Physfs.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69CE7A13167485D900BFAD1C /* Physfs.framework */; };
@@ -28,6 +22,13 @@
 		69CE7A33167487EB00BFAD1C /* SDL2_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69CE7A15167485D900BFAD1C /* SDL2_mixer.framework */; };
 		69CE7A34167487EB00BFAD1C /* SDL2_ttf.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69CE7A16167485D900BFAD1C /* SDL2_ttf.framework */; };
 		69CE7A35167487EB00BFAD1C /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69CE7A17167485D900BFAD1C /* SDL2.framework */; };
+		69DD5BF416A7A506009CA543 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69DD5BED16A7A506009CA543 /* GameState.cpp */; };
+		69DD5BF516A7A506009CA543 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69DD5BEF16A7A506009CA543 /* main.cpp */; };
+		69DD5BF616A7A506009CA543 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69DD5BF016A7A506009CA543 /* Player.cpp */; };
+		69DD5BF716A7A506009CA543 /* Zombie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69DD5BF216A7A506009CA543 /* Zombie.cpp */; };
+		69DD5BFC16A7A530009CA543 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 69DD5BF816A7A530009CA543 /* Credits.rtf */; };
+		69DD5BFD16A7A530009CA543 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69DD5BFA16A7A530009CA543 /* InfoPlist.strings */; };
+		69DD5BFF16A7A53A009CA543 /* NAS2D_Test-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 69DD5BFE16A7A53A009CA543 /* NAS2D_Test-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,10 +55,6 @@
 		69AAEFA615AF818600DC00AC /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		69AAEFA715AF818600DC00AC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		69AAEFA815AF818600DC00AC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		69AAEFAB15AF818600DC00AC /* NAS2D_Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NAS2D_Test-Info.plist"; sourceTree = "<group>"; };
-		69AAEFAD15AF818600DC00AC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		69AAEFB115AF818600DC00AC /* NAS2D_Test-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NAS2D_Test-Prefix.pch"; sourceTree = "<group>"; };
-		69AAEFB315AF818600DC00AC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		69AAEFC815AF81B200DC00AC /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		69AAEFC915AF81B200DC00AC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		69CE7A13167485D900BFAD1C /* Physfs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Physfs.framework; path = ../Frameworks/Physfs.framework; sourceTree = "<group>"; };
@@ -65,14 +62,17 @@
 		69CE7A15167485D900BFAD1C /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		69CE7A16167485D900BFAD1C /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		69CE7A17167485D900BFAD1C /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../Frameworks/SDL2.framework; sourceTree = "<group>"; };
-		69CE7A1D1674861A00BFAD1C /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = ../../../../../NAS2D_Test/GameState.cpp; sourceTree = "<group>"; };
-		69CE7A1E1674861A00BFAD1C /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = ../../../../../NAS2D_Test/GameState.h; sourceTree = "<group>"; };
-		69CE7A1F1674861A00BFAD1C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../../../NAS2D_Test/main.cpp; sourceTree = "<group>"; };
-		69CE7A201674861A00BFAD1C /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = ../../../../../NAS2D_Test/Player.cpp; sourceTree = "<group>"; };
-		69CE7A211674861A00BFAD1C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../../../../../NAS2D_Test/Player.h; sourceTree = "<group>"; };
-		69CE7A221674861A00BFAD1C /* Zombie.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zombie.cpp; path = ../../../../../NAS2D_Test/Zombie.cpp; sourceTree = "<group>"; };
-		69CE7A231674861A00BFAD1C /* Zombie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zombie.h; path = ../../../../../NAS2D_Test/Zombie.h; sourceTree = "<group>"; };
-		69CE7A281674863600BFAD1C /* NAS2D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NAS2D.framework; path = ../build/Release/NAS2D.framework; sourceTree = "<group>"; };
+		69CE7A281674863600BFAD1C /* NAS2D.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NAS2D.framework; path = ../build/Debug/NAS2D.framework; sourceTree = "<group>"; };
+		69DD5BED16A7A506009CA543 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameState.cpp; path = "../../../../../../nas2d-tests/NAS2D_Test/GameState.cpp"; sourceTree = "<group>"; };
+		69DD5BEE16A7A506009CA543 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameState.h; path = "../../../../../../nas2d-tests/NAS2D_Test/GameState.h"; sourceTree = "<group>"; };
+		69DD5BEF16A7A506009CA543 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = "../../../../../../nas2d-tests/NAS2D_Test/main.cpp"; sourceTree = "<group>"; };
+		69DD5BF016A7A506009CA543 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = "../../../../../../nas2d-tests/NAS2D_Test/Player.cpp"; sourceTree = "<group>"; };
+		69DD5BF116A7A506009CA543 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = "../../../../../../nas2d-tests/NAS2D_Test/Player.h"; sourceTree = "<group>"; };
+		69DD5BF216A7A506009CA543 /* Zombie.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zombie.cpp; path = "../../../../../../nas2d-tests/NAS2D_Test/Zombie.cpp"; sourceTree = "<group>"; };
+		69DD5BF316A7A506009CA543 /* Zombie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zombie.h; path = "../../../../../../nas2d-tests/NAS2D_Test/Zombie.h"; sourceTree = "<group>"; };
+		69DD5BF916A7A530009CA543 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = NAS2D_Test/en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		69DD5BFB16A7A530009CA543 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = NAS2D_Test/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		69DD5BFE16A7A53A009CA543 /* NAS2D_Test-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "NAS2D_Test-Info.plist"; path = "NAS2D_Test/NAS2D_Test-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,25 +142,24 @@
 		69AAEFA915AF818600DC00AC /* NAS2D_Test */ = {
 			isa = PBXGroup;
 			children = (
-				69CE7A1D1674861A00BFAD1C /* GameState.cpp */,
-				69CE7A1E1674861A00BFAD1C /* GameState.h */,
-				69CE7A1F1674861A00BFAD1C /* main.cpp */,
-				69CE7A201674861A00BFAD1C /* Player.cpp */,
-				69CE7A211674861A00BFAD1C /* Player.h */,
-				69CE7A221674861A00BFAD1C /* Zombie.cpp */,
-				69CE7A231674861A00BFAD1C /* Zombie.h */,
+				69DD5BED16A7A506009CA543 /* GameState.cpp */,
+				69DD5BEE16A7A506009CA543 /* GameState.h */,
+				69DD5BEF16A7A506009CA543 /* main.cpp */,
+				69DD5BF016A7A506009CA543 /* Player.cpp */,
+				69DD5BF116A7A506009CA543 /* Player.h */,
+				69DD5BF216A7A506009CA543 /* Zombie.cpp */,
+				69DD5BF316A7A506009CA543 /* Zombie.h */,
 				69AAEFAA15AF818600DC00AC /* Supporting Files */,
 			);
-			path = NAS2D_Test;
+			name = NAS2D_Test;
 			sourceTree = "<group>";
 		};
 		69AAEFAA15AF818600DC00AC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				69AAEFAB15AF818600DC00AC /* NAS2D_Test-Info.plist */,
-				69AAEFAC15AF818600DC00AC /* InfoPlist.strings */,
-				69AAEFB115AF818600DC00AC /* NAS2D_Test-Prefix.pch */,
-				69AAEFB215AF818600DC00AC /* Credits.rtf */,
+				69DD5BFE16A7A53A009CA543 /* NAS2D_Test-Info.plist */,
+				69DD5BF816A7A530009CA543 /* Credits.rtf */,
+				69DD5BFA16A7A530009CA543 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -217,8 +216,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				69AAEFAE15AF818600DC00AC /* InfoPlist.strings in Resources */,
-				69AAEFB415AF818600DC00AC /* Credits.rtf in Resources */,
+				69DD5BFC16A7A530009CA543 /* Credits.rtf in Resources */,
+				69DD5BFD16A7A530009CA543 /* InfoPlist.strings in Resources */,
+				69DD5BFF16A7A53A009CA543 /* NAS2D_Test-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,30 +229,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				69CE7A241674861A00BFAD1C /* GameState.cpp in Sources */,
-				69CE7A251674861A00BFAD1C /* main.cpp in Sources */,
-				69CE7A261674861A00BFAD1C /* Player.cpp in Sources */,
-				69CE7A271674861A00BFAD1C /* Zombie.cpp in Sources */,
+				69DD5BF416A7A506009CA543 /* GameState.cpp in Sources */,
+				69DD5BF516A7A506009CA543 /* main.cpp in Sources */,
+				69DD5BF616A7A506009CA543 /* Player.cpp in Sources */,
+				69DD5BF716A7A506009CA543 /* Zombie.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		69AAEFAC15AF818600DC00AC /* InfoPlist.strings */ = {
+		69DD5BF816A7A530009CA543 /* Credits.rtf */ = {
 			isa = PBXVariantGroup;
 			children = (
-				69AAEFAD15AF818600DC00AC /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		69AAEFB215AF818600DC00AC /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				69AAEFB315AF818600DC00AC /* en */,
+				69DD5BF916A7A530009CA543 /* en */,
 			);
 			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		69DD5BFA16A7A530009CA543 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				69DD5BFB16A7A530009CA543 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

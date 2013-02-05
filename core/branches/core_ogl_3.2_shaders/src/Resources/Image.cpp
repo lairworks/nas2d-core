@@ -20,7 +20,8 @@
 
 
 #if defined(__APPLE__)
-	#include <SDL2/SDL_opengl.h>
+	#include <OpenGL/OpenGL.h>
+	#include <OpenGL/gl3.h>
 #elif defined(WIN32)
 	#include "SDL/SDL_opengl.h"
 #else
@@ -94,6 +95,7 @@ Image::Image(int w, int h):	Resource(ARBITRARY_IMAGE_NAME),
 	mRect(0, 0, w, h);
 
 	glGenTextures(1, &mTextureId);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
 
 	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (w * h))] (); // 4 = R G B A channels

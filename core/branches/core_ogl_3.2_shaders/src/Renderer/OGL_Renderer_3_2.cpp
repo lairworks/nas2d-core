@@ -26,7 +26,7 @@
 using namespace std;
 
 
-extern GLfloat DEFAULT_VERTEX_COORDS[8];
+extern GLfloat DEFAULT_VERTEX_COORDS[18];
 extern GLfloat DEFAULT_TEXTURE_COORDS[8];
 extern GLfloat POINT_VERTEX_ARRAY[2];
 extern GraphicsQuality TEXTURE_FILTER;
@@ -41,7 +41,8 @@ extern GraphicsQuality TEXTURE_FILTER;
 
 OGL_Renderer_3_2::OGL_Renderer_3_2(const std::string title):	Renderer("OpenGL Renderer", title),
 mWindow(NULL),
-mTextureTarget(0)
+mTextureTarget(0),
+mTextureUnits(0)
 {
 	cout << "Starting " << name() << ":" << endl;
 
@@ -77,7 +78,7 @@ void OGL_Renderer_3_2::clearScreen(int r, int g, int b)
 
 void OGL_Renderer_3_2::drawVertexArray(GLuint textureId, bool defaultTextureCoords)
 {
-	clearScreen(0, 0, 0);
+	//clearScreen(0, 0, 0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
@@ -90,23 +91,24 @@ void OGL_Renderer_3_2::drawVertexArray(GLuint textureId, bool defaultTextureCoor
 	glUniformMatrix4fv(mModelViewMatrix, 1, GL_FALSE, glm::value_ptr(ModelViewMatrix));
 	getError();
 	
-	glActiveTexture(GL_TEXTURE0);
+
+	glActiveTexture(GL_TEXTURE0 + textureId);
 	glBindTexture(GL_TEXTURE_2D, textureId);
 	
-	mShaderTextureCoords = glGetAttribLocation( mShaderManager->getShaderProgram(), "texture0");
-	getError();
 	
-	glUniform1i(mShaderTextureCoords, 0);
-	getError();
-	
+	GLint texUnitLoc = glGetUniformLocation(mShaderManager->getShaderProgram(), "tex0");
+	glUniform1i(texUnitLoc, textureId);
 	
 	glBindVertexArray(mVertexArray);
 	getError();
 
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDrawArrays(GL_TRIANGLES, 0, 5);
 	getError();
 
 	glBindVertexArray(0);
+	getError();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	getError();
 	glUseProgram(0);
 	getError();
@@ -118,21 +120,17 @@ void OGL_Renderer_3_2::drawVertexArray(GLuint textureId, bool defaultTextureCoor
  */
 void OGL_Renderer_3_2::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-//	cout << "Vertices Array:\n"; 
-//	for (int i = 0; i < sizeof(mVertexArrayData); i++) {
-//		cout << mVertexArrayData[i] << ",\t";
-//	}
-//	cout << endl;
-	mVertexArrayData[0] = static_cast<GLfloat>(x); mVertexArrayData[1] = static_cast<GLfloat>(y + h); mVertexArrayData[2] = 0;
-	mVertexArrayData[3] = static_cast<GLfloat>(x); mVertexArrayData[4] = static_cast<GLfloat>(y); mVertexArrayData[5] = 0;
-	mVertexArrayData[6] = static_cast<GLfloat>(x + w); mVertexArrayData[7] = static_cast<GLfloat>(y); mVertexArrayData[8] = 0;
-	mVertexArrayData[9] = static_cast<GLfloat>(x + w); mVertexArrayData[10] = static_cast<GLfloat>(y); mVertexArrayData[11] = 0;
-	mVertexArrayData[12] = static_cast<GLfloat>(x + w);	mVertexArrayData[13] = static_cast<GLfloat>(y + h); mVertexArrayData[14] = 0;
-	mVertexArrayData[15] = static_cast<GLfloat>(x);	mVertexArrayData[16] = static_cast<GLfloat>(y + h); mVertexArrayData[17] = 0;
+	mVertexArrayData[0] = static_cast<GLfloat>(x); mVertexArrayData[1] = static_cast<GLfloat>(y + h); mVertexArrayData[2] = 0.0;
+	mVertexArrayData[3] = static_cast<GLfloat>(x); mVertexArrayData[4] = static_cast<GLfloat>(y); mVertexArrayData[5] = 0.0;
+	mVertexArrayData[6] = static_cast<GLfloat>(x + w); mVertexArrayData[7] = static_cast<GLfloat>(y); mVertexArrayData[8] = 0.0;
+	mVertexArrayData[9] = static_cast<GLfloat>(x + w); mVertexArrayData[10] = static_cast<GLfloat>(y); mVertexArrayData[11] = 0.0;
+	mVertexArrayData[12] = static_cast<GLfloat>(x);	mVertexArrayData[13] = static_cast<GLfloat>(y + h); mVertexArrayData[14] = 0.0;
+	mVertexArrayData[15] = static_cast<GLfloat>(x + w);	mVertexArrayData[16] = static_cast<GLfloat>(y + h); mVertexArrayData[17] = 0.0;
+	
 
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
 	getError();
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(mVertexArrayData), mVertexArrayData);
+	glBufferData(GL_ARRAY_BUFFER, 3 * 6 * sizeof(GLfloat), mVertexArrayData, GL_DYNAMIC_DRAW);
 	getError();
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	getError();
@@ -148,21 +146,27 @@ void OGL_Renderer_3_2::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat 
  */
 void OGL_Renderer_3_2::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 {
-	mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(y);
-	mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(v);
-	mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(v);
-	mTextureCoordArray[6] = static_cast<GLfloat>(u),	mTextureCoordArray[7] = static_cast<GLfloat>(y);
+	mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(v);
+	mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(y);
+	mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(y);
+	mTextureCoordArray[6] = static_cast<GLfloat>(u),	mTextureCoordArray[7] = static_cast<GLfloat>(v);
 
 	glBindBuffer(GL_ARRAY_BUFFER, mTextureBufferObject);
 	getError();
-	glBufferData(GL_ARRAY_BUFFER, sizeof(mTextureCoordArray), mTextureCoordArray, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(mTextureCoordArray), mTextureCoordArray);
+	getError();
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	getError();
+	glBindBuffer(GL_ARRAY_BUFFER, NULL);
+	getError();
+	glFlush();
 	getError();
 }
 
 
 void OGL_Renderer_3_2::drawImage(Image& image, float x, float y, float scale = 1.0f)
 {
-	fillVertexArray(x, y, static_cast<float>(image.width()), static_cast<float>(image.height()));
+	fillVertexArray(x, y, image.width(), image.height());
 	fillTextureArray(x, y, image.width(), image.height());
 	drawVertexArray(image.texture_id(), false);
 }
@@ -263,10 +267,6 @@ void OGL_Renderer_3_2::drawImageToImage(Image& source, Image& destination, const
 	if(dstPoint.x > destination.width() || dstPoint.y > destination.height())
 		return;
 
-//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-//
-//	glBindTexture(mTextureTarget, destination.texture_id());
-
 	Rectangle_2d clipRect;
 
 	(dstPoint.x + source.width()) > destination.width() ? clipRect.w = source.width() - ((dstPoint.x + source.width()) - destination.width()) : clipRect.w = source.width();
@@ -277,17 +277,27 @@ void OGL_Renderer_3_2::drawImageToImage(Image& source, Image& destination, const
 		return;
 
 
-	unsigned int fbo = destination.fbo_id();
+//	unsigned int fbo = destination.fbo_id();
+//
+//	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+//	getError();
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destination.texture_id(), 0);
+//	getError();
+//	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER); // Check that status of our generated frame buffer
+//	
+//	if (status != GL_FRAMEBUFFER_COMPLETE) // If the frame buffer does not report back as complete
+//	{
+//		std::cout << "Couldn't create frame buffer" << std::endl; // Make sure you include <iostream>
+//	}
+//	else {
+//		cout << "Framebuffer complete!" << endl;
+//	}
 
-//	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-//	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mTextureTarget, destination.texture_id(), 0);
 
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x, destination.height() - dstPoint.y, clipRect.w, -clipRect.h);
 
 	drawVertexArray(source.texture_id());
-//	glBindTexture(mTextureTarget, destination.texture_id());
-//	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 }
 
@@ -388,8 +398,8 @@ void OGL_Renderer_3_2::drawCircle(float cx, float cy, float radius, int r, int g
 void OGL_Renderer_3_2::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
 {
 	fillVertexArray(x, y, width, height);
-	
-	clearScreen(0, 0, 0);
+	//drawVertexArray(0);
+	//clearScreen(0, 0, 0);
 	
 	glUseProgram(mShaderManager->getShaderProgram());
 	getError();
@@ -403,7 +413,7 @@ void OGL_Renderer_3_2::drawBox(float x, float y, float width, float height, int 
 	glBindVertexArray(mVertexArray);
 	getError();
 	
-	glDrawArrays(GL_LINE_LOOP, 0, 5);
+	glDrawArrays(GL_LINE_STRIP, 0, 5);
 	getError();
 	
 	glBindVertexArray(0);
@@ -500,10 +510,12 @@ void OGL_Renderer_3_2::drawTextClamped(Font& font, const std::string& text, floa
 
 void OGL_Renderer_3_2::update()
 {
-	//getError();
+	//clearScreen(0, 0, 0);
+	//glViewport(0, 0, width(), height());
 	Renderer::update();
 	//SDL_GL_SwapBuffers();
 	SDL_GL_SwapWindow(mWindow);
+	clearScreen(0, 0, 0);
 }
 
 
@@ -580,6 +592,9 @@ void OGL_Renderer_3_2::getError()
 		case GL_OUT_OF_MEMORY:
 			errStr += "Out of Memory.";
 			break;
+		case GL_INVALID_FRAMEBUFFER_OPERATION:
+			errStr += "Tried to read/write to incomplete FBO.";
+			break;
 		default:
 			errStr += "Unknown Error Code.";
 			break;
@@ -638,6 +653,10 @@ void OGL_Renderer_3_2::initGL()
 {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glDisable(GL_DEPTH_TEST);
+	
+	glViewport(0, 0, width(), height());
 
 	// Spit out system graphics information.
 	cout << "\t- OpenGL System Info -" << endl;
@@ -661,7 +680,11 @@ void OGL_Renderer_3_2::initGL()
 	getError();
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
 	getError();
-	glBufferData(GL_ARRAY_BUFFER, 4 * 6 * sizeof(GLfloat), DEFAULT_VERTEX_COORDS, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * 6 * sizeof(DEFAULT_VERTEX_COORDS), DEFAULT_VERTEX_COORDS, GL_DYNAMIC_DRAW);
+	getError();
+	glEnableVertexAttribArray(0);
+	getError();
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	getError();
 
 	glGenBuffers(1, &mTextureBufferObject);
@@ -670,10 +693,9 @@ void OGL_Renderer_3_2::initGL()
 	getError();
 	glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(DEFAULT_TEXTURE_COORDS), DEFAULT_TEXTURE_COORDS, GL_STATIC_DRAW);
 	getError();
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 	getError();
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	getError();
 }
 
@@ -735,13 +757,10 @@ void OGL_Renderer_3_2::initVideo(unsigned int resX, unsigned int resY, unsigned 
 	
 	int w, h;
 	SDL_GetWindowSize(mWindow, &w, &h);
-	projection = glm::mat4(1.0f);
-	projection = glm::ortho(0.0f, static_cast<float>(w), 0.0f, static_cast<float>(h), -1.0f, 1.0f);
-	view = glm::lookAt(
-				glm::vec3(0,0,0), // Camera is at (0,0,5), in World Space
-				glm::vec3(0,0,1), // and looks at the origin
-				glm::vec3(0,-1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-	);
-	model = glm::mat4(1.0f);
-	ModelViewMatrix = projection;
+	projection = glm::ortho(0.0f, static_cast<float>(w), static_cast<float>(h), 0.0f, -1.0f, 1.0f);
+	glm::mat4 view = glm::lookAt(glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, 0.0, 1.0));
+	glm::mat4 Model = glm::scale(
+								 glm::mat4(1.0f),
+								 glm::vec3(1.0f, 1.0f, 1.0f));
+	ModelViewMatrix = projection * Model;
 }

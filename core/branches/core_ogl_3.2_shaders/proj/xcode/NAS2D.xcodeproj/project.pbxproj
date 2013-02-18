@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		695B3B8213274C9A003E937A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8113274C9A003E937A /* GLUT.framework */; };
 		695B3B8413274C9A003E937A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8313274C9A003E937A /* OpenGL.framework */; };
-		6979575E16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6979575D16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp */; };
 		69BD4D231673F4DE009EEBE2 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0A1673F4DE009EEBE2 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D241673F4DE009EEBE2 /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0B1673F4DE009EEBE2 /* Configuration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D251673F4DE009EEBE2 /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0C1673F4DE009EEBE2 /* Documentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -67,6 +66,8 @@
 		69CE7A2C1674870A00BFAD1C /* Renderer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D191673F4DE009EEBE2 /* Renderer */; };
 		69CE7A2D1674870E00BFAD1C /* Resources in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D1A1673F4DE009EEBE2 /* Resources */; };
 		69CE7A2E1674871300BFAD1C /* tinyxml in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D1F1673F4DE009EEBE2 /* tinyxml */; };
+		69D5388F16C223AA00C3A0D4 /* OGL_Renderer_3_2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D5388D16C223AA00C3A0D4 /* OGL_Renderer_3_2.cpp */; };
+		69D5389016C223AA00C3A0D4 /* OGL_Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D5388E16C223AA00C3A0D4 /* OGL_Renderer.cpp */; };
 		69DD5BD616A7530C009CA543 /* glm in Resources */ = {isa = PBXBuildFile; fileRef = 69DD5BD516A7530C009CA543 /* glm */; };
 		69DD5BD816A75371009CA543 /* glm in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69DD5BD516A7530C009CA543 /* glm */; };
 		69F2C1F216980D1A007FAB38 /* Physfs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1ED16980D1A007FAB38 /* Physfs.framework */; };
@@ -107,7 +108,6 @@
 		32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAS2D_Prefix.pch; sourceTree = "<group>"; };
 		695B3B8113274C9A003E937A /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		695B3B8313274C9A003E937A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		6979575D16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OGL_Core_Renderer.cpp; sourceTree = "<group>"; };
 		69BD4D0A1673F4DE009EEBE2 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../../include/NAS2D/Common.h; sourceTree = "<group>"; };
 		69BD4D0B1673F4DE009EEBE2 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configuration.h; path = ../../include/NAS2D/Configuration.h; sourceTree = "<group>"; };
 		69BD4D0C1673F4DE009EEBE2 /* Documentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Documentation.h; path = ../../include/NAS2D/Documentation.h; sourceTree = "<group>"; };
@@ -160,7 +160,9 @@
 		69BD4D5A1673F4FA009EEBE2 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		69BD4D5B1673F4FA009EEBE2 /* Trig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trig.cpp; sourceTree = "<group>"; };
 		69BD4D5C1673F4FA009EEBE2 /* XmlAttributeParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XmlAttributeParser.cpp; sourceTree = "<group>"; };
-		69DD5BD516A7530C009CA543 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = glm; sourceTree = "<group>"; };
+		69D5388D16C223AA00C3A0D4 /* OGL_Renderer_3_2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OGL_Renderer_3_2.cpp; sourceTree = "<group>"; };
+		69D5388E16C223AA00C3A0D4 /* OGL_Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OGL_Renderer.cpp; sourceTree = "<group>"; };
+		69DD5BD516A7530C009CA543 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; name = glm; path = ../../include/NAS2D/glm; sourceTree = "<group>"; };
 		69F2C1ED16980D1A007FAB38 /* Physfs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Physfs.framework; path = Frameworks/Physfs.framework; sourceTree = "<group>"; };
 		69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
@@ -343,7 +345,8 @@
 		69BD4D481673F4FA009EEBE2 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
-				6979575D16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp */,
+				69D5388D16C223AA00C3A0D4 /* OGL_Renderer_3_2.cpp */,
+				69D5388E16C223AA00C3A0D4 /* OGL_Renderer.cpp */,
 				69BD4D4A1673F4FA009EEBE2 /* Renderer.cpp */,
 				69BD4D4B1673F4FA009EEBE2 /* ShaderManager.cpp */,
 			);
@@ -507,7 +510,8 @@
 				69BD4D771673F4FA009EEBE2 /* tinyxmlparser.cpp in Sources */,
 				69BD4D781673F4FA009EEBE2 /* Trig.cpp in Sources */,
 				69BD4D791673F4FA009EEBE2 /* XmlAttributeParser.cpp in Sources */,
-				6979575E16A36FF500F0B9F2 /* OGL_Core_Renderer.cpp in Sources */,
+				69D5388F16C223AA00C3A0D4 /* OGL_Renderer_3_2.cpp in Sources */,
+				69D5389016C223AA00C3A0D4 /* OGL_Renderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -552,7 +556,7 @@
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"/**";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -587,7 +591,7 @@
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"";
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"/**";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

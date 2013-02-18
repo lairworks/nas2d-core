@@ -25,9 +25,9 @@
 #include "ShaderManager.h"
 
 #include <map>
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include "NAS2D/glm/glm.hpp"
+#include "NAS2D/glm/gtc/matrix_transform.hpp"
+#include "NAS2D/glm/gtc/type_ptr.hpp"
 
 extern SDL_Window* _window;
 
@@ -112,11 +112,13 @@ private:
 	ShaderManager		*mShaderManager;
 
 	glm::mat4 projection;
-	glm::mat4 view;
-	glm::mat4 model;
 	glm::mat4 ModelViewMatrix;
 	GLint mModelViewMatrix;
-	GLint mShaderTextureCoords;
+	GLint mShaderTexture;
+	GLint mShaderTexCoords;
+	GLint mShaderVerts;
+	
+	vector<GLuint> mTextureUnits;
 };
 
 #endif

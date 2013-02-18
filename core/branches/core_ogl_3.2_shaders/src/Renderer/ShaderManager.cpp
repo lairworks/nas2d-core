@@ -39,6 +39,9 @@ void ShaderManager::loadDefaultShaders()
 	loadShader(GL_VERTEX_SHADER, "shaders/v_shader.shader");
 	loadShader(GL_FRAGMENT_SHADER, "shaders/f_shader.shader");
 	
+	glBindAttribLocation(mShaderProgram, 0, "position");
+	glBindAttribLocation(mShaderProgram, 1, "texCoord");
+	
 	linkProgram(mShaderProgram);
 	validateProgram(mShaderProgram);
 	cout << "done.\n";

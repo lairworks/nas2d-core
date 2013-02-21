@@ -377,7 +377,7 @@ unsigned int Image::fbo_id()
 
 	// Image doesn't have an FBO attached to it, generate one.
 	GLuint fbo = 0;
-	glGenBuffers(1, &fbo);
+	glGenFramebuffers(1, &fbo);
 
 	it->second.fboId = fbo;
 

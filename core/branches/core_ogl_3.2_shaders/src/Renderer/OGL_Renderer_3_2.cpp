@@ -102,7 +102,7 @@ void OGL_Renderer_3_2::drawVertexArray(GLuint textureId, bool defaultTextureCoor
 	glBindVertexArray(mVertexArray);
 	getError();
 
-	glDrawArrays(GL_TRIANGLES, 0, 5);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	getError();
 
 	glBindVertexArray(0);
@@ -120,17 +120,15 @@ void OGL_Renderer_3_2::drawVertexArray(GLuint textureId, bool defaultTextureCoor
  */
 void OGL_Renderer_3_2::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-	mVertexArrayData[0] = static_cast<GLfloat>(x); mVertexArrayData[1] = static_cast<GLfloat>(y + h); mVertexArrayData[2] = 0.0;
-	mVertexArrayData[3] = static_cast<GLfloat>(x); mVertexArrayData[4] = static_cast<GLfloat>(y); mVertexArrayData[5] = 0.0;
+	mVertexArrayData[0] = static_cast<GLfloat>(x); mVertexArrayData[1] = static_cast<GLfloat>(y); mVertexArrayData[2] = 0.0;
+	mVertexArrayData[3] = static_cast<GLfloat>(x); mVertexArrayData[4] = static_cast<GLfloat>(y + h); mVertexArrayData[5] = 0.0;
 	mVertexArrayData[6] = static_cast<GLfloat>(x + w); mVertexArrayData[7] = static_cast<GLfloat>(y); mVertexArrayData[8] = 0.0;
-	mVertexArrayData[9] = static_cast<GLfloat>(x + w); mVertexArrayData[10] = static_cast<GLfloat>(y); mVertexArrayData[11] = 0.0;
-	mVertexArrayData[12] = static_cast<GLfloat>(x);	mVertexArrayData[13] = static_cast<GLfloat>(y + h); mVertexArrayData[14] = 0.0;
-	mVertexArrayData[15] = static_cast<GLfloat>(x + w);	mVertexArrayData[16] = static_cast<GLfloat>(y + h); mVertexArrayData[17] = 0.0;
+	mVertexArrayData[9] = static_cast<GLfloat>(x + w); mVertexArrayData[10] = static_cast<GLfloat>(y + h); mVertexArrayData[11] = 0.0;
 	
 
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
 	getError();
-	glBufferData(GL_ARRAY_BUFFER, 3 * 6 * sizeof(GLfloat), mVertexArrayData, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * 4 * sizeof(GLfloat), mVertexArrayData, GL_DYNAMIC_DRAW);
 	getError();
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	getError();
@@ -146,14 +144,14 @@ void OGL_Renderer_3_2::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat 
  */
 void OGL_Renderer_3_2::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 {
-	mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(v);
-	mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(y);
+	mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(y);
+	mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(v);
 	mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(y);
 	mTextureCoordArray[6] = static_cast<GLfloat>(u),	mTextureCoordArray[7] = static_cast<GLfloat>(v);
 
 	glBindBuffer(GL_ARRAY_BUFFER, mTextureBufferObject);
 	getError();
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(mTextureCoordArray), mTextureCoordArray);
+	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), mTextureCoordArray, GL_DYNAMIC_DRAW);
 	getError();
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	getError();
@@ -266,39 +264,38 @@ void OGL_Renderer_3_2::drawImageToImage(Image& source, Image& destination, const
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if(dstPoint.x > destination.width() || dstPoint.y > destination.height())
 		return;
-
+	
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	getError();
+	glBindTexture(GL_TEXTURE_2D, destination.texture_id());
+	getError();
+	
 	Rectangle_2d clipRect;
-
+	
 	(dstPoint.x + source.width()) > destination.width() ? clipRect.w = source.width() - ((dstPoint.x + source.width()) - destination.width()) : clipRect.w = source.width();
 	(dstPoint.y + source.height()) > destination.height() ? clipRect.h = source.height() - ((dstPoint.y + source.height()) - destination.height()) : clipRect.h = source.height();
-
+	
 	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
 	if(clipRect.w < 1 || clipRect.h < 1)
 		return;
-
-
-//	unsigned int fbo = destination.fbo_id();
-//
-//	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-//	getError();
-//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destination.texture_id(), 0);
-//	getError();
-//	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER); // Check that status of our generated frame buffer
-//	
-//	if (status != GL_FRAMEBUFFER_COMPLETE) // If the frame buffer does not report back as complete
-//	{
-//		std::cout << "Couldn't create frame buffer" << std::endl; // Make sure you include <iostream>
-//	}
-//	else {
-//		cout << "Framebuffer complete!" << endl;
-//	}
-
-
+	
+	
+	unsigned int fbo = destination.fbo_id();
+	if (!fbo) {
+		cout << "FBO is NULL!" << endl;
+	}
+	
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
+	getError();
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, destination.texture_id(), 0);
+	getError();
+	cout << glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) << endl;
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x, destination.height() - dstPoint.y, clipRect.w, -clipRect.h);
-
+	getError();
 	drawVertexArray(source.texture_id());
-
+	glBindTexture(GL_TEXTURE_2D, destination.texture_id());
+	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 }
 
 
@@ -680,7 +677,7 @@ void OGL_Renderer_3_2::initGL()
 	getError();
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferObject);
 	getError();
-	glBufferData(GL_ARRAY_BUFFER, 3 * 6 * sizeof(DEFAULT_VERTEX_COORDS), DEFAULT_VERTEX_COORDS, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * 4 * sizeof(DEFAULT_VERTEX_COORDS), DEFAULT_VERTEX_COORDS, GL_DYNAMIC_DRAW);
 	getError();
 	glEnableVertexAttribArray(0);
 	getError();

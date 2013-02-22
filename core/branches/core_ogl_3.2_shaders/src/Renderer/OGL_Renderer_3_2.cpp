@@ -148,7 +148,7 @@ void OGL_Renderer_3_2::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat
 	mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(v);
 	mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(y);
 	mTextureCoordArray[6] = static_cast<GLfloat>(u),	mTextureCoordArray[7] = static_cast<GLfloat>(v);
-
+	
 	glBindBuffer(GL_ARRAY_BUFFER, mTextureBufferObject);
 	getError();
 	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), mTextureCoordArray, GL_DYNAMIC_DRAW);
@@ -165,7 +165,11 @@ void OGL_Renderer_3_2::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat
 void OGL_Renderer_3_2::drawImage(Image& image, float x, float y, float scale = 1.0f)
 {
 	fillVertexArray(x, y, image.width(), image.height());
-	fillTextureArray(x, y, image.width(), image.height());
+	fillTextureArray(	x / image.width(),
+					 y / image.height(),
+					 x / image.width() + image.width() / image.width(),
+					 y / image.height() + image.height() / image.height()
+					 );
 	drawVertexArray(image.texture_id(), false);
 }
 
@@ -249,13 +253,13 @@ void OGL_Renderer_3_2::drawImageRepeated(Image& image, float x, float y, float w
 	fillVertexArray(x, y, w, h);
 
 	// Change texture mode to repeat at edges.
-//	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	drawVertexArray(image.texture_id(), true);
 
-//	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 
@@ -289,7 +293,6 @@ void OGL_Renderer_3_2::drawImageToImage(Image& source, Image& destination, const
 	getError();
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, destination.texture_id(), 0);
 	getError();
-	cout << glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) << endl;
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x, destination.height() - dstPoint.y, clipRect.w, -clipRect.h);
 	getError();
@@ -318,7 +321,6 @@ void OGL_Renderer_3_2::drawPixel(float x, float y, int r, int g, int b, int a)
 
 void OGL_Renderer_3_2::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
 {
-	//glDisable(mTextureTarget);
 
 	GLfloat verts[12] =	{
 		x, y + 1.0f,
@@ -329,14 +331,29 @@ void OGL_Renderer_3_2::drawLine(float x, float y, float x2, float y2, int r, int
 		x2, y2
 	};
 
-	//glColor4ub(r, g, b, a);
-
-	fillVertexArray(x, y, x2- x, y2 - x);
-	drawVertexArray(NULL);
-
-	//glEnable(mTextureTarget);
-
-	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+	fillVertexArray(x, y, x2, y2);
+	//drawVertexArray(0);
+	//clearScreen(0, 0, 0);
+	
+	glUseProgram(mShaderManager->getShaderProgram());
+	getError();
+	
+	mModelViewMatrix = glGetUniformLocation(mShaderManager->getShaderProgram(), "mvp");
+	getError();
+	
+	glUniformMatrix4fv(mModelViewMatrix, 1, GL_FALSE, glm::value_ptr(ModelViewMatrix));
+	getError();
+	
+	glBindVertexArray(mVertexArray);
+	getError();
+	
+	glDrawArrays(GL_LINES, 0, 4);
+	getError();
+	
+	glBindVertexArray(0);
+	getError();
+	glUseProgram(0);
+	getError();
 }
 
 

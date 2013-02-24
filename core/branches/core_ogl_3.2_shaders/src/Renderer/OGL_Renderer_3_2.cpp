@@ -28,6 +28,7 @@ using namespace std;
 
 extern GLfloat DEFAULT_VERTEX_COORDS[18];
 extern GLfloat DEFAULT_TEXTURE_COORDS[8];
+const GLfloat DEFAULT_COLOR[4] = {255, 255, 255, 1};
 extern GLfloat POINT_VERTEX_ARRAY[2];
 extern GraphicsQuality TEXTURE_FILTER;
 
@@ -134,8 +135,8 @@ void OGL_Renderer_3_2::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat 
 	getError();
 	glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	getError();
-	glFlush();
-	getError();
+//	glFlush();
+//	getError();
 }
 
 
@@ -157,19 +158,15 @@ void OGL_Renderer_3_2::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat
 	getError();
 	glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	getError();
-	glFlush();
-	getError();
+//	glFlush();
+//	getError();
 }
 
 
 void OGL_Renderer_3_2::drawImage(Image& image, float x, float y, float scale = 1.0f)
 {
 	fillVertexArray(x, y, image.width(), image.height());
-	fillTextureArray(	x / image.width(),
-					 y / image.height(),
-					 x / image.width() + image.width() / image.width(),
-					 y / image.height() + image.height() / image.height()
-					 );
+	fillTextureArray(0, 0, 1, 1 );
 	drawVertexArray(image.texture_id(), false);
 }
 
@@ -198,6 +195,10 @@ void OGL_Renderer_3_2::drawSubImageRotated(Image& image, float rasterX, float ra
 
 	// Adjust the translation so that images appear where expected.
 	//glTranslatef(rasterX + tX, rasterY + tY, 0.0f);
+	glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(rasterX + tX, rasterY + tY, 0.0f));
+	glm::mat4 rotateView  = glm::rotate(translateMatrix,  degrees, glm::vec3(0.0f, 0.0f, 1.0f)); //glRotatef(rX,1,0,0);
+	glm::mat4 tempMatrix = ModelViewMatrix;
+	ModelViewMatrix = Projection * rotateView * Model;
 	//glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
@@ -209,6 +210,8 @@ void OGL_Renderer_3_2::drawSubImageRotated(Image& image, float rasterX, float ra
 					 );
 
 	drawVertexArray(image.texture_id(), false);
+	
+	ModelViewMatrix = tempMatrix;
 
 	//glPopMatrix();
 }
@@ -228,6 +231,11 @@ void OGL_Renderer_3_2::drawImageRotated(Image& image, float x, float y, float de
 	// Adjust the translation so that images appear where expected.
 	//glTranslatef(x + imgHalfW, y + imgHalfH, 0.0f);
 	//glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+	
+	glm::mat4 translateMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(x + imgHalfW, y + imgHalfH, 0.0f));
+	glm::mat4 rotateView  = glm::rotate(translateMatrix,  degrees, glm::vec3(0.0f, 0.0f, 1.0f)); //glRotatef(rX,1,0,0);
+	glm::mat4 tempMatrix = ModelViewMatrix;
+	ModelViewMatrix = Projection * rotateView * Model;
 
 	//glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -236,6 +244,8 @@ void OGL_Renderer_3_2::drawImageRotated(Image& image, float x, float y, float de
 
 	drawVertexArray(image.texture_id());
 	//glPopMatrix();
+	
+	ModelViewMatrix = tempMatrix;
 
 	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
@@ -304,56 +314,17 @@ void OGL_Renderer_3_2::drawImageToImage(Image& source, Image& destination, const
 
 void OGL_Renderer_3_2::drawPixel(float x, float y, int r, int g, int b, int a)
 {
-	//glDisable(mTextureTarget);
-
-	//glColor4ub(r, g, b, a);
-
-	POINT_VERTEX_ARRAY[0] = x + 0.5f; POINT_VERTEX_ARRAY[1] = y + 0.5f;
-
-	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
-	glDrawArrays(GL_POINTS, 0, 1);
-
-	//glEnable(mTextureTarget);
-
-	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+//	POINT_VERTEX_ARRAY[0] = x + 0.5f; POINT_VERTEX_ARRAY[1] = y + 0.5f;
+//
+//	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
+//	glDrawArrays(GL_POINTS, 0, 1);
 }
 
 
 void OGL_Renderer_3_2::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
 {
 
-	GLfloat verts[12] =	{
-		x, y + 1.0f,
-		x2, y2 + 1.0f,
-		x - 0.5f, y + 0.5f,
-		x2 - 0.5f, y2 + 0.5f,
-		x, y,
-		x2, y2
-	};
-
-	fillVertexArray(x, y, x2, y2);
-	//drawVertexArray(0);
-	//clearScreen(0, 0, 0);
 	
-	glUseProgram(mShaderManager->getShaderProgram());
-	getError();
-	
-	mModelViewMatrix = glGetUniformLocation(mShaderManager->getShaderProgram(), "mvp");
-	getError();
-	
-	glUniformMatrix4fv(mModelViewMatrix, 1, GL_FALSE, glm::value_ptr(ModelViewMatrix));
-	getError();
-	
-	glBindVertexArray(mVertexArray);
-	getError();
-	
-	glDrawArrays(GL_LINES, 0, 4);
-	getError();
-	
-	glBindVertexArray(0);
-	getError();
-	glUseProgram(0);
-	getError();
 }
 
 
@@ -364,10 +335,6 @@ void OGL_Renderer_3_2::drawLine(float x, float y, float x2, float y2, int r, int
  */
 void OGL_Renderer_3_2::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
 {
-	//glDisable(mTextureTarget);
-
-	//glColor4ub(r, g, b, a);
-
 	float theta = PI_2 / static_cast<float>(num_segments);
 	float c = cosf(theta);
 	float s = sinf(theta);
@@ -411,45 +378,13 @@ void OGL_Renderer_3_2::drawCircle(float cx, float cy, float radius, int r, int g
 
 void OGL_Renderer_3_2::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
 {
-	fillVertexArray(x, y, width, height);
-	//drawVertexArray(0);
-	//clearScreen(0, 0, 0);
-	
-	glUseProgram(mShaderManager->getShaderProgram());
-	getError();
-	
-	mModelViewMatrix = glGetUniformLocation(mShaderManager->getShaderProgram(), "mvp");
-	getError();
-	
-	glUniformMatrix4fv(mModelViewMatrix, 1, GL_FALSE, glm::value_ptr(ModelViewMatrix));
-	getError();
-	
-	glBindVertexArray(mVertexArray);
-	getError();
-	
-	glDrawArrays(GL_LINE_STRIP, 0, 5);
-	getError();
-	
-	glBindVertexArray(0);
-	getError();
-	glUseProgram(0);
-	getError();
 
-	//glEnable(mTextureTarget);
-	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
 void OGL_Renderer_3_2::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
 {
-	//glColor4ub(r, g, b, a);
-	//glDisable(mTextureTarget);
 
-	fillVertexArray(x, y, width, height);
-	drawVertexArray(0);
-
-	//glEnable(mTextureTarget);
-	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -458,8 +393,6 @@ void OGL_Renderer_3_2::drawText(Font& font, const std::string& text, float x, fl
 	// Ignore if font isn't loaded or string is empty
 	if(!font.loaded() || text.empty())
 		return;
-
-	//glColor4ub(r, g, b, a);
 
 	int offset = 0;
 	int	cellSize = font.glyphCellSize();
@@ -476,8 +409,6 @@ void OGL_Renderer_3_2::drawText(Font& font, const std::string& text, float x, fl
 		drawVertexArray(font.texture_id(), false);
 		offset += gm.advance + gm.minX;
 	}
-
-	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -486,8 +417,6 @@ void OGL_Renderer_3_2::drawTextClamped(Font& font, const std::string& text, floa
 	// Ignore if font isn't loaded or string is empty
 	if(!font.loaded() || text.empty())
 		return;
-
-	//glColor4ub(r, g, b, a);
 
 	int offset = 0;
 	int	cellSize = font.glyphCellSize();
@@ -502,30 +431,21 @@ void OGL_Renderer_3_2::drawTextClamped(Font& font, const std::string& text, floa
 		{
 			fillVertexArray(rasterX + x + offset, rasterY + y, cellSize, cellSize);
 			fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
-			//cout << "Ins:\t" << x + offset + gm.advance << "\t" << text[i]<< "\t" << temp << "\t" << gm.advance << "\t" << temp - gm.advance << "\t" << x + offset + (temp - gm.advance) << endl;
 		}
 		else if(x + offset + (gm.advance - temp) <= w && temp > 0)
 		{
 			fillVertexArray(rasterX + x + offset, rasterY + y, cellSize, cellSize);
 			fillTextureArray(gm.uvX, gm.uvY, static_cast<float>(temp)/static_cast<float>(cellSize), gm.uvH);
-			//cout << "Out:\t" << gm.uvX << "\t" << gm.uvW << "\t" << gm.uvY << "\t" << gm.uvH << "\t" << static_cast<float>(temp)/static_cast<float>(cellSize) << endl;
 		}
 
 		drawVertexArray(font.texture_id(), false);
 		offset += gm.advance;
 	}
-
-	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
-	//drawText(font, text, rasterX, rasterY, r, g, b, a); // replace with appropriate drawing code.
-
-	// please finish me
 }
 
 
 void OGL_Renderer_3_2::update()
 {
-	//clearScreen(0, 0, 0);
-	//glViewport(0, 0, width(), height());
 	Renderer::update();
 	//SDL_GL_SwapBuffers();
 	SDL_GL_SwapWindow(mWindow);
@@ -535,7 +455,6 @@ void OGL_Renderer_3_2::update()
 
 float OGL_Renderer_3_2::width()
 {
-    //return static_cast<float>(mScreen->w);
 	int n = 0;
 	SDL_GetWindowSize(mWindow, &n, NULL);
 	return static_cast<float>(n);
@@ -544,7 +463,6 @@ float OGL_Renderer_3_2::width()
 
 float OGL_Renderer_3_2::height()
 {
-    //return static_cast<float>(mScreen->h);
 	int n = 0;
 	SDL_GetWindowSize(mWindow, NULL, &n);
 	return static_cast<float>(n);
@@ -711,6 +629,17 @@ void OGL_Renderer_3_2::initGL()
 	getError();
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	getError();
+	
+	glGenBuffers(1, &mColorBufferObject);
+	getError();
+	glBindBuffer(GL_ARRAY_BUFFER, mColorBufferObject);
+	getError();
+	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(DEFAULT_COLOR), DEFAULT_COLOR, GL_STATIC_DRAW);
+	getError();
+	glEnableVertexAttribArray(2);
+	getError();
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	getError();
 }
 
 
@@ -771,10 +700,8 @@ void OGL_Renderer_3_2::initVideo(unsigned int resX, unsigned int resY, unsigned 
 	
 	int w, h;
 	SDL_GetWindowSize(mWindow, &w, &h);
-	projection = glm::ortho(0.0f, static_cast<float>(w), static_cast<float>(h), 0.0f, -1.0f, 1.0f);
-	glm::mat4 view = glm::lookAt(glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, 0.0, 1.0));
-	glm::mat4 Model = glm::scale(
-								 glm::mat4(1.0f),
-								 glm::vec3(1.0f, 1.0f, 1.0f));
-	ModelViewMatrix = projection * Model;
+	Projection = glm::ortho(0.0f, static_cast<float>(w), static_cast<float>(h), 0.0f, -1.0f, 1.0f);
+	View = glm::mat4(1.);
+	Model = glm::mat4(1.0);
+	ModelViewMatrix = Projection * View * Model;
 }

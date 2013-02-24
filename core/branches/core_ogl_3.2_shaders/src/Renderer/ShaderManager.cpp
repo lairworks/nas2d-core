@@ -41,6 +41,7 @@ void ShaderManager::loadDefaultShaders()
 	
 	glBindAttribLocation(mShaderProgram, 0, "position");
 	glBindAttribLocation(mShaderProgram, 1, "texCoord");
+	glBindAttribLocation(mShaderProgram, 2, "color");
 	
 	linkProgram(mShaderProgram);
 	validateProgram(mShaderProgram);

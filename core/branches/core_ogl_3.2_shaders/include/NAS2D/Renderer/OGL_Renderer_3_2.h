@@ -105,13 +105,16 @@ private:
 	GLuint				mTextureTarget;				/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */
 		GLuint				mVertexBufferObject;	/**< COMMENT ME! */
 		GLuint				mTextureBufferObject;	/**< COMMENT ME! */
+		GLuint				mColorBufferObject;		/**< COMMENT ME! */
 
 	unsigned int		mFontShaderFrag;
 	unsigned int		mFontShaderVert;
 
 	ShaderManager		*mShaderManager;
 
-	glm::mat4 projection;
+	glm::mat4 Projection;
+	glm::mat4 View;
+	glm::mat4 Model;
 	glm::mat4 ModelViewMatrix;
 	GLint mModelViewMatrix;
 	GLint mShaderTexture;

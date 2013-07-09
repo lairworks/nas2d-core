@@ -133,28 +133,32 @@ void ShaderManager::printProgramInfoLog(GLuint obj)
 
 void ShaderManager::validateProgram(GLuint program)
 {
-    GLint logLength;
-    
-    glValidateProgram(program);
-    getError();
-    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-    getError();
-    if (logLength > 0)
-    {
-        GLchar *log = (char *)malloc(logLength);
-        glGetProgramInfoLog(program, logLength, &logLength, log);
-        getError();
-        cout << "Program validation produced errors:\n" << log << endl;
-        free(log);
-    }
-    
-    GLint status;
-    glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
-    getError();
-    if (0 == status)
-    {
-        cout << "Failed to link shader program" << endl;;
-    }
+	GLint logLength = 0;
+
+	glValidateProgram(program);
+
+	getError();
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+	getError();
+
+	cout << logLength << endl;
+
+	if(logLength > 0)
+	{
+		GLchar *log = (char *)malloc(logLength);
+		glGetProgramInfoLog(program, logLength, &logLength, log);
+		getError();
+		cout << "Program validation produced errors:\n" << log << endl;
+		free(log);
+	}
+
+	GLint status = 0;
+	glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
+	getError();
+	if(!status)
+	{
+		cout << "Failed to link shader program" << endl;;
+	}
 }
 
 void ShaderManager::getError()

@@ -132,7 +132,7 @@ void Music::load()
 	}
 
 	// Load failed
-	it->second.music = Mix_LoadMUS_RW(SDL_RWFromConstMem(it->second.buffer->raw_bytes(), it->second.buffer->size()));
+	it->second.music = Mix_LoadMUS_RW(SDL_RWFromConstMem(it->second.buffer->raw_bytes(), it->second.buffer->size()), 0);
 	if(!it->second.music) 
 	{
 		cout << "(ERROR) Music::load(): " << Mix_GetError() << endl;

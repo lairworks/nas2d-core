@@ -8,18 +8,14 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Filesystem.h"
-#include "NAS2D/Signal.h"
+#ifndef _NAS_SPRITE_
+#define _NAS_SPRITE_
 
-#include "NAS2D/Resources/Image.h"
-#include "NAS2D/Renderer/Renderer.h"
+#include "NAS2D/NAS2D.h"
 
 #include <map>
 #include <string>
 #include <vector>
-
-#ifndef _NAS_SPRITE_
-#define _NAS_SPRITE_
 
 extern const std::string SPRITE_VERSION;
 
@@ -55,7 +51,9 @@ public:
 	void rotation(float angle);
 	float rotation() const;
 
-	void alpha(int alpha) { mAlpha = clamp(alpha, 0, 255); }
+	void alpha(int alpha) { mColor.alpha(alpha); }
+	void color(const Color_4ub& color) { mColor = color; }
+	void color(int red, int green, int blue, int alpha) { mColor = Color_4ub(red, green, blue, alpha); }
 
 	int width();
 	int height();
@@ -137,7 +135,7 @@ private:
 
 	Callback			mFrameCallback;		/**< Callback to signal a listener whenever an animation sequence completes. */
 
-	int					mAlpha;				/**< Alpha value to draw the sprite. */
+	Color_4ub			mColor;				/**< Color value to use for drawing the sprite. */
 
 	float				mRotationAngle;		/**< Angle of rotation in degrees. */
 

@@ -168,6 +168,11 @@ Image::~Image()
 	// if texture id reference count is 0, delete the texture.
 	if(it->second.ref_count < 1)
 	{
+		if(mTextureId == 0)
+			return;
+
+		cout << "Deleting Texture '" << name() << "' (" << it->second.textureId << ")" << endl;
+
 		glDeleteTextures(1, &mTextureId);
 
 		if(it->second.fboId != 0)

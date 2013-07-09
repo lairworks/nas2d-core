@@ -94,8 +94,10 @@ public:
 	virtual void drawImage(Image& image, float x, float y, float scale = 1.0f);
 	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
 
-	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees);
-	void drawImageRotated(Image& image, float x, float y, float degrees, Color_4ub color = COLOR_NORMAL, float scale = 1.0f);
+	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color_4ub& color = COLOR_NORMAL);
+	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a);
+
+	void drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color = COLOR_NORMAL, float scale = 1.0f);
 	virtual void drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale = 1.0f);
 
 	void drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color = COLOR_NORMAL);

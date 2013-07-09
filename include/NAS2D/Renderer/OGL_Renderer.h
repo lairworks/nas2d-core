@@ -48,7 +48,7 @@ public:
 	void drawImage(Image& image, float x, float y, float scale);
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
 
-	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees);
+	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a);
 	void drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale);
 	void drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a);
 

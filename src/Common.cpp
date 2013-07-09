@@ -34,7 +34,7 @@
  */
 bool isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)
 {
-	return (pointX > rectX && pointX < rectX + rectW && pointY > rectY && pointY < rectY + rectH);
+	return (pointX >= rectX && pointX <= rectX + rectW && pointY >= rectY && pointY <= rectY + rectH);
 }
 
 
@@ -50,7 +50,7 @@ bool isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int 
  */
 bool isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
 {
-	return (point.x > rect.x && point.x < rect.x + rect.w && point.y > rect.y && point.y < rect.y + rect.h);
+	return (point.x >= rect.x && point.x <= rect.x + rect.w && point.y >= rect.y && point.y <= rect.y + rect.h);
 }
 
 
@@ -72,7 +72,7 @@ bool isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
  */
 bool isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int bX2, int bY2)
 {
-	return (aX < bX2 && aX2 > bX && aY < bY2 && aY2 > bY);
+	return (aX <= bX2 && aX2 >= bX && aY <= bY2 && aY2 >= bY);
 }
 
 
@@ -88,7 +88,7 @@ bool isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int bX2, int
  */
 bool isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
 {
-	return (a.x < (b.x + b.w) && (a.x + a.w) > b.x && a.y < (b.y + b.h) && (a.y + a.h) > b.y);
+	return (a.x <= (b.x + b.w) && (a.x + a.w) >= b.x && a.y <= (b.y + b.h) && (a.y + a.h) >= b.y);
 }
 
 

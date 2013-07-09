@@ -42,7 +42,7 @@ string endTag(int row, const std::string& name)
 Sprite::Sprite():	mSpriteName("Default Constructed"),
 					mCurrentAction(DEFAULT_ACTION),
 					mCurrentFrame(0),
-					mAlpha(255),
+					mColor(COLOR_NORMAL),
 					mRotationAngle(0.0f),
 					mPaused(false)
 {
@@ -58,7 +58,7 @@ Sprite::Sprite():	mSpriteName("Default Constructed"),
 Sprite::Sprite(const std::string& filePath):	mSpriteName(filePath),
 												mCurrentAction(DEFAULT_ACTION),
 												mCurrentFrame(0),
-												mAlpha(255),
+												mColor(COLOR_NORMAL),
 												mRotationAngle(0.0f),
 												mPaused(false)
 {
@@ -75,7 +75,7 @@ Sprite::Sprite(const Sprite &sprite):	mImageSheets(sprite.mImageSheets),
 										mSpriteName(sprite.mSpriteName),
 										mCurrentAction(sprite.mCurrentAction),
 										mCurrentFrame(sprite.mCurrentFrame),
-										mAlpha(sprite.mAlpha),
+										mColor(sprite.mColor),
 										mRotationAngle(sprite.mRotationAngle),
 										mPaused(sprite.mPaused)
 {}
@@ -91,7 +91,7 @@ Sprite& Sprite::operator=(const Sprite &rhs)
 	mSpriteName		= rhs.mSpriteName;
 	mCurrentAction	= rhs.mCurrentAction;
 	mCurrentFrame	= rhs.mCurrentFrame;
-	mAlpha			= rhs.mAlpha;
+	mColor			= rhs.mColor;
 	mRotationAngle	= rhs.mRotationAngle;
 	mPaused			= rhs.mPaused;
 
@@ -181,7 +181,7 @@ void Sprite::update(float x, float y)
 		}
 	}
 
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height(), mRotationAngle);
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height(), mRotationAngle, mColor);
 }
 
 

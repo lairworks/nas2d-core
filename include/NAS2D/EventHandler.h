@@ -216,6 +216,7 @@ public:
 	typedef Gallant::Signal0<>						QuitEventCallback;
 
 	EventHandler();
+	~EventHandler();
 
 	ActivateEventCallback&				activate();
 

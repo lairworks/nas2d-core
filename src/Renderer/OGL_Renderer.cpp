@@ -82,8 +82,10 @@ OGL_Renderer::~OGL_Renderer()
 
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
-	_window = NULL;
+	//_window = NULL;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+
+	cout << "OpenGL Renderer Terminated." << endl;
 
 	//delete mShaderManager;
 }
@@ -150,7 +152,7 @@ void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, floa
 }
 
 
-void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees)
+void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a)
 {
 	glPushMatrix();
 
@@ -161,6 +163,8 @@ void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float raster
 	// Adjust the translation so that images appear where expected.
 	glTranslatef(rasterX + tX, rasterY + tY, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+
+	glColor4ub(r, g, b, a);
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
@@ -173,6 +177,8 @@ void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float raster
 	drawVertexArray(image.texture_id(), false);
 
 	glPopMatrix();
+
+	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 

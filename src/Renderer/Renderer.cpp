@@ -108,8 +108,9 @@ void Renderer::drawImage(Image& image, float x, float y, float scale)
 void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
 {}
 
+
 /**
- * Draws a portion of a given Image to the screen.
+ * Draws a portion of a given Image to the screen with optional rotation.
  *
  * \param	image		A refernece to an Image Resource.
  * \param	rasterX		X-Coordinate to draw the Image at.
@@ -119,8 +120,31 @@ void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x,
  * \param	width		Width of the area to start getting pixel data from.
  * \param	height		Height of the area to start getting pixel data from.
  * \param	degrees		Angle of rotation in degrees.
+ * \param	color		Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees)
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color_4ub& color)
+{
+	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
+/**
+ * Draws a portion of a given Image to the screen with optional rotation.
+ *
+ * \param	image		A refernece to an Image Resource.
+ * \param	rasterX		X-Coordinate to draw the Image at.
+ * \param	rasterY		Y-Coordinate to draw the Image at.
+ * \param	x			X-Coordinate of the area to start getting pixel data from.
+ * \param	y			Y-Coordinate of the area to start getting pixel data from.
+ * \param	width		Width of the area to start getting pixel data from.
+ * \param	height		Height of the area to start getting pixel data from.
+ * \param	degrees		Angle of rotation in degrees.
+ * \param	r			Red value to tint the image at (0 - 255).
+ * \param	g			Green value to tint the image at (0 - 255).
+ * \param	b			Blue value to tint the image at (0 - 255).
+ * \param	a			Alpha value to draw the image at (0 - 255).
+ */
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a)
 {}
 
 
@@ -134,7 +158,7 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, Color_4ub color, float scale)
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color, float scale)
 {
 	drawImageRotated(image, x, y, degrees, color.red(), color.green(), color.blue(), color.alpha(), scale);
 }

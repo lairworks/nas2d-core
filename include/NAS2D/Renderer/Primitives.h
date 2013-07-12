@@ -64,7 +64,7 @@ public:
 
 	void operator()(int _x, int _y, int _w, int _h) { x = _x; y = _y; w = _w; h = _h; }
 
-	bool null() { return x * y == 0; }
+	bool null() { return w * h == 0; }
 
 	int x, y, w, h;
 };
@@ -84,7 +84,7 @@ public:
 
 	void operator()(float _x, float _y, float _w, float _h) { x = _x; y = _y; w = _w; h = _h; }
 
-	bool null() { return x * y == 0; }
+	bool null() { return w * h == 0; }
 
 	float x, y, w, h;
 };

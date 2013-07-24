@@ -51,9 +51,39 @@ public:
 	void rotation(float angle);
 	float rotation() const;
 
+	/**
+	 * Sets the alpha value for the Sprite.
+	 * 
+	 * \param	alpha	Alpha value to set between 0 - 255.
+	 */
 	void alpha(int alpha) { mColor.alpha(alpha); }
+	
+	/**
+	 * Gets the alpha value for the Sprite.
+	 */
+	int alpha() const { return mColor.alpha(); }
+
+	/**
+	 * Sets the color of the Sprite.
+	 * 
+	 * \param	color	Reference to a Color_4ub object.
+	 */
 	void color(const Color_4ub& color) { mColor = color; }
+
+	/**
+	 * Sets the color of the Sprite.
+	 * 
+	 * \param	red		Red value to set between 0 - 255.
+	 * \param	green	Green value to set between 0 - 255.
+	 * \param	blue	Blue value to set between 0 - 255.
+	 * \param	alpha	Alpha value to set between 0 - 255.
+	 */
 	void color(int red, int green, int blue, int alpha) { mColor = Color_4ub(red, green, blue, alpha); }
+
+	/**
+	 * Gets the color of the Sprite.
+	 */
+	const Color_4ub& color() const { return mColor; }
 
 	int width();
 	int height();

@@ -171,7 +171,7 @@ Image::~Image()
 		if(mTextureId == 0)
 			return;
 
-		cout << "Deleting Texture '" << name() << "' (" << it->second.textureId << ")" << endl;
+		//cout << "Deleting Texture '" << name() << "' (" << it->second.textureId << ")" << endl;
 
 		glDeleteTextures(1, &mTextureId);
 

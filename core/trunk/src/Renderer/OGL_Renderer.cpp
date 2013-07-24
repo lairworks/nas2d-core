@@ -82,7 +82,8 @@ OGL_Renderer::~OGL_Renderer()
 
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
-	//_window = NULL;
+	mWindow = NULL;
+	_window = NULL;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	cout << "OpenGL Renderer Terminated." << endl;

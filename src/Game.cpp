@@ -72,9 +72,9 @@ Game::~Game()
 	cout << "Shutting down..." << endl;
 
 	// Destroy all of our various components in reverse order.
+	Utility<Renderer>::clean();
 	Utility<EventHandler>::clean();
 	Utility<Mixer>::clean();
-	Utility<Renderer>::clean();
 	Utility<Configuration>::clean();
 	Utility<Filesystem>::clean();
 

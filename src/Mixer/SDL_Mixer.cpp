@@ -34,6 +34,10 @@ SDL_Mixer::~SDL_Mixer()
 
 	stopAllAudio();
 
+	// force a quit
+	while(Mix_Init(0))
+		Mix_Quit();
+
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 
 	cout << "Mixer Terminated." << endl;

@@ -180,6 +180,8 @@ void Sprite::update(float x, float y)
 			mFrameCallback.Emit();		// Notifiy any frame listeners that the animation sequence has completed.
 		}
 	}
+	else if(frame.frameDelay() == FRAME_PAUSE)
+		mFrameCallback.Emit();
 
 	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height(), mRotationAngle, mColor);
 }

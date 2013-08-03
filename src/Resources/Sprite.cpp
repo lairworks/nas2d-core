@@ -183,7 +183,7 @@ void Sprite::update(float x, float y)
 	else if(frame.frameDelay() == FRAME_PAUSE)
 		mFrameCallback.Emit();
 
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), frame.x(), frame.y(), frame.width(), frame.height(), mRotationAngle, mColor);
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), static_cast<float>(frame.x()), static_cast<float>(frame.y()), static_cast<float>(frame.width()), static_cast<float>(frame.height()), mRotationAngle, mColor);
 }
 
 

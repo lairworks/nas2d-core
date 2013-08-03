@@ -236,10 +236,10 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 	drawImageRepeated(center, x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height());
 
 	// Draw the sides
-	drawImageRepeated(top, x + topLeft.width(), y, w - topLeft.width() - topRight.width(), top.height());
-	drawImageRepeated(bottom, x + bottomLeft.width(), y + h - bottom.height(), w - bottomLeft.width() - bottomRight.width(), bottom.height());
-	drawImageRepeated(left, x, y + topLeft.height(), left.width(), h - topLeft.height() - bottomLeft.height());
-	drawImageRepeated(right, x + w - right.width(), y + topRight.height(), right.width(), h - topRight.height() - bottomRight.height());
+	drawImageRepeated(top, x + static_cast<float>(topLeft.width()), y, w - static_cast<float>(topLeft.width() - topRight.width()), static_cast<float>(top.height()));
+	drawImageRepeated(bottom, x + static_cast<float>(bottomLeft.width()), y + h - static_cast<float>(bottom.height()), w - static_cast<float>(bottomLeft.width() - bottomRight.width()), static_cast<float>(bottom.height()));
+	drawImageRepeated(left, x, y + static_cast<float>(topLeft.height()), static_cast<float>(left.width()), h - topLeft.height() - bottomLeft.height());
+	drawImageRepeated(right, x + w - static_cast<float>(right.width()), y + static_cast<float>(topRight.height()), static_cast<float>(right.width()), h - static_cast<float>(topRight.height() - bottomRight.height()));
 
 	// Draw the corners
 	drawImage(topLeft, x, y);
@@ -290,19 +290,6 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
  */
 void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {}
-
-
-/**
- * Draws a source image to a destination image.
- * 
- * \param	source		A reference to a source Image.
- * \param	destination	A reference to the destination Image.
- * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
- */
-void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint)
-{
-	drawImageToImage(source, destination, Point_2df(dstPoint.x, dstPoint.y));
-}
 
 
 /**

@@ -248,8 +248,8 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	Rectangle_2d clipRect;
 
-	(dstPoint.x + source.width()) > destination.width() ? clipRect.w = source.width() - ((dstPoint.x + source.width()) - destination.width()) : clipRect.w = source.width();
-	(dstPoint.y + source.height()) > destination.height() ? clipRect.h = source.height() - ((dstPoint.y + source.height()) - destination.height()) : clipRect.h = source.height();
+	(static_cast<int>(dstPoint.x) + source.width()) > destination.width() ? clipRect.w = source.width() - ((static_cast<int>(dstPoint.x) + source.width()) - destination.width()) : clipRect.w = source.width();
+	(static_cast<int>(dstPoint.y) + source.height()) > destination.height() ? clipRect.h = source.height() - ((static_cast<int>(dstPoint.y) + source.height()) - destination.height()) : clipRect.h = source.height();
 
 	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
 	if(clipRect.w < 1 || clipRect.h < 1)
@@ -262,7 +262,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mTextureTarget, destination.texture_id(), 0);
 
 	// Flip the Y axis to keep images drawing correctly.
-	fillVertexArray(dstPoint.x, destination.height() - dstPoint.y, clipRect.w, -clipRect.h);
+	fillVertexArray(dstPoint.x, static_cast<float>(destination.height()) - dstPoint.y, static_cast<float>(clipRect.w), static_cast<float>(-clipRect.h));
 
 	drawVertexArray(source.texture_id());
 	glBindTexture(mTextureTarget, destination.texture_id());
@@ -435,7 +435,7 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float 
 	glColor4ub(r, g, b, a);
 
 	int offset = 0;
-	int	cellSize = font.glyphCellSize();
+	float cellSize = static_cast<float>(font.glyphCellSize());
 	Font::GlyphMetrics gm;
 
 
@@ -463,13 +463,13 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, float ra
 	glColor4ub(r, g, b, a);
 	
 	int offset = 0;
-	int	cellSize = font.glyphCellSize();
+	float cellSize = static_cast<float>(font.glyphCellSize());
 	Font::GlyphMetrics gm;
 
-	for(int i = 0; i < text.size(); i++)
+	for(size_t i = 0; i < text.size(); i++)
 	{
 		gm = font.glyphMetrics(static_cast<int>(text[i]));
-		int temp = (w - (x + offset));
+		float temp = (w - (x + offset));
 		
 		if(x + offset + gm.advance <= w)
 		{

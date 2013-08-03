@@ -336,6 +336,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\Renderer\Primitives.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\Renderer\Renderer.cpp"
 					>
 				</File>

@@ -108,7 +108,6 @@ public:
 	void drawImageRect(float x, float y, float w, float h, ImageList& images);
 
 	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint);
-	void drawImageToImage(Image& source, Image& destination, const Point_2d& dstPoint);
 
 	void drawPixel(float x, float y, const Color_4ub& color = COLOR_WHITE);
 	virtual void drawPixel(float x, float y, int r, int g, int b, int a = 255);

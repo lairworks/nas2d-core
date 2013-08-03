@@ -89,23 +89,26 @@ public:
 	float x, y, w, h;
 };
 
+class Point_2d;
+class Point_2df;
 
 /**
- * \struct	Point_2d
+ * \class	Point_2d
  * \brief	2D point.
  */
 class Point_2d
 {
 public:
-	Point_2d(): x(0), y(0) {}
-	Point_2d(int x, int y): x(x), y(y) {}
+	Point_2d();
+	Point_2d(int x, int y);
+	Point_2d(const Point_2df& _p);
 
-	bool operator==(const Point_2d& pt) { return (x == pt.x) && (y == pt.y); }
-	bool operator!=(const Point_2d& pt) { return (x != pt.x) || (y != pt.y); }
-	void operator()(int _x, int _y) { x = _x; y = _y; }
+	bool operator==(const Point_2d& pt);
+	bool operator!=(const Point_2d& pt);
+	void operator()(int _x, int _y);
 
-	Point_2d operator+(const Point_2d& pt) { return Point_2d(x + pt.x, y + pt.y); }
-	Point_2d operator-(const Point_2d& pt) { return Point_2d(x - pt.x, y - pt.y); }
+	Point_2d operator+(const Point_2d& pt);
+	Point_2d operator-(const Point_2d& pt);
 
 	int x, y;
 };
@@ -120,6 +123,7 @@ class Point_2df
 public:
 	Point_2df(): x(0.0f), y(0.0f) {}
 	Point_2df(float x, float y): x(x), y(y) {}
+	Point_2df(const Point_2d& _p): x(static_cast<float>(_p.x)), y(static_cast<float>(_p.y)) {}
 
 	bool operator==(const Point_2df& pt) { return (x == pt.x) && (y == pt.y); }
 	bool operator!=(const Point_2df& pt) { return (x != pt.x) || (y != pt.y); }

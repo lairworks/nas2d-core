@@ -43,6 +43,93 @@ public:
 	typedef Gallant::Signal1<bool>					ActivateEventCallback;
 
 	/**
+	 * \typedef	WindowHiddenEventCallback
+	 * \brief	Triggered whenever the application's window is hidden or exposed.
+	 * 
+	 * The callback function expects one bool paramter.
+	 * 
+	 * \code
+	 * void function(bool hidden);
+	 * \endcode
+	 * 
+	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
+	 */
+	typedef Gallant::Signal1<bool>					WindowHiddenEventCallback;
+
+
+	/**
+	 * \typedef	WindowExposedEventCallback
+	 * \brief	Triggered whenever the application's window is exposed.
+	 * 
+	 * \code
+	 * void function(void);
+	 * \endcode
+	 * 
+	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
+	 */
+	typedef Gallant::Signal0<void>					WindowExposedEventCallback;
+
+	/**
+	 * \typedef	WindowMinimizedEventCallback
+	 * \brief	Triggered whenever the application's window is minimized.
+	 * 
+	 * \code
+	 * void function(void);
+	 * \endcode
+	 * 
+	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
+	 */
+	typedef Gallant::Signal0<void>					WindowMinimizedEventCallback;
+
+	/**
+	 * \typedef	WindowMaximizedEventCallback
+	 * \brief	Triggered whenever the application's window is maximized.
+	 * 
+	 * \code
+	 * void function(void);
+	 * \endcode
+	 * 
+	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
+	 */
+	typedef Gallant::Signal0<void>					WindowMaximizedEventCallback;
+
+	/**
+	 * \typedef	WindowRestoredEventCallback
+	 * \brief	Triggered whenever the application's window is restored to its original size and location.
+	 * 
+	 * \code
+	 * void function(void);
+	 * \endcode
+	 * 
+	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
+	 */
+	typedef Gallant::Signal0<void>					WindowRestoredEventCallback;
+
+	/**
+	 * \typedef	WindowMouseEnterEventCallback
+	 * \brief	Triggered whenever the mouse enters the application's window.
+	 * 
+	 * \code
+	 * void function(void);
+	 * \endcode
+	 * 
+	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
+	 */
+	typedef Gallant::Signal0<void>					WindowMouseEnterEventCallback;
+
+	/**
+	 * \typedef	WindowMouseLeaveEventCallback
+	 * \brief	Triggered whenever the mouse leaves the application's window.
+	 * 
+	 * \code
+	 * void function(void);
+	 * \endcode
+	 * 
+	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
+	 */
+	typedef Gallant::Signal0<void>					WindowMouseLeaveEventCallback;
+
+	/**
 	 * \typedef	JoystickAxisMotionEventCallback
 	 * \brief	Joystic axis events generate three values: Device ID,
 	 *			Axis ID and Axis Position.
@@ -220,6 +307,16 @@ public:
 
 	ActivateEventCallback&				activate();
 
+	WindowHiddenEventCallback&			windowHidden();
+	WindowExposedEventCallback&			windowExposed();
+
+	WindowMinimizedEventCallback&		windowMinimized();
+	WindowMaximizedEventCallback&		windowMaximized();
+	WindowRestoredEventCallback	&		windowRestored();
+
+	WindowMouseEnterEventCallback&		windowMouseEnter();
+	WindowMouseLeaveEventCallback&		windowMouseLeave();
+
 	JoystickAxisMotionEventCallback&	joystickAxisMotion();
 	JoystickBallMotionEventCallback&	joystickBallMotion();
 	JoystickButtonEventCallback&		joystickButtonUp();
@@ -248,17 +345,29 @@ public:
 private:
 
 	ActivateEventCallback				mActivateEvent;
+
+	WindowHiddenEventCallback			mWindowHiddenEventCallback;
+	WindowExposedEventCallback			mWindowExposedEventCallback;
+	WindowMinimizedEventCallback		mWindowMinimizedEventCallback;
+	WindowMaximizedEventCallback		mWindowMaximizedEventCallback;
+	WindowRestoredEventCallback			mWindowRestoredEventCallback;
+	WindowMouseEnterEventCallback		mWindowMouseEnterEventCallback;
+	WindowMouseLeaveEventCallback		mWindowMouseLeaveEventCallback;
+
 	JoystickAxisMotionEventCallback		mJoystickAxisMotionEvent;
 	JoystickBallMotionEventCallback		mJoystickBallMotionEvent;
 	JoystickButtonEventCallback			mJoystickButtonUpEvent;
 	JoystickButtonEventCallback			mJoystickButtonDownEvent;
 	JoystickHatMotionEventCallback		mJoystickHatMotionEvent;
+
 	KeyUpEventCallback					mKeyUpEvent;
 	KeyDownEventCallback				mKeyDownEvent;
+
 	MouseButtonEventCallback			mMouseButtonUpEvent;
 	MouseButtonEventCallback			mMouseButtonDownEvent;
 	MouseMotionEventCallback			mMouseMotionEvent;
 	MouseWheelEventCallback				mMouseWheelEvent;
+
 	QuitEventCallback					mQuitEvent;
 
 };

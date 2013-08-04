@@ -74,13 +74,138 @@ EventHandler::ActivateEventCallback& EventHandler::activate()
  * connect(this, &Object::function);
  * \endcode
  * 
+ * See EventHandler::WindowHiddenEventCallback for paramter listing.
+ */
+EventHandler::WindowHiddenEventCallback& EventHandler::windowHidden()
+{
+	return mWindowHiddenEventCallback;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::WindowExposedEventCallback for paramter listing.
+ */
+EventHandler::WindowExposedEventCallback& EventHandler::windowExposed()
+{
+	return mWindowExposedEventCallback;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::WindowMinimizedEventCallback for paramter listing.
+ */
+EventHandler::WindowMinimizedEventCallback& EventHandler::windowMinimized()
+{
+	return mWindowMinimizedEventCallback;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::WindowMaximizedEventCallback for paramter listing.
+ */
+EventHandler::WindowMaximizedEventCallback& EventHandler::windowMaximized()
+{
+	return mWindowMaximizedEventCallback;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::WindowRestoredEventCallback for paramter listing.
+ */
+EventHandler::WindowRestoredEventCallback& EventHandler::windowRestored()
+{
+	return mWindowRestoredEventCallback;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::WindowMouseEnterEventCallback for paramter listing.
+ */
+EventHandler::WindowMouseEnterEventCallback& EventHandler::windowMouseEnter()
+{
+	return mWindowMouseEnterEventCallback;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
+ * See EventHandler::WindowMouseLeaveEventCallback for paramter listing.
+ */
+EventHandler::WindowMouseLeaveEventCallback& EventHandler::windowMouseLeave()
+{
+	return mWindowMouseLeaveEventCallback;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
  * See EventHandler::JoystickAxisMotionEventCallback for paramter listing.
  */
 EventHandler::JoystickAxisMotionEventCallback& EventHandler::joystickAxisMotion()
 {
 	return mJoystickAxisMotionEvent;
 }
-
 
 
 /**
@@ -101,7 +226,6 @@ EventHandler::JoystickBallMotionEventCallback& EventHandler::joystickBallMotion(
 }
 
 
-
 /**
  * \brief Gets the handler slot associated with this event.
  * 
@@ -118,7 +242,6 @@ EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonUp()
 {
 	return mJoystickButtonUpEvent;
 }
-
 
 
 /**
@@ -398,11 +521,27 @@ void EventHandler::pump()
 				break;
 
 			case SDL_WINDOWEVENT:
-				/// \todo	This is very incomplete. Update to include the other window events.
+				// Not completely happy with this but meh, it works.
 				if(event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
 					mActivateEvent(true);
-				else
+				else if(event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
 					mActivateEvent(false);
+				else if(event.window.event == SDL_WINDOWEVENT_SHOWN)
+					mWindowHiddenEventCallback(false);
+				else if(event.window.event == SDL_WINDOWEVENT_HIDDEN)
+					mWindowHiddenEventCallback(true);
+				else if(event.window.event == SDL_WINDOWEVENT_EXPOSED)
+					mWindowExposedEventCallback();
+				else if(event.window.event == SDL_WINDOWEVENT_MINIMIZED)
+					mWindowMinimizedEventCallback();
+				else if(event.window.event == SDL_WINDOWEVENT_MAXIMIZED)
+					mWindowMaximizedEventCallback();
+				else if(event.window.event == SDL_WINDOWEVENT_RESTORED)
+					mWindowRestoredEventCallback();
+				else if(event.window.event == SDL_WINDOWEVENT_ENTER)
+					mWindowMouseEnterEventCallback();
+				else if(event.window.event == SDL_WINDOWEVENT_LEAVE)
+					mWindowMouseLeaveEventCallback();
 
 				break;
 

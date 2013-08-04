@@ -94,7 +94,7 @@ Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
 	generateTexture(buffer, 4, width, height);
 
 	// Update resource management.
-	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
+	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
 	Image::_IdMap[name()].ref_count++;
 
 	delete [] buffer;
@@ -133,7 +133,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
 	generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
-	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
+	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
 	Image::_IdMap[name()].ref_count++;
 }
 
@@ -276,7 +276,7 @@ void Image::load()
 	generateTexture(mPixels->pixels, mPixels->format->BytesPerPixel, mPixels->w, mPixels->h);
 
 	// Add generated texture id to texture ID map.
-	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w, mRect.h);
+	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
 	Image::_IdMap[name()].ref_count++;
 
 	loaded(true);
@@ -350,7 +350,7 @@ void Image::generateTexture(void *buffer, int bytesPerPixel, int width, int heig
  */
 int Image::width() const
 {
-	return mRect.w;
+	return mRect.w();
 }
 
 
@@ -359,7 +359,7 @@ int Image::width() const
  */
 int Image::height() const
 {
-	return mRect.h;
+	return mRect.h();
 }
 
 

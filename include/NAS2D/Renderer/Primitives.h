@@ -21,76 +21,145 @@
 class Color_4ub
 {
 public:
-	Color_4ub():	mR(static_cast<unsigned char>(255)),
-					mG(static_cast<unsigned char>(255)),
-					mB(static_cast<unsigned char>(255)),
-					mA(static_cast<unsigned char>(255))
-	{}
+	Color_4ub();
 
-	Color_4ub(int r, int g, int b, int a):	mR(static_cast<unsigned char>(r)),
-											mG(static_cast<unsigned char>(g)),
-											mB(static_cast<unsigned char>(b)),
-											mA(static_cast<unsigned char>(a))
-	{}
+	Color_4ub(int r, int g, int b, int a);
 
-	void operator()(int r, int g, int b, int a) { red(r); green(g); blue(b); alpha(a); }
+	void operator()(int r, int g, int b, int a);
 
-	int red() const { return static_cast<int>(mR); }
-	int green() const { return static_cast<int>(mG); }
-	int blue() const { return static_cast<int>(mB); }
-	int alpha() const { return static_cast<int>(mA); }
+	int red() const;
+	int green() const;
+	int blue() const;
+	int alpha() const;
 
-	void red(int red) { mR = static_cast<unsigned char>(red); }
-	void green(int green) { mG = static_cast<unsigned char>(green); }
-	void blue(int blue) { mB = static_cast<unsigned char>(blue); }
-	void alpha(int alpha) { mA = static_cast<unsigned char>(alpha); }
+	void red(int red);
+	void green(int green);
+	void blue(int blue);
+	void alpha(int alpha);
 
 private:
 	unsigned char mR, mG, mB, mA;
 };
 
 
+class Rectangle_2d;
+class Rectangle_2df;
+
+
 /**
- * \struct	Rectangle_2d
+ * \class	Rectangle_2d
  * \brief	2D rectangle.
  */
 class Rectangle_2d
 {
 public:
-	Rectangle_2d(): x(0), y(0), w(0), h(0) {}
-	Rectangle_2d(int x, int y, int w, int h): x(x), y(y), w(w), h(h) {}
+	Rectangle_2d();
+	Rectangle_2d(int x, int y, int w, int h);
+	Rectangle_2d(const Rectangle_2df& rect);
 
-	bool operator==(const Rectangle_2d& rect) { return (x == rect.x) && (y == rect.y) && (w == rect.w) && (h == rect.h); }
+	void operator()(int x, int y, int w, int h);
 
-	void operator()(int _x, int _y, int _w, int _h) { x = _x; y = _y; w = _w; h = _h; }
+	bool operator==(const Rectangle_2d& rect);
+	bool operator==(const Rectangle_2df& rect);
 
-	bool null() { return w * h == 0; }
+	bool operator!=(const Rectangle_2d& rect);
+	bool operator!=(const Rectangle_2df& rect);
 
-	int x, y, w, h;
+	Rectangle_2d& operator+=(const Rectangle_2d& rect);
+	Rectangle_2d& operator+=(const Rectangle_2df& rect);
+
+	Rectangle_2d& operator-=(const Rectangle_2d& rect);
+	Rectangle_2d& operator-=(const Rectangle_2df& rect);
+
+	Rectangle_2d& operator*=(const Rectangle_2d& rect);
+	Rectangle_2d& operator*=(const Rectangle_2df& rect);
+
+	const Rectangle_2d operator+(const Rectangle_2d& rect);
+	const Rectangle_2d operator+(const Rectangle_2df& rect);
+
+	const Rectangle_2d operator-(const Rectangle_2d& rect);
+	const Rectangle_2d operator-(const Rectangle_2df& rect);
+
+	const Rectangle_2d operator*(const Rectangle_2d& rect);
+	const Rectangle_2d operator*(const Rectangle_2df& rect);
+
+	bool null();
+
+	void x(int x);
+	int x() const;
+
+	void y(int y);
+	int y() const;
+
+	void w(int w);
+	int w() const;
+
+	void h(int h);
+	int h() const;
+
+private:
+	int mX, mY, mW, mH;
 };
 
 
 /**
- * \struct	Rectangle_2df
+ * \class	Rectangle_2df
  * \brief	Floating point 2D Rectangle.
  */
 class Rectangle_2df
 {
 public:
-	Rectangle_2df(): x(0), y(0), w(0), h(0) {}
-	Rectangle_2df(float x, float y, float w, float h): x(x), y(y), w(w), h(h) {}
+	Rectangle_2df();
+	Rectangle_2df(float x, float y, float w, float h);
 
-	bool operator==(const Rectangle_2df& rect) { return (x == rect.x) && (y == rect.y) && (w == rect.w) && (h == rect.h); }
+	void operator()(float x, float y, float w, float h);
 
-	void operator()(float _x, float _y, float _w, float _h) { x = _x; y = _y; w = _w; h = _h; }
+	bool operator==(const Rectangle_2d& rect);
+	bool operator==(const Rectangle_2df& rect);
 
-	bool null() { return w * h == 0; }
+	bool operator!=(const Rectangle_2d& rect);
+	bool operator!=(const Rectangle_2df& rect);
 
-	float x, y, w, h;
+	Rectangle_2df& operator+=(const Rectangle_2d& rect);
+	Rectangle_2df& operator+=(const Rectangle_2df& rect);
+
+	Rectangle_2df& operator-=(const Rectangle_2d& rect);
+	Rectangle_2df& operator-=(const Rectangle_2df& rect);
+
+	Rectangle_2df& operator*=(const Rectangle_2d& rect);
+	Rectangle_2df& operator*=(const Rectangle_2df& rect);
+
+	const Rectangle_2df operator+(const Rectangle_2d& rect);
+	const Rectangle_2df operator+(const Rectangle_2df& rect);
+
+	const Rectangle_2df operator-(const Rectangle_2d& rect);
+	const Rectangle_2df operator-(const Rectangle_2df& rect);
+
+	const Rectangle_2df operator*(const Rectangle_2d& rect);
+	const Rectangle_2df operator*(const Rectangle_2df& rect);
+
+	bool null();
+
+	void x(float x);
+	float x() const;
+
+	void y(float y);
+	float y() const;
+
+	void w(float w);
+	float w() const;
+
+	void h(float h);
+	float h() const;
+
+private:
+	float mX, mY, mW, mH;
 };
+
 
 class Point_2d;
 class Point_2df;
+
 
 /**
  * \class	Point_2d
@@ -103,36 +172,88 @@ public:
 	Point_2d(int x, int y);
 	Point_2d(const Point_2df& _p);
 
+	void operator()(int x, int y);
+
 	bool operator==(const Point_2d& pt);
+	bool operator==(const Point_2df& pt);
+
 	bool operator!=(const Point_2d& pt);
-	void operator()(int _x, int _y);
+	bool operator!=(const Point_2df& pt);
 
-	Point_2d operator+(const Point_2d& pt);
-	Point_2d operator-(const Point_2d& pt);
+	Point_2d& operator+=(const Point_2d& pt);
+	Point_2d& operator+=(const Point_2df& pt);
 
-	int x, y;
+	Point_2d& operator-=(const Point_2d& pt);
+	Point_2d& operator-=(const Point_2df& pt);
+
+	Point_2d& operator*=(const Point_2d& pt);
+	Point_2d& operator*=(const Point_2df& pt);
+
+	const Point_2d operator+(const Point_2d& pt);
+	const Point_2d operator+(const Point_2df& pt);
+
+	const Point_2d operator-(const Point_2d& pt);
+	const Point_2d operator-(const Point_2df& pt);
+
+	const Point_2d operator*(const Point_2d& pt);
+	const Point_2d operator*(const Point_2df& pt);
+
+	void x(int x);
+	int x() const;
+
+	void y(int y);
+	int y() const;
+
+private:
+	int mX, mY;
 };
 
 
 /**
- * \struct	Point_2df
+ * \class	Point_2df
  * \brief	Floating point 2D Point.
  */
 class Point_2df
 {
 public:
-	Point_2df(): x(0.0f), y(0.0f) {}
-	Point_2df(float x, float y): x(x), y(y) {}
-	Point_2df(const Point_2d& _p): x(static_cast<float>(_p.x)), y(static_cast<float>(_p.y)) {}
+	Point_2df();
+	Point_2df(float x, float y);
+	Point_2df(const Point_2d& _p);
 
-	bool operator==(const Point_2df& pt) { return (x == pt.x) && (y == pt.y); }
-	bool operator!=(const Point_2df& pt) { return (x != pt.x) || (y != pt.y); }
-	void operator()(float _x, float _y) { x = _x; y = _y; }
+	void operator()(float _x, float _y);
 
-	Point_2df operator+(const Point_2df& pt) { return Point_2df(x + pt.x, y + pt.y); }
-	Point_2df operator-(const Point_2df& pt) { return Point_2df(x - pt.x, y - pt.y); }
+	bool operator==(const Point_2d& pt);
+	bool operator==(const Point_2df& pt);
 
-	float x, y;
+	bool operator!=(const Point_2d& pt);
+	bool operator!=(const Point_2df& pt);
+
+	Point_2df& operator+=(const Point_2d& pt);
+	Point_2df& operator+=(const Point_2df& pt);
+
+	Point_2df& operator-=(const Point_2d& pt);
+	Point_2df& operator-=(const Point_2df& pt);
+
+	Point_2df& operator*=(const Point_2d& pt);
+	Point_2df& operator*=(const Point_2df& pt);
+
+	const Point_2df operator+(const Point_2d& pt);
+	const Point_2df operator+(const Point_2df& pt);
+
+	const Point_2df operator-(const Point_2d& pt);
+	const Point_2df operator-(const Point_2df& pt);
+
+	const Point_2df operator*(const Point_2d& pt);
+	const Point_2df operator*(const Point_2df& pt);
+
+	void x(float x);
+	float x() const;
+
+	void y(float y);
+	float y() const;
+
+private:
+	float mX, mY;
 };
 
 

@@ -121,10 +121,10 @@ private:
 		int anchorX() const { return mAnchorX; }
 		int anchorY() const { return mAnchorY; }
 		
-		int width() const { return mRect.w; }
-		int height() const { return mRect.h; }
-		int x() const { return mRect.x; }
-		int y() const { return mRect.y; }
+		int width() const { return mRect.w(); }
+		int height() const { return mRect.h(); }
+		int x() const { return mRect.x(); }
+		int y() const { return mRect.y(); }
 
 		int frameDelay() const { return mFrameDelay; }
 

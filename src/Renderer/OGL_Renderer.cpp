@@ -239,7 +239,7 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if(dstPoint.x > destination.width() || dstPoint.y > destination.height())
+	if(dstPoint.x() > destination.width() || dstPoint.y() > destination.height())
 		return;
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -248,11 +248,11 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	Rectangle_2d clipRect;
 
-	(static_cast<int>(dstPoint.x) + source.width()) > destination.width() ? clipRect.w = source.width() - ((static_cast<int>(dstPoint.x) + source.width()) - destination.width()) : clipRect.w = source.width();
-	(static_cast<int>(dstPoint.y) + source.height()) > destination.height() ? clipRect.h = source.height() - ((static_cast<int>(dstPoint.y) + source.height()) - destination.height()) : clipRect.h = source.height();
+	(static_cast<int>(dstPoint.x()) + source.width()) > destination.width() ? clipRect.w(source.width() - ((static_cast<int>(dstPoint.x()) + source.width()) - destination.width())) : clipRect.w(source.width());
+	(static_cast<int>(dstPoint.y()) + source.height()) > destination.height() ? clipRect.h(source.height() - ((static_cast<int>(dstPoint.y()) + source.height()) - destination.height())) : clipRect.h(source.height());
 
 	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
-	if(clipRect.w < 1 || clipRect.h < 1)
+	if(clipRect.w() < 1 || clipRect.h() < 1)
 		return;
 
 
@@ -262,7 +262,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mTextureTarget, destination.texture_id(), 0);
 
 	// Flip the Y axis to keep images drawing correctly.
-	fillVertexArray(dstPoint.x, static_cast<float>(destination.height()) - dstPoint.y, static_cast<float>(clipRect.w), static_cast<float>(-clipRect.h));
+	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipRect.w()), static_cast<float>(-clipRect.h()));
 
 	drawVertexArray(source.texture_id());
 	glBindTexture(mTextureTarget, destination.texture_id());

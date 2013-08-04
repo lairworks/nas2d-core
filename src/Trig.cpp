@@ -69,7 +69,7 @@ Point_2df getDirectionVector(float angle)
 
 
 /**
- * Determines if a given line intersects a givn circle.
+ * Determines if a given line intersects a given circle.
  * 
  * \param	p	First point of a line segment.
  * \param	q	Second point of a line segment.
@@ -78,18 +78,18 @@ Point_2df getDirectionVector(float angle)
  */
 bool lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r)
 {
-	float dx = static_cast<float>(q.x - p.x);
-	float dy = static_cast<float>(q.y - p.y);
+	float dx = static_cast<float>(q.x() - p.x());
+	float dy = static_cast<float>(q.y() - p.y());
 
-	float t = -(((p.x - c.x) * dx) + ((p.y - c.y) * dy)) / ((dx * dx) + (dy * dy));
+	float t = -(((p.x() - c.x()) * dx) + ((p.y() - c.y()) * dy)) / ((dx * dx) + (dy * dy));
 
 	if(t < 0.0)
 		t = 0.0;
 	else if(t > 1.0)
 		t = 1.0;
 
-	dx = (p.x + (t * (q.x - p.x))) - c.x;
-	dy = (p.y + (t * (q.y - p.y))) - c.y;
+	dx = (p.x() + (t * (q.x() - p.x()))) - c.x();
+	dy = (p.y() + (t * (q.y() - p.y()))) - c.y();
 	float rt = (dx * dx) + (dy * dy);
 
 	if(rt < (r * r))

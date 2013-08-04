@@ -287,28 +287,19 @@ void OGL_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
+void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 
 void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
 {	
 	glDisable(mTextureTarget);
+	glEnableClientState(GL_COLOR_ARRAY);
 	
-	GLfloat verts[12] =	{
-							x, y + 1.0f,
-							x2, y2 + 1.0f,
-							x - 0.5f, y + 0.5f,
-							x2 - 0.5f, y2 + 0.5f,
-							x, y,
-							x2, y2
-						};
+	line(x, y, x2, y2, (float)line_width, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
-	glColor4ub(r, g, b, a);
-
-	glVertexPointer(2, GL_FLOAT, 0, verts);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
-	
+	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(mTextureTarget);
 
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -320,7 +311,6 @@ void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, 
 void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
 {
 	glDisable(mTextureTarget);
-
 	glColor4ub(r, g, b, a);
 
 	float theta = PI_2 / static_cast<float>(num_segments);
@@ -349,7 +339,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	glVertexPointer(2, GL_FLOAT, 0, verts);
 	glDrawArrays(GL_LINE_LOOP, 0, num_segments);
 
-	
+
 	/**
 	 * \todo	I really hate the alloc's/dealloc's that are done in this function.
 				We should consider a basic array lookup table approach which will
@@ -777,4 +767,200 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	buildDisplayModeList();
 	//mShaderManager = new ShaderManager();
 	initGL();
+}
+
+
+/**
+ * The following code was developed by Chris Tsang and lifted from:
+ * 
+ * http://artgrammer.blogspot.com/2011/05/drawing-nearly-perfect-2d-line-segments.html
+ * http://www.codeproject.com/KB/openGL/gllinedraw.aspx
+ * 
+ * Modified: Removed option for non-alpha blending and general code cleanup.
+ * 
+ * This is just drop-in code for the time being until I can find a better
+ * method of drawing lines. They don't need to be nearly perfect but this
+ * should do the job.
+ */
+static inline float _ABS(float x) { return x > 0 ? x : -x; }
+
+void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca)
+{
+	// What are these values for?
+	float t = 0.0f;
+	float R = 0.0f;
+	float f = w - static_cast<int>(w);
+	
+	// Alpha component?
+	float A = Ca;
+
+	// HOLY CRAP magic numbers!
+	//determine parameters t,R
+	if(w >= 0.0f && w < 1.0f)
+	{
+		t = 0.05f;
+		R = 0.48f + 0.32f * f;
+		
+		A *= f;
+	}
+	else if(w >= 1.0f && w < 2.0f)
+	{
+		t = 0.05f + f * 0.33f;
+		R = 0.768f + 0.312f * f;
+	}
+	else if(w >= 2.0f && w < 3.0f)
+	{
+		t = 0.38f + f * 0.58f;
+		R = 1.08f;
+	}
+	else if(w >= 3.0f && w < 4.0f)
+	{
+		t = 0.96f + f * 0.48f;
+		R = 1.08f;
+	}
+	else if(w >= 4.0f && w < 5.0f)
+	{
+		t = 1.44f + f * 0.46f;
+		R = 1.08f;
+	}
+	else if(w >= 5.0f && w < 6.0f)
+	{
+		t = 1.9f + f * 0.6f;
+		R = 1.08f;
+	}
+	else if(w >= 6.0f)
+	{
+		float ff = w - 6.0f;
+		t = 2.5f + ff * 0.50f;
+		R = 1.08f;
+	}
+	//printf( "w=%f, f=%f, C=%.4f\n", w,f,C);
+	
+	//determine angle of the line to horizontal
+	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
+	float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
+	float cx = 0.0f, cy = 0.0f; //cap of a line
+	float ALW = 0.01f;			// Dafuq is this?
+	float dx = x2 - x1;
+	float dy = y2 - y1;
+	
+	if(_ABS(dx) < ALW)
+	{
+		//vertical
+		tx = t; ty = 0.0f;
+		Rx = R; Ry = 0.0f;
+		if(w > 0.0f && w <= 1.0f)
+		{
+			tx = 0.5f;
+			Rx = 0.0f;
+		}
+	}
+	else if(_ABS(dy) < ALW)
+	{
+		//horizontal
+		tx = 0.0f; ty = t;
+		Rx = 0.0f; Ry = R;
+		if(w > 0.0f && w <= 1.0f)
+		{
+			ty = 0.5f;
+			Ry = 0.0f;
+		}
+	}
+	else
+	{
+		dx = y1 - y2;
+		dy = x2 - x1;
+
+		float L = sqrt(dx * dx + dy * dy);
+
+		dx /= L;
+		dy /= L;
+
+		cx = -dy;
+		cy = dx;
+		
+		tx = t * dx;
+		ty = t * dy;
+		
+		Rx = R * dx;
+		Ry = R * dy;
+	}
+
+	x1 += cx * 0.5f;
+	y1 += cy * 0.5f;
+	
+	x2 -= cx * 0.5f;
+	y2 -= cy * 0.5f;
+
+	//draw the line by triangle strip
+	float line_vertex[]=
+	{
+		x1-tx-Rx-cx, y1-ty-Ry-cy, //fading edge1
+		x2-tx-Rx+cx, y2-ty-Ry+cy,
+		x1-tx-cx,y1-ty-cy,	  //core
+		x2-tx+cx,y2-ty+cy,
+		x1+tx-cx,y1+ty-cy,
+		x2+tx+cx,y2+ty+cy,
+		x1+tx+Rx-cx, y1+ty+Ry-cy, //fading edge2
+		x2+tx+Rx+cx, y2+ty+Ry+cy
+	};
+
+	glVertexPointer(2, GL_FLOAT, 0, line_vertex);
+
+	float line_color[]=
+	{
+		Cr, Cg, Cb, 0,
+		Cr, Cg, Cb, 0,
+		Cr, Cg, Cb, Ca,
+		Cr, Cg, Cb, Ca,
+		Cr, Cg, Cb, Ca,
+		Cr, Cg, Cb, Ca,
+		Cr, Cg, Cb, 0,
+		Cr, Cg, Cb, 0
+	};
+
+	glColorPointer(4, GL_FLOAT, 0, line_color);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
+
+	// Line End Caps
+	if(w > 3.0f) // <<< Arbitrary number.
+	{
+		float line_vertex[]=
+		{
+			x1-tx-Rx-cx, y1-ty-Ry-cy, //cap1
+			x1-tx-Rx, y1-ty-Ry,
+			x1-tx-cx, y1-ty-cy,
+			x1+tx+Rx, y1+ty+Ry,
+			x1+tx-cx, y1+ty-cy,
+			x1+tx+Rx-cx, y1+ty+Ry-cy,
+			x2-tx-Rx+cx, y2-ty-Ry+cy, //cap2
+			x2-tx-Rx, y2-ty-Ry,
+			x2-tx+cx, y2-ty+cy,
+			x2+tx+Rx, y2+ty+Ry,
+			x2+tx+cx, y2+ty+cy,
+			x2+tx+Rx+cx, y2+ty+Ry+cy
+		};
+		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
+
+		float line_color[]=
+		{
+			Cr,Cg,Cb, 0, //cap1
+			Cr,Cg,Cb, 0,
+			Cr,Cg,Cb, Ca,
+			Cr,Cg,Cb, 0,
+			Cr,Cg,Cb, Ca,
+			Cr,Cg,Cb, 0,		
+			Cr,Cg,Cb, 0, //cap2
+			Cr,Cg,Cb, 0,
+			Cr,Cg,Cb, Ca,
+			Cr,Cg,Cb, 0,
+			Cr,Cg,Cb, Ca,
+			Cr,Cg,Cb, 0
+		};
+		glColorPointer(4, GL_FLOAT, 0, line_color);
+
+		//glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+		//glDrawArrays(GL_TRIANGLE_STRIP, 6, 6);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
+	}
 }

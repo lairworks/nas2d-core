@@ -60,6 +60,7 @@ Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
 														mPtSize(ptSize),
 														mTextureId(0)
 {
+
 	load();
 }
 
@@ -75,8 +76,7 @@ Font::Font():	Resource("Default Font"),
 				mPtSize(0),
 				mTextureId(0),
 				mFontName("Default Font")
-{
-}
+{}
 
 
 /**

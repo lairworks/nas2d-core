@@ -104,7 +104,7 @@ private:
 
 	GlyphMetricsList	mGlyphMetrics;		/**< Metrics for each glyph. */
 
-	static FontMap		_FontMap;		/*< Lookup table for OpenGL Texture ID's. */
+	static FontMap		_FontMap;			/*< Lookup table for OpenGL Texture ID's. */
 };
 
 #endif

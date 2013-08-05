@@ -104,10 +104,10 @@ Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
 /**
  * Create an Image from a raw data buffer.
  * 
- * \param	buffer	Pointer to a data buffer.
+ * \param	buffer			Pointer to a data buffer.
  * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
- * \param	width	Width of the Image.
- * \param	height	Height of the Image.
+ * \param	width			Width of the Image.
+ * \param	height			Height of the Image.
  */
 Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
 																		mTextureId(0),
@@ -115,6 +115,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
 {
 	if(buffer == NULL)
 		throw Exception(0, "Bad Data", "Attempted to construct an Image with a NULL pixel buffer.");
+
 	if(bytesPerPixel != 3 && bytesPerPixel != 4)
 	{
 		#if defined(_DEBUG)
@@ -123,6 +124,12 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
 
 		throw Exception(0, "Unsupported Image", "Attempted to construct an Image less than 24-bit. Images must be 24- or 32-bit.");
 	}
+
+	// Create an SDL_Surface so that this Image has something to look at if the user
+	// wants to be peeking pixels out of it.
+	// 
+	// I believe this to be correct but I have to test it.
+	mPixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
 	stringstream str;
 	str << _Arbitrary++;
@@ -465,7 +472,7 @@ Color_4ub Image::pixelColor(int x, int y) const
  * Permanently desaturates the Image.
  * 
  * \note	This is currently a stub function that has no effect.
- *			Expect functionality in NAS2D 1.1.
+ *			Expect functionality in NAS2D 1.2.
  */
 void Image::desaturate()
 {

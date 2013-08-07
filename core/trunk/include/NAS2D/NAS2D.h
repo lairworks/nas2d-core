@@ -23,9 +23,9 @@
 #include "NAS2D/Trig.h"
 #include "NAS2D/XmlAttributeParser.h"
 
-#include "NAS2D/Mixer/SDL_Mixer.h"
+#include "NAS2D/Mixer/Mixer.h"
 
-#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Renderer/Renderer.h"
 
 #include "NAS2D/Resources/Font.h"
 #include "NAS2D/Resources/Image.h"

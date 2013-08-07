@@ -272,6 +272,12 @@ int Rectangle_2d::x() const
 }
 
 
+int& Rectangle_2d::x()
+{
+	return mX;
+}
+
+
 void Rectangle_2d::y(int y)
 {
 	mY = y;
@@ -282,6 +288,13 @@ int Rectangle_2d::y() const
 {
 	return mY;
 }
+
+
+int& Rectangle_2d::y()
+{
+	return mY;
+}
+
 
 
 void Rectangle_2d::w(int w)
@@ -296,6 +309,12 @@ int Rectangle_2d::w() const
 }
 
 
+int& Rectangle_2d::w()
+{
+	return mW;
+}
+
+
 void Rectangle_2d::h(int h)
 {
 	mH = h;
@@ -303,6 +322,12 @@ void Rectangle_2d::h(int h)
 
 
 int Rectangle_2d::h() const
+{
+	return mH;
+}
+
+
+int& Rectangle_2d::h()
 {
 	return mH;
 }
@@ -490,6 +515,12 @@ float Rectangle_2df::x() const
 }
 
 
+float& Rectangle_2df::x()
+{
+	return mX;
+}
+
+
 void Rectangle_2df::y(float y)
 {
 	mY = y;
@@ -497,6 +528,12 @@ void Rectangle_2df::y(float y)
 
 
 float Rectangle_2df::y() const
+{
+	return mY;
+}
+
+
+float& Rectangle_2df::y()
 {
 	return mY;
 }
@@ -514,6 +551,12 @@ float Rectangle_2df::w() const
 }
 
 
+float& Rectangle_2df::w()
+{
+	return mW;
+}
+
+
 void Rectangle_2df::h(float h)
 {
 	mH = h;
@@ -525,6 +568,11 @@ float Rectangle_2df::h() const
 	return mH;
 }
 
+
+float& Rectangle_2df::h()
+{
+	return mH;
+}
 
 // ==================================================================================
 // = Point_2d Implementation
@@ -689,6 +737,12 @@ int Point_2d::x() const
 }
 
 
+int& Point_2d::x()
+{
+	return mX;
+}
+
+
 void Point_2d::y(int y)
 {
 	mY = y;
@@ -700,6 +754,11 @@ int Point_2d::y() const
 	return mY;
 }
 
+
+int& Point_2d::y()
+{
+	return mY;
+}
 
 // ==================================================================================
 // = Point_2df Implementation
@@ -865,6 +924,12 @@ float Point_2df::x() const
 }
 
 
+float& Point_2df::x()
+{
+	return mX;
+}
+
+
 void Point_2df::y(float y)
 {
 	mY = y;
@@ -875,3 +940,10 @@ float Point_2df::y() const
 {
 	return mY;
 }
+
+
+float& Point_2df::y()
+{
+	return mY;
+}
+

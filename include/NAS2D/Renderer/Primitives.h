@@ -87,15 +87,19 @@ public:
 
 	void x(int x);
 	int x() const;
+	int& x();
 
 	void y(int y);
 	int y() const;
+	int& y();
 
 	void w(int w);
 	int w() const;
+	int& w();
 
 	void h(int h);
 	int h() const;
+	int& h();
 
 private:
 	int mX, mY, mW, mH;
@@ -142,15 +146,19 @@ public:
 
 	void x(float x);
 	float x() const;
+	float& x();
 
 	void y(float y);
 	float y() const;
+	float& y();
 
 	void w(float w);
 	float w() const;
+	float& w();
 
 	void h(float h);
 	float h() const;
+	float& h();
 
 private:
 	float mX, mY, mW, mH;
@@ -200,9 +208,11 @@ public:
 
 	void x(int x);
 	int x() const;
+	int& x();
 
 	void y(int y);
 	int y() const;
+	int& y();
 
 private:
 	int mX, mY;
@@ -248,9 +258,11 @@ public:
 
 	void x(float x);
 	float x() const;
+	float& x();
 
 	void y(float y);
 	float y() const;
+	float& y();
 
 private:
 	float mX, mY;

@@ -425,15 +425,13 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float 
 	glColor4ub(r, g, b, a);
 
 	int offset = 0;
-	float cellSize = static_cast<float>(font.glyphCellSize());
 	Font::GlyphMetrics gm;
-
 
 	for(size_t i = 0; i < text.size(); i++)
 	{
 		gm = font.glyphMetrics(static_cast<int>(text[i]));
 
-		fillVertexArray(x + offset, y, cellSize, cellSize);
+		fillVertexArray(x + offset, y, font.glyphCellWidth(), font.glyphCellHeight());
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
 		drawVertexArray(font.texture_id(), false);
@@ -453,7 +451,7 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, float ra
 	glColor4ub(r, g, b, a);
 	
 	int offset = 0;
-	float cellSize = static_cast<float>(font.glyphCellSize());
+	//float cellSize = static_cast<float>(font.glyphCellSize());
 	Font::GlyphMetrics gm;
 
 	for(size_t i = 0; i < text.size(); i++)
@@ -463,15 +461,15 @@ void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, float ra
 		
 		if(x + offset + gm.advance <= w)
 		{
-			fillVertexArray(rasterX + x + offset, rasterY + y, cellSize, cellSize);
+			fillVertexArray(rasterX + x + offset, rasterY + y, font.glyphCellWidth(), font.glyphCellHeight());
 			fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
-			cout << "Ins:\t" << x + offset + gm.advance << "\t" << text[i]<< "\t" << temp << "\t" << gm.advance << "\t" << temp - gm.advance << "\t" << x + offset + (temp - gm.advance) << endl;
+			//cout << "Ins:\t" << x + offset + gm.advance << "\t" << text[i]<< "\t" << temp << "\t" << gm.advance << "\t" << temp - gm.advance << "\t" << x + offset + (temp - gm.advance) << endl;
 		}
 		else if(x + offset + (gm.advance - temp) <= w && temp > 0)
 		{
-			fillVertexArray(rasterX + x + offset, rasterY + y, cellSize, cellSize);
-			fillTextureArray(gm.uvX, gm.uvY, static_cast<float>(temp)/static_cast<float>(cellSize), gm.uvH);
-			cout << "Out:\t" << gm.uvX << "\t" << gm.uvW << "\t" << gm.uvY << "\t" << gm.uvH << "\t" << static_cast<float>(temp)/static_cast<float>(cellSize) << endl;
+			fillVertexArray(rasterX + x + offset, rasterY + y, font.glyphCellWidth(), font.glyphCellHeight());
+			fillTextureArray(gm.uvX, gm.uvY, static_cast<float>(temp)/static_cast<float>(font.glyphCellWidth()), gm.uvH);
+			//cout << "Out:\t" << gm.uvX << "\t" << gm.uvW << "\t" << gm.uvY << "\t" << gm.uvH << "\t" << static_cast<float>(temp)/static_cast<float>(cellSize) << endl;
 		}
 		
 		drawVertexArray(font.texture_id(), false);

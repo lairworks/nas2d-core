@@ -35,6 +35,7 @@ class Font: public Resource
 public:
 	Font();
 	Font(const std::string& filePath, int ptSize = 12);
+	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
 	~Font();
 
 	int width(const std::string& str) const;
@@ -63,7 +64,8 @@ protected:
 		int advance;
 	};
 
-	const int glyphCellSize() const;
+	const int glyphCellWidth() const;
+	const int glyphCellHeight() const;
 	const Font::GlyphMetrics& glyphMetrics(int glyph) const;
 	unsigned int texture_id() const;
 
@@ -88,6 +90,7 @@ private:
 	Font& operator=(const Font& font);
 
 	void load();
+	void loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 
 	void generateGlyphMap(TTF_Font* ft);
 	void generateTexture(SDL_Surface *src);
@@ -96,7 +99,7 @@ private:
 	int					mAscent;			/**< Height of each glyph relative to the baseline. */
 	int					mPtSize;			/**< Point Size to load the Font in. */
 
-	int					mGlyphCellSize;		/**< Size in pixels of each cell that glyphs occupy. */
+	Point_2d			mGlyphCellSize;		/**< Size in pixels of each cell that glyphs occupy. */
 
 	unsigned int		mTextureId;			/**< OpenGL Texture ID. */
 

@@ -14,14 +14,17 @@
 #if defined(__APPLE__)
 	#include "SDL2/SDL_opengl.h"
 	#include "SDL2_ttf/SDL_ttf.h"
+	#include "SDL2_image/SDL_image.h"
 #elif defined(WIN32)
 	#include "SDL/SDL_opengl.h"
 	#include "SDL/SDL_ttf.h"
+	#include "SDL/SDL_image.h"
 #else
 	#include "SDL/SDL_opengl.h"
 	#include "SDL/SDL_gfxPrimitives.h"
 	#include "SDL/SDL_ttf.h"
 #endif
+
 
 #include <math.h>
 
@@ -62,6 +65,17 @@ Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
 {
 
 	load();
+}
+
+
+Font::Font(const string& filePath, int glyphWidth, int glyphHeight, int glyphSpace):	Resource(filePath),
+																						mHeight(glyphHeight),
+																						mAscent(0),
+																						mPtSize(glyphHeight),
+																						mGlyphCellSize(glyphWidth, glyphHeight),
+																						mTextureId(0)
+{
+	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
 
 
@@ -146,6 +160,59 @@ void Font::load()
 }
 
 
+void Font::loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
+{
+	// Load specified file and check that it divides to a 16x16 grid.
+	File fontBuffer = Utility<Filesystem>::get().open(name());
+
+	if(fontBuffer.empty())
+	{
+		cout << "(ERROR) Font::load(): " << Utility<Filesystem>::get().lastError() << endl;
+		return;
+	}
+
+	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0);
+	if(!glyphMap)
+	{
+		cout << "(ERROR) Font::loadBitmap(): " << SDL_GetError() << endl;
+		return;
+	}
+
+	if( (glyphMap->w / 16 != glyphWidth) || (glyphMap->h / 16 != glyphHeight) )
+	{
+		cout << "(ERROR) Font::loadBitmap(): Glyph texture does not have 16 columns or 16 rows." << endl;
+		return;
+	}
+
+	mGlyphMetrics.resize(ASCII_TABLE_COUNT);
+	for(size_t i = 0; i < ASCII_TABLE_COUNT; i++)
+		mGlyphMetrics[i].minX = glyphCellWidth();
+
+	for(int row = 0; row < 16; row++)
+	{
+		for(int col = 0; col < 16; col++)
+		{
+			int glyph = (row * 16) + col;
+
+			mGlyphMetrics[glyph].uvX = (float)(col * glyphCellWidth()) / (float)glyphMap->w;
+			mGlyphMetrics[glyph].uvY = (float)(row * glyphCellHeight()) / (float)glyphMap->h;
+			mGlyphMetrics[glyph].uvW = mGlyphMetrics[glyph].uvX + (float)(glyphCellWidth()) / (float)glyphMap->w;
+			mGlyphMetrics[glyph].uvH = mGlyphMetrics[glyph].uvY + (float)(glyphCellHeight()) / (float)glyphMap->h;
+			mGlyphMetrics[glyph].advance = glyphSpace;
+		}
+	}
+
+	generateTexture(glyphMap);
+	
+	// Add generated texture id to texture ID map.
+	Font::_FontMap[name()] = FontInfo(texture_id(), ptSize());
+	Font::_FontMap[name()].ref_count++;
+	SDL_FreeSurface(glyphMap);
+
+	loaded(true);
+}
+
+
 /**
  * Generates a glyph map of all ASCII standard characters from 0 - 255.
  */
@@ -171,8 +238,8 @@ void Font::generateGlyphMap(TTF_Font* ft)
 		mGlyphMetrics.push_back(metrics);
 	}
 
-	mGlyphCellSize = nextPowerOf2(largest_width);
-	int textureSize = mGlyphCellSize * 16; // glyph map contains 16 rows and 16 columns.
+	mGlyphCellSize(nextPowerOf2(largest_width), nextPowerOf2(largest_width));
+	int textureSize = mGlyphCellSize.x() * 16; // glyph map contains 16 rows and 16 columns.
 
 	//cout << "Largest Width: " << largest_width << " Nearest Po2: " << nextPowerOf2(largest_width) << endl;
 
@@ -188,10 +255,10 @@ void Font::generateGlyphMap(TTF_Font* ft)
 		{
 			int glyph = (row * 16) + col;
 
-			mGlyphMetrics[glyph].uvX = (float)(col * mGlyphCellSize) / (float)textureSize;
-			mGlyphMetrics[glyph].uvY = (float)(row * mGlyphCellSize) / (float)textureSize;
-			mGlyphMetrics[glyph].uvW = mGlyphMetrics[glyph].uvX + (float)(mGlyphCellSize) / (float)textureSize;
-			mGlyphMetrics[glyph].uvH = mGlyphMetrics[glyph].uvY + (float)(mGlyphCellSize) / (float)textureSize;
+			mGlyphMetrics[glyph].uvX = (float)(col * glyphCellWidth()) / (float)textureSize;
+			mGlyphMetrics[glyph].uvY = (float)(row * glyphCellHeight()) / (float)textureSize;
+			mGlyphMetrics[glyph].uvW = mGlyphMetrics[glyph].uvX + (float)(glyphCellWidth()) / (float)textureSize;
+			mGlyphMetrics[glyph].uvH = mGlyphMetrics[glyph].uvY + (float)(glyphCellHeight()) / (float)textureSize;
 
 			// HACK HACK HACK!
 			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
@@ -208,7 +275,7 @@ void Font::generateGlyphMap(TTF_Font* ft)
 			else
 			{
 				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
-				SDL_Rect rect = { col * mGlyphCellSize, row * mGlyphCellSize, 0, 0 };
+				SDL_Rect rect = { col * mGlyphCellSize.x(), row * mGlyphCellSize.y(), 0, 0 };
 				SDL_BlitSurface(srf, NULL, glyphMap, &rect);
 				SDL_FreeSurface(srf);
 			}
@@ -272,11 +339,20 @@ unsigned int Font::texture_id() const
 
 
 /**
- * Returns the size of a glyph's cell.
+ * Returns the width of a glyph's cell.
  */
-const int Font::glyphCellSize() const
+const int Font::glyphCellWidth() const
 {
-	return mGlyphCellSize;
+	return mGlyphCellSize.x();
+}
+
+
+/**
+ * Returns the height of a glyph's cell.
+ */
+const int Font::glyphCellHeight() const
+{
+	return mGlyphCellSize.y();
 }
 
 

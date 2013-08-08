@@ -271,10 +271,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\nas2d-tests\NAS2D_Test\Player.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\nas2d-tests\NAS2D_Test\Zombie.cpp"
 				>
 			</File>
@@ -410,10 +406,6 @@
 			>
 			<File
 				RelativePath="..\..\..\..\nas2d-tests\NAS2D_Test\GameState.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\nas2d-tests\NAS2D_Test\Player.h"
 				>
 			</File>
 			<File

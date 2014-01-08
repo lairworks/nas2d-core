@@ -9,32 +9,40 @@
 /* Begin PBXBuildFile section */
 		695B3B8213274C9A003E937A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8113274C9A003E937A /* GLUT.framework */; };
 		695B3B8413274C9A003E937A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695B3B8313274C9A003E937A /* OpenGL.framework */; };
-		69AF4BFF169E5A3A00D8AC0F /* Delegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 69AF4BFD169E5A3A00D8AC0F /* Delegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69AF4C00169E5A3A00D8AC0F /* Signal.h in Headers */ = {isa = PBXBuildFile; fileRef = 69AF4BFE169E5A3A00D8AC0F /* Signal.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D231673F4DE009EEBE2 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0A1673F4DE009EEBE2 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D241673F4DE009EEBE2 /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0B1673F4DE009EEBE2 /* Configuration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D251673F4DE009EEBE2 /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0C1673F4DE009EEBE2 /* Documentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D261673F4DE009EEBE2 /* Event in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D0D1673F4DE009EEBE2 /* Event */; };
-		69BD4D271673F4DE009EEBE2 /* EventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0E1673F4DE009EEBE2 /* EventHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D281673F4DE009EEBE2 /* Exception.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D0F1673F4DE009EEBE2 /* Exception.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D291673F4DE009EEBE2 /* File.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D101673F4DE009EEBE2 /* File.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D2A1673F4DE009EEBE2 /* Filesystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D111673F4DE009EEBE2 /* Filesystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D2B1673F4DE009EEBE2 /* FpsCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D121673F4DE009EEBE2 /* FpsCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D2C1673F4DE009EEBE2 /* Game.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D131673F4DE009EEBE2 /* Game.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D2D1673F4DE009EEBE2 /* KeyTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D141673F4DE009EEBE2 /* KeyTranslator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D2E1673F4DE009EEBE2 /* MersenneTwister.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D151673F4DE009EEBE2 /* MersenneTwister.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D2F1673F4DE009EEBE2 /* Mixer in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D161673F4DE009EEBE2 /* Mixer */; };
-		69BD4D301673F4DE009EEBE2 /* NAS2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D171673F4DE009EEBE2 /* NAS2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D311673F4DE009EEBE2 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D181673F4DE009EEBE2 /* Random.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D321673F4DE009EEBE2 /* Renderer in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D191673F4DE009EEBE2 /* Renderer */; };
-		69BD4D331673F4DE009EEBE2 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D1A1673F4DE009EEBE2 /* Resources */; };
-		69BD4D351673F4DE009EEBE2 /* State.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1C1673F4DE009EEBE2 /* State.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D361673F4DE009EEBE2 /* StateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1D1673F4DE009EEBE2 /* StateManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D371673F4DE009EEBE2 /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D1E1673F4DE009EEBE2 /* Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D381673F4DE009EEBE2 /* tinyxml in Resources */ = {isa = PBXBuildFile; fileRef = 69BD4D1F1673F4DE009EEBE2 /* tinyxml */; };
-		69BD4D391673F4DE009EEBE2 /* Trig.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D201673F4DE009EEBE2 /* Trig.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D3A1673F4DE009EEBE2 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D211673F4DE009EEBE2 /* Utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69BD4D3B1673F4DE009EEBE2 /* XmlAttributeParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 69BD4D221673F4DE009EEBE2 /* XmlAttributeParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DCD187DA5C90072C1A5 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DB2187DA5C90072C1A5 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DCE187DA5C90072C1A5 /* Configuration.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DB3187DA5C90072C1A5 /* Configuration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DCF187DA5C90072C1A5 /* Delegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DB4187DA5C90072C1A5 /* Delegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD0187DA5C90072C1A5 /* Documentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DB5187DA5C90072C1A5 /* Documentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD2187DA5C90072C1A5 /* EventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DB7187DA5C90072C1A5 /* EventHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD3187DA5C90072C1A5 /* Exception.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DB8187DA5C90072C1A5 /* Exception.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD4187DA5C90072C1A5 /* File.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DB9187DA5C90072C1A5 /* File.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD5187DA5C90072C1A5 /* Filesystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DBA187DA5C90072C1A5 /* Filesystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD6187DA5C90072C1A5 /* FpsCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DBB187DA5C90072C1A5 /* FpsCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD7187DA5C90072C1A5 /* Game.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DBC187DA5C90072C1A5 /* Game.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD8187DA5C90072C1A5 /* KeyTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DBD187DA5C90072C1A5 /* KeyTranslator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DD9187DA5C90072C1A5 /* MersenneTwister.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DBE187DA5C90072C1A5 /* MersenneTwister.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DDB187DA5C90072C1A5 /* NAS2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC0187DA5C90072C1A5 /* NAS2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DDC187DA5C90072C1A5 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC1187DA5C90072C1A5 /* Random.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DDF187DA5C90072C1A5 /* Signal.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC4187DA5C90072C1A5 /* Signal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DE0187DA5C90072C1A5 /* sigslot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC5187DA5C90072C1A5 /* sigslot.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DE1187DA5C90072C1A5 /* State.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC6187DA5C90072C1A5 /* State.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DE2187DA5C90072C1A5 /* StateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC7187DA5C90072C1A5 /* StateManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DE3187DA5C90072C1A5 /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC8187DA5C90072C1A5 /* Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DE5187DA5C90072C1A5 /* Trig.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DCA187DA5C90072C1A5 /* Trig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DE6187DA5C90072C1A5 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DCB187DA5C90072C1A5 /* Utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DE7187DA5C90072C1A5 /* XmlAttributeParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DCC187DA5C90072C1A5 /* XmlAttributeParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		69693DE8187DA5EF0072C1A5 /* Event in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69693DB6187DA5C90072C1A5 /* Event */; };
+		69693DE9187DA5EF0072C1A5 /* Mixer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69693DBF187DA5C90072C1A5 /* Mixer */; };
+		69693DEA187DA5EF0072C1A5 /* Renderer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69693DC2187DA5C90072C1A5 /* Renderer */; };
+		69693DEB187DA5EF0072C1A5 /* Resources in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69693DC3187DA5C90072C1A5 /* Resources */; };
+		69693DEC187DA5EF0072C1A5 /* tinyxml in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69693DC9187DA5C90072C1A5 /* tinyxml */; };
+		69693DEE187DA7E90072C1A5 /* Primitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69693DED187DA7E90072C1A5 /* Primitives.cpp */; };
+		69693E51187DAD5D0072C1A5 /* SDL2_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */; };
+		69693E52187DAD5D0072C1A5 /* SDL2_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */; };
+		69693E53187DAD5D0072C1A5 /* SDL2_ttf.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */; };
+		69693E54187DAD5D0072C1A5 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69F2C1F116980D1A007FAB38 /* SDL2.framework */; };
+		69693E56187DAEE90072C1A5 /* libphysfs.2.0.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 69693E55187DAEE90072C1A5 /* libphysfs.2.0.3.dylib */; };
+		69693E57187DAEFE0072C1A5 /* libphysfs.2.0.3.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69693E55187DAEE90072C1A5 /* libphysfs.2.0.3.dylib */; };
 		69BD4D5D1673F4FA009EEBE2 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3C1673F4FA009EEBE2 /* Common.cpp */; };
 		69BD4D5E1673F4FA009EEBE2 /* Configuration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3D1673F4FA009EEBE2 /* Configuration.cpp */; };
 		69BD4D5F1673F4FA009EEBE2 /* EventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3E1673F4FA009EEBE2 /* EventHandler.cpp */; };
@@ -64,12 +72,6 @@
 		69BD4D771673F4FA009EEBE2 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D5A1673F4FA009EEBE2 /* tinyxmlparser.cpp */; };
 		69BD4D781673F4FA009EEBE2 /* Trig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D5B1673F4FA009EEBE2 /* Trig.cpp */; };
 		69BD4D791673F4FA009EEBE2 /* XmlAttributeParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D5C1673F4FA009EEBE2 /* XmlAttributeParser.cpp */; };
-		69CE7A2A167486FD00BFAD1C /* Event in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D0D1673F4DE009EEBE2 /* Event */; };
-		69CE7A2B1674870600BFAD1C /* Mixer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D161673F4DE009EEBE2 /* Mixer */; };
-		69CE7A2C1674870A00BFAD1C /* Renderer in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D191673F4DE009EEBE2 /* Renderer */; };
-		69CE7A2D1674870E00BFAD1C /* Resources in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D1A1673F4DE009EEBE2 /* Resources */; };
-		69CE7A2E1674871300BFAD1C /* tinyxml in Copy Headers With Directories */ = {isa = PBXBuildFile; fileRef = 69BD4D1F1673F4DE009EEBE2 /* tinyxml */; };
-		69F2C1F216980D1A007FAB38 /* Physfs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1ED16980D1A007FAB38 /* Physfs.framework */; };
 		69F2C1F316980D1A007FAB38 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */; };
 		69F2C1F416980D1A007FAB38 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */; };
 		69F2C1F516980D1A007FAB38 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */; };
@@ -85,13 +87,27 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 1;
 			files = (
-				69CE7A2A167486FD00BFAD1C /* Event in Copy Headers With Directories */,
-				69CE7A2B1674870600BFAD1C /* Mixer in Copy Headers With Directories */,
-				69CE7A2C1674870A00BFAD1C /* Renderer in Copy Headers With Directories */,
-				69CE7A2D1674870E00BFAD1C /* Resources in Copy Headers With Directories */,
-				69CE7A2E1674871300BFAD1C /* tinyxml in Copy Headers With Directories */,
+				69693DE8187DA5EF0072C1A5 /* Event in Copy Headers With Directories */,
+				69693DE9187DA5EF0072C1A5 /* Mixer in Copy Headers With Directories */,
+				69693DEA187DA5EF0072C1A5 /* Renderer in Copy Headers With Directories */,
+				69693DEB187DA5EF0072C1A5 /* Resources in Copy Headers With Directories */,
+				69693DEC187DA5EF0072C1A5 /* tinyxml in Copy Headers With Directories */,
 			);
 			name = "Copy Headers With Directories";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		69693E4F187DAD420072C1A5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				69693E57187DAEFE0072C1A5 /* libphysfs.2.0.3.dylib in CopyFiles */,
+				69693E51187DAD5D0072C1A5 /* SDL2_image.framework in CopyFiles */,
+				69693E52187DAD5D0072C1A5 /* SDL2_mixer.framework in CopyFiles */,
+				69693E53187DAD5D0072C1A5 /* SDL2_ttf.framework in CopyFiles */,
+				69693E54187DAD5D0072C1A5 /* SDL2.framework in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -104,32 +120,35 @@
 		32DBCF5E0370ADEE00C91783 /* NAS2D_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NAS2D_Prefix.pch; sourceTree = "<group>"; };
 		695B3B8113274C9A003E937A /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		695B3B8313274C9A003E937A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		69AF4BFD169E5A3A00D8AC0F /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Delegate.h; path = ../../include/NAS2D/Delegate.h; sourceTree = "<group>"; };
-		69AF4BFE169E5A3A00D8AC0F /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Signal.h; path = ../../include/NAS2D/Signal.h; sourceTree = "<group>"; };
-		69BD4D0A1673F4DE009EEBE2 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../../include/NAS2D/Common.h; sourceTree = "<group>"; };
-		69BD4D0B1673F4DE009EEBE2 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configuration.h; path = ../../include/NAS2D/Configuration.h; sourceTree = "<group>"; };
-		69BD4D0C1673F4DE009EEBE2 /* Documentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Documentation.h; path = ../../include/NAS2D/Documentation.h; sourceTree = "<group>"; };
-		69BD4D0D1673F4DE009EEBE2 /* Event */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Event; path = ../../include/NAS2D/Event; sourceTree = "<group>"; };
-		69BD4D0E1673F4DE009EEBE2 /* EventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventHandler.h; path = ../../include/NAS2D/EventHandler.h; sourceTree = "<group>"; };
-		69BD4D0F1673F4DE009EEBE2 /* Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Exception.h; path = ../../include/NAS2D/Exception.h; sourceTree = "<group>"; };
-		69BD4D101673F4DE009EEBE2 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = File.h; path = ../../include/NAS2D/File.h; sourceTree = "<group>"; };
-		69BD4D111673F4DE009EEBE2 /* Filesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filesystem.h; path = ../../include/NAS2D/Filesystem.h; sourceTree = "<group>"; };
-		69BD4D121673F4DE009EEBE2 /* FpsCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FpsCounter.h; path = ../../include/NAS2D/FpsCounter.h; sourceTree = "<group>"; };
-		69BD4D131673F4DE009EEBE2 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Game.h; path = ../../include/NAS2D/Game.h; sourceTree = "<group>"; };
-		69BD4D141673F4DE009EEBE2 /* KeyTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyTranslator.h; path = ../../include/NAS2D/KeyTranslator.h; sourceTree = "<group>"; };
-		69BD4D151673F4DE009EEBE2 /* MersenneTwister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MersenneTwister.h; path = ../../include/NAS2D/MersenneTwister.h; sourceTree = "<group>"; };
-		69BD4D161673F4DE009EEBE2 /* Mixer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Mixer; path = ../../include/NAS2D/Mixer; sourceTree = "<group>"; };
-		69BD4D171673F4DE009EEBE2 /* NAS2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NAS2D.h; path = ../../include/NAS2D/NAS2D.h; sourceTree = "<group>"; };
-		69BD4D181673F4DE009EEBE2 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Random.h; path = ../../include/NAS2D/Random.h; sourceTree = "<group>"; };
-		69BD4D191673F4DE009EEBE2 /* Renderer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Renderer; path = ../../include/NAS2D/Renderer; sourceTree = "<group>"; };
-		69BD4D1A1673F4DE009EEBE2 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../../include/NAS2D/Resources; sourceTree = "<group>"; };
-		69BD4D1C1673F4DE009EEBE2 /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = State.h; path = ../../include/NAS2D/State.h; sourceTree = "<group>"; };
-		69BD4D1D1673F4DE009EEBE2 /* StateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateManager.h; path = ../../include/NAS2D/StateManager.h; sourceTree = "<group>"; };
-		69BD4D1E1673F4DE009EEBE2 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timer.h; path = ../../include/NAS2D/Timer.h; sourceTree = "<group>"; };
-		69BD4D1F1673F4DE009EEBE2 /* tinyxml */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tinyxml; path = ../../include/NAS2D/tinyxml; sourceTree = "<group>"; };
-		69BD4D201673F4DE009EEBE2 /* Trig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Trig.h; path = ../../include/NAS2D/Trig.h; sourceTree = "<group>"; };
-		69BD4D211673F4DE009EEBE2 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../include/NAS2D/Utility.h; sourceTree = "<group>"; };
-		69BD4D221673F4DE009EEBE2 /* XmlAttributeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlAttributeParser.h; path = ../../include/NAS2D/XmlAttributeParser.h; sourceTree = "<group>"; };
+		69693DB2187DA5C90072C1A5 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../../include/NAS2D/Common.h; sourceTree = "<group>"; };
+		69693DB3187DA5C90072C1A5 /* Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Configuration.h; path = ../../include/NAS2D/Configuration.h; sourceTree = "<group>"; };
+		69693DB4187DA5C90072C1A5 /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Delegate.h; path = ../../include/NAS2D/Delegate.h; sourceTree = "<group>"; };
+		69693DB5187DA5C90072C1A5 /* Documentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Documentation.h; path = ../../include/NAS2D/Documentation.h; sourceTree = "<group>"; };
+		69693DB6187DA5C90072C1A5 /* Event */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Event; path = ../../include/NAS2D/Event; sourceTree = "<group>"; };
+		69693DB7187DA5C90072C1A5 /* EventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventHandler.h; path = ../../include/NAS2D/EventHandler.h; sourceTree = "<group>"; };
+		69693DB8187DA5C90072C1A5 /* Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Exception.h; path = ../../include/NAS2D/Exception.h; sourceTree = "<group>"; };
+		69693DB9187DA5C90072C1A5 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = File.h; path = ../../include/NAS2D/File.h; sourceTree = "<group>"; };
+		69693DBA187DA5C90072C1A5 /* Filesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filesystem.h; path = ../../include/NAS2D/Filesystem.h; sourceTree = "<group>"; };
+		69693DBB187DA5C90072C1A5 /* FpsCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FpsCounter.h; path = ../../include/NAS2D/FpsCounter.h; sourceTree = "<group>"; };
+		69693DBC187DA5C90072C1A5 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Game.h; path = ../../include/NAS2D/Game.h; sourceTree = "<group>"; };
+		69693DBD187DA5C90072C1A5 /* KeyTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyTranslator.h; path = ../../include/NAS2D/KeyTranslator.h; sourceTree = "<group>"; };
+		69693DBE187DA5C90072C1A5 /* MersenneTwister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MersenneTwister.h; path = ../../include/NAS2D/MersenneTwister.h; sourceTree = "<group>"; };
+		69693DBF187DA5C90072C1A5 /* Mixer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Mixer; path = ../../include/NAS2D/Mixer; sourceTree = "<group>"; };
+		69693DC0187DA5C90072C1A5 /* NAS2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NAS2D.h; path = ../../include/NAS2D/NAS2D.h; sourceTree = "<group>"; };
+		69693DC1187DA5C90072C1A5 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Random.h; path = ../../include/NAS2D/Random.h; sourceTree = "<group>"; };
+		69693DC2187DA5C90072C1A5 /* Renderer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Renderer; path = ../../include/NAS2D/Renderer; sourceTree = "<group>"; };
+		69693DC3187DA5C90072C1A5 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../../include/NAS2D/Resources; sourceTree = "<group>"; };
+		69693DC4187DA5C90072C1A5 /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Signal.h; path = ../../include/NAS2D/Signal.h; sourceTree = "<group>"; };
+		69693DC5187DA5C90072C1A5 /* sigslot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sigslot.h; path = ../../include/NAS2D/sigslot.h; sourceTree = "<group>"; };
+		69693DC6187DA5C90072C1A5 /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = State.h; path = ../../include/NAS2D/State.h; sourceTree = "<group>"; };
+		69693DC7187DA5C90072C1A5 /* StateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateManager.h; path = ../../include/NAS2D/StateManager.h; sourceTree = "<group>"; };
+		69693DC8187DA5C90072C1A5 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timer.h; path = ../../include/NAS2D/Timer.h; sourceTree = "<group>"; };
+		69693DC9187DA5C90072C1A5 /* tinyxml */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tinyxml; path = ../../include/NAS2D/tinyxml; sourceTree = "<group>"; };
+		69693DCA187DA5C90072C1A5 /* Trig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Trig.h; path = ../../include/NAS2D/Trig.h; sourceTree = "<group>"; };
+		69693DCB187DA5C90072C1A5 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../include/NAS2D/Utility.h; sourceTree = "<group>"; };
+		69693DCC187DA5C90072C1A5 /* XmlAttributeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlAttributeParser.h; path = ../../include/NAS2D/XmlAttributeParser.h; sourceTree = "<group>"; };
+		69693DED187DA7E90072C1A5 /* Primitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Primitives.cpp; sourceTree = "<group>"; };
+		69693E55187DAEE90072C1A5 /* libphysfs.2.0.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libphysfs.2.0.3.dylib; path = Frameworks/libphysfs.2.0.3.dylib; sourceTree = "<group>"; };
 		69BD4D3C1673F4FA009EEBE2 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
 		69BD4D3D1673F4FA009EEBE2 /* Configuration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Configuration.cpp; sourceTree = "<group>"; };
 		69BD4D3E1673F4FA009EEBE2 /* EventHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventHandler.cpp; sourceTree = "<group>"; };
@@ -159,7 +178,6 @@
 		69BD4D5A1673F4FA009EEBE2 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		69BD4D5B1673F4FA009EEBE2 /* Trig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Trig.cpp; sourceTree = "<group>"; };
 		69BD4D5C1673F4FA009EEBE2 /* XmlAttributeParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XmlAttributeParser.cpp; sourceTree = "<group>"; };
-		69F2C1ED16980D1A007FAB38 /* Physfs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Physfs.framework; path = Frameworks/Physfs.framework; sourceTree = "<group>"; };
 		69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
@@ -174,9 +192,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				69F2C1F216980D1A007FAB38 /* Physfs.framework in Frameworks */,
 				69F2C1F316980D1A007FAB38 /* SDL2_image.framework in Frameworks */,
 				69F2C1F416980D1A007FAB38 /* SDL2_mixer.framework in Frameworks */,
+				69693E56187DAEE90072C1A5 /* libphysfs.2.0.3.dylib in Frameworks */,
 				69F2C1F516980D1A007FAB38 /* SDL2_ttf.framework in Frameworks */,
 				69F2C1F616980D1A007FAB38 /* SDL2.framework in Frameworks */,
 				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
@@ -238,7 +256,7 @@
 		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				69F2C1ED16980D1A007FAB38 /* Physfs.framework */,
+				69693E55187DAEE90072C1A5 /* libphysfs.2.0.3.dylib */,
 				69F2C1EE16980D1A007FAB38 /* SDL2_image.framework */,
 				69F2C1EF16980D1A007FAB38 /* SDL2_mixer.framework */,
 				69F2C1F016980D1A007FAB38 /* SDL2_ttf.framework */,
@@ -271,32 +289,33 @@
 		6928723D1417484300F20BEB /* NAS2D */ = {
 			isa = PBXGroup;
 			children = (
-				69AF4BFD169E5A3A00D8AC0F /* Delegate.h */,
-				69AF4BFE169E5A3A00D8AC0F /* Signal.h */,
-				69BD4D0A1673F4DE009EEBE2 /* Common.h */,
-				69BD4D0B1673F4DE009EEBE2 /* Configuration.h */,
-				69BD4D0C1673F4DE009EEBE2 /* Documentation.h */,
-				69BD4D0D1673F4DE009EEBE2 /* Event */,
-				69BD4D0E1673F4DE009EEBE2 /* EventHandler.h */,
-				69BD4D0F1673F4DE009EEBE2 /* Exception.h */,
-				69BD4D101673F4DE009EEBE2 /* File.h */,
-				69BD4D111673F4DE009EEBE2 /* Filesystem.h */,
-				69BD4D121673F4DE009EEBE2 /* FpsCounter.h */,
-				69BD4D131673F4DE009EEBE2 /* Game.h */,
-				69BD4D141673F4DE009EEBE2 /* KeyTranslator.h */,
-				69BD4D151673F4DE009EEBE2 /* MersenneTwister.h */,
-				69BD4D161673F4DE009EEBE2 /* Mixer */,
-				69BD4D171673F4DE009EEBE2 /* NAS2D.h */,
-				69BD4D181673F4DE009EEBE2 /* Random.h */,
-				69BD4D191673F4DE009EEBE2 /* Renderer */,
-				69BD4D1A1673F4DE009EEBE2 /* Resources */,
-				69BD4D1C1673F4DE009EEBE2 /* State.h */,
-				69BD4D1D1673F4DE009EEBE2 /* StateManager.h */,
-				69BD4D1E1673F4DE009EEBE2 /* Timer.h */,
-				69BD4D1F1673F4DE009EEBE2 /* tinyxml */,
-				69BD4D201673F4DE009EEBE2 /* Trig.h */,
-				69BD4D211673F4DE009EEBE2 /* Utility.h */,
-				69BD4D221673F4DE009EEBE2 /* XmlAttributeParser.h */,
+				69693DB2187DA5C90072C1A5 /* Common.h */,
+				69693DB3187DA5C90072C1A5 /* Configuration.h */,
+				69693DB4187DA5C90072C1A5 /* Delegate.h */,
+				69693DB5187DA5C90072C1A5 /* Documentation.h */,
+				69693DB6187DA5C90072C1A5 /* Event */,
+				69693DB7187DA5C90072C1A5 /* EventHandler.h */,
+				69693DB8187DA5C90072C1A5 /* Exception.h */,
+				69693DB9187DA5C90072C1A5 /* File.h */,
+				69693DBA187DA5C90072C1A5 /* Filesystem.h */,
+				69693DBB187DA5C90072C1A5 /* FpsCounter.h */,
+				69693DBC187DA5C90072C1A5 /* Game.h */,
+				69693DBD187DA5C90072C1A5 /* KeyTranslator.h */,
+				69693DBE187DA5C90072C1A5 /* MersenneTwister.h */,
+				69693DBF187DA5C90072C1A5 /* Mixer */,
+				69693DC0187DA5C90072C1A5 /* NAS2D.h */,
+				69693DC1187DA5C90072C1A5 /* Random.h */,
+				69693DC2187DA5C90072C1A5 /* Renderer */,
+				69693DC3187DA5C90072C1A5 /* Resources */,
+				69693DC4187DA5C90072C1A5 /* Signal.h */,
+				69693DC5187DA5C90072C1A5 /* sigslot.h */,
+				69693DC6187DA5C90072C1A5 /* State.h */,
+				69693DC7187DA5C90072C1A5 /* StateManager.h */,
+				69693DC8187DA5C90072C1A5 /* Timer.h */,
+				69693DC9187DA5C90072C1A5 /* tinyxml */,
+				69693DCA187DA5C90072C1A5 /* Trig.h */,
+				69693DCB187DA5C90072C1A5 /* Utility.h */,
+				69693DCC187DA5C90072C1A5 /* XmlAttributeParser.h */,
 			);
 			name = NAS2D;
 			sourceTree = "<group>";
@@ -338,6 +357,7 @@
 		69BD4D481673F4FA009EEBE2 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				69693DED187DA7E90072C1A5 /* Primitives.cpp */,
 				69BD4D491673F4FA009EEBE2 /* OGL_Renderer.cpp */,
 				69BD4D4A1673F4FA009EEBE2 /* Renderer.cpp */,
 				69BD4D4B1673F4FA009EEBE2 /* ShaderManager.cpp */,
@@ -377,27 +397,28 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				69BD4D301673F4DE009EEBE2 /* NAS2D.h in Headers */,
-				69BD4D231673F4DE009EEBE2 /* Common.h in Headers */,
-				69BD4D241673F4DE009EEBE2 /* Configuration.h in Headers */,
-				69BD4D251673F4DE009EEBE2 /* Documentation.h in Headers */,
-				69BD4D271673F4DE009EEBE2 /* EventHandler.h in Headers */,
-				69BD4D281673F4DE009EEBE2 /* Exception.h in Headers */,
-				69BD4D291673F4DE009EEBE2 /* File.h in Headers */,
-				69BD4D2A1673F4DE009EEBE2 /* Filesystem.h in Headers */,
-				69BD4D2B1673F4DE009EEBE2 /* FpsCounter.h in Headers */,
-				69BD4D2C1673F4DE009EEBE2 /* Game.h in Headers */,
-				69BD4D2D1673F4DE009EEBE2 /* KeyTranslator.h in Headers */,
-				69BD4D2E1673F4DE009EEBE2 /* MersenneTwister.h in Headers */,
-				69BD4D311673F4DE009EEBE2 /* Random.h in Headers */,
-				69BD4D351673F4DE009EEBE2 /* State.h in Headers */,
-				69BD4D361673F4DE009EEBE2 /* StateManager.h in Headers */,
-				69BD4D371673F4DE009EEBE2 /* Timer.h in Headers */,
-				69AF4BFF169E5A3A00D8AC0F /* Delegate.h in Headers */,
-				69AF4C00169E5A3A00D8AC0F /* Signal.h in Headers */,
-				69BD4D391673F4DE009EEBE2 /* Trig.h in Headers */,
-				69BD4D3A1673F4DE009EEBE2 /* Utility.h in Headers */,
-				69BD4D3B1673F4DE009EEBE2 /* XmlAttributeParser.h in Headers */,
+				69693DDB187DA5C90072C1A5 /* NAS2D.h in Headers */,
+				69693DE6187DA5C90072C1A5 /* Utility.h in Headers */,
+				69693DD7187DA5C90072C1A5 /* Game.h in Headers */,
+				69693DE1187DA5C90072C1A5 /* State.h in Headers */,
+				69693DDF187DA5C90072C1A5 /* Signal.h in Headers */,
+				69693DE2187DA5C90072C1A5 /* StateManager.h in Headers */,
+				69693DD6187DA5C90072C1A5 /* FpsCounter.h in Headers */,
+				69693DE0187DA5C90072C1A5 /* sigslot.h in Headers */,
+				69693DD9187DA5C90072C1A5 /* MersenneTwister.h in Headers */,
+				69693DCD187DA5C90072C1A5 /* Common.h in Headers */,
+				69693DCF187DA5C90072C1A5 /* Delegate.h in Headers */,
+				69693DE5187DA5C90072C1A5 /* Trig.h in Headers */,
+				69693DE7187DA5C90072C1A5 /* XmlAttributeParser.h in Headers */,
+				69693DD4187DA5C90072C1A5 /* File.h in Headers */,
+				69693DE3187DA5C90072C1A5 /* Timer.h in Headers */,
+				69693DD8187DA5C90072C1A5 /* KeyTranslator.h in Headers */,
+				69693DD2187DA5C90072C1A5 /* EventHandler.h in Headers */,
+				69693DCE187DA5C90072C1A5 /* Configuration.h in Headers */,
+				69693DD3187DA5C90072C1A5 /* Exception.h in Headers */,
+				69693DDC187DA5C90072C1A5 /* Random.h in Headers */,
+				69693DD0187DA5C90072C1A5 /* Documentation.h in Headers */,
+				69693DD5187DA5C90072C1A5 /* Filesystem.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +434,7 @@
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
 				695B3C3613274F42003E937A /* Copy Headers With Directories */,
+				69693E4F187DAD420072C1A5 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -458,11 +480,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
-				69BD4D261673F4DE009EEBE2 /* Event in Resources */,
-				69BD4D2F1673F4DE009EEBE2 /* Mixer in Resources */,
-				69BD4D321673F4DE009EEBE2 /* Renderer in Resources */,
-				69BD4D331673F4DE009EEBE2 /* Resources in Resources */,
-				69BD4D381673F4DE009EEBE2 /* tinyxml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,6 +517,7 @@
 				69BD4D751673F4FA009EEBE2 /* tinyxml.cpp in Sources */,
 				69BD4D761673F4FA009EEBE2 /* tinyxmlerror.cpp in Sources */,
 				69BD4D771673F4FA009EEBE2 /* tinyxmlparser.cpp in Sources */,
+				69693DEE187DA7E90072C1A5 /* Primitives.cpp in Sources */,
 				69BD4D781673F4FA009EEBE2 /* Trig.cpp in Sources */,
 				69BD4D791673F4FA009EEBE2 /* XmlAttributeParser.cpp in Sources */,
 			);
@@ -522,6 +540,7 @@
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -530,6 +549,7 @@
 					"\"$(SRCROOT)/Frameworks\"",
 				);
 				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NAS2D_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = TIXML_USE_STL;
@@ -537,7 +557,10 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/trevor/Development/nas2d/core/trunk/proj/xcode/Frameworks,
+				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -546,7 +569,6 @@
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -554,6 +576,7 @@
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -564,6 +587,7 @@
 					"\"$(SRCROOT)/Frameworks\"",
 				);
 				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NAS2D_Prefix.pch;
@@ -572,7 +596,10 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/trevor/Development/nas2d/core/trunk/proj/xcode/Frameworks,
+				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -581,7 +608,6 @@
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
-				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../../include\"";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -589,7 +615,7 @@
 		1DEB91B208733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -604,7 +630,7 @@
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

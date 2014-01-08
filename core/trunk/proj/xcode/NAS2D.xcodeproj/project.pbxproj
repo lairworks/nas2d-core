@@ -43,6 +43,7 @@
 		69693E54187DAD5D0072C1A5 /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69F2C1F116980D1A007FAB38 /* SDL2.framework */; };
 		69693E56187DAEE90072C1A5 /* libphysfs.2.0.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 69693E55187DAEE90072C1A5 /* libphysfs.2.0.3.dylib */; };
 		69693E57187DAEFE0072C1A5 /* libphysfs.2.0.3.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 69693E55187DAEE90072C1A5 /* libphysfs.2.0.3.dylib */; };
+		69693E5D187DB83A0072C1A5 /* physfs.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693E5C187DB83A0072C1A5 /* physfs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69BD4D5D1673F4FA009EEBE2 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3C1673F4FA009EEBE2 /* Common.cpp */; };
 		69BD4D5E1673F4FA009EEBE2 /* Configuration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3D1673F4FA009EEBE2 /* Configuration.cpp */; };
 		69BD4D5F1673F4FA009EEBE2 /* EventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69BD4D3E1673F4FA009EEBE2 /* EventHandler.cpp */; };
@@ -149,6 +150,7 @@
 		69693DCC187DA5C90072C1A5 /* XmlAttributeParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XmlAttributeParser.h; path = ../../include/NAS2D/XmlAttributeParser.h; sourceTree = "<group>"; };
 		69693DED187DA7E90072C1A5 /* Primitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Primitives.cpp; sourceTree = "<group>"; };
 		69693E55187DAEE90072C1A5 /* libphysfs.2.0.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libphysfs.2.0.3.dylib; path = Frameworks/libphysfs.2.0.3.dylib; sourceTree = "<group>"; };
+		69693E5C187DB83A0072C1A5 /* physfs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physfs.h; sourceTree = "<group>"; };
 		69BD4D3C1673F4FA009EEBE2 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
 		69BD4D3D1673F4FA009EEBE2 /* Configuration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Configuration.cpp; sourceTree = "<group>"; };
 		69BD4D3E1673F4FA009EEBE2 /* EventHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventHandler.cpp; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 		6928723D1417484300F20BEB /* NAS2D */ = {
 			isa = PBXGroup;
 			children = (
+				69693E5C187DB83A0072C1A5 /* physfs.h */,
 				69693DB2187DA5C90072C1A5 /* Common.h */,
 				69693DB3187DA5C90072C1A5 /* Configuration.h */,
 				69693DB4187DA5C90072C1A5 /* Delegate.h */,
@@ -417,6 +420,7 @@
 				69693DCE187DA5C90072C1A5 /* Configuration.h in Headers */,
 				69693DD3187DA5C90072C1A5 /* Exception.h in Headers */,
 				69693DDC187DA5C90072C1A5 /* Random.h in Headers */,
+				69693E5D187DB83A0072C1A5 /* physfs.h in Headers */,
 				69693DD0187DA5C90072C1A5 /* Documentation.h in Headers */,
 				69693DD5187DA5C90072C1A5 /* Filesystem.h in Headers */,
 			);
@@ -542,6 +546,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -562,6 +567,7 @@
 					/Users/trevor/Development/nas2d/core/trunk/proj/xcode/Frameworks,
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-lfreetype",
@@ -569,6 +575,7 @@
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+				STRIP_INSTALLED_PRODUCT = NO;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -578,6 +585,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -601,6 +609,7 @@
 					/Users/trevor/Development/nas2d/core/trunk/proj/xcode/Frameworks,
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-lfreetype",
@@ -608,6 +617,7 @@
 				PRODUCT_NAME = NAS2D;
 				SDKROOT = macosx;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+				STRIP_INSTALLED_PRODUCT = NO;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

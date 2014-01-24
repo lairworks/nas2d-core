@@ -15,8 +15,8 @@
 	#include <OpenGL/OpenGL.h>
 #elif defined(WIN32)
 	#include "SDL/SDL_opengl.h"
-#else
-	#include "SDL/SDL_opengl.h"
+#elif defined (__linux__)
+    #include "SDL2/SDL_opengl.h"
 #endif
 
 #include <iostream>
@@ -416,7 +416,7 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, in
 }
 
 
-void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
+void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
 {
 	// Ignore if font isn't loaded or string is empty
 	if(!font.loaded() || text.empty())
@@ -425,7 +425,7 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float 
 	glColor4ub(r, g, b, a);
 
 	int offset = 0;
-	Font::GlyphMetrics gm;
+    NAS2D::Font::GlyphMetrics gm;
 
 	for(size_t i = 0; i < text.size(); i++)
 	{
@@ -442,44 +442,55 @@ void OGL_Renderer::drawText(Font& font, const std::string& text, float x, float 
 }
 
 
-void OGL_Renderer::drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
+void OGL_Renderer::drawTextClamped(NAS2D::Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
 {
-	// Ignore if font isn't loaded or string is empty
-	if(!font.loaded() || text.empty())
-		return;
-	
-	glColor4ub(r, g, b, a);
-	
-	int offset = 0;
-	//float cellSize = static_cast<float>(font.glyphCellSize());
-	Font::GlyphMetrics gm;
+    // Ignore if font isn't loaded or string is empty
+    if(!font.loaded() || text.empty())
+        return;
 
-	for(size_t i = 0; i < text.size(); i++)
-	{
-		gm = font.glyphMetrics(static_cast<int>(text[i]));
-		float temp = (w - (x + offset));
-		
-		if(x + offset + gm.advance <= w)
-		{
-			fillVertexArray(rasterX + x + offset, rasterY + y, font.glyphCellWidth(), font.glyphCellHeight());
-			fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
-			//cout << "Ins:\t" << x + offset + gm.advance << "\t" << text[i]<< "\t" << temp << "\t" << gm.advance << "\t" << temp - gm.advance << "\t" << x + offset + (temp - gm.advance) << endl;
-		}
-		else if(x + offset + (gm.advance - temp) <= w && temp > 0)
-		{
-			fillVertexArray(rasterX + x + offset, rasterY + y, font.glyphCellWidth(), font.glyphCellHeight());
-			fillTextureArray(gm.uvX, gm.uvY, static_cast<float>(temp)/static_cast<float>(font.glyphCellWidth()), gm.uvH);
-			//cout << "Out:\t" << gm.uvX << "\t" << gm.uvW << "\t" << gm.uvY << "\t" << gm.uvH << "\t" << static_cast<float>(temp)/static_cast<float>(cellSize) << endl;
-		}
-		
-		drawVertexArray(font.texture_id(), false);
-		offset += gm.advance;
-	}
-	
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
-	//drawText(font, text, rasterX, rasterY, r, g, b, a); // replace with appropriate drawing code.
+    glColor4ub(r, g, b, a);
 
-	// please finish me
+    int offset = 0;
+    NAS2D::Font::GlyphMetrics gm;
+
+    glEnable(GL_STENCIL_TEST);
+    glDepthMask(GL_FALSE);
+
+    glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+    glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
+
+    glDisable(GL_TEXTURE_2D);
+
+    glColor4ub(0,0,0,0); //white
+
+    fillVertexArray(rasterX, rasterY, w, h);
+    fillTextureArray(0, 0, 1, 1);
+
+    drawVertexArray(font.texture_id(), false);
+
+    glColor4ub(r, g, b, a);
+
+    glEnable(GL_TEXTURE_2D);
+    glDepthMask(GL_TRUE);
+
+    glStencilFunc(GL_EQUAL, 1, 0xFFFFFFFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+    for(size_t i = 0; i < text.size(); i++)
+    {
+        gm = font.glyphMetrics(static_cast<int>(text[i]));
+
+        fillVertexArray(rasterX + x + offset, rasterY + y, font.glyphCellWidth(), font.glyphCellHeight());
+        fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
+
+        drawVertexArray(font.texture_id(), false);
+
+        offset += gm.advance;
+    }
+
+    glDisable(GL_STENCIL_TEST);
+
+    glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -602,12 +613,18 @@ void OGL_Renderer::getError()
  */
 bool OGL_Renderer::extensionExists(const std::string& extension)
 {
-	std::istringstream iss(std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS))));
+    StringList extensions;
+    GLint n, i;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &n);
+    for (i = 0; i < n; i++) {
+        extensions.push_back((const char*)glGetStringi(GL_EXTENSIONS, i));
+    }
+    //std::istringstream iss(std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS))));
 
-	StringList extensions;
-	string token;
-	while(getline(iss, token, ' '))
-		extensions.push_back(token);
+
+    //string token;
+    //while(getline(iss, token, ' '))
+        //extensions.push_back(token);
 
 	if(extensions.empty())
 		return false;
@@ -704,13 +721,14 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 
 	// Setup OpenGL parameters
-//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-//	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
 	if(vsync)
 		SDL_GL_SetSwapInterval(1);

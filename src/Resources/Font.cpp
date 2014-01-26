@@ -19,6 +19,11 @@
 	#include "SDL/SDL_opengl.h"
 	#include "SDL/SDL_ttf.h"
 	#include "SDL/SDL_image.h"
+#elif defined(__linux__)
+#define NO_SDL_GLEXT
+#include "GLee.h"
+#include "SDL2/SDL_ttf.h"
+#include "SDL2/SDL_image.h"
 #else
 	#include "SDL/SDL_opengl.h"
 	#include "SDL/SDL_gfxPrimitives.h"
@@ -38,7 +43,7 @@ const int	ASCII_TABLE_LAST	= 255;
 
 const int	BITS_32				= 32;
 
-Font::FontMap Font::_FontMap;
+NAS2D::Font::FontMap NAS2D::Font::_FontMap;
 
 
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
@@ -57,7 +62,7 @@ unsigned nextPowerOf2(unsigned n)
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
+NAS2D::Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
 														mHeight(0),
 														mAscent(0),
 														mPtSize(ptSize),
@@ -68,7 +73,7 @@ Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
 }
 
 
-Font::Font(const string& filePath, int glyphWidth, int glyphHeight, int glyphSpace):	Resource(filePath),
+NAS2D::Font::Font(const string& filePath, int glyphWidth, int glyphHeight, int glyphSpace):	Resource(filePath),
 																						mHeight(glyphHeight),
 																						mAscent(0),
 																						mPtSize(glyphHeight),
@@ -84,7 +89,7 @@ Font::Font(const string& filePath, int glyphWidth, int glyphHeight, int glyphSpa
  * 
  * Fonts instantiated with this constructor are not valid for use.
  */
-Font::Font():	Resource("Default Font"),
+NAS2D::Font::Font():	Resource("Default Font"),
 				mHeight(0),
 				mAscent(0),
 				mPtSize(0),
@@ -93,10 +98,36 @@ Font::Font():	Resource("Default Font"),
 {}
 
 
+NAS2D::Font::Font(const Font& _f): Resource(_f.name())
+{
+    FontMap::iterator it = Font::_FontMap.find(name());
+    if(it != Font::_FontMap.end())
+    {
+        it->second.ref_count++;
+    }
+
+    loaded(_f.loaded());
+}
+
+NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
+{
+    FontMap::iterator it = Font::_FontMap.find(name());
+    if(it != Font::_FontMap.end())
+    {
+        it->second.ref_count++;
+    }
+
+    name(_f.name());
+    loaded(_f.loaded());
+
+    return *this;
+}
+
+
 /**
  * D'tor
  */
-Font::~Font()
+NAS2D::Font::~Font()
 {
 	// Is this check necessary?
 	FontMap::iterator it = Font::_FontMap.find(name());
@@ -122,7 +153,7 @@ Font::~Font()
  * by the constructor. It is not publicly exposed and should never be called
  * anywhere except the constructor.
  */
-void Font::load()
+void NAS2D::Font::load()
 {
 	if(TTF_WasInit() == 0)
 	{
@@ -160,7 +191,7 @@ void Font::load()
 }
 
 
-void Font::loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
+void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
 {
 	// Load specified file and check that it divides to a 16x16 grid.
 	File fontBuffer = Utility<Filesystem>::get().open(name());
@@ -216,7 +247,7 @@ void Font::loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, 
 /**
  * Generates a glyph map of all ASCII standard characters from 0 - 255.
  */
-void Font::generateGlyphMap(TTF_Font* ft)
+void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
 {	
 	int largest_width = 0;
 
@@ -303,7 +334,7 @@ void Font::generateGlyphMap(TTF_Font* ft)
  * 
  * \note	Code bloat.
  */
-void Font::generateTexture(SDL_Surface *src)
+void NAS2D::Font::generateTexture(SDL_Surface *src)
 {
 	// Surface must always be 32-Bit, anything else should be treated as an error.
 	if(src->format->BytesPerPixel < 4)
@@ -332,7 +363,7 @@ void Font::generateTexture(SDL_Surface *src)
 /**
  * Gets the texture ID for the font.
  */
-unsigned int Font::texture_id() const
+unsigned int NAS2D::Font::texture_id() const
 {
 	return mTextureId;
 }
@@ -341,7 +372,7 @@ unsigned int Font::texture_id() const
 /**
  * Returns the width of a glyph's cell.
  */
-const int Font::glyphCellWidth() const
+const int NAS2D::Font::glyphCellWidth() const
 {
 	return mGlyphCellSize.x();
 }
@@ -350,7 +381,7 @@ const int Font::glyphCellWidth() const
 /**
  * Returns the height of a glyph's cell.
  */
-const int Font::glyphCellHeight() const
+const int NAS2D::Font::glyphCellHeight() const
 {
 	return mGlyphCellSize.y();
 }
@@ -361,7 +392,7 @@ const int Font::glyphCellHeight() const
  * 
  * \param	glyph	Glyph index. Valid values are 0 - 255.
  */
-const Font::GlyphMetrics& Font::glyphMetrics(int glyph) const
+const NAS2D::Font::GlyphMetrics& NAS2D::Font::glyphMetrics(int glyph) const
 {
 	int g = clamp(glyph, ASCII_TABLE_FIRST, ASCII_TABLE_LAST);
 	return mGlyphMetrics[g];
@@ -373,7 +404,7 @@ const Font::GlyphMetrics& Font::glyphMetrics(int glyph) const
  *
  * \param	str		Reference to a std::string to get the width of.
  */
-int Font::width(const std::string& str) const
+int NAS2D::Font::width(const std::string& str) const
 {
 	if(str.empty() || mGlyphMetrics.empty())
 		return 0;
@@ -389,7 +420,7 @@ int Font::width(const std::string& str) const
 /**
  * Returns the height in pixels of the font.
  */
-int Font::height() const
+int NAS2D::Font::height() const
 {
 	return mHeight;
 }
@@ -398,7 +429,7 @@ int Font::height() const
 /**
  * Returns the height in pixels of the font.
  */
-int Font::ascent() const
+int NAS2D::Font::ascent() const
 {
 	return mAscent;
 }
@@ -407,7 +438,7 @@ int Font::ascent() const
 /**
  * Returns the font's pt size.
  */
-int Font::ptSize() const
+int NAS2D::Font::ptSize() const
 {
 	return mPtSize;
 }
@@ -416,7 +447,7 @@ int Font::ptSize() const
 /**
  * Returns the typeface name.
  */
-const std::string& Font::typefaceName() const
+const std::string& NAS2D::Font::typefaceName() const
 {
 	return mFontName;
 }
@@ -425,7 +456,7 @@ const std::string& Font::typefaceName() const
 /**
  * Toggles Bold style.
  */
-void Font::bold()
+void NAS2D::Font::bold()
 {
 
 }
@@ -434,7 +465,7 @@ void Font::bold()
 /**
  * Toggles Italic style.
  */
-void Font::italic()
+void NAS2D::Font::italic()
 {
 
 }
@@ -443,7 +474,7 @@ void Font::italic()
 /**
  * Toggles Underline style.
  */
-void Font::underline()
+void NAS2D::Font::underline()
 {
 
 }
@@ -452,7 +483,7 @@ void Font::underline()
 /**
  * Resets all font styling.
  */
-void Font::normal()
+void NAS2D::Font::normal()
 {
 
 }

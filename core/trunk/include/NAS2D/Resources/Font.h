@@ -15,14 +15,17 @@
 
 #ifdef __APPLE__
 #include "SDL2_ttf/SDL_ttf.h"
-#else
+#elif _WIN32
 #include "GLee.h"
 #define NO_SDL_GLEXT
 #include "SDL/SDL_ttf.h"
+#else
+#include "SDL2/SDL_ttf.h"
 #endif
 
 #include <map>
 
+namespace NAS2D {
 
 /**
  *  \class Font
@@ -36,6 +39,8 @@ public:
 	Font();
 	Font(const std::string& filePath, int ptSize = 12);
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
+    Font(const Font& font);
+    Font& operator=(const Font& font);
 	~Font();
 
 	int width(const std::string& str) const;
@@ -51,23 +56,23 @@ public:
 	void underline();
 	void normal();
 
+    struct GlyphMetrics
+    {
+        float uvX, uvY;	// Texture coordinates.
+        float uvW, uvH; // Texture coordinates.
+        int minX, minY;
+        int maxX, maxY;
+        int advance;
+    };
+
+    const int glyphCellWidth() const;
+    const int glyphCellHeight() const;
+    const Font::GlyphMetrics& glyphMetrics(int glyph) const;
+    unsigned int texture_id() const;
+
 protected:
 	friend class Renderer;
-	friend class OGL_Renderer;
-
-	struct GlyphMetrics
-	{
-		float uvX, uvY;	// Texture coordinates.
-		float uvW, uvH; // Texture coordinates.
-		int minX, minY;
-		int maxX, maxY;
-		int advance;
-	};
-
-	const int glyphCellWidth() const;
-	const int glyphCellHeight() const;
-	const Font::GlyphMetrics& glyphMetrics(int glyph) const;
-	unsigned int texture_id() const;
+    friend class OGL_Renderer;
 
 private:
 	struct FontInfo
@@ -83,11 +88,7 @@ private:
 	};
 
 	typedef std::map<std::string, FontInfo> FontMap;
-	typedef std::vector<GlyphMetrics> GlyphMetricsList;
-
-	// explicitly disallow copy construction/assignment operator
-	Font(const Font &font);
-	Font& operator=(const Font& font);
+    typedef std::vector<GlyphMetrics> GlyphMetricsList;
 
 	void load();
 	void loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
@@ -109,6 +110,6 @@ private:
 
 	static FontMap		_FontMap;			/*< Lookup table for OpenGL Texture ID's. */
 };
-
+}
 #endif
 

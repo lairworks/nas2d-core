@@ -41,6 +41,7 @@ extern const Color_4ub COLOR_YELLOW;
 
 extern const Color_4ub COLOR_NORMAL;
 
+using namespace NAS2D;
 
 /**
  * \class Renderer

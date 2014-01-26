@@ -12,14 +12,19 @@
 #define _NAS_MUSICRESOURCE_
 
 #include "Resource.h"
+
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
+#elif __linux__
+#include "SDL2/SDL.h"
 #else
 #include "SDL/SDL.h"
 #endif
 
 #ifdef __APPLE__
-#include "SDL2_mixer/SDL_mixer.h"
+#include <SDL2/SDL_mixer.h>
+#elif __linux__
+#include "SDL2/SDL_mixer.h"
 #else
 #include "SDL/SDL_mixer.h"
 #endif

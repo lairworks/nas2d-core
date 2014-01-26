@@ -15,7 +15,9 @@
 
 #ifdef __APPLE__
 #include "SDL2_image/SDL_image.h"
-#else
+#elif __linux__
+#include "SDL2/SDL_image.h"
+#elif _WIN32
 #include "GLee.h"
 #define NO_SDL_GLEXT
 #include "SDL/SDL_image.h"
@@ -68,7 +70,7 @@ private:
 		ImageInfo(): textureId(0), fboId(0), w(0), h(0), ref_count(0) {}
 		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): textureId(id), fboId(fbo_id), w(w), h(h), ref_count(0) {}
 		
-		void operator()(unsigned int id, unsigned int fbo_id, int w, int h) { textureId = id; fboId = fbo_id; w = w; h = h; }
+        void operator()(unsigned int id, unsigned int fbo_id, int w, int h) { textureId = id; fboId = fbo_id; w = w; h = h; }
 
 		unsigned int textureId;
 		unsigned int fboId;

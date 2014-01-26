@@ -88,7 +88,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 	if(PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
 	{
 		mErrorMessages.push_back(PHYSFS_getLastError());
-		Logger::log << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << endl;
+        cout << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << endl;
 	}
 
 #else
@@ -134,12 +134,12 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 		return false;
 	}
 #elif __linux__
-    string searchPath = mDataPath + pathName;
+    string searchPath = mDataPath + path;
 
     if(PHYSFS_addToSearchPath(searchPath.c_str(), 1) == 0)
     {
         mErrorMessages.push_back(PHYSFS_getLastError());
-        Logger::log << Logger::warning() << "Couldn't add '" << path << "' to search path. " << mErrorMessages.back() << "." << endl;
+        cout << "Couldn't add '" << path << "' to search path. " << mErrorMessages.back() << "." << endl;
         return false;
     }
 #else
@@ -205,7 +205,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 		for(char **i = rc; *i != NULL; i++)
 		{
 			string tmpStr = *i;
-			if(tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
+            if(tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
 				fileList.push_back(*i);
 		}
 	}

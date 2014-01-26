@@ -21,6 +21,8 @@
 
 #if defined(__APPLE__)
 	#include <SDL2/SDL_opengl.h>
+#elif defined(__linux__)
+    #include <SDL2/SDL_opengl.h>
 #elif defined(WIN32)
 	#include "SDL/SDL_opengl.h"
 #else
@@ -184,8 +186,8 @@ Image::~Image()
 
 		if(it->second.fboId != 0)
 		{
-			unsigned int fbo = it->second.fboId;
-			glDeleteBuffers(1, &fbo);
+            unsigned int fbo = it->second.fboId;
+            glDeleteBuffers(1, &fbo);
 		}
 
 		Image::_IdMap.erase(it);

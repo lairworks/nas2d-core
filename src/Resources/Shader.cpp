@@ -16,6 +16,8 @@
 #include "GLee.h"
 #elif __APPLE__
 #include "SDL2/SDL_opengl.h"
+#elif __linux
+#include "GLee.h"
 #endif
 
 #include <map>

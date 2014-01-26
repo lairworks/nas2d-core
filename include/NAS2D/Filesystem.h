@@ -22,6 +22,10 @@
 #include "physfs/physfs.h"
 #endif
 
+#ifdef __linux__
+#include <cstring>
+#endif
+
 #include <string>
 #include <vector>
 #include <iomanip>

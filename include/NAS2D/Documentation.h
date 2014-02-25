@@ -21,9 +21,9 @@
  * 
  * \section overview Obtaining NAS2D
  * 
- * Visit the <a href="http://nas2d.newagesoftware.org/download.php">Download</a> section on NAS2D's home page to get developer packages for your platform and IDE of choice.
+ * Visit the <a href="http://nas2d.lairworks.com/download.php">Download</a> section on NAS2D's home page to get developer packages for your platform and IDE of choice.
  * 
  * \section design-elements Learning to Use NAS2D
  * 
- * This document was originally intended to be a crash course in using NAS2D. We've since set up a wiki which provides examples and tutorials for beginners as well as in-depth articles about the design decisions behind some of NAS2D's more advanced features. Head over to the wiki to get started: <a href="http://nas2d.newagesoftware.org/wiki/">http://nas2d.newagesoftware.org/wiki/</a>
+ * This document was originally intended to be a crash course in using NAS2D. We've since set up a wiki which provides examples and tutorials for beginners as well as in-depth articles about the design decisions behind some of NAS2D's more advanced features. Head over to the wiki to get started: <a href="http://nas2d.lairworks.com/wiki/">http://nas2d.lairworks.com/wiki/</a>
  */

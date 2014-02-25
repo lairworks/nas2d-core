@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Gui", "NAS2D_Gui.vcproj", "{5C2255BD-D95B-4052-AAFB-D2CBBA05E812}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D_Gui_Test", "NAS2D_Gui_Test.vcproj", "{CAA1CAFB-EFE8-4DE7-AB6F-3A4145C098DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C2255BD-D95B-4052-AAFB-D2CBBA05E812}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5C2255BD-D95B-4052-AAFB-D2CBBA05E812}.Debug|Win32.Build.0 = Debug|Win32
+		{5C2255BD-D95B-4052-AAFB-D2CBBA05E812}.Release|Win32.ActiveCfg = Release|Win32
+		{5C2255BD-D95B-4052-AAFB-D2CBBA05E812}.Release|Win32.Build.0 = Release|Win32
+		{CAA1CAFB-EFE8-4DE7-AB6F-3A4145C098DC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CAA1CAFB-EFE8-4DE7-AB6F-3A4145C098DC}.Debug|Win32.Build.0 = Debug|Win32
+		{CAA1CAFB-EFE8-4DE7-AB6F-3A4145C098DC}.Release|Win32.ActiveCfg = Release|Win32
+		{CAA1CAFB-EFE8-4DE7-AB6F-3A4145C098DC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

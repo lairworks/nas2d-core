@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'NAS2D_GUI' target in the 'NAS2D_GUI' project
+//
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+#endif

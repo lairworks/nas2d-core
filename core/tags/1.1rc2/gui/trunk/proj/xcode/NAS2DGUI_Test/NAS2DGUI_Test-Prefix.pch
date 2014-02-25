@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'NAS2DGUI_Test' target in the 'NAS2DGUI_Test' project
+//
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+#endif

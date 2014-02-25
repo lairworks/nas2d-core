@@ -1,0 +1,34 @@
+<sprite version="0.99">
+	<imagesheet id="main" src="zombie.png" />
+
+	<action name="Idle">
+		<frame sheetid="main" delay="125" x="0" y="0" width="32" height="32" anchorx="16" anchory="16" />
+	</action>
+
+	<action name="Walk">
+		<frame sheetid="main" delay="175" x="0" y="0" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="175" x="32" y="0" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="175" x="64" y="0" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="175" x="96" y="0" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="175" x="128" y="0" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="175" x="160" y="0" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="175" x="192" y="0" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="175" x="224" y="0" width="32" height="32" anchorx="16" anchory="16" />
+	</action>
+
+	<action name="Attack">
+		<frame sheetid="main" delay="0" x="0" y="0" width="32" height="32" anchorx="16" anchory="16" />
+	</action>
+
+	<action name="Dead">
+		<frame sheetid="main" delay="100" x="0" y="32" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="100" x="32" y="32" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="100" x="64" y="32" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="100" x="96" y="32" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="100" x="128" y="32" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="100" x="160" y="32" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="100" x="192" y="32" width="32" height="32" anchorx="16" anchory="16" />
+		<frame sheetid="main" delay="-1" x="224" y="32" width="32" height="32" anchorx="16" anchory="16" />
+	</action>
+
+</sprite>

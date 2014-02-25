@@ -1,0 +1,275 @@
+<skinset name="Default" image="default.png" font="ui.ttf">
+	
+	<pointers>
+		<pointer state="default" src="arrow.png" />
+		<pointer state="normal" src="arrow.png" />
+	</pointers>
+
+	<control type="Window">
+		<captiontext align="left" leftoffset="4" rightoffset="4" topoffset="2" bottomoffset="2" minimumheight="16" />
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="0" ypos="0" width="8" height="8" />
+			<region type="top-edge"				xpos="8" ypos="0" width="8" height="8" />
+			<region type="top-right-corner"		xpos="16" ypos="0" width="8" height="8" />
+
+			<region type="left-edge"			xpos="0" ypos="8" width="8" height="8" />
+			<region type="bg-quad"				xpos="8" ypos="8" width="8" height="8" />
+			<region type="right-edge"			xpos="16" ypos="8" width="8" height="8" />
+
+			<region type="bottom-left-corner"	xpos="0" ypos="16" width="8" height="8" />
+			<region type="bottom-edge"			xpos="8" ypos="16" width="8" height="8" />
+			<region type="bottom-right-corner"	xpos="16" ypos="16" width="8" height="8" />
+
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+		</state>
+		<state type="NoFocus">
+			<region type="top-left-corner"		xpos="0" ypos="0" width="8" height="8" />
+			<region type="top-edge"				xpos="8" ypos="0" width="8" height="8" />
+			<region type="top-right-corner"		xpos="16" ypos="0" width="8" height="8" />
+
+			<region type="left-edge"			xpos="0" ypos="8" width="8" height="8" />
+			<region type="bg-quad"				xpos="8" ypos="8" width="8" height="8" />
+			<region type="right-edge"			xpos="16" ypos="8" width="8" height="8" />
+
+			<region type="bottom-left-corner"	xpos="0" ypos="16" width="8" height="8" />
+			<region type="bottom-edge"			xpos="8" ypos="16" width="8" height="8" />
+			<region type="bottom-right-corner"	xpos="16" ypos="16" width="8" height="8" />
+
+			<colordef type="foreground"			red="145" green="145" blue="145" />
+		</state>
+	</control>
+
+	<control type="WindowCloseButton">
+		<state type="Normal">
+			<region type="bg-quad"				xpos="24" ypos="12" width="12" height="12" />
+		</state>
+		<state type="Pressed">
+			<region type="bg-quad"				xpos="36" ypos="12" width="12" height="12" />
+		</state>
+	</control>
+	
+	<control type="TextBox">
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="24" ypos="36" width="4" height="4" />
+			<region type="top-edge"				xpos="28" ypos="36" width="4" height="4" />
+			<region type="top-right-corner"		xpos="32" ypos="36" width="4" height="4" />
+
+			<region type="left-edge"			xpos="24" ypos="40" width="4" height="4" />
+			<region type="bg-quad"				xpos="28" ypos="40" width="4" height="4" />
+			<region type="right-edge"			xpos="32" ypos="40" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="24" ypos="44" width="4" height="4" />
+			<region type="bottom-edge"			xpos="28" ypos="44" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="32" ypos="44" width="4" height="4" />
+		</state>
+	</control>
+	
+	<control type="ScrollArea">
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="60" ypos="36" width="4" height="4" />
+			<region type="top-edge"				xpos="64" ypos="36" width="4" height="4" />
+			<region type="top-right-corner"		xpos="68" ypos="36" width="4" height="4" />
+
+			<region type="left-edge"			xpos="60" ypos="40" width="4" height="4" />
+			<region type="bg-quad"				xpos="64" ypos="40" width="4" height="4" />
+			<region type="right-edge"			xpos="68" ypos="40" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="60" ypos="44" width="4" height="4" />
+			<region type="bottom-edge"			xpos="64" ypos="44" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="68" ypos="44" width="4" height="4" />
+		</state>
+	</control>
+
+	<control type="Button">
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="0" ypos="24" width="4" height="4" />
+			<region type="top-edge"				xpos="4" ypos="24" width="4" height="4" />
+			<region type="top-right-corner"		xpos="8" ypos="24" width="4" height="4" />
+
+			<region type="left-edge"			xpos="0" ypos="28" width="4" height="4" />
+			<region type="bg-quad"				xpos="4" ypos="28" width="4" height="4" />
+			<region type="right-edge"			xpos="8" ypos="28" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="0" ypos="32" width="4" height="4" />
+			<region type="bottom-edge"			xpos="4" ypos="32" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="8" ypos="32" width="4" height="4" />
+
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+		</state>
+		<state type="Pressed">
+			<region type="top-left-corner"		xpos="12" ypos="24" width="4" height="4" />
+			<region type="top-edge"				xpos="16" ypos="24" width="4" height="4" />
+			<region type="top-right-corner"		xpos="20" ypos="24" width="4" height="4" />
+
+			<region type="left-edge"			xpos="12" ypos="28" width="4" height="4" />
+			<region type="bg-quad"				xpos="16" ypos="28" width="4" height="4" />
+			<region type="right-edge"			xpos="20" ypos="28" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="12" ypos="32" width="4" height="4" />
+			<region type="bottom-edge"			xpos="16" ypos="32" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="20" ypos="32" width="4" height="4" />
+		</state>
+		<state type="Disabled">
+			<region type="top-left-corner"		xpos="0" ypos="24" width="4" height="4" />
+			<region type="top-edge"				xpos="4" ypos="24" width="4" height="4" />
+			<region type="top-right-corner"		xpos="8" ypos="24" width="4" height="4" />
+
+			<region type="left-edge"			xpos="0" ypos="28" width="4" height="4" />
+			<region type="bg-quad"				xpos="4" ypos="28" width="4" height="4" />
+			<region type="right-edge"			xpos="8" ypos="28" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="0" ypos="32" width="4" height="4" />
+			<region type="bottom-edge"			xpos="4" ypos="32" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="8" ypos="32" width="4" height="4" />
+
+			<colordef type="foreground"			red="145" green="145" blue="145" />
+		</state>
+	</control>
+
+    <control type="ScrollBar">
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="60" ypos="36" width="4" height="4" />
+			<region type="top-edge"				xpos="64" ypos="36" width="4" height="4" />
+			<region type="top-right-corner"		xpos="68" ypos="36" width="4" height="4" />
+
+			<region type="left-edge"			xpos="60" ypos="40" width="4" height="4" />
+			<region type="bg-quad"				xpos="64" ypos="40" width="4" height="4" />
+			<region type="right-edge"			xpos="68" ypos="40" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="60" ypos="44" width="4" height="4" />
+			<region type="bottom-edge"			xpos="64" ypos="44" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="68" ypos="44" width="4" height="4" />
+		</state>
+	</control>
+	
+	<control type="ScrollBarThumb">
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="48" ypos="36" width="4" height="4" />
+			<region type="top-edge"				xpos="52" ypos="36" width="4" height="4" />
+			<region type="top-right-corner"		xpos="56" ypos="36" width="4" height="4" />
+
+			<region type="left-edge"			xpos="48" ypos="40" width="4" height="4" />
+			<region type="bg-quad"				xpos="52" ypos="40" width="4" height="4" />
+			<region type="right-edge"			xpos="56" ypos="40" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="48" ypos="44" width="4" height="4" />
+			<region type="bottom-edge"			xpos="52" ypos="44" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="56" ypos="44" width="4" height="4" />
+		</state>
+	</control>
+
+    <control type="ScrollButtonUp">
+		<state type="Normal">
+			<region type="bg-quad"				xpos="48" ypos="0" width="16" height="16" />
+		</state>
+		<state type="Pressed">
+			<region type="bg-quad"				xpos="64" ypos="0" width="16" height="16" />
+		</state>
+	</control>
+
+    <control type="ScrollButtonDown">
+		<state type="Normal">
+			<region type="bg-quad"				xpos="48" ypos="15" width="16" height="16" />
+		</state>
+		<state type="Pressed">
+			<region type="bg-quad"				xpos="64" ypos="15" width="16" height="16" />
+		</state>
+	</control>
+
+	<control type="ListItem">
+		<state type="Normal">
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+		</state>
+		<state type="Selected">
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+			<colordef type="background"			red="100" green="100" blue="255" />
+		</state>
+	</control>
+	
+    <control type="GroupBox">
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="36" ypos="36" width="4" height="4" />
+			<region type="top-edge"				xpos="40" ypos="36" width="4" height="4" />
+			<region type="top-right-corner"		xpos="44" ypos="36" width="4" height="4" />
+
+			<region type="left-edge"			xpos="36" ypos="40" width="4" height="4" />
+			<region type="bg-quad"				xpos="40" ypos="40" width="4" height="4" />
+			<region type="right-edge"			xpos="44" ypos="40" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="36" ypos="44" width="4" height="4" />
+			<region type="bottom-edge"			xpos="40" ypos="44" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="44" ypos="44" width="4" height="4" />
+		</state>
+	</control>
+
+	<control type="CheckBox">
+		<state type="Normal">
+			<region type="bg-quad"				xpos="24" ypos="24" width="12" height="12" />
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+		</state>
+		<state type="Selected">
+			<region type="bg-quad"				xpos="36" ypos="24" width="12" height="12" />
+		</state>
+		<state type="Disabled">
+			<region type="bg-quad"				xpos="24" ypos="24" width="12" height="12" />
+			<colordef type="foreground"			red="145" green="145" blue="145" />
+		</state>
+	</control>
+
+	<control type="Label">
+		<state type="Normal">
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+		</state>
+	</control>
+
+	<control type="TabArea">
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="0" ypos="0" width="8" height="8" />
+			<region type="top-edge"				xpos="8" ypos="0" width="8" height="8" />
+			<region type="top-right-corner"		xpos="16" ypos="0" width="8" height="8" />
+
+			<region type="left-edge"			xpos="0" ypos="8" width="8" height="8" />
+			<region type="bg-quad"				xpos="8" ypos="8" width="8" height="8" />
+			<region type="right-edge"			xpos="16" ypos="8" width="8" height="8" />
+
+			<region type="bottom-left-corner"	xpos="0" ypos="16" width="8" height="8" />
+			<region type="bottom-edge"			xpos="8" ypos="16" width="8" height="8" />
+			<region type="bottom-right-corner"	xpos="16" ypos="16" width="8" height="8" />
+
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+		</state>
+	</control>
+	
+	<control type="TabLabel">
+		<state type="Normal">
+			<region type="top-left-corner"		xpos="92" ypos="0" width="4" height="4" />
+			<region type="top-edge"				xpos="96" ypos="0" width="4" height="4" />
+			<region type="top-right-corner"		xpos="100" ypos="0" width="4" height="4" />
+
+			<region type="left-edge"			xpos="92" ypos="4" width="4" height="4" />
+			<region type="bg-quad"				xpos="96" ypos="4" width="4" height="4" />
+			<region type="right-edge"			xpos="100" ypos="4" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="92" ypos="8" width="4" height="4" />
+			<region type="bottom-edge"			xpos="96" ypos="8" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="100" ypos="8" width="4" height="4" />
+
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+		</state>
+		<state type="Selected">
+			<region type="top-left-corner"		xpos="80" ypos="0" width="4" height="4" />
+			<region type="top-edge"				xpos="84" ypos="0" width="4" height="4" />
+			<region type="top-right-corner"		xpos="88" ypos="0" width="4" height="4" />
+
+			<region type="left-edge"			xpos="80" ypos="4" width="4" height="4" />
+			<region type="bg-quad"				xpos="84" ypos="4" width="4" height="4" />
+			<region type="right-edge"			xpos="88" ypos="4" width="4" height="4" />
+
+			<region type="bottom-left-corner"	xpos="80" ypos="8" width="4" height="4" />
+			<region type="bottom-edge"			xpos="84" ypos="8" width="4" height="4" />
+			<region type="bottom-right-corner"	xpos="88" ypos="8" width="4" height="4" />
+
+			<colordef type="foreground"			red="0" green="0" blue="0" />
+		</state>
+	</control>
+</skinset>

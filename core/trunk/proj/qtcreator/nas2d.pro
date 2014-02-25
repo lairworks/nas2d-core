@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       -= core gui
-
+VERSION = 1.1
 TARGET = nas2d
 TEMPLATE = lib
 
@@ -13,6 +13,7 @@ CONFIG += staticlib
 
 DEFINES += TIXML_USE_STL \
            GL_GLEXT_PROTOTYPES
+DESTDIR = $$OUT_PWD/lib/nas2d/bin/
 INCLUDEPATH += "../../include" \
                "/usr/include/SDL2" \
                "/usr/include" \
@@ -95,11 +96,7 @@ HEADERS += \
     ../../include/NAS2D/tinyxml/tinyxml.h \
     ../../include/NAS2D/tinyxml/tinystr.h
 
-unix:!symbian {
-    maemo5 {
-        target.path = /opt/usr/lib
-    } else {
-        target.path = /usr/lib
-    }
-    INSTALLS += target
-}
+headers.path = $$OUT_PWD/lib/nas2d/include
+headers.files = ../../include/*
+
+INSTALLS += headers

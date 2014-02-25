@@ -11,6 +11,8 @@
 #ifndef _NAS_MOUSEBUTTONS_
 #define _NAS_MOUSEBUTTONS_
 
+namespace NAS2D {
+
 /**
  * \enum	MouseButton
  * \brief	Various mouse button enumerations.
@@ -22,5 +24,7 @@ enum MouseButton
 	BUTTON_MIDDLE,
 	BUTTON_RIGHT
 };
+
+} // namespace
 
 #endif

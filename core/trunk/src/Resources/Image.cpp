@@ -35,7 +35,7 @@
 #include <sstream>
 
 using namespace std;
-
+using namespace NAS2D;
 
 const string DEFAULT_IMAGE_NAME		= "Default Image";
 const string ARBITRARY_IMAGE_NAME	= "Arbitrary Image ";

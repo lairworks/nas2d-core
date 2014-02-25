@@ -29,6 +29,8 @@
 #include "SDL/SDL_mixer.h"
 #endif
 
+namespace NAS2D {
+
 /**
  *  \class Sound
  *  \brief Sound Resource.
@@ -56,4 +58,7 @@ private:
 
 	Mix_Chunk	*mChunk;
 };
+
+} // namespace
+
 #endif

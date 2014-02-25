@@ -25,7 +25,7 @@
 
 
 using namespace std;
-
+using namespace NAS2D;
 
 const int MAX_MESSAGE_PROCESSING = 10;	/**
 										 * Maximum number of events to process each frame.

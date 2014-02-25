@@ -15,6 +15,8 @@
 
 #include <string>
 
+namespace NAS2D {
+
 /**
  * \class Game
  * \brief The Engine Core.
@@ -33,5 +35,7 @@ public:
 
 	void go(State *state);
 };
+
+} // namespace
 
 #endif

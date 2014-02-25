@@ -13,12 +13,14 @@
 
 #include <math.h>
 
+using namespace NAS2D;
+
 // Common Trig Defines
 const float PI = 3.14159265f;
-const float PI_2 = PI * 2;
+const float PI_2 = NAS2D::PI * 2;
 
-const float DEG2RAD = PI / 180.0f;
-const float RAD2DEG = 180 / PI;
+const float DEG2RAD = NAS2D::PI / 180.0f;
+const float RAD2DEG = 180 / NAS2D::PI;
 
 
 /**
@@ -26,7 +28,7 @@ const float RAD2DEG = 180 / PI;
  */
 float degToRad(float degree)
 {
-	return degree * DEG2RAD;
+	return degree * NAS2D::DEG2RAD;
 }
 
 
@@ -35,7 +37,7 @@ float degToRad(float degree)
  */
 float radToDeg(float rad)
 {
-	return rad * -RAD2DEG;
+	return rad * -NAS2D::RAD2DEG;
 }
 
 
@@ -45,7 +47,7 @@ float radToDeg(float rad)
 float angleFromPoints(float x, float y, float x2, float y2)
 {
 #if defined(_DEBUG)
-	float angle = 90 - radToDeg(atan2(y2 - y, x2 - x));
+	float angle = 90 - NAS2D::radToDeg(atan2(y2 - y, x2 - x));
 
 	// Corrects for an odd anomaly whenever the angle
 	// is between 270.0f and 260.0f.
@@ -64,7 +66,7 @@ float angleFromPoints(float x, float y, float x2, float y2)
  */
 Point_2df getDirectionVector(float angle)
 {
-	return Point_2df(sin(degToRad(angle)), -cos(degToRad(angle)));
+	return Point_2df(sin(NAS2D::degToRad(angle)), -cos(NAS2D::degToRad(angle)));
 }
 
 

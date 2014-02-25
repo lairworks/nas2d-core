@@ -19,6 +19,7 @@
 #include "NAS2D/Resources/Sound.h"
 #include "NAS2D/Resources/Music.h"
 
+namespace NAS2D {
 
 /**
  * \class Mixer
@@ -167,5 +168,7 @@ private:
 	 */
 	Mixer& operator=(const Mixer&);
 };
+
+} // namespace
 
 #endif

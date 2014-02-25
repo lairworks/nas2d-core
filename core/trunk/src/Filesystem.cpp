@@ -22,6 +22,7 @@
 #endif
 
 using namespace std;
+using namespace NAS2D;
 
 const unsigned int	CLOSE_MAX_ATTEMPTS			= 3;
 const unsigned int	CLOSE_ATTEMPT_TIMEOUT		= 5;	// Seconds

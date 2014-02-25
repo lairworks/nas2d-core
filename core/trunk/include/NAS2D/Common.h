@@ -18,6 +18,8 @@
 
 #include "NAS2D/Renderer/Primitives.h"
 
+namespace NAS2D {
+
 // Utility Functions
 bool isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH);
 bool isPointInRect(const Point_2d& point, const Rectangle_2d& rect);
@@ -46,5 +48,7 @@ bool from_string(T& t, const std::string& s, std::ios_base& (*f)(std::ios_base&)
  * \brief	A list of strings.
  */
 typedef std::vector<std::string> StringList;
+
+}
 
 #endif

@@ -14,6 +14,8 @@
 #include "State.h"
 #include "NAS2D/Utility.h"
 
+namespace NAS2D {
+
 /**
  * \class	StateManager
  * \brief	Implements a Finite State Machine model that switches between
@@ -38,5 +40,7 @@ private:
 	State			*mActiveState;
 	bool			mActive;
 };
+
+} // namespace
 
 #endif

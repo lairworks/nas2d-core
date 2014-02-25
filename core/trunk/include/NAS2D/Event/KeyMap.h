@@ -11,6 +11,8 @@
 #ifndef _NAS_KEYCODES_
 #define _NAS_KEYCODES_
 
+namespace NAS2D {
+
 #define SCANCODE_MASK (1<<30)
 #define SCANCODE_TO_KEYCODE(X)	(X | SCANCODE_MASK)
 
@@ -228,5 +230,7 @@ const int KEY_MOD_CTRL	= KEY_MOD_LCTRL | KEY_MOD_RCTRL;
 const int KEY_MOD_SHIFT	= KEY_MOD_LSHIFT | KEY_MOD_RSHIFT;
 const int KEY_MOD_ALT	= KEY_MOD_LALT | KEY_MOD_RALT;
 const int KEY_MOD_META	= KEY_MOD_LMETA | KEY_MOD_RMETA;
+
+} // namespace
 
 #endif

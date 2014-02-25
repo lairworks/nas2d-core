@@ -27,6 +27,7 @@
 #include <string>
 #include <vector>
 
+namespace NAS2D {
 
 /**
  * Document me!
@@ -53,5 +54,7 @@ private:
 
 	StringList	mShaderList;
 };
+
+} // namespace
 
 #endif /* defined(__NAS2D__ShaderManager__) */

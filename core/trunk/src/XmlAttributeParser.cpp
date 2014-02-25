@@ -13,6 +13,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace NAS2D;
 
 /**
  * Gets an int value from a named attribute.

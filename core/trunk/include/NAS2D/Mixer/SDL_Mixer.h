@@ -29,6 +29,8 @@
 #include "SDL/SDL_mixer.h"
 #endif
 
+namespace NAS2D {
+
 /**
  * \class SDL_Mixer
  * \brief SDL Mixer.
@@ -73,6 +75,8 @@ private:
 	void init();
 
 	bool		mActAsNull;		/**< Act as a NULL mixer in the event of an audio failure. */
+};
+
 };
 
 #endif

@@ -33,6 +33,8 @@
 
 #include "File.h"
 
+namespace NAS2D {
+
 /**
  * \class Filesystem
  * \brief Implements a virtual file system.
@@ -88,6 +90,8 @@ private:
 #ifdef __APPLE__
 	std::string			mBundlePath;		/**< Apple Bundle Directory. */
 #endif
+};
+
 };
 
 #endif

@@ -13,6 +13,8 @@
 
 #include "NAS2D/Event/KeyMap.h"
 
+namespace NAS2D {
+
 /**
  * \class KeyTranslator
  * \brief Translates key events into a single alpha-numeric character.
@@ -32,5 +34,6 @@ private:
 
 };
 
+} // namespace
 
 #endif

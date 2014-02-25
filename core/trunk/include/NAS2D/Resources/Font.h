@@ -110,6 +110,8 @@ private:
 
 	static FontMap		_FontMap;			/*< Lookup table for OpenGL Texture ID's. */
 };
-}
+
+} // namespace
+
 #endif
 

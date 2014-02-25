@@ -1,5 +1,6 @@
 #include "NAS2D/KeyTranslator.h"
 
+using namespace NAS2D;
 
 const char* KeyTranslator::translate(KeyCode key, KeyModifier mod)
 {

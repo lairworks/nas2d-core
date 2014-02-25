@@ -11,6 +11,7 @@
 #ifndef _NAS_GRAPHICS_PRIMITIVES_
 #define _NAS_GRAPHICS_PRIMITIVES_
 
+namespace NAS2D {
 
 /**
  * \class	Color_4ub
@@ -268,5 +269,6 @@ private:
 	float mX, mY;
 };
 
+} // namespace
 
 #endif

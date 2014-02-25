@@ -15,6 +15,7 @@
 
 #include "tinyxml/tinyxml.h"
 
+namespace NAS2D {
 
 class XmlAttributeParser
 {
@@ -30,6 +31,6 @@ private:
 	StringList		mMessages;
 };
 
-
+} // namespace
 
 #endif

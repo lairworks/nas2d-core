@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2013 New Age Software
+// = Copyright © 2008 - 2014 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -34,7 +34,7 @@ using namespace NAS2D;
  * 
  * \return Returns true if point is within rectangular area.
  */
-bool isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)
+bool NAS2D::isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)
 {
 	return (pointX >= rectX && pointX <= rectX + rectW && pointY >= rectY && pointY <= rectY + rectH);
 }
@@ -50,7 +50,7 @@ bool isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int 
  * 
  * \return Returns true if point is within rectangular area.
  */
-bool isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
+bool NAS2D::isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
 {
 	return (point.x() >= rect.x() && point.x() <= rect.x() + rect.w() && point.y() >= rect.y() && point.y() <= rect.y() + rect.h());
 }
@@ -72,7 +72,7 @@ bool isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
  * 
  * \return Returns true if rectangles intersect.
  */
-bool isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int bX2, int bY2)
+bool NAS2D::isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int bX2, int bY2)
 {
 	return (aX <= bX2 && aX2 >= bX && aY <= bY2 && aY2 >= bY);
 }
@@ -88,7 +88,7 @@ bool isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int bX2, int
  * 
  * \return Returns true if rectangles intersect.
  */
-bool isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
+bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
 {
 	return (a.x() <= (b.x() + b.w()) && (a.x() + a.w()) >= b.x() && a.y() <= (b.y() + b.h()) && (a.y() + a.h()) >= b.y());
 }
@@ -103,7 +103,7 @@ bool isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  * 
  * \return	Returns the converted string.
  */
-std::string toLowercase(const std::string& str)
+std::string NAS2D::toLowercase(const std::string& str)
 {
 	std::string transformStr(str);
 	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int(*)(int))std::tolower);
@@ -120,7 +120,7 @@ std::string toLowercase(const std::string& str)
  * 
  * \return	Returns the converted string.
  */
-std::string toUppercase(const std::string& str)
+std::string NAS2D::toUppercase(const std::string& str)
 {
 	std::string transformStr(str);
 	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int(*)(int))std::toupper);
@@ -139,7 +139,7 @@ std::string toUppercase(const std::string& str)
  * 
  * \return	Clamped value.
  */
-int clamp(int x, int a, int b)
+int NAS2D::clamp(int x, int a, int b)
 {
     return x < a ? a : (x > b ? b : x);
 }
@@ -156,7 +156,7 @@ int clamp(int x, int a, int b)
  * 
  * \return	Clamped value.
  */
-float clamp(float x, float a, float b)
+float NAS2D::clamp(float x, float a, float b)
 {
     return x < a ? a : (x > b ? b : x);
 }
@@ -172,7 +172,7 @@ float clamp(float x, float a, float b)
  * 
  * \return	Returns the divided number rounded up to the nearest whole number.
  */
-int divideUp(int a, int b)
+int NAS2D::divideUp(int a, int b)
 {
 	return (a + (b - 1)) / b;
 }

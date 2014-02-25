@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2013 New Age Software
+// = Copyright © 2008 - 2014 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -13,21 +13,21 @@
 using namespace NAS2D;
 
 // Preset Colors
-const Color_4ub COLOR_BLACK(0, 0, 0, 255);
-const Color_4ub COLOR_BLUE(0, 0, 255, 255);
-const Color_4ub COLOR_BRIGHT_GREEN(0, 255, 0, 255);
-const Color_4ub COLOR_CYAN(0, 255, 255, 255);
-const Color_4ub COLOR_GREEN(0, 185, 0, 255);
-const Color_4ub COLOR_GREY(128, 128, 128, 255);
-const Color_4ub COLOR_MAGENTA(255, 0, 255, 255);
-const Color_4ub COLOR_NAVY(35, 60, 85, 255);
-const Color_4ub COLOR_ORANGE(255, 127, 0, 255);
-const Color_4ub COLOR_RED(255, 0, 0, 255);
-const Color_4ub COLOR_SILVER(192, 192, 192, 255);
-const Color_4ub COLOR_WHITE(255, 255, 255, 255);
-const Color_4ub COLOR_YELLOW(255, 255, 0, 255);
+const Color_4ub NAS2D::COLOR_BLACK(0, 0, 0, 255);
+const Color_4ub NAS2D::COLOR_BLUE(0, 0, 255, 255);
+const Color_4ub NAS2D::COLOR_BRIGHT_GREEN(0, 255, 0, 255);
+const Color_4ub NAS2D::COLOR_CYAN(0, 255, 255, 255);
+const Color_4ub NAS2D::COLOR_GREEN(0, 185, 0, 255);
+const Color_4ub NAS2D::COLOR_GREY(128, 128, 128, 255);
+const Color_4ub NAS2D::COLOR_MAGENTA(255, 0, 255, 255);
+const Color_4ub NAS2D::COLOR_NAVY(35, 60, 85, 255);
+const Color_4ub NAS2D::COLOR_ORANGE(255, 127, 0, 255);
+const Color_4ub NAS2D::COLOR_RED(255, 0, 0, 255);
+const Color_4ub NAS2D::COLOR_SILVER(192, 192, 192, 255);
+const Color_4ub NAS2D::COLOR_WHITE(255, 255, 255, 255);
+const Color_4ub NAS2D::COLOR_YELLOW(255, 255, 0, 255);
 
-const Color_4ub COLOR_NORMAL = NAS2D::COLOR_WHITE;
+const Color_4ub NAS2D::COLOR_NORMAL = NAS2D::COLOR_WHITE;
 
 
 /**

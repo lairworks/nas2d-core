@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2013 New Age Software
+// = Copyright © 2008 - 2014 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -16,17 +16,17 @@
 using namespace NAS2D;
 
 // Common Trig Defines
-const float PI = 3.14159265f;
-const float PI_2 = NAS2D::PI * 2;
+const float NAS2D::PI = 3.14159265f;
+const float NAS2D::PI_2 = NAS2D::PI * 2;
 
-const float DEG2RAD = NAS2D::PI / 180.0f;
-const float RAD2DEG = 180 / NAS2D::PI;
+const float NAS2D::DEG2RAD = NAS2D::PI / 180.0f;
+const float NAS2D::RAD2DEG = 180 / NAS2D::PI;
 
 
 /**
  * Gets an angle in radians from degrees.
  */
-float degToRad(float degree)
+float NAS2D::degToRad(float degree)
 {
 	return degree * NAS2D::DEG2RAD;
 }
@@ -35,7 +35,7 @@ float degToRad(float degree)
 /**
  * Gets an angle in degrees from radians.
  */
-float radToDeg(float rad)
+float NAS2D::radToDeg(float rad)
 {
 	return rad * -NAS2D::RAD2DEG;
 }
@@ -44,7 +44,7 @@ float radToDeg(float rad)
 /**
  * Gets the angle of a line in degrees given two points.
  */
-float angleFromPoints(float x, float y, float x2, float y2)
+float NAS2D::angleFromPoints(float x, float y, float x2, float y2)
 {
 #if defined(_DEBUG)
 	float angle = 90 - NAS2D::radToDeg(atan2(y2 - y, x2 - x));
@@ -64,7 +64,7 @@ float angleFromPoints(float x, float y, float x2, float y2)
 /**
  * Gets a directional vector from an angle in degrees.
  */
-Point_2df getDirectionVector(float angle)
+Point_2df NAS2D::getDirectionVector(float angle)
 {
 	return Point_2df(sin(NAS2D::degToRad(angle)), -cos(NAS2D::degToRad(angle)));
 }
@@ -78,7 +78,7 @@ Point_2df getDirectionVector(float angle)
  * \param	c	Center point of a circle.
  * \param	r	Radius of a circle.
  */
-bool lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r)
+bool NAS2D::lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r)
 {
 	float dx = static_cast<float>(q.x() - p.x());
 	float dy = static_cast<float>(q.y() - p.y());

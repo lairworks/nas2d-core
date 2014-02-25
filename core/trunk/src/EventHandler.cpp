@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2013 New Age Software
+// = Copyright © 2008 - 2014 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -584,7 +584,7 @@ void EventHandler::disconnectAll()
 /**
  * Posts a quit event to the event system.
  */
-void postQuitEvent()
+void NAS2D::postQuitEvent()
 {
 	SDL_Event event;
 	event.type = SDL_QUIT;

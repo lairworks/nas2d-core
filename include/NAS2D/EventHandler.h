@@ -19,6 +19,8 @@
 
 #include <string>
 
+namespace NAS2D {
+
 /**
  * \class	EventHandler
  * \brief	Handles and dispatches low-level events.
@@ -373,5 +375,7 @@ private:
 };
 
 void postQuitEvent();
+
+} // namespace
 
 #endif

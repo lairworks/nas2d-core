@@ -17,6 +17,8 @@
 
 #include "NAS2D/MersenneTwister.h"
 
+namespace NAS2D {
+
 /**
  * \class	Resource
  * \brief	A basic Resource.
@@ -63,6 +65,8 @@ private:
 
 	int mId;
 };
+
+} // namespace
 
 #endif
 

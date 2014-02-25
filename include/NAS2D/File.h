@@ -13,6 +13,8 @@
 
 #include <string>
 
+namespace NAS2D {
+
 /**
  * \class File
  * \brief Represent a File object.
@@ -164,5 +166,7 @@ private:
 	ByteStream	mByteStream;	/**< Internal stream of bytes. */
 	std::string	mFileName;		/**< Internal filename including directory path. */
 };
+
+} // namespace
 
 #endif

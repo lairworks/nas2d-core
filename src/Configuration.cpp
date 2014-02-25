@@ -13,6 +13,8 @@
 #include "NAS2D/Utility.h"
 #include "NAS2D/XmlAttributeParser.h"
 
+using namespace NAS2D;
+
 // Set some basic constants.
 const int				AUDIO_LOW_QUALITY			= 11025;
 const int				AUDIO_MEDIUM_QUALITY		= 22050;

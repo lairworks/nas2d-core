@@ -31,6 +31,8 @@
 
 #include <map>
 
+namespace NAS2D {
+
 /**
  *  \class Music
  *  \brief Music Resource.
@@ -79,5 +81,7 @@ private:
 
 	static MusicReferenceMap			_RefMap;		/*< Lookup table for music resource references. */
 };
+
+} // namespace
 
 #endif

@@ -30,6 +30,8 @@
 
 #include <map>
 
+namespace NAS2D {
+
 extern SDL_Window* _window;
 
 /**
@@ -112,6 +114,8 @@ private:
 	unsigned int		mFontShaderVert;
 	
 	ShaderManager		*mShaderManager;
-};	
+};
+
+} // namespace
 
 #endif

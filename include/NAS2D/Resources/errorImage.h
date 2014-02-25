@@ -12,6 +12,9 @@
 // = This file contains a simple character string that defines the checkerboard
 // = pattern that shows up when an image file can't be loaded for whatever reason.
 // ==================================================================================
+
+namespace NAS2D {
+
 #define ERRORIMG_LEN 249
 
 static unsigned char errorImg[]=
@@ -37,3 +40,5 @@ static unsigned char errorImg[]=
 	0x85,0x58,0xc6,0x00,0x00,0x00,0x00,0x49,0x45,0x4e,0x44,0xae,0x42,
 	0x60,0x82,0x82
 };
+
+} // namespace

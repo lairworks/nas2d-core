@@ -13,6 +13,7 @@
 
 #include "MersenneTwister.h"
 
+namespace NAS2D {
 
 /**
  * \class	Random
@@ -44,6 +45,8 @@ private:
 	const Random& operator=(const Random&) { return *this; }
 
 	static MersenneTwister		mMT;
+};
+
 };
 
 #endif

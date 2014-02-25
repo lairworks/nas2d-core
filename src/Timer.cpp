@@ -18,6 +18,7 @@
 #include "SDL/SDL.h"
 #endif
 
+using namespace NAS2D;
 
 /**
  * C'tor

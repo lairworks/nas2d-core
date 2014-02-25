@@ -18,6 +18,8 @@
 #include "SDL/SDL.h"
 #endif
 
+using namespace NAS2D;
+
 const unsigned int FPS_COUNTS_SIZE = 10;
 unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };
 

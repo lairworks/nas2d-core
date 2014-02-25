@@ -22,6 +22,8 @@
 #include "NAS2D/EventHandler.h"
 #include "NAS2D/Signal.h"
 
+namespace NAS2D {
+
 /**
  * \class	State
  * \brief	The State class operates within a StateManager as a separate unit of
@@ -117,5 +119,6 @@ protected:
 	virtual State* update() = 0;
 };
 
+} // namespace
 
 #endif

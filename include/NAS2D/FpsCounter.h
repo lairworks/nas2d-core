@@ -15,6 +15,8 @@
 
 #include "Common.h"
 
+namespace NAS2D {
+
 /**
  * \class FpsCounter
  * \brief Implements a basic FPS Counter.
@@ -38,5 +40,7 @@ private:
 	unsigned int	mArrayIndex;
 	unsigned int	mAccumulator;
 };
+
+} // namespace
 
 #endif

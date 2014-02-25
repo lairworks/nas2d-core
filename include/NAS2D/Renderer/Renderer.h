@@ -24,6 +24,8 @@
 
 #include <sstream>
 
+namespace NAS2D {
+
 // Color Presets
 extern const Color_4ub COLOR_BLACK;
 extern const Color_4ub COLOR_BLUE;
@@ -216,5 +218,7 @@ private:
 
 	int					mTickDelta;		/**< Current tick in miliseconds. */
 };
+
+} // namespace
 
 #endif

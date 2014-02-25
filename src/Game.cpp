@@ -18,6 +18,7 @@
 #include "NAS2D/Mixer/SDL_Mixer.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
+using namespace NAS2D;
 
 /**
  * Starts the engine by initializing all of the engine sub components and

@@ -11,6 +11,8 @@
 #ifndef _NAS_UTILITY_
 #define _NAS_UTILITY_
 
+namespace NAS2D {
+
 /**
  * \class	Utility
  * \brief	A simple singleton type class used specifically for handling single
@@ -109,5 +111,7 @@ private:
 };
 
 template<typename T> T* Utility<T>::mInstance = 0;
+
+} // namespace
 
 #endif

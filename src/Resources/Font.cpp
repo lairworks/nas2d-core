@@ -34,6 +34,7 @@
 #include <math.h>
 
 using namespace std;
+using namespace NAS2D;
 
 string buildName(TTF_Font*);
 

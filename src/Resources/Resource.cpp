@@ -11,6 +11,7 @@
 #include "NAS2D/Resources/Resource.h"
 
 using namespace std;
+using namespace NAS2D;
 
 MersenneTwister Resource::mMt = MersenneTwister();
 

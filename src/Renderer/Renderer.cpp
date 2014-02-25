@@ -10,6 +10,8 @@
 
 #include "NAS2D/Renderer/Renderer.h"
 
+using namespace NAS2D;
+
 // Preset Colors
 const Color_4ub COLOR_BLACK(0, 0, 0, 255);
 const Color_4ub COLOR_BLUE(0, 0, 255, 255);
@@ -25,7 +27,7 @@ const Color_4ub COLOR_SILVER(192, 192, 192, 255);
 const Color_4ub COLOR_WHITE(255, 255, 255, 255);
 const Color_4ub COLOR_YELLOW(255, 255, 0, 255);
 
-const Color_4ub COLOR_NORMAL = COLOR_WHITE;
+const Color_4ub COLOR_NORMAL = NAS2D::COLOR_WHITE;
 
 
 /**

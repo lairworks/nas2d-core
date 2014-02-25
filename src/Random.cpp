@@ -10,8 +10,9 @@
 
 #include "NAS2D/Random.h"
 
-MersenneTwister Random::mMT;
+using namespace NAS2D;
 
+MersenneTwister Random::mMT;
 
 /**
  * Gets an integer value between 0 and 2,147,483,647.

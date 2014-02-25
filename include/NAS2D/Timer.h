@@ -11,6 +11,7 @@
 #ifndef __NAS_TIMER__
 #define __NAS_TIMER__
 
+namespace NAS2D {
 
 /**
  * \class Timer
@@ -73,5 +74,7 @@ private:
 
 	unsigned int	mAccumulator;
 };
+
+} // namespace
 
 #endif

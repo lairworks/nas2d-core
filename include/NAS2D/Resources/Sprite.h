@@ -17,6 +17,8 @@
 #include <string>
 #include <vector>
 
+namespace NAS2D {
+
 extern const std::string SPRITE_VERSION;
 
 /**
@@ -171,5 +173,7 @@ private:
 
 	bool				mPaused;			/**< Indicate whether or not the animation for this Sprite is paused. */
 };
+
+} // namespace
 
 #endif

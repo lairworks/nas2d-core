@@ -29,6 +29,8 @@
 
 #include "tinyxml/tinyxml.h"
 
+namespace NAS2D {
+
 enum ConfigOptions
 {
 	AUDIO_QUALITY
@@ -133,4 +135,6 @@ private:
 
 	bool				mOptionChanged;					/**< Flags whether or not an option was changed. */
 };
+
+} // namespace
 #endif

@@ -11,7 +11,7 @@
 #include "NAS2D/Resources/Sound.h"
 
 using namespace std;
-
+using namespace NAS2D;
 
 /**
  * Default C'tor.

@@ -15,6 +15,8 @@
 
 using namespace std;
 
+namespace NAS2D {
+
 /**
  * \class Exception
  * \brief Thrown when Exceptions occur.
@@ -50,5 +52,7 @@ private:
 	std::string		mErrorDescription;		/**< Full description of the Error. */
 	int				mErrorCode;				/**< Error Code */
 };
+
+} // namespace
 
 #endif

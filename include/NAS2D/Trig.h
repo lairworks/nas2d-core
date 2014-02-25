@@ -11,6 +11,8 @@
 #ifndef __NAS_TRIG__
 #define __NAS_TRIG__
 
+namespace NAS2D {
+
 extern const float PI;
 extern const float PI_2;
 extern const float DEG2RAD;
@@ -27,5 +29,7 @@ float angleFromPoints(float x, float y, float x2, float y2);
 Point_2df getDirectionVector(float angle);
 
 bool lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r);
+
+};
 
 #endif

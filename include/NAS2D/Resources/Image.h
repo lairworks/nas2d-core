@@ -26,7 +26,10 @@
 #include <vector>
 #include <map>
 
+namespace NAS2D {
+
 class Rectangle_2d;
+
 
 /**
  * \class Image
@@ -111,5 +114,7 @@ typedef std::vector<Image*> ImageListPtr;
  * \brief	A list of Image objects.
  */
 typedef std::vector<Image> ImageList;
+
+} // namespace
 
 #endif

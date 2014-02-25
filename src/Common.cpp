@@ -18,6 +18,8 @@
 #include <windows.h>
 #endif
 
+using namespace NAS2D;
+
 /**
  * \fn isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)
  * 

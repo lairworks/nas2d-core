@@ -23,7 +23,7 @@
 #include <math.h>
 
 using namespace std;
-
+using namespace NAS2D;
 
 /**
  * Life of generated OpenGL Textures in Miliseconds. Roughly 30 seconds

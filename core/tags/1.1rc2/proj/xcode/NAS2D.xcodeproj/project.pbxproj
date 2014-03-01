@@ -24,7 +24,6 @@
 		69693DDB187DA5C90072C1A5 /* NAS2D.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC0187DA5C90072C1A5 /* NAS2D.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69693DDC187DA5C90072C1A5 /* Random.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC1187DA5C90072C1A5 /* Random.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69693DDF187DA5C90072C1A5 /* Signal.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC4187DA5C90072C1A5 /* Signal.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		69693DE0187DA5C90072C1A5 /* sigslot.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC5187DA5C90072C1A5 /* sigslot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69693DE1187DA5C90072C1A5 /* State.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC6187DA5C90072C1A5 /* State.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69693DE2187DA5C90072C1A5 /* StateManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC7187DA5C90072C1A5 /* StateManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69693DE3187DA5C90072C1A5 /* Timer.h in Headers */ = {isa = PBXBuildFile; fileRef = 69693DC8187DA5C90072C1A5 /* Timer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -140,7 +139,6 @@
 		69693DC2187DA5C90072C1A5 /* Renderer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Renderer; path = ../../include/NAS2D/Renderer; sourceTree = "<group>"; };
 		69693DC3187DA5C90072C1A5 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = ../../include/NAS2D/Resources; sourceTree = "<group>"; };
 		69693DC4187DA5C90072C1A5 /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Signal.h; path = ../../include/NAS2D/Signal.h; sourceTree = "<group>"; };
-		69693DC5187DA5C90072C1A5 /* sigslot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sigslot.h; path = ../../include/NAS2D/sigslot.h; sourceTree = "<group>"; };
 		69693DC6187DA5C90072C1A5 /* State.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = State.h; path = ../../include/NAS2D/State.h; sourceTree = "<group>"; };
 		69693DC7187DA5C90072C1A5 /* StateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StateManager.h; path = ../../include/NAS2D/StateManager.h; sourceTree = "<group>"; };
 		69693DC8187DA5C90072C1A5 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timer.h; path = ../../include/NAS2D/Timer.h; sourceTree = "<group>"; };
@@ -311,7 +309,6 @@
 				69693DC2187DA5C90072C1A5 /* Renderer */,
 				69693DC3187DA5C90072C1A5 /* Resources */,
 				69693DC4187DA5C90072C1A5 /* Signal.h */,
-				69693DC5187DA5C90072C1A5 /* sigslot.h */,
 				69693DC6187DA5C90072C1A5 /* State.h */,
 				69693DC7187DA5C90072C1A5 /* StateManager.h */,
 				69693DC8187DA5C90072C1A5 /* Timer.h */,
@@ -407,7 +404,6 @@
 				69693DDF187DA5C90072C1A5 /* Signal.h in Headers */,
 				69693DE2187DA5C90072C1A5 /* StateManager.h in Headers */,
 				69693DD6187DA5C90072C1A5 /* FpsCounter.h in Headers */,
-				69693DE0187DA5C90072C1A5 /* sigslot.h in Headers */,
 				69693DD9187DA5C90072C1A5 /* MersenneTwister.h in Headers */,
 				69693DCD187DA5C90072C1A5 /* Common.h in Headers */,
 				69693DCF187DA5C90072C1A5 /* Delegate.h in Headers */,
@@ -585,7 +581,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -615,9 +611,9 @@
 					"-lfreetype",
 				);
 				PRODUCT_NAME = NAS2D;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
-				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;

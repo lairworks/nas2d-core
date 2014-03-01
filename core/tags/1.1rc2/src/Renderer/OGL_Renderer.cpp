@@ -615,16 +615,20 @@ bool OGL_Renderer::extensionExists(const std::string& extension)
 {
     StringList extensions;
     GLint n, i;
+#ifndef __APPLE__
+    
     glGetIntegerv(GL_NUM_EXTENSIONS, &n);
     for (i = 0; i < n; i++) {
         extensions.push_back((const char*)glGetStringi(GL_EXTENSIONS, i));
     }
-    //std::istringstream iss(std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS))));
+#else
+    std::istringstream iss(std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS))));
 
 
-    //string token;
-    //while(getline(iss, token, ' '))
-        //extensions.push_back(token);
+    string token;
+    while(getline(iss, token, ' '))
+        extensions.push_back(token);
+#endif
 
 	if(extensions.empty())
 		return false;

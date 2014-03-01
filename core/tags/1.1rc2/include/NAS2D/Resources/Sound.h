@@ -22,7 +22,7 @@
 #endif
 
 #ifdef __APPLE__
-#include <SDL2/SDL_mixer.h>
+#include <SDL2_mixer/SDL_mixer.h>
 #elif __linux__
 #include "SDL2/SDL_mixer.h"
 #else

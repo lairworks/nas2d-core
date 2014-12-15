@@ -103,3 +103,9 @@ void StateManager::handleQuit()
 {
 	mActive = false;
 }
+
+
+bool StateManager::active() const
+{
+	return mActive;
+}

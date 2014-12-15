@@ -104,6 +104,7 @@ protected:
 	 */
 	virtual void initialize() = 0;
 
+
 	/**
 	 * Called once every frame.
 	 * 

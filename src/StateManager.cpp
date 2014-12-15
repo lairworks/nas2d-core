@@ -67,6 +67,8 @@ void StateManager::setState(State* state)
 	// Initialize the new one
 	mActiveState = state;
 	mActiveState->initialize();
+
+	mActive = true;
 }
 
 /**

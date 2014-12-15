@@ -34,6 +34,8 @@ public:
 	void setState(State* state);	
 	bool update();
 
+	bool active() const;
+
 private:
 	void handleQuit();
 

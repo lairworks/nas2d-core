@@ -218,6 +218,7 @@ void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, f
 	fillVertexArray(x, y, w, h);
 	
 	drawVertexArray(image.texture_id());
+	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 

@@ -14,12 +14,16 @@ CONFIG += staticlib
 DEFINES += TIXML_USE_STL \
            GL_GLEXT_PROTOTYPES
 DESTDIR = $$OUT_PWD/lib/nas2d/bin/
-INCLUDEPATH += "../../include" \
+
+win32:INCLUDEPATH += "../../include" \
+               "../../../../depend/win32/include/"
+unix:INCLUDEPATH += "../../include" \
                "/usr/include/SDL2" \
                "/usr/include" \
                "../../include/tinyxml"
 
-LIBS *= -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
+win32:LIBS *= -L"$$_PRO_FILE_PWD_/../../../../depend/win32/lib/"
+unix:LIBS *= -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
 
 
 SOURCES += \

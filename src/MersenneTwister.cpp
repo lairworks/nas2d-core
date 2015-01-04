@@ -55,6 +55,9 @@
 
 #include <iostream>
 #include <cassert>
+#include <ctime>
+
+#include <time.h>
 
 #include "NAS2D/MersenneTwister.h"
 
@@ -69,9 +72,14 @@ MersenneTwister::MersenneTwister(void):	mt_(new unsigned long[N]),
 										seeded_by_array_(false),
 										seeded_by_int_(false)
 {
-	unsigned long init[4] = { 0x123, 0x234, 0x345, 0x456 };
+	time_t timer;
+	time(&timer);
+
+	unsigned long init[4] = { timer, timer>>2, timer>>4, timer>>8 };
 	unsigned long length = 4;
 	init_by_array(init, length);
+
+	//init_genrand(timer);
 }
 
 /**

@@ -428,6 +428,9 @@ Color_4ub Image::pixelColor(int x, int y) const
 	if(x < 0 || x > width() || y < 0 || y > height())
 		return Color_4ub(0, 0, 0, 255);
 
+	if(!mPixels)
+		throw Exception(0, "NULL Surface", "Image::pixelColor() called on an Image with no pixel data.");
+
 	SDL_LockSurface(mPixels);
     int bpp = mPixels->format->BytesPerPixel;
     // Here p is the address to the pixel we want to retrieve

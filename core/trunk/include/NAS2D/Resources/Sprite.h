@@ -48,6 +48,8 @@ public:
 	void pause();
 	void resume();
 
+	void skip(int frames);
+
 	void update(float x, float y);
 
 	void rotation(float angle);

@@ -156,6 +156,20 @@ void Sprite::resume()
 
 
 /**
+ * Skips animation playback frames.
+ * 
+ * \param	frames	Number of frames to skip.
+ */
+void Sprite::skip(int frames)
+{
+	if(mActions.find(toLowercase(mCurrentAction)) == mActions.end())
+		return;
+
+	mCurrentFrame = frames % mActions[mCurrentAction].size();
+}
+
+
+/**
  * Updates the Sprite and draws it to the screen at specified coordinaes.
  *
  * \param	x	X-Screen Coordinate to render the Sprite.

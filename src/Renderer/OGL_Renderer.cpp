@@ -57,6 +57,8 @@ GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 // so that we can handle mouse input grabbing.
 SDL_Window* _window = NULL;
 
+void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
+
 
 OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title),
 														mWindow(NULL),
@@ -288,7 +290,6 @@ void OGL_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
-void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 
 void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
 {	
@@ -300,7 +301,7 @@ void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(mTextureTarget);
 
-	//glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -392,6 +393,7 @@ void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int 
 
 void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
 {
+	/*
 	glColor4ub(r, g, b, a);
 	glDisable(mTextureTarget);
 
@@ -400,6 +402,25 @@ void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, i
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 
 	glEnable(mTextureTarget);
+	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+	*/
+
+	/*
+	 * \todo	This is a somewhat inefficient hack to fix an issue where pixels
+	 *			get clipped along some corners depending on OpenGL implementations.
+	 */
+
+	glDisable(mTextureTarget);
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	line(x, y, x + width, y, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(x, y, x, y + height + 0.5, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(x, y + height + 0.5, x + width, y + height + 0.5, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(x + width, y, x + width, y + height + 0.5, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glEnable(mTextureTarget);
+
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 

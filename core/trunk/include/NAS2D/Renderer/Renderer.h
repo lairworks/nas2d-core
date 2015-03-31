@@ -94,8 +94,11 @@ public:
 	const std::string& title();
 	void title(const std::string& title);
 
-	virtual void drawImage(Image& image, float x, float y, float scale = 1.0f);
-	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
+	void drawImage(Image& image, float x, float y, float scale = 1.0f);
+	virtual void drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a);
+	
+	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
+	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a);
 
 	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color_4ub& color = COLOR_NORMAL);
 	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a);

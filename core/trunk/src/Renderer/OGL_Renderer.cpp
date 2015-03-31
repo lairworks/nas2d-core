@@ -134,15 +134,21 @@ void OGL_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 }
 
 
-void OGL_Renderer::drawImage(Image& image, float x, float y, float scale = 1.0f)
+void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a)
 {
+	glColor4ub(r, g, b, a);
+
 	fillVertexArray(x, y, static_cast<float>(image.width()), static_cast<float>(image.height()));
 	drawVertexArray(image.texture_id());
+
+	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
-void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
+void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a)
 {
+	glColor4ub(r, g, b, a);
+
 	fillVertexArray(rasterX, rasterY, width, height);
 
 	fillTextureArray(	x / image.width(),
@@ -152,6 +158,8 @@ void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, floa
 					);
 
 	drawVertexArray(image.texture_id(), false);
+
+	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 

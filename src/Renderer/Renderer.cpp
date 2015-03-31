@@ -93,6 +93,24 @@ Renderer::~Renderer()
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
 void Renderer::drawImage(Image& image, float x, float y, float scale)
+{
+	drawImage(image, x, y, scale, 255, 255, 255, 255);
+}
+
+
+/**
+ * Draws an Image to the screen.
+ *
+ * \param	image	A reference to an Image Resource.
+ * \param	x		X-Coordinate of the Image to draw.
+ * \param	y		Y-Coordinate of the Image to draw.
+ * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
+ * \param	r		Red value to tint the image at (0 - 255).
+ * \param	g		Green value to tint the image at (0 - 255).
+ * \param	b		Blue value to tint the image at (0 - 255).
+ * \param	a		Alpha value to draw the image at (0 - 255).
+ */
+void Renderer::drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a)
 {}
 
 
@@ -108,6 +126,27 @@ void Renderer::drawImage(Image& image, float x, float y, float scale)
  * \param	height		Height of the area to start getting pixel data from.
  */
 void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
+{
+	drawSubImage(image, rasterX, rasterY, x, y, width, height, 255, 255, 255, 255);
+}
+
+
+/**
+ * Draws a portion of a given Image to the screen.
+ *
+ * \param	image		A refernece to an Image Resource.
+ * \param	rasterX		X-Coordinate to draw the Image at.
+ * \param	rasterY		Y-Coordinate to draw the Image at.
+ * \param	x			X-Coordinate of the area to start getting pixel data from.
+ * \param	y			Y-Coordinate of the area to start getting pixel data from.
+ * \param	width		Width of the area to start getting pixel data from.
+ * \param	height		Height of the area to start getting pixel data from.
+ * \param	r			Red value to tint the image at (0 - 255).
+ * \param	g			Green value to tint the image at (0 - 255).
+ * \param	b			Blue value to tint the image at (0 - 255).
+ * \param	a			Alpha value to draw the image at (0 - 255).
+ */
+void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a)
 {}
 
 

@@ -23,8 +23,8 @@
 	#include <SDL2/SDL_opengl.h>
 #elif defined(__linux__)
     #include <SDL2/SDL_opengl.h>
-#elif defined(WIN32)
-	#include "SDL/SDL_opengl.h"
+#elif defined(WINDOWS)
+	#include "SDL_opengl.h"
 #else
 	#include "SDL/SDL_opengl.h"
 	#include "SDL/SDL_gfxPrimitives.h"

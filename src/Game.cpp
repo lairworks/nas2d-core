@@ -15,7 +15,7 @@
 #include "NAS2D/Game.h"
 #include "NAS2D/Utility.h"
 
-#include "NAS2D/Mixer/SDL_Mixer.h"
+#include "NAS2D/Mixer/Mixer_SDL.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
 using namespace NAS2D;
@@ -40,7 +40,7 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 	Configuration& cf = Utility<Configuration>::get();
 	cf.load(configPath);
 
-	Utility<Mixer>::instantiateDerived(new SDL_Mixer());
+	Utility<Mixer>::instantiateDerived(new Mixer_SDL());
 	
 	cout << "Initializing Event Handler... ";
 	Utility<EventHandler>::get();

@@ -12,7 +12,7 @@
 #define _NAS_OGL_RENDERER_
 
 #ifdef _WIN32
-#include "Glee.h"
+#include "GL/glew.h"
 #define NO_SDL_GLEXT
 #endif
 
@@ -22,7 +22,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_opengl.h"
 #else
-#include "SDL/SDL.h"
+#include "SDL.h"
 #endif
 
 #include "Renderer.h"

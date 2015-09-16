@@ -11,23 +11,20 @@
 #ifndef _NAS_SDL_MIXER_
 #define _NAS_SDL_MIXER_
 
-#include "Mixer.h"
-
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#else
-#include "SDL/SDL.h"
-#endif
-
-#ifdef __APPLE__
 #include "SDL2_mixer/SDL_mixer.h"
 #elif __linux__
+#include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
-#else
-#include "SDL/SDL_mixer.h"
+#elif WINDOWS
+#include "SDL.h"
+#include "SDL_mixer.h"
 #endif
+
+
+#include "Mixer.h"
+
 
 namespace NAS2D {
 
@@ -40,37 +37,37 @@ namespace NAS2D {
  * \warning	Ensure that the mixer is not playing any audio resources
  *			before freeing them. Not doing so results in crashes.
  */
-class SDL_Mixer: public Mixer
-{
-public:
-	SDL_Mixer();
-	~SDL_Mixer();
-	
-	// Sound Functions
-	void playSound(Sound& sound);
-	void stopSound();
-	void pauseSound();
-	void resumeSound();
+	class Mixer_SDL : public Mixer
+	{
+	public:
+		Mixer_SDL();
+		~Mixer_SDL();
 
-	// Music Functions
-	void playMusic(Music& music);
-	void stopMusic();
-	void pauseMusic();
-	void resumeMusic();
+		// Sound Functions
+		void playSound(Sound& sound);
+		void stopSound();
+		void pauseSound();
+		void resumeSound();
 
-	void fadeInMusic(Music& music, int loops, int delay);
-	void fadeOutMusic(int delay);
+		// Music Functions
+		void playMusic(Music& music);
+		void stopMusic();
+		void pauseMusic();
+		void resumeMusic();
 
-	// Global Functions
-	void setSfxVolume(int level);
-	void setMusVolume(int level);
+		void fadeInMusic(Music& music, int loops, int delay);
+		void fadeOutMusic(int delay);
 
-	void mute();
-	void unmute();
+		// Global Functions
+		void setSfxVolume(int level);
+		void setMusVolume(int level);
 
-private:
-	SDL_Mixer(const SDL_Mixer&);			// Intentionally left undefined;
-	SDL_Mixer& operator=(const SDL_Mixer&);	// Intentionally left undefined;
+		void mute();
+		void unmute();
+
+	private:
+		Mixer_SDL(const Mixer_SDL&) {}			// Intentionally left undefined;
+		Mixer_SDL& operator=(const Mixer_SDL&) {}	// Intentionally left undefined;
 
 	void init();
 

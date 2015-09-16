@@ -13,11 +13,9 @@
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
-#elif WIN32
-#include "GLee.h"
+#elif WINDOWS
+#include "GL/glew.h"
 #define NO_SDL_GLEXT
-#include <windows.h>
-#include "SDL/SDL_opengl.h"
 #else
 #include <GL/gl.h>
 #endif

@@ -19,7 +19,7 @@
 #elif __APPLE__
 #include "physfs.h"
 #else
-#include "physfs/physfs.h"
+#include "physfs.h"
 #endif
 
 #ifdef __linux__

@@ -15,18 +15,13 @@
 
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#else
-#include "SDL/SDL.h"
-#endif
-
-#ifdef __APPLE__
 #include <SDL2/SDL_mixer.h>
 #elif __linux__
+#include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 #else
-#include "SDL/SDL_mixer.h"
+#include "SDL.h"
+#include "SDL_mixer.h"
 #endif
 
 #include <map>
@@ -53,7 +48,7 @@ public:
 
 protected:
 	friend class Mixer;
-	friend class SDL_Mixer;
+	friend class Mixer_SDL;
 
 	Mix_Music *music() const;			/**< Internal function used only by Mixer classes. */
 

@@ -15,18 +15,13 @@
 
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#else
-#include "SDL/SDL.h"
-#endif
-
-#ifdef __APPLE__
 #include <SDL2/SDL_mixer.h>
 #elif __linux__
+#include "SDL2/SDL.h"
 #include "SDL2/SDL_mixer.h"
 #else
-#include "SDL/SDL_mixer.h"
+#include "SDL.h"
+#include "SDL_mixer.h"
 #endif
 
 namespace NAS2D {
@@ -49,7 +44,7 @@ public:
 
 protected:
 	friend class Mixer;
-	friend class SDL_Mixer;
+	friend class Mixer_SDL;
 
 	Mix_Chunk *sound() const;			/**< Internal function only used by the Mixer. */
 

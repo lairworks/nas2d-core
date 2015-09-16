@@ -13,7 +13,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
-#include "GLee.h"
+#include "GL/glew.h"
 #elif __APPLE__
 #include "SDL2/SDL_opengl.h"
 #elif __linux

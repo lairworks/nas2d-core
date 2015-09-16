@@ -58,7 +58,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 
 	mStartPath = startPath;
 
-#if defined(WIN32) || defined(__APPLE__)
+#if defined(WINDOWS) || defined(__APPLE__)
 	std::string basePath = PHYSFS_getBaseDir();
 	mDirSeparator = PHYSFS_getDirSeparator();
 
@@ -116,7 +116,7 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 		return false;
 	}
 
-#ifdef WIN32
+#ifdef WINDOWS
 	string searchPath = mDataPath + path;
 
 	if(PHYSFS_addToSearchPath(searchPath.c_str(), 1) == 0)

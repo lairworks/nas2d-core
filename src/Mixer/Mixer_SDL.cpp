@@ -8,7 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Mixer/SDL_Mixer.h"
+#include "NAS2D/Mixer/Mixer_SDL.h"
 
 #include <iostream>
 
@@ -17,7 +17,7 @@ using namespace NAS2D;
 /*
  * C'tor.
  */
-SDL_Mixer::SDL_Mixer():	Mixer("SDL Mixer"),
+Mixer_SDL::Mixer_SDL():	Mixer("SDL Mixer"),
 						mActAsNull(false)
 {
 	init();
@@ -27,7 +27,7 @@ SDL_Mixer::SDL_Mixer():	Mixer("SDL Mixer"),
 /*
  * D'tor.
  */
-SDL_Mixer::~SDL_Mixer()
+Mixer_SDL::~Mixer_SDL()
 {
 	// Save current volume levels in the Configuration.
 	Utility<Configuration>::get().audioSfxVolume(Mix_Volume(-1, -1));
@@ -42,7 +42,7 @@ SDL_Mixer::~SDL_Mixer()
 }
 
 
-void SDL_Mixer::init()
+void Mixer_SDL::init()
 {
 	cout << "Initializing Mixer... ";
 	// Initialize SDL's Audio Subsystems.
@@ -71,7 +71,7 @@ void SDL_Mixer::init()
 }
 
 
-void SDL_Mixer::playSound(Sound& sound)
+void Mixer_SDL::playSound(Sound& sound)
 {
 	if(mActAsNull)
 		return;
@@ -83,25 +83,25 @@ void SDL_Mixer::playSound(Sound& sound)
 }
 
 
-void SDL_Mixer::stopSound()
+void Mixer_SDL::stopSound()
 {
 	Mix_HaltChannel(-1);
 }
 
 
-void SDL_Mixer::pauseSound()
+void Mixer_SDL::pauseSound()
 {
 	Mix_Pause(-1);
 }
 
 
-void SDL_Mixer::resumeSound()
+void Mixer_SDL::resumeSound()
 {
 	Mix_Resume(-1);
 }
 
 
-void SDL_Mixer::playMusic(Music& music)
+void Mixer_SDL::playMusic(Music& music)
 {
 	if(mActAsNull)
 		return;
@@ -113,26 +113,26 @@ void SDL_Mixer::playMusic(Music& music)
 }
 
 
-void SDL_Mixer::stopMusic()
+void Mixer_SDL::stopMusic()
 {
 	Mix_HaltMusic();
 }
 
 
 
-void SDL_Mixer::pauseMusic()
+void Mixer_SDL::pauseMusic()
 {
 	Mix_PauseMusic();
 }
 
 
-void SDL_Mixer::resumeMusic()
+void Mixer_SDL::resumeMusic()
 {
 	Mix_ResumeMusic();
 }
 
 
-void SDL_Mixer::fadeInMusic(Music& music, int loops, int delay)
+void Mixer_SDL::fadeInMusic(Music& music, int loops, int delay)
 {
 	if(mActAsNull)
 		return;
@@ -141,7 +141,7 @@ void SDL_Mixer::fadeInMusic(Music& music, int loops, int delay)
 }
 
 
-void SDL_Mixer::fadeOutMusic(int delay)
+void Mixer_SDL::fadeOutMusic(int delay)
 {
 	if(mActAsNull)
 		return;
@@ -150,7 +150,7 @@ void SDL_Mixer::fadeOutMusic(int delay)
 }
 
 
-void SDL_Mixer::setSfxVolume(int volume)
+void Mixer_SDL::setSfxVolume(int volume)
 {
 	if(mActAsNull)
 		return;
@@ -159,7 +159,7 @@ void SDL_Mixer::setSfxVolume(int volume)
 }
 
 
-void SDL_Mixer::setMusVolume(int volume)
+void Mixer_SDL::setMusVolume(int volume)
 {
 	if(mActAsNull)
 		return;
@@ -168,7 +168,7 @@ void SDL_Mixer::setMusVolume(int volume)
 }
 
 
-void SDL_Mixer::mute()
+void Mixer_SDL::mute()
 {
 	if(mActAsNull)
 		return;
@@ -178,7 +178,7 @@ void SDL_Mixer::mute()
 }
 
 
-void SDL_Mixer::unmute()
+void Mixer_SDL::unmute()
 {
 	if(mActAsNull)
 		return;

@@ -643,6 +643,7 @@ void OGL_Renderer::getError()
  */
 bool OGL_Renderer::extensionExists(const std::string& extension)
 {
+	/*
     StringList extensions;
     GLint n, i;
     glGetIntegerv(GL_NUM_EXTENSIONS, &n);
@@ -664,6 +665,8 @@ bool OGL_Renderer::extensionExists(const std::string& extension)
 			return true;
 
 	return false;
+	*/
+	return true;
 }
 
 

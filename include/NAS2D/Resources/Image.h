@@ -18,9 +18,9 @@
 #elif __linux__
 #include "SDL2/SDL_image.h"
 #elif _WIN32
-#include "GLee.h"
+#include "GL/glew.h"
 #define NO_SDL_GLEXT
-#include "SDL/SDL_image.h"
+#include "SDL_image.h"
 #endif
 
 #include <vector>

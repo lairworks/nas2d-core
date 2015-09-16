@@ -158,7 +158,8 @@ private:
 	 * The copy c'tor is intentionally private and undefined. It should
 	 * never be invoked at any time.
 	 */
-	Mixer(const Mixer&);
+	Mixer(const Mixer&)
+	{}
 
 	/**
 	 * Copy operator.
@@ -166,7 +167,8 @@ private:
 	 * The copy operator is intentionally private and undefined. It should
 	 * never be invoked at any time.
 	 */
-	Mixer& operator=(const Mixer&);
+	Mixer& operator=(const Mixer&)
+	{}
 };
 
 } // namespace

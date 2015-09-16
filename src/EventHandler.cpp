@@ -15,7 +15,7 @@
 #elif __linux__
 #include "SDL2/SDL.h"
 #else
-#include "SDL/SDL.h"
+#include "SDL.h"
 #endif
 
 // UGLY ASS HACK for mouse window grabbing

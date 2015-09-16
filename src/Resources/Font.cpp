@@ -15,10 +15,10 @@
 	#include "SDL2/SDL_opengl.h"
 	#include "SDL2_ttf/SDL_ttf.h"
 	#include "SDL2_image/SDL_image.h"
-#elif defined(WIN32)
-	#include "SDL/SDL_opengl.h"
-	#include "SDL/SDL_ttf.h"
-	#include "SDL/SDL_image.h"
+#elif defined(WINDOWS)
+	#include "SDL_opengl.h"
+	#include "SDL_ttf.h"
+	#include "SDL_image.h"
 #elif defined(__linux__)
 #define NO_SDL_GLEXT
 #include "GLee.h"

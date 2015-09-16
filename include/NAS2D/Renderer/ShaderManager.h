@@ -16,8 +16,8 @@
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
-#elif defined(WIN32)
-#include "GLee.h"
+#elif defined(WINDOWS)
+#include "GL/glew.h"
 #elif defined(__linux__)
 #include "SDL2/SDL_opengl.h"
 #endif

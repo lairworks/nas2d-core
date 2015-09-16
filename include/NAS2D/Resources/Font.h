@@ -16,9 +16,9 @@
 #ifdef __APPLE__
 #include "SDL2_ttf/SDL_ttf.h"
 #elif _WIN32
-#include "GLee.h"
+#include "GL/glew.h"
 #define NO_SDL_GLEXT
-#include "SDL/SDL_ttf.h"
+#include "SDL_ttf.h"
 #else
 #include "SDL2/SDL_ttf.h"
 #endif

@@ -60,7 +60,7 @@ void StateManager::setState(State* state)
 
 	if(mActiveState != NULL)
 	{
-		Utility<EventHandler>::get().disconnectAll();
+		//Utility<EventHandler>::get().disconnectAll();
 		delete mActiveState;
 	}
 

@@ -643,29 +643,30 @@ void OGL_Renderer::getError()
  */
 bool OGL_Renderer::extensionExists(const std::string& extension)
 {
+	// FIXME:	GLEW doesn't provide a proc address for glGetStringi in GL contexts
+	//			greater than 3. Assume that if a GLSL is available that a NPOT extension
+	//			is also available.
 	/*
-    StringList extensions;
-    GLint n, i;
-    glGetIntegerv(GL_NUM_EXTENSIONS, &n);
-    for (i = 0; i < n; i++) {
-        extensions.push_back((const char*)glGetStringi(GL_EXTENSIONS, i));
-    }
-    //std::istringstream iss(std::string(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS))));
+	StringList extensions;
+	GLint n = 0;
+	glGetIntegerv(GL_NUM_EXTENSIONS, &n);
 
-
-    //string token;
-    //while(getline(iss, token, ' '))
-        //extensions.push_back(token);
+	for (int i = 0; i < n; ++i)
+	{
+		if ((char*)glGetStringi(GL_EXTENSIONS, i))
+			extensions.push_back((char*)glGetStringi(GL_EXTENSIONS, i));
+	}
 
 	if(extensions.empty())
 		return false;
 
-	for(size_t i = 0; i < extensions.size(); i++)
+	for(size_t i = 0; i < extensions.size(); ++i)
 		if(extensions[i] == extension)
 			return true;
 
 	return false;
 	*/
+
 	return true;
 }
 
@@ -727,7 +728,12 @@ void OGL_Renderer::initGL()
 	cout << "\tVendor: " << glGetString(GL_VENDOR) << endl;
 	cout << "\tRenderer: " << driverName() << endl;
 	cout << "\tDriver Version: " << glGetString(GL_VERSION) << endl;
-	cout << "\tGLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+
+	std::string glsl_v = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+	if (glsl_v.empty())
+		throw Exception(0, "No GLSL Support", "Graphics driver reports no GLSL support.");
+
+	cout << "\tGLSL Version: " << glsl_v << endl;
 
 	if(!checkExtensions())
 		throw Exception(0, "Graphics Requirements Not Met", "Your graphics driver does not meet the minimum requirements.");

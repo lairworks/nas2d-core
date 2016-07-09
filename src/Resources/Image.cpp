@@ -238,6 +238,12 @@ bool Image::checkTextureId()
 		mTextureId = it->second.textureId;
 		mRect(0, 0, it->second.w, it->second.h);
 		Image::_IdMap[name()].ref_count++;
+
+		File imageFile = Utility<Filesystem>::get().open(name());
+		mPixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
+		if (!mPixels)
+			throw Exception(0, "Failed Copy", "NAS2D::Image(): Failed to copy raw pixel data on a texture that's been previously loaded.");
+
 		loaded(true);
 		return true;
 	}

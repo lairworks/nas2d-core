@@ -5,6 +5,14 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Gold|Win32">
+      <Configuration>Release Gold</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Gold|x64">
+      <Configuration>Release Gold</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -37,6 +45,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -44,6 +59,13 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
@@ -61,10 +83,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -77,6 +105,10 @@
     <IncludePath>C:\API\glew-1.13.0\include;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\physfs-2.0.3;$(IncludePath)</IncludePath>
     <LibraryPath>C:\API\glew-1.13.0\lib\Release\x64;C:\API\physfs-2.0.3\lib\x64;C:\API\SDL2-2.0.3\lib\x64;C:\API\SDL2_image-2.0.0\lib\x64;C:\API\SDL2_mixer-2.0.0\lib\x64;C:\API\SDL2_ttf-2.0.12\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|x64'">
+    <IncludePath>C:\API\glew-1.13.0\include;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\physfs-2.0.3;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\API\glew-1.13.0\lib\Release\x64;C:\API\physfs-2.0.3\lib\x64;C:\API\SDL2-2.0.3\lib\x64;C:\API\SDL2_image-2.0.0\lib\x64;C:\API\SDL2_mixer-2.0.0\lib\x64;C:\API\SDL2_ttf-2.0.12\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\API\glew-1.13.0\include;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\physfs-2.0.3;$(IncludePath)</IncludePath>
     <LibraryPath>C:\API\glew-1.13.0\lib\Release\Win32;C:\API\physfs-2.0.3\lib\x86;C:\API\SDL2-2.0.3\lib\x86;C:\API\SDL2_image-2.0.0\lib\x86;C:\API\SDL2_mixer-2.0.0\lib\x86;C:\API\SDL2_ttf-2.0.12\lib\x86;$(LibraryPath)</LibraryPath>
@@ -85,6 +117,12 @@
     <TargetName>$(ProjectName)_d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\API\glew-1.13.0\include;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\physfs-2.0.3;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\API\glew-1.13.0\lib\Release\Win32;C:\API\physfs-2.0.3\lib\x86;C:\API\SDL2-2.0.3\lib\x86;C:\API\SDL2_image-2.0.0\lib\x86;C:\API\SDL2_mixer-2.0.0\lib\x86;C:\API\SDL2_ttf-2.0.12\lib\x86;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'">
     <IncludePath>C:\API\glew-1.13.0\include;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\physfs-2.0.3;$(IncludePath)</IncludePath>
     <LibraryPath>C:\API\glew-1.13.0\lib\Release\Win32;C:\API\physfs-2.0.3\lib\x86;C:\API\SDL2-2.0.3\lib\x86;C:\API\SDL2_image-2.0.0\lib\x86;C:\API\SDL2_mixer-2.0.0\lib\x86;C:\API\SDL2_ttf-2.0.12\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -132,6 +170,24 @@
       <AdditionalDependencies>glew32s.lib;physfs.lib;sdl2.lib;sdl2_image.lib;sdl2_mixer.lib;sdl2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MinSpace</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include;C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include\NAS2D\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glew32s.lib;physfs.lib;sdl2.lib;sdl2_image.lib;sdl2_mixer.lib;sdl2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -141,6 +197,23 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include;C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include\NAS2D\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MinSpace</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include;C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include\NAS2D\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -150,6 +150,12 @@ void Mixer_SDL::fadeOutMusic(int delay)
 }
 
 
+bool Mixer_SDL::musicPlaying() const
+{
+	return Mix_PlayingMusic() == 1;
+}
+
+
 void Mixer_SDL::setSfxVolume(int volume)
 {
 	if(mActAsNull)

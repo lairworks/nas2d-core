@@ -58,6 +58,8 @@ namespace NAS2D {
 		void fadeInMusic(Music& music, int loops, int delay);
 		void fadeOutMusic(int delay);
 
+		virtual bool musicPlaying() const;
+
 		// Global Functions
 		void setSfxVolume(int level);
 		void setMusVolume(int level);

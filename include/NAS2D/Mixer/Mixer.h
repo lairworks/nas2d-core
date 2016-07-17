@@ -99,6 +99,11 @@ public:
 	virtual void fadeOutMusic(int delay = 500) {}
 
 	/**
+	* Gets whether or not music is currently playing.
+	*/
+	virtual bool musicPlaying() const { return false; }
+
+	/**
 	 * Mutes all music and audio.
 	 */
 	virtual void mute() {}

@@ -70,10 +70,12 @@ private:
 
 	struct ImageInfo
 	{
-		ImageInfo(): textureId(0), fboId(0), w(0), h(0), ref_count(0) {}
-		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): textureId(id), fboId(fbo_id), w(w), h(h), ref_count(0) {}
+		ImageInfo(): pixels_raw(nullptr), textureId(0), fboId(0), w(0), h(0), ref_count(0) {}
+		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): pixels_raw(nullptr), textureId(id), fboId(fbo_id), w(w), h(h), ref_count(0) {}
 		
-        void operator()(unsigned int id, unsigned int fbo_id, int w, int h) { textureId = id; fboId = fbo_id; w = w; h = h; }
+        //void operator()(unsigned int id, unsigned int fbo_id, int w, int h) { textureId = id; fboId = fbo_id; w = w; h = h; }
+
+		SDL_Surface*	pixels_raw;
 
 		unsigned int textureId;
 		unsigned int fboId;
@@ -94,8 +96,6 @@ private:
 	Rectangle_2d	mRect;			/**< Width/Height information about the Image. */
 
 	unsigned int	mTextureId;		/**< OpenGL Texture ID. */
-
-	SDL_Surface*	mPixels;		/**< Copy of pixel data in ordinary memory. */
 
 	static TextureIdMap			_IdMap;		/*< Lookup table for OpenGL Texture ID's. */
 	static int					_Arbitrary;	/*< Counter for arbitrary image ID's. */

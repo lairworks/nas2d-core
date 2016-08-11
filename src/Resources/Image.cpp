@@ -54,8 +54,7 @@ int Image::_Arbitrary = 0;
  * If the load fails, a default image is stored indicating an error condition.
  */
 Image::Image(const std::string& filePath):	Resource(filePath),
-											mTextureId(0),
-											mPixels(NULL)
+											mTextureId(0)
 {
 	load();
 }
@@ -70,8 +69,7 @@ Image::Image(const std::string& filePath):	Resource(filePath),
  * error condition.		
  */
 Image::Image():	Resource(DEFAULT_IMAGE_NAME),
-				mTextureId(0),
-				mPixels(NULL)
+				mTextureId(0)
 {}
 
 
@@ -82,8 +80,7 @@ Image::Image():	Resource(DEFAULT_IMAGE_NAME),
  * \param	height	Height of the Image.
  */
 Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
-										mTextureId(0),
-										mPixels(NULL)
+										mTextureId(0)
 {
 	stringstream str;
 	str << _Arbitrary++;
@@ -112,10 +109,9 @@ Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
  * \param	height			Height of the Image.
  */
 Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
-																		mTextureId(0),
-																		mPixels(NULL)
+																		mTextureId(0)
 {
-	if(buffer == NULL)
+	if(buffer == nullptr)
 		throw Exception(0, "Bad Data", "Attempted to construct an Image with a NULL pixel buffer.");
 
 	if(bytesPerPixel != 3 && bytesPerPixel != 4)
@@ -131,7 +127,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
 	// wants to be peeking pixels out of it.
 	// 
 	// I believe this to be correct but I have to test it.
-	mPixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
+	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
 	stringstream str;
 	str << _Arbitrary++;
@@ -144,6 +140,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
 	// Update resource management.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
 	Image::_IdMap[name()].ref_count++;
+	Image::_IdMap[name()].pixels_raw = pixels;
 }
 
 
@@ -154,8 +151,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
  */
 Image::Image(const Image &src):	Resource(src.name()),
 								mRect(src.mRect),
-								mTextureId(src.mTextureId),
-								mPixels(src.mPixels)
+								mTextureId(src.mTextureId)
 {
 	loaded(src.loaded());
 	Image::_IdMap[name()].ref_count++;
@@ -190,13 +186,13 @@ Image::~Image()
             glDeleteBuffers(1, &fbo);
 		}
 
-		Image::_IdMap.erase(it);
-
-		if(mPixels)
+		if(Image::_IdMap[name()].pixels_raw != nullptr)
 		{
-			SDL_FreeSurface(mPixels); // be sure to free memory after all references are gone.
-			mPixels = NULL;
+			SDL_FreeSurface(Image::_IdMap[name()].pixels_raw);
+			Image::_IdMap[name()].pixels_raw = nullptr;
 		}
+
+		Image::_IdMap.erase(it);
 	}
 }
 
@@ -211,7 +207,6 @@ Image& Image::operator=(const Image& rhs)
 	name(rhs.name());
 	mRect = rhs.rect();
 	mTextureId = rhs.mTextureId;
-	mPixels = rhs.mPixels;
 	loaded(rhs.loaded());
 	Image::_IdMap[name()].ref_count++;
 
@@ -238,11 +233,6 @@ bool Image::checkTextureId()
 		mTextureId = it->second.textureId;
 		mRect(0, 0, it->second.w, it->second.h);
 		Image::_IdMap[name()].ref_count++;
-
-		File imageFile = Utility<Filesystem>::get().open(name());
-		mPixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
-		if (!mPixels)
-			throw Exception(0, "Failed Copy", "NAS2D::Image(): Failed to copy raw pixel data on a texture that's been previously loaded.");
 
 		loaded(true);
 		return true;
@@ -275,9 +265,9 @@ void Image::load()
 
 	// Create a temporary surface and ensure that the image loaded properly.
 	//SDL_Surface *tmpSurface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
-	mPixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
+	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
 	//if(!tmpSurface)
-	if(!mPixels)
+	if(!pixels)
 	{		
 		// loading failed, log a message, set a default image and return.
 		cout << "(ERROR) Image::load(): " << SDL_GetError() << endl;
@@ -285,14 +275,15 @@ void Image::load()
 		return;
 	}
 
-	mRect = Rectangle_2d(0, 0, mPixels->w, mPixels->h);
+	mRect = Rectangle_2d(0, 0, pixels->w, pixels->h);
 
 	// Generate OpenGL Texture from SDL_Surface
-	generateTexture(mPixels->pixels, mPixels->format->BytesPerPixel, mPixels->w, mPixels->h);
+	generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
 
 	// Add generated texture id to texture ID map.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
 	Image::_IdMap[name()].ref_count++;
+	Image::_IdMap[name()].pixels_raw = pixels;
 
 	loaded(true);
 }
@@ -305,6 +296,7 @@ void Image::load()
 void Image::loadDefault()
 {
 	// Check if texture id was generated and back out if it was.
+	/*
 	if(checkTextureId())
 		return;
 
@@ -316,6 +308,7 @@ void Image::loadDefault()
 	}
 
 	generateTexture(mPixels->pixels, mPixels->format->BytesPerPixel, mPixels->w, mPixels->h);
+	*/
 }
 
 
@@ -434,13 +427,14 @@ Color_4ub Image::pixelColor(int x, int y) const
 	if(x < 0 || x > width() || y < 0 || y > height())
 		return Color_4ub(0, 0, 0, 255);
 
-	if(!mPixels)
+	SDL_Surface* pixels = Image::_IdMap[name()].pixels_raw;
+
+	if(!pixels)
 		throw Exception(0, "NULL Surface", "Image::pixelColor() called on an Image with no pixel data.");
 
-	SDL_LockSurface(mPixels);
-    int bpp = mPixels->format->BytesPerPixel;
-    // Here p is the address to the pixel we want to retrieve
-    Uint8 *p = (Uint8*)mPixels->pixels + y * mPixels->pitch + x * bpp;
+	SDL_LockSurface(pixels);
+    int bpp = pixels->format->BytesPerPixel;
+    Uint8 *p = (Uint8*)pixels->pixels + y * pixels->pitch + x * bpp;
 
 	unsigned int c = 0;
 
@@ -471,9 +465,9 @@ Color_4ub Image::pixelColor(int x, int y) const
 
 	Uint8 r, g, b, a;
 
-	SDL_GetRGBA(c, mPixels->format, &r, &g, &b, &a);
+	SDL_GetRGBA(c, pixels->format, &r, &g, &b, &a);
 
-	SDL_UnlockSurface(mPixels);
+	SDL_UnlockSurface(pixels);
 
 	return Color_4ub(r, g, b, a);
 }

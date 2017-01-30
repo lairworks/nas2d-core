@@ -38,7 +38,10 @@ GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  3
 /**
  * Texture coordinate pairs. Default coordinates encompassing the entire texture.
  */
-GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f };
+//GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f };
+
+GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
+
 
 GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 
@@ -106,7 +109,7 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords =
 	else
 		glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordArray);
 	
-	glDrawArrays(GL_QUADS, 0, 4);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
 
 
@@ -115,10 +118,18 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords =
  */
 void OGL_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-	mVertexArray[0] = static_cast<GLfloat>(x),		mVertexArray[1] = static_cast<GLfloat>(y);	
-	mVertexArray[2] = static_cast<GLfloat>(x),		mVertexArray[3] = static_cast<GLfloat>(y + h);
-	mVertexArray[4] = static_cast<GLfloat>(x + w),	mVertexArray[5] = static_cast<GLfloat>(y + h);
-	mVertexArray[6] = static_cast<GLfloat>(x + w),	mVertexArray[7] = static_cast<GLfloat>(y);
+	//mVertexArray[0] = static_cast<GLfloat>(x),		mVertexArray[1] = static_cast<GLfloat>(y);	
+	//mVertexArray[2] = static_cast<GLfloat>(x),		mVertexArray[3] = static_cast<GLfloat>(y + h);
+	//mVertexArray[4] = static_cast<GLfloat>(x + w),	mVertexArray[5] = static_cast<GLfloat>(y + h);
+	//mVertexArray[6] = static_cast<GLfloat>(x + w),	mVertexArray[7] = static_cast<GLfloat>(y);
+
+	mVertexArray[0] = static_cast<GLfloat>(x), mVertexArray[1] = static_cast<GLfloat>(y);
+	mVertexArray[2] = static_cast<GLfloat>(x), mVertexArray[3] = static_cast<GLfloat>(y + h);
+	mVertexArray[4] = static_cast<GLfloat>(x + w), mVertexArray[5] = static_cast<GLfloat>(y + h);
+
+	mVertexArray[6] = static_cast<GLfloat>(x + w), mVertexArray[7] = static_cast<GLfloat>(y + h);
+	mVertexArray[8] = static_cast<GLfloat>(x + w), mVertexArray[9] = static_cast<GLfloat>(y);
+	mVertexArray[10] = static_cast<GLfloat>(x), mVertexArray[11] = static_cast<GLfloat>(y);
 }
 
 
@@ -127,10 +138,18 @@ void OGL_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
  */
 void OGL_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 {
-	mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(y);
-	mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(v);
-	mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(v);
-	mTextureCoordArray[6] = static_cast<GLfloat>(u),	mTextureCoordArray[7] = static_cast<GLfloat>(y);
+	//mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(y);
+	//mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(v);
+	//mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(v);
+	//mTextureCoordArray[6] = static_cast<GLfloat>(u),	mTextureCoordArray[7] = static_cast<GLfloat>(y);
+
+	mTextureCoordArray[0] = static_cast<GLfloat>(x), mTextureCoordArray[1] = static_cast<GLfloat>(y);
+	mTextureCoordArray[2] = static_cast<GLfloat>(x), mTextureCoordArray[3] = static_cast<GLfloat>(v);
+	mTextureCoordArray[4] = static_cast<GLfloat>(u), mTextureCoordArray[5] = static_cast<GLfloat>(v);
+
+	mTextureCoordArray[6] = static_cast<GLfloat>(u), mTextureCoordArray[7] = static_cast<GLfloat>(v);
+	mTextureCoordArray[8] = static_cast<GLfloat>(u), mTextureCoordArray[9] = static_cast<GLfloat>(y);
+	mTextureCoordArray[10] = static_cast<GLfloat>(x), mTextureCoordArray[11] = static_cast<GLfloat>(y);
 }
 
 
@@ -139,9 +158,12 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r,
 	glColor4ub(r, g, b, a);
 
 	fillVertexArray(x, y, static_cast<float>(image.width()), static_cast<float>(image.height()));
+	fillTextureArray(0.0, 0.0, 1.0, 1.0);
 	drawVertexArray(image.texture_id());
 
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+
+	//drawSubImage(image, x, y, 0.0, 0.0, image.width(), image.height(), r, g, b, a);
 }
 
 

@@ -105,8 +105,8 @@ private:
 	//SDL_Renderer*		mRenderer;					/**< SDL2 Renderer object associated with the OGL Context/Window. */
 
 	GLfloat				mVertexArray[12];			/**< Vertex array for quad drawing functions (all blitter functions). */
-	GLfloat				mTextureCoordArray[8];		/**< Texture coordinate arrawy for quad drawing functions (all blitter functions). */
-	
+	GLfloat				mTextureCoordArray[12];		/**< Texture coordinate array for quad drawing functions (all blitter functions). */
+
 	GLuint				mTextureTarget;				/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */
 	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
 	//	GLfloat				mTextureBufferObject;	/**< COMMENT ME! */

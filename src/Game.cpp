@@ -40,7 +40,19 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 	Configuration& cf = Utility<Configuration>::get();
 	cf.load(configPath);
 
-	Utility<Mixer>::instantiateDerived(new Mixer_SDL());
+	try
+	{
+		Utility<Mixer>::instantiateDerived(new Mixer_SDL());
+	}
+	catch (Exception e)
+	{
+		cout << "Unable to create SDL Audio Mixer: " << e.getDescription() << ". Setting NULL driver." << endl;
+		Utility<Mixer>::instantiateDerived(new Mixer());
+	}
+	catch (...)
+	{
+		throw Exception(0, "OpenGL Renderer", "Unhandled exception occured while creating a Renderer.");
+	}
 	
 	cout << "Initializing Event Handler... ";
 	Utility<EventHandler>::get();

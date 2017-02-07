@@ -17,8 +17,7 @@ using namespace NAS2D;
 /*
  * C'tor.
  */
-Mixer_SDL::Mixer_SDL():	Mixer("SDL Mixer"),
-						mActAsNull(false)
+Mixer_SDL::Mixer_SDL():	Mixer("SDL Mixer")
 {
 	init();
 }
@@ -49,9 +48,7 @@ void Mixer_SDL::init()
 	if(SDL_Init(SDL_INIT_AUDIO) < 0)
 	{
 		cout << endl << "\tAudio driver not initialized: " << SDL_GetError() << endl;
-		cout << "\tSetting to NULL mode. No audio will be played." << endl;
-		mActAsNull = true;
-		return;
+		throw Exception(0, "Unable to initialize audio", SDL_GetError());
 	}
 	
 	Configuration& c = Utility<Configuration>::get();
@@ -59,9 +56,7 @@ void Mixer_SDL::init()
     if(Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
 	{
 		cout << endl << "\tAudio driver not initialized: " << Mix_GetError() << endl;
-		cout << "\tSetting to NULL mode. No audio will be played." << endl;
-		mActAsNull = true;
-		return;
+		throw Exception(0, "Unable to initialize audio", SDL_GetError());
 	}
 
 	setSfxVolume(c.audioSfxVolume());
@@ -73,9 +68,6 @@ void Mixer_SDL::init()
 
 void Mixer_SDL::playSound(Sound& sound)
 {
-	if(mActAsNull)
-		return;
-
 	if(!sound.loaded())
 		return;
 
@@ -103,9 +95,6 @@ void Mixer_SDL::resumeSound()
 
 void Mixer_SDL::playMusic(Music& music)
 {
-	if(mActAsNull)
-		return;
-
 	if(!music.loaded())
 		return;
 
@@ -134,18 +123,12 @@ void Mixer_SDL::resumeMusic()
 
 void Mixer_SDL::fadeInMusic(Music& music, int loops, int delay)
 {
-	if(mActAsNull)
-		return;
-
 	Mix_FadeInMusic(music.music(), loops, delay);
 }
 
 
 void Mixer_SDL::fadeOutMusic(int delay)
 {
-	if(mActAsNull)
-		return;
-	
 	Mix_FadeOutMusic(delay);
 }
 
@@ -158,27 +141,18 @@ bool Mixer_SDL::musicPlaying() const
 
 void Mixer_SDL::setSfxVolume(int volume)
 {
-	if(mActAsNull)
-		return;
-
 	Mix_Volume(-1, clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 
 void Mixer_SDL::setMusVolume(int volume)
 {
-	if(mActAsNull)
-		return;
-
 	Mix_VolumeMusic(clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 
 void Mixer_SDL::mute()
 {
-	if(mActAsNull)
-		return;
-
 	setMusVolume(0);
 	setSfxVolume(0);
 }
@@ -186,10 +160,6 @@ void Mixer_SDL::mute()
 
 void Mixer_SDL::unmute()
 {
-	if(mActAsNull)
-		return;
-
 	setMusVolume(Mix_VolumeMusic(-1));
 	setSfxVolume(Mix_Volume(-1, -1));
 }
-

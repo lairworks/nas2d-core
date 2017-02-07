@@ -72,8 +72,6 @@ namespace NAS2D {
 		Mixer_SDL& operator=(const Mixer_SDL&) {}	// Intentionally left undefined;
 
 	void init();
-
-	bool		mActAsNull;		/**< Act as a NULL mixer in the event of an audio failure. */
 };
 
 };

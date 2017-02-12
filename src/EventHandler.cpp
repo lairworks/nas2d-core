@@ -357,6 +357,24 @@ EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonDown()
 
 /**
  * \brief Gets the handler slot associated with this event.
+ *
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ *
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ *
+ * See EventHandler::MouseButtonEventCallback for paramter listing.
+ */
+EventHandler::MouseButtonEventCallback& EventHandler::mouseDoubleClick()
+{
+	return mMouseDoubleClick;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
  * 
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -491,7 +509,10 @@ void EventHandler::pump()
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
-				mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+				if (event.button.clicks > 1)
+					mMouseDoubleClick(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+				else
+					mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
 				break;
 
 			case SDL_MOUSEBUTTONUP:

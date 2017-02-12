@@ -330,6 +330,7 @@ public:
 
 	MouseButtonEventCallback&			mouseButtonUp();
 	MouseButtonEventCallback&			mouseButtonDown();
+	MouseButtonEventCallback&			mouseDoubleClick();
 	MouseMotionEventCallback&			mouseMotion();
 	MouseWheelEventCallback&			mouseWheel();
 
@@ -367,6 +368,7 @@ private:
 
 	MouseButtonEventCallback			mMouseButtonUpEvent;
 	MouseButtonEventCallback			mMouseButtonDownEvent;
+	MouseButtonEventCallback			mMouseDoubleClick;
 	MouseMotionEventCallback			mMouseMotionEvent;
 	MouseWheelEventCallback				mMouseWheelEvent;
 

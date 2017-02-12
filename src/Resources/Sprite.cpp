@@ -256,9 +256,10 @@ void Sprite::incrementFrame()
  */
 void Sprite::decrementFrame()
 {
+	if (mCurrentFrame == 0)
+		mCurrentFrame = mActions[mCurrentAction].size();
+	
 	--mCurrentFrame;
-	if (mCurrentFrame < 0)
-		mCurrentFrame = mActions[mCurrentAction].size() - 1;
 }
 
 

@@ -82,7 +82,7 @@ public:
 	 * \param	blue	Blue value to set between 0 - 255.
 	 * \param	alpha	Alpha value to set between 0 - 255.
 	 */
-	void color(int red, int green, int blue, int alpha) { mColor = Color_4ub(red, green, blue, alpha); }
+	void color(int red, int green, int blue, int alpha) { color(Color_4ub(red, green, blue, alpha)); }
 
 	/**
 	 * Gets the color of the Sprite.
@@ -101,16 +101,21 @@ public:
 	 */
 	Callback& frameCallback() { return mFrameCallback; }
 
+
+	StringList actions();
+
+	void incrementFrame();
+	void decrementFrame();
+
 protected:
 	const std::string& name() const { return mSpriteName; }
 
 private:
-
 	/**
 	 * \class	spriteFrame
 	 * \brief	Contains 
 	 */
-	struct SpriteFrame
+	class SpriteFrame
 	{
 	public:
 		SpriteFrame(const std::string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
@@ -142,10 +147,12 @@ private:
 		Rectangle_2d	mRect;
 	};
 
+private:
 	typedef std::vector<SpriteFrame>	FrameList;
 	typedef std::map<string, FrameList>	ActionList;
 	typedef std::map<string, Image>		SheetList;
 
+private:
 	void parseXml(const std::string& filePath);
 	void parseImageSheets(TiXmlElement *root);
 	void addImageSheet(const std::string& id, const std::string& src, TiXmlNode* node);
@@ -157,6 +164,7 @@ private:
 
 	void addDefaultAction();
 
+private:
 	Timer				mTimer;				/**< Internal time keeper. */
 
 	SheetList			mImageSheets;		/**< Imagesheets */

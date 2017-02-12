@@ -146,6 +146,7 @@ void Sprite::pause()
 	mPaused = true;
 }
 
+
 /**
  * Resumes the action of the Sprite.
  */
@@ -191,11 +192,11 @@ void Sprite::update(float x, float y)
 		if(mCurrentFrame >= mActions[mCurrentAction].size())
 		{
 			mCurrentFrame = 0;
-			mFrameCallback.Emit();		// Notifiy any frame listeners that the animation sequence has completed.
+			mFrameCallback();		// Notifiy any frame listeners that the animation sequence has completed.
 		}
 	}
 	else if(frame.frameDelay() == FRAME_PAUSE)
-		mFrameCallback.Emit();
+		mFrameCallback();
 
 	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), static_cast<float>(frame.x()), static_cast<float>(frame.y()), static_cast<float>(frame.width()), static_cast<float>(frame.height()), mRotationAngle, mColor);
 }
@@ -220,6 +221,44 @@ void Sprite::rotation(float angle)
 float Sprite::rotation() const
 {
 	return mRotationAngle;
+}
+
+
+/**
+ * Gets a list of Actions available for the Sprite.
+ *
+ * \return	StringList of actions.
+ */
+StringList Sprite::actions()
+{
+	StringList list;
+
+	for (auto it = mActions.begin(); it != mActions.end(); ++it)
+		list.push_back(it->first);
+
+	return list;
+}
+
+
+/**
+ * Increments the frame counter.
+ */
+void Sprite::incrementFrame()
+{
+	++mCurrentFrame;
+	if (mCurrentFrame >= mActions[mCurrentAction].size())
+		mCurrentFrame = 0;
+}
+
+
+/**
+ * Decrements the frame counter.
+ */
+void Sprite::decrementFrame()
+{
+	--mCurrentFrame;
+	if (mCurrentFrame < 0)
+		mCurrentFrame = mActions[mCurrentAction].size() - 1;
 }
 
 

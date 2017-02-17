@@ -509,10 +509,10 @@ void EventHandler::pump()
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
-				if (event.button.clicks > 1)
+				if (event.button.clicks == 2)
 					mMouseDoubleClick(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
-				else
-					mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+
+				mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
 				break;
 
 			case SDL_MOUSEBUTTONUP:

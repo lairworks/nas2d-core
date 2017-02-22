@@ -402,7 +402,7 @@ bool Renderer::isFading() const
  */
 bool Renderer::isFaded() const
 {
-	return (mCurrentFade != 0.0f);
+	return (mCurrentFade == 255.0f);
 }
 
 

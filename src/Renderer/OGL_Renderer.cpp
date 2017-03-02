@@ -11,13 +11,18 @@
 #include "NAS2D/Trig.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
-#if defined(__APPLE__)
-	#include <OpenGL/OpenGL.h>
-#elif defined(WIN32)
-	#include "SDL/SDL_opengl.h"
-#elif defined (__linux__)
-    #include "SDL2/SDL_opengl.h"
+#ifdef WINDOWS
+#define NO_SDL_GLEXT
+#include "GL/glew.h"
+#elif __APPLE__
+#include <SDL2/SDL.h>
+#elif __linux__
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_opengl.h"
+#else
+#include "SDL2.h"
 #endif
+
 
 #include <iostream>
 #include <math.h>
@@ -56,8 +61,7 @@ GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 
 
 // UGLY ASS HACK!
-// Until I do this properly, for now I'm leaving this as a global
-// so that we can handle mouse input grabbing.
+// This is required for mouse grabbing in the EventHandler class.
 SDL_Window*			_WINDOW = nullptr;
 
 SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */

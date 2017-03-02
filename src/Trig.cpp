@@ -46,18 +46,7 @@ float NAS2D::radToDeg(float rad)
  */
 float NAS2D::angleFromPoints(float x, float y, float x2, float y2)
 {
-#if defined(_DEBUG)
-	float angle = 90 - NAS2D::radToDeg(atan2(y2 - y, x2 - x));
-
-	// Corrects for an odd anomaly whenever the angle
-	// is between 270.0f and 260.0f.
-	if(angle < 0.0f)
-		angle = 360.0f + angle;
-
-	return angle;
-#else
-	return 90 - radToDeg(atan2(y2 - y, x2 - x));
-#endif
+	return 90.0f - radToDeg(atan2(y2 - y, x2 - x));
 }
 
 

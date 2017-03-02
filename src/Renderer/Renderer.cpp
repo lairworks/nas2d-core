@@ -70,16 +70,6 @@ Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
  */
 Renderer::~Renderer()
 {
-	// This is purely a debugging aid.
-	#if defined(_DEBUG)
-	if(!mMessages.empty())
-	{
-		cout << "Renderer contains the following " << mMessages.size() << " messages:" << endl;
-		for(size_t i = 0; i < mMessages.size(); i++)
-			cout << i << " Description: " << mMessages[i] << endl;
-	}
-	#endif
-
 	cout << "Renderer Terminated." << endl;
 }
 

@@ -10,26 +10,10 @@
 
 #pragma once
 
-#ifdef WINDOWS
-#define NO_SDL_GLEXT
-#include "GL/glew.h"
-#endif
-
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_opengl.h"
-#else
-#include "SDL.h"
-#endif
-
 #include "Renderer.h"
 #include "ShaderManager.h"
 
 #include <map>
-
-extern SDL_Window* _window;
 
 namespace NAS2D {
 

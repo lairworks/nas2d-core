@@ -23,6 +23,10 @@
 
 #include <iostream>
 
+// UGLY ASS HACK!
+// This is required for mouse grabbing in the EventHandler class.
+extern SDL_Window* _WINDOW;
+
 
 using namespace std;
 using namespace NAS2D;
@@ -439,8 +443,8 @@ EventHandler::QuitEventCallback& EventHandler::quit()
  */
 void EventHandler::grabMouse()
 {
-	if(_window)
-		SDL_SetWindowGrab(_window, SDL_TRUE);
+	if(_WINDOW)
+		SDL_SetWindowGrab(_WINDOW, SDL_TRUE);
 }
 
 
@@ -452,8 +456,8 @@ void EventHandler::grabMouse()
  */
 void EventHandler::releaseMouse()
 {
-	if(_window)
-		SDL_SetWindowGrab(_window, SDL_FALSE);
+	if(_WINDOW)
+		SDL_SetWindowGrab(_WINDOW, SDL_FALSE);
 }
 
 
@@ -465,8 +469,8 @@ void EventHandler::releaseMouse()
  */
 void EventHandler::warpMouse(int x, int y)
 {
-	if(_window)
-		SDL_WarpMouseInWindow(_window, x, y);
+	if(_WINDOW)
+		SDL_WarpMouseInWindow(_WINDOW, x, y);
 }
 
 

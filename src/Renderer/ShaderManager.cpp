@@ -44,7 +44,7 @@ void ShaderManager::loadShader(const std::string& src, GLuint shader)
 {
 	File f = Utility<Filesystem>::get().open(src);
 	const GLchar* c = f.raw_bytes();
-	glShaderSource(shader, 1, &c, NULL);
+	glShaderSource(shader, 1, &c, nullptr);
 	
 	compileShader(shader);
 	attachShader(shader);
@@ -76,7 +76,7 @@ void ShaderManager::printLog(GLuint obj)
 	if (result == GL_FALSE)
 	{
 		char infoLog[1024];
-		glGetShaderInfoLog(obj, 1024, NULL, infoLog);
+		glGetShaderInfoLog(obj, 1024, nullptr, infoLog);
 		cout << "The shader at " << mShaderProgram << " failed to compile with the following error:\n"
 		<< infoLog << "\n";
 	}

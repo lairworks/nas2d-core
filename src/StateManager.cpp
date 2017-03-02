@@ -19,7 +19,7 @@ using namespace NAS2D;
 /**
  * C'tor
  */
-StateManager::StateManager():	mActiveState(NULL),
+StateManager::StateManager():	mActiveState(nullptr),
 								mActive(true)
 {
 	// Ensure that all quit messages are handled in some way even if a State object doesn't.
@@ -45,8 +45,8 @@ StateManager::~StateManager()
  *
  * \param	state	A pointer to a State.
  * 
- * \note	Passing a NULL pointer to this function will effectively
- *			terminate the application.
+ * \note	Passing a nullptr to this function will terminate the
+ * 			application.
  * 
  * \warning	The pointer given to the StateManager becomes owned by
  *			the StateManager.
@@ -58,9 +58,8 @@ void StateManager::setState(State* state)
 
 	Utility<Mixer>::get().stopAllAudio();
 
-	if(mActiveState != NULL)
+	if(mActiveState != nullptr)
 	{
-		//Utility<EventHandler>::get().disconnectAll();
 		delete mActiveState;
 	}
 

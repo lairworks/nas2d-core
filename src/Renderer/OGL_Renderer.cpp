@@ -58,13 +58,13 @@ GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 // UGLY ASS HACK!
 // Until I do this properly, for now I'm leaving this as a global
 // so that we can handle mouse input grabbing.
-SDL_Window* _window = NULL;
+SDL_Window* _window = nullptr;
 
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 
 
 OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title),
-														mWindow(NULL),
+														mWindow(nullptr),
 														mTextureTarget(0)
 {
 	cout << "Starting " << name() << ":" << endl;
@@ -87,8 +87,8 @@ OGL_Renderer::~OGL_Renderer()
 
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
-	mWindow = NULL;
-	_window = NULL;
+	mWindow = nullptr;
+	_window = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	cout << "OpenGL Renderer Terminated." << endl;
@@ -578,38 +578,6 @@ float OGL_Renderer::height()
 
 void OGL_Renderer::buildDisplayModeList()
 {
-/*
-	// Get available fullscreen/hardware modes
-	SDL_Rect** modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_OPENGL);
-
-	// No video modes available.
-	if(modes == NULL)
-	{
-		Logger::log << Logger::error() << "No available video modes." << endl;
-		throw Exception(705, "Cannot Initialize Video", "No video modes are available.");
-	}
-	// Indicates that ANY resolution is okay.
-	else if(modes == (SDL_Rect **)-1)
-	{
-		// This is an extremely unlikely case, in fact so unlikely
-		// that I can comfortably say that we'll never hit this so
-		// we can safely throw an exception in the event it does occur.
-		throw Exception(706, "Cannot Initialize Video", "No video modes are available.");
-	}
-	for(int i = 0; modes[i]; ++i)
-	{
-		DisplayMode tmpMode;
-		tmpMode.screenWidth = modes[i]->w;
-		tmpMode.screenHeight = modes[i]->h;
-		
-		stringstream str;
-		str << tmpMode.screenWidth << "x" << tmpMode.screenHeight;
-		tmpMode.resolution = str.str();
-		
-		mDisplayModes.push_back(tmpMode);
-	}
-	*/
-
 	mDisplayModes.push_back(DisplayMode(640, 480));
 	mDisplayModes.push_back(DisplayMode(800, 600));
 	mDisplayModes.push_back(DisplayMode(1024, 768));

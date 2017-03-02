@@ -308,7 +308,7 @@ void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
 			{
 				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
 				SDL_Rect rect = { col * mGlyphCellSize.x(), row * mGlyphCellSize.y(), 0, 0 };
-				SDL_BlitSurface(srf, NULL, glyphMap, &rect);
+				SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
 				SDL_FreeSurface(srf);
 			}
 		}

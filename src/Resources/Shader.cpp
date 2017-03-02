@@ -76,10 +76,10 @@ public:
         }
 		
         const GLchar* tmp = static_cast<const GLchar*>(m_vertexShader.source.c_str());
-        glShaderSource(m_vertexShader.id, 1, (const GLchar**)&tmp, NULL);
+        glShaderSource(m_vertexShader.id, 1, (const GLchar**)&tmp, nullptr);
 		
         tmp = static_cast<const GLchar*>(m_fragmentShader.source.c_str());
-        glShaderSource(m_fragmentShader.id, 1, (const GLchar**)&tmp, NULL);
+        glShaderSource(m_fragmentShader.id, 1, (const GLchar**)&tmp, nullptr);
 		
         if (!compileShader(m_vertexShader) || !compileShader(m_fragmentShader))
         {
@@ -216,7 +216,7 @@ private:
 		
         std::cerr << string(infoLog.begin(), infoLog.end()) << std::endl;
 #ifdef _WIN32
-        //MessageBox(NULL, string(infoLog.begin(), infoLog.end()).c_str(), "Error", MB_OK);
+        //MessageBox(nullptr, string(infoLog.begin(), infoLog.end()).c_str(), "Error", MB_OK);
 #endif
 		
     }

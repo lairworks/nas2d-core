@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_MUSICRESOURCE_
-#define _NAS_MUSICRESOURCE_
+#pragma once
 
 #include "Resource.h"
 
@@ -55,7 +54,7 @@ protected:
 private:
 	struct MusicInfo
 	{
-		MusicInfo(): buffer(NULL), music(NULL), ref_count(0)
+		MusicInfo(): buffer(nullptr), music(nullptr), ref_count(0)
 		{}
 
 		File*		buffer;
@@ -63,20 +62,14 @@ private:
 		int			ref_count;
 	};
 
+private:
 	typedef std::map<std::string, MusicInfo> MusicReferenceMap;
-
-
+	
+private:
 	void load();
 
-
-	//File		mMusicBuffer;			/**< Persistent memory buffer for Mix_Music. */
-	//Mix_Music	*mMusic;
-
-
-
+private:
 	static MusicReferenceMap			_RefMap;		/*< Lookup table for music resource references. */
 };
 
 } // namespace
-
-#endif

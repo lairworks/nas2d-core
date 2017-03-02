@@ -78,7 +78,7 @@ Music::~Music()
 {
 	// Is this check necessary?
 	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
-	if(it == Music::_RefMap.end() || it->second.music == NULL)
+	if(it == Music::_RefMap.end() || it->second.music == nullptr)
 		return;
 
 	it->second.ref_count--;
@@ -89,13 +89,13 @@ Music::~Music()
 		if(it->second.music)
 		{
 			Mix_FreeMusic(it->second.music);
-			it->second.music = NULL;
+			it->second.music = nullptr;
 		}
 
 		if(it->second.buffer)
 		{
 			delete it->second.buffer;
-			it->second.buffer = NULL;
+			it->second.buffer = nullptr;
 		}
 
 		_RefMap.erase(it);
@@ -158,7 +158,7 @@ Mix_Music *Music::music() const
 	MusicReferenceMap::iterator it = _RefMap.find(name());
 
 	if(it == _RefMap.end())
-		return NULL;
+		return nullptr;
 
 	return it->second.music;
 }

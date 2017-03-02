@@ -17,7 +17,7 @@ using namespace NAS2D;
  * Default C'tor.
  */
 Sound::Sound(): Resource(),
-				mChunk(NULL)
+				mChunk(nullptr)
 {}
 
 /**
@@ -26,7 +26,7 @@ Sound::Sound(): Resource(),
  * \param	filePath	File path of the sound file to load.
  */
 Sound::Sound(const std::string& filePath):	Resource(filePath),
-											mChunk(NULL)
+											mChunk(nullptr)
 { 
 	load();
 }
@@ -40,7 +40,7 @@ Sound::~Sound()
 	if(mChunk)
 	{
 		Mix_FreeChunk(mChunk);
-		mChunk = NULL;
+		mChunk = nullptr;
 	}
 }
 

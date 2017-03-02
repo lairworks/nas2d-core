@@ -213,17 +213,11 @@ bool Configuration::readConfig(const std::string& filePath)
 		while(xmlNode = root->IterateChildren(xmlNode))
 		{
 			if (xmlNode->ValueStr() == "graphics")
-			{
 				parseGraphics(xmlNode);
-			}
 			else if (xmlNode->ValueStr() == "audio")
-			{
 				parseAudio(xmlNode);
-			}
 			else if (xmlNode->ValueStr() == "options")
-			{
 				parseOptions(xmlNode);
-			}
 			else if (xmlNode->Type() == TiXmlNode::TINYXML_DOCUMENT)
 				; // ignore comments
 			else

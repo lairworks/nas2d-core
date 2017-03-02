@@ -30,35 +30,18 @@
 using namespace std;
 using namespace NAS2D;
 
-/**
- * Life of generated OpenGL Textures in Miliseconds. Roughly 30 seconds
- */
- const unsigned int TEXTURE_EXPIRE_TIME = 30000;
-
-/**
- * Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging.
- */
+/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
 GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
 
-/**
- * Texture coordinate pairs. Default coordinates encompassing the entire texture.
- */
-//GLfloat DEFAULT_TEXTURE_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f };
-
+/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
-
 
 GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 
-
-/**
- * Color value array for four verts. Defaults to white or normal color.
- */
+/** Color value array for four verts. Defaults to white or normal color. */
 GLfloat COLOR_VERTEX_ARRAY[16] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
-
-
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
@@ -76,29 +59,23 @@ OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer",
 	cout << "Starting " << name() << ":" << endl;
 	
 	Configuration& cf = Utility<Configuration>::get();
-
 	TEXTURE_FILTER = cf.graphicsTextureQuality();
-
 	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
 
-	// Set our LetterBox height to 15% of the screen's height.
 	mLetterBoxHeight = (int)((width()) * 0.15);
-	
 }
 
 
 OGL_Renderer::~OGL_Renderer()
 {
-	//glDeleteBuffers(1, &mVertexBufferObject);
-
 	SDL_GL_DeleteContext(CONTEXT);
 	SDL_DestroyWindow(_WINDOW);
 	_WINDOW = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
-	cout << "OpenGL Renderer Terminated." << endl;
-
 	//delete mShaderManager;
+
+	cout << "OpenGL Renderer Terminated." << endl;
 }
 
 
@@ -109,10 +86,8 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords =
 	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
 
 	// Choose from the default texture coordinates or from a custom set.
-	if(defaultTextureCoords)
-		glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
-	else
-		glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordArray);
+	if(defaultTextureCoords) glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
+	else glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordArray);
 	
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
@@ -123,11 +98,6 @@ void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords =
  */
 void OGL_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-	//mVertexArray[0] = static_cast<GLfloat>(x),		mVertexArray[1] = static_cast<GLfloat>(y);	
-	//mVertexArray[2] = static_cast<GLfloat>(x),		mVertexArray[3] = static_cast<GLfloat>(y + h);
-	//mVertexArray[4] = static_cast<GLfloat>(x + w),	mVertexArray[5] = static_cast<GLfloat>(y + h);
-	//mVertexArray[6] = static_cast<GLfloat>(x + w),	mVertexArray[7] = static_cast<GLfloat>(y);
-
 	mVertexArray[0] = static_cast<GLfloat>(x), mVertexArray[1] = static_cast<GLfloat>(y);
 	mVertexArray[2] = static_cast<GLfloat>(x), mVertexArray[3] = static_cast<GLfloat>(y + h);
 	mVertexArray[4] = static_cast<GLfloat>(x + w), mVertexArray[5] = static_cast<GLfloat>(y + h);
@@ -143,11 +113,6 @@ void OGL_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
  */
 void OGL_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 {
-	//mTextureCoordArray[0] = static_cast<GLfloat>(x),	mTextureCoordArray[1] = static_cast<GLfloat>(y);
-	//mTextureCoordArray[2] = static_cast<GLfloat>(x),	mTextureCoordArray[3] = static_cast<GLfloat>(v);
-	//mTextureCoordArray[4] = static_cast<GLfloat>(u),	mTextureCoordArray[5] = static_cast<GLfloat>(v);
-	//mTextureCoordArray[6] = static_cast<GLfloat>(u),	mTextureCoordArray[7] = static_cast<GLfloat>(y);
-
 	mTextureCoordArray[0] = static_cast<GLfloat>(x), mTextureCoordArray[1] = static_cast<GLfloat>(y);
 	mTextureCoordArray[2] = static_cast<GLfloat>(x), mTextureCoordArray[3] = static_cast<GLfloat>(v);
 	mTextureCoordArray[4] = static_cast<GLfloat>(u), mTextureCoordArray[5] = static_cast<GLfloat>(v);
@@ -167,8 +132,6 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r,
 	drawVertexArray(image.texture_id());
 
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
-
-	//drawSubImage(image, x, y, 0.0, 0.0, image.width(), image.height(), r, g, b, a);
 }
 
 
@@ -292,7 +255,6 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
 	if(clipRect.w() < 1 || clipRect.h() < 1)
 		return;
-
 
 	unsigned int fbo = destination.fbo_id();
 
@@ -428,23 +390,6 @@ void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int 
 
 void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
 {
-	/*
-	glColor4ub(r, g, b, a);
-	glDisable(mTextureTarget);
-
-	fillVertexArray(x, y, width, height);
-	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
-	glDrawArrays(GL_LINE_LOOP, 0, 4);
-
-	glEnable(mTextureTarget);
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
-	*/
-
-	/*
-	 * \todo	This is a somewhat inefficient hack to fix an issue where pixels
-	 *			get clipped along some corners depending on OpenGL implementations.
-	 */
-
 	glDisable(mTextureTarget);
 	glEnableClientState(GL_COLOR_ARRAY);
 
@@ -596,27 +541,16 @@ void OGL_Renderer::initGL()
 {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
-
-
-	//glViewport(0, 0, mScreen->w, mScreen->h);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	
-
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-
 	glOrtho(0.0, (GLdouble)width(), (GLdouble)height(), 0.0, -1.0, 1.0);
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
 	glShadeModel(GL_SMOOTH);
-
 	glEnable(GL_COLOR_MATERIAL);
-
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	glDisable(GL_DEPTH_TEST);
 
 	// Spit out system graphics information.
@@ -646,8 +580,8 @@ void OGL_Renderer::initGL()
 	glVertexPointer(2, GL_FLOAT, 0, DEFAULT_VERTEX_COORDS);
 	glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
 	
-	//		mShaderManager->loadShader("shaders/font/font.frag", mFontShaderFrag);
-	//	mShaderManager->loadShader("shaders/font/font.vert", mFontShaderVert);
+	//mShaderManager->loadShader("shaders/font/font.frag", mFontShaderFrag);
+	//mShaderManager->loadShader("shaders/font/font.vert", mFontShaderVert);
 }
 
 

@@ -11,8 +11,7 @@
 // = Durham, March 7, 2007
 // ==================================================================================
 
-#ifndef _NAS_MERSENNE_TWISTER_
-#define _NAS_MERSENNE_TWISTER_
+#pragma once
 
 /*
 Mersenne Twister.
@@ -75,5 +74,3 @@ private:
     bool seeded_by_array_;               // Seeded by an array
     bool seeded_by_int_;                 // Seeded by an integer
 };
-
-#endif

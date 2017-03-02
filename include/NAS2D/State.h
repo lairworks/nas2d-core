@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_STATE_
-#define _NAS_STATE_
+#pragma once
 
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
@@ -121,5 +120,3 @@ protected:
 };
 
 } // namespace
-
-#endif

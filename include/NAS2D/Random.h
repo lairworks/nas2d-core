@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_RANDOM_GENERATOR_
-#define _NAS_RANDOM_GENERATOR_
+#pragma once
 
 #include "MersenneTwister.h"
 
@@ -48,5 +47,3 @@ private:
 };
 
 };
-
-#endif

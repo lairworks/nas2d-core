@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_UTILITY_
-#define _NAS_UTILITY_
+#pragma once
 
 namespace NAS2D {
 
@@ -113,5 +112,3 @@ private:
 template<typename T> T* Utility<T>::mInstance = 0;
 
 } // namespace
-
-#endif

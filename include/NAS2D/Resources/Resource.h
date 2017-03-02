@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_RESOURCE_
-#define _NAS_RESOURCE_
+#pragma once
 
 #include "NAS2D/Common.h"
 #include "NAS2D/Filesystem.h"
@@ -67,7 +66,3 @@ private:
 };
 
 } // namespace
-
-#endif
-
-

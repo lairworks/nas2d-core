@@ -8,12 +8,11 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_OGL_RENDERER_
-#define _NAS_OGL_RENDERER_
+#pragma once
 
-#ifdef _WIN32
-#include "GL/glew.h"
+#ifdef WINDOWS
 #define NO_SDL_GLEXT
+#include "GL/glew.h"
 #endif
 
 #ifdef __APPLE__
@@ -92,9 +91,7 @@ private:
 
 	void drawVertexArray(GLuint textureId, bool defaultTextureCoords);
 	
-	SDL_Window*			mWindow;					/**< Primary window. */
-	SDL_GLContext		mContext;					/**< Primary OpenGL render context. */
-
+private:
 	GLfloat				mVertexArray[12];			/**< Vertex array for quad drawing functions (all blitter functions). */
 	GLfloat				mTextureCoordArray[12];		/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
@@ -107,5 +104,3 @@ private:
 };
 
 } // namespace
-
-#endif

@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_MOUSEBUTTONS_
-#define _NAS_MOUSEBUTTONS_
+#pragma once
 
 namespace NAS2D {
 
@@ -26,5 +25,3 @@ enum MouseButton
 };
 
 } // namespace
-
-#endif

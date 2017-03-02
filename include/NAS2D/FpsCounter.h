@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _LOM_FPS_COUNTER_
-#define _LOM_FPS_COUNTER_
+#pragma once
 
 #include <vector>
 
@@ -42,5 +41,3 @@ private:
 };
 
 } // namespace
-
-#endif

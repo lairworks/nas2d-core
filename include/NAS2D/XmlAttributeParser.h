@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _LOM_XML_ATTRIBUTE_PARSER_
-#define _LOM_XML_ATTRIBUTE_PARSER_
+#pragma once
 
 #include "Common.h"
 
@@ -32,5 +31,3 @@ private:
 };
 
 } // namespace
-
-#endif

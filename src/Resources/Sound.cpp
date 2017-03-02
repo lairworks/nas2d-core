@@ -55,19 +55,11 @@ void Sound::load()
 {
 	File soundFile = Utility<Filesystem>::get().open(name());
 	if(soundFile.empty())
-	{
-		//errorMessage(Utility<Filesystem>::get().lastError());
-		cout << "(ERROR) Sound::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
-	}
 
 	mChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), soundFile.size()), 0);
 	if(!mChunk)
-	{
-		//errorMessage(Mix_GetError());
-		cout << "(ERROR) Sound::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
-	}
 
 	loaded(true);
 }

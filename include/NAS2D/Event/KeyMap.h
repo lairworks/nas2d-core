@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_KEYCODES_
-#define _NAS_KEYCODES_
+#pragma once
 
 namespace NAS2D {
 
@@ -232,5 +231,3 @@ const int KEY_MOD_ALT	= KEY_MOD_LALT | KEY_MOD_RALT;
 const int KEY_MOD_META	= KEY_MOD_LMETA | KEY_MOD_RMETA;
 
 } // namespace
-
-#endif

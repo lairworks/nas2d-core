@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef __NAS_TIMER__
-#define __NAS_TIMER__
+#pragma once
 
 namespace NAS2D {
 
@@ -76,5 +75,3 @@ private:
 };
 
 } // namespace
-
-#endif

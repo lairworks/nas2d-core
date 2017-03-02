@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_SPRITE_
-#define _NAS_SPRITE_
+#pragma once
 
 #include "NAS2D/NAS2D.h"
 
@@ -185,5 +184,3 @@ private:
 };
 
 } // namespace
-
-#endif

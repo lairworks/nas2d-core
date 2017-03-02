@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _LOM_EXCEPTION_
-#define _LOM_EXCEPTION_
+#pragma once
 
 #include <string>
 
@@ -54,5 +53,3 @@ private:
 };
 
 } // namespace
-
-#endif

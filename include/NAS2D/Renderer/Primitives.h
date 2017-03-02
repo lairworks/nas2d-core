@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_GRAPHICS_PRIMITIVES_
-#define _NAS_GRAPHICS_PRIMITIVES_
+#pragma once
 
 namespace NAS2D {
 
@@ -270,5 +269,3 @@ private:
 };
 
 } // namespace
-
-#endif

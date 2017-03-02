@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_FONTRESOURCE_
-#define _NAS_FONTRESOURCE_
+#pragma once
 
 #include "Resource.h"
 
@@ -112,6 +111,3 @@ private:
 };
 
 } // namespace
-
-#endif
-

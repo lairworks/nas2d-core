@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef __EVENT_HANDLER__
-#define __EVENT_HANDLER__
+#pragma once
 
 #include "NAS2D/Signal.h"
 
@@ -379,5 +378,3 @@ private:
 void postQuitEvent();
 
 } // namespace
-
-#endif

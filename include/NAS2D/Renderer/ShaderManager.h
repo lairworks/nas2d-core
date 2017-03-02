@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef __NAS2D__ShaderManager__
-#define __NAS2D__ShaderManager__
+#pragma once
 
 #include "NAS2D/Common.h"
 
@@ -56,5 +55,3 @@ private:
 };
 
 } // namespace
-
-#endif /* defined(__NAS2D__ShaderManager__) */

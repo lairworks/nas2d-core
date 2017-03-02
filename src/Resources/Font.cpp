@@ -168,10 +168,7 @@ void NAS2D::Font::load()
 	File fontBuffer = Utility<Filesystem>::get().open(name());
 
 	if(fontBuffer.empty())
-	{
-		cout << "(ERROR) Font::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
-	}
 
 	// Attempt to load the font.
 	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0, mPtSize);
@@ -198,10 +195,7 @@ void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphH
 	File fontBuffer = Utility<Filesystem>::get().open(name());
 
 	if(fontBuffer.empty())
-	{
-		cout << "(ERROR) Font::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		return;
-	}
 
 	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0);
 	if(!glyphMap)

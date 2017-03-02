@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_FILE_
-#define _NAS_FILE_
+#pragma once
 
 #include <string>
 
@@ -168,5 +167,3 @@ private:
 };
 
 } // namespace
-
-#endif

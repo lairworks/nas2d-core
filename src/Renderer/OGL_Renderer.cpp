@@ -58,13 +58,15 @@ GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 // UGLY ASS HACK!
 // Until I do this properly, for now I'm leaving this as a global
 // so that we can handle mouse input grabbing.
-SDL_Window* _window = nullptr;
+SDL_Window*			_WINDOW = nullptr;
+
+SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
+
 
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 
 
 OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title),
-														mWindow(nullptr),
 														mTextureTarget(0)
 {
 	cout << "Starting " << name() << ":" << endl;
@@ -85,10 +87,9 @@ OGL_Renderer::~OGL_Renderer()
 {
 	//glDeleteBuffers(1, &mVertexBufferObject);
 
-	SDL_GL_DeleteContext(mContext);
-	SDL_DestroyWindow(mWindow);
-	mWindow = nullptr;
-	_window = nullptr;
+	SDL_GL_DeleteContext(CONTEXT);
+	SDL_DestroyWindow(_WINDOW);
+	_WINDOW = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	cout << "OpenGL Renderer Terminated." << endl;
@@ -444,9 +445,9 @@ void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, i
 	glEnableClientState(GL_COLOR_ARRAY);
 
 	line(x, y, x + width, y, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x, y, x, y + height + 0.5, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x, y + height + 0.5, x + width, y + height + 0.5, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x + width, y, x + width, y + height + 0.5, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(x, y, x, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(x, y + height + 0.5f, x + width, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(x + width, y, x + width, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(mTextureTarget);
@@ -483,7 +484,7 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 	{
 		gm = font.glyphMetrics(static_cast<int>(text[i]));
 
-		fillVertexArray(x + offset, y, font.glyphCellWidth(), font.glyphCellHeight());
+		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
 		drawVertexArray(font.texture_id(), false);
@@ -532,7 +533,7 @@ void OGL_Renderer::drawTextClamped(NAS2D::Font& font, const std::string& text, f
     {
         gm = font.glyphMetrics(static_cast<int>(text[i]));
 
-        fillVertexArray(rasterX + x + offset, rasterY + y, font.glyphCellWidth(), font.glyphCellHeight());
+        fillVertexArray(rasterX + x + offset, rasterY + y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
         fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
         drawVertexArray(font.texture_id(), false);
@@ -556,14 +557,14 @@ void OGL_Renderer::clearScreen(int r, int g, int b)
 void OGL_Renderer::update()
 {
 	Renderer::update();
-	SDL_GL_SwapWindow(mWindow);
+	SDL_GL_SwapWindow(_WINDOW);
 }
 
 
 float OGL_Renderer::width()
 {
 	int n = 0;
-	SDL_GetWindowSize(mWindow, &n, nullptr);
+	SDL_GetWindowSize(_WINDOW, &n, nullptr);
 	return static_cast<float>(n);
 }
 
@@ -571,7 +572,7 @@ float OGL_Renderer::width()
 float OGL_Renderer::height()
 {
 	int n = 0;
-	SDL_GetWindowSize(mWindow, nullptr, &n);
+	SDL_GetWindowSize(_WINDOW, nullptr, &n);
 	return static_cast<float>(n);
 }
 
@@ -652,7 +653,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 		throw Exception(701, "Error starting SDL Video Library", SDL_GetError());
 
-
 	// Setup OpenGL parameters
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
@@ -671,38 +671,24 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	if(fullscreen)
 		sdlFlags = sdlFlags | SDL_WINDOW_FULLSCREEN;
 
-	mWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
+	_WINDOW = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
 
-	if(!mWindow)
-	{
-		cout << "EXCEPTION: Could not create a Window: " << SDL_GetError() << endl;
-		throw Exception(0, "Window Creation Failed", "Unable to create a window.");
-	}
-	
-	_window = mWindow;
+	if(!_WINDOW)
+		throw Exception(702, "Window Creation Failed", string("Unable to create a window: ") + SDL_GetError());
 
-	mContext = SDL_GL_CreateContext(mWindow);
+	CONTEXT = SDL_GL_CreateContext(_WINDOW);
+	if(!CONTEXT)
+		throw Exception(703, "Unable to start OpenGL", "Unable to create an OpenGL Context.\n" + string(SDL_GetError()));
 
-	if(!mContext)
-	{
-		cout << "Could not create an OpenGL Context: " << SDL_GetError() << endl;
-		throw Exception(0, "Unable to start OpenGL", "Unable to create an OpenGL Context.\n" + string(SDL_GetError()));
-	}
-
-
-	void* ptr = SDL_GL_GetProcAddress("glDrawArrays");
-
-#ifdef __APPLE__
+	#ifdef __APPLE__
 	if (vsync)
 	{
-
 		// FIXME: The SDL 2.0 method above may work fine which would allow us to pull this code.
-		
 		vsync = false;
 		const GLint VBL = 1;
 		CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
 	}
-#endif
+	#endif
 
 	SDL_ShowCursor(false);
 

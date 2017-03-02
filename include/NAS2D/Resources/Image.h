@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_IMAGERESOURCE_
-#define _NAS_IMAGERESOURCE_
+#pragma once
 
 #include "Resource.h"
 
@@ -116,5 +115,3 @@ typedef std::vector<Image*> ImageListPtr;
 typedef std::vector<Image> ImageList;
 
 } // namespace
-
-#endif

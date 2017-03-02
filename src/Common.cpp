@@ -30,14 +30,14 @@ std::string NAS2D::versionString()
 {
 	std::stringstream ss;
 	ss << versionMajor() << "." << versionMinor() << "." << versionPatch();
-	return 
+	return ss.str();
 }
 
 
 /**
  * Gets version major.
  */
-int versionMajor()
+int NAS2D::versionMajor()
 {
 	return NAS2D_MAJOR_VERSION;
 }

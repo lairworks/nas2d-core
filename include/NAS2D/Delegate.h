@@ -67,8 +67,7 @@
 //				  * Bundled with Signals.h for signals and slots library
 //				  * Changed namespace to "gallant"
 
-#ifndef _Delegate_H_
-#define _Delegate_H_
+#pragma once
 
 #if _MSC_VER > 1000
 	#pragma once
@@ -2132,6 +2131,3 @@ Delegate8<Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, FASTDL
 #undef FASTDLGT_RETTYPE
 
 } // namespace
-
-#endif //_DELEGATES_H_
-

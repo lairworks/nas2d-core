@@ -12,6 +12,17 @@
 
 #include <iostream>
 
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#include "SDL2_mixer/SDL_mixer.h"
+#elif __linux__
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
+#elif WINDOWS
+#include "SDL.h"
+#include "SDL_mixer.h"
+#endif
+
 using namespace NAS2D;
 
 /*

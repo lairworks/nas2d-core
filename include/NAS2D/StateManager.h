@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_STATE_MANAGER_
-#define _NAS_STATE_MANAGER_
+#pragma once
 
 #include "State.h"
 #include "NAS2D/Utility.h"
@@ -44,5 +43,3 @@ private:
 };
 
 } // namespace
-
-#endif

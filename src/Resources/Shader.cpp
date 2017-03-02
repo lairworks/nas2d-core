@@ -8,9 +8,6 @@
 
 #include "NAS2D/Resources/Shader.h"
 
-#ifndef GLSL_SHADER_H_INCLUDED
-#define GLSL_SHADER_H_INCLUDED
-
 #ifdef _WIN32
 #include <windows.h>
 #include "GL/glew.h"
@@ -228,6 +225,3 @@ private:
     map<string, GLuint> m_uniformMap;
     map<string, GLuint> m_attribMap;
 };
-
-#endif // GLSL_SHADER_H_INCLUDED
-

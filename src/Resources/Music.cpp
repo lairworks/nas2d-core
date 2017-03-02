@@ -127,7 +127,6 @@ void Music::load()
 	// Empty File
 	if(it->second.buffer->empty())
 	{
-		cout << "(ERROR) Music::load(): " << Utility<Filesystem>::get().lastError() << endl;
 		Music::_RefMap.erase(it);
 		return;
 	}

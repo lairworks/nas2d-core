@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef __NAS_TRIG__
-#define __NAS_TRIG__
+#pragma once
 
 namespace NAS2D {
 
@@ -31,5 +30,3 @@ Point_2df getDirectionVector(float angle);
 bool lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r);
 
 };
-
-#endif

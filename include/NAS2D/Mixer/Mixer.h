@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_MIXER_
-#define _NAS_MIXER_
+#pragma once
 
 #include "NAS2D/Exception.h"
 #include "NAS2D/Common.h"
@@ -177,5 +176,3 @@ private:
 };
 
 } // namespace
-
-#endif

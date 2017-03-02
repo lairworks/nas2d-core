@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_RENDERER_
-#define _NAS_RENDERER_
+#pragma once
 
 #include "NAS2D/Common.h"
 #include "NAS2D/Configuration.h"
@@ -218,5 +217,3 @@ private:
 };
 
 } // namespace
-
-#endif

@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef __KEY_TRANSLATOR__
-#define __KEY_TRANSLATOR__
+#pragma once
 
 #include "NAS2D/Event/KeyMap.h"
 
@@ -35,5 +34,3 @@ private:
 };
 
 } // namespace
-
-#endif

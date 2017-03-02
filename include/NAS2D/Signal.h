@@ -7,8 +7,7 @@
  *
  */
 
-#ifndef _Signal_H_
-#define _Signal_H_
+#pragma once
 
 #include "Delegate.h"
 #include <set>
@@ -655,5 +654,3 @@ public:
 
 
 } // namespace
-
-#endif //_SIGNAL_H_

@@ -6,10 +6,6 @@
 //
 //
 
-#ifndef __NAS2D__Shader__
-#define __NAS2D__Shader__
+#pragma once
 
 #include <iostream>
-
-
-#endif /* defined(__NAS2D__Shader__) */

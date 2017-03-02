@@ -653,22 +653,18 @@ void OGL_Renderer::initGL()
 
 void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
 {
-	// Initialize SDL's Video Subsystems.
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 		throw Exception(701, "Error starting SDL Video Library", SDL_GetError());
 
-	// Setup OpenGL parameters
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
 	if(vsync)
 		SDL_GL_SetSwapInterval(1);
+	else
+		SDL_GL_SetSwapInterval(0);
 
 	Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 

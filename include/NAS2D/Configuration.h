@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2014 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -8,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_CONFIGURATION_
-#define _NAS_CONFIGURATION_
+#pragma once
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
@@ -25,15 +24,7 @@
 #include "Common.h"
 #include "Exception.h"
 
-#include "tinyxml/tinyxml.h"
-
 namespace NAS2D {
-
-enum ConfigOptions
-{
-	AUDIO_QUALITY
-};
-
 
 enum GraphicsQuality
 {
@@ -107,13 +98,11 @@ private:
 
 	bool readConfig(const std::string& filePath);
 
-	void parseGraphics(TiXmlNode *node);
-	void parseAudio(TiXmlNode *node);
+	void parseGraphics(void *node);
+	void parseAudio(void *node);
+	void parseOptions(void *node);
 
-	void parseOptions(TiXmlNode *node);
-
-	TiXmlDocument		*mConfigFile;					/**< XML Document. */
-
+private:
 	Options				mOptions;						/**< Options table containing option/value pairs. */
 
 	int					mScreenWidth, mScreenHeight;	/**< Screen Resolution */
@@ -135,4 +124,3 @@ private:
 };
 
 } // namespace
-#endif

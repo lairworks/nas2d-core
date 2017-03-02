@@ -1,7 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2014 New Age Software
-
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -9,8 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifndef _NAS_FILESYSTEM_
-#define _NAS_FILESYSTEM_
+#pragma once
 
 #include "Common.h"
 
@@ -69,9 +67,7 @@ public:
 	bool makeDirectory(const std::string& path) const;
 
 
-	std::string lastError() const;
 	void toggleVerbose() const;
-	void debug();
 
 private:
 	Filesystem(const Filesystem&);				// Intentionally left undefined.
@@ -79,19 +75,16 @@ private:
 
 	bool closeFile(PHYSFS_File *file) const;
 
+private:
 	std::string			mDataPath;			/**< Data path string. Specific to each platform. */
 	std::string			mStartPath;			/**< Path to start in. This will typically be 'data/'. */
 	std::string			mDirSeparator;		/**< Platform dependant directory separator. */
 
-	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
-
-	mutable StringList	mErrorMessages;		/**< List of error messages. */
-
-#ifdef __APPLE__
+	#ifdef __APPLE__
 	std::string			mBundlePath;		/**< Apple Bundle Directory. */
-#endif
+	#endif
+
+	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 };
 
 };
-
-#endif

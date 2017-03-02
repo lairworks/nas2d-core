@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2014 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -89,7 +89,6 @@ public:
 
 	const std::string& name();
 	const std::string& driverName();
-	const std::string& lastError();
 
 	const std::string& title();
 	void title(const std::string& title);
@@ -164,21 +163,15 @@ public:
 
 	virtual void update();
 
-	void debug();
-
-
 protected:
 	Renderer(const std::string& rendererName, const std::string& appTitle);
 
 	virtual void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync) {}
 
-	void pushMessage(const std::string& str);
-
 	void driverName(const std::string& name);
 
 	Timer				mTimer;				/**< Internal Timer. */
 
-	StringList			mMessages;			/**< List of messages. */
 	DisplayModes		mDisplayModes;		/**< List of Screen resolutions. */
 
 	int					mLetterBoxHeight;	/**< Height of Letter Box's */
@@ -203,6 +196,7 @@ private:
 	 */
 	Renderer& operator=(const Renderer&);
 
+private:
 	enum FadeType
 	{
 		FADE_NONE,
@@ -210,6 +204,7 @@ private:
 		FADE_OUT
 	};
 
+private:
 	std::string			mRendererName;	/**< Internal name of the Renderer. */
 	std::string			mDriverName;	/**< OS Driver name */
 	std::string			mTitle;			/**< Title to use for the application. */

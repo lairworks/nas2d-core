@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2014 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -32,8 +32,7 @@ const unsigned int	CLOSE_ATTEMPT_TIMEOUT		= 5;	// Seconds
  * Default c'tor.
  */
 Filesystem::Filesystem(): mVerbose(false)
-{
-}
+{}
 
 
 /**
@@ -52,9 +51,9 @@ Filesystem::~Filesystem()
 void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 {
 	cout << "Initializing Filesystem... ";
-	// Throw an exception if PhysFS couldn't start properly.
-	if(PHYSFS_init(argv_0.c_str()) == 0)
-		throw Exception(602, "Filesystem::Filesystem(): Unable to initialize PhysFS!", PHYSFS_getLastError());
+
+	if (PHYSFS_init(argv_0.c_str()) == 0)
+		throw Exception(602, "Filesystem Error", std::string("Unable to start virtual filesystem: ") + PHYSFS_getLastError());
 
 	mStartPath = startPath;
 
@@ -112,37 +111,18 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 
 	if(PHYSFS_exists(path.c_str()) == 0)
 	{
-		mErrorMessages.push_back(PHYSFS_getLastError());
+		cout << "File '" << path << "' does not exist as specified." << endl;
 		return false;
 	}
 
-#ifdef WINDOWS
-	string searchPath = mDataPath + path;
-
-	if(PHYSFS_addToSearchPath(searchPath.c_str(), 1) == 0)
-	{
-		mErrorMessages.push_back(PHYSFS_getLastError());
-		cout << "Couldn't add '" << path << "' to search path. " << mErrorMessages.back() << "." << endl;
-		return false;
-	}
-#elif __APPLE__
+#if defined(WINDOWS) || defined(__APPLE__) || defined(__linux__)
 	string searchPath(mDataPath + path);
 
 	if(PHYSFS_addToSearchPath(searchPath.c_str(), 1) == 0)
 	{
-		mErrorMessages.push_back(PHYSFS_getLastError());
-		cout << "Couldn't add '" << path << "' to search path. " << mErrorMessages.back() << "." << endl;
+		cout << "Couldn't add '" << path << "' to search path. " << PHYSFS_getLastError() << "." << endl;
 		return false;
 	}
-#elif __linux__
-    string searchPath = mDataPath + path;
-
-    if(PHYSFS_addToSearchPath(searchPath.c_str(), 1) == 0)
-    {
-        mErrorMessages.push_back(PHYSFS_getLastError());
-        cout << "Couldn't add '" << path << "' to search path. " << mErrorMessages.back() << "." << endl;
-        return false;
-    }
 #else
 	#error Filesystem support for this platform has not been developed.
 #endif
@@ -160,7 +140,7 @@ StringList Filesystem::searchPath() const
 {
 	StringList searchPath;
 
-	for(char **i = PHYSFS_getSearchPath(); *i != NULL; i++)
+	for(char **i = PHYSFS_getSearchPath(); *i != nullptr; i++)
 		searchPath.push_back(*i);
 
 	return searchPath;
@@ -195,15 +175,13 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 	StringList fileList;
 	if(filter.empty())
 	{
-		for(char **i = rc; *i != NULL; i++)
+		for(char **i = rc; *i != nullptr; i++)
 			fileList.push_back(*i);
-
-		//Logger::log << fileList.back() << endl;
 	}
 	else
 	{
 		int filterLen = filter.size();
-		for(char **i = rc; *i != NULL; i++)
+		for(char **i = rc; *i != nullptr; i++)
 		{
 			string tmpStr = *i;
             if(tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
@@ -229,8 +207,7 @@ bool Filesystem::del(const std::string& filename) const
 {
 	if(PHYSFS_delete(filename.c_str()) == 0)
 	{
-		mErrorMessages.push_back(lastError());
-		cout << "Unable to delete '" << filename << "':" << lastError() << endl;
+		cout << "Unable to delete '" << filename << "':" << PHYSFS_getLastError << endl;
 		return false;
 	}
 
@@ -253,8 +230,7 @@ File Filesystem::open(const std::string& filename) const
 
 	if(!myFile)
 	{
-		mErrorMessages.push_back(PHYSFS_getLastError());
-		cout << "Filesystem::open(): Unable to load '" << filename << "'. " << mErrorMessages.back() << "." << endl;
+		cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << endl;
 		closeFile(myFile);
 		return File();
 	}
@@ -264,8 +240,7 @@ File Filesystem::open(const std::string& filename) const
 	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
 	if(len < 0 || len > UINT_MAX)
 	{
-		mErrorMessages.push_back("Filesystem::open(): File too big to load.");
-		cout << mErrorMessages.back() << endl;
+		cout << "File '" << filename << "' is too large to load." << endl;
 		closeFile(myFile);
 		return File();
 	}
@@ -279,16 +254,12 @@ File Filesystem::open(const std::string& filename) const
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
 	if(PHYSFS_read(myFile, fileBuffer, sizeof(char), fileLength) < fileLength)
 	{
-		mErrorMessages.push_back(PHYSFS_getLastError());
-		cout << "Unable to load '" << filename << "'. " << mErrorMessages.back() << "." << endl;
-
+		cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << endl;
 		delete [] fileBuffer;
-		// Close the file as we no longer need it.
 		closeFile(myFile);
 		return File();
 	}
 
-	// Instantiate a new File object and clean up any remaining used memory.
 	std::string returnStr(fileBuffer, fileLength);
 	File file(string(fileBuffer, fileLength), filename);
 	closeFile(myFile);
@@ -309,7 +280,7 @@ File Filesystem::open(const std::string& filename) const
  */
 bool Filesystem::makeDirectory(const std::string& path) const
 {
-	return (PHYSFS_mkdir(path.c_str()) == 0) ? false : true;
+	return PHYSFS_mkdir(path.c_str()) != 0;
 }
 
 
@@ -337,18 +308,6 @@ bool Filesystem::exists(const std::string& filename) const
 }
 
 
-/**
- * Returns the last error that occurred.
- */
-string Filesystem::lastError() const
-{
-	if(mErrorMessages.empty())
-		return "";
-
-	return mErrorMessages.back();
-}
-
-
 /*
  * Toggles Verbose Mode.
  *
@@ -357,38 +316,7 @@ string Filesystem::lastError() const
  */
 void Filesystem::toggleVerbose() const
 {
-	mVerbose ? mVerbose = false : mVerbose = true;
-}
-
-
-/**
- * Writes basic Filesystem debug information to the global Log File.
- */
-void Filesystem::debug()
-{
-	cout << endl;
-	cout << "=== Filesystem Debug Info ===" << endl;
-	cout << "Working Directory: " << PHYSFS_getBaseDir() << endl;
-
-#ifdef __APPLE__
-	cout << "Bundle Directory: " << mBundlePath << endl;
-#endif
-
-	cout << "Base Data Path: " << mDataPath << endl;
-	cout << "Search Path:"  << endl;
-
-	for(char **i = PHYSFS_getSearchPath(); *i != NULL; i++)
-		cout << "\t - " << *i << endl;
-
-	if(!mErrorMessages.empty())
-	{
-		cout << endl;
-
-		for(size_t i = 0; i < mErrorMessages.size(); i++)
-			cout << mErrorMessages[i] << endl;
-	}
-
-	cout << endl;
+	mVerbose = !mVerbose;
 }
 
 
@@ -398,19 +326,11 @@ void Filesystem::debug()
  * \param	file	A handle to a PHYSFS_file.
  *
  * \return	True on success, false otherwise.
- *
- * \note	This function sets its paramter to NULL after the file is closed. This
- *			effectively invalidates the file handle and so it should not be used again
- *			unless properly initialized. This is an intentional design feature to ensure
- *			that the use of a file that's been closed cannot be used again.
  */
 bool Filesystem::closeFile(PHYSFS_File *file) const
 {
 	if(!file)
-	{
-		//mErrorMessages.push_back("Filesystem::closeFile(): attempted to pass a NULL parameter.");
 		return false;
-	}
 
 
 	// Attempt to close the file. If the first attempt fails, try to close the
@@ -422,10 +342,7 @@ bool Filesystem::closeFile(PHYSFS_File *file) const
 	while((attempts < CLOSE_MAX_ATTEMPTS))
 	{
 		if(PHYSFS_close(file) > 0)
-		{
-			file = NULL;
 			return true;
-		}
 
 		while(t.accumulator() < CLOSE_ATTEMPT_TIMEOUT)
 		{}
@@ -457,31 +374,26 @@ bool Filesystem::write(const File& file, bool overwrite) const
 {
 	if(file.empty())
 	{
-		mErrorMessages.push_back(string("Attempted to write empty file '") + file.filename() + "'");
+		cout << "Attempted to write empty file '" << file.filename() << "'" << endl;
 		return false;
 	}
 
 	if(!overwrite && exists(file.filename()))
 	{
-		if(mVerbose) cout << "Attempted to overwrite a file '" << file.filename() << "' that exists." << endl;
-		mErrorMessages.push_back(string("Attempted to overwrite a file '") + file.filename() + "' that exists.");
+		if(mVerbose) cout << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << endl;
 		return false;
 	}
 
 	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
 	if(!myFile)
 	{
-		std::stringstream tmpString;
-		tmpString << PHYSFS_getLastError() << ": '" << file.filename() << "'";
-		mErrorMessages.push_back(tmpString.str());
+		if (mVerbose) cout << "Couldn't open '" << file.filename()  << "' for writing: " << PHYSFS_getLastError() << endl;
 		return false;
 	}
 
 	if(PHYSFS_write(myFile, file.bytes().c_str(), sizeof(char), file.size()) < file.size())
 	{
-		std::stringstream tmpString;
-		tmpString << PHYSFS_getLastError() << ": '" << file.filename() << "'";
-		mErrorMessages.push_back(tmpString.str());
+		if (mVerbose) cout << "Error occured while writing to file '" << file.filename() << "': " << PHYSFS_getLastError() << endl;
 		closeFile(myFile);
 		return false;
 	}
@@ -532,12 +444,7 @@ string Filesystem::workingPath(const std::string& filename) const
 	}
 	else
 	{
-		mErrorMessages.push_back("Filesystem::workingPath() was given an empty string.");
-
-		#if defined(_DEBUG)
-		cout <<  mErrorMessages.back();
-		#endif
-
+		if (mVerbose) cout << "Filesystem::workingPath(): empty string provided." << endl;
 		return string();
 	}
 }
@@ -546,14 +453,14 @@ string Filesystem::workingPath(const std::string& filename) const
 /**
  * Gets the extension of a given file path.
  * 
- * \param path Path to check for an extension.
+ * \param	path	Path to check for an extension.
  * 
  * \return	Returns a string containing the file extension. An empty string will be
  *			returned if the file has no extension or if it's a directory.
  */
 std::string Filesystem::extension(const std::string path)
 {
-	// Finds the last occurance of a period character.
+	// This is a naive approach but works for most cases.
 	int pos = path.find_last_of(".");
 	
 	if(pos >= 0)
@@ -562,22 +469,12 @@ std::string Filesystem::extension(const std::string path)
 	}
 	else if(isDirectory(path))
 	{
-		mErrorMessages.push_back("Filesystem::extension(): Given path is a directory, not a file.");
-
-		#if defined(_DEBUG)
-		cout <<  mErrorMessages.back();
-		#endif
-
+		if (mVerbose) cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << endl;
 		return string();
 	}
 	else
 	{
-		mErrorMessages.push_back("Filesystem::extension(): File has no extension.");
-
-		#if defined(_DEBUG)
-		cout <<  mErrorMessages.back();
-		#endif
-
+		if (mVerbose) cout << "Filesystem::extension(): File '" << path << "' has no extension." << endl;
 		return string();
 	}
 }

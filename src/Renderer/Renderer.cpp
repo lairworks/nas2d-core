@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2014 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -433,15 +433,6 @@ void Renderer::toggleCinematicMode()
 
 
 /**
- * Returns a description of the last error message, if any.
- */
-const std::string& Renderer::lastError()
-{
-	return mMessages.back();
-}
-
-
-/**
  * Draws a single Pixel to the primary surface.
  *
  * \param	x		X-Coordinate of the pixel to draw.
@@ -772,28 +763,6 @@ void Renderer::title(const std::string& title)
 }
 
 
-/**
- * Writes debug information to the log file.
- */
-void Renderer::debug()
-{
-	cout << endl;
-
-	if(!mMessages.empty())
-	{
-		cout << "=== Renderer Debug Info ===" << endl;
-		cout << mMessages.size() << " messages:" << endl;
-
-		cout << endl;
-
-		for(size_t i = 0; i < mMessages.size(); i++)
-			cout << mMessages[i] << endl;
-	}
-
-	cout << endl;
-}
-
-
 /*
  * Renders Text in the Color specified.
  *
@@ -941,23 +910,4 @@ void Renderer::update()
 
 	if(mCurrentFade > 0.0f)
 		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), (int)mCurrentFade);
-}
-
-
-/**
- * Adds a new message to Renderer's message list.
- */
-void Renderer::pushMessage(const std::string& str)
-{
-	if(mMessages.empty())
-	{
-		mMessages.push_back(str);
-		return;
-	}
-	
-	if(str != mMessages.back())
-	{
-		cout << str;
-		mMessages.push_back(str);
-	}
 }

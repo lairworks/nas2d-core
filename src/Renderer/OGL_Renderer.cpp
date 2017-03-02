@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2014 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -555,28 +555,23 @@ void OGL_Renderer::clearScreen(int r, int g, int b)
 
 void OGL_Renderer::update()
 {
-	getError();
-
 	Renderer::update();
-	//SDL_GL_SwapBuffers();
 	SDL_GL_SwapWindow(mWindow);
 }
 
 
 float OGL_Renderer::width()
 {
-    //return static_cast<float>(mScreen->w);
 	int n = 0;
-	SDL_GetWindowSize(mWindow, &n, NULL);
+	SDL_GetWindowSize(mWindow, &n, nullptr);
 	return static_cast<float>(n);
 }
 
 
 float OGL_Renderer::height()
 {
-    //return static_cast<float>(mScreen->h);
 	int n = 0;
-	SDL_GetWindowSize(mWindow, NULL, &n);
+	SDL_GetWindowSize(mWindow, nullptr, &n);
 	return static_cast<float>(n);
 }
 
@@ -624,97 +619,6 @@ void OGL_Renderer::buildDisplayModeList()
 }
 
 
-void OGL_Renderer::getError()
-{
-	std::string errStr = "OpenGL Error: ";
-	
-	switch(glGetError())
-	{
-		case GL_NO_ERROR:
-			return;
-			break;
-		case GL_INVALID_ENUM:
-			errStr += "Invalid Enumerator.";
-			break;
-		case GL_INVALID_VALUE:
-			errStr += "Invalid Value.";
-			break;
-		case GL_INVALID_OPERATION:
-			errStr += "Invalid Operation.";
-			break; 
-		case GL_OUT_OF_MEMORY:
-			errStr += "Out of Memory.";
-			break;
-		default:
-			errStr += "Unknown Error Code.";
-			break;
-	}
-	
-	stringstream str;
-	str << errStr << endl;
-
-	cout << str.str();
-
-	pushMessage(str.str());
-}
-
-
-/**
- * Checks for expected extensions and prints warning messages
- * if the video driver doesn't support the extension.
- */
-bool OGL_Renderer::extensionExists(const std::string& extension)
-{
-	// FIXME:	GLEW doesn't provide a proc address for glGetStringi in GL contexts
-	//			greater than 3. Assume that if a GLSL is available that a NPOT extension
-	//			is also available.
-	/*
-	StringList extensions;
-	GLint n = 0;
-	glGetIntegerv(GL_NUM_EXTENSIONS, &n);
-
-	for (int i = 0; i < n; ++i)
-	{
-		if ((char*)glGetStringi(GL_EXTENSIONS, i))
-			extensions.push_back((char*)glGetStringi(GL_EXTENSIONS, i));
-	}
-
-	if(extensions.empty())
-		return false;
-
-	for(size_t i = 0; i < extensions.size(); ++i)
-		if(extensions[i] == extension)
-			return true;
-
-	return false;
-	*/
-
-	return true;
-}
-
-
-bool OGL_Renderer::checkExtensions()
-{
-	cout << "\tOpenGL Extensions:" << endl;
-	
-	// Check extension and set our texture target
-	if(extensionExists("GL_ARB_texture_non_power_of_two"))
-	{
-		cout << "\t\t- GL_ARB_texture_non_power_of_two" << endl;
-		mTextureTarget = GL_TEXTURE_2D;
-		return true;
-	}
-	else if(extensionExists("GL_ARB_texture_rectangle"))
-	{
-		cout << "\t\t- GL_ARB_texture_rectangle" << endl;
-		mTextureTarget = GL_TEXTURE_RECTANGLE_ARB;
-		return true;
-	}
-	else
-		return false;
-}
-
-
 void OGL_Renderer::initGL()
 {
 	glClearColor(0, 0, 0, 0);
@@ -757,8 +661,9 @@ void OGL_Renderer::initGL()
 
 	cout << "\tGLSL Version: " << glsl_v << endl;
 
-	if(!checkExtensions())
-		throw Exception(0, "Graphics Requirements Not Met", "Your graphics driver does not meet the minimum requirements.");
+	// If GLSL is available then we can assume that non-power-of-two texture support is also
+	// available. This, however, is a BIG ASSUMPTION AND MAY NOT BE TRUE.
+	mTextureTarget = GL_TEXTURE_2D;
 
 	glEnable(mTextureTarget);
 
@@ -767,7 +672,6 @@ void OGL_Renderer::initGL()
 
 	glVertexPointer(2, GL_FLOAT, 0, DEFAULT_VERTEX_COORDS);
 	glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
-
 	
 	//		mShaderManager->loadShader("shaders/font/font.frag", mFontShaderFrag);
 	//	mShaderManager->loadShader("shaders/font/font.vert", mFontShaderVert);
@@ -782,10 +686,10 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 
 	// Setup OpenGL parameters
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-    //SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.
@@ -793,10 +697,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	if(vsync)
 		SDL_GL_SetSwapInterval(1);
-
-	// Anti-aliasing... need to test this.
-	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-	//SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
 	Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
@@ -817,8 +717,8 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	if(!mContext)
 	{
-		cout << "EXCEPTION: Could not create an OpenGL Context: " << SDL_GetError() << endl;
-		throw Exception(0, "Can't create OGL Context", "Unable to create an OpenGL Context.\n" + string(SDL_GetError()));
+		cout << "Could not create an OpenGL Context: " << SDL_GetError() << endl;
+		throw Exception(0, "Unable to start OpenGL", "Unable to create an OpenGL Context.\n" + string(SDL_GetError()));
 	}
 
 
@@ -837,9 +737,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 #endif
 
 	SDL_ShowCursor(false);
-
-	//if(TTF_Init() < 0)
-	//	throw Exception(703, "Error starting TrueType Library", TTF_GetError());
 
 	buildDisplayModeList();
 	//mShaderManager = new ShaderManager();
@@ -1035,9 +932,6 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			Cr,Cg,Cb, 0
 		};
 		glColorPointer(4, GL_FLOAT, 0, line_color);
-
-		//glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
-		//glDrawArrays(GL_TRIANGLE_STRIP, 6, 6);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	}
 }

@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2014 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -12,6 +12,8 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 #include "NAS2D/XmlAttributeParser.h"
+
+#include "NAS2D/tinyxml/tinyxml.h"
 
 using namespace NAS2D;
 
@@ -42,8 +44,7 @@ const bool				GRAPHICS_FULLSCREEN			= false;
 /**
  * C'tor
  */
-Configuration::Configuration():	mConfigFile(new TiXmlDocument()),
-								mScreenWidth(GRAPHICS_WIDTH),
+Configuration::Configuration():	mScreenWidth(GRAPHICS_WIDTH),
 								mScreenHeight(GRAPHICS_HEIGHT),
 								mScreenBpp(GRAPHICS_BITDEPTH),
 								mTextureQuality(GRAPHICS_TEXTURE_QUALITY),
@@ -66,12 +67,6 @@ Configuration::~Configuration()
 {
 	if(mOptionChanged)
 		save();
-
-	if(mConfigFile)
-	{
-		delete mConfigFile;
-		mConfigFile = NULL;
-	}
 
 	cout << "Configuration Terminated." << endl;
 }
@@ -107,68 +102,62 @@ void Configuration::load(const std::string& filePath)
 
 void Configuration::save()
 {
-	TiXmlDocument *doc = new TiXmlDocument();
+	TiXmlDocument doc;
 
-	TiXmlComment *comment = new TiXmlComment("Automatically generated Configuration file. This is best left untouched.");
-	doc->LinkEndChild(comment);
+	TiXmlComment comment("Automatically generated Configuration file.");
+	doc.LinkEndChild(&comment);
 
-	TiXmlElement *root = new TiXmlElement("configuration");
-	doc->LinkEndChild(root);
+	TiXmlElement root("configuration");
+	doc.LinkEndChild(&root);
 
-	TiXmlElement *graphics = new TiXmlElement("graphics");
-	graphics->SetAttribute("screenwidth", mScreenWidth);
-	graphics->SetAttribute("screenheight", mScreenHeight);
-	graphics->SetAttribute("bitdepth", mScreenBpp);
-	// Fullscreen Attribute
+	TiXmlElement graphics("graphics");
+	graphics.SetAttribute("screenwidth", mScreenWidth);
+	graphics.SetAttribute("screenheight", mScreenHeight);
+	graphics.SetAttribute("bitdepth", mScreenBpp);
+
 	if(mFullScreen)
-		graphics->SetAttribute("fullscreen", "true");
+		graphics.SetAttribute("fullscreen", "true");
 	else
-		graphics->SetAttribute("fullscreen", "false");
+		graphics.SetAttribute("fullscreen", "false");
 	
 	if(mVSync)
-		graphics->SetAttribute("vsync", "true");
+		graphics.SetAttribute("vsync", "true");
 	else
-		graphics->SetAttribute("vsync", "false");
+		graphics.SetAttribute("vsync", "false");
 
 	if(mTextureQuality == GL_NEAREST)
-		graphics->SetAttribute("texturequality", "fast");
+		graphics.SetAttribute("texturequality", "fast");
 	else if(mTextureQuality == GL_LINEAR)
-		graphics->SetAttribute("texturequality", "good");
+		graphics.SetAttribute("texturequality", "good");
 
-	root->LinkEndChild(graphics);
+	root.LinkEndChild(&graphics);
 
-	TiXmlElement *audio = new TiXmlElement("audio");
-	audio->SetAttribute("mixrate", mMixRate);
-	audio->SetAttribute("channels", mStereoChannels);
-	audio->SetAttribute("sfxvolume", mSfxVolume);
-	audio->SetAttribute("musicvolume", mMusicVolume);
-	audio->SetAttribute("bufferlength", mBufferLength);
-	audio->SetAttribute("mixer", mMixerName);
-	root->LinkEndChild(audio);
+	TiXmlElement audio("audio");
+	audio.SetAttribute("mixrate", mMixRate);
+	audio.SetAttribute("channels", mStereoChannels);
+	audio.SetAttribute("sfxvolume", mSfxVolume);
+	audio.SetAttribute("musicvolume", mMusicVolume);
+	audio.SetAttribute("bufferlength", mBufferLength);
+	audio.SetAttribute("mixer", mMixerName);
+	root.LinkEndChild(&audio);
 
 	// Options
-	TiXmlElement *options = new TiXmlElement("options");
-	root->LinkEndChild(options);
+	TiXmlElement options("options");
+	root.LinkEndChild(&options);
     
-	// Iterate through the gui options list
-	Options::iterator optIt = mOptions.begin();
-	while(optIt != mOptions.end())
+	for (auto op : mOptions)
 	{
-		TiXmlElement *option = new TiXmlElement("option");
-		option->SetAttribute("name", optIt->first);
-		option->SetAttribute("value", optIt->second);
-		options->LinkEndChild(option);
-		optIt++;
+		TiXmlElement option("option");
+		option.SetAttribute("name", op.first);
+		option.SetAttribute("value", op.second);
+		options.LinkEndChild(&option);
 	}
 
 	// Write out the XML file.
 	TiXmlPrinter printer;
-	doc->Accept(&printer);
+	doc.Accept(&printer);
 
 	Utility<Filesystem>::get().write(File(printer.Str(), mConfigPath));
-
-	delete doc;
-	doc = 0;
 }
 
 
@@ -192,12 +181,6 @@ void Configuration::setDefaultValues()
 
 
 /**
- * Writes all stored values to disk.
- */
-
-
-
-/**
  * Reads a given XML configuration file.
  *
  * \param filePath	Name of an XML Configuration file to be read.
@@ -206,61 +189,43 @@ bool Configuration::readConfig(const std::string& filePath)
 {
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
-	TiXmlElement  *xmlRootElement;
-
-	// Load the XML document and handle any errors if occuring
-	mConfigFile->Parse(xmlFile.raw_bytes());
-	if(mConfigFile->Error())
+	TiXmlDocument config;
+	config.Parse(xmlFile.raw_bytes());
+	if(config.Error())
 	{
-		cout << "Configuration malformed. Error on Row " << mConfigFile->ErrorRow() << ", Column " << mConfigFile->ErrorCol() << ": " << mConfigFile->ErrorDesc() << endl;
+		cout << "Error parsing configuration file 'filePath' on Row " << config.ErrorRow() << ", Column " << config.ErrorCol() << ": " << config.ErrorDesc() << endl;
 		return false;
 	}
 	else
 	{
-		// Check that we're using an XML Document.
-		if (mConfigFile->ToDocument() != 0)
+		TiXmlElement* root = config.FirstChildElement("configuration");
+		if(!root)
 		{
-			// Find the <configuration> tag
-			xmlRootElement = mConfigFile->FirstChildElement("configuration");
-			if(xmlRootElement == 0)
-			{
-				cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << endl;
-				return false;
-			}
-			
-		} 
-		else 
-		{
-			cout << "Configuration parsing train wrecked."  << endl;
-			setDefaultValues();
+			cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << endl;
 			return false;
 		}
+
 
 		// Start parsing through the Config.xml file.
 		int result = 0;
 		
-		TiXmlNode *xmlNode = 0;
-		while(xmlNode = xmlRootElement->IterateChildren(xmlNode))
+		TiXmlNode *xmlNode = nullptr;
+		while(xmlNode = root->IterateChildren(xmlNode))
 		{
-			if(xmlNode->ValueStr() == "graphics")
+			if (xmlNode->ValueStr() == "graphics")
 			{
 				parseGraphics(xmlNode);
 			}
-			else if(xmlNode->ValueStr() == "audio")
+			else if (xmlNode->ValueStr() == "audio")
 			{
 				parseAudio(xmlNode);
 			}
-			else if(xmlNode->ValueStr() == "options")
+			else if (xmlNode->ValueStr() == "options")
 			{
 				parseOptions(xmlNode);
 			}
-			else if(xmlNode->ValueStr() == "gui-options")
-			{
-				//if(!parseGuiOptions(xmlNode))
-					//return false;
-				// Add stuff here.
-				cout << "GUI options are not supported at this time." << endl;
-			}
+			else if (xmlNode->Type() == TiXmlNode::TINYXML_DOCUMENT)
+				; // ignore comments
 			else
 				cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in '" << filePath << "' on row " << xmlNode->Row() << "." << endl;
 		}
@@ -274,10 +239,13 @@ bool Configuration::readConfig(const std::string& filePath)
  * Parse the <graphics> tab.
  *
  * \todo	Check for sane configurations, particularly screen resolution.
+ * 
+ * \note	Use of void pointer in declaration to avoid implementation details in header.
  */
-void Configuration::parseGraphics(TiXmlNode *node)
+void Configuration::parseGraphics(void* _n)
 {
 	XmlAttributeParser parser;
+	TiXmlNode* node = static_cast<TiXmlNode*>(_n);
 
 	mScreenWidth = parser.intAttribute(node, "screenwidth");
 	mScreenHeight = parser.intAttribute(node, "screenheight");
@@ -301,10 +269,13 @@ void Configuration::parseGraphics(TiXmlNode *node)
  * 
  * \note	If any values are invalid or non-existant, this
  *			function will set default values.
+ * 
+ * \note	Use of void pointer in declaration to avoid implementation details in header.
  */
-void Configuration::parseAudio(TiXmlNode *node)
+void Configuration::parseAudio(void* _n)
 {
 	XmlAttributeParser parser;
+	TiXmlNode* node = static_cast<TiXmlNode*>(_n);
 
 	mMixRate = parser.intAttribute(node, "mixrate");
 	if(mMixRate == 0)
@@ -335,12 +306,15 @@ void Configuration::parseAudio(TiXmlNode *node)
 
 /**
  * Parses program options from an XML node.
+ * 
+ * \note	Use of void pointer in declaration to avoid implementation details in header.
  */
-void Configuration::parseOptions(TiXmlNode *node)
+void Configuration::parseOptions(void* _n)
 {
 	XmlAttributeParser parser;
+	TiXmlNode* node = static_cast<TiXmlNode*>(_n);
 
-	TiXmlNode *xmlNode = 0;
+	TiXmlNode *xmlNode = nullptr;
 	while(xmlNode = node->IterateChildren(xmlNode))
 	{
 		if(xmlNode->ValueStr() == "option")

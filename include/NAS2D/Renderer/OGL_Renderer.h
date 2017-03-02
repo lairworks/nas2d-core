@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2014 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -38,16 +38,12 @@ namespace NAS2D {
  * \class OGL_Renderer
  * \brief OpenGL Renderer.
  *
- * Implements all Renderer functions with the SDL_opengl API.
- * Note: The use of glBegin()->glEnd() calls is now deprecated in OGL3. If we can switch
- * to a non-immediate mode methodollogy it may help us when splitting towards a pure 3D renderer.
+ * Implements an OpenGL based Renderer.
  */
 class OGL_Renderer: public Renderer
 {
 public:
 	OGL_Renderer(const std::string title);
-	
-	//OGL_Renderer(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
 
 	~OGL_Renderer();
 
@@ -88,8 +84,6 @@ private:
 
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
-	bool checkExtensions();
-	bool extensionExists(const std::string& extension);
 	
 	void buildDisplayModeList();
 	
@@ -97,19 +91,14 @@ private:
 	void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
 
 	void drawVertexArray(GLuint textureId, bool defaultTextureCoords);
-
-	void getError();
 	
 	SDL_Window*			mWindow;					/**< Primary window. */
 	SDL_GLContext		mContext;					/**< Primary OpenGL render context. */
-	//SDL_Renderer*		mRenderer;					/**< SDL2 Renderer object associated with the OGL Context/Window. */
 
 	GLfloat				mVertexArray[12];			/**< Vertex array for quad drawing functions (all blitter functions). */
 	GLfloat				mTextureCoordArray[12];		/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
 	GLuint				mTextureTarget;				/**< Target to bind textures to. Generally going to be GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_ARB */
-	//	GLfloat				mVertexBufferObject;	/**< COMMENT ME! */
-	//	GLfloat				mTextureBufferObject;	/**< COMMENT ME! */
 	
 	unsigned int		mFontShaderFrag;
 	unsigned int		mFontShaderVert;

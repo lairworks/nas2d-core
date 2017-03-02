@@ -14,11 +14,52 @@
 #include <algorithm>
 #include <sstream>
 
-#if defined(WIN32)
+#if defined(WINDOWS)
 #include <windows.h>
 #endif
 
-using namespace NAS2D;
+
+const int NAS2D_MAJOR_VERSION = 1;
+const int NAS2D_MINOR_VERSION = 2;
+const int NAS2D_PATCH_VERSION = 1;
+
+/**
+ * Gets a string containing the version of NAS2D being used.
+ */
+std::string NAS2D::versionString()
+{
+	std::stringstream ss;
+	ss << versionMajor() << "." << versionMinor() << "." << versionPatch();
+	return 
+}
+
+
+/**
+ * Gets version major.
+ */
+int versionMajor()
+{
+	return NAS2D_MAJOR_VERSION;
+}
+
+
+/**
+ * Gets version minor.
+ */
+int NAS2D::versionMinor()
+{
+	return NAS2D_MINOR_VERSION;
+}
+
+
+/**
+ * Gets version patch.
+ */
+int NAS2D::versionPatch()
+{
+	return NAS2D_PATCH_VERSION;
+}
+
 
 /**
  * \fn isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)

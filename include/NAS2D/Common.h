@@ -19,6 +19,12 @@
 
 namespace NAS2D {
 
+std::string versionString();
+
+int versionMajor();
+int versionMinor();
+int versionPatch();
+
 // Utility Functions
 bool isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH);
 bool isPointInRect(const Point_2d& point, const Rectangle_2d& rect);

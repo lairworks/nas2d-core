@@ -31,7 +31,8 @@ using namespace NAS2D;
  */
 Game::Game(const std::string& title, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
 {
-	cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << endl << endl;
+	cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << endl;
+	cout << "NAS2D VERSION: " << NAS2D::versionString() << endl << endl;
 
 	cout << "Initializing subsystems..." << endl << endl;	
 

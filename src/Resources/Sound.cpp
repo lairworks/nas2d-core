@@ -10,14 +10,24 @@
 
 #include "NAS2D/Resources/Sound.h"
 
-using namespace std;
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+#elif __linux__
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
+#else
+#include "SDL.h"
+#include "SDL_mixer.h"
+#endif
+
 using namespace NAS2D;
 
 /**
  * Default C'tor.
  */
 Sound::Sound(): Resource(),
-				mChunk(nullptr)
+				_chunk(nullptr)
 {}
 
 /**
@@ -26,7 +36,7 @@ Sound::Sound(): Resource(),
  * \param	filePath	File path of the sound file to load.
  */
 Sound::Sound(const std::string& filePath):	Resource(filePath),
-											mChunk(nullptr)
+_chunk(nullptr)
 { 
 	load();
 }
@@ -37,10 +47,10 @@ Sound::Sound(const std::string& filePath):	Resource(filePath),
  */
 Sound::~Sound()
 {
-	if(mChunk)
+	if(_chunk)
 	{
-		Mix_FreeChunk(mChunk);
-		mChunk = nullptr;
+		Mix_FreeChunk(static_cast<Mix_Chunk*>(_chunk));
+		_chunk = nullptr;
 	}
 }
 
@@ -57,8 +67,8 @@ void Sound::load()
 	if(soundFile.empty())
 		return;
 
-	mChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
-	if(!mChunk)
+	_chunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
+	if(!_chunk)
 		return;
 
 	loaded(true);
@@ -66,12 +76,9 @@ void Sound::load()
 
 
 /**
- * Retrieves a pointer to an SDL_Mixer Mix_Chunk.
- * 
- * \note	This function is accessible by the Mixer
- *			only.
+ * Gets a pointer to sound buffer.
  */
-Mix_Chunk *Sound::sound() const
+void* Sound::sound() const
 {
-	return mChunk;
+	return _chunk;
 }

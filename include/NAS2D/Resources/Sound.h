@@ -7,21 +7,9 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 #include "Resource.h"
-
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_mixer.h"
-#else
-#include "SDL.h"
-#include "SDL_mixer.h"
-#endif
 
 namespace NAS2D {
 
@@ -42,15 +30,14 @@ public:
 	~Sound();
 
 protected:
-	friend class Mixer;
 	friend class Mixer_SDL;
 
-	Mix_Chunk *sound() const;			/**< Internal function only used by the Mixer. */
+	void* sound() const;
 
 private:
 	void load();
 
-	Mix_Chunk	*mChunk;
+	void*	_chunk;
 };
 
 } // namespace

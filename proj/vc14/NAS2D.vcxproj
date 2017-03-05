@@ -225,6 +225,7 @@
     <ClCompile Include="..\..\src\Common.cpp" />
     <ClCompile Include="..\..\src\Configuration.cpp" />
     <ClCompile Include="..\..\src\EventHandler.cpp" />
+    <ClCompile Include="..\..\src\Exception.cpp" />
     <ClCompile Include="..\..\src\Filesystem.cpp" />
     <ClCompile Include="..\..\src\FpsCounter.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />

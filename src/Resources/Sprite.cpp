@@ -594,7 +594,7 @@ void Sprite::debug()
 
 	cout << endl << endl << "Actions: " << mActions.size() << endl;
 	
-	unsigned int frameCount = 0;
+	size_t frameCount = 0;
 	ActionList::iterator actionIt = mActions.begin();
 	while(actionIt != mActions.end())
 	{

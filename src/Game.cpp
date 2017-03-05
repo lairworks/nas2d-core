@@ -31,10 +31,10 @@ using namespace NAS2D;
  */
 Game::Game(const std::string& title, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
 {
-	cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << endl;
-	cout << "NAS2D VERSION: " << NAS2D::versionString() << endl << endl;
+	std::cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << std::endl;
+	std::cout << "NAS2D VERSION: " << NAS2D::versionString() << std::endl << std::endl;
 
-	cout << "Initializing subsystems..." << endl << endl;	
+	std::cout << "Initializing subsystems..." << std::endl << std::endl;
 
 	Utility<Filesystem>::get().init(argv_0, dataPath);
 
@@ -45,35 +45,24 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 	{
 		Utility<Mixer>::instantiateDerived(new Mixer_SDL());
 	}
-	catch (Exception e)
+	catch (std::exception e)
 	{
-		cout << "Unable to create SDL Audio Mixer: " << e.getDescription() << ". Setting NULL driver." << endl;
+		std::cout << "Unable to create SDL Audio Mixer: " << e.what() << ". Setting NULL driver." << std::endl;
 		Utility<Mixer>::instantiateDerived(new Mixer());
 	}
 	catch (...)
 	{
-		throw Exception(0, "OpenGL Renderer", "Unhandled exception occured while creating a Renderer.");
+		throw std::runtime_error("Unexpected exception occured while creating a Mixer.");
 	}
 	
-	cout << "Initializing Event Handler... ";
+	std::cout << "Initializing Event Handler... ";
 	Utility<EventHandler>::get();
-	cout << "done." << endl << endl;
+	std::cout << "done." << std::endl << std::endl;
 
-	try
-	{
-		Utility<Renderer>::instantiateDerived(new OGL_Renderer(title));
-	}
-	catch(Exception e)
-	{
-		throw Exception(0, "OpenGL Renderer", "Unable to create a Renderer:\n\n" + e.getDescription());
-	}
-	catch(...)
-	{
-		throw Exception(0, "OpenGL Renderer", "Unhandled exception occured while creating a Renderer.");
-	}
+	Utility<Renderer>::instantiateDerived(new OGL_Renderer(title));
 
-	cout << endl << "Subsystems initialized." << endl << endl;
-	cout << "===================================" << endl << endl;
+	std::cout << std::endl << "Subsystems initialized." << std::endl << std::endl;
+	std::cout << "===================================" << std::endl << std::endl;
 }
 
 
@@ -82,8 +71,8 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
  */
 Game::~Game()
 {
-	cout << endl << "===================================" << endl << endl;
-	cout << "Shutting down..." << endl;
+	std::cout << std::endl << "===================================" << std::endl << std::endl;
+	std::cout << "Shutting down..." << std::endl;
 
 	// Destroy all of our various components in reverse order.
 	Utility<Renderer>::clean();
@@ -92,7 +81,7 @@ Game::~Game()
 	Utility<Configuration>::clean();
 	Utility<Filesystem>::clean();
 
-	cout << endl << "Game object has been terminated." << endl;
+	std::cout << std::endl << "Game object has been terminated." << std::endl;
 
 	// Shut down all SDL subsystems.
 	SDL_Quit();
@@ -121,7 +110,7 @@ void Game::mount(const std::string& path)
  */
 void Game::go(State *state)
 {
-	cout << "** GAME STATE START **" << endl << endl;
+	std::cout << "** GAME STATE START **" << std::endl << std::endl;
 
 	StateManager stateManager;
 

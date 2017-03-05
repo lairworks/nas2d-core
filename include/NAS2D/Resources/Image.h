@@ -56,7 +56,7 @@ public:
 
 	Color_4ub pixelColor(int x, int y) const;
 
-	void desaturate();
+	void DEPRECATED(desaturate();, "This function has been deprecated and support will be removed in future releases.")
 
 protected:
 	friend class Renderer;
@@ -66,7 +66,6 @@ protected:
 	unsigned int fbo_id();
 
 private:
-
 	struct ImageInfo
 	{
 		ImageInfo(): pixels_raw(nullptr), textureId(0), fboId(0), w(0), h(0), ref_count(0) {}
@@ -86,12 +85,13 @@ private:
 
 	typedef std::map<std::string, ImageInfo> TextureIdMap;
 
+private:
 	void load();
-	void loadDefault();
 	void generateTexture(void* buffer, int bytesPerPixel, int width, int height);
 
 	bool checkTextureId();
 
+private:
 	Rectangle_2d	mRect;			/**< Width/Height information about the Image. */
 
 	unsigned int	mTextureId;		/**< OpenGL Texture ID. */

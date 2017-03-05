@@ -23,8 +23,6 @@
 
 #include "NAS2D/Deprecate.h"
 
-#include <sstream>
-
 namespace NAS2D {
 
 // Color Presets
@@ -117,7 +115,7 @@ public:
 	bool isFaded() const;
 
 	void toggleLetterBox();
-	DEPRECATED(void toggleCinematicMode();)
+	DEPRECATED(void toggleCinematicMode();, "This function has been deprecated and will be removed in future releases.")
 
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);

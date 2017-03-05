@@ -135,6 +135,9 @@
     <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp">
       <Filter>Source Files\Mixer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\NAS2D\Common.h">

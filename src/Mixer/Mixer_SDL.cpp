@@ -48,32 +48,26 @@ Mixer_SDL::~Mixer_SDL()
 	Mix_CloseAudio();
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 
-	cout << "Mixer Terminated." << endl;
+	std::cout << "Mixer Terminated." << std::endl;
 }
 
 
 void Mixer_SDL::init()
 {
-	cout << "Initializing Mixer... ";
-	// Initialize SDL's Audio Subsystems.
+	std::cout << "Initializing Mixer... ";
+
 	if(SDL_Init(SDL_INIT_AUDIO) < 0)
-	{
-		cout << endl << "\tAudio driver not initialized: " << SDL_GetError() << endl;
-		throw Exception(0, "Unable to initialize audio", SDL_GetError());
-	}
+		throw mixer_backend_init_failure(SDL_GetError());
 	
 	Configuration& c = Utility<Configuration>::get();
     // Initialize the Audio Mixer
     if(Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
-	{
-		cout << endl << "\tAudio driver not initialized: " << Mix_GetError() << endl;
-		throw Exception(0, "Unable to initialize audio", SDL_GetError());
-	}
+		throw mixer_backend_init_failure(Mix_GetError());
 
 	setSfxVolume(c.audioSfxVolume());
 	setMusVolume(c.audioMusicVolume());
 
-	cout << "done." << endl;
+	std::cout << "done." << std::endl;
 }
 
 

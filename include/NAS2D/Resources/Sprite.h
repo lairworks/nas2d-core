@@ -137,8 +137,7 @@ private:
 		int frameDelay() const { return mFrameDelay; }
 
 	private:
-
-		string			mSheetId;
+		std::string		mSheetId;
 
 		int				mFrameDelay;
 		int				mAnchorX, mAnchorY;
@@ -147,9 +146,9 @@ private:
 	};
 
 private:
-	typedef std::vector<SpriteFrame>	FrameList;
-	typedef std::map<string, FrameList>	ActionList;
-	typedef std::map<string, Image>		SheetList;
+	typedef std::vector<SpriteFrame>			FrameList;
+	typedef std::map<std::string, FrameList>	ActionList;
+	typedef std::map<std::string, Image>		SheetList;
 
 private:
 	void parseXml(const std::string& filePath);
@@ -172,7 +171,7 @@ private:
 	std::string			mSpriteName;		/**< Name of this Sprite. */
 	std::string			mCurrentAction;		/**< The current Action being performed. */
 
-	unsigned int		mCurrentFrame;		/**< The current frame index in the current Action's frame list. */
+	size_t				mCurrentFrame;		/**< The current frame index in the current Action's frame list. */
 
 	Callback			mFrameCallback;		/**< Callback to signal a listener whenever an animation sequence completes. */
 

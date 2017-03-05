@@ -24,10 +24,9 @@
 #endif
 
 
-#include <iostream>
+//#include <iostream>
 #include <math.h>
 
-using namespace std;
 using namespace NAS2D;
 
 /** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
@@ -56,7 +55,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title),
 														mTextureTarget(0)
 {
-	cout << "Starting " << name() << ":" << endl;
+	std::cout << "Starting " << name() << ":" << std::endl;
 	
 	Configuration& cf = Utility<Configuration>::get();
 	TEXTURE_FILTER = cf.graphicsTextureQuality();
@@ -75,7 +74,7 @@ OGL_Renderer::~OGL_Renderer()
 
 	//delete mShaderManager;
 
-	cout << "OpenGL Renderer Terminated." << endl;
+	std::cout << "OpenGL Renderer Terminated." << std::endl;
 }
 
 
@@ -543,19 +542,19 @@ void OGL_Renderer::initGL()
 	glDisable(GL_DEPTH_TEST);
 
 	// Spit out system graphics information.
-	cout << "\t- OpenGL System Info -" << endl;
+	std::cout << "\t- OpenGL System Info -" << std::endl;
 
 	driverName((char*)glGetString(GL_RENDERER));
 
-	cout << "\tVendor: " << glGetString(GL_VENDOR) << endl;
-	cout << "\tRenderer: " << driverName() << endl;
-	cout << "\tDriver Version: " << glGetString(GL_VERSION) << endl;
+	std::cout << "\tVendor: " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "\tRenderer: " << driverName() << std::endl;
+	std::cout << "\tDriver Version: " << glGetString(GL_VERSION) << std::endl;
 
 	std::string glsl_v = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 	if (glsl_v.empty())
-		throw Exception(0, "No GLSL Support", "Graphics driver reports no GLSL support.");
+		throw renderer_no_glsl();
 
-	cout << "\tGLSL Version: " << glsl_v << endl;
+	std::cout << "\tGLSL Version: " << glsl_v << std::endl;
 
 	// If GLSL is available then we can assume that non-power-of-two texture support is also
 	// available. This, however, is a BIG ASSUMPTION AND MAY NOT BE TRUE.
@@ -576,8 +575,8 @@ void OGL_Renderer::initGL()
 
 void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
 {
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
-		throw Exception(701, "Error starting SDL Video Library", SDL_GetError());
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		throw renderer_backend_init_failure(SDL_GetError());
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -596,12 +595,12 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	_WINDOW = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
 
-	if(!_WINDOW)
-		throw Exception(702, "Window Creation Failed", string("Unable to create a window: ") + SDL_GetError());
+	if (!_WINDOW)
+		throw renderer_window_creation_failure();
 
 	CONTEXT = SDL_GL_CreateContext(_WINDOW);
-	if(!CONTEXT)
-		throw Exception(703, "Unable to start OpenGL", "Unable to create an OpenGL Context.\n" + string(SDL_GetError()));
+	if (!CONTEXT)
+		throw renderer_opengl_context_failure();
 
 	#ifdef __APPLE__
 	if (vsync)
@@ -615,7 +614,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 
 	SDL_ShowCursor(false);
 
-	buildDisplayModeList();
 	//mShaderManager = new ShaderManager();
 	initGL();
 }

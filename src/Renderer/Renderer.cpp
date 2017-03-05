@@ -72,7 +72,7 @@ Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
  */
 Renderer::~Renderer()
 {
-	std::cout << "Renderer Terminated." << endl;
+	std::cout << "Renderer Terminated." << std::endl;
 }
 
 

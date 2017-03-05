@@ -7,13 +7,10 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 #include "Renderer.h"
 #include "ShaderManager.h"
-
-#include <map>
 
 namespace NAS2D {
 
@@ -61,14 +58,11 @@ public:
 	void update();
 
 private:
-
 	OGL_Renderer(const OGL_Renderer&);				// Intentionally left undefined;
 	OGL_Renderer& operator=(const OGL_Renderer&);	// Intentionally left undefined;
 
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
-	
-	void buildDisplayModeList();
 	
 	void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 	void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);

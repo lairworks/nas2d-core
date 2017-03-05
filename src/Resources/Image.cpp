@@ -34,8 +34,8 @@
 
 using namespace NAS2D;
 
-const string DEFAULT_IMAGE_NAME		= "Default Image";
-const string ARBITRARY_IMAGE_NAME	= "Arbitrary Image ";
+const std::string DEFAULT_IMAGE_NAME	= "Default Image";
+const std::string ARBITRARY_IMAGE_NAME	= "Arbitrary Image ";
 
 
 Image::TextureIdMap Image::_IdMap;
@@ -79,10 +79,7 @@ Image::Image():	Resource(DEFAULT_IMAGE_NAME),
 Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
 										mTextureId(0)
 {
-	stringstream str;
-	str << _Arbitrary++;
-
-	name(ARBITRARY_IMAGE_NAME + str.str());
+	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++_Arbitrary));
 	mRect(0, 0, width, height);
 
 	// MAGIC NUMBER: 4 == 4 1-byte color channels (RGBA)
@@ -108,20 +105,17 @@ Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
 Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
 																		mTextureId(0)
 {
-	if(buffer == nullptr)
-		throw Exception(0, "Bad Data", "Attempted to construct an Image with a NULL pixel buffer.");
+	if (buffer == nullptr)
+		throw image_null_data();
 
-	if(bytesPerPixel != 3 && bytesPerPixel != 4)
-		throw Exception(0, "Unsupported Image", "Attempted to construct an Image less than 24-bit. Images must be 24- or 32-bit.");
+	if (bytesPerPixel != 3 && bytesPerPixel != 4)
+		throw image_unsupported_bit_depth();
 
 	// Create an SDL_Surface so that this Image has something to look at if the user
 	// wants to be peeking pixels out of it.
 	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
-	stringstream str;
-	str << _Arbitrary++;
-
-	name(ARBITRARY_IMAGE_NAME + str.str());
+	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++_Arbitrary));
 
 	mRect(0, 0, width, height);
 	generateTexture(buffer, bytesPerPixel, width, height);
@@ -244,29 +238,22 @@ void Image::load()
 	if(checkTextureId())
 		return;
 
-	// File has not been previously loaded, so open it.
 	File imageFile = Utility<Filesystem>::get().open(name());
 	if(imageFile.size() == 0)
 	{
-		//cout << "(ERROR) Image::load(): " << Utility<Filesystem>::get().lastError() << endl;
+		std::cout << "Image::load(): '" << name() << "' is empty." << std::endl;
 		return;
 	}
 
-	// Create a temporary surface and ensure that the image loaded properly.
-	//SDL_Surface *tmpSurface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
-	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), imageFile.size()), 0);
-	//if(!tmpSurface)
+	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
 	if(!pixels)
 	{		
-		// loading failed, log a message, set a default image and return.
-		std::cout << "Image::load(): " << SDL_GetError() << endl;
-		loadDefault();
+		std::cout << "Image::load(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
 	mRect = Rectangle_2d(0, 0, pixels->w, pixels->h);
 
-	// Generate OpenGL Texture from SDL_Surface
 	generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
 
 	// Add generated texture id to texture ID map.
@@ -275,29 +262,6 @@ void Image::load()
 	Image::_IdMap[name()].pixels_raw = pixels;
 
 	loaded(true);
-}
-
-
-/**
- * Used by the default c'tor and any time a default
- * image needs to be used.
- */
-void Image::loadDefault()
-{
-	// Check if texture id was generated and back out if it was.
-	/*
-	if(checkTextureId())
-		return;
-
-	mPixels = IMG_Load_RW(SDL_RWFromMem(errorImg, ERRORIMG_LEN), 1);
-	if(!mPixels)
-	{
-		cout << "Unable to generate default texture." << endl;
-		return;
-	}
-
-	generateTexture(mPixels->pixels, mPixels->format->BytesPerPixel, mPixels->w, mPixels->h);
-	*/
 }
 
 
@@ -322,7 +286,7 @@ void Image::generateTexture(void *buffer, int bytesPerPixel, int width, int heig
 			break;
 
 		default:
-			throw Exception(0, "Unsupported Bit Depth", "Only 24- and 32-bit images are supported.");
+			throw image_unsupported_bit_depth();
 			break;
 	}
 
@@ -411,14 +375,13 @@ unsigned int Image::fbo_id()
  */
 Color_4ub Image::pixelColor(int x, int y) const
 {
-	// Ensure we're only ever reading within the bounds of the pixel data.
 	if(x < 0 || x > width() || y < 0 || y > height())
 		return Color_4ub(0, 0, 0, 255);
 
 	SDL_Surface* pixels = Image::_IdMap[name()].pixels_raw;
 
-	if(!pixels)
-		throw Exception(0, "NULL Surface", "Image::pixelColor() called on an Image with no pixel data.");
+	if (!pixels)
+		throw image_null_data();
 
 	SDL_LockSurface(pixels);
     int bpp = pixels->format->BytesPerPixel;
@@ -447,14 +410,13 @@ Color_4ub Image::pixelColor(int x, int y) const
 			c = *(Uint32*)p;
 			break;
 
-		default:
-			break;       // shouldn't happen, but avoids warnings
+		default:	// Should never be possible.
+			throw image_bad_data();
+			break;
 	}
 
 	Uint8 r, g, b, a;
-
 	SDL_GetRGBA(c, pixels->format, &r, &g, &b, &a);
-
 	SDL_UnlockSurface(pixels);
 
 	return Color_4ub(r, g, b, a);
@@ -465,7 +427,8 @@ Color_4ub Image::pixelColor(int x, int y) const
  * Permanently desaturates the Image.
  * 
  * \note	This is currently a stub function that has no effect.
- *			Expect functionality in NAS2D 1.2.
+ * 
+ * \deprecated	This function is deprecated and will not be provided in future versions of NAS2D.
  */
 void Image::desaturate()
 {

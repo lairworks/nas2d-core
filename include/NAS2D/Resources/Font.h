@@ -35,6 +35,16 @@ namespace NAS2D {
 class Font: public Resource
 {
 public:
+	struct GlyphMetrics
+	{
+		float uvX, uvY;	// Texture coordinates.
+		float uvW, uvH; // Texture coordinates.
+		int minX, minY;
+		int maxX, maxY;
+		int advance;
+	};
+
+public:
 	Font();
 	Font(const std::string& filePath, int ptSize = 12);
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
@@ -54,15 +64,6 @@ public:
 	void italic();
 	void underline();
 	void normal();
-
-    struct GlyphMetrics
-    {
-        float uvX, uvY;	// Texture coordinates.
-        float uvW, uvH; // Texture coordinates.
-        int minX, minY;
-        int maxX, maxY;
-        int advance;
-    };
 
     const int glyphCellWidth() const;
     const int glyphCellHeight() const;
@@ -89,12 +90,14 @@ private:
 	typedef std::map<std::string, FontInfo> FontMap;
     typedef std::vector<GlyphMetrics> GlyphMetricsList;
 
+private:
 	void load();
 	void loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 
 	void generateGlyphMap(TTF_Font* ft);
 	void generateTexture(SDL_Surface *src);
 
+private:
 	int					mHeight;			/**< Font Height. */
 	int					mAscent;			/**< Height of each glyph relative to the baseline. */
 	int					mPtSize;			/**< Point Size to load the Font in. */

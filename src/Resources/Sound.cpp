@@ -57,7 +57,7 @@ void Sound::load()
 	if(soundFile.empty())
 		return;
 
-	mChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), soundFile.size()), 0);
+	mChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
 	if(!mChunk)
 		return;
 

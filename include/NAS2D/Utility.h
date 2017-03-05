@@ -96,7 +96,7 @@ public:
 		if(mInstance)
 		{
 			delete mInstance;
-			mInstance = 0;
+			mInstance = nullptr;
 		}
 	}
 

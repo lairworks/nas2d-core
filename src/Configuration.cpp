@@ -13,8 +13,6 @@
 #include "NAS2D/Utility.h"
 #include "NAS2D/XmlAttributeParser.h"
 
-#include "NAS2D/tinyxml/tinyxml.h"
-
 using namespace NAS2D;
 
 // Set some basic constants.
@@ -31,12 +29,12 @@ const int				AUDIO_MUSIC_VOLUME			= 100;
 const int				AUDIO_BUFFER_SIZE			= 1024;
 const int				AUDIO_MONO					= 1;
 const int				AUDIO_STEREO				= 2;
-const string			AUDIO_MIXER					= "SDL";
+const std::string		AUDIO_MIXER					= "SDL";
 
 const int				GRAPHICS_WIDTH				= 800;
 const int				GRAPHICS_HEIGHT				= 600;
 const int				GRAPHICS_BITDEPTH			= 32;
-const string			GRAPHICS_VSYNC				= "false";
+const std::string		GRAPHICS_VSYNC				= "false";
 const GraphicsQuality	GRAPHICS_TEXTURE_QUALITY	= GRAPHICS_GOOD;
 const bool				GRAPHICS_FULLSCREEN			= false;
 
@@ -68,7 +66,7 @@ Configuration::~Configuration()
 	if(mOptionChanged)
 		save();
 
-	cout << "Configuration Terminated." << endl;
+	std::cout << "Configuration Terminated." << std::endl;
 }
 
 
@@ -79,23 +77,23 @@ Configuration::~Configuration()
  */
 void Configuration::load(const std::string& filePath)
 {
-	cout << "Initializing Configuration... ";
+	std::cout << "Initializing Configuration... ";
 
 	mConfigPath = filePath;
 	
 	if(!Utility<Filesystem>::get().exists(filePath))
 	{
-		cout << "configuration file '" << filePath << "' does not exist. Using default options." << endl;
+		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
 		mOptionChanged = true;
 	}
 	// Read in the Config File.
 	else if(!readConfig(filePath))
 	{
 		mOptionChanged = true;
-		cout << "unable to process '" << filePath << "'. Using default options." << endl;
+		std::cout << "unable to process '" << filePath << "'. Using default options." << std::endl;
 	}
 	else
-		cout << "done." << endl;
+		std::cout << "done." << std::endl;
 
 }
 
@@ -193,7 +191,7 @@ bool Configuration::readConfig(const std::string& filePath)
 	config.Parse(xmlFile.raw_bytes());
 	if(config.Error())
 	{
-		cout << "Error parsing configuration file 'filePath' on Row " << config.ErrorRow() << ", Column " << config.ErrorCol() << ": " << config.ErrorDesc() << endl;
+		std::cout << "Error parsing configuration file 'filePath' on Row " << config.ErrorRow() << ", Column " << config.ErrorCol() << ": " << config.ErrorDesc() << std::endl;
 		return false;
 	}
 	else
@@ -201,7 +199,7 @@ bool Configuration::readConfig(const std::string& filePath)
 		TiXmlElement* root = config.FirstChildElement("configuration");
 		if(!root)
 		{
-			cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << endl;
+			std::cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << std::endl;
 			return false;
 		}
 
@@ -221,7 +219,7 @@ bool Configuration::readConfig(const std::string& filePath)
 			else if (xmlNode->Type() == TiXmlNode::TINYXML_DOCUMENT)
 				; // ignore comments
 			else
-				cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in '" << filePath << "' on row " << xmlNode->Row() << "." << endl;
+				std::cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in '" << filePath << "' on row " << xmlNode->Row() << "." << std::endl;
 		}
 	}
 
@@ -245,11 +243,11 @@ void Configuration::parseGraphics(void* _n)
 	mScreenHeight = parser.intAttribute(node, "screenheight");
 	mScreenBpp = parser.intAttribute(node, "bitdepth");
 
-	string fs = parser.stringAttribute(node, "fullscreen");
+	std::string fs = parser.stringAttribute(node, "fullscreen");
 	(toLowercase(fs) == "true") ? fullscreen(true) : fullscreen(false);
 
 
-	string vSync = parser.stringAttribute(node, "vsync");
+	std::string vSync = parser.stringAttribute(node, "vsync");
 	if(toLowercase(vSync) != "true" && toLowercase(vSync) != "false")
 		vsync(true);
 	else
@@ -314,15 +312,15 @@ void Configuration::parseOptions(void* _n)
 		if(xmlNode->ValueStr() == "option")
 		{
 			// Ensure that there is a 'name' attribute.
-			string option = parser.stringAttribute(xmlNode, "name");
+			std::string option = parser.stringAttribute(xmlNode, "name");
 
 			if(!option.empty())
 				mOptions[option] = parser.stringAttribute(xmlNode, "value");
 			else
-				cout << "Option tag is missing a name attribute on row " << xmlNode->Row() << "." << endl;
+				std::cout << "Option tag is missing a name attribute on row " << xmlNode->Row() << "." << std::endl;
 		}
 		else
-			cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in configuration on row " << xmlNode->Row() << "." << endl;
+			std::cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in configuration on row " << xmlNode->Row() << "." << std::endl;
 	}
 }
 

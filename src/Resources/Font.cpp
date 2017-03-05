@@ -35,7 +35,7 @@
 
 using namespace NAS2D;
 
-string buildName(TTF_Font*);
+std::string buildName(TTF_Font*); // ???? The hell is this?
 
 const int	ASCII_TABLE_COUNT	= 256;
 const int	ASCII_TABLE_FIRST	= 0;
@@ -73,12 +73,12 @@ NAS2D::Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
 }
 
 
-NAS2D::Font::Font(const string& filePath, int glyphWidth, int glyphHeight, int glyphSpace):	Resource(filePath),
-																						mHeight(glyphHeight),
-																						mAscent(0),
-																						mPtSize(glyphHeight),
-																						mGlyphCellSize(glyphWidth, glyphHeight),
-																						mTextureId(0)
+NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace):	Resource(filePath),
+																									mHeight(glyphHeight),
+																									mAscent(0),
+																									mPtSize(glyphHeight),
+																									mGlyphCellSize(glyphWidth, glyphHeight),
+																									mTextureId(0)
 {
 	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
@@ -159,7 +159,7 @@ void NAS2D::Font::load()
 	{
 		if(TTF_Init() == -1)
 		{
-			std::cout << "Font::load(): " << TTF_GetError() << endl;
+			std::cout << "Font::load(): " << TTF_GetError() << std::endl;
 			return;
 		}
 	}
@@ -170,10 +170,10 @@ void NAS2D::Font::load()
 		return;
 
 	// Attempt to load the font.
-	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0, mPtSize);
+	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, mPtSize);
 	if(!font)
 	{
-		std::cout << "Font::load(): " << TTF_GetError() << endl;
+		std::cout << "Font::load(): " << TTF_GetError() << std::endl;
 		return;
 	}
 
@@ -196,16 +196,16 @@ void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphH
 	if(fontBuffer.empty())
 		return;
 
-	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0);
+	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
 	if(!glyphMap)
 	{
-		std::cout << "Font::loadBitmap(): " << SDL_GetError() << endl;
+		std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
-	if( (glyphMap->w / 16 != glyphWidth) || (glyphMap->h / 16 != glyphHeight) )
+	if ((glyphMap->w / 16 != glyphWidth) || (glyphMap->h / 16 != glyphHeight))
 	{
-		std::cout << "Font::loadBitmap(): Glyph texture does not have 16 columns or 16 rows." << endl;
+		std::cout << "Font::loadBitmap(): Glyph texture does not have 16 columns or 16 rows." << std::endl;
 		return;
 	}
 
@@ -295,7 +295,7 @@ void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
 			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
 			if(!srf)
 			{
-				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << endl;
+				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
 			}
 			else
 			{
@@ -330,9 +330,8 @@ void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
  */
 void NAS2D::Font::generateTexture(SDL_Surface *src)
 {
-	// Surface must always be 32-Bit, anything else should be treated as an error.
-	if(src->format->BytesPerPixel < 4)
-		throw Exception(0, "Image Format Error", "Attempted to create a bitmap font using an image that is not 32bit.");
+	if (src->format->BytesPerPixel < 4)
+		throw image_unsupported_bit_depth();
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
 											// or can we set it once in the Renderer?
@@ -489,11 +488,11 @@ void NAS2D::Font::normal()
 /*
  * Builds a typeface name given a TTF_Font.
  */
-string buildName(TTF_Font* font)
+std::string buildName(TTF_Font* font)
 {
 	// Build Font Name with Family Name and Style Name.
-	string fontFamily = TTF_FontFaceFamilyName(font);
-	string fontStyle = TTF_FontFaceStyleName(font);
+	std::string fontFamily = TTF_FontFaceFamilyName(font);
+	std::string fontStyle = TTF_FontFaceStyleName(font);
 
 	// If Font style is regular, just use the family name.
 	if(toLowercase(fontStyle) == "regular")

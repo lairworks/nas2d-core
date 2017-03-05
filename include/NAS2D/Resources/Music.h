@@ -12,16 +12,7 @@
 
 #include "Resource.h"
 
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_mixer.h"
-#else
-#include "SDL.h"
-#include "SDL_mixer.h"
-#endif
+class Mixer_SDL;
 
 #include <map>
 
@@ -46,10 +37,9 @@ public:
 	~Music();
 
 protected:
-	friend class Mixer;
 	friend class Mixer_SDL;
 
-	Mix_Music *music() const;			/**< Internal function used only by Mixer classes. */
+	void *music() const;			/**< Internal function used only by Mixer classes. */
 
 private:
 	struct MusicInfo
@@ -57,9 +47,9 @@ private:
 		MusicInfo(): buffer(nullptr), music(nullptr), ref_count(0)
 		{}
 
-		File*		buffer;
-		Mix_Music*	music;
-		int			ref_count;
+		File*	buffer;
+		void*	music;
+		int		ref_count;
 	};
 
 private:

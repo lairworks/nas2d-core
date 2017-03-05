@@ -103,7 +103,7 @@ void Mixer_SDL::playMusic(Music& music)
 	if(!music.loaded())
 		return;
 
-	Mix_PlayMusic(music.music(), -1);
+	Mix_PlayMusic(static_cast<Mix_Music*>(music.music()), -1);
 }
 
 
@@ -128,7 +128,7 @@ void Mixer_SDL::resumeMusic()
 
 void Mixer_SDL::fadeInMusic(Music& music, int loops, int delay)
 {
-	Mix_FadeInMusic(music.music(), loops, delay);
+	Mix_FadeInMusic(static_cast<Mix_Music*>(music.music()), loops, delay);
 }
 
 

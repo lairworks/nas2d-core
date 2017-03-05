@@ -13,7 +13,17 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+#elif __linux__
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
+#else
+#include "SDL.h"
+#include "SDL_mixer.h"
+#endif
+
 
 using namespace NAS2D;
 
@@ -89,7 +99,7 @@ Music::~Music()
 	{
 		if(it->second.music)
 		{
-			Mix_FreeMusic(it->second.music);
+			Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
 			it->second.music = nullptr;
 		}
 
@@ -136,7 +146,7 @@ void Music::load()
 	it->second.music = Mix_LoadMUS_RW(SDL_RWFromConstMem(it->second.buffer->raw_bytes(), static_cast<int>(it->second.buffer->size())), 0);
 	if(!it->second.music) 
 	{
-		std::cout << "Music::load(): " << Mix_GetError() << endl;
+		std::cout << "Music::load(): " << Mix_GetError() << std::endl;
 		Music::_RefMap.erase(it);
 		return;
 	}
@@ -148,12 +158,11 @@ void Music::load()
 
 
 /**
- * Retrieves a pointer to an SDL_Mixer Mix_Music.
+ * Gets a pointer to buffer containing music data.
  * 
- * \note	This function is accessible by the Mixer
- *			only.
+ * \note	Used by the Mixer object only.
  */
-Mix_Music *Music::music() const
+void* Music::music() const
 {
 	MusicReferenceMap::iterator it = _RefMap.find(name());
 

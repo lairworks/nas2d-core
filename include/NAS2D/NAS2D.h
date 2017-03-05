@@ -16,7 +16,6 @@
 #include "NAS2D/FpsCounter.h"
 #include "NAS2D/Game.h"
 #include "NAS2D/KeyTranslator.h"
-#include "NAS2D/Random.h"
 #include "NAS2D/Utility.h"
 #include "NAS2D/StateManager.h"
 #include "NAS2D/Timer.h"

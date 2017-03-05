@@ -14,8 +14,6 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
-#include "NAS2D/MersenneTwister.h"
-
 namespace NAS2D {
 
 /**
@@ -28,20 +26,16 @@ namespace NAS2D {
 class Resource
 {
 public:
-
-	Resource(const std::string& filePath);
 	Resource();
+	Resource(const std::string& filePath);
 	virtual ~Resource();
 
 	const std::string& name() const;
 
 	bool loaded() const;
 
-	int id() const;
-
 protected:
 	void loaded(bool loaded);
-
 	void name(const std::string& name);
 
 private:
@@ -59,10 +53,6 @@ private:
 	std::string mResourceName;		/**< File path and internal identifier. */
 	
 	bool mIsLoaded;					/**< Flag indicating whether or not this Resource has loaded properly. */
-
-	static MersenneTwister mMt;
-
-	int mId;
 };
 
 } // namespace

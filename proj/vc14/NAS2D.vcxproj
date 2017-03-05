@@ -230,10 +230,8 @@
     <ClCompile Include="..\..\src\FpsCounter.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />
     <ClCompile Include="..\..\src\KeyTranslator.cpp" />
-    <ClCompile Include="..\..\src\MersenneTwister.cpp" />
     <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp" />
     <ClCompile Include="..\..\src\NAS2D.cpp" />
-    <ClCompile Include="..\..\src\Random.cpp" />
     <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp" />
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
@@ -269,11 +267,9 @@
     <ClInclude Include="..\..\include\NAS2D\FpsCounter.h" />
     <ClInclude Include="..\..\include\NAS2D\Game.h" />
     <ClInclude Include="..\..\include\NAS2D\KeyTranslator.h" />
-    <ClInclude Include="..\..\include\NAS2D\MersenneTwister.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer_SDL.h" />
     <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
-    <ClInclude Include="..\..\include\NAS2D\Random.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\OGL_Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />

@@ -10,21 +10,15 @@
 
 #include "NAS2D/Resources/Resource.h"
 
-using namespace std;
 using namespace NAS2D;
-
-MersenneTwister Resource::mMt = MersenneTwister();
 
 
 Resource::Resource(const std::string& filePath):	mResourceName(filePath),
-													mIsLoaded(false),
-													mId(mMt.random_int())
-									
+													mIsLoaded(false)								
 {}
 
 Resource::Resource():	mResourceName("Default Resource"),
-						mIsLoaded(false),
-						mId(mMt.random_int())
+						mIsLoaded(false)
 {}
 
 
@@ -70,13 +64,4 @@ bool Resource::loaded() const
 void Resource::loaded(bool loaded)
 {
 	mIsLoaded = loaded;
-}
-
-
-/**
- * Gets the resource Id.
- */
-int Resource::id() const
-{
-	return mId;
 }

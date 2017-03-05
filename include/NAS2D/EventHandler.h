@@ -41,7 +41,7 @@ public:
 	 * 
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef Gallant::Signal1<bool>					ActivateEventCallback;
+	typedef NAS2D::Signal1<bool>					ActivateEventCallback;
 
 	/**
 	 * \typedef	WindowHiddenEventCallback
@@ -55,7 +55,7 @@ public:
 	 * 
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef Gallant::Signal1<bool>					WindowHiddenEventCallback;
+	typedef NAS2D::Signal1<bool>					WindowHiddenEventCallback;
 
 
 	/**
@@ -68,7 +68,7 @@ public:
 	 * 
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef Gallant::Signal0<void>					WindowExposedEventCallback;
+	typedef NAS2D::Signal0<void>					WindowExposedEventCallback;
 
 	/**
 	 * \typedef	WindowMinimizedEventCallback
@@ -80,7 +80,7 @@ public:
 	 * 
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef Gallant::Signal0<void>					WindowMinimizedEventCallback;
+	typedef NAS2D::Signal0<void>					WindowMinimizedEventCallback;
 
 	/**
 	 * \typedef	WindowMaximizedEventCallback
@@ -92,7 +92,7 @@ public:
 	 * 
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef Gallant::Signal0<void>					WindowMaximizedEventCallback;
+	typedef NAS2D::Signal0<void>					WindowMaximizedEventCallback;
 
 	/**
 	 * \typedef	WindowRestoredEventCallback
@@ -104,7 +104,7 @@ public:
 	 * 
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef Gallant::Signal0<void>					WindowRestoredEventCallback;
+	typedef NAS2D::Signal0<void>					WindowRestoredEventCallback;
 
 	/**
 	 * \typedef	WindowMouseEnterEventCallback
@@ -116,7 +116,7 @@ public:
 	 * 
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef Gallant::Signal0<void>					WindowMouseEnterEventCallback;
+	typedef NAS2D::Signal0<void>					WindowMouseEnterEventCallback;
 
 	/**
 	 * \typedef	WindowMouseLeaveEventCallback
@@ -128,7 +128,7 @@ public:
 	 * 
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef Gallant::Signal0<void>					WindowMouseLeaveEventCallback;
+	typedef NAS2D::Signal0<void>					WindowMouseLeaveEventCallback;
 
 	/**
 	 * \typedef	JoystickAxisMotionEventCallback
@@ -146,7 +146,7 @@ public:
 						use additional axis as buttons.
 	 * \arg \c pos		Current position of the axis.
 	 */
-	typedef Gallant::Signal3<int, int, int>			JoystickAxisMotionEventCallback;
+	typedef NAS2D::Signal3<int, int, int>			JoystickAxisMotionEventCallback;
 
 	/**
 	 * \typedef	JoystickBallMotionEventCallback
@@ -164,7 +164,7 @@ public:
 	 * \arg \c xChange	Change in relative position of the X position.
 	 * \arg \c yChange	Change in relative position of the Y position.
 	 */
-	typedef Gallant::Signal4<int, int, int, int>	JoystickBallMotionEventCallback;
+	typedef NAS2D::Signal4<int, int, int, int>	JoystickBallMotionEventCallback;
 
 	/**
 	 * \typedef	JoystickButtonEventCallback
@@ -181,7 +181,7 @@ public:
 	 * \arg \c deviceId	Joystick ID which this event was generated from.
 	 * \arg \c buttonId	Button ID which the event was generated from.
 	 */
-	typedef Gallant::Signal2<int, int>				JoystickButtonEventCallback;
+	typedef NAS2D::Signal2<int, int>				JoystickButtonEventCallback;
 
 	/**
 	 * \typedef	JoystickHatMotionEventCallback
@@ -198,7 +198,7 @@ public:
 	 * \arg \c hatId	Hat ID.
 	 * \arg \c pos		Current position of the hat.
 	 */
-	typedef Gallant::Signal3<int, int, int>			JoystickHatMotionEventCallback;
+	typedef NAS2D::Signal3<int, int, int>			JoystickHatMotionEventCallback;
 
 	/**
 	 * \typedef	KeyDownEventCallback
@@ -216,7 +216,7 @@ public:
 	 * \arg \c mod		Keyboard modifier.
 	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
 	 */
-	typedef Gallant::Signal3<KeyCode, KeyModifier, bool>	KeyDownEventCallback;
+	typedef NAS2D::Signal3<KeyCode, KeyModifier, bool>	KeyDownEventCallback;
 
 	/**
 	 * \typedef	KeyUpEventCallback
@@ -233,7 +233,7 @@ public:
 	 * \arg \c mod		Keyboard modifier.
 	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
 	 */
-	typedef Gallant::Signal2<KeyCode, KeyModifier>	KeyUpEventCallback;
+	typedef NAS2D::Signal2<KeyCode, KeyModifier>	KeyUpEventCallback;
 
 	/**
 	 * \typedef	MouseButtonEventCallback
@@ -250,7 +250,7 @@ public:
 	 * \arg	\c x:		X position of the mouse button event.
 	 * \arg	\c y:		Y position of the mouse button event.
 	 */
-	typedef Gallant::Signal3<MouseButton, int, int>	MouseButtonEventCallback;
+	typedef NAS2D::Signal3<MouseButton, int, int>	MouseButtonEventCallback;
 
 	/**
 	 * \typedef	MouseMotionEventCallback
@@ -268,7 +268,7 @@ public:
 	 * \arg	\c relX:	X position of the mouse relative to its last position.
 	 * \arg	\c relY;	Y position of the mouse relative to its last position.
 	 */
-	typedef Gallant::Signal4<int, int, int, int>	MouseMotionEventCallback;
+	typedef NAS2D::Signal4<int, int, int, int>	MouseMotionEventCallback;
 
 	/**
 	 * \typedef	MouseWheelEventCallback
@@ -289,7 +289,7 @@ public:
 	 * 			more than one (on Windows this value is typical 120,
 	 * 			not 1).
 	 */
-	typedef Gallant::Signal2<int, int>	MouseWheelEventCallback;
+	typedef NAS2D::Signal2<int, int>	MouseWheelEventCallback;
 
 	/**
 	 * \typedef	QuitEventCallback
@@ -301,7 +301,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	typedef Gallant::Signal0<>						QuitEventCallback;
+	typedef NAS2D::Signal0<>						QuitEventCallback;
 
 	EventHandler();
 	~EventHandler();

@@ -1,129 +1,34 @@
-/*
- *	Delegate.h
- *  CoreGame
- *	Efficient delegates in C++ that generate only two lines of asm code
- *
- *	Created by Don Clugston.
- *	Contributions by Jody Hagins.
- *	http://www.codeproject.com/KB/cpp/FastDelegate.aspx
- *
- *	Tweaked by Patrick Hogan on 5/18/09.
- *
- *	License: The Code Project Open License (CPOL)
- *	http://www.codeproject.com/info/cpol10.aspx
- *
- */
-
-//	Delegates.h
-//	Efficient delegates in C++ that generate only two lines of asm code!
-//	Documentation is found at http://www.codeproject.com/KB/cpp/FastDelegate.aspx
-//
-//	By Don Clugston, Mar 2004.
-//	Major contributions were made by Jody Hagins.
-//
-// History:
-//
-// 24-Apr-04 1.0  * Submitted to CodeProject.
-// 28-Apr-04 1.1  * Prevent most unsafe uses of evil static function hack.
-//				  * Improved syntax for horrible_cast (thanks Paul Bludov).
-//				  * Tested on Metrowerks MWCC and Intel ICL (IA32)
-//				  * Compiled, but not run, on Comeau C++ and Intel Itanium ICL.
-//	27-Jun-04 1.2 * Now works on Borland C++ Builder 5.5
-//				  * Now works on /clr "managed C++" code on VC7, VC7.1
-//				  * Comeau C++ now compiles without warnings.
-//				  * Prevent the virtual inheritance case from being used on
-//					  VC6 and earlier, which generate incorrect code.
-//				  * Improved warning and error messages. Non-standard hacks
-//					 now have compile-time checks to make them safer.
-//				  * implicit_cast used instead of static_cast in many cases.
-//				  * If calling a const member function, a const class pointer can be used.
-//				  * MakeDelegate() global helper function added to simplify pass-by-value.
-//				  * Added fastdelegate.clear()
-// 16-Jul-04 1.2.1* Workaround for gcc bug (const member function pointers in templates)
-// 30-Oct-04 1.3  * Support for (non-void) return values.
-//				  * No more workarounds in client code!
-//					 MSVC and Intel now use a clever hack invented by John Dlugosz:
-//					 - The FASTDELEGATEDECLARE workaround is no longer necessary.
-//					 - No more warning messages for VC6
-//				  * Less use of macros. Error messages should be more comprehensible.
-//				  * Added include guards
-//				  * Added delegate::empty() to test if invocation is safe (Thanks Neville Franks).
-//				  * Now tested on VS 2005 Express Beta, PGI C++
-// 24-Dec-04 1.4  * Added DelegateMemento, to allow collections of disparate delegates.
-//				  * <,>,<=,>= comparison operators to allow storage in ordered containers.
-//				  * Substantial reduction of code size, especially the 'Closure' class.
-//				  * Standardised all the compiler-specific workarounds.
-//				  * MFP conversion now works for CodePlay (but not yet supported in the full code).
-//				  * Now compiles without warnings on _any_ supported compiler, including BCC 5.5.1
-//				  * New syntax: delegate< int (char *, double) >.
-// 14-Feb-05 1.4.1* Now treats =0 as equivalent to .clear(), ==0 as equivalent to .empty(). (Thanks elfric).
-//				  * Now tested on Intel ICL for AMD64, VS2005 Beta for AMD64 and Itanium.
-// 30-Mar-05 1.5  * Safebool idiom: "if (dg)" is now equivalent to "if (!dg.empty())"
-//				  * Fully supported by CodePlay VectorC
-//				  * Bugfix for Metrowerks: empty() was buggy because a valid MFP can be 0 on MWCC!
-//				  * More optimal assignment,== and != operators for static function pointers.
-//
-// 19-May-09 1.5a Patrick Hogan:
-//				  * Bundled with Signals.h for signals and slots library
-//				  * Changed namespace to "gallant"
-
 #pragma once
+// ==================================================================================
+// = DELEGATE.H
+// ==================================================================================
+// = Efficient delegates in C++ that generate only two lines of asm code
+// = 
+// = Created by Don Clugston. Contributions by Jody Hagins and Patrick Hogan.
+// = http://www.codeproject.com/KB/cpp/FastDelegate.aspx
+// ==================================================================================
 
-#if _MSC_VER > 1000
-	#pragma once
-#endif // _MSC_VER > 1000
+// ==================================================================================
+// = LICENSE
+// ==================================================================================
+// = The Code Project Open License (CPOL)
+// = http://www.codeproject.com/info/cpol10.aspx
+// ==================================================================================
 
-#include <memory.h> // to allow <,> comparisons
+#include <memory.h>
 
-////////////////////////////////////////////////////////////////////////////////
-//						Configuration options
-//
-////////////////////////////////////////////////////////////////////////////////
-
-// Uncomment the following #define for optimally-sized delegates.
-// In this case, the generated asm code is almost identical to the code you'd get
-// if the compiler had native support for delegates.
-// It will not work on systems where sizeof(dataptr) < sizeof(codeptr).
-// Thus, it will not work for DOS compilers using the medium model.
-// It will also probably fail on some DSP systems.
 #define FASTDELEGATE_USESTATICFUNCTIONHACK
 
-// Uncomment the next line to allow function declarator syntax.
-// It is automatically enabled for those compilers where it is known to work.
-//#define FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
-
-////////////////////////////////////////////////////////////////////////////////
-//						Compiler identification for workarounds
-//
-////////////////////////////////////////////////////////////////////////////////
-
-// Compiler identification. It's not easy to identify Visual C++ because
-// many vendors fraudulently define Microsoft's identifiers.
+// Compiler identification. It's not easy to identify Visual C++ because many vendors
+// fraudulently define Microsoft's identifiers.
 #if defined(_MSC_VER) && !defined(__MWERKS__) && !defined(__VECTOR_C) && !defined(__ICL) && !defined(__BORLANDC__)
 #define FASTDLGT_ISMSVC
-
-#if (_MSC_VER <1300) // Many workarounds are required for VC6.
-#define FASTDLGT_VC6
-#pragma warning(disable:4786) // disable this ridiculous warning
-#endif
-
-#endif
-
-// Does the compiler uses Microsoft's member function pointer structure?
-// If so, it needs special treatment.
-// Metrowerks CodeWarrior, Intel, and CodePlay fraudulently define Microsoft's
-// identifier, _MSC_VER. We need to filter Metrowerks out.
-#if defined(_MSC_VER) && !defined(__MWERKS__)
 #define FASTDLGT_MICROSOFT_MFP
-
-#if !defined(__VECTOR_C)
-// CodePlay doesn't have the __single/multi/virtual_inheritance keywords
 #define FASTDLGT_HASINHERITANCE_KEYWORDS
-#endif
 #endif
 
 // Does it allow function declarator syntax? The following compilers are known to work:
-#if defined(FASTDLGT_ISMSVC) && (_MSC_VER >=1310) // VC 7.1
+#if defined(FASTDLGT_ISMSVC) && (_MSC_VER >= 1310) // VC 7.1
 #define FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
 #endif
 
@@ -132,49 +37,29 @@
 #define FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
 #endif
 
-// It works on Metrowerks MWCC 3.2.2. From boost.Config it should work on earlier ones too.
-#if defined (__MWERKS__)
-#define FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
-#endif
-
 #ifdef __GNUC__ // Workaround GCC bug #8271
 	// At present, GCC doesn't recognize constness of MFPs in templates
 #define FASTDELEGATE_GCC_BUG_8271
 #endif
 
+// ==================================================================================
+// = GENERAL TRICKS USED IN THIS CODE
+// ==================================================================================
+// = 1)	Error messages are generated by typdefing an array of negative size to
+// =	generate compile-time errors.
+// = 2)	Warning messages on MSVC are generated by declaring unused variables, and
+// =	enabling the "variable XXX is never used" warning.
+// = 3)	Unions are used in a few compiler-specific cases to perform illegal casts.
+// = 4)	For Microsoft and Intel, when adjusting the 'this' pointer, it's cast to
+// =	(char*) first to ensure that the correct number of *bytes* are added.
+// ==================================================================================
+// = HELPER TEMPLATES
+// ==================================================================================
 
 
-////////////////////////////////////////////////////////////////////////////////
-//						General tricks used in this code
-//
-// (a) Error messages are generated by typdefing an array of negative size to
-//	   generate compile-time errors.
-// (b) Warning messages on MSVC are generated by declaring unused variables, and
-//		enabling the "variable XXX is never used" warning.
-// (c) Unions are used in a few compiler-specific cases to perform illegal casts.
-// (d) For Microsoft and Intel, when adjusting the 'this' pointer, it's cast to
-//	   (char *) first to ensure that the correct number of *bytes* are added.
-//
-////////////////////////////////////////////////////////////////////////////////
-//						Helper templates
-//
-////////////////////////////////////////////////////////////////////////////////
-
-
-namespace Gallant {
+namespace NAS2D {
 
 namespace detail {	// we'll hide the implementation details in a nested namespace.
-
-//		implicit_cast< >
-// I believe this was originally going to be in the C++ standard but
-// was left out by accident. It's even milder than static_cast.
-// I use it instead of static_cast<> to emphasize that I'm not doing
-// anything nasty.
-// Usage is identical to static_cast<>
-template <class OutputClass, class InputClass>
-inline OutputClass implicit_cast(InputClass input){
-	return input;
-}
 
 //		horrible_cast< >
 // This is truly evil. It completely subverts C++'s type system, allowing you
@@ -213,35 +98,7 @@ inline OutputClass horrible_cast(const InputClass input){
 // case for Intel and Microsoft. Now it just forward-declares the class.
 #define FASTDELEGATEDECLARE(CLASSNAME)	class CLASSNAME;
 
-// Prevent use of the static function hack with the DOS medium model.
-#ifdef __MEDIUM__
-#undef FASTDELEGATE_USESTATICFUNCTIONHACK
-#endif
-
-//			DefaultVoid - a workaround for 'void' templates in VC6.
-//
-//	(1) VC6 and earlier do not allow 'void' as a default template argument.
-//	(2) They also doesn't allow you to return 'void' from a function.
-//
-// Workaround for (1): Declare a dummy type 'DefaultVoid' which we use
-//	 when we'd like to use 'void'. We convert it into 'void' and back
-//	 using the templates DefaultVoidToVoid<> and VoidToDefaultVoid<>.
-// Workaround for (2): On VC6, the code for calling a void function is
-//	 identical to the code for calling a non-void function in which the
-//	 return value is never used, provided the return value is returned
-//	 in the EAX register, rather than on the stack.
-//	 This is true for most fundamental types such as int, enum, void *.
-//	 Const void * is the safest option since it doesn't participate
-//	 in any automatic conversions. But on a 16-bit compiler it might
-//	 cause extra code to be generated, so we disable it for all compilers
-//	 except for VC6 (and VC5).
-#ifdef FASTDLGT_VC6
-// VC6 workaround
-typedef const void * DefaultVoid;
-#else
-// On any other compiler, just use a normal void.
 typedef void DefaultVoid;
-#endif
 
 // Translate from 'DefaultVoid' to 'void'.
 // Everything else is unchanged
@@ -903,17 +760,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate0(Y *pthis, DesiredRetType (X::* function_to_bind)() ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)()) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate0(const Y *pthis, DesiredRetType (X::* function_to_bind)() const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)() const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate0(DesiredRetType (*function_to_bind)() ) {
@@ -988,17 +845,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate1(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1) ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1)) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate1(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate1(DesiredRetType (*function_to_bind)(Param1 p1) ) {
@@ -1073,17 +930,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate2(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2) ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2)) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate2(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate2(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2) ) {
@@ -1158,17 +1015,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate3(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3) ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate3(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate3(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3) ) {
@@ -1243,17 +1100,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate4(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate4(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate4(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) ) {
@@ -1328,17 +1185,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate5(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate5(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate5(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) ) {
@@ -1413,17 +1270,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate6(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6)) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate6(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate6(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ) {
@@ -1498,17 +1355,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate7(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7)) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate7(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate7(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ) {
@@ -1583,17 +1440,17 @@ public:
 	// Binding to non-const member functions
 	template < class X, class Y >
 	Delegate8(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind); }
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
 	inline void Bind(Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8)) {
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}
+		m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);	}
 	// Binding to const member functions.
 	template < class X, class Y >
 	Delegate8(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);	}
 	template < class X, class Y >
 	inline void Bind(const Y *pthis, DesiredRetType (X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) const) {
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
+		m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind);	}
 	// Static functions. We convert them into a member function call.
 	// This constructor also provides implicit conversion
 	Delegate8(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ) {

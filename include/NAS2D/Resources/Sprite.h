@@ -30,7 +30,7 @@ extern const std::string SPRITE_VERSION;
 class Sprite
 {
 public:
-	typedef Gallant::Signal0<> Callback;
+	typedef NAS2D::Signal0<> Callback;
 
 	Sprite();
 	Sprite(const std::string& filePath);

@@ -12,16 +12,6 @@
 
 #include "Resource.h"
 
-#ifdef __APPLE__
-#include "SDL2_image/SDL_image.h"
-#elif __linux__
-#include "SDL2/SDL_image.h"
-#elif _WIN32
-#include "GL/glew.h"
-#define NO_SDL_GLEXT
-#include "SDL_image.h"
-#endif
-
 #include <vector>
 #include <map>
 
@@ -56,10 +46,7 @@ public:
 
 	Color_4ub pixelColor(int x, int y) const;
 
-	void DEPRECATED(desaturate();, "This function has been deprecated and support will be removed in future releases.")
-
 protected:
-	friend class Renderer;
 	friend class OGL_Renderer;
 
 	unsigned int texture_id() const;
@@ -68,19 +55,16 @@ protected:
 private:
 	struct ImageInfo
 	{
-		ImageInfo(): pixels_raw(nullptr), textureId(0), fboId(0), w(0), h(0), ref_count(0) {}
-		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): pixels_raw(nullptr), textureId(id), fboId(fbo_id), w(w), h(h), ref_count(0) {}
+		ImageInfo(): pixels(nullptr), textureId(0), fboId(0), w(0), h(0), ref_count(0) {}
+		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): pixels(nullptr), textureId(id), fboId(fbo_id), w(w), h(h), ref_count(0) {}
 		
-        //void operator()(unsigned int id, unsigned int fbo_id, int w, int h) { textureId = id; fboId = fbo_id; w = w; h = h; }
+		void*	pixels;
 
-		SDL_Surface*	pixels_raw;
-
-		unsigned int textureId;
-		unsigned int fboId;
-		int w;
-		int h;
-
-		int ref_count;
+		size_t	textureId;
+		size_t	fboId;
+		int		w;
+		int		h;
+		int		ref_count;
 	};
 
 	typedef std::map<std::string, ImageInfo> TextureIdMap;

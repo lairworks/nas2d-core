@@ -12,8 +12,6 @@
 
 #include "Resource.h"
 
-class Mixer_SDL;
-
 #include <map>
 
 namespace NAS2D {

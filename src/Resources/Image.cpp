@@ -18,15 +18,14 @@
 #include "NAS2D/Resources/Image.h"
 #include "NAS2D/Resources/errorImage.h"
 
-#if defined(__APPLE__)
-	#include <SDL2/SDL_opengl.h>
-#elif defined(__linux__)
-    #include <SDL2/SDL_opengl.h>
-#elif defined(WINDOWS)
-	#include "SDL_opengl.h"
-#else
-	#include "SDL/SDL_opengl.h"
-	#include "SDL/SDL_gfxPrimitives.h"
+#ifdef __APPLE__
+#include "SDL2_image/SDL_image.h"
+#elif __linux__
+#include "SDL2/SDL_image.h"
+#elif _WIN32
+#include "GL/glew.h"
+#define NO_SDL_GLEXT
+#include "SDL_image.h"
 #endif
 
 #include <iostream>
@@ -123,7 +122,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
 	// Update resource management.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
 	Image::_IdMap[name()].ref_count++;
-	Image::_IdMap[name()].pixels_raw = pixels;
+	Image::_IdMap[name()].pixels = pixels;
 }
 
 
@@ -169,10 +168,10 @@ Image::~Image()
             glDeleteBuffers(1, &fbo);
 		}
 
-		if(Image::_IdMap[name()].pixels_raw != nullptr)
+		if(Image::_IdMap[name()].pixels != nullptr)
 		{
-			SDL_FreeSurface(Image::_IdMap[name()].pixels_raw);
-			Image::_IdMap[name()].pixels_raw = nullptr;
+			SDL_FreeSurface(static_cast<SDL_Surface*>(Image::_IdMap[name()].pixels));
+			Image::_IdMap[name()].pixels = nullptr;
 		}
 
 		Image::_IdMap.erase(it);
@@ -259,7 +258,7 @@ void Image::load()
 	// Add generated texture id to texture ID map.
 	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
 	Image::_IdMap[name()].ref_count++;
-	Image::_IdMap[name()].pixels_raw = pixels;
+	Image::_IdMap[name()].pixels = pixels;
 
 	loaded(true);
 }
@@ -290,18 +289,17 @@ void Image::generateTexture(void *buffer, int bytesPerPixel, int width, int heig
 			break;
 	}
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
-											// or can we set it once in the Renderer?
-
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
-
+	// Set texture and pixel handling states.
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
 }
 
 
@@ -378,7 +376,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 	if(x < 0 || x > width() || y < 0 || y > height())
 		return Color_4ub(0, 0, 0, 255);
 
-	SDL_Surface* pixels = Image::_IdMap[name()].pixels_raw;
+	SDL_Surface* pixels = static_cast<SDL_Surface*>(Image::_IdMap[name()].pixels);
 
 	if (!pixels)
 		throw image_null_data();
@@ -421,28 +419,3 @@ Color_4ub Image::pixelColor(int x, int y) const
 
 	return Color_4ub(r, g, b, a);
 }
-
-
-/**
- * Permanently desaturates the Image.
- * 
- * \note	This is currently a stub function that has no effect.
- * 
- * \deprecated	This function is deprecated and will not be provided in future versions of NAS2D.
- */
-void Image::desaturate()
-{
-	/*
-	Color_4ub color;
-	for(int y = 0; y < mPixels->h; y++)
-	{
-		for(int x = 0; x < mPixels->w; x++)
-		{
-			color = pixelColor(x, y);
-			unsigned char grey = static_cast<unsigned char>((color.red() + color.green() + color.blue()) / 3);
-			pixelRGBA(mPixels, x, y, grey, grey, grey, color.alpha());
-		}
-	}
-	*/
-}
-

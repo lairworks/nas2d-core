@@ -52,8 +52,7 @@ SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 
 
-OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title),
-														mTextureTarget(0)
+OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title)
 {
 	std::cout << "Starting " << name() << ":" << std::endl;
 	
@@ -80,7 +79,7 @@ OGL_Renderer::~OGL_Renderer()
 
 void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords = true)
 { 	
-	glBindTexture(mTextureTarget, textureId);
+	glBindTexture(GL_TEXTURE_2D, textureId);
 
 	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
 
@@ -226,13 +225,13 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 	fillVertexArray(x, y, w, h);
 
 	// Change texture mode to repeat at edges.
-	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	
 	drawVertexArray(image.texture_id(), true);
 
-	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(mTextureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 
@@ -244,7 +243,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	glBindTexture(mTextureTarget, destination.texture_id());
+	glBindTexture(GL_TEXTURE_2D, destination.texture_id());
 
 	Rectangle_2d clipRect;
 
@@ -258,13 +257,13 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	unsigned int fbo = destination.fbo_id();
 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, mTextureTarget, destination.texture_id(), 0);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, destination.texture_id(), 0);
 
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipRect.w()), static_cast<float>(-clipRect.h()));
 
 	drawVertexArray(source.texture_id());
-	glBindTexture(mTextureTarget, destination.texture_id());
+	glBindTexture(GL_TEXTURE_2D, destination.texture_id());
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 }
@@ -272,7 +271,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 void OGL_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 {
-	glDisable(mTextureTarget);
+	glDisable(GL_TEXTURE_2D);
 
 	glColor4ub(r, g, b, a);
 
@@ -281,7 +280,7 @@ void OGL_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
 	glDrawArrays(GL_POINTS, 0, 1);
 
-	glEnable(mTextureTarget);
+	glEnable(GL_TEXTURE_2D);
 
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
@@ -289,13 +288,13 @@ void OGL_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
 
 void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
 {	
-	glDisable(mTextureTarget);
+	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 	
 	line(x, y, x2, y2, (float)line_width, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
 	glDisableClientState(GL_COLOR_ARRAY);
-	glEnable(mTextureTarget);
+	glEnable(GL_TEXTURE_2D);
 
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
@@ -308,7 +307,7 @@ void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, 
  */
 void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
 {
-	glDisable(mTextureTarget);
+	glDisable(GL_TEXTURE_2D);
 	glColor4ub(r, g, b, a);
 
 	float theta = PI_2 / static_cast<float>(num_segments);
@@ -347,7 +346,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	delete [] verts;
 	verts = 0;
 
-	glEnable(mTextureTarget);
+	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
@@ -355,7 +354,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4)
 {
 	glEnableClientState(GL_COLOR_ARRAY);
-	glDisable(mTextureTarget);
+	glDisable(GL_TEXTURE_2D);
 
 	COLOR_VERTEX_ARRAY[0] = r1 / 255.0f;
 	COLOR_VERTEX_ARRAY[1] = g1 / 255.0f;
@@ -382,14 +381,14 @@ void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int 
 	glColorPointer(4, GL_FLOAT, 0, COLOR_VERTEX_ARRAY);
 	drawVertexArray(0);
 
-	glEnable(mTextureTarget);
+	glEnable(GL_TEXTURE_2D);
 	glDisableClientState(GL_COLOR_ARRAY);
 }
 
 
 void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
 {
-	glDisable(mTextureTarget);
+	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
 	line(x, y, x + width, y, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
@@ -398,7 +397,7 @@ void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, i
 	line(x + width, y, x + width, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
 	glDisableClientState(GL_COLOR_ARRAY);
-	glEnable(mTextureTarget);
+	glEnable(GL_TEXTURE_2D);
 
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
@@ -407,12 +406,12 @@ void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, i
 void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
 {
 	glColor4ub(r, g, b, a);
-	glDisable(mTextureTarget);
+	glDisable(GL_TEXTURE_2D);
 
 	fillVertexArray(x, y, width, height);
 	drawVertexArray(0);
 
-	glEnable(mTextureTarget);
+	glEnable(GL_TEXTURE_2D);
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
@@ -556,18 +555,14 @@ void OGL_Renderer::initGL()
 
 	std::cout << "\tGLSL Version: " << glsl_v << std::endl;
 
-	// If GLSL is available then we can assume that non-power-of-two texture support is also
-	// available. This, however, is a BIG ASSUMPTION AND MAY NOT BE TRUE.
-	mTextureTarget = GL_TEXTURE_2D;
-
-	glEnable(mTextureTarget);
+	glEnable(GL_TEXTURE_2D);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glVertexPointer(2, GL_FLOAT, 0, DEFAULT_VERTEX_COORDS);
 	glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
-	
+
 	//mShaderManager->loadShader("shaders/font/font.frag", mFontShaderFrag);
 	//mShaderManager->loadShader("shaders/font/font.vert", mFontShaderVert);
 }

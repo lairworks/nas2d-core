@@ -20,17 +20,20 @@
 
 using namespace NAS2D;
 
-const unsigned int FPS_COUNTS_SIZE = 10;
+const unsigned int FPS_COUNTS_SIZE = 25;
 unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };
+
+unsigned int	CURRENT_TICK		= 0;
+unsigned int	LAST_TICK			= 0;
+unsigned int	TICK_DELTA			= 0;
+unsigned int	INDEX				= 0;
+unsigned int	ACCUMULATOR			= 0;
+
 
 /**
  * Basic Constructor
  */
-FpsCounter::FpsCounter():	mCurrentTick(0),
-							mLastTick(0),
-							mDelta(0),
-							mArrayIndex(0),
-							mAccumulator(0)
+FpsCounter::FpsCounter()
 {}
 
 
@@ -39,24 +42,21 @@ FpsCounter::FpsCounter():	mCurrentTick(0),
  */
 unsigned int FpsCounter::fps()
 {
-	mLastTick = mCurrentTick;
-	mCurrentTick = SDL_GetTicks();
+	LAST_TICK = CURRENT_TICK;
+	CURRENT_TICK = SDL_GetTicks();
 
-	mDelta = mCurrentTick - mLastTick;
+	TICK_DELTA = CURRENT_TICK - LAST_TICK;
 	
-	// Avoid a division by 0
-	if(mDelta == 0)
-		mDelta = 1;
+	if(TICK_DELTA == 0) TICK_DELTA = 1;
 
-	// Using a modulus here to eliminate maintenance overhead
-	FPS_COUNTS[mArrayIndex] = 1000 / mDelta;
-	mArrayIndex++;
-	if(mArrayIndex >= FPS_COUNTS_SIZE)
-		mArrayIndex = 0;
+	FPS_COUNTS[++INDEX] = 1000 / TICK_DELTA;
+	
+	if(INDEX >= FPS_COUNTS_SIZE)
+		INDEX = 0;
 
-	mAccumulator = 0;
-	for(unsigned int i = 0; i < FPS_COUNTS_SIZE; i++)
-		mAccumulator += FPS_COUNTS[i];
+	ACCUMULATOR = 0;
+	for (auto i : FPS_COUNTS)
+		ACCUMULATOR += i;
 
-	return mAccumulator / FPS_COUNTS_SIZE;
+	return ACCUMULATOR / FPS_COUNTS_SIZE;
 }

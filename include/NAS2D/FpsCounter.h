@@ -7,12 +7,7 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
-
-#include <vector>
-
-#include "Common.h"
 
 namespace NAS2D {
 
@@ -29,15 +24,6 @@ public:
 	FpsCounter();
 
 	unsigned int fps();
-
-private:
-
-	unsigned int	mCurrentTick;
-	unsigned int	mLastTick;
-	unsigned int	mDelta;
-
-	unsigned int	mArrayIndex;
-	unsigned int	mAccumulator;
 };
 
 } // namespace

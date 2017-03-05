@@ -30,10 +30,9 @@
 	#include "SDL/SDL_ttf.h"
 #endif
 
-
+#include <iostream>
 #include <math.h>
 
-using namespace std;
 using namespace NAS2D;
 
 string buildName(TTF_Font*);
@@ -160,7 +159,7 @@ void NAS2D::Font::load()
 	{
 		if(TTF_Init() == -1)
 		{
-			cout << "(ERROR) Font::load(): " << TTF_GetError() << endl;
+			std::cout << "Font::load(): " << TTF_GetError() << endl;
 			return;
 		}
 	}
@@ -174,7 +173,7 @@ void NAS2D::Font::load()
 	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0, mPtSize);
 	if(!font)
 	{
-		cout << "(ERROR) Font::load(): " << TTF_GetError() << endl;
+		std::cout << "Font::load(): " << TTF_GetError() << endl;
 		return;
 	}
 
@@ -200,13 +199,13 @@ void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphH
 	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), fontBuffer.size()), 0);
 	if(!glyphMap)
 	{
-		cout << "(ERROR) Font::loadBitmap(): " << SDL_GetError() << endl;
+		std::cout << "Font::loadBitmap(): " << SDL_GetError() << endl;
 		return;
 	}
 
 	if( (glyphMap->w / 16 != glyphWidth) || (glyphMap->h / 16 != glyphHeight) )
 	{
-		cout << "(ERROR) Font::loadBitmap(): Glyph texture does not have 16 columns or 16 rows." << endl;
+		std::cout << "Font::loadBitmap(): Glyph texture does not have 16 columns or 16 rows." << endl;
 		return;
 	}
 
@@ -296,7 +295,7 @@ void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
 			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
 			if(!srf)
 			{
-				cout << "(ERROR) Font::generateGlyphMap(): " << TTF_GetError() << endl;
+				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << endl;
 			}
 			else
 			{
@@ -333,10 +332,7 @@ void NAS2D::Font::generateTexture(SDL_Surface *src)
 {
 	// Surface must always be 32-Bit, anything else should be treated as an error.
 	if(src->format->BytesPerPixel < 4)
-	{
-		cout << "EXCEPTION: Could not create font, pixel format is not 32 bit." << endl;
-		throw Exception(0, "Font Generation", "Font generation failed.");
-	}
+		throw Exception(0, "Image Format Error", "Attempted to create a bitmap font using an image that is not 32bit.");
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
 											// or can we set it once in the Renderer?

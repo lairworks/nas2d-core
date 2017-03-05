@@ -10,6 +10,8 @@
 
 #include "NAS2D/Renderer/Renderer.h"
 
+#include <iostream>
+
 using namespace NAS2D;
 
 // Preset Colors
@@ -70,7 +72,7 @@ Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
  */
 Renderer::~Renderer()
 {
-	cout << "Renderer Terminated." << endl;
+	std::cout << "Renderer Terminated." << endl;
 }
 
 
@@ -402,10 +404,6 @@ bool Renderer::isFaded() const
 void Renderer::toggleLetterBox()
 {
 	mLetterbox = !mLetterbox;
-
-	#if defined(_DEBUG)
-		mLetterbox ? cout << "Letterbox Mode on..." << endl : cout << "Letterbox Mode off..." << endl;
-	#endif
 }
 
 
@@ -415,10 +413,6 @@ void Renderer::toggleLetterBox()
 void Renderer::toggleCinematicMode()
 {
 	mCinematic = !mCinematic;
-
-	#if defined(_DEBUG)
-		mCinematic ? cout << "Cinematic Mode on..." << endl : cout << "Cinematic Mode off..." << endl;
-	#endif
 }
 
 
@@ -696,13 +690,6 @@ float Renderer::screenCenterY()
 {
 	return height() / 2;
 }
-
-
-/**
- * Builds a list of available display modes.
- */
-void Renderer::buildDisplayModeList()
-{}
 
 
 /**

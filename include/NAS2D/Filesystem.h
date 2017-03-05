@@ -12,22 +12,7 @@
 
 #include "Common.h"
 
-#if defined(__linux__)
-#include "physfs.h"
-#elif __APPLE__
-#include "physfs.h"
-#else
-#include "physfs.h"
-#endif
-
-#ifdef __linux__
-#include <cstring>
-#endif
-
 #include <string>
-#include <vector>
-#include <iomanip>
-#include <iostream>
 
 #include "File.h"
 
@@ -73,7 +58,7 @@ private:
 	Filesystem(const Filesystem&);				// Intentionally left undefined.
 	Filesystem& operator= (const Filesystem&);	// Intentionally left undefined.
 
-	bool closeFile(PHYSFS_File *file) const;
+	bool closeFile(void *file) const;
 
 private:
 	std::string			mDataPath;			/**< Data path string. Specific to each platform. */

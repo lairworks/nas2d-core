@@ -10,6 +10,7 @@
 
 #include "NAS2D/Resources/Music.h"
 
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -135,7 +136,7 @@ void Music::load()
 	it->second.music = Mix_LoadMUS_RW(SDL_RWFromConstMem(it->second.buffer->raw_bytes(), it->second.buffer->size()), 0);
 	if(!it->second.music) 
 	{
-		cout << "(ERROR) Music::load(): " << Mix_GetError() << endl;
+		std::cout << "Music::load(): " << Mix_GetError() << endl;
 		Music::_RefMap.erase(it);
 		return;
 	}

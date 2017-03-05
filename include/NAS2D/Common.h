@@ -7,10 +7,9 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
-#include <iostream>
+
 #include <sstream>
 #include <string>
 #include <vector>

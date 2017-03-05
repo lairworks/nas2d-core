@@ -12,16 +12,18 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Timer.h"
 
-#include <iostream>
-#include <sstream>
-#include <limits.h>
-
-
-#ifdef __APPLE__
+#if defined(__linux__)
+#include "physfs.h"
+#elif __APPLE__
+#include "physfs.h"
 #include <CoreFoundation/CoreFoundation.h>
+#else
+#include "physfs.h"
 #endif
 
-using namespace std;
+#include <iostream>
+#include <sstream>
+
 using namespace NAS2D;
 
 const unsigned int	CLOSE_MAX_ATTEMPTS			= 3;
@@ -44,7 +46,7 @@ Filesystem::~Filesystem()
 {
 	PHYSFS_deinit();
 	FILESYSTEM_INITIALIZED = false;
-	cout << "Filesystem Terminated." << endl;
+	std::cout << "Filesystem Terminated." << endl;
 }
 
 
@@ -53,7 +55,7 @@ Filesystem::~Filesystem()
  */
 void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 {
-	cout << "Initializing Filesystem... ";
+	std::cout << "Initializing Filesystem... ";
 
 	if (PHYSFS_init(argv_0.c_str()) == 0)
 		throw Exception(602, "Filesystem Error", std::string("Unable to start virtual filesystem: ") + PHYSFS_getLastError());
@@ -100,7 +102,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 
 	FILESYSTEM_INITIALIZED = true;
 
-	cout << "done." << endl;
+	std::cout << "done." << endl;
 }
 
 
@@ -115,11 +117,11 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 {
 	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
 
-	if(mVerbose) cout << "Adding '" << path << "' to search path." << endl;
+	if(mVerbose) std::cout << "Adding '" << path << "' to search path." << endl;
 
 	if(PHYSFS_exists(path.c_str()) == 0)
 	{
-		cout << "File '" << path << "' does not exist as specified." << endl;
+		std::cout << "File '" << path << "' does not exist as specified." << endl;
 		return false;
 	}
 
@@ -128,14 +130,14 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 
 	if(PHYSFS_addToSearchPath(searchPath.c_str(), 1) == 0)
 	{
-		cout << "Couldn't add '" << path << "' to search path. " << PHYSFS_getLastError() << "." << endl;
+		std::cout << "Couldn't add '" << path << "' to search path. " << PHYSFS_getLastError() << "." << endl;
 		return false;
 	}
 #else
 	#error Filesystem support for this platform has not been developed.
 #endif
 
-	if(mVerbose) cout << "Added '" << path << "' to search path." << endl;
+	if(mVerbose) std::cout << "Added '" << path << "' to search path." << endl;
 
 	return true;
 }
@@ -221,7 +223,7 @@ bool Filesystem::del(const std::string& filename) const
 
 	if(PHYSFS_delete(filename.c_str()) == 0)
 	{
-		cout << "Unable to delete '" << filename << "':" << PHYSFS_getLastError << endl;
+		std::cout << "Unable to delete '" << filename << "':" << PHYSFS_getLastError << endl;
 		return false;
 	}
 
@@ -240,37 +242,33 @@ File Filesystem::open(const std::string& filename) const
 {
 	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
 
-	if(mVerbose) cout << "Attempting to load '" << filename << endl;
+	if(mVerbose) std::cout << "Attempting to load '" << filename << endl;
 
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
-
 	if(!myFile)
 	{
-		cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << endl;
+		std::cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << endl;
 		closeFile(myFile);
 		return File();
 	}
-
 
 	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
 	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
 	if(len < 0 || len > UINT_MAX)
 	{
-		cout << "File '" << filename << "' is too large to load." << endl;
+		std::cout << "File '" << filename << "' is too large to load." << endl;
 		closeFile(myFile);
 		return File();
 	}
-
 
 	// Create a char* buffer large enough to hold the entire file.
 	PHYSFS_uint32 fileLength = static_cast<PHYSFS_uint32>(len);
 	char *fileBuffer = new char[fileLength + 1];
 
-
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
 	if(PHYSFS_read(myFile, fileBuffer, sizeof(char), fileLength) < fileLength)
 	{
-		cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << endl;
+		std::cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << endl;
 		delete [] fileBuffer;
 		closeFile(myFile);
 		return File();
@@ -281,7 +279,7 @@ File Filesystem::open(const std::string& filename) const
 	closeFile(myFile);
 	delete [] fileBuffer;
 
-	if(mVerbose) cout << "Loaded '" << filename << "' successfully." << endl;
+	if(mVerbose) std::cout << "Loaded '" << filename << "' successfully." << endl;
 
 	return file;
 }
@@ -297,7 +295,6 @@ File Filesystem::open(const std::string& filename) const
 bool Filesystem::makeDirectory(const std::string& path) const
 {
 	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
-
 	return PHYSFS_mkdir(path.c_str()) != 0;
 }
 
@@ -310,7 +307,6 @@ bool Filesystem::makeDirectory(const std::string& path) const
 bool Filesystem::isDirectory(const std::string& path) const
 {
 	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
-
 	return PHYSFS_isDirectory(path.c_str()) != 0;
 }
 
@@ -325,7 +321,6 @@ bool Filesystem::isDirectory(const std::string& path) const
 bool Filesystem::exists(const std::string& filename) const
 {
 	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
-
 	return PHYSFS_exists(filename.c_str()) != 0;
 }
 
@@ -349,7 +344,7 @@ void Filesystem::toggleVerbose() const
  *
  * \return	True on success, false otherwise.
  */
-bool Filesystem::closeFile(PHYSFS_File *file) const
+bool Filesystem::closeFile(void* file) const
 {
 	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
 
@@ -364,7 +359,7 @@ bool Filesystem::closeFile(PHYSFS_File *file) const
 
 	while((attempts < CLOSE_MAX_ATTEMPTS))
 	{
-		if(PHYSFS_close(file) > 0)
+		if(PHYSFS_close(static_cast<PHYSFS_File*>(file)) > 0)
 			return true;
 
 		while(t.accumulator() < CLOSE_ATTEMPT_TIMEOUT)
@@ -373,13 +368,13 @@ bool Filesystem::closeFile(PHYSFS_File *file) const
 		t.reset();
 
 		if(mVerbose)
-			cout << "Unable to close file handle: " << PHYSFS_getLastError() << ". Will attempt to close " << CLOSE_MAX_ATTEMPTS - attempts << " more time(s)." << endl;
+			std::cout << "Unable to close file handle: " << PHYSFS_getLastError() << ". Will attempt to close " << CLOSE_MAX_ATTEMPTS - attempts << " more time(s)." << endl;
 
 		attempts++;
 	}
 
 
-	cout << "Unable to close file handle: " << PHYSFS_getLastError() << ". File handle is still open." << endl;
+	std::cout << "Unable to close file handle: " << PHYSFS_getLastError() << ". File handle is still open." << endl;
 
 	return false;
 }
@@ -399,33 +394,33 @@ bool Filesystem::write(const File& file, bool overwrite) const
 
 	if(file.empty())
 	{
-		cout << "Attempted to write empty file '" << file.filename() << "'" << endl;
+		std::cout << "Attempted to write empty file '" << file.filename() << "'" << endl;
 		return false;
 	}
 
 	if(!overwrite && exists(file.filename()))
 	{
-		if(mVerbose) cout << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << endl;
+		if(mVerbose) std::cout << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << endl;
 		return false;
 	}
 
 	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
 	if(!myFile)
 	{
-		if (mVerbose) cout << "Couldn't open '" << file.filename()  << "' for writing: " << PHYSFS_getLastError() << endl;
+		if (mVerbose) std::cout << "Couldn't open '" << file.filename()  << "' for writing: " << PHYSFS_getLastError() << endl;
 		return false;
 	}
 
 	if(PHYSFS_write(myFile, file.bytes().c_str(), sizeof(char), file.size()) < file.size())
 	{
-		if (mVerbose) cout << "Error occured while writing to file '" << file.filename() << "': " << PHYSFS_getLastError() << endl;
+		if (mVerbose) std::cout << "Error occured while writing to file '" << file.filename() << "': " << PHYSFS_getLastError() << endl;
 		closeFile(myFile);
 		return false;
 	}
 	else
 	{
 		closeFile(myFile);
-		if(mVerbose) cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << endl;
+		if(mVerbose) std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << endl;
 	}
 
 	return true;
@@ -474,7 +469,7 @@ string Filesystem::workingPath(const std::string& filename) const
 	}
 	else
 	{
-		if (mVerbose) cout << "Filesystem::workingPath(): empty string provided." << endl;
+		if (mVerbose) std::cout << "Filesystem::workingPath(): empty string provided." << endl;
 		return string();
 	}
 }
@@ -501,12 +496,12 @@ std::string Filesystem::extension(const std::string path)
 	}
 	else if(isDirectory(path))
 	{
-		if (mVerbose) cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << endl;
+		if (mVerbose) std::cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << endl;
 		return string();
 	}
 	else
 	{
-		if (mVerbose) cout << "Filesystem::extension(): File '" << path << "' has no extension." << endl;
+		if (mVerbose) std::cout << "Filesystem::extension(): File '" << path << "' has no extension." << endl;
 		return string();
 	}
 }

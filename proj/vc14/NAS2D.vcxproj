@@ -257,6 +257,7 @@
     <ClInclude Include="..\..\include\NAS2D\Common.h" />
     <ClInclude Include="..\..\include\NAS2D\Configuration.h" />
     <ClInclude Include="..\..\include\NAS2D\Delegate.h" />
+    <ClInclude Include="..\..\include\NAS2D\Deprecate.h" />
     <ClInclude Include="..\..\include\NAS2D\Documentation.h" />
     <ClInclude Include="..\..\include\NAS2D\EventHandler.h" />
     <ClInclude Include="..\..\include\NAS2D\Event\KeyMap.h" />

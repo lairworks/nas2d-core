@@ -18,7 +18,6 @@
 #include "NAS2D/Resources/Image.h"
 #include "NAS2D/Resources/errorImage.h"
 
-
 #if defined(__APPLE__)
 	#include <SDL2/SDL_opengl.h>
 #elif defined(__linux__)
@@ -30,11 +29,9 @@
 	#include "SDL/SDL_gfxPrimitives.h"
 #endif
 
-
+#include <iostream>
 #include <string>
-#include <sstream>
 
-using namespace std;
 using namespace NAS2D;
 
 const string DEFAULT_IMAGE_NAME		= "Default Image";
@@ -115,18 +112,10 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
 		throw Exception(0, "Bad Data", "Attempted to construct an Image with a NULL pixel buffer.");
 
 	if(bytesPerPixel != 3 && bytesPerPixel != 4)
-	{
-		#if defined(_DEBUG)
-		cout << "(EXCEPTION) Image::Image(void*, int, int, int): " << "bytesPerPixel: " << bytesPerPixel << " W: " << width << " H: " << height << endl;
-		#endif
-
 		throw Exception(0, "Unsupported Image", "Attempted to construct an Image less than 24-bit. Images must be 24- or 32-bit.");
-	}
 
 	// Create an SDL_Surface so that this Image has something to look at if the user
 	// wants to be peeking pixels out of it.
-	// 
-	// I believe this to be correct but I have to test it.
 	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
 	stringstream str;
@@ -270,7 +259,7 @@ void Image::load()
 	if(!pixels)
 	{		
 		// loading failed, log a message, set a default image and return.
-		cout << "(ERROR) Image::load(): " << SDL_GetError() << endl;
+		std::cout << "Image::load(): " << SDL_GetError() << endl;
 		loadDefault();
 		return;
 	}
@@ -333,7 +322,6 @@ void Image::generateTexture(void *buffer, int bytesPerPixel, int width, int heig
 			break;
 
 		default:
-			cout << "EXCEPTION: Only 24- and 32-bit images are supported." << std::endl;
 			throw Exception(0, "Unsupported Bit Depth", "Only 24- and 32-bit images are supported.");
 			break;
 	}

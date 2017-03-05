@@ -21,6 +21,8 @@
 #include "NAS2D/Resources/Font.h"
 #include "NAS2D/Resources/Image.h"
 
+#include "NAS2D/Deprecate.h"
+
 #include <sstream>
 
 namespace NAS2D {
@@ -54,36 +56,7 @@ using namespace NAS2D;
 class Renderer
 {
 public:
-
-	/**
-	 * \class DisplayMode
-	 * \brief Represents a display mode.
-	 */
-	class DisplayMode
-	{
-	public:
-		/** C'tor */
-		DisplayMode(int x, int y): screenWidth(x), screenHeight(y)
-		{
-			std::stringstream str;
-			str << screenWidth << "x" << screenHeight;
-			resolution = str.str();
-		}
-
-		std::string resolution;
-		int screenWidth;
-		int screenHeight;
-	};
-
-	/**
-	 * \typedef	DisplayModes
-	 * 
-	 * List of display modes.
-	 */
-	typedef std::vector<DisplayMode> DisplayModes;
-
 	Renderer();
-
 	virtual ~Renderer();
 
 	const std::string& name();
@@ -144,7 +117,7 @@ public:
 	bool isFaded() const;
 
 	void toggleLetterBox();
-	void toggleCinematicMode();
+	DEPRECATED(void toggleCinematicMode();)
 
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);
@@ -157,9 +130,6 @@ public:
 	float screenCenterX();
 	float screenCenterY();
 
-	virtual void buildDisplayModeList();
-	const DisplayModes& getDisplayModes() const { return mDisplayModes; }
-
 	virtual void update();
 
 protected:
@@ -170,8 +140,6 @@ protected:
 	void driverName(const std::string& name);
 
 	Timer				mTimer;				/**< Internal Timer. */
-
-	DisplayModes		mDisplayModes;		/**< List of Screen resolutions. */
 
 	int					mLetterBoxHeight;	/**< Height of Letter Box's */
 

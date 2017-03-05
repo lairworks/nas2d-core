@@ -526,17 +526,6 @@ float OGL_Renderer::height()
 }
 
 
-void OGL_Renderer::buildDisplayModeList()
-{
-	mDisplayModes.push_back(DisplayMode(640, 480));
-	mDisplayModes.push_back(DisplayMode(800, 600));
-	mDisplayModes.push_back(DisplayMode(1024, 768));
-	mDisplayModes.push_back(DisplayMode(1152, 864));
-	mDisplayModes.push_back(DisplayMode(1280, 1024));
-	mDisplayModes.push_back(DisplayMode(1440, 900));
-}
-
-
 void OGL_Renderer::initGL()
 {
 	glClearColor(0, 0, 0, 0);

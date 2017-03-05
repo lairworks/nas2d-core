@@ -27,6 +27,8 @@ using namespace NAS2D;
 const unsigned int	CLOSE_MAX_ATTEMPTS			= 3;
 const unsigned int	CLOSE_ATTEMPT_TIMEOUT		= 5;	// Seconds
 
+bool				FILESYSTEM_INITIALIZED		= false;
+
 
 /**
  * Default c'tor.
@@ -41,6 +43,7 @@ Filesystem::Filesystem(): mVerbose(false)
 Filesystem::~Filesystem()
 {
 	PHYSFS_deinit();
+	FILESYSTEM_INITIALIZED = false;
 	cout << "Filesystem Terminated." << endl;
 }
 
@@ -94,6 +97,9 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 #else
 	#error Filesystem support for this platform has not been developed.
 #endif
+
+	FILESYSTEM_INITIALIZED = true;
+
 	cout << "done." << endl;
 }
 
@@ -107,6 +113,8 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
  */
 bool Filesystem::addToSearchPath(const std::string& path) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	if(mVerbose) cout << "Adding '" << path << "' to search path." << endl;
 
 	if(PHYSFS_exists(path.c_str()) == 0)
@@ -138,6 +146,8 @@ bool Filesystem::addToSearchPath(const std::string& path) const
  */
 StringList Filesystem::searchPath() const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	StringList searchPath;
 
 	for(char **i = PHYSFS_getSearchPath(); *i != nullptr; i++)
@@ -170,6 +180,8 @@ StringList Filesystem::directoryList(const std::string& dir) const
  */
 StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	char **rc = PHYSFS_enumerateFiles(dir.c_str());
 
 	StringList fileList;
@@ -205,6 +217,8 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
  */
 bool Filesystem::del(const std::string& filename) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	if(PHYSFS_delete(filename.c_str()) == 0)
 	{
 		cout << "Unable to delete '" << filename << "':" << PHYSFS_getLastError << endl;
@@ -224,6 +238,8 @@ bool Filesystem::del(const std::string& filename) const
  */
 File Filesystem::open(const std::string& filename) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	if(mVerbose) cout << "Attempting to load '" << filename << endl;
 
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
@@ -280,6 +296,8 @@ File Filesystem::open(const std::string& filename) const
  */
 bool Filesystem::makeDirectory(const std::string& path) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	return PHYSFS_mkdir(path.c_str()) != 0;
 }
 
@@ -291,6 +309,8 @@ bool Filesystem::makeDirectory(const std::string& path) const
  */
 bool Filesystem::isDirectory(const std::string& path) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	return PHYSFS_isDirectory(path.c_str()) != 0;
 }
 
@@ -304,6 +324,8 @@ bool Filesystem::isDirectory(const std::string& path) const
  */
 bool Filesystem::exists(const std::string& filename) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	return PHYSFS_exists(filename.c_str()) != 0;
 }
 
@@ -329,9 +351,10 @@ void Filesystem::toggleVerbose() const
  */
 bool Filesystem::closeFile(PHYSFS_File *file) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	if(!file)
 		return false;
-
 
 	// Attempt to close the file. If the first attempt fails, try to close the
 	// file again every CLOSE_ATTEMPT_TIMEOUT seconds at least CLOSE_MAX_ATTEMPTS
@@ -372,6 +395,8 @@ bool Filesystem::closeFile(PHYSFS_File *file) const
  */
 bool Filesystem::write(const File& file, bool overwrite) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	if(file.empty())
 	{
 		cout << "Attempted to write empty file '" << file.filename() << "'" << endl;
@@ -412,6 +437,8 @@ bool Filesystem::write(const File& file, bool overwrite) const
  */
 string Filesystem::userPath() const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	return PHYSFS_getUserDir();
 }
 
@@ -421,6 +448,8 @@ string Filesystem::userPath() const
  */
 string Filesystem::dataPath() const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	return mDataPath;
 }
 
@@ -434,6 +463,7 @@ string Filesystem::dataPath() const
  */
 string Filesystem::workingPath(const std::string& filename) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
 
 	if(!filename.empty())
 	{
@@ -460,6 +490,8 @@ string Filesystem::workingPath(const std::string& filename) const
  */
 std::string Filesystem::extension(const std::string path)
 {
+	if (!FILESYSTEM_INITIALIZED) throw std::runtime_error("Fileystem is not initialized.");
+
 	// This is a naive approach but works for most cases.
 	int pos = path.find_last_of(".");
 	

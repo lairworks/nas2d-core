@@ -31,14 +31,14 @@ unsigned int	ACCUMULATOR			= 0;
 
 
 /**
- * Basic Constructor
+ * FpsCounter c'tor
  */
 FpsCounter::FpsCounter()
 {}
 
 
 /**
- * Returns an approximate FPS value.
+ * Gets an average count of Frames per Second.
  */
 unsigned int FpsCounter::fps()
 {

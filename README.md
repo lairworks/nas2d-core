@@ -1,4 +1,4 @@
-nas2d-core
+NAS2D: Core
 ==========
 
 ## What is NAS2D?

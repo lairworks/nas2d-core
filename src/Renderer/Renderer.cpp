@@ -408,15 +408,6 @@ void Renderer::toggleLetterBox()
 
 
 /**
- * Toggles Cinematic Mode.
- */
-void Renderer::toggleCinematicMode()
-{
-	mCinematic = !mCinematic;
-}
-
-
-/**
  * Draws a single Pixel to the primary surface.
  *
  * \param	x		X-Coordinate of the pixel to draw.

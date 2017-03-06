@@ -10,6 +10,8 @@
 
 #include "NAS2D/Mixer/Mixer_SDL.h"
 
+#include "NAS2D/Resources/MusicInfo.h"
+
 #include <iostream>
 
 #ifdef __APPLE__
@@ -24,6 +26,8 @@
 #endif
 
 using namespace NAS2D;
+
+extern std::map<std::string, MusicInfo>	MUSIC_REF_MAP;
 
 /*
  * C'tor.
@@ -60,7 +64,7 @@ void Mixer_SDL::init()
 		throw mixer_backend_init_failure(SDL_GetError());
 	
 	Configuration& c = Utility<Configuration>::get();
-    // Initialize the Audio Mixer
+
     if(Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
 		throw mixer_backend_init_failure(Mix_GetError());
 
@@ -103,7 +107,7 @@ void Mixer_SDL::playMusic(Music& music)
 	if(!music.loaded())
 		return;
 
-	Mix_PlayMusic(static_cast<Mix_Music*>(music.music()), -1);
+	Mix_PlayMusic(static_cast<Mix_Music*>(MUSIC_REF_MAP[music.name()].music), -1);
 }
 
 
@@ -128,7 +132,7 @@ void Mixer_SDL::resumeMusic()
 
 void Mixer_SDL::fadeInMusic(Music& music, int loops, int delay)
 {
-	Mix_FadeInMusic(static_cast<Mix_Music*>(music.music()), loops, delay);
+	Mix_FadeInMusic(static_cast<Mix_Music*>(MUSIC_REF_MAP[music.name()].music), loops, delay);
 }
 
 

@@ -1,38 +1,24 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright Â© 2008 - 2017 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
-#include "Resource.h"
-
-#include <map>
-
-namespace NAS2D {
-
 /**
- *  \class Music
- *  \brief Music Resource.
+ * Struct containing basic information related to Images. Not part of the public
+ * interface.
  */
-class Music: public Resource
+struct MusicInfo
 {
-public:
-	Music();
-	Music(const std::string& filePath);
+	MusicInfo() : buffer(nullptr), music(nullptr), ref_count(0)
+	{}
 
-	Music(const Music& _m);
-	Music& operator=(const Music& _m);
-
-	~Music();
-
-private:
-	void load();
+	void*	buffer;
+	void*	music;
+	int		ref_count;
 };
-
-} // namespace

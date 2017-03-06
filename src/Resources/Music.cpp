@@ -9,6 +9,8 @@
 // ==================================================================================
 
 #include "NAS2D/Resources/Music.h"
+#include "NAS2D/Resources/MusicInfo.h"
+
 
 #include <iostream>
 #include <string>
@@ -27,13 +29,14 @@
 
 using namespace NAS2D;
 
-Music::MusicReferenceMap Music::_RefMap;
+
+std::map<std::string, MusicInfo>	MUSIC_REF_MAP;		/*< Lookup table for music resource references. */
+
 
 /**
  * Default c'tor.
  */
-Music::Music():	Resource()//,
-				//mMusic(NULL)
+Music::Music():	Resource()
 {}
 
 
@@ -42,8 +45,7 @@ Music::Music():	Resource()//,
  * 
  * \param filePath	Path of the music file to load.
  */
-Music::Music(const std::string& filePath):	Resource(filePath)//,
-											//mMusic(NULL)
+Music::Music(const std::string& filePath):	Resource(filePath)
 {
 	load();
 }
@@ -54,11 +56,9 @@ Music::Music(const std::string& filePath):	Resource(filePath)//,
  */
 Music::Music(const Music& _m): Resource(_m.name())
 {
-	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
-	if(it != Music::_RefMap.end())
-	{
+	auto it = MUSIC_REF_MAP.find(name());
+	if(it != MUSIC_REF_MAP.end())
 		it->second.ref_count++;
-	}
 
 	loaded(_m.loaded());
 }
@@ -69,11 +69,9 @@ Music::Music(const Music& _m): Resource(_m.name())
  */
 Music& Music::operator=(const Music& _m)
 {
-	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
-	if(it != Music::_RefMap.end())
-	{
+	auto it = MUSIC_REF_MAP.find(name());
+	if(it != MUSIC_REF_MAP.end())
 		it->second.ref_count++;
-	}
 
 	name(_m.name());
 	loaded(_m.loaded());
@@ -87,9 +85,8 @@ Music& Music::operator=(const Music& _m)
  */
 Music::~Music()
 {
-	// Is this check necessary?
-	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
-	if(it == Music::_RefMap.end() || it->second.music == nullptr)
+	auto it = MUSIC_REF_MAP.find(name());
+	if(it == MUSIC_REF_MAP.end())
 		return;
 
 	it->second.ref_count--;
@@ -98,77 +95,48 @@ Music::~Music()
 	if(it->second.ref_count < 1)
 	{
 		if(it->second.music)
-		{
 			Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
-			it->second.music = nullptr;
-		}
 
 		if(it->second.buffer)
-		{
 			delete it->second.buffer;
-			it->second.buffer = nullptr;
-		}
 
-		_RefMap.erase(it);
+		MUSIC_REF_MAP.erase(it);
 	}
 }
 
 
 /**
- * Attempts to load a specified music file.
+ * Loads a specified music file.
  * 
- * \note	This function is called internally during
- *			instantiation.
+ * \note	This function is called internally during instantiation.
  */
 void Music::load()
 {
-	// Check the reference map to see if we've already loaded this file.
-	MusicReferenceMap::iterator it = Music::_RefMap.find(name());
-	if(it != Music::_RefMap.end())
+	if(MUSIC_REF_MAP.find(name()) != MUSIC_REF_MAP.end())
 	{
-		it->second.ref_count++;
+		MUSIC_REF_MAP.find(name())->second.ref_count++;
 		loaded(true);
 		return;
 	}
 
-	// File was not previously loaded, load it.
-	Music::_RefMap[name()].buffer = new File(Utility<Filesystem>::get().open(name()));
-	it = Music::_RefMap.find(name());
-
-	// Empty File
-	if(it->second.buffer->empty())
+	File* file = new File(Utility<Filesystem>::get().open(name()));
+	if (file->empty())
 	{
-		Music::_RefMap.erase(it);
+		delete file;
 		return;
 	}
 
-	// Load failed
-	it->second.music = Mix_LoadMUS_RW(SDL_RWFromConstMem(it->second.buffer->raw_bytes(), static_cast<int>(it->second.buffer->size())), 0);
-	if(!it->second.music) 
+	Mix_Music* music = Mix_LoadMUS_RW(SDL_RWFromConstMem(file->raw_bytes(), file->size()), 0);
+	if (!music)
 	{
 		std::cout << "Music::load(): " << Mix_GetError() << std::endl;
-		Music::_RefMap.erase(it);
 		return;
 	}
 
-	it->second.ref_count++;
+	auto record = MUSIC_REF_MAP.find(name());
+	record->second.buffer = file;
+	record->second.music = music;
+	record->second.ref_count++;
 
 	loaded(true);
 }
-
-
-/**
- * Gets a pointer to buffer containing music data.
- * 
- * \note	Used by the Mixer object only.
- */
-void* Music::music() const
-{
-	MusicReferenceMap::iterator it = _RefMap.find(name());
-
-	if(it == _RefMap.end())
-		return nullptr;
-
-	return it->second.music;
-}
-

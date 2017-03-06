@@ -278,6 +278,7 @@
     <ClInclude Include="..\..\include\NAS2D\Resources\Image.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\ImageInfo.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Music.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\MusicInfo.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Resource.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Shader.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Sound.h" />

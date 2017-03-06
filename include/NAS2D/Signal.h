@@ -35,7 +35,7 @@ namespace Signals {
  * \class Signal0
  * \brief Signal with no paramters.
  * 
- * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
 template<class Param0 = void>
 class Signal0
@@ -76,7 +76,7 @@ public:
  * \class Signal1
  * \brief Signal with one paramter.
  *
- * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
 template<class Param1>
 class Signal1
@@ -116,7 +116,7 @@ public:
  * \class Signal2
  * \brief Signal with two paramters.
  *
- * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
 template<class Param1, class Param2>
 class Signal2
@@ -157,7 +157,7 @@ public:
  * \class Signal3
  * \brief Signal with three paramters.
  *
- * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
 template<class Param1, class Param2, class Param3>
 class Signal3
@@ -198,7 +198,7 @@ public:
  * \class Signal4
  * \brief Signal with four paramters.
  *
- * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
 template<class Param1, class Param2, class Param3, class Param4>
 class Signal4
@@ -239,7 +239,7 @@ public:
  * \class Signal5
  * \brief Signal with five paramters.
  *
- * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
 template<class Param1, class Param2, class Param3, class Param4, class Param5>
 class Signal5

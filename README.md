@@ -16,4 +16,4 @@ Officially, *NAS2D* is supported on Windows (Vista+) and MacOS X (10.8+). Binari
 
 ## NAS2D's History
 
-*NAS2D* was born from the development efforts of another LairWorks project, [The Legend of Mazzeroth](lom.lairworks.com). After several months of development it became clear that core code that *LoM* was built on didn't change very much. We cleaned it up, pulled it out of the LoM project, repackaged it and the first version of NAS2D was released.
+*NAS2D* was born from the development efforts of another LairWorks project, [The Legend of Mazzeroth](http://lom.lairworks.com). After several months of development it became clear that core code that *LoM* was built on didn't change very much. We cleaned it up, pulled it out of the LoM project, repackaged it and the first version of NAS2D was released.

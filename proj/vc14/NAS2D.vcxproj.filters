@@ -66,9 +66,6 @@
     <ClCompile Include="..\..\src\KeyTranslator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\NAS2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\StateManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

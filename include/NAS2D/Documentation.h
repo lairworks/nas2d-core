@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2011 New Age Software
+// = Copyright © 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software as long under the terms of the zlib license.
@@ -21,9 +21,9 @@
  * 
  * \section overview Obtaining NAS2D
  * 
- * Visit the <a href="http://nas2d.lairworks.com/download.php">Download</a> section on NAS2D's home page to get developer packages for your platform and IDE of choice.
+ * Visit the <a href="http://nas2d.lairworks.com/">NAS2D Home Page</a> to get official builds for support platforms and IDE's.
  * 
  * \section design-elements Learning to Use NAS2D
  * 
- * This document was originally intended to be a crash course in using NAS2D. We've since set up a wiki which provides examples and tutorials for beginners as well as in-depth articles about the design decisions behind some of NAS2D's more advanced features. Head over to the wiki to get started: <a href="http://nas2d.lairworks.com/wiki/">http://nas2d.lairworks.com/wiki/</a>
+ * This document is the manual for NAS2D and provides details about the specifics of using it. For tutorials and assistance in understanding NAS2D and how to use it, visit the Wiki, currently hosted on GitHub: https://github.com/lairworks/nas2d-core/wiki
  */

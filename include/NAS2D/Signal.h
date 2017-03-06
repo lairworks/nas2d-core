@@ -1,7 +1,23 @@
 // ==================================================================================
+// = NAS2D
+// = Copyright © 2008 - 2017 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software under the terms of the zlib license.
+// = 
+// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// ==================================================================================
+
+// ==================================================================================
 // = SIGNAL.H
 // ==================================================================================
-// =  A lightweight signals and slots implementation using fast delegates
+// = This file is provided under the terms of the MIT license and is included as part
+// = of NAS2D's library interface.
+// = 
+// = Modifications include:
+// =	- Condensed lines for a more compact file
+// =	- Removed templates for parameter lists 6 - 8
+// =	- Replaced for loops using C++11 range-based loops
 // = 
 // = Created by Patrick Hogan on 5/18/09.
 // = https://github.com/pbhogan/Signals
@@ -48,7 +64,7 @@ public:
 	void Disconnect(Y * obj, void (X::*func)() const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void Clear() { delegateList.clear(); }
-	void Emit() const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(); }
+	void Emit() const { for (auto i : delegateList) i(); }
 	void operator() () const { Emit(); }
 	bool Empty() const { return delegateList.empty(); }
 };
@@ -82,7 +98,7 @@ public:
 	void Disconnect(Y * obj, void (X::*func)(Param1 p1) const) { delegateList.erase(MakeDelegate(obj, func)); }
 	
 	void Clear() { delegateList.clear(); }
-	void Emit(Param1 p1) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1); }
+	void Emit(Param1 p1) const { for (auto i : delegateList) i(p1); }
 	void operator() (Param1 p1) const { Emit(p1); }
 	bool Empty() const { return delegateList.empty(); }
 };
@@ -118,7 +134,7 @@ public:
 
 	void Clear() { delegateList.clear(); }
 	void operator() (Param1 p1, Param2 p2) const { Emit(p1, p2); }
-	void Emit(Param1 p1, Param2 p2) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1, p2); }
+	void Emit(Param1 p1, Param2 p2) const { for (auto i : delegateList) i(p1, p2); }
 	bool Empty() const { return delegateList.empty(); }
 };
 
@@ -152,7 +168,7 @@ public:
 	void Disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void Clear() { delegateList.clear(); }
-	void Emit(Param1 p1, Param2 p2, Param3 p3) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1, p2, p3); }
+	void Emit(Param1 p1, Param2 p2, Param3 p3) const { for (auto i : delegateList) i(p1, p2, p3); }
 	void operator() (Param1 p1, Param2 p2, Param3 p3) const { Emit(p1, p2, p3); }
 	bool Empty() const { return delegateList.empty(); }
 };
@@ -187,7 +203,7 @@ public:
 	void Disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void Clear() { delegateList.clear(); }
-	void Emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1, p2, p3, p4); }
+	void Emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { for (auto i : delegateList) i(p1, p2, p3, p4); }
 	void operator() (Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { Emit(p1, p2, p3, p4); }
 	bool Empty() const { return delegateList.empty(); }
 };
@@ -222,7 +238,7 @@ public:
 	void Disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void Clear() { delegateList.clear(); }
-	void Emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1, p2, p3, p4, p5); }
+	void Emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { for (auto i : delegateList) i(p1, p2, p3, p4, p5); }
 	void operator() (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { Emit(p1, p2, p3, p4, p5); }
 	bool Empty() const { return delegateList.empty(); }
 };

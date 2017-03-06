@@ -231,7 +231,6 @@
     <ClCompile Include="..\..\src\Game.cpp" />
     <ClCompile Include="..\..\src\KeyTranslator.cpp" />
     <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp" />
-    <ClCompile Include="..\..\src\NAS2D.cpp" />
     <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp" />
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />

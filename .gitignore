@@ -213,3 +213,5 @@ ModelManifest.xml
 /proj/vc14/Win32
 /proj/vc14/*.opendb
 /proj/vc14/*.db
+/doxygen.exe
+/doc

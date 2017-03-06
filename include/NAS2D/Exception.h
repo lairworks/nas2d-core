@@ -14,6 +14,8 @@
 
 namespace NAS2D {
 
+namespace exception {
+
 /**
  * \class Exception
  * \brief Thrown when Exceptions occur.
@@ -69,5 +71,5 @@ class renderer_no_glsl : public std::runtime_error { public: renderer_no_glsl();
 class renderer_backend_init_failure : public std::runtime_error { public: renderer_backend_init_failure(const std::string& description); renderer_backend_init_failure();};
 class renderer_window_creation_failure : public std::runtime_error { public: renderer_window_creation_failure(); };
 class renderer_opengl_context_failure : public std::runtime_error { public: renderer_opengl_context_failure(); };
-
-} // namespace
+} // exception namespace
+} // NAS2D namespace

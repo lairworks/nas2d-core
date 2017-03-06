@@ -30,6 +30,7 @@
 #include <math.h>
 
 using namespace NAS2D;
+using namespace NAS2D::exception;
 
 /** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
 GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };

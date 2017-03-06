@@ -24,6 +24,7 @@
 #include <sstream>
 
 using namespace NAS2D;
+using namespace NAS2D::exception;
 
 const unsigned int	CLOSE_MAX_ATTEMPTS			= 3;
 const unsigned int	CLOSE_ATTEMPT_TIMEOUT		= 5;	// Seconds
@@ -54,7 +55,7 @@ Filesystem::~Filesystem()
  */
 void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 {
-	if (FILESYSTEM_INITIALIZED) throw filesystem_already_initialized();
+	if (FILESYSTEM_INITIALIZED) throw exception::filesystem_already_initialized();
 
 	std::cout << "Initializing Filesystem... ";
 

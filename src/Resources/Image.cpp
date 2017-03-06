@@ -34,6 +34,7 @@
 #include <string>
 
 using namespace NAS2D;
+using namespace NAS2D::exception;
 
 const std::string DEFAULT_IMAGE_NAME	= "Default Image";
 const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";

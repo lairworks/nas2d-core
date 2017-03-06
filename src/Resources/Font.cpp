@@ -34,6 +34,8 @@
 #include <math.h>
 
 using namespace NAS2D;
+using namespace NAS2D::exception;
+
 
 std::string buildName(TTF_Font*); // ???? The hell is this?
 

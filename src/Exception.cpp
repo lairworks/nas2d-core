@@ -13,6 +13,7 @@
 
 
 using namespace NAS2D;
+using namespace NAS2D::exception;
 
 filesystem_already_initialized::filesystem_already_initialized() : runtime_error("Filesystem is already initialized.")
 {}

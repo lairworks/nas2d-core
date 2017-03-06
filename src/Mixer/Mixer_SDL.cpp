@@ -26,6 +26,7 @@
 #endif
 
 using namespace NAS2D;
+using namespace NAS2D::exception;
 
 extern std::map<std::string, MusicInfo>	MUSIC_REF_MAP;
 

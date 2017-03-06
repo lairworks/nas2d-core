@@ -12,8 +12,6 @@
 
 #include <string>
 
-#include "NAS2D/Deprecate.h"
-
 namespace NAS2D {
 
 /**
@@ -23,9 +21,9 @@ namespace NAS2D {
  * \deprecated	This class has been deprecated and will be removed in future versions of NAS2D. See
  *				current NAS2D documentation (http://www.lairworks.com/nas2d_doc/) for recommended usage.
  */
-class DEPRECATED(Exception, "Exception is deprecated. See NAS2D documentation regarding updated exception usage.")
+class Exception
 {
-public:
+private:
 	Exception(int code, const std::string& brief, const std::string& description);
 	~Exception();
 	
@@ -44,11 +42,17 @@ public:
 	 */
 	int getCode() const;
 
-private:
 	std::string		mErrorBrief;			/**< Brief description of the error. */
 	std::string		mErrorDescription;		/**< Full description of the Error. */
 	int				mErrorCode;				/**< Error Code */
 };
+
+
+/**
+ * \page Exceptions Exceptions
+ * 
+ * See <a href="https://github.com/lairworks/nas2d-core/wiki/Exceptions-&-Exception-Handling-in-NAS2D">Wiki Page (Exceptions)</a> for further details.
+ */
 
 class filesystem_backend_init_failure : public std::runtime_error { public: filesystem_backend_init_failure(const std::string& description); filesystem_backend_init_failure(); };
 class filesystem_not_initialized : public std::runtime_error { public: filesystem_not_initialized(); };

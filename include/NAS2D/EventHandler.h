@@ -7,7 +7,6 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 #include "NAS2D/Signal.h"
@@ -302,7 +301,8 @@ public:
 	 * \endcode
 	 */
 	typedef NAS2D::Signal0<>						QuitEventCallback;
-
+	
+public:
 	EventHandler();
 	~EventHandler();
 
@@ -345,7 +345,6 @@ public:
 	void disconnectAll();
 
 private:
-
 	ActivateEventCallback				mActivateEvent;
 
 	WindowHiddenEventCallback			mWindowHiddenEventCallback;
@@ -372,7 +371,6 @@ private:
 	MouseWheelEventCallback				mMouseWheelEvent;
 
 	QuitEventCallback					mQuitEvent;
-
 };
 
 void postQuitEvent();

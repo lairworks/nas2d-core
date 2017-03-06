@@ -15,7 +15,7 @@
 namespace NAS2D {
 
 /**
- * \class SDL_Mixer
+ * \class Mixer_SDL
  * \brief SDL Mixer.
  *
  * Implements all Mixer functions with the SDL API.

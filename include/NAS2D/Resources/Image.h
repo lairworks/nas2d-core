@@ -24,7 +24,18 @@ class Rectangle_2d;
  * \class Image
  * \brief Image Class
  *
- * Stores an image as a representation of pixels in memory.
+ * Provides a high level interface for image files. Can load the following formats:
+ * - BMP
+ * - JPEG
+ * - PCX
+ * - PNG
+ * - TGA
+ * - TIFF
+ * - WEBP
+ * 
+ * \note	Image currently only supports 24-bit and 32-bit images (true-color with
+ *			and without an alpha channel).
+ * 
  */
 class Image: public Resource
 {

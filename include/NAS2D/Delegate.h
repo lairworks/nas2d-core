@@ -19,7 +19,7 @@
 // = Created by Don Clugston. Contributions by Jody Hagins and Patrick Hogan.
 // = http://www.codeproject.com/KB/cpp/FastDelegate.aspx
 // ==================================================================================
-// = LICENSE: Code Project Open License (http://www.codeproject.com/info/cpol10.aspx)
+// = LICENSE: PUBLIC DOMAIN
 // ==================================================================================
 
 #pragma once

@@ -29,6 +29,7 @@
 #include <set>
 
 namespace NAS2D {
+namespace Signals {
 
 /**
  * \class Signal0
@@ -274,4 +275,5 @@ public:
 	bool Empty() const { return delegateList.empty(); }
 };
 
+} // namespace
 } // namespace

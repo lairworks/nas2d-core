@@ -7,8 +7,6 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
-// ==================================================================================
 // = SIGNAL.H
 // ==================================================================================
 // = This file is provided under the terms of the MIT license and is included as part
@@ -18,15 +16,12 @@
 // =	- Condensed lines for a more compact file
 // =	- Removed templates for parameter lists 6 - 8
 // =	- Replaced for loops using C++11 range-based loops
+// =	- Added doxygen comments for automatic generation of documentation.
 // = 
 // = Created by Patrick Hogan on 5/18/09.
 // = https://github.com/pbhogan/Signals
 // ==================================================================================
-
-// ==================================================================================
-// = LICENSE
-// ==================================================================================
-// = MIT http://www.opensource.org/licenses/mit-license.php
+// = LICENSE: MIT (http://www.opensource.org/licenses/mit-license.php)
 // ==================================================================================
 #pragma once
 
@@ -35,6 +30,12 @@
 
 namespace NAS2D {
 
+/**
+ * \class Signal0
+ * \brief Signal with no paramters.
+ * 
+ * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ */
 template<class Param0 = void>
 class Signal0
 {
@@ -70,6 +71,12 @@ public:
 };
 
 
+/**
+ * \class Signal1
+ * \brief Signal with one paramter.
+ *
+ * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ */
 template<class Param1>
 class Signal1
 {
@@ -104,6 +111,12 @@ public:
 };
 
 
+/**
+ * \class Signal2
+ * \brief Signal with two paramters.
+ *
+ * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ */
 template<class Param1, class Param2>
 class Signal2
 {
@@ -139,6 +152,12 @@ public:
 };
 
 
+/**
+ * \class Signal3
+ * \brief Signal with three paramters.
+ *
+ * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ */
 template<class Param1, class Param2, class Param3>
 class Signal3
 {
@@ -174,6 +193,12 @@ public:
 };
 
 
+/**
+ * \class Signal4
+ * \brief Signal with four paramters.
+ *
+ * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ */
 template<class Param1, class Param2, class Param3, class Param4>
 class Signal4
 {
@@ -209,6 +234,12 @@ public:
 };
 
 
+/**
+ * \class Signal5
+ * \brief Signal with five paramters.
+ *
+ * See https://github.com/lairworks/nas2d-core/wiki/sigslots for usage documentation.
+ */
 template<class Param1, class Param2, class Param3, class Param4, class Param5>
 class Signal5
 {

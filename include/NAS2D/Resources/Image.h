@@ -46,42 +46,11 @@ public:
 
 	Color_4ub pixelColor(int x, int y) const;
 
-protected:
-	friend class OGL_Renderer;
-
-	unsigned int texture_id() const;
-	unsigned int fbo_id();
-
-private:
-	struct ImageInfo
-	{
-		ImageInfo(): pixels(nullptr), textureId(0), fboId(0), w(0), h(0), ref_count(0) {}
-		ImageInfo(unsigned int id, unsigned int fbo_id, int w, int h): pixels(nullptr), textureId(id), fboId(fbo_id), w(w), h(h), ref_count(0) {}
-		
-		void*	pixels;
-
-		size_t	textureId;
-		size_t	fboId;
-		int		w;
-		int		h;
-		int		ref_count;
-	};
-
-	typedef std::map<std::string, ImageInfo> TextureIdMap;
-
 private:
 	void load();
-	void generateTexture(void* buffer, int bytesPerPixel, int width, int height);
-
-	bool checkTextureId();
 
 private:
 	Rectangle_2d	mRect;			/**< Width/Height information about the Image. */
-
-	unsigned int	mTextureId;		/**< OpenGL Texture ID. */
-
-	static TextureIdMap			_IdMap;		/*< Lookup table for OpenGL Texture ID's. */
-	static int					_Arbitrary;	/*< Counter for arbitrary image ID's. */
 };
 
 
@@ -89,7 +58,7 @@ private:
  * \typedef	ImageListPtr
  * \brief	A list of pointers to Image objects.
  */
-typedef std::vector<Image*> ImageListPtr;
+typedef std::vector<Image*> ImagePtrList;
 
 
 /**

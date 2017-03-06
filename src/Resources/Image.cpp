@@ -16,7 +16,9 @@
 #include "NAS2D/Renderer/Primitives.h"
 
 #include "NAS2D/Resources/Image.h"
+#include "NAS2D/Resources/ImageInfo.h"
 #include "NAS2D/Resources/errorImage.h"
+
 
 #ifdef __APPLE__
 #include "SDL2_image/SDL_image.h"
@@ -34,11 +36,17 @@
 using namespace NAS2D;
 
 const std::string DEFAULT_IMAGE_NAME	= "Default Image";
-const std::string ARBITRARY_IMAGE_NAME	= "Arbitrary Image ";
+const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
 
 
-Image::TextureIdMap Image::_IdMap;
-int Image::_Arbitrary = 0;
+typedef std::map<std::string, ImageInfo> TextureIdMap;
+
+TextureIdMap	IMAGE_ID_MAP;			/*< Lookup table for OpenGL Texture ID's. */
+int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
+
+
+bool checkTextureId(const std::string& name);
+unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 
 
 
@@ -49,8 +57,7 @@ int Image::_Arbitrary = 0;
  *
  * If the load fails, a default image is stored indicating an error condition.
  */
-Image::Image(const std::string& filePath):	Resource(filePath),
-											mTextureId(0)
+Image::Image(const std::string& filePath) : Resource(filePath)
 {
 	load();
 }
@@ -64,8 +71,7 @@ Image::Image(const std::string& filePath):	Resource(filePath),
  * instantiating an Image should be for testing purposes or to indicate an
  * error condition.		
  */
-Image::Image():	Resource(DEFAULT_IMAGE_NAME),
-				mTextureId(0)
+Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 {}
 
 
@@ -75,19 +81,19 @@ Image::Image():	Resource(DEFAULT_IMAGE_NAME),
  * \param	width	Width of the Image.
  * \param	height	Height of the Image.
  */
-Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
-										mTextureId(0)
+Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
-	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++_Arbitrary));
+	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++IMAGE_ARBITRARY));
 	mRect(0, 0, width, height);
 
 	// MAGIC NUMBER: 4 == 4 1-byte color channels (RGBA)
 	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (width * height))] ();
+	unsigned int texture_id = 0;
 	generateTexture(buffer, 4, width, height);
 
 	// Update resource management.
-	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
-	Image::_IdMap[name()].ref_count++;
+	IMAGE_ID_MAP[name()] = ImageInfo(IMAGE_ID_MAP[name()].texture_id, 0, mRect.w(), mRect.h());
+	IMAGE_ID_MAP[name()].ref_count++;
 
 	delete [] buffer;
 }
@@ -101,8 +107,7 @@ Image::Image(int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
  * \param	width			Width of the Image.
  * \param	height			Height of the Image.
  */
-Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(ARBITRARY_IMAGE_NAME),
-																		mTextureId(0)
+Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
 	if (buffer == nullptr)
 		throw image_null_data();
@@ -114,15 +119,15 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
 	// wants to be peeking pixels out of it.
 	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
-	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++_Arbitrary));
+	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++IMAGE_ARBITRARY));
 
 	mRect(0, 0, width, height);
-	generateTexture(buffer, bytesPerPixel, width, height);
+	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
-	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
-	Image::_IdMap[name()].ref_count++;
-	Image::_IdMap[name()].pixels = pixels;
+	IMAGE_ID_MAP[name()] = ImageInfo(texture_id, 0, mRect.w(), mRect.h());
+	IMAGE_ID_MAP[name()].ref_count++;
+	IMAGE_ID_MAP[name()].pixels = pixels;
 }
 
 
@@ -131,12 +136,10 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height):	Resource(A
  * 
  * \param	src		A reference to an Image Resource.
  */
-Image::Image(const Image &src):	Resource(src.name()),
-								mRect(src.mRect),
-								mTextureId(src.mTextureId)
+Image::Image(const Image &src) : Resource(src.name()), mRect(src.mRect)
 {
 	loaded(src.loaded());
-	Image::_IdMap[name()].ref_count++;
+	IMAGE_ID_MAP[name()].ref_count++;
 }
 
 
@@ -146,8 +149,8 @@ Image::Image(const Image &src):	Resource(src.name()),
 Image::~Image()
 {
 	// Is this check necessary?
-	TextureIdMap::iterator it = Image::_IdMap.find(name());
-	if(it == Image::_IdMap.end())
+	auto it = IMAGE_ID_MAP.find(name());
+	if(it == IMAGE_ID_MAP.end())
 		return;
 
 	it->second.ref_count--;
@@ -155,26 +158,21 @@ Image::~Image()
 	// if texture id reference count is 0, delete the texture.
 	if(it->second.ref_count < 1)
 	{
-		if(mTextureId == 0)
+		if(it->second.texture_id == 0)
 			return;
 
-		//cout << "Deleting Texture '" << name() << "' (" << it->second.textureId << ")" << endl;
+		glDeleteTextures(1, &it->second.texture_id);
 
-		glDeleteTextures(1, &mTextureId);
+		if(it->second.fbo_id != 0)
+            glDeleteBuffers(1, &it->second.fbo_id);
 
-		if(it->second.fboId != 0)
+		if(IMAGE_ID_MAP[name()].pixels != nullptr)
 		{
-            unsigned int fbo = it->second.fboId;
-            glDeleteBuffers(1, &fbo);
+			SDL_FreeSurface(static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels));
+			IMAGE_ID_MAP[name()].pixels = nullptr;
 		}
 
-		if(Image::_IdMap[name()].pixels != nullptr)
-		{
-			SDL_FreeSurface(static_cast<SDL_Surface*>(Image::_IdMap[name()].pixels));
-			Image::_IdMap[name()].pixels = nullptr;
-		}
-
-		Image::_IdMap.erase(it);
+		IMAGE_ID_MAP.erase(it);
 	}
 }
 
@@ -188,40 +186,10 @@ Image& Image::operator=(const Image& rhs)
 {
 	name(rhs.name());
 	mRect = rhs.rect();
-	mTextureId = rhs.mTextureId;
 	loaded(rhs.loaded());
-	Image::_IdMap[name()].ref_count++;
+	IMAGE_ID_MAP[name()].ref_count++;
 
 	return *this;
-}
-
-
-/**
- * Checks to see if a texture has already been generated
- * and if it has, increases the reference count.
- * 
- * \note	This is an internal only function.
- * 
- * \return	True if texture already exists. False otherwise.
- */
-bool Image::checkTextureId()
-{
-	// Check texture id map to see if this has already been loaded
-	TextureIdMap::iterator it = Image::_IdMap.find(name());
-	
-	// if loaded, set texture ID to what's in the map and exit function.
-	if(it != Image::_IdMap.end())
-	{
-		mTextureId = it->second.textureId;
-		mRect(0, 0, it->second.w, it->second.h);
-		Image::_IdMap[name()].ref_count++;
-
-		loaded(true);
-		return true;
-	}
-
-	// Texture ID was not found, texture needs to be generated.
-	return false;
 }
 
 
@@ -233,9 +201,12 @@ bool Image::checkTextureId()
  */
 void Image::load()
 {
-	// Check if texture id was generated and back out if it was.
-	if(checkTextureId())
+	if (checkTextureId(name()))
+	{
+		mRect(0, 0, IMAGE_ID_MAP[name()].w, IMAGE_ID_MAP[name()].h);
+		loaded(true);
 		return;
+	}
 
 	File imageFile = Utility<Filesystem>::get().open(name());
 	if(imageFile.size() == 0)
@@ -253,53 +224,14 @@ void Image::load()
 
 	mRect = Rectangle_2d(0, 0, pixels->w, pixels->h);
 
-	generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
+	unsigned int texture_id = generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
 
 	// Add generated texture id to texture ID map.
-	Image::_IdMap[name()] = ImageInfo(texture_id(), 0, mRect.w(), mRect.h());
-	Image::_IdMap[name()].ref_count++;
-	Image::_IdMap[name()].pixels = pixels;
+	IMAGE_ID_MAP[name()] = ImageInfo(texture_id, 0, mRect.w(), mRect.h());
+	IMAGE_ID_MAP[name()].ref_count++;
+	IMAGE_ID_MAP[name()].pixels = pixels;
 
 	loaded(true);
-}
-
-
-/**
- * Generates a new OpenGL texture from an SDL_Surface.
- * 
- * \param	src	Pointer to an SDL_Surface.
- * 
- * \note	This function assumes that the image is unique and
- *			has not been loaded. Does no resource management.
- */
-void Image::generateTexture(void *buffer, int bytesPerPixel, int width, int height)
-{
-	GLenum textureFormat = 0;
-	switch(bytesPerPixel)
-	{
-		case 4:
-			SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
-			break;
-		case 3:
-			SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGR : textureFormat = GL_RGB;
-			break;
-
-		default:
-			throw image_unsupported_bit_depth();
-			break;
-	}
-
-	glGenTextures(1, &mTextureId);
-	glBindTexture(GL_TEXTURE_2D, mTextureId);
-
-	// Set texture and pixel handling states.
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
 }
 
 
@@ -330,35 +262,6 @@ const Rectangle_2d& Image::rect() const
 }
 
 
-unsigned int Image::texture_id() const
-{
-	return mTextureId;
-}
-
-
-unsigned int Image::fbo_id()
-{
-	// Create a framebuffer object
-	TextureIdMap::iterator it = Image::_IdMap.find(name());
-
-	// This texture was never generated, return a safe value.
-	if(it == Image::_IdMap.end())
-		return 0;
-
-	// Check that there isn't already an FBO attached to this Image.
-	if(it->second.fboId != 0)
-		return it->second.fboId;
-
-	// Image doesn't have an FBO attached to it, generate one.
-	GLuint fbo = 0;
-	glGenBuffers(1, &fbo);
-
-	it->second.fboId = fbo;
-
-	return fbo;
-}
-
-
 /**
  * Gets the color of a pixel at a given coordinate.
  * 
@@ -376,7 +279,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 	if(x < 0 || x > width() || y < 0 || y > height())
 		return Color_4ub(0, 0, 0, 255);
 
-	SDL_Surface* pixels = static_cast<SDL_Surface*>(Image::_IdMap[name()].pixels);
+	SDL_Surface* pixels = static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels);
 
 	if (!pixels)
 		throw image_null_data();
@@ -418,4 +321,61 @@ Color_4ub Image::pixelColor(int x, int y) const
 	SDL_UnlockSurface(pixels);
 
 	return Color_4ub(r, g, b, a);
+}
+
+
+/**
+* Checks to see if a texture has already been generated
+* and if it has, increases the reference count.
+*
+* \return	True if texture already exists. False otherwise.
+*/
+bool checkTextureId(const std::string& name)
+{
+	auto it = IMAGE_ID_MAP.find(name);
+
+	if (it != IMAGE_ID_MAP.end())
+	{
+		IMAGE_ID_MAP[name].ref_count++;
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
+* Generates a new OpenGL texture from an SDL_Surface.
+*/
+unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
+{
+	GLenum textureFormat = 0;
+	switch (bytesPerPixel)
+	{
+	case 4:
+		SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
+		break;
+	case 3:
+		SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGR : textureFormat = GL_RGB;
+		break;
+
+	default:
+		throw image_unsupported_bit_depth();
+		break;
+	}
+
+	GLuint texture_id;
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+
+	// Set texture and pixel handling states.
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
+
+	return texture_id;
 }

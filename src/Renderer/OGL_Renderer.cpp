@@ -11,6 +11,8 @@
 #include "NAS2D/Trig.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
+#include "NAS2D/Resources/ImageInfo.h"
+
 #ifdef WINDOWS
 #define NO_SDL_GLEXT
 #include "GL/glew.h"
@@ -43,6 +45,10 @@ GLfloat COLOR_VERTEX_ARRAY[16] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 
 // UGLY ASS HACK!
+// This is required here in order to remove OpenGL implementation details from Image.
+extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
+
+// UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
 SDL_Window*			_WINDOW = nullptr;
 
@@ -50,6 +56,7 @@ SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
 
 
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
+GLuint generate_fbo();
 
 
 OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title)
@@ -127,7 +134,7 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r,
 
 	fillVertexArray(x, y, static_cast<float>(image.width()), static_cast<float>(image.height()));
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
-	drawVertexArray(image.texture_id());
+	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
 
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
@@ -145,7 +152,7 @@ void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, floa
 						y / image.height() + height / image.height()
 					);
 
-	drawVertexArray(image.texture_id(), false);
+	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
 
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
@@ -173,7 +180,7 @@ void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float raster
 						y / image.height() + height / image.height()
 					);
 
-	drawVertexArray(image.texture_id(), false);
+	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
 
 	glPopMatrix();
 
@@ -201,7 +208,7 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 	
-	drawVertexArray(image.texture_id());
+	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
 	glPopMatrix();
 
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
@@ -215,7 +222,7 @@ void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, f
 
 	fillVertexArray(x, y, w, h);
 	
-	drawVertexArray(image.texture_id());
+	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
 	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
@@ -228,7 +235,7 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	
-	drawVertexArray(image.texture_id(), true);
+	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, true);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -243,7 +250,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	glBindTexture(GL_TEXTURE_2D, destination.texture_id());
+	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
 
 	Rectangle_2d clipRect;
 
@@ -254,16 +261,21 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	if(clipRect.w() < 1 || clipRect.h() < 1)
 		return;
 
-	unsigned int fbo = destination.fbo_id();
+	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
+	if (fbo == 0)
+	{
+		fbo = generate_fbo();
+		IMAGE_ID_MAP[destination.name()].fbo_id = fbo;
+	}
 
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, destination.texture_id(), 0);
+	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id, 0);
 
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipRect.w()), static_cast<float>(-clipRect.h()));
 
-	drawVertexArray(source.texture_id());
-	glBindTexture(GL_TEXTURE_2D, destination.texture_id());
+	drawVertexArray(IMAGE_ID_MAP[source.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 
 }
@@ -804,4 +816,12 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		glColorPointer(4, GL_FLOAT, 0, line_color);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	}
+}
+
+
+GLuint generate_fbo()
+{
+	GLuint fbo = 0;
+	glGenBuffers(1, &fbo);
+	return fbo;
 }

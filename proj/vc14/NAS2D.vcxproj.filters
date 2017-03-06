@@ -245,5 +245,8 @@
     <ClInclude Include="..\..\include\NAS2D\Deprecate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\ImageInfo.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

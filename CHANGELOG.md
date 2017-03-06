@@ -1,5 +1,7 @@
 # [1.3.0] - UNRELEASED
 
+This version of NAS2D focuses on cleaning up the public interface headers and removing as much of the implementation details as possible. This is to help make NAS2D a lot easier to use to set up new projects and will reduce reliance on backend library interface headers unless the user specifically wants/needs direct access to these libraries.
+
 ## Added
 
 
@@ -30,7 +32,7 @@ Since the Exception class has been removed, any code using NAS2D::Exception will
 
 The Signals interface has been moved from the Gallant namespace to the NAS2D::Signals namespace. This will affect all code using custom Signals however using any of the built-in Signals (such as from the EventHandler or Sprite classes) will continue to function the same way without need for any changes.
 
-Since all of the `using namespace` directives have been removed from all public interface headers, you will need to either use your own directive or specific they appropriate namespace for both `std::` and 'NAS2D::` namespaces.
+Since all of the `using namespace` directives have been removed from all public interface headers, you will need to either use your own directive or specific they appropriate namespace for both `std::` and `NAS2D::` namespaces.
 
 ---
 

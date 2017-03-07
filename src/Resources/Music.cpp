@@ -133,10 +133,10 @@ void Music::load()
 		return;
 	}
 
-	auto record = MUSIC_REF_MAP.find(name());
-	record->second.buffer = file;
-	record->second.music = music;
-	record->second.ref_count++;
+	auto& record = MUSIC_REF_MAP[name()];
+	record.buffer = file;
+	record.music = music;
+	record.ref_count++;
 
 	loaded(true);
 }

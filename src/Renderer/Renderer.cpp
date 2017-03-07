@@ -33,38 +33,17 @@ const Color_4ub NAS2D::COLOR_NORMAL = NAS2D::COLOR_WHITE;
 
 
 /**
- * C'tor
- */
-Renderer::Renderer():	mLetterBoxHeight(0),
-						mCinematic(false),
-						mLetterbox(false),
-						mRendererName("DEBUG"),
-						mFadeColor(COLOR_BLACK),
-						mFade(Renderer::FADE_NONE),
-						mFadeStep(0.0f),
-						mCurrentFade(0.0f),
-						mTickDelta(0)
-{
-}
-
-
-/**
  * Internal constructor used by derived types to set the name of the Renderer.
  * 
  * This c'tor is not public and can't be invoked externally.
  */
-Renderer::Renderer(const std::string& rendererName, const std::string& appTitle):	mLetterBoxHeight(0),
-																					mCinematic(false),
-																					mLetterbox(false),
-																					mRendererName(rendererName),
+Renderer::Renderer(const std::string& rendererName, const std::string& appTitle):	mRendererName(rendererName),
 																					mTitle(appTitle),
 																					mFadeColor(COLOR_BLACK),
 																					mFade(Renderer::FADE_NONE),
 																					mFadeStep(0.0f),
-																					mCurrentFade(0.0f),
-																					mTickDelta(0)
-{
-}
+																					mCurrentFade(0.0f)
+{}
 
 
 /**
@@ -395,15 +374,6 @@ bool Renderer::isFading() const
 bool Renderer::isFaded() const
 {
 	return (mCurrentFade == 255.0f);
-}
-
-
-/**
- * Toggles LetterBox mode.
- */
-void Renderer::toggleLetterBox()
-{
-	mLetterbox = !mLetterbox;
 }
 
 
@@ -848,11 +818,9 @@ void Renderer::clearScreen(int r, int g, int b)
  */
 void Renderer::update()
 {
-	mTickDelta = mTimer.delta();
-
 	if(mFade != Renderer::FADE_NONE)
 	{
-		float fade = mTickDelta * mFadeStep;
+		float fade = mTimer.delta() * mFadeStep;
 
 		if(mFade == Renderer::FADE_IN)
 		{

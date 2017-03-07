@@ -52,7 +52,6 @@ using namespace NAS2D;
 class Renderer
 {
 public:
-	Renderer();
 	virtual ~Renderer();
 
 	const std::string& name();
@@ -112,8 +111,6 @@ public:
 	bool isFading() const;
 	bool isFaded() const;
 
-	void toggleLetterBox();
-
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);
 
@@ -131,17 +128,18 @@ protected:
 	Renderer(const std::string& rendererName, const std::string& appTitle);
 
 	virtual void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync) {}
-
 	void driverName(const std::string& name);
 
-	Timer				mTimer;				/**< Internal Timer. */
-
-	int					mLetterBoxHeight;	/**< Height of Letter Box's */
-
-	bool				mLetterbox;			/**< Toggles Letterbox Mode */
-	bool				mCinematic;			/**< Toggles Cinematic Mode */
-
 private:
+	/**
+	* Default c'tor.
+	*
+	* The default c'tor is intentionally private and undefined. It should
+	* never be invoked at any time.
+	*/
+	Renderer();
+
+
 	/**
 	 * Copy c'tor.
 	 * 
@@ -171,12 +169,12 @@ private:
 	std::string			mDriverName;	/**< OS Driver name */
 	std::string			mTitle;			/**< Title to use for the application. */
 
+	Timer				mTimer;				/**< Internal Timer. */
+
 	Color_4ub			mFadeColor;		/**< Fade Color. */
 	FadeType			mFade;			/**< Fade State. */
 	float				mFadeStep;		/**< Amount of fading to do per milisecond. */
 	float				mCurrentFade;	/**< Current fade amount. */
-
-	int					mTickDelta;		/**< Current tick in miliseconds. */
 };
 
 } // namespace

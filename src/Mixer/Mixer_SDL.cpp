@@ -10,9 +10,13 @@
 
 #include "NAS2D/Mixer/Mixer_SDL.h"
 
+#include "NAS2D/Configuration.h"
+#include "NAS2D/Exception.h"
+
 #include "NAS2D/Resources/MusicInfo.h"
 
 #include <iostream>
+#include <functional>
 
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
@@ -29,6 +33,32 @@ using namespace NAS2D;
 using namespace NAS2D::exception;
 
 extern std::map<std::string, MusicInfo>	MUSIC_REF_MAP;
+
+
+
+// ==================================================================================
+// INTEROP WITH SDL2_MIXER
+// ==================================================================================
+template <typename T>
+struct Callback;
+
+template <typename Ret, typename... Params>
+struct Callback<Ret(Params...)>
+{
+	template <typename... Args>
+	static Ret callback(Args... args) { func(args...); }
+	static std::function<Ret(Params...)> func;
+};
+
+template <typename Ret, typename... Params>
+std::function<Ret(Params...)> Callback<Ret(Params...)>::func;
+typedef void(*callback_t)(void);
+
+callback_t mixer_hook;
+// ==================================================================================
+
+
+
 
 /*
  * C'tor.
@@ -69,8 +99,13 @@ void Mixer_SDL::init()
     if(Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
 		throw mixer_backend_init_failure(Mix_GetError());
 
-	setSfxVolume(c.audioSfxVolume());
-	setMusVolume(c.audioMusicVolume());
+	soundVolume(c.audioSfxVolume());
+	musicVolume(c.audioMusicVolume());
+
+	Callback<void(void)>::func = std::bind(&Mixer::_music_complete, this);
+	mixer_hook = static_cast<callback_t>(Callback<void(void)>::callback);
+	
+	Mix_HookMusicFinished(mixer_hook);
 
 	std::cout << "done." << std::endl;
 }
@@ -103,15 +138,6 @@ void Mixer_SDL::resumeSound()
 }
 
 
-void Mixer_SDL::playMusic(Music& music)
-{
-	if(!music.loaded())
-		return;
-
-	Mix_PlayMusic(static_cast<Mix_Music*>(MUSIC_REF_MAP[music.name()].music), -1);
-}
-
-
 void Mixer_SDL::stopMusic()
 {
 	Mix_HaltMusic();
@@ -131,9 +157,12 @@ void Mixer_SDL::resumeMusic()
 }
 
 
-void Mixer_SDL::fadeInMusic(Music& music, int loops, int delay)
+void Mixer_SDL::fadeInMusic(Music& music, int loops, int time)
 {
-	Mix_FadeInMusic(static_cast<Mix_Music*>(MUSIC_REF_MAP[music.name()].music), loops, delay);
+	if (!music.loaded())
+		return;
+
+	Mix_FadeInMusic(static_cast<Mix_Music*>(MUSIC_REF_MAP[music.name()].music), loops, time);
 }
 
 
@@ -149,13 +178,13 @@ bool Mixer_SDL::musicPlaying() const
 }
 
 
-void Mixer_SDL::setSfxVolume(int volume)
+void Mixer_SDL::soundVolume(int volume)
 {
 	Mix_Volume(-1, clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 
-void Mixer_SDL::setMusVolume(int volume)
+void Mixer_SDL::musicVolume(int volume)
 {
 	Mix_VolumeMusic(clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
@@ -163,13 +192,13 @@ void Mixer_SDL::setMusVolume(int volume)
 
 void Mixer_SDL::mute()
 {
-	setMusVolume(0);
-	setSfxVolume(0);
+	musicVolume(0);
+	soundVolume(0);
 }
 
 
 void Mixer_SDL::unmute()
 {
-	setMusVolume(Mix_VolumeMusic(-1));
-	setSfxVolume(Mix_Volume(-1, -1));
+	musicVolume(Mix_VolumeMusic(-1));
+	soundVolume(Mix_Volume(-1, -1));
 }

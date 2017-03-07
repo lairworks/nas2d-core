@@ -10,10 +10,7 @@
 
 #pragma once
 
-#include "NAS2D/Exception.h"
-#include "NAS2D/Common.h"
-#include "NAS2D/Configuration.h"
-#include "NAS2D/Utility.h"
+#include "NAS2D/Signal.h"
 
 #include "NAS2D/Resources/Sound.h"
 #include "NAS2D/Resources/Music.h"
@@ -29,6 +26,10 @@ namespace NAS2D {
  */
 class Mixer
 {
+public:
+	static const int CONTINUOUS = -1;
+	static const int DEFAULT_FADE_TIME = 500;
+
 public:
 	/**
 	 * C'Tor
@@ -65,10 +66,9 @@ public:
 	/**
 	 * Starts playing a Music track.
 	 * 
-	 * \param	music	A reference to a Music Resource.
+	 * \param	music	Reference to a Music Resource.
 	 */
-	virtual void playMusic(Music& music) {}
-
+	void playMusic(Music& music) { fadeInMusic(music, Mixer::CONTINUOUS, 0); }
 
 	/**
 	 * Stops all playing music.
@@ -76,12 +76,12 @@ public:
 	virtual void stopMusic() {}
 
 	/**
-	 * Pauses the currently playing Music track.
+	 * Pauses the currently playing Music.
 	 */
 	virtual void pauseMusic() {}
 
 	/**
-	 * Resumes the currently paused Music track.
+	 * Resumes the currently paused Music.
 	 * 
 	 * \note	It is safe to call this function if the music is stopped or already playing.
 	 */
@@ -89,26 +89,32 @@ public:
 	
 	/**
 	 * Starts a Music track and fades it in to the current Music volume.
+	 * 
+	 * \param	music	Reference to a Music Resource.
+	 * \param	loops	Number of times the Music should be repeated. -1 for continuous loop.
+	 * \param	time	Time, in miliseconds, for the fade to last. Default is 500.
 	 */
-	virtual void fadeInMusic(Music& music, int loops = -1, int delay = 500) {}
+	virtual void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) {}
 
 	/**
 	 * Fades out the currently playing Music track.
+	 * 
+	 * \param	time	Time, in miliseconds, for the fade to last. Default is 500.
 	 */
-	virtual void fadeOutMusic(int delay = 500) {}
+	virtual void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) {}
 
 	/**
-	* Gets whether or not music is currently playing.
-	*/
+	 * Gets whether or not music is currently playing.
+	 */
 	virtual bool musicPlaying() const { return false; }
 
 	/**
-	 * Mutes all music and audio.
+	 * Mutes all audio.
 	 */
 	virtual void mute() {}
 
 	/**
-	 * Unmute's all music and sound and returns their volumes to their previous levels.
+	 * Unmutes all audio.
 	 */
 	virtual void unmute() {}
 
@@ -129,20 +135,30 @@ public:
 
 	/**
 	 * Sets the sound volume.
+	 *
+	 * \param	level	Volume level to set. Valid values are 0 - 128.
 	 */
-	void setSfxVolume(int level) {};
+	virtual void soundVolume(int level) {};
 
 	/**
 	 * Sets the music volume.
+	 * 
+	 * \param	level	Volume level to set. Valid values are 0 - 128.
 	 */
-	void setMusVolume(int level) {};
+	virtual void musicVolume(int level) {};
 
 	/**
-	 * Gets the name of the derived Mixer.
+	 * Gets the name of the Mixer.
 	 * 
 	 * \return	A /c std::string containing the name of the Mixer.
 	 */
-	const std::string& getName() const { return mMixerName; }
+	const std::string& name() const { return mName; }
+
+	/**
+	 * Gets a reference to a NAS2D::Signals::Signal0<void>, a signal raised
+	 * when a Music track has finished playing.
+	 */
+	NAS2D::Signals::Signal0<void>& musicComplete() { return _music_complete; }
 
 protected:
 	/**
@@ -150,10 +166,13 @@ protected:
 	 * 
 	 * This c'tor is not public and can't be invoked externally.
 	 */
-	Mixer(const std::string& mixerName):	mMixerName(mixerName)
+	Mixer(const std::string& name) : mName(name)
 	{}
 
-	std::string mMixerName;		/**< Internal name of the Renderer. */
+protected:
+	friend class Mixer_SDL;
+
+	NAS2D::Signals::Signal0<void>	_music_complete;
 
 private:
 	/**
@@ -173,6 +192,9 @@ private:
 	 */
 	Mixer& operator=(const Mixer&)
 	{}
+
+private:
+	std::string		mName;		/**< Internal name of the Renderer. */
 };
 
 } // namespace

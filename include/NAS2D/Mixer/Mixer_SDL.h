@@ -36,19 +36,18 @@ public:
 	void resumeSound();
 
 	// Music Functions
-	void playMusic(Music& music);
 	void stopMusic();
 	void pauseMusic();
 	void resumeMusic();
 
-	void fadeInMusic(Music& music, int loops, int delay);
-	void fadeOutMusic(int delay);
+	void fadeInMusic(Music& music, int loops, int time);
+	void fadeOutMusic(int time);
 
 	virtual bool musicPlaying() const;
 
 	// Global Functions
-	void setSfxVolume(int level);
-	void setMusVolume(int level);
+	virtual void soundVolume(int level);
+	virtual void musicVolume(int level);
 
 	void mute();
 	void unmute();

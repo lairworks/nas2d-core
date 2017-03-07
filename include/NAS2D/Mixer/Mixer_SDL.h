@@ -57,6 +57,7 @@ private:
 	Mixer_SDL& operator=(const Mixer_SDL&) {}	// Intentionally left undefined;
 
 	void init();
+	void music_finished_hook();
 };
 
 };

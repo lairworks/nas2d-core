@@ -39,22 +39,8 @@ extern std::map<std::string, MusicInfo>	MUSIC_REF_MAP;
 // ==================================================================================
 // INTEROP WITH SDL2_MIXER
 // ==================================================================================
-template <typename T>
-struct Callback;
-
-template <typename Ret, typename... Params>
-struct Callback<Ret(Params...)>
-{
-	template <typename... Args>
-	static Ret callback(Args... args) { func(args...); }
-	static std::function<Ret(Params...)> func;
-};
-
-template <typename Ret, typename... Params>
-std::function<Ret(Params...)> Callback<Ret(Params...)>::func;
-typedef void(*callback_t)(void);
-
-callback_t mixer_hook;
+NAS2D::Signals::Signal0<void> MIXER_HOOK_CALLBACK_SIGNAL;
+void MIXER_HOOK() { MIXER_HOOK_CALLBACK_SIGNAL(); }
 // ==================================================================================
 
 
@@ -81,6 +67,10 @@ Mixer_SDL::~Mixer_SDL()
 	stopAllAudio();
 
 	Mix_CloseAudio();
+
+	MIXER_HOOK_CALLBACK_SIGNAL.Disconnect(this, &Mixer_SDL::music_finished_hook);
+	Mix_HookMusicFinished(nullptr);
+
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 
 	std::cout << "Mixer Terminated." << std::endl;
@@ -102,12 +92,16 @@ void Mixer_SDL::init()
 	soundVolume(c.audioSfxVolume());
 	musicVolume(c.audioMusicVolume());
 
-	Callback<void(void)>::func = std::bind(&Mixer::_music_complete, this);
-	mixer_hook = static_cast<callback_t>(Callback<void(void)>::callback);
-	
-	Mix_HookMusicFinished(mixer_hook);
+	Mix_HookMusicFinished(MIXER_HOOK);
+	MIXER_HOOK_CALLBACK_SIGNAL.Connect(this, &Mixer_SDL::music_finished_hook);
 
 	std::cout << "done." << std::endl;
+}
+
+
+void Mixer_SDL::music_finished_hook()
+{
+	musicComplete().Emit();
 }
 
 

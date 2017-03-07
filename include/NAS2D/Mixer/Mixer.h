@@ -68,7 +68,7 @@ public:
 	 * 
 	 * \param	music	Reference to a Music Resource.
 	 */
-	void playMusic(Music& music) { fadeInMusic(music, Mixer::CONTINUOUS, 0); }
+	void playMusic(Music& music, int loops = Mixer::CONTINUOUS) { fadeInMusic(music, loops, 0); }
 
 	/**
 	 * Stops all playing music.
@@ -170,8 +170,6 @@ protected:
 	{}
 
 protected:
-	friend class Mixer_SDL;
-
 	NAS2D::Signals::Signal0<void>	_music_complete;
 
 private:

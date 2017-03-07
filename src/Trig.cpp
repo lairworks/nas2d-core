@@ -46,7 +46,9 @@ float NAS2D::radToDeg(float rad)
  */
 float NAS2D::angleFromPoints(float x, float y, float x2, float y2)
 {
-	return 90.0f - radToDeg(atan2(y2 - y, x2 - x));
+	// static_cast<float> used to suppress warning at possible loss of data. Intentionally
+	// surpressed as we don't need that level of precision.
+	return 90.0f - radToDeg(static_cast<float>(atan2(y2 - y, x2 - x)));
 }
 
 
@@ -55,7 +57,9 @@ float NAS2D::angleFromPoints(float x, float y, float x2, float y2)
  */
 Point_2df NAS2D::getDirectionVector(float angle)
 {
-	return Point_2df(sin(NAS2D::degToRad(angle)), -cos(NAS2D::degToRad(angle)));
+	// static_cast<float> used to suppress warning at possible loss of data. Intentionally
+	// surpressed as we don't need that level of precision.
+	return Point_2df(static_cast<float>(sin(NAS2D::degToRad(angle))), static_cast<float>(-cos(NAS2D::degToRad(angle))));
 }
 
 

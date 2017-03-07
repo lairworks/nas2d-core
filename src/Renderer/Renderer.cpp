@@ -741,26 +741,6 @@ void Renderer::drawText(Font& font, const std::string& text, float x, float y, i
 {}
 
 
-/*
- * Renders Text in the Color specified clamped within a specified width and height.
- *
- * \param font		A reference to a Font Resource.
- * \param text		The text to draw.
- * \param rasterX	X-Coordinate to render text string.
- * \param rasterY	Y-Coordinate to render text string.
- * \param x			X-Coordinate to grab from the rendered font area.
- * \param y			Y-Coordinate to grab from the rendered font area.
- * \param w			Maximum width of the target area that text should be rendered to.
- * \param h			Maximum Height of the target area that text should be rendered to.
- * \param r			Red color value between 0 - 255.
- * \param g			Green color value between 0 - 255.
- * \param b			Blue color value between 0 - 255.
- * \param a			Alpha color value between 0 - 255.
- */
-void Renderer::drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
-{}
-
-
 /**
  * Renders a text string with a drop shadow.
  *
@@ -781,33 +761,6 @@ void Renderer::drawTextShadow(Font& font, const std::string& text, float x, floa
 {
 	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
 	drawText(font, text, x, y, r, g, b, a);
-}
-
-
-/**
- * Renders a text string with a drop shadow.
- *
- * \param font		A reference to a Font Resource.
- * \param text		The text to draw.
- * \param rasterX	X-Coordinate to render text string.
- * \param rasterY	Y-Coordinate to render text string.
- * \param x			X-Coordinate to grab from the rendered font area.
- * \param y			Y-Coordinate to grab from the rendered font area.
- * \param w			Maximum width of the target area that text should be rendered to.
- * \param h			Maximum Height of the target area that text should be rendered to.
- * \param distance	Distance in pixels the drop shadow should be rendered.
- * \param r			Red color value between 0 - 255.
- * \param g			Green color value between 0 - 255.
- * \param b			Blue color value between 0 - 255.
- * \param sr		Red color value between 0 - 255.
- * \param sg		Green color value between 0 - 255.
- * \param sb		Blue color value between 0 - 255.
- * \param a			Alpha color value between 0 - 255.
- */
-void Renderer::drawTextShadowClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int distance, int r, int g, int b, int sr, int sg, int sb, int a)
-{
-	drawTextClamped(font, text, rasterX + distance, rasterY + distance, x, y, w, h, sr, sg, sb, a);
-	drawTextClamped(font, text, rasterX, rasterY, x, y, w, h, r, g, b, a);
 }
 
 

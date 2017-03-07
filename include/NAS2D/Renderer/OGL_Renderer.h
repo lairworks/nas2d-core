@@ -47,7 +47,6 @@ public:
 	void drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4);
 
     void drawText(NAS2D::Font& font, const std::string& text, float x, float y, int r, int g, int b, int a);
-    void drawTextClamped(NAS2D::Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a);
 
 	void clearScreen(int r, int g, int b);
     

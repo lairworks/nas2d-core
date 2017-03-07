@@ -103,8 +103,6 @@ public:
 
 	virtual void drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a = 255);
 	void drawTextShadow(Font& font, const std::string& text, float x, float y, int sDistance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
-	virtual void drawTextClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a = 255);
-	void drawTextShadowClamped(Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int distance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
 
 	void setFadeColor(const Color_4ub& color);
 	void fadeIn(float delayTime);

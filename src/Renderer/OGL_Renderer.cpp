@@ -399,56 +399,6 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 }
 
 
-void OGL_Renderer::drawTextClamped(NAS2D::Font& font, const std::string& text, float rasterX, float rasterY, float x, float y, float w, float h, int r, int g, int b, int a)
-{
-    // Ignore if font isn't loaded or string is empty
-    if(!font.loaded() || text.empty())
-        return;
-
-    glColor4ub(r, g, b, a);
-
-    int offset = 0;
-    NAS2D::Font::GlyphMetrics gm;
-
-    glEnable(GL_STENCIL_TEST);
-    glDepthMask(GL_FALSE);
-
-    glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
-    glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
-
-    glDisable(GL_TEXTURE_2D);
-
-    glColor4ub(0,0,0,0); //white
-
-    fillVertexArray(rasterX, rasterY, w, h);
-    fillTextureArray(0, 0, 1, 1);
-
-    drawVertexArray(font.texture_id(), false);
-
-    glColor4ub(r, g, b, a);
-
-    glEnable(GL_TEXTURE_2D);
-    glDepthMask(GL_TRUE);
-
-    glStencilFunc(GL_EQUAL, 1, 0xFFFFFFFF);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-    for(size_t i = 0; i < text.size(); i++)
-    {
-        gm = font.glyphMetrics(static_cast<int>(text[i]));
-
-        fillVertexArray(rasterX + x + offset, rasterY + y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
-        fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
-
-        drawVertexArray(font.texture_id(), false);
-
-        offset += gm.advance;
-    }
-
-    glDisable(GL_STENCIL_TEST);
-}
-
-
 void OGL_Renderer::clearScreen(int r, int g, int b)
 {
 	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0 );

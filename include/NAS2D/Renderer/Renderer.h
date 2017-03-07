@@ -10,37 +10,31 @@
 
 #pragma once
 
-#include "NAS2D/Common.h"
-#include "NAS2D/Configuration.h"
-#include "NAS2D/Exception.h"
-#include "NAS2D/Utility.h"
-#include "NAS2D/Timer.h"
+#include <string>
 
+#include "NAS2D/Signal.h"
 #include "NAS2D/Renderer/Primitives.h"
-
-#include "NAS2D/Resources/Font.h"
 #include "NAS2D/Resources/Image.h"
+#include "NAS2D/Resources/Font.h"
 
 namespace NAS2D {
 
 // Color Presets
-extern const Color_4ub COLOR_BLACK;
-extern const Color_4ub COLOR_BLUE;
-extern const Color_4ub COLOR_BRIGHT_GREEN;
-extern const Color_4ub COLOR_CYAN;
-extern const Color_4ub COLOR_GREEN;
-extern const Color_4ub COLOR_GREY;
-extern const Color_4ub COLOR_MAGENTA;
-extern const Color_4ub COLOR_NAVY;
-extern const Color_4ub COLOR_ORANGE;
-extern const Color_4ub COLOR_RED;
-extern const Color_4ub COLOR_SILVER;
-extern const Color_4ub COLOR_WHITE;
-extern const Color_4ub COLOR_YELLOW;
+extern const NAS2D::Color_4ub COLOR_BLACK;
+extern const NAS2D::Color_4ub COLOR_BLUE;
+extern const NAS2D::Color_4ub COLOR_BRIGHT_GREEN;
+extern const NAS2D::Color_4ub COLOR_CYAN;
+extern const NAS2D::Color_4ub COLOR_GREEN;
+extern const NAS2D::Color_4ub COLOR_GREY;
+extern const NAS2D::Color_4ub COLOR_MAGENTA;
+extern const NAS2D::Color_4ub COLOR_NAVY;
+extern const NAS2D::Color_4ub COLOR_ORANGE;
+extern const NAS2D::Color_4ub COLOR_RED;
+extern const NAS2D::Color_4ub COLOR_SILVER;
+extern const NAS2D::Color_4ub COLOR_WHITE;
+extern const NAS2D::Color_4ub COLOR_YELLOW;
 
-extern const Color_4ub COLOR_NORMAL;
-
-using namespace NAS2D;
+extern const NAS2D::Color_4ub COLOR_NORMAL;
 
 /**
  * \class Renderer
@@ -63,11 +57,11 @@ public:
 
 	void drawImage(Image& image, float x, float y, float scale = 1.0f);
 	virtual void drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a);
-	
+
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
 	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a);
 
-	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color_4ub& color = COLOR_NORMAL);
+	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const NAS2D::Color_4ub& color = NAS2D::COLOR_NORMAL);
 	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a);
 
 	void drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color = COLOR_NORMAL, float scale = 1.0f);
@@ -77,7 +71,7 @@ public:
 	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a);
 
 	virtual void drawImageRepeated(Image& image, float x, float y, float w, float h);
-	void drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
+	void drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
 	void drawImageRect(float x, float y, float w, float h, ImageList& images);
 
 	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint);
@@ -109,6 +103,7 @@ public:
 	void fadeOut(float delayTime);
 	bool isFading() const;
 	bool isFaded() const;
+	NAS2D::Signals::Signal0<void>& fadeComplete() const;
 
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);
@@ -132,7 +127,7 @@ protected:
 private:
 	/**
 	 * Copy c'tor.
-	 * 
+	 *
 	 * The copy c'tor is intentionally private and undefined. It should
 	 * never be invoked at any time.
 	 */
@@ -140,7 +135,7 @@ private:
 
 	/**
 	 * Copy operator.
-	 * 
+	 *
 	 * The copy operator is intentionally private and undefined. It should
 	 * never be invoked at any time.
 	 */
@@ -150,8 +145,6 @@ private:
 	std::string			mRendererName;	/**< Internal name of the Renderer. */
 	std::string			mDriverName;	/**< OS Driver name */
 	std::string			mTitle;			/**< Title to use for the application. */
-
-	Timer				mTimer;				/**< Internal Timer. */
 
 	Color_4ub			mFadeColor;		/**< Fade Color. */
 	float				mFadeStep;		/**< Amount of fading to do per milisecond. */

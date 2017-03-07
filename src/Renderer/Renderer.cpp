@@ -10,6 +10,8 @@
 
 #include "NAS2D/Renderer/Renderer.h"
 
+#include "NAS2D/Timer.h"
+
 #include <iostream>
 
 using namespace NAS2D;
@@ -31,7 +33,9 @@ const Color_4ub NAS2D::COLOR_YELLOW(255, 255, 0, 255);
 
 const Color_4ub NAS2D::COLOR_NORMAL = NAS2D::COLOR_WHITE;
 
+NAS2D::Timer		_TIMER;
 
+NAS2D::Signals::Signal0<void>	_FADE_COMPLETE;
 
 enum FadeType
 {
@@ -75,6 +79,7 @@ Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
  */
 Renderer::~Renderer()
 {
+	_FADE_COMPLETE.Clear();
 	std::cout << "Renderer Terminated." << std::endl;
 }
 
@@ -357,7 +362,7 @@ void Renderer::fadeIn(float delay)
 	CURRENT_FADE = FADE_IN;
 	mFadeStep = 255.0f /delay;
 
-	mTimer.delta();	// clear timer
+	_TIMER.delta();	// clear timer
 }
 
 
@@ -379,7 +384,7 @@ void Renderer::fadeOut(float delay)
 	CURRENT_FADE = FADE_OUT;
 	mFadeStep = 255.0f / delay;
 
-	mTimer.delta(); // clear timer
+	_TIMER.delta(); // clear timer
 }
 
 
@@ -398,6 +403,12 @@ bool Renderer::isFading() const
 bool Renderer::isFaded() const
 {
 	return (mCurrentFade == 255.0f);
+}
+
+
+NAS2D::Signals::Signal0<void>& Renderer::fadeComplete() const
+{
+	return _FADE_COMPLETE;
 }
 
 
@@ -797,7 +808,7 @@ void Renderer::update()
 {
 	if(CURRENT_FADE != FADE_NONE)
 	{
-		float fade = mTimer.delta() * mFadeStep;
+		float fade = _TIMER.delta() * mFadeStep;
 
 		if(CURRENT_FADE == FADE_IN)
 		{
@@ -807,6 +818,7 @@ void Renderer::update()
 			{
 				mCurrentFade = 0.0f;
 				CURRENT_FADE = FADE_NONE;
+				_FADE_COMPLETE();
 			}
 		}
 		else
@@ -817,6 +829,7 @@ void Renderer::update()
 			{
 				mCurrentFade = 255.0f;
 				CURRENT_FADE = FADE_NONE;
+				_FADE_COMPLETE();
 			}
 		}
 	}

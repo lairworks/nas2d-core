@@ -11,6 +11,8 @@
 #include "NAS2D/Trig.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
+#include "NAS2D/Configuration.h"
+#include "NAS2D/Exception.h"
 #include "NAS2D/Resources/ImageInfo.h"
 
 #ifdef WINDOWS

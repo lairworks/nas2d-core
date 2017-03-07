@@ -215,3 +215,5 @@ ModelManifest.xml
 /proj/vc14/*.db
 /doxygen.exe
 /doc
+/*.bat
+/*.txt

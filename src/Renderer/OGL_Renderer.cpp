@@ -95,8 +95,6 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r,
 	fillVertexArray(x, y, static_cast<float>(image.width()), static_cast<float>(image.height()));
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
 	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
-
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -113,8 +111,6 @@ void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, floa
 					);
 
 	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
-
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -143,8 +139,6 @@ void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float raster
 	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
 
 	glPopMatrix();
-
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -170,8 +164,6 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 	
 	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
 	glPopMatrix();
-
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -181,14 +173,13 @@ void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, f
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(x, y, w, h);
-	
 	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
 void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
 {
+	glColor4ub(255, 255, 255, 255);
 	fillVertexArray(x, y, w, h);
 
 	// Change texture mode to repeat at edges.
@@ -204,6 +195,8 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 
 void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
+	glColor4ub(255, 255, 255, 255);
+
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if(dstPoint.x() > destination.width() || dstPoint.y() > destination.height())
 		return;
@@ -253,8 +246,6 @@ void OGL_Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
 	glDrawArrays(GL_POINTS, 0, 1);
 
 	glEnable(GL_TEXTURE_2D);
-
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -267,8 +258,6 @@ void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, 
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
-
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -319,7 +308,6 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	verts = 0;
 
 	glEnable(GL_TEXTURE_2D);
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -384,7 +372,6 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, in
 	drawVertexArray(0);
 
 	glEnable(GL_TEXTURE_2D);
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -409,8 +396,6 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 		drawVertexArray(font.texture_id(), false);
 		offset += gm.advance + gm.minX;
 	}
-	
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
@@ -461,8 +446,6 @@ void OGL_Renderer::drawTextClamped(NAS2D::Font& font, const std::string& text, f
     }
 
     glDisable(GL_STENCIL_TEST);
-
-    glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 

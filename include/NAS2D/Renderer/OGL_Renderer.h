@@ -10,7 +10,6 @@
 #pragma once
 
 #include "Renderer.h"
-#include "ShaderManager.h"
 
 namespace NAS2D {
 
@@ -30,8 +29,8 @@ public:
 	void drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a);
 	
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a);
-
 	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a);
+
 	void drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale);
 	void drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a);
 
@@ -39,7 +38,7 @@ public:
 
 	void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint);
 
-	void drawPixel(float x, float y, int r, int g, int b, int a);
+	void drawPoint(float x, float y, int r, int g, int b, int a);
 	void drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width);
 	void drawBox(float x, float y, float width, float height, int r, int g, int b, int a);
 	void drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a);
@@ -62,18 +61,7 @@ private:
 	OGL_Renderer& operator=(const OGL_Renderer&);	// Intentionally left undefined;
 
 	void initGL();
-	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
-	
-	void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
-	void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
-
-	void drawVertexArray(GLuint textureId, bool defaultTextureCoords);
-	
-private:
-	GLfloat				mVertexArray[12];			/**< Vertex array for quad drawing functions (all blitter functions). */
-	GLfloat				mTextureCoordArray[12];		/**< Texture coordinate array for quad drawing functions (all blitter functions). */
-	
-	ShaderManager		*mShaderManager;
+	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);	
 };
 
 } // namespace

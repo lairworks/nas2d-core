@@ -18,6 +18,10 @@
 #include "NAS2D/Mixer/Mixer_SDL.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
+
+#include <iostream>
+
+
 using namespace NAS2D;
 
 /**

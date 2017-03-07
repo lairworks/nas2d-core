@@ -26,7 +26,7 @@
 #endif
 
 
-//#include <iostream>
+#include <iostream>
 #include <math.h>
 
 using namespace NAS2D;
@@ -43,6 +43,10 @@ GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 /** Color value array for four verts. Defaults to white or normal color. */
 GLfloat COLOR_VERTEX_ARRAY[16] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
+
+GLfloat		VERTEX_ARRAY[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
+GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
+
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 
 // UGLY ASS HACK!
@@ -55,20 +59,21 @@ SDL_Window*			_WINDOW = nullptr;
 
 SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
 
+void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
+void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
+void drawVertexArray(GLuint textureId, bool defaultTextureCoords = true);
 
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 GLuint generate_fbo();
 
 
-OGL_Renderer::OGL_Renderer(const std::string title):	Renderer("OpenGL Renderer", title)
+OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer", title)
 {
 	std::cout << "Starting " << name() << ":" << std::endl;
 	
 	Configuration& cf = Utility<Configuration>::get();
 	TEXTURE_FILTER = cf.graphicsTextureQuality();
 	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
-
-	mLetterBoxHeight = (int)((width()) * 0.15);
 }
 
 
@@ -79,53 +84,7 @@ OGL_Renderer::~OGL_Renderer()
 	_WINDOW = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
-	//delete mShaderManager;
-
 	std::cout << "OpenGL Renderer Terminated." << std::endl;
-}
-
-
-void OGL_Renderer::drawVertexArray(GLuint textureId, bool defaultTextureCoords = true)
-{ 	
-	glBindTexture(GL_TEXTURE_2D, textureId);
-
-	glVertexPointer(2, GL_FLOAT, 0, mVertexArray);
-
-	// Choose from the default texture coordinates or from a custom set.
-	if(defaultTextureCoords) glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
-	else glTexCoordPointer(2, GL_FLOAT, 0, mTextureCoordArray);
-	
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
-}
-
-
-/**
- * Used internally to fill the vertex array with quad vertex information.
- */
-void OGL_Renderer::fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
-{
-	mVertexArray[0] = static_cast<GLfloat>(x), mVertexArray[1] = static_cast<GLfloat>(y);
-	mVertexArray[2] = static_cast<GLfloat>(x), mVertexArray[3] = static_cast<GLfloat>(y + h);
-	mVertexArray[4] = static_cast<GLfloat>(x + w), mVertexArray[5] = static_cast<GLfloat>(y + h);
-
-	mVertexArray[6] = static_cast<GLfloat>(x + w), mVertexArray[7] = static_cast<GLfloat>(y + h);
-	mVertexArray[8] = static_cast<GLfloat>(x + w), mVertexArray[9] = static_cast<GLfloat>(y);
-	mVertexArray[10] = static_cast<GLfloat>(x), mVertexArray[11] = static_cast<GLfloat>(y);
-}
-
-
-/**
- * Used internally to fill the texture coordinate array with quad vertex information.
- */
-void OGL_Renderer::fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
-{
-	mTextureCoordArray[0] = static_cast<GLfloat>(x), mTextureCoordArray[1] = static_cast<GLfloat>(y);
-	mTextureCoordArray[2] = static_cast<GLfloat>(x), mTextureCoordArray[3] = static_cast<GLfloat>(v);
-	mTextureCoordArray[4] = static_cast<GLfloat>(u), mTextureCoordArray[5] = static_cast<GLfloat>(v);
-
-	mTextureCoordArray[6] = static_cast<GLfloat>(u), mTextureCoordArray[7] = static_cast<GLfloat>(v);
-	mTextureCoordArray[8] = static_cast<GLfloat>(u), mTextureCoordArray[9] = static_cast<GLfloat>(y);
-	mTextureCoordArray[10] = static_cast<GLfloat>(x), mTextureCoordArray[11] = static_cast<GLfloat>(y);
 }
 
 
@@ -282,7 +241,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 }
 
 
-void OGL_Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
+void OGL_Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
 {
 	glDisable(GL_TEXTURE_2D);
 
@@ -352,9 +311,9 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 
 	/**
 	 * \todo	I really hate the alloc's/dealloc's that are done in this function.
-				We should consider a basic array lookup table approach which will
-				eliminate the alloc/dealloc overhead (at the cost of increased code
-				size).
+	 * 			We should consider a basic array lookup table approach which will
+	 * 			eliminate the alloc/dealloc overhead (at the cost of increased code
+	 * 			size).
 	 */
 	delete [] verts;
 	verts = 0;
@@ -575,9 +534,6 @@ void OGL_Renderer::initGL()
 
 	glVertexPointer(2, GL_FLOAT, 0, DEFAULT_VERTEX_COORDS);
 	glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
-
-	//mShaderManager->loadShader("shaders/font/font.frag", mFontShaderFrag);
-	//mShaderManager->loadShader("shaders/font/font.vert", mFontShaderVert);
 }
 
 
@@ -621,23 +577,80 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	#endif
 
 	SDL_ShowCursor(false);
-
-	//mShaderManager = new ShaderManager();
 	initGL();
+}
+
+
+
+// ==================================================================================
+// = NON PUBLIC IMPLEMENTATION
+// ==================================================================================
+
+/**
+ * Generates an OpenGL Frame Buffer Object.
+ */
+GLuint generate_fbo()
+{
+	GLuint fbo = 0;
+	glGenBuffers(1, &fbo);
+	return fbo;
+}
+
+
+/**
+ * Draws a textured rectangle using a vertex and texture coordinate array
+ */
+void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
+{
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
+
+	// Choose from the default texture coordinates or from a custom set.
+	if (defaultTextureCoords) glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
+	else glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY);
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+}
+
+
+/**
+ * Fills a vertex array with quad vertex information.
+ */
+void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
+{
+	VERTEX_ARRAY[0] = static_cast<GLfloat>(x), VERTEX_ARRAY[1] = static_cast<GLfloat>(y);
+	VERTEX_ARRAY[2] = static_cast<GLfloat>(x), VERTEX_ARRAY[3] = static_cast<GLfloat>(y + h);
+	VERTEX_ARRAY[4] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[5] = static_cast<GLfloat>(y + h);
+
+	VERTEX_ARRAY[6] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[7] = static_cast<GLfloat>(y + h);
+	VERTEX_ARRAY[8] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[9] = static_cast<GLfloat>(y);
+	VERTEX_ARRAY[10] = static_cast<GLfloat>(x), VERTEX_ARRAY[11] = static_cast<GLfloat>(y);
+}
+
+
+/**
+ * Fills a texture coordinate array with quad vertex information.
+ */
+void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
+{
+	TEXTURE_COORD_ARRAY[0] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[1] = static_cast<GLfloat>(y);
+	TEXTURE_COORD_ARRAY[2] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[3] = static_cast<GLfloat>(v);
+	TEXTURE_COORD_ARRAY[4] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[5] = static_cast<GLfloat>(v);
+
+	TEXTURE_COORD_ARRAY[6] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[7] = static_cast<GLfloat>(v);
+	TEXTURE_COORD_ARRAY[8] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[9] = static_cast<GLfloat>(y);
+	TEXTURE_COORD_ARRAY[10] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[11] = static_cast<GLfloat>(y);
 }
 
 
 /**
  * The following code was developed by Chris Tsang and lifted from:
  * 
- * http://artgrammer.blogspot.com/2011/05/drawing-nearly-perfect-2d-line-segments.html
  * http://www.codeproject.com/KB/openGL/gllinedraw.aspx
  * 
  * Modified: Removed option for non-alpha blending and general code cleanup.
  * 
- * This is just drop-in code for the time being until I can find a better
- * method of drawing lines. They don't need to be nearly perfect but this
- * should do the job.
+ * This is drop-in code that may be replaced in the future.
  */
 static inline float _ABS(float x) { return x > 0 ? x : -x; }
 
@@ -817,12 +830,4 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		glColorPointer(4, GL_FLOAT, 0, line_color);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	}
-}
-
-
-GLuint generate_fbo()
-{
-	GLuint fbo = 0;
-	glGenBuffers(1, &fbo);
-	return fbo;
 }

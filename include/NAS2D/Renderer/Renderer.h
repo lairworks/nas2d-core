@@ -52,6 +52,7 @@ using namespace NAS2D;
 class Renderer
 {
 public:
+	Renderer();
 	virtual ~Renderer();
 
 	const std::string& name();
@@ -81,8 +82,8 @@ public:
 
 	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint);
 
-	void drawPixel(float x, float y, const Color_4ub& color = COLOR_WHITE);
-	virtual void drawPixel(float x, float y, int r, int g, int b, int a = 255);
+	void drawPoint(float x, float y, const Color_4ub& color = COLOR_WHITE);
+	virtual void drawPoint(float x, float y, int r, int g, int b, int a = 255);
 
 	void drawLine(float x, float y, float x2, float y2, const Color_4ub& color = COLOR_WHITE, int line_width = 1);
 	virtual void drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a = 255, int line_width = 1);
@@ -117,7 +118,7 @@ public:
 	virtual float width();
 	virtual float height();
 
-	Point_2df getScreenResolution();
+	Point_2df screenSize();
 
 	float screenCenterX();
 	float screenCenterY();
@@ -131,15 +132,6 @@ protected:
 	void driverName(const std::string& name);
 
 private:
-	/**
-	* Default c'tor.
-	*
-	* The default c'tor is intentionally private and undefined. It should
-	* never be invoked at any time.
-	*/
-	Renderer();
-
-
 	/**
 	 * Copy c'tor.
 	 * 
@@ -157,14 +149,6 @@ private:
 	Renderer& operator=(const Renderer&);
 
 private:
-	enum FadeType
-	{
-		FADE_NONE,
-		FADE_IN,
-		FADE_OUT
-	};
-
-private:
 	std::string			mRendererName;	/**< Internal name of the Renderer. */
 	std::string			mDriverName;	/**< OS Driver name */
 	std::string			mTitle;			/**< Title to use for the application. */
@@ -172,7 +156,6 @@ private:
 	Timer				mTimer;				/**< Internal Timer. */
 
 	Color_4ub			mFadeColor;		/**< Fade Color. */
-	FadeType			mFade;			/**< Fade State. */
 	float				mFadeStep;		/**< Amount of fading to do per milisecond. */
 	float				mCurrentFade;	/**< Current fade amount. */
 };

@@ -32,6 +32,29 @@ const Color_4ub NAS2D::COLOR_YELLOW(255, 255, 0, 255);
 const Color_4ub NAS2D::COLOR_NORMAL = NAS2D::COLOR_WHITE;
 
 
+
+enum FadeType
+{
+	FADE_NONE,
+	FADE_IN,
+	FADE_OUT
+};
+
+
+FadeType				CURRENT_FADE = FADE_NONE;
+
+
+Renderer::Renderer() :	mRendererName("NULL Renderer"),
+						mDriverName("NULL Renderer"),
+						mTitle("Default Application"),
+						mFadeColor(COLOR_BLACK),
+						mFadeStep(0.0f),
+						mCurrentFade(0.0f)
+{
+	CURRENT_FADE = FADE_NONE;
+}
+
+
 /**
  * Internal constructor used by derived types to set the name of the Renderer.
  * 
@@ -40,10 +63,11 @@ const Color_4ub NAS2D::COLOR_NORMAL = NAS2D::COLOR_WHITE;
 Renderer::Renderer(const std::string& rendererName, const std::string& appTitle):	mRendererName(rendererName),
 																					mTitle(appTitle),
 																					mFadeColor(COLOR_BLACK),
-																					mFade(Renderer::FADE_NONE),
 																					mFadeStep(0.0f),
 																					mCurrentFade(0.0f)
-{}
+{
+	CURRENT_FADE = FADE_NONE;
+}
 
 
 /**
@@ -262,7 +286,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 
 
 /**
- * Draws a rectangle using a series of set of images.
+ * Draws a rectangle using a set of images.
  *
  * This function expects an ImageList with 9 images in it: four corners,
  * four edges and a center image to fill the rest in with.
@@ -326,11 +350,11 @@ void Renderer::fadeIn(float delay)
 	if(delay == 0)
 	{
 		mCurrentFade = 0.0f;
-		mFade = Renderer::FADE_NONE;
+		CURRENT_FADE = FADE_NONE;
 		return;
 	}
 
-	mFade = Renderer::FADE_IN;
+	CURRENT_FADE = FADE_IN;
 	mFadeStep = 255.0f /delay;
 
 	mTimer.delta();	// clear timer
@@ -348,11 +372,11 @@ void Renderer::fadeOut(float delay)
 	if(delay == 0)
 	{
 		mCurrentFade = 255.0f;
-		mFade = Renderer::FADE_NONE;
+		CURRENT_FADE = FADE_NONE;
 		return;
 	}
 
-	mFade = Renderer::FADE_OUT;
+	CURRENT_FADE = FADE_OUT;
 	mFadeStep = 255.0f / delay;
 
 	mTimer.delta(); // clear timer
@@ -364,7 +388,7 @@ void Renderer::fadeOut(float delay)
  */
 bool Renderer::isFading() const
 {
-	return (mFade != Renderer::FADE_NONE);
+	return (CURRENT_FADE != FADE_NONE);
 }
 
 
@@ -384,9 +408,9 @@ bool Renderer::isFaded() const
  * \param	y		Y-Coordinate of the pixel to draw.
  * \param	color	A references to a Color_4ub.
  */
-void Renderer::drawPixel(float x, float y, const Color_4ub& color)
+void Renderer::drawPoint(float x, float y, const Color_4ub& color)
 {
-	drawPixel(x, y, color.red(), color.green(), color.blue(), color.alpha());
+	drawPoint(x, y, color.red(), color.green(), color.blue(), color.alpha());
 }
 
 
@@ -400,7 +424,7 @@ void Renderer::drawPixel(float x, float y, const Color_4ub& color)
  * \param	b	Blue Color Value. Must be between 0 - 255.
  * \param	a	Alpha Value. Must be between 0 - 255. Defaults to 255.
  */
-void Renderer::drawPixel(float x, float y, int r, int g, int b, int a)
+void Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
 {}
 
 
@@ -629,7 +653,7 @@ float Renderer::height()
 /**
  * Gets the current screen resolution as a Point_2d.
  */
-Point_2df Renderer::getScreenResolution()
+Point_2df Renderer::screenSize()
 {
 	return Point_2df(width(), height());
 }
@@ -818,18 +842,18 @@ void Renderer::clearScreen(int r, int g, int b)
  */
 void Renderer::update()
 {
-	if(mFade != Renderer::FADE_NONE)
+	if(CURRENT_FADE != FADE_NONE)
 	{
 		float fade = mTimer.delta() * mFadeStep;
 
-		if(mFade == Renderer::FADE_IN)
+		if(CURRENT_FADE == FADE_IN)
 		{
 			mCurrentFade -= fade;
 
 			if(mCurrentFade < 0.0f)
 			{
 				mCurrentFade = 0.0f;
-				mFade = Renderer::FADE_NONE;
+				CURRENT_FADE = FADE_NONE;
 			}
 		}
 		else
@@ -839,7 +863,7 @@ void Renderer::update()
 			if(mCurrentFade > 255.0f)
 			{
 				mCurrentFade = 255.0f;
-				mFade = Renderer::FADE_NONE;
+				CURRENT_FADE = FADE_NONE;
 			}
 		}
 	}

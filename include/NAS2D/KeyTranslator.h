@@ -24,7 +24,7 @@ namespace NAS2D {
  * statement.
  * 
  * \note	KeyTranslator is a static class and therefore should never
- * 		be instantiated by itself.
+ *			be instantiated by itself.
  * 
  * Using the KeyTranslator is simple. Simply call its static methods with
  * the parameters from your KeyDown event handler:
@@ -32,8 +32,8 @@ namespace NAS2D {
  * \code{.cpp}
  * void onKeyDown(KeyCode key, KeyModifer mod, bool repeat)
  * {
- * 	std::string character = KeyTranslator::translate(key, mod);
- 	std::cout << character << std::endl;
+ *	std::string character = KeyTranslator::translate(key, mod);
+ *	std::cout << character << std::endl;
  * }
  *  \endcode
  */

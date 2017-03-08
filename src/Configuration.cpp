@@ -102,53 +102,47 @@ void Configuration::save()
 {
 	TiXmlDocument doc;
 
-	TiXmlComment comment("Automatically generated Configuration file.");
-	doc.LinkEndChild(&comment);
+	TiXmlComment* comment = new TiXmlComment("Automatically generated Configuration file.");
+	doc.LinkEndChild(comment);
 
-	TiXmlElement root("configuration");
-	doc.LinkEndChild(&root);
+	TiXmlElement* root = new TiXmlElement("configuration");
+	doc.LinkEndChild(root);
 
-	TiXmlElement graphics("graphics");
-	graphics.SetAttribute("screenwidth", mScreenWidth);
-	graphics.SetAttribute("screenheight", mScreenHeight);
-	graphics.SetAttribute("bitdepth", mScreenBpp);
+	TiXmlElement* graphics = new TiXmlElement("graphics");
+	graphics->SetAttribute("screenwidth", mScreenWidth);
+	graphics->SetAttribute("screenheight", mScreenHeight);
+	graphics->SetAttribute("bitdepth", mScreenBpp);
 
-	if(mFullScreen)
-		graphics.SetAttribute("fullscreen", "true");
-	else
-		graphics.SetAttribute("fullscreen", "false");
+	if(mFullScreen)	graphics->SetAttribute("fullscreen", "true");
+	else graphics->SetAttribute("fullscreen", "false");
 	
-	if(mVSync)
-		graphics.SetAttribute("vsync", "true");
-	else
-		graphics.SetAttribute("vsync", "false");
+	if(mVSync)	graphics->SetAttribute("vsync", "true");
+	else graphics->SetAttribute("vsync", "false");
 
-	if(mTextureQuality == GL_NEAREST)
-		graphics.SetAttribute("texturequality", "fast");
-	else if(mTextureQuality == GL_LINEAR)
-		graphics.SetAttribute("texturequality", "good");
+	if(mTextureQuality == GL_NEAREST) graphics->SetAttribute("texturequality", "fast");
+	else if(mTextureQuality == GL_LINEAR) graphics->SetAttribute("texturequality", "good");
 
-	root.LinkEndChild(&graphics);
+	root->LinkEndChild(graphics);
 
-	TiXmlElement audio("audio");
-	audio.SetAttribute("mixrate", mMixRate);
-	audio.SetAttribute("channels", mStereoChannels);
-	audio.SetAttribute("sfxvolume", mSfxVolume);
-	audio.SetAttribute("musicvolume", mMusicVolume);
-	audio.SetAttribute("bufferlength", mBufferLength);
-	audio.SetAttribute("mixer", mMixerName);
-	root.LinkEndChild(&audio);
+	TiXmlElement* audio = new TiXmlElement("audio");
+	audio->SetAttribute("mixrate", mMixRate);
+	audio->SetAttribute("channels", mStereoChannels);
+	audio->SetAttribute("sfxvolume", mSfxVolume);
+	audio->SetAttribute("musicvolume", mMusicVolume);
+	audio->SetAttribute("bufferlength", mBufferLength);
+	audio->SetAttribute("mixer", mMixerName);
+	root->LinkEndChild(audio);
 
 	// Options
-	TiXmlElement options("options");
-	root.LinkEndChild(&options);
+	TiXmlElement* options = new TiXmlElement("options");
+	root->LinkEndChild(options);
     
 	for (auto op : mOptions)
 	{
-		TiXmlElement option("option");
-		option.SetAttribute("name", op.first);
-		option.SetAttribute("value", op.second);
-		options.LinkEndChild(&option);
+		TiXmlElement* option = new TiXmlElement("option");
+		option->SetAttribute("name", op.first);
+		option->SetAttribute("value", op.second);
+		options->LinkEndChild(option);
 	}
 
 	// Write out the XML file.

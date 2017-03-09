@@ -7,32 +7,44 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 namespace NAS2D {
 
 /**
  * \class	Utility
- * \brief	A simple singleton type class used specifically for handling single
- *			instances of utility classes (like configuration, renderer, mixer, etc.)
- *			where only one instance should only ever be created for an application.
+ * \brief	Provides a simple interface to classes that should only be instantiated
+ *			once globally for a NAS2D application.
+ * 
+ * \c Utility is a simple templated class designed to provide easy access to 'global'
+ * objects that should only ever be instantiated once (for instance the Renderer,
+ * Filesystem and Mixer classes). 
+ * 
+ * Most often usage cases are a simple matter of asking for a reference to a specific
+ * type that is used several times within a section of code. For instance, if you
+ * wanted to get a reference to a Renderer:
+ * 
+ * \code{.cpp}
+ * // Keep a reference to use multiple times in a code block.
+ * Renderer& r Utility<Renderer>::get();
+ * 
+ * r.drawBox(0, 0, 10, 10, 255, 255, 255, 255);
+ * r.drawLine( 10, 10, 400, 200, 255, 0, 0, 255, 4);
+ * // and so on
+ * \endcode
+ * 
+ * If you only need to use the reference for one or two calls, it may make more
+ * sense to just use the provided reference:
+ * 
+ * \code{.cpp}
+ * // Only need to make a single call.
+ * Utility<Mixer>::get().stopAllAudio();
+ * \endcode
+ * 
+ * \sa <a href="https://github.com/lairworks/nas2d-core/wiki/Using-Derived-Types-with-Utility">Using Utility<T> with Derived Types</a>
  *
- * This is a very basic implementation of the single pattern used for getting references
- * to single instance classes like Renderer, Mixer, Configuration, Filesystem, etc.
- *
- * \warning	This class is \a not thread safe. All utilities must be instantiated
- *			from the main thread of any application that uses them.
- *
- * \note	\c Utility offers only basic exception safety. If an exception occurs
- *			during instantiation of its internal type the exception will not be
- *			caught. In general practice using any of the core utility classes, an
- *			exception being thrown indicates a serious error that must be
- *			address by the client.
- *
- * \warning	\c Utility offers a static member method \c Utility::clean(). This
- *			should \a only \a ever be used when nothing is using the instance of
- *			T (e.g., at the end of a program.)
+ * \note	\c Utility does not catch exceptions. If any instantiated object
+ *			throws the client will be responsible for handling it.
  */
 template<typename T>
 class Utility
@@ -40,8 +52,8 @@ class Utility
 public:
 	
 	/**
-	 * Gets an instance of the specified type T. If an instance
-	 * hasn't yet been created, one is created.
+	 * Gets a reference to a global instance of the specified type
+	 * \c T. If an instance doesn't exist, one is created.
 	 */
 	static T& get()
 	{
@@ -53,21 +65,18 @@ public:
 
 
 	/**
-	 * Sets the internal type T to a type that derives from T.
+	 * Creates a \c Utility<T> interface using a derived type \c T* for
+	 * derived implementation. This is useful when you need polymorphic
+	 * behavior in an object that you need global access to.
+	 * 
+	 * \param	t	A pointer to a new derived object of type \c T.
 	 *
-	 * \note	This function expects that the parameter T is created in
-	 *			the function call (e.g.,
-	 *			\c Utility<T>::instantiateDerived(new T()).
+	 * \note	This method should be called before <tt>Utility::get()</tt>.
 	 *
-	 * \warning	This function is only intended to be used in very special
-	 *			cases where the caller needs to instantiate an object that
-	 *			derives from type T.
-	 *
-	 * \warning	If the caller needs a derived type T, this function must
-	 *			be called before \c Utility::get();
-	 *
-	 * \warning	Utility takes ownership of whatever pointer is passed into
-	 *			this function. Deleting it outside of the Utility yields
+	 * \warning	This method expects a pointer to a derived type that is
+	 *			created with \c new. It then takes ownership of the pointer
+	 *			and manages deallocation. Passing the address of a locally
+	 *			created object or deallocating the object will yield
 	 *			undefined behavior.
 	 */
 	static void instantiateDerived(T* t)
@@ -86,12 +95,12 @@ public:
 
 
 	/**
-	 * Frees any currently instantiated instances of T.
+	 * Frees any currently instantiated instances of \c T.
 	 *
-	 * \warning	This should \a only \a ever be called when no
-	 *			other instances are being used.
+	 * \warning	Any remaining references to the object \c T that
+	 *			the \c Utility manages will be invalidated.
 	 */
-	static void clean()
+	static void clear()
 	{
 		if(mInstance)
 		{
@@ -106,9 +115,9 @@ private:
 	Utility<T>(const Utility& s);				// Explicitly declared private.
 	Utility<T>& operator=(const Utility& s);	// Explicitly declared private.
 
-	static T* mInstance;	/**< Internal instance of type T. */
+	static T* mInstance;						/**< Internal instance of type \c T. */
 };
 
-template<typename T> T* Utility<T>::mInstance = 0;
+template<typename T> T* Utility<T>::mInstance = nullptr;
 
 } // namespace

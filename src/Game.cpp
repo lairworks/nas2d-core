@@ -79,11 +79,11 @@ Game::~Game()
 	std::cout << "Shutting down..." << std::endl;
 
 	// Destroy all of our various components in reverse order.
-	Utility<Renderer>::clean();
-	Utility<EventHandler>::clean();
-	Utility<Mixer>::clean();
-	Utility<Configuration>::clean();
-	Utility<Filesystem>::clean();
+	Utility<Renderer>::clear();
+	Utility<EventHandler>::clear();
+	Utility<Mixer>::clear();
+	Utility<Configuration>::clear();
+	Utility<Filesystem>::clear();
 
 	std::cout << std::endl << "Game object has been terminated." << std::endl;
 

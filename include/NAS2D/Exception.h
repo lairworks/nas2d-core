@@ -7,7 +7,6 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 #include <string>
@@ -15,40 +14,6 @@
 namespace NAS2D {
 
 namespace exception {
-
-/**
- * \class Exception
- * \brief Thrown when Exceptions occur.
- *
- * \deprecated	This class has been deprecated and will be removed in future versions of NAS2D. See
- *				current NAS2D documentation (http://www.lairworks.com/nas2d_doc/) for recommended usage.
- */
-class Exception
-{
-private:
-	Exception(int code, const std::string& brief, const std::string& description);
-	~Exception();
-	
-	/**
-	 * Gets a brief description of the Exception.
-	 */
-	const std::string& getBriefDescription() const;
-
-	/**
-	 * Gets a full description of the Exception.
-	 */
-	const std::string& getDescription() const;
-
-	/**
-	 * Gets an Exception ID.
-	 */
-	int getCode() const;
-
-	std::string		mErrorBrief;			/**< Brief description of the error. */
-	std::string		mErrorDescription;		/**< Full description of the Error. */
-	int				mErrorCode;				/**< Error Code */
-};
-
 
 /**
  * \page Exceptions Exceptions

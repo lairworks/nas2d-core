@@ -93,13 +93,13 @@ public:
 	int y() const;
 	int& y();
 
-	void w(int w);
-	int w() const;
-	int& w();
+	void width(int w);
+	int width() const;
+	int& width();
 
-	void h(int h);
-	int h() const;
-	int& h();
+	void height(int h);
+	int height() const;
+	int& height();
 
 private:
 	int mX, mY, mW, mH;
@@ -152,13 +152,13 @@ public:
 	float y() const;
 	float& y();
 
-	void w(float w);
-	float w() const;
-	float& w();
+	void width(float w);
+	float width() const;
+	float& width();
 
-	void h(float h);
-	float h() const;
-	float& h();
+	void height(float h);
+	float height() const;
+	float& height();
 
 private:
 	float mX, mY, mW, mH;

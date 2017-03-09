@@ -93,7 +93,7 @@ bool NAS2D::isPointInRect(int pointX, int pointY, int rectX, int rectY, int rect
  */
 bool NAS2D::isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
 {
-	return (point.x() >= rect.x() && point.x() <= rect.x() + rect.w() && point.y() >= rect.y() && point.y() <= rect.y() + rect.h());
+	return (point.x() >= rect.x() && point.x() <= rect.x() + rect.width() && point.y() >= rect.y() && point.y() <= rect.y() + rect.height());
 }
 
 
@@ -131,7 +131,7 @@ bool NAS2D::isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int b
  */
 bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
 {
-	return (a.x() <= (b.x() + b.w()) && (a.x() + a.w()) >= b.x() && a.y() <= (b.y() + b.h()) && (a.y() + a.h()) >= b.y());
+	return (a.x() <= (b.x() + b.width()) && (a.x() + a.width()) >= b.x() && a.y() <= (b.y() + b.height()) && (a.y() + a.height()) >= b.y());
 }
 
 

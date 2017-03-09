@@ -106,8 +106,8 @@ Rectangle_2d::Rectangle_2d(int x, int y, int w, int h):	mX(x),
 
 Rectangle_2d::Rectangle_2d(const Rectangle_2df& rect):	mX(static_cast<int>(rect.x())),
 														mY(static_cast<int>(rect.y())),
-														mW(static_cast<int>(rect.w())),
-														mH(static_cast<int>(rect.h()))
+														mW(static_cast<int>(rect.width())),
+														mH(static_cast<int>(rect.height()))
 {}
 
 
@@ -115,40 +115,40 @@ void Rectangle_2d::operator()(int _x, int _y, int _w, int _h)
 {
 	x(_x);
 	y(_y);
-	w(_w);
-	h(_h);
+	width(_w);
+	height(_h);
 }
 
 
 bool Rectangle_2d::operator==(const Rectangle_2d& rect)
 {
-	return (x() == rect.x()) && (y() == rect.y()) && (w() == rect.w()) && (h() == rect.h());
+	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
 
 
 bool Rectangle_2d::operator==(const Rectangle_2df& rect)
 {
-	return (x() == rect.x()) && (y() == rect.y()) && (w() == rect.w()) && (h() == rect.h());
+	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
 
 
 bool Rectangle_2d::operator!=(const Rectangle_2d& rect)
 {
-	return (x() != rect.x()) || (y() != rect.y()) || (w() != rect.w()) || (h() != rect.h());
+	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
 
 bool Rectangle_2d::operator!=(const Rectangle_2df& rect)
 {
-	return (x() != rect.x()) || (y() != rect.y()) || (w() != rect.w()) || (h() != rect.h());
+	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
 Rectangle_2d& Rectangle_2d::operator+=(const Rectangle_2d& rect)
 {
 	mX += rect.x();
 	mY += rect.y();
-	mW += rect.w();
-	mH += rect.h();
+	mW += rect.width();
+	mH += rect.height();
 
 	return *this;
 }
@@ -158,8 +158,8 @@ Rectangle_2d& Rectangle_2d::operator+=(const Rectangle_2df& rect)
 {
 	mX += static_cast<int>(rect.x());
 	mY += static_cast<int>(rect.y());
-	mW += static_cast<int>(rect.w());
-	mH += static_cast<int>(rect.h());
+	mW += static_cast<int>(rect.width());
+	mH += static_cast<int>(rect.height());
 
 	return *this;
 }
@@ -169,8 +169,8 @@ Rectangle_2d& Rectangle_2d::operator-=(const Rectangle_2d& rect)
 {
 	mX -= rect.x();
 	mY -= rect.y();
-	mW -= rect.w();
-	mH -= rect.h();
+	mW -= rect.width();
+	mH -= rect.height();
 
 	return *this;
 }
@@ -180,8 +180,8 @@ Rectangle_2d& Rectangle_2d::operator-=(const Rectangle_2df& rect)
 {
 	mX -= static_cast<int>(rect.x());
 	mY -= static_cast<int>(rect.y());
-	mW -= static_cast<int>(rect.w());
-	mH -= static_cast<int>(rect.h());
+	mW -= static_cast<int>(rect.width());
+	mH -= static_cast<int>(rect.height());
 
 	return *this;
 }
@@ -191,8 +191,8 @@ Rectangle_2d& Rectangle_2d::operator*=(const Rectangle_2d& rect)
 {
 	mX *= rect.x();
 	mY *= rect.y();
-	mW *= rect.w();
-	mH *= rect.h();
+	mW *= rect.width();
+	mH *= rect.height();
 
 	return *this;
 }
@@ -202,8 +202,8 @@ Rectangle_2d& Rectangle_2d::operator*=(const Rectangle_2df& rect)
 {
 	mX *= static_cast<int>(rect.x());
 	mY *= static_cast<int>(rect.y());
-	mW *= static_cast<int>(rect.w());
-	mH *= static_cast<int>(rect.h());
+	mW *= static_cast<int>(rect.width());
+	mH *= static_cast<int>(rect.height());
 
 	return *this;
 }
@@ -259,7 +259,7 @@ const Rectangle_2d Rectangle_2d::operator*(const Rectangle_2df& rect)
 
 bool Rectangle_2d::null()
 {
-	return w() * h() == 0;
+	return width() * height() == 0;
 }
 
 void Rectangle_2d::x(int x)
@@ -299,37 +299,37 @@ int& Rectangle_2d::y()
 
 
 
-void Rectangle_2d::w(int w)
+void Rectangle_2d::width(int w)
 {
 	mW = w;
 }
 
 
-int Rectangle_2d::w() const
+int Rectangle_2d::width() const
 {
 	return mW;
 }
 
 
-int& Rectangle_2d::w()
+int& Rectangle_2d::width()
 {
 	return mW;
 }
 
 
-void Rectangle_2d::h(int h)
+void Rectangle_2d::height(int h)
 {
 	mH = h;
 }
 
 
-int Rectangle_2d::h() const
+int Rectangle_2d::height() const
 {
 	return mH;
 }
 
 
-int& Rectangle_2d::h()
+int& Rectangle_2d::height()
 {
 	return mH;
 }
@@ -358,40 +358,40 @@ void Rectangle_2df::operator()(float _x, float _y, float _w, float _h)
 {
 	x(_x);
 	y(_y);
-	w(_w);
-	h(_h);
+	width(_w);
+	height(_h);
 }
 
 
 bool Rectangle_2df::operator==(const Rectangle_2d& rect)
 {
-	return (x() == rect.x()) && (y() == rect.y()) && (w() == rect.w()) && (h() == rect.h());
+	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
 
 
 bool Rectangle_2df::operator==(const Rectangle_2df& rect)
 {
-	return (x() == rect.x()) && (y() == rect.y()) && (w() == rect.w()) && (h() == rect.h());
+	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
 
 
 bool Rectangle_2df::operator!=(const Rectangle_2d& rect)
 {
-	return (x() != rect.x()) || (y() != rect.y()) || (w() != rect.w()) || (h() != rect.h());
+	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
 
 bool Rectangle_2df::operator!=(const Rectangle_2df& rect)
 {
-	return (x() != rect.x()) || (y() != rect.y()) || (w() != rect.w()) || (h() != rect.h());
+	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
 Rectangle_2df& Rectangle_2df::operator+=(const Rectangle_2d& rect)
 {
 	mX += rect.x();
 	mY += rect.y();
-	mW += rect.w();
-	mH += rect.h();
+	mW += rect.width();
+	mH += rect.height();
 
 	return *this;
 }
@@ -401,8 +401,8 @@ Rectangle_2df& Rectangle_2df::operator+=(const Rectangle_2df& rect)
 {
 	mX += rect.x();
 	mY += rect.y();
-	mW += rect.w();
-	mH += rect.h();
+	mW += rect.width();
+	mH += rect.height();
 
 	return *this;
 }
@@ -412,8 +412,8 @@ Rectangle_2df& Rectangle_2df::operator-=(const Rectangle_2d& rect)
 {
 	mX -= rect.x();
 	mY -= rect.y();
-	mW -= rect.w();
-	mH -= rect.h();
+	mW -= rect.width();
+	mH -= rect.height();
 
 	return *this;
 }
@@ -423,8 +423,8 @@ Rectangle_2df& Rectangle_2df::operator-=(const Rectangle_2df& rect)
 {
 	mX -= rect.x();
 	mY -= rect.y();
-	mW -= rect.w();
-	mH -= rect.h();
+	mW -= rect.width();
+	mH -= rect.height();
 
 	return *this;
 }
@@ -434,8 +434,8 @@ Rectangle_2df& Rectangle_2df::operator*=(const Rectangle_2d& rect)
 {
 	mX *= rect.x();
 	mY *= rect.y();
-	mW *= rect.w();
-	mH *= rect.h();
+	mW *= rect.width();
+	mH *= rect.height();
 
 	return *this;
 }
@@ -445,8 +445,8 @@ Rectangle_2df& Rectangle_2df::operator*=(const Rectangle_2df& rect)
 {
 	mX *= rect.x();
 	mY *= rect.y();
-	mW *= rect.w();
-	mH *= rect.h();
+	mW *= rect.width();
+	mH *= rect.height();
 
 	return *this;
 }
@@ -502,7 +502,7 @@ const Rectangle_2df Rectangle_2df::operator*(const Rectangle_2df& rect)
 
 bool Rectangle_2df::null()
 {
-	return w() * h() == 0;
+	return width() * height() == 0;
 }
 
 void Rectangle_2df::x(float x)
@@ -541,37 +541,37 @@ float& Rectangle_2df::y()
 }
 
 
-void Rectangle_2df::w(float w)
+void Rectangle_2df::width(float w)
 {
 	mW = w;
 }
 
 
-float Rectangle_2df::w() const
+float Rectangle_2df::width() const
 {
 	return mW;
 }
 
 
-float& Rectangle_2df::w()
+float& Rectangle_2df::width()
 {
 	return mW;
 }
 
 
-void Rectangle_2df::h(float h)
+void Rectangle_2df::height(float h)
 {
 	mH = h;
 }
 
 
-float Rectangle_2df::h() const
+float Rectangle_2df::height() const
 {
 	return mH;
 }
 
 
-float& Rectangle_2df::h()
+float& Rectangle_2df::height()
 {
 	return mH;
 }

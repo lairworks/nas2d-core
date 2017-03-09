@@ -10,7 +10,8 @@
 
 #pragma once
 
-#include "Resource.h"
+#include "NAS2D/Resources/Resource.h"
+#include "NAS2D/Renderer/Primitives.h"
 
 #ifdef __APPLE__
 #include "SDL2_ttf/SDL_ttf.h"
@@ -23,6 +24,7 @@
 #endif
 
 #include <map>
+#include <vector>
 
 namespace NAS2D {
 

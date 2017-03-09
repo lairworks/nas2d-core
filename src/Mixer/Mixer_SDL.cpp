@@ -15,6 +15,8 @@
 
 #include "NAS2D/Resources/MusicInfo.h"
 
+#include "NAS2D/Utility.h"
+
 #include <iostream>
 #include <functional>
 

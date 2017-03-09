@@ -7,13 +7,11 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #include "NAS2D/Resources/Music.h"
 #include "NAS2D/Resources/MusicInfo.h"
 
-
-#include <iostream>
-#include <string>
+#include "NAS2D/Filesystem.h"
+#include "NAS2D/Utility.h"
 
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
@@ -26,9 +24,10 @@
 #include "SDL_mixer.h"
 #endif
 
+#include <iostream>
+#include <string>
 
 using namespace NAS2D;
-
 
 std::map<std::string, MusicInfo>	MUSIC_REF_MAP;		/*< Lookup table for music resource references. */
 

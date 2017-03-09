@@ -7,18 +7,15 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
+#include "NAS2D/Resources/Image.h"
+#include "NAS2D/Resources/ImageInfo.h"
+#include "NAS2D/Resources/errorImage.h"
 
-#include "NAS2D/Common.h"
 #include "NAS2D/Exception.h"
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
 #include "NAS2D/Renderer/Primitives.h"
-
-#include "NAS2D/Resources/Image.h"
-#include "NAS2D/Resources/ImageInfo.h"
-#include "NAS2D/Resources/errorImage.h"
-
 
 #ifdef __APPLE__
 #include "SDL2_image/SDL_image.h"
@@ -31,6 +28,7 @@
 #endif
 
 #include <iostream>
+#include <map>
 #include <string>
 
 using namespace NAS2D;
@@ -85,7 +83,7 @@ Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++IMAGE_ARBITRARY));
-	mRect(0, 0, width, height);
+	_size = std::make_pair(width, height);
 
 	// MAGIC NUMBER: 4 == 4 1-byte color channels (RGBA)
 	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (width * height))] ();
@@ -93,7 +91,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	generateTexture(buffer, 4, width, height);
 
 	// Update resource management.
-	IMAGE_ID_MAP[name()] = ImageInfo(IMAGE_ID_MAP[name()].texture_id, 0, mRect.w(), mRect.h());
+	IMAGE_ID_MAP[name()] = ImageInfo(IMAGE_ID_MAP[name()].texture_id, 0, width, height);
 	IMAGE_ID_MAP[name()].ref_count++;
 
 	delete [] buffer;
@@ -122,11 +120,11 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++IMAGE_ARBITRARY));
 
-	mRect(0, 0, width, height);
+	_size = std::make_pair(width, height);
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
-	IMAGE_ID_MAP[name()] = ImageInfo(texture_id, 0, mRect.w(), mRect.h());
+	IMAGE_ID_MAP[name()] = ImageInfo(texture_id, 0, width, height);
 	IMAGE_ID_MAP[name()].ref_count++;
 	IMAGE_ID_MAP[name()].pixels = pixels;
 }
@@ -137,7 +135,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
  * 
  * \param	src		A reference to an Image Resource.
  */
-Image::Image(const Image &src) : Resource(src.name()), mRect(src.mRect)
+Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
 {
 	loaded(src.loaded());
 	IMAGE_ID_MAP[name()].ref_count++;
@@ -186,7 +184,7 @@ Image::~Image()
 Image& Image::operator=(const Image& rhs)
 {
 	name(rhs.name());
-	mRect = rhs.rect();
+	_size = rhs._size;
 	loaded(rhs.loaded());
 	IMAGE_ID_MAP[name()].ref_count++;
 
@@ -204,7 +202,7 @@ void Image::load()
 {
 	if (checkTextureId(name()))
 	{
-		mRect(0, 0, IMAGE_ID_MAP[name()].w, IMAGE_ID_MAP[name()].h);
+		_size = std::make_pair(IMAGE_ID_MAP[name()].w, IMAGE_ID_MAP[name()].h);
 		loaded(true);
 		return;
 	}
@@ -223,12 +221,12 @@ void Image::load()
 		return;
 	}
 
-	mRect = Rectangle_2d(0, 0, pixels->w, pixels->h);
+	_size = std::make_pair(pixels->w, pixels->h);
 
 	unsigned int texture_id = generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
 
 	// Add generated texture id to texture ID map.
-	IMAGE_ID_MAP[name()] = ImageInfo(texture_id, 0, mRect.w(), mRect.h());
+	IMAGE_ID_MAP[name()] = ImageInfo(texture_id, 0, width(), height());
 	IMAGE_ID_MAP[name()].ref_count++;
 	IMAGE_ID_MAP[name()].pixels = pixels;
 
@@ -241,7 +239,7 @@ void Image::load()
  */
 int Image::width() const
 {
-	return mRect.w();
+	return _size.first;
 }
 
 
@@ -250,16 +248,7 @@ int Image::width() const
  */
 int Image::height() const
 {
-	return mRect.h();
-}
-
-
-/**
- * Gets a reference to a Rectangle_2d that represents the area of the Image.
- */
-const Rectangle_2d& Image::rect() const
-{
-	return mRect;
+	return _size.second;
 }
 
 

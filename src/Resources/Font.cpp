@@ -10,6 +10,8 @@
 
 #include "NAS2D/Resources/Font.h"
 #include "NAS2D/Exception.h"
+#include "NAS2D/Filesystem.h"
+#include "NAS2D/Utility.h"
 
 #if defined(__APPLE__)
 	#include "SDL2/SDL_opengl.h"

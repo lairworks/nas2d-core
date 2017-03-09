@@ -483,7 +483,7 @@ void Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int 
  */
 void Renderer::drawBox(const Rectangle_2d& rect, int r, int g, int b, int a)
 {
-	drawBox(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.w()), static_cast<float>(rect.h()), r, g, b, a);
+	drawBox(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.width()), static_cast<float>(rect.height()), r, g, b, a);
 }
 
 
@@ -498,7 +498,7 @@ void Renderer::drawBox(const Rectangle_2d& rect, int r, int g, int b, int a)
  */
 void Renderer::drawBox(const Rectangle_2df& rect, int r, int g, int b, int a)
 {
-	drawBox(rect.x(), rect.y(), rect.w(), rect.h(), r, g, b, a);
+	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
 
 
@@ -529,7 +529,7 @@ void Renderer::drawBox(float x, float y, float w, float h, int r, int g, int b, 
  */
 void Renderer::drawBoxFilled(const Rectangle_2d& rect, int r, int g, int b, int a)
 {
-	drawBoxFilled(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.w()), static_cast<float>(rect.h()), r, g, b, a);
+	drawBoxFilled(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.width()), static_cast<float>(rect.height()), r, g, b, a);
 }
 
 
@@ -544,7 +544,7 @@ void Renderer::drawBoxFilled(const Rectangle_2d& rect, int r, int g, int b, int 
  */
 void Renderer::drawBoxFilled(const Rectangle_2df& rect, int r, int g, int b, int a)
 {
-	drawBoxFilled(rect.x(), rect.y(), rect.w(), rect.h(), r, g, b, a);
+	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
 
 

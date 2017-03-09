@@ -10,6 +10,9 @@
 
 #include "NAS2D/Resources/Sound.h"
 
+#include "NAS2D/Filesystem.h"
+#include "NAS2D/Utility.h"
+
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>

@@ -14,6 +14,7 @@
 #include "NAS2D/Configuration.h"
 #include "NAS2D/Exception.h"
 #include "NAS2D/Resources/ImageInfo.h"
+#include "NAS2D/Utility.h"
 
 #ifdef WINDOWS
 #define NO_SDL_GLEXT
@@ -209,11 +210,11 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	Rectangle_2d clipRect;
 
-	(static_cast<int>(dstPoint.x()) + source.width()) > destination.width() ? clipRect.w(source.width() - ((static_cast<int>(dstPoint.x()) + source.width()) - destination.width())) : clipRect.w(source.width());
-	(static_cast<int>(dstPoint.y()) + source.height()) > destination.height() ? clipRect.h(source.height() - ((static_cast<int>(dstPoint.y()) + source.height()) - destination.height())) : clipRect.h(source.height());
+	(static_cast<int>(dstPoint.x()) + source.width()) > destination.width() ? clipRect.width(source.width() - ((static_cast<int>(dstPoint.x()) + source.width()) - destination.width())) : clipRect.width(source.width());
+	(static_cast<int>(dstPoint.y()) + source.height()) > destination.height() ? clipRect.height(source.height() - ((static_cast<int>(dstPoint.y()) + source.height()) - destination.height())) : clipRect.height(source.height());
 
 	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
-	if(clipRect.w() < 1 || clipRect.h() < 1)
+	if(clipRect.width() < 1 || clipRect.height() < 1)
 		return;
 
 	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
@@ -227,7 +228,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id, 0);
 
 	// Flip the Y axis to keep images drawing correctly.
-	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipRect.w()), static_cast<float>(-clipRect.h()));
+	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipRect.width()), static_cast<float>(-clipRect.height()));
 
 	drawVertexArray(IMAGE_ID_MAP[source.name()].texture_id);
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);

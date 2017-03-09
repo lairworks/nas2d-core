@@ -7,17 +7,16 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
-#include "Resource.h"
+#include "NAS2D/Resources/Resource.h"
+#include "NAS2D/Renderer/Primitives.h"
 
 #include <vector>
-#include <map>
+#include <utility>
+
 
 namespace NAS2D {
-
-class Rectangle_2d;
 
 
 /**
@@ -53,15 +52,13 @@ public:
 	int width() const;
 	int height() const;
 
-	const Rectangle_2d& rect() const;
-
 	Color_4ub pixelColor(int x, int y) const;
 
 private:
 	void load();
 
 private:
-	Rectangle_2d	mRect;			/**< Width/Height information about the Image. */
+	std::pair<int, int>		_size;			/**< Width/Height information about the Image. */
 };
 
 

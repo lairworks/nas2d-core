@@ -262,7 +262,7 @@ public:
 	/** Expands entities in a string. Note this should not contian the tag's '<', '>', etc, 
 		or they will be transformed into entities!
 	*/
-	static void EncodeString( const TIXML_STRING& str, TIXML_STRING* out );
+	static void EncodeString( const std::string& str, std::string* out );
 
 	enum
 	{
@@ -302,21 +302,21 @@ protected:
 	}
 
 	#ifdef TIXML_USE_STL
-	static bool	StreamWhiteSpace( std::istream * in, TIXML_STRING * tag );
-	static bool StreamTo( std::istream * in, int character, TIXML_STRING * tag );
+	static bool	StreamWhiteSpace( std::istream * in, std::string * tag );
+	static bool StreamTo( std::istream * in, int character, std::string * tag );
 	#endif
 
 	/*	Reads an XML name into the string provided. Returns
 		a pointer just past the last character of the name,
 		or 0 if the function has an error.
 	*/
-	static const char* ReadName( const char* p, TIXML_STRING* name, TiXmlEncoding encoding );
+	static const char* ReadName( const char* p, std::string* name, TiXmlEncoding encoding );
 
 	/*	Reads text. Returns a pointer past the given end tag.
 		Wickedly complex options, but it keeps the (sensitive) code in one place.
 	*/
 	static const char* ReadText(	const char* in,				// where to start
-									TIXML_STRING* text,			// the string read
+									std::string* text,			// the string read
 									bool ignoreWhiteSpace,		// whether to keep the white space
 									const char* endTag,			// what ends this text
 									bool ignoreCase,			// whether to ignore case in the end tag
@@ -497,7 +497,7 @@ public:
 	const std::string& ValueStr() const { return value; }
 	#endif
 
-	const TIXML_STRING& ValueTStr() const { return value; }
+	const std::string& ValueTStr() const { return value; }
 
 	/** Changes the value of the node. Defined as:
 		@verbatim
@@ -749,7 +749,7 @@ protected:
 
 	#ifdef TIXML_USE_STL
 	    // The real work of the input operator.
-	virtual void StreamIn( std::istream* in, TIXML_STRING* tag ) = 0;
+	virtual void StreamIn( std::istream* in, std::string* tag ) = 0;
 	#endif
 
 	// Figure out what is at *p, and parse it. Returns null if it is not an xml node.
@@ -761,7 +761,7 @@ protected:
 	TiXmlNode*		firstChild;
 	TiXmlNode*		lastChild;
 
-	TIXML_STRING	value;
+	std::string	value;
 
 	TiXmlNode*		prev;
 	TiXmlNode*		next;
@@ -820,7 +820,7 @@ public:
 	double			DoubleValue() const;								///< Return the value of this attribute, converted to a double.
 
 	// Get the tinyxml string representation
-	const TIXML_STRING& NameTStr() const { return name; }
+	const std::string& NameTStr() const { return name; }
 
 	/** QueryIntValue examines the value string. It is an alternative to the
 		IntValue() method with richer error checking.
@@ -873,7 +873,7 @@ public:
 	virtual void Print( FILE* cfile, int depth ) const {
 		Print( cfile, depth, 0 );
 	}
-	void Print( FILE* cfile, int depth, TIXML_STRING* str ) const;
+	void Print( FILE* cfile, int depth, std::string* str ) const;
 
 	// [internal use]
 	// Set the document pointer so the attribute can report errors.
@@ -884,8 +884,8 @@ private:
 	void operator=( const TiXmlAttribute& base );	// not allowed.
 
 	TiXmlDocument*	document;	// A pointer back to a document, for error reporting.
-	TIXML_STRING name;
-	TIXML_STRING value;
+	std::string name;
+	std::string value;
 	TiXmlAttribute*	prev;
 	TiXmlAttribute*	next;
 };
@@ -1140,7 +1140,7 @@ protected:
 
 	// Used to be public [internal use]
 	#ifdef TIXML_USE_STL
-	virtual void StreamIn( std::istream * in, TIXML_STRING * tag );
+	virtual void StreamIn( std::istream * in, std::string * tag );
 	#endif
 	/*	[internal use]
 		Reads the "value" of the element -- another element, or text.
@@ -1191,7 +1191,7 @@ protected:
 
 	// used to be public
 	#ifdef TIXML_USE_STL
-	virtual void StreamIn( std::istream * in, TIXML_STRING * tag );
+	virtual void StreamIn( std::istream * in, std::string * tag );
 	#endif
 //	virtual void StreamOut( TIXML_OSTREAM * out ) const;
 
@@ -1257,7 +1257,7 @@ protected :
 	bool Blank() const;	// returns true if all white space and new lines
 	// [internal use]
 	#ifdef TIXML_USE_STL
-	virtual void StreamIn( std::istream * in, TIXML_STRING * tag );
+	virtual void StreamIn( std::istream * in, std::string * tag );
 	#endif
 
 private:
@@ -1311,7 +1311,7 @@ public:
 	/// Creates a copy of this Declaration and returns it.
 	virtual TiXmlNode* Clone() const;
 	// Print this declaration to a FILE stream.
-	virtual void Print( FILE* cfile, int depth, TIXML_STRING* str ) const;
+	virtual void Print( FILE* cfile, int depth, std::string* str ) const;
 	virtual void Print( FILE* cfile, int depth ) const {
 		Print( cfile, depth, 0 );
 	}
@@ -1329,14 +1329,14 @@ protected:
 	void CopyTo( TiXmlDeclaration* target ) const;
 	// used to be public
 	#ifdef TIXML_USE_STL
-	virtual void StreamIn( std::istream * in, TIXML_STRING * tag );
+	virtual void StreamIn( std::istream * in, std::string * tag );
 	#endif
 
 private:
 
-	TIXML_STRING version;
-	TIXML_STRING encoding;
-	TIXML_STRING standalone;
+	std::string version;
+	std::string encoding;
+	std::string standalone;
 };
 
 
@@ -1374,7 +1374,7 @@ protected:
 	void CopyTo( TiXmlUnknown* target ) const;
 
 	#ifdef TIXML_USE_STL
-	virtual void StreamIn( std::istream * in, TIXML_STRING * tag );
+	virtual void StreamIn( std::istream * in, std::string * tag );
 	#endif
 
 private:
@@ -1536,7 +1536,7 @@ protected :
 	// [internal use]
 	virtual TiXmlNode* Clone() const;
 	#ifdef TIXML_USE_STL
-	virtual void StreamIn( std::istream * in, TIXML_STRING * tag );
+	virtual void StreamIn( std::istream * in, std::string * tag );
 	#endif
 
 private:
@@ -1544,7 +1544,7 @@ private:
 
 	bool error;
 	int  errorId;
-	TIXML_STRING errorDesc;
+	std::string errorDesc;
 	int tabsize;
 	TiXmlCursor errorLocation;
 	bool useMicrosoftBOM;		// the UTF-8 BOM were found when read. Note this, and try to write.
@@ -1788,9 +1788,9 @@ private:
 
 	int depth;
 	bool simpleTextPrint;
-	TIXML_STRING buffer;
-	TIXML_STRING indent;
-	TIXML_STRING lineBreak;
+	std::string buffer;
+	std::string indent;
+	std::string lineBreak;
 };
 
 

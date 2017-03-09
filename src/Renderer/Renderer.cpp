@@ -79,7 +79,7 @@ Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
  */
 Renderer::~Renderer()
 {
-	_FADE_COMPLETE.Clear();
+	_FADE_COMPLETE.clear();
 	std::cout << "Renderer Terminated." << std::endl;
 }
 

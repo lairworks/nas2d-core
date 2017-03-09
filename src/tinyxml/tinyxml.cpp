@@ -49,7 +49,7 @@ FILE* TiXmlFOpen( const char* filename, const char* mode )
 	#endif
 }
 
-void TiXmlBase::EncodeString( const TIXML_STRING& str, TIXML_STRING* outString )
+void TiXmlBase::EncodeString( const std::string& str, std::string* outString )
 {
 	int i=0;
 
@@ -433,7 +433,7 @@ const TiXmlNode* TiXmlNode::PreviousSibling( const char * _value ) const
 void TiXmlElement::RemoveAttribute( const char * name )
 {
     #ifdef TIXML_USE_STL
-	TIXML_STRING str( name );
+	std::string str( name );
 	TiXmlAttribute* node = attributeSet.Find( str );
 	#else
 	TiXmlAttribute* node = attributeSet.Find( name );
@@ -919,7 +919,7 @@ bool TiXmlDocument::SaveFile() const
 
 bool TiXmlDocument::LoadFile( const char* _filename, TiXmlEncoding encoding )
 {
-	TIXML_STRING filename( _filename );
+	std::string filename( _filename );
 	value = filename;
 
 	// reading in binary mode so that tinyxml can normalize the EOL
@@ -1162,14 +1162,14 @@ TiXmlAttribute* TiXmlAttribute::Previous()
 }
 */
 
-void TiXmlAttribute::Print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) const
+void TiXmlAttribute::Print( FILE* cfile, int /*depth*/, std::string* str ) const
 {
-	TIXML_STRING n, v;
+	std::string n, v;
 
 	EncodeString( name, &n );
 	EncodeString( value, &v );
 
-	if (value.find ('\"') == TIXML_STRING::npos) {
+	if (value.find ('\"') == std::string::npos) {
 		if ( cfile ) {
 		fprintf (cfile, "%s=\"%s\"", n.c_str(), v.c_str() );
 		}
@@ -1297,7 +1297,7 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
 	}
 	else
 	{
-		TIXML_STRING buffer;
+		std::string buffer;
 		EncodeString( value, &buffer );
 		fprintf( cfile, "%s", buffer.c_str() );
 	}
@@ -1368,7 +1368,7 @@ void TiXmlDeclaration::operator=( const TiXmlDeclaration& copy )
 }
 
 
-void TiXmlDeclaration::Print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) const
+void TiXmlDeclaration::Print( FILE* cfile, int /*depth*/, std::string* str ) const
 {
 	if ( cfile ) fprintf( cfile, "<?xml " );
 	if ( str )	 (*str) += "<?xml ";
@@ -1467,7 +1467,7 @@ TiXmlAttributeSet::~TiXmlAttributeSet()
 void TiXmlAttributeSet::Add( TiXmlAttribute* addMe )
 {
     #ifdef TIXML_USE_STL
-	assert( !Find( TIXML_STRING( addMe->Name() ) ) );	// Shouldn't be multiply adding to the set.
+	assert( !Find( std::string( addMe->Name() ) ) );	// Shouldn't be multiply adding to the set.
 	#else
 	assert( !Find( addMe->Name() ) );	// Shouldn't be multiply adding to the set.
 	#endif
@@ -1548,7 +1548,7 @@ TiXmlAttribute* TiXmlAttributeSet::FindOrCreate( const char* _name )
 #ifdef TIXML_USE_STL	
 std::istream& operator>> (std::istream & in, TiXmlNode & base)
 {
-	TIXML_STRING tag;
+	std::string tag;
 	tag.reserve( 8 * 1000 );
 	base.StreamIn( &in, &tag );
 
@@ -1791,14 +1791,14 @@ bool TiXmlPrinter::Visit( const TiXmlText& text )
 	}
 	else if ( simpleTextPrint )
 	{
-		TIXML_STRING str;
+		std::string str;
 		TiXmlBase::EncodeString( text.ValueTStr(), &str );
 		buffer += str;
 	}
 	else
 	{
 		DoIndent();
-		TIXML_STRING str;
+		std::string str;
 		TiXmlBase::EncodeString( text.ValueTStr(), &str );
 		buffer += str;
 		DoLineBreak();

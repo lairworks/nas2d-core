@@ -244,7 +244,6 @@
     <ClCompile Include="..\..\src\Resources\Sprite.cpp" />
     <ClCompile Include="..\..\src\StateManager.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
-    <ClCompile Include="..\..\src\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\..\src\tinyxml\tinyxml.cpp" />
     <ClCompile Include="..\..\src\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\src\tinyxml\tinyxmlparser.cpp" />
@@ -286,7 +285,6 @@
     <ClInclude Include="..\..\include\NAS2D\State.h" />
     <ClInclude Include="..\..\include\NAS2D\StateManager.h" />
     <ClInclude Include="..\..\include\NAS2D\Timer.h" />
-    <ClInclude Include="..\..\include\NAS2D\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\include\NAS2D\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\include\NAS2D\Trig.h" />
     <ClInclude Include="..\..\include\NAS2D\Utility.h" />

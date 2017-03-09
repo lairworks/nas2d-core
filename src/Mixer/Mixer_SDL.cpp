@@ -68,7 +68,7 @@ Mixer_SDL::~Mixer_SDL()
 
 	Mix_CloseAudio();
 
-	MIXER_HOOK_CALLBACK_SIGNAL.Disconnect(this, &Mixer_SDL::music_finished_hook);
+	MIXER_HOOK_CALLBACK_SIGNAL.disconnect(this, &Mixer_SDL::music_finished_hook);
 	Mix_HookMusicFinished(nullptr);
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
@@ -93,7 +93,7 @@ void Mixer_SDL::init()
 	musicVolume(c.audioMusicVolume());
 
 	Mix_HookMusicFinished(MIXER_HOOK);
-	MIXER_HOOK_CALLBACK_SIGNAL.Connect(this, &Mixer_SDL::music_finished_hook);
+	MIXER_HOOK_CALLBACK_SIGNAL.connect(this, &Mixer_SDL::music_finished_hook);
 
 	std::cout << "done." << std::endl;
 }
@@ -101,7 +101,7 @@ void Mixer_SDL::init()
 
 void Mixer_SDL::music_finished_hook()
 {
-	musicComplete().Emit();
+	musicComplete().emit();
 }
 
 

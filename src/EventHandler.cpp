@@ -589,19 +589,19 @@ void EventHandler::pump()
  */
 void EventHandler::disconnectAll()
 {
-	mActivateEvent.Clear();
-	mJoystickAxisMotionEvent.Clear();
-	mJoystickBallMotionEvent.Clear();
-	mJoystickButtonUpEvent.Clear();
-	mJoystickButtonDownEvent.Clear();
-	mJoystickHatMotionEvent.Clear();
-	mKeyUpEvent.Clear();
-	mKeyDownEvent.Clear();
-	mMouseButtonUpEvent.Clear();
-	mMouseButtonDownEvent.Clear();
-	mMouseMotionEvent.Clear();
-	mMouseWheelEvent.Clear();
-	mQuitEvent.Clear();
+	mActivateEvent.clear();
+	mJoystickAxisMotionEvent.clear();
+	mJoystickBallMotionEvent.clear();
+	mJoystickButtonUpEvent.clear();
+	mJoystickButtonDownEvent.clear();
+	mJoystickHatMotionEvent.clear();
+	mKeyUpEvent.clear();
+	mKeyDownEvent.clear();
+	mMouseButtonUpEvent.clear();
+	mMouseButtonDownEvent.clear();
+	mMouseMotionEvent.clear();
+	mMouseWheelEvent.clear();
+	mQuitEvent.clear();
 }
 
 

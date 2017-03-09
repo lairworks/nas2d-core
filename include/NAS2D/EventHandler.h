@@ -12,10 +12,6 @@
 #include "NAS2D/Signal.h"
 
 #include "NAS2D/Event/KeyMap.h"
-#include "NAS2D/Event/MouseButtons.h"
-
-
-#include <string>
 
 namespace NAS2D {
 
@@ -26,6 +22,18 @@ namespace NAS2D {
  */
 class EventHandler
 {
+public:
+	/**
+	* \enum		MouseButton
+	* \brief	Mouse button identifiers.
+	*/
+	enum MouseButton
+	{
+		BUTTON_NONE,
+		BUTTON_LEFT,
+		BUTTON_MIDDLE,
+		BUTTON_RIGHT
+	};
 public:
 
 	/**

@@ -191,9 +191,6 @@
     <ClInclude Include="..\..\include\NAS2D\Event\KeyMap.h">
       <Filter>Header Files\Event</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Event\MouseButtons.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer.h">
       <Filter>Header Files\Mixer</Filter>
     </ClInclude>

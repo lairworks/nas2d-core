@@ -1,3 +1,7 @@
+proj/* linguist-vendored
+src/tinyxml/* linguist-vendored
+include/NAS2D/tinyxml/* linguist-vendored
+
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################

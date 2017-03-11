@@ -42,11 +42,19 @@ const int	ASCII_TABLE_LAST	= 255;
 
 const int	BITS_32				= 32;
 
-extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit = true);
 
 std::map<std::string, FontInfo>	FONTMAP;
 
 
+extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit = true);
+
+// ==================================================================================
+// = UNEXPOSED FUNCTION PROTOTYPES
+// ==================================================================================
+bool load(const std::string path, unsigned int ptSize, int& height, int& ascent, Point_2d& size, Font::GlyphMetricsList& glyph_list);
+bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace, Font::GlyphMetricsList& glyph_list);
+Point_2d generateGlyphMap(TTF_Font* ft, Font::GlyphMetricsList& glyph_list, const std::string& typeface_name, unsigned int font_size);
+bool fontAlreadyLoaded(const std::string& name, unsigned int ptSize);
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 
 
@@ -68,7 +76,7 @@ NAS2D::Font::Font(const std::string& filePath, int ptSize) :	Resource(filePath),
 																mAscent(0),
 																mPtSize(ptSize)
 {
-	load();
+	loaded(::load(filePath, ptSize, mHeight, mAscent, mGlyphCellSize, mGlyphMetrics));
 }
 
 
@@ -78,7 +86,7 @@ NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, 
 																									mPtSize(glyphHeight),
 																									mGlyphCellSize(glyphWidth, glyphHeight)
 {
-	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
+	loaded(loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace, mGlyphMetrics));
 }
 
 
@@ -90,8 +98,7 @@ NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, 
 NAS2D::Font::Font() :	Resource("Default Font"),
 						mHeight(0),
 						mAscent(0),
-						mPtSize(0),
-						mFontName("Default Font")
+						mPtSize(0)
 {}
 
 
@@ -140,176 +147,10 @@ NAS2D::Font::~Font()
 		glDeleteTextures(1, &it->second.textureId);
 		FONTMAP.erase(it);
 	}
+
+	if (FONTMAP.empty())
+		TTF_Quit();
 }
-
-
-/**
- * Loads a Font file.
- *
- * This is the normal method of loading a Font Resource and is called internally
- * by the constructor. It is not publicly exposed and should never be called
- * anywhere except the constructor.
- */
-void NAS2D::Font::load()
-{
-	if (TTF_WasInit() == 0)
-	{
-		if (TTF_Init() == -1)
-		{
-			std::cout << "Font::load(): " << TTF_GetError() << std::endl;
-			return;
-		}
-	}
-
-	File fontBuffer = Utility<Filesystem>::get().open(name());
-
-	if (fontBuffer.empty())
-		return;
-
-	// Attempt to load the font.
-	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, mPtSize);
-	if (!font)
-	{
-		std::cout << "Font::load(): " << TTF_GetError() << std::endl;
-		return;
-	}
-
-	mHeight = TTF_FontHeight(font);
-	mAscent = TTF_FontAscent(font);
-	mFontName = buildName(font);
-
-	generateGlyphMap(font);
-	TTF_CloseFont(font);
-
-	loaded(true);
-}
-
-
-void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
-{
-	// Load specified file and check that it divides to a 16x16 grid.
-	File fontBuffer = Utility<Filesystem>::get().open(name());
-
-	if (fontBuffer.empty())
-		return;
-
-	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
-	if (!glyphMap)
-	{
-		std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
-		return;
-	}
-
-	if ((glyphMap->w / 16 != glyphWidth) || (glyphMap->h / 16 != glyphHeight))
-	{
-		std::cout << "Font::loadBitmap(): Glyph texture does not have 16 columns or 16 rows." << std::endl;
-		return;
-	}
-
-	mGlyphMetrics.resize(ASCII_TABLE_COUNT);
-	for (size_t i = 0; i < ASCII_TABLE_COUNT; i++)
-		mGlyphMetrics[i].minX = glyphCellWidth();
-
-	for (int row = 0; row < 16; row++)
-	{
-		for (int col = 0; col < 16; col++)
-		{
-			int glyph = (row * 16) + col;
-
-			mGlyphMetrics[glyph].uvX = (float)(col * glyphCellWidth()) / (float)glyphMap->w;
-			mGlyphMetrics[glyph].uvY = (float)(row * glyphCellHeight()) / (float)glyphMap->h;
-			mGlyphMetrics[glyph].uvW = mGlyphMetrics[glyph].uvX + (float)(glyphCellWidth()) / (float)glyphMap->w;
-			mGlyphMetrics[glyph].uvH = mGlyphMetrics[glyph].uvY + (float)(glyphCellHeight()) / (float)glyphMap->h;
-			mGlyphMetrics[glyph].advance = glyphSpace;
-		}
-	}
-
-	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
-
-	// Add generated texture id to texture ID map.
-	FONTMAP[name()] = FontInfo(texture_id, ptSize());
-	FONTMAP[name()].ref_count++;
-	SDL_FreeSurface(glyphMap);
-
-	loaded(true);
-}
-
-
-/**
- * Generates a glyph map of all ASCII standard characters from 0 - 255.
- */
-void NAS2D::Font::generateGlyphMap(void* ft)
-{
-	int largest_width = 0;
-
-	// Go through each glyph and determine how much space we need in the texture.
-	for (int i = 0; i < ASCII_TABLE_COUNT; i++)
-	{
-		GlyphMetrics metrics;
-
-		TTF_GlyphMetrics(static_cast<TTF_Font*>(ft), i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
-		if (metrics.advance > largest_width)
-			largest_width = metrics.advance;
-
-		if (metrics.minX + metrics.maxX > largest_width)
-			largest_width = metrics.minX + metrics.maxX;
-
-		if (metrics.minY + metrics.maxY > largest_width)
-			largest_width = metrics.minY + metrics.maxY;
-
-		mGlyphMetrics.push_back(metrics);
-	}
-
-	mGlyphCellSize(nextPowerOf2(largest_width), nextPowerOf2(largest_width));
-	int textureSize = mGlyphCellSize.x() * 16;
-
-	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
-	setupMasks(rmask, gmask, bmask, amask);
-
-	SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
-
-	SDL_Color white = { 255, 255, 255 };
-	for (int row = 0; row < 16; row++)
-	{
-		for (int col = 0; col < 16; col++)
-		{
-			int glyph = (row * 16) + col;
-
-			mGlyphMetrics[glyph].uvX = (float)(col * glyphCellWidth()) / (float)textureSize;
-			mGlyphMetrics[glyph].uvY = (float)(row * glyphCellHeight()) / (float)textureSize;
-			mGlyphMetrics[glyph].uvW = mGlyphMetrics[glyph].uvX + (float)(glyphCellWidth()) / (float)textureSize;
-			mGlyphMetrics[glyph].uvH = mGlyphMetrics[glyph].uvY + (float)(glyphCellHeight()) / (float)textureSize;
-
-			// HACK HACK HACK!
-			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
-			// This is here only to prevent the message until I find the time to put in something
-			// less bad.
-			if (glyph == 0)
-				continue;
-
-			SDL_Surface* srf = TTF_RenderGlyph_Blended(static_cast<TTF_Font*>(ft), glyph, white);
-			if (!srf)
-			{
-				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
-			}
-			else
-			{
-				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
-				SDL_Rect rect = { col * mGlyphCellSize.x(), row * mGlyphCellSize.y(), 0, 0 };
-				SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
-				SDL_FreeSurface(srf);
-			}
-		}
-	}
-
-	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
-
-	// Add generated texture id to texture ID map.
-	FONTMAP[name()] = FontInfo(texture_id, ptSize());
-	FONTMAP[name()].ref_count++;
-	SDL_FreeSurface(glyphMap);
-}
-
 
 
 /**
@@ -343,7 +184,7 @@ const NAS2D::Font::GlyphMetrics& NAS2D::Font::glyphMetrics(int glyph) const
 
 
 /**
- * Returns the width in pixels of the font.
+ * Gets the width in pixels of the Font.
  *
  * \param	str		Reference to a std::string to get the width of.
  */
@@ -361,7 +202,7 @@ int NAS2D::Font::width(const std::string& str) const
 
 
 /**
- * Returns the height in pixels of the font.
+ * Gets the height in pixels of the Font.
  */
 int NAS2D::Font::height() const
 {
@@ -370,7 +211,7 @@ int NAS2D::Font::height() const
 
 
 /**
- * Returns the height in pixels of the font.
+ * 
  */
 int NAS2D::Font::ascent() const
 {
@@ -387,35 +228,200 @@ int NAS2D::Font::ptSize() const
 }
 
 
-/**
- * Returns the typeface name.
- */
-const std::string& NAS2D::Font::typefaceName() const
-{
-	return mFontName;
-}
-
-
 
 // ==================================================================================
 // = Unexposed module-level functions defined here that don't need to be part of the
 // = API interface.
 // ==================================================================================
 
-/*
- * Builds a typeface name given a TTF_Font.
- */
-std::string buildName(TTF_Font* font)
+/**
+* Loads a Font file.
+*
+* This is the normal method of loading a Font Resource and is called internally
+* by the constructor. It is not publicly exposed and should never be called
+* anywhere except the constructor.
+*/
+bool load(const std::string path, unsigned int ptSize, int& height, int& ascent, Point_2d& size, Font::GlyphMetricsList& glyph_list)
 {
-	// Build Font Name with Family Name and Style Name.
-	std::string fontFamily = TTF_FontFaceFamilyName(font);
-	std::string fontStyle = TTF_FontFaceStyleName(font);
+	if (fontAlreadyLoaded(path, ptSize))
+	{
+		++FONTMAP[path].ref_count;
+		return true;
+	}
 
-	// If Font style is regular, just use the family name.
-	if (toLowercase(fontStyle) == "regular")
-		return fontFamily;
-	else
-		return fontFamily + " " + fontStyle;
+	if (TTF_WasInit() == 0)
+	{
+		if (TTF_Init() != 0)
+		{
+			std::cout << "Font::load(): " << TTF_GetError() << std::endl;
+			return false;
+		}
+	}
+
+	File fontBuffer = Utility<Filesystem>::get().open(path);
+	if (fontBuffer.empty())
+		return false;
+
+	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, ptSize);
+	if (!font)
+	{
+		std::cout << "Font::load(): " << TTF_GetError() << std::endl;
+		return false;
+	}
+
+	height = TTF_FontHeight(font);
+	ascent = TTF_FontAscent(font);
+
+	size = generateGlyphMap(font, glyph_list, path, ptSize);
+	TTF_CloseFont(font);
+
+	return true;
+}
+
+
+bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace, Font::GlyphMetricsList& glyph_list)
+{
+	if (fontAlreadyLoaded(path, glyphHeight))
+	{
+		++FONTMAP[path].ref_count;
+		return true;
+	}
+
+	// Load specified file and check that it divides to a 16x16 grid.
+	File fontBuffer = Utility<Filesystem>::get().open(path);
+	if (fontBuffer.empty())
+		return false;
+
+	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
+	if (!glyphMap)
+	{
+		std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
+		return false;
+	}
+
+	if ((glyphMap->w / 16 != glyphWidth) || (glyphMap->h / 16 != glyphHeight))
+	{
+		std::cout << "Font::loadBitmap(): Glyph texture does not have 16 columns or 16 rows." << std::endl;
+		return false;
+	}
+
+	glyph_list.resize(ASCII_TABLE_COUNT);
+	for (size_t i = 0; i < ASCII_TABLE_COUNT; i++)
+		glyph_list[i].minX = glyphWidth;
+
+	for (int row = 0; row < 16; row++)
+	{
+		for (int col = 0; col < 16; col++)
+		{
+			int glyph = (row * 16) + col;
+
+			glyph_list[glyph].uvX = (float)(col * glyphWidth) / (float)glyphMap->w;
+			glyph_list[glyph].uvY = (float)(row * glyphHeight) / (float)glyphMap->h;
+			glyph_list[glyph].uvW = glyph_list[glyph].uvX + (float)(glyphWidth) / (float)glyphMap->w;
+			glyph_list[glyph].uvH = glyph_list[glyph].uvY + (float)(glyphHeight) / (float)glyphMap->h;
+			glyph_list[glyph].advance = glyphSpace;
+		}
+	}
+
+	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
+
+	// Add generated texture id to texture ID map.
+	FONTMAP[path] = FontInfo(texture_id, glyphHeight);
+	FONTMAP[path].ref_count++;
+	SDL_FreeSurface(glyphMap);
+
+	return true;
+}
+
+
+/**
+ * Generates a glyph map of all ASCII standard characters from 0 - 255.
+ */
+Point_2d generateGlyphMap(TTF_Font* ft, Font::GlyphMetricsList& glyph_list, const std::string& typeface_name, unsigned int font_size)
+{
+	int largest_width = 0;
+
+	// Go through each glyph and determine how much space we need in the texture.
+	for (int i = 0; i < ASCII_TABLE_COUNT; i++)
+	{
+		Font::GlyphMetrics metrics;
+
+		TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
+		if (metrics.advance > largest_width)
+			largest_width = metrics.advance;
+
+		if (metrics.minX + metrics.maxX > largest_width)
+			largest_width = metrics.minX + metrics.maxX;
+
+		if (metrics.minY + metrics.maxY > largest_width)
+			largest_width = metrics.minY + metrics.maxY;
+
+		glyph_list.push_back(metrics);
+	}
+
+	Point_2d size(nextPowerOf2(largest_width), nextPowerOf2(largest_width));
+	int textureSize = size.x() * 16;
+
+	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
+	setupMasks(rmask, gmask, bmask, amask);
+
+	SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
+
+	SDL_Color white = { 255, 255, 255 };
+	for (int row = 0; row < 16; row++)
+	{
+		for (int col = 0; col < 16; col++)
+		{
+			int glyph = (row * 16) + col;
+
+			glyph_list[glyph].uvX = (float)(col * size.x()) / (float)textureSize;
+			glyph_list[glyph].uvY = (float)(row * size.y()) / (float)textureSize;
+			glyph_list[glyph].uvW = glyph_list[glyph].uvX + (float)(size.x()) / (float)textureSize;
+			glyph_list[glyph].uvH = glyph_list[glyph].uvY + (float)(size.y()) / (float)textureSize;
+
+			// HACK HACK HACK!
+			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
+			// This is here only to prevent the message until I find the time to put in something
+			// less bad.
+			if (glyph == 0)
+				continue;
+
+			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
+			if (!srf)
+			{
+				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
+			}
+			else
+			{
+				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
+				SDL_Rect rect = { col * size.x(), row * size.y(), 0, 0 };
+				SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
+				SDL_FreeSurface(srf);
+			}
+		}
+	}
+
+	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
+
+	// Add generated texture id to texture ID map.
+	FONTMAP[typeface_name] = FontInfo(texture_id, font_size);
+	FONTMAP[typeface_name].ref_count++;
+	SDL_FreeSurface(glyphMap);
+
+	return size;
+}
+
+
+bool fontAlreadyLoaded(const std::string& name, unsigned int ptSize)
+{
+	auto it = FONTMAP.find(name);
+	if (it != FONTMAP.end() && it->second.fontSize == ptSize)
+	{
+		++it->second.ref_count;
+		return true;
+	}
+
+	return false;
 }
 
 

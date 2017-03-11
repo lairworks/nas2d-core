@@ -13,12 +13,14 @@
 
 #include "NAS2D/Configuration.h"
 #include "NAS2D/Exception.h"
+#include "NAS2D/Resources/FontInfo.h"
 #include "NAS2D/Resources/ImageInfo.h"
 #include "NAS2D/Utility.h"
 
 #ifdef WINDOWS
 #define NO_SDL_GLEXT
 #include "GL/glew.h"
+#include "SDL.h"
 #elif __APPLE__
 #include <SDL2/SDL.h>
 #elif __linux__
@@ -53,8 +55,9 @@ GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad dr
 GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
 
 // UGLY ASS HACK!
-// This is required here in order to remove OpenGL implementation details from Image.
+// This is required here in order to remove OpenGL implementation details from Image and Font.
 extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
+extern std::map<std::string, FontInfo> FONTMAP;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
@@ -388,15 +391,14 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 
 	int offset = 0;
     NAS2D::Font::GlyphMetrics gm;
-
-	for(size_t i = 0; i < text.size(); i++)
+	for (size_t i = 0; i < text.size(); i++)
 	{
 		gm = font.glyphMetrics(static_cast<int>(text[i]));
 
 		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
-
-		drawVertexArray(font.texture_id(), false);
+		
+		drawVertexArray(FONTMAP[font.name()].textureId, false);
 		offset += gm.advance + gm.minX;
 	}
 }

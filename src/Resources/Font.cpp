@@ -7,29 +7,24 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #include "NAS2D/Resources/Font.h"
+#include "NAS2D/Resources/FontInfo.h"
+
 #include "NAS2D/Exception.h"
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
-#if defined(__APPLE__)
-	#include "SDL2/SDL_opengl.h"
-	#include "SDL2_ttf/SDL_ttf.h"
-	#include "SDL2_image/SDL_image.h"
-#elif defined(WINDOWS)
-	#include "SDL_opengl.h"
-	#include "SDL_ttf.h"
-	#include "SDL_image.h"
-#elif defined(__linux__)
+#ifdef __APPLE__
+#include "SDL2_image/SDL_image.h"
+#include "SDL2_ttf/SDL_ttf.h"
+#elif _WIN32
+#include "GL/glew.h"
 #define NO_SDL_GLEXT
-#include "GLee.h"
-#include "SDL2/SDL_ttf.h"
-#include "SDL2/SDL_image.h"
+#include "SDL_image.h"
+#include "SDL_ttf.h"
 #else
-	#include "SDL/SDL_opengl.h"
-	#include "SDL/SDL_gfxPrimitives.h"
-	#include "SDL/SDL_ttf.h"
+#include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
 #endif
 
 #include <iostream>
@@ -39,7 +34,7 @@ using namespace NAS2D;
 using namespace NAS2D::exception;
 
 
-std::string buildName(TTF_Font*); // ???? The hell is this?
+std::string buildName(TTF_Font*);
 
 const int	ASCII_TABLE_COUNT	= 256;
 const int	ASCII_TABLE_FIRST	= 0;
@@ -47,7 +42,9 @@ const int	ASCII_TABLE_LAST	= 255;
 
 const int	BITS_32				= 32;
 
-NAS2D::Font::FontMap NAS2D::Font::_FontMap;
+extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit = true);
+
+std::map<std::string, FontInfo>	FONTMAP;
 
 
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
@@ -66,23 +63,20 @@ unsigned nextPowerOf2(unsigned n)
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-NAS2D::Font::Font(const std::string& filePath, int ptSize):	Resource(filePath),
-														mHeight(0),
-														mAscent(0),
-														mPtSize(ptSize),
-														mTextureId(0)
+NAS2D::Font::Font(const std::string& filePath, int ptSize) :	Resource(filePath),
+																mHeight(0),
+																mAscent(0),
+																mPtSize(ptSize)
 {
-
 	load();
 }
 
 
-NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace):	Resource(filePath),
+NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :	Resource(filePath),
 																									mHeight(glyphHeight),
 																									mAscent(0),
 																									mPtSize(glyphHeight),
-																									mGlyphCellSize(glyphWidth, glyphHeight),
-																									mTextureId(0)
+																									mGlyphCellSize(glyphWidth, glyphHeight)
 {
 	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
@@ -93,38 +87,38 @@ NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, 
  * 
  * Fonts instantiated with this constructor are not valid for use.
  */
-NAS2D::Font::Font():	Resource("Default Font"),
-				mHeight(0),
-				mAscent(0),
-				mPtSize(0),
-				mTextureId(0),
-				mFontName("Default Font")
+NAS2D::Font::Font() :	Resource("Default Font"),
+						mHeight(0),
+						mAscent(0),
+						mPtSize(0),
+						mFontName("Default Font")
 {}
 
 
-NAS2D::Font::Font(const Font& _f): Resource(_f.name())
+NAS2D::Font::Font(const Font& _f) : Resource(_f.name())
 {
-    FontMap::iterator it = Font::_FontMap.find(name());
-    if(it != Font::_FontMap.end())
-    {
-        it->second.ref_count++;
-    }
+	auto it = FONTMAP.find(name());
+	if (it != FONTMAP.end())
+	{
+		it->second.ref_count++;
+	}
 
-    loaded(_f.loaded());
+	loaded(_f.loaded());
 }
+
 
 NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
 {
-    FontMap::iterator it = Font::_FontMap.find(name());
-    if(it != Font::_FontMap.end())
-    {
-        it->second.ref_count++;
-    }
+	auto it = FONTMAP.find(name());
+	if (it != FONTMAP.end())
+	{
+		it->second.ref_count++;
+	}
 
-    name(_f.name());
-    loaded(_f.loaded());
+	name(_f.name());
+	loaded(_f.loaded());
 
-    return *this;
+	return *this;
 }
 
 
@@ -134,18 +128,17 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
 NAS2D::Font::~Font()
 {
 	// Is this check necessary?
-	FontMap::iterator it = Font::_FontMap.find(name());
-	if(it == Font::_FontMap.end())
+	auto it = FONTMAP.find(name());
+	if (it == FONTMAP.end())
 		return;
 
 	it->second.ref_count--;
 
 	// if texture id reference count is 0, delete the texture.
-	if(it->second.ref_count < 1)
+	if (it->second.ref_count < 1)
 	{
-		glDeleteTextures(1, &mTextureId);
-
-		Font::_FontMap.erase(it);
+		glDeleteTextures(1, &it->second.textureId);
+		FONTMAP.erase(it);
 	}
 }
 
@@ -159,9 +152,9 @@ NAS2D::Font::~Font()
  */
 void NAS2D::Font::load()
 {
-	if(TTF_WasInit() == 0)
+	if (TTF_WasInit() == 0)
 	{
-		if(TTF_Init() == -1)
+		if (TTF_Init() == -1)
 		{
 			std::cout << "Font::load(): " << TTF_GetError() << std::endl;
 			return;
@@ -170,12 +163,12 @@ void NAS2D::Font::load()
 
 	File fontBuffer = Utility<Filesystem>::get().open(name());
 
-	if(fontBuffer.empty())
+	if (fontBuffer.empty())
 		return;
 
 	// Attempt to load the font.
 	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, mPtSize);
-	if(!font)
+	if (!font)
 	{
 		std::cout << "Font::load(): " << TTF_GetError() << std::endl;
 		return;
@@ -197,11 +190,11 @@ void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphH
 	// Load specified file and check that it divides to a 16x16 grid.
 	File fontBuffer = Utility<Filesystem>::get().open(name());
 
-	if(fontBuffer.empty())
+	if (fontBuffer.empty())
 		return;
 
 	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
-	if(!glyphMap)
+	if (!glyphMap)
 	{
 		std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
 		return;
@@ -214,12 +207,12 @@ void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphH
 	}
 
 	mGlyphMetrics.resize(ASCII_TABLE_COUNT);
-	for(size_t i = 0; i < ASCII_TABLE_COUNT; i++)
+	for (size_t i = 0; i < ASCII_TABLE_COUNT; i++)
 		mGlyphMetrics[i].minX = glyphCellWidth();
 
-	for(int row = 0; row < 16; row++)
+	for (int row = 0; row < 16; row++)
 	{
-		for(int col = 0; col < 16; col++)
+		for (int col = 0; col < 16; col++)
 		{
 			int glyph = (row * 16) + col;
 
@@ -231,11 +224,11 @@ void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphH
 		}
 	}
 
-	generateTexture(glyphMap);
-	
+	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
+
 	// Add generated texture id to texture ID map.
-	Font::_FontMap[name()] = FontInfo(texture_id(), ptSize());
-	Font::_FontMap[name()].ref_count++;
+	FONTMAP[name()] = FontInfo(texture_id, ptSize());
+	FONTMAP[name()].ref_count++;
 	SDL_FreeSurface(glyphMap);
 
 	loaded(true);
@@ -245,32 +238,30 @@ void NAS2D::Font::loadBitmap(const std::string& path, int glyphWidth, int glyphH
 /**
  * Generates a glyph map of all ASCII standard characters from 0 - 255.
  */
-void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
-{	
+void NAS2D::Font::generateGlyphMap(void* ft)
+{
 	int largest_width = 0;
 
 	// Go through each glyph and determine how much space we need in the texture.
-	for(int i = 0; i < ASCII_TABLE_COUNT; i++)
+	for (int i = 0; i < ASCII_TABLE_COUNT; i++)
 	{
 		GlyphMetrics metrics;
 
-		TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
-		if(metrics.advance > largest_width)
+		TTF_GlyphMetrics(static_cast<TTF_Font*>(ft), i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
+		if (metrics.advance > largest_width)
 			largest_width = metrics.advance;
-		
-		if(metrics.minX + metrics.maxX > largest_width)
+
+		if (metrics.minX + metrics.maxX > largest_width)
 			largest_width = metrics.minX + metrics.maxX;
 
-		if(metrics.minY + metrics.maxY > largest_width)
+		if (metrics.minY + metrics.maxY > largest_width)
 			largest_width = metrics.minY + metrics.maxY;
 
 		mGlyphMetrics.push_back(metrics);
 	}
 
 	mGlyphCellSize(nextPowerOf2(largest_width), nextPowerOf2(largest_width));
-	int textureSize = mGlyphCellSize.x() * 16; // glyph map contains 16 rows and 16 columns.
-
-	//cout << "Largest Width: " << largest_width << " Nearest Po2: " << nextPowerOf2(largest_width) << endl;
+	int textureSize = mGlyphCellSize.x() * 16;
 
 	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
 	setupMasks(rmask, gmask, bmask, amask);
@@ -278,9 +269,9 @@ void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
 	SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
 
 	SDL_Color white = { 255, 255, 255 };
-	for(int row = 0; row < 16; row++)
+	for (int row = 0; row < 16; row++)
 	{
-		for(int col = 0; col < 16; col++)
+		for (int col = 0; col < 16; col++)
 		{
 			int glyph = (row * 16) + col;
 
@@ -293,11 +284,11 @@ void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
 			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
 			// This is here only to prevent the message until I find the time to put in something
 			// less bad.
-			if(glyph == 0)
+			if (glyph == 0)
 				continue;
 
-			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
-			if(!srf)
+			SDL_Surface* srf = TTF_RenderGlyph_Blended(static_cast<TTF_Font*>(ft), glyph, white);
+			if (!srf)
 			{
 				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
 			}
@@ -311,56 +302,14 @@ void NAS2D::Font::generateGlyphMap(TTF_Font* ft)
 		}
 	}
 
-	//SDL_SaveBMP(glyphMap, "glyphmap.bmp");
+	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
 
-	generateTexture(glyphMap);
-	
 	// Add generated texture id to texture ID map.
-	Font::_FontMap[name()] = FontInfo(texture_id(), ptSize());
-	Font::_FontMap[name()].ref_count++;
+	FONTMAP[name()] = FontInfo(texture_id, ptSize());
+	FONTMAP[name()].ref_count++;
 	SDL_FreeSurface(glyphMap);
 }
 
-
-/**
- * Generates a new OpenGL texture from an SDL_Surface.
- * 
- * \param	src	Pointer to an SDL_Surface.
- * 
- * \note	This function assumes that the image is unique and
- *			has not been loaded. Does no resource management.
- * 
- * \note	Code bloat.
- */
-void NAS2D::Font::generateTexture(SDL_Surface *src)
-{
-	if (src->format->BytesPerPixel < 4)
-		throw image_unsupported_bit_depth();
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);	// Does this need to be called every time
-											// or can we set it once in the Renderer?
-
-	glGenTextures(1, &mTextureId);
-	glBindTexture(GL_TEXTURE_2D, mTextureId);
-
-	GLenum textureFormat = 0;
-	SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, src->w, src->h, 0, textureFormat, GL_UNSIGNED_BYTE, src->pixels);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-}
-
-
-/**
- * Gets the texture ID for the font.
- */
-unsigned int NAS2D::Font::texture_id() const
-{
-	return mTextureId;
-}
 
 
 /**
@@ -400,11 +349,11 @@ const NAS2D::Font::GlyphMetrics& NAS2D::Font::glyphMetrics(int glyph) const
  */
 int NAS2D::Font::width(const std::string& str) const
 {
-	if(str.empty() || mGlyphMetrics.empty())
+	if (str.empty() || mGlyphMetrics.empty())
 		return 0;
 
 	int width = 0;
-	for(size_t i = 0; i < str.size(); i++)
+	for (size_t i = 0; i < str.size(); i++)
 		width += mGlyphMetrics[str[i]].advance + mGlyphMetrics[i].minX;
 
 	return width;
@@ -447,42 +396,6 @@ const std::string& NAS2D::Font::typefaceName() const
 }
 
 
-/**
- * Toggles Bold style.
- */
-void NAS2D::Font::bold()
-{
-
-}
-
-
-/**
- * Toggles Italic style.
- */
-void NAS2D::Font::italic()
-{
-
-}
-
-
-/**
- * Toggles Underline style.
- */
-void NAS2D::Font::underline()
-{
-
-}
-
-
-/**
- * Resets all font styling.
- */
-void NAS2D::Font::normal()
-{
-
-}
-
-
 
 // ==================================================================================
 // = Unexposed module-level functions defined here that don't need to be part of the
@@ -499,17 +412,16 @@ std::string buildName(TTF_Font* font)
 	std::string fontStyle = TTF_FontFaceStyleName(font);
 
 	// If Font style is regular, just use the family name.
-	if(toLowercase(fontStyle) == "regular")
+	if (toLowercase(fontStyle) == "regular")
 		return fontFamily;
 	else
 		return fontFamily + " " + fontStyle;
 }
 
 
-
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
 {
-	if(SDL_BYTEORDER == SDL_LIL_ENDIAN)
+	if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
 	{
 		rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
 	}

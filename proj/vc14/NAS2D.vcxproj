@@ -272,6 +272,7 @@
     <ClInclude Include="..\..\include\NAS2D\Renderer\ShaderManager.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\errorImage.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Font.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\FontInfo.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Image.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\ImageInfo.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Music.h" />

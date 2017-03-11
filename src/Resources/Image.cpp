@@ -45,7 +45,7 @@ int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
 
 
 bool checkTextureId(const std::string& name);
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
+unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit = true);
 
 
 
@@ -337,7 +337,7 @@ bool checkTextureId(const std::string& name)
 /**
 * Generates a new OpenGL texture from an SDL_Surface.
 */
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
+unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit)
 {
 	GLenum textureFormat = 0;
 	switch (bytesPerPixel)

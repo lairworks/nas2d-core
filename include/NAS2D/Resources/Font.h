@@ -13,16 +13,6 @@
 #include "NAS2D/Resources/Resource.h"
 #include "NAS2D/Renderer/Primitives.h"
 
-#ifdef __APPLE__
-#include "SDL2_ttf/SDL_ttf.h"
-#elif _WIN32
-#include "GL/glew.h"
-#define NO_SDL_GLEXT
-#include "SDL_ttf.h"
-#else
-#include "SDL2/SDL_ttf.h"
-#endif
-
 #include <map>
 #include <vector>
 
@@ -62,42 +52,22 @@ public:
 
 	const std::string& typefaceName() const;
 
-	void bold();
-	void italic();
-	void underline();
-	void normal();
-
     const int glyphCellWidth() const;
     const int glyphCellHeight() const;
     const Font::GlyphMetrics& glyphMetrics(int glyph) const;
-    unsigned int texture_id() const;
 
 protected:
 	friend class Renderer;
     friend class OGL_Renderer;
 
 private:
-	struct FontInfo
-	{
-		FontInfo(): textureId(0), fontSize(0) {}
-		FontInfo(unsigned int id, unsigned int fontSize): textureId(id), fontSize(fontSize) {}
-		
-		void operator()(unsigned int id, unsigned int size) { textureId = id; fontSize = size; }
-
-		unsigned int textureId;
-		unsigned int fontSize;
-		int ref_count;
-	};
-
-	typedef std::map<std::string, FontInfo> FontMap;
     typedef std::vector<GlyphMetrics> GlyphMetricsList;
 
 private:
 	void load();
 	void loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 
-	void generateGlyphMap(TTF_Font* ft);
-	void generateTexture(SDL_Surface *src);
+	void generateGlyphMap(void* ft);
 
 private:
 	int					mHeight;			/**< Font Height. */
@@ -106,13 +76,9 @@ private:
 
 	Point_2d			mGlyphCellSize;		/**< Size in pixels of each cell that glyphs occupy. */
 
-	unsigned int		mTextureId;			/**< OpenGL Texture ID. */
-
 	std::string			mFontName;			/**< Full typeface name. */
 
 	GlyphMetricsList	mGlyphMetrics;		/**< Metrics for each glyph. */
-
-	static FontMap		_FontMap;			/*< Lookup table for OpenGL Texture ID's. */
 };
 
 } // namespace

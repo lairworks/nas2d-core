@@ -34,11 +34,11 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 
 ### IMPORTANT NOTES ABOUT BREAKING CHANGES
 
-Since the Exception class has been removed, any code using NAS2D::Exception will need to be replaced. The easiest method to do this is to use `std::runtime_error()` or you may use a built-in exception type from the NAS2D::exception namespace. See [Issue #13](https://github.com/lairworks/nas2d-core/issues/13) for an explanation for the decision behind deprecating this class.
+Since the `Exception` class has been removed, any code using `NAS2D::Exception` will need to be replaced. The easiest method to do this is to use `std::runtime_error()` or you may use a built-in exception type from the `NAS2D::exception` namespace. See [Issue #13](https://github.com/lairworks/nas2d-core/issues/13) for an explanation of the decision behind deprecating this class.
 
-The Signals interface has been moved from the Gallant namespace to the NAS2D::Signals namespace. This will affect all code using custom Signals however using any of the built-in Signals (such as from the EventHandler or Sprite classes) will continue to function the same way without need for any changes. Additionally, all method names have been renamed to all lowercase names to match NAS2D and std:: library conventions.
+The Signals interface has been moved from the `Gallant` namespace to the `NAS2D::Signals` namespace. This will affect all code using custom Signals however using any of the built-in Signals (such as from the `EventHandler` or `Sprite` classes) will continue to function the same way without need for any changes. Additionally, all method names have been renamed to all lowercase names to match `NAS2D` and `std::` library conventions.
 
-All ::w() and ::h() method names in across the entire interface have been renamed to ::width() and ::height().
+All `::w()` and `::h()` method names in across the entire interface have been renamed to `::width()` and `::height()`.
 
 Since all of the `using namespace` directives have been removed from all public interface headers, you will need to either use your own directive or specific they appropriate namespace for both `std::` and `NAS2D::` namespaces.
 

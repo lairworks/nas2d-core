@@ -91,9 +91,10 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	generateTexture(buffer, 4, width, height);
 
 	// Update resource management.
-	IMAGE_ID_MAP[name()] = ImageInfo(IMAGE_ID_MAP[name()].texture_id, 0, width, height);
+	IMAGE_ID_MAP[name()].texture_id = IMAGE_ID_MAP[name()].texture_id;
+	IMAGE_ID_MAP[name()].w = width;
+	IMAGE_ID_MAP[name()].h = height;
 	IMAGE_ID_MAP[name()].ref_count++;
-
 	delete [] buffer;
 }
 
@@ -124,7 +125,9 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
-	IMAGE_ID_MAP[name()] = ImageInfo(texture_id, 0, width, height);
+	IMAGE_ID_MAP[name()].texture_id = texture_id;
+	IMAGE_ID_MAP[name()].w = width;
+	IMAGE_ID_MAP[name()].h = height;
 	IMAGE_ID_MAP[name()].ref_count++;
 	IMAGE_ID_MAP[name()].pixels = pixels;
 }
@@ -226,8 +229,11 @@ void Image::load()
 	unsigned int texture_id = generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
 
 	// Add generated texture id to texture ID map.
-	IMAGE_ID_MAP[name()] = ImageInfo(texture_id, 0, width(), height());
+	IMAGE_ID_MAP[name()].texture_id = texture_id;
+	IMAGE_ID_MAP[name()].w = width();
+	IMAGE_ID_MAP[name()].h = height();
 	IMAGE_ID_MAP[name()].ref_count++;
+
 	IMAGE_ID_MAP[name()].pixels = pixels;
 
 	loaded(true);

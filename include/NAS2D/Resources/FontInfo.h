@@ -9,6 +9,10 @@
 // ==================================================================================
 #pragma once
 
+#include "NAS2D/Renderer/Primitives.h"
+
+#include <iostream>
+
 struct GlyphMetrics
 {
 	GlyphMetrics() : uvX(0.0f), uvY(0.0f), uvW(0.0f), uvH(0.0f), minX(0), minY(0), maxX(0), maxY(0), advance(0) {}
@@ -28,14 +32,17 @@ typedef std::vector<GlyphMetrics> GlyphMetricsList;
  */
 struct FontInfo
 {
-	FontInfo() : textureId(0), fontSize(0), ref_count(0) {}
-	FontInfo(unsigned int id, unsigned int fontSize) : textureId(id), fontSize(fontSize), ref_count(0) {}
+	FontInfo() : texture_id(0), pt_size(0), height(0), ascent(0), ref_count(0)
+	{}
 
-	void operator()(unsigned int id, unsigned int size) { textureId = id; fontSize = size; }
+	unsigned int		texture_id;
+	unsigned int		pt_size;
+	
+	int					height;
+	int					ascent;
 
-	unsigned int textureId;
-	unsigned int fontSize;
-	int ref_count;
-
+	int					ref_count;
+	
+	NAS2D::Point_2d		glyph_size;
 	GlyphMetricsList	metrics;
 };

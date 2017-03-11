@@ -399,7 +399,7 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 		
-		drawVertexArray(FONTMAP[font.name()].textureId, false);
+		drawVertexArray(FONTMAP[font.name()].texture_id, false);
 		offset += gm.advance + gm.minX;
 	}
 }

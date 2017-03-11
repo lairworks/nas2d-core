@@ -46,12 +46,6 @@ public:
 private:
 	void load() {}
 
-private:
-	int					mHeight;			/**< Font Height. */
-	int					mAscent;			/**< Height of each glyph relative to the baseline. */
-	int					mPtSize;			/**< Point Size to load the Font in. */
-
-	Point_2d			mGlyphCellSize;		/**< Size in pixels of each cell that glyphs occupy. */
 };
 
 } // namespace

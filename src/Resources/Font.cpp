@@ -51,10 +51,10 @@ extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, 
 // ==================================================================================
 // = UNEXPOSED FUNCTION PROTOTYPES
 // ==================================================================================
-bool load(const std::string path, unsigned int ptSize, int& height, int& ascent, Point_2d& size);
+bool load(const std::string path, unsigned int ptSize);
 bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
-bool fontAlreadyLoaded(const std::string& name, unsigned int ptSize);
+bool fontAlreadyLoaded(const std::string& name);
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 
 
@@ -71,20 +71,14 @@ unsigned nextPowerOf2(unsigned n)
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-NAS2D::Font::Font(const std::string& filePath, int ptSize) :	Resource(filePath),
-																mHeight(0),
-																mAscent(0),
-																mPtSize(ptSize)
+NAS2D::Font::Font(const std::string& filePath, int ptSize) :	Resource(filePath)
 {
-	loaded(::load(filePath, ptSize, mHeight, mAscent, mGlyphCellSize));
+	loaded(::load(name(), ptSize));
+	name(name() + string_format("_%ipt", ptSize));
 }
 
 
-NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :	Resource(filePath),
-																									mHeight(glyphHeight),
-																									mAscent(0),
-																									mPtSize(glyphHeight),
-																									mGlyphCellSize(glyphWidth, glyphHeight)
+NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :	Resource(filePath)
 {
 	loaded(loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace));
 }
@@ -95,35 +89,37 @@ NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, 
  * 
  * Fonts instantiated with this constructor are not valid for use.
  */
-NAS2D::Font::Font() :	Resource("Default Font"),
-						mHeight(0),
-						mAscent(0),
-						mPtSize(0)
+NAS2D::Font::Font() :	Resource("Default Font")
 {}
 
 
 NAS2D::Font::Font(const Font& _f) : Resource(_f.name())
 {
+	std::cout << "Font::copy c'tor" << std::endl;
 	auto it = FONTMAP.find(name());
 	if (it != FONTMAP.end())
 	{
-		it->second.ref_count++;
+		++it->second.ref_count;
+		loaded(_f.loaded());
 	}
-
-	loaded(_f.loaded());
+	else
+		loaded(false);
 }
 
 
 NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
 {
+	std::cout << "Font::operator=" << std::endl;
 	auto it = FONTMAP.find(name());
 	if (it != FONTMAP.end())
 	{
-		it->second.ref_count++;
+		++it->second.ref_count;
+		loaded(_f.loaded());
 	}
+	else
+		loaded(false);
 
 	name(_f.name());
-	loaded(_f.loaded());
 
 	return *this;
 }
@@ -139,12 +135,12 @@ NAS2D::Font::~Font()
 	if (it == FONTMAP.end())
 		return;
 
-	it->second.ref_count--;
+	--it->second.ref_count;
 
 	// if texture id reference count is 0, delete the texture.
 	if (it->second.ref_count < 1)
 	{
-		glDeleteTextures(1, &it->second.textureId);
+		glDeleteTextures(1, &it->second.texture_id);
 		FONTMAP.erase(it);
 	}
 
@@ -158,7 +154,7 @@ NAS2D::Font::~Font()
  */
 const int NAS2D::Font::glyphCellWidth() const
 {
-	return mGlyphCellSize.x();
+	return FONTMAP[name()].glyph_size.x();
 }
 
 
@@ -167,7 +163,7 @@ const int NAS2D::Font::glyphCellWidth() const
  */
 const int NAS2D::Font::glyphCellHeight() const
 {
-	return mGlyphCellSize.y();
+	return FONTMAP[name()].glyph_size.y();
 }
 
 
@@ -198,7 +194,7 @@ int NAS2D::Font::width(const std::string& str) const
  */
 int NAS2D::Font::height() const
 {
-	return mHeight;
+	return FONTMAP[name()].height;
 }
 
 
@@ -207,7 +203,7 @@ int NAS2D::Font::height() const
  */
 int NAS2D::Font::ascent() const
 {
-	return mAscent;
+	return FONTMAP[name()].ascent;
 }
 
 
@@ -216,7 +212,7 @@ int NAS2D::Font::ascent() const
  */
 int NAS2D::Font::ptSize() const
 {
-	return mPtSize;
+	return FONTMAP[name()].pt_size;
 }
 
 
@@ -233,11 +229,12 @@ int NAS2D::Font::ptSize() const
 * by the constructor. It is not publicly exposed and should never be called
 * anywhere except the constructor.
 */
-bool load(const std::string path, unsigned int ptSize, int& height, int& ascent, Point_2d& size)
+bool load(const std::string path, unsigned int ptSize)
 {
-	if (fontAlreadyLoaded(path, ptSize))
+	std::string fontname = path + string_format("_%ipt", ptSize);
+	if (fontAlreadyLoaded(fontname))
 	{
-		++FONTMAP[path].ref_count;
+		++FONTMAP[fontname].ref_count;
 		return true;
 	}
 
@@ -261,10 +258,9 @@ bool load(const std::string path, unsigned int ptSize, int& height, int& ascent,
 		return false;
 	}
 
-	height = TTF_FontHeight(font);
-	ascent = TTF_FontAscent(font);
-
-	size = generateGlyphMap(font, path, ptSize);
+	FONTMAP[fontname].height = TTF_FontHeight(font);
+	FONTMAP[fontname].ascent = TTF_FontAscent(font);
+	FONTMAP[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize);
 	TTF_CloseFont(font);
 
 	return true;
@@ -273,9 +269,10 @@ bool load(const std::string path, unsigned int ptSize, int& height, int& ascent,
 
 bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
 {
-	if (fontAlreadyLoaded(path, glyphHeight))
+	if (fontAlreadyLoaded(path))
 	{
 		++FONTMAP[path].ref_count;
+		std::cout << "TID: " << FONTMAP[path].texture_id << " GLYPHS: " << FONTMAP[path].metrics.size() << " REFS: " << FONTMAP[path].ref_count << std::endl;
 		return true;
 	}
 
@@ -319,10 +316,13 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
 
 	// Add generated texture id to texture ID map.
-	FONTMAP[path] = FontInfo(texture_id, glyphHeight);
+	FONTMAP[path].texture_id = texture_id;
+	FONTMAP[path].pt_size = glyphHeight;
+	FONTMAP[path].height = glyphHeight;
 	FONTMAP[path].ref_count++;
+	FONTMAP[path].glyph_size(glyphWidth, glyphHeight);
 	SDL_FreeSurface(glyphMap);
-
+	
 	return true;
 }
 
@@ -399,7 +399,8 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
 
 	// Add generated texture id to texture ID map.
-	FONTMAP[name] = FontInfo(texture_id, font_size);
+	FONTMAP[name].texture_id = texture_id;
+	FONTMAP[name].pt_size = font_size;
 	FONTMAP[name].ref_count++;
 	SDL_FreeSurface(glyphMap);
 
@@ -407,12 +408,11 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 }
 
 
-bool fontAlreadyLoaded(const std::string& name, unsigned int ptSize)
+bool fontAlreadyLoaded(const std::string& name)
 {
 	auto it = FONTMAP.find(name);
-	if (it != FONTMAP.end() && it->second.fontSize == ptSize)
+	if (it != FONTMAP.end())
 	{
-		++it->second.ref_count;
 		return true;
 	}
 

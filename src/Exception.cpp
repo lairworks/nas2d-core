@@ -43,11 +43,11 @@ font_bad_data::font_bad_data() : runtime_error("Font contains invalid data.")
 {}
 
 
-font_bad_glyph_map::font_bad_glyph_map() : runtime_error("Bitmap font specified but image doesn't conform to expected parameters.")
+font_invalid_glyph_map::font_invalid_glyph_map() : runtime_error("Bitmap font specified but image doesn't conform to expected parameters.")
 {}
 
 
-font_bad_glyph_map::font_bad_glyph_map(const std::string& description) : runtime_error("Bitmap font specified but image doesn't conform to expected parameters: " + description)
+font_invalid_glyph_map::font_invalid_glyph_map(const std::string& description) : runtime_error("Bitmap font specified but image doesn't conform to expected parameters: " + description)
 {}
 
 

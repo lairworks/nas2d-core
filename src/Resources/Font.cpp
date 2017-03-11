@@ -283,10 +283,10 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 	}
 
 	if (glyphMap->w / GLYPH_MATRIX_SIZE != glyphWidth)
-		throw font_bad_glyph_map(string_format("expected image width of %i -- width is %i.", glyphWidth * GLYPH_MATRIX_SIZE, glyphMap->w));
+		throw font_invalid_glyph_map(string_format("image width is %i, expected %i.", glyphMap->w, glyphWidth * GLYPH_MATRIX_SIZE));
 
 	if (glyphMap->h / GLYPH_MATRIX_SIZE != glyphHeight)
-		throw font_bad_glyph_map(string_format("expected image height of %i -- height is %i.", glyphWidth * GLYPH_MATRIX_SIZE, glyphMap->w));
+		throw font_invalid_glyph_map(string_format("image height is %i, expected %i.", glyphMap->h, glyphHeight * GLYPH_MATRIX_SIZE));
 
 	GlyphMetricsList& glm = FONTMAP[path].metrics;
 	glm.resize(ASCII_TABLE_COUNT);

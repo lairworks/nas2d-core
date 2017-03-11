@@ -195,7 +195,7 @@ int NAS2D::Font::width(const std::string& str) const
 
 	int width = 0;
 	for (size_t i = 0; i < str.size(); i++)
-		width += mGlyphMetrics[str[i]].advance + mGlyphMetrics[i].minX;
+		width += mGlyphMetrics[str[i]].advance + mGlyphMetrics[str[i]].minX;
 
 	return width;
 }

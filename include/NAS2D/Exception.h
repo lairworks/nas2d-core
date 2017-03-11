@@ -54,6 +54,22 @@ class filesystem_file_handle_still_open : public std::runtime_error { public: fi
 
 
 /**
+ * \class font_bad_data
+ * 
+ * Thrown when Font::operator=() is called but the font hasn't been loaded yet.
+ */
+class font_bad_data : public std::runtime_error { public: font_bad_data(); };
+
+
+/**
+* \class font_bad_glyph_map
+*
+* Thrown when a bitmap font is loaded but the texture does not conform to expected paramters.
+*/
+class font_bad_glyph_map : public std::runtime_error { public: font_bad_glyph_map(); font_bad_glyph_map(const std::string& description); };
+
+
+/**
  * \class image_bad_data
  *
  * Thrown when an Image resource contains an invalid pixel buffer.
@@ -76,7 +92,6 @@ class image_null_data : public std::runtime_error { public: image_null_data(); }
  * an 8-bit or 16-bit format. See Image for further details.
  */
 class image_unsupported_bit_depth : public std::runtime_error { public: image_unsupported_bit_depth(); };
-
 
 
 /**

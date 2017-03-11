@@ -40,6 +40,8 @@ const int	ASCII_TABLE_COUNT	= 256;
 const int	ASCII_TABLE_FIRST	= 0;
 const int	ASCII_TABLE_LAST	= 255;
 
+const int	GLYPH_MATRIX_SIZE	= 16;
+
 const int	BITS_32				= 32;
 
 
@@ -56,6 +58,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
 bool fontAlreadyLoaded(const std::string& name);
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
+void updateFontReference(const std::string name);
 
 
 unsigned nextPowerOf2(unsigned n)
@@ -95,7 +98,6 @@ NAS2D::Font::Font() :	Resource("Default Font")
 
 NAS2D::Font::Font(const Font& _f) : Resource(_f.name())
 {
-	std::cout << "Font::copy c'tor" << std::endl;
 	auto it = FONTMAP.find(name());
 	if (it != FONTMAP.end())
 	{
@@ -104,48 +106,34 @@ NAS2D::Font::Font(const Font& _f) : Resource(_f.name())
 	}
 	else
 		loaded(false);
-}
-
-
-NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
-{
-	std::cout << "Font::operator=" << std::endl;
-	auto it = FONTMAP.find(name());
-	if (it != FONTMAP.end())
-	{
-		++it->second.ref_count;
-		loaded(_f.loaded());
-	}
-	else
-		loaded(false);
-
-	name(_f.name());
-
-	return *this;
 }
 
 
 /**
- * D'tor
- */
+* D'tor
+*/
 NAS2D::Font::~Font()
 {
-	// Is this check necessary?
+	updateFontReference(name());
+}
+
+
+/**
+ * Copy assignment operator.
+ */
+NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
+{
+	updateFontReference(name());
+
+	name(_f.name());
+
 	auto it = FONTMAP.find(name());
 	if (it == FONTMAP.end())
-		return;
+		throw font_bad_data();
 
-	--it->second.ref_count;
+	++it->second.ref_count;
 
-	// if texture id reference count is 0, delete the texture.
-	if (it->second.ref_count < 1)
-	{
-		glDeleteTextures(1, &it->second.texture_id);
-		FONTMAP.erase(it);
-	}
-
-	if (FONTMAP.empty())
-		TTF_Quit();
+	return *this;
 }
 
 
@@ -223,12 +211,11 @@ int NAS2D::Font::ptSize() const
 // ==================================================================================
 
 /**
-* Loads a Font file.
-*
-* This is the normal method of loading a Font Resource and is called internally
-* by the constructor. It is not publicly exposed and should never be called
-* anywhere except the constructor.
-*/
+ * Loads a TrueType or OpenType font from a file.
+ * 
+ * \param	path	Path to the TTF or OTF font file.
+ * \param	ptSize	Point size to use when loading the font.
+ */
 bool load(const std::string path, unsigned int ptSize)
 {
 	std::string fontname = path + string_format("_%ipt", ptSize);
@@ -267,6 +254,14 @@ bool load(const std::string path, unsigned int ptSize)
 }
 
 
+/**
+ * Internal function that loads a bitmap font from an file.
+ * 
+ * \param	path		Path to the image file.
+ * \param	glyphWidth	Width of glyphs in the bitmap font.
+ * \param	glyphHeight	Height of the glyphs in the bitmap font.
+ * \param	glyphSpace	Spacing to use when drawing glyphs.
+ */
 bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
 {
 	if (fontAlreadyLoaded(path))
@@ -276,7 +271,6 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		return true;
 	}
 
-	// Load specified file and check that it divides to a 16x16 grid.
 	File fontBuffer = Utility<Filesystem>::get().open(path);
 	if (fontBuffer.empty())
 		return false;
@@ -288,22 +282,22 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		return false;
 	}
 
-	if ((glyphMap->w / 16 != glyphWidth) || (glyphMap->h / 16 != glyphHeight))
-	{
-		std::cout << "Font::loadBitmap(): Glyph texture does not have 16 columns or 16 rows." << std::endl;
-		return false;
-	}
+	if (glyphMap->w / GLYPH_MATRIX_SIZE != glyphWidth)
+		throw font_bad_glyph_map(string_format("expected image width of %i -- width is %i.", glyphWidth * GLYPH_MATRIX_SIZE, glyphMap->w));
+
+	if (glyphMap->h / GLYPH_MATRIX_SIZE != glyphHeight)
+		throw font_bad_glyph_map(string_format("expected image height of %i -- height is %i.", glyphWidth * GLYPH_MATRIX_SIZE, glyphMap->w));
 
 	GlyphMetricsList& glm = FONTMAP[path].metrics;
 	glm.resize(ASCII_TABLE_COUNT);
 	for (size_t i = 0; i < ASCII_TABLE_COUNT; i++)
 		glm[i].minX = glyphWidth;
 
-	for (int row = 0; row < 16; row++)
+	for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
 	{
-		for (int col = 0; col < 16; col++)
+		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
-			int glyph = (row * 16) + col;
+			int glyph = (row * GLYPH_MATRIX_SIZE) + col;
 
 			glm[glyph].uvX = (float)(col * glyphWidth) / (float)glyphMap->w;
 			glm[glyph].uvY = (float)(row * glyphHeight) / (float)glyphMap->h;
@@ -329,6 +323,8 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 
 /**
  * Generates a glyph map of all ASCII standard characters from 0 - 255.
+ * 
+ * Internal function used to generate a glyph texture map from an TTF_Font struct.
  */
 Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
 {
@@ -355,7 +351,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 	}
 
 	Point_2d size(nextPowerOf2(largest_width), nextPowerOf2(largest_width));
-	int textureSize = size.x() * 16;
+	int textureSize = size.x() * GLYPH_MATRIX_SIZE;
 
 	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
 	setupMasks(rmask, gmask, bmask, amask);
@@ -408,6 +404,10 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 }
 
 
+/**
+ * Internal utility function used to test if a given Font has already
+ * been loaded.
+ */
 bool fontAlreadyLoaded(const std::string& name)
 {
 	auto it = FONTMAP.find(name);
@@ -420,6 +420,9 @@ bool fontAlreadyLoaded(const std::string& name)
 }
 
 
+/**
+ * Sets up image masks for generating OpenGL textures based on machine endianness.
+ */
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
 {
 	if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
@@ -430,4 +433,29 @@ void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, u
 	{
 		rmask = 0xff000000; gmask = 0x00ff0000; bmask = 0x0000ff00; amask = 0x000000ff;
 	}
+}
+
+
+/**
+ * Internal function used to clean up references to fonts when the Font
+ * destructor or copy assignment operators are called.
+ */
+void updateFontReference(const std::string name)
+{
+	auto it = FONTMAP.find(name);
+	if (it == FONTMAP.end())
+		throw font_bad_data();
+
+	--it->second.ref_count;
+
+	// if texture id reference count is 0, delete the texture.
+	if (it->second.ref_count < 1)
+	{
+		glDeleteTextures(1, &it->second.texture_id);
+		FONTMAP.erase(it);
+	}
+
+	if (FONTMAP.empty())
+		TTF_Quit();
+
 }

@@ -27,20 +27,6 @@ namespace NAS2D {
 class Font : public Resource
 {
 public:
-	struct GlyphMetrics
-	{
-		GlyphMetrics() : uvX(0.0f), uvY(0.0f), uvW(0.0f), uvH(0.0f), minX(0), minY(0), maxX(0), maxY(0), advance(0) {}
-
-		float uvX, uvY;	// Texture coordinates.
-		float uvW, uvH; // Texture coordinates.
-		int minX, minY;
-		int maxX, maxY;
-		int advance;
-	};
-
-	typedef std::vector<GlyphMetrics> GlyphMetricsList;
-
-public:
 	Font();
 	Font(const std::string& filePath, int ptSize = 12);
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
@@ -56,7 +42,9 @@ public:
 
 	const int glyphCellWidth() const;
 	const int glyphCellHeight() const;
-	const Font::GlyphMetrics& glyphMetrics(int glyph) const;
+
+private:
+	void load() {}
 
 private:
 	int					mHeight;			/**< Font Height. */
@@ -64,8 +52,6 @@ private:
 	int					mPtSize;			/**< Point Size to load the Font in. */
 
 	Point_2d			mGlyphCellSize;		/**< Size in pixels of each cell that glyphs occupy. */
-
-	GlyphMetricsList	mGlyphMetrics;		/**< Metrics for each glyph. */
 };
 
 } // namespace

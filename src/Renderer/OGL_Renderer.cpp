@@ -390,10 +390,11 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 	glColor4ub(r, g, b, a);
 
 	int offset = 0;
-    NAS2D::Font::GlyphMetrics gm;
+    GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
+	GlyphMetrics gm;
 	for (size_t i = 0; i < text.size(); i++)
 	{
-		gm = font.glyphMetrics(static_cast<int>(text[i]));
+		gm = gml[clamp(text[i], 0, 255)];
 
 		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);

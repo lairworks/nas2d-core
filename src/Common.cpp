@@ -175,14 +175,14 @@ std::string NAS2D::toUppercase(const std::string& str)
  * Clamps an \c int value to a specified range.
  *
  * \param	x	Value to clamp.
- * \param	a	Minimum value to clamp to.
- * \param	b	Maximum value to clamp to.
+ * \param	min	Minimum value to clamp to.
+ * \param	max	Maximum value to clamp to.
  * 
  * \return	Clamped value.
  */
-int NAS2D::clamp(int x, int a, int b)
+int NAS2D::clamp(int x, int min, int max)
 {
-    return x < a ? a : (x > b ? b : x);
+    return x < min ? min : (x > max ? max : x);
 }
 
 
@@ -192,14 +192,14 @@ int NAS2D::clamp(int x, int a, int b)
  * Clamps a \c float value to a specified range.
  *
  * \param	x	Value to clamp.
- * \param	a	Minimum value to clamp to.
- * \param	b	Maximum value to clamp to.
+ * \param	min	Minimum value to clamp to.
+ * \param	max	Maximum value to clamp to.
  * 
  * \return	Clamped value.
  */
-float NAS2D::clamp(float x, float a, float b)
+float NAS2D::clamp(float x, float min, float max)
 {
-    return x < a ? a : (x > b ? b : x);
+    return x < min ? min : (x > max ? max : x);
 }
 
 

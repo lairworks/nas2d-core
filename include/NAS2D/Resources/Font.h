@@ -19,10 +19,18 @@
 namespace NAS2D {
 
 /**
- *  \class Font
- *  \brief Font Resource.
+ * \class Font
+ * \brief Font Resource.
  *
- *  Implements a Font resource.
+ * The Font class can be used to render TrueType, OpenType and Bitmap fonts. Two
+ * contructors are provided for these types.
+ * 
+ * TrueType and OpenType fonts generate their own glyph map internally. Only
+ * the ASCII values 0 - 255 are used.
+ * 
+ * Bitmap fonts are expected to be in a 16x16 glyph matrix with the top right
+ * glyph cell equating to ASCII value 0. Glyph values increase from left to
+ * right up to ASCII value 255.
  */
 class Font : public Resource
 {
@@ -45,7 +53,6 @@ public:
 
 private:
 	void load() {}
-
 };
 
 } // namespace

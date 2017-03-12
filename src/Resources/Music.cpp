@@ -31,7 +31,7 @@ using namespace NAS2D;
 
 std::map<std::string, MusicInfo>	MUSIC_REF_MAP;		/*< Lookup table for music resource references. */
 
-void updateReferenceCount(const std::string& name);
+void updateMusicReferenceCount(const std::string& name);
 
 /**
  * Default c'tor.
@@ -72,7 +72,7 @@ Music& Music::operator=(const Music& rhs)
 	if (this == &rhs) // ignore self copy
 		return *this; // Should this throw?
 
-	updateReferenceCount(name());
+	updateMusicReferenceCount(name());
 
 	name(rhs.name());
 
@@ -94,7 +94,7 @@ Music& Music::operator=(const Music& rhs)
  */
 Music::~Music()
 {
-	updateReferenceCount(name());
+	updateMusicReferenceCount(name());
 }
 
 

@@ -310,8 +310,8 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 
 	GlyphMetricsList& glm = FONTMAP[path].metrics;
 	glm.resize(ASCII_TABLE_COUNT);
-	for (auto g : glm)
-		g.minX = glyphWidth;
+	for (size_t i = 0; i < glm.size(); ++i)
+		glm[i].minX = glyphWidth;
 
 	for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
 	{

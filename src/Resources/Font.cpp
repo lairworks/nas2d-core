@@ -68,7 +68,7 @@ unsigned nextPowerOf2(unsigned n)
 
 
 /**
- * Primary method of instantiating a font.
+ * Instantiate a Font using a TrueType or OpenType font.
  *
  * \param	filePath	Path to a font file.
  * \param	ptSize		Point size of the font. Defaults to 12pt.
@@ -81,6 +81,15 @@ NAS2D::Font::Font(const std::string& filePath, int ptSize) :	Resource(filePath)
 }
 
 
+/**
+ * Instantiate a Font as a bitmap font.
+ *
+ * \param	filePath	Path to a font file.
+ * \param	glyphWidth	Width of glyphs in the bitmap Font.
+ * \param	glyphHeight	Height of glyphs in the bitmap Font.
+ * \param	glyphSpace	Space between glyphs when rendering a bitmap font. This value can be negative.
+ *
+ */
 NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :	Resource(filePath)
 {
 	loaded(loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace));
@@ -96,6 +105,11 @@ NAS2D::Font::Font() :	Resource("Default Font")
 {}
 
 
+/**
+ * Copy c'tor.
+ * 
+ * \param	_f	Font to copy.
+ */
 NAS2D::Font::Font(const Font& _f) : Resource(_f.name())
 {
 	auto it = FONTMAP.find(name());
@@ -120,6 +134,8 @@ NAS2D::Font::~Font()
 
 /**
  * Copy assignment operator.
+ * 
+ * \param	_f	Font to copy.
  */
 NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
 {
@@ -138,7 +154,7 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
 
 
 /**
- * Returns the width of a glyph's cell.
+ * Gets the glyph cell width.
  */
 const int NAS2D::Font::glyphCellWidth() const
 {
@@ -147,7 +163,7 @@ const int NAS2D::Font::glyphCellWidth() const
 
 
 /**
- * Returns the height of a glyph's cell.
+ * Gets the glyph cell height.
  */
 const int NAS2D::Font::glyphCellHeight() const
 {
@@ -156,7 +172,7 @@ const int NAS2D::Font::glyphCellHeight() const
 
 
 /**
- * Gets the width in pixels of the Font.
+ * Gets the width in pixels of a string rendered using the Font.
  *
  * \param	str		Reference to a std::string to get the width of.
  */
@@ -187,7 +203,7 @@ int NAS2D::Font::height() const
 
 
 /**
- * 
+ * The maximum pixel ascent of all glyphs in the Font.
  */
 int NAS2D::Font::ascent() const
 {
@@ -196,7 +212,7 @@ int NAS2D::Font::ascent() const
 
 
 /**
- * Returns the font's pt size.
+ * Returns the point size of the Font.
  */
 int NAS2D::Font::ptSize() const
 {
@@ -407,6 +423,8 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 /**
  * Internal utility function used to test if a given Font has already
  * been loaded.
+ * 
+ * \param	name	Name of the Font to check against.
  */
 bool fontAlreadyLoaded(const std::string& name)
 {
@@ -439,6 +457,8 @@ void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, u
 /**
  * Internal function used to clean up references to fonts when the Font
  * destructor or copy assignment operators are called.
+ * 
+ * \param	name	Name of the Font to check against.
  */
 void updateFontReference(const std::string name)
 {

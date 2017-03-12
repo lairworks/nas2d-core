@@ -31,6 +31,7 @@ using namespace NAS2D;
 
 std::map<std::string, MusicInfo>	MUSIC_REF_MAP;		/*< Lookup table for music resource references. */
 
+void updateReferenceCount(const std::string& name);
 
 /**
  * Default c'tor.
@@ -53,27 +54,36 @@ Music::Music(const std::string& filePath):	Resource(filePath)
 /**
  * Copy c'tor.
  */
-Music::Music(const Music& _m): Resource(_m.name())
+Music::Music(const Music& rhs): Resource(rhs.name())
 {
 	auto it = MUSIC_REF_MAP.find(name());
 	if(it != MUSIC_REF_MAP.end())
 		it->second.ref_count++;
 
-	loaded(_m.loaded());
+	loaded(rhs.loaded());
 }
 
 
 /**
  * Copy operator.
  */
-Music& Music::operator=(const Music& _m)
+Music& Music::operator=(const Music& rhs)
 {
-	auto it = MUSIC_REF_MAP.find(name());
-	if(it != MUSIC_REF_MAP.end())
-		it->second.ref_count++;
+	if (this == &rhs) // ignore self copy
+		return *this; // Should this throw?
 
-	name(_m.name());
-	loaded(_m.loaded());
+	updateReferenceCount(name());
+
+	name(rhs.name());
+
+	auto it = MUSIC_REF_MAP.find(name());
+	if (it != MUSIC_REF_MAP.end())
+	{
+		it->second.ref_count++;
+		loaded(rhs.loaded());
+	}
+	else
+		loaded(false);
 
 	return *this;
 }
@@ -84,23 +94,7 @@ Music& Music::operator=(const Music& _m)
  */
 Music::~Music()
 {
-	auto it = MUSIC_REF_MAP.find(name());
-	if(it == MUSIC_REF_MAP.end())
-		return;
-
-	it->second.ref_count--;
-
-	// No more references to this resource.
-	if(it->second.ref_count < 1)
-	{
-		if(it->second.music)
-			Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
-
-		if(it->second.buffer)
-			delete it->second.buffer;
-
-		MUSIC_REF_MAP.erase(it);
-	}
+	updateReferenceCount(name());
 }
 
 
@@ -138,4 +132,38 @@ void Music::load()
 	record.ref_count++;
 
 	loaded(true);
+}
+
+
+
+// ==================================================================================
+// = Unexposed module-level functions defined here that don't need to be part of the
+// = API interface.
+// ==================================================================================
+
+/**
+* Internal function used to clean up references to fonts when the Music
+* destructor or copy assignment operators are called.
+*
+* \param	name	Name of the Music to check against.
+*/
+void updateMusicReferenceCount(const std::string& name)
+{
+	auto it = MUSIC_REF_MAP.find(name);
+	if (it == MUSIC_REF_MAP.end())
+		return;
+
+	--it->second.ref_count;
+
+	// No more references to this resource.
+	if (it->second.ref_count < 1)
+	{
+		if (it->second.music)
+			Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
+
+		if (it->second.buffer)
+			delete it->second.buffer;
+
+		MUSIC_REF_MAP.erase(it);
+	}
 }

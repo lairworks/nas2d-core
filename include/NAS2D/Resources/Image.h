@@ -44,7 +44,7 @@ public:
 	Image(int width, int height);
 	Image();
 
-	Image(const Image &src);
+	Image(const Image &rhs);
 	Image& operator=(const Image& rhs);
 
 	~Image();

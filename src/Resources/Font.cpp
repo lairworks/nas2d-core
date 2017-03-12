@@ -58,7 +58,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
 bool fontAlreadyLoaded(const std::string& name);
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
-void updateFontReference(const std::string name);
+void updateFontReferenceCount(const std::string name);
 
 
 unsigned nextPowerOf2(unsigned n)
@@ -128,7 +128,7 @@ NAS2D::Font::Font(const Font& rhs) : Resource(rhs.name())
 */
 NAS2D::Font::~Font()
 {
-	updateFontReference(name());
+	updateFontReferenceCount(name());
 }
 
 
@@ -142,7 +142,7 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
 	if (this == &rhs) // attempting to copy ones self.
 		return *this; // Should this throw an exception?
 
-	updateFontReference(name());
+	updateFontReferenceCount(name());
 
 	name(rhs.name());
 
@@ -464,7 +464,7 @@ void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, u
  * 
  * \param	name	Name of the Font to check against.
  */
-void updateFontReference(const std::string name)
+void updateFontReferenceCount(const std::string name)
 {
 	auto it = FONTMAP.find(name);
 	if (it == FONTMAP.end())

@@ -26,8 +26,8 @@ public:
 	Music();
 	Music(const std::string& filePath);
 
-	Music(const Music& _m);
-	Music& operator=(const Music& _m);
+	Music(const Music& rhs);
+	Music& operator=(const Music& rhs);
 
 	~Music();
 

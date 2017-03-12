@@ -47,7 +47,7 @@ int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
 // ==================================================================================
 bool checkTextureId(const std::string& name);
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit = true);
-void updateReferenceCount(const std::string& name);
+void updateImageReferenceCount(const std::string& name);
 
 
 /**
@@ -145,7 +145,7 @@ Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
  */
 Image::~Image()
 {
-	updateReferenceCount(name());
+	updateImageReferenceCount(name());
 }
 
 
@@ -159,10 +159,10 @@ Image& Image::operator=(const Image& rhs)
 	if (this == &rhs) // attempting to copy ones self.
 		return *this; // Should this throw an exception?
 
-	name(rhs.name());
-	_size = rhs._size;
+	updateImageReferenceCount(name());
 
 	name(rhs.name());
+	_size = rhs._size;
 
 	auto it = IMAGE_ID_MAP.find(name());
 	if (it == IMAGE_ID_MAP.end())
@@ -304,7 +304,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 *
 * \param	name	Name of the Image to check against.
 */
-void updateReferenceCount(const std::string& name)
+void updateImageReferenceCount(const std::string& name)
 {
 	auto it = IMAGE_ID_MAP.find(name);
 	if (it == IMAGE_ID_MAP.end())

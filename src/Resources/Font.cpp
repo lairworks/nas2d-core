@@ -361,9 +361,9 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 	SDL_Color white = { 255, 255, 255 };
 	for (int row = 0; row < 16; row++)
 	{
-		for (int col = 0; col < 16; col++)
+		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
-			int glyph = (row * 16) + col;
+			int glyph = (row * GLYPH_MATRIX_SIZE) + col;
 
 			glm[glyph].uvX = (float)(col * size.x()) / (float)textureSize;
 			glm[glyph].uvY = (float)(row * size.y()) / (float)textureSize;

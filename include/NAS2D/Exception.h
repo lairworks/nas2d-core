@@ -62,7 +62,7 @@ class font_bad_data : public std::runtime_error { public: font_bad_data(); };
 
 
 /**
-* \class font_bad_glyph_map
+* \class font_invalid_glyph_map
 *
 * Thrown when a bitmap font is loaded but the texture does not conform to expected paramters.
 */

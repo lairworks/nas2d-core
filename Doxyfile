@@ -121,9 +121,12 @@ RECURSIVE              = YES
 EXCLUDE                = ./src/tinyxml \
                          ./include/NAS2D/tinyxml \
 						 ./include/NAS2D/Delegate.h \
+						 ./include/NAS2D/Resources/FontInfo.h \
 						 ./include/NAS2D/Resources/ImageInfo.h \
 						 ./include/NAS2D/Resources/MusicInfo.h \
+						 ./include/NAS2D/Renderer/ShaderManager.h \
 						 ./src/Resources/Shader.cpp \
+						 ./src/Renderer/ShaderManager.cpp \
                          ./proj
 
 EXCLUDE_SYMLINKS       = NO

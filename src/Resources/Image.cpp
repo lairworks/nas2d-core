@@ -9,7 +9,6 @@
 // ==================================================================================
 #include "NAS2D/Resources/Image.h"
 #include "NAS2D/Resources/ImageInfo.h"
-#include "NAS2D/Resources/errorImage.h"
 
 #include "NAS2D/Exception.h"
 #include "NAS2D/Filesystem.h"
@@ -43,18 +42,18 @@ typedef std::map<std::string, ImageInfo> TextureIdMap;
 TextureIdMap	IMAGE_ID_MAP;			/*< Lookup table for OpenGL Texture ID's. */
 int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
 
-
+// ==================================================================================
+// = UNEXPOSED FUNCTION PROTOTYPES
+// ==================================================================================
 bool checkTextureId(const std::string& name);
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit = true);
-
+void updateReferenceCount(const std::string& name);
 
 
 /**
  * Loads an Image from disk.
  *
  * \param filePath Path to an image file.
- *
- * If the load fails, a default image is stored indicating an error condition.
  */
 Image::Image(const std::string& filePath) : Resource(filePath)
 {
@@ -63,12 +62,7 @@ Image::Image(const std::string& filePath) : Resource(filePath)
 
 
 /**
- * Default C'tor.
- *
- * This Constructor should almost never be invoked. It initializes the Image
- * Resource to a valid state with valid pixel data. Generally this method of
- * instantiating an Image should be for testing purposes or to indicate an
- * error condition.		
+ * Default C'tor.	
  */
 Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 {}
@@ -115,11 +109,9 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	if (bytesPerPixel != 3 && bytesPerPixel != 4)
 		throw image_unsupported_bit_depth();
 
-	// Create an SDL_Surface so that this Image has something to look at if the user
-	// wants to be peeking pixels out of it.
-	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
-
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME, ++IMAGE_ARBITRARY));
+
+	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
 	_size = std::make_pair(width, height);
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
@@ -136,10 +128,13 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 /**
  * Copy C'tor.
  * 
- * \param	src		A reference to an Image Resource.
+ * \param	src		Image to copy.
  */
 Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
 {
+	if (!src.loaded())
+		throw image_bad_copy();
+
 	loaded(src.loaded());
 	IMAGE_ID_MAP[name()].ref_count++;
 }
@@ -150,46 +145,31 @@ Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
  */
 Image::~Image()
 {
-	// Is this check necessary?
-	auto it = IMAGE_ID_MAP.find(name());
-	if(it == IMAGE_ID_MAP.end())
-		return;
-
-	it->second.ref_count--;
-	
-	// if texture id reference count is 0, delete the texture.
-	if(it->second.ref_count < 1)
-	{
-		if(it->second.texture_id == 0)
-			return;
-
-		glDeleteTextures(1, &it->second.texture_id);
-
-		if(it->second.fbo_id != 0)
-            glDeleteBuffers(1, &it->second.fbo_id);
-
-		if(IMAGE_ID_MAP[name()].pixels != nullptr)
-		{
-			SDL_FreeSurface(static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels));
-			IMAGE_ID_MAP[name()].pixels = nullptr;
-		}
-
-		IMAGE_ID_MAP.erase(it);
-	}
+	updateReferenceCount(name());
 }
 
 
 /**
- * Copy operator.
+ * Copy assignment operator.
  * 
- * \param	rhs		Reference to an Image Resource.
+ * \param	rhs		Image to copy.
  */
 Image& Image::operator=(const Image& rhs)
 {
+	if (this == &rhs) // attempting to copy ones self.
+		return *this; // Should this throw an exception?
+
 	name(rhs.name());
 	_size = rhs._size;
+
+	name(rhs.name());
+
+	auto it = IMAGE_ID_MAP.find(name());
+	if (it == IMAGE_ID_MAP.end())
+		throw image_bad_data();
+
 	loaded(rhs.loaded());
-	IMAGE_ID_MAP[name()].ref_count++;
+	++it->second.ref_count;
 
 	return *this;
 }
@@ -198,8 +178,7 @@ Image& Image::operator=(const Image& rhs)
 /**
  * Loads an image file from disk.
  * 
- * \note	If loading fails, Image will be set to a valid internal
- *			state with a default image indicating an error.
+ * \note	If loading fails, Image will be set to a valid internal state.
  */
 void Image::load()
 {
@@ -263,12 +242,6 @@ int Image::height() const
  * 
  * \param	x	X-Coordinate of the pixel to check.
  * \param	y	Y-Coordinate of the pixel to check.
- * 
- * \note	This function works by storing a local copy
- *			of the generated SDL_Surface instead of
- *			freeing it after creating an OpenGL texture.
- *			This is a brute force and memory inefficient
- *			method and will change in the future.
  */
 Color_4ub Image::pixelColor(int x, int y) const
 {
@@ -320,6 +293,46 @@ Color_4ub Image::pixelColor(int x, int y) const
 }
 
 
+// ==================================================================================
+// = Unexposed module-level functions defined here that don't need to be part of the
+// = API interface.
+// ==================================================================================
+
+/**
+* Internal function used to clean up references to fonts when the Image
+* destructor or copy assignment operators are called.
+*
+* \param	name	Name of the Image to check against.
+*/
+void updateReferenceCount(const std::string& name)
+{
+	auto it = IMAGE_ID_MAP.find(name);
+	if (it == IMAGE_ID_MAP.end())
+		return;
+
+	--it->second.ref_count;
+
+	// if texture id reference count is 0, delete the texture.
+	if (it->second.ref_count < 1)
+	{
+		if (it->second.texture_id == 0)
+			return;
+
+		glDeleteTextures(1, &it->second.texture_id);
+
+		if (it->second.fbo_id != 0)
+			glDeleteBuffers(1, &it->second.fbo_id);
+
+		if (it->second.pixels != nullptr)
+		{
+			SDL_FreeSurface(static_cast<SDL_Surface*>(it->second.pixels));
+			it->second.pixels = nullptr;
+		}
+
+		IMAGE_ID_MAP.erase(it);
+	}
+}
+
 /**
 * Checks to see if a texture has already been generated
 * and if it has, increases the reference count.
@@ -332,7 +345,7 @@ bool checkTextureId(const std::string& name)
 
 	if (it != IMAGE_ID_MAP.end())
 	{
-		IMAGE_ID_MAP[name].ref_count++;
+		++IMAGE_ID_MAP[name].ref_count;
 		return true;
 	}
 

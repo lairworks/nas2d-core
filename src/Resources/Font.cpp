@@ -108,15 +108,15 @@ NAS2D::Font::Font() :	Resource("Default Font")
 /**
  * Copy c'tor.
  * 
- * \param	_f	Font to copy.
+ * \param	rhs	Font to copy.
  */
-NAS2D::Font::Font(const Font& _f) : Resource(_f.name())
+NAS2D::Font::Font(const Font& rhs) : Resource(rhs.name())
 {
 	auto it = FONTMAP.find(name());
 	if (it != FONTMAP.end())
 	{
 		++it->second.ref_count;
-		loaded(_f.loaded());
+		loaded(rhs.loaded());
 	}
 	else
 		loaded(false);
@@ -137,17 +137,21 @@ NAS2D::Font::~Font()
  * 
  * \param	_f	Font to copy.
  */
-NAS2D::Font& NAS2D::Font::operator=(const Font& _f)
+NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
 {
+	if (this == &rhs) // attempting to copy ones self.
+		return *this; // Should this throw an exception?
+
 	updateFontReference(name());
 
-	name(_f.name());
+	name(rhs.name());
 
 	auto it = FONTMAP.find(name());
 	if (it == FONTMAP.end())
 		throw font_bad_data();
 
 	++it->second.ref_count;
+	loaded(rhs.loaded());
 
 	return *this;
 }

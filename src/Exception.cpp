@@ -51,6 +51,10 @@ font_invalid_glyph_map::font_invalid_glyph_map(const std::string& description) :
 {}
 
 
+image_bad_copy::image_bad_copy() : runtime_error("Attempted to copy an Image in an invalid load state.")
+{}
+
+
 image_bad_data::image_bad_data() : runtime_error("Image contains invalid data.")
 {}
 

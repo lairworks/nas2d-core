@@ -70,6 +70,14 @@ class font_invalid_glyph_map : public std::runtime_error { public: font_invalid_
 
 
 /**
+* \class image_bad_copy
+*
+* Thrown when an Image resource contains an invalid pixel buffer.
+*/
+class image_bad_copy : public std::runtime_error { public: image_bad_copy(); };
+
+
+/**
  * \class image_bad_data
  *
  * Thrown when an Image resource contains an invalid pixel buffer.

@@ -299,6 +299,16 @@ public:
 	typedef NAS2D::Signals::Signal2<int, int>	MouseWheelEventCallback;
 
 	/**
+	* \typedef	TextInputEventCallback
+	* \brief	Fires whenever text input events occur.
+	*
+	* \code
+	* void function(const std::string&);
+	* \endcode
+	*/
+	typedef NAS2D::Signals::Signal1<const std::string&> TextInputEventCallback;
+
+	/**
 	 * \typedef	QuitEventCallback
 	 * \brief	Triggered whenever a Quit message is posted.
 	 * 
@@ -335,6 +345,8 @@ public:
 	KeyUpEventCallback&					keyUp();
 	KeyDownEventCallback&				keyDown();
 
+	TextInputEventCallback&				textInput();
+
 	MouseButtonEventCallback&			mouseButtonUp();
 	MouseButtonEventCallback&			mouseButtonDown();
 	MouseButtonEventCallback&			mouseDoubleClick();
@@ -347,6 +359,17 @@ public:
 	void releaseMouse();
 	void warpMouse(int x, int y);
 	void mouseRelativeMode(bool rel);
+
+	void textInputMode(bool);
+	bool textInputMode();
+
+	bool shift(KeyModifier mod);
+	bool numlock(KeyModifier mod);
+	bool control(KeyModifier mod);
+
+	bool query_shift();
+	bool query_numlock();
+	bool query_control();
 
 	void pump();
 
@@ -371,6 +394,8 @@ private:
 
 	KeyUpEventCallback					mKeyUpEvent;
 	KeyDownEventCallback				mKeyDownEvent;
+
+	TextInputEventCallback				mTextInput;
 
 	MouseButtonEventCallback			mMouseButtonUpEvent;
 	MouseButtonEventCallback			mMouseButtonDownEvent;

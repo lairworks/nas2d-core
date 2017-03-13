@@ -323,6 +323,24 @@ EventHandler::KeyDownEventCallback& EventHandler::keyDown()
 
 
 /**
+* \brief Gets the handler slot associated with this event.
+*
+* To connect an event handler to this event, call the 'connect()'
+* function as follows:
+*
+* \code
+* connect(this, &Object::function);
+* \endcode
+*
+* See EventHandler::TextInputEventCallback for paramter listing.
+*/
+EventHandler::TextInputEventCallback& EventHandler::textInput()
+{
+	return mTextInput;
+}
+
+
+/**
  * \brief Gets the handler slot associated with this event.
  * 
  * To connect an event handler to this event, call the 'connect()'
@@ -511,6 +529,10 @@ void EventHandler::pump()
 				mKeyUpEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
 				break;
 
+			case SDL_TEXTINPUT:
+				mTextInput(event.text.text);
+				break;
+
 			case SDL_MOUSEBUTTONDOWN:
 				if (event.button.clicks == 2)
 					mMouseDoubleClick(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
@@ -585,6 +607,79 @@ void EventHandler::pump()
 
 
 /**
+ * Turns on/off text input mode.
+ */
+void EventHandler::textInputMode(bool _b)
+{
+	if (_b) SDL_StartTextInput();
+	else SDL_StopTextInput();
+}
+
+
+/**
+ * Queries text input mode.
+ */
+bool EventHandler::textInputMode()
+{
+	return SDL_IsTextInputActive() == SDL_TRUE;
+}
+
+
+/**
+ * Decodes a KeyModifier and determines if the Shift keymod is applied.
+ */
+bool EventHandler::shift(KeyModifier mod)
+{
+	return ((mod & KEY_MOD_SHIFT) || (mod & KEY_MOD_CAPS));
+}
+
+
+/**
+ * Decodes a KeyModifier and determines if the Numlock keymod is applied.
+ */
+bool EventHandler::numlock(KeyModifier mod)
+{
+	return (mod & KEY_MOD_NUM) != 0;
+}
+
+
+/**
+ * Decodes a KeyModifier and determines if the Control keymod is applied.
+ */
+bool EventHandler::control(KeyModifier mod)
+{
+	return (mod & KEY_MOD_CTRL) != 0;
+}
+
+
+/**
+ * Queries state of the Shift key modifier.
+ */
+bool EventHandler::query_shift()
+{
+	return (SDL_GetModState() & KEY_MOD_SHIFT) != 0;
+}
+
+
+/**
+ * Queries state of the Shift key modifier.
+ */
+bool EventHandler::query_numlock()
+{
+	return (SDL_GetModState() & KEY_MOD_NUM) != 0;
+}
+
+
+/**
+ * Queries state of the Shift key modifier.
+ */
+bool EventHandler::query_control()
+{
+	return (SDL_GetModState() & KEY_MOD_CTRL) != 0;
+}
+
+
+/**
  * Used to disconnect all connected signal handlers.
  */
 void EventHandler::disconnectAll()
@@ -597,6 +692,7 @@ void EventHandler::disconnectAll()
 	mJoystickHatMotionEvent.clear();
 	mKeyUpEvent.clear();
 	mKeyDownEvent.clear();
+	mTextInput.clear();
 	mMouseButtonUpEvent.clear();
 	mMouseButtonDownEvent.clear();
 	mMouseMotionEvent.clear();

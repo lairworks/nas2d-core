@@ -5,17 +5,22 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 ## Added
 - Renderer fade completed signal.
 - Mixer music completed signal.
+- Added EventHandler::textInputMode(bool) to turn on and off text input modes.
+- Added EventHandler::textInput() to query whether or not text input mode is turned on.
+- Added EventHandller::query_control(), EventHandller::query_numlock() and EventHandller::query_shift() to query key modifier states.
 
 ## Changed
 
+- Clarified origin and licensing information for Signal.h and Delegate.h.
+- Updated documentation on most interfaces.
 - Filesystem now throws an exception when any function is used before Filesystem::init() is called.
 - Cleaned up the public interfaces for all objects removing backend library headers and implementation details from public classes.
-- Moved signals into the NAS2D::Signals namespace.
-- Clarified origin and licensing information for Signal.h and Delegate.h.
-- Moved exceptions into NAS2D::exception namespace.
-- Updated documentation on most interfaces.
 - Cleaned out all `using namespace` directives from public interface headers.
-- Moved MouseButton enumeration to EventHandler class declaration.
+- Moved exceptions into NAS2D::exception namespace.
+- Moved signals into the NAS2D::Signals namespace.
+- Merged MouseButton enumeration to EventHandler class declaration.
+- Merged KeyCode into EventHandler class instead of being stand alone.
+- Merged KeyTranslator::control(KeyModifier), KeyTranslator::numlock(KeyModifier) and KeyTranslator::shift(KeyModifier) into EventHandler.
 - Renamed all functions in Signal0 - Signal5 to lowercase names to match std:: and NAS2D library conventions.
 - Renamed ::w() and ::h() methods in in Rectangle_2d/Rectangle_2df to ::width() and ::height().
 
@@ -31,6 +36,11 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 
 ## Fixed
 
+- Fixed a bug in Font::width(const std::string&) that would report incorrect widths when using TrueType or OpenType fonts.
+- Fixed a possible resource leak in Font copy assignment operator.
+- Fixed a possible resource leak in Image copy assignment operator.
+- Fixed a possible resource leak in Music copy assignment operator.
+
 
 ### IMPORTANT NOTES ABOUT BREAKING CHANGES
 
@@ -41,6 +51,8 @@ The Signals interface has been moved from the `Gallant` namespace to the `NAS2D:
 All `::w()` and `::h()` method names in across the entire interface have been renamed to `::width()` and `::height()`.
 
 Since all of the `using namespace` directives have been removed from all public interface headers, you will need to either use your own directive or specific they appropriate namespace for both `std::` and `NAS2D::` namespaces.
+
+The `KeyTranslator` object has been removed. Useful functionality has been merged into the `EventHandler` class. Additionally, the KeyCode and MouseButton enumerators were also merged into the EventHandler. This means that you will either need to append `EventHander::` to your calls or add a `using namespace NAS2D::EventHandler` to your source files.
 
 ---
 

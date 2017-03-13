@@ -255,7 +255,6 @@
     <ClInclude Include="..\..\include\NAS2D\Delegate.h" />
     <ClInclude Include="..\..\include\NAS2D\Documentation.h" />
     <ClInclude Include="..\..\include\NAS2D\EventHandler.h" />
-    <ClInclude Include="..\..\include\NAS2D\Event\KeyMap.h" />
     <ClInclude Include="..\..\include\NAS2D\Exception.h" />
     <ClInclude Include="..\..\include\NAS2D\File.h" />
     <ClInclude Include="..\..\include\NAS2D\Filesystem.h" />
@@ -268,7 +267,6 @@
     <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\ShaderManager.h" />
-    <ClInclude Include="..\..\include\NAS2D\Resources\errorImage.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Font.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\FontInfo.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Image.h" />

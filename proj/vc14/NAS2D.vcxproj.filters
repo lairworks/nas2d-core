@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Event">
-      <UniqueIdentifier>{b90412a7-99ea-411e-9fe8-fd0a24405bf5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Mixer">
       <UniqueIdentifier>{38850f27-88ca-4a9f-8398-c4fc4063e7d2}</UniqueIdentifier>
     </Filter>
@@ -27,9 +24,6 @@
     </Filter>
     <Filter Include="Source Files\tinyxml">
       <UniqueIdentifier>{7d97d5b5-2a02-45fa-b77b-5421848a65aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Event">
-      <UniqueIdentifier>{3b3a4c97-6346-4a99-aff7-2fbbf13f1363}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Mixer">
       <UniqueIdentifier>{e726c591-8921-4e48-bcd1-b31f16365f75}</UniqueIdentifier>
@@ -182,14 +176,8 @@
     <ClInclude Include="..\..\include\NAS2D\tinyxml\tinyxml.h">
       <Filter>Header Files\tinyxml</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Event\KeyMap.h">
-      <Filter>Header Files\Event</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer.h">
       <Filter>Header Files\Mixer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Resources\errorImage.h">
-      <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Resources\Font.h">
       <Filter>Header Files\Resources</Filter>

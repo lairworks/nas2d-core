@@ -8,6 +8,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Added EventHandler::textInputMode(bool) to turn on and off text input modes.
 - Added EventHandler::textInput() to query whether or not text input mode is turned on.
 - Added EventHandller::query_control(), EventHandller::query_numlock() and EventHandller::query_shift() to query key modifier states.
+- Added Renderer::showSystemPointer() method.
 
 ## Changed
 
@@ -23,6 +24,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Merged KeyTranslator::control(KeyModifier), KeyTranslator::numlock(KeyModifier) and KeyTranslator::shift(KeyModifier) into EventHandler.
 - Renamed all functions in Signal0 - Signal5 to lowercase names to match std:: and NAS2D library conventions.
 - Renamed ::w() and ::h() methods in in Rectangle_2d/Rectangle_2df to ::width() and ::height().
+- OGL_Renderer sets line quality for circle drawing code based on configuration's texture quality.
 
 ## Deprecated
 
@@ -40,6 +42,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Fixed a possible resource leak in Font copy assignment operator.
 - Fixed a possible resource leak in Image copy assignment operator.
 - Fixed a possible resource leak in Music copy assignment operator.
+- Fixed OGL_Renderer::drawGradient() showing incorrect colors.
 
 
 ### IMPORTANT NOTES ABOUT BREAKING CHANGES
@@ -48,11 +51,11 @@ Since the `Exception` class has been removed, any code using `NAS2D::Exception` 
 
 The Signals interface has been moved from the `Gallant` namespace to the `NAS2D::Signals` namespace. This will affect all code using custom Signals however using any of the built-in Signals (such as from the `EventHandler` or `Sprite` classes) will continue to function the same way without need for any changes. Additionally, all method names have been renamed to all lowercase names to match `NAS2D` and `std::` library conventions.
 
-All `::w()` and `::h()` method names in across the entire interface have been renamed to `::width()` and `::height()`.
+All `::w()` and `::h()` method names across the entire interface have been renamed to `::width()` and `::height()`.
 
-Since all of the `using namespace` directives have been removed from all public interface headers, you will need to either use your own directive or specific they appropriate namespace for both `std::` and `NAS2D::` namespaces.
+Since all of the `using namespace` directives have been removed from all public interface headers, you will need to either use your own directive or specific the appropriate namespace for both `std::` and `NAS2D::` namespaces.
 
-The `KeyTranslator` object has been removed. Useful functionality has been merged into the `EventHandler` class. Additionally, the KeyCode and MouseButton enumerators were also merged into the EventHandler. This means that you will either need to append `EventHander::` to your calls or add a `using namespace NAS2D::EventHandler` to your source files.
+The `KeyTranslator` object has been removed. Useful functionality has been merged into the `EventHandler` class. Additionally, the `KeyCode` and `MouseButton` enumerators were also merged into the `EventHandler`. This means that you will either need to append `EventHander::` to your calls or add a `using namespace NAS2D::EventHandler` to your source files. See [Issue #23](https://github.com/lairworks/nas2d-core/issues/23) for an in-depth explanation.
 
 ---
 

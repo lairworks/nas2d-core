@@ -643,6 +643,15 @@ void Renderer::drawGradient(float x, float y, float w, float h, const Color_4ub&
 	drawGradient(x, y, w, h, c1.red(), c1.green(), c1.blue(), c1.alpha(), c2.red(), c2.green(), c2.blue(), c2.alpha(), c3.red(), c3.green(), c3.blue(), c3.alpha(), c4.red(), c4.green(), c4.blue(), c4.alpha());
 }
 
+
+/**
+ * Shows or hides the system mouse pointer.
+ * \param	_b	True shows the pointer, false hides it.
+ */
+void Renderer::showSystemPointer(bool _b)
+{}
+
+
 /**
  * Returns the primary display's Width.
  */

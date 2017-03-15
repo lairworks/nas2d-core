@@ -46,8 +46,7 @@ GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.
 GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 
 /** Color value array for four verts. Defaults to white or normal color. */
-GLfloat COLOR_VERTEX_ARRAY[16] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-
+GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
 GLfloat		VERTEX_ARRAY[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
 GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
@@ -303,7 +302,6 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	glVertexPointer(2, GL_FLOAT, 0, verts);
 	glDrawArrays(GL_LINE_LOOP, 0, num_segments);
 
-
 	/**
 	 * \todo	I really hate the alloc's/dealloc's that are done in this function.
 	 * 			We should consider a basic array lookup table approach which will
@@ -311,7 +309,6 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	 * 			size).
 	 */
 	delete [] verts;
-	verts = 0;
 
 	glEnable(GL_TEXTURE_2D);
 }
@@ -337,10 +334,21 @@ void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int 
 	COLOR_VERTEX_ARRAY[10] = b3 / 255.0f;
 	COLOR_VERTEX_ARRAY[11] = a3 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[12] = r4 / 255.0f;
-	COLOR_VERTEX_ARRAY[13] = g4 / 255.0f;
-	COLOR_VERTEX_ARRAY[14] = b4 / 255.0f;
-	COLOR_VERTEX_ARRAY[15] = a4 / 255.0f;
+
+	COLOR_VERTEX_ARRAY[12] = r3 / 255.0f;
+	COLOR_VERTEX_ARRAY[13] = g3 / 255.0f;
+	COLOR_VERTEX_ARRAY[14] = b3 / 255.0f;
+	COLOR_VERTEX_ARRAY[15] = a3 / 255.0f;
+
+	COLOR_VERTEX_ARRAY[16] = r4 / 255.0f;
+	COLOR_VERTEX_ARRAY[17] = g4 / 255.0f;
+	COLOR_VERTEX_ARRAY[18] = b4 / 255.0f;
+	COLOR_VERTEX_ARRAY[19] = a4 / 255.0f;
+
+	COLOR_VERTEX_ARRAY[20] = r1 / 255.0f;
+	COLOR_VERTEX_ARRAY[21] = g1 / 255.0f;
+	COLOR_VERTEX_ARRAY[22] = b1 / 255.0f;
+	COLOR_VERTEX_ARRAY[23] = a1 / 255.0f;
 
 
 	fillVertexArray(x, y, w, h);
@@ -405,6 +413,12 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 }
 
 
+void OGL_Renderer::showSystemPointer(bool _b)
+{
+	SDL_ShowCursor(static_cast<int>(_b));
+}
+
+
 void OGL_Renderer::clearScreen(int r, int g, int b)
 {
 	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0 );
@@ -450,6 +464,12 @@ void OGL_Renderer::initGL()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
+
+	if (Utility<Configuration>::get().graphicsTextureQuality() == GRAPHICS_GOOD)
+	{
+		glEnable(GL_LINE_SMOOTH);
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	}
 
 	// Spit out system graphics information.
 	std::cout << "\t- OpenGL System Info -" << std::endl;
@@ -516,6 +536,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	#endif
 
 	SDL_ShowCursor(false);
+	glewInit();
 	initGL();
 }
 

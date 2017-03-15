@@ -187,6 +187,9 @@ int NAS2D::Font::width(const std::string& str) const
 
 	int width = 0;
 	GlyphMetricsList& gml = FONTMAP[name()].metrics;
+	if (gml.empty())
+		return 0;
+
 	for (size_t i = 0; i < str.size(); i++)
 	{
 		int glyph = clamp(str[i], 0, 255);
@@ -468,7 +471,10 @@ void updateFontReferenceCount(const std::string name)
 {
 	auto it = FONTMAP.find(name);
 	if (it == FONTMAP.end())
-		throw font_bad_data();
+	{
+		std::cout << "Font '" << name << "' was not found in the resource management." << std::endl;
+		return;
+	}
 
 	--it->second.ref_count;
 

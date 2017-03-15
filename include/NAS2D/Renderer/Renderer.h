@@ -105,6 +105,8 @@ public:
 	bool isFaded() const;
 	NAS2D::Signals::Signal0<void>& fadeComplete() const;
 
+	virtual void showSystemPointer(bool);
+
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);
 

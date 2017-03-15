@@ -65,7 +65,9 @@ Image::Image(const std::string& filePath) : Resource(filePath)
  * Default C'tor.	
  */
 Image::Image() : Resource(DEFAULT_IMAGE_NAME)
-{}
+{
+	loaded(true);
+}
 
 
 /**

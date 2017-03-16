@@ -349,7 +349,7 @@ void Sprite::parseImageSheets(TiXmlElement *root)
 	TiXmlNode* xmlNode = 0;
 	while(xmlNode = root->IterateChildren(xmlNode))
 	{
-		if(xmlNode->ValueStr() == "imagesheet")
+		if(xmlNode->Value() == "imagesheet")
 		{
 			string id = parser.stringAttribute(xmlNode, "id");
 			string src = parser.stringAttribute(xmlNode, "src");
@@ -425,7 +425,7 @@ void Sprite::parseActions(TiXmlElement *root)
 	TiXmlNode *actionNode = 0;
 	while(actionNode = root->IterateChildren(actionNode))
 	{
-		if(actionNode->ValueStr() == "action")
+		if(actionNode->Value() == "action")
 		{
 			string action_name = parser.stringAttribute(actionNode, "name");
 
@@ -460,7 +460,7 @@ void Sprite::parseFrames(const std::string& action, TiXmlNode *node)
 	{
 		int currentRow = frameNode->Row();
 		
-		if(frameNode->ValueStr() == "frame")
+		if(frameNode->Value() == "frame")
 		{
 			// Imagesheet ID
 			string sheetId = toLowercase(parser.stringAttribute(frameNode, "sheetid")); // normalized

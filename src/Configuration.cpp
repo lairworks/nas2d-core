@@ -204,16 +204,16 @@ bool Configuration::readConfig(const std::string& filePath)
 		TiXmlNode *xmlNode = nullptr;
 		while(xmlNode = root->IterateChildren(xmlNode))
 		{
-			if (xmlNode->ValueStr() == "graphics")
+			if (xmlNode->Value() == "graphics")
 				parseGraphics(xmlNode);
-			else if (xmlNode->ValueStr() == "audio")
+			else if (xmlNode->Value() == "audio")
 				parseAudio(xmlNode);
-			else if (xmlNode->ValueStr() == "options")
+			else if (xmlNode->Value() == "options")
 				parseOptions(xmlNode);
 			else if (xmlNode->Type() == TiXmlNode::TINYXML_DOCUMENT)
 				; // ignore comments
 			else
-				std::cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in '" << filePath << "' on row " << xmlNode->Row() << "." << std::endl;
+				std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in '" << filePath << "' on row " << xmlNode->Row() << "." << std::endl;
 		}
 	}
 
@@ -303,7 +303,7 @@ void Configuration::parseOptions(void* _n)
 	TiXmlNode *xmlNode = nullptr;
 	while(xmlNode = node->IterateChildren(xmlNode))
 	{
-		if(xmlNode->ValueStr() == "option")
+		if(xmlNode->Value() == "option")
 		{
 			// Ensure that there is a 'name' attribute.
 			std::string option = parser.stringAttribute(xmlNode, "name");
@@ -314,7 +314,7 @@ void Configuration::parseOptions(void* _n)
 				std::cout << "Option tag is missing a name attribute on row " << xmlNode->Row() << "." << std::endl;
 		}
 		else
-			std::cout << "Unexpected tag '<" << xmlNode->ValueStr() << ">' found in configuration on row " << xmlNode->Row() << "." << std::endl;
+			std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in configuration on row " << xmlNode->Row() << "." << std::endl;
 	}
 }
 

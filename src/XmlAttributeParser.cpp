@@ -135,7 +135,7 @@ double XmlAttributeParser::doubleAttribute(TiXmlNode* node, const std::string& a
  */
 string XmlAttributeParser::stringAttribute(TiXmlNode* node, const std::string& attribute)
 {
-	const std::string returnValue(*node->ToElement()->Attribute(attribute));
+	const std::string returnValue = node->ToElement()->Attribute(attribute);
 	if(returnValue.empty())
 	{
 		cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;

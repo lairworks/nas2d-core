@@ -31,7 +31,7 @@ int XmlAttributeParser::intAttribute(TiXmlNode* node, const std::string& attribu
 
 	int result = TIXML_SUCCESS;
 
-	result = node->ToElement()->QueryIntAttribute(attribute.c_str(), &returnValue);
+	result = node->ToElement()->QueryIntAttribute(attribute, returnValue);
 	if(result != TIXML_SUCCESS)
 	{
 		if(result == TIXML_NO_ATTRIBUTE)
@@ -67,7 +67,7 @@ float XmlAttributeParser::floatAttribute(TiXmlNode* node, const std::string& att
 
 	int result = TIXML_SUCCESS;
 
-	result = node->ToElement()->QueryFloatAttribute(attribute.c_str(), &returnValue);
+	result = node->ToElement()->QueryFloatAttribute(attribute, returnValue);
 	if(result != TIXML_SUCCESS)
 	{
 		if(result == TIXML_NO_ATTRIBUTE)
@@ -103,7 +103,7 @@ double XmlAttributeParser::doubleAttribute(TiXmlNode* node, const std::string& a
 
 	int result = TIXML_SUCCESS;
 
-	result = node->ToElement()->QueryDoubleAttribute(attribute.c_str(), &returnValue);
+	result = node->ToElement()->QueryDoubleAttribute(attribute, returnValue);
 	if(result != TIXML_SUCCESS)
 	{
 		if(result == TIXML_NO_ATTRIBUTE)

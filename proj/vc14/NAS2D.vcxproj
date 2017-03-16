@@ -115,12 +115,16 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\API\glew-1.13.0\include;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\physfs-2.0.3;..\..\include;..\..\include\NAS2D\tinyxml;$(IncludePath)</IncludePath>
     <LibraryPath>C:\API\glew-1.13.0\lib\Release\Win32;C:\API\physfs-2.0.3\lib\x86;C:\API\SDL2-2.0.3\lib\x86;C:\API\SDL2_image-2.0.0\lib\x86;C:\API\SDL2_mixer-2.0.0\lib\x86;C:\API\SDL2_ttf-2.0.12\lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'">
     <IncludePath>C:\API\glew-1.13.0\include;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\physfs-2.0.3;..\..\include;..\..\include\NAS2D\tinyxml;$(IncludePath)</IncludePath>
@@ -135,6 +139,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Development\NAS2D\nas2d-core\include\;C:\Development\NAS2D\nas2d-core\include\NAS2D\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WINDOWS;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -162,6 +167,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Development\NAS2D\nas2d-core\include\;C:\Development\NAS2D\nas2d-core\include\NAS2D\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WINDOWS;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

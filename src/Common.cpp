@@ -7,7 +7,6 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #include "NAS2D/Common.h"
 
 #include <cctype>
@@ -208,12 +207,12 @@ float NAS2D::clamp(float x, float min, float max)
  * 
  * Basic integer division that rounds up to the nearest whole number.
  * 
- * \param	a	Number to be divided.
- * \param	b	Divisor.
+ * \param	to_divide	Number to be divided.
+ * \param	divisor		Divisor.
  * 
  * \return	Returns the divided number rounded up to the nearest whole number.
  */
-int NAS2D::divideUp(int a, int b)
+int NAS2D::divideUp(int to_divide, int divisor)
 {
-	return (a + (b - 1)) / b;
+	return (to_divide + (divisor - 1)) / divisor;
 }

@@ -33,12 +33,13 @@ bool isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b);
 int clamp(int x, int min, int max);
 float clamp(float x, float min, float max);
 
-int divideUp(int a, int b);
+int divideUp(int to_divide, int divisor);
 
 
 // String functions & types
 std::string toLowercase(const std::string& str);
 std::string toUppercase(const std::string& str);
+
 
 template <typename T>
 bool from_string(T& t, const std::string& s, std::ios_base& (*f)(std::ios_base&))
@@ -63,7 +64,10 @@ std::string string_format(const std::string& format, Args ... args)
 
 /**
  * \typedef StringList
- * \brief	A list of strings.
+ * \brief	A list of std::string's.
+ * 
+ * The StringList is provided primarily as a convenience typedef
+ * but is also used by some of NAS2D's functions.
  */
 typedef std::vector<std::string> StringList;
 

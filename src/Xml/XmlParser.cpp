@@ -787,23 +787,6 @@ const char* TiXmlDocument::Parse( const char* p, TiXmlParsingData* prevData, TiX
 			break;
 		}
 
-		// Did we get encoding info?
-		if (encoding == TIXML_ENCODING_UNKNOWN && node->ToDeclaration() )
-		{
-			TiXmlDeclaration* dec = node->ToDeclaration();
-			const char* enc = dec->Encoding().c_str();
-			assert( enc );
-
-			if ( *enc == 0 )
-				encoding = TIXML_ENCODING_UTF8;
-			else if ( StringEqual( enc, "UTF-8", true, TIXML_ENCODING_UNKNOWN ) )
-				encoding = TIXML_ENCODING_UTF8;
-			else if ( StringEqual( enc, "UTF8", true, TIXML_ENCODING_UNKNOWN ) )
-				encoding = TIXML_ENCODING_UTF8;	// incorrect, but be nice
-			else 
-				encoding = TIXML_ENCODING_LEGACY;
-		}
-
 		p = SkipWhiteSpace( p, encoding );
 	}
 
@@ -862,19 +845,11 @@ TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
 	//
 
 	// Holy crap there are MUCH better ways to do this.
-	const char* xmlHeader = { "<?xml" };
 	const char* commentHeader = { "<!--" };
 	const char* dtdHeader = { "<!" };
 	const char* cdataHeader = { "<![CDATA[" };
 
-	if ( StringEqual( p, xmlHeader, true, encoding ) )
-	{
-		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing Declaration\n" );
-		#endif
-		returnNode = new TiXmlDeclaration();
-	}
-	else if ( StringEqual( p, commentHeader, false, encoding ) )
+	if ( StringEqual( p, commentHeader, false, encoding ) )
 	{
 		#ifdef DEBUG_PARSER
 			TIXML_LOG( "XML parsing Comment\n" );
@@ -1556,84 +1531,6 @@ const char* TiXmlText::Parse( const char* p, TiXmlParsingData* data, TiXmlEncodi
 	}
 }
 
-void TiXmlDeclaration::StreamIn(std::istream & in, std::string & tag)
-{
-	while (in.good())
-	{
-		int c = in.get();
-		if (c <= 0)
-		{
-			TiXmlDocument* document = GetDocument();
-			if (document)
-				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
-			return;
-		}
-		tag += static_cast<char>(c);
-
-		if (c == '>')
-			return;
-	}
-}
-
-
-const char* TiXmlDeclaration::Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding _encoding )
-{
-	p = SkipWhiteSpace( p, _encoding );
-	// Find the beginning, find the end, and look for
-	// the stuff in-between.
-	TiXmlDocument* document = GetDocument();
-	if ( !p || !*p || !StringEqual( p, "<?xml", true, _encoding ) )
-	{
-		if ( document ) document->SetError( TIXML_ERROR_PARSING_DECLARATION, 0, 0, _encoding );
-		return nullptr;
-	}
-	if ( data )
-	{
-		data->Stamp( p, _encoding );
-		location = data->Cursor();
-	}
-	p += 5;
-
-	version = "";
-	encoding = "";
-	standalone = "";
-
-	while ( p && *p )
-	{
-		if ( *p == '>' )
-		{
-			++p;
-			return p;
-		}
-
-		p = SkipWhiteSpace( p, _encoding );
-		if ( StringEqual( p, "version", true, _encoding ) )
-		{
-			TiXmlAttribute attrib;
-			p = attrib.Parse( p, data, _encoding );		
-			version = attrib.Value();
-		}
-		else if ( StringEqual( p, "encoding", true, _encoding ) )
-		{
-			TiXmlAttribute attrib;
-			p = attrib.Parse( p, data, _encoding );		
-			encoding = attrib.Value();
-		}
-		else if ( StringEqual( p, "standalone", true, _encoding ) )
-		{
-			TiXmlAttribute attrib;
-			p = attrib.Parse( p, data, _encoding );		
-			standalone = attrib.Value();
-		}
-		else
-		{
-			// Read over whatever it is.
-			while( p && *p && *p != '>' && !IsWhiteSpace( *p ) )
-				++p;
-		}
-	}
-	return nullptr;
-}
 
 bool TiXmlText::Blank() const
 {

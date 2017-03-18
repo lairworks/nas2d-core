@@ -17,7 +17,6 @@
 namespace NAS2D {
 namespace Xml {
 
-
 /**
  * The parent class for everything in the DOM (Except for attributes).
  * 

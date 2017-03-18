@@ -290,9 +290,18 @@
     <ClInclude Include="..\..\include\NAS2D\Trig.h" />
     <ClInclude Include="..\..\include\NAS2D\Utility.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\Xml.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttribute.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeParser.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeSet.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlBase.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlComment.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlDocument.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlElement.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlHandle.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlMemoryBuffer.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlNode.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlText.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlUnknown.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlVisitor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

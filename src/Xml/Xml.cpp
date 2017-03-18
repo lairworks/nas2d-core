@@ -630,18 +630,22 @@ void TiXmlElement::RemoveAttribute(const std::string& name)
 // ==================================================================================
 // = XmlDocument Implementation
 // ==================================================================================
-TiXmlDocument::TiXmlDocument() : TiXmlNode(TiXmlNode::TINYXML_DOCUMENT)
+TiXmlDocument::TiXmlDocument() :	TiXmlNode(TiXmlNode::TINYXML_DOCUMENT),
+									errorId(0),
+									tabsize(4),
+									error(false),
+									useMicrosoftBOM(false)
 {
-	tabsize = 4;
-	useMicrosoftBOM = false;
 	ClearError();
 }
 
 
-TiXmlDocument::TiXmlDocument(const std::string& documentName) : TiXmlNode(TiXmlNode::TINYXML_DOCUMENT)
+TiXmlDocument::TiXmlDocument(const std::string& documentName) : TiXmlNode(TiXmlNode::TINYXML_DOCUMENT),
+																errorId(0),
+																tabsize(4),
+																error(false),
+																useMicrosoftBOM(false)
 {
-	tabsize = 4;
-	useMicrosoftBOM = false;
 	value = documentName;
 	ClearError();
 }
@@ -674,9 +678,7 @@ void TiXmlDocument::CopyTo(TiXmlDocument* target) const
 
 	TiXmlNode* node = nullptr;
 	for (node = firstChild; node; node = node->NextSibling())
-	{
 		target->LinkEndChild(node->Clone());
-	}
 }
 
 
@@ -872,66 +874,6 @@ TiXmlNode* TiXmlText::Clone() const
 	TiXmlText* clone = new TiXmlText("");
 	CopyTo(clone);
 
-	return clone;
-}
-
-
-
-// ==================================================================================
-// = XmlDeclaration Implementation
-// ==================================================================================
-TiXmlDeclaration& TiXmlDeclaration::operator=( const TiXmlDeclaration& copy )
-{
-	Clear();
-	copy.CopyTo( this );
-	return *this;
-}
-
-
-void TiXmlDeclaration::Print(std::string& buf, int /*depth*/) const
-{
-	buf += "<?xml ";
-
-	if (!version.empty())
-	{
-		buf += "version=\"";
-		buf += version;
-		buf += "\" ";
-	}
-	if (!encoding.empty())
-	{
-		buf += "encoding=\"";
-		buf += encoding;
-		buf += "\" ";
-	}
-	if (!standalone.empty())
-	{
-		buf += "standalone=\"";
-		buf += standalone;
-		buf += "\" ";
-	}
-	buf += "?>";
-}
-
-
-void TiXmlDeclaration::CopyTo(TiXmlDeclaration* target) const
-{
-	TiXmlNode::CopyTo(target);
-
-	target->version = version;
-	target->encoding = encoding;
-	target->standalone = standalone;
-}
-
-
-TiXmlNode* TiXmlDeclaration::Clone() const
-{
-	TiXmlDeclaration* clone = new TiXmlDeclaration();
-
-	if (!clone)
-		return nullptr;
-
-	CopyTo(clone);
 	return clone;
 }
 
@@ -1214,15 +1156,6 @@ bool XmlMemoryBuffer::Visit(const TiXmlText& text)
 		_buffer += str;
 		line_break();
 	}
-	return true;
-}
-
-
-bool XmlMemoryBuffer::Visit(const TiXmlDeclaration& declaration)
-{
-	indent();
-	declaration.Print(_buffer, 0);
-	line_break();
 	return true;
 }
 

@@ -233,5 +233,32 @@
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlNode.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttribute.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeSet.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlElement.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlComment.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlText.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlUnknown.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlDocument.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlHandle.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlMemoryBuffer.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

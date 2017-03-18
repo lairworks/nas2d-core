@@ -16,7 +16,6 @@ namespace Xml {
 
 class TiXmlAttribute;
 class TiXmlComment;
-class TiXmlDeclaration;
 class TiXmlDocument;
 class TiXmlElement;
 class TiXmlText;

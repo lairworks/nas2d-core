@@ -19,19 +19,19 @@ namespace Xml {
 /**
  * A Comment in XML.
  */
-class TiXmlComment : public TiXmlNode
+class XmlComment : public XmlNode
 {
 public:
-	TiXmlComment() : TiXmlNode(TiXmlNode::TINYXML_COMMENT) {}
+	XmlComment() : XmlNode(XmlNode::TINYXML_COMMENT) {}
 
-	TiXmlComment(const std::string& _value) : TiXmlNode(TiXmlNode::TINYXML_COMMENT) { SetValue(_value); }
-	TiXmlComment(const TiXmlComment& copy) { copy.CopyTo(this); }
-	TiXmlComment& operator=(const TiXmlComment& base);
+	XmlComment(const std::string& _value) : XmlNode(XmlNode::TINYXML_COMMENT) { SetValue(_value); }
+	XmlComment(const XmlComment& copy) { copy.CopyTo(this); }
+	XmlComment& operator=(const XmlComment& base);
 
-	virtual ~TiXmlComment() {}
+	virtual ~XmlComment() {}
 
 	/// Returns a copy of this Comment.
-	virtual TiXmlNode* Clone() const;
+	virtual XmlNode* Clone() const;
 
 	virtual void Print(std::string& buf, int depth) const;
 
@@ -39,10 +39,10 @@ public:
 	 * Attribtue parsing starts: at the ! of the !--
 	 * 					 returns: next char past '>'
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
 
-	virtual const TiXmlComment* ToComment() const { return this; }
-	virtual TiXmlComment* ToComment() { return this; }
+	virtual const XmlComment* ToComment() const { return this; }
+	virtual XmlComment* ToComment() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
@@ -50,7 +50,7 @@ public:
 	virtual bool Accept(XmlVisitor* visitor) const { return visitor->Visit(*this); }
 
 protected:
-	void CopyTo(TiXmlComment* target) const { TiXmlNode::CopyTo(target); }
+	void CopyTo(XmlComment* target) const { XmlNode::CopyTo(target); }
 	virtual void StreamIn(std::istream& in, std::string& tag);
 
 private:

@@ -23,15 +23,15 @@ namespace Xml {
  * contain other elements, text, comments, and unknowns. Elements also contain an
  * arbitrary number of attributes.
  */
-class TiXmlElement : public TiXmlNode
+class XmlElement : public XmlNode
 {
 public:
-	TiXmlElement(const std::string& _value);
-	TiXmlElement(const TiXmlElement& copy);
+	XmlElement(const std::string& _value);
+	XmlElement(const XmlElement& copy);
 
-	TiXmlElement& operator=(const TiXmlElement& base);
+	XmlElement& operator=(const XmlElement& base);
 
-	virtual ~TiXmlElement();
+	virtual ~XmlElement();
 
 	/**
 	 * Given an attribute name, Attribute() returns the value for the attribute
@@ -113,21 +113,21 @@ public:
 	/**
 	 * Get the first attribute of the XmlElement.
 	 */
-	const TiXmlAttribute* FirstAttribute() const;
-	TiXmlAttribute* FirstAttribute();
+	const XmlAttribute* FirstAttribute() const;
+	XmlAttribute* FirstAttribute();
 
 	/**
 	 * Get the last attribute of the XmlElement.
 	 */
-	const TiXmlAttribute* LastAttribute() const;
-	TiXmlAttribute* LastAttribute();
+	const XmlAttribute* LastAttribute() const;
+	XmlAttribute* LastAttribute();
 
 	/**
 	 * Convenience function for easy access to the text inside an element. Although easy
-	 * and concise, GetText() is limited compared to getting the TiXmlText child and 
+	 * and concise, GetText() is limited compared to getting the XmlText child and 
 	 * accessing it directly.
 	 * 
-	 * If the first child of 'this' is a TiXmlText, the GetText() returns the character
+	 * If the first child of 'this' is a XmlText, the GetText() returns the character
 	 * string of the Text node, else null is returned.
 	 * 
 	 * This is a convenient method for getting the text of simple contained text:
@@ -162,7 +162,7 @@ public:
 	/**
 	 * Creates a new Element and returns it - the returned element is a copy.
 	 */
-	virtual TiXmlNode* Clone() const;
+	virtual XmlNode* Clone() const;
 	
 	virtual void Print(std::string& buf, int depth) const;
 
@@ -170,10 +170,10 @@ public:
 	 * Attribtue parsing starts: next char past '<'
 	 * returns: next char past '>'
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
 
-	virtual const TiXmlElement* ToElement() const { return this; }
-	virtual TiXmlElement* ToElement() { return this; }
+	virtual const XmlElement* ToElement() const { return this; }
+	virtual XmlElement* ToElement() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
@@ -181,7 +181,7 @@ public:
 	virtual bool Accept(XmlVisitor* visitor) const;
 
 protected:
-	void CopyTo(TiXmlElement* target) const;
+	void CopyTo(XmlElement* target) const;
 	void ClearThis();	// like clear, but initializes 'this' object as well
 
 	// Used to be public [internal use]
@@ -191,10 +191,10 @@ protected:
 		Reads the "value" of the element -- another element, or text.
 		This should terminate with the current end tag.
 	*/
-	const char* ReadValue(const char* in, TiXmlParsingData* prevData, TiXmlEncoding encoding);
+	const char* ReadValue(const char* in, TiXmlParsingData* prevData, XmlEncoding encoding);
 
 private:
-	TiXmlAttributeSet attributeSet;
+	XmlAttributeSet attributeSet;
 };	
 	
 } // namespace Xml

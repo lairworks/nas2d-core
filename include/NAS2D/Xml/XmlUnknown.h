@@ -23,26 +23,26 @@ namespace Xml {
  * 
  * Declarations and DTD tags get thrown into XmlUnknown's.
  */
-class TiXmlUnknown : public TiXmlNode
+class XmlUnknown : public XmlNode
 {
 public:
-	TiXmlUnknown();
-	virtual ~TiXmlUnknown();
+	XmlUnknown();
+	virtual ~XmlUnknown();
 
-	TiXmlUnknown(const TiXmlUnknown& copy);
-	TiXmlUnknown& operator=(const TiXmlUnknown& copy);
+	XmlUnknown(const XmlUnknown& copy);
+	XmlUnknown& operator=(const XmlUnknown& copy);
 
-	virtual TiXmlNode* Clone() const;
+	virtual XmlNode* Clone() const;
 	
 	/**
 	 * Print the Unknown to a buffer.
 	 */
 	virtual void Print(std::string& buf, int depth) const;
 
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
 
-	virtual const TiXmlUnknown* ToUnknown() const { return this; }
-	virtual TiXmlUnknown* ToUnknown() { return this; }
+	virtual const XmlUnknown* ToUnknown() const { return this; }
+	virtual XmlUnknown* ToUnknown() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
@@ -50,7 +50,7 @@ public:
 	virtual bool Accept(XmlVisitor* visitor) const;
 
 protected:
-	void CopyTo(TiXmlUnknown* target) const;
+	void CopyTo(XmlUnknown* target) const;
 	virtual void StreamIn(std::istream& in, std::string& tag);
 };
 

@@ -14,12 +14,12 @@
 namespace NAS2D {
 namespace Xml {
 
-class TiXmlAttribute;
-class TiXmlComment;
-class TiXmlDocument;
-class TiXmlElement;
-class TiXmlText;
-class TiXmlUnknown;
+class XmlAttribute;
+class XmlComment;
+class XmlDocument;
+class XmlElement;
+class XmlText;
+class XmlUnknown;
 
 /**
  * Implements the interface to the "Visitor pattern" (see the Accept() method.) If you call
@@ -33,7 +33,7 @@ class TiXmlUnknown;
  * All flavors of Visit methods have a default implementation that returns 'true' (continue
  * visiting). You need to only override methods that are interesting to you.
  *
- * Generally Accept() is called on the TiXmlDocument, although all nodes suppert Visiting.
+ * Generally Accept() is called on the XmlDocument, although all nodes suppert Visiting.
  *
  * \see XmlNode::Accept()
  */
@@ -42,15 +42,15 @@ class XmlVisitor
 public:
 	virtual ~XmlVisitor() {}
 
-	virtual bool VisitEnter(const TiXmlDocument&) { return true; }
-	virtual bool VisitExit(const TiXmlDocument&) { return true; }
+	virtual bool VisitEnter(const XmlDocument&) { return true; }
+	virtual bool VisitExit(const XmlDocument&) { return true; }
 
-	virtual bool VisitEnter(const TiXmlElement&, const TiXmlAttribute*) { return true; }
-	virtual bool VisitExit(const TiXmlElement&) { return true; }
+	virtual bool VisitEnter(const XmlElement&, const XmlAttribute*) { return true; }
+	virtual bool VisitExit(const XmlElement&) { return true; }
 
-	virtual bool Visit(const TiXmlText&) { return true; }
-	virtual bool Visit(const TiXmlComment&) { return true; }
-	virtual bool Visit(const TiXmlUnknown&) { return true; }
+	virtual bool Visit(const XmlText&) { return true; }
+	virtual bool Visit(const XmlComment&) { return true; }
+	virtual bool Visit(const XmlUnknown&) { return true; }
 };
 
 } // namespace Xml

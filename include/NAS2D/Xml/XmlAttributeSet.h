@@ -28,29 +28,29 @@ This version is implemented with circular lists because:
 - I like circular lists
 - it demonstrates some independence from the (typical) doubly linked list.
 */
-class TiXmlAttributeSet
+class XmlAttributeSet
 {
 public:
-	TiXmlAttributeSet();
-	~TiXmlAttributeSet();
+	XmlAttributeSet();
+	~XmlAttributeSet();
 
-	void Add(TiXmlAttribute* attribute);
-	void Remove(TiXmlAttribute* attribute);
+	void Add(XmlAttribute* attribute);
+	void Remove(XmlAttribute* attribute);
 
-	const TiXmlAttribute* First()	const { return (sentinel.next == &sentinel) ? 0 : sentinel.next; }
-	TiXmlAttribute* First() { return (sentinel.next == &sentinel) ? 0 : sentinel.next; }
-	const TiXmlAttribute* Last() const { return (sentinel.prev == &sentinel) ? 0 : sentinel.prev; }
-	TiXmlAttribute* Last() { return (sentinel.prev == &sentinel) ? 0 : sentinel.prev; }
+	const XmlAttribute* First()	const { return (sentinel.next == &sentinel) ? 0 : sentinel.next; }
+	XmlAttribute* First() { return (sentinel.next == &sentinel) ? 0 : sentinel.next; }
+	const XmlAttribute* Last() const { return (sentinel.prev == &sentinel) ? 0 : sentinel.prev; }
+	XmlAttribute* Last() { return (sentinel.prev == &sentinel) ? 0 : sentinel.prev; }
 
-	TiXmlAttribute*	Find(const std::string& _name) const;
-	TiXmlAttribute* FindOrCreate(const std::string& _name);
+	XmlAttribute*	Find(const std::string& _name) const;
+	XmlAttribute* FindOrCreate(const std::string& _name);
 
 
 private:
-	TiXmlAttributeSet(const TiXmlAttributeSet&); // Explicitly disallowed.
-	void operator=(const TiXmlAttributeSet&); // Explicitly disallowed.
+	XmlAttributeSet(const XmlAttributeSet&); // Explicitly disallowed.
+	void operator=(const XmlAttributeSet&); // Explicitly disallowed.
 
-	TiXmlAttribute sentinel;	/**< Comment me. */
+	XmlAttribute sentinel;	/**< Comment me. */
 };
 
 } // namespace Xml

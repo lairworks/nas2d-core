@@ -13,13 +13,13 @@
 
 using namespace NAS2D::Xml;
 
-bool TiXmlBase::condenseWhiteSpace = true;
+bool XmlBase::condenseWhiteSpace = true;
 
 /**
 * Return the position, in the original source file, of this node or attribute.
 *
-* Generally, the row and column value will be set when the TiXmlDocument::Load(),
-* TiXmlDocument::LoadFile(), or any TiXmlNode::Parse() is called. It will NOT be set
+* Generally, the row and column value will be set when the XmlDocument::Load(),
+* XmlDocument::LoadFile(), or any XmlNode::Parse() is called. It will NOT be set
 * when the DOM was created from operator>>.
 *
 * The values reflect the initial load. Once the DOM is modified programmatically
@@ -27,19 +27,19 @@ bool TiXmlBase::condenseWhiteSpace = true;
 * reflect changes in the document.
 *
 * There is a minor performance cost to computing the row and column. Computation
-* can be disabled if TiXmlDocument::SetTabSize() is called with 0 as the value.
+* can be disabled if XmlDocument::SetTabSize() is called with 0 as the value.
 *
-* @sa TiXmlDocument::SetTabSize()
+* @sa XmlDocument::SetTabSize()
 */
-int TiXmlBase::row() const
+int XmlBase::row() const
 {
 	return location.row + 1;
 }
 
-int TiXmlBase::column() const { return location.col + 1; }	///< See Row()
+int XmlBase::column() const { return location.col + 1; }	///< See Row()
 
 
-void TiXmlBase::EncodeString(const std::string& str, std::string& outString)
+void XmlBase::EncodeString(const std::string& str, std::string& outString)
 {
 	size_t i = 0;
 
@@ -121,22 +121,22 @@ void TiXmlBase::EncodeString(const std::string& str, std::string& outString)
 }
 
 
-void TiXmlBase::fillErrorTable()
+void XmlBase::fillErrorTable()
 {
-	TiXmlBase::errorString.push_back("No error");
-	TiXmlBase::errorString.push_back("Unspecified Error");
-	TiXmlBase::errorString.push_back("Error: Failed to open file");
-	TiXmlBase::errorString.push_back("Error parsing Element.");
-	TiXmlBase::errorString.push_back("Failed to read Element name.");
-	TiXmlBase::errorString.push_back("Error reading Element value.");
-	TiXmlBase::errorString.push_back("Error reading Attributes.");
-	TiXmlBase::errorString.push_back("Error: Empty tag.");
-	TiXmlBase::errorString.push_back("Error reading end tag.");
-	TiXmlBase::errorString.push_back("Error parsing Unknown.");
-	TiXmlBase::errorString.push_back("Error parsing Comment.");
-	TiXmlBase::errorString.push_back("Error parsing Declaration.");
-	TiXmlBase::errorString.push_back("Error: Document empty.");
-	TiXmlBase::errorString.push_back("Error: Unexpected EOF found in input stream.");
-	TiXmlBase::errorString.push_back("Error parsing CDATA.");
-	TiXmlBase::errorString.push_back("Error adding XmlDocument to document: XmlDocument can only be at the root.");
+	XmlBase::errorString.push_back("No error");
+	XmlBase::errorString.push_back("Unspecified Error");
+	XmlBase::errorString.push_back("Error: Failed to open file");
+	XmlBase::errorString.push_back("Error parsing Element.");
+	XmlBase::errorString.push_back("Failed to read Element name.");
+	XmlBase::errorString.push_back("Error reading Element value.");
+	XmlBase::errorString.push_back("Error reading Attributes.");
+	XmlBase::errorString.push_back("Error: Empty tag.");
+	XmlBase::errorString.push_back("Error reading end tag.");
+	XmlBase::errorString.push_back("Error parsing Unknown.");
+	XmlBase::errorString.push_back("Error parsing Comment.");
+	XmlBase::errorString.push_back("Error parsing Declaration.");
+	XmlBase::errorString.push_back("Error: Document empty.");
+	XmlBase::errorString.push_back("Error: Unexpected EOF found in input stream.");
+	XmlBase::errorString.push_back("Error parsing CDATA.");
+	XmlBase::errorString.push_back("Error adding XmlDocument to document: XmlDocument can only be at the root.");
 }

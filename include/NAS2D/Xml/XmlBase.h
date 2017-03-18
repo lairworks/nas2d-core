@@ -17,12 +17,12 @@
 namespace NAS2D {
 namespace Xml {
 
-class TiXmlAttribute;
-class TiXmlComment;
-class TiXmlDocument;
-class TiXmlElement;
-class TiXmlText;
-class TiXmlUnknown;
+class XmlAttribute;
+class XmlComment;
+class XmlDocument;
+class XmlElement;
+class XmlText;
+class XmlUnknown;
 class TiXmlParsingData;
 
 /**
@@ -37,19 +37,20 @@ struct XmlCursor
 	int col; // 0 based.
 };
 
+
 // Used by the parsing routines.
-enum TiXmlEncoding
+enum XmlEncoding
 {
 	TIXML_ENCODING_UNKNOWN,
 	TIXML_ENCODING_UTF8,
 	TIXML_ENCODING_LEGACY
 };
 
-const TiXmlEncoding TIXML_DEFAULT_ENCODING = TIXML_ENCODING_UNKNOWN;
+const XmlEncoding TIXML_DEFAULT_ENCODING = TIXML_ENCODING_UNKNOWN;
 
 
 /**
- * TiXmlBase is a base class for every class in TinyXml. It does little except to establish
+ * XmlBase is a base class for every class in TinyXml. It does little except to establish
  * that TinyXml classes can be printed and provide some utility functions.
  * 
  * In XML, the document and elements can contain other elements and other types of nodes.
@@ -69,15 +70,15 @@ const TiXmlEncoding TIXML_DEFAULT_ENCODING = TIXML_ENCODING_UNKNOWN;
  * 
  * A Decleration contains: Attributes (not on tree)
  */
-class TiXmlBase
+class XmlBase
 {
-	friend class TiXmlNode;
-	friend class TiXmlElement;
-	friend class TiXmlDocument;
+	friend class XmlNode;
+	friend class XmlElement;
+	friend class XmlDocument;
 
 public:
-	TiXmlBase() : userData(nullptr) { fillErrorTable(); }
-	virtual ~TiXmlBase() {}
+	XmlBase() : userData(nullptr) { fillErrorTable(); }
+	virtual ~XmlBase() {}
 
 	/**
 	* All TinyXml classes can print themselves to a filestream or a string.
@@ -109,7 +110,7 @@ public:
 															// Table that returns, for a given lead byte, the total number of bytes in the UTF-8 sequence.
 	static const int utf8ByteTable[256];
 
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding) = 0;
+	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding) = 0;
 
 	/**
 	* Expands entities in a string. Note this should not contian the tag's '<', '>', etc,
@@ -140,7 +141,7 @@ public:
 	};
 
 protected:
-	static const char* SkipWhiteSpace(const char*, TiXmlEncoding encoding);
+	static const char* SkipWhiteSpace(const char*, XmlEncoding encoding);
 
 	inline static bool IsWhiteSpace(char c) { return (isspace((unsigned char)c) || c == '\n' || c == '\r'); }
 	inline static bool IsWhiteSpace(int c) { if (c < 256) return IsWhiteSpace((char)c);	return false; }
@@ -152,7 +153,7 @@ protected:
 	* Reads an XML name into the string provided. Returns a pointer just past
 	* the last character of the name, or 0 if the function has an error.
 	*/
-	static const char* ReadName(const char* p, std::string& name, TiXmlEncoding encoding);
+	static const char* ReadName(const char* p, std::string& name, XmlEncoding encoding);
 
 	/**
 	* Reads text. Returns a pointer past the given end tag. Wickedly complex options, but it
@@ -165,19 +166,19 @@ protected:
 	* \param ignoreCase		Whether to ignore case in the end tag
 	* \param encoding			The current encoding.
 	*/
-	static const char* ReadText(const char* in, std::string* text, bool ignoreWhiteSpace, const char* endTag, bool ignoreCase, TiXmlEncoding encoding);
+	static const char* ReadText(const char* in, std::string* text, bool ignoreWhiteSpace, const char* endTag, bool ignoreCase, XmlEncoding encoding);
 
 	// If an entity has been found, transform it into a character.
-	static const char* GetEntity(const char* in, char* value, int* length, TiXmlEncoding encoding);
+	static const char* GetEntity(const char* in, char* value, int* length, XmlEncoding encoding);
 
 	// Get a character, while interpreting entities.
 	// The length can be from 0 to 4 bytes.
-	inline static const char* GetChar(const char* p, char* _value, int* length, TiXmlEncoding encoding);
+	inline static const char* GetChar(const char* p, char* _value, int* length, XmlEncoding encoding);
 
 	// Return true if the next characters in the stream are any of the endTag sequences.
 	// Ignore case only works for english, and should only be relied on when comparing
 	// to English words: StringEqual( p, "version", true ) is fine.
-	static bool StringEqual(const char* p, const char* endTag, bool ignoreCase, TiXmlEncoding encoding);
+	static bool StringEqual(const char* p, const char* endTag, bool ignoreCase, XmlEncoding encoding);
 
 	static std::vector<std::string> errorString;
 
@@ -187,9 +188,9 @@ protected:
 
 						// None of these methods are reliable for any language except English.
 						// Good for approximation, not great for accuracy.
-	static int IsAlpha(unsigned char anyByte, TiXmlEncoding encoding);
-	static int IsAlphaNum(unsigned char anyByte, TiXmlEncoding encoding);
-	inline static int ToLower(int v, TiXmlEncoding encoding)
+	static int IsAlpha(unsigned char anyByte, XmlEncoding encoding);
+	static int IsAlphaNum(unsigned char anyByte, XmlEncoding encoding);
+	inline static int ToLower(int v, XmlEncoding encoding)
 	{
 		if (encoding == TIXML_ENCODING_UTF8)
 		{
@@ -204,8 +205,8 @@ protected:
 	static void ConvertUTF32ToUTF8(unsigned long input, char* output, int* length);
 
 private:
-	TiXmlBase(const TiXmlBase&); // Explicitly disallowed.
-	void operator=(const TiXmlBase& base); // Explicitly disallowed.
+	XmlBase(const XmlBase&); // Explicitly disallowed.
+	void operator=(const XmlBase& base); // Explicitly disallowed.
 
 private:
 	void fillErrorTable();

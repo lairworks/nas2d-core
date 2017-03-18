@@ -19,10 +19,10 @@ namespace NAS2D {
 class XmlAttributeParser
 {
 public:
-	int intAttribute(Xml::TiXmlNode* node, const std::string& attribute);
-	float floatAttribute(Xml::TiXmlNode* node, const std::string& attribute);
-	double doubleAttribute(Xml::TiXmlNode* node, const std::string& attribute);
-	std::string stringAttribute(Xml::TiXmlNode* node, const std::string& attribute);
+	int intAttribute(Xml::XmlNode* node, const std::string& attribute);
+	float floatAttribute(Xml::XmlNode* node, const std::string& attribute);
+	double doubleAttribute(Xml::XmlNode* node, const std::string& attribute);
+	std::string stringAttribute(Xml::XmlNode* node, const std::string& attribute);
 };
 
 } // namespace

@@ -13,7 +13,7 @@
 
 using namespace NAS2D::Xml;
 
-const TiXmlAttribute* TiXmlAttribute::Next() const
+const XmlAttribute* XmlAttribute::Next() const
 {
 	// We are using knowledge of the sentinel. The sentinel have a value or name.
 	if (next->value.empty() && next->name.empty())
@@ -23,7 +23,7 @@ const TiXmlAttribute* TiXmlAttribute::Next() const
 }
 
 
-const TiXmlAttribute* TiXmlAttribute::Previous() const
+const XmlAttribute* XmlAttribute::Previous() const
 {
 	// We are using knowledge of the sentinel. The sentinel have a value or name.
 	if (prev->value.empty() && prev->name.empty())
@@ -33,7 +33,7 @@ const TiXmlAttribute* TiXmlAttribute::Previous() const
 }
 
 
-void TiXmlAttribute::Print(std::string& buf, int /*depth*/) const
+void XmlAttribute::Print(std::string& buf, int /*depth*/) const
 {
 	std::string n, v;
 
@@ -57,7 +57,7 @@ void TiXmlAttribute::Print(std::string& buf, int /*depth*/) const
 }
 
 
-int TiXmlAttribute::QueryIntValue(int& ival) const
+int XmlAttribute::QueryIntValue(int& ival) const
 {
 	try
 	{
@@ -72,7 +72,7 @@ int TiXmlAttribute::QueryIntValue(int& ival) const
 }
 
 
-int TiXmlAttribute::QueryDoubleValue(double& dval) const
+int XmlAttribute::QueryDoubleValue(double& dval) const
 {
 	try
 	{
@@ -87,25 +87,25 @@ int TiXmlAttribute::QueryDoubleValue(double& dval) const
 }
 
 
-void TiXmlAttribute::SetIntValue(int _value)
+void XmlAttribute::SetIntValue(int _value)
 {
 	SetValue(std::to_string(_value));
 }
 
 
-void TiXmlAttribute::SetDoubleValue(double _value)
+void XmlAttribute::SetDoubleValue(double _value)
 {
 	SetValue(std::to_string(_value));
 }
 
 
-int TiXmlAttribute::IntValue() const
+int XmlAttribute::IntValue() const
 {
 	return std::stoi(value);
 }
 
 
-double  TiXmlAttribute::DoubleValue() const
+double  XmlAttribute::DoubleValue() const
 {
 	return std::stof(value);
 }

@@ -16,6 +16,7 @@
 #include <iostream>
 
 using namespace NAS2D;
+using namespace NAS2D::Xml;
 
 // Set some basic constants.
 const int				AUDIO_LOW_QUALITY			= 11025;
@@ -99,19 +100,17 @@ void Configuration::load(const std::string& filePath)
 
 }
 
-using namespace NAS2D::Xml;
-
 void Configuration::save()
 {
-	TiXmlDocument doc;
+	XmlDocument doc;
 
-	TiXmlComment* comment = new TiXmlComment("Automatically generated Configuration file.");
+	XmlComment* comment = new XmlComment("Automatically generated Configuration file.");
 	doc.LinkEndChild(comment);
 
-	TiXmlElement* root = new TiXmlElement("configuration");
+	XmlElement* root = new XmlElement("configuration");
 	doc.LinkEndChild(root);
 
-	TiXmlElement* graphics = new TiXmlElement("graphics");
+	XmlElement* graphics = new XmlElement("graphics");
 	graphics->SetAttribute("screenwidth", mScreenWidth);
 	graphics->SetAttribute("screenheight", mScreenHeight);
 	graphics->SetAttribute("bitdepth", mScreenBpp);
@@ -127,7 +126,7 @@ void Configuration::save()
 
 	root->LinkEndChild(graphics);
 
-	TiXmlElement* audio = new TiXmlElement("audio");
+	XmlElement* audio = new XmlElement("audio");
 	audio->SetAttribute("mixrate", mMixRate);
 	audio->SetAttribute("channels", mStereoChannels);
 	audio->SetAttribute("sfxvolume", mSfxVolume);
@@ -137,12 +136,12 @@ void Configuration::save()
 	root->LinkEndChild(audio);
 
 	// Options
-	TiXmlElement* options = new TiXmlElement("options");
+	XmlElement* options = new XmlElement("options");
 	root->LinkEndChild(options);
     
 	for (auto op : mOptions)
 	{
-		TiXmlElement* option = new TiXmlElement("option");
+		XmlElement* option = new XmlElement("option");
 		option->SetAttribute("name", op.first);
 		option->SetAttribute("value", op.second);
 		options->LinkEndChild(option);
@@ -184,7 +183,7 @@ bool Configuration::readConfig(const std::string& filePath)
 {
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
-	TiXmlDocument config;
+	XmlDocument config;
 	config.Parse(xmlFile.raw_bytes());
 	if(config.Error())
 	{
@@ -193,7 +192,7 @@ bool Configuration::readConfig(const std::string& filePath)
 	}
 	else
 	{
-		TiXmlElement* root = config.FirstChildElement("configuration");
+		XmlElement* root = config.FirstChildElement("configuration");
 		if(!root)
 		{
 			std::cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << std::endl;
@@ -204,7 +203,7 @@ bool Configuration::readConfig(const std::string& filePath)
 		// Start parsing through the Config.xml file.
 		int result = 0;
 		
-		TiXmlNode *xmlNode = nullptr;
+		XmlNode *xmlNode = nullptr;
 		while(xmlNode = root->IterateChildren(xmlNode))
 		{
 			if (xmlNode->Value() == "graphics")
@@ -213,7 +212,7 @@ bool Configuration::readConfig(const std::string& filePath)
 				parseAudio(xmlNode);
 			else if (xmlNode->Value() == "options")
 				parseOptions(xmlNode);
-			else if (xmlNode->Type() == TiXmlNode::TINYXML_DOCUMENT)
+			else if (xmlNode->Type() == XmlNode::TINYXML_DOCUMENT)
 				; // ignore comments
 			else
 				std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in '" << filePath << "' on row " << xmlNode->row() << "." << std::endl;
@@ -234,7 +233,7 @@ bool Configuration::readConfig(const std::string& filePath)
 void Configuration::parseGraphics(void* _n)
 {
 	XmlAttributeParser parser;
-	TiXmlNode* node = static_cast<TiXmlNode*>(_n);
+	XmlNode* node = static_cast<XmlNode*>(_n);
 
 	mScreenWidth = parser.intAttribute(node, "screenwidth");
 	mScreenHeight = parser.intAttribute(node, "screenheight");
@@ -264,7 +263,7 @@ void Configuration::parseGraphics(void* _n)
 void Configuration::parseAudio(void* _n)
 {
 	XmlAttributeParser parser;
-	TiXmlNode* node = static_cast<TiXmlNode*>(_n);
+	XmlNode* node = static_cast<XmlNode*>(_n);
 
 	mMixRate = parser.intAttribute(node, "mixrate");
 	if(mMixRate == 0)
@@ -301,9 +300,9 @@ void Configuration::parseAudio(void* _n)
 void Configuration::parseOptions(void* _n)
 {
 	XmlAttributeParser parser;
-	TiXmlNode* node = static_cast<TiXmlNode*>(_n);
+	XmlNode* node = static_cast<XmlNode*>(_n);
 
-	TiXmlNode *xmlNode = nullptr;
+	XmlNode *xmlNode = nullptr;
 	while(xmlNode = node->IterateChildren(xmlNode))
 	{
 		if(xmlNode->Value() == "option")

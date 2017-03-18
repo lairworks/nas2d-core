@@ -17,111 +17,111 @@
 
 using namespace NAS2D::Xml;
 
-TiXmlHandle TiXmlHandle::FirstChild() const
+XmlHandle XmlHandle::FirstChild() const
 {
 	if (node)
 	{
-		TiXmlNode* child = node->FirstChild();
+		XmlNode* child = node->FirstChild();
 		if (child)
-			return TiXmlHandle(child);
+			return XmlHandle(child);
 	}
-	return TiXmlHandle(nullptr);
+	return XmlHandle(nullptr);
 }
 
 
-TiXmlHandle TiXmlHandle::FirstChild(const std::string& value) const
+XmlHandle XmlHandle::FirstChild(const std::string& value) const
 {
 	if (node)
 	{
-		TiXmlNode* child = node->FirstChild(value);
+		XmlNode* child = node->FirstChild(value);
 		if (child)
-			return TiXmlHandle(child);
+			return XmlHandle(child);
 	}
-	return TiXmlHandle(nullptr);
+	return XmlHandle(nullptr);
 }
 
 
-TiXmlHandle TiXmlHandle::FirstChildElement() const
+XmlHandle XmlHandle::FirstChildElement() const
 {
 	if (node)
 	{
-		TiXmlElement* child = node->FirstChildElement();
+		XmlElement* child = node->FirstChildElement();
 		if (child)
-			return TiXmlHandle(child);
+			return XmlHandle(child);
 	}
-	return TiXmlHandle(nullptr);
+	return XmlHandle(nullptr);
 }
 
 
-TiXmlHandle TiXmlHandle::FirstChildElement(const std::string& value) const
+XmlHandle XmlHandle::FirstChildElement(const std::string& value) const
 {
 	if (node)
 	{
-		TiXmlElement* child = node->FirstChildElement(value);
+		XmlElement* child = node->FirstChildElement(value);
 		if (child)
-			return TiXmlHandle(child);
+			return XmlHandle(child);
 	}
 
-	return TiXmlHandle(nullptr);
+	return XmlHandle(nullptr);
 }
 
 
-TiXmlHandle TiXmlHandle::Child(int count) const
+XmlHandle XmlHandle::Child(int count) const
 {
 	if (node)
 	{
-		TiXmlNode* child = node->FirstChild();
+		XmlNode* child = node->FirstChild();
 		for (int i = 0; child && i < count; child = child->NextSibling(), ++i)
 			; // Nothing
 		if (child)
-			return TiXmlHandle(child);
+			return XmlHandle(child);
 	}
 
-	return TiXmlHandle(nullptr);
+	return XmlHandle(nullptr);
 }
 
 
-TiXmlHandle TiXmlHandle::Child(const std::string& value, int count) const
+XmlHandle XmlHandle::Child(const std::string& value, int count) const
 {
 	if (node)
 	{
-		TiXmlNode* child = node->FirstChild(value);
+		XmlNode* child = node->FirstChild(value);
 		for (int i = 0; child && i < count; child = child->NextSibling(value), ++i)
 			; // Nothing
 		if (child)
-			return TiXmlHandle(child);
+			return XmlHandle(child);
 	}
 
-	return TiXmlHandle(nullptr);
+	return XmlHandle(nullptr);
 }
 
 
-TiXmlHandle TiXmlHandle::ChildElement(int count) const
+XmlHandle XmlHandle::ChildElement(int count) const
 {
 	if (node)
 	{
-		TiXmlElement* child = node->FirstChildElement();
+		XmlElement* child = node->FirstChildElement();
 		for (int i = 0; child && i < count; child = child->NextSiblingElement(), ++i)
 			; // Nothing
 
 		if (child)
-			return TiXmlHandle(child);
+			return XmlHandle(child);
 	}
 
-	return TiXmlHandle(nullptr);
+	return XmlHandle(nullptr);
 }
 
 
-TiXmlHandle TiXmlHandle::ChildElement(const std::string& value, int count) const
+XmlHandle XmlHandle::ChildElement(const std::string& value, int count) const
 {
 	if (node)
 	{
-		TiXmlElement* child = node->FirstChildElement(value);
+		XmlElement* child = node->FirstChildElement(value);
 		for (int i = 0; child && i < count; child = child->NextSiblingElement(value), ++i)
 			; // Nothing
 		if (child)
-			return TiXmlHandle(child);
+			return XmlHandle(child);
 	}
 
-	return TiXmlHandle(nullptr);
+	return XmlHandle(nullptr);
 }

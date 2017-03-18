@@ -37,15 +37,15 @@ class XmlMemoryBuffer : public XmlVisitor
 public:
 	XmlMemoryBuffer() : depth(0), _indent("\t"), _lineBreak("\n") {}
 
-	virtual bool VisitEnter(const TiXmlDocument& doc) { return true; }
-	virtual bool VisitExit(const TiXmlDocument& doc) { return true; }
+	virtual bool VisitEnter(const XmlDocument& doc) { return true; }
+	virtual bool VisitExit(const XmlDocument& doc) { return true; }
 
-	virtual bool VisitEnter(const TiXmlElement& element, const TiXmlAttribute* firstAttribute);
-	virtual bool VisitExit(const TiXmlElement& element);
+	virtual bool VisitEnter(const XmlElement& element, const XmlAttribute* firstAttribute);
+	virtual bool VisitExit(const XmlElement& element);
 
-	virtual bool Visit(const TiXmlText& text);
-	virtual bool Visit(const TiXmlComment& comment);
-	virtual bool Visit(const TiXmlUnknown& unknown);
+	virtual bool Visit(const XmlText& text);
+	virtual bool Visit(const XmlComment& comment);
+	virtual bool Visit(const XmlUnknown& unknown);
 
 	size_t size() { return _buffer.size(); }
 

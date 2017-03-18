@@ -21,13 +21,13 @@
 
 using namespace NAS2D::Xml;
 
-bool XmlMemoryBuffer::VisitEnter(const TiXmlElement& element, const TiXmlAttribute* firstAttribute)
+bool XmlMemoryBuffer::VisitEnter(const XmlElement& element, const XmlAttribute* firstAttribute)
 {
 	indent();
 	_buffer += "<";
 	_buffer += element.Value();
 
-	for (const TiXmlAttribute* attrib = firstAttribute; attrib; attrib = attrib->Next())
+	for (const XmlAttribute* attrib = firstAttribute; attrib; attrib = attrib->Next())
 	{
 		_buffer += " ";
 		attrib->Print(_buffer, 0);
@@ -48,7 +48,7 @@ bool XmlMemoryBuffer::VisitEnter(const TiXmlElement& element, const TiXmlAttribu
 }
 
 
-bool XmlMemoryBuffer::VisitExit(const TiXmlElement& element)
+bool XmlMemoryBuffer::VisitExit(const XmlElement& element)
 {
 	--depth;
 	if (!element.FirstChild())
@@ -65,7 +65,7 @@ bool XmlMemoryBuffer::VisitExit(const TiXmlElement& element)
 }
 
 
-bool XmlMemoryBuffer::Visit(const TiXmlText& text)
+bool XmlMemoryBuffer::Visit(const XmlText& text)
 {
 	if (text.CDATA())
 	{
@@ -79,7 +79,7 @@ bool XmlMemoryBuffer::Visit(const TiXmlText& text)
 	{
 		indent();
 		std::string str;
-		TiXmlBase::EncodeString(text.Value(), str);
+		XmlBase::EncodeString(text.Value(), str);
 		_buffer += str;
 		line_break();
 	}
@@ -87,7 +87,7 @@ bool XmlMemoryBuffer::Visit(const TiXmlText& text)
 }
 
 
-bool XmlMemoryBuffer::Visit(const TiXmlComment& comment)
+bool XmlMemoryBuffer::Visit(const XmlComment& comment)
 {
 	indent();
 	_buffer += "<!--";
@@ -98,7 +98,7 @@ bool XmlMemoryBuffer::Visit(const TiXmlComment& comment)
 }
 
 
-bool XmlMemoryBuffer::Visit(const TiXmlUnknown& unknown)
+bool XmlMemoryBuffer::Visit(const XmlUnknown& unknown)
 {
 	indent();
 	_buffer += "<";

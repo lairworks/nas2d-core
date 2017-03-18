@@ -5,7 +5,7 @@ using namespace NAS2D::Xml;
 // ==================================================================================
 // = XmlDocument Implementation
 // ==================================================================================
-TiXmlDocument::TiXmlDocument() :	TiXmlNode(TiXmlNode::TINYXML_DOCUMENT),
+XmlDocument::XmlDocument() :	XmlNode(XmlNode::TINYXML_DOCUMENT),
 									errorId(0),
 									tabsize(4),
 									error(false),
@@ -15,7 +15,7 @@ TiXmlDocument::TiXmlDocument() :	TiXmlNode(TiXmlNode::TINYXML_DOCUMENT),
 }
 
 
-TiXmlDocument::TiXmlDocument(const std::string& documentName) : TiXmlNode(TiXmlNode::TINYXML_DOCUMENT),
+XmlDocument::XmlDocument(const std::string& documentName) : XmlNode(XmlNode::TINYXML_DOCUMENT),
 																errorId(0),
 																tabsize(4),
 																error(false),
@@ -26,13 +26,13 @@ TiXmlDocument::TiXmlDocument(const std::string& documentName) : TiXmlNode(TiXmlN
 }
 
 
-TiXmlDocument::TiXmlDocument(const TiXmlDocument& copy) : TiXmlNode(TiXmlNode::TINYXML_DOCUMENT)
+XmlDocument::XmlDocument(const XmlDocument& copy) : XmlNode(XmlNode::TINYXML_DOCUMENT)
 {
 	copy.CopyTo(this);
 }
 
 
-TiXmlDocument& TiXmlDocument::operator=(const TiXmlDocument& copy)
+XmlDocument& XmlDocument::operator=(const XmlDocument& copy)
 {
 	Clear();
 	copy.CopyTo(this);
@@ -40,9 +40,9 @@ TiXmlDocument& TiXmlDocument::operator=(const TiXmlDocument& copy)
 }
 
 
-void TiXmlDocument::CopyTo(TiXmlDocument* target) const
+void XmlDocument::CopyTo(XmlDocument* target) const
 {
-	TiXmlNode::CopyTo(target);
+	XmlNode::CopyTo(target);
 
 	target->error = error;
 	target->errorId = errorId;
@@ -51,15 +51,15 @@ void TiXmlDocument::CopyTo(TiXmlDocument* target) const
 	target->errorLocation = errorLocation;
 	target->useMicrosoftBOM = useMicrosoftBOM;
 
-	TiXmlNode* node = nullptr;
+	XmlNode* node = nullptr;
 	for (node = firstChild; node; node = node->NextSibling())
 		target->LinkEndChild(node->Clone());
 }
 
 
-TiXmlNode* TiXmlDocument::Clone() const
+XmlNode* XmlDocument::Clone() const
 {
-	TiXmlDocument* clone = new TiXmlDocument();
+	XmlDocument* clone = new XmlDocument();
 	if (!clone)
 		return nullptr;
 
@@ -68,9 +68,9 @@ TiXmlNode* TiXmlDocument::Clone() const
 }
 
 
-void TiXmlDocument::Print(std::string& buf, int depth) const
+void XmlDocument::Print(std::string& buf, int depth) const
 {
-	for (const TiXmlNode* node = FirstChild(); node; node = node->NextSibling())
+	for (const XmlNode* node = FirstChild(); node; node = node->NextSibling())
 	{
 		node->Print(buf, depth);
 		buf += "\n";
@@ -78,11 +78,11 @@ void TiXmlDocument::Print(std::string& buf, int depth) const
 }
 
 
-bool TiXmlDocument::Accept(XmlVisitor* visitor) const
+bool XmlDocument::Accept(XmlVisitor* visitor) const
 {
 	if (visitor->VisitEnter(*this))
 	{
-		for (const TiXmlNode* node = FirstChild(); node; node = node->NextSibling())
+		for (const XmlNode* node = FirstChild(); node; node = node->NextSibling())
 		{
 			if (!node->Accept(visitor))
 				break;

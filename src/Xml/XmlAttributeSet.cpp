@@ -13,21 +13,21 @@
 
 using namespace NAS2D::Xml;
 
-TiXmlAttributeSet::TiXmlAttributeSet()
+XmlAttributeSet::XmlAttributeSet()
 {
 	sentinel.next = &sentinel;
 	sentinel.prev = &sentinel;
 }
 
 
-TiXmlAttributeSet::~TiXmlAttributeSet()
+XmlAttributeSet::~XmlAttributeSet()
 {
 	//assert(sentinel.next == &sentinel);
 	//assert(sentinel.prev == &sentinel);
 }
 
 
-void TiXmlAttributeSet::Add(TiXmlAttribute* addMe)
+void XmlAttributeSet::Add(XmlAttribute* addMe)
 {
 	//assert(!Find(addMe->Name()));	// Shouldn't be multiply adding to the set.
 
@@ -39,9 +39,9 @@ void TiXmlAttributeSet::Add(TiXmlAttribute* addMe)
 }
 
 
-void TiXmlAttributeSet::Remove(TiXmlAttribute* removeMe)
+void XmlAttributeSet::Remove(XmlAttribute* removeMe)
 {
-	TiXmlAttribute* node;
+	XmlAttribute* node;
 
 	for (node = sentinel.next; node != &sentinel; node = node->next)
 	{
@@ -58,9 +58,9 @@ void TiXmlAttributeSet::Remove(TiXmlAttribute* removeMe)
 }
 
 
-TiXmlAttribute* TiXmlAttributeSet::Find(const std::string& name) const
+XmlAttribute* XmlAttributeSet::Find(const std::string& name) const
 {
-	for (TiXmlAttribute* node = sentinel.next; node != &sentinel; node = node->next)
+	for (XmlAttribute* node = sentinel.next; node != &sentinel; node = node->next)
 	{
 		if (node->name == name)
 			return node;
@@ -69,11 +69,11 @@ TiXmlAttribute* TiXmlAttributeSet::Find(const std::string& name) const
 }
 
 
-TiXmlAttribute* TiXmlAttributeSet::FindOrCreate(const std::string& _name)
+XmlAttribute* XmlAttributeSet::FindOrCreate(const std::string& _name)
 {
-	TiXmlAttribute* attrib = Find(_name);
+	XmlAttribute* attrib = Find(_name);
 	if (!attrib) {
-		attrib = new TiXmlAttribute();
+		attrib = new XmlAttribute();
 		Add(attrib);
 		attrib->SetName(_name);
 	}

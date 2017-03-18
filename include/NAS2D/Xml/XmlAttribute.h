@@ -29,18 +29,18 @@ enum
  * An attribute is a name-value pair. Elements have an arbitrary number of attributes,
  * each with a unique name.
  * 
- * \note	The attributes are not TiXmlNodes, since they are not part of the TinyXML
+ * \note	The attributes are not XmlNodes, since they are not part of the TinyXML
  *			document object model. There are other suggested ways to look at this problem.
  */
-class TiXmlAttribute : public TiXmlBase
+class XmlAttribute : public XmlBase
 {
-	friend class TiXmlAttributeSet;
+	friend class XmlAttributeSet;
 
 public:
-	TiXmlAttribute() : TiXmlBase(), document(nullptr), prev(nullptr), next(nullptr) {}
+	XmlAttribute() : XmlBase(), document(nullptr), prev(nullptr), next(nullptr) {}
 
 	/// Construct an attribute with a name and value.
-	TiXmlAttribute(const std::string& _name, std::string& _value) : TiXmlBase(), document(nullptr), name(_name), value(_value), prev(nullptr), next(nullptr) {}
+	XmlAttribute(const std::string& _name, std::string& _value) : XmlBase(), document(nullptr), name(_name), value(_value), prev(nullptr), next(nullptr) {}
 
 	/**
 	 * Name of the Attribute.
@@ -65,39 +65,39 @@ public:
 	void SetDoubleValue(double _value);								///< Set the value from a double.
 
 	/// Get the next sibling attribute in the DOM. Returns nullptr at end.
-	const TiXmlAttribute* Next() const;
-	TiXmlAttribute* Next() { return const_cast<TiXmlAttribute*>((const_cast<const TiXmlAttribute*>(this))->Next()); }
+	const XmlAttribute* Next() const;
+	XmlAttribute* Next() { return const_cast<XmlAttribute*>((const_cast<const XmlAttribute*>(this))->Next()); }
 
 	/// Get the previous sibling attribute in the DOM. Returns nullptr at beginning.
-	const TiXmlAttribute* Previous() const;
-	TiXmlAttribute* Previous() { return const_cast<TiXmlAttribute*>((const_cast<const TiXmlAttribute*>(this))->Previous()); }
+	const XmlAttribute* Previous() const;
+	XmlAttribute* Previous() { return const_cast<XmlAttribute*>((const_cast<const XmlAttribute*>(this))->Previous()); }
 
-	bool operator==(const TiXmlAttribute& rhs) const { return rhs.name == name; }
-	bool operator<(const TiXmlAttribute& rhs)	 const { return name < rhs.name; }
-	bool operator>(const TiXmlAttribute& rhs)  const { return name > rhs.name; }
+	bool operator==(const XmlAttribute& rhs) const { return rhs.name == name; }
+	bool operator<(const XmlAttribute& rhs)	 const { return name < rhs.name; }
+	bool operator>(const XmlAttribute& rhs)  const { return name > rhs.name; }
 
 	/**
 	 * Attribute parsing starts: first letter of the name
 	 * returns: the next char after the value end quote
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
 
 	// Prints this Attribute to a FILE stream.
 	virtual void Print(std::string& buf, int depth) const;
 
 	// [internal use]
 	// Set the document pointer so the attribute can report errors.
-	void SetDocument(TiXmlDocument* doc) { document = doc; }
+	void SetDocument(XmlDocument* doc) { document = doc; }
 
 private:
-	TiXmlAttribute(const TiXmlAttribute&); // Explicitly disallowed.
-	void operator=(const TiXmlAttribute& base); // Explicitly disallowed.
+	XmlAttribute(const XmlAttribute&); // Explicitly disallowed.
+	void operator=(const XmlAttribute& base); // Explicitly disallowed.
 
-	TiXmlDocument*	document;	/**< Comment Me. */
+	XmlDocument*	document;	/**< Comment Me. */
 	std::string		name;		/**< Comment Me. */
 	std::string		value;		/**< Comment Me. */
-	TiXmlAttribute*	prev;		/**< Comment Me. */
-	TiXmlAttribute*	next;		/**< Comment Me. */
+	XmlAttribute*	prev;		/**< Comment Me. */
+	XmlAttribute*	next;		/**< Comment Me. */
 };
 
 } // namespace Xml

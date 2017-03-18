@@ -18,7 +18,7 @@ namespace Xml {
 
 /**
  * An XmlHandle is a class that wraps a node pointer with null checks; this is
- * an incredibly useful thing. Note that TiXmlHandle is not part of the TinyXml
+ * an incredibly useful thing. Note that XmlHandle is not part of the TinyXml
  * DOM structure. It is a separate utility class.
  * 
  * Take an example:
@@ -36,16 +36,16 @@ namespace Xml {
  * easy to write a *lot* of code that looks like:
  * 
  * \code{.cpp}
- * TiXmlElement* root = document.FirstChildElement( "Document" );
+ * XmlElement* root = document.FirstChildElement( "Document" );
  * if (root)
  * {
- *	TiXmlElement* element = root->FirstChildElement( "Element" );
+ *	XmlElement* element = root->FirstChildElement( "Element" );
  *	if (element)
  * 	{
- * 		TiXmlElement* child = element->FirstChildElement( "Child" );
+ * 		XmlElement* child = element->FirstChildElement( "Child" );
  * 		if ( child )
  * 		{
- * 			TiXmlElement* child2 = child->NextSiblingElement( "Child" );
+ * 			XmlElement* child2 = child->NextSiblingElement( "Child" );
  * 			if ( child2 )
  * 			{
  * 				// Finally do something useful.
@@ -55,13 +55,13 @@ namespace Xml {
  * }
  * \endcode
  *
- * And that doesn't even cover "else" cases. TiXmlHandle addresses the verbosity
- * of such code. A TiXmlHandle checks for nullpointers so it is perfectly safe
+ * And that doesn't even cover "else" cases. XmlHandle addresses the verbosity
+ * of such code. A XmlHandle checks for nullpointers so it is perfectly safe
  * and correct to use:
  *
  * \code{.cpp}
- * TiXmlHandle docHandle( &document );
- * TiXmlElement* child2 = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).Child( "Child", 1 ).ToElement();
+ * XmlHandle docHandle( &document );
+ * XmlElement* child2 = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).Child( "Child", 1 ).ToElement();
  * if ( child2 )
  * {
  *	// do something usefull
@@ -72,7 +72,7 @@ namespace Xml {
  *
  * It is also safe to copy handles - internally they are nothing more than node pointers.
  * \code{.cpp{
- * TiXmlHandle handleCopy = handle;
+ * XmlHandle handleCopy = handle;
  * \endcode
  *
  * What they should not be used for is iteration:
@@ -81,7 +81,7 @@ namespace Xml {
  * int i = 0;
  * while (true)
  * {
- *	TiXmlElement* child = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).Child( "Child", i ).ToElement();
+ *	XmlElement* child = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).Child( "Child", i ).ToElement();
  *	if (!child)
  * 		break;
  * 	// do something
@@ -94,71 +94,71 @@ namespace Xml {
  * to. Instead, prefer:
  *
  * \code{.cpp}
- * TiXmlElement* child = docHandle.FirstChild("Document").FirstChild("Element").FirstChild("Child").ToElement();
+ * XmlElement* child = docHandle.FirstChild("Document").FirstChild("Element").FirstChild("Child").ToElement();
  * for (child; child; child = child->NextSiblingElement())
  * {
  *	// do something
  * }
  * \endcode
 */
-class TiXmlHandle
+class XmlHandle
 {
 public:
-	TiXmlHandle(TiXmlNode* _node) { this->node = _node; }
-	TiXmlHandle(const TiXmlHandle& ref) { this->node = ref.node; }
-	TiXmlHandle operator=(const TiXmlHandle& ref) { if (&ref != this) this->node = ref.node; return *this; }
+	XmlHandle(XmlNode* _node) { this->node = _node; }
+	XmlHandle(const XmlHandle& ref) { this->node = ref.node; }
+	XmlHandle operator=(const XmlHandle& ref) { if (&ref != this) this->node = ref.node; return *this; }
 
-	TiXmlHandle FirstChild() const;
-	TiXmlHandle FirstChild(const std::string& value) const;
-	TiXmlHandle FirstChildElement() const;
-	TiXmlHandle FirstChildElement(const std::string& value) const;
+	XmlHandle FirstChild() const;
+	XmlHandle FirstChild(const std::string& value) const;
+	XmlHandle FirstChildElement() const;
+	XmlHandle FirstChildElement(const std::string& value) const;
 
 	/**
 	 * Return a handle to the "index" child with the given name. The first child is 0, the second 1, etc.
 	 */
-	TiXmlHandle Child(const std::string& value, int index) const;
+	XmlHandle Child(const std::string& value, int index) const;
 
 	/**
 	 * Return a handle to the "index" child. The first child is 0, the second 1, etc.
 	 */
-	TiXmlHandle Child(int index) const;
+	XmlHandle Child(int index) const;
 
 	/**
 	 * Return a handle to the "index" child element with the given name. The first child element is 0, the second 1, etc.
 	 * 
 	 * \note	Only XmlElements are indexed. Other types are not counted.
 	 */
-	TiXmlHandle ChildElement(const std::string& value, int index) const;
+	XmlHandle ChildElement(const std::string& value, int index) const;
 
 	/**
 	 * Return a handle to the "index" child element. The first child element is 0, the second 1, etc.
 	 * 
 	 * \note	Only XmlElements are indexed. Other types are not counted.
 	 */
-	TiXmlHandle ChildElement(int index) const;
+	XmlHandle ChildElement(int index) const;
 
 	/**
-	 * Return the handle as a TiXmlNode. This may return null.
+	 * Return the handle as a XmlNode. This may return null.
 	 */
-	TiXmlNode* ToNode() const { return node; }
+	XmlNode* ToNode() const { return node; }
 
 	/**
-	 * Return the handle as a TiXmlElement. This may return null.
+	 * Return the handle as a XmlElement. This may return null.
 	 */
-	TiXmlElement* ToElement() const { return ((node && node->ToElement()) ? node->ToElement() : 0); }
+	XmlElement* ToElement() const { return ((node && node->ToElement()) ? node->ToElement() : 0); }
 	
 	/**
-	 * Return the handle as a TiXmlText. This may return null.
+	 * Return the handle as a XmlText. This may return null.
 	 */
-	TiXmlText* ToText() const { return ((node && node->ToText()) ? node->ToText() : 0); }
+	XmlText* ToText() const { return ((node && node->ToText()) ? node->ToText() : 0); }
 	
 	/**
-	 * Return the handle as a TiXmlUnknown. This may return null.
+	 * Return the handle as a XmlUnknown. This may return null.
 	 */
-	TiXmlUnknown* ToUnknown() const { return ((node && node->ToUnknown()) ? node->ToUnknown() : 0); }
+	XmlUnknown* ToUnknown() const { return ((node && node->ToUnknown()) ? node->ToUnknown() : 0); }
 
 private:
-	TiXmlNode* node;
+	XmlNode* node;
 };
 
 } // namespace Xml

@@ -21,19 +21,19 @@ namespace Xml {
  * A text node has two ways to output text: "normal" output and CDATA. It will default
  * to the mode it was parsed from the XML file.
  */
-class TiXmlText : public TiXmlNode
+class XmlText : public XmlNode
 {
-	friend class TiXmlElement;
+	friend class XmlElement;
 public:
 	/**
 	 * Constructor for text element. By default, it is treated as normal, encoded text.
 	 * If you want it be output as a CDATA text	element, call \c CDATA(true).
 	 */
-	TiXmlText(const std::string& initValue);
-	virtual ~TiXmlText() {}
+	XmlText(const std::string& initValue);
+	virtual ~XmlText() {}
 
-	TiXmlText(const TiXmlText& copy);
-	TiXmlText& operator=(const TiXmlText& base);
+	XmlText(const XmlText& copy);
+	XmlText& operator=(const XmlText& base);
 
 	virtual void Print(std::string& buf, int depth) const;
 
@@ -47,10 +47,10 @@ public:
 	 */
 	void CDATA(bool _cdata) { cdata = _cdata; }
 
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
 
-	virtual const TiXmlText* ToText() const { return this; }
-	virtual TiXmlText* ToText() { return this; }
+	virtual const XmlText* ToText() const { return this; }
+	virtual XmlText* ToText() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
@@ -59,8 +59,8 @@ public:
 
 protected:
 	///  [internal use] Creates a new Element and returns it.
-	virtual TiXmlNode* Clone() const;
-	void CopyTo(TiXmlText* target) const;
+	virtual XmlNode* Clone() const;
+	void CopyTo(XmlText* target) const;
 
 	bool Blank() const;	// returns true if all white space and new lines
 	virtual void StreamIn(std::istream& in, std::string& tag);

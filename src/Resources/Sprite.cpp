@@ -288,8 +288,8 @@ void Sprite::parseXml(const std::string& filePath)
 		return;
 	}
 
-	TiXmlDocument docXml;
-	TiXmlElement *xmlRootElement = 0;
+	XmlDocument docXml;
+	XmlElement *xmlRootElement = 0;
 
 	// Load the XML document and handle any errors if occuring
 	docXml.Parse(xmlFile.raw_bytes(), 0, TIXML_DEFAULT_ENCODING);
@@ -339,13 +339,13 @@ void Sprite::parseXml(const std::string& filePath)
  *
  * \todo	Make use of mErrorMessage.
  */
-void Sprite::parseImageSheets(TiXmlElement *root)
+void Sprite::parseImageSheets(XmlElement *root)
 {
 	XmlAttributeParser parser;
 
 	// Iterate through all child elements of <sprite> to find all <imagesheet> tags
 	// then push them into a list of imagesheet's identified by a string id.
-	TiXmlNode* xmlNode = 0;
+	XmlNode* xmlNode = 0;
 	while(xmlNode = root->IterateChildren(xmlNode))
 	{
 		if(xmlNode->Value() == "imagesheet")
@@ -381,7 +381,7 @@ void Sprite::parseImageSheets(TiXmlElement *root)
  * \param	src		Image sheet file path.
  * \param	node	XML Node (for error information).
  */
-void Sprite::addImageSheet(const std::string& id, const std::string& src, TiXmlNode* node)
+void Sprite::addImageSheet(const std::string& id, const std::string& src, XmlNode* node)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
@@ -415,13 +415,13 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, TiXmlN
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-void Sprite::parseActions(TiXmlElement *root)
+void Sprite::parseActions(XmlElement *root)
 {
 	XmlAttributeParser parser;
 
 	// Iterate through all child elements of <sprite> to find all <action> tags
 	// then push them into a list of actions identified by a string id.
-	TiXmlNode *actionNode = 0;
+	XmlNode *actionNode = 0;
 	while(actionNode = root->IterateChildren(actionNode))
 	{
 		if(actionNode->Value() == "action")
@@ -448,13 +448,13 @@ void Sprite::parseActions(TiXmlElement *root)
  *
  * \todo	Make use of mErrorMessage.
  */
-void Sprite::parseFrames(const std::string& action, TiXmlNode *node)
+void Sprite::parseFrames(const std::string& action, XmlNode *node)
 {
 	XmlAttributeParser parser;
 	
 	FrameList frameList;
 
-	TiXmlNode *frameNode = 0;
+	XmlNode *frameNode = 0;
 	while(frameNode = node->IterateChildren(frameNode))
 	{
 		int currentRow = frameNode->row();

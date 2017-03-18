@@ -42,7 +42,7 @@ namespace Xml {
 // Note tha "PutString" hardcodes the same list. This
 // is less flexible than it appears. Changing the entries
 // or order will break putstring.	
-TiXmlBase::Entity TiXmlBase::entity[ TiXmlBase::NUM_ENTITY ] = 
+XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] = 
 {
 	{ "&amp;",  5, '&' },
 	{ "&lt;",   4, '<' },
@@ -65,7 +65,7 @@ const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
 const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
 const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
 
-const int TiXmlBase::utf8ByteTable[256] = 
+const int XmlBase::utf8ByteTable[256] = 
 {
 	//	0	1	2	3	4	5	6	7	8	9	a	b	c	d	e	f
 		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x00
@@ -87,7 +87,7 @@ const int TiXmlBase::utf8ByteTable[256] =
 };
 
 
-void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* length )
+void XmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* length )
 {
 	const unsigned long BYTE_MASK = 0xBF;
 	const unsigned long BYTE_MARK = 0x80;
@@ -128,7 +128,7 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 }
 
 
-/*static*/ int TiXmlBase::IsAlpha( unsigned char anyByte, TiXmlEncoding /*encoding*/ )
+/*static*/ int XmlBase::IsAlpha( unsigned char anyByte, XmlEncoding /*encoding*/ )
 {
 	// This will only work for low-ascii, everything else is assumed to be a valid
 	// letter. I'm not sure this is the best approach, but it is quite tricky trying
@@ -149,7 +149,7 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 }
 
 
-/*static*/ int TiXmlBase::IsAlphaNum( unsigned char anyByte, TiXmlEncoding /*encoding*/ )
+/*static*/ int XmlBase::IsAlphaNum( unsigned char anyByte, XmlEncoding /*encoding*/ )
 {
 	// This will only work for low-ascii, everything else is assumed to be a valid
 	// letter. I'm not sure this is the best approach, but it is quite tricky trying
@@ -171,9 +171,9 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 
 class TiXmlParsingData
 {
-	friend class TiXmlDocument;
+	friend class XmlDocument;
 public:
-	void Stamp(const char* now, TiXmlEncoding encoding);
+	void Stamp(const char* now, XmlEncoding encoding);
 
 	const XmlCursor& Cursor() const { return cursor; }
 
@@ -194,7 +194,7 @@ private:
 };
 
 
-void TiXmlParsingData::Stamp( const char* now, TiXmlEncoding encoding )
+void TiXmlParsingData::Stamp( const char* now, XmlEncoding encoding )
 {
 	assert( now );
 
@@ -287,7 +287,7 @@ void TiXmlParsingData::Stamp( const char* now, TiXmlEncoding encoding )
 				if ( encoding == TIXML_ENCODING_UTF8 )
 				{
 					// Eat the 1 to 4 byte utf8 character.
-					int step = TiXmlBase::utf8ByteTable[*((const unsigned char*)p)];
+					int step = XmlBase::utf8ByteTable[*((const unsigned char*)p)];
 					if ( step == 0 )
 						step = 1;		// Error case from bad encoding, but handle gracefully.
 					p += step;
@@ -312,7 +312,7 @@ void TiXmlParsingData::Stamp( const char* now, TiXmlEncoding encoding )
 }
 
 
-const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
+const char* XmlBase::SkipWhiteSpace( const char* p, XmlEncoding encoding )
 {
 	if ( !p || !*p )
 	{
@@ -363,7 +363,7 @@ const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
 }
 
 
-bool TiXmlBase::StreamWhiteSpace(std::istream& in, std::string& tag)
+bool XmlBase::StreamWhiteSpace(std::istream& in, std::string& tag)
 {
 	for (;;)
 	{
@@ -379,7 +379,7 @@ bool TiXmlBase::StreamWhiteSpace(std::istream& in, std::string& tag)
 }
 
 
-bool TiXmlBase::StreamTo(std::istream& in, int character, std::string& tag)
+bool XmlBase::StreamTo(std::istream& in, int character, std::string& tag)
 {
 	while (in.good())
 	{
@@ -399,7 +399,7 @@ bool TiXmlBase::StreamTo(std::istream& in, int character, std::string& tag)
 // One of TinyXML's more performance demanding functions. Try to keep the memory overhead down. The
 // "assign" optimization removes over 10% of the execution time.
 //
-const char* TiXmlBase::ReadName(const char* p, std::string& name, TiXmlEncoding encoding)
+const char* XmlBase::ReadName(const char* p, std::string& name, XmlEncoding encoding)
 {
 	name.clear();
 	assert(p);
@@ -433,7 +433,7 @@ const char* TiXmlBase::ReadName(const char* p, std::string& name, TiXmlEncoding 
 	return nullptr;
 }
 
-const char* TiXmlBase::GetEntity( const char* p, char* value, int* length, TiXmlEncoding encoding )
+const char* XmlBase::GetEntity( const char* p, char* value, int* length, XmlEncoding encoding )
 {
 	// Presume an entity, and pull it out.
     std::string ent;
@@ -529,7 +529,7 @@ const char* TiXmlBase::GetEntity( const char* p, char* value, int* length, TiXml
 }
 
 
-const char* TiXmlBase::GetChar(const char* p, char* _value, int* length, TiXmlEncoding encoding)
+const char* XmlBase::GetChar(const char* p, char* _value, int* length, XmlEncoding encoding)
 {
 	assert(p);
 	if (encoding == TIXML_ENCODING_UTF8)
@@ -566,7 +566,7 @@ const char* TiXmlBase::GetChar(const char* p, char* _value, int* length, TiXmlEn
 }
 
 
-bool TiXmlBase::StringEqual(const char* p, const char* tag, bool ignoreCase, TiXmlEncoding encoding)
+bool XmlBase::StringEqual(const char* p, const char* tag, bool ignoreCase, XmlEncoding encoding)
 {
 	assert(p);
 	assert(tag);
@@ -603,7 +603,7 @@ bool TiXmlBase::StringEqual(const char* p, const char* tag, bool ignoreCase, TiX
 	return false;
 }
 
-const char* TiXmlBase::ReadText(const char* p, std::string* text, bool trimWhiteSpace, const char* endTag, bool caseInsensitive, TiXmlEncoding encoding)
+const char* XmlBase::ReadText(const char* p, std::string* text, bool trimWhiteSpace, const char* endTag, bool caseInsensitive, XmlEncoding encoding)
 {
     *text = "";
 	if (    !trimWhiteSpace			// certain tags always keep whitespace
@@ -664,7 +664,7 @@ const char* TiXmlBase::ReadText(const char* p, std::string* text, bool trimWhite
 }
 
 
-void TiXmlDocument::StreamIn(std::istream& in, std::string& tag)
+void XmlDocument::StreamIn(std::istream& in, std::string& tag)
 {
 	// The basic issue with a document is that we don't know what we're
 	// streaming. Read something presumed to be a tag (and hope), then
@@ -698,7 +698,7 @@ void TiXmlDocument::StreamIn(std::istream& in, std::string& tag)
 			// We now have something we presume to be a node of 
 			// some sort. Identify it, and call the node to
 			// continue streaming.
-			TiXmlNode* node = Identify(tag.c_str() + tagIndex, TIXML_DEFAULT_ENCODING);
+			XmlNode* node = Identify(tag.c_str() + tagIndex, TIXML_DEFAULT_ENCODING);
 
 			if (node)
 			{
@@ -724,7 +724,7 @@ void TiXmlDocument::StreamIn(std::istream& in, std::string& tag)
 }
 
 
-const char* TiXmlDocument::Parse( const char* p, TiXmlParsingData* prevData, TiXmlEncoding encoding )
+const char* XmlDocument::Parse( const char* p, TiXmlParsingData* prevData, XmlEncoding encoding )
 {
 	ClearError();
 
@@ -776,7 +776,7 @@ const char* TiXmlDocument::Parse( const char* p, TiXmlParsingData* prevData, TiX
 
 	while ( p && *p )
 	{
-		TiXmlNode* node = Identify( p, encoding );
+		XmlNode* node = Identify( p, encoding );
 		if ( node )
 		{
 			p = node->Parse( p, &data, encoding );
@@ -800,7 +800,7 @@ const char* TiXmlDocument::Parse( const char* p, TiXmlParsingData* prevData, TiX
 	return p;
 }
 
-void TiXmlDocument::SetError( int err, const char* pError, TiXmlParsingData* data, TiXmlEncoding encoding )
+void XmlDocument::SetError( int err, const char* pError, TiXmlParsingData* data, XmlEncoding encoding )
 {	
 	// The first error in a chain is more accurate - don't set again!
 	if ( error )
@@ -820,9 +820,9 @@ void TiXmlDocument::SetError( int err, const char* pError, TiXmlParsingData* dat
 }
 
 
-TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
+XmlNode* XmlNode::Identify( const char* p, XmlEncoding encoding )
 {
-	TiXmlNode* returnNode = 0;
+	XmlNode* returnNode = 0;
 
 	p = SkipWhiteSpace( p, encoding );
 	if( !p || !*p || *p != '<' )
@@ -854,14 +854,14 @@ TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
 		#ifdef DEBUG_PARSER
 			TIXML_LOG( "XML parsing Comment\n" );
 		#endif
-		returnNode = new TiXmlComment();
+		returnNode = new XmlComment();
 	}
 	else if ( StringEqual( p, cdataHeader, false, encoding ) )
 	{
 		#ifdef DEBUG_PARSER
 			TIXML_LOG( "XML parsing CDATA\n" );
 		#endif
-		TiXmlText* text = new TiXmlText( "" );
+		XmlText* text = new XmlText( "" );
 		text->CDATA(true);
 		returnNode = text;
 	}
@@ -870,7 +870,7 @@ TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
 		#ifdef DEBUG_PARSER
 			TIXML_LOG( "XML parsing Unknown(1)\n" );
 		#endif
-		returnNode = new TiXmlUnknown();
+		returnNode = new XmlUnknown();
 	}
 	else if (    IsAlpha( *(p+1), encoding )
 			  || *(p+1) == '_' )
@@ -878,14 +878,14 @@ TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
 		#ifdef DEBUG_PARSER
 			TIXML_LOG( "XML parsing Element\n" );
 		#endif
-		returnNode = new TiXmlElement( "" );
+		returnNode = new XmlElement( "" );
 	}
 	else
 	{
 		#ifdef DEBUG_PARSER
 			TIXML_LOG( "XML parsing Unknown(2)\n" );
 		#endif
-		returnNode = new TiXmlUnknown();
+		returnNode = new XmlUnknown();
 	}
 
 	if ( returnNode )
@@ -896,7 +896,7 @@ TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
 	return returnNode;
 }
 
-void TiXmlElement::StreamIn(std::istream & in, std::string & tag)
+void XmlElement::StreamIn(std::istream & in, std::string & tag)
 {
 	// We're called with some amount of pre-parsing. That is, some of "this"
 	// element is in "tag". Go ahead and stream to the closing ">"
@@ -905,7 +905,7 @@ void TiXmlElement::StreamIn(std::istream & in, std::string & tag)
 		int c = in.get();
 		if (c <= 0)
 		{
-			TiXmlDocument* document = GetDocument();
+			XmlDocument* document = GetDocument();
 			if (document)
 				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
 			return;
@@ -942,7 +942,7 @@ void TiXmlElement::StreamIn(std::istream & in, std::string & tag)
 			if (in.good() && in.peek() != '<')
 			{
 				// Yep, text.
-				TiXmlText text("");
+				XmlText text("");
 				text.StreamIn(in, tag);
 
 				// What follows text is a closing tag or another node.
@@ -967,7 +967,7 @@ void TiXmlElement::StreamIn(std::istream & in, std::string & tag)
 				int c = in.peek();
 				if (c <= 0)
 				{
-					TiXmlDocument* document = GetDocument();
+					XmlDocument* document = GetDocument();
 					if (document)
 						document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
 					return;
@@ -1007,7 +1007,7 @@ void TiXmlElement::StreamIn(std::istream & in, std::string & tag)
 				int c = in.get();
 				if (c <= 0)
 				{
-					TiXmlDocument* document = GetDocument();
+					XmlDocument* document = GetDocument();
 					if (document)
 						document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
 					return;
@@ -1022,7 +1022,7 @@ void TiXmlElement::StreamIn(std::istream & in, std::string & tag)
 			{
 				// If not a closing tag, id it, and stream.
 				const char* tagloc = tag.c_str() + tagIndex;
-				TiXmlNode* node = Identify(tagloc, TIXML_DEFAULT_ENCODING);
+				XmlNode* node = Identify(tagloc, TIXML_DEFAULT_ENCODING);
 				if (!node)
 					return;
 				node->StreamIn(in, tag);
@@ -1035,10 +1035,10 @@ void TiXmlElement::StreamIn(std::istream & in, std::string & tag)
 	}
 }
 
-const char* TiXmlElement::Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding)
+const char* XmlElement::Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding)
 {
 	p = SkipWhiteSpace(p, encoding);
-	TiXmlDocument* document = GetDocument();
+	XmlDocument* document = GetDocument();
 
 	if (!p || !*p)
 	{
@@ -1134,7 +1134,7 @@ const char* TiXmlElement::Parse(const char* p, TiXmlParsingData* data, TiXmlEnco
 		else
 		{
 			// Try to read an attribute:
-			TiXmlAttribute* attrib = new TiXmlAttribute();
+			XmlAttribute* attrib = new XmlAttribute();
 			if (!attrib)
 			{
 				return nullptr;
@@ -1152,7 +1152,7 @@ const char* TiXmlElement::Parse(const char* p, TiXmlParsingData* data, TiXmlEnco
 			}
 
 			// Handle the strange case of double attributes:
-			TiXmlAttribute* node = attributeSet.Find(attrib->Name());
+			XmlAttribute* node = attributeSet.Find(attrib->Name());
 
 			if (node)
 			{
@@ -1168,9 +1168,9 @@ const char* TiXmlElement::Parse(const char* p, TiXmlParsingData* data, TiXmlEnco
 }
 
 
-const char* TiXmlElement::ReadValue( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding )
+const char* XmlElement::ReadValue( const char* p, TiXmlParsingData* data, XmlEncoding encoding )
 {
-	TiXmlDocument* document = GetDocument();
+	XmlDocument* document = GetDocument();
 
 	// Read in text and elements in any order.
 	const char* pWithWhiteSpace = p;
@@ -1181,14 +1181,14 @@ const char* TiXmlElement::ReadValue( const char* p, TiXmlParsingData* data, TiXm
 		if ( *p != '<' )
 		{
 			// Take what we have, make a text element.
-			TiXmlText* textNode = new TiXmlText( "" );
+			XmlText* textNode = new XmlText( "" );
 
 			if ( !textNode )
 			{
 			    return nullptr;
 			}
 
-			if ( TiXmlBase::IsWhiteSpaceCondensed() )
+			if ( XmlBase::IsWhiteSpaceCondensed() )
 			{
 				p = textNode->Parse( p, data, encoding );
 			}
@@ -1208,14 +1208,14 @@ const char* TiXmlElement::ReadValue( const char* p, TiXmlParsingData* data, TiXm
 		{
 			// We hit a '<'
 			// Have we hit a new element or an end tag? This could also be
-			// a TiXmlText in the "CDATA" style.
+			// a XmlText in the "CDATA" style.
 			if ( StringEqual( p, "</", false, encoding ) )
 			{
 				return p;
 			}
 			else
 			{
-				TiXmlNode* node = Identify( p, encoding );
+				XmlNode* node = Identify( p, encoding );
 				if ( node )
 				{
 					p = node->Parse( p, data, encoding );
@@ -1239,14 +1239,14 @@ const char* TiXmlElement::ReadValue( const char* p, TiXmlParsingData* data, TiXm
 }
 
 
-void TiXmlUnknown::StreamIn(std::istream& in, std::string& tag)
+void XmlUnknown::StreamIn(std::istream& in, std::string& tag)
 {
 	while (in.good())
 	{
 		int c = in.get();
 		if (c <= 0)
 		{
-			TiXmlDocument* document = GetDocument();
+			XmlDocument* document = GetDocument();
 			if (document)
 				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
 			return;
@@ -1259,9 +1259,9 @@ void TiXmlUnknown::StreamIn(std::istream& in, std::string& tag)
 }
 
 
-const char* TiXmlUnknown::Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding )
+const char* XmlUnknown::Parse( const char* p, TiXmlParsingData* data, XmlEncoding encoding )
 {
-	TiXmlDocument* document = GetDocument();
+	XmlDocument* document = GetDocument();
 	p = SkipWhiteSpace( p, encoding );
 
 	if ( data )
@@ -1293,14 +1293,14 @@ const char* TiXmlUnknown::Parse( const char* p, TiXmlParsingData* data, TiXmlEnc
 	return p;
 }
 
-void TiXmlComment::StreamIn(std::istream& in, std::string& tag)
+void XmlComment::StreamIn(std::istream& in, std::string& tag)
 {
 	while (in.good())
 	{
 		int c = in.get();
 		if (c <= 0)
 		{
-			TiXmlDocument* document = GetDocument();
+			XmlDocument* document = GetDocument();
 			if (document)
 				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
 			return;
@@ -1319,9 +1319,9 @@ void TiXmlComment::StreamIn(std::istream& in, std::string& tag)
 }
 
 
-const char* TiXmlComment::Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding )
+const char* XmlComment::Parse( const char* p, TiXmlParsingData* data, XmlEncoding encoding )
 {
-	TiXmlDocument* document = GetDocument();
+	XmlDocument* document = GetDocument();
 	value = "";
 
 	p = SkipWhiteSpace( p, encoding );
@@ -1374,7 +1374,7 @@ const char* TiXmlComment::Parse( const char* p, TiXmlParsingData* data, TiXmlEnc
 }
 
 
-const char* TiXmlAttribute::Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding)
+const char* XmlAttribute::Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding)
 {
 	p = SkipWhiteSpace(p, encoding);
 	if (!p || !*p) return nullptr;
@@ -1448,7 +1448,7 @@ const char* TiXmlAttribute::Parse(const char* p, TiXmlParsingData* data, TiXmlEn
 	return p;
 }
 
-void TiXmlText::StreamIn(std::istream& in, std::string& tag)
+void XmlText::StreamIn(std::istream& in, std::string& tag)
 {
 	while (in.good())
 	{
@@ -1459,7 +1459,7 @@ void TiXmlText::StreamIn(std::istream& in, std::string& tag)
 		}
 		if (c <= 0)
 		{
-			TiXmlDocument* document = GetDocument();
+			XmlDocument* document = GetDocument();
 			if (document)
 				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
 			return;
@@ -1480,10 +1480,10 @@ void TiXmlText::StreamIn(std::istream& in, std::string& tag)
 	}
 }
 
-const char* TiXmlText::Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding )
+const char* XmlText::Parse( const char* p, TiXmlParsingData* data, XmlEncoding encoding )
 {
 	value = "";
-	TiXmlDocument* document = GetDocument();
+	XmlDocument* document = GetDocument();
 
 	if ( data )
 	{
@@ -1532,7 +1532,7 @@ const char* TiXmlText::Parse( const char* p, TiXmlParsingData* data, TiXmlEncodi
 }
 
 
-bool TiXmlText::Blank() const
+bool XmlText::Blank() const
 {
 	for (unsigned i = 0; i < value.length(); ++i)
 		if (!IsWhiteSpace(value[i]))

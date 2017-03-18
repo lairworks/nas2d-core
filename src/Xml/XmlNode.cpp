@@ -16,10 +16,10 @@
 
 using namespace NAS2D::Xml;
 
-TiXmlNode::~TiXmlNode()
+XmlNode::~XmlNode()
 {
-	TiXmlNode* node = firstChild;
-	TiXmlNode* temp = nullptr;
+	XmlNode* node = firstChild;
+	XmlNode* temp = nullptr;
 
 	while (node)
 	{
@@ -30,7 +30,7 @@ TiXmlNode::~TiXmlNode()
 }
 
 
-void TiXmlNode::CopyTo(TiXmlNode* target) const
+void XmlNode::CopyTo(XmlNode* target) const
 {
 	target->SetValue(value);
 	target->userData = userData;
@@ -38,10 +38,10 @@ void TiXmlNode::CopyTo(TiXmlNode* target) const
 }
 
 
-void TiXmlNode::Clear()
+void XmlNode::Clear()
 {
-	TiXmlNode* node = firstChild;
-	TiXmlNode* temp = nullptr;
+	XmlNode* node = firstChild;
+	XmlNode* temp = nullptr;
 
 	while (node)
 	{
@@ -55,14 +55,14 @@ void TiXmlNode::Clear()
 }
 
 
-TiXmlNode* TiXmlNode::LinkEndChild(TiXmlNode* node)
+XmlNode* XmlNode::LinkEndChild(XmlNode* node)
 {
 	if (!node)
 		throw std::invalid_argument("XmlNode::LinkEndChild: Null pointer passed as a parameter.");
 	else if (node->parent == nullptr || node->parent == this || node->GetDocument() == nullptr || node->GetDocument() == this->GetDocument())
 		throw std::runtime_error("XmlNode::LinkEndChild: Unrecoverable error."); // this is not a helpful message.
 
-	if (node->Type() == TiXmlNode::TINYXML_DOCUMENT)
+	if (node->Type() == XmlNode::TINYXML_DOCUMENT)
 	{
 		delete node;
 		if (GetDocument())
@@ -85,15 +85,15 @@ TiXmlNode* TiXmlNode::LinkEndChild(TiXmlNode* node)
 }
 
 
-TiXmlNode* TiXmlNode::InsertEndChild(const TiXmlNode& addThis)
+XmlNode* XmlNode::InsertEndChild(const XmlNode& addThis)
 {
-	if (addThis.Type() == TiXmlNode::TINYXML_DOCUMENT)
+	if (addThis.Type() == XmlNode::TINYXML_DOCUMENT)
 	{
 		if (GetDocument())
 			GetDocument()->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
 		return nullptr;
 	}
-	TiXmlNode* node = addThis.Clone();
+	XmlNode* node = addThis.Clone();
 	if (!node)
 		return nullptr;
 
@@ -101,19 +101,19 @@ TiXmlNode* TiXmlNode::InsertEndChild(const TiXmlNode& addThis)
 }
 
 
-TiXmlNode* TiXmlNode::InsertBeforeChild(TiXmlNode* beforeThis, const TiXmlNode& addThis)
+XmlNode* XmlNode::InsertBeforeChild(XmlNode* beforeThis, const XmlNode& addThis)
 {
 	if (!beforeThis || beforeThis->parent != this)
 		return nullptr;
 
-	if (addThis.Type() == TiXmlNode::TINYXML_DOCUMENT)
+	if (addThis.Type() == XmlNode::TINYXML_DOCUMENT)
 	{
 		if (GetDocument())
 			GetDocument()->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
 		return nullptr;
 	}
 
-	TiXmlNode* node = addThis.Clone();
+	XmlNode* node = addThis.Clone();
 	if (!node)
 		return nullptr;
 	node->parent = this;
@@ -134,19 +134,19 @@ TiXmlNode* TiXmlNode::InsertBeforeChild(TiXmlNode* beforeThis, const TiXmlNode& 
 }
 
 
-TiXmlNode* TiXmlNode::InsertAfterChild(TiXmlNode* afterThis, const TiXmlNode& addThis)
+XmlNode* XmlNode::InsertAfterChild(XmlNode* afterThis, const XmlNode& addThis)
 {
 	if (!afterThis || afterThis->parent != this) {
 		return nullptr;
 	}
-	if (addThis.Type() == TiXmlNode::TINYXML_DOCUMENT)
+	if (addThis.Type() == XmlNode::TINYXML_DOCUMENT)
 	{
 		if (GetDocument())
 			GetDocument()->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
 		return nullptr;
 	}
 
-	TiXmlNode* node = addThis.Clone();
+	XmlNode* node = addThis.Clone();
 	if (!node)
 		return nullptr;
 	node->parent = this;
@@ -167,7 +167,7 @@ TiXmlNode* TiXmlNode::InsertAfterChild(TiXmlNode* afterThis, const TiXmlNode& ad
 }
 
 
-TiXmlNode* TiXmlNode::ReplaceChild(TiXmlNode* replaceThis, const TiXmlNode& withThis)
+XmlNode* XmlNode::ReplaceChild(XmlNode* replaceThis, const XmlNode& withThis)
 {
 	if (!replaceThis)
 		return nullptr;
@@ -178,13 +178,13 @@ TiXmlNode* TiXmlNode::ReplaceChild(TiXmlNode* replaceThis, const TiXmlNode& with
 	if (withThis.ToDocument())
 	{
 		// A document can never be a child.	Thanks to Noam.
-		TiXmlDocument* document = GetDocument();
+		XmlDocument* document = GetDocument();
 		if (document)
 			document->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
 		return nullptr;
 	}
 
-	TiXmlNode* node = withThis.Clone();
+	XmlNode* node = withThis.Clone();
 	if (!node)
 		return nullptr;
 
@@ -207,7 +207,7 @@ TiXmlNode* TiXmlNode::ReplaceChild(TiXmlNode* replaceThis, const TiXmlNode& with
 }
 
 
-bool TiXmlNode::RemoveChild(TiXmlNode* removeThis)
+bool XmlNode::RemoveChild(XmlNode* removeThis)
 {
 	if (!removeThis)
 		return false;
@@ -232,9 +232,9 @@ bool TiXmlNode::RemoveChild(TiXmlNode* removeThis)
 	return true;
 }
 
-const TiXmlNode* TiXmlNode::FirstChild(const std::string& _value) const
+const XmlNode* XmlNode::FirstChild(const std::string& _value) const
 {
-	const TiXmlNode* node = nullptr;
+	const XmlNode* node = nullptr;
 	for (node = firstChild; node; node = node->next)
 	{
 		if (node->Value() == _value)
@@ -244,9 +244,9 @@ const TiXmlNode* TiXmlNode::FirstChild(const std::string& _value) const
 }
 
 
-const TiXmlNode* TiXmlNode::LastChild(const std::string& _value) const
+const XmlNode* XmlNode::LastChild(const std::string& _value) const
 {
-	const TiXmlNode* node = nullptr;
+	const XmlNode* node = nullptr;
 	for (node = lastChild; node; node = node->prev)
 	{
 		if (node->Value() == _value)
@@ -256,7 +256,7 @@ const TiXmlNode* TiXmlNode::LastChild(const std::string& _value) const
 }
 
 
-const TiXmlNode* TiXmlNode::IterateChildren(const TiXmlNode* previous) const
+const XmlNode* XmlNode::IterateChildren(const XmlNode* previous) const
 {
 	if (!previous)
 	{
@@ -270,7 +270,7 @@ const TiXmlNode* TiXmlNode::IterateChildren(const TiXmlNode* previous) const
 }
 
 
-const TiXmlNode* TiXmlNode::IterateChildren(const std::string& val, const TiXmlNode* previous) const
+const XmlNode* XmlNode::IterateChildren(const std::string& val, const XmlNode* previous) const
 {
 	if (!previous)
 	{
@@ -284,9 +284,9 @@ const TiXmlNode* TiXmlNode::IterateChildren(const std::string& val, const TiXmlN
 }
 
 
-const TiXmlNode* TiXmlNode::NextSibling(const std::string& _value) const
+const XmlNode* XmlNode::NextSibling(const std::string& _value) const
 {
-	const TiXmlNode* node = nullptr;
+	const XmlNode* node = nullptr;
 	for (node = next; node; node = node->next)
 	{
 		if (node->Value() == _value)
@@ -296,9 +296,9 @@ const TiXmlNode* TiXmlNode::NextSibling(const std::string& _value) const
 }
 
 
-const TiXmlNode* TiXmlNode::PreviousSibling(const std::string& _value) const
+const XmlNode* XmlNode::PreviousSibling(const std::string& _value) const
 {
-	const TiXmlNode* node = nullptr;
+	const XmlNode* node = nullptr;
 	for (node = prev; node; node = node->prev)
 	{
 		if (node->Value() == _value)
@@ -308,9 +308,9 @@ const TiXmlNode* TiXmlNode::PreviousSibling(const std::string& _value) const
 }
 
 
-const TiXmlElement* TiXmlNode::FirstChildElement() const
+const XmlElement* XmlNode::FirstChildElement() const
 {
-	const TiXmlNode* node = nullptr;
+	const XmlNode* node = nullptr;
 
 	for (node = FirstChild(); node; node = node->NextSibling())
 	{
@@ -321,9 +321,9 @@ const TiXmlElement* TiXmlNode::FirstChildElement() const
 }
 
 
-const TiXmlElement* TiXmlNode::FirstChildElement(const std::string& _value) const
+const XmlElement* XmlNode::FirstChildElement(const std::string& _value) const
 {
-	const TiXmlNode* node = nullptr;
+	const XmlNode* node = nullptr;
 
 	for (node = FirstChild(_value);	node; node = node->NextSibling(_value))
 	{
@@ -334,9 +334,9 @@ const TiXmlElement* TiXmlNode::FirstChildElement(const std::string& _value) cons
 }
 
 
-const TiXmlElement* TiXmlNode::NextSiblingElement() const
+const XmlElement* XmlNode::NextSiblingElement() const
 {
-	const TiXmlNode* node = nullptr;
+	const XmlNode* node = nullptr;
 
 	for (node = NextSibling(); node; node = node->NextSibling())
 	{
@@ -347,9 +347,9 @@ const TiXmlElement* TiXmlNode::NextSiblingElement() const
 }
 
 
-const TiXmlElement* TiXmlNode::NextSiblingElement(const std::string&  _value) const
+const XmlElement* XmlNode::NextSiblingElement(const std::string&  _value) const
 {
-	const TiXmlNode* node = nullptr;
+	const XmlNode* node = nullptr;
 
 	for (node = NextSibling(_value); node; node = node->NextSibling(_value))
 	{
@@ -361,9 +361,9 @@ const TiXmlElement* TiXmlNode::NextSiblingElement(const std::string&  _value) co
 }
 
 
-const TiXmlDocument* TiXmlNode::GetDocument() const
+const XmlDocument* XmlNode::GetDocument() const
 {
-	const TiXmlNode* node;
+	const XmlNode* node;
 
 	for (node = this; node; node = node->parent)
 	{

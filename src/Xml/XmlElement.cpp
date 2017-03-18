@@ -23,19 +23,19 @@ using namespace NAS2D::Xml;
 
 const std::string NAS2D_EMPTY_STR = "";
 
-TiXmlElement::TiXmlElement(const std::string& _value) : TiXmlNode(TiXmlNode::TINYXML_ELEMENT)
+XmlElement::XmlElement(const std::string& _value) : XmlNode(XmlNode::TINYXML_ELEMENT)
 {
 	value = _value;
 }
 
 
-TiXmlElement::TiXmlElement(const TiXmlElement& copy) : TiXmlNode(TiXmlNode::TINYXML_ELEMENT)
+XmlElement::XmlElement(const XmlElement& copy) : XmlNode(XmlNode::TINYXML_ELEMENT)
 {
 	copy.CopyTo(this);
 }
 
 
-TiXmlElement& TiXmlElement::operator=(const TiXmlElement& base)
+XmlElement& XmlElement::operator=(const XmlElement& base)
 {
 	ClearThis();
 	base.CopyTo(this);
@@ -43,36 +43,36 @@ TiXmlElement& TiXmlElement::operator=(const TiXmlElement& base)
 }
 
 
-TiXmlElement::~TiXmlElement()
+XmlElement::~XmlElement()
 {
 	ClearThis();
 }
 
 
-void TiXmlElement::ClearThis()
+void XmlElement::ClearThis()
 {
 	Clear();
 	while (attributeSet.First())
 	{
-		TiXmlAttribute* node = attributeSet.First();
+		XmlAttribute* node = attributeSet.First();
 		attributeSet.Remove(node);
 		delete node;
 	}
 }
 
 
-std::string TiXmlElement::Attribute(const std::string& name) const
+std::string XmlElement::Attribute(const std::string& name) const
 {
-	const TiXmlAttribute* node = attributeSet.Find(name);
+	const XmlAttribute* node = attributeSet.Find(name);
 	if (node)
 		return node->Value();
 	return "";
 }
 
 
-std::string TiXmlElement::Attribute(const std::string& name, int& i) const
+std::string XmlElement::Attribute(const std::string& name, int& i) const
 {
-	const TiXmlAttribute* attrib = attributeSet.Find(name);
+	const XmlAttribute* attrib = attributeSet.Find(name);
 	std::string result;
 
 	if (attrib)
@@ -87,9 +87,9 @@ std::string TiXmlElement::Attribute(const std::string& name, int& i) const
 }
 
 
-std::string TiXmlElement::Attribute(const std::string& name, double& d) const
+std::string XmlElement::Attribute(const std::string& name, double& d) const
 {
-	const TiXmlAttribute* attrib = attributeSet.Find(name);
+	const XmlAttribute* attrib = attributeSet.Find(name);
 	std::string result;
 
 	if (attrib)
@@ -104,9 +104,9 @@ std::string TiXmlElement::Attribute(const std::string& name, double& d) const
 }
 
 
-int TiXmlElement::QueryIntAttribute(const std::string& name, int& ival) const
+int XmlElement::QueryIntAttribute(const std::string& name, int& ival) const
 {
-	const TiXmlAttribute* attrib = attributeSet.Find(name);
+	const XmlAttribute* attrib = attributeSet.Find(name);
 	if (!attrib)
 		return TIXML_NO_ATTRIBUTE;
 
@@ -114,9 +114,9 @@ int TiXmlElement::QueryIntAttribute(const std::string& name, int& ival) const
 }
 
 
-int TiXmlElement::QueryDoubleAttribute(const std::string& name, double& dval) const
+int XmlElement::QueryDoubleAttribute(const std::string& name, double& dval) const
 {
-	const TiXmlAttribute* attrib = attributeSet.Find(name);
+	const XmlAttribute* attrib = attributeSet.Find(name);
 	if (!attrib)
 		return TIXML_NO_ATTRIBUTE;
 
@@ -124,26 +124,26 @@ int TiXmlElement::QueryDoubleAttribute(const std::string& name, double& dval) co
 }
 
 
-void TiXmlElement::SetAttribute(const std::string& name, int val)
+void XmlElement::SetAttribute(const std::string& name, int val)
 {
-	TiXmlAttribute* attrib = attributeSet.FindOrCreate(name);
+	XmlAttribute* attrib = attributeSet.FindOrCreate(name);
 
 	if (attrib)
 		attrib->SetIntValue(val);
 }
 
 
-void TiXmlElement::SetDoubleAttribute(const std::string& name, double val)
+void XmlElement::SetDoubleAttribute(const std::string& name, double val)
 {
-	TiXmlAttribute* attrib = attributeSet.FindOrCreate(name);
+	XmlAttribute* attrib = attributeSet.FindOrCreate(name);
 	if (attrib)
 		attrib->SetDoubleValue(val);
 }
 
 
-void TiXmlElement::SetAttribute(const std::string& cname, const std::string& cvalue)
+void XmlElement::SetAttribute(const std::string& cname, const std::string& cvalue)
 {
-	TiXmlAttribute* attrib = attributeSet.FindOrCreate(cname);
+	XmlAttribute* attrib = attributeSet.FindOrCreate(cname);
 	if (attrib)
 	{
 		attrib->SetValue(cvalue);
@@ -151,21 +151,21 @@ void TiXmlElement::SetAttribute(const std::string& cname, const std::string& cva
 }
 
 
-void TiXmlElement::Print(std::string& buf, int depth) const
+void XmlElement::Print(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; ++i)
 		buf += "\t";
 
 	buf += "<" + value;
 
-	const TiXmlAttribute* attrib;
+	const XmlAttribute* attrib;
 	for (attrib = attributeSet.First(); attrib; attrib = attrib->Next())
 	{
 		buf += " ";
 		attrib->Print(buf, depth);
 	}
 
-	TiXmlNode* node;
+	XmlNode* node;
 	if (!firstChild)
 	{
 		buf += " />";
@@ -198,31 +198,31 @@ void TiXmlElement::Print(std::string& buf, int depth) const
 }
 
 
-void TiXmlElement::CopyTo(TiXmlElement* target) const
+void XmlElement::CopyTo(XmlElement* target) const
 {
 	// superclass:
-	TiXmlNode::CopyTo(target);
+	XmlNode::CopyTo(target);
 
 	// Element class: 
 	// Clone the attributes, then clone the children.
-	const TiXmlAttribute* attribute = nullptr;
+	const XmlAttribute* attribute = nullptr;
 	for (attribute = attributeSet.First(); attribute; attribute = attribute->Next())
 	{
 		target->SetAttribute(attribute->Name(), attribute->Value());
 	}
 
-	TiXmlNode* node = nullptr;
+	XmlNode* node = nullptr;
 	for (node = firstChild; node; node = node->NextSibling())
 	{
 		target->LinkEndChild(node->Clone());
 	}
 }
 
-bool TiXmlElement::Accept(XmlVisitor* visitor) const
+bool XmlElement::Accept(XmlVisitor* visitor) const
 {
 	if (visitor->VisitEnter(*this, attributeSet.First()))
 	{
-		for (const TiXmlNode* node = FirstChild(); node; node = node->NextSibling())
+		for (const XmlNode* node = FirstChild(); node; node = node->NextSibling())
 		{
 			if (!node->Accept(visitor))
 				break;
@@ -232,9 +232,9 @@ bool TiXmlElement::Accept(XmlVisitor* visitor) const
 }
 
 
-TiXmlNode* TiXmlElement::Clone() const
+XmlNode* XmlElement::Clone() const
 {
-	TiXmlElement* clone = new TiXmlElement(Value());
+	XmlElement* clone = new XmlElement(Value());
 	if (!clone)
 		return nullptr;
 
@@ -243,12 +243,12 @@ TiXmlNode* TiXmlElement::Clone() const
 }
 
 
-const std::string& TiXmlElement::GetText() const
+const std::string& XmlElement::GetText() const
 {
-	const TiXmlNode* child = this->FirstChild();
+	const XmlNode* child = this->FirstChild();
 	if (child)
 	{
-		const TiXmlText* childText = child->ToText();
+		const XmlText* childText = child->ToText();
 		if (childText)
 		{
 			return childText->Value();
@@ -258,9 +258,9 @@ const std::string& TiXmlElement::GetText() const
 }
 
 
-void TiXmlElement::RemoveAttribute(const std::string& name)
+void XmlElement::RemoveAttribute(const std::string& name)
 {
-	TiXmlAttribute* node = attributeSet.Find(name);
+	XmlAttribute* node = attributeSet.Find(name);
 	if (node)
 	{
 		attributeSet.Remove(node);
@@ -269,31 +269,31 @@ void TiXmlElement::RemoveAttribute(const std::string& name)
 }
 
 
-const TiXmlAttribute* TiXmlElement::FirstAttribute() const
+const XmlAttribute* XmlElement::FirstAttribute() const
 {
 	return attributeSet.First();
 }
 
 
-TiXmlAttribute* TiXmlElement::FirstAttribute()
+XmlAttribute* XmlElement::FirstAttribute()
 {
 	return attributeSet.First();
 }
 
 
-const TiXmlAttribute* TiXmlElement::LastAttribute() const
+const XmlAttribute* XmlElement::LastAttribute() const
 {
 	return attributeSet.Last();
 }
 
 
-TiXmlAttribute* TiXmlElement::LastAttribute()
+XmlAttribute* XmlElement::LastAttribute()
 {
 	return attributeSet.Last();
 }
 
 
-int TiXmlElement::QueryFloatAttribute(const std::string& name, float& _value) const
+int XmlElement::QueryFloatAttribute(const std::string& name, float& _value) const
 {
 	double d = 0;
 	int result = QueryDoubleAttribute(name, d);
@@ -304,7 +304,7 @@ int TiXmlElement::QueryFloatAttribute(const std::string& name, float& _value) co
 }
 
 
-int TiXmlElement::QueryStringAttribute(const std::string& name, std::string& _value) const
+int XmlElement::QueryStringAttribute(const std::string& name, std::string& _value) const
 {
 	std::string str = Attribute(name);
 	if (!str.empty())

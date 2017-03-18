@@ -9,30 +9,30 @@ namespace Xml {
 	XML pieces. It can be saved, loaded, and printed to the screen.
 	The 'value' of a document node is the xml file name.
 */
-class TiXmlDocument : public TiXmlNode
+class XmlDocument : public XmlNode
 {
 public:
-	TiXmlDocument();
-	TiXmlDocument(const std::string& documentName);
+	XmlDocument();
+	XmlDocument(const std::string& documentName);
 
-	TiXmlDocument(const TiXmlDocument& copy);
-	TiXmlDocument& operator=(const TiXmlDocument& copy);
+	XmlDocument(const XmlDocument& copy);
+	XmlDocument& operator=(const XmlDocument& copy);
 
-	virtual ~TiXmlDocument() {}
+	virtual ~XmlDocument() {}
 
 	/**
 	 * Parse the given null terminated block of xml data. Passing in an encoding to this
 	 * method (either TIXML_ENCODING_LEGACY or TIXML_ENCODING_UTF8 will force TinyXml
 	 * to use that encoding, regardless of what TinyXml might otherwise try to detect.
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data = 0, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data = 0, XmlEncoding encoding = TIXML_DEFAULT_ENCODING);
 
 	/**
 	 * Get the root element -- the only top level element -- of the document. In well formed XML,
 	 * there should only be one. TinyXml is tolerant of multiple elements at the document level.
 	 */
-	const TiXmlElement* RootElement() const { return FirstChildElement(); }
-	TiXmlElement* RootElement() { return FirstChildElement(); }
+	const XmlElement* RootElement() const { return FirstChildElement(); }
+	XmlElement* RootElement() { return FirstChildElement(); }
 
 	/**
 	 * If an error occurs, Error will be set to true. Also,
@@ -78,7 +78,7 @@ public:
 	 *
 	 * The tab size needs to be enabled before the parse or load. Correct usage:
 	 * @verbatim
-	 * TiXmlDocument doc;
+	 * XmlDocument doc;
 	 * doc.SetTabSize( 8 );
 	 * doc.Load( "myfile.xml" );
 	 * @endverbatim
@@ -106,8 +106,8 @@ public:
 	 */
 	virtual void Print(std::string& buf, int depth = 0) const;
 
-	virtual const TiXmlDocument* ToDocument() const { return this; }
-	virtual TiXmlDocument* ToDocument() { return this; }
+	virtual const XmlDocument* ToDocument() const { return this; }
+	virtual XmlDocument* ToDocument() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
@@ -115,14 +115,14 @@ public:
 	virtual bool Accept(XmlVisitor* content) const;
 
 	// [internal use]
-	void SetError(int err, const char* errorLocation, TiXmlParsingData* prevData, TiXmlEncoding encoding);
+	void SetError(int err, const char* errorLocation, TiXmlParsingData* prevData, XmlEncoding encoding);
 
 protected:
-	virtual TiXmlNode* Clone() const;
+	virtual XmlNode* Clone() const;
 	virtual void StreamIn(std::istream& in, std::string& tag);
 
 private:
-	void CopyTo(TiXmlDocument* target) const;
+	void CopyTo(XmlDocument* target) const;
 
 private:
 	int				errorId;

@@ -13,7 +13,7 @@
 
 using namespace NAS2D::Xml;
 
-TiXmlComment& TiXmlComment::operator=(const TiXmlComment& base)
+XmlComment& XmlComment::operator=(const XmlComment& base)
 {
 	Clear();
 	base.CopyTo(this);
@@ -21,7 +21,7 @@ TiXmlComment& TiXmlComment::operator=(const TiXmlComment& base)
 }
 
 
-void TiXmlComment::Print(std::string& buf, int depth) const
+void XmlComment::Print(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; i++)
 		buf += "\t";
@@ -30,9 +30,9 @@ void TiXmlComment::Print(std::string& buf, int depth) const
 }
 
 
-TiXmlNode* TiXmlComment::Clone() const
+XmlNode* XmlComment::Clone() const
 {
-	TiXmlComment* clone = new TiXmlComment();
+	XmlComment* clone = new XmlComment();
 
 	if (!clone)
 		return nullptr;

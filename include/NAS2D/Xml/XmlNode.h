@@ -24,10 +24,10 @@ namespace Xml {
  * on its own. The type of a XmlNode can be queried, and it can be cast to its more
  * defined type.
  */
-class TiXmlNode : public TiXmlBase
+class XmlNode : public XmlBase
 {
-	friend class TiXmlDocument;
-	friend class TiXmlElement;
+	friend class XmlDocument;
+	friend class XmlElement;
 
 public:
 	/**
@@ -44,11 +44,11 @@ public:
 		TINYXML_TYPECOUNT
 	};
 
-	TiXmlNode() : TiXmlBase(), parent(nullptr), type(TINYXML_UNKNOWN), firstChild(nullptr), lastChild(nullptr), prev(nullptr), next(nullptr) {}
-	virtual ~TiXmlNode();
+	XmlNode() : XmlBase(), parent(nullptr), type(TINYXML_UNKNOWN), firstChild(nullptr), lastChild(nullptr), prev(nullptr), next(nullptr) {}
+	virtual ~XmlNode();
 
 	/**
-	 * The meaning of 'value' changes for the specific type of TiXmlNode.
+	 * The meaning of 'value' changes for the specific type of XmlNode.
 	 * 
 	 * @verbatim
 	 * Document:	filename of the xml file
@@ -80,32 +80,32 @@ public:
 	/**
 	 * One step up in the DOM.
 	 */
-	TiXmlNode* Parent() { return parent; }
-	const TiXmlNode* Parent() const { return parent; }
+	XmlNode* Parent() { return parent; }
+	const XmlNode* Parent() const { return parent; }
 
 	/**
 	 * The first child of this node. Will be \c nullptr if there are no children.
 	 */
-	const TiXmlNode* FirstChild()	const { return firstChild; }
-	TiXmlNode* FirstChild() { return firstChild; }
+	const XmlNode* FirstChild()	const { return firstChild; }
+	XmlNode* FirstChild() { return firstChild; }
 
 	/**
 	 * The first child of this node with the matching 'value'. Will be \c nullptr if none found.
 	 */
-	const TiXmlNode* FirstChild(const std::string& value) const;
-	TiXmlNode* FirstChild(const std::string& _value) { return const_cast<TiXmlNode*> ((const_cast<const TiXmlNode*>(this))->FirstChild(_value)); }
+	const XmlNode* FirstChild(const std::string& value) const;
+	XmlNode* FirstChild(const std::string& _value) { return const_cast<XmlNode*> ((const_cast<const XmlNode*>(this))->FirstChild(_value)); }
 
 	/**
 	 * The last child of this node. Will be \c nullptr if there are no children.
 	 */
-	const TiXmlNode* LastChild() const { return lastChild; }
-	TiXmlNode* LastChild() { return lastChild; }
+	const XmlNode* LastChild() const { return lastChild; }
+	XmlNode* LastChild() { return lastChild; }
 
 	/**
 	 * The last child of this node matching 'value'. Will be \c nullptr if there are no children.
 	 */
-	const TiXmlNode* LastChild(const std::string& value) const;
-	TiXmlNode* LastChild(const std::string& _value) { return const_cast<TiXmlNode*> ((const_cast<const TiXmlNode*>(this))->LastChild(_value)); }
+	const XmlNode* LastChild(const std::string& value) const;
+	XmlNode* LastChild(const std::string& _value) { return const_cast<XmlNode*> ((const_cast<const XmlNode*>(this))->LastChild(_value)); }
 
 	/**
 	 * An alternate way to walk the children of a node.
@@ -124,20 +124,20 @@ public:
 	 * IterateChildren takes the previous child as input and finds the next one. If the previous
 	 * child is \c nullptr, it returns thefirst. IterateChildren will return \c nullptr when done.
 	 */
-	const TiXmlNode* IterateChildren(const TiXmlNode* previous) const;
-	TiXmlNode* IterateChildren(const TiXmlNode* previous) { return const_cast<TiXmlNode*>((const_cast<const TiXmlNode*>(this))->IterateChildren(previous)); }
+	const XmlNode* IterateChildren(const XmlNode* previous) const;
+	XmlNode* IterateChildren(const XmlNode* previous) { return const_cast<XmlNode*>((const_cast<const XmlNode*>(this))->IterateChildren(previous)); }
 
 	/**
 	 * Search for children with a particular 'value'.
 	 */
-	const TiXmlNode* IterateChildren(const std::string& value, const TiXmlNode* previous) const;
-	TiXmlNode* IterateChildren(const std::string& _value, const TiXmlNode* previous) { return const_cast<TiXmlNode*>((const_cast<const TiXmlNode*>(this))->IterateChildren(_value, previous)); }
+	const XmlNode* IterateChildren(const std::string& value, const XmlNode* previous) const;
+	XmlNode* IterateChildren(const std::string& _value, const XmlNode* previous) { return const_cast<XmlNode*>((const_cast<const XmlNode*>(this))->IterateChildren(_value, previous)); }
 
 	/**
 	 * Add a new node related to this. Adds a child past the LastChild.
 	 * Returns a pointer to the new object or NULL if an error occured.
 	 */
-	TiXmlNode* InsertEndChild(const TiXmlNode& addThis);
+	XmlNode* InsertEndChild(const XmlNode& addThis);
 
 
 	/**
@@ -148,56 +148,56 @@ public:
 	 * 
 	 * \see InsertEndChild
 	 */
-	TiXmlNode* LinkEndChild(TiXmlNode* addThis);
+	XmlNode* LinkEndChild(XmlNode* addThis);
 
 	/**
 	 * Add a new node related to this. Adds a child before the specified child.
 	 * 
 	 * \return A pointer to the new object or nullptr if an error occured.
 	 */
-	TiXmlNode* InsertBeforeChild(TiXmlNode* beforeThis, const TiXmlNode& addThis);
+	XmlNode* InsertBeforeChild(XmlNode* beforeThis, const XmlNode& addThis);
 
 	/**
 	 * Add a new node related to this. Adds a child after the specified child.
 	 * Returns a pointer to the new object or nullptr if an error occured.
 	 */
-	TiXmlNode* InsertAfterChild(TiXmlNode* afterThis, const TiXmlNode& addThis);
+	XmlNode* InsertAfterChild(XmlNode* afterThis, const XmlNode& addThis);
 
 	/**
 	 * Replace a child of this node.
 	 * 
 	 * \return A pointer to the new object or \c nullptr if an error occured.
 	 */
-	TiXmlNode* ReplaceChild(TiXmlNode* replaceThis, const TiXmlNode& withThis);
+	XmlNode* ReplaceChild(XmlNode* replaceThis, const XmlNode& withThis);
 
 	/**
 	 * Delete a child of this node.
 	 */
-	bool RemoveChild(TiXmlNode* removeThis);
+	bool RemoveChild(XmlNode* removeThis);
 
 	/**
 	 * Navigate to a sibling node.
 	 */
-	const TiXmlNode* PreviousSibling() const { return prev; }
-	TiXmlNode* PreviousSibling() { return prev; }
+	const XmlNode* PreviousSibling() const { return prev; }
+	XmlNode* PreviousSibling() { return prev; }
 
 	/**
 	 * Navigate to a sibling node.
 	 */
-	const TiXmlNode* PreviousSibling(const std::string&) const;
-	TiXmlNode* PreviousSibling(const std::string& _prev) { return const_cast<TiXmlNode*>((const_cast<const TiXmlNode*>(this))->PreviousSibling(_prev)); }
+	const XmlNode* PreviousSibling(const std::string&) const;
+	XmlNode* PreviousSibling(const std::string& _prev) { return const_cast<XmlNode*>((const_cast<const XmlNode*>(this))->PreviousSibling(_prev)); }
 
 	/**
 	 * Navigate to a sibling node.
 	 */
-	const TiXmlNode* NextSibling() const { return next; }
-	TiXmlNode* NextSibling() { return next; }
+	const XmlNode* NextSibling() const { return next; }
+	XmlNode* NextSibling() { return next; }
 
 	/**
 	 * Navigate to a sibling node with a given value.
 	 */
-	const TiXmlNode* NextSibling(const std::string&) const;
-	TiXmlNode* NextSibling(const std::string& _next) { return const_cast<TiXmlNode*>((const_cast<const TiXmlNode*>(this))->NextSibling(_next)); }
+	const XmlNode* NextSibling(const std::string&) const;
+	XmlNode* NextSibling(const std::string& _next) { return const_cast<XmlNode*>((const_cast<const XmlNode*>(this))->NextSibling(_next)); }
 
 	/**
 	 * Convenience function to get through elements.
@@ -205,8 +205,8 @@ public:
 	 * 
 	 * \return \c nullptr if there is not another element.
 	 */
-	const TiXmlElement* NextSiblingElement() const;
-	TiXmlElement* NextSiblingElement() { return const_cast<TiXmlElement*>((const_cast<const TiXmlNode*>(this))->NextSiblingElement()); }
+	const XmlElement* NextSiblingElement() const;
+	XmlElement* NextSiblingElement() { return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->NextSiblingElement()); }
 
 	/**
 	 * Convenience function to get through elements.
@@ -214,20 +214,20 @@ public:
 	 * 
 	 * \return \c nullptr if there is not another element.
 	 */
-	const TiXmlElement* NextSiblingElement(const std::string&) const;
-	TiXmlElement* NextSiblingElement(const std::string& _next) { return const_cast<TiXmlElement*>((const_cast<const TiXmlNode*>(this))->NextSiblingElement(_next)); }
+	const XmlElement* NextSiblingElement(const std::string&) const;
+	XmlElement* NextSiblingElement(const std::string& _next) { return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->NextSiblingElement(_next)); }
 
 	/**
 	 * Convenience function to get through elements.
 	 */
-	const TiXmlElement* FirstChildElement()	const;
-	TiXmlElement* FirstChildElement() { return const_cast<TiXmlElement*>((const_cast<const TiXmlNode*>(this))->FirstChildElement()); }
+	const XmlElement* FirstChildElement()	const;
+	XmlElement* FirstChildElement() { return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->FirstChildElement()); }
 
 	/**
 	 * Convenience function to get through elements.
 	 */
-	const TiXmlElement* FirstChildElement(const std::string& _value) const;
-	TiXmlElement* FirstChildElement(const std::string& _value) { return const_cast<TiXmlElement*>((const_cast<const TiXmlNode*>(this))->FirstChildElement(_value)); }
+	const XmlElement* FirstChildElement(const std::string& _value) const;
+	XmlElement* FirstChildElement(const std::string& _value) { return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->FirstChildElement(_value)); }
 
 	/**
 	 * Query the type (as an enumerated value, above) of this node. The possible
@@ -239,30 +239,30 @@ public:
 	/**
 	 * Return a pointer to the Document this node lives in. Returns null if not in a document.
 	 */
-	const TiXmlDocument* GetDocument() const;
-	TiXmlDocument* GetDocument() { return const_cast<TiXmlDocument*>((const_cast<const TiXmlNode*>(this))->GetDocument()); }
+	const XmlDocument* GetDocument() const;
+	XmlDocument* GetDocument() { return const_cast<XmlDocument*>((const_cast<const XmlNode*>(this))->GetDocument()); }
 
 	/**
 	 * Returns true if this node has no children.
 	 */
 	bool NoChildren() const { return firstChild == nullptr; }
 
-	virtual const TiXmlDocument* ToDocument() const { return nullptr; }
-	virtual const TiXmlElement* ToElement() const { return nullptr; }
-	virtual const TiXmlComment* ToComment() const { return nullptr; }
-	virtual const TiXmlUnknown* ToUnknown() const { return nullptr; }
-	virtual const TiXmlText* ToText() const { return nullptr; }
+	virtual const XmlDocument* ToDocument() const { return nullptr; }
+	virtual const XmlElement* ToElement() const { return nullptr; }
+	virtual const XmlComment* ToComment() const { return nullptr; }
+	virtual const XmlUnknown* ToUnknown() const { return nullptr; }
+	virtual const XmlText* ToText() const { return nullptr; }
 
-	virtual TiXmlDocument* ToDocument() { return nullptr; }
-	virtual TiXmlElement* ToElement() { return nullptr; }
-	virtual TiXmlComment* ToComment() { return nullptr; }
-	virtual TiXmlUnknown* ToUnknown() { return nullptr; }
-	virtual TiXmlText* ToText() { return nullptr; }
+	virtual XmlDocument* ToDocument() { return nullptr; }
+	virtual XmlElement* ToElement() { return nullptr; }
+	virtual XmlComment* ToComment() { return nullptr; }
+	virtual XmlUnknown* ToUnknown() { return nullptr; }
+	virtual XmlText* ToText() { return nullptr; }
 
 	/**
 	 * Create an exact duplicate of this node and return it. The memory must be deleted by the caller.
 	 */
-	virtual TiXmlNode* Clone() const = 0;
+	virtual XmlNode* Clone() const = 0;
 
 	/**
 	 * Accept a hierchical visit the nodes in the TinyXML DOM. Every node in the  XML tree will be
@@ -274,33 +274,33 @@ public:
 	virtual void StreamIn(std::istream& in, std::string& tag) = 0;
 
 protected:
-	TiXmlNode(NodeType _type) : TiXmlBase(), parent(nullptr), type(_type), firstChild(nullptr), lastChild(nullptr), prev(nullptr), next(nullptr) {}
+	XmlNode(NodeType _type) : XmlBase(), parent(nullptr), type(_type), firstChild(nullptr), lastChild(nullptr), prev(nullptr), next(nullptr) {}
 
 	/**
 	 * Copy to the allocated object. Shared functionality between Clone,
 	 * Copy constructor, and the copy assignment operator.
 	 */
-	void CopyTo(TiXmlNode* target) const;
+	void CopyTo(XmlNode* target) const;
 
 	/**
 	 * Figure out what is at *p, and parse it. Returns null if it is not an xml node.
 	 */
-	TiXmlNode* Identify(const char* start, TiXmlEncoding encoding);
+	XmlNode* Identify(const char* start, XmlEncoding encoding);
 
-	TiXmlNode*		parent;			/**< Parent of the XmlNode. */
+	XmlNode*		parent;			/**< Parent of the XmlNode. */
 	NodeType		type;			/**< Type of the XmlNode. */
 
-	TiXmlNode*		firstChild;		/**< First child of the XmlNode. */
-	TiXmlNode*		lastChild;		/**< Last child of the XmlNode. */
+	XmlNode*		firstChild;		/**< First child of the XmlNode. */
+	XmlNode*		lastChild;		/**< Last child of the XmlNode. */
 
 	std::string		value;			/**< Value of the XmlNode. */
 
-	TiXmlNode*		prev;			/**< Previous XmlNode. */
-	TiXmlNode*		next;			/**< Next XmlNode. */
+	XmlNode*		prev;			/**< Previous XmlNode. */
+	XmlNode*		next;			/**< Next XmlNode. */
 
 private:
-	TiXmlNode(const TiXmlNode&); // Explicitly disallowed.
-	void operator=(const TiXmlNode& base); // Explicitly disallowed.
+	XmlNode(const XmlNode&); // Explicitly disallowed.
+	void operator=(const XmlNode& base); // Explicitly disallowed.
 };
 
 

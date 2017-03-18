@@ -13,26 +13,26 @@
 
 using namespace NAS2D::Xml;
 
-TiXmlText::TiXmlText(const std::string& initValue) : TiXmlNode(TiXmlNode::TINYXML_TEXT), cdata(false)
+XmlText::XmlText(const std::string& initValue) : XmlNode(XmlNode::TINYXML_TEXT), cdata(false)
 {
 	SetValue(initValue);
 }
 
 
-TiXmlText::TiXmlText(const TiXmlText& copy) : TiXmlNode(TiXmlNode::TINYXML_TEXT)
+XmlText::XmlText(const XmlText& copy) : XmlNode(XmlNode::TINYXML_TEXT)
 {
 	copy.CopyTo(this);
 }
 
 
-TiXmlText& TiXmlText::operator=(const TiXmlText& base)
+XmlText& XmlText::operator=(const XmlText& base)
 {
 	base.CopyTo(this);
 	return *this;
 }
 
 
-void TiXmlText::Print(std::string& buf, int depth) const
+void XmlText::Print(std::string& buf, int depth) const
 {
 	if (cdata)
 	{
@@ -51,16 +51,16 @@ void TiXmlText::Print(std::string& buf, int depth) const
 }
 
 
-void TiXmlText::CopyTo(TiXmlText* target) const
+void XmlText::CopyTo(XmlText* target) const
 {
-	TiXmlNode::CopyTo(target);
+	XmlNode::CopyTo(target);
 	target->cdata = cdata;
 }
 
 
-TiXmlNode* TiXmlText::Clone() const
+XmlNode* XmlText::Clone() const
 {
-	TiXmlText* clone = new TiXmlText("");
+	XmlText* clone = new XmlText("");
 	CopyTo(clone);
 
 	return clone;

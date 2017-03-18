@@ -13,28 +13,28 @@
 
 using namespace NAS2D::Xml;
 
-TiXmlUnknown::TiXmlUnknown() : TiXmlNode(TiXmlNode::TINYXML_UNKNOWN)
+XmlUnknown::XmlUnknown() : XmlNode(XmlNode::TINYXML_UNKNOWN)
 {}
 
 
-TiXmlUnknown::~TiXmlUnknown()
+XmlUnknown::~XmlUnknown()
 {}
 
 
-TiXmlUnknown::TiXmlUnknown(const TiXmlUnknown& copy) : TiXmlNode(TiXmlNode::TINYXML_UNKNOWN)
+XmlUnknown::XmlUnknown(const XmlUnknown& copy) : XmlNode(XmlNode::TINYXML_UNKNOWN)
 {
 	copy.CopyTo(this);
 }
 
 
-TiXmlUnknown& TiXmlUnknown::operator=(const TiXmlUnknown& copy)
+XmlUnknown& XmlUnknown::operator=(const XmlUnknown& copy)
 {
 	copy.CopyTo(this);
 	return *this;
 }
 
 
-void TiXmlUnknown::Print(std::string& buf, int depth) const
+void XmlUnknown::Print(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; i++)
 		buf += "\t";
@@ -43,9 +43,9 @@ void TiXmlUnknown::Print(std::string& buf, int depth) const
 }
 
 
-TiXmlNode* TiXmlUnknown::Clone() const
+XmlNode* XmlUnknown::Clone() const
 {
-	TiXmlUnknown* clone = new TiXmlUnknown();
+	XmlUnknown* clone = new XmlUnknown();
 
 	if (!clone)
 		return nullptr;
@@ -55,13 +55,13 @@ TiXmlNode* TiXmlUnknown::Clone() const
 }
 
 
-bool TiXmlUnknown::Accept(XmlVisitor* visitor) const
+bool XmlUnknown::Accept(XmlVisitor* visitor) const
 {
 	return visitor->Visit(*this);
 }
 
 
-void TiXmlUnknown::CopyTo(TiXmlUnknown* target) const
+void XmlUnknown::CopyTo(XmlUnknown* target) const
 {
-	TiXmlNode::CopyTo(target);
+	XmlNode::CopyTo(target);
 }

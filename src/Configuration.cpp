@@ -13,6 +13,8 @@
 #include "NAS2D/Utility.h"
 #include "NAS2D/XmlAttributeParser.h"
 
+#include <iostream>
+
 using namespace NAS2D;
 
 // Set some basic constants.
@@ -146,10 +148,10 @@ void Configuration::save()
 	}
 
 	// Write out the XML file.
-	TiXmlPrinter printer;
-	doc.Accept(&printer);
+	XmlMemoryBuffer buff;
+	doc.Accept(&buff);
 
-	Utility<Filesystem>::get().write(File(printer.Str(), mConfigPath));
+	Utility<Filesystem>::get().write(File(buff.buffer(), mConfigPath));
 }
 
 

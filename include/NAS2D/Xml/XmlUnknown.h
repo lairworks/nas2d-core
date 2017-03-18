@@ -39,7 +39,7 @@ public:
 	 */
 	virtual void Print(std::string& buf, int depth) const;
 
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data);
 
 	virtual const XmlUnknown* ToUnknown() const { return this; }
 	virtual XmlUnknown* ToUnknown() { return this; }

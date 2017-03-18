@@ -58,15 +58,17 @@ void XmlNode::Clear()
 XmlNode* XmlNode::LinkEndChild(XmlNode* node)
 {
 	if (!node)
-		throw std::invalid_argument("XmlNode::LinkEndChild: Null pointer passed as a parameter.");
-	else if (node->parent == nullptr || node->parent == this || node->GetDocument() == nullptr || node->GetDocument() == this->GetDocument())
-		throw std::runtime_error("XmlNode::LinkEndChild: Unrecoverable error."); // this is not a helpful message.
+		return nullptr;
+	else if (node->parent != nullptr && node->parent != this)
+		return nullptr;
+	else if (node->GetDocument() != nullptr && node->GetDocument() != this->GetDocument())
+		return nullptr;
 
-	if (node->Type() == XmlNode::TINYXML_DOCUMENT)
+	if (node->Type() == XmlNode::XML_DOCUMENT)
 	{
 		delete node;
 		if (GetDocument())
-			GetDocument()->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
+			GetDocument()->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 
@@ -78,7 +80,7 @@ XmlNode* XmlNode::LinkEndChild(XmlNode* node)
 	if (lastChild)
 		lastChild->next = node;
 	else
-		firstChild = node;			// it was an empty list.
+		firstChild = node; // it was an empty list.
 
 	lastChild = node;
 	return node;
@@ -87,10 +89,10 @@ XmlNode* XmlNode::LinkEndChild(XmlNode* node)
 
 XmlNode* XmlNode::InsertEndChild(const XmlNode& addThis)
 {
-	if (addThis.Type() == XmlNode::TINYXML_DOCUMENT)
+	if (addThis.Type() == XmlNode::XML_DOCUMENT)
 	{
 		if (GetDocument())
-			GetDocument()->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
+			GetDocument()->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 	XmlNode* node = addThis.Clone();
@@ -106,10 +108,10 @@ XmlNode* XmlNode::InsertBeforeChild(XmlNode* beforeThis, const XmlNode& addThis)
 	if (!beforeThis || beforeThis->parent != this)
 		return nullptr;
 
-	if (addThis.Type() == XmlNode::TINYXML_DOCUMENT)
+	if (addThis.Type() == XmlNode::XML_DOCUMENT)
 	{
 		if (GetDocument())
-			GetDocument()->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
+			GetDocument()->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 
@@ -139,10 +141,10 @@ XmlNode* XmlNode::InsertAfterChild(XmlNode* afterThis, const XmlNode& addThis)
 	if (!afterThis || afterThis->parent != this) {
 		return nullptr;
 	}
-	if (addThis.Type() == XmlNode::TINYXML_DOCUMENT)
+	if (addThis.Type() == XmlNode::XML_DOCUMENT)
 	{
 		if (GetDocument())
-			GetDocument()->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
+			GetDocument()->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 
@@ -180,7 +182,7 @@ XmlNode* XmlNode::ReplaceChild(XmlNode* replaceThis, const XmlNode& withThis)
 		// A document can never be a child.	Thanks to Noam.
 		XmlDocument* document = GetDocument();
 		if (document)
-			document->SetError(TIXML_ERROR_DOCUMENT_TOP_ONLY, 0, 0, TIXML_ENCODING_UNKNOWN);
+			document->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 

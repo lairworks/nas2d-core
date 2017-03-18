@@ -13,7 +13,7 @@
 
 using namespace NAS2D::Xml;
 
-XmlUnknown::XmlUnknown() : XmlNode(XmlNode::TINYXML_UNKNOWN)
+XmlUnknown::XmlUnknown() : XmlNode(XmlNode::XML_UNKNOWN)
 {}
 
 
@@ -21,7 +21,7 @@ XmlUnknown::~XmlUnknown()
 {}
 
 
-XmlUnknown::XmlUnknown(const XmlUnknown& copy) : XmlNode(XmlNode::TINYXML_UNKNOWN)
+XmlUnknown::XmlUnknown(const XmlUnknown& copy) : XmlNode(XmlNode::XML_UNKNOWN)
 {
 	copy.CopyTo(this);
 }

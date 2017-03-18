@@ -13,13 +13,13 @@
 
 using namespace NAS2D::Xml;
 
-XmlText::XmlText(const std::string& initValue) : XmlNode(XmlNode::TINYXML_TEXT), cdata(false)
+XmlText::XmlText(const std::string& initValue) : XmlNode(XmlNode::XML_TEXT), cdata(false)
 {
 	SetValue(initValue);
 }
 
 
-XmlText::XmlText(const XmlText& copy) : XmlNode(XmlNode::TINYXML_TEXT)
+XmlText::XmlText(const XmlText& copy) : XmlNode(XmlNode::XML_TEXT)
 {
 	copy.CopyTo(this);
 }
@@ -44,9 +44,7 @@ void XmlText::Print(std::string& buf, int depth) const
 	}
 	else
 	{
-		std::string buffer;
-		EncodeString(value, buffer);
-		buf += buffer;
+		buf += value;
 	}
 }
 

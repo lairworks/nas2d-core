@@ -36,15 +36,15 @@ public:
 	 */
 	enum NodeType
 	{
-		TINYXML_DOCUMENT,
-		TINYXML_ELEMENT,
-		TINYXML_COMMENT,
-		TINYXML_UNKNOWN,
-		TINYXML_TEXT,
-		TINYXML_TYPECOUNT
+		XML_DOCUMENT,
+		XML_ELEMENT,
+		XML_COMMENT,
+		XML_UNKNOWN,
+		XML_TEXT,
+		XML_TYPECOUNT
 	};
 
-	XmlNode() : XmlBase(), parent(nullptr), type(TINYXML_UNKNOWN), firstChild(nullptr), lastChild(nullptr), prev(nullptr), next(nullptr) {}
+	XmlNode() : XmlBase(), parent(nullptr), type(XML_UNKNOWN), firstChild(nullptr), lastChild(nullptr), prev(nullptr), next(nullptr) {}
 	virtual ~XmlNode();
 
 	/**
@@ -285,7 +285,7 @@ protected:
 	/**
 	 * Figure out what is at *p, and parse it. Returns null if it is not an xml node.
 	 */
-	XmlNode* Identify(const char* start, XmlEncoding encoding);
+	XmlNode* Identify(const char* start);
 
 	XmlNode*		parent;			/**< Parent of the XmlNode. */
 	NodeType		type;			/**< Type of the XmlNode. */

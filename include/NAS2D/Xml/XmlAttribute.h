@@ -20,9 +20,9 @@ namespace Xml {
 
 enum
 {
-	TIXML_SUCCESS,
-	TIXML_NO_ATTRIBUTE,
-	TIXML_WRONG_TYPE
+	XML_SUCCESS,
+	XML_NO_ATTRIBUTE,
+	XML_WRONG_TYPE
 };
 
 /**
@@ -38,8 +38,6 @@ class XmlAttribute : public XmlBase
 
 public:
 	XmlAttribute() : XmlBase(), document(nullptr), prev(nullptr), next(nullptr) {}
-
-	/// Construct an attribute with a name and value.
 	XmlAttribute(const std::string& _name, std::string& _value) : XmlBase(), document(nullptr), name(_name), value(_value), prev(nullptr), next(nullptr) {}
 
 	/**
@@ -80,9 +78,8 @@ public:
 	 * Attribute parsing starts: first letter of the name
 	 * returns: the next char after the value end quote
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data);
 
-	// Prints this Attribute to a FILE stream.
 	virtual void Print(std::string& buf, int depth) const;
 
 	// [internal use]

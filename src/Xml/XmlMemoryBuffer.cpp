@@ -79,8 +79,7 @@ bool XmlMemoryBuffer::Visit(const XmlText& text)
 	{
 		indent();
 		std::string str;
-		XmlBase::EncodeString(text.Value(), str);
-		_buffer += str;
+		_buffer += text.Value();
 		line_break();
 	}
 	return true;

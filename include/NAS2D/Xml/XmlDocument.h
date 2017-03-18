@@ -25,7 +25,7 @@ public:
 	 * method (either TIXML_ENCODING_LEGACY or TIXML_ENCODING_UTF8 will force TinyXml
 	 * to use that encoding, regardless of what TinyXml might otherwise try to detect.
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data = 0, XmlEncoding encoding = TIXML_DEFAULT_ENCODING);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data = 0);
 
 	/**
 	 * Get the root element -- the only top level element -- of the document. In well formed XML,
@@ -115,7 +115,7 @@ public:
 	virtual bool Accept(XmlVisitor* content) const;
 
 	// [internal use]
-	void SetError(int err, const char* errorLocation, TiXmlParsingData* prevData, XmlEncoding encoding);
+	void SetError(XmlErrorCode err, const char* errorLocation, TiXmlParsingData* prevData);
 
 protected:
 	virtual XmlNode* Clone() const;

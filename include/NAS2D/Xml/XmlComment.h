@@ -22,9 +22,9 @@ namespace Xml {
 class XmlComment : public XmlNode
 {
 public:
-	XmlComment() : XmlNode(XmlNode::TINYXML_COMMENT) {}
+	XmlComment() : XmlNode(XmlNode::XML_COMMENT) {}
 
-	XmlComment(const std::string& _value) : XmlNode(XmlNode::TINYXML_COMMENT) { SetValue(_value); }
+	XmlComment(const std::string& _value) : XmlNode(XmlNode::XML_COMMENT) { SetValue(_value); }
 	XmlComment(const XmlComment& copy) { copy.CopyTo(this); }
 	XmlComment& operator=(const XmlComment& base);
 
@@ -39,7 +39,7 @@ public:
 	 * Attribtue parsing starts: at the ! of the !--
 	 * 					 returns: next char past '>'
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data);
 
 	virtual const XmlComment* ToComment() const { return this; }
 	virtual XmlComment* ToComment() { return this; }

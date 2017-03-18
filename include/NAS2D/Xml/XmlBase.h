@@ -38,17 +38,6 @@ struct XmlCursor
 };
 
 
-// Used by the parsing routines.
-enum XmlEncoding
-{
-	TIXML_ENCODING_UNKNOWN,
-	TIXML_ENCODING_UTF8,
-	TIXML_ENCODING_LEGACY
-};
-
-const XmlEncoding TIXML_DEFAULT_ENCODING = TIXML_ENCODING_UNKNOWN;
-
-
 /**
  * XmlBase is a base class for every class in TinyXml. It does little except to establish
  * that TinyXml classes can be printed and provide some utility functions.
@@ -107,53 +96,43 @@ public:
 	void* GetUserData() { return userData; }				///< Get a pointer to arbitrary user data.
 	const void* GetUserData() const { return userData; }	///< Get a pointer to arbitrary user data.
 
-															// Table that returns, for a given lead byte, the total number of bytes in the UTF-8 sequence.
-	static const int utf8ByteTable[256];
+	virtual const char* Parse(const char* p, TiXmlParsingData* data) = 0;
 
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding) = 0;
-
-	/**
-	* Expands entities in a string. Note this should not contian the tag's '<', '>', etc,
-	* or they will be transformed into entities!
-	*/
-	static void EncodeString(const std::string& str, std::string& out);
-
-	enum
+	enum XmlErrorCode
 	{
-		TIXML_NO_ERROR = 0,
-		TIXML_ERROR,
-		TIXML_ERROR_OPENING_FILE,
-		TIXML_ERROR_PARSING_ELEMENT,
-		TIXML_ERROR_FAILED_TO_READ_ELEMENT_NAME,
-		TIXML_ERROR_READING_ELEMENT_VALUE,
-		TIXML_ERROR_READING_ATTRIBUTES,
-		TIXML_ERROR_PARSING_EMPTY,
-		TIXML_ERROR_READING_END_TAG,
-		TIXML_ERROR_PARSING_UNKNOWN,
-		TIXML_ERROR_PARSING_COMMENT,
-		TIXML_ERROR_PARSING_DECLARATION,
-		TIXML_ERROR_DOCUMENT_EMPTY,
-		TIXML_ERROR_EMBEDDED_NULL,
-		TIXML_ERROR_PARSING_CDATA,
-		TIXML_ERROR_DOCUMENT_TOP_ONLY,
+		XML_NO_ERROR = 0,
+		XML_ERROR,
+		XML_ERROR_PARSING_ELEMENT,
+		XML_ERROR_FAILED_TO_READ_ELEMENT_NAME,
+		XML_ERROR_READING_ELEMENT_VALUE,
+		XML_ERROR_READING_ATTRIBUTES,
+		XML_ERROR_PARSING_EMPTY,
+		XML_ERROR_READING_END_TAG,
+		XML_ERROR_PARSING_UNKNOWN,
+		XML_ERROR_PARSING_COMMENT,
+		XML_ERROR_PARSING_DECLARATION,
+		XML_ERROR_DOCUMENT_EMPTY,
+		XML_ERROR_EMBEDDED_NULL,
+		XML_ERROR_PARSING_CDATA,
+		XML_ERROR_DOCUMENT_TOP_ONLY,
 
-		TIXML_ERROR_STRING_COUNT
+		XML_ERROR_STRING_COUNT
 	};
 
 protected:
-	static const char* SkipWhiteSpace(const char*, XmlEncoding encoding);
+	static const char* SkipWhiteSpace(const char*);
 
-	inline static bool IsWhiteSpace(char c) { return (isspace((unsigned char)c) || c == '\n' || c == '\r'); }
-	inline static bool IsWhiteSpace(int c) { if (c < 256) return IsWhiteSpace((char)c);	return false; }
+	inline static bool white_space(char c) { return (isspace(static_cast<unsigned char>(c)) || c == '\n' || c == '\r'); }
+	inline static bool white_space(int c) { if (c < 256) return white_space(static_cast<char>(c));	return false; }
 
 	static bool	StreamWhiteSpace(std::istream& in, std::string& tag);
 	static bool StreamTo(std::istream& in, int character, std::string& tag);
 
 	/**
-	* Reads an XML name into the string provided. Returns a pointer just past
-	* the last character of the name, or 0 if the function has an error.
-	*/
-	static const char* ReadName(const char* p, std::string& name, XmlEncoding encoding);
+	 * Reads an XML name into the string provided. Returns a pointer just past
+	 * the last character of the name, or 0 if the function has an error.
+	 */
+	static const char* ReadName(const char* p, std::string& name);
 
 	/**
 	* Reads text. Returns a pointer past the given end tag. Wickedly complex options, but it
@@ -166,43 +145,30 @@ protected:
 	* \param ignoreCase		Whether to ignore case in the end tag
 	* \param encoding			The current encoding.
 	*/
-	static const char* ReadText(const char* in, std::string* text, bool ignoreWhiteSpace, const char* endTag, bool ignoreCase, XmlEncoding encoding);
+	static const char* ReadText(const char* in, std::string* text, bool ignoreWhiteSpace, const char* endTag, bool ignoreCase);
 
 	// If an entity has been found, transform it into a character.
-	static const char* GetEntity(const char* in, char* value, int* length, XmlEncoding encoding);
+	static const char* GetEntity(const char* in, char* value, int* length);
 
 	// Get a character, while interpreting entities.
 	// The length can be from 0 to 4 bytes.
-	inline static const char* GetChar(const char* p, char* _value, int* length, XmlEncoding encoding);
+	inline static const char* GetChar(const char* p, char* _value, int* length);
 
 	// Return true if the next characters in the stream are any of the endTag sequences.
 	// Ignore case only works for english, and should only be relied on when comparing
 	// to English words: StringEqual( p, "version", true ) is fine.
-	static bool StringEqual(const char* p, const char* endTag, bool ignoreCase, XmlEncoding encoding);
-
-	static std::vector<std::string> errorString;
+	static bool StringEqual(const char* p, const char* endTag, bool ignoreCase);
 
 	XmlCursor location;
 
 	void* userData;		/**< Field containing a generic user pointer */
 
-						// None of these methods are reliable for any language except English.
-						// Good for approximation, not great for accuracy.
-	static int IsAlpha(unsigned char anyByte, XmlEncoding encoding);
-	static int IsAlphaNum(unsigned char anyByte, XmlEncoding encoding);
-	inline static int ToLower(int v, XmlEncoding encoding)
+	static int IsAlpha(unsigned char anyByte);
+	static int IsAlphaNum(unsigned char anyByte);
+	inline static int ToLower(int v)
 	{
-		if (encoding == TIXML_ENCODING_UTF8)
-		{
-			if (v < 128) return tolower(v);
-			return v;
-		}
-		else
-		{
-			return tolower(v);
-		}
+		return tolower(v);
 	}
-	static void ConvertUTF32ToUTF8(unsigned long input, char* output, int* length);
 
 private:
 	XmlBase(const XmlBase&); // Explicitly disallowed.
@@ -213,9 +179,9 @@ private:
 
 	struct Entity
 	{
-		const char*     str;
-		unsigned int	strLength;
-		char		    chr;
+		const char* str;
+		unsigned int strLength;
+		char chr;
 	};
 
 	enum

@@ -30,16 +30,16 @@ int XmlAttributeParser::intAttribute(Xml::XmlNode* node, const std::string& attr
 {
 	int returnValue = 0;
 
-	int result = Xml::TIXML_SUCCESS;
+	int result = Xml::XML_SUCCESS;
 
 	result = node->ToElement()->QueryIntAttribute(attribute, returnValue);
-	if(result != Xml::TIXML_SUCCESS)
+	if(result != Xml::XML_SUCCESS)
 	{
-		if(result == Xml::TIXML_NO_ATTRIBUTE)
+		if(result == Xml::XML_NO_ATTRIBUTE)
 		{
 			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->row() << "." << endl;
 		}
-		else if(result == Xml::TIXML_WRONG_TYPE)
+		else if(result == Xml::XML_WRONG_TYPE)
 		{
 			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->row() << "." << endl;
 		}
@@ -66,16 +66,16 @@ float XmlAttributeParser::floatAttribute(Xml::XmlNode* node, const std::string& 
 {
 	float returnValue = 0.0f;
 
-	int result = Xml::TIXML_SUCCESS;
+	int result = Xml::XML_SUCCESS;
 
 	result = node->ToElement()->QueryFloatAttribute(attribute, returnValue);
-	if(result != Xml::TIXML_SUCCESS)
+	if(result != Xml::XML_SUCCESS)
 	{
-		if(result == Xml::TIXML_NO_ATTRIBUTE)
+		if(result == Xml::XML_NO_ATTRIBUTE)
 		{
 			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->row() << "." << endl;
 		}
-		else if(result == Xml::TIXML_WRONG_TYPE)
+		else if(result == Xml::XML_WRONG_TYPE)
 		{
 			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->row() << "." << endl;
 		}
@@ -102,16 +102,16 @@ double XmlAttributeParser::doubleAttribute(Xml::XmlNode* node, const std::string
 {
 	double returnValue = 0.0;
 
-	int result = Xml::TIXML_SUCCESS;
+	int result = Xml::XML_SUCCESS;
 
 	result = node->ToElement()->QueryDoubleAttribute(attribute, returnValue);
-	if(result != Xml::TIXML_SUCCESS)
+	if(result != Xml::XML_SUCCESS)
 	{
-		if(result == Xml::TIXML_NO_ATTRIBUTE)
+		if(result == Xml::XML_NO_ATTRIBUTE)
 		{
 			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->row() << "." << endl;
 		}
-		else if(result == Xml::TIXML_WRONG_TYPE)
+		else if(result == Xml::XML_WRONG_TYPE)
 		{
 			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->row() << "." << endl;
 		}

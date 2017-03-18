@@ -187,7 +187,7 @@ bool Configuration::readConfig(const std::string& filePath)
 	config.Parse(xmlFile.raw_bytes());
 	if(config.Error())
 	{
-		std::cout << "Error parsing configuration file 'filePath' on Row " << config.ErrorRow() << ", Column " << config.ErrorCol() << ": " << config.ErrorDesc() << std::endl;
+		std::cout << "Error parsing configuration file '" << filePath << "' on Row " << config.ErrorRow() << ", Column " << config.ErrorCol() << ": " << config.ErrorDesc() << std::endl;
 		return false;
 	}
 	else
@@ -212,7 +212,7 @@ bool Configuration::readConfig(const std::string& filePath)
 				parseAudio(xmlNode);
 			else if (xmlNode->Value() == "options")
 				parseOptions(xmlNode);
-			else if (xmlNode->Type() == XmlNode::TINYXML_DOCUMENT)
+			else if (xmlNode->Type() == XmlNode::XML_COMMENT)
 				; // ignore comments
 			else
 				std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in '" << filePath << "' on row " << xmlNode->row() << "." << std::endl;

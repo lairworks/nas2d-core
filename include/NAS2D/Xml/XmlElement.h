@@ -58,9 +58,9 @@ public:
 	/**
 	 * QueryIntAttribute examines the attribute - it is an alternative to the
 	 * Attribute() method with richer error checking. If the attribute is an
-	 * integer, it is stored in 'value' and	the call returns TIXML_SUCCESS. If
-	 * it is not an integer, it returns TIXML_WRONG_TYPE. If the attribute does
-	 * not exist, then TIXML_NO_ATTRIBUTE is returned.
+	 * integer, it is stored in 'value' and	the call returns XML_SUCCESS. If
+	 * it is not an integer, it returns XML_WRONG_TYPE. If the attribute does
+	 * not exist, then XML_NO_ATTRIBUTE is returned.
 	 */
 	int QueryIntAttribute(const std::string& name, int& _value) const;
 
@@ -170,7 +170,7 @@ public:
 	 * Attribtue parsing starts: next char past '<'
 	 * returns: next char past '>'
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data);
 
 	virtual const XmlElement* ToElement() const { return this; }
 	virtual XmlElement* ToElement() { return this; }
@@ -191,7 +191,7 @@ protected:
 		Reads the "value" of the element -- another element, or text.
 		This should terminate with the current end tag.
 	*/
-	const char* ReadValue(const char* in, TiXmlParsingData* prevData, XmlEncoding encoding);
+	const char* ReadValue(const char* in, TiXmlParsingData* prevData);
 
 private:
 	XmlAttributeSet attributeSet;

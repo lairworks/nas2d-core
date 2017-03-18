@@ -23,13 +23,13 @@ using namespace NAS2D::Xml;
 
 const std::string NAS2D_EMPTY_STR = "";
 
-XmlElement::XmlElement(const std::string& _value) : XmlNode(XmlNode::TINYXML_ELEMENT)
+XmlElement::XmlElement(const std::string& _value) : XmlNode(XmlNode::XML_ELEMENT)
 {
 	value = _value;
 }
 
 
-XmlElement::XmlElement(const XmlElement& copy) : XmlNode(XmlNode::TINYXML_ELEMENT)
+XmlElement::XmlElement(const XmlElement& copy) : XmlNode(XmlNode::XML_ELEMENT)
 {
 	copy.CopyTo(this);
 }
@@ -108,7 +108,7 @@ int XmlElement::QueryIntAttribute(const std::string& name, int& ival) const
 {
 	const XmlAttribute* attrib = attributeSet.Find(name);
 	if (!attrib)
-		return TIXML_NO_ATTRIBUTE;
+		return XML_NO_ATTRIBUTE;
 
 	return attrib->QueryIntValue(ival);
 }
@@ -118,7 +118,7 @@ int XmlElement::QueryDoubleAttribute(const std::string& name, double& dval) cons
 {
 	const XmlAttribute* attrib = attributeSet.Find(name);
 	if (!attrib)
-		return TIXML_NO_ATTRIBUTE;
+		return XML_NO_ATTRIBUTE;
 
 	return attrib->QueryDoubleValue(dval);
 }
@@ -297,7 +297,7 @@ int XmlElement::QueryFloatAttribute(const std::string& name, float& _value) cons
 {
 	double d = 0;
 	int result = QueryDoubleAttribute(name, d);
-	if (result == TIXML_SUCCESS)
+	if (result == XML_SUCCESS)
 		_value = static_cast<float>(d);
 
 	return result;
@@ -310,7 +310,7 @@ int XmlElement::QueryStringAttribute(const std::string& name, std::string& _valu
 	if (!str.empty())
 	{
 		_value = str;
-		return TIXML_SUCCESS;
+		return XML_SUCCESS;
 	}
-	return TIXML_NO_ATTRIBUTE;
+	return XML_NO_ATTRIBUTE;
 }

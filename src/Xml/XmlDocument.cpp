@@ -5,28 +5,28 @@ using namespace NAS2D::Xml;
 // ==================================================================================
 // = XmlDocument Implementation
 // ==================================================================================
-XmlDocument::XmlDocument() :	XmlNode(XmlNode::TINYXML_DOCUMENT),
-									errorId(0),
-									tabsize(4),
-									error(false),
-									useMicrosoftBOM(false)
+XmlDocument::XmlDocument() :	XmlNode(XmlNode::XML_DOCUMENT),
+								errorId(0),
+								tabsize(4),
+								error(false),
+								useMicrosoftBOM(false)
 {
 	ClearError();
 }
 
 
-XmlDocument::XmlDocument(const std::string& documentName) : XmlNode(XmlNode::TINYXML_DOCUMENT),
-																errorId(0),
-																tabsize(4),
-																error(false),
-																useMicrosoftBOM(false)
+XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML_DOCUMENT),
+															errorId(0),
+															tabsize(4),
+															error(false),
+															useMicrosoftBOM(false)
 {
 	value = documentName;
 	ClearError();
 }
 
 
-XmlDocument::XmlDocument(const XmlDocument& copy) : XmlNode(XmlNode::TINYXML_DOCUMENT)
+XmlDocument::XmlDocument(const XmlDocument& copy) : XmlNode(XmlNode::XML_DOCUMENT)
 {
 	copy.CopyTo(this);
 }

@@ -47,7 +47,7 @@ public:
 	 */
 	void CDATA(bool _cdata) { cdata = _cdata; }
 
-	virtual const char* Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding);
+	virtual const char* Parse(const char* p, TiXmlParsingData* data);
 
 	virtual const XmlText* ToText() const { return this; }
 	virtual XmlText* ToText() { return this; }

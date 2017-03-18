@@ -35,23 +35,18 @@ const XmlAttribute* XmlAttribute::Previous() const
 
 void XmlAttribute::Print(std::string& buf, int /*depth*/) const
 {
-	std::string n, v;
-
-	EncodeString(name, n);
-	EncodeString(value, v);
-
 	if (value.find('\"') == std::string::npos)
 	{
-		buf += n;
+		buf += name;
 		buf += "=\"";
-		buf += v;
+		buf += value;
 		buf += "\"";
 	}
 	else
 	{
-		buf += n;
+		buf += name;
 		buf += "='";
-		buf += v;
+		buf += value;
 		buf += "'";
 	}
 }
@@ -65,10 +60,10 @@ int XmlAttribute::QueryIntValue(int& ival) const
 	}
 	catch (std::invalid_argument)
 	{
-		return TIXML_WRONG_TYPE;
+		return XML_WRONG_TYPE;
 	}
 
-	return TIXML_SUCCESS;
+	return XML_SUCCESS;
 }
 
 
@@ -80,10 +75,10 @@ int XmlAttribute::QueryDoubleValue(double& dval) const
 	}
 	catch (std::invalid_argument)
 	{
-		return TIXML_WRONG_TYPE;
+		return XML_WRONG_TYPE;
 	}
 
-	return TIXML_SUCCESS;
+	return XML_SUCCESS;
 }
 
 

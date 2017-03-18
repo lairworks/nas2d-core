@@ -20,11 +20,13 @@
 // = 
 // = 3. This notice may not be removed or altered from any source distribution.
 // ==================================================================================
+#include "NAS2D/XML/Xml.h"
+
 #include <assert.h>
 #include <ctype.h>
 #include <stddef.h>
 
-#include "NAS2D/XML/Xml.h"
+#include <locale>
 
 //#define DEBUG_PARSER
 #if defined( DEBUG_PARSER )
@@ -35,6 +37,8 @@
 #		define TIXML_LOG printf
 #	endif
 #endif
+
+extern std::vector<std::string> XML_ERROR_TABLE;
 
 namespace NAS2D {
 namespace Xml {
@@ -51,313 +55,137 @@ XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] =
 	{ "&apos;", 6, '\'' }
 };
 
-// Bunch of unicode info at:
-//		http://www.unicode.org/faq/utf_bom.html
-// Including the basic of this table, which determines the #bytes in the
-// sequence from the lead byte. 1 placed for invalid sequences --
-// although the result will be junk, pass it through as much as possible.
-// Beware of the non-characters in UTF-8:	
-//				ef bb bf (Microsoft "lead bytes")
-//				ef bf be
-//				ef bf bf 
 
-const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
-const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
-const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
-
-const int XmlBase::utf8ByteTable[256] = 
+int XmlBase::IsAlpha(unsigned char anyByte)
 {
-	//	0	1	2	3	4	5	6	7	8	9	a	b	c	d	e	f
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x00
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x10
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x20
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x30
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x40
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x50
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x60
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x70	End of ASCII range
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x80 0x80 to 0xc1 invalid
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x90 
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0xa0 
-		1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0xb0 
-		1,	1,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	// 0xc0 0xc2 to 0xdf 2 byte
-		2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	// 0xd0
-		3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	// 0xe0 0xe0 to 0xef 3 byte
-		4,	4,	4,	4,	4,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1	// 0xf0 0xf0 to 0xf4 4 byte, 0xf5 and higher invalid
-};
+	std::locale loc;
 
-
-void XmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* length )
-{
-	const unsigned long BYTE_MASK = 0xBF;
-	const unsigned long BYTE_MARK = 0x80;
-	const unsigned long FIRST_BYTE_MARK[7] = { 0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
-
-	if (input < 0x80) 
-		*length = 1;
-	else if ( input < 0x800 )
-		*length = 2;
-	else if ( input < 0x10000 )
-		*length = 3;
-	else if ( input < 0x200000 )
-		*length = 4;
+	if (anyByte < 127)
+		return std::isalpha(anyByte, loc);
 	else
-		{ *length = 0; return; }	// This code won't covert this correctly anyway.
-
-	output += *length;
-
-	// Scary scary fall throughs.
-	switch (*length) 
-	{
-		case 4:
-			--output; 
-			*output = (char)((input | BYTE_MARK) & BYTE_MASK); 
-			input >>= 6;
-		case 3:
-			--output; 
-			*output = (char)((input | BYTE_MARK) & BYTE_MASK); 
-			input >>= 6;
-		case 2:
-			--output; 
-			*output = (char)((input | BYTE_MARK) & BYTE_MASK); 
-			input >>= 6;
-		case 1:
-			--output; 
-			*output = (char)(input | FIRST_BYTE_MARK[*length]);
-	}
+		return 1;	// What else to do? The unicode set is huge...get the english ones right.
 }
 
 
-/*static*/ int XmlBase::IsAlpha( unsigned char anyByte, XmlEncoding /*encoding*/ )
+int XmlBase::IsAlphaNum(unsigned char anyByte)
 {
-	// This will only work for low-ascii, everything else is assumed to be a valid
-	// letter. I'm not sure this is the best approach, but it is quite tricky trying
-	// to figure out alhabetical vs. not across encoding. So take a very 
-	// conservative approach.
+	std::locale loc;
 
-//	if ( encoding == TIXML_ENCODING_UTF8 )
-//	{
-		if ( anyByte < 127 )
-			return isalpha( anyByte );
-		else
-			return 1;	// What else to do? The unicode set is huge...get the english ones right.
-//	}
-//	else
-//	{
-//		return isalpha( anyByte );
-//	}
+	if (anyByte < 127)
+		return std::isalnum(anyByte, loc);
+	else
+		return 1;	// What else to do? The unicode set is huge...get the english ones right.
 }
 
 
-/*static*/ int XmlBase::IsAlphaNum( unsigned char anyByte, XmlEncoding /*encoding*/ )
-{
-	// This will only work for low-ascii, everything else is assumed to be a valid
-	// letter. I'm not sure this is the best approach, but it is quite tricky trying
-	// to figure out alhabetical vs. not across encoding. So take a very 
-	// conservative approach.
-
-//	if ( encoding == TIXML_ENCODING_UTF8 )
-//	{
-		if ( anyByte < 127 )
-			return isalnum( anyByte );
-		else
-			return 1;	// What else to do? The unicode set is huge...get the english ones right.
-//	}
-//	else
-//	{
-//		return isalnum( anyByte );
-//	}
-}
-
+/**
+ * Document this class.
+ */
 class TiXmlParsingData
 {
 	friend class XmlDocument;
 public:
-	void Stamp(const char* now, XmlEncoding encoding);
-
-	const XmlCursor& Cursor() const { return cursor; }
+	void stamp(const char* now);
+	const XmlCursor& Cursor() const { return _cursor; }
 
 private:
 	TiXmlParsingData(const char* start, int _tabsize, int row, int col)
 	{
 		assert(start);
-		stamp = start;
-		tabsize = _tabsize;
-		cursor.row = row;
-		cursor.col = col;
+		_stamp = start;
+		_tabsize = _tabsize;
+		_cursor.row = row;
+		_cursor.col = col;
 	}
 
 private:
-	XmlCursor		cursor;
-	const char*		stamp;
-	int				tabsize;
+	XmlCursor		_cursor;
+	const char*		_stamp;
+	int				_tabsize;
 };
 
 
-void TiXmlParsingData::Stamp( const char* now, XmlEncoding encoding )
+void TiXmlParsingData::stamp(const char* now)
 {
-	assert( now );
+	assert(now);
 
 	// Do nothing if the tabsize is 0.
-	if ( tabsize < 1 )
-	{
+	if (_tabsize < 1)
 		return;
-	}
 
 	// Get the current row, column.
-	int row = cursor.row;
-	int col = cursor.col;
-	const char* p = stamp;
-	assert( p );
+	int row = _cursor.row;
+	int col = _cursor.col;
+	const char* p = _stamp;
+	assert(p);
 
-	while ( p < now )
+	while (p < now)
 	{
 		// Treat p as unsigned, so we have a happy compiler.
 		const unsigned char* pU = (const unsigned char*)p;
 
 		// Code contributed by Fletcher Dunn: (modified by lee)
-		switch (*pU) {
-			case 0:
-				// We *should* never get here, but in case we do, don't
-				// advance past the terminating null character, ever
-				return;
+		switch (*pU)
+		{
+		case 0:
+			// We *should* never get here, but in case we do, don't
+			// advance past the terminating null character, ever
+			return;
 
-			case '\r':
-				// bump down to the next line
-				++row;
-				col = 0;				
-				// Eat the character
+		case '\r':
+			// bump down to the next line
+			++row;
+			col = 0;
+			// Eat the character
+			++p;
+
+			// Check for \r\n sequence, and treat this as a single character
+			if (*p == '\n')
 				++p;
+			break;
 
-				// Check for \r\n sequence, and treat this as a single character
-				if (*p == '\n') {
-					++p;
-				}
-				break;
+		case '\n':
+			// bump down to the next line
+			++row;
+			col = 0;
 
-			case '\n':
-				// bump down to the next line
-				++row;
-				col = 0;
+			// Eat the character
+			++p;
 
-				// Eat the character
+			// Check for \n\r sequence, and treat this as a single character.
+			if (*p == '\r')
 				++p;
+			break;
 
-				// Check for \n\r sequence, and treat this as a single
-				// character.  (Yes, this bizarre thing does occur still
-				// on some arcane platforms...)
-				if (*p == '\r') {
-					++p;
-				}
-				break;
+		case '\t':
+			// Eat the character
+			++p;
 
-			case '\t':
-				// Eat the character
-				++p;
+			// Skip to next tab stop
+			col = (col / _tabsize + 1) * _tabsize;
+			break;
 
-				// Skip to next tab stop
-				col = (col / tabsize + 1) * tabsize;
-				break;
-
-			case TIXML_UTF_LEAD_0:
-				if ( encoding == TIXML_ENCODING_UTF8 )
-				{
-					if ( *(p+1) && *(p+2) )
-					{
-						// In these cases, don't advance the column. These are
-						// 0-width spaces.
-						if ( *(pU+1)==TIXML_UTF_LEAD_1 && *(pU+2)==TIXML_UTF_LEAD_2 )
-							p += 3;	
-						else if ( *(pU+1)==0xbfU && *(pU+2)==0xbeU )
-							p += 3;	
-						else if ( *(pU+1)==0xbfU && *(pU+2)==0xbfU )
-							p += 3;	
-						else
-							{ p +=3; ++col; }	// A normal character.
-					}
-				}
-				else
-				{
-					++p;
-					++col;
-				}
-				break;
-
-			default:
-				if ( encoding == TIXML_ENCODING_UTF8 )
-				{
-					// Eat the 1 to 4 byte utf8 character.
-					int step = XmlBase::utf8ByteTable[*((const unsigned char*)p)];
-					if ( step == 0 )
-						step = 1;		// Error case from bad encoding, but handle gracefully.
-					p += step;
-
-					// Just advance one column, of course.
-					++col;
-				}
-				else
-				{
-					++p;
-					++col;
-				}
-				break;
+		default:
+			++p;
+			++col;
 		}
 	}
-	cursor.row = row;
-	cursor.col = col;
-	assert( cursor.row >= -1 );
-	assert( cursor.col >= -1 );
-	stamp = p;
-	assert( stamp );
+	_cursor.row = row;
+	_cursor.col = col;
+	assert(_cursor.row >= -1);
+	assert(_cursor.col >= -1);
+	_stamp = p;
+	assert(_stamp);
 }
 
 
-const char* XmlBase::SkipWhiteSpace( const char* p, XmlEncoding encoding )
+const char* XmlBase::SkipWhiteSpace(const char* p)
 {
-	if ( !p || !*p )
-	{
+	if (!p || !*p)
 		return nullptr;
-	}
-	if ( encoding == TIXML_ENCODING_UTF8 )
-	{
-		while ( *p )
-		{
-			const unsigned char* pU = (const unsigned char*)p;
-			
-			// Skip the stupid Microsoft UTF-8 Byte order marks
-			if (	*(pU+0)==TIXML_UTF_LEAD_0
-				 && *(pU+1)==TIXML_UTF_LEAD_1 
-				 && *(pU+2)==TIXML_UTF_LEAD_2 )
-			{
-				p += 3;
-				continue;
-			}
-			else if(*(pU+0)==TIXML_UTF_LEAD_0
-				 && *(pU+1)==0xbfU
-				 && *(pU+2)==0xbeU )
-			{
-				p += 3;
-				continue;
-			}
-			else if(*(pU+0)==TIXML_UTF_LEAD_0
-				 && *(pU+1)==0xbfU
-				 && *(pU+2)==0xbfU )
-			{
-				p += 3;
-				continue;
-			}
 
-			if ( IsWhiteSpace( *p ) )		// Still using old rules for white space.
-				++p;
-			else
-				break;
-		}
-	}
-	else
-	{
-		while ( *p && IsWhiteSpace( *p ) )
-			++p;
-	}
+	while (*p && white_space(*p))
+		++p;
 
 	return p;
 }
@@ -371,7 +199,7 @@ bool XmlBase::StreamWhiteSpace(std::istream& in, std::string& tag)
 
 		int c = in.peek();
 		// At this scope, we can't get to a document. So fail silently.
-		if (!IsWhiteSpace(c) || c <= 0)
+		if (!white_space(c) || c <= 0)
 			return true;
 
 		tag += static_cast<char>(in.get());
@@ -399,7 +227,7 @@ bool XmlBase::StreamTo(std::istream& in, int character, std::string& tag)
 // One of TinyXML's more performance demanding functions. Try to keep the memory overhead down. The
 // "assign" optimization removes over 10% of the execution time.
 //
-const char* XmlBase::ReadName(const char* p, std::string& name, XmlEncoding encoding)
+const char* XmlBase::ReadName(const char* p, std::string& name)
 {
 	name.clear();
 	assert(p);
@@ -410,16 +238,14 @@ const char* XmlBase::ReadName(const char* p, std::string& name, XmlEncoding enco
 	// After that, they can be letters, underscores, numbers, hyphens,
 	// or colons. (Colons are valid ony for namespaces, but tinyxml can't
 	// tell namespaces from names.)
-	if (p	&& *p
-			&& (IsAlpha((unsigned char)*p, encoding) || *p == '_'))
+	if (p && *p && (IsAlpha((unsigned char)*p) || *p == '_'))
 	{
 		const char* start = p;
-		while (p && *p
-			&& (IsAlphaNum((unsigned char)*p, encoding)
-				|| *p == '_'
-				|| *p == '-'
-				|| *p == '.'
-				|| *p == ':'))
+		while (p && *p && (IsAlphaNum((unsigned char)*p)
+					|| *p == '_'
+					|| *p == '-'
+					|| *p == '.'
+					|| *p == ':'))
 		{
 			//(*name) += *p; // expensive
 			++p;
@@ -433,41 +259,41 @@ const char* XmlBase::ReadName(const char* p, std::string& name, XmlEncoding enco
 	return nullptr;
 }
 
-const char* XmlBase::GetEntity( const char* p, char* value, int* length, XmlEncoding encoding )
+const char* XmlBase::GetEntity(const char* p, char* value, int* length)
 {
 	// Presume an entity, and pull it out.
-    std::string ent;
+	std::string ent;
 	int i;
 	*length = 0;
 
-	if ( *(p+1) && *(p+1) == '#' && *(p+2) )
+	if (*(p + 1) && *(p + 1) == '#' && *(p + 2))
 	{
 		unsigned long ucs = 0;
 		ptrdiff_t delta = 0;
 		unsigned mult = 1;
 
-		if ( *(p+2) == 'x' )
+		if (*(p + 2) == 'x')
 		{
 			// Hexadecimal.
-			if ( !*(p+3) ) return nullptr;
+			if (!*(p + 3)) return nullptr;
 
-			const char* q = p+3;
-			q = strchr( q, ';' );
+			const char* q = p + 3;
+			q = strchr(q, ';');
 
-			if ( !q || !*q ) return nullptr;
+			if (!q || !*q) return nullptr;
 
-			delta = q-p;
+			delta = q - p;
 			--q;
 
-			while ( *q != 'x' )
+			while (*q != 'x')
 			{
-				if ( *q >= '0' && *q <= '9' )
+				if (*q >= '0' && *q <= '9')
 					ucs += mult * (*q - '0');
-				else if ( *q >= 'a' && *q <= 'f' )
+				else if (*q >= 'a' && *q <= 'f')
 					ucs += mult * (*q - 'a' + 10);
-				else if ( *q >= 'A' && *q <= 'F' )
-					ucs += mult * (*q - 'A' + 10 );
-				else 
+				else if (*q >= 'A' && *q <= 'F')
+					ucs += mult * (*q - 'A' + 10);
+				else
 					return nullptr;
 				mult *= 16;
 				--q;
@@ -476,76 +302,62 @@ const char* XmlBase::GetEntity( const char* p, char* value, int* length, XmlEnco
 		else
 		{
 			// Decimal.
-			if ( !*(p+2) ) return nullptr;
+			if (!*(p + 2)) return nullptr;
 
-			const char* q = p+2;
-			q = strchr( q, ';' );
+			const char* q = p + 2;
+			q = strchr(q, ';');
 
-			if ( !q || !*q ) return nullptr;
+			if (!q || !*q) return nullptr;
 
-			delta = q-p;
+			delta = q - p;
 			--q;
 
-			while ( *q != '#' )
+			while (*q != '#')
 			{
-				if ( *q >= '0' && *q <= '9' )
+				if (*q >= '0' && *q <= '9')
 					ucs += mult * (*q - '0');
-				else 
+				else
 					return nullptr;
 				mult *= 10;
 				--q;
 			}
 		}
-		if ( encoding == TIXML_ENCODING_UTF8 )
-		{
-			// convert the UCS to UTF-8
-			ConvertUTF32ToUTF8( ucs, value, length );
-		}
-		else
-		{
-			*value = (char)ucs;
-			*length = 1;
-		}
+
+		*value = (char)ucs;
+		*length = 1;
+
 		return p + delta + 1;
 	}
 
 	// Now try to match it.
-	for( i=0; i<NUM_ENTITY; ++i )
+	for (i = 0; i < NUM_ENTITY; ++i)
 	{
-		if ( strncmp( entity[i].str, p, entity[i].strLength ) == 0 )
+		if (strncmp(entity[i].str, p, entity[i].strLength) == 0)
 		{
-			assert( strlen( entity[i].str ) == entity[i].strLength );
+			assert(strlen(entity[i].str) == entity[i].strLength);
 			*value = entity[i].chr;
 			*length = 1;
-			return ( p + entity[i].strLength );
+			return (p + entity[i].strLength);
 		}
 	}
 
 	// So it wasn't an entity, its unrecognized, or something like that.
 	*value = *p;	// Don't put back the last one, since we return it!
-	//*length = 1;	// Leave unrecognized entities - this doesn't really work.
-					// Just writes strange XML.
-	return p+1;
+
+	return p + 1;
 }
 
 
-const char* XmlBase::GetChar(const char* p, char* _value, int* length, XmlEncoding encoding)
+const char* XmlBase::GetChar(const char* p, char* _value, int* length)
 {
 	assert(p);
-	if (encoding == TIXML_ENCODING_UTF8)
-	{
-		*length = utf8ByteTable[*((const unsigned char*)p)];
-		assert(*length >= 0 && *length < 5);
-	}
-	else
-	{
-		*length = 1;
-	}
+
+	*length = 1;
 
 	if (*length == 1)
 	{
 		if (*p == '&')
-			return GetEntity(p, _value, length, encoding);
+			return GetEntity(p, _value, length);
 		*_value = *p;
 		return p + 1;
 	}
@@ -566,7 +378,7 @@ const char* XmlBase::GetChar(const char* p, char* _value, int* length, XmlEncodi
 }
 
 
-bool XmlBase::StringEqual(const char* p, const char* tag, bool ignoreCase, XmlEncoding encoding)
+bool XmlBase::StringEqual(const char* p, const char* tag, bool ignoreCase)
 {
 	assert(p);
 	assert(tag);
@@ -580,7 +392,7 @@ bool XmlBase::StringEqual(const char* p, const char* tag, bool ignoreCase, XmlEn
 
 	if (ignoreCase)
 	{
-		while (*q && *tag && ToLower(*q, encoding) == ToLower(*tag, encoding))
+		while (*q && *tag && ToLower(*q) == ToLower(*tag))
 		{
 			++q;
 			++tag;
@@ -603,21 +415,18 @@ bool XmlBase::StringEqual(const char* p, const char* tag, bool ignoreCase, XmlEn
 	return false;
 }
 
-const char* XmlBase::ReadText(const char* p, std::string* text, bool trimWhiteSpace, const char* endTag, bool caseInsensitive, XmlEncoding encoding)
+const char* XmlBase::ReadText(const char* p, std::string* text, bool trimWhiteSpace, const char* endTag, bool caseInsensitive)
 {
-    *text = "";
-	if (    !trimWhiteSpace			// certain tags always keep whitespace
-		 || !condenseWhiteSpace )	// if true, whitespace is always kept
+	*text = ""; // certain tags always keep whitespace
+	if (!trimWhiteSpace	|| !condenseWhiteSpace)	// if true, whitespace is always kept
 	{
 		// Keep all the white space.
-		while (	   p && *p
-				&& !StringEqual( p, endTag, caseInsensitive, encoding )
-			  )
+		while (p && *p && !StringEqual(p, endTag, caseInsensitive))
 		{
 			int len;
 			char cArr[4] = { 0, 0, 0, 0 };
-			p = GetChar( p, cArr, &len, encoding );
-			text->append( cArr, len );
+			p = GetChar(p, cArr, &len);
+			text->append(cArr, len);
 		}
 	}
 	else
@@ -625,16 +434,15 @@ const char* XmlBase::ReadText(const char* p, std::string* text, bool trimWhiteSp
 		bool whitespace = false;
 
 		// Remove leading white space:
-		p = SkipWhiteSpace( p, encoding );
-		while (	   p && *p
-				&& !StringEqual( p, endTag, caseInsensitive, encoding ) )
+		p = SkipWhiteSpace(p);
+		while (p && *p && !StringEqual(p, endTag, caseInsensitive))
 		{
-			if ( *p == '\r' || *p == '\n' )
+			if (*p == '\r' || *p == '\n')
 			{
 				whitespace = true;
 				++p;
 			}
-			else if ( IsWhiteSpace( *p ) )
+			else if (white_space(*p))
 			{
 				whitespace = true;
 				++p;
@@ -643,24 +451,24 @@ const char* XmlBase::ReadText(const char* p, std::string* text, bool trimWhiteSp
 			{
 				// If we've found whitespace, add it before the
 				// new character. Any whitespace just becomes a space.
-				if ( whitespace )
+				if (whitespace)
 				{
 					(*text) += ' ';
 					whitespace = false;
 				}
 				int len;
 				char cArr[4] = { 0, 0, 0, 0 };
-				p = GetChar( p, cArr, &len, encoding );
-				if ( len == 1 )
+				p = GetChar(p, cArr, &len);
+				if (len == 1)
 					(*text) += cArr[0];	// more efficient
 				else
-					text->append( cArr, len );
+					text->append(cArr, len);
 			}
 		}
 	}
-	if ( p && *p )
-		p += strlen( endTag );
-	return ( p && *p ) ? p : 0;
+	if (p && *p)
+		p += strlen(endTag);
+	return (p && *p) ? p : 0;
 }
 
 
@@ -675,7 +483,7 @@ void XmlDocument::StreamIn(std::istream& in, std::string& tag)
 
 	if (!StreamTo(in, '<', tag))
 	{
-		SetError(TIXML_ERROR_PARSING_EMPTY, 0, 0, TIXML_ENCODING_UNKNOWN);
+		SetError(XML_ERROR_PARSING_EMPTY, 0, 0);
 		return;
 	}
 
@@ -687,7 +495,7 @@ void XmlDocument::StreamIn(std::istream& in, std::string& tag)
 			int c = in.get();
 			if (c <= 0)
 			{
-				SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
+				SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
 				break;
 			}
 			tag += static_cast<char>(c);
@@ -695,10 +503,9 @@ void XmlDocument::StreamIn(std::istream& in, std::string& tag)
 
 		if (in.good())
 		{
-			// We now have something we presume to be a node of 
-			// some sort. Identify it, and call the node to
-			// continue streaming.
-			XmlNode* node = Identify(tag.c_str() + tagIndex, TIXML_DEFAULT_ENCODING);
+			// We now have something we presume to be a node of  some sort.
+			// Identify it, and call the node to continue streaming.
+			XmlNode* node = Identify(tag.c_str() + tagIndex);
 
 			if (node)
 			{
@@ -714,85 +521,72 @@ void XmlDocument::StreamIn(std::istream& in, std::string& tag)
 			}
 			else
 			{
-				SetError(TIXML_ERROR, 0, 0, TIXML_ENCODING_UNKNOWN);
+				SetError(XML_ERROR, 0, 0);
 				return;
 			}
 		}
 	}
+
 	// We should have returned sooner.
-	SetError(TIXML_ERROR, 0, 0, TIXML_ENCODING_UNKNOWN);
+	SetError(XML_ERROR, 0, 0);
 }
 
 
-const char* XmlDocument::Parse( const char* p, TiXmlParsingData* prevData, XmlEncoding encoding )
+const char* XmlDocument::Parse(const char* p, TiXmlParsingData* prevData)
 {
 	ClearError();
 
-	// Parse away, at the document level. Since a document
-	// contains nothing but other tags, most of what happens
-	// here is skipping white space.
-	if ( !p || !*p )
+	// Parse away, at the document level. Since a document contains nothing but
+	// other tags, most of what happens here is skipping white space.
+	if (!p || !*p)
 	{
-		SetError( TIXML_ERROR_DOCUMENT_EMPTY, 0, 0, TIXML_ENCODING_UNKNOWN );
+		SetError(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
-	// Note that, for a document, this needs to come
-	// before the while space skip, so that parsing
-	// starts from the pointer we are given.
+	// Note that, for a document, this needs to come before the while space skip,
+	// so that parsing starts from the pointer we are given.
 	location.clear();
-	if ( prevData )
+	if (prevData)
 	{
-		location.row = prevData->cursor.row;
-		location.col = prevData->cursor.col;
+		location.row = prevData->_cursor.row;
+		location.col = prevData->_cursor.col;
 	}
 	else
 	{
 		location.row = 0;
 		location.col = 0;
 	}
-	TiXmlParsingData data( p, TabSize(), location.row, location.col );
+	TiXmlParsingData data(p, TabSize(), location.row, location.col);
 	location = data.Cursor();
 
-	if ( encoding == TIXML_ENCODING_UNKNOWN )
+	p = SkipWhiteSpace(p);
+	if (!p)
 	{
-		// Check for the Microsoft UTF-8 lead bytes.
-		const unsigned char* pU = (const unsigned char*)p;
-		if (	*(pU+0) && *(pU+0) == TIXML_UTF_LEAD_0
-			 && *(pU+1) && *(pU+1) == TIXML_UTF_LEAD_1
-			 && *(pU+2) && *(pU+2) == TIXML_UTF_LEAD_2 )
-		{
-			encoding = TIXML_ENCODING_UTF8;
-			useMicrosoftBOM = true;
-		}
-	}
-
-    p = SkipWhiteSpace( p, encoding );
-	if ( !p )
-	{
-		SetError( TIXML_ERROR_DOCUMENT_EMPTY, 0, 0, TIXML_ENCODING_UNKNOWN );
+		SetError(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
-	while ( p && *p )
+	while (p && *p)
 	{
-		XmlNode* node = Identify( p, encoding );
-		if ( node )
+		XmlNode* node = Identify(p);
+		if (node)
 		{
-			p = node->Parse( p, &data, encoding );
-			LinkEndChild( node );
+			p = node->Parse(p, &data);
+			LinkEndChild(node);
 		}
 		else
 		{
 			break;
 		}
 
-		p = SkipWhiteSpace( p, encoding );
+		p = SkipWhiteSpace(p);
 	}
 
 	// Was this empty?
-	if ( !firstChild ) {
-		SetError( TIXML_ERROR_DOCUMENT_EMPTY, 0, 0, encoding );
+	if (!firstChild)
+	{
+		SetError(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
@@ -800,42 +594,39 @@ const char* XmlDocument::Parse( const char* p, TiXmlParsingData* prevData, XmlEn
 	return p;
 }
 
-void XmlDocument::SetError( int err, const char* pError, TiXmlParsingData* data, XmlEncoding encoding )
-{	
+void XmlDocument::SetError(XmlErrorCode err, const char* pError, TiXmlParsingData* data)
+{
 	// The first error in a chain is more accurate - don't set again!
-	if ( error )
+	if (error)
 		return;
 
-	assert( err > 0 && err < TIXML_ERROR_STRING_COUNT );
-	error   = true;
+	assert(err > 0 && err < XML_ERROR_STRING_COUNT);
+	error = true;
 	errorId = err;
-	errorDesc = errorString[ errorId ];
+	errorDesc = XML_ERROR_TABLE[errorId];
 
 	errorLocation.clear();
-	if ( pError && data )
+	if (pError && data)
 	{
-		data->Stamp( pError, encoding );
+		data->stamp(pError);
 		errorLocation = data->Cursor();
 	}
 }
 
 
-XmlNode* XmlNode::Identify( const char* p, XmlEncoding encoding )
+XmlNode* XmlNode::Identify(const char* p)
 {
 	XmlNode* returnNode = 0;
 
-	p = SkipWhiteSpace( p, encoding );
-	if( !p || !*p || *p != '<' )
-	{
+	p = SkipWhiteSpace(p);
+	if (!p || !*p || *p != '<')
 		return nullptr;
-	}
 
-	p = SkipWhiteSpace( p, encoding );
+	p = SkipWhiteSpace(p);
 
-	if ( !p || !*p )
-	{
+	if (!p || !*p)
 		return nullptr;
-	}
+
 
 	// What is this thing? 
 	// - Elements start with a letter or underscore, but xml is reserved.
@@ -849,46 +640,45 @@ XmlNode* XmlNode::Identify( const char* p, XmlEncoding encoding )
 	const char* dtdHeader = { "<!" };
 	const char* cdataHeader = { "<![CDATA[" };
 
-	if ( StringEqual( p, commentHeader, false, encoding ) )
+	if (StringEqual(p, commentHeader, false))
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing Comment\n" );
+		TIXML_LOG("XML parsing Comment\n");
 		#endif
 		returnNode = new XmlComment();
 	}
-	else if ( StringEqual( p, cdataHeader, false, encoding ) )
+	else if (StringEqual(p, cdataHeader, false))
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing CDATA\n" );
+		TIXML_LOG("XML parsing CDATA\n");
 		#endif
-		XmlText* text = new XmlText( "" );
+		XmlText* text = new XmlText("");
 		text->CDATA(true);
 		returnNode = text;
 	}
-	else if ( StringEqual( p, dtdHeader, false, encoding ) )
+	else if (StringEqual(p, dtdHeader, false))
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing Unknown(1)\n" );
+		TIXML_LOG("XML parsing Unknown(1)\n");
 		#endif
 		returnNode = new XmlUnknown();
 	}
-	else if (    IsAlpha( *(p+1), encoding )
-			  || *(p+1) == '_' )
+	else if (IsAlpha(*(p + 1)) || *(p + 1) == '_')
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing Element\n" );
+		TIXML_LOG("XML parsing Element\n");
 		#endif
-		returnNode = new XmlElement( "" );
+		returnNode = new XmlElement("");
 	}
 	else
 	{
 		#ifdef DEBUG_PARSER
-			TIXML_LOG( "XML parsing Unknown(2)\n" );
+		TIXML_LOG("XML parsing Unknown(2)\n");
 		#endif
 		returnNode = new XmlUnknown();
 	}
 
-	if ( returnNode )
+	if (returnNode)
 	{
 		// Set the parent, so it can report errors
 		returnNode->parent = this;
@@ -907,7 +697,7 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 		{
 			XmlDocument* document = GetDocument();
 			if (document)
-				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
+				document->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
 			return;
 		}
 		tag += static_cast<char>(c);
@@ -920,9 +710,7 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 
 	// Okay...if we are a "/>" tag, then we're done. We've read a complete tag.
 	// If not, identify and stream.
-
-	if (tag.at(tag.length() - 1) == '>'
-		&& tag.at(tag.length() - 2) == '/')
+	if (tag.at(tag.length() - 1) == '>' && tag.at(tag.length() - 2) == '/')
 	{
 		// All good!
 		return;
@@ -934,7 +722,7 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 		//		cdata text (which looks like another node)
 		//		closing tag
 		//		another node.
-		for (;; )
+		for (;;)
 		{
 			StreamWhiteSpace(in, tag);
 
@@ -959,7 +747,7 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 			bool closingTag = false;
 			bool firstCharFound = false;
 
-			for (;; )
+			for (;;)
 			{
 				if (!in.good())
 					return;
@@ -969,7 +757,7 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 				{
 					XmlDocument* document = GetDocument();
 					if (document)
-						document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
+						document->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
 					return;
 				}
 
@@ -984,13 +772,14 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 				{
 					size_t len = tag.size();
 					const char* start = tag.c_str() + len - 9;
-					if (strcmp(start, "<![CDATA[") == 0) {
+					if (strcmp(start, "<![CDATA[") == 0)
+					{
 						assert(!closingTag);
 						break;
 					}
 				}
 
-				if (!firstCharFound && c != '<' && !IsWhiteSpace(c))
+				if (!firstCharFound && c != '<' && !white_space(c))
 				{
 					firstCharFound = true;
 					if (c == '/')
@@ -1009,7 +798,7 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 				{
 					XmlDocument* document = GetDocument();
 					if (document)
-						document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
+						document->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
 					return;
 				}
 				assert(c == '>');
@@ -1022,7 +811,7 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 			{
 				// If not a closing tag, id it, and stream.
 				const char* tagloc = tag.c_str() + tagIndex;
-				XmlNode* node = Identify(tagloc, TIXML_DEFAULT_ENCODING);
+				XmlNode* node = Identify(tagloc);
 				if (!node)
 					return;
 				node->StreamIn(in, tag);
@@ -1035,38 +824,38 @@ void XmlElement::StreamIn(std::istream & in, std::string & tag)
 	}
 }
 
-const char* XmlElement::Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding)
+const char* XmlElement::Parse(const char* p, TiXmlParsingData* data)
 {
-	p = SkipWhiteSpace(p, encoding);
+	p = SkipWhiteSpace(p);
 	XmlDocument* document = GetDocument();
 
 	if (!p || !*p)
 	{
-		if (document) document->SetError(TIXML_ERROR_PARSING_ELEMENT, 0, 0, encoding);
+		if (document) document->SetError(XML_ERROR_PARSING_ELEMENT, 0, 0);
 		return nullptr;
 	}
 
 	if (data)
 	{
-		data->Stamp(p, encoding);
+		data->stamp(p);
 		location = data->Cursor();
 	}
 
 	if (*p != '<')
 	{
-		if (document) document->SetError(TIXML_ERROR_PARSING_ELEMENT, p, data, encoding);
+		if (document) document->SetError(XML_ERROR_PARSING_ELEMENT, p, data);
 		return nullptr;
 	}
 
-	p = SkipWhiteSpace(p + 1, encoding);
+	p = SkipWhiteSpace(p + 1);
 
 	// Read the name.
 	const char* pErr = p;
 
-	p = ReadName(p, value, encoding);
+	p = ReadName(p, value);
 	if (!p || !*p)
 	{
-		if (document)	document->SetError(TIXML_ERROR_FAILED_TO_READ_ELEMENT_NAME, pErr, data, encoding);
+		if (document)	document->SetError(XML_ERROR_FAILED_TO_READ_ELEMENT_NAME, pErr, data);
 		return nullptr;
 	}
 
@@ -1078,10 +867,10 @@ const char* XmlElement::Parse(const char* p, TiXmlParsingData* data, XmlEncoding
 	while (p && *p)
 	{
 		pErr = p;
-		p = SkipWhiteSpace(p, encoding);
+		p = SkipWhiteSpace(p);
 		if (!p || !*p)
 		{
-			if (document) document->SetError(TIXML_ERROR_READING_ATTRIBUTES, pErr, data, encoding);
+			if (document) document->SetError(XML_ERROR_READING_ATTRIBUTES, pErr, data);
 			return nullptr;
 		}
 		if (*p == '/')
@@ -1090,22 +879,22 @@ const char* XmlElement::Parse(const char* p, TiXmlParsingData* data, XmlEncoding
 			// Empty tag.
 			if (*p != '>')
 			{
-				if (document) document->SetError(TIXML_ERROR_PARSING_EMPTY, p, data, encoding);
+				if (document) document->SetError(XML_ERROR_PARSING_EMPTY, p, data);
 				return nullptr;
 			}
 			return (p + 1);
 		}
 		else if (*p == '>')
 		{
-			// Done with attributes (if there were any.)
-			// Read the value -- which can include other
-			// elements -- read the end tag, and return.
+			// Done with attributes (if there were any.) Read the value -- which
+			// can include other elements -- read the end tag, and return.
 			++p;
-			p = ReadValue(p, data, encoding);		// Note this is an Element method, and will set the error if one happens.
-			if (!p || !*p) {
+			p = ReadValue(p, data); // Note this is an Element method, and will set the error if one happens.
+			if (!p || !*p)
+			{
 				// We were looking for the end tag, but found nothing.
 				// Fix for [ 1663758 ] Failure to report error on bad XML
-				if (document) document->SetError(TIXML_ERROR_READING_END_TAG, p, data, encoding);
+				if (document) document->SetError(XML_ERROR_READING_END_TAG, p, data);
 				return nullptr;
 			}
 
@@ -1114,20 +903,21 @@ const char* XmlElement::Parse(const char* p, TiXmlParsingData* data, XmlEncoding
 			// </foo > and
 			// </foo> 
 			// are both valid end tags.
-			if (StringEqual(p, endTag.c_str(), false, encoding))
+			if (StringEqual(p, endTag.c_str(), false))
 			{
 				p += endTag.length();
-				p = SkipWhiteSpace(p, encoding);
-				if (p && *p && *p == '>') {
+				p = SkipWhiteSpace(p);
+				if (p && *p && *p == '>')
+				{
 					++p;
 					return p;
 				}
-				if (document) document->SetError(TIXML_ERROR_READING_END_TAG, p, data, encoding);
+				if (document) document->SetError(XML_ERROR_READING_END_TAG, p, data);
 				return nullptr;
 			}
 			else
 			{
-				if (document) document->SetError(TIXML_ERROR_READING_END_TAG, p, data, encoding);
+				if (document) document->SetError(XML_ERROR_READING_END_TAG, p, data);
 				return nullptr;
 			}
 		}
@@ -1142,11 +932,11 @@ const char* XmlElement::Parse(const char* p, TiXmlParsingData* data, XmlEncoding
 
 			attrib->SetDocument(document);
 			pErr = p;
-			p = attrib->Parse(p, data, encoding);
+			p = attrib->Parse(p, data);
 
 			if (!p || !*p)
 			{
-				if (document) document->SetError(TIXML_ERROR_PARSING_ELEMENT, pErr, data, encoding);
+				if (document) document->SetError(XML_ERROR_PARSING_ELEMENT, pErr, data);
 				delete attrib;
 				return nullptr;
 			}
@@ -1156,7 +946,7 @@ const char* XmlElement::Parse(const char* p, TiXmlParsingData* data, XmlEncoding
 
 			if (node)
 			{
-				if (document) document->SetError(TIXML_ERROR_PARSING_ELEMENT, pErr, data, encoding);
+				if (document) document->SetError(XML_ERROR_PARSING_ELEMENT, pErr, data);
 				delete attrib;
 				return nullptr;
 			}
@@ -1168,59 +958,59 @@ const char* XmlElement::Parse(const char* p, TiXmlParsingData* data, XmlEncoding
 }
 
 
-const char* XmlElement::ReadValue( const char* p, TiXmlParsingData* data, XmlEncoding encoding )
+const char* XmlElement::ReadValue(const char* p, TiXmlParsingData* data)
 {
 	XmlDocument* document = GetDocument();
 
 	// Read in text and elements in any order.
 	const char* pWithWhiteSpace = p;
-	p = SkipWhiteSpace( p, encoding );
+	p = SkipWhiteSpace(p);
 
-	while ( p && *p )
+	while (p && *p)
 	{
-		if ( *p != '<' )
+		if (*p != '<')
 		{
 			// Take what we have, make a text element.
-			XmlText* textNode = new XmlText( "" );
+			XmlText* textNode = new XmlText("");
 
-			if ( !textNode )
+			if (!textNode)
 			{
-			    return nullptr;
+				return nullptr;
 			}
 
-			if ( XmlBase::IsWhiteSpaceCondensed() )
+			if (XmlBase::IsWhiteSpaceCondensed())
 			{
-				p = textNode->Parse( p, data, encoding );
+				p = textNode->Parse(p, data);
 			}
 			else
 			{
 				// Special case: we want to keep the white space
 				// so that leading spaces aren't removed.
-				p = textNode->Parse( pWithWhiteSpace, data, encoding );
+				p = textNode->Parse(pWithWhiteSpace, data);
 			}
 
-			if ( !textNode->Blank() )
-				LinkEndChild( textNode );
+			if (!textNode->Blank())
+				LinkEndChild(textNode);
 			else
 				delete textNode;
-		} 
-		else 
+		}
+		else
 		{
 			// We hit a '<'
-			// Have we hit a new element or an end tag? This could also be
-			// a XmlText in the "CDATA" style.
-			if ( StringEqual( p, "</", false, encoding ) )
+			// Have we hit a new element or an end tag? This could also be an
+			// XmlText in the "CDATA" style.
+			if (StringEqual(p, "</", false))
 			{
 				return p;
 			}
 			else
 			{
-				XmlNode* node = Identify( p, encoding );
-				if ( node )
+				XmlNode* node = Identify(p);
+				if (node)
 				{
-					p = node->Parse( p, data, encoding );
-					LinkEndChild( node );
-				}				
+					p = node->Parse(p, data);
+					LinkEndChild(node);
+				}
 				else
 				{
 					return nullptr;
@@ -1228,13 +1018,13 @@ const char* XmlElement::ReadValue( const char* p, TiXmlParsingData* data, XmlEnc
 			}
 		}
 		pWithWhiteSpace = p;
-		p = SkipWhiteSpace( p, encoding );
+		p = SkipWhiteSpace(p);
 	}
 
-	if ( !p )
+	if (!p)
 	{
-		if ( document ) document->SetError( TIXML_ERROR_READING_ELEMENT_VALUE, 0, 0, encoding );
-	}	
+		if (document) document->SetError(XML_ERROR_READING_ELEMENT_VALUE, 0, 0);
+	}
 	return p;
 }
 
@@ -1248,7 +1038,7 @@ void XmlUnknown::StreamIn(std::istream& in, std::string& tag)
 		{
 			XmlDocument* document = GetDocument();
 			if (document)
-				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
+				document->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
 			return;
 		}
 		tag += static_cast<char>(c);
@@ -1259,37 +1049,40 @@ void XmlUnknown::StreamIn(std::istream& in, std::string& tag)
 }
 
 
-const char* XmlUnknown::Parse( const char* p, TiXmlParsingData* data, XmlEncoding encoding )
+const char* XmlUnknown::Parse(const char* p, TiXmlParsingData* data)
 {
 	XmlDocument* document = GetDocument();
-	p = SkipWhiteSpace( p, encoding );
+	p = SkipWhiteSpace(p);
 
-	if ( data )
+	if (data)
 	{
-		data->Stamp( p, encoding );
+		data->stamp(p);
 		location = data->Cursor();
 	}
-	if ( !p || !*p || *p != '<' )
+
+	if (!p || !*p || *p != '<')
 	{
-		if ( document ) document->SetError( TIXML_ERROR_PARSING_UNKNOWN, p, data, encoding );
+		if (document) document->SetError(XML_ERROR_PARSING_UNKNOWN, p, data);
 		return nullptr;
 	}
-	++p;
-    value = "";
 
-	while ( p && *p && *p != '>' )
+	++p;
+	value = "";
+
+	while (p && *p && *p != '>')
 	{
 		value += *p;
 		++p;
 	}
 
-	if ( !p )
+	if (!p)
 	{
-		if ( document )	
-			document->SetError( TIXML_ERROR_PARSING_UNKNOWN, 0, 0, encoding );
+		if (document)
+			document->SetError(XML_ERROR_PARSING_UNKNOWN, 0, 0);
 	}
-	if ( p && *p == '>' )
-		return p+1;
+	if (p && *p == '>')
+		return p + 1;
+
 	return p;
 }
 
@@ -1302,7 +1095,7 @@ void XmlComment::StreamIn(std::istream& in, std::string& tag)
 		{
 			XmlDocument* document = GetDocument();
 			if (document)
-				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
+				document->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
 			return;
 		}
 
@@ -1319,28 +1112,28 @@ void XmlComment::StreamIn(std::istream& in, std::string& tag)
 }
 
 
-const char* XmlComment::Parse( const char* p, TiXmlParsingData* data, XmlEncoding encoding )
+const char* XmlComment::Parse(const char* p, TiXmlParsingData* data)
 {
 	XmlDocument* document = GetDocument();
 	value = "";
 
-	p = SkipWhiteSpace( p, encoding );
+	p = SkipWhiteSpace(p);
 
-	if ( data )
+	if (data)
 	{
-		data->Stamp( p, encoding );
+		data->stamp(p);
 		location = data->Cursor();
 	}
 	const char* startTag = "<!--";
-	const char* endTag   = "-->";
+	const char* endTag = "-->";
 
-	if ( !StringEqual( p, startTag, false, encoding ) )
+	if (!StringEqual(p, startTag, false))
 	{
-		if ( document )
-			document->SetError( TIXML_ERROR_PARSING_COMMENT, p, data, encoding );
+		if (document)
+			document->SetError(XML_ERROR_PARSING_COMMENT, p, data);
 		return nullptr;
 	}
-	p += strlen( startTag );
+	p += strlen(startTag);
 
 	// [ 1475201 ] TinyXML parses entities in comments
 	// Oops - ReadText doesn't work, because we don't want to parse the entities.
@@ -1348,11 +1141,11 @@ const char* XmlComment::Parse( const char* p, TiXmlParsingData* data, XmlEncodin
 	//
 	// from the XML spec:
 	/*
-	 [Definition: Comments may appear anywhere in a document outside other markup; in addition, 
-	              they may appear within the document type declaration at places allowed by the grammar. 
-				  They are not part of the document's character data; an XML processor MAY, but need not, 
-				  make it possible for an application to retrieve the text of comments. For compatibility, 
-				  the string "--" (double-hyphen) MUST NOT occur within comments.] Parameter entity 
+	 [Definition: Comments may appear anywhere in a document outside other markup; in addition,
+				  they may appear within the document type declaration at places allowed by the grammar.
+				  They are not part of the document's character data; an XML processor MAY, but need not,
+				  make it possible for an application to retrieve the text of comments. For compatibility,
+				  the string "--" (double-hyphen) MUST NOT occur within comments.] Parameter entity
 				  references MUST NOT be recognized within comments.
 
 				  An example of a comment:
@@ -1360,50 +1153,50 @@ const char* XmlComment::Parse( const char* p, TiXmlParsingData* data, XmlEncodin
 				  <!-- declarations for <head> & <body> -->
 	*/
 
-    value = "";
+	value = "";
 	// Keep all the white space.
-	while (	p && *p && !StringEqual( p, endTag, false, encoding ) )
+	while (p && *p && !StringEqual(p, endTag, false))
 	{
-		value.append( p, 1 );
+		value.append(p, 1);
 		++p;
 	}
-	if ( p && *p ) 
-		p += strlen( endTag );
+	if (p && *p)
+		p += strlen(endTag);
 
 	return p;
 }
 
 
-const char* XmlAttribute::Parse(const char* p, TiXmlParsingData* data, XmlEncoding encoding)
+const char* XmlAttribute::Parse(const char* p, TiXmlParsingData* data)
 {
-	p = SkipWhiteSpace(p, encoding);
+	p = SkipWhiteSpace(p);
 	if (!p || !*p) return nullptr;
 
 	if (data)
 	{
-		data->Stamp(p, encoding);
+		data->stamp(p);
 		location = data->Cursor();
 	}
 	// Read the name, the '=' and the value.
 	const char* pErr = p;
-	p = ReadName(p, name, encoding);
+	p = ReadName(p, name);
 	if (!p || !*p)
 	{
-		if (document) document->SetError(TIXML_ERROR_READING_ATTRIBUTES, pErr, data, encoding);
+		if (document) document->SetError(XML_ERROR_READING_ATTRIBUTES, pErr, data);
 		return nullptr;
 	}
-	p = SkipWhiteSpace(p, encoding);
+	p = SkipWhiteSpace(p);
 	if (!p || !*p || *p != '=')
 	{
-		if (document) document->SetError(TIXML_ERROR_READING_ATTRIBUTES, p, data, encoding);
+		if (document) document->SetError(XML_ERROR_READING_ATTRIBUTES, p, data);
 		return nullptr;
 	}
 
 	++p;	// skip '='
-	p = SkipWhiteSpace(p, encoding);
+	p = SkipWhiteSpace(p);
 	if (!p || !*p)
 	{
-		if (document) document->SetError(TIXML_ERROR_READING_ATTRIBUTES, p, data, encoding);
+		if (document) document->SetError(XML_ERROR_READING_ATTRIBUTES, p, data);
 		return nullptr;
 	}
 
@@ -1415,13 +1208,13 @@ const char* XmlAttribute::Parse(const char* p, TiXmlParsingData* data, XmlEncodi
 	{
 		++p;
 		end = "\'";		// single quote in string
-		p = ReadText(p, &value, false, end, false, encoding);
+		p = ReadText(p, &value, false, end, false);
 	}
 	else if (*p == DOUBLE_QUOTE)
 	{
 		++p;
 		end = "\"";		// double quote in string
-		p = ReadText(p, &value, false, end, false, encoding);
+		p = ReadText(p, &value, false, end, false);
 	}
 	else
 	{
@@ -1429,16 +1222,16 @@ const char* XmlAttribute::Parse(const char* p, TiXmlParsingData* data, XmlEncodi
 		// But this is such a common error that the parser will try
 		// its best, even without them.
 		value = "";
-		while (p && *p											// existence
-			&& !IsWhiteSpace(*p)								// whitespace
-			&& *p != '/' && *p != '>')							// tag end
+		while (p && *p					// existence
+			&& !white_space(*p)			// whitespace
+			&& *p != '/' && *p != '>')	// tag end
 		{
 			if (*p == SINGLE_QUOTE || *p == DOUBLE_QUOTE)
 			{
 				// [ 1451649 ] Attribute values with trailing quotes not handled correctly
 				// We did not have an opening quote but seem to have a 
 				// closing one. Give up and throw an error.
-				if (document) document->SetError(TIXML_ERROR_READING_ATTRIBUTES, p, data, encoding);
+				if (document) document->SetError(XML_ERROR_READING_ATTRIBUTES, p, data);
 				return nullptr;
 			}
 			value += *p;
@@ -1461,7 +1254,8 @@ void XmlText::StreamIn(std::istream& in, std::string& tag)
 		{
 			XmlDocument* document = GetDocument();
 			if (document)
-				document->SetError(TIXML_ERROR_EMBEDDED_NULL, 0, 0, TIXML_ENCODING_UNKNOWN);
+				document->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
+
 			return;
 		}
 
@@ -1480,43 +1274,41 @@ void XmlText::StreamIn(std::istream& in, std::string& tag)
 	}
 }
 
-const char* XmlText::Parse( const char* p, TiXmlParsingData* data, XmlEncoding encoding )
+const char* XmlText::Parse(const char* p, TiXmlParsingData* data)
 {
 	value = "";
 	XmlDocument* document = GetDocument();
 
-	if ( data )
+	if (data)
 	{
-		data->Stamp( p, encoding );
+		data->stamp(p);
 		location = data->Cursor();
 	}
 
 	const char* const startTag = "<![CDATA[";
-	const char* const endTag   = "]]>";
+	const char* const endTag = "]]>";
 
-	if ( cdata || StringEqual( p, startTag, false, encoding ) )
+	if (cdata || StringEqual(p, startTag, false))
 	{
 		cdata = true;
 
-		if ( !StringEqual( p, startTag, false, encoding ) )
+		if (!StringEqual(p, startTag, false))
 		{
-			if ( document )
-				document->SetError( TIXML_ERROR_PARSING_CDATA, p, data, encoding );
+			if (document)
+				document->SetError(XML_ERROR_PARSING_CDATA, p, data);
 			return nullptr;
 		}
-		p += strlen( startTag );
+		p += strlen(startTag);
 
 		// Keep all the white space, ignore the encoding, etc.
-		while (	   p && *p
-				&& !StringEqual( p, endTag, false, encoding )
-			  )
+		while (p && *p && !StringEqual(p, endTag, false))
 		{
 			value += *p;
 			++p;
 		}
 
 		std::string dummy;
-		p = ReadText( p, &dummy, false, endTag, false, encoding );
+		p = ReadText(p, &dummy, false, endTag, false);
 		return p;
 	}
 	else
@@ -1524,9 +1316,9 @@ const char* XmlText::Parse( const char* p, TiXmlParsingData* data, XmlEncoding e
 		bool ignoreWhite = true;
 
 		const char* end = "<";
-		p = ReadText( p, &value, ignoreWhite, end, false, encoding );
-		if ( p && *p )
-			return p-1;	// don't truncate the '<'
+		p = ReadText(p, &value, ignoreWhite, end, false);
+		if (p && *p)
+			return p - 1;	// don't truncate the '<'
 		return nullptr;
 	}
 }
@@ -1535,7 +1327,7 @@ const char* XmlText::Parse( const char* p, TiXmlParsingData* data, XmlEncoding e
 bool XmlText::Blank() const
 {
 	for (unsigned i = 0; i < value.length(); ++i)
-		if (!IsWhiteSpace(value[i]))
+		if (!white_space(value[i]))
 			return false;
 
 	return true;

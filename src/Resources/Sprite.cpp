@@ -25,7 +25,7 @@ const int FRAME_PAUSE = -1;
 // Adds a row/name tag to the end of messages.
 string endTag(int row, const std::string& name)
 {
-	return " Row: " + std::to_string(row) + ", " + name + "')";
+	return " (Row: " + std::to_string(row) + ", " + name + ")";
 }
 
 

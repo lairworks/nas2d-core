@@ -38,6 +38,7 @@
 #endif
 
 #include <string>
+#include <vector>
 
 // Deprecated library function hell. Compilers want to use the new safe versions. This
 // probably doesn't fully address the problem, but it gets closer. There are too many
@@ -77,11 +78,6 @@ class TiXmlText;
 class TiXmlDeclaration;
 class TiXmlParsingData;
 
-
-const int TIXML_MAJOR_VERSION = 2;
-const int TIXML_MINOR_VERSION = 6;
-const int TIXML_PATCH_VERSION = 2;
-
 /**
  * Internal structure for tracking location of items in the XML file.
  */
@@ -90,8 +86,8 @@ struct TiXmlCursor
 	TiXmlCursor() { Clear(); }
 	void Clear() { row = col = -1; }
 
-	int row;	// 0 based.
-	int col;	// 0 based.
+	int row; // 0 based.
+	int col; // 0 based.
 };
 
 
@@ -178,7 +174,7 @@ class TiXmlBase
 	friend class TiXmlDocument;
 
 public:
-	TiXmlBase() : userData(nullptr) {}
+	TiXmlBase() : userData(nullptr) { fillErrorTable(); }
 	virtual ~TiXmlBase() {}
 
 	/**
@@ -298,7 +294,8 @@ protected:
 	// to English words: StringEqual( p, "version", true ) is fine.
 	static bool StringEqual(const char* p, const char* endTag, bool ignoreCase, TiXmlEncoding encoding);
 
-	static const char* errorString[TIXML_ERROR_STRING_COUNT];
+	//static const char* errorString[TIXML_ERROR_STRING_COUNT];
+	static std::vector<std::string> errorString;
 
 	TiXmlCursor location;
 
@@ -326,6 +323,9 @@ protected:
 private:
 	TiXmlBase(const TiXmlBase&);			// not implemented.
 	void operator=(const TiXmlBase& base);	// not allowed.
+
+private:
+	void fillErrorTable();
 
 	struct Entity
 	{

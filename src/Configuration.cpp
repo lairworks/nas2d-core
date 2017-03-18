@@ -11,7 +11,7 @@
 #include "NAS2D/Configuration.h"
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
-#include "NAS2D/XmlAttributeParser.h"
+#include "NAS2D/Xml/XmlAttributeParser.h"
 
 #include <iostream>
 

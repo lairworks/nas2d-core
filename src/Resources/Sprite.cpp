@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Resources/Sprite.h"
-#include "NAS2D/XmlAttributeParser.h"
+#include "NAS2D/XML/XmlAttributeParser.h"
 
 #include <iostream>
 
@@ -25,9 +25,7 @@ const int FRAME_PAUSE = -1;
 // Adds a row/name tag to the end of messages.
 string endTag(int row, const std::string& name)
 {
-	stringstream str;
-	str << " (Row: " << row << ", '" << name << "')";
-	return str.str();
+	return " Row: " + std::to_string(row) + ", " + name + "')";
 }
 
 

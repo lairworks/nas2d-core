@@ -23,7 +23,7 @@
 #include <assert.h>
 #include <ctype.h>
 
-#include "tinyxml.h"
+#include "NAS2D/XML/Xml.h"
 
 //FILE* TiXmlFOpen(const char* filename, const char* mode);
 
@@ -115,7 +115,6 @@ void TiXmlBase::EncodeString(const std::string& str, std::string& outString)
 		}
 	}
 }
-
 
 
 // ==================================================================================

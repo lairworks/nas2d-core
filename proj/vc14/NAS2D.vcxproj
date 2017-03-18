@@ -249,11 +249,11 @@
     <ClCompile Include="..\..\src\Resources\Sprite.cpp" />
     <ClCompile Include="..\..\src\StateManager.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
-    <ClCompile Include="..\..\src\tinyxml\tinyxml.cpp" />
-    <ClCompile Include="..\..\src\tinyxml\tinyxmlerror.cpp" />
-    <ClCompile Include="..\..\src\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\src\tinyxml\Xml.cpp" />
+    <ClCompile Include="..\..\src\tinyxml\XmlAttributeParser.cpp" />
+    <ClCompile Include="..\..\src\tinyxml\XmlError.cpp" />
+    <ClCompile Include="..\..\src\tinyxml\XmlParser.cpp" />
     <ClCompile Include="..\..\src\Trig.cpp" />
-    <ClCompile Include="..\..\src\XmlAttributeParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\NAS2D\Common.h" />
@@ -287,10 +287,10 @@
     <ClInclude Include="..\..\include\NAS2D\State.h" />
     <ClInclude Include="..\..\include\NAS2D\StateManager.h" />
     <ClInclude Include="..\..\include\NAS2D\Timer.h" />
-    <ClInclude Include="..\..\include\NAS2D\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\include\NAS2D\Trig.h" />
     <ClInclude Include="..\..\include\NAS2D\Utility.h" />
-    <ClInclude Include="..\..\include\NAS2D\XmlAttributeParser.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\Xml.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeParser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

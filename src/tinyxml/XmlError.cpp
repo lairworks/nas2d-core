@@ -20,8 +20,7 @@
 // = 
 // = 3. This notice may not be removed or altered from any source distribution.
 // ==================================================================================
-
-#include "tinyxml.h"
+#include "NAS2D/XML/Xml.h"
 
 // The goal of the seperate error file is to make the first
 // step towards localization. tinyxml (currently) only supports
@@ -30,22 +29,22 @@
 // It also cleans up the code a bit.
 //
 
-const char* TiXmlBase::errorString[ TiXmlBase::TIXML_ERROR_STRING_COUNT ] =
+void TiXmlBase::fillErrorTable()
 {
-	"No error",
-	"Error",
-	"Failed to open file",
-	"Error parsing Element.",
-	"Failed to read Element name",
-	"Error reading Element value.",
-	"Error reading Attributes.",
-	"Error: empty tag.",
-	"Error reading end tag.",
-	"Error parsing Unknown.",
-	"Error parsing Comment.",
-	"Error parsing Declaration.",
-	"Error document empty.",
-	"Error null (0) or unexpected EOF found in input stream.",
-	"Error parsing CDATA.",
-	"Error when TiXmlDocument added to document, because TiXmlDocument can only be at the root.",
-};
+	TiXmlBase::errorString.push_back("No error");
+	TiXmlBase::errorString.push_back("Error");
+	TiXmlBase::errorString.push_back("Failed to open file");
+	TiXmlBase::errorString.push_back("Error parsing Element.");
+	TiXmlBase::errorString.push_back("Failed to read Element name");
+	TiXmlBase::errorString.push_back("Error reading Element value.");
+	TiXmlBase::errorString.push_back("Error reading Attributes.");
+	TiXmlBase::errorString.push_back("Error: empty tag.");
+	TiXmlBase::errorString.push_back("Error reading end tag.");
+	TiXmlBase::errorString.push_back("Error parsing Unknown.");
+	TiXmlBase::errorString.push_back("Error parsing Comment.");
+	TiXmlBase::errorString.push_back("Error parsing Declaration.");
+	TiXmlBase::errorString.push_back("Error document empty.");
+	TiXmlBase::errorString.push_back("Error null (0) or unexpected EOF found in input stream.");
+	TiXmlBase::errorString.push_back("Error parsing CDATA.");
+	TiXmlBase::errorString.push_back("Error when TiXmlDocument added to document, because TiXmlDocument can only be at the root.");
+}

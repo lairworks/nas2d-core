@@ -8,7 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/XmlAttributeParser.h"
+#include "NAS2D/Xml/XmlAttributeParser.h"
 
 
 #include <iostream>

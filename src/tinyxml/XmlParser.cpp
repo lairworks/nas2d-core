@@ -24,7 +24,7 @@
 #include <ctype.h>
 #include <stddef.h>
 
-#include "tinyxml.h"
+#include "NAS2D/XML/Xml.h"
 
 //#define DEBUG_PARSER
 #if defined( DEBUG_PARSER )

@@ -10,7 +10,6 @@
 #pragma once
 
 #include <memory>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -39,15 +38,6 @@ int divideUp(int to_divide, int divisor);
 // String functions & types
 std::string toLowercase(const std::string& str);
 std::string toUppercase(const std::string& str);
-
-
-template <typename T>
-bool from_string(T& t, const std::string& s, std::ios_base& (*f)(std::ios_base&))
-{
-	std::istringstream iss(s);
-	return !(iss >> f >> t).fail();
-}
-
 
 /**
  * Simple helper function to provide a printf like function.

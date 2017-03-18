@@ -19,8 +19,8 @@
 
 
 const int NAS2D_MAJOR_VERSION = 1;
-const int NAS2D_MINOR_VERSION = 2;
-const int NAS2D_PATCH_VERSION = 1;
+const int NAS2D_MINOR_VERSION = 3;
+const int NAS2D_PATCH_VERSION = 0;
 
 /**
  * Gets a string containing the version of NAS2D being used.

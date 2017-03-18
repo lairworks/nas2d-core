@@ -13,6 +13,7 @@
 
 using namespace NAS2D::Xml;
 
+bool TiXmlBase::condenseWhiteSpace = true;
 
 /**
 * Return the position, in the original source file, of this node or attribute.

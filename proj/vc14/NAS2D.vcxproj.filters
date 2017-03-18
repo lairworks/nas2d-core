@@ -105,9 +105,6 @@
     <ClCompile Include="..\..\src\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Xml\Xml.cpp">
-      <Filter>Source Files\Xml</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Xml\XmlAttributeParser.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
@@ -115,6 +112,36 @@
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Xml\XmlBase.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlMemoryBuffer.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlHandle.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlAttributeSet.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlUnknown.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlElement.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlText.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlComment.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlAttribute.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlDocument.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlNode.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
   </ItemGroup>

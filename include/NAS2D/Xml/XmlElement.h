@@ -12,6 +12,7 @@
 #pragma once
 
 #include "NAS2D/Xml/XmlAttribute.h"
+#include "NAS2D/Xml/XmlAttributeSet.h"
 #include "NAS2D/Xml/XmlNode.h"
 
 namespace NAS2D {
@@ -25,8 +26,8 @@ namespace Xml {
 class TiXmlElement : public TiXmlNode
 {
 public:
-	TiXmlElement(const std::string& _value) : TiXmlNode(TiXmlNode::TINYXML_ELEMENT) { value = _value; }
-	TiXmlElement(const TiXmlElement& copy) : TiXmlNode(TiXmlNode::TINYXML_ELEMENT) { copy.CopyTo(this); }
+	TiXmlElement(const std::string& _value);
+	TiXmlElement(const TiXmlElement& copy);
 
 	TiXmlElement& operator=(const TiXmlElement& base);
 
@@ -75,31 +76,14 @@ public:
 	 * 
 	 * \see QueryIntAttribute()
 	 */
-	int QueryFloatAttribute(const std::string& name, float& _value) const
-	{
-		double d = 0;
-		int result = QueryDoubleAttribute(name, d);
-		if (result == TIXML_SUCCESS)
-			_value = static_cast<float>(d);
-
-		return result;
-	}
+	int QueryFloatAttribute(const std::string& name, float& _value) const;
 
 	/**
 	 * QueryStringAttribute examines the attribute.
 	 * 
 	 * \see QueryIntAttribute()
 	 */
-	int QueryStringAttribute(const std::string& name, std::string& _value) const
-	{
-		std::string str = Attribute(name);
-		if (!str.empty())
-		{
-			_value = str;
-			return TIXML_SUCCESS;
-		}
-		return TIXML_NO_ATTRIBUTE;
-	}
+	int QueryStringAttribute(const std::string& name, std::string& _value) const;
 
 
 	/**
@@ -129,14 +113,14 @@ public:
 	/**
 	 * Get the first attribute of the XmlElement.
 	 */
-	const TiXmlAttribute* FirstAttribute() const { return attributeSet.First(); }
-	TiXmlAttribute* FirstAttribute() { return attributeSet.First(); }
+	const TiXmlAttribute* FirstAttribute() const;
+	TiXmlAttribute* FirstAttribute();
 
 	/**
 	 * Get the last attribute of the XmlElement.
 	 */
-	const TiXmlAttribute* LastAttribute() const { return attributeSet.Last(); }
-	TiXmlAttribute* LastAttribute() { return attributeSet.Last(); }
+	const TiXmlAttribute* LastAttribute() const;
+	TiXmlAttribute* LastAttribute();
 
 	/**
 	 * Convenience function for easy access to the text inside an element. Although easy
@@ -210,7 +194,6 @@ protected:
 	const char* ReadValue(const char* in, TiXmlParsingData* prevData, TiXmlEncoding encoding);
 
 private:
-	class XmlAttributeSet;
 	TiXmlAttributeSet attributeSet;
 };	
 	

@@ -29,11 +29,11 @@ public:
 	 * Constructor for text element. By default, it is treated as normal, encoded text.
 	 * If you want it be output as a CDATA text	element, call \c CDATA(true).
 	 */
-	TiXmlText(const std::string& initValue) : TiXmlNode(TiXmlNode::TINYXML_TEXT), cdata(false) { SetValue(initValue); }
+	TiXmlText(const std::string& initValue);
 	virtual ~TiXmlText() {}
 
-	TiXmlText(const TiXmlText& copy) : TiXmlNode(TiXmlNode::TINYXML_TEXT) { copy.CopyTo(this); }
-	TiXmlText& operator=(const TiXmlText& base) { base.CopyTo(this); return *this; }
+	TiXmlText(const TiXmlText& copy);
+	TiXmlText& operator=(const TiXmlText& base);
 
 	virtual void Print(std::string& buf, int depth) const;
 

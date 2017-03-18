@@ -11,14 +11,11 @@
 // ==================================================================================
 #pragma once
 
-#include "NAS2D/Xml/Xml.h"
-
 namespace NAS2D {
 namespace Xml {
 
 class TiXmlAttribute;
 class TiXmlComment;
-class TiXmlDeclaration;
 class TiXmlDocument;
 class TiXmlElement;
 class TiXmlText;
@@ -51,7 +48,6 @@ public:
 	virtual bool VisitEnter(const TiXmlElement&, const TiXmlAttribute*) { return true; }
 	virtual bool VisitExit(const TiXmlElement&) { return true; }
 
-	virtual bool Visit(const TiXmlDeclaration&) { return true; }
 	virtual bool Visit(const TiXmlText&) { return true; }
 	virtual bool Visit(const TiXmlComment&) { return true; }
 	virtual bool Visit(const TiXmlUnknown&) { return true; }

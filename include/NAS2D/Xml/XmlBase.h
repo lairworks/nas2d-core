@@ -11,6 +11,9 @@
 // ==================================================================================
 #pragma once
 
+#include <string>
+#include <vector>
+
 namespace NAS2D {
 namespace Xml {
 

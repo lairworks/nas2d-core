@@ -41,7 +41,6 @@ public:
 		TINYXML_COMMENT,
 		TINYXML_UNKNOWN,
 		TINYXML_TEXT,
-		TINYXML_DECLARATION,
 		TINYXML_TYPECOUNT
 	};
 
@@ -145,9 +144,7 @@ public:
 	 * Add a new node related to this. Adds a child past the LastChild.
 	 * 
 	 * \note The node to be added is passed by pointer, and will be henceforth owned
-	 *		 (and deleted) by TinyXML. This method is efficient and avoids an extra
-	 *		 copy, but should be used with care as it uses a different memory model
-	 *		 than the other insert functions.
+	 *		 by the Xml library.
 	 * 
 	 * \see InsertEndChild
 	 */
@@ -155,7 +152,8 @@ public:
 
 	/**
 	 * Add a new node related to this. Adds a child before the specified child.
-	 * Returns a pointer to the new object or nullptr if an error occured.
+	 * 
+	 * \return A pointer to the new object or nullptr if an error occured.
 	 */
 	TiXmlNode* InsertBeforeChild(TiXmlNode* beforeThis, const TiXmlNode& addThis);
 
@@ -254,14 +252,12 @@ public:
 	virtual const TiXmlComment* ToComment() const { return nullptr; }
 	virtual const TiXmlUnknown* ToUnknown() const { return nullptr; }
 	virtual const TiXmlText* ToText() const { return nullptr; }
-	virtual const TiXmlDeclaration* ToDeclaration() const { return nullptr; }
 
 	virtual TiXmlDocument* ToDocument() { return nullptr; }
 	virtual TiXmlElement* ToElement() { return nullptr; }
 	virtual TiXmlComment* ToComment() { return nullptr; }
 	virtual TiXmlUnknown* ToUnknown() { return nullptr; }
 	virtual TiXmlText* ToText() { return nullptr; }
-	virtual TiXmlDeclaration* ToDeclaration() { return nullptr; }
 
 	/**
 	 * Create an exact duplicate of this node and return it. The memory must be deleted by the caller.

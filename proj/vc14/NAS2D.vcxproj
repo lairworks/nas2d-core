@@ -250,10 +250,19 @@
     <ClCompile Include="..\..\src\StateManager.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Trig.cpp" />
-    <ClCompile Include="..\..\src\Xml\Xml.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlNode.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlAttribute.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlAttributeParser.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlAttributeSet.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlBase.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlComment.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlDocument.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlElement.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlHandle.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlMemoryBuffer.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlParser.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlText.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlUnknown.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\NAS2D\Common.h" />

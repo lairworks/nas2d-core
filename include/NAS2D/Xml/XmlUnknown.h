@@ -26,16 +26,16 @@ namespace Xml {
 class TiXmlUnknown : public TiXmlNode
 {
 public:
-	TiXmlUnknown() : TiXmlNode(TiXmlNode::TINYXML_UNKNOWN) {}
-	virtual ~TiXmlUnknown() {}
+	TiXmlUnknown();
+	virtual ~TiXmlUnknown();
 
-	TiXmlUnknown(const TiXmlUnknown& copy) : TiXmlNode(TiXmlNode::TINYXML_UNKNOWN) { copy.CopyTo(this); }
-	TiXmlUnknown& operator=(const TiXmlUnknown& copy) { copy.CopyTo(this); return *this; }
+	TiXmlUnknown(const TiXmlUnknown& copy);
+	TiXmlUnknown& operator=(const TiXmlUnknown& copy);
 
 	virtual TiXmlNode* Clone() const;
 	
 	/**
-	 * Print this Unknown to a buffer.
+	 * Print the Unknown to a buffer.
 	 */
 	virtual void Print(std::string& buf, int depth) const;
 
@@ -47,15 +47,11 @@ public:
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
 	 */
-	virtual bool Accept(XmlVisitor* visitor) const { return visitor->Visit(*this); }
+	virtual bool Accept(XmlVisitor* visitor) const;
 
 protected:
-	void CopyTo(TiXmlUnknown* target) const { TiXmlNode::CopyTo(target); }
-
+	void CopyTo(TiXmlUnknown* target) const;
 	virtual void StreamIn(std::istream& in, std::string& tag);
-
-private:
-
 };
 
 } // namespace Xml

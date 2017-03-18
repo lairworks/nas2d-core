@@ -757,9 +757,8 @@ class TiXmlElement : public TiXmlNode
 {
 public:
 	/// Construct an element.
-	TiXmlElement(const std::string& _value);
-
-	TiXmlElement(const TiXmlElement&);
+	TiXmlElement(const std::string& _value) : TiXmlNode(TiXmlNode::TINYXML_ELEMENT) { value = _value; }
+	TiXmlElement(const TiXmlElement& copy) : TiXmlNode(TiXmlNode::TINYXML_ELEMENT) { copy.CopyTo(this); }
 
 	TiXmlElement& operator=(const TiXmlElement& base);
 
@@ -963,20 +962,20 @@ private:
 };
 
 
-/** XML text. A text node can have 2 ways to output the next. "normal" output 
-	and CDATA. It will default to the mode it was parsed from the XML file and
-	you generally want to leave it alone, but you can change the output mode with 
-	SetCDATA() and query it with CDATA().
-*/
+/**
+ * XML text.
+ * A text node has two ways to output text: "normal" output and CDATA. It will default
+ * to the mode it was parsed from the XML file.
+ */
 class TiXmlText : public TiXmlNode
 {
 	friend class TiXmlElement;
 public:
-	/** Constructor for text element. By default, it is treated as
-		normal, encoded text. If you want it be output as a CDATA text
-		element, set the parameter _cdata to 'true'
-	*/
-	TiXmlText(const std::string& initValue) : TiXmlNode(TiXmlNode::TINYXML_TEXT) { SetValue(initValue);	cdata = false; }
+	/**
+	 * Constructor for text element. By default, it is treated as normal, encoded text.
+	 * If you want it be output as a CDATA text	element, call \c CDATA(true).
+	 */
+	TiXmlText(const std::string& initValue) : TiXmlNode(TiXmlNode::TINYXML_TEXT), cdata(false) { SetValue(initValue); }
 	virtual ~TiXmlText() {}
 
 	TiXmlText(const TiXmlText& copy) : TiXmlNode(TiXmlNode::TINYXML_TEXT) { copy.CopyTo(this); }
@@ -988,7 +987,7 @@ public:
 	/// Queries whether this represents text using a CDATA section.
 	bool CDATA() const { return cdata; }
 	/// Turns on or off a CDATA representation of text.
-	void SetCDATA(bool _cdata) { cdata = _cdata; }
+	void CDATA(bool _cdata) { cdata = _cdata; }
 
 	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
 
@@ -1012,38 +1011,36 @@ private:
 };
 
 
-/** In correct XML the declaration is the first entry in the file.
-	@verbatim
-		<?xml version="1.0" standalone="yes"?>
-	@endverbatim
-
-	TinyXml will happily read or write files without a declaration,
-	however. There are 3 possible attributes to the declaration:
-	version, encoding, and standalone.
-
-	Note: In this version of the code, the attributes are
-	handled as special cases, not generic attributes, simply
-	because there can only be at most 3 and they are always the same.
-*/
+/**
+ * In correct XML the declaration is the first entry in the file.
+ * \code{.xml}
+ * <?xml version="1.0" standalone="yes"?>
+ * \endcode
+ * 
+ * TinyXml will happily read or write files without a declaration, however. There are three
+ * possible attributes to the declaration: version, encoding, and standalone.
+ * 
+ * \note	In this version of the code, the attributes are handled as special cases, not
+ *			generic attributes, simply because there can only be at most three and they are
+ *			always the same.
+ */
 class TiXmlDeclaration : public TiXmlNode
 {
 public:
-	/// Construct an empty declaration.
 	TiXmlDeclaration() : TiXmlNode(TiXmlNode::TINYXML_DECLARATION) {}
+	TiXmlDeclaration(const std::string& _version, const std::string& _encoding, const std::string& _standalone) : TiXmlNode(TiXmlNode::TINYXML_DECLARATION), version(_version), encoding(_encoding), standalone(_standalone) {}
 
-	/// Constructor.
-	TiXmlDeclaration(const std::string& _version, const std::string& _encoding, const std::string& _standalone);
-	TiXmlDeclaration(const TiXmlDeclaration& copy);
+	TiXmlDeclaration(const TiXmlDeclaration& copy) : TiXmlNode(TiXmlNode::TINYXML_DECLARATION) { copy.CopyTo(this); }
 	TiXmlDeclaration& operator=(const TiXmlDeclaration& copy);
 
 	virtual ~TiXmlDeclaration() {}
 
 	/// Version. Will return an empty string if none was found.
-	const char *Version() const { return version.c_str(); }
+	const std::string& Version() const { return version; }
 	/// Encoding. Will return an empty string if none was found.
-	const char *Encoding() const { return encoding.c_str(); }
+	const std::string& Encoding() const { return encoding; }
 	/// Is this a standalone document?
-	const char *Standalone() const { return standalone.c_str(); }
+	const std::string& Standalone() const { return standalone; }
 
 	/// Creates a copy of this Declaration and returns it.
 	virtual TiXmlNode* Clone() const;
@@ -1052,8 +1049,8 @@ public:
 
 	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
 
-	virtual const TiXmlDeclaration* ToDeclaration() const { return this; }	///< Cast to a more defined type. Will return null not of the requested type.
-	virtual TiXmlDeclaration* ToDeclaration() { return this; }				///< Cast to a more defined type. Will return null not of the requested type.
+	virtual const TiXmlDeclaration* ToDeclaration() const { return this; }
+	virtual TiXmlDeclaration* ToDeclaration() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
@@ -1065,9 +1062,9 @@ protected:
 	virtual void StreamIn(std::istream& in, std::string& tag);
 
 private:
-	std::string version;
-	std::string encoding;
-	std::string standalone;
+	std::string version;	/**< Comment Me. */
+	std::string encoding;	/**< Comment Me. */
+	std::string standalone;	/**< Comment Me. */
 };
 
 

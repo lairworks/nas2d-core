@@ -31,6 +31,10 @@ bool TiXmlBase::condenseWhiteSpace = true;
 
 const std::string TIXML_EMPTY_STR = "";
 
+
+// ==================================================================================
+// = XmlBase Implementation
+// ==================================================================================
 void TiXmlBase::EncodeString(const std::string& str, std::string& outString)
 {
 	size_t i = 0;
@@ -113,6 +117,10 @@ void TiXmlBase::EncodeString(const std::string& str, std::string& outString)
 }
 
 
+
+// ==================================================================================
+// = XmlNode Implementation
+// ==================================================================================
 TiXmlNode::~TiXmlNode()
 {
 	TiXmlNode* node = firstChild;
@@ -402,17 +410,6 @@ const TiXmlNode* TiXmlNode::PreviousSibling(const std::string& _value) const
 }
 
 
-void TiXmlElement::RemoveAttribute(const std::string& name)
-{
-	TiXmlAttribute* node = attributeSet.Find(name);
-	if (node)
-	{
-		attributeSet.Remove(node);
-		delete node;
-	}
-}
-
-
 const TiXmlElement* TiXmlNode::FirstChildElement() const
 {
 	const TiXmlNode* node = nullptr;
@@ -479,22 +476,9 @@ const TiXmlDocument* TiXmlNode::GetDocument() const
 }
 
 
-TiXmlElement::TiXmlElement(const std::string& _value)
-	: TiXmlNode(TiXmlNode::TINYXML_ELEMENT)
-{
-	firstChild = lastChild = nullptr;
-	value = _value;
-}
-
-
-TiXmlElement::TiXmlElement( const TiXmlElement& copy)
-	: TiXmlNode( TiXmlNode::TINYXML_ELEMENT )
-{
-	firstChild = lastChild = 0;
-	copy.CopyTo( this );	
-}
-
-
+// ==================================================================================
+// = XmlElement Implementation
+// ==================================================================================
 TiXmlElement& TiXmlElement::operator=( const TiXmlElement& base )
 {
 	ClearThis();
@@ -512,10 +496,10 @@ TiXmlElement::~TiXmlElement()
 void TiXmlElement::ClearThis()
 {
 	Clear();
-	while( attributeSet.First() )
+	while (attributeSet.First())
 	{
 		TiXmlAttribute* node = attributeSet.First();
-		attributeSet.Remove( node );
+		attributeSet.Remove(node);
 		delete node;
 	}
 }
@@ -718,6 +702,20 @@ const std::string& TiXmlElement::GetText() const
 }
 
 
+void TiXmlElement::RemoveAttribute(const std::string& name)
+{
+	TiXmlAttribute* node = attributeSet.Find(name);
+	if (node)
+	{
+		attributeSet.Remove(node);
+		delete node;
+	}
+}
+
+
+// ==================================================================================
+// = XmlDocument Implementation
+// ==================================================================================
 TiXmlDocument::TiXmlDocument() : TiXmlNode(TiXmlNode::TINYXML_DOCUMENT)
 {
 	tabsize = 4;
@@ -804,6 +802,10 @@ bool TiXmlDocument::Accept(XmlVisitor* visitor) const
 }
 
 
+
+// ==================================================================================
+// = XmlAttribute Implementation
+// ==================================================================================
 const TiXmlAttribute* TiXmlAttribute::Next() const
 {
 	// We are using knowledge of the sentinel. The sentinel have a value or name.
@@ -855,6 +857,7 @@ int TiXmlAttribute::QueryIntValue(int& ival) const
 	return TIXML_WRONG_TYPE;
 }
 
+
 int TiXmlAttribute::QueryDoubleValue(double& dval) const
 {
 	if (TIXML_SSCANF(value.c_str(), "%lf", &dval) == 1)
@@ -862,20 +865,24 @@ int TiXmlAttribute::QueryDoubleValue(double& dval) const
 	return TIXML_WRONG_TYPE;
 }
 
+
 void TiXmlAttribute::SetIntValue(int _value)
 {
 	SetValue(std::to_string(_value));
 }
+
 
 void TiXmlAttribute::SetDoubleValue(double _value)
 {
 	SetValue(std::to_string(_value));
 }
 
+
 int TiXmlAttribute::IntValue() const
 {
 	return std::stoi(value);
 }
+
 
 double  TiXmlAttribute::DoubleValue() const
 {
@@ -883,6 +890,10 @@ double  TiXmlAttribute::DoubleValue() const
 }
 
 
+
+// ==================================================================================
+// = XmlComment Implementation
+// ==================================================================================
 TiXmlComment& TiXmlComment::operator=(const TiXmlComment& base)
 {
 	Clear();
@@ -912,6 +923,10 @@ TiXmlNode* TiXmlComment::Clone() const
 }
 
 
+
+// ==================================================================================
+// = XmlText Implementation
+// ==================================================================================
 void TiXmlText::Print(std::string& buf, int depth) const
 {
 	if (cdata)
@@ -947,22 +962,10 @@ TiXmlNode* TiXmlText::Clone() const
 }
 
 
-TiXmlDeclaration::TiXmlDeclaration(	const std::string& _version, const std::string& _encoding, const std::string& _standalone )
-	: TiXmlNode( TiXmlNode::TINYXML_DECLARATION )
-{
-	version = _version;
-	encoding = _encoding;
-	standalone = _standalone;
-}
 
-
-TiXmlDeclaration::TiXmlDeclaration( const TiXmlDeclaration& copy )
-	: TiXmlNode( TiXmlNode::TINYXML_DECLARATION )
-{
-	copy.CopyTo( this );	
-}
-
-
+// ==================================================================================
+// = XmlDeclaration Implementation
+// ==================================================================================
 TiXmlDeclaration& TiXmlDeclaration::operator=( const TiXmlDeclaration& copy )
 {
 	Clear();

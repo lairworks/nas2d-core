@@ -786,11 +786,10 @@ const char* TiXmlDocument::Parse( const char* p, TiXmlParsingData* prevData, TiX
 		}
 
 		// Did we get encoding info?
-		if (    encoding == TIXML_ENCODING_UNKNOWN
-			 && node->ToDeclaration() )
+		if (encoding == TIXML_ENCODING_UNKNOWN && node->ToDeclaration() )
 		{
 			TiXmlDeclaration* dec = node->ToDeclaration();
-			const char* enc = dec->Encoding();
+			const char* enc = dec->Encoding().c_str();
 			assert( enc );
 
 			if ( *enc == 0 )
@@ -886,7 +885,7 @@ TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
 			TIXML_LOG( "XML parsing CDATA\n" );
 		#endif
 		TiXmlText* text = new TiXmlText( "" );
-		text->SetCDATA( true );
+		text->CDATA(true);
 		returnNode = text;
 	}
 	else if ( StringEqual( p, dtdHeader, false, encoding ) )

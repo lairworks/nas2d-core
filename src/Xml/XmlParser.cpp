@@ -26,8 +26,6 @@
 
 #include "NAS2D/XML/Xml.h"
 
-using namespace NAS2D::Xml;
-
 //#define DEBUG_PARSER
 #if defined( DEBUG_PARSER )
 #	if defined( DEBUG ) && defined( _MSC_VER )
@@ -37,6 +35,9 @@ using namespace NAS2D::Xml;
 #		define TIXML_LOG printf
 #	endif
 #endif
+
+namespace NAS2D {
+namespace Xml {
 
 // Note tha "PutString" hardcodes the same list. This
 // is less flexible than it appears. Changing the entries
@@ -168,34 +169,29 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 //	}
 }
 
-namespace NAS2D {
-namespace Xml {
+class TiXmlParsingData
+{
+	friend class TiXmlDocument;
+public:
+	void Stamp(const char* now, TiXmlEncoding encoding);
 
-	class TiXmlParsingData
+	const XmlCursor& Cursor() const { return cursor; }
+
+private:
+	TiXmlParsingData(const char* start, int _tabsize, int row, int col)
 	{
-		friend class TiXmlDocument;
-	public:
-		void Stamp(const char* now, TiXmlEncoding encoding);
+		assert(start);
+		stamp = start;
+		tabsize = _tabsize;
+		cursor.row = row;
+		cursor.col = col;
+	}
 
-		const TiXmlCursor& Cursor() const { return cursor; }
-
-	private:
-		// Only used by the document!
-		TiXmlParsingData(const char* start, int _tabsize, int row, int col)
-		{
-			assert(start);
-			stamp = start;
-			tabsize = _tabsize;
-			cursor.row = row;
-			cursor.col = col;
-		}
-
-		TiXmlCursor		cursor;
-		const char*		stamp;
-		int				tabsize;
-	};
-}; // namespace Xml
-}; // namespace NAS2D
+private:
+	XmlCursor		cursor;
+	const char*		stamp;
+	int				tabsize;
+};
 
 
 void TiXmlParsingData::Stamp( const char* now, TiXmlEncoding encoding )
@@ -744,7 +740,7 @@ const char* TiXmlDocument::Parse( const char* p, TiXmlParsingData* prevData, TiX
 	// Note that, for a document, this needs to come
 	// before the while space skip, so that parsing
 	// starts from the pointer we are given.
-	location.Clear();
+	location.clear();
 	if ( prevData )
 	{
 		location.row = prevData->cursor.row;
@@ -832,7 +828,7 @@ void TiXmlDocument::SetError( int err, const char* pError, TiXmlParsingData* dat
 	errorId = err;
 	errorDesc = errorString[ errorId ];
 
-	errorLocation.Clear();
+	errorLocation.clear();
 	if ( pError && data )
 	{
 		data->Stamp( pError, encoding );
@@ -1647,3 +1643,6 @@ bool TiXmlText::Blank() const
 
 	return true;
 }
+
+} // namespace Xml
+} // namespace NAS2D

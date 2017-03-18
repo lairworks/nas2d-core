@@ -252,6 +252,7 @@
     <ClCompile Include="..\..\src\Trig.cpp" />
     <ClCompile Include="..\..\src\Xml\Xml.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlAttributeParser.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlBase.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlParser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -290,6 +291,9 @@
     <ClInclude Include="..\..\include\NAS2D\Utility.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\Xml.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeParser.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlBase.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlNode.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlVisitor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

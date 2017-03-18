@@ -37,11 +37,11 @@ int XmlAttributeParser::intAttribute(Xml::TiXmlNode* node, const std::string& at
 	{
 		if(result == Xml::TIXML_NO_ATTRIBUTE)
 		{
-			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->Row() << "." << endl;
+			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->row() << "." << endl;
 		}
 		else if(result == Xml::TIXML_WRONG_TYPE)
 		{
-			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;
+			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->row() << "." << endl;
 		}
 		else
 		{
@@ -73,11 +73,11 @@ float XmlAttributeParser::floatAttribute(Xml::TiXmlNode* node, const std::string
 	{
 		if(result == Xml::TIXML_NO_ATTRIBUTE)
 		{
-			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->Row() << "." << endl;
+			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->row() << "." << endl;
 		}
 		else if(result == Xml::TIXML_WRONG_TYPE)
 		{
-			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;
+			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->row() << "." << endl;
 		}
 		else
 		{
@@ -109,11 +109,11 @@ double XmlAttributeParser::doubleAttribute(Xml::TiXmlNode* node, const std::stri
 	{
 		if(result == Xml::TIXML_NO_ATTRIBUTE)
 		{
-			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->Row() << "." << endl;
+			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->row() << "." << endl;
 		}
 		else if(result == Xml::TIXML_WRONG_TYPE)
 		{
-			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;
+			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->row() << "." << endl;
 		}
 		else
 		{
@@ -139,7 +139,7 @@ string XmlAttributeParser::stringAttribute(Xml::TiXmlNode* node, const std::stri
 	const std::string returnValue = node->ToElement()->Attribute(attribute);
 	if(returnValue.empty())
 	{
-		cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;
+		cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->row() << "." << endl;
 		return "";
 	}
 

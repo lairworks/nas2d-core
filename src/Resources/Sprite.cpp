@@ -355,13 +355,13 @@ void Sprite::parseImageSheets(TiXmlElement *root)
 
 			if(id.empty())
 			{
-				cout << "Zero-length 'id' value in Imagesheet definition." << endTag(xmlNode->Row(), name()) << endl;
+				cout << "Zero-length 'id' value in Imagesheet definition." << endTag(xmlNode->row(), name()) << endl;
 				return;
 			}
 
 			if(src.empty())
 			{
-				cout << "Zero-length 'src' value in Imagesheet definition." << endTag(xmlNode->Row(), name()) << endl;
+				cout << "Zero-length 'src' value in Imagesheet definition." << endTag(xmlNode->row(), name()) << endl;
 				return;
 			}
 
@@ -402,7 +402,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, TiXmlN
 	}
 	else
 	{
-		cout << "Image-sheet redefinition '" << id << "'." << endTag(node->Row(), name()) << ". Imagesheet ignored." << endl;
+		cout << "Image-sheet redefinition '" << id << "'." << endTag(node->row(), name()) << ". Imagesheet ignored." << endl;
 	}
 }
 
@@ -430,14 +430,14 @@ void Sprite::parseActions(TiXmlElement *root)
 
 			if(action_name.empty())
 			{
-				cout << "Zero-length 'name' value in Action definition." << endTag(actionNode->Row(), name()) << endl;
+				cout << "Zero-length 'name' value in Action definition." << endTag(actionNode->row(), name()) << endl;
 				continue;
 			}
 
 			if(mActions.find(toLowercase(action_name)) == mActions.end())
 				parseFrames(action_name, actionNode);
 			else
-				cout << "Redefinition of action '" << action_name << "'. First definition will be used." << endTag(actionNode->Row(), name()) << endl;
+				cout << "Redefinition of action '" << action_name << "'. First definition will be used." << endTag(actionNode->row(), name()) << endl;
 		}
 	}
 }
@@ -457,7 +457,7 @@ void Sprite::parseFrames(const std::string& action, TiXmlNode *node)
 	TiXmlNode *frameNode = 0;
 	while(frameNode = node->IterateChildren(frameNode))
 	{
-		int currentRow = frameNode->Row();
+		int currentRow = frameNode->row();
 		
 		if(frameNode->Value() == "frame")
 		{

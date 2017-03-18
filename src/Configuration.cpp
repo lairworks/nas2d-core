@@ -216,7 +216,7 @@ bool Configuration::readConfig(const std::string& filePath)
 			else if (xmlNode->Type() == TiXmlNode::TINYXML_DOCUMENT)
 				; // ignore comments
 			else
-				std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in '" << filePath << "' on row " << xmlNode->Row() << "." << std::endl;
+				std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in '" << filePath << "' on row " << xmlNode->row() << "." << std::endl;
 		}
 	}
 
@@ -314,10 +314,10 @@ void Configuration::parseOptions(void* _n)
 			if(!option.empty())
 				mOptions[option] = parser.stringAttribute(xmlNode, "value");
 			else
-				std::cout << "Option tag is missing a name attribute on row " << xmlNode->Row() << "." << std::endl;
+				std::cout << "Option tag is missing a name attribute on row " << xmlNode->row() << "." << std::endl;
 		}
 		else
-			std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in configuration on row " << xmlNode->Row() << "." << std::endl;
+			std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in configuration on row " << xmlNode->row() << "." << std::endl;
 	}
 }
 

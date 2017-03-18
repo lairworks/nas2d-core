@@ -16,6 +16,7 @@
 using namespace std;
 using namespace NAS2D;
 
+
 /**
  * Gets an int value from a named attribute.
  * 
@@ -25,20 +26,20 @@ using namespace NAS2D;
  * \return	The value contained in the attribute. If the attribute wasn't
  *			found, this will return 0.
  */
-int XmlAttributeParser::intAttribute(TiXmlNode* node, const std::string& attribute)
+int XmlAttributeParser::intAttribute(Xml::TiXmlNode* node, const std::string& attribute)
 {
 	int returnValue = 0;
 
-	int result = TIXML_SUCCESS;
+	int result = Xml::TIXML_SUCCESS;
 
 	result = node->ToElement()->QueryIntAttribute(attribute, returnValue);
-	if(result != TIXML_SUCCESS)
+	if(result != Xml::TIXML_SUCCESS)
 	{
-		if(result == TIXML_NO_ATTRIBUTE)
+		if(result == Xml::TIXML_NO_ATTRIBUTE)
 		{
 			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->Row() << "." << endl;
 		}
-		else if(result == TIXML_WRONG_TYPE)
+		else if(result == Xml::TIXML_WRONG_TYPE)
 		{
 			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;
 		}
@@ -61,20 +62,20 @@ int XmlAttributeParser::intAttribute(TiXmlNode* node, const std::string& attribu
  * \return	The value contained in the attribute. If the attribute wasn't
  *			found, this will return 0.0f.
  */
-float XmlAttributeParser::floatAttribute(TiXmlNode* node, const std::string& attribute)
+float XmlAttributeParser::floatAttribute(Xml::TiXmlNode* node, const std::string& attribute)
 {
 	float returnValue = 0.0f;
 
-	int result = TIXML_SUCCESS;
+	int result = Xml::TIXML_SUCCESS;
 
 	result = node->ToElement()->QueryFloatAttribute(attribute, returnValue);
-	if(result != TIXML_SUCCESS)
+	if(result != Xml::TIXML_SUCCESS)
 	{
-		if(result == TIXML_NO_ATTRIBUTE)
+		if(result == Xml::TIXML_NO_ATTRIBUTE)
 		{
 			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->Row() << "." << endl;
 		}
-		else if(result == TIXML_WRONG_TYPE)
+		else if(result == Xml::TIXML_WRONG_TYPE)
 		{
 			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;
 		}
@@ -97,20 +98,20 @@ float XmlAttributeParser::floatAttribute(TiXmlNode* node, const std::string& att
  * \return	The value contained in the attribute. If the attribute wasn't
  *			found, this will return 0.0.
  */
-double XmlAttributeParser::doubleAttribute(TiXmlNode* node, const std::string& attribute)
+double XmlAttributeParser::doubleAttribute(Xml::TiXmlNode* node, const std::string& attribute)
 {
 	double returnValue = 0.0;
 
-	int result = TIXML_SUCCESS;
+	int result = Xml::TIXML_SUCCESS;
 
 	result = node->ToElement()->QueryDoubleAttribute(attribute, returnValue);
-	if(result != TIXML_SUCCESS)
+	if(result != Xml::TIXML_SUCCESS)
 	{
-		if(result == TIXML_NO_ATTRIBUTE)
+		if(result == Xml::TIXML_NO_ATTRIBUTE)
 		{
 			cout << "Tag '<" << node->Value() << ">' is missing attribute '" << attribute << "' on row " << node->Row() << "." << endl;
 		}
-		else if(result == TIXML_WRONG_TYPE)
+		else if(result == Xml::TIXML_WRONG_TYPE)
 		{
 			cout << "Attribute '" << attribute << "' in tag '<" << node->Value() << ">' contains invalid data on row " << node->Row() << "." << endl;
 		}
@@ -133,7 +134,7 @@ double XmlAttributeParser::doubleAttribute(TiXmlNode* node, const std::string& a
  * \return	The value contained in the attribute. If the attribute wasn't
  *			found, this will return an empty string.
  */
-string XmlAttributeParser::stringAttribute(TiXmlNode* node, const std::string& attribute)
+string XmlAttributeParser::stringAttribute(Xml::TiXmlNode* node, const std::string& attribute)
 {
 	const std::string returnValue = node->ToElement()->Attribute(attribute);
 	if(returnValue.empty())

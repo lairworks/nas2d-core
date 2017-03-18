@@ -99,6 +99,7 @@ void Configuration::load(const std::string& filePath)
 
 }
 
+using namespace NAS2D::Xml;
 
 void Configuration::save()
 {

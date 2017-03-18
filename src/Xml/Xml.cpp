@@ -25,7 +25,7 @@
 
 #include "NAS2D/XML/Xml.h"
 
-//FILE* TiXmlFOpen(const char* filename, const char* mode);
+using namespace NAS2D::Xml;
 
 bool TiXmlBase::condenseWhiteSpace = true;
 
@@ -115,6 +115,28 @@ void TiXmlBase::EncodeString(const std::string& str, std::string& outString)
 		}
 	}
 }
+
+
+void TiXmlBase::fillErrorTable()
+{
+	TiXmlBase::errorString.push_back("No error");
+	TiXmlBase::errorString.push_back("Unspecified Error");
+	TiXmlBase::errorString.push_back("Error: Failed to open file");
+	TiXmlBase::errorString.push_back("Error parsing Element.");
+	TiXmlBase::errorString.push_back("Failed to read Element name.");
+	TiXmlBase::errorString.push_back("Error reading Element value.");
+	TiXmlBase::errorString.push_back("Error reading Attributes.");
+	TiXmlBase::errorString.push_back("Error: Empty tag.");
+	TiXmlBase::errorString.push_back("Error reading end tag.");
+	TiXmlBase::errorString.push_back("Error parsing Unknown.");
+	TiXmlBase::errorString.push_back("Error parsing Comment.");
+	TiXmlBase::errorString.push_back("Error parsing Declaration.");
+	TiXmlBase::errorString.push_back("Error: Document empty.");
+	TiXmlBase::errorString.push_back("Error: Unexpected EOF found in input stream.");
+	TiXmlBase::errorString.push_back("Error parsing CDATA.");
+	TiXmlBase::errorString.push_back("Error adding XmlDocument to document: XmlDocument can only be at the root.");
+}
+
 
 
 // ==================================================================================
@@ -1239,7 +1261,7 @@ TiXmlHandle TiXmlHandle::ChildElement(const std::string& value, int count) const
 // ==================================================================================
 bool XmlMemoryBuffer::VisitEnter(const TiXmlElement& element, const TiXmlAttribute* firstAttribute)
 {
-	DoIndent();
+	indent();
 	_buffer += "<";
 	_buffer += element.Value();
 
@@ -1252,15 +1274,12 @@ bool XmlMemoryBuffer::VisitEnter(const TiXmlElement& element, const TiXmlAttribu
 	if (!element.FirstChild())
 	{
 		_buffer += " />";
-		DoLineBreak();
+		line_break();
 	}
 	else
 	{
 		_buffer += ">";
-		if (element.FirstChild()->ToText() && element.LastChild() == element.FirstChild() && element.FirstChild()->ToText()->CDATA() == false)
-			simpleTextPrint = true;
-		else
-			DoLineBreak();
+		line_break();
 	}
 	++depth;
 	return true;
@@ -1274,15 +1293,11 @@ bool XmlMemoryBuffer::VisitExit(const TiXmlElement& element)
 		;
 	else
 	{
-		if (simpleTextPrint)
-			simpleTextPrint = false;
-		else
-			DoIndent();
-
+		indent();
 		_buffer += "</";
 		_buffer += element.Value();
 		_buffer += ">";
-		DoLineBreak();
+		line_break();
 	}
 	return true;
 }
@@ -1292,25 +1307,19 @@ bool XmlMemoryBuffer::Visit(const TiXmlText& text)
 {
 	if (text.CDATA())
 	{
-		DoIndent();
+		indent();
 		_buffer += "<![CDATA[";
 		_buffer += text.Value();
 		_buffer += "]]>";
-		DoLineBreak();
-	}
-	else if (simpleTextPrint)
-	{
-		std::string str;
-		TiXmlBase::EncodeString(text.Value(), str);
-		_buffer += str;
+		line_break();
 	}
 	else
 	{
-		DoIndent();
+		indent();
 		std::string str;
 		TiXmlBase::EncodeString(text.Value(), str);
 		_buffer += str;
-		DoLineBreak();
+		line_break();
 	}
 	return true;
 }
@@ -1318,30 +1327,30 @@ bool XmlMemoryBuffer::Visit(const TiXmlText& text)
 
 bool XmlMemoryBuffer::Visit(const TiXmlDeclaration& declaration)
 {
-	DoIndent();
+	indent();
 	declaration.Print(_buffer, 0);
-	DoLineBreak();
+	line_break();
 	return true;
 }
 
 
 bool XmlMemoryBuffer::Visit( const TiXmlComment& comment )
 {
-	DoIndent();
+	indent();
 	_buffer += "<!--";
 	_buffer += comment.Value();
 	_buffer += "-->";
-	DoLineBreak();
+	line_break();
 	return true;
 }
 
 
 bool XmlMemoryBuffer::Visit( const TiXmlUnknown& unknown )
 {
-	DoIndent();
+	indent();
 	_buffer += "<";
 	_buffer += unknown.Value();
 	_buffer += ">";
-	DoLineBreak();
+	line_break();
 	return true;
 }

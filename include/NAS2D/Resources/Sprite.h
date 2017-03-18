@@ -152,11 +152,11 @@ private:
 
 private:
 	void parseXml(const std::string& filePath);
-	void parseImageSheets(TiXmlElement *root);
-	void addImageSheet(const std::string& id, const std::string& src, TiXmlNode* node);
+	void parseImageSheets(Xml::TiXmlElement *root);
+	void addImageSheet(const std::string& id, const std::string& src, Xml::TiXmlNode* node);
 
-	void parseActions(TiXmlElement *root);
-	void parseFrames(const std::string& action, TiXmlNode *node);
+	void parseActions(Xml::TiXmlElement *root);
+	void parseFrames(const std::string& action, Xml::TiXmlNode *node);
 
 	bool validateSheetId(const std::string& sheetId, int row);
 

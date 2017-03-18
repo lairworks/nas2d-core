@@ -15,6 +15,7 @@
 
 using namespace std;
 using namespace NAS2D;
+using namespace NAS2D::Xml;
 
 const string NAS2D::SPRITE_VERSION("0.99");
 const string DEFAULT_ACTION("default");

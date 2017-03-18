@@ -26,6 +26,8 @@
 
 #include "NAS2D/XML/Xml.h"
 
+using namespace NAS2D::Xml;
+
 //#define DEBUG_PARSER
 #if defined( DEBUG_PARSER )
 #	if defined( DEBUG ) && defined( _MSC_VER )
@@ -166,30 +168,34 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 //	}
 }
 
+namespace NAS2D {
+namespace Xml {
 
-class TiXmlParsingData
-{
-	friend class TiXmlDocument;
-  public:
-	void Stamp( const char* now, TiXmlEncoding encoding );
-
-	const TiXmlCursor& Cursor() const	{ return cursor; }
-
-  private:
-	// Only used by the document!
-	TiXmlParsingData( const char* start, int _tabsize, int row, int col )
+	class TiXmlParsingData
 	{
-		assert( start );
-		stamp = start;
-		tabsize = _tabsize;
-		cursor.row = row;
-		cursor.col = col;
-	}
+		friend class TiXmlDocument;
+	public:
+		void Stamp(const char* now, TiXmlEncoding encoding);
 
-	TiXmlCursor		cursor;
-	const char*		stamp;
-	int				tabsize;
-};
+		const TiXmlCursor& Cursor() const { return cursor; }
+
+	private:
+		// Only used by the document!
+		TiXmlParsingData(const char* start, int _tabsize, int row, int col)
+		{
+			assert(start);
+			stamp = start;
+			tabsize = _tabsize;
+			cursor.row = row;
+			cursor.col = col;
+		}
+
+		TiXmlCursor		cursor;
+		const char*		stamp;
+		int				tabsize;
+	};
+}; // namespace Xml
+}; // namespace NAS2D
 
 
 void TiXmlParsingData::Stamp( const char* now, TiXmlEncoding encoding )

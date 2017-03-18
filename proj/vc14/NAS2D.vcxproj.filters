@@ -105,16 +105,13 @@
     <ClCompile Include="..\..\src\Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\tinyxml\Xml.cpp">
+    <ClCompile Include="..\..\src\Xml\Xml.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\tinyxml\XmlAttributeParser.cpp">
+    <ClCompile Include="..\..\src\Xml\XmlAttributeParser.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\tinyxml\XmlError.cpp">
-      <Filter>Source Files\Xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\tinyxml\XmlParser.cpp">
+    <ClCompile Include="..\..\src\Xml\XmlParser.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
   </ItemGroup>

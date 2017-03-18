@@ -68,6 +68,8 @@
 	#endif
 #endif	
 
+namespace NAS2D {
+namespace Xml {
 
 class TiXmlDocument;
 class TiXmlElement;
@@ -254,7 +256,6 @@ public:
 	};
 
 protected:
-
 	static const char* SkipWhiteSpace(const char*, TiXmlEncoding encoding);
 
 	inline static bool IsWhiteSpace(char c) { return (isspace((unsigned char)c) || c == '\n' || c == '\r'); }
@@ -299,8 +300,7 @@ protected:
 
 	TiXmlCursor location;
 
-	/// Field containing a generic user pointer
-	void*			userData;
+	void* userData;		/**< Field containing a generic user pointer */
 
 	// None of these methods are reliable for any language except English.
 	// Good for approximation, not great for accuracy.
@@ -321,8 +321,8 @@ protected:
 	static void ConvertUTF32ToUTF8(unsigned long input, char* output, int* length);
 
 private:
-	TiXmlBase(const TiXmlBase&);			// not implemented.
-	void operator=(const TiXmlBase& base);	// not allowed.
+	TiXmlBase(const TiXmlBase&); // Explicitly disallowed.
+	void operator=(const TiXmlBase& base); // Explicitly disallowed.
 
 private:
 	void fillErrorTable();
@@ -907,7 +907,6 @@ protected:
 	void ClearThis();	// like clear, but initializes 'this' object as well
 
 	// Used to be public [internal use]
-
 	virtual void StreamIn(std::istream& in, std::string& tag);
 
 	/*	[internal use]
@@ -981,21 +980,26 @@ public:
 	TiXmlText(const TiXmlText& copy) : TiXmlNode(TiXmlNode::TINYXML_TEXT) { copy.CopyTo(this); }
 	TiXmlText& operator=(const TiXmlText& base) { base.CopyTo(this); return *this; }
 
-	// Write this text object to a FILE stream.
 	virtual void Print(std::string& buf, int depth) const;
 
-	/// Queries whether this represents text using a CDATA section.
+	/**
+	 * Queries whether this represents text using a CDATA section.
+	 */
 	bool CDATA() const { return cdata; }
-	/// Turns on or off a CDATA representation of text.
+
+	/**
+	 * Turns on or off a CDATA representation of text.
+	 */
 	void CDATA(bool _cdata) { cdata = _cdata; }
 
 	virtual const char* Parse(const char* p, TiXmlParsingData* data, TiXmlEncoding encoding);
 
-	virtual const TiXmlText* ToText() const { return this; } ///< Cast to a more defined type. Will return null not of the requested type.
-	virtual TiXmlText*       ToText() { return this; } ///< Cast to a more defined type. Will return null not of the requested type.
+	virtual const TiXmlText* ToText() const { return this; }
+	virtual TiXmlText* ToText() { return this; }
 
-	/** Walk the XML tree visiting this node and all of its children.
-	*/
+	/**
+	 * Walk the XML tree visiting this node and all of its children.
+	 */
 	virtual bool Accept(XmlVisitor* visitor) const { return visitor->Visit(*this); }
 
 protected:
@@ -1382,29 +1386,23 @@ private:
 
 
 /**
- * Print to memory functionality. The TiXmlPrinter is useful when you need to:
+ * Writes an XML Document to a memory buffer.
  * 
- * -# Print to memory (especially in non-STL mode)
- * -# Control formatting (line endings, etc.)
+ * Once you have a buffer containing the XML document, you can
+ * save it to disk using the Filesystem class.
  * 
- * When constructed, the TiXmlPrinter is in its default "pretty printing" mode.
- * Before calling Accept() you can call methods to control the printing
- * of the XML document. After TiXmlNode::Accept() is called, the printed document can
- * be accessed via the CStr(), Str(), and Size() methods.
+ * \code{.cpp}
+ * XmlDocument doc;
+ * XmlMemoryBuffer buff;
+ * doc.Accept(&buff);
  * 
- * TiXmlPrinter uses the Visitor API.
- * @verbatim
- * TiXmlPrinter printer;
- * printer.SetIndent( "\t" );
- * 
- * doc.Accept( &printer );
- * fprintf( stdout, "%s", printer.CStr() );
- * @endverbatim
+ * Utility<Filesystem>::get().write(File(buff.buffer(), mConfigPath));
+ * \endcode
  */
 class XmlMemoryBuffer : public XmlVisitor
 {
 public:
-	XmlMemoryBuffer() : depth(0), simpleTextPrint(false), indent("\t"), lineBreak("\n") {}
+	XmlMemoryBuffer() : depth(0), _indent("\t"), _lineBreak("\n") {}
 
 	virtual bool VisitEnter(const TiXmlDocument& doc) { return true; }
 	virtual bool VisitExit(const TiXmlDocument& doc) { return true; }
@@ -1422,15 +1420,19 @@ public:
 	const std::string& buffer() { return _buffer; }
 
 private:
-	void DoIndent() { for (int i = 0; i < depth; ++i) _buffer += indent; }
-	void DoLineBreak() { _buffer += lineBreak; }
+	void indent() { for (int i = 0; i < depth; ++i) _buffer += _indent; }
+	void line_break() { _buffer += _lineBreak; }
 
+private:
 	int depth;
-	bool simpleTextPrint;
+
 	std::string _buffer;
-	std::string indent;
-	std::string lineBreak;
+	std::string _indent;
+	std::string _lineBreak;
 };
+
+}; // namespace Xml
+}; // namespace NAS2D
 
 #ifdef _MSC_VER
 #pragma warning(pop)

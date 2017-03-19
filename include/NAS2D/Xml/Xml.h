@@ -30,7 +30,7 @@
 // =	- Removed file input/output and substituted buffer input/output
 // =	- Removed 'Ti' from all object names.
 // =	- Renamed class methods to use lowercase names (conforms with NAS2D naming).
-// =	- Broke library apart into separate source and header files.
+// =	- Broke source code apart into separate source and header files.
 // =	- Removed processing of 'declaration' tag (not needed for NAS2D apps).
 // =	- Removed support for UTF encoding -- not needed for NAS2D applications.
 // ==================================================================================

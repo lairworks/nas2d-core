@@ -43,9 +43,8 @@ extern std::vector<std::string> XML_ERROR_TABLE;
 namespace NAS2D {
 namespace Xml {
 
-// Note tha "PutString" hardcodes the same list. This
-// is less flexible than it appears. Changing the entries
-// or order will break putstring.	
+// Note that "PutString" hardcodes the same list. This is less flexible
+// than itappears. Changing the entries or order will break putstring.	
 XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] = 
 {
 	{ "&amp;",  5, '&' },

@@ -43,6 +43,9 @@ int XmlBase::column() const { return location.col + 1; }	///< See Row()
 
 void XmlBase::fillErrorTable()
 {
+	if (!XML_ERROR_TABLE.empty())
+		return;
+
 	XML_ERROR_TABLE.push_back("No error");
 	XML_ERROR_TABLE.push_back("Unspecified Error");
 	XML_ERROR_TABLE.push_back("Error parsing Element.");

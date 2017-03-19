@@ -290,7 +290,6 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 	if (fontAlreadyLoaded(path))
 	{
 		++FONTMAP[path].ref_count;
-		std::cout << "TID: " << FONTMAP[path].texture_id << " GLYPHS: " << FONTMAP[path].metrics.size() << " REFS: " << FONTMAP[path].ref_count << std::endl;
 		return true;
 	}
 

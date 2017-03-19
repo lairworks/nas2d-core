@@ -17,7 +17,7 @@
 
 using namespace NAS2D::Xml;
 
-XmlHandle XmlHandle::FirstChild() const
+XmlHandle XmlHandle::firstChild() const
 {
 	if (node)
 	{
@@ -29,7 +29,7 @@ XmlHandle XmlHandle::FirstChild() const
 }
 
 
-XmlHandle XmlHandle::FirstChild(const std::string& value) const
+XmlHandle XmlHandle::firstChild(const std::string& value) const
 {
 	if (node)
 	{
@@ -41,7 +41,7 @@ XmlHandle XmlHandle::FirstChild(const std::string& value) const
 }
 
 
-XmlHandle XmlHandle::FirstChildElement() const
+XmlHandle XmlHandle::firstChildElement() const
 {
 	if (node)
 	{
@@ -53,7 +53,7 @@ XmlHandle XmlHandle::FirstChildElement() const
 }
 
 
-XmlHandle XmlHandle::FirstChildElement(const std::string& value) const
+XmlHandle XmlHandle::firstChildElement(const std::string& value) const
 {
 	if (node)
 	{
@@ -66,7 +66,7 @@ XmlHandle XmlHandle::FirstChildElement(const std::string& value) const
 }
 
 
-XmlHandle XmlHandle::Child(int count) const
+XmlHandle XmlHandle::child(int count) const
 {
 	if (node)
 	{
@@ -81,7 +81,7 @@ XmlHandle XmlHandle::Child(int count) const
 }
 
 
-XmlHandle XmlHandle::Child(const std::string& value, int count) const
+XmlHandle XmlHandle::child(const std::string& value, int count) const
 {
 	if (node)
 	{
@@ -96,7 +96,7 @@ XmlHandle XmlHandle::Child(const std::string& value, int count) const
 }
 
 
-XmlHandle XmlHandle::ChildElement(int count) const
+XmlHandle XmlHandle::childElement(int count) const
 {
 	if (node)
 	{
@@ -112,7 +112,7 @@ XmlHandle XmlHandle::ChildElement(int count) const
 }
 
 
-XmlHandle XmlHandle::ChildElement(const std::string& value, int count) const
+XmlHandle XmlHandle::childElement(const std::string& value, int count) const
 {
 	if (node)
 	{

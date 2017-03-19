@@ -36,17 +36,17 @@ namespace Xml {
  * easy to write a *lot* of code that looks like:
  * 
  * \code{.cpp}
- * XmlElement* root = document.FirstChildElement( "Document" );
+ * XmlElement* root = document.firstChildElement("Document");
  * if (root)
  * {
- *	XmlElement* element = root->FirstChildElement( "Element" );
+ *	XmlElement* element = root->firstChildElement("Element");
  *	if (element)
  * 	{
- * 		XmlElement* child = element->FirstChildElement( "Child" );
- * 		if ( child )
+ * 		XmlElement* child = element->firstChildElement("Child");
+ * 		if (child)
  * 		{
- * 			XmlElement* child2 = child->NextSiblingElement( "Child" );
- * 			if ( child2 )
+ * 			XmlElement* child2 = child->nextSiblingElement("Child");
+ * 			if (child2)
  * 			{
  * 				// Finally do something useful.
  * 			}
@@ -56,13 +56,13 @@ namespace Xml {
  * \endcode
  *
  * And that doesn't even cover "else" cases. XmlHandle addresses the verbosity
- * of such code. A XmlHandle checks for nullpointers so it is perfectly safe
+ * of such code. An XmlHandle checks for null pointers so it is perfectly safe
  * and correct to use:
  *
  * \code{.cpp}
- * XmlHandle docHandle( &document );
- * XmlElement* child2 = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).Child( "Child", 1 ).ToElement();
- * if ( child2 )
+ * XmlHandle docHandle(&document);
+ * XmlElement* child2 = docHandle.firstChild("Document").firstChild("Element").child("Child", 1).toElement();
+ * if (child2)
  * {
  *	// do something usefull
  * }
@@ -70,8 +70,8 @@ namespace Xml {
  *
  * Which is MUCH more concise and useful.
  *
- * It is also safe to copy handles - internally they are nothing more than node pointers.
- * \code{.cpp{
+ * It is also safe to copy handle.
+ * \code{.cpp}
  * XmlHandle handleCopy = handle;
  * \endcode
  *
@@ -81,7 +81,7 @@ namespace Xml {
  * int i = 0;
  * while (true)
  * {
- *	XmlElement* child = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).Child( "Child", i ).ToElement();
+ *	XmlElement* child = docHandle.firstChild("Document").firstChild("Element").child("Child", i).toElement();
  *	if (!child)
  * 		break;
  * 	// do something
@@ -89,13 +89,13 @@ namespace Xml {
  * }
  * \endcode
  *
- * It seems reasonable, but it is in fact two embedded \c while loops. The Child method is
+ * It seems reasonable, but it is in fact two embedded \c while loops. The \c child method is
  * a linear walk to find the element, so this code would iterate much more than it needs
- * to. Instead, prefer:
+ * to. Instead, use:
  *
  * \code{.cpp}
- * XmlElement* child = docHandle.FirstChild("Document").FirstChild("Element").FirstChild("Child").ToElement();
- * for (child; child; child = child->NextSiblingElement())
+ * XmlElement* child = docHandle.firstChild("Document").firstChild("Element").firstChild("Child").toElement();
+ * for (child; child; child = child->nextSiblingElement())
  * {
  *	// do something
  * }
@@ -108,54 +108,54 @@ public:
 	XmlHandle(const XmlHandle& ref) { this->node = ref.node; }
 	XmlHandle operator=(const XmlHandle& ref) { if (&ref != this) this->node = ref.node; return *this; }
 
-	XmlHandle FirstChild() const;
-	XmlHandle FirstChild(const std::string& value) const;
-	XmlHandle FirstChildElement() const;
-	XmlHandle FirstChildElement(const std::string& value) const;
+	XmlHandle firstChild() const;
+	XmlHandle firstChild(const std::string& value) const;
+	XmlHandle firstChildElement() const;
+	XmlHandle firstChildElement(const std::string& value) const;
 
 	/**
 	 * Return a handle to the "index" child with the given name. The first child is 0, the second 1, etc.
 	 */
-	XmlHandle Child(const std::string& value, int index) const;
+	XmlHandle child(const std::string& value, int index) const;
 
 	/**
 	 * Return a handle to the "index" child. The first child is 0, the second 1, etc.
 	 */
-	XmlHandle Child(int index) const;
+	XmlHandle child(int index) const;
 
 	/**
 	 * Return a handle to the "index" child element with the given name. The first child element is 0, the second 1, etc.
 	 * 
 	 * \note	Only XmlElements are indexed. Other types are not counted.
 	 */
-	XmlHandle ChildElement(const std::string& value, int index) const;
+	XmlHandle childElement(const std::string& value, int index) const;
 
 	/**
 	 * Return a handle to the "index" child element. The first child element is 0, the second 1, etc.
 	 * 
 	 * \note	Only XmlElements are indexed. Other types are not counted.
 	 */
-	XmlHandle ChildElement(int index) const;
+	XmlHandle childElement(int index) const;
 
 	/**
 	 * Return the handle as a XmlNode. This may return null.
 	 */
-	XmlNode* ToNode() const { return node; }
+	XmlNode* toNode() const { return node; }
 
 	/**
 	 * Return the handle as a XmlElement. This may return null.
 	 */
-	XmlElement* ToElement() const { return ((node && node->toElement()) ? node->toElement() : 0); }
+	XmlElement* toElement() const { return ((node && node->toElement()) ? node->toElement() : nullptr); }
 	
 	/**
 	 * Return the handle as a XmlText. This may return null.
 	 */
-	XmlText* ToText() const { return ((node && node->toText()) ? node->toText() : 0); }
+	XmlText* toText() const { return ((node && node->toText()) ? node->toText() : nullptr); }
 	
 	/**
 	 * Return the handle as a XmlUnknown. This may return null.
 	 */
-	XmlUnknown* ToUnknown() const { return ((node && node->toUnknown()) ? node->toUnknown() : 0); }
+	XmlUnknown* toUnknown() const { return ((node && node->toUnknown()) ? node->toUnknown() : nullptr); }
 
 private:
 	XmlNode* node;

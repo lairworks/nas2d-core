@@ -65,6 +65,11 @@ void XmlComment::write(std::string& buf, int depth) const
 }
 
 
+/**
+ * Creates a clone of the Comment.
+ * 
+ * \returns	A pointer to an XmlNode.
+ */
 XmlNode* XmlComment::clone() const
 {
 	XmlComment* clone = new XmlComment();
@@ -74,4 +79,19 @@ XmlNode* XmlComment::clone() const
 
 	copyTo(clone);
 	return clone;
+}
+
+
+/**
+ * Walk the XML tree visiting this node and all of its children.
+ */
+bool XmlComment::accept(XmlVisitor* visitor) const
+{
+	return visitor->visit(*this);
+}
+
+
+void XmlComment::copyTo(XmlComment* target) const
+{
+	XmlNode::copyTo(target);
 }

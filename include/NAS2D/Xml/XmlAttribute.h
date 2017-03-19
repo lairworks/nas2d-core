@@ -19,7 +19,7 @@ namespace NAS2D {
 namespace Xml {
 
 /**
- * An attribute is a name-value pair. Elements have an arbitrary number of attributes,
+ * An XmlAttribute is a name-value pair. Elements have an arbitrary number of attributes,
  * each with a unique name.
  */
 class XmlAttribute : public XmlBase

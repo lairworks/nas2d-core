@@ -250,9 +250,9 @@
     <ClCompile Include="..\..\src\StateManager.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Trig.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlAttributeParser.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlNode.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlAttribute.cpp" />
-    <ClCompile Include="..\..\src\Xml\XmlAttributeParser.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlAttributeSet.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlBase.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlComment.cpp" />

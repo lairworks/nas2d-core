@@ -44,13 +44,10 @@ public:
 	virtual const XmlComment* toComment() const { return this; }
 	virtual XmlComment* toComment() { return this; }
 
-	/**
-	 * Walk the XML tree visiting this node and all of its children.
-	 */
-	virtual bool accept(XmlVisitor* visitor) const { return visitor->visit(*this); }
+	virtual bool accept(XmlVisitor* visitor) const;
 
 protected:
-	void copyTo(XmlComment* target) const { XmlNode::copyTo(target); }
+	void copyTo(XmlComment* target) const;
 	virtual void streamIn(std::istream& in, std::string& tag);
 
 private:

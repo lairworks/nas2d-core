@@ -152,6 +152,7 @@ XmlHandle XmlHandle::firstChildElement(const std::string& value) const
  *	<element_b />
  *	<element_c />
  * </document>
+ * \endcode
  * 
  * Using '1' for the \c index paramter will return a handle to
  * an XmlNode with the value "element_b".
@@ -189,10 +190,12 @@ XmlHandle XmlHandle::child(int index) const
  *	<element_a />
  *	<element_c />
  * </document>
+ * \endcode
  * 
  * Using parameters 'element_a' '1' for the \c index paramter will
  * return a handle to the second node 'element_a'.
  * 
+ * \param value Value of the node to look for.
  * \param index	Index position of the child.
  * 
  * \return	Returns a handle to a child node or nullptr
@@ -201,12 +204,12 @@ XmlHandle XmlHandle::child(int index) const
  * 
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-XmlHandle XmlHandle::child(const std::string& value, int count) const
+XmlHandle XmlHandle::child(const std::string& value, int index) const
 {
 	if (node)
 	{
 		XmlNode* child = node->firstChild(value);
-		for (int i = 0; child && i < count; child = child->nextSibling(value), ++i)
+		for (int i = 0; child && i < index; child = child->nextSibling(value), ++i)
 			; // Nothing
 		if (child)
 			return XmlHandle(child);
@@ -227,6 +230,7 @@ XmlHandle XmlHandle::child(const std::string& value, int count) const
  *	<!-- This is a comment -->
  *	<element_b />
  * </document>
+ * \endcode
  * 
  * Using '1' for the \c index paramter will return a handle to
  * an XmlNode with the value "element_b".
@@ -239,12 +243,12 @@ XmlHandle XmlHandle::child(const std::string& value, int count) const
  * 
  * \note	Only Elements are indexed. Other types are ignored.
  */
-XmlHandle XmlHandle::childElement(int count) const
+XmlHandle XmlHandle::childElement(int index) const
 {
 	if (node)
 	{
 		XmlElement* child = node->firstChildElement();
-		for (int i = 0; child && i < count; child = child->nextSiblingElement(), ++i)
+		for (int i = 0; child && i < index; child = child->nextSiblingElement(), ++i)
 			; // Nothing
 
 		if (child)
@@ -267,10 +271,12 @@ XmlHandle XmlHandle::childElement(int count) const
  *	<element_a />
  *	<element_c />
  * </document>
+ * \endcode
  * 
  * Using parameters 'element_a' '1' for the \c index paramter will
  * return a handle to the second node 'element_a'.
  * 
+ * \param value Value of the node to look for.
  * \param index	Index position of the child.
  * 
  * \return	Returns a handle to a child node or nullptr

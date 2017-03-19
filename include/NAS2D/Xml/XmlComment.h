@@ -22,36 +22,36 @@ namespace Xml {
 class XmlComment : public XmlNode
 {
 public:
-	XmlComment() : XmlNode(XmlNode::XML_COMMENT) {}
+	XmlComment();
 
-	XmlComment(const std::string& _value) : XmlNode(XmlNode::XML_COMMENT) { SetValue(_value); }
-	XmlComment(const XmlComment& copy) { copy.CopyTo(this); }
+	XmlComment(const std::string& _value);
+	XmlComment(const XmlComment& copy);
 	XmlComment& operator=(const XmlComment& base);
 
 	virtual ~XmlComment() {}
 
 	/// Returns a copy of this Comment.
-	virtual XmlNode* Clone() const;
+	virtual XmlNode* clone() const;
 
-	virtual void Print(std::string& buf, int depth) const;
+	virtual void write(std::string& buf, int depth) const;
 
 	/**
 	 * Attribtue parsing starts: at the ! of the !--
 	 * 					 returns: next char past '>'
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data);
+	virtual const char* parse(const char* p, TiXmlParsingData* data);
 
-	virtual const XmlComment* ToComment() const { return this; }
-	virtual XmlComment* ToComment() { return this; }
+	virtual const XmlComment* toComment() const { return this; }
+	virtual XmlComment* toComment() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
 	 */
-	virtual bool Accept(XmlVisitor* visitor) const { return visitor->Visit(*this); }
+	virtual bool accept(XmlVisitor* visitor) const { return visitor->visit(*this); }
 
 protected:
-	void CopyTo(XmlComment* target) const { XmlNode::CopyTo(target); }
-	virtual void StreamIn(std::istream& in, std::string& tag);
+	void copyTo(XmlComment* target) const { XmlNode::copyTo(target); }
+	virtual void streamIn(std::istream& in, std::string& tag);
 
 private:
 

@@ -11,52 +11,182 @@
 // ==================================================================================
 #include "NAS2D/Xml/XmlAttribute.h"
 
+using namespace std;
 using namespace NAS2D::Xml;
 
-const XmlAttribute* XmlAttribute::Next() const
+/**
+ * Default c'tor.
+ */
+XmlAttribute::XmlAttribute() :	XmlBase(),
+								_document(nullptr),
+								_prev(nullptr),
+								_next(nullptr)
+{}
+
+
+/**
+ * C'tor.
+ * 
+ * Constructs an XmlAttribute with a given name and value.
+ * 
+ * \param	name	Name of the attribute.
+ * \param	value	Value of the attribute.
+ */
+XmlAttribute::XmlAttribute(const string& name, string& value) :	XmlBase(),
+																_document(nullptr),
+																_name(name),
+																_value(value),
+																_prev(nullptr),
+																_next(nullptr)
+{}
+
+
+
+/**
+ * Get the next sibling attribute.
+ *
+ * \returns	A const pointer to the next sibling attribute or nullptr if at the end.
+ */
+const XmlAttribute* XmlAttribute::next() const
 {
 	// We are using knowledge of the sentinel. The sentinel have a value or name.
-	if (next->value.empty() && next->name.empty())
+	if (_next->_value.empty() && _next->_name.empty())
 		return nullptr;
 
-	return next;
+	return _next;
 }
 
 
-const XmlAttribute* XmlAttribute::Previous() const
+/**
+ * Get the next sibling attribute.
+ *
+ * \returns	A pointer to the next sibling attribute or nullptr if at the end.
+ */
+XmlAttribute* XmlAttribute::next()
 {
-	// We are using knowledge of the sentinel. The sentinel have a value or name.
-	if (prev->value.empty() && prev->name.empty())
-		return nullptr;
-
-	return prev;
+	return const_cast<XmlAttribute*>((const_cast<const XmlAttribute*>(this))->next());
 }
 
 
-void XmlAttribute::Print(std::string& buf, int /*depth*/) const
+/**
+ * Get the previous sibling attribute.
+ *
+ * \returns	A const pointer to the next sibling attribute or nullptr if at the beginning.
+ */
+const XmlAttribute* XmlAttribute::previous() const
 {
-	if (value.find('\"') == std::string::npos)
+	// We are using knowledge of the sentinel. The sentinel have a value or name.
+	if (_prev->_value.empty() && _prev->_name.empty())
+		return nullptr;
+
+	return _prev;
+}
+
+
+/**
+ * Get the previous sibling attribute.
+ *
+ * \returns	A pointer to the next sibling attribute or nullptr if at the beginning.
+ */
+XmlAttribute* XmlAttribute::previous()
+{
+	return const_cast<XmlAttribute*>((const_cast<const XmlAttribute*>(this))->previous());
+}
+
+
+/**
+ * \see XmlBase::print()
+ */
+void XmlAttribute::write(std::string& buf, int) const
+{
+	if (_value.find('\"') == std::string::npos)
 	{
-		buf += name;
+		buf += _name;
 		buf += "=\"";
-		buf += value;
+		buf += _value;
 		buf += "\"";
 	}
 	else
 	{
-		buf += name;
+		buf += _name;
 		buf += "='";
-		buf += value;
+		buf += _value;
 		buf += "'";
 	}
 }
 
 
-int XmlAttribute::QueryIntValue(int& ival) const
+/**
+ * Set value to an \c int.
+ * 
+ * \param	i	\c int value to use.
+ */
+void XmlAttribute::intValue(int i)
+{
+	value(std::to_string(i));
+}
+
+
+/**
+ * Set value to a \c double.
+ * 
+ * \param	d	\c double value to use.
+ */
+void XmlAttribute::doubleValue(double d)
+{
+	value(std::to_string(d));
+}
+
+
+/**
+ * Gets the value of the attribute as an \c int.
+ * 
+ * \note	This function does not attempt to verify that the value in
+ *			the attribute is a valid numeric value that can be converted
+ *			to a \c double.
+ * 
+ * \returns	Returns the requested value as an \c int.
+ * 
+ * \throws	Throws \c std::invalid_argument if the value is not a numeric value.
+ */
+int XmlAttribute::intValue() const
+{
+	return std::stoi(_value);
+}
+
+
+/**
+ * Gets the value of the attribute as a \c double.
+ * 
+ * \note	This function does not attempt to verify that the value in
+ *			the attribute is a valid numeric value that can be converted
+ *			to a \c double.
+ * 
+ * \returns	Returns the requested value as a \c double.
+ * 
+ * \throws	Throws \c std::invalid_argument if the value is not a numeric value.
+ */
+double XmlAttribute::doubleValue() const
+{
+	return std::stof(_value);
+}
+
+
+/**
+ * Gets the value of the attribute as an \c int.
+ * 
+ * Similar to XmlAttribute::intValue() but with richer
+ * error checking.
+ * 
+ * \param	i	Reference to an \c int to write the value to.
+ * 
+ * \returns	An XmlAttribute::QueryResult value.
+ */
+XmlAttribute::QueryResult XmlAttribute::queryIntValue(int& i) const
 {
 	try
 	{
-		ival = std::stoi(value);
+		i = std::stoi(_value);
 	}
 	catch (std::invalid_argument)
 	{
@@ -67,11 +197,21 @@ int XmlAttribute::QueryIntValue(int& ival) const
 }
 
 
-int XmlAttribute::QueryDoubleValue(double& dval) const
+/**
+ * Gets the value of the attribute as a \c double.
+ * 
+ * Similar to XmlAttribute::doubleValue() but with richer
+ * error checking.
+ * 
+ * \param	d	Reference to an \c double to write the value to.
+ * 
+ * \returns	An XmlAttribute::QueryResult value.
+ */
+XmlAttribute::QueryResult XmlAttribute::queryDoubleValue(double& d) const
 {
 	try
 	{
-		dval = std::stod(value);
+		d = std::stod(_value);
 	}
 	catch (std::invalid_argument)
 	{
@@ -82,25 +222,47 @@ int XmlAttribute::QueryDoubleValue(double& dval) const
 }
 
 
-void XmlAttribute::SetIntValue(int _value)
+/**
+ * Gets the name of the Attribute.
+ *
+ * \return	Returns a \c std::string containing the name of the attribute.
+ */
+const std::string& XmlAttribute::name() const
 {
-	SetValue(std::to_string(_value));
+	return _name;
 }
 
 
-void XmlAttribute::SetDoubleValue(double _value)
+/**
+ * Gets the value of the Attribute.
+ * 
+ * \return	Returns a \c std::string containing the value of the attribute.
+ * 
+ * \see	XmlAttribute::intValue(), XmlAttribute::doubleValue()
+ */
+const std::string& XmlAttribute::value() const
 {
-	SetValue(std::to_string(_value));
+	return _value;
 }
 
 
-int XmlAttribute::IntValue() const
+/**
+ * Sets the name of the Attribute.
+ * 
+ * \param name	A \c std::string containing the name to set.
+ */
+void XmlAttribute::name(const std::string& name)
 {
-	return std::stoi(value);
+	_name = name;
 }
 
 
-double  XmlAttribute::DoubleValue() const
+/**
+ * Sets the value of the Attribute.
+ *
+ * \param value	A \c std::string containing the value to set.
+ */
+void XmlAttribute::value(const std::string& value)
 {
-	return std::stof(value);
+	_value = value;
 }

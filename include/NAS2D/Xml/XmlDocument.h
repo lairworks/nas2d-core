@@ -25,14 +25,14 @@ public:
 	 * method (either TIXML_ENCODING_LEGACY or TIXML_ENCODING_UTF8 will force TinyXml
 	 * to use that encoding, regardless of what TinyXml might otherwise try to detect.
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data = 0);
+	virtual const char* parse(const char* p, TiXmlParsingData* data = 0);
 
 	/**
 	 * Get the root element -- the only top level element -- of the document. In well formed XML,
 	 * there should only be one. TinyXml is tolerant of multiple elements at the document level.
 	 */
-	const XmlElement* RootElement() const { return FirstChildElement(); }
-	XmlElement* RootElement() { return FirstChildElement(); }
+	const XmlElement* RootElement() const { return firstChildElement(); }
+	XmlElement* RootElement() { return firstChildElement(); }
 
 	/**
 	 * If an error occurs, Error will be set to true. Also,
@@ -104,22 +104,22 @@ public:
 	/**
 	 * Print the Document to a buffer.
 	 */
-	virtual void Print(std::string& buf, int depth = 0) const;
+	virtual void write(std::string& buf, int depth = 0) const;
 
-	virtual const XmlDocument* ToDocument() const { return this; }
-	virtual XmlDocument* ToDocument() { return this; }
+	virtual const XmlDocument* toDocument() const { return this; }
+	virtual XmlDocument* toDocument() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
 	 */
-	virtual bool Accept(XmlVisitor* content) const;
+	virtual bool accept(XmlVisitor* content) const;
 
 	// [internal use]
 	void SetError(XmlErrorCode err, const char* errorLocation, TiXmlParsingData* prevData);
 
 protected:
-	virtual XmlNode* Clone() const;
-	virtual void StreamIn(std::istream& in, std::string& tag);
+	virtual XmlNode* clone() const;
+	virtual void streamIn(std::istream& in, std::string& tag);
 
 private:
 	void CopyTo(XmlDocument* target) const;

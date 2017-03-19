@@ -42,15 +42,15 @@ class XmlVisitor
 public:
 	virtual ~XmlVisitor() {}
 
-	virtual bool VisitEnter(const XmlDocument&) { return true; }
-	virtual bool VisitExit(const XmlDocument&) { return true; }
+	virtual bool visitEnter(const XmlDocument&) { return true; }
+	virtual bool visitExit(const XmlDocument&) { return true; }
 
-	virtual bool VisitEnter(const XmlElement&, const XmlAttribute*) { return true; }
-	virtual bool VisitExit(const XmlElement&) { return true; }
+	virtual bool visitEnter(const XmlElement&, const XmlAttribute*) { return true; }
+	virtual bool visitExit(const XmlElement&) { return true; }
 
-	virtual bool Visit(const XmlText&) { return true; }
-	virtual bool Visit(const XmlComment&) { return true; }
-	virtual bool Visit(const XmlUnknown&) { return true; }
+	virtual bool visit(const XmlText&) { return true; }
+	virtual bool visit(const XmlComment&) { return true; }
+	virtual bool visit(const XmlUnknown&) { return true; }
 };
 
 } // namespace Xml

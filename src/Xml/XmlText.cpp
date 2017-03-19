@@ -15,24 +15,24 @@ using namespace NAS2D::Xml;
 
 XmlText::XmlText(const std::string& initValue) : XmlNode(XmlNode::XML_TEXT), cdata(false)
 {
-	SetValue(initValue);
+	value(initValue);
 }
 
 
 XmlText::XmlText(const XmlText& copy) : XmlNode(XmlNode::XML_TEXT)
 {
-	copy.CopyTo(this);
+	copy.copyTo(this);
 }
 
 
 XmlText& XmlText::operator=(const XmlText& base)
 {
-	base.CopyTo(this);
+	base.copyTo(this);
 	return *this;
 }
 
 
-void XmlText::Print(std::string& buf, int depth) const
+void XmlText::write(std::string& buf, int depth) const
 {
 	if (cdata)
 	{
@@ -40,26 +40,36 @@ void XmlText::Print(std::string& buf, int depth) const
 		for (int i = 0; i < depth; i++)
 			buf += "\t";
 
-		buf += "<![CDATA[" + value + "]]>\n"; // unformatted output
+		buf += "<![CDATA[" + value() + "]]>\n"; // unformatted output
 	}
 	else
 	{
-		buf += value;
+		buf += value();
 	}
 }
 
 
-void XmlText::CopyTo(XmlText* target) const
+void XmlText::copyTo(XmlText* target) const
 {
-	XmlNode::CopyTo(target);
+	XmlNode::copyTo(target);
 	target->cdata = cdata;
 }
 
 
-XmlNode* XmlText::Clone() const
+XmlNode* XmlText::clone() const
 {
 	XmlText* clone = new XmlText("");
-	CopyTo(clone);
+	copyTo(clone);
 
 	return clone;
+}
+
+
+bool XmlText::blank() const
+{
+	for (unsigned i = 0; i < _value.length(); ++i)
+		if (!white_space(_value[i]))
+			return false;
+
+	return true;
 }

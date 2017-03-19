@@ -37,7 +37,7 @@ public:
 	 * Given an attribute name, Attribute() returns the value for the attribute
 	 * of that name, or null if none exists.
 	 */
-	std::string Attribute(const std::string& name) const;
+	std::string attribute(const std::string& name) const;
 
 	/**
 	 * Given an attribute name, Attribute() returns the value for the attribute
@@ -45,7 +45,7 @@ public:
 	 * converted to an integer,	the integer value will be put in the return
 	 * 'i', if 'i' is non-null.
 	 */
-	std::string Attribute(const std::string& name, int& i) const;
+	std::string attribute(const std::string& name, int& i) const;
 
 	/**
 	 * Given an attribute name, Attribute() returns the value for the attribute
@@ -53,7 +53,7 @@ public:
 	 * converted to an double, the double value will be put in the return 'd',
 	 * if 'd' is non-null.
 	 */
-	std::string Attribute(const std::string& name, double& d) const;
+	std::string attribute(const std::string& name, double& d) const;
 
 	/**
 	 * QueryIntAttribute examines the attribute - it is an alternative to the
@@ -62,65 +62,65 @@ public:
 	 * it is not an integer, it returns XML_WRONG_TYPE. If the attribute does
 	 * not exist, then XML_NO_ATTRIBUTE is returned.
 	 */
-	int QueryIntAttribute(const std::string& name, int& _value) const;
+	XmlAttribute::QueryResult queryIntAttribute(const std::string& name, int& _value) const;
 
 	/**
 	 * QueryDoubleAttribute examines the attribute.
 	 * 
 	 * \see QueryIntAttribute()
 	 */
-	int QueryDoubleAttribute(const std::string& name, double& _value) const;
+	XmlAttribute::QueryResult queryDoubleAttribute(const std::string& name, double& _value) const;
 
 	/**
 	 * QueryFloatAttribute examines the attribute.
 	 * 
 	 * \see QueryIntAttribute()
 	 */
-	int QueryFloatAttribute(const std::string& name, float& _value) const;
+	XmlAttribute::QueryResult queryFloatAttribute(const std::string& name, float& _value) const;
 
 	/**
 	 * QueryStringAttribute examines the attribute.
 	 * 
 	 * \see QueryIntAttribute()
 	 */
-	int QueryStringAttribute(const std::string& name, std::string& _value) const;
+	XmlAttribute::QueryResult queryStringAttribute(const std::string& name, std::string& _value) const;
 
 
 	/**
 	 * Sets an attribute of name to a given value. The attribute
 	 * will be created if it does not exist, or changed if it does.
 	 */
-	void SetAttribute(const std::string& name, const std::string& _value);
+	void setAttribute(const std::string& name, const std::string& _value);
 
 	/**
 	 * Sets an attribute of name to a given value. The attribute
 	 * will be created if it does not exist, or changed if it does.
 	 */
-	void SetAttribute(const std::string& name, int value);
+	void setAttribute(const std::string& name, int value);
 
 	/**
 	 * Sets an attribute of name to a given value. The attribute
 	 * will be created if it does not exist, or changed if it does.
 	 */
-	void SetDoubleAttribute(const std::string& name, double value);
+	void setDoubleAttribute(const std::string& name, double value);
 
 	/**
 	 * Deletes an attribute with the given name.
 	 */
-	void RemoveAttribute(const std::string& name);
+	void removeAttribute(const std::string& name);
 
 
 	/**
 	 * Get the first attribute of the XmlElement.
 	 */
-	const XmlAttribute* FirstAttribute() const;
-	XmlAttribute* FirstAttribute();
+	const XmlAttribute* firstAttribute() const;
+	XmlAttribute* firstAttribute();
 
 	/**
 	 * Get the last attribute of the XmlElement.
 	 */
-	const XmlAttribute* LastAttribute() const;
-	XmlAttribute* LastAttribute();
+	const XmlAttribute* lastAttribute() const;
+	XmlAttribute* lastAttribute();
 
 	/**
 	 * Convenience function for easy access to the text inside an element. Although easy
@@ -157,41 +157,41 @@ public:
 	 *			similarly named XmlHandle::Text() and XmlNode::ToText() which
 	 *			are safe type casts on the referenced node.
 	 */
-	const std::string& GetText() const;
+	const std::string& text() const;
 
 	/**
 	 * Creates a new Element and returns it - the returned element is a copy.
 	 */
-	virtual XmlNode* Clone() const;
+	virtual XmlNode* clone() const;
 	
-	virtual void Print(std::string& buf, int depth) const;
+	virtual void write(std::string& buf, int depth) const;
 
 	/**
 	 * Attribtue parsing starts: next char past '<'
 	 * returns: next char past '>'
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data);
+	virtual const char* parse(const char* p, TiXmlParsingData* data);
 
-	virtual const XmlElement* ToElement() const { return this; }
-	virtual XmlElement* ToElement() { return this; }
+	virtual const XmlElement* toElement() const { return this; }
+	virtual XmlElement* toElement() { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
 	 */
-	virtual bool Accept(XmlVisitor* visitor) const;
+	virtual bool accept(XmlVisitor* visitor) const;
 
 protected:
-	void CopyTo(XmlElement* target) const;
-	void ClearThis();	// like clear, but initializes 'this' object as well
+	void copyTo(XmlElement* target) const;
+	void clearThis();	// like clear, but initializes 'this' object as well
 
 	// Used to be public [internal use]
-	virtual void StreamIn(std::istream& in, std::string& tag);
+	virtual void streamIn(std::istream& in, std::string& tag);
 
 	/*	[internal use]
 		Reads the "value" of the element -- another element, or text.
 		This should terminate with the current end tag.
 	*/
-	const char* ReadValue(const char* in, TiXmlParsingData* prevData);
+	const char* readValue(const char* in, TiXmlParsingData* prevData);
 
 private:
 	XmlAttributeSet attributeSet;

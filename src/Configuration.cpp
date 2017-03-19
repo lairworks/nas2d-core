@@ -105,51 +105,51 @@ void Configuration::save()
 	XmlDocument doc;
 
 	XmlComment* comment = new XmlComment("Automatically generated Configuration file.");
-	doc.LinkEndChild(comment);
+	doc.linkEndChild(comment);
 
 	XmlElement* root = new XmlElement("configuration");
-	doc.LinkEndChild(root);
+	doc.linkEndChild(root);
 
 	XmlElement* graphics = new XmlElement("graphics");
-	graphics->SetAttribute("screenwidth", mScreenWidth);
-	graphics->SetAttribute("screenheight", mScreenHeight);
-	graphics->SetAttribute("bitdepth", mScreenBpp);
+	graphics->setAttribute("screenwidth", mScreenWidth);
+	graphics->setAttribute("screenheight", mScreenHeight);
+	graphics->setAttribute("bitdepth", mScreenBpp);
 
-	if(mFullScreen)	graphics->SetAttribute("fullscreen", "true");
-	else graphics->SetAttribute("fullscreen", "false");
+	if(mFullScreen)	graphics->setAttribute("fullscreen", "true");
+	else graphics->setAttribute("fullscreen", "false");
 	
-	if(mVSync)	graphics->SetAttribute("vsync", "true");
-	else graphics->SetAttribute("vsync", "false");
+	if(mVSync)	graphics->setAttribute("vsync", "true");
+	else graphics->setAttribute("vsync", "false");
 
-	if(mTextureQuality == GL_NEAREST) graphics->SetAttribute("texturequality", "fast");
-	else if(mTextureQuality == GL_LINEAR) graphics->SetAttribute("texturequality", "good");
+	if(mTextureQuality == GL_NEAREST) graphics->setAttribute("texturequality", "fast");
+	else if(mTextureQuality == GL_LINEAR) graphics->setAttribute("texturequality", "good");
 
-	root->LinkEndChild(graphics);
+	root->linkEndChild(graphics);
 
 	XmlElement* audio = new XmlElement("audio");
-	audio->SetAttribute("mixrate", mMixRate);
-	audio->SetAttribute("channels", mStereoChannels);
-	audio->SetAttribute("sfxvolume", mSfxVolume);
-	audio->SetAttribute("musicvolume", mMusicVolume);
-	audio->SetAttribute("bufferlength", mBufferLength);
-	audio->SetAttribute("mixer", mMixerName);
-	root->LinkEndChild(audio);
+	audio->setAttribute("mixrate", mMixRate);
+	audio->setAttribute("channels", mStereoChannels);
+	audio->setAttribute("sfxvolume", mSfxVolume);
+	audio->setAttribute("musicvolume", mMusicVolume);
+	audio->setAttribute("bufferlength", mBufferLength);
+	audio->setAttribute("mixer", mMixerName);
+	root->linkEndChild(audio);
 
 	// Options
 	XmlElement* options = new XmlElement("options");
-	root->LinkEndChild(options);
+	root->linkEndChild(options);
     
 	for (auto op : mOptions)
 	{
 		XmlElement* option = new XmlElement("option");
-		option->SetAttribute("name", op.first);
-		option->SetAttribute("value", op.second);
-		options->LinkEndChild(option);
+		option->setAttribute("name", op.first);
+		option->setAttribute("value", op.second);
+		options->linkEndChild(option);
 	}
 
 	// Write out the XML file.
 	XmlMemoryBuffer buff;
-	doc.Accept(&buff);
+	doc.accept(&buff);
 
 	Utility<Filesystem>::get().write(File(buff.buffer(), mConfigPath));
 }
@@ -184,7 +184,7 @@ bool Configuration::readConfig(const std::string& filePath)
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
 	XmlDocument config;
-	config.Parse(xmlFile.raw_bytes());
+	config.parse(xmlFile.raw_bytes());
 	if(config.Error())
 	{
 		std::cout << "Error parsing configuration file '" << filePath << "' on Row " << config.ErrorRow() << ", Column " << config.ErrorCol() << ": " << config.ErrorDesc() << std::endl;
@@ -192,7 +192,7 @@ bool Configuration::readConfig(const std::string& filePath)
 	}
 	else
 	{
-		XmlElement* root = config.FirstChildElement("configuration");
+		XmlElement* root = config.firstChildElement("configuration");
 		if(!root)
 		{
 			std::cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << std::endl;
@@ -204,18 +204,18 @@ bool Configuration::readConfig(const std::string& filePath)
 		int result = 0;
 		
 		XmlNode *xmlNode = nullptr;
-		while(xmlNode = root->IterateChildren(xmlNode))
+		while(xmlNode = root->iterateChildren(xmlNode))
 		{
-			if (xmlNode->Value() == "graphics")
+			if (xmlNode->value() == "graphics")
 				parseGraphics(xmlNode);
-			else if (xmlNode->Value() == "audio")
+			else if (xmlNode->value() == "audio")
 				parseAudio(xmlNode);
-			else if (xmlNode->Value() == "options")
+			else if (xmlNode->value() == "options")
 				parseOptions(xmlNode);
-			else if (xmlNode->Type() == XmlNode::XML_COMMENT)
+			else if (xmlNode->type() == XmlNode::XML_COMMENT)
 				; // ignore comments
 			else
-				std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in '" << filePath << "' on row " << xmlNode->row() << "." << std::endl;
+				std::cout << "Unexpected tag '<" << xmlNode->value() << ">' found in '" << filePath << "' on row " << xmlNode->row() << "." << std::endl;
 		}
 	}
 
@@ -303,9 +303,9 @@ void Configuration::parseOptions(void* _n)
 	XmlNode* node = static_cast<XmlNode*>(_n);
 
 	XmlNode *xmlNode = nullptr;
-	while(xmlNode = node->IterateChildren(xmlNode))
+	while(xmlNode = node->iterateChildren(xmlNode))
 	{
-		if(xmlNode->Value() == "option")
+		if(xmlNode->value() == "option")
 		{
 			// Ensure that there is a 'name' attribute.
 			std::string option = parser.stringAttribute(xmlNode, "name");
@@ -316,7 +316,7 @@ void Configuration::parseOptions(void* _n)
 				std::cout << "Option tag is missing a name attribute on row " << xmlNode->row() << "." << std::endl;
 		}
 		else
-			std::cout << "Unexpected tag '<" << xmlNode->Value() << ">' found in configuration on row " << xmlNode->row() << "." << std::endl;
+			std::cout << "Unexpected tag '<" << xmlNode->value() << ">' found in configuration on row " << xmlNode->row() << "." << std::endl;
 	}
 }
 

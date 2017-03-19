@@ -17,6 +17,29 @@ bool XmlBase::condenseWhiteSpace = true;
 
 std::vector<std::string> XML_ERROR_TABLE;
 
+void fillErrorTable()
+{
+	if (!XML_ERROR_TABLE.empty())
+		return;
+
+	XML_ERROR_TABLE.push_back("No error");
+	XML_ERROR_TABLE.push_back("Unspecified Error");
+	XML_ERROR_TABLE.push_back("Error parsing Element.");
+	XML_ERROR_TABLE.push_back("Failed to read Element name.");
+	XML_ERROR_TABLE.push_back("Error reading Element value.");
+	XML_ERROR_TABLE.push_back("Error reading Attributes.");
+	XML_ERROR_TABLE.push_back("Error: Empty tag.");
+	XML_ERROR_TABLE.push_back("Error reading end tag.");
+	XML_ERROR_TABLE.push_back("Error parsing Unknown.");
+	XML_ERROR_TABLE.push_back("Error parsing Comment.");
+	XML_ERROR_TABLE.push_back("Error parsing Declaration.");
+	XML_ERROR_TABLE.push_back("Error: Document empty.");
+	XML_ERROR_TABLE.push_back("Error: Unexpected EOF found in input stream.");
+	XML_ERROR_TABLE.push_back("Error parsing CDATA.");
+	XML_ERROR_TABLE.push_back("Error adding XmlDocument to document: XmlDocument can only be at the root.");
+}
+
+
 /**
  * Return the position, in the original source file, of this node or attribute.
  *
@@ -40,25 +63,3 @@ int XmlBase::row() const
 
 int XmlBase::column() const { return location.col + 1; }	///< See Row()
 
-
-void XmlBase::fillErrorTable()
-{
-	if (!XML_ERROR_TABLE.empty())
-		return;
-
-	XML_ERROR_TABLE.push_back("No error");
-	XML_ERROR_TABLE.push_back("Unspecified Error");
-	XML_ERROR_TABLE.push_back("Error parsing Element.");
-	XML_ERROR_TABLE.push_back("Failed to read Element name.");
-	XML_ERROR_TABLE.push_back("Error reading Element value.");
-	XML_ERROR_TABLE.push_back("Error reading Attributes.");
-	XML_ERROR_TABLE.push_back("Error: Empty tag.");
-	XML_ERROR_TABLE.push_back("Error reading end tag.");
-	XML_ERROR_TABLE.push_back("Error parsing Unknown.");
-	XML_ERROR_TABLE.push_back("Error parsing Comment.");
-	XML_ERROR_TABLE.push_back("Error parsing Declaration.");
-	XML_ERROR_TABLE.push_back("Error: Document empty.");
-	XML_ERROR_TABLE.push_back("Error: Unexpected EOF found in input stream.");
-	XML_ERROR_TABLE.push_back("Error parsing CDATA.");
-	XML_ERROR_TABLE.push_back("Error adding XmlDocument to document: XmlDocument can only be at the root.");
-}

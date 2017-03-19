@@ -13,30 +13,65 @@
 
 using namespace NAS2D::Xml;
 
+/**
+ * Default c'tor.
+ */
+XmlComment::XmlComment() : XmlNode(XmlNode::XML_COMMENT)
+{}
+
+
+/**
+ * C'tor.
+ * 
+ * Constructs an XML Comment with a value.
+ * 
+ * \param	_value	Reference to a \c std::string with the value to use for the comment.
+ */
+XmlComment::XmlComment(const std::string& _value) : XmlNode(XmlNode::XML_COMMENT)
+{
+	value(_value);
+}
+
+
+/**
+ * Copy c'tor.
+ */
+XmlComment::XmlComment(const XmlComment& copy)
+{
+	copy.copyTo(this);
+}
+
+
+/**
+ * Copy assignment operator.
+ */
 XmlComment& XmlComment::operator=(const XmlComment& base)
 {
-	Clear();
-	base.CopyTo(this);
+	clear();
+	base.copyTo(this);
 	return *this;
 }
 
 
-void XmlComment::Print(std::string& buf, int depth) const
+/**
+ * \see XmlBase::write()
+ */
+void XmlComment::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; i++)
 		buf += "\t";
 
-	buf += "<!--" + value + "-->";
+	buf += "<!--" + _value + "-->";
 }
 
 
-XmlNode* XmlComment::Clone() const
+XmlNode* XmlComment::clone() const
 {
 	XmlComment* clone = new XmlComment();
 
 	if (!clone)
 		return nullptr;
 
-	CopyTo(clone);
+	copyTo(clone);
 	return clone;
 }

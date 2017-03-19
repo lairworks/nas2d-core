@@ -15,42 +15,39 @@ using namespace NAS2D::Xml;
 
 XmlAttributeSet::XmlAttributeSet()
 {
-	sentinel.next = &sentinel;
-	sentinel.prev = &sentinel;
+	sentinel._next = &sentinel;
+	sentinel._prev = &sentinel;
 }
 
 
 XmlAttributeSet::~XmlAttributeSet()
-{
-	//assert(sentinel.next == &sentinel);
-	//assert(sentinel.prev == &sentinel);
-}
+{}
 
 
-void XmlAttributeSet::Add(XmlAttribute* addMe)
+void XmlAttributeSet::add(XmlAttribute* attribute)
 {
 	//assert(!Find(addMe->Name()));	// Shouldn't be multiply adding to the set.
 
-	addMe->next = &sentinel;
-	addMe->prev = sentinel.prev;
+	attribute->_next = &sentinel;
+	attribute->_prev = sentinel._prev;
 
-	sentinel.prev->next = addMe;
-	sentinel.prev = addMe;
+	sentinel._prev->_next = attribute;
+	sentinel._prev = attribute;
 }
 
 
-void XmlAttributeSet::Remove(XmlAttribute* removeMe)
+void XmlAttributeSet::remove(XmlAttribute* attribute)
 {
 	XmlAttribute* node;
 
-	for (node = sentinel.next; node != &sentinel; node = node->next)
+	for (node = sentinel._next; node != &sentinel; node = node->_next)
 	{
-		if (node == removeMe)
+		if (node == attribute)
 		{
-			node->prev->next = node->next;
-			node->next->prev = node->prev;
-			node->next = 0;
-			node->prev = 0;
+			node->_prev->_next = node->_next;
+			node->_next->_prev = node->_prev;
+			node->_next = nullptr;
+			node->_prev = nullptr;
 			return;
 		}
 	}
@@ -58,24 +55,26 @@ void XmlAttributeSet::Remove(XmlAttribute* removeMe)
 }
 
 
-XmlAttribute* XmlAttributeSet::Find(const std::string& name) const
+XmlAttribute* XmlAttributeSet::find(const std::string& name) const
 {
-	for (XmlAttribute* node = sentinel.next; node != &sentinel; node = node->next)
+	for (XmlAttribute* node = sentinel._next; node != &sentinel; node = node->_next)
 	{
-		if (node->name == name)
+		if (node->_name == name)
 			return node;
 	}
 	return nullptr;
 }
 
 
-XmlAttribute* XmlAttributeSet::FindOrCreate(const std::string& _name)
+XmlAttribute* XmlAttributeSet::findOrCreate(const std::string& _name)
 {
-	XmlAttribute* attrib = Find(_name);
-	if (!attrib) {
+	XmlAttribute* attrib = find(_name);
+	if (!attrib)
+	{
 		attrib = new XmlAttribute();
-		Add(attrib);
-		attrib->SetName(_name);
+		add(attrib);
+		attrib->name(_name);
 	}
+
 	return attrib;
 }

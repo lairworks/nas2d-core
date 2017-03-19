@@ -23,45 +23,45 @@ XmlUnknown::~XmlUnknown()
 
 XmlUnknown::XmlUnknown(const XmlUnknown& copy) : XmlNode(XmlNode::XML_UNKNOWN)
 {
-	copy.CopyTo(this);
+	copy.copyTo(this);
 }
 
 
 XmlUnknown& XmlUnknown::operator=(const XmlUnknown& copy)
 {
-	copy.CopyTo(this);
+	copy.copyTo(this);
 	return *this;
 }
 
 
-void XmlUnknown::Print(std::string& buf, int depth) const
+void XmlUnknown::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; i++)
 		buf += "\t";
 
-	buf += "<" + value + ">";
+	buf += "<" + value() + ">";
 }
 
 
-XmlNode* XmlUnknown::Clone() const
+XmlNode* XmlUnknown::clone() const
 {
 	XmlUnknown* clone = new XmlUnknown();
 
 	if (!clone)
 		return nullptr;
 
-	CopyTo(clone);
+	copyTo(clone);
 	return clone;
 }
 
 
-bool XmlUnknown::Accept(XmlVisitor* visitor) const
+bool XmlUnknown::accept(XmlVisitor* visitor) const
 {
-	return visitor->Visit(*this);
+	return visitor->visit(*this);
 }
 
 
-void XmlUnknown::CopyTo(XmlUnknown* target) const
+void XmlUnknown::copyTo(XmlUnknown* target) const
 {
-	XmlNode::CopyTo(target);
+	XmlNode::copyTo(target);
 }

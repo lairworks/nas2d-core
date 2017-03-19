@@ -25,15 +25,15 @@ bool XmlMemoryBuffer::VisitEnter(const XmlElement& element, const XmlAttribute* 
 {
 	indent();
 	_buffer += "<";
-	_buffer += element.Value();
+	_buffer += element.value();
 
-	for (const XmlAttribute* attrib = firstAttribute; attrib; attrib = attrib->Next())
+	for (const XmlAttribute* attrib = firstAttribute; attrib; attrib = attrib->next())
 	{
 		_buffer += " ";
-		attrib->Print(_buffer, 0);
+		attrib->write(_buffer, 0);
 	}
 
-	if (!element.FirstChild())
+	if (!element.firstChild())
 	{
 		_buffer += " />";
 		line_break();
@@ -51,13 +51,13 @@ bool XmlMemoryBuffer::VisitEnter(const XmlElement& element, const XmlAttribute* 
 bool XmlMemoryBuffer::VisitExit(const XmlElement& element)
 {
 	--depth;
-	if (!element.FirstChild())
+	if (!element.firstChild())
 		;
 	else
 	{
 		indent();
 		_buffer += "</";
-		_buffer += element.Value();
+		_buffer += element.value();
 		_buffer += ">";
 		line_break();
 	}
@@ -71,7 +71,7 @@ bool XmlMemoryBuffer::Visit(const XmlText& text)
 	{
 		indent();
 		_buffer += "<![CDATA[";
-		_buffer += text.Value();
+		_buffer += text.value();
 		_buffer += "]]>";
 		line_break();
 	}
@@ -79,7 +79,7 @@ bool XmlMemoryBuffer::Visit(const XmlText& text)
 	{
 		indent();
 		std::string str;
-		_buffer += text.Value();
+		_buffer += text.value();
 		line_break();
 	}
 	return true;
@@ -90,7 +90,7 @@ bool XmlMemoryBuffer::Visit(const XmlComment& comment)
 {
 	indent();
 	_buffer += "<!--";
-	_buffer += comment.Value();
+	_buffer += comment.value();
 	_buffer += "-->";
 	line_break();
 	return true;
@@ -101,7 +101,7 @@ bool XmlMemoryBuffer::Visit(const XmlUnknown& unknown)
 {
 	indent();
 	_buffer += "<";
-	_buffer += unknown.Value();
+	_buffer += unknown.value();
 	_buffer += ">";
 	line_break();
 	return true;

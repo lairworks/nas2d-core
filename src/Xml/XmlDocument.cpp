@@ -21,28 +21,28 @@ XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML
 															error(false),
 															useMicrosoftBOM(false)
 {
-	value = documentName;
+	_value = documentName;
 	ClearError();
 }
 
 
 XmlDocument::XmlDocument(const XmlDocument& copy) : XmlNode(XmlNode::XML_DOCUMENT)
 {
-	copy.CopyTo(this);
+	copy.copyTo(this);
 }
 
 
 XmlDocument& XmlDocument::operator=(const XmlDocument& copy)
 {
-	Clear();
-	copy.CopyTo(this);
+	clear();
+	copy.copyTo(this);
 	return *this;
 }
 
 
 void XmlDocument::CopyTo(XmlDocument* target) const
 {
-	XmlNode::CopyTo(target);
+	XmlNode::copyTo(target);
 
 	target->error = error;
 	target->errorId = errorId;
@@ -52,42 +52,42 @@ void XmlDocument::CopyTo(XmlDocument* target) const
 	target->useMicrosoftBOM = useMicrosoftBOM;
 
 	XmlNode* node = nullptr;
-	for (node = firstChild; node; node = node->NextSibling())
-		target->LinkEndChild(node->Clone());
+	for (node = _firstChild; node; node = node->nextSibling())
+		target->linkEndChild(node->clone());
 }
 
 
-XmlNode* XmlDocument::Clone() const
+XmlNode* XmlDocument::clone() const
 {
 	XmlDocument* clone = new XmlDocument();
 	if (!clone)
 		return nullptr;
 
-	CopyTo(clone);
+	copyTo(clone);
 	return clone;
 }
 
 
-void XmlDocument::Print(std::string& buf, int depth) const
+void XmlDocument::write(std::string& buf, int depth) const
 {
-	for (const XmlNode* node = FirstChild(); node; node = node->NextSibling())
+	for (const XmlNode* node = firstChild(); node; node = node->nextSibling())
 	{
-		node->Print(buf, depth);
+		node->write(buf, depth);
 		buf += "\n";
 	}
 }
 
 
-bool XmlDocument::Accept(XmlVisitor* visitor) const
+bool XmlDocument::accept(XmlVisitor* visitor) const
 {
-	if (visitor->VisitEnter(*this))
+	if (visitor->visitEnter(*this))
 	{
-		for (const XmlNode* node = FirstChild(); node; node = node->NextSibling())
+		for (const XmlNode* node = firstChild(); node; node = node->nextSibling())
 		{
-			if (!node->Accept(visitor))
+			if (!node->accept(visitor))
 				break;
 		}
 	}
 
-	return visitor->VisitExit(*this);
+	return visitor->visitExit(*this);
 }

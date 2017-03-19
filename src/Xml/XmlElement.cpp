@@ -23,169 +23,169 @@ using namespace NAS2D::Xml;
 
 const std::string NAS2D_EMPTY_STR = "";
 
-XmlElement::XmlElement(const std::string& _value) : XmlNode(XmlNode::XML_ELEMENT)
+XmlElement::XmlElement(const std::string& value) : XmlNode(XmlNode::XML_ELEMENT)
 {
-	value = _value;
+	_value = value;
 }
 
 
 XmlElement::XmlElement(const XmlElement& copy) : XmlNode(XmlNode::XML_ELEMENT)
 {
-	copy.CopyTo(this);
+	copy.copyTo(this);
 }
 
 
 XmlElement& XmlElement::operator=(const XmlElement& base)
 {
-	ClearThis();
-	base.CopyTo(this);
+	clearThis();
+	base.copyTo(this);
 	return *this;
 }
 
 
 XmlElement::~XmlElement()
 {
-	ClearThis();
+	clearThis();
 }
 
 
-void XmlElement::ClearThis()
+void XmlElement::clearThis()
 {
-	Clear();
-	while (attributeSet.First())
+	clear();
+	while (attributeSet.first())
 	{
-		XmlAttribute* node = attributeSet.First();
-		attributeSet.Remove(node);
+		XmlAttribute* node = attributeSet.first();
+		attributeSet.remove(node);
 		delete node;
 	}
 }
 
 
-std::string XmlElement::Attribute(const std::string& name) const
+std::string XmlElement::attribute(const std::string& name) const
 {
-	const XmlAttribute* node = attributeSet.Find(name);
+	const XmlAttribute* node = attributeSet.find(name);
 	if (node)
-		return node->Value();
+		return node->value();
 	return "";
 }
 
 
-std::string XmlElement::Attribute(const std::string& name, int& i) const
+std::string XmlElement::attribute(const std::string& name, int& i) const
 {
-	const XmlAttribute* attrib = attributeSet.Find(name);
+	const XmlAttribute* attrib = attributeSet.find(name);
 	std::string result;
 
 	if (attrib)
 	{
-		result = attrib->Value();
+		result = attrib->value();
 		if (i)
 		{
-			attrib->QueryIntValue(i);
+			attrib->queryIntValue(i);
 		}
 	}
 	return result;
 }
 
 
-std::string XmlElement::Attribute(const std::string& name, double& d) const
+std::string XmlElement::attribute(const std::string& name, double& d) const
 {
-	const XmlAttribute* attrib = attributeSet.Find(name);
+	const XmlAttribute* attrib = attributeSet.find(name);
 	std::string result;
 
 	if (attrib)
 	{
-		result = attrib->Value();
+		result = attrib->value();
 		if (d)
 		{
-			attrib->QueryDoubleValue(d);
+			attrib->queryDoubleValue(d);
 		}
 	}
 	return result;
 }
 
 
-int XmlElement::QueryIntAttribute(const std::string& name, int& ival) const
+XmlAttribute::QueryResult XmlElement::queryIntAttribute(const std::string& name, int& ival) const
 {
-	const XmlAttribute* attrib = attributeSet.Find(name);
+	const XmlAttribute* attrib = attributeSet.find(name);
 	if (!attrib)
-		return XML_NO_ATTRIBUTE;
+		return XmlAttribute::XML_NO_ATTRIBUTE;
 
-	return attrib->QueryIntValue(ival);
+	return attrib->queryIntValue(ival);
 }
 
 
-int XmlElement::QueryDoubleAttribute(const std::string& name, double& dval) const
+XmlAttribute::QueryResult XmlElement::queryDoubleAttribute(const std::string& name, double& dval) const
 {
-	const XmlAttribute* attrib = attributeSet.Find(name);
+	const XmlAttribute* attrib = attributeSet.find(name);
 	if (!attrib)
-		return XML_NO_ATTRIBUTE;
+		return XmlAttribute::XML_NO_ATTRIBUTE;
 
-	return attrib->QueryDoubleValue(dval);
+	return attrib->queryDoubleValue(dval);
 }
 
 
-void XmlElement::SetAttribute(const std::string& name, int val)
+void XmlElement::setAttribute(const std::string& name, int val)
 {
-	XmlAttribute* attrib = attributeSet.FindOrCreate(name);
+	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 
 	if (attrib)
-		attrib->SetIntValue(val);
+		attrib->intValue(val);
 }
 
 
-void XmlElement::SetDoubleAttribute(const std::string& name, double val)
+void XmlElement::setDoubleAttribute(const std::string& name, double val)
 {
-	XmlAttribute* attrib = attributeSet.FindOrCreate(name);
+	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 	if (attrib)
-		attrib->SetDoubleValue(val);
+		attrib->doubleValue(val);
 }
 
 
-void XmlElement::SetAttribute(const std::string& cname, const std::string& cvalue)
+void XmlElement::setAttribute(const std::string& cname, const std::string& cvalue)
 {
-	XmlAttribute* attrib = attributeSet.FindOrCreate(cname);
+	XmlAttribute* attrib = attributeSet.findOrCreate(cname);
 	if (attrib)
 	{
-		attrib->SetValue(cvalue);
+		attrib->value(cvalue);
 	}
 }
 
 
-void XmlElement::Print(std::string& buf, int depth) const
+void XmlElement::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; ++i)
 		buf += "\t";
 
-	buf += "<" + value;
+	buf += "<" + _value;
 
 	const XmlAttribute* attrib;
-	for (attrib = attributeSet.First(); attrib; attrib = attrib->Next())
+	for (attrib = attributeSet.first(); attrib; attrib = attrib->next())
 	{
 		buf += " ";
-		attrib->Print(buf, depth);
+		attrib->write(buf, depth);
 	}
 
 	XmlNode* node;
-	if (!firstChild)
+	if (!_firstChild)
 	{
 		buf += " />";
 	}
-	else if (firstChild == lastChild && firstChild->ToText())
+	else if (_firstChild == _lastChild && _firstChild->toText())
 	{
 		buf += ">";
-		firstChild->Print(buf, depth + 1);
-		buf += "</" + value + ">";
+		_firstChild->write(buf, depth + 1);
+		buf += "</" + _value + ">";
 	}
 	else
 	{
 		buf += ">";
 
-		for (node = firstChild; node; node = node->NextSibling())
+		for (node = _firstChild; node; node = node->nextSibling())
 		{
-			if (!node->ToText())
+			if (!node->toText())
 				buf += "\n";
 
-			node->Print(buf, depth + 1);
+			node->write(buf, depth + 1);
 		}
 
 		buf += "\n";
@@ -193,124 +193,124 @@ void XmlElement::Print(std::string& buf, int depth) const
 		for (int i = 0; i < depth; ++i)
 			buf += "\t";
 
-		buf += "</" + value + ">";
+		buf += "</" + _value + ">";
 	}
 }
 
 
-void XmlElement::CopyTo(XmlElement* target) const
+void XmlElement::copyTo(XmlElement* target) const
 {
 	// superclass:
-	XmlNode::CopyTo(target);
+	XmlNode::copyTo(target);
 
 	// Element class: 
 	// Clone the attributes, then clone the children.
 	const XmlAttribute* attribute = nullptr;
-	for (attribute = attributeSet.First(); attribute; attribute = attribute->Next())
+	for (attribute = attributeSet.first(); attribute; attribute = attribute->next())
 	{
-		target->SetAttribute(attribute->Name(), attribute->Value());
+		target->setAttribute(attribute->name(), attribute->value());
 	}
 
 	XmlNode* node = nullptr;
-	for (node = firstChild; node; node = node->NextSibling())
+	for (node = _firstChild; node; node = node->nextSibling())
 	{
-		target->LinkEndChild(node->Clone());
+		target->linkEndChild(node->clone());
 	}
 }
 
-bool XmlElement::Accept(XmlVisitor* visitor) const
+bool XmlElement::accept(XmlVisitor* visitor) const
 {
-	if (visitor->VisitEnter(*this, attributeSet.First()))
+	if (visitor->visitEnter(*this, attributeSet.first()))
 	{
-		for (const XmlNode* node = FirstChild(); node; node = node->NextSibling())
+		for (const XmlNode* node = firstChild(); node; node = node->nextSibling())
 		{
-			if (!node->Accept(visitor))
+			if (!node->accept(visitor))
 				break;
 		}
 	}
-	return visitor->VisitExit(*this);
+	return visitor->visitExit(*this);
 }
 
 
-XmlNode* XmlElement::Clone() const
+XmlNode* XmlElement::clone() const
 {
-	XmlElement* clone = new XmlElement(Value());
+	XmlElement* clone = new XmlElement(value());
 	if (!clone)
 		return nullptr;
 
-	CopyTo(clone);
+	copyTo(clone);
 	return clone;
 }
 
 
-const std::string& XmlElement::GetText() const
+const std::string& XmlElement::text() const
 {
-	const XmlNode* child = this->FirstChild();
+	const XmlNode* child = this->firstChild();
 	if (child)
 	{
-		const XmlText* childText = child->ToText();
+		const XmlText* childText = child->toText();
 		if (childText)
 		{
-			return childText->Value();
+			return childText->value();
 		}
 	}
 	return NAS2D_EMPTY_STR;
 }
 
 
-void XmlElement::RemoveAttribute(const std::string& name)
+void XmlElement::removeAttribute(const std::string& name)
 {
-	XmlAttribute* node = attributeSet.Find(name);
+	XmlAttribute* node = attributeSet.find(name);
 	if (node)
 	{
-		attributeSet.Remove(node);
+		attributeSet.remove(node);
 		delete node;
 	}
 }
 
 
-const XmlAttribute* XmlElement::FirstAttribute() const
+const XmlAttribute* XmlElement::firstAttribute() const
 {
-	return attributeSet.First();
+	return attributeSet.first();
 }
 
 
-XmlAttribute* XmlElement::FirstAttribute()
+XmlAttribute* XmlElement::firstAttribute()
 {
-	return attributeSet.First();
+	return attributeSet.first();
 }
 
 
-const XmlAttribute* XmlElement::LastAttribute() const
+const XmlAttribute* XmlElement::lastAttribute() const
 {
-	return attributeSet.Last();
+	return attributeSet.last();
 }
 
 
-XmlAttribute* XmlElement::LastAttribute()
+XmlAttribute* XmlElement::lastAttribute()
 {
-	return attributeSet.Last();
+	return attributeSet.last();
 }
 
 
-int XmlElement::QueryFloatAttribute(const std::string& name, float& _value) const
+XmlAttribute::QueryResult XmlElement::queryFloatAttribute(const std::string& name, float& _value) const
 {
 	double d = 0;
-	int result = QueryDoubleAttribute(name, d);
-	if (result == XML_SUCCESS)
+	auto result = queryDoubleAttribute(name, d);
+	if (result == XmlAttribute::XML_SUCCESS)
 		_value = static_cast<float>(d);
 
 	return result;
 }
 
 
-int XmlElement::QueryStringAttribute(const std::string& name, std::string& _value) const
+XmlAttribute::QueryResult XmlElement::queryStringAttribute(const std::string& name, std::string& _value) const
 {
-	std::string str = Attribute(name);
+	std::string str = attribute(name);
 	if (!str.empty())
 	{
 		_value = str;
-		return XML_SUCCESS;
+		return XmlAttribute::XML_SUCCESS;
 	}
-	return XML_NO_ATTRIBUTE;
+	return XmlAttribute::XML_NO_ATTRIBUTE;
 }

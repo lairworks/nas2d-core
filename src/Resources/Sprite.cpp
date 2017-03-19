@@ -292,7 +292,7 @@ void Sprite::parseXml(const std::string& filePath)
 	XmlElement *xmlRootElement = 0;
 
 	// Load the XML document and handle any errors if occuring
-	docXml.Parse(xmlFile.raw_bytes(), 0);
+	docXml.parse(xmlFile.raw_bytes(), 0);
 	if(docXml.Error())
 	{
 		cout << "Malformed XML. Row: " << docXml.ErrorRow() << " Column: " << docXml.ErrorCol() << ": " << docXml.ErrorDesc() << " (" << name() << ")" << endl;
@@ -302,7 +302,7 @@ void Sprite::parseXml(const std::string& filePath)
 	else
 	{
 		// Find the Sprite node.
-		xmlRootElement = docXml.FirstChildElement("sprite");
+		xmlRootElement = docXml.firstChildElement("sprite");
 		if(!xmlRootElement)
 		{
 			cout << "Specified file '" << filePath << "' doesn't contain a <sprite> tag." << endl;
@@ -346,9 +346,9 @@ void Sprite::parseImageSheets(XmlElement *root)
 	// Iterate through all child elements of <sprite> to find all <imagesheet> tags
 	// then push them into a list of imagesheet's identified by a string id.
 	XmlNode* xmlNode = 0;
-	while(xmlNode = root->IterateChildren(xmlNode))
+	while(xmlNode = root->iterateChildren(xmlNode))
 	{
-		if(xmlNode->Value() == "imagesheet")
+		if(xmlNode->value() == "imagesheet")
 		{
 			string id = parser.stringAttribute(xmlNode, "id");
 			string src = parser.stringAttribute(xmlNode, "src");
@@ -422,9 +422,9 @@ void Sprite::parseActions(XmlElement *root)
 	// Iterate through all child elements of <sprite> to find all <action> tags
 	// then push them into a list of actions identified by a string id.
 	XmlNode *actionNode = 0;
-	while(actionNode = root->IterateChildren(actionNode))
+	while(actionNode = root->iterateChildren(actionNode))
 	{
-		if(actionNode->Value() == "action")
+		if(actionNode->value() == "action")
 		{
 			string action_name = parser.stringAttribute(actionNode, "name");
 
@@ -455,11 +455,11 @@ void Sprite::parseFrames(const std::string& action, XmlNode *node)
 	FrameList frameList;
 
 	XmlNode *frameNode = 0;
-	while(frameNode = node->IterateChildren(frameNode))
+	while(frameNode = node->iterateChildren(frameNode))
 	{
 		int currentRow = frameNode->row();
 		
-		if(frameNode->Value() == "frame")
+		if(frameNode->value() == "frame")
 		{
 			// Imagesheet ID
 			string sheetId = toLowercase(parser.stringAttribute(frameNode, "sheetid")); // normalized
@@ -520,7 +520,7 @@ void Sprite::parseFrames(const std::string& action, XmlNode *node)
 			frameList.push_back(SpriteFrame(sheetId, x, y, width, height, anchorx, anchory, delay));
 		}
 		else
-			cout << "Unexpected tag '<" << frameNode->Value() << ">'." << endTag(currentRow, name()) << endl;
+			cout << "Unexpected tag '<" << frameNode->value() << ">'." << endTag(currentRow, name()) << endl;
 	}
 
 	// Add the frame list to the action container.

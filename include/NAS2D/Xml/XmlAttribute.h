@@ -18,83 +18,74 @@
 namespace NAS2D {
 namespace Xml {
 
-enum
-{
-	XML_SUCCESS,
-	XML_NO_ATTRIBUTE,
-	XML_WRONG_TYPE
-};
-
 /**
  * An attribute is a name-value pair. Elements have an arbitrary number of attributes,
  * each with a unique name.
- * 
- * \note	The attributes are not XmlNodes, since they are not part of the TinyXML
- *			document object model. There are other suggested ways to look at this problem.
  */
 class XmlAttribute : public XmlBase
 {
-	friend class XmlAttributeSet;
+public:
+	enum QueryResult
+	{
+		XML_SUCCESS,
+		XML_NO_ATTRIBUTE,
+		XML_WRONG_TYPE
+	};
 
 public:
-	XmlAttribute() : XmlBase(), document(nullptr), prev(nullptr), next(nullptr) {}
-	XmlAttribute(const std::string& _name, std::string& _value) : XmlBase(), document(nullptr), name(_name), value(_value), prev(nullptr), next(nullptr) {}
+	XmlAttribute();
+	XmlAttribute(const std::string& name, std::string& value);
 
-	/**
-	 * Name of the Attribute.
-	 */
-	const std::string&	Name()  const { return name; }
+	const std::string& name() const;
+	const std::string& value() const;
 
-	/**
-	 * Value of the Attribute.
-	 */
-	const std::string&	Value() const { return value; }
+	int intValue() const;
+	void intValue(int i);
 
-	int IntValue() const;					///< Return the value of this attribute, converted to an integer.
-	double DoubleValue() const;				///< Return the value of this attribute, converted to a double.
+	double doubleValue() const;
+	void doubleValue(double d);
 
-	int QueryIntValue(int& _value) const;
-	int QueryDoubleValue(double& _value) const;
+	QueryResult queryIntValue(int& i) const;
+	QueryResult queryDoubleValue(double& d) const;
 
-	void SetName(const std::string& _name) { name = _name; }		///< Set the name of this attribute.
-	void SetValue(const std::string& _value) { value = _value; }	///< Set the value.
+	void name(const std::string& name);
+	void value(const std::string& value);
 
-	void SetIntValue(int _value);									///< Set the value from an integer.
-	void SetDoubleValue(double _value);								///< Set the value from a double.
+	const XmlAttribute* next() const;
+	XmlAttribute* next();
 
-	/// Get the next sibling attribute in the DOM. Returns nullptr at end.
-	const XmlAttribute* Next() const;
-	XmlAttribute* Next() { return const_cast<XmlAttribute*>((const_cast<const XmlAttribute*>(this))->Next()); }
+	const XmlAttribute* previous() const;
+	XmlAttribute* previous();
 
-	/// Get the previous sibling attribute in the DOM. Returns nullptr at beginning.
-	const XmlAttribute* Previous() const;
-	XmlAttribute* Previous() { return const_cast<XmlAttribute*>((const_cast<const XmlAttribute*>(this))->Previous()); }
-
-	bool operator==(const XmlAttribute& rhs) const { return rhs.name == name; }
-	bool operator<(const XmlAttribute& rhs)	 const { return name < rhs.name; }
-	bool operator>(const XmlAttribute& rhs)  const { return name > rhs.name; }
+	bool operator==(const XmlAttribute& rhs) const { return rhs._name == _name; }
+	bool operator<(const XmlAttribute& rhs)	 const { return _name < rhs._name; }
+	bool operator>(const XmlAttribute& rhs)  const { return _name > rhs._name; }
 
 	/**
 	 * Attribute parsing starts: first letter of the name
 	 * returns: the next char after the value end quote
 	 */
-	virtual const char* Parse(const char* p, TiXmlParsingData* data);
+	virtual const char* parse(const char* p, TiXmlParsingData* data);
 
-	virtual void Print(std::string& buf, int depth) const;
+	virtual void write(std::string& buf, int depth) const;
 
-	// [internal use]
+protected:
+	friend class XmlElement;
 	// Set the document pointer so the attribute can report errors.
-	void SetDocument(XmlDocument* doc) { document = doc; }
+	void document(XmlDocument* doc) { _document = doc; }
 
 private:
+	friend class XmlAttributeSet;
+
 	XmlAttribute(const XmlAttribute&); // Explicitly disallowed.
 	void operator=(const XmlAttribute& base); // Explicitly disallowed.
 
-	XmlDocument*	document;	/**< Comment Me. */
-	std::string		name;		/**< Comment Me. */
-	std::string		value;		/**< Comment Me. */
-	XmlAttribute*	prev;		/**< Comment Me. */
-	XmlAttribute*	next;		/**< Comment Me. */
+private:
+	XmlDocument*	_document;	/**< Comment Me. */
+	std::string		_name;		/**< Comment Me. */
+	std::string		_value;		/**< Comment Me. */
+	XmlAttribute*	_prev;		/**< Comment Me. */
+	XmlAttribute*	_next;		/**< Comment Me. */
 };
 
 } // namespace Xml

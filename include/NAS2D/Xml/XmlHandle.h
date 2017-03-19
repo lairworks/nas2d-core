@@ -145,17 +145,17 @@ public:
 	/**
 	 * Return the handle as a XmlElement. This may return null.
 	 */
-	XmlElement* ToElement() const { return ((node && node->ToElement()) ? node->ToElement() : 0); }
+	XmlElement* ToElement() const { return ((node && node->toElement()) ? node->toElement() : 0); }
 	
 	/**
 	 * Return the handle as a XmlText. This may return null.
 	 */
-	XmlText* ToText() const { return ((node && node->ToText()) ? node->ToText() : 0); }
+	XmlText* ToText() const { return ((node && node->toText()) ? node->toText() : 0); }
 	
 	/**
 	 * Return the handle as a XmlUnknown. This may return null.
 	 */
-	XmlUnknown* ToUnknown() const { return ((node && node->ToUnknown()) ? node->ToUnknown() : 0); }
+	XmlUnknown* ToUnknown() const { return ((node && node->toUnknown()) ? node->toUnknown() : 0); }
 
 private:
 	XmlNode* node;

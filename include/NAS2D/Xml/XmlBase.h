@@ -31,6 +31,7 @@ class TiXmlParsingData;
 struct XmlCursor
 {
 	XmlCursor() { clear(); }
+	XmlCursor(int row, int col) : row(row), col(col) {}
 	void clear() { row = col = -1; }
 
 	int row; // 0 based.

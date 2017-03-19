@@ -85,16 +85,12 @@ class TiXmlParsingData
 	friend class XmlDocument;
 public:
 	void stamp(const char* now);
-	const XmlCursor& Cursor() const { return _cursor; }
+	const XmlCursor& cursor() const { return _cursor; }
 
 private:
-	TiXmlParsingData(const char* start, int _tabsize, int row, int col)
+	TiXmlParsingData(const char* start, int _tabsize, int row, int col) : _stamp(start), _tabsize(_tabsize), _cursor(row, col)
 	{
 		assert(start);
-		_stamp = start;
-		_tabsize = _tabsize;
-		_cursor.row = row;
-		_cursor.col = col;
 	}
 
 private:
@@ -557,7 +553,7 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 		location.col = 0;
 	}
 	TiXmlParsingData data(p, TabSize(), location.row, location.col);
-	location = data.Cursor();
+	location = data.cursor();
 
 	p = skipWhiteSpace(p);
 	if (!p)
@@ -608,7 +604,7 @@ void XmlDocument::SetError(XmlErrorCode err, const char* pError, TiXmlParsingDat
 	if (pError && data)
 	{
 		data->stamp(pError);
-		errorLocation = data->Cursor();
+		errorLocation = data->cursor();
 	}
 }
 
@@ -838,7 +834,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 	if (data)
 	{
 		data->stamp(p);
-		location = data->Cursor();
+		location = data->cursor();
 	}
 
 	if (*p != '<')
@@ -1057,7 +1053,7 @@ const char* XmlUnknown::parse(const char* p, TiXmlParsingData* data)
 	if (data)
 	{
 		data->stamp(p);
-		location = data->Cursor();
+		location = data->cursor();
 	}
 
 	if (!p || !*p || *p != '<')
@@ -1122,7 +1118,7 @@ const char* XmlComment::parse(const char* p, TiXmlParsingData* data)
 	if (data)
 	{
 		data->stamp(p);
-		location = data->Cursor();
+		location = data->cursor();
 	}
 	const char* startTag = "<!--";
 	const char* endTag = "-->";
@@ -1157,7 +1153,7 @@ const char* XmlAttribute::parse(const char* p, TiXmlParsingData* data)
 	if (data)
 	{
 		data->stamp(p);
-		location = data->Cursor();
+		location = data->cursor();
 	}
 	// Read the name, the '=' and the value.
 	const char* pErr = p;
@@ -1262,7 +1258,7 @@ const char* XmlText::parse(const char* p, TiXmlParsingData* data)
 	if (data)
 	{
 		data->stamp(p);
-		location = data->Cursor();
+		location = data->cursor();
 	}
 
 	const char* const startTag = "<![CDATA[";

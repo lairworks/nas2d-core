@@ -78,11 +78,12 @@ void XmlNode::copyTo(XmlNode* target) const
 /**
  * Changes the value of the node.
  * 
- * <b>Document:</b> filename of the XML file.
- * <b>Element:</b> name of the Element.
- * <b>Comment:</b> the Comment text.
- * <b>Unknown:</b> the Tag contents.
- * <b>Text:</b> the Text string.
+ * The type of node changes the meaning of its value:
+ * \li <b>Document:</b> filename of the XML file.
+ * \li <b>Element:</b> name of the Element.
+ * \li <b>Comment:</b> the Comment text.
+ * \li <b>Unknown:</b> the Tag contents.
+ * \li <b>Text:</b> the Text string.
  * 
  * \param	value	\c std::string containing the value to set.
  */
@@ -95,11 +96,12 @@ void XmlNode::value(const std::string& value)
 /**
  * Changes the value of the node.
  * 
- * <b>Document:</b> filename of the XML file.
- * <b>Element:</b> name of the Element.
- * <b>Comment:</b> the Comment text.
- * <b>Unknown:</b> the Tag contents.
- * <b>Text:</b> the Text string.
+ * The type of node changes the meaning of its value:
+ * \li <b>Document:</b> filename of the XML file.
+ * \li <b>Element:</b> name of the Element.
+ * \li <b>Comment:</b> the Comment text.
+ * \li <b>Unknown:</b> the Tag contents.
+ * \li <b>Text:</b> the Text string.
  * 
  * \returns	The value of the node.
  */
@@ -347,6 +349,8 @@ bool XmlNode::removeChild(XmlNode* node)
  * 
  * \returns	The first child of the node with a matching value or
  *			\c nullptr if not available.
+ * 
+ * \see See XmlNode::value() for possible meanings of 'value'.
  */
 const XmlNode* XmlNode::firstChild(const std::string& value) const
 {
@@ -367,6 +371,8 @@ const XmlNode* XmlNode::firstChild(const std::string& value) const
  * 
  * \returns Child node matching 'value' or \c nullptr if
  *			node isn't found.
+ * 
+ * \see See XmlNode::value() for possible meanings of 'value'.
  */
 const XmlNode* XmlNode::lastChild(const std::string& value) const
 {
@@ -389,6 +395,8 @@ const XmlNode* XmlNode::lastChild(const std::string& value) const
  * 
  * \returns Child node matching 'value' or \c nullptr if
  *			node isn't found.
+ * 
+ * \see See XmlNode::value() for possible meanings of 'value'.
  */
 XmlNode* XmlNode::lastChild(const std::string& _value)
 {
@@ -401,13 +409,13 @@ XmlNode* XmlNode::lastChild(const std::string& _value)
  *
  * One way to iterate over nodes is:
  * \code{.cpp}
- * for(child = parent->FirstChild(); child; child = child->NextSibling())
+ * for(child = parent->firstChild(); child; child = child->nextSibling())
  * \endcode
  *
  * IterateChildren does the same thing with the syntax:
  * \code{.cpp}
  * child = nullptr;
- * while(child = parent->IterateChildren(child))
+ * while(child = parent->iterateChildren(child))
  * \endcode
  *
  * \param	previous	Pointer to the previous child of the node and finds
@@ -441,7 +449,7 @@ const XmlNode* XmlNode::iterateChildren(const XmlNode* previous) const
  * \returns	Pointer to the next child of the node. Will return \c nullptr
  *			when there are no children left.
  * 
- * \see XmlNode::iterateChildren(const XmlNode*)
+ * \see See XmlNode::iterateChildren(const XmlNode*) const
  */
 XmlNode* XmlNode::iterateChildren(const XmlNode* previous)
 {
@@ -485,7 +493,7 @@ const XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode*
  * \returns	Pointer to the next child of the node. Will return \c nullptr
  *			when there are no children left.
  * 
- * \see XmlNode::iterateChildren(const std::string&, const XmlNode*) const
+ * \see See XmlNode::iterateChildren(const std::string&, const XmlNode*) const
  */
 XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode* previous)
 {
@@ -494,14 +502,16 @@ XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode* previ
 
 
 /**
- * Navigate to a sibling node with a given value.
+ * Navigate to a sibling node with a given 'value'.
+ * 
+ * \see See XmlNode::value() for possible meanings of 'value'.
  */
-const XmlNode* XmlNode::nextSibling(const std::string& _value) const
+const XmlNode* XmlNode::nextSibling(const std::string& value) const
 {
 	const XmlNode* node = nullptr;
 	for (node = _next; node; node = node->_next)
 	{
-		if (node->value() == _value)
+		if (node->value() == value)
 			return node;
 	}
 	return nullptr;

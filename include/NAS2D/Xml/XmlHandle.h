@@ -104,58 +104,27 @@ namespace Xml {
 class XmlHandle
 {
 public:
-	XmlHandle(XmlNode* _node) { this->node = _node; }
-	XmlHandle(const XmlHandle& ref) { this->node = ref.node; }
-	XmlHandle operator=(const XmlHandle& ref) { if (&ref != this) this->node = ref.node; return *this; }
+	XmlHandle();
+	XmlHandle(XmlNode* _node);
+	XmlHandle(const XmlHandle& ref);
+	XmlHandle operator=(const XmlHandle& ref);
 
 	XmlHandle firstChild() const;
 	XmlHandle firstChild(const std::string& value) const;
 	XmlHandle firstChildElement() const;
 	XmlHandle firstChildElement(const std::string& value) const;
 
-	/**
-	 * Return a handle to the "index" child with the given name. The first child is 0, the second 1, etc.
-	 */
 	XmlHandle child(const std::string& value, int index) const;
-
-	/**
-	 * Return a handle to the "index" child. The first child is 0, the second 1, etc.
-	 */
 	XmlHandle child(int index) const;
 
-	/**
-	 * Return a handle to the "index" child element with the given name. The first child element is 0, the second 1, etc.
-	 * 
-	 * \note	Only XmlElements are indexed. Other types are not counted.
-	 */
 	XmlHandle childElement(const std::string& value, int index) const;
-
-	/**
-	 * Return a handle to the "index" child element. The first child element is 0, the second 1, etc.
-	 * 
-	 * \note	Only XmlElements are indexed. Other types are not counted.
-	 */
 	XmlHandle childElement(int index) const;
 
-	/**
-	 * Return the handle as a XmlNode. This may return null.
-	 */
-	XmlNode* toNode() const { return node; }
-
-	/**
-	 * Return the handle as a XmlElement. This may return null.
-	 */
-	XmlElement* toElement() const { return ((node && node->toElement()) ? node->toElement() : nullptr); }
-	
-	/**
-	 * Return the handle as a XmlText. This may return null.
-	 */
-	XmlText* toText() const { return ((node && node->toText()) ? node->toText() : nullptr); }
-	
-	/**
-	 * Return the handle as a XmlUnknown. This may return null.
-	 */
-	XmlUnknown* toUnknown() const { return ((node && node->toUnknown()) ? node->toUnknown() : nullptr); }
+	// Cast to type functions.
+	XmlNode* toNode() const;
+	XmlElement* toElement() const;
+	XmlText* toText() const;
+	XmlUnknown* toUnknown() const;
 
 private:
 	XmlNode* node;

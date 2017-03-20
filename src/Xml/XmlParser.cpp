@@ -529,7 +529,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 
 const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 {
-	ClearError();
+	clearError();
 
 	// Parse away, at the document level. Since a document contains nothing but
 	// other tags, most of what happens here is skipping white space.
@@ -592,19 +592,19 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 void XmlDocument::SetError(XmlErrorCode err, const char* pError, TiXmlParsingData* data)
 {
 	// The first error in a chain is more accurate - don't set again!
-	if (error)
+	if (_error)
 		return;
 
 	assert(err > 0 && err < XML_ERROR_STRING_COUNT);
-	error = true;
-	errorId = err;
-	errorDesc = XML_ERROR_TABLE[errorId];
+	_error = true;
+	_errorId = err;
+	_errorDesc = XML_ERROR_TABLE[_errorId];
 
-	errorLocation.clear();
+	_errorLocation.clear();
 	if (pError && data)
 	{
 		data->stamp(pError);
-		errorLocation = data->cursor();
+		_errorLocation = data->cursor();
 	}
 }
 

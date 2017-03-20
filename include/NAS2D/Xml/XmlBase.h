@@ -32,7 +32,10 @@ struct XmlCursor
 {
 	XmlCursor() { clear(); }
 	XmlCursor(int row, int col) : row(row), col(col) {}
-	void clear() { row = col = -1; }
+
+	void clear() { operator()(-1, -1); }
+
+	void operator()(int _row, int _col) { row = _row, col = _col; }
 
 	int row; // 0 based.
 	int col; // 0 based.

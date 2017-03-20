@@ -6,23 +6,21 @@ using namespace NAS2D::Xml;
 // = XmlDocument Implementation
 // ==================================================================================
 XmlDocument::XmlDocument() :	XmlNode(XmlNode::XML_DOCUMENT),
-								errorId(0),
-								tabsize(4),
-								error(false),
-								useMicrosoftBOM(false)
+								_errorId(0),
+								_tabsize(4),
+								_error(false)							
 {
-	ClearError();
+	clearError();
 }
 
 
 XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML_DOCUMENT),
-															errorId(0),
-															tabsize(4),
-															error(false),
-															useMicrosoftBOM(false)
+															_errorId(0),
+															_tabsize(4),
+															_error(false)
 {
 	_value = documentName;
-	ClearError();
+	clearError();
 }
 
 
@@ -44,12 +42,11 @@ void XmlDocument::CopyTo(XmlDocument* target) const
 {
 	XmlNode::copyTo(target);
 
-	target->error = error;
-	target->errorId = errorId;
-	target->errorDesc = errorDesc;
-	target->tabsize = tabsize;
-	target->errorLocation = errorLocation;
-	target->useMicrosoftBOM = useMicrosoftBOM;
+	target->_error = _error;
+	target->_errorId = _errorId;
+	target->_errorDesc = _errorDesc;
+	target->_tabsize = _tabsize;
+	target->_errorLocation = _errorLocation;
 
 	XmlNode* node = nullptr;
 	for (node = _firstChild; node; node = node->nextSibling())
@@ -78,6 +75,9 @@ void XmlDocument::write(std::string& buf, int depth) const
 }
 
 
+/**
+ * Walk the XML tree visiting this node and all of its children.
+ */
 bool XmlDocument::accept(XmlVisitor* visitor) const
 {
 	if (visitor->visitEnter(*this))
@@ -90,4 +90,17 @@ bool XmlDocument::accept(XmlVisitor* visitor) const
 	}
 
 	return visitor->visitExit(*this);
+}
+
+
+/**
+ * If you have handled the error, it can be reset with this call. The error
+ * state is automatically cleared if you parse a new XML block.
+ */
+void XmlDocument::clearError()
+{
+	_error = false;
+	_errorId = 0;
+	_errorDesc = "";
+	_errorLocation(0, 0);
 }

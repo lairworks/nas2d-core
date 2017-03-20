@@ -21,18 +21,16 @@ public:
 	virtual ~XmlDocument() {}
 
 	/**
-	 * Parse the given null terminated block of xml data. Passing in an encoding to this
-	 * method (either TIXML_ENCODING_LEGACY or TIXML_ENCODING_UTF8 will force TinyXml
-	 * to use that encoding, regardless of what TinyXml might otherwise try to detect.
+	 * Parse the given null terminated block of XML data.
 	 */
-	virtual const char* parse(const char* p, TiXmlParsingData* data = 0);
+	virtual const char* parse(const char* p, TiXmlParsingData* data = nullptr);
 
 	/**
 	 * Get the root element -- the only top level element -- of the document. In well formed XML,
 	 * there should only be one. TinyXml is tolerant of multiple elements at the document level.
 	 */
-	const XmlElement* RootElement() const { return firstChildElement(); }
-	XmlElement* RootElement() { return firstChildElement(); }
+	const XmlElement* rootElement() const { return firstChildElement(); }
+	XmlElement* rootElement() { return firstChildElement(); }
 
 	/**
 	 * If an error occurs, Error will be set to true. Also,
@@ -40,18 +38,18 @@ public:
 	 * 	- The ErrorDesc() method will return the name of the error. (very useful)
 	 * 	- The ErrorRow() and ErrorCol() will return the location of the error (if known)
 	 */
-	bool Error() const { return error; }
+	bool error() const { return _error; }
 
 	/**
 	 * Gets the error descrition.
 	 */
-	const std::string& ErrorDesc() const { return errorDesc; }
+	const std::string& errorDesc() const { return _errorDesc; }
 
 	/**
 	 * Generally, you probably want the error string ( ErrorDesc() ). But if you
 	 * prefer the ErrorId, this function will fetch it.
 	 */
-	int ErrorId()	const { return errorId; }
+	int ErrorId()	const { return _errorId; }
 
 	/**
 	 * Returns the location (if known) of the error. The first column is column 1, and the first
@@ -61,8 +59,8 @@ public:
 	 *
 	 * @sa SetTabSize, Row, Column
 	 */
-	int ErrorRow() const { return errorLocation.row + 1; }
-	int ErrorCol() const { return errorLocation.col + 1; }	///< The column where the error occured. See ErrorRow()
+	int ErrorRow() const { return _errorLocation.row + 1; }
+	int ErrorCol() const { return _errorLocation.col + 1; }	///< The column where the error occured. See ErrorRow()
 
 	/**
 	 * SetTabSize() allows the error reporting functions (ErrorRow() and ErrorCol()) to report
@@ -85,33 +83,17 @@ public:
 	 *
 	 * @sa Row, Column
 	 */
-	void SetTabSize(int _tabsize) { tabsize = _tabsize; }
+	void SetTabSize(int _tabsize) { _tabsize = _tabsize; }
 
-	int TabSize() const { return tabsize; }
+	int TabSize() const { return _tabsize; }
 
-	/**
-	 * If you have handled the error, it can be reset with this call. The error
-	 * state is automatically cleared if you Parse a new XML block.
-	 */
-	void ClearError()
-	{
-		error = false;
-		errorId = 0;
-		errorDesc = "";
-		errorLocation.row = errorLocation.col = 0;
-	}
+	void clearError();
 
-	/**
-	 * Print the Document to a buffer.
-	 */
 	virtual void write(std::string& buf, int depth = 0) const;
 
 	virtual const XmlDocument* toDocument() const { return this; }
 	virtual XmlDocument* toDocument() { return this; }
 
-	/**
-	 * Walk the XML tree visiting this node and all of its children.
-	 */
 	virtual bool accept(XmlVisitor* content) const;
 
 	// [internal use]
@@ -125,15 +107,14 @@ private:
 	void CopyTo(XmlDocument* target) const;
 
 private:
-	int				errorId;
-	int				tabsize;
+	int				_errorId;
+	int				_tabsize;
 
-	bool			error;
-	bool			useMicrosoftBOM;		// the UTF-8 BOM were found when read. Note this, and try to write.
+	bool			_error;
 
-	std::string		errorDesc;
+	std::string		_errorDesc;
 
-	XmlCursor		errorLocation;
+	XmlCursor		_errorLocation;
 };
 
 } // namespace Xml

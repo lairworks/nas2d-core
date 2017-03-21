@@ -30,15 +30,10 @@ public:
 
 	virtual ~XmlComment() {}
 
-	/// Returns a copy of this Comment.
 	virtual XmlNode* clone() const;
 
 	virtual void write(std::string& buf, int depth) const;
 
-	/**
-	 * Attribtue parsing starts: at the ! of the !--
-	 * 					 returns: next char past '>'
-	 */
 	virtual const char* parse(const char* p, TiXmlParsingData* data);
 
 	virtual const XmlComment* toComment() const { return this; }

@@ -1130,6 +1130,10 @@ void XmlComment::streamIn(std::istream& in, std::string& tag)
 }
 
 
+/**
+ * Attribtue parsing starts: at the ! of the !--
+ * 					 returns: next char past '>'
+ */
 const char* XmlComment::parse(const char* p, TiXmlParsingData* data)
 {
 	XmlDocument* doc = document();

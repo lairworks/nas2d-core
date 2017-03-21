@@ -41,25 +41,47 @@ void fillErrorTable()
 
 
 /**
- * Return the position, in the original source file, of this node or attribute.
+ * Get the row of the node in the document.
  *
- * Generally, the row and column value will be set when the XmlDocument::Load(),
- * XmlDocument::LoadFile(), or any XmlNode::Parse() is called. It will NOT be set
- * when the DOM was created from operator>>.
- *
- * The values reflect the initial load. Once the DOM is modified programmatically
+ * The values reflect the initial load. Once the document is modified programmatically
  * (by adding or changing nodes and attributes) the new values will NOT update to
  * reflect changes in the document.
- *
- * There is a minor performance cost to computing the row and column. Computation
- * can be disabled if XmlDocument::SetTabSize() is called with 0 as the value.
- *
- * \see XmlDocument::SetTabSize()
  */
 int XmlBase::row() const
 {
-	return location.row + 1;
+	return location.first + 1;
 }
 
-int XmlBase::column() const { return location.col + 1; }	///< See Row()
 
+/**
+ * Get the column of the node in the document.
+ *
+ * The values reflect the initial load. Once the document is modified programmatically
+ * (by adding or changing nodes and attributes) the new values will NOT update to
+ * reflect changes in the document.
+ */
+int XmlBase::column() const
+{
+	return location.second + 1;
+}
+
+
+/**
+ * The world does not agree on whether white space should be kept or not. In order
+ * to make everyone happy, these global, static functions are provided to set whether
+ * or not TinyXml will condense all white space	into a single space or not. The
+ * default is to condense. Note changing this value is not thread safe.
+ */
+void XmlBase::whitespaceCondensed(bool condense)
+{
+	condenseWhiteSpace = condense;
+}
+
+
+/**
+ * Return the current white space setting.
+ */
+bool XmlBase::whitespaceCondensed()
+{
+	return condenseWhiteSpace;
+}

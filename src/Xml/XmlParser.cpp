@@ -85,7 +85,7 @@ class TiXmlParsingData
 	friend class XmlDocument;
 public:
 	void stamp(const char* now);
-	const XmlCursor& cursor() const { return _cursor; }
+	const std::pair<int, int>& cursor() const { return _cursor; }
 
 private:
 	TiXmlParsingData(const char* start, int row, int col) : _stamp(start), _cursor(row, col)
@@ -94,8 +94,8 @@ private:
 	}
 
 private:
-	XmlCursor		_cursor;
-	const char*		_stamp;
+	std::pair<int, int>	_cursor;
+	const char*			_stamp;
 };
 
 
@@ -104,8 +104,8 @@ void TiXmlParsingData::stamp(const char* now)
 	assert(now);
 
 	// Get the current row, column.
-	int row = _cursor.row;
-	int col = _cursor.col;
+	int row = _cursor.first;
+	int col = _cursor.second;
 	const char* p = _stamp;
 	assert(p);
 
@@ -157,10 +157,10 @@ void TiXmlParsingData::stamp(const char* now)
 			++col;
 		}
 	}
-	_cursor.row = row;
-	_cursor.col = col;
-	assert(_cursor.row >= -1);
-	assert(_cursor.col >= -1);
+	_cursor.first = row;
+	_cursor.second = col;
+	assert(_cursor.first >= -1);
+	assert(_cursor.second >= -1);
 	_stamp = p;
 	assert(_stamp);
 }
@@ -211,11 +211,15 @@ bool XmlBase::streamTo(std::istream& in, int character, std::string& tag)
 }
 
 
-// One of TinyXML's more performance demanding functions. Try to keep the memory overhead down. The
-// "assign" optimization removes over 10% of the execution time.
-//
+/**
+ * Reads an XML name into the string provided. Returns a pointer just past
+ * the last character of the name, or null if the function encounters an error.
+ */
 const char* XmlBase::readName(const char* p, std::string& name)
 {
+	// One of TinyXML's more performance demanding functions. Try to keep the memory overhead down. The
+	// "assign" optimization removes over 10% of the execution time. <-- I want to evaluate that statement.
+
 	name.clear();
 	assert(p);
 
@@ -246,6 +250,9 @@ const char* XmlBase::readName(const char* p, std::string& name)
 }
 
 
+/**
+ * If an entity has been found, transform it into a character.
+ */
 const char* XmlBase::getEntity(const char* p, char* value, int* length)
 {
 	// Presume an entity, and pull it out.
@@ -335,6 +342,9 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 }
 
 
+/**
+ * Get a character, while interpreting entities. The length can be from 0 to 4 bytes.
+ */
 const char* XmlBase::getChar(const char* p, char* _value, int* length)
 {
 	assert(p);
@@ -352,7 +362,8 @@ const char* XmlBase::getChar(const char* p, char* _value, int* length)
 	{
 		//strncpy( _value, p, *length );	// lots of compilers don't like this function (unsafe),
 		// and the null terminator isn't needed
-		for (int i = 0; p[i] && i < *length; ++i) {
+		for (int i = 0; p[i] && i < *length; ++i)
+		{
 			_value[i] = p[i];
 		}
 		return p + (*length);
@@ -365,6 +376,11 @@ const char* XmlBase::getChar(const char* p, char* _value, int* length)
 }
 
 
+/**
+ * Return true if the next characters in the stream are any of the endTag sequences.
+ * Ignore case only works for english, and should only be relied on when comparing
+ * to English words: StringEqual( p, "version", true ) is fine.
+ */
 bool XmlBase::stringEqual(const char* p, const char* tag, bool ignoreCase)
 {
 	assert(p);
@@ -402,6 +418,18 @@ bool XmlBase::stringEqual(const char* p, const char* tag, bool ignoreCase)
 	return false;
 }
 
+
+/**
+ * Reads text. Returns a pointer past the given end tag. Wickedly complex options, but it
+ * keeps the (sensitive) code in one place.
+ *
+ * \param in				Where to start
+ * \param text				The string read
+ * \param ignoreWhiteSpace	Wheather to keep the white space
+ * \param endTag			What ends this text
+ * \param ignoreCase		Whether to ignore case in the end tag
+ * \param encoding			The current encoding.
+ */
 const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSpace, const char* endTag, bool caseInsensitive)
 {
 	*text = ""; // certain tags always keep whitespace
@@ -533,18 +561,18 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 
 	// Note that, for a document, this needs to come before the while space skip,
 	// so that parsing starts from the pointer we are given.
-	location.clear();
 	if (prevData)
 	{
-		location.row = prevData->_cursor.row;
-		location.col = prevData->_cursor.col;
+		location.first = prevData->_cursor.first;
+		location.second = prevData->_cursor.second;
 	}
 	else
 	{
-		location.row = 0;
-		location.col = 0;
+		location.first = 0;
+		location.second = 0;
 	}
-	TiXmlParsingData data(p, location.row, location.col);
+
+	TiXmlParsingData data(p, location.first, location.second);
 	location = data.cursor();
 
 	p = skipWhiteSpace(p);
@@ -592,7 +620,9 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, TiXmlParsingData* 
 	_errorId = err;
 	_errorDesc = XML_ERROR_TABLE[_errorId];
 
-	_errorLocation.clear();
+	_errorLocation.first = 0;
+	_errorLocation.second = 0;
+	
 	if (pError && data)
 	{
 		data->stamp(pError);

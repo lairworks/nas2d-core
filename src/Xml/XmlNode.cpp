@@ -70,7 +70,6 @@ XmlNode::~XmlNode()
 void XmlNode::copyTo(XmlNode* target) const
 {
 	target->value(_value);
-	target->_userData = _userData;
 	target->location = location;
 }
 

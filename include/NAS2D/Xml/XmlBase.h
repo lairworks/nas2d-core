@@ -26,23 +26,6 @@ class XmlUnknown;
 class TiXmlParsingData;
 
 /**
- * Internal structure for tracking location of items in the XML file.
- */
-struct XmlCursor
-{
-	XmlCursor() { clear(); }
-	XmlCursor(int row, int col) : row(row), col(col) {}
-
-	void clear() { operator()(-1, -1); }
-
-	void operator()(int _row, int _col) { row = _row, col = _col; }
-
-	int row; // 0 based.
-	int col; // 0 based.
-};
-
-
-/**
  * XmlBase is a base class for every class in TinyXml. It does little except to establish
  * that TinyXml classes can be printed and provide some utility functions.
  * 
@@ -70,7 +53,7 @@ class XmlBase
 	friend class XmlDocument;
 
 public:
-	XmlBase() : _userData(nullptr) {}
+	XmlBase() {}
 	virtual ~XmlBase() {}
 
 	/**
@@ -81,23 +64,11 @@ public:
 	 */
 	virtual void write(std::string& buf, int indent) const = 0;
 
-	/**
-	 * The world does not agree on whether white space should be kept or not. In order
-	 * to make everyone happy, these global, static functions are provided to set whether
-	 * or not TinyXml will condense all white space	into a single space or not. The
-	 * default is to condense. Note changing this value is not thread safe.
-	 */
-	static void whitespaceCondensed(bool condense) { condenseWhiteSpace = condense; }
-
-	/// Return the current white space setting.
-	static bool whitespaceCondensed() { return condenseWhiteSpace; }
+	static void whitespaceCondensed(bool condense);
+	static bool whitespaceCondensed();
 
 	int row() const;
 	int column() const;
-
-	void userData(void* user) { _userData = user; }		///< Set a pointer to arbitrary user data.
-	void* userData() { return _userData; }				///< Get a pointer to arbitrary user data.
-	const void* userData() const { return _userData; }	///< Get a pointer to arbitrary user data.
 
 	virtual const char* parse(const char* p, TiXmlParsingData* data) = 0;
 
@@ -131,35 +102,12 @@ protected:
 	static bool	streamWhiteSpace(std::istream& in, std::string& tag);
 	static bool streamTo(std::istream& in, int character, std::string& tag);
 
-	/**
-	 * Reads an XML name into the string provided. Returns a pointer just past
-	 * the last character of the name, or 0 if the function has an error.
-	 */
 	static const char* readName(const char* p, std::string& name);
-
-	/**
-	 * Reads text. Returns a pointer past the given end tag. Wickedly complex options, but it
-	 * keeps the (sensitive) code in one place.
-	 *
-	 * \param in				Where to start
-	 * \param text				The string read
-	 * \param ignoreWhiteSpace	Wheather to keep the white space
-	 * \param endTag			What ends this text
-	 * \param ignoreCase		Whether to ignore case in the end tag
-	 * \param encoding			The current encoding.
-	 */
 	static const char* readText(const char* in, std::string* text, bool ignoreWhiteSpace, const char* endTag, bool ignoreCase);
-
-	// If an entity has been found, transform it into a character.
 	static const char* getEntity(const char* in, char* value, int* length);
 
-	// Get a character, while interpreting entities.
-	// The length can be from 0 to 4 bytes.
 	inline static const char* getChar(const char* p, char* _value, int* length);
 
-	// Return true if the next characters in the stream are any of the endTag sequences.
-	// Ignore case only works for english, and should only be relied on when comparing
-	// to English words: StringEqual( p, "version", true ) is fine.
 	static bool stringEqual(const char* p, const char* endTag, bool ignoreCase);
 
 	static int isAlpha(unsigned char anyByte);
@@ -168,8 +116,7 @@ protected:
 	inline static int toLower(int v) { return tolower(v); }
 
 protected:
-	XmlCursor location;
-	void* _userData;		/**< Field containing a generic user pointer */
+	std::pair<int, int> location;
 
 private:
 	XmlBase(const XmlBase&); // Explicitly disallowed.
@@ -193,9 +140,6 @@ private:
 	static Entity entity[NUM_ENTITY];
 	static bool condenseWhiteSpace;
 };
-
-
-
 
 } // namespace Xml
 } // namespace NAS2D

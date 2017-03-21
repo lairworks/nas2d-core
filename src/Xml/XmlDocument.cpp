@@ -114,7 +114,8 @@ void XmlDocument::clearError()
 	_error = false;
 	_errorId = 0;
 	_errorDesc = "";
-	_errorLocation(0, 0);
+	_errorLocation.first = 0;
+	_errorLocation.second = 0;
 }
 
 
@@ -180,12 +181,12 @@ int XmlDocument::errorId() const
 */
 int XmlDocument::errorRow() const
 {
-	return _errorLocation.row + 1;
+	return _errorLocation.first + 1;
 }
 
 
 int XmlDocument::errorCol() const
 {
-	return _errorLocation.col + 1;
+	return _errorLocation.second + 1;
 
 }

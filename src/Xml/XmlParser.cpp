@@ -842,6 +842,11 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 	}
 }
 
+
+/**
+ * Attribtue parsing starts: next char past '<'
+ * returns: next char past '>'
+ */
 const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 {
 	p = skipWhiteSpace(p);

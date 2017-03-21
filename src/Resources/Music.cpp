@@ -119,7 +119,7 @@ void Music::load()
 		return;
 	}
 
-	Mix_Music* music = Mix_LoadMUS_RW(SDL_RWFromConstMem(file->raw_bytes(), file->size()), 0);
+	Mix_Music* music = Mix_LoadMUS_RW(SDL_RWFromConstMem(file->raw_bytes(), static_cast<int>(file->size())), 0);
 	if (!music)
 	{
 		std::cout << "Music::load(): " << Mix_GetError() << std::endl;

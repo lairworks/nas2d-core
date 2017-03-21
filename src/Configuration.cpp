@@ -11,7 +11,7 @@
 #include "NAS2D/Configuration.h"
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
-#include "NAS2D/Xml/XmlAttributeParser.h"
+#include "NAS2D/Xml/Xml.h"
 
 #include <iostream>
 
@@ -111,28 +111,28 @@ void Configuration::save()
 	doc.linkEndChild(root);
 
 	XmlElement* graphics = new XmlElement("graphics");
-	graphics->setAttribute("screenwidth", mScreenWidth);
-	graphics->setAttribute("screenheight", mScreenHeight);
-	graphics->setAttribute("bitdepth", mScreenBpp);
+	graphics->attribute("screenwidth", mScreenWidth);
+	graphics->attribute("screenheight", mScreenHeight);
+	graphics->attribute("bitdepth", mScreenBpp);
 
-	if(mFullScreen)	graphics->setAttribute("fullscreen", "true");
-	else graphics->setAttribute("fullscreen", "false");
+	if(mFullScreen)	graphics->attribute("fullscreen", "true");
+	else graphics->attribute("fullscreen", "false");
 	
-	if(mVSync)	graphics->setAttribute("vsync", "true");
-	else graphics->setAttribute("vsync", "false");
+	if(mVSync) graphics->attribute("vsync", "true");
+	else graphics->attribute("vsync", "false");
 
-	if(mTextureQuality == GL_NEAREST) graphics->setAttribute("texturequality", "fast");
-	else if(mTextureQuality == GL_LINEAR) graphics->setAttribute("texturequality", "good");
+	if(mTextureQuality == GL_NEAREST) graphics->attribute("texturequality", "fast");
+	else if(mTextureQuality == GL_LINEAR) graphics->attribute("texturequality", "good");
 
 	root->linkEndChild(graphics);
 
 	XmlElement* audio = new XmlElement("audio");
-	audio->setAttribute("mixrate", mMixRate);
-	audio->setAttribute("channels", mStereoChannels);
-	audio->setAttribute("sfxvolume", mSfxVolume);
-	audio->setAttribute("musicvolume", mMusicVolume);
-	audio->setAttribute("bufferlength", mBufferLength);
-	audio->setAttribute("mixer", mMixerName);
+	audio->attribute("mixrate", mMixRate);
+	audio->attribute("channels", mStereoChannels);
+	audio->attribute("sfxvolume", mSfxVolume);
+	audio->attribute("musicvolume", mMusicVolume);
+	audio->attribute("bufferlength", static_cast<int>(mBufferLength));
+	audio->attribute("mixer", mMixerName);
 	root->linkEndChild(audio);
 
 	// Options
@@ -142,8 +142,8 @@ void Configuration::save()
 	for (auto op : mOptions)
 	{
 		XmlElement* option = new XmlElement("option");
-		option->setAttribute("name", op.first);
-		option->setAttribute("value", op.second);
+		option->attribute("name", op.first);
+		option->attribute("value", op.second);
 		options->linkEndChild(option);
 	}
 

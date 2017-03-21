@@ -31,4 +31,3 @@
 #include "NAS2D/Resources/Sprite.h"
 
 #include "NAS2D/Xml/Xml.h"
-#include "NAS2D/Xml/XmlAttributeParser.h"

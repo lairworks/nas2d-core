@@ -61,6 +61,14 @@ void XmlElement::clearThis()
 }
 
 
+/**
+ * Gets the value of an attribute matching 'name'.
+ * 
+ * \param name	Name of the attribute to find.
+ * 
+ * \returns The value of the named attribute or an empty string if
+ *			the attribute wasn't found.
+ */
 std::string XmlElement::attribute(const std::string& name) const
 {
 	const XmlAttribute* node = attributeSet.find(name);
@@ -70,87 +78,63 @@ std::string XmlElement::attribute(const std::string& name) const
 }
 
 
-std::string XmlElement::attribute(const std::string& name, int& i) const
-{
-	const XmlAttribute* attrib = attributeSet.find(name);
-	std::string result;
-
-	if (attrib)
-	{
-		result = attrib->value();
-		if (i)
-		{
-			attrib->queryIntValue(i);
-		}
-	}
-	return result;
-}
-
-
-std::string XmlElement::attribute(const std::string& name, double& d) const
-{
-	const XmlAttribute* attrib = attributeSet.find(name);
-	std::string result;
-
-	if (attrib)
-	{
-		result = attrib->value();
-		if (d)
-		{
-			attrib->queryDoubleValue(d);
-		}
-	}
-	return result;
-}
-
-
-XmlAttribute::QueryResult XmlElement::queryIntAttribute(const std::string& name, int& ival) const
-{
-	const XmlAttribute* attrib = attributeSet.find(name);
-	if (!attrib)
-		return XmlAttribute::XML_NO_ATTRIBUTE;
-
-	return attrib->queryIntValue(ival);
-}
-
-
-XmlAttribute::QueryResult XmlElement::queryDoubleAttribute(const std::string& name, double& dval) const
-{
-	const XmlAttribute* attrib = attributeSet.find(name);
-	if (!attrib)
-		return XmlAttribute::XML_NO_ATTRIBUTE;
-
-	return attrib->queryDoubleValue(dval);
-}
-
-
-void XmlElement::setAttribute(const std::string& name, int val)
+/**
+ * Sets a value to a named attribute.
+ * 
+ * \note	If no named attribute is found, one is created.
+ * 
+ * \param name	Name of the attribute to find.
+ * \param i		\c int value to set to the attribute.
+ */
+void XmlElement::attribute(const std::string& name, int i)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 
 	if (attrib)
-		attrib->intValue(val);
+		attrib->intValue(i);
 }
 
 
-void XmlElement::setDoubleAttribute(const std::string& name, double val)
+/**
+ * Sets a value to a named attribute.
+ * 
+ * \note	If no named attribute is found, one is created.
+ * 
+ * \param name	Name of the attribute to find.
+ * \param d		\c double value to set to the attribute.
+ */
+void XmlElement::attribute(const std::string& name, double d)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 	if (attrib)
-		attrib->doubleValue(val);
+		attrib->doubleValue(d);
 }
 
 
-void XmlElement::setAttribute(const std::string& cname, const std::string& cvalue)
+/**
+ * Sets a value to a named attribute.
+ * 
+ * \note	If no named attribute is found, one is created.
+ * 
+ * \param name	Name of the attribute to find.
+ * \param s		String value to set to the attribute.
+ */
+void XmlElement::attribute(const std::string& name, const std::string& s)
 {
-	XmlAttribute* attrib = attributeSet.findOrCreate(cname);
+	XmlAttribute* attrib = attributeSet.findOrCreate(s);
 	if (attrib)
 	{
-		attrib->value(cvalue);
+		attrib->value(s);
 	}
 }
 
 
+/**
+ * Writes the element to a string buffer.
+ * 
+ * \param buf	String buffer to write to.
+ * \param depth	Indent depth to use when writing the element.
+ */
 void XmlElement::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; ++i)
@@ -208,7 +192,7 @@ void XmlElement::copyTo(XmlElement* target) const
 	const XmlAttribute* attribute = nullptr;
 	for (attribute = attributeSet.first(); attribute; attribute = attribute->next())
 	{
-		target->setAttribute(attribute->name(), attribute->value());
+		target->attribute(attribute->name(), attribute->value());
 	}
 
 	XmlNode* node = nullptr;
@@ -218,6 +202,10 @@ void XmlElement::copyTo(XmlElement* target) const
 	}
 }
 
+
+/**
+ * Walk the XML tree visiting this node and all of its children.
+ */
 bool XmlElement::accept(XmlVisitor* visitor) const
 {
 	if (visitor->visitEnter(*this, attributeSet.first()))
@@ -232,6 +220,9 @@ bool XmlElement::accept(XmlVisitor* visitor) const
 }
 
 
+/**
+ * Creates a new Element and returns it - the returned element is a copy.
+ */
 XmlNode* XmlElement::clone() const
 {
 	XmlElement* clone = new XmlElement(value());
@@ -243,21 +234,11 @@ XmlNode* XmlElement::clone() const
 }
 
 
-const std::string& XmlElement::text() const
-{
-	const XmlNode* child = this->firstChild();
-	if (child)
-	{
-		const XmlText* childText = child->toText();
-		if (childText)
-		{
-			return childText->value();
-		}
-	}
-	return NAS2D_EMPTY_STR;
-}
-
-
+/**
+ * Deletes an attribute with the given name.
+ * 
+ * \param name	Name of the attribute to delete.
+ */
 void XmlElement::removeAttribute(const std::string& name)
 {
 	XmlAttribute* node = attributeSet.find(name);
@@ -269,48 +250,45 @@ void XmlElement::removeAttribute(const std::string& name)
 }
 
 
+/**
+ * Get the first attribute of the XmlElement.
+ * 
+ * \returns Pointer to an XmlAttribute or nullptr if the
+ *			element has no attributes.
+ */
 const XmlAttribute* XmlElement::firstAttribute() const
 {
 	return attributeSet.first();
 }
 
 
+/**
+ * Get the first attribute of the XmlElement.
+ * 
+ * Non-const version of firstAttribute().
+ * 
+ * \returns Pointer to an XmlAttribute or nullptr if the
+ *			element has no attributes.
+ */
 XmlAttribute* XmlElement::firstAttribute()
 {
 	return attributeSet.first();
 }
 
 
+/**
+ * Get the last attribute of the XmlElement.
+ */
 const XmlAttribute* XmlElement::lastAttribute() const
 {
 	return attributeSet.last();
 }
 
 
+/**
+ * Get the last attribute of the XmlElement.
+ */
 XmlAttribute* XmlElement::lastAttribute()
 {
 	return attributeSet.last();
-}
-
-
-XmlAttribute::QueryResult XmlElement::queryFloatAttribute(const std::string& name, float& _value) const
-{
-	double d = 0;
-	auto result = queryDoubleAttribute(name, d);
-	if (result == XmlAttribute::XML_SUCCESS)
-		_value = static_cast<float>(d);
-
-	return result;
-}
-
-
-XmlAttribute::QueryResult XmlElement::queryStringAttribute(const std::string& name, std::string& _value) const
-{
-	std::string str = attribute(name);
-	if (!str.empty())
-	{
-		_value = str;
-		return XmlAttribute::XML_SUCCESS;
-	}
-	return XmlAttribute::XML_NO_ATTRIBUTE;
 }

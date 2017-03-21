@@ -141,9 +141,6 @@
     <ClCompile Include="..\..\src\Xml\XmlNode.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Xml\XmlAttributeParser.cpp">
-      <Filter>Source Files\Xml</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\NAS2D\Common.h">
@@ -282,9 +279,6 @@
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlMemoryBuffer.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeParser.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
   </ItemGroup>

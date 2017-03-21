@@ -5,10 +5,9 @@
 namespace NAS2D {
 namespace Xml {
 
-/** Always the top level node. A document binds together all the
-	XML pieces. It can be saved, loaded, and printed to the screen.
-	The 'value' of a document node is the xml file name.
-*/
+/**
+ * Always the top level node. A document binds together all the XML pieces.
+ */
 class XmlDocument : public XmlNode
 {
 public:

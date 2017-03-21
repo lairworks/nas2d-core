@@ -152,7 +152,7 @@ XmlNode* XmlNode::linkEndChild(XmlNode* node)
 	{
 		delete node;
 		if (document())
-			document()->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+			document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 
@@ -180,7 +180,7 @@ XmlNode* XmlNode::insertEndChild(const XmlNode& node)
 	if (node.type() == XmlNode::XML_DOCUMENT)
 	{
 		if (document())
-			document()->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+			document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 
 		return nullptr;
 	}
@@ -205,7 +205,7 @@ XmlNode* XmlNode::insertBeforeChild(XmlNode* beforeThis, const XmlNode& addThis)
 	if (addThis.type() == XmlNode::XML_DOCUMENT)
 	{
 		if (document())
-			document()->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+			document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 
@@ -242,7 +242,7 @@ XmlNode* XmlNode::insertAfterChild(XmlNode* afterThis, const XmlNode& addThis)
 	if (addThis.type() == XmlNode::XML_DOCUMENT)
 	{
 		if (document())
-			document()->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+			document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 
@@ -286,7 +286,7 @@ XmlNode* XmlNode::replaceChild(XmlNode* replaceThis, const XmlNode& withThis)
 		// A document can never be a child.	Thanks to Noam.
 		XmlDocument* doc = document();
 		if (doc)
-			doc->SetError(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+			doc->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
 		return nullptr;
 	}
 

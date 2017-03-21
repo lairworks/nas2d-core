@@ -88,7 +88,7 @@ public:
 	const XmlCursor& cursor() const { return _cursor; }
 
 private:
-	TiXmlParsingData(const char* start, int _tabsize, int row, int col) : _stamp(start), _tabsize(_tabsize), _cursor(row, col)
+	TiXmlParsingData(const char* start, int row, int col) : _stamp(start), _cursor(row, col)
 	{
 		assert(start);
 	}
@@ -96,17 +96,12 @@ private:
 private:
 	XmlCursor		_cursor;
 	const char*		_stamp;
-	int				_tabsize;
 };
 
 
 void TiXmlParsingData::stamp(const char* now)
 {
 	assert(now);
-
-	// Do nothing if the tabsize is 0.
-	if (_tabsize < 1)
-		return;
 
 	// Get the current row, column.
 	int row = _cursor.row;
@@ -155,9 +150,6 @@ void TiXmlParsingData::stamp(const char* now)
 		case '\t':
 			// Eat the character
 			++p;
-
-			// Skip to next tab stop
-			col = (col / _tabsize + 1) * _tabsize;
 			break;
 
 		default:
@@ -478,7 +470,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 
 	if (!streamTo(in, '<', tag))
 	{
-		SetError(XML_ERROR_PARSING_EMPTY, 0, 0);
+		error(XML_ERROR_PARSING_EMPTY, 0, 0);
 		return;
 	}
 
@@ -490,7 +482,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 			int c = in.get();
 			if (c <= 0)
 			{
-				SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
+				error(XML_ERROR_EMBEDDED_NULL, 0, 0);
 				break;
 			}
 			tag += static_cast<char>(c);
@@ -516,14 +508,14 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 			}
 			else
 			{
-				SetError(XML_ERROR, 0, 0);
+				error(XML_ERROR, 0, 0);
 				return;
 			}
 		}
 	}
 
 	// We should have returned sooner.
-	SetError(XML_ERROR, 0, 0);
+	error(XML_ERROR, 0, 0);
 }
 
 
@@ -535,7 +527,7 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 	// other tags, most of what happens here is skipping white space.
 	if (!p || !*p)
 	{
-		SetError(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
@@ -552,13 +544,13 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 		location.row = 0;
 		location.col = 0;
 	}
-	TiXmlParsingData data(p, TabSize(), location.row, location.col);
+	TiXmlParsingData data(p, location.row, location.col);
 	location = data.cursor();
 
 	p = skipWhiteSpace(p);
 	if (!p)
 	{
-		SetError(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
@@ -581,7 +573,7 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 	// Was this empty?
 	if (!_firstChild)
 	{
-		SetError(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
@@ -589,7 +581,7 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 	return p;
 }
 
-void XmlDocument::SetError(XmlErrorCode err, const char* pError, TiXmlParsingData* data)
+void XmlDocument::error(XmlErrorCode err, const char* pError, TiXmlParsingData* data)
 {
 	// The first error in a chain is more accurate - don't set again!
 	if (_error)
@@ -693,7 +685,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 		{
 			XmlDocument* doc = document();
 			if (doc)
-				doc->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
+				doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
 			return;
 		}
 		tag += static_cast<char>(c);
@@ -753,7 +745,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				{
 					XmlDocument* doc = document();
 					if (doc)
-						doc->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
+						doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
 					return;
 				}
 
@@ -794,7 +786,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				{
 					XmlDocument* doc = document();
 					if (doc)
-						doc->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
+						doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
 					return;
 				}
 				assert(c == '>');
@@ -827,7 +819,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 
 	if (!p || !*p)
 	{
-		if (doc) doc->SetError(XML_ERROR_PARSING_ELEMENT, 0, 0);
+		if (doc) doc->error(XML_ERROR_PARSING_ELEMENT, 0, 0);
 		return nullptr;
 	}
 
@@ -839,7 +831,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 
 	if (*p != '<')
 	{
-		if (doc) doc->SetError(XML_ERROR_PARSING_ELEMENT, p, data);
+		if (doc) doc->error(XML_ERROR_PARSING_ELEMENT, p, data);
 		return nullptr;
 	}
 
@@ -851,7 +843,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 	p = readName(p, _value);
 	if (!p || !*p)
 	{
-		if (doc) doc->SetError(XML_ERROR_FAILED_TO_READ_ELEMENT_NAME, pErr, data);
+		if (doc) doc->error(XML_ERROR_FAILED_TO_READ_ELEMENT_NAME, pErr, data);
 		return nullptr;
 	}
 
@@ -866,7 +858,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 		p = skipWhiteSpace(p);
 		if (!p || !*p)
 		{
-			if (doc) doc->SetError(XML_ERROR_READING_ATTRIBUTES, pErr, data);
+			if (doc) doc->error(XML_ERROR_READING_ATTRIBUTES, pErr, data);
 			return nullptr;
 		}
 		if (*p == '/')
@@ -875,7 +867,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 			// Empty tag.
 			if (*p != '>')
 			{
-				if (doc) doc->SetError(XML_ERROR_PARSING_EMPTY, p, data);
+				if (doc) doc->error(XML_ERROR_PARSING_EMPTY, p, data);
 				return nullptr;
 			}
 			return (p + 1);
@@ -890,7 +882,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 			{
 				// We were looking for the end tag, but found nothing.
 				// Fix for [ 1663758 ] Failure to report error on bad XML
-				if (doc) doc->SetError(XML_ERROR_READING_END_TAG, p, data);
+				if (doc) doc->error(XML_ERROR_READING_END_TAG, p, data);
 				return nullptr;
 			}
 
@@ -908,12 +900,12 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 					++p;
 					return p;
 				}
-				if (doc) doc->SetError(XML_ERROR_READING_END_TAG, p, data);
+				if (doc) doc->error(XML_ERROR_READING_END_TAG, p, data);
 				return nullptr;
 			}
 			else
 			{
-				if (doc) doc->SetError(XML_ERROR_READING_END_TAG, p, data);
+				if (doc) doc->error(XML_ERROR_READING_END_TAG, p, data);
 				return nullptr;
 			}
 		}
@@ -932,7 +924,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 
 			if (!p || !*p)
 			{
-				if (doc) doc->SetError(XML_ERROR_PARSING_ELEMENT, pErr, data);
+				if (doc) doc->error(XML_ERROR_PARSING_ELEMENT, pErr, data);
 				delete attrib;
 				return nullptr;
 			}
@@ -942,7 +934,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 
 			if (node)
 			{
-				if (doc) doc->SetError(XML_ERROR_PARSING_ELEMENT, pErr, data);
+				if (doc) doc->error(XML_ERROR_PARSING_ELEMENT, pErr, data);
 				delete attrib;
 				return nullptr;
 			}
@@ -1019,7 +1011,7 @@ const char* XmlElement::readValue(const char* p, TiXmlParsingData* data)
 
 	if (!p)
 	{
-		if (doc) doc->SetError(XML_ERROR_READING_ELEMENT_VALUE, 0, 0);
+		if (doc) doc->error(XML_ERROR_READING_ELEMENT_VALUE, 0, 0);
 	}
 	return p;
 }
@@ -1034,7 +1026,7 @@ void XmlUnknown::streamIn(std::istream& in, std::string& tag)
 		{
 			XmlDocument* doc = document();
 			if (doc)
-				doc->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
+				doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
 			return;
 		}
 		tag += static_cast<char>(c);
@@ -1058,7 +1050,7 @@ const char* XmlUnknown::parse(const char* p, TiXmlParsingData* data)
 
 	if (!p || !*p || *p != '<')
 	{
-		if (doc) doc->SetError(XML_ERROR_PARSING_UNKNOWN, p, data);
+		if (doc) doc->error(XML_ERROR_PARSING_UNKNOWN, p, data);
 		return nullptr;
 	}
 
@@ -1074,7 +1066,7 @@ const char* XmlUnknown::parse(const char* p, TiXmlParsingData* data)
 	if (!p)
 	{
 		if (doc)
-			doc->SetError(XML_ERROR_PARSING_UNKNOWN, 0, 0);
+			doc->error(XML_ERROR_PARSING_UNKNOWN, 0, 0);
 	}
 	if (p && *p == '>')
 		return p + 1;
@@ -1091,7 +1083,7 @@ void XmlComment::streamIn(std::istream& in, std::string& tag)
 		{
 			XmlDocument* doc = document();
 			if (doc)
-				doc->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
+				doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
 			return;
 		}
 
@@ -1126,7 +1118,7 @@ const char* XmlComment::parse(const char* p, TiXmlParsingData* data)
 	if (!stringEqual(p, startTag, false))
 	{
 		if (doc)
-			doc->SetError(XML_ERROR_PARSING_COMMENT, p, data);
+			doc->error(XML_ERROR_PARSING_COMMENT, p, data);
 		return nullptr;
 	}
 	p += strlen(startTag);
@@ -1160,13 +1152,13 @@ const char* XmlAttribute::parse(const char* p, TiXmlParsingData* data)
 	p = readName(p, _name);
 	if (!p || !*p)
 	{
-		if (_document) _document->SetError(XML_ERROR_READING_ATTRIBUTES, pErr, data);
+		if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, pErr, data);
 		return nullptr;
 	}
 	p = skipWhiteSpace(p);
 	if (!p || !*p || *p != '=')
 	{
-		if (_document) _document->SetError(XML_ERROR_READING_ATTRIBUTES, p, data);
+		if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, p, data);
 		return nullptr;
 	}
 
@@ -1174,7 +1166,7 @@ const char* XmlAttribute::parse(const char* p, TiXmlParsingData* data)
 	p = skipWhiteSpace(p);
 	if (!p || !*p)
 	{
-		if (_document) _document->SetError(XML_ERROR_READING_ATTRIBUTES, p, data);
+		if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, p, data);
 		return nullptr;
 	}
 
@@ -1206,7 +1198,7 @@ const char* XmlAttribute::parse(const char* p, TiXmlParsingData* data)
 				// [ 1451649 ] Attribute values with trailing quotes not handled correctly
 				// We did not have an opening quote but seem to have a 
 				// closing one. Give up and throw an error.
-				if (_document) _document->SetError(XML_ERROR_READING_ATTRIBUTES, p, data);
+				if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, p, data);
 				return nullptr;
 			}
 			_value += *p;
@@ -1230,7 +1222,7 @@ void XmlText::streamIn(std::istream& in, std::string& tag)
 		{
 			XmlDocument* doc = document();
 			if (doc)
-				doc->SetError(XML_ERROR_EMBEDDED_NULL, 0, 0);
+				doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
 
 			return;
 		}
@@ -1271,7 +1263,7 @@ const char* XmlText::parse(const char* p, TiXmlParsingData* data)
 		if (!stringEqual(p, startTag, false))
 		{
 			if (doc)
-				doc->SetError(XML_ERROR_PARSING_CDATA, p, data);
+				doc->error(XML_ERROR_PARSING_CDATA, p, data);
 			return nullptr;
 		}
 		p += strlen(startTag);

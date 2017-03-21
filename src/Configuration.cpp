@@ -187,7 +187,7 @@ bool Configuration::readConfig(const std::string& filePath)
 	config.parse(xmlFile.raw_bytes());
 	if(config.error())
 	{
-		std::cout << "Error parsing configuration file '" << filePath << "' on Row " << config.ErrorRow() << ", Column " << config.ErrorCol() << ": " << config.errorDesc() << std::endl;
+		std::cout << "Error parsing configuration file '" << filePath << "' on Row " << config.errorRow() << ", Column " << config.errorCol() << ": " << config.errorDesc() << std::endl;
 		return false;
 	}
 	else

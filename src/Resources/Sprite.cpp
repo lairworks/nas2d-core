@@ -295,7 +295,7 @@ void Sprite::parseXml(const std::string& filePath)
 	docXml.parse(xmlFile.raw_bytes(), 0);
 	if(docXml.error())
 	{
-		cout << "Malformed XML. Row: " << docXml.ErrorRow() << " Column: " << docXml.ErrorCol() << ": " << docXml.errorDesc() << " (" << name() << ")" << endl;
+		cout << "Malformed XML. Row: " << docXml.errorRow() << " Column: " << docXml.errorCol() << ": " << docXml.errorDesc() << " (" << name() << ")" << endl;
 		addDefaultAction();
 		return;
 	}

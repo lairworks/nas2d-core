@@ -2,21 +2,24 @@
 
 using namespace NAS2D::Xml;
 
-// ==================================================================================
-// = XmlDocument Implementation
-// ==================================================================================
+/**
+ * Default c'tor
+ */
 XmlDocument::XmlDocument() :	XmlNode(XmlNode::XML_DOCUMENT),
 								_errorId(0),
-								_tabsize(4),
 								_error(false)							
 {
 	clearError();
 }
 
 
+/**
+ * C'tor
+ * 
+ * \param documentName	Name of the document.
+ */
 XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML_DOCUMENT),
 															_errorId(0),
-															_tabsize(4),
 															_error(false)
 {
 	_value = documentName;
@@ -24,12 +27,22 @@ XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML
 }
 
 
+/**
+ * Copy c'tor.
+ * 
+ * \param copy XmlDocument to copy.
+ */
 XmlDocument::XmlDocument(const XmlDocument& copy) : XmlNode(XmlNode::XML_DOCUMENT)
 {
 	copy.copyTo(this);
 }
 
 
+/**
+ * Copy assignment operator.
+ * 
+ * \param copy XmlDocument to copy.
+ */
 XmlDocument& XmlDocument::operator=(const XmlDocument& copy)
 {
 	clear();
@@ -38,14 +51,13 @@ XmlDocument& XmlDocument::operator=(const XmlDocument& copy)
 }
 
 
-void XmlDocument::CopyTo(XmlDocument* target) const
+void XmlDocument::copyTo(XmlDocument* target) const
 {
 	XmlNode::copyTo(target);
 
 	target->_error = _error;
 	target->_errorId = _errorId;
 	target->_errorDesc = _errorDesc;
-	target->_tabsize = _tabsize;
 	target->_errorLocation = _errorLocation;
 
 	XmlNode* node = nullptr;
@@ -103,4 +115,77 @@ void XmlDocument::clearError()
 	_errorId = 0;
 	_errorDesc = "";
 	_errorLocation(0, 0);
+}
+
+
+/**
+ * If an error occurs, Error will be set to true. Also,
+ * 	- The ErrorId() will contain the integer identifier of the error (not generally useful)
+ * 	- The ErrorDesc() method will return the name of the error. (very useful)
+ * 	- The ErrorRow() and ErrorCol() will return the location of the error (if known)
+ */
+bool XmlDocument::error() const
+{
+	return _error;
+}
+
+
+
+/**
+ * Get the root element -- the only top level element -- of the document. In well formed XML,
+ * there should only be one. TinyXml is tolerant of multiple elements at the document level.
+ */
+const XmlElement* XmlDocument::rootElement() const
+{
+	return firstChildElement();
+}
+
+
+/**
+ * Get the root element -- the only top level element -- of the document. In well formed XML,
+ * there should only be one. TinyXml is tolerant of multiple elements at the document level.
+ */
+XmlElement* XmlDocument::rootElement()
+{
+	return firstChildElement();
+}
+
+
+/**
+ * Gets the error descrition.
+ */
+const std::string& XmlDocument::errorDesc() const
+{
+	return _errorDesc;
+}
+
+
+/**
+ * Generally, you probably want the error string ( ErrorDesc() ). But if you
+ * prefer the ErrorId, this function will fetch it.
+ */
+int XmlDocument::errorId() const
+{
+	return _errorId;
+}
+
+
+/**
+* Returns the location (if known) of the error. The first column is column 1, and the first
+* row is row 1. A value of 0 means the row and column wasn't applicable (memory errors, for
+* example, have no row/column) or the parser lost the error. (An error in the error
+* reporting, in that case.)
+*
+* @sa SetTabSize, Row, Column
+*/
+int XmlDocument::errorRow() const
+{
+	return _errorLocation.row + 1;
+}
+
+
+int XmlDocument::errorCol() const
+{
+	return _errorLocation.col + 1;
+
 }

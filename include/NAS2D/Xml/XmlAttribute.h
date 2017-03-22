@@ -61,6 +61,8 @@ public:
 	bool operator<(const XmlAttribute& rhs)	 const { return _name < rhs._name; }
 	bool operator>(const XmlAttribute& rhs)  const { return _name > rhs._name; }
 
+	bool operator==(const std::string& rhs) const { return rhs == _name; }
+
 	/**
 	 * Attribute parsing starts: first letter of the name
 	 * returns: the next char after the value end quote

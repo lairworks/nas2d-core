@@ -30,16 +30,30 @@ const int				AUDIO_MUSIC_MIN_VOLUME		= 0;
 const int				AUDIO_MUSIC_MAX_VOLUME		= 128;
 const int				AUDIO_MUSIC_VOLUME			= 100;
 const int				AUDIO_BUFFER_SIZE			= 1024;
+const int				AUDIO_BUFFER_MIN_SIZE		= 256;
+const int				AUDIO_BUFFER_MAX_SIZE		= 4096;
 const int				AUDIO_MONO					= 1;
 const int				AUDIO_STEREO				= 2;
 const std::string		AUDIO_MIXER					= "SDL";
 
+const std::string		AUDIO_CFG_MIXRATE			= "mixrate";
+const std::string		AUDIO_CFG_CHANNELS			= "channels";
+const std::string		AUDIO_CFG_SFX_VOLUME		= "sfxvolume";
+const std::string		AUDIO_CFG_MUS_VOLUME		= "musicvolume";
+const std::string		AUDIO_CFG_BUFFER_SIZE		= "bufferlength";
+const std::string		AUDIO_CFG_MIXER				= "mixer";
+
 const int				GRAPHICS_WIDTH				= 800;
 const int				GRAPHICS_HEIGHT				= 600;
 const int				GRAPHICS_BITDEPTH			= 32;
-const std::string		GRAPHICS_VSYNC				= "false";
-const GraphicsQuality	GRAPHICS_TEXTURE_QUALITY	= GRAPHICS_GOOD;
 const bool				GRAPHICS_FULLSCREEN			= false;
+
+const std::string		GRAPHICS_CFG_SCREEN_WIDTH	= "screenwidth";
+const std::string		GRAPHICS_CFG_SCREEN_HEIGHT	= "screenheight";
+const std::string		GRAPHICS_CFG_SCREEN_DEPTH	= "bitdepth";
+const std::string		GRAPHICS_CFG_FULLSCREEN		= "fullscreen";
+const std::string		GRAPHICS_CFG_VSYNC			= "vsync";
+
 
 
 /**
@@ -48,7 +62,6 @@ const bool				GRAPHICS_FULLSCREEN			= false;
 Configuration::Configuration():	mScreenWidth(GRAPHICS_WIDTH),
 								mScreenHeight(GRAPHICS_HEIGHT),
 								mScreenBpp(GRAPHICS_BITDEPTH),
-								mTextureQuality(GRAPHICS_TEXTURE_QUALITY),
 								mFullScreen(false),
 								mMixRate(AUDIO_MEDIUM_QUALITY),
 								mStereoChannels(AUDIO_STEREO),
@@ -121,9 +134,6 @@ void Configuration::save()
 	if(mVSync) graphics->attribute("vsync", "true");
 	else graphics->attribute("vsync", "false");
 
-	if(mTextureQuality == GL_NEAREST) graphics->attribute("texturequality", "fast");
-	else if(mTextureQuality == GL_LINEAR) graphics->attribute("texturequality", "good");
-
 	root->linkEndChild(graphics);
 
 	XmlElement* audio = new XmlElement("audio");
@@ -164,7 +174,6 @@ void Configuration::setDefaultValues()
 	mScreenHeight = GRAPHICS_HEIGHT;
 	mScreenBpp = GRAPHICS_BITDEPTH;
 	mFullScreen = GRAPHICS_FULLSCREEN;
-	mTextureQuality = GRAPHICS_TEXTURE_QUALITY;
 	
 	mMixRate = AUDIO_MEDIUM_QUALITY;
 	mStereoChannels = AUDIO_STEREO;
@@ -227,29 +236,38 @@ bool Configuration::readConfig(const std::string& filePath)
  * Parse the <graphics> tab.
  *
  * \todo	Check for sane configurations, particularly screen resolution.
- * 
- * \note	Use of void pointer in declaration to avoid implementation details in header.
  */
 void Configuration::parseGraphics(void* _n)
 {
-	XmlAttributeParser parser;
-	XmlNode* node = static_cast<XmlNode*>(_n);
+	// NOTE: Void pointer used to avoid implementation details in the class declaration.
 
-	mScreenWidth = parser.intAttribute(node, "screenwidth");
-	mScreenHeight = parser.intAttribute(node, "screenheight");
-	mScreenBpp = parser.intAttribute(node, "bitdepth");
+	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
 
-	std::string fs = parser.stringAttribute(node, "fullscreen");
-	(toLowercase(fs) == "true") ? fullscreen(true) : fullscreen(false);
+	// Probably not a necessary check but here for robustness.
+	if (!element)
+	{
+		std::cout << "Unexpected XML tag '" << static_cast<XmlNode*>(_n)->value() << "' found in configuration file while processing the '<graphics>' element." << std::endl;
+		return;
+	}
 
+	XmlAttribute* attribute = element->firstAttribute();
+	while (attribute)
+	{
+		if (attribute->name() == GRAPHICS_CFG_SCREEN_WIDTH)
+			attribute->queryIntValue(mScreenWidth);
+		else if (attribute->name() == GRAPHICS_CFG_SCREEN_HEIGHT)
+			attribute->queryIntValue(mScreenHeight);
+		else if (attribute->name() == GRAPHICS_CFG_SCREEN_DEPTH)
+			attribute->queryIntValue(mScreenBpp);
+		else if (attribute->name() == GRAPHICS_CFG_FULLSCREEN)
+			fullscreen(toLowercase(attribute->value()) == "true");
+		else if (attribute->name() == GRAPHICS_CFG_VSYNC)
+			vsync(toLowercase(attribute->value()) == "true");
+		else
+			std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
 
-	std::string vSync = parser.stringAttribute(node, "vsync");
-	if(toLowercase(vSync) != "true" && toLowercase(vSync) != "false")
-		vsync(true);
-	else
-		toLowercase(vSync) == "true" ? vsync(true) : vsync(false);
-
-	graphicsTextureQuality(parser.stringAttribute(node, "texturequality"));
+		attribute = attribute->next();
+	}
 }
 
 /**
@@ -257,38 +275,71 @@ void Configuration::parseGraphics(void* _n)
  * 
  * \note	If any values are invalid or non-existant, this
  *			function will set default values.
- * 
- * \note	Use of void pointer in declaration to avoid implementation details in header.
  */
 void Configuration::parseAudio(void* _n)
 {
-	XmlAttributeParser parser;
-	XmlNode* node = static_cast<XmlNode*>(_n);
+	// NOTE: Void pointer used to avoid implementation details in the class declaration.
 
-	mMixRate = parser.intAttribute(node, "mixrate");
-	if(mMixRate == 0)
-		audioMixRate(AUDIO_MEDIUM_QUALITY);
+	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
 
-	mStereoChannels = parser.intAttribute(node, "channels");
-	if(mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
-		audioStereoChannels(AUDIO_STEREO);
+	// Probably not a necessary check but here for robustness.
+	if (!element)
+	{
+		std::cout << "Unexpected XML tag '" << static_cast<XmlNode*>(_n)->value() << "' found in configuration file while processing the '<audio>' element." << std::endl;
+		return;
+	}
 
-	mSfxVolume = parser.intAttribute(node, "sfxvolume");
-	if(mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
-		audioSfxVolume(AUDIO_SFX_VOLUME);
+	XmlAttribute* attribute = element->firstAttribute();
+	while (attribute)
+	{
+		if (attribute->name() == AUDIO_CFG_MIXRATE)
+		{
+			attribute->queryIntValue(mMixRate);
+			if (mMixRate != AUDIO_LOW_QUALITY && mMixRate != AUDIO_MEDIUM_QUALITY && mMixRate != AUDIO_HIGH_QUALITY)
+			{
+				std::cout << "Invalid audio mixrate setting '" << mMixRate << "'. Expected 11025, 22050 or 44100. Setting to default of 22050." << std::endl;
+				audioMixRate(AUDIO_MEDIUM_QUALITY);
+			}
+		}
+		else if (attribute->name() == AUDIO_CFG_CHANNELS)
+		{
+			attribute->queryIntValue(mStereoChannels);
+			
+			if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
+			{
+				std::cout << "Invalid audio channels setting '" << mStereoChannels << "'. Expected 1 or 2. Setting to default of 2." << std::endl;
+				audioStereoChannels(AUDIO_STEREO);
+			}
+		}
+		else if (attribute->name() == AUDIO_CFG_SFX_VOLUME)
+		{
+			attribute->queryIntValue(mSfxVolume);
 
+			if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
+				audioSfxVolume(clamp(mSfxVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
+		}
+		else if (attribute->name() == AUDIO_CFG_MUS_VOLUME)
+		{
+			attribute->queryIntValue(mMusicVolume);
 
-	mMusicVolume = parser.intAttribute(node, "musicvolume");
-	if(mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
-		audioSfxVolume(AUDIO_MUSIC_VOLUME);
+			if (mMusicVolume < AUDIO_SFX_MIN_VOLUME || mMusicVolume > AUDIO_SFX_MAX_VOLUME)
+				audioSfxVolume(clamp(mMusicVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
+		}
+		else if (attribute->name() == AUDIO_CFG_BUFFER_SIZE)
+		{
+			attribute->queryIntValue(mBufferLength);
+			if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
+				audioBufferSize(clamp(mBufferLength, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE));
+		}
+		else if (attribute->name() == AUDIO_CFG_MIXER)
+		{
+			mMixerName = attribute->value();
+		}
+		else
+			std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
 
-
-	audioBufferSize(parser.intAttribute(node, "bufferlength"));
-
-
-	mixer(parser.stringAttribute(node, "mixer"));
-	if(mixer() != "SDL")
-		mixer(AUDIO_MIXER);
+		attribute = attribute->next();
+	}
 }
 
 
@@ -299,24 +350,43 @@ void Configuration::parseAudio(void* _n)
  */
 void Configuration::parseOptions(void* _n)
 {
-	XmlAttributeParser parser;
-	XmlNode* node = static_cast<XmlNode*>(_n);
+	// NOTE: Void pointer used to avoid implementation details in the class declaration.
 
-	XmlNode *xmlNode = nullptr;
-	while(xmlNode = node->iterateChildren(xmlNode))
+	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
+
+	// Probably not a necessary check but here for robustness.
+	if (!element)
 	{
-		if(xmlNode->value() == "option")
-		{
-			// Ensure that there is a 'name' attribute.
-			std::string option = parser.stringAttribute(xmlNode, "name");
+		std::cout << "Unexpected XML tag '" << static_cast<XmlNode*>(_n)->value() << "' found in configuration file while processing the '<graphics>' element." << std::endl;
+		return;
+	}
 
-			if(!option.empty())
-				mOptions[option] = parser.stringAttribute(xmlNode, "value");
+	XmlNode *node = nullptr;
+	while(node = element->iterateChildren(node))
+	{
+		if(node->value() == "option")
+		{
+			XmlAttribute* attribute = element->firstAttribute();
+			std::string name, value;
+			while (attribute)
+			{
+				if (attribute->name() == "name")
+					name == attribute->value();
+				else if (attribute->name() == "value")
+					value == attribute->value();
+				else
+					std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
+
+				attribute = attribute->next();
+			}
+			
+			if (name.empty() || value.empty())
+				std::cout << "Invalid name/value pair in <option> tag in configuration file on row " << node->row() << ". This option will be ignored." << std::endl;
 			else
-				std::cout << "Option tag is missing a name attribute on row " << xmlNode->row() << "." << std::endl;
+				mOptions[name] = value;
 		}
 		else
-			std::cout << "Unexpected tag '<" << xmlNode->value() << ">' found in configuration on row " << xmlNode->row() << "." << std::endl;
+			std::cout << "Unexpected tag '<" << node->value() << ">' found in configuration on row " << node->row() << "." << std::endl;
 	}
 }
 
@@ -345,17 +415,6 @@ int Configuration::graphicsHeight() const
 int Configuration::graphicsColorDepth() const
 {
 	return mScreenBpp;
-}
-
-
-/**
- * Gets texture render quality.
- *
- * \note	Equivalent to GL_NEAREST or GL_LINEAR
- */
-GraphicsQuality Configuration::graphicsTextureQuality() const
-{
-	return mTextureQuality;
 }
 
 
@@ -468,42 +527,30 @@ void Configuration::graphicsColorDepth(int bpp)
 
 
 /**
- * Sets the texture quality.
+ * Sets fullscreen mode.
  * 
- * \param	quality		Can either be GRAPHICS_FAST or GRAPHICS_GOOD.
- * 
- * \note	If the specified quality is not one of the two valid choices,
- *			GRAPHICS_FAST is used instead.
+ * \param	fullscreen	Sets fullscreen mode when \c true.
  */
-void Configuration::graphicsTextureQuality(const std::string& quality)
+void Configuration::fullscreen(bool fullscreen)
 {
-	if(toLowercase(quality) == "fast")
-		mTextureQuality = GRAPHICS_FAST;
-	else if(toLowercase(quality) == "good")
-		mTextureQuality = GRAPHICS_GOOD;
-	else
-		mTextureQuality = GRAPHICS_FAST;
-
+	mFullScreen = fullscreen;
 	mOptionChanged = true;
 }
 
 
 /**
- * Toggles between windowed and fullscreen mode.
+ * Toggles vertical sync.
+ * 
+ * \param	vsync	Turns on vertical synch when \c true.
+ * 
+ * \note	This option does nothing when the graphics driver
+ *			is set to a forced mode outside of the application.
+ *			This is commonly seen on nVidia GPU's with global
+ *			settings in place.
  */
-void Configuration::fullscreen(bool isFullscreen)
+void Configuration::vsync(bool vsync)
 {
-	mFullScreen = isFullscreen;
-	mOptionChanged = true;
-}
-
-
-/**
- * Toggles the use of Vertical Sync.
- */
-void Configuration::vsync(bool isVsync)
-{
-	mVSync = isVsync;
+	mVSync = vsync;
 	mOptionChanged = true;
 }
 
@@ -527,8 +574,10 @@ void Configuration::audioMixRate(int mixrate)
 
 /**
  * Sets the audio mixer.
- *
- * \todo	Needs proper value and error checking.
+ * 
+ * \param	mixer	Sets the name of the mixer driver to use.
+ * 
+ * \note	The following values are available: "SDL"
  */
 void Configuration::mixer(const std::string& mixer)
 {
@@ -564,7 +613,8 @@ void Configuration::audioSfxVolume(int volume)
 /**
  * Sets the Music volume.
  * 
- * \param	volume	Music volume. Can be anywhere between AUDIO_MUSIC_MIN_VOLUME and AUDIO_MUSIC_MAX_VOLUME.
+ * \param	volume	Music volume. Can be anywhere between AUDIO_MUSIC_MIN_VOLUME
+ *					and AUDIO_MUSIC_MAX_VOLUME.
  */
 void Configuration::audioMusicVolume(int volume)
 {

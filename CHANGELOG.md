@@ -25,6 +25,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Renamed all functions in Signal0 - Signal5 to lowercase names to match std:: and NAS2D library conventions.
 - Renamed ::w() and ::h() methods in in Rectangle_2d/Rectangle_2df to ::width() and ::height().
 - OGL_Renderer sets line quality for circle drawing code based on configuration's texture quality.
+- Merged TinyXML into the NAS2D namespace. See [Task #14](https://github.com/lairworks/nas2d-core/issues/14) for additional information.
 
 ## Deprecated
 
@@ -35,6 +36,9 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Removed Random interface. See [Random Numbers](https://github.com/lairworks/nas2d-core/wiki/Random-Numbers).
 - Removed MersenneTwister implementation. See [Random Numbers](https://github.com/lairworks/nas2d-core/wiki/Random-Numbers).
 - Removed Image::rect().
+- Removed XmlAttributeParser.
+- Removed Sprite::debug().
+- Texture Quality configuration option has been removed.
 
 ## Fixed
 
@@ -56,6 +60,8 @@ All `::w()` and `::h()` method names across the entire interface have been renam
 Since all of the `using namespace` directives have been removed from all public interface headers, you will need to either use your own directive or specific the appropriate namespace for both `std::` and `NAS2D::` namespaces.
 
 The `KeyTranslator` object has been removed. Useful functionality has been merged into the `EventHandler` class. Additionally, the `KeyCode` and `MouseButton` enumerators were also merged into the `EventHandler`. This means that you will either need to append `EventHander::` to your calls or add a `using namespace NAS2D::EventHandler` to your source files. See [Issue #23](https://github.com/lairworks/nas2d-core/issues/23) for an in-depth explanation.
+
+TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects have been renamed and its interface has been updated to reflect NAS2D naming conventions. Documentation has been thoroughly updated and is now included as part of NAS2D's main documentation. See [Task #14](https://github.com/lairworks/nas2d-core/issues/14) for additional information.
 
 ---
 

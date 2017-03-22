@@ -51,8 +51,6 @@ GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0
 GLfloat		VERTEX_ARRAY[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
 GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
-GraphicsQuality TEXTURE_FILTER = GRAPHICS_GOOD;
-
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
 extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
@@ -77,7 +75,6 @@ OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer"
 	std::cout << "Starting " << name() << ":" << std::endl;
 	
 	Configuration& cf = Utility<Configuration>::get();
-	TEXTURE_FILTER = cf.graphicsTextureQuality();
 	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
 }
 
@@ -465,11 +462,8 @@ void OGL_Renderer::initGL()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
 
-	if (Utility<Configuration>::get().graphicsTextureQuality() == GRAPHICS_GOOD)
-	{
-		glEnable(GL_LINE_SMOOTH);
-		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-	}
+	glEnable(GL_LINE_SMOOTH);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
 	// Spit out system graphics information.
 	std::cout << "\t- OpenGL System Info -" << std::endl;

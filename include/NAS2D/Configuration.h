@@ -25,12 +25,6 @@
 
 namespace NAS2D {
 
-enum GraphicsQuality
-{
-	GRAPHICS_FAST = GL_NEAREST,
-	GRAPHICS_GOOD = GL_LINEAR
-};
-
 
 /**
  * \class Configuration
@@ -52,18 +46,16 @@ public:
 	int graphicsWidth() const;
 	int graphicsHeight() const;
 	int graphicsColorDepth() const;
-	GraphicsQuality graphicsTextureQuality() const;
 
 	bool fullscreen() const;
-	void fullscreen(bool isFullscreen);
+	void fullscreen(bool fullscreen);
 
 	bool vsync() const;
-	void vsync(bool isVsync);
+	void vsync(bool vsync);
 
 	void graphicsWidth(int width);
 	void graphicsHeight(int height);
 	void graphicsColorDepth(int bpp);
-	void graphicsTextureQuality(const std::string& quality);
 
 
 	// Audio Options
@@ -106,7 +98,6 @@ private:
 
 	int					mScreenWidth, mScreenHeight;	/**< Screen Resolution */
 	int					mScreenBpp;						/**< Color Depth */
-	GraphicsQuality		mTextureQuality;				/**< Texture render quality -- equivalent to GL_NEAREST and GL_LINEAR */
 
 	bool				mFullScreen;					/**< Screen Mode */
 	bool				mVSync;							/**< Vertical Sync */
@@ -114,7 +105,7 @@ private:
     int					mMixRate;						/**< */
 	int					mStereoChannels;				/**< Either AUDIO_STEREO or AUDIO_MONO */
 	int					mSfxVolume, mMusicVolume;		/**< Audio Volume Levels */
-	unsigned int		mBufferLength;					/**< Audio Buffer Length */
+	int					mBufferLength;					/**< Audio Buffer Length */
 	std::string			mMixerName;						/**< Renderer to use. */
 
 	std::string			mConfigPath;					/**< Path for the config file. */

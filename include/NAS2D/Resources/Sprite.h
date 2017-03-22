@@ -93,7 +93,6 @@ public:
 	int originX(int x);
 	int originY(int y);
 
-	void debug();
 
 	/**
 	 * Returns a reference to the frame listener signal slot.
@@ -151,12 +150,12 @@ private:
 	typedef std::map<std::string, Image>		SheetList;
 
 private:
-	void parseXml(const std::string& filePath);
-	void parseImageSheets(Xml::XmlElement *root);
-	void addImageSheet(const std::string& id, const std::string& src, Xml::XmlNode* node);
+	void processXml(const std::string& filePath);
+	void processImageSheets(void* root);
+	void addImageSheet(const std::string& id, const std::string& src, void* node);
 
-	void parseActions(Xml::XmlElement *root);
-	void parseFrames(const std::string& action, Xml::XmlNode *node);
+	void processActions(void* root);
+	void processFrames(const std::string& action, void* node);
 
 	bool validateSheetId(const std::string& sheetId, int row);
 

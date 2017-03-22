@@ -9,7 +9,6 @@
 // ==================================================================================
 
 #include "NAS2D/Resources/Sprite.h"
-#include "NAS2D/XML/XmlAttributeParser.h"
 
 #include <iostream>
 
@@ -61,8 +60,7 @@ Sprite::Sprite(const std::string& filePath):	mSpriteName(filePath),
 												mRotationAngle(0.0f),
 												mPaused(false)
 {
-	addDefaultAction();
-	parseXml(filePath);
+	processXml(filePath);
 }
 
 
@@ -267,7 +265,7 @@ void Sprite::decrementFrame()
  *
  * \param filePath	File path of the sprite XML definition file.
  */
-void Sprite::parseXml(const std::string& filePath)
+void Sprite::processXml(const std::string& filePath)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
@@ -281,7 +279,7 @@ void Sprite::parseXml(const std::string& filePath)
 	File xmlFile = fs.open(filePath);
 
 	// Load the file
-	if(xmlFile.size() == 0)
+	if(xmlFile.empty())
 	{
 		cout << "Sprite file '" << filePath << "' is empty." << endl;
 		addDefaultAction();
@@ -289,10 +287,10 @@ void Sprite::parseXml(const std::string& filePath)
 	}
 
 	XmlDocument docXml;
-	XmlElement *xmlRootElement = 0;
+	XmlElement *xmlRootElement = nullptr;
 
 	// Load the XML document and handle any errors if occuring
-	docXml.parse(xmlFile.raw_bytes(), 0);
+	docXml.parse(xmlFile.raw_bytes());
 	if(docXml.error())
 	{
 		cout << "Malformed XML. Row: " << docXml.errorRow() << " Column: " << docXml.errorCol() << ": " << docXml.errorDesc() << " (" << name() << ")" << endl;
@@ -311,61 +309,72 @@ void Sprite::parseXml(const std::string& filePath)
 		}
 
 		// Get the Sprite version.
-		XmlAttributeParser parser;
-		string versionString = parser.stringAttribute(xmlRootElement, "version");
-		if(versionString != SPRITE_VERSION)
+		XmlAttribute* version = xmlRootElement->firstAttribute();
+		if (!version || version->value().empty())
 		{
-			if(versionString.empty())
-				cout << "Sprite file '" << filePath << "' doesn't define a version." << endl;
-			else
-				cout << "Sprite version mismatch (" << versionString <<") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
-			
+			cout << "Root element in sprite file '" << filePath << "' doesn't define a version." << endl;
 			addDefaultAction();
+			return;
+		}
+		else if(version && version->value() != SPRITE_VERSION)
+		{
+			cout << "Sprite version mismatch (" << versionString << ") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
+			addDefaultAction();
+			return;
 		}
 
 		// Note:
 		// Here instead of going through each element and calling a processing function to handle
 		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 		// image sheets anywhere in the sprite file.
-		parseImageSheets(xmlRootElement);
-		parseActions(xmlRootElement);
+		processImageSheets(xmlRootElement);
+		processActions(xmlRootElement);
 	}
 }
 
 
 /**
- * Parses through and interpretes <imagesheet> tags within a Sprite
- * XML Definition File.
- *
- * \todo	Make use of mErrorMessage.
+ * Iterates through all elements of a Sprite XML definition looking
+ * for 'imagesheet' elements and processes them.
+ * 
+ * \note	Since 'imagesheet' elements are processed before any other
+ *			element in a sprite definition, these elements can appear
+ *			anywhere in a Sprite XML definition.
  */
-void Sprite::parseImageSheets(XmlElement *root)
+void Sprite::processImageSheets(void* root)
 {
-	XmlAttributeParser parser;
+	XmlElement* e = static_cast<XmlElement*>(root);
 
-	// Iterate through all child elements of <sprite> to find all <imagesheet> tags
-	// then push them into a list of imagesheet's identified by a string id.
-	XmlNode* xmlNode = 0;
-	while(xmlNode = root->iterateChildren(xmlNode))
+	XmlNode* node = nullptr;
+	string id, src;
+	while(node = e->iterateChildren(node))
 	{
-		if(xmlNode->value() == "imagesheet")
+		if(node->value() == "imagesheet" && node->toElement())
 		{
-			string id = parser.stringAttribute(xmlNode, "id");
-			string src = parser.stringAttribute(xmlNode, "src");
+			XmlAttribute* attribute = node->toElement()->firstAttribute();
+			while (attribute)
+			{
+				if (toLowercase(attribute->name()) == "id")
+					id = attribute->value();
+				else if (toLowercase(attribute->name()) == "src")
+					src = attribute->value();
+
+				attribute = attribute->next();
+			}
 
 			if(id.empty())
 			{
-				cout << "Zero-length 'id' value in Imagesheet definition." << endTag(xmlNode->row(), name()) << endl;
-				return;
+				cout << "Zero-length 'id' value in Imagesheet definition." << endTag(node->row(), name()) << endl;
+				continue;
 			}
 
 			if(src.empty())
 			{
-				cout << "Zero-length 'src' value in Imagesheet definition." << endTag(xmlNode->row(), name()) << endl;
-				return;
+				cout << "Zero-length 'src' value in Imagesheet definition." << endTag(node->row(), name()) << endl;
+				continue;
 			}
 
-			addImageSheet(id, src, xmlNode);
+			addImageSheet(id, src, node);
 		}
 	}
 }
@@ -381,7 +390,7 @@ void Sprite::parseImageSheets(XmlElement *root)
  * \param	src		Image sheet file path.
  * \param	node	XML Node (for error information).
  */
-void Sprite::addImageSheet(const std::string& id, const std::string& src, XmlNode* node)
+void Sprite::addImageSheet(const std::string& id, const std::string& src, void* node)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
@@ -402,42 +411,49 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, XmlNod
 	}
 	else
 	{
-		cout << "Image-sheet redefinition '" << id << "'." << endTag(node->row(), name()) << ". Imagesheet ignored." << endl;
+		cout << "Image-sheet redefinition '" << id << "'." << endTag(static_cast<XmlNode*>(node)->row(), name()) << ". Imagesheet ignored." << endl;
 	}
 }
 
 
 
 /**
- * Parses through and interpretes <action> tags within a Sprite
- * XML Definition File.
+ * Iterates through all elements of a Sprite XML definition looking
+ * for 'action' elements and processes them.
  * 
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-void Sprite::parseActions(XmlElement *root)
+void Sprite::processActions(void* root)
 {
-	XmlAttributeParser parser;
+	XmlElement* element = static_cast<XmlElement*>(root);
 
-	// Iterate through all child elements of <sprite> to find all <action> tags
-	// then push them into a list of actions identified by a string id.
-	XmlNode *actionNode = 0;
-	while(actionNode = root->iterateChildren(actionNode))
+	XmlNode* node = nullptr;
+	while(node = element->iterateChildren(node))
 	{
-		if(actionNode->value() == "action")
+		if(toLowercase(node->value()) == "action" && node->toElement())
 		{
-			string action_name = parser.stringAttribute(actionNode, "name");
+
+			string action_name;
+			XmlAttribute* attribute = node->toElement()->firstAttribute();
+			while (attribute)
+			{
+				if (toLowercase(attribute->name()) == "name")
+					action_name = attribute->value();
+
+				attribute = attribute->next();
+			}
 
 			if(action_name.empty())
 			{
-				cout << "Zero-length 'name' value in Action definition." << endTag(actionNode->row(), name()) << endl;
+				cout << "Zero-length 'name' value in Action definition." << endTag(node->row(), name()) << endl;
 				continue;
 			}
 
 			if(mActions.find(toLowercase(action_name)) == mActions.end())
-				parseFrames(action_name, actionNode);
+				processFrames(action_name, node);
 			else
-				cout << "Redefinition of action '" << action_name << "'. First definition will be used." << endTag(actionNode->row(), name()) << endl;
+				cout << "Redefinition of action '" << action_name << "'. First definition will be used." << endTag(node->row(), name()) << endl;
 		}
 	}
 }
@@ -445,34 +461,55 @@ void Sprite::parseActions(XmlElement *root)
 
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
- *
- * \todo	Make use of mErrorMessage.
  */
-void Sprite::parseFrames(const std::string& action, XmlNode *node)
+void Sprite::processFrames(const std::string& action, void* _node)
 {
-	XmlAttributeParser parser;
+	XmlNode* node = static_cast<XmlNode*>(_node);
 	
 	FrameList frameList;
 
-	XmlNode *frameNode = 0;
-	while(frameNode = node->iterateChildren(frameNode))
+	XmlNode* frame = nullptr;
+	while(frame = node->iterateChildren(frame))
 	{
-		int currentRow = frameNode->row();
+		int currentRow = frame->row();
 		
-		if(frameNode->value() == "frame")
+		if(frame->value() == "frame" && frame->toElement())
 		{
-			// Imagesheet ID
-			string sheetId = toLowercase(parser.stringAttribute(frameNode, "sheetid")); // normalized
-			if(!validateSheetId(sheetId, currentRow))
+			string sheetId;
+			int delay = 0;
+			int x = 0, y = 0;
+			int width = 0, height = 0;
+			int anchorx = 0, anchory = 0;
+
+			XmlAttribute* attribute = frame->toElement()->firstAttribute();
+			while (attribute)
 			{
-				continue;
+				if (toLowercase(attribute->name()) == "sheetid")
+					sheetId = attribute->value();
+				else if (toLowercase(attribute->name()) == "delay")
+					attribute->queryIntValue(delay);
+				else if (toLowercase(attribute->name()) == "x")
+					attribute->queryIntValue(x);
+				else if (toLowercase(attribute->name()) == "y")
+					attribute->queryIntValue(y);
+				else if (toLowercase(attribute->name()) == "width")
+					attribute->queryIntValue(width);
+				else if (toLowercase(attribute->name()) == "height")
+					attribute->queryIntValue(height);
+				else if (toLowercase(attribute->name()) == "anchorx")
+					attribute->queryIntValue(anchorx);
+				else if (toLowercase(attribute->name()) == "anchory")
+					attribute->queryIntValue(anchory);
+				else
+					std::cout << "Unexpected attribute '" << attribute->name() << "' found on row " << currentRow << std::endl;
+
+				attribute = attribute->next();
 			}
 
-			// Delay Value
-			int delay = parser.intAttribute(frameNode, "delay");
+			if(!validateSheetId(sheetId, currentRow))
+				continue;
 
 			// X-Coordinate
-			int x = parser.intAttribute(frameNode, "x");
 			if( x < 0 || x > mImageSheets.find(sheetId)->second.width())
 			{
 				cout << "Value 'x' is out of bounds." << endTag(currentRow, name()) << endl;
@@ -480,7 +517,6 @@ void Sprite::parseFrames(const std::string& action, XmlNode *node)
 			}
 
 			// Y-Coordinate
-			int y = parser.intAttribute(frameNode, "y");
 			if(y < 0 || y > mImageSheets.find(sheetId)->second.height())
 			{
 				cout << "Value 'y' is out of bounds." << endTag(currentRow, name()) << endl;
@@ -488,11 +524,11 @@ void Sprite::parseFrames(const std::string& action, XmlNode *node)
 			}
 			
 			// Width
-			int width = parser.intAttribute(frameNode, "width");
 			if(width < 1)
 			{
 				width = 1;
-				cout << "'width' value must be non-zero. Defaulting to 1." << endTag(currentRow, name()) << endl;
+				cout << "'width' value must be greater than 0." << endTag(currentRow, name()) << endl;
+				continue;
 			}
 			else if(x + width > mImageSheets.find(sheetId)->second.width())
 			{
@@ -501,11 +537,11 @@ void Sprite::parseFrames(const std::string& action, XmlNode *node)
 			}
 			
 			// Height
-			int height = parser.intAttribute(frameNode, "height");
 			if(height < 1)
 			{
 				height = 1;
-				cout << "'height' value must be non-zero. Defaulting to 1." << endTag(currentRow, name()) << endl;
+				cout << "'height' value must be greater than 0." << endTag(currentRow, name()) << endl;
+				continue;
 			}
 			else if(y + height > mImageSheets.find(sheetId)->second.height())
 			{
@@ -513,14 +549,10 @@ void Sprite::parseFrames(const std::string& action, XmlNode *node)
 				continue;
 			}
 
-			// Anchor Coordinates
-			int anchorx	= parser.intAttribute(frameNode, "anchorx");
-			int anchory	= parser.intAttribute(frameNode, "anchory");
-
 			frameList.push_back(SpriteFrame(sheetId, x, y, width, height, anchorx, anchory, delay));
 		}
 		else
-			cout << "Unexpected tag '<" << frameNode->value() << ">'." << endTag(currentRow, name()) << endl;
+			cout << "Unexpected tag '<" << frame->value() << ">'." << endTag(currentRow, name()) << endl;
 	}
 
 	// Add the frame list to the action container.
@@ -535,7 +567,7 @@ bool Sprite::validateSheetId(const std::string& sheetId, int row)
 {
 	if(sheetId.empty())
 	{
-		cout << "Frame definition has a zero-length 'name' value. Frame is being ignored." << endTag(row, name()) << endl;
+		cout << "Frame definition has a zero-length 'sheetid' value. Frame is being ignored." << endTag(row, name()) << endl;
 		return false;
 	}
 	else if(mImageSheets.find(sheetId) == mImageSheets.end())
@@ -572,36 +604,6 @@ void Sprite::addDefaultAction()
 		frameList.push_back(SpriteFrame("default", 0, 0, width, height, width / 2, height / 2, -1));
 		mActions["default"] = frameList;
 	}
-}
-
-
-/**
- * Spits out a bit of debug info on the Sprite.
- */
-void Sprite::debug()
-{
-	cout << endl;
-	cout << "=== Sprite Info: " << name() << " ===" << endl;
-	cout << "Sheets: " << mImageSheets.size() << endl;
-	
-	SheetList::iterator sheetIt = mImageSheets.begin();
-	while(sheetIt != mImageSheets.end())
-	{
-		cout << "   " << sheetIt->first << ": '" << sheetIt->second.name() << "'" << endl;
-		sheetIt++;
-	}
-
-	cout << endl << endl << "Actions: " << mActions.size() << endl;
-	
-	size_t frameCount = 0;
-	ActionList::iterator actionIt = mActions.begin();
-	while(actionIt != mActions.end())
-	{
-		cout << "   " << actionIt->first << endl;
-		frameCount += actionIt->second.size();
-		actionIt++;
-	}
-	cout << endl << endl << "Frames: " << frameCount << endl << endl;
 }
 
 

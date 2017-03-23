@@ -1,4 +1,4 @@
-# [1.3.0] - UNRELEASED
+# [1.3.0] - 2013-03-23
 
 This version of NAS2D focuses on cleaning up the public interface headers and removing as much of the implementation details as possible. This is to help make NAS2D a lot easier to use to set up new projects and will reduce reliance on backend library interface headers unless the user specifically wants/needs direct access to these libraries.
 

@@ -17,18 +17,42 @@ using namespace NAS2D;
 // = Color_4ub Implementation
 // ==================================================================================
 
+
+/**
+ * Default c'tor.
+ */
 Color_4ub::Color_4ub():	mR(static_cast<unsigned char>(255)),
 						mG(static_cast<unsigned char>(255)),
 						mB(static_cast<unsigned char>(255)),
 						mA(static_cast<unsigned char>(255))
 {}
 
+
+/**
+ * C'tor
+ * 
+ * Instantiates a Color_4ub with a given RGBA value set.
+ * 
+ * \param r	Red compontent. Valid values are 0 - 255.
+ * \param g	Green compontent. Valid values are 0 - 255.
+ * \param b	Blue compontent. Valid values are 0 - 255.
+ * \param a	Alpha compontent. Valid values are 0 - 255.
+ */
 Color_4ub::Color_4ub(int r, int g, int b, int a):	mR(static_cast<unsigned char>(clamp(r, 0, 255))),
 													mG(static_cast<unsigned char>(clamp(g, 0, 255))),
 													mB(static_cast<unsigned char>(clamp(b, 0, 255))),
 													mA(static_cast<unsigned char>(clamp(a, 0, 255)))
 {}
 
+
+/**
+ * Sets a Color_4ub with a given RGBA value set.
+ * 
+ * \param r	Red compontent. Valid values are 0 - 255.
+ * \param g	Green compontent. Valid values are 0 - 255.
+ * \param b	Blue compontent. Valid values are 0 - 255.
+ * \param a	Alpha compontent. Valid values are 0 - 255.
+ */
 void Color_4ub::operator()(int r, int g, int b, int a)
 {
 	red(clamp(r, 0, 255));
@@ -38,48 +62,80 @@ void Color_4ub::operator()(int r, int g, int b, int a)
 }
 
 
+/**
+ * Gets the red component value of the color.
+ */
 int Color_4ub::red() const
 {
 	return static_cast<int>(mR);
 }
 
 
+/**
+ * Gets the green component value of the color.
+ */
 int Color_4ub::green() const
 {
 	return static_cast<int>(mG);
 }
 
 
+/**
+ * Gets the blue component value of the color.
+ */
 int Color_4ub::blue() const
 {
 	return static_cast<int>(mB);
 }
 
 
+/**
+ * Gets the alpha component value of the color.
+ */
 int Color_4ub::alpha() const
 {
 	return static_cast<int>(mA);
 }
 
 
+/**
+ * Sets the red component value of the color.
+ * 
+ * \param red Red value. Valid values are 0 - 255.
+ */
 void Color_4ub::red(int red)
 {
 	mR = static_cast<unsigned char>(clamp(red, 0, 255));
 }
 
 
+/**
+ * Sets the green component value of the color.
+ * 
+ * \param green Green value. Valid values are 0 - 255.
+ */
 void Color_4ub::green(int green)
 {
 	mG = static_cast<unsigned char>(clamp(green, 0, 255));
 }
 
 
+/**
+ * Sets the blue component value of the color.
+ * 
+ * \param blue Blue value. Valid values are 0 - 255.
+ */
 void Color_4ub::blue(int blue)
 {
 	mB = static_cast<unsigned char>(clamp(blue, 0, 255));
 }
 
 
+/**
+ * Sets the alpha component value of the color.
+ * 
+ * \param alpha Alpha value. Valid values are 0 - 255.
+ */
 void Color_4ub::alpha(int alpha)
 {
 	mA = static_cast<unsigned char>(clamp(alpha, 0, 255));
@@ -90,6 +146,9 @@ void Color_4ub::alpha(int alpha)
 // = Rectangle_2d Implementation
 // ==================================================================================
 
+/**
+ * Default c'tor.
+ */
 Rectangle_2d::Rectangle_2d():	mX(0),
 								mY(0),
 								mW(0),
@@ -97,6 +156,16 @@ Rectangle_2d::Rectangle_2d():	mX(0),
 {}
 
 
+/**
+ * C'tor.
+ * 
+ * Instantiates a Rectangle_2d to a given set of values.
+ * 
+ * \param x	X-Coordinate.
+ * \param y Y-Coordinate.
+ * \param w	Width of the Rectangle_2d.
+ * \param h Height of the Rectangle_2d.
+ */
 Rectangle_2d::Rectangle_2d(int x, int y, int w, int h):	mX(x),
 														mY(y),
 														mW(w),
@@ -104,6 +173,11 @@ Rectangle_2d::Rectangle_2d(int x, int y, int w, int h):	mX(x),
 {}
 
 
+/**
+ * Copy c'tor.
+ * 
+ * \param rect Rectangle_2d to copy.
+ */
 Rectangle_2d::Rectangle_2d(const Rectangle_2df& rect):	mX(static_cast<int>(rect.x())),
 														mY(static_cast<int>(rect.y())),
 														mW(static_cast<int>(rect.width())),
@@ -111,6 +185,14 @@ Rectangle_2d::Rectangle_2d(const Rectangle_2df& rect):	mX(static_cast<int>(rect.
 {}
 
 
+/**
+ * Sets a Rectangle_2d with a given size.
+ * 
+ * \param _x X-Coordinate.
+ * \param _y Y-Coordinate.
+ * \param _w Width of the Rectangle_2d.
+ * \param _h Height of the Rectangle_2d.
+ */
 void Rectangle_2d::operator()(int _x, int _y, int _w, int _h)
 {
 	x(_x);
@@ -120,29 +202,63 @@ void Rectangle_2d::operator()(int _x, int _y, int _w, int _h)
 }
 
 
+/**
+ * Compares two rectangles.
+ * 
+ * \param rect	Rectangle_2d to compare against.
+ * 
+ * \returns True if the two rectangles are equivalent.
+ */
 bool Rectangle_2d::operator==(const Rectangle_2d& rect)
 {
 	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
 
 
+/**
+ * Compares two rectangles, \c float version.
+ * 
+ * \param rect	Rectangle_2df to compare against.
+ * 
+ * \returns True if the two rectangles are equivalent.
+ */
 bool Rectangle_2d::operator==(const Rectangle_2df& rect)
 {
 	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
 
 
+/**
+ * Compares two rectangles.
+ * 
+ * \param rect	Rectangle_2d to compare against.
+ * 
+ * \returns True if the two rectangles are not equivalent.
+ */
 bool Rectangle_2d::operator!=(const Rectangle_2d& rect)
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
 
+/**
+ * Compares two rectangles, \c float version.
+ * 
+ * \param rect	Rectangle_2d to compare against.
+ * 
+ * \returns True if the two rectangles are not equivalent.
+ */
 bool Rectangle_2d::operator!=(const Rectangle_2df& rect)
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
+
+/**
+ * Adds two rectangles together.
+ *
+ * \param rect	Rectangle to add.
+ */
 Rectangle_2d& Rectangle_2d::operator+=(const Rectangle_2d& rect)
 {
 	mX += rect.x();
@@ -154,6 +270,11 @@ Rectangle_2d& Rectangle_2d::operator+=(const Rectangle_2d& rect)
 }
 
 
+/**
+ * Adds two rectangles together, \c float version.
+ *
+ * \param rect	Rectangle to add.
+ */
 Rectangle_2d& Rectangle_2d::operator+=(const Rectangle_2df& rect)
 {
 	mX += static_cast<int>(rect.x());
@@ -165,6 +286,11 @@ Rectangle_2d& Rectangle_2d::operator+=(const Rectangle_2df& rect)
 }
 
 
+/**
+ * Subtracts two rectangles.
+ *
+ * \param rect	Rectangle to subtract.
+ */
 Rectangle_2d& Rectangle_2d::operator-=(const Rectangle_2d& rect)
 {
 	mX -= rect.x();
@@ -176,6 +302,11 @@ Rectangle_2d& Rectangle_2d::operator-=(const Rectangle_2d& rect)
 }
 
 
+/**
+ * Subtracts two rectangles, \c float version.
+ *
+ * \param rect	Rectangle to subtract.
+ */
 Rectangle_2d& Rectangle_2d::operator-=(const Rectangle_2df& rect)
 {
 	mX -= static_cast<int>(rect.x());
@@ -187,6 +318,11 @@ Rectangle_2d& Rectangle_2d::operator-=(const Rectangle_2df& rect)
 }
 
 
+/**
+ * Multiplies two rectangles together.
+ *
+ * \param rect	Rectangle to multiply.
+ */
 Rectangle_2d& Rectangle_2d::operator*=(const Rectangle_2d& rect)
 {
 	mX *= rect.x();
@@ -198,6 +334,11 @@ Rectangle_2d& Rectangle_2d::operator*=(const Rectangle_2d& rect)
 }
 
 
+/**
+ * Multiplies two rectangles together, \c float version.
+ *
+ * \param rect	Rectangle to multiply.
+ */
 Rectangle_2d& Rectangle_2d::operator*=(const Rectangle_2df& rect)
 {
 	mX *= static_cast<int>(rect.x());
@@ -209,6 +350,9 @@ Rectangle_2d& Rectangle_2d::operator*=(const Rectangle_2df& rect)
 }
 
 
+/**
+ * \see operator+=
+ */
 const Rectangle_2d Rectangle_2d::operator+(const Rectangle_2d& rect)
 {
 	Rectangle_2d r = *this;
@@ -217,6 +361,9 @@ const Rectangle_2d Rectangle_2d::operator+(const Rectangle_2d& rect)
 }
 
 
+/**
+ * \see operator+=
+ */
 const Rectangle_2d Rectangle_2d::operator+(const Rectangle_2df& rect)
 {
 	Rectangle_2d r = *this;
@@ -225,6 +372,9 @@ const Rectangle_2d Rectangle_2d::operator+(const Rectangle_2df& rect)
 }
 
 
+/**
+ * \see operator-=
+ */
 const Rectangle_2d Rectangle_2d::operator-(const Rectangle_2d& rect)
 {
 	Rectangle_2d r = *this;
@@ -233,6 +383,9 @@ const Rectangle_2d Rectangle_2d::operator-(const Rectangle_2d& rect)
 }
 
 
+/**
+ * \see operator-=
+ */
 const Rectangle_2d Rectangle_2d::operator-(const Rectangle_2df& rect)
 {
 	Rectangle_2d r = *this;
@@ -241,6 +394,9 @@ const Rectangle_2d Rectangle_2d::operator-(const Rectangle_2df& rect)
 }
 
 
+/**
+ * \see operator*=
+ */
 const Rectangle_2d Rectangle_2d::operator*(const Rectangle_2d& rect)
 {
 	Rectangle_2d r = *this;
@@ -249,6 +405,9 @@ const Rectangle_2d Rectangle_2d::operator*(const Rectangle_2d& rect)
 }
 
 
+/**
+ * \see operator*=
+ */
 const Rectangle_2d Rectangle_2d::operator*(const Rectangle_2df& rect)
 {
 	Rectangle_2d r = *this;
@@ -257,78 +416,117 @@ const Rectangle_2d Rectangle_2d::operator*(const Rectangle_2df& rect)
 }
 
 
+/**
+ * Indicates a rectangle has a size of 0.
+ */
 bool Rectangle_2d::null()
 {
 	return width() * height() == 0;
 }
 
+
+/**
+ * Sets the X-Coordinate of the rectangle.
+ */
 void Rectangle_2d::x(int x)
 {
 	mX = x;
 }
 
 
+/**
+ * Gets the X-Coordinate of the rectangle.
+ */
 int Rectangle_2d::x() const
 {
 	return mX;
 }
 
 
+/**
+ * Gets the X-Coordinate of the rectangle.
+ */
 int& Rectangle_2d::x()
 {
 	return mX;
 }
 
 
+/**
+ * Sets the Y-Coordinate of the rectangle.
+ */
 void Rectangle_2d::y(int y)
 {
 	mY = y;
 }
 
 
+/**
+ * Gets the Y-Coordinate of the rectangle.
+ */
 int Rectangle_2d::y() const
 {
 	return mY;
 }
 
 
+/**
+ * Gets the Y-Coordinate of the rectangle.
+ */
 int& Rectangle_2d::y()
 {
 	return mY;
 }
 
 
-
+/**
+ * Sets the width of the rectangle.
+ */
 void Rectangle_2d::width(int w)
 {
 	mW = w;
 }
 
 
+/**
+ * Gets the width of the rectangle.
+ */
 int Rectangle_2d::width() const
 {
 	return mW;
 }
 
 
+/**
+ * Gets the width of the rectangle.
+ */
 int& Rectangle_2d::width()
 {
 	return mW;
 }
 
 
+/**
+ * Sets the height of the rectangle.
+ */
 void Rectangle_2d::height(int h)
 {
 	mH = h;
 }
 
 
+/**
+ * Gets the height of the rectangle.
+ */
 int Rectangle_2d::height() const
 {
 	return mH;
 }
 
 
+/**
+ * Gets the height of the rectangle.
+ */
 int& Rectangle_2d::height()
 {
 	return mH;
@@ -339,7 +537,9 @@ int& Rectangle_2d::height()
 // = Rectangle_2df Implementation
 // ==================================================================================
 
-
+/**
+ * Default c'tor
+ */
 Rectangle_2df::Rectangle_2df():	mX(0),
 								mY(0),
 								mW(0),
@@ -347,6 +547,16 @@ Rectangle_2df::Rectangle_2df():	mX(0),
 {}
 
 
+/**
+ * C'tor.
+ * 
+ * Instantiates a Rectangle_2df to a given set of values.
+ * 
+ * \param x	X-Coordinate.
+ * \param y Y-Coordinate.
+ * \param w	Width of the Rectangle_2d.
+ * \param h Height of the Rectangle_2d.
+ */
 Rectangle_2df::Rectangle_2df(float x, float y, float w, float h):	mX(x),
 																	mY(y),
 																	mW(w),
@@ -354,6 +564,14 @@ Rectangle_2df::Rectangle_2df(float x, float y, float w, float h):	mX(x),
 {}
 
 
+/**
+ * Sets a Rectangle_2df with a given size.
+ * 
+ * \param _x X-Coordinate.
+ * \param _y Y-Coordinate.
+ * \param _w Width of the Rectangle_2d.
+ * \param _h Height of the Rectangle_2d.
+ */
 void Rectangle_2df::operator()(float _x, float _y, float _w, float _h)
 {
 	x(_x);
@@ -363,29 +581,63 @@ void Rectangle_2df::operator()(float _x, float _y, float _w, float _h)
 }
 
 
+/**
+ * Compares two rectangles.
+ * 
+ * \param rect	Rectangle_2d to compare against.
+ * 
+ * \returns True if the two rectangles are equivalent.
+ */
 bool Rectangle_2df::operator==(const Rectangle_2d& rect)
 {
 	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
 
 
+/**
+ * Compares two rectangles.
+ * 
+ * \param rect	Rectangle_2df to compare against.
+ * 
+ * \returns True if the two rectangles are equivalent.
+ */
 bool Rectangle_2df::operator==(const Rectangle_2df& rect)
 {
 	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
 
 
+/**
+ * Compares two rectangles.
+ * 
+ * \param rect	Rectangle_2d to compare against.
+ * 
+ * \returns True if the two rectangles are not equivalent.
+ */
 bool Rectangle_2df::operator!=(const Rectangle_2d& rect)
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
 
+/**
+ * Compares two rectangles.
+ * 
+ * \param rect	Rectangle_2df to compare against.
+ * 
+ * \returns True if the two rectangles are not equivalent.
+ */
 bool Rectangle_2df::operator!=(const Rectangle_2df& rect)
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
+
+/**
+ * Adds two rectangles together.
+ *
+ * \param rect	Rectangle to add.
+ */
 Rectangle_2df& Rectangle_2df::operator+=(const Rectangle_2d& rect)
 {
 	mX += rect.x();
@@ -397,6 +649,11 @@ Rectangle_2df& Rectangle_2df::operator+=(const Rectangle_2d& rect)
 }
 
 
+/**
+ * Adds two rectangles together, \c float version.
+ *
+ * \param rect	Rectangle to add.
+ */
 Rectangle_2df& Rectangle_2df::operator+=(const Rectangle_2df& rect)
 {
 	mX += rect.x();
@@ -408,6 +665,11 @@ Rectangle_2df& Rectangle_2df::operator+=(const Rectangle_2df& rect)
 }
 
 
+/**
+ * Subtracts two rectangles.
+ *
+ * \param rect	Rectangle to subtract.
+ */
 Rectangle_2df& Rectangle_2df::operator-=(const Rectangle_2d& rect)
 {
 	mX -= rect.x();
@@ -419,6 +681,11 @@ Rectangle_2df& Rectangle_2df::operator-=(const Rectangle_2d& rect)
 }
 
 
+/**
+ * Subtracts two rectangles.
+ *
+ * \param rect	Rectangle to subtract.
+ */
 Rectangle_2df& Rectangle_2df::operator-=(const Rectangle_2df& rect)
 {
 	mX -= rect.x();
@@ -430,6 +697,11 @@ Rectangle_2df& Rectangle_2df::operator-=(const Rectangle_2df& rect)
 }
 
 
+/**
+ * Multiplies two rectangles together.
+ *
+ * \param rect	Rectangle to multiply.
+ */
 Rectangle_2df& Rectangle_2df::operator*=(const Rectangle_2d& rect)
 {
 	mX *= rect.x();
@@ -441,6 +713,11 @@ Rectangle_2df& Rectangle_2df::operator*=(const Rectangle_2d& rect)
 }
 
 
+/**
+ * Multiplies two rectangles together.
+ *
+ * \param rect	Rectangle to multiply.
+ */
 Rectangle_2df& Rectangle_2df::operator*=(const Rectangle_2df& rect)
 {
 	mX *= rect.x();
@@ -452,6 +729,9 @@ Rectangle_2df& Rectangle_2df::operator*=(const Rectangle_2df& rect)
 }
 
 
+/**
+ * \see operator+=
+ */
 const Rectangle_2df Rectangle_2df::operator+(const Rectangle_2d& rect)
 {
 	Rectangle_2df r = *this;
@@ -460,6 +740,9 @@ const Rectangle_2df Rectangle_2df::operator+(const Rectangle_2d& rect)
 }
 
 
+/**
+ * \see operator+=
+ */
 const Rectangle_2df Rectangle_2df::operator+(const Rectangle_2df& rect)
 {
 	Rectangle_2df r = *this;
@@ -468,6 +751,9 @@ const Rectangle_2df Rectangle_2df::operator+(const Rectangle_2df& rect)
 }
 
 
+/**
+ * \see operator-=
+ */
 const Rectangle_2df Rectangle_2df::operator-(const Rectangle_2d& rect)
 {
 	Rectangle_2df r = *this;
@@ -476,6 +762,9 @@ const Rectangle_2df Rectangle_2df::operator-(const Rectangle_2d& rect)
 }
 
 
+/**
+ * \see operator-=
+ */
 const Rectangle_2df Rectangle_2df::operator-(const Rectangle_2df& rect)
 {
 	Rectangle_2df r = *this;
@@ -484,6 +773,9 @@ const Rectangle_2df Rectangle_2df::operator-(const Rectangle_2df& rect)
 }
 
 
+/**
+ * \see operator*=
+ */
 const Rectangle_2df Rectangle_2df::operator*(const Rectangle_2d& rect)
 {
 	Rectangle_2df r = *this;
@@ -492,6 +784,9 @@ const Rectangle_2df Rectangle_2df::operator*(const Rectangle_2d& rect)
 }
 
 
+/**
+ * \see operator*=
+ */
 const Rectangle_2df Rectangle_2df::operator*(const Rectangle_2df& rect)
 {
 	Rectangle_2df r = *this;
@@ -500,77 +795,117 @@ const Rectangle_2df Rectangle_2df::operator*(const Rectangle_2df& rect)
 }
 
 
+/**
+ * Indicates a rectangle has a size of 0.
+ */
 bool Rectangle_2df::null()
 {
 	return width() * height() == 0;
 }
 
+
+/**
+ * Sets the X-Coordinate of the rectangle.
+ */
 void Rectangle_2df::x(float x)
 {
 	mX = x;
 }
 
 
+/**
+ * Gets the X-Coordinate of the rectangle.
+ */
 float Rectangle_2df::x() const
 {
 	return mX;
 }
 
 
+/**
+ * Gets the X-Coordinate of the rectangle.
+ */
 float& Rectangle_2df::x()
 {
 	return mX;
 }
 
 
+/**
+ * Sets the Y-Coordinate of the rectangle.
+ */
 void Rectangle_2df::y(float y)
 {
 	mY = y;
 }
 
 
+/**
+ * Gets the Y-Coordinate of the rectangle.
+ */
 float Rectangle_2df::y() const
 {
 	return mY;
 }
 
 
+/**
+ * Gets the Y-Coordinate of the rectangle.
+ */
 float& Rectangle_2df::y()
 {
 	return mY;
 }
 
 
+/**
+ * Sets the width of the rectangle.
+ */
 void Rectangle_2df::width(float w)
 {
 	mW = w;
 }
 
 
+/**
+ * Gets the width of the rectangle.
+ */
 float Rectangle_2df::width() const
 {
 	return mW;
 }
 
 
+/**
+ * Gets the width of the rectangle.
+ */
 float& Rectangle_2df::width()
 {
 	return mW;
 }
 
 
+/**
+ * Sets the height of the rectangle.
+ */
 void Rectangle_2df::height(float h)
 {
 	mH = h;
 }
 
 
+/**
+ * Gets the height of the rectangle.
+ */
 float Rectangle_2df::height() const
 {
 	return mH;
 }
 
 
+/**
+ * Gets the height of the rectangle.
+ */
 float& Rectangle_2df::height()
 {
 	return mH;
@@ -580,11 +915,22 @@ float& Rectangle_2df::height()
 // = Point_2d Implementation
 // ==================================================================================
 
+/**
+ * Default c'tor.
+ */
 Point_2d::Point_2d():	mX(0),
 						mY(0)
 {}
 
 
+/**
+ * C'tor
+ * 
+ * Instantiates a Point_2d with a given value set.
+ * 
+ * \param x	X-Coordinate.
+ * \param y	Y-Coordinate.
+ */
 Point_2d::Point_2d(int x, int y):	mX(x),
 									mY(y)
 {}

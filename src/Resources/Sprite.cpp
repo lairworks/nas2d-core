@@ -607,24 +607,52 @@ void Sprite::addDefaultAction()
 }
 
 
+/**
+ * Gets the width of the Sprite.
+ * 
+ * \note	This gets the width of the current frame. For most
+ *			most sprites this will be the same for all frames
+ *			but can be surprising if frame sizes vary.
+ */
 int Sprite::width()
 {
 	return mActions[mCurrentAction][mCurrentFrame].width();
 }
 
 
+/**
+ * Gets the height of the Sprite.
+ * 
+ * \note	This gets the height of the current frame. For most
+ *			most sprites this will be the same for all frames
+ *			but can be surprising if frame sizes vary.
+ */
 int Sprite::height()
 {
 	return mActions[mCurrentAction][mCurrentFrame].height();
 }
 
 
+/**
+ * Gets the origin X-Coordinate of the Sprite.
+ * 
+ * \note	This gets the origin of the current frame. For most
+ *			most sprites this will be the same for all frames
+ *			but can be surprising if frame sizes vary.
+ */
 int Sprite::originX(int x)
 {
 	return x - mActions[mCurrentAction][mCurrentFrame].anchorX();
 }
 
 
+/**
+ * Gets the origin Y-Coordinate of the Sprite.
+ * 
+ * \note	This gets the origin of the current frame. For most
+ *			most sprites this will be the same for all frames
+ *			but can be surprising if frame sizes vary.
+ */
 int Sprite::originY(int y)
 {
 	return y - mActions[mCurrentAction][mCurrentFrame].anchorY();
@@ -649,10 +677,10 @@ int Sprite::originY(int y)
  * \param	d	Length of time milliseconds to display this spriteFrame during animation playback.
  */
 Sprite::SpriteFrame::SpriteFrame(const std::string& sId, int x, int y, int w, int h, int aX, int aY, int d):	mSheetId(sId),
-																										mFrameDelay(d),
-																										mAnchorX(aX),
-																										mAnchorY(aY),
-																										mRect(x, y, w, h)
+																												mFrameDelay(d),
+																												mAnchorX(aX),
+																												mAnchorY(aY),
+																												mRect(x, y, w, h)
 {}
 
 

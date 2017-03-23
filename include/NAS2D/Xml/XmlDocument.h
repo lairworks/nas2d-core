@@ -35,7 +35,7 @@ public:
 	virtual const XmlDocument* toDocument() const { return this; }
 	virtual XmlDocument* toDocument() { return this; }
 
-	virtual bool accept(XmlVisitor* content) const;
+	virtual bool accept(void* content) const;
 	virtual void write(std::string& buf, int depth = 0) const;
 
 public:

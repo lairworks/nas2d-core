@@ -47,7 +47,7 @@ public:
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
 	 */
-	virtual bool accept(XmlVisitor* visitor) const;
+	virtual bool accept(void* visitor) const;
 
 protected:
 	void copyTo(XmlUnknown* target) const;

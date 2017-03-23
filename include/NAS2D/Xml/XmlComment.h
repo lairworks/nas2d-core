@@ -39,7 +39,7 @@ public:
 	virtual const XmlComment* toComment() const { return this; }
 	virtual XmlComment* toComment() { return this; }
 
-	virtual bool accept(XmlVisitor* visitor) const;
+	virtual bool accept(void* visitor) const;
 
 protected:
 	void copyTo(XmlComment* target) const;

@@ -13,7 +13,7 @@
 
 namespace NAS2D {
 
-namespace exception {
+namespace Exception {
 
 /**
  * \page Exceptions Exceptions

@@ -31,7 +31,7 @@
 #include <math.h>
 
 using namespace NAS2D;
-using namespace NAS2D::exception;
+using namespace NAS2D::Exception;
 
 
 std::string buildName(TTF_Font*);
@@ -135,7 +135,7 @@ NAS2D::Font::~Font()
 /**
  * Copy assignment operator.
  * 
- * \param	_f	Font to copy.
+ * \param rhs Font to copy.
  */
 NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
 {

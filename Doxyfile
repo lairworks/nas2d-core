@@ -118,15 +118,21 @@ FILE_PATTERNS          = *.c \
                          *.h++
 
 RECURSIVE              = YES
-EXCLUDE                = ./src/tinyxml \
-                         ./include/NAS2D/tinyxml \
+EXCLUDE                = ./src/Xml\XmlAttributeSet.cpp \
+						 ./src/Xml\XmlParser.cpp \
+                         ./include/NAS2D/Xml\XmlAttributeSet.h \
+                         ./include/NAS2D/Xml\XmlVisitor.h \
 						 ./include/NAS2D/Delegate.h \
 						 ./include/NAS2D/Resources/FontInfo.h \
 						 ./include/NAS2D/Resources/ImageInfo.h \
 						 ./include/NAS2D/Resources/MusicInfo.h \
 						 ./include/NAS2D/Renderer/ShaderManager.h \
+						 ./include/NAS2D/Renderer/OGL_Renderer.h \
+						 ./src/Renderer/OGL_Renderer.cpp \
 						 ./src/Resources/Shader.cpp \
 						 ./src/Renderer/ShaderManager.cpp \
+						 ./include/NAS2D/Mixer/Mixer_SDL.h \
+						 ./src/Mixer/Mixer_SDL.cpp \
                          ./proj
 
 EXCLUDE_SYMLINKS       = NO

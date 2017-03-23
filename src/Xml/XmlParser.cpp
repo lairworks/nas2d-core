@@ -39,12 +39,13 @@
 #endif
 
 extern std::vector<std::string> XML_ERROR_TABLE;
+extern void fillErrorTable();
 
 namespace NAS2D {
 namespace Xml {
 
 // Note that "PutString" hardcodes the same list. This is less flexible
-// than itappears. Changing the entries or order will break putstring.	
+// than it appears. Changing the entries or order will break putstring.	
 XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] = 
 {
 	{ "&amp;",  5, '&' },
@@ -614,6 +615,9 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, TiXmlParsingData* 
 	// The first error in a chain is more accurate - don't set again!
 	if (_error)
 		return;
+
+	if (XML_ERROR_TABLE.empty())
+		fillErrorTable();
 
 	assert(err > 0 && err < XML_ERROR_STRING_COUNT);
 	_error = true;

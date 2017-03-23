@@ -30,8 +30,9 @@ extern const std::string SPRITE_VERSION;
 class Sprite
 {
 public:
-	typedef NAS2D::Signals::Signal0<> Callback;
+	typedef NAS2D::Signals::Signal0<> Callback;	/**< Signal used when action animations complete. */
 
+public:
 	Sprite();
 	Sprite(const std::string& filePath);
 	Sprite(const Sprite &sprite);
@@ -93,12 +94,10 @@ public:
 	int originX(int x);
 	int originY(int y);
 
-
 	/**
 	 * Returns a reference to the frame listener signal slot.
 	 */
 	Callback& frameCallback() { return mFrameCallback; }
-
 
 	StringList actions();
 
@@ -106,6 +105,7 @@ public:
 	void decrementFrame();
 
 protected:
+	/// Gets the name of the Sprite. \note Internal use only.
 	const std::string& name() const { return mSpriteName; }
 
 private:

@@ -27,8 +27,8 @@ namespace NAS2D {
 class Mixer
 {
 public:
-	static const int CONTINUOUS = -1;
-	static const int DEFAULT_FADE_TIME = 500;
+	static const int CONTINUOUS = -1; /**< Constant representing a continuous loop. */
+	static const int DEFAULT_FADE_TIME = 500; /**< Default fade time. */
 
 public:
 	/**
@@ -66,7 +66,8 @@ public:
 	/**
 	 * Starts playing a Music track.
 	 * 
-	 * \param	music	Reference to a Music Resource.
+	 * \param music	Reference to a Music Resource.
+	 * \param loops	Number of times to repeat the music.
 	 */
 	void playMusic(Music& music, int loops = Mixer::CONTINUOUS) { fadeInMusic(music, loops, 0); }
 
@@ -170,7 +171,7 @@ protected:
 	{}
 
 protected:
-	NAS2D::Signals::Signal0<void>	_music_complete;
+	NAS2D::Signals::Signal0<void>	_music_complete; /**< Callback used when music finished playing. */
 
 private:
 	/**

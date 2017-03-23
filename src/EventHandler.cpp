@@ -450,13 +450,6 @@ EventHandler::QuitEventCallback& EventHandler::quit()
 
 /**
  * Grabs exclusive mouse input.
- * 
- * \param	update	True if mouse position should be updated while
- *					in exclusive grab, otherwise don't update position.
- *					Default true.
- * 
- * \todo	Decide of the EventHandler is an appropriate place
- *			for this series of functions.
  */
 void EventHandler::grabMouse()
 {
@@ -467,9 +460,6 @@ void EventHandler::grabMouse()
 
 /**
  * Releases exclusive mouse input.
- * 
- * \todo	Decide of the EventHandler is an appropriate place
- *			for this series of functions.
  */
 void EventHandler::releaseMouse()
 {
@@ -481,8 +471,11 @@ void EventHandler::releaseMouse()
 /**
  * Sets the mouse pointer to a specified location within the application window.
  * 
- * \todo	Decide of the EventHandler is an appropriate place
- *			for this series of functions.
+ * \param x X-Coordinate.
+ * \param y Y-Coordinate.
+ * 
+ * \note	Coordinates can only be set within the bounds of the application's
+ *			window. Coordinates will be clamped for all other values.
  */
 void EventHandler::warpMouse(int x, int y)
 {
@@ -495,9 +488,6 @@ void EventHandler::warpMouse(int x, int y)
  * Sets mouse updates to relative or absolute mostion.
  * 
  * \param	rel		True for relative mode. False for absolute mode.
- * 
- * \todo	Decide of the EventHandler is an appropriate place
- *			for this series of functions.
  */
 void EventHandler::mouseRelativeMode(bool rel)
 {
@@ -608,6 +598,8 @@ void EventHandler::pump()
 
 /**
  * Turns on/off text input mode.
+ * 
+ * \param _b Boolean value. True to turn on text input, false to turn it off.
  */
 void EventHandler::textInputMode(bool _b)
 {
@@ -627,6 +619,8 @@ bool EventHandler::textInputMode()
 
 /**
  * Decodes a KeyModifier and determines if the Shift keymod is applied.
+ * 
+ * \param mod	Modifier value to decode.
  */
 bool EventHandler::shift(KeyModifier mod)
 {
@@ -636,6 +630,8 @@ bool EventHandler::shift(KeyModifier mod)
 
 /**
  * Decodes a KeyModifier and determines if the Numlock keymod is applied.
+ * 
+ * \param mod	Modifier value to decode.
  */
 bool EventHandler::numlock(KeyModifier mod)
 {
@@ -645,6 +641,8 @@ bool EventHandler::numlock(KeyModifier mod)
 
 /**
  * Decodes a KeyModifier and determines if the Control keymod is applied.
+ *
+ * \param mod	Modifier value to decode.
  */
 bool EventHandler::control(KeyModifier mod)
 {
@@ -680,7 +678,7 @@ bool EventHandler::query_control()
 
 
 /**
- * Used to disconnect all connected signal handlers.
+ * Disconnects all connected signal handlers.
  */
 void EventHandler::disconnectAll()
 {

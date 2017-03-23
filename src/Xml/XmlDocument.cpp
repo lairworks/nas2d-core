@@ -90,9 +90,9 @@ void XmlDocument::write(std::string& buf, int depth) const
 /**
  * Walk the XML tree visiting this node and all of its children.
  */
-bool XmlDocument::accept(XmlVisitor* visitor) const
+bool XmlDocument::accept(void* visitor) const
 {
-	if (visitor->visitEnter(*this))
+	if (static_cast<XmlVisitor*>(visitor)->visitEnter(*this))
 	{
 		for (const XmlNode* node = firstChild(); node; node = node->nextSibling())
 		{
@@ -101,7 +101,7 @@ bool XmlDocument::accept(XmlVisitor* visitor) const
 		}
 	}
 
-	return visitor->visitExit(*this);
+	return static_cast<XmlVisitor*>(visitor)->visitExit(*this);
 }
 
 

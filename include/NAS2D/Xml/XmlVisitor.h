@@ -23,7 +23,7 @@ class XmlUnknown;
 
 /**
  * Implements the interface to the "Visitor pattern" (see the Accept() method.) If you call
- * the Accept() method, it requires being passed an XmlVisitor class to handle callbacks.
+ * the accept() method, it requires being passed an XmlVisitor class to handle callbacks.
  * For nodes that contain other nodes (Document, Element) you will get called with a
  * VisitEnter/VisitExit pair. Nodes that are always leaves are simply called with Visit().
  *
@@ -33,9 +33,9 @@ class XmlUnknown;
  * All flavors of Visit methods have a default implementation that returns 'true' (continue
  * visiting). You need to only override methods that are interesting to you.
  *
- * Generally Accept() is called on the XmlDocument, although all nodes suppert Visiting.
+ * Generally accept() is called on the XmlDocument, although all nodes suppert Visiting.
  *
- * \see XmlNode::Accept()
+ * \see XmlNode::accept()
  */
 class XmlVisitor
 {

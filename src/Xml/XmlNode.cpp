@@ -541,6 +541,9 @@ const XmlNode* XmlNode::previousSibling(const std::string& value) const
 }
 
 
+/**
+ * Navigate to a sibling node.
+ */
 XmlNode* XmlNode::previousSibling(const std::string& prev)
 {
 	return const_cast<XmlNode*>((const_cast<const XmlNode*>(this))->previousSibling(prev));
@@ -563,6 +566,9 @@ const XmlElement* XmlNode::firstChildElement() const
 }
 
 
+/**
+ * Convenience function to get through elements.
+ */
 XmlElement* XmlNode::firstChildElement()
 {
 	return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->firstChildElement());
@@ -585,6 +591,9 @@ const XmlElement* XmlNode::firstChildElement(const std::string& value) const
 }
 
 
+/**
+ * Convenience function to get through elements.
+ */
 XmlElement* XmlNode::firstChildElement(const std::string& value)
 {
 	return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->firstChildElement(value));
@@ -610,6 +619,12 @@ const XmlElement* XmlNode::nextSiblingElement() const
 }
 
 
+/**
+ * Convenience function to get through elements.
+ * Calls NextSibling and ToElement. Will skip all non-Element nodes.
+ *
+ * \return \c nullptr if there is not another element.
+ */
 XmlElement* XmlNode::nextSiblingElement()
 {
 	return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->nextSiblingElement());
@@ -636,6 +651,12 @@ const XmlElement* XmlNode::nextSiblingElement(const std::string&  _value) const
 }
 
 
+/**
+ * Convenience function to get through elements.
+ * Calls NextSibling and ToElement. Will skip all non-Element nodes.
+ *
+ * \return \c nullptr if there is not another element.
+ */
 XmlElement* XmlNode::nextSiblingElement(const std::string& next)
 {
 	return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->nextSiblingElement(next));
@@ -643,7 +664,7 @@ XmlElement* XmlNode::nextSiblingElement(const std::string& next)
 
 
 /**
- * Return a pointer to the Document this node lives in. Returns null if not in a document.
+ * Get a const pointer to the Document this node lives in. Returns nullptr if not in a document.
  */
 const XmlDocument* XmlNode::document() const
 {
@@ -658,6 +679,9 @@ const XmlDocument* XmlNode::document() const
 }
 
 
+/**
+ * Get a pointer to the Document this node lives in. Returns nullptr if not in a document.
+ */
 XmlDocument* XmlNode::document()
 {
 	return const_cast<XmlDocument*>((const_cast<const XmlNode*>(this))->document());

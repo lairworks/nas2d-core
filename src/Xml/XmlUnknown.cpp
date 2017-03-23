@@ -55,9 +55,9 @@ XmlNode* XmlUnknown::clone() const
 }
 
 
-bool XmlUnknown::accept(XmlVisitor* visitor) const
+bool XmlUnknown::accept(void* visitor) const
 {
-	return visitor->visit(*this);
+	return static_cast<XmlVisitor*>(visitor)->visit(*this);
 }
 
 

@@ -28,6 +28,8 @@ StateManager::StateManager():	mActiveState(nullptr),
 
 
 /**
+ * D'tor.
+ * 
  * \note	The active State is destroyed when the StateManager is destroyed.
  */
 StateManager::~StateManager()
@@ -41,7 +43,7 @@ StateManager::~StateManager()
 
 
 /**
- * \brief	Sets the StateManager to run specified State.
+ * Sets the StateManager to run specified State.
  *
  * \param	state	A pointer to a State.
  * 
@@ -69,6 +71,7 @@ void StateManager::setState(State* state)
 
 	mActive = true;
 }
+
 
 /**
  * Updates the current state and makes any necessary changes to
@@ -100,12 +103,21 @@ bool StateManager::update()
 }
 
 
+/**
+ * Called when a quit event is raised.
+ * 
+ * Used to ensure that quit events are responded to
+ * if a State doesn't.
+ */
 void StateManager::handleQuit()
 {
 	mActive = false;
 }
 
 
+/**
+ * Indicates that the StateManger is active.
+ */
 bool StateManager::active() const
 {
 	return mActive;

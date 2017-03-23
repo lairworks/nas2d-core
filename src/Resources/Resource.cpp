@@ -12,22 +12,33 @@
 
 using namespace NAS2D;
 
-
-Resource::Resource(const std::string& filePath):	mResourceName(filePath),
-													mIsLoaded(false)								
-{}
-
+/**
+ * Default c'tor.
+ */
 Resource::Resource():	mResourceName("Default Resource"),
 						mIsLoaded(false)
 {}
 
 
+/**
+ * C'tor.
+ * 
+ * \param filePath Sets the name of the Resource to \c filePath.
+ */
+Resource::Resource(const std::string& filePath):	mResourceName(filePath),
+													mIsLoaded(false)								
+{}
+
+
+/**
+ * D'tor
+ */
 Resource::~Resource()
 {}
 
 
 /**
- * Returns the name of the Resource as a file name with directory path.
+ * Gets the name of the Resource as a file name with directory path.
  */
 const std::string& Resource::name() const
 {

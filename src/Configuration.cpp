@@ -113,6 +113,10 @@ void Configuration::load(const std::string& filePath)
 
 }
 
+
+/**
+ * Saves the Configuration to an XML file.
+ */
 void Configuration::save()
 {
 	XmlDocument doc;

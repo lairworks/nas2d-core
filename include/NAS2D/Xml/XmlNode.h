@@ -108,16 +108,26 @@ public:
 	const XmlDocument* document() const;
 	XmlDocument* document();
 
+	/// Cast the XmlNode to a more derived type.
 	virtual const XmlDocument* toDocument() const { return nullptr; }
+	/// Cast the XmlNode to a more derived type.
 	virtual const XmlElement* toElement() const { return nullptr; }
+	/// Cast the XmlNode to a more derived type.
 	virtual const XmlComment* toComment() const { return nullptr; }
+	/// Cast the XmlNode to a more derived type.
 	virtual const XmlUnknown* toUnknown() const { return nullptr; }
+	/// Cast the XmlNode to a more derived type.
 	virtual const XmlText* toText() const { return nullptr; }
 
+	/// Cast the XmlNode to a more derived type.
 	virtual XmlDocument* toDocument() { return nullptr; }
+	/// Cast the XmlNode to a more derived type.
 	virtual XmlElement* toElement() { return nullptr; }
+	/// Cast the XmlNode to a more derived type.
 	virtual XmlComment* toComment() { return nullptr; }
+	/// Cast the XmlNode to a more derived type.
 	virtual XmlUnknown* toUnknown() { return nullptr; }
+	/// Cast the XmlNode to a more derived type.
 	virtual XmlText* toText() { return nullptr; }
 
 	/**
@@ -129,7 +139,7 @@ public:
 	 * Accept a hierchical visit the nodes in the TinyXML DOM. Every node in the  XML tree will be
 	 * conditionally visited and the host will be called back via the TiXmlVisitor interface.
 	 */
-	virtual bool accept(XmlVisitor* visitor) const = 0;
+	virtual bool accept(void* visitor) const = 0;
 
 	// The real work of the input operator.
 	virtual void streamIn(std::istream& in, std::string& tag) = 0;

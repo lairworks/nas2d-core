@@ -15,8 +15,6 @@ namespace NAS2D {
 /**
  * \class	Color_4ub
  * \brief	RGBA Color.
- * 
- * RGBA values can only be between 0 and 255.
  */
 class Color_4ub
 {

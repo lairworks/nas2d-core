@@ -35,7 +35,7 @@
 #include <math.h>
 
 using namespace NAS2D;
-using namespace NAS2D::exception;
+using namespace NAS2D::Exception;
 
 /** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
 GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
@@ -70,6 +70,13 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 GLuint generate_fbo();
 
 
+/**
+ * C'tor
+ * 
+ * Instantiates an OGL_Renderer object with the title of the application window.
+ * 
+ * \param title	Title of the application window.
+ */
 OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer", title)
 {
 	std::cout << "Starting " << name() << ":" << std::endl;
@@ -79,6 +86,9 @@ OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer"
 }
 
 
+/**
+ * D'tor.
+ */
 OGL_Renderer::~OGL_Renderer()
 {
 	SDL_GL_DeleteContext(CONTEXT);

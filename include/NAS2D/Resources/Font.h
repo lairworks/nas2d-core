@@ -25,10 +25,10 @@ namespace NAS2D {
  * contructors are provided for these types.
  * 
  * TrueType and OpenType fonts generate their own glyph map internally. Only
- * the ASCII values 0 - 255 are used.
+ * the ASCII values 0 - 255 are used. Unicode/UTF is not supported.
  * 
- * Bitmap fonts are expected to be in a 16x16 glyph matrix with the top right
- * glyph cell equating to ASCII value 0. Glyph values increase from left to
+ * Bitmap fonts are expected to be in a 16x16 glyph matrix with the top left
+ * glyph cell equating to ASCII value '0'. Glyph values increase from left to
  * right up to ASCII value 255.
  */
 class Font : public Resource

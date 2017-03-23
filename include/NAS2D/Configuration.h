@@ -79,6 +79,10 @@ public:
 
 	void setDefaultValues();
 
+	/**
+	 * Indicates that an option has changed since the
+	 * Configuration file was loaded.
+	 */
 	bool optionChanged() const { return mOptionChanged; }
 
 private:

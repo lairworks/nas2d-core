@@ -54,7 +54,7 @@ public:
 	virtual const XmlElement* toElement() const { return this; }
 	virtual XmlElement* toElement() { return this; }
 
-	virtual bool accept(XmlVisitor* visitor) const;
+	virtual bool accept(void* visitor) const;
 
 protected:
 	void copyTo(XmlElement* target) const;

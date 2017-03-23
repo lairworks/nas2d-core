@@ -121,7 +121,7 @@ void XmlElement::attribute(const std::string& name, double d)
  */
 void XmlElement::attribute(const std::string& name, const std::string& s)
 {
-	XmlAttribute* attrib = attributeSet.findOrCreate(s);
+	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 	if (attrib)
 	{
 		attrib->value(s);
@@ -206,9 +206,9 @@ void XmlElement::copyTo(XmlElement* target) const
 /**
  * Walk the XML tree visiting this node and all of its children.
  */
-bool XmlElement::accept(XmlVisitor* visitor) const
+bool XmlElement::accept(void* visitor) const
 {
-	if (visitor->visitEnter(*this, attributeSet.first()))
+	if (static_cast<XmlVisitor*>(visitor)->visitEnter(*this, attributeSet.first()))
 	{
 		for (const XmlNode* node = firstChild(); node; node = node->nextSibling())
 		{
@@ -216,7 +216,7 @@ bool XmlElement::accept(XmlVisitor* visitor) const
 				break;
 		}
 	}
-	return visitor->visitExit(*this);
+	return static_cast<XmlVisitor*>(visitor)->visitExit(*this);
 }
 
 

@@ -21,7 +21,7 @@
 
 using namespace NAS2D::Xml;
 
-bool XmlMemoryBuffer::VisitEnter(const XmlElement& element, const XmlAttribute* firstAttribute)
+bool XmlMemoryBuffer::visitEnter(const XmlElement& element, const XmlAttribute* firstAttribute)
 {
 	indent();
 	_buffer += "<";
@@ -48,7 +48,7 @@ bool XmlMemoryBuffer::VisitEnter(const XmlElement& element, const XmlAttribute* 
 }
 
 
-bool XmlMemoryBuffer::VisitExit(const XmlElement& element)
+bool XmlMemoryBuffer::visitExit(const XmlElement& element)
 {
 	--depth;
 	if (!element.firstChild())
@@ -65,7 +65,7 @@ bool XmlMemoryBuffer::VisitExit(const XmlElement& element)
 }
 
 
-bool XmlMemoryBuffer::Visit(const XmlText& text)
+bool XmlMemoryBuffer::visit(const XmlText& text)
 {
 	if (text.CDATA())
 	{
@@ -86,7 +86,7 @@ bool XmlMemoryBuffer::Visit(const XmlText& text)
 }
 
 
-bool XmlMemoryBuffer::Visit(const XmlComment& comment)
+bool XmlMemoryBuffer::visit(const XmlComment& comment)
 {
 	indent();
 	_buffer += "<!--";
@@ -97,7 +97,7 @@ bool XmlMemoryBuffer::Visit(const XmlComment& comment)
 }
 
 
-bool XmlMemoryBuffer::Visit(const XmlUnknown& unknown)
+bool XmlMemoryBuffer::visit(const XmlUnknown& unknown)
 {
 	indent();
 	_buffer += "<";

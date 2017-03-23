@@ -51,7 +51,6 @@ public:
 	bool isDirectory(const std::string& path) const;
 	bool makeDirectory(const std::string& path) const;
 
-
 	void toggleVerbose() const;
 
 private:

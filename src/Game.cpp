@@ -96,7 +96,7 @@ Game::~Game()
  * Adds an additional directory or archive to the search path
  * of the Filesystem.
  * 
- * \param	path	Path to add to the search path.
+ * \param path	Path to add to the search path.
  */
 void Game::mount(const std::string& path)
 {
@@ -105,9 +105,9 @@ void Game::mount(const std::string& path)
 
 
 /**
- * Primes the EventHandler and StateManager and enteres the main game loop.
+ * Primes the EventHandler and StateManager and enters the main game loop.
  *
- * \param	state	A pointer to a State object.
+ * \param state	A pointer to a State object.
  * 
  * \warning	The State object becomes owned by the StateManager. Do not delete
  *			the State.

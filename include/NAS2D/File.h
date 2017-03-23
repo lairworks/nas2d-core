@@ -24,13 +24,13 @@ class File
 {
 public:
 
-	typedef char byte;
-	typedef const char const_byte;
-	typedef const_byte* RawByteStream;
+	typedef char byte; /**< Byte. */
+	typedef const char const_byte; /**< Const byte. */
+	typedef const_byte* RawByteStream; /**< Pointer to a const_byte. */
 
-	typedef std::string::iterator iterator;
-	typedef std::string::reverse_iterator reverse_iterator;
-	typedef std::string ByteStream;
+	typedef std::string::iterator iterator; /**< Forward iterator for a File byte stream. */
+	typedef std::string::reverse_iterator reverse_iterator; /**< Reverse iterator for a File byte stream. */
+	typedef std::string ByteStream; /**< Byte stream. */
 
 
 	/**
@@ -133,18 +133,65 @@ public:
 	 */
 	void resize(int size, byte b) { mByteStream.resize(size, b); }
 
+	/**
+	 * Indicates that the File is empty.
+	 */
 	bool empty() const { return mByteStream.empty(); }
 
+	/**
+	 * Gets an iterator to the beginning of the File's byte stream.
+	 */
 	iterator begin() { return mByteStream.begin(); }
+
+	/**
+	 * Gets an iterator to the end of the File's byte stream.
+	 */
 	iterator end() { return mByteStream.end(); }
 
+	/**
+	 * Gets a reverse iterator to the beginning of the File's byte stream.
+	 */
 	reverse_iterator rbegin() { return mByteStream.rbegin(); }
+
+	/**
+	 * Gets a reverse iterator to the end of the File's byte stream.
+	 */
 	reverse_iterator rend() { return mByteStream.rend(); }
 
+	/**
+	 * Gets an iterator to the byte at a specified position.
+	 * 
+	 * \param pos	Position of the iterator to get.
+	 */
 	iterator seek(size_t pos) { iterator it = mByteStream.begin() + pos; return it; }
+
+	/**
+	 * Gets a reverse iterator to the byte at a specified position.
+	 * 
+	 * \param pos	Position of the iterator to get.
+	 * 
+	 * \see seek
+	 */
 	reverse_iterator rseek(size_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
 
+	/**
+	 * Gets a byte from the byte stream at a specified position.
+	 * 
+	 * \param pos Position of the byte to get.
+	 * 
+	 * \warning	Out of range positions yield undefined behavior. Some compilers will
+	 *			throw an \c out_of_range exception.
+	 */
 	byte& operator[](size_t pos) { return mByteStream[pos]; }
+
+	/**
+	 * Gets a const byte from the byte stream at a specified position.
+	 * 
+	 * \param pos Position of the byte to get.
+	 * 
+	 * \warning	Out of range positions yield undefined behavior. Some compilers will
+	 *			throw an \c out_of_range exception.
+	 */
 	const_byte& operator[](size_t pos) const { return mByteStream[pos]; }
 
 	/**

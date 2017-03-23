@@ -32,12 +32,12 @@ XmlAttribute::XmlAttribute() :	XmlBase(),
  * \param	name	Name of the attribute.
  * \param	value	Value of the attribute.
  */
-XmlAttribute::XmlAttribute(const string& name, string& value) :	XmlBase(),
-																_document(nullptr),
-																_name(name),
-																_value(value),
-																_prev(nullptr),
-																_next(nullptr)
+XmlAttribute::XmlAttribute(const std::string &name, std::string &value) :	XmlBase(),
+																			_document(nullptr),
+																			_name(name),
+																			_value(value),
+																			_prev(nullptr),
+																			_next(nullptr)
 {}
 
 
@@ -95,7 +95,7 @@ XmlAttribute* XmlAttribute::previous()
 
 
 /**
- * \see XmlBase::print()
+ * \see XmlBase::write()
  */
 void XmlAttribute::write(std::string& buf, int) const
 {

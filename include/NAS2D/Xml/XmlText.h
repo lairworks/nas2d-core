@@ -52,10 +52,7 @@ public:
 	virtual const XmlText* toText() const { return this; }
 	virtual XmlText* toText() { return this; }
 
-	/**
-	 * Walk the XML tree visiting this node and all of its children.
-	 */
-	virtual bool accept(XmlVisitor* visitor) const { return visitor->visit(*this); }
+	virtual bool accept(void* visitor) const;
 
 protected:
 	///  [internal use] Creates a new Element and returns it.

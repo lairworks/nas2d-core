@@ -73,3 +73,12 @@ bool XmlText::blank() const
 
 	return true;
 }
+
+
+/**
+ * Walk the XML tree visiting this node and all of its children.
+ */
+bool XmlText::accept(void* visitor) const
+{
+	return static_cast<XmlVisitor*>(visitor)->visit(*this);
+}

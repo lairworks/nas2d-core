@@ -13,6 +13,10 @@
 
 using namespace NAS2D::Xml;
 
+
+/**
+ * Default c'tor.
+ */
 XmlAttributeSet::XmlAttributeSet()
 {
 	sentinel._next = &sentinel;
@@ -20,14 +24,18 @@ XmlAttributeSet::XmlAttributeSet()
 }
 
 
+/**
+ * D'tor
+ */
 XmlAttributeSet::~XmlAttributeSet()
 {}
 
 
+/**
+ * Adds an attribute to the set.
+ */
 void XmlAttributeSet::add(XmlAttribute* attribute)
 {
-	//assert(!Find(addMe->Name()));	// Shouldn't be multiply adding to the set.
-
 	attribute->_next = &sentinel;
 	attribute->_prev = sentinel._prev;
 
@@ -36,6 +44,9 @@ void XmlAttributeSet::add(XmlAttribute* attribute)
 }
 
 
+/**
+ * Removes an attribute from the set.
+ */
 void XmlAttributeSet::remove(XmlAttribute* attribute)
 {
 	XmlAttribute* node;

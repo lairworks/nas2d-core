@@ -85,9 +85,9 @@ XmlNode* XmlComment::clone() const
 /**
  * Walk the XML tree visiting this node and all of its children.
  */
-bool XmlComment::accept(XmlVisitor* visitor) const
+bool XmlComment::accept(void* visitor) const
 {
-	return visitor->visit(*this);
+	return static_cast<XmlVisitor*>(visitor)->visit(*this);
 }
 
 

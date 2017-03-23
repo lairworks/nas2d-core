@@ -23,7 +23,6 @@ class XmlDocument;
 class XmlElement;
 class XmlText;
 class XmlUnknown;
-class TiXmlParsingData;
 
 /**
  * XmlBase is a base class for every class in TinyXml. It does little except to establish
@@ -70,7 +69,7 @@ public:
 	int row() const;
 	int column() const;
 
-	virtual const char* parse(const char* p, TiXmlParsingData* data) = 0;
+	virtual const char* parse(const char* p, void* data) = 0;
 
 	enum XmlErrorCode
 	{

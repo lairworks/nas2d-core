@@ -81,7 +81,7 @@ int XmlBase::isAlphaNum(unsigned char anyByte)
 /**
  * Document this class.
  */
-class TiXmlParsingData
+class XmlParsingData
 {
 	friend class XmlDocument;
 public:
@@ -89,7 +89,7 @@ public:
 	const std::pair<int, int>& cursor() const { return _cursor; }
 
 private:
-	TiXmlParsingData(const char* start, int row, int col) : _stamp(start), _cursor(row, col)
+	XmlParsingData(const char* start, int row, int col) : _stamp(start), _cursor(row, col)
 	{
 		assert(start);
 	}
@@ -100,7 +100,7 @@ private:
 };
 
 
-void TiXmlParsingData::stamp(const char* now)
+void XmlParsingData::stamp(const char* now)
 {
 	assert(now);
 
@@ -548,7 +548,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 }
 
 
-const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
+const char* XmlDocument::parse(const char* p, void* prevData)
 {
 	clearError();
 
@@ -564,8 +564,8 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 	// so that parsing starts from the pointer we are given.
 	if (prevData)
 	{
-		location.first = prevData->_cursor.first;
-		location.second = prevData->_cursor.second;
+		location.first = static_cast<XmlParsingData*>(prevData)->_cursor.first;
+		location.second = static_cast<XmlParsingData*>(prevData)->_cursor.second;
 	}
 	else
 	{
@@ -573,7 +573,7 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 		location.second = 0;
 	}
 
-	TiXmlParsingData data(p, location.first, location.second);
+	XmlParsingData data(p, location.first, location.second);
 	location = data.cursor();
 
 	p = skipWhiteSpace(p);
@@ -610,7 +610,7 @@ const char* XmlDocument::parse(const char* p, TiXmlParsingData* prevData)
 	return p;
 }
 
-void XmlDocument::error(XmlErrorCode err, const char* pError, TiXmlParsingData* data)
+void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 {
 	// The first error in a chain is more accurate - don't set again!
 	if (_error)
@@ -629,8 +629,8 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, TiXmlParsingData* 
 	
 	if (pError && data)
 	{
-		data->stamp(pError);
-		_errorLocation = data->cursor();
+		static_cast<XmlParsingData*>(data)->stamp(pError);
+		_errorLocation = static_cast<XmlParsingData*>(data)->cursor();
 	}
 }
 
@@ -851,7 +851,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
  * Attribtue parsing starts: next char past '<'
  * returns: next char past '>'
  */
-const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
+const char* XmlElement::parse(const char* p, void* data)
 {
 	p = skipWhiteSpace(p);
 	XmlDocument* doc = document();
@@ -864,8 +864,8 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 
 	if (data)
 	{
-		data->stamp(p);
-		location = data->cursor();
+		static_cast<XmlParsingData*>(data)->stamp(p);
+		location = static_cast<XmlParsingData*>(data)->cursor();
 	}
 
 	if (*p != '<')
@@ -985,7 +985,7 @@ const char* XmlElement::parse(const char* p, TiXmlParsingData* data)
 }
 
 
-const char* XmlElement::readValue(const char* p, TiXmlParsingData* data)
+const char* XmlElement::readValue(const char* p, void* data)
 {
 	XmlDocument* doc = document();
 
@@ -1076,15 +1076,15 @@ void XmlUnknown::streamIn(std::istream& in, std::string& tag)
 }
 
 
-const char* XmlUnknown::parse(const char* p, TiXmlParsingData* data)
+const char* XmlUnknown::parse(const char* p, void* data)
 {
 	XmlDocument* doc = document();
 	p = skipWhiteSpace(p);
 
 	if (data)
 	{
-		data->stamp(p);
-		location = data->cursor();
+		static_cast<XmlParsingData*>(data)->stamp(p);
+		location = static_cast<XmlParsingData*>(data)->cursor();
 	}
 
 	if (!p || !*p || *p != '<')
@@ -1143,7 +1143,7 @@ void XmlComment::streamIn(std::istream& in, std::string& tag)
  * Attribtue parsing starts: at the ! of the !--
  * 					 returns: next char past '>'
  */
-const char* XmlComment::parse(const char* p, TiXmlParsingData* data)
+const char* XmlComment::parse(const char* p, void* data)
 {
 	XmlDocument* doc = document();
 	_value = "";
@@ -1152,8 +1152,8 @@ const char* XmlComment::parse(const char* p, TiXmlParsingData* data)
 
 	if (data)
 	{
-		data->stamp(p);
-		location = data->cursor();
+		static_cast<XmlParsingData*>(data)->stamp(p);
+		location = static_cast<XmlParsingData*>(data)->cursor();
 	}
 	const char* startTag = "<!--";
 	const char* endTag = "-->";
@@ -1180,15 +1180,15 @@ const char* XmlComment::parse(const char* p, TiXmlParsingData* data)
 }
 
 
-const char* XmlAttribute::parse(const char* p, TiXmlParsingData* data)
+const char* XmlAttribute::parse(const char* p, void* data)
 {
 	p = skipWhiteSpace(p);
 	if (!p || !*p) return nullptr;
 
 	if (data)
 	{
-		data->stamp(p);
-		location = data->cursor();
+		static_cast<XmlParsingData*>(data)->stamp(p);
+		location = static_cast<XmlParsingData*>(data)->cursor();
 	}
 	// Read the name, the '=' and the value.
 	const char* pErr = p;
@@ -1285,15 +1285,15 @@ void XmlText::streamIn(std::istream& in, std::string& tag)
 	}
 }
 
-const char* XmlText::parse(const char* p, TiXmlParsingData* data)
+const char* XmlText::parse(const char* p, void* data)
 {
 	_value = "";
 	XmlDocument* doc = document();
 
 	if (data)
 	{
-		data->stamp(p);
-		location = data->cursor();
+		static_cast<XmlParsingData*>(data)->stamp(p);
+		location = static_cast<XmlParsingData*>(data)->cursor();
 	}
 
 	const char* const startTag = "<![CDATA[";

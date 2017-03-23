@@ -39,7 +39,7 @@ public:
 	 */
 	virtual void write(std::string& buf, int depth) const;
 
-	virtual const char* parse(const char* p, TiXmlParsingData* data);
+	virtual const char* parse(const char* p, void* data);
 
 	virtual const XmlUnknown* toUnknown() const { return this; }
 	virtual XmlUnknown* toUnknown() { return this; }

@@ -19,7 +19,7 @@ public:
 
 	virtual ~XmlDocument() {}
 
-	virtual const char* parse(const char* p, TiXmlParsingData* data = nullptr);
+	virtual const char* parse(const char* p, void* data = nullptr);
 
 	const XmlElement* rootElement() const;
 	XmlElement* rootElement();
@@ -39,7 +39,7 @@ public:
 	virtual void write(std::string& buf, int depth = 0) const;
 
 public:
-	void error(XmlErrorCode err, const char* errorLocation, TiXmlParsingData* prevData);
+	void error(XmlErrorCode err, const char* errorLocation, void* prevData);
 
 protected:
 	virtual XmlNode* clone() const;

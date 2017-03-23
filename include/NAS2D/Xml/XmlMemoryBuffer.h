@@ -35,7 +35,7 @@ namespace Xml {
 class XmlMemoryBuffer : public XmlVisitor
 {
 public:
-	XmlMemoryBuffer() : depth(0), _indent("\t"), _lineBreak("\n") {}
+	XmlMemoryBuffer();
 
 	virtual bool visitEnter(const XmlDocument& doc) { return true; }
 	virtual bool visitExit(const XmlDocument& doc) { return true; }
@@ -47,13 +47,9 @@ public:
 	virtual bool visit(const XmlComment& comment);
 	virtual bool visit(const XmlUnknown& unknown);
 
-	size_t size() { return _buffer.size(); }
+	size_t size();
 
-	const std::string& buffer() { return _buffer; }
-
-private:
-	void indent() { for (int i = 0; i < depth; ++i) _buffer += _indent; }
-	void line_break() { _buffer += _lineBreak; }
+	const std::string& buffer();
 
 private:
 	int depth;

@@ -370,14 +370,14 @@ void Configuration::parseOptions(void* _n)
 	{
 		if(node->value() == "option")
 		{
-			XmlAttribute* attribute = element->firstAttribute();
+			XmlAttribute* attribute = node->toElement()->firstAttribute();
 			std::string name, value;
 			while (attribute)
 			{
 				if (attribute->name() == "name")
-					name == attribute->value();
+					name = attribute->value();
 				else if (attribute->name() == "value")
-					value == attribute->value();
+					value = attribute->value();
 				else
 					std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
 

@@ -4,7 +4,8 @@ This is a patch to NAS2D that fixes a few minor bugs.
 
 ## Fixed
 
-- Fixed a bug in Font::width(const std::string&) that would report incorrect widths when using TrueType or OpenType fonts.
+- Fixed a mistake in Configuration's XML processing of Options tags.
+- Fixed an issue in OGL_Renderer's drawText that could result in an out of bounds exception being thrown.
 
 ---
 

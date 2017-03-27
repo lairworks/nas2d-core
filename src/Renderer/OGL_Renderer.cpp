@@ -406,6 +406,7 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 
 	int offset = 0;
     GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
+	if (gml.empty()) return;
 	GlyphMetrics gm;
 	for (size_t i = 0; i < text.size(); i++)
 	{

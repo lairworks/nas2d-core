@@ -2,6 +2,10 @@
 
 This is a patch to NAS2D that fixes a few minor bugs.
 
+## Changed
+
+- Improved Renderer's handling of fading and fade callbacks.
+
 ## Fixed
 
 - Fixed a mistake in Configuration's XML processing of Options tags.

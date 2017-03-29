@@ -10,6 +10,7 @@
 
 #include "NAS2D/Renderer/Renderer.h"
 
+#include "NAS2D/Common.h"
 #include "NAS2D/Timer.h"
 
 #include <iostream>
@@ -39,9 +40,9 @@ NAS2D::Signals::Signal0<void>	_FADE_COMPLETE;
 
 enum FadeType
 {
-	FADE_NONE,
-	FADE_IN,
-	FADE_OUT
+	FADE_IN = -1,
+	FADE_NONE = 0,
+	FADE_OUT = 1
 };
 
 
@@ -360,7 +361,7 @@ void Renderer::fadeIn(float delay)
 	}
 
 	CURRENT_FADE = FADE_IN;
-	mFadeStep = 255.0f /delay;
+	mFadeStep = 255.0f / delay;
 
 	_TIMER.delta();	// clear timer
 }
@@ -820,29 +821,15 @@ void Renderer::update()
 {
 	if(CURRENT_FADE != FADE_NONE)
 	{
-		float fade = _TIMER.delta() * mFadeStep;
+		float fade = (_TIMER.delta() * mFadeStep) * CURRENT_FADE;
 
-		if(CURRENT_FADE == FADE_IN)
+		mCurrentFade += fade;
+
+		if (mCurrentFade < 0.0f || mCurrentFade > 255.0f)
 		{
-			mCurrentFade -= fade;
-
-			if(mCurrentFade < 0.0f)
-			{
-				mCurrentFade = 0.0f;
-				CURRENT_FADE = FADE_NONE;
-				_FADE_COMPLETE();
-			}
-		}
-		else
-		{
-			mCurrentFade += fade;
-
-			if(mCurrentFade > 255.0f)
-			{
-				mCurrentFade = 255.0f;
-				CURRENT_FADE = FADE_NONE;
-				_FADE_COMPLETE();
-			}
+			mCurrentFade = clamp(mCurrentFade, 0.0f, 255.0f);
+			CURRENT_FADE = FADE_NONE;
+			_FADE_COMPLETE();
 		}
 	}
 

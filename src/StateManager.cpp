@@ -63,6 +63,7 @@ void StateManager::setState(State* state)
 	if(mActiveState != nullptr)
 	{
 		delete mActiveState;
+		mActiveState = nullptr;
 	}
 
 	// Initialize the new one

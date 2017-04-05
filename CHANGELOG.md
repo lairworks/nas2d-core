@@ -1,4 +1,4 @@
-# [1.3.1] - 2013-03-23
+# [1.3.1] - 2013-04-05
 
 This is a patch to NAS2D that fixes a few minor bugs.
 

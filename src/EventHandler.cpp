@@ -169,6 +169,24 @@ EventHandler::WindowRestoredEventCallback& EventHandler::windowRestored()
  * connect(this, &Object::function);
  * \endcode
  * 
+ * See EventHandler::WindowResizedEventCallback for paramter listing.
+ */
+EventHandler::WindowResizedEventCallback& EventHandler::windowResized()
+{
+	return mWindowResizedEventCallback;
+}
+
+
+/**
+ * \brief Gets the handler slot associated with this event.
+ * 
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ * 
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ * 
  * See EventHandler::WindowMouseEnterEventCallback for paramter listing.
  */
 EventHandler::WindowMouseEnterEventCallback& EventHandler::windowMouseEnter()
@@ -560,27 +578,28 @@ void EventHandler::pump()
 
 			case SDL_WINDOWEVENT:
 				// Not completely happy with this but meh, it works.
-				if(event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+				if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
 					mActivateEvent(true);
-				else if(event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+				else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
 					mActivateEvent(false);
-				else if(event.window.event == SDL_WINDOWEVENT_SHOWN)
+				else if (event.window.event == SDL_WINDOWEVENT_SHOWN)
 					mWindowHiddenEventCallback(false);
-				else if(event.window.event == SDL_WINDOWEVENT_HIDDEN)
+				else if (event.window.event == SDL_WINDOWEVENT_HIDDEN)
 					mWindowHiddenEventCallback(true);
-				else if(event.window.event == SDL_WINDOWEVENT_EXPOSED)
+				else if (event.window.event == SDL_WINDOWEVENT_EXPOSED)
 					mWindowExposedEventCallback();
-				else if(event.window.event == SDL_WINDOWEVENT_MINIMIZED)
+				else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED)
 					mWindowMinimizedEventCallback();
-				else if(event.window.event == SDL_WINDOWEVENT_MAXIMIZED)
+				else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED)
 					mWindowMaximizedEventCallback();
-				else if(event.window.event == SDL_WINDOWEVENT_RESTORED)
+				else if (event.window.event == SDL_WINDOWEVENT_RESTORED)
 					mWindowRestoredEventCallback();
-				else if(event.window.event == SDL_WINDOWEVENT_ENTER)
+				else if (event.window.event == SDL_WINDOWEVENT_ENTER)
 					mWindowMouseEnterEventCallback();
-				else if(event.window.event == SDL_WINDOWEVENT_LEAVE)
+				else if (event.window.event == SDL_WINDOWEVENT_LEAVE)
 					mWindowMouseLeaveEventCallback();
-
+				else if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+					mWindowResizedEventCallback(event.window.data1, event.window.data2);
 				break;
 
 			case SDL_QUIT:

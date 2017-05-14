@@ -278,8 +278,6 @@ public:
 	 * \code
 	 * void function(void);
 	 * \endcode
-	 * 
-	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
 	typedef NAS2D::Signals::Signal0<void>				WindowExposedEventCallback;
 
@@ -290,8 +288,6 @@ public:
 	 * \code
 	 * void function(void);
 	 * \endcode
-	 * 
-	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
 	typedef NAS2D::Signals::Signal0<void>				WindowMinimizedEventCallback;
 
@@ -302,8 +298,6 @@ public:
 	 * \code
 	 * void function(void);
 	 * \endcode
-	 * 
-	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
 	typedef NAS2D::Signals::Signal0<void>				WindowMaximizedEventCallback;
 
@@ -314,8 +308,6 @@ public:
 	 * \code
 	 * void function(void);
 	 * \endcode
-	 * 
-	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
 	typedef NAS2D::Signals::Signal0<void>				WindowRestoredEventCallback;
 
@@ -326,8 +318,6 @@ public:
 	 * \code
 	 * void function(void);
 	 * \endcode
-	 * 
-	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
 	typedef NAS2D::Signals::Signal0<void>				WindowMouseEnterEventCallback;
 
@@ -338,10 +328,21 @@ public:
 	 * \code
 	 * void function(void);
 	 * \endcode
-	 * 
-	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
 	typedef NAS2D::Signals::Signal0<void>				WindowMouseLeaveEventCallback;
+
+	/**
+	 * \typedef	WindowResizedEventCallback
+	 * \brief	Triggered whenever the window is resized.
+	 *
+	 * \code
+	 * void function(int width, int height);
+	 * \endcode
+	 *
+	 * \arg \c width	Width of the resized window.
+	 * \arg \c height	Height of the resized window.
+	 */
+	typedef NAS2D::Signals::Signal2<int, int>				WindowResizedEventCallback;
 
 	/**
 	 * \typedef	JoystickAxisMotionEventCallback
@@ -538,6 +539,7 @@ public:
 	WindowMinimizedEventCallback&		windowMinimized();
 	WindowMaximizedEventCallback&		windowMaximized();
 	WindowRestoredEventCallback	&		windowRestored();
+	WindowResizedEventCallback&			windowResized();
 
 	WindowMouseEnterEventCallback&		windowMouseEnter();
 	WindowMouseLeaveEventCallback&		windowMouseLeave();
@@ -589,6 +591,7 @@ private:
 	WindowMinimizedEventCallback		mWindowMinimizedEventCallback;
 	WindowMaximizedEventCallback		mWindowMaximizedEventCallback;
 	WindowRestoredEventCallback			mWindowRestoredEventCallback;
+	WindowResizedEventCallback			mWindowResizedEventCallback;
 	WindowMouseEnterEventCallback		mWindowMouseEnterEventCallback;
 	WindowMouseLeaveEventCallback		mWindowMouseLeaveEventCallback;
 

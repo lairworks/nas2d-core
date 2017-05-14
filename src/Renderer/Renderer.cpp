@@ -677,7 +677,7 @@ float Renderer::height()
 /**
  * Gets the current screen resolution as a Point_2d.
  */
-Point_2df Renderer::screenSize()
+Point_2df Renderer::size()
 {
 	return Point_2df(width(), height());
 }
@@ -686,7 +686,7 @@ Point_2df Renderer::screenSize()
 /**
  * Gets the center X-Coordinate of the screen.
  */
-float Renderer::screenCenterX()
+float Renderer::center_x()
 {
 	return width() / 2;
 }
@@ -695,7 +695,7 @@ float Renderer::screenCenterX()
 /**
  * Gets the center Y-Coordinate of the screen.
  */
-float Renderer::screenCenterY()
+float Renderer::center_y()
 {
 	return height() / 2;
 }

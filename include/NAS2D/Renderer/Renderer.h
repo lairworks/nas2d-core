@@ -113,10 +113,10 @@ public:
 	virtual float width();
 	virtual float height();
 
-	Point_2df screenSize();
+	Point_2df size();
 
-	float screenCenterX();
-	float screenCenterY();
+	float center_x();
+	float center_y();
 
 	virtual void update();
 

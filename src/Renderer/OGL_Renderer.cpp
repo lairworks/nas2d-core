@@ -12,6 +12,7 @@
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
 #include "NAS2D/Configuration.h"
+#include "NAS2D/EventHandler.h"
 #include "NAS2D/Exception.h"
 #include "NAS2D/Resources/FontInfo.h"
 #include "NAS2D/Resources/ImageInfo.h"
@@ -62,12 +63,16 @@ SDL_Window*			_WINDOW = nullptr;
 
 SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
 
+
+// MODULE LEVEL FUNCTIONS
 void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
 void drawVertexArray(GLuint textureId, bool defaultTextureCoords = true);
 
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 GLuint generate_fbo();
+
+void resize(int w, int h);
 
 
 /**
@@ -91,6 +96,8 @@ OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer"
  */
 OGL_Renderer::~OGL_Renderer()
 {
+	Utility<EventHandler>::get().windowResized().disconnect(&resize);
+
 	SDL_GL_DeleteContext(CONTEXT);
 	SDL_DestroyWindow(_WINDOW);
 	_WINDOW = nullptr;
@@ -462,11 +469,9 @@ void OGL_Renderer::initGL()
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, (GLdouble)width(), (GLdouble)height(), 0.0, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+
+	resize(width(), height());
+
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_BLEND);
@@ -543,6 +548,8 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	SDL_ShowCursor(false);
 	glewInit();
 	initGL();
+
+	Utility<EventHandler>::get().windowResized().connect(&resize);
 }
 
 
@@ -550,6 +557,17 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================
+
+
+void resize(int w, int h)
+{
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+}
+
 
 /**
  * Generates an OpenGL Frame Buffer Object.

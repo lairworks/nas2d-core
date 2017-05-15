@@ -1,3 +1,14 @@
+# [1.4.1] - 2017-05-14
+
+This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.0 release.
+
+## Fixed
+
+- Version information has been corrected.
+- Window will now center itself when switching out of fullscreen mode.
+
+---
+
 # [1.4.0] - 2017-05-14
 
 This version of NAS2D introduces several new features to make it easier to use geometric primitives, switch between fullscreen and windowed modes and resize the window.

@@ -473,6 +473,7 @@ void OGL_Renderer::size(int w, int h)
 {
 	SDL_SetWindowSize(_WINDOW, w, h);
 	_resize(w, h);
+	SDL_SetWindowPosition(_WINDOW, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
 

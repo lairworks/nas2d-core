@@ -1,6 +1,6 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "NAS2D"
-PROJECT_NUMBER         = "1.4.0"
+PROJECT_NUMBER         = "1.4.1"
 PROJECT_BRIEF          = "The Open Source, Object Oriented 2D Game Development Framework"
 OUTPUT_DIRECTORY       = ./doc/
 CREATE_SUBDIRS         = NO

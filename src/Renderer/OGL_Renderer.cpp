@@ -38,6 +38,9 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
+/** Desktop resolution. To avoid unnecessary function calls. */
+Point_2df DESKTOP_RESOLUTION;
+
 /** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
 GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
 
@@ -72,8 +75,6 @@ void drawVertexArray(GLuint textureId, bool defaultTextureCoords = true);
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 GLuint generate_fbo();
 
-void resize(int w, int h);
-
 
 /**
  * C'tor
@@ -96,7 +97,7 @@ OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer"
  */
 OGL_Renderer::~OGL_Renderer()
 {
-	Utility<EventHandler>::get().windowResized().disconnect(&resize);
+	Utility<EventHandler>::get().windowResized().disconnect(this, &OGL_Renderer::_resize);
 
 	SDL_GL_DeleteContext(CONTEXT);
 	SDL_DestroyWindow(_WINDOW);
@@ -450,17 +451,78 @@ void OGL_Renderer::update()
 
 float OGL_Renderer::width()
 {
-	int n = 0;
-	SDL_GetWindowSize(_WINDOW, &n, nullptr);
-	return static_cast<float>(n);
+	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+		return DESKTOP_RESOLUTION.x();
+
+	return _size().x();
 }
 
 
 float OGL_Renderer::height()
 {
-	int n = 0;
-	SDL_GetWindowSize(_WINDOW, nullptr, &n);
-	return static_cast<float>(n);
+	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+		return DESKTOP_RESOLUTION.y();
+
+	return _size().y();
+}
+
+
+void OGL_Renderer::size(int w, int h)
+{
+	SDL_SetWindowSize(_WINDOW, w, h);
+	_resize(w, h);
+}
+
+
+void OGL_Renderer::fullscreen(bool fs, bool maintain)
+{
+	if (fs)
+	{
+		if (!maintain) SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		else SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN);
+	}
+	else
+	{
+		SDL_SetWindowFullscreen(_WINDOW, 0);
+		SDL_SetWindowSize(_WINDOW, width(), height());
+		SDL_SetWindowPosition(_WINDOW, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	}
+}
+
+
+bool OGL_Renderer::fullscreen()
+{
+	return	((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
+			((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
+
+void OGL_Renderer::resizeable(bool _r)
+{
+	if (fullscreen())
+		return;
+
+	// Not happy with the cast but I suppose it's a necessary evil.
+	SDL_SetWindowResizable(_WINDOW, static_cast<SDL_bool>(_r));
+}
+
+
+bool OGL_Renderer::resizeable()
+{
+	return (SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
+}
+
+
+void OGL_Renderer::_resize(int w, int h)
+{
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+
+	if(!fullscreen())
+		_size()(w, h);
 }
 
 
@@ -470,7 +532,7 @@ void OGL_Renderer::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	resize(width(), height());
+	_resize(width(), height());
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
@@ -531,6 +593,8 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	if (!_WINDOW)
 		throw renderer_window_creation_failure();
 
+	_size()(resX, resY);
+
 	CONTEXT = SDL_GL_CreateContext(_WINDOW);
 	if (!CONTEXT)
 		throw renderer_opengl_context_failure();
@@ -549,7 +613,16 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	glewInit();
 	initGL();
 
-	Utility<EventHandler>::get().windowResized().connect(&resize);
+	Utility<EventHandler>::get().windowResized().connect(this, &OGL_Renderer::_resize);
+
+	SDL_DisplayMode dm;
+	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+	{
+		std::cout << "SDL_GetDesktopDisplayMode failed: " << SDL_GetError();
+		throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
+	}
+
+	DESKTOP_RESOLUTION(static_cast<float>(dm.w), static_cast<float>(dm.h));
 }
 
 
@@ -557,17 +630,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================
-
-
-void resize(int w, int h)
-{
-	glViewport(0, 0, w, h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
-}
-
 
 /**
  * Generates an OpenGL Frame Buffer Object.

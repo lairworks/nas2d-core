@@ -657,6 +657,44 @@ void Renderer::showSystemPointer(bool _b)
 
 
 /**
+ * Sets fullscreen mode.
+ * 
+ * \param	fs			True for fullscreen, false for windowed mode.
+ * \param	maintain	Boolean flag indicating whether or not resolution from
+ *						windowed mode should be maintained or if the native
+ *						desktop resolution should be used.
+ */
+void Renderer::fullscreen(bool fs, bool maintain)
+{}
+
+
+/**
+ * Gets whether or not the app is in fullscreen mode or not.
+ */
+bool Renderer::fullscreen()
+{
+	return false;
+}
+
+
+/**
+ * Sets whether or not the app's window can be resized with the mouse.
+ */
+void Renderer::resizeable(bool _r)
+{}
+
+
+/**
+ * Gets whether or not the app's window can be resized with the mouse.
+ */
+bool Renderer::resizeable()
+{
+	return false;
+}
+
+
+
+/**
  * Returns the primary display's Width.
  */
 float Renderer::width()
@@ -675,12 +713,28 @@ float Renderer::height()
 
 
 /**
- * Gets the current screen resolution as a Point_2d.
+ * Gets the current screen resolution as a Point_2df.
  */
-Point_2df Renderer::size()
+const Point_2df& Renderer::size()
 {
-	return Point_2df(width(), height());
+	return mResolution;
 }
+
+
+/**
+ * Internal accessor function for derived Renderer types.
+ */
+Point_2df& Renderer::_size()
+{
+	return mResolution;
+}
+
+
+/**
+ * Sets the video resolution.
+ */
+void Renderer::size(int w, int h)
+{}
 
 
 /**

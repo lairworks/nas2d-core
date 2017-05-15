@@ -113,10 +113,17 @@ public:
 	virtual float width();
 	virtual float height();
 
-	Point_2df size();
+	virtual void size(int w, int h);
+	const Point_2df& size();
 
 	float center_x();
 	float center_y();
+
+	virtual void fullscreen(bool fs, bool maintain = false);
+	virtual bool fullscreen();
+
+	virtual void resizeable(bool _r);
+	virtual bool resizeable();
 
 	virtual void update();
 
@@ -125,6 +132,8 @@ protected:
 
 	virtual void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync) {}
 	void driverName(const std::string& name);
+
+	Point_2df& _size();
 
 private:
 	/**
@@ -143,6 +152,8 @@ private:
 	 */
 	Renderer& operator=(const Renderer&);
 
+
+
 private:
 	std::string			mRendererName;	/**< Internal name of the Renderer. */
 	std::string			mDriverName;	/**< OS Driver name */
@@ -151,6 +162,8 @@ private:
 	Color_4ub			mFadeColor;		/**< Fade Color. */
 	float				mFadeStep;		/**< Amount of fading to do per milisecond. */
 	float				mCurrentFade;	/**< Current fade amount. */
+
+	Point_2df			mResolution;	/**< Screen resolution. */
 };
 
 } // namespace

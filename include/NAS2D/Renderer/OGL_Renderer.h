@@ -52,8 +52,16 @@ public:
 
 	void clearScreen(int r, int g, int b);
     
-	float width();
-	float height();
+	virtual float width();
+	virtual float height();
+
+	virtual void size(int w, int h);
+
+	virtual void fullscreen(bool fs, bool maintain = false);
+	virtual bool fullscreen();
+
+	virtual void resizeable(bool _r);
+	virtual bool resizeable();
 
 	void update();
 
@@ -62,7 +70,9 @@ private:
 	OGL_Renderer& operator=(const OGL_Renderer&);	// Intentionally left undefined;
 
 	void initGL();
-	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);	
+	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
+
+	void _resize(int w, int h);
 };
 
 } // namespace

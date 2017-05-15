@@ -1,3 +1,13 @@
+# [1.4.2] - 2017-05-15
+
+This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.1 release.
+
+## Fixed
+
+- Rectangle_2d/Rectangle_2df center_x/center_y functions were not marked as const causing a variety of issues when attempting to use these functions.
+
+---
+
 # [1.4.1] - 2017-05-14
 
 This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.0 release.

@@ -14,6 +14,7 @@
 #include "NAS2D/Configuration.h"
 #include "NAS2D/EventHandler.h"
 #include "NAS2D/Exception.h"
+#include "NAS2D/Filesystem.h"
 #include "NAS2D/Resources/FontInfo.h"
 #include "NAS2D/Resources/ImageInfo.h"
 #include "NAS2D/Utility.h"
@@ -22,6 +23,7 @@
 #define NO_SDL_GLEXT
 #include "GL/glew.h"
 #include "SDL.h"
+#include "SDL_image.h"
 #elif __APPLE__
 #include <SDL2/SDL.h>
 #elif __linux__
@@ -523,6 +525,24 @@ void OGL_Renderer::_resize(int w, int h)
 
 	if(!fullscreen())
 		_size()(w, h);
+}
+
+
+void OGL_Renderer::window_icon(const std::string& path)
+{
+	if (!Utility<Filesystem>::get().exists(path))
+		return;
+
+	File f = Utility<Filesystem>::get().open(path);
+	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(f.raw_bytes(), static_cast<int>(f.size())), 0);
+	if (!icon)
+	{
+		std::cout << "OGL_Renderer::window_icon(): " << SDL_GetError() << std::endl;
+		return;
+	}
+
+	SDL_SetWindowIcon(_WINDOW, icon);
+	SDL_FreeSurface(icon);
 }
 
 

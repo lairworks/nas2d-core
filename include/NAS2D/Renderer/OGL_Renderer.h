@@ -63,6 +63,8 @@ public:
 	virtual void resizeable(bool _r);
 	virtual bool resizeable();
 
+	virtual void window_icon(const std::string& path);
+
 	void update();
 
 private:

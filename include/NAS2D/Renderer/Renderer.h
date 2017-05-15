@@ -55,6 +55,8 @@ public:
 	const std::string& title();
 	void title(const std::string& title);
 
+	virtual void window_icon(const std::string& path);
+
 	void drawImage(Image& image, float x, float y, float scale = 1.0f);
 	virtual void drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a);
 

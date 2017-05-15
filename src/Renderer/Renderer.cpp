@@ -803,6 +803,15 @@ void Renderer::title(const std::string& title)
 }
 
 
+/**
+ * Sets an icon for the window to use from an image file.
+ * 
+ * \param path	Path to an image file to use for the window icon.
+ */
+void Renderer::window_icon(const std::string& path)
+{}
+
+
 /*
  * Renders Text in the Color specified.
  *

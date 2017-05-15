@@ -22,6 +22,8 @@ This version of NAS2D introduces several new features to make it easier to use g
 
 Very little has changed internally but some functions have been renamed, particularly in the Renderer (```screenSize```, ```screenCenterX``` and ```screenCenterY```). Your applications will need to be adjusted to account for this.
 
+This release now links to SDL 2.0.5, be sure to use the updated SDL binary files included in the download package.
+
 ---
 
 # [1.3.1] - 2017-04-05

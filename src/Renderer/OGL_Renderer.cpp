@@ -488,6 +488,7 @@ void OGL_Renderer::fullscreen(bool fs, bool maintain)
 	{
 		if (!maintain) SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		else SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN);
+		SDL_SetWindowResizable(_WINDOW, SDL_FALSE);
 	}
 	else
 	{

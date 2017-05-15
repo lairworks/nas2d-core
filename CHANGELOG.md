@@ -1,4 +1,30 @@
-# [1.3.1] - 2013-04-05
+# [1.4.0] - 2017-05-14
+
+This version of NAS2D introduces several new features to make it easier to use geometric primitives, switch between fullscreen and windowed modes and resize the window.
+
+## Added
+- Added Window Resize events to the EventHandler.
+- Added center_x/center_y functions to Rectangle_2d/Rectangle_2df.
+- Added ability to set an applications window icon.
+- Added ability to change the size of the application window.
+- Applications can now switch to fullscreen and windowed modes.
+- Added ability to set the minimum size for an applications window.
+- Added the ability to set an application window as resizeable.
+
+
+## Changed
+
+- Renamed Renderer::screenSize() to Renderer::size();
+- Renamed Renderer::screenCenterX()/Renderer::screenCenterY() to Renderer::center_x()/Renderer::center_y().
+- Renderer will now respond to window resize events as they happen.
+
+### IMPORTANT NOTES ABOUT BREAKING CHANGES
+
+Very little has changed internally but some functions have been renamed, particularly in the Renderer (```screenSize```, ```screenCenterX``` and ```screenCenterY```). Your applications will need to be adjusted to account for this.
+
+---
+
+# [1.3.1] - 2017-04-05
 
 This is a patch to NAS2D that fixes a few minor bugs.
 
@@ -13,7 +39,7 @@ This is a patch to NAS2D that fixes a few minor bugs.
 
 ---
 
-# [1.3.0] - 2013-03-23
+# [1.3.0] - 2017-03-23
 
 This version of NAS2D focuses on cleaning up the public interface headers and removing as much of the implementation details as possible. This is to help make NAS2D a lot easier to use to set up new projects and will reduce reliance on backend library interface headers unless the user specifically wants/needs direct access to these libraries.
 

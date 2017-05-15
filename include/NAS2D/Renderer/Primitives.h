@@ -99,8 +99,8 @@ public:
 	int height() const;
 	int& height();
 
-	int center_x();
-	int center_y();
+	int center_x() const;
+	int center_y() const;
 
 private:
 	int mX, mY, mW, mH;
@@ -161,8 +161,8 @@ public:
 	float height() const;
 	float& height();
 
-	float center_x();
-	float center_y();
+	float center_x() const;
+	float center_y() const;
 
 private:
 	float mX, mY, mW, mH;

@@ -536,7 +536,7 @@ int& Rectangle_2d::height()
 /**
  * Gets the center point X-coordinate of the rectangle.
  */
-int Rectangle_2d::center_x()
+int Rectangle_2d::center_x() const
 {
 	return x() + (width() / 2);
 }
@@ -545,7 +545,7 @@ int Rectangle_2d::center_x()
 /**
  * Gets the center point Y-coordinate of the rectangle.
  */
-int Rectangle_2d::center_y()
+int Rectangle_2d::center_y() const
 {
 	return y() + (height() / 2);
 }
@@ -933,7 +933,7 @@ float& Rectangle_2df::height()
 /**
  * Gets the center point X-coordinate of the rectangle.
  */
-float Rectangle_2df::center_x()
+float Rectangle_2df::center_x() const
 {
 	return x() + (width() / 2);
 }
@@ -942,7 +942,7 @@ float Rectangle_2df::center_x()
 /**
  * Gets the center point Y-coordinate of the rectangle.
  */
-float Rectangle_2df::center_y()
+float Rectangle_2df::center_y() const
 {
 	return y() + (height() / 2);
 }

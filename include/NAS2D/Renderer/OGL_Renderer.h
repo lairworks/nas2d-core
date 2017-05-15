@@ -56,6 +56,7 @@ public:
 	virtual float height();
 
 	virtual void size(int w, int h);
+	virtual void minimum_size(int w, int h);
 
 	virtual void fullscreen(bool fs, bool maintain = false);
 	virtual bool fullscreen();

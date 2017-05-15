@@ -118,6 +118,8 @@ public:
 	virtual void size(int w, int h);
 	const Point_2df& size();
 
+	virtual void minimum_size(int w, int h);
+
 	float center_x();
 	float center_y();
 

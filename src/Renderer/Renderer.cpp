@@ -722,6 +722,13 @@ const Point_2df& Renderer::size()
 
 
 /**
+ * Sets the minimum size of the application window / screen resolution.
+ */
+void Renderer::minimum_size(int w, int h)
+{}
+
+
+/**
  * Internal accessor function for derived Renderer types.
  */
 Point_2df& Renderer::_size()

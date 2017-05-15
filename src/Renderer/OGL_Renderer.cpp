@@ -476,6 +476,12 @@ void OGL_Renderer::size(int w, int h)
 }
 
 
+void OGL_Renderer::minimum_size(int w, int h)
+{
+	SDL_SetWindowMinimumSize(_WINDOW, w, h);
+}
+
+
 void OGL_Renderer::fullscreen(bool fs, bool maintain)
 {
 	if (fs)

@@ -99,6 +99,9 @@ public:
 	int height() const;
 	int& height();
 
+	int center_x();
+	int center_y();
+
 private:
 	int mX, mY, mW, mH;
 };
@@ -157,6 +160,9 @@ public:
 	void height(float h);
 	float height() const;
 	float& height();
+
+	float center_x();
+	float center_y();
 
 private:
 	float mX, mY, mW, mH;

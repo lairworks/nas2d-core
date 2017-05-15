@@ -533,6 +533,24 @@ int& Rectangle_2d::height()
 }
 
 
+/**
+ * Gets the center point X-coordinate of the rectangle.
+ */
+int Rectangle_2d::center_x()
+{
+	return x() + (width() / 2);
+}
+
+
+/**
+ * Gets the center point Y-coordinate of the rectangle.
+ */
+int Rectangle_2d::center_y()
+{
+	return y() + (height() / 2);
+}
+
+
 // ==================================================================================
 // = Rectangle_2df Implementation
 // ==================================================================================
@@ -911,6 +929,25 @@ float& Rectangle_2df::height()
 	return mH;
 }
 
+
+/**
+ * Gets the center point X-coordinate of the rectangle.
+ */
+float Rectangle_2df::center_x()
+{
+	return x() + (width() / 2);
+}
+
+
+/**
+ * Gets the center point Y-coordinate of the rectangle.
+ */
+float Rectangle_2df::center_y()
+{
+	return y() + (height() / 2);
+}
+
+
 // ==================================================================================
 // = Point_2d Implementation
 // ==================================================================================
@@ -1108,6 +1145,7 @@ int& Point_2d::y()
 	return mY;
 }
 
+
 // ==================================================================================
 // = Point_2df Implementation
 // ==================================================================================
@@ -1294,4 +1332,3 @@ float& Point_2df::y()
 {
 	return mY;
 }
-

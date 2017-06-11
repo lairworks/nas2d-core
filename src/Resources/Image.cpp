@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "NAS2D/Resources/Image.h"
@@ -62,7 +62,7 @@ Image::Image(const std::string& filePath) : Resource(filePath)
 
 
 /**
- * Default C'tor.	
+ * Default C'tor.
  */
 Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 {
@@ -72,7 +72,7 @@ Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 
 /**
  * Create a blank Image of X, Y dimensions.
- * 
+ *
  * \param	width	Width of the Image.
  * \param	height	Height of the Image.
  */
@@ -97,7 +97,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 
 /**
  * Create an Image from a raw data buffer.
- * 
+ *
  * \param	buffer			Pointer to a data buffer.
  * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
  * \param	width			Width of the Image.
@@ -129,7 +129,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 /**
  * Copy C'tor.
- * 
+ *
  * \param	src		Image to copy.
  */
 Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
@@ -153,7 +153,7 @@ Image::~Image()
 
 /**
  * Copy assignment operator.
- * 
+ *
  * \param	rhs		Image to copy.
  */
 Image& Image::operator=(const Image& rhs)
@@ -179,7 +179,7 @@ Image& Image::operator=(const Image& rhs)
 
 /**
  * Loads an image file from disk.
- * 
+ *
  * \note	If loading fails, Image will be set to a valid internal state.
  */
 void Image::load()
@@ -200,7 +200,7 @@ void Image::load()
 
 	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
 	if(!pixels)
-	{		
+	{
 		std::cout << "Image::load(): " << SDL_GetError() << std::endl;
 		return;
 	}
@@ -241,7 +241,7 @@ int Image::height() const
 
 /**
  * Gets the color of a pixel at a given coordinate.
- * 
+ *
  * \param	x	X-Coordinate of the pixel to check.
  * \param	y	Y-Coordinate of the pixel to check.
  */

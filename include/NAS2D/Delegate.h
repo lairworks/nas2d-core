@@ -4,18 +4,18 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = DELEGATE.H
 // ==================================================================================
 // = Efficient delegates in C++ that generate only two lines of asm code
-// = 
+// =
 // = Modifications include:
 // =	- Removed a lot of instructional comments unnecessary for NAS2D.
 // =	- Removed support for MSVC compilers < 7 (far too old to still be using)
 // =	- Condensed lines for a more compact file
-// = 
+// =
 // = Created by Don Clugston. Contributions by Jody Hagins and Patrick Hogan.
 // = http://www.codeproject.com/KB/cpp/FastDelegate.aspx
 // ==================================================================================
@@ -253,7 +253,7 @@ public:
 #else
 	inline bool IsEqual(const DelegateMemento &x) const { return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction; }
 #endif
-	inline bool IsLess(const DelegateMemento &right) const 
+	inline bool IsLess(const DelegateMemento &right) const
 	{
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 		if (m_pStaticFunction != 0 || right.m_pStaticFunction != 0) return m_pStaticFunction < right.m_pStaticFunction;
@@ -340,7 +340,7 @@ public:
 	inline void bindstaticfunc(DerivedClass *pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 	{
 		if (function_to_bind == 0) m_pFunction = 0;
-		else bindmemfunc(pParent, static_function_invoker); 
+		else bindmemfunc(pParent, static_function_invoker);
 		m_pStaticFunction = reinterpret_cast<GenericFuncPtr>(function_to_bind);
 	}
 	inline UnvoidStaticFuncPtr GetStaticFunction() const { return reinterpret_cast<UnvoidStaticFuncPtr>(m_pStaticFunction); }
@@ -674,7 +674,7 @@ private:
 
 public:
 	typedef Delegate5 type;
-	
+
 	Delegate5() { clear(); }
 	Delegate5(const Delegate5 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
 	void operator = (const Delegate5 &x) { m_Closure.CopyFrom(this, x.m_Closure); }

@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "NAS2D/Resources/Font.h"
@@ -98,7 +98,7 @@ NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, 
 
 /**
  * Default c'tor.
- * 
+ *
  * Fonts instantiated with this constructor are not valid for use.
  */
 NAS2D::Font::Font() :	Resource("Default Font")
@@ -107,7 +107,7 @@ NAS2D::Font::Font() :	Resource("Default Font")
 
 /**
  * Copy c'tor.
- * 
+ *
  * \param	rhs	Font to copy.
  */
 NAS2D::Font::Font(const Font& rhs) : Resource(rhs.name())
@@ -134,7 +134,7 @@ NAS2D::Font::~Font()
 
 /**
  * Copy assignment operator.
- * 
+ *
  * \param rhs Font to copy.
  */
 NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
@@ -235,7 +235,7 @@ int NAS2D::Font::ptSize() const
 
 /**
  * Loads a TrueType or OpenType font from a file.
- * 
+ *
  * \param	path	Path to the TTF or OTF font file.
  * \param	ptSize	Point size to use when loading the font.
  */
@@ -279,7 +279,7 @@ bool load(const std::string path, unsigned int ptSize)
 
 /**
  * Internal function that loads a bitmap font from an file.
- * 
+ *
  * \param	path		Path to the image file.
  * \param	glyphWidth	Width of glyphs in the bitmap font.
  * \param	glyphHeight	Height of the glyphs in the bitmap font.
@@ -338,14 +338,14 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 	FONTMAP[path].ref_count++;
 	FONTMAP[path].glyph_size(glyphWidth, glyphHeight);
 	SDL_FreeSurface(glyphMap);
-	
+
 	return true;
 }
 
 
 /**
  * Generates a glyph map of all ASCII standard characters from 0 - 255.
- * 
+ *
  * Internal function used to generate a glyph texture map from an TTF_Font struct.
  */
 Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
@@ -429,7 +429,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 /**
  * Internal utility function used to test if a given Font has already
  * been loaded.
- * 
+ *
  * \param	name	Name of the Font to check against.
  */
 bool fontAlreadyLoaded(const std::string& name)
@@ -463,7 +463,7 @@ void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, u
 /**
  * Internal function used to clean up references to fonts when the Font
  * destructor or copy assignment operators are called.
- * 
+ *
  * \param	name	Name of the Font to check against.
  */
 void updateFontReferenceCount(const std::string name)

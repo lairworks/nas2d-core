@@ -9,6 +9,8 @@
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
+#include <stdexcept>
+
 #include "NAS2D/Xml/XmlAttribute.h"
 
 using namespace std;

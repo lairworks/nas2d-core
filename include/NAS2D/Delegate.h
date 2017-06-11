@@ -25,6 +25,7 @@
 #pragma once
 
 #include <memory>
+#include <cstring>
 
 #define FASTDELEGATE_USESTATICFUNCTIONHACK
 

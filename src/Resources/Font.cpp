@@ -23,6 +23,7 @@
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 #else
+#include "GL/glew.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 #endif

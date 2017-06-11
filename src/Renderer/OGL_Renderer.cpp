@@ -8,6 +8,22 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
+#ifdef WINDOWS
+#define NO_SDL_GLEXT
+#include "GL/glew.h"
+#include "SDL.h"
+#include "SDL_image.h"
+#elif __APPLE__
+#include <SDL2/SDL.h>
+#elif __linux__
+#include "GL/glew.h"
+#include "SDL2/SDL.h"
+#include "SDL_image.h"
+//#include "SDL2/SDL_opengl.h"
+#else
+#include "SDL2.h"
+#endif
+
 #include "NAS2D/Trig.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
@@ -18,20 +34,6 @@
 #include "NAS2D/Resources/FontInfo.h"
 #include "NAS2D/Resources/ImageInfo.h"
 #include "NAS2D/Utility.h"
-
-#ifdef WINDOWS
-#define NO_SDL_GLEXT
-#include "GL/glew.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#elif __APPLE__
-#include <SDL2/SDL.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_opengl.h"
-#else
-#include "SDL2.h"
-#endif
 
 
 #include <iostream>

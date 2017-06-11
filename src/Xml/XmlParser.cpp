@@ -20,11 +20,13 @@
 // =
 // = 3. This notice may not be removed or altered from any source distribution.
 // ==================================================================================
-#include "NAS2D/XML/Xml.h"
+#include "NAS2D/Xml/Xml.h"
 
 #include <assert.h>
 #include <ctype.h>
 #include <stddef.h>
+#include <fstream>
+#include <cstring>
 
 #include <locale>
 

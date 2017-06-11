@@ -18,7 +18,7 @@
 #elif defined(WINDOWS)
 #include "GL/glew.h"
 #elif defined(__linux__)
-#include "SDL2/SDL_opengl.h"
+#include "GL/glew.h"
 #endif
 
 

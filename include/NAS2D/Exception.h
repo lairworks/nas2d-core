@@ -9,6 +9,7 @@
 // ==================================================================================
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 namespace NAS2D {

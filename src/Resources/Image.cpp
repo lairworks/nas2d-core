@@ -19,6 +19,7 @@
 #ifdef __APPLE__
 #include "SDL2_image/SDL_image.h"
 #elif __linux__
+#include "GL/glew.h"
 #include "SDL2/SDL_image.h"
 #elif _WIN32
 #include "GL/glew.h"

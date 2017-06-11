@@ -20,6 +20,8 @@
 #include "physfs.h"
 #endif
 
+#include <climits>
+#include <cstring>
 #include <iostream>
 #include <sstream>
 

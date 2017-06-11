@@ -298,7 +298,6 @@ File Filesystem::open(const std::string& filename) const
  */
 bool Filesystem::makeDirectory(const std::string& path) const
 {
-	if (!FILESYSTEM_INITIALIZED) throw filesystem_not_initialized();
 	return PHYSFS_mkdir(path.c_str()) != 0;
 }
 

@@ -96,8 +96,8 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 
 	if(PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
 	{
-		mErrorMessages.push_back(PHYSFS_getLastError());
-        cout << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << endl;
+		//mErrorMessages.push_back(PHYSFS_getLastError());
+		std::cout << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
 	}
 
 #else

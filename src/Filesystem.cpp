@@ -89,7 +89,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 
 	if(PHYSFS_exists(mDataPath.c_str()) == 0)
 	{
-		makeDirectory(mDirName.c_str());
+		PHYSFS_mkdir(mDirName.c_str());
 	}
 
 	PHYSFS_setWriteDir(mDataPath.c_str());
@@ -298,6 +298,7 @@ File Filesystem::open(const std::string& filename) const
  */
 bool Filesystem::makeDirectory(const std::string& path) const
 {
+	if (!FILESYSTEM_INITIALIZED) throw filesystem_not_initialized();
 	return PHYSFS_mkdir(path.c_str()) != 0;
 }
 

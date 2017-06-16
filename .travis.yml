@@ -1,4 +1,4 @@
-# Based on https://github.com/ldionne/hana/blob/master/.travis.yml
+  # Based on https://github.com/ldionne/hana/blob/master/.travis.yml
 
 language: cpp
 sudo: false
@@ -45,7 +45,7 @@ matrix:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.7
 
-- env: CLANG_VERSION=3.7 BUILD_TYPE=Release
+    - env: CLANG_VERSION=3.7 BUILD_TYPE=Release
       os: linux
       addons: *clang37
     - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug

@@ -1,11 +1,11 @@
-# Based on https://github.com/ldionne/hana/blob/master/.travis.yml
+  # Based on https://github.com/ldionne/hana/blob/master/.travis.yml
 
 language: cpp
-sudo: false
+dist: trusty
+sudo: required
 
 cache:
   directories:
-    - ${TRAVIS_BUILD_DIR}/deps/cmake
     - ${TRAVIS_BUILD_DIR}/deps/llvm-3.5.2/install
     - ${TRAVIS_BUILD_DIR}/deps/llvm-3.6.2/install
     - ${TRAVIS_BUILD_DIR}/deps/llvm-3.7.1/install
@@ -45,6 +45,7 @@ matrix:
           sources: &sources
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.7
+
     - env: CLANG_VERSION=3.7 BUILD_TYPE=Release
       os: linux
       addons: *clang37
@@ -88,20 +89,6 @@ install:
   - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
 
   ############################################################################
-  # Install a recent CMake (unless already installed on OS X)
-  ############################################################################
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      if [[ -z "$(ls -A ${DEPS_DIR}/cmake/bin)" ]]; then
-        CMAKE_URL="https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.tar.gz"
-        mkdir -p cmake && travis_retry wget --no-check-certificate --quiet -O - "${CMAKE_URL}" | tar --strip-components=1 -xz -C cmake
-      fi
-      export PATH="${DEPS_DIR}/cmake/bin:${PATH}"
-    else
-      if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
-    fi
-
-  ############################################################################
   # [linux]: Install the right version of libc++
   ############################################################################
   - |
@@ -128,14 +115,13 @@ install:
       export LDFLAGS="-L ${LLVM_ROOT}/install/lib -lc++ -lc++abi"
       export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${LLVM_ROOT}/install/lib"
     fi
-
-before_script:
-  - cd "${TRAVIS_BUILD_DIR}"
-  - cmake . -Bbuild -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-  - cmake --build build -- -j$JOBS
+    
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update && sudo apt-get install -y libsdl2-dev; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install sdl2 && sudo brew link sdl2; fi
 
 script:
-  - cd build
+  - cd ../ && make
 
 notifications:
   email: false

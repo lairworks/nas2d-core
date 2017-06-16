@@ -1,6 +1,7 @@
   # Based on https://github.com/ldionne/hana/blob/master/.travis.yml
 
 language: cpp
+dist: trusty
 sudo: required
 
 cache:

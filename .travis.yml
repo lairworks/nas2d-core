@@ -121,7 +121,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install sdl2 && sudo brew link sdl2; fi
 
 script:
-  - cd ../ && ./configure && make
+  - cd ../ && make
 
 notifications:
   email: false

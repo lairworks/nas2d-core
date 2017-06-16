@@ -4,9 +4,25 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
+
+#ifdef WINDOWS
+#define NO_SDL_GLEXT
+#include "GL/glew.h"
+#include "SDL.h"
+#include "SDL_image.h"
+#elif __APPLE__
+#include <SDL2/SDL.h>
+#elif __linux__
+#include "GL/glew.h"
+#include "SDL2/SDL.h"
+#include "SDL_image.h"
+//#include "SDL2/SDL_opengl.h"
+#else
+#include "SDL2.h"
+#endif
 
 #include "NAS2D/Trig.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
@@ -18,20 +34,6 @@
 #include "NAS2D/Resources/FontInfo.h"
 #include "NAS2D/Resources/ImageInfo.h"
 #include "NAS2D/Utility.h"
-
-#ifdef WINDOWS
-#define NO_SDL_GLEXT
-#include "GL/glew.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#elif __APPLE__
-#include <SDL2/SDL.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_opengl.h"
-#else
-#include "SDL2.h"
-#endif
 
 
 #include <iostream>
@@ -80,15 +82,15 @@ GLuint generate_fbo();
 
 /**
  * C'tor
- * 
+ *
  * Instantiates an OGL_Renderer object with the title of the application window.
- * 
+ *
  * \param title	Title of the application window.
  */
 OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer", title)
 {
 	std::cout << "Starting " << name() << ":" << std::endl;
-	
+
 	Configuration& cf = Utility<Configuration>::get();
 	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
 }
@@ -183,7 +185,7 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
-	
+
 	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
 	glPopMatrix();
 }
@@ -207,7 +209,7 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 	// Change texture mode to repeat at edges.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	
+
 	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, true);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -272,10 +274,10 @@ void OGL_Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
 
 
 void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
-{	
+{
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
-	
+
 	line(x, y, x2, y2, (float)line_width, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
 	glDisableClientState(GL_COLOR_ARRAY);
@@ -424,7 +426,7 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 
 		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
-		
+
 		drawVertexArray(FONTMAP[font.name()].texture_id, false);
 		offset += gm.advance + gm.minX;
 	}
@@ -718,11 +720,11 @@ void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 
 /**
  * The following code was developed by Chris Tsang and lifted from:
- * 
+ *
  * http://www.codeproject.com/KB/openGL/gllinedraw.aspx
- * 
+ *
  * Modified: Removed option for non-alpha blending and general code cleanup.
- * 
+ *
  * This is drop-in code that may be replaced in the future.
  */
 static inline float _ABS(float x) { return x > 0 ? x : -x; }
@@ -733,7 +735,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float t = 0.0f;
 	float R = 0.0f;
 	float f = w - static_cast<int>(w);
-	
+
 	// Alpha component?
 	float A = Ca;
 
@@ -743,7 +745,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	{
 		t = 0.05f;
 		R = 0.48f + 0.32f * f;
-		
+
 		A *= f;
 	}
 	else if(w >= 1.0f && w < 2.0f)
@@ -778,7 +780,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		R = 1.08f;
 	}
 	//printf( "w=%f, f=%f, C=%.4f\n", w,f,C);
-	
+
 	//determine angle of the line to horizontal
 	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
 	float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
@@ -786,7 +788,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float ALW = 0.01f;			// Dafuq is this?
 	float dx = x2 - x1;
 	float dy = y2 - y1;
-	
+
 	if(_ABS(dx) < ALW)
 	{
 		//vertical
@@ -821,17 +823,17 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 
 		cx = -dy;
 		cy = dx;
-		
+
 		tx = t * dx;
 		ty = t * dy;
-		
+
 		Rx = R * dx;
 		Ry = R * dy;
 	}
 
 	x1 += cx * 0.5f;
 	y1 += cy * 0.5f;
-	
+
 	x2 -= cx * 0.5f;
 	y2 -= cy * 0.5f;
 
@@ -892,7 +894,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			Cr,Cg,Cb, Ca,
 			Cr,Cg,Cb, 0,
 			Cr,Cg,Cb, Ca,
-			Cr,Cg,Cb, 0,		
+			Cr,Cg,Cb, 0,
 			Cr,Cg,Cb, 0, //cap2
 			Cr,Cg,Cb, 0,
 			Cr,Cg,Cb, Ca,

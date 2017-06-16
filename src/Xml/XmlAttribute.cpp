@@ -4,11 +4,13 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
+#include <stdexcept>
+
 #include "NAS2D/Xml/XmlAttribute.h"
 
 using namespace std;
@@ -26,9 +28,9 @@ XmlAttribute::XmlAttribute() :	XmlBase(),
 
 /**
  * C'tor.
- * 
+ *
  * Constructs an XmlAttribute with a given name and value.
- * 
+ *
  * \param	name	Name of the attribute.
  * \param	value	Value of the attribute.
  */
@@ -118,7 +120,7 @@ void XmlAttribute::write(std::string& buf, int) const
 
 /**
  * Set value to an \c int.
- * 
+ *
  * \param	i	\c int value to use.
  */
 void XmlAttribute::intValue(int i)
@@ -129,7 +131,7 @@ void XmlAttribute::intValue(int i)
 
 /**
  * Set value to a \c double.
- * 
+ *
  * \param	d	\c double value to use.
  */
 void XmlAttribute::doubleValue(double d)
@@ -140,13 +142,13 @@ void XmlAttribute::doubleValue(double d)
 
 /**
  * Gets the value of the attribute as an \c int.
- * 
+ *
  * \note	This function does not attempt to verify that the value in
  *			the attribute is a valid numeric value that can be converted
  *			to a \c double.
- * 
+ *
  * \returns	Returns the requested value as an \c int.
- * 
+ *
  * \throws	Throws \c std::invalid_argument if the value is not a numeric value.
  */
 int XmlAttribute::intValue() const
@@ -157,13 +159,13 @@ int XmlAttribute::intValue() const
 
 /**
  * Gets the value of the attribute as a \c double.
- * 
+ *
  * \note	This function does not attempt to verify that the value in
  *			the attribute is a valid numeric value that can be converted
  *			to a \c double.
- * 
+ *
  * \returns	Returns the requested value as a \c double.
- * 
+ *
  * \throws	Throws \c std::invalid_argument if the value is not a numeric value.
  */
 double XmlAttribute::doubleValue() const
@@ -174,12 +176,12 @@ double XmlAttribute::doubleValue() const
 
 /**
  * Gets the value of the attribute as an \c int.
- * 
+ *
  * Similar to XmlAttribute::intValue() but with richer
  * error checking.
- * 
+ *
  * \param	i	Reference to an \c int to write the value to.
- * 
+ *
  * \returns	An XmlAttribute::QueryResult value.
  */
 XmlAttribute::QueryResult XmlAttribute::queryIntValue(int& i) const
@@ -199,12 +201,12 @@ XmlAttribute::QueryResult XmlAttribute::queryIntValue(int& i) const
 
 /**
  * Gets the value of the attribute as a \c double.
- * 
+ *
  * Similar to XmlAttribute::doubleValue() but with richer
  * error checking.
- * 
+ *
  * \param	d	Reference to an \c double to write the value to.
- * 
+ *
  * \returns	An XmlAttribute::QueryResult value.
  */
 XmlAttribute::QueryResult XmlAttribute::queryDoubleValue(double& d) const
@@ -235,9 +237,9 @@ const std::string& XmlAttribute::name() const
 
 /**
  * Gets the value of the Attribute.
- * 
+ *
  * \return	Returns a \c std::string containing the value of the attribute.
- * 
+ *
  * \see	XmlAttribute::intValue(), XmlAttribute::doubleValue()
  */
 const std::string& XmlAttribute::value() const
@@ -248,7 +250,7 @@ const std::string& XmlAttribute::value() const
 
 /**
  * Sets the name of the Attribute.
- * 
+ *
  * \param name	A \c std::string containing the name to set.
  */
 void XmlAttribute::name(const std::string& name)

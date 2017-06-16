@@ -5,26 +5,28 @@
 // = This software is provided 'as-is', without any express or implied warranty. In
 // = no event will the authors be held liable for any damages arising from the use of
 // = this software.
-// = 
+// =
 // = Permission is granted to anyone to use this software for any purpose, including
 // = commercial applications, and to alter it and redistribute it freely, subject to
 // = the following restrictions:
-// = 
+// =
 // = 1. The origin of this software must not be misrepresented; you must not claim
 // = that you wrote the original software. If you use this software in a product, an
 // = acknowledgment in the product documentation would be appreciated but is not
 // = required.
-// = 
+// =
 // = 2. Altered source versions must be plainly marked as such, and must not be
 // = misrepresented as being the original software.
-// = 
+// =
 // = 3. This notice may not be removed or altered from any source distribution.
 // ==================================================================================
-#include "NAS2D/XML/Xml.h"
+#include "NAS2D/Xml/Xml.h"
 
 #include <assert.h>
 #include <ctype.h>
 #include <stddef.h>
+#include <fstream>
+#include <cstring>
 
 #include <locale>
 
@@ -45,8 +47,8 @@ namespace NAS2D {
 namespace Xml {
 
 // Note that "PutString" hardcodes the same list. This is less flexible
-// than it appears. Changing the entries or order will break putstring.	
-XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] = 
+// than it appears. Changing the entries or order will break putstring.
+XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] =
 {
 	{ "&amp;",  5, '&' },
 	{ "&lt;",   4, '<' },
@@ -58,10 +60,8 @@ XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] =
 
 int XmlBase::isAlpha(unsigned char anyByte)
 {
-	std::locale loc;
-
 	if (anyByte < 127)
-		return std::isalpha(anyByte, loc);
+		return std::isalpha(anyByte);
 	else
 		return 1;	// What else to do? The unicode set is huge...get the english ones right.
 }
@@ -69,10 +69,8 @@ int XmlBase::isAlpha(unsigned char anyByte)
 
 int XmlBase::isAlphaNum(unsigned char anyByte)
 {
-	std::locale loc;
-
 	if (anyByte < 127)
-		return std::isalnum(anyByte, loc);
+		return std::isalnum(anyByte);
 	else
 		return 1;	// What else to do? The unicode set is huge...get the english ones right.
 }
@@ -626,7 +624,7 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 
 	_errorLocation.first = 0;
 	_errorLocation.second = 0;
-	
+
 	if (pError && data)
 	{
 		static_cast<XmlParsingData*>(data)->stamp(pError);
@@ -652,7 +650,7 @@ XmlNode* XmlNode::identify(const char* p)
 		return nullptr;
 
 
-	// What is this thing? 
+	// What is this thing?
 	// - Elements start with a letter or underscore, but xml is reserved.
 	// - Comments: <!--
 	// - Decleration: <?xml
@@ -928,7 +926,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			// We should find the end tag now
 			// note that:
 			// </foo > and
-			// </foo> 
+			// </foo>
 			// are both valid end tags.
 			if (stringEqual(p, endTag.c_str(), false))
 			{
@@ -1239,7 +1237,7 @@ const char* XmlAttribute::parse(const char* p, void* data)
 			if (*p == SINGLE_QUOTE || *p == DOUBLE_QUOTE)
 			{
 				// [ 1451649 ] Attribute values with trailing quotes not handled correctly
-				// We did not have an opening quote but seem to have a 
+				// We did not have an opening quote but seem to have a
 				// closing one. Give up and throw an error.
 				if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, p, data);
 				return nullptr;

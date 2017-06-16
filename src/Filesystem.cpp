@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -20,6 +20,8 @@
 #include "physfs.h"
 #endif
 
+#include <climits>
+#include <cstring>
 #include <iostream>
 #include <sstream>
 
@@ -87,15 +89,15 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 
 	if(PHYSFS_exists(mDataPath.c_str()) == 0)
 	{
-		makeDirectory(mDirName.c_str());
+		PHYSFS_mkdir(mDirName.c_str());
 	}
 
 	PHYSFS_setWriteDir(mDataPath.c_str());
 
 	if(PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
 	{
-		mErrorMessages.push_back(PHYSFS_getLastError());
-        cout << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << endl;
+		//mErrorMessages.push_back(PHYSFS_getLastError());
+		std::cout << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
 	}
 
 #else
@@ -112,7 +114,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
  * Adds a directory or supported archive to the Search Path.
  *
  * \param path	File path to add.
- * 
+ *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
 bool Filesystem::addToSearchPath(const std::string& path) const
@@ -213,9 +215,9 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 
 /**
  * Deletes a specified file.
- * 
+ *
  * \param	filename	Path of the file to delete relative to the Filesystem root directory.
- * 
+ *
  * \note	This function is not named 'delete' due to
  *			language limitations.
  */
@@ -235,9 +237,9 @@ bool Filesystem::del(const std::string& filename) const
 
 /**
  * Opens a file.
- * 
+ *
  * \param filename	Path of the file to load.
- * 
+ *
  * \return Returns a File.
  */
 File Filesystem::open(const std::string& filename) const
@@ -289,7 +291,7 @@ File Filesystem::open(const std::string& filename) const
 
 /**
  * Creates a new directory within the primary search path.
- * 
+ *
  * \param path	Path of the directory to create.
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
@@ -303,7 +305,7 @@ bool Filesystem::makeDirectory(const std::string& path) const
 
 /**
  * Determines if a given path is a directory rather than a file.
- * 
+ *
  * \param path	Path to check.
  */
 bool Filesystem::isDirectory(const std::string& path) const
@@ -315,7 +317,7 @@ bool Filesystem::isDirectory(const std::string& path) const
 
 /**
  * Checks for the existence of a file.
- * 
+ *
  * \param	filename	File path to check.
  *
  * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
@@ -455,9 +457,9 @@ std::string Filesystem::workingPath(const std::string& filename) const
 
 /**
  * Gets the extension of a given file path.
- * 
+ *
  * \param	path	Path to check for an extension.
- * 
+ *
  * \return	Returns a string containing the file extension. An empty string will be
  *			returned if the file has no extension or if it's a directory.
  */
@@ -467,7 +469,7 @@ std::string Filesystem::extension(const std::string path)
 
 	// This is a naive approach but works for most cases.
 	size_t pos = path.find_last_of(".");
-	
+
 	if(pos >= 0)
 	{
 		return path.substr(pos + 1);

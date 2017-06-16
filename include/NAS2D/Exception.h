@@ -4,11 +4,12 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 namespace NAS2D {
@@ -17,13 +18,13 @@ namespace Exception {
 
 /**
  * \page Exceptions Exceptions
- * 
+ *
  * See <a href="https://github.com/lairworks/nas2d-core/wiki/Exceptions-&-Exception-Handling-in-NAS2D">Wiki Page (Exceptions)</a> for further details.
  */
 
 /**
  * \class filesystem_backend_init_failure
- * 
+ *
  * Thrown when the Filesystem is unable to initialize itself.
  */
 class filesystem_backend_init_failure : public std::runtime_error { public: filesystem_backend_init_failure(const std::string& description); filesystem_backend_init_failure(); };
@@ -55,7 +56,7 @@ class filesystem_file_handle_still_open : public std::runtime_error { public: fi
 
 /**
  * \class font_bad_data
- * 
+ *
  * Thrown when Font::operator=() is called but the font hasn't been loaded yet.
  */
 class font_bad_data : public std::runtime_error { public: font_bad_data(); };

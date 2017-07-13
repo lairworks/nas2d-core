@@ -3,7 +3,7 @@ DIR_SRC		=	./src
 DIR_OBJ		=	./obj
 DIR_BIN		=	./lib
 
-CFLAGS		+=	-g -Wall -I${DIR_INC} `sdl-config --cflags`
+CFLAGS		+=	-g -Wall -I${DIR_INC} `sdl2-config --cflags`
 LDFLAGS		+=	-lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
 
 SRC			=	$(shell find ${DIR_SRC} -name "*.cpp")

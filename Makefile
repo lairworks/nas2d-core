@@ -34,3 +34,9 @@ clean:
 .PHONY:install-deps-arch
 install-deps-arch:
 	pacman -S sdl2 sdl2_mixer sdl2_image sdl2_ttf glew glee physfs
+
+# Ubuntu
+
+.PHONY:install-deps-ubuntu
+install-deps-ubuntu:
+	apt install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev glee-dev libphysfs-dev

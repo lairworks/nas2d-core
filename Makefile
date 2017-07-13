@@ -40,3 +40,17 @@ install-deps-arch:
 .PHONY:install-deps-ubuntu
 install-deps-ubuntu:
 	apt install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev glee-dev libphysfs-dev
+
+# CentOS
+
+.PHONY:install-repos-centos
+install-repos-centos:
+	# For SDL2
+	yum install epel-release
+	# For GLee (-y answers "yes" to prompts)
+	yum install -y http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm
+
+.PHONY:install-deps-centos
+install-deps-centos:
+	# Install development packages (-y answers "yes" to prompts)
+	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel GLee-devel

@@ -44,3 +44,11 @@ clean-deps:
 	-rm -fr $(DEPDIR)
 
 # vim: filetype=make
+
+
+
+# Arch Linux
+
+.PHONY:install-deps-arch
+install-deps-arch:
+	pacman -S sdl2 sdl2_mixer sdl2_image sdl2_ttf glew glee physfs

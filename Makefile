@@ -26,3 +26,11 @@ ${DIR_OBJ}/%.o: ${DIR_SRC}/%.cpp ${INC_H}
 clean:
 	-rm -fr ${DIR_OBJ}/*
 	-rm -fr ${DIR_BIN}/*
+
+
+
+# Arch Linux
+
+.PHONY:install-deps-arch
+install-deps-arch:
+	pacman -S sdl2 sdl2_mixer sdl2_image sdl2_ttf glew glee physfs

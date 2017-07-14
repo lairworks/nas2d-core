@@ -68,8 +68,8 @@ Configuration::Configuration():	mScreenWidth(GRAPHICS_WIDTH),
 								mSfxVolume(AUDIO_SFX_VOLUME),
 								mMusicVolume(AUDIO_MUSIC_VOLUME),
 								mBufferLength(AUDIO_BUFFER_SIZE),
-								mOptionChanged(false),
-								mMixerName("SDL")
+								mMixerName("SDL"),
+								mOptionChanged(false)
 {
 }
 

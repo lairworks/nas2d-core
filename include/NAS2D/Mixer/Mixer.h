@@ -174,23 +174,10 @@ protected:
 	NAS2D::Signals::Signal0<void>	_music_complete; /**< Callback used when music finished playing. */
 
 private:
-	/**
-	 * Copy c'tor.
-	 * 
-	 * The copy c'tor is intentionally private and undefined. It should
-	 * never be invoked at any time.
-	 */
-	Mixer(const Mixer&)
-	{}
-
-	/**
-	 * Copy operator.
-	 * 
-	 * The copy operator is intentionally private and undefined. It should
-	 * never be invoked at any time.
-	 */
-	Mixer& operator=(const Mixer&)
-	{}
+	// No default copy constructor or copy operator
+	// Calling these any any time should result in an error
+	Mixer(const Mixer&) = delete;
+	Mixer& operator=(const Mixer&) = delete;
 
 private:
 	std::string		mName;		/**< Internal name of the Renderer. */

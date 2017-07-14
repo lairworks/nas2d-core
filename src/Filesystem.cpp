@@ -227,7 +227,7 @@ bool Filesystem::del(const std::string& filename) const
 
 	if(PHYSFS_delete(filename.c_str()) == 0)
 	{
-		std::cout << "Unable to delete '" << filename << "':" << PHYSFS_getLastError << std::endl;
+		std::cout << "Unable to delete '" << filename << "':" << PHYSFS_getLastError() << std::endl;
 		return false;
 	}
 

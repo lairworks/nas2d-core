@@ -318,7 +318,7 @@ void Sprite::processXml(const std::string& filePath)
 		}
 		else if(version && version->value() != SPRITE_VERSION)
 		{
-			cout << "Sprite version mismatch (" << versionString << ") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
+			cout << "Sprite version mismatch (" << versionString() << ") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
 			addDefaultAction();
 			return;
 		}

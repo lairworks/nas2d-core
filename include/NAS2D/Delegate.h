@@ -107,7 +107,7 @@ struct SimplifyMemFunc
 	template <class X, class XFuncType, class GenericMemFuncType>
 	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, GenericMemFuncType &bound_func)
 	{
-		typedef char ERROR_Unsupported_member_function_pointer_on_this_compiler[N-100];
+		static_assert(N < 100, "Unsupported member function pointer on this compiler");
 		return 0;
 	}
 };

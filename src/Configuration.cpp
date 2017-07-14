@@ -214,8 +214,6 @@ bool Configuration::readConfig(const std::string& filePath)
 
 
 		// Start parsing through the Config.xml file.
-		int result = 0;
-		
 		XmlNode *xmlNode = nullptr;
 		while((xmlNode = root->iterateChildren(xmlNode)))
 		{

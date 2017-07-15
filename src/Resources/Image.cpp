@@ -83,7 +83,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	_size = std::make_pair(width, height);
 
 	// MAGIC NUMBER: 4 == 4 1-byte color channels (RGBA)
-	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (width * height))] ();
+	unsigned char* buffer = new unsigned char[4 * (width * height)] ();
 	generateTexture(buffer, 4, width, height);
 
 	// Update resource management.

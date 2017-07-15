@@ -30,7 +30,7 @@ extern SDL_Window* _WINDOW;
 using namespace std;
 using namespace NAS2D;
 
-const int MAX_MESSAGE_PROCESSING = 10;	/**
+const int MAX_MESSAGE_PROCESSING = 100;	/**
 										 * Maximum number of events to process each frame.
 										 * 
 										 * \todo	Make this configurable?

@@ -62,7 +62,7 @@ template <class OutputClass, class InputClass>
 inline OutputClass horrible_cast(const InputClass input)
 {
 	horrible_union<OutputClass, InputClass> u;
-	typedef int ERROR_CantUseHorrible_cast[sizeof(InputClass) == sizeof(u) && sizeof(InputClass) == sizeof(OutputClass) ? 1 : -1];
+	static_assert(sizeof(InputClass) != sizeof(u) || sizeof(InputClass) != sizeof(OutputClass), "Can't use horrible cast");
 	u.in = input;
 	return u.out;
 }
@@ -107,7 +107,7 @@ struct SimplifyMemFunc
 	template <class X, class XFuncType, class GenericMemFuncType>
 	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, GenericMemFuncType &bound_func)
 	{
-		typedef char ERROR_Unsupported_member_function_pointer_on_this_compiler[N-100];
+		static_assert(N < 100, "Unsupported member function pointer on this compiler");
 		return 0;
 	}
 };
@@ -205,7 +205,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3 * sizeof(int)>
 			} s;
 		} u;
 
-		typedef int ERROR_CantUsehorrible_cast[sizeof(XFuncType)==sizeof(u.s)? 1 : -1];
+		static_assert(sizeof(XFuncType) != sizeof(u.s), "Can't use horrible cast");
 		u.func = function_to_bind;
 		bound_func = u.s.funcaddress;
 		int virtual_delta = 0;
@@ -355,13 +355,13 @@ public:
 	{
 		if (function_to_bind == 0) m_pFunction = 0;
 		else bindmemfunc(pParent, static_function_invoker);
-		typedef int ERROR_CantUseEvilMethod[sizeof(GenericClass *) == sizeof(function_to_bind) ? 1 : -1];
+		static_assert(sizeof(GenericClass *) != sizeof(function_to_bind), "Can't use evil method");
 		m_pthis = horrible_cast<GenericClass *>(function_to_bind);
 	}
 
 	inline UnvoidStaticFuncPtr GetStaticFunction() const
 	{
-		typedef int ERROR_CantUseEvilMethod[sizeof(UnvoidStaticFuncPtr) == sizeof(this) ? 1 : -1];
+		static_assert(sizeof(UnvoidStaticFuncPtr) != sizeof(this), "Can't use evil method");
 		return horrible_cast<UnvoidStaticFuncPtr>(this);
 	}
 #endif

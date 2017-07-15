@@ -84,7 +84,6 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 
 	// MAGIC NUMBER: 4 == 4 1-byte color channels (RGBA)
 	unsigned char* buffer = new unsigned char[4 * (sizeof(unsigned char) * (width * height))] ();
-	unsigned int texture_id = 0;
 	generateTexture(buffer, 4, width, height);
 
 	// Update resource management.

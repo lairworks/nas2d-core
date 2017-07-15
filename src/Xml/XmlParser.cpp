@@ -93,8 +93,8 @@ private:
 	}
 
 private:
-	std::pair<int, int>	_cursor;
 	const char*			_stamp;
+	std::pair<int, int>	_cursor;
 };
 
 

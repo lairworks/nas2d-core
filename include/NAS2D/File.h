@@ -69,6 +69,7 @@ public:
 	{
 		mByteStream = _f.mByteStream;
 		mFileName = _f.mFileName;
+		return *this;
 	}
 
 	/**

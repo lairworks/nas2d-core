@@ -68,8 +68,8 @@ Configuration::Configuration():	mScreenWidth(GRAPHICS_WIDTH),
 								mSfxVolume(AUDIO_SFX_VOLUME),
 								mMusicVolume(AUDIO_MUSIC_VOLUME),
 								mBufferLength(AUDIO_BUFFER_SIZE),
-								mOptionChanged(false),
-								mMixerName("SDL")
+								mMixerName("SDL"),
+								mOptionChanged(false)
 {
 }
 
@@ -214,10 +214,8 @@ bool Configuration::readConfig(const std::string& filePath)
 
 
 		// Start parsing through the Config.xml file.
-		int result = 0;
-		
 		XmlNode *xmlNode = nullptr;
-		while(xmlNode = root->iterateChildren(xmlNode))
+		while((xmlNode = root->iterateChildren(xmlNode)))
 		{
 			if (xmlNode->value() == "graphics")
 				parseGraphics(xmlNode);
@@ -366,7 +364,7 @@ void Configuration::parseOptions(void* _n)
 	}
 
 	XmlNode *node = nullptr;
-	while(node = element->iterateChildren(node))
+	while((node = element->iterateChildren(node)))
 	{
 		if(node->value() == "option")
 		{

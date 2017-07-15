@@ -53,8 +53,9 @@ public:
 	void unmute();
 
 private:
-	Mixer_SDL(const Mixer_SDL&) {}			// Intentionally left undefined;
-	Mixer_SDL& operator=(const Mixer_SDL&) {}	// Intentionally left undefined;
+	// No default copy constructor or copy operator
+	Mixer_SDL(const Mixer_SDL&) = delete;
+	Mixer_SDL& operator=(const Mixer_SDL&) = delete;
 
 	void init();
 	void music_finished_hook();

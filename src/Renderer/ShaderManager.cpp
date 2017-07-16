@@ -24,19 +24,18 @@ ShaderManager::ShaderManager()
 
 	if(mFragShader == 0 || mVertShader == 0)
 		cout << endl << "\t\tShaders unavailable." << endl;
-	
+
 	mShaderProgram = glCreateProgram();
-	
+
 //	loadShader("../shaders/helloworld_frag.fragmentshader", mFragShader);
 //	loadShader("../shaders/helloworld_vert.vertexshader", mVertShader);
-	
+
 	cout << "done.\n";
 }
 
 
 ShaderManager::~ShaderManager()
 {
-	
 }
 
 
@@ -45,13 +44,12 @@ void ShaderManager::loadShader(const std::string& src, GLuint shader)
 	File f = Utility<Filesystem>::get().open(src);
 	const GLchar* c = f.raw_bytes();
 	glShaderSource(shader, 1, &c, nullptr);
-	
+
 	compileShader(shader);
 	attachShader(shader);
 	glLinkProgram(mShaderProgram);
 	mShaderList.push_back(src);
-	
-	
+
 	glUseProgram(mShaderProgram);
 }
 

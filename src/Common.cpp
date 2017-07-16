@@ -181,7 +181,7 @@ std::string NAS2D::toUppercase(const std::string& str)
  */
 int NAS2D::clamp(int x, int min, int max)
 {
-    return x < min ? min : (x > max ? max : x);
+	return x < min ? min : (x > max ? max : x);
 }
 
 
@@ -198,7 +198,7 @@ int NAS2D::clamp(int x, int min, int max)
  */
 float NAS2D::clamp(float x, float min, float max)
 {
-    return x < min ? min : (x > max ? max : x);
+	return x < min ? min : (x > max ? max : x);
 }
 
 

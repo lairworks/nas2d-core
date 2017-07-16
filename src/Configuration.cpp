@@ -96,7 +96,7 @@ void Configuration::load(const std::string& filePath)
 	std::cout << "Initializing Configuration... ";
 
 	mConfigPath = filePath;
-	
+
 	if(!Utility<Filesystem>::get().exists(filePath))
 	{
 		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
@@ -134,7 +134,7 @@ void Configuration::save()
 
 	if(mFullScreen)	graphics->attribute("fullscreen", "true");
 	else graphics->attribute("fullscreen", "false");
-	
+
 	if(mVSync) graphics->attribute("vsync", "true");
 	else graphics->attribute("vsync", "false");
 
@@ -152,7 +152,7 @@ void Configuration::save()
 	// Options
 	XmlElement* options = new XmlElement("options");
 	root->linkEndChild(options);
-    
+
 	for (auto op : mOptions)
 	{
 		XmlElement* option = new XmlElement("option");
@@ -178,7 +178,7 @@ void Configuration::setDefaultValues()
 	mScreenHeight = GRAPHICS_HEIGHT;
 	mScreenBpp = GRAPHICS_BITDEPTH;
 	mFullScreen = GRAPHICS_FULLSCREEN;
-	
+
 	mMixRate = AUDIO_MEDIUM_QUALITY;
 	mStereoChannels = AUDIO_STEREO;
 	mSfxVolume = AUDIO_SFX_VOLUME;
@@ -230,7 +230,7 @@ bool Configuration::readConfig(const std::string& filePath)
 		}
 	}
 
-    return true;
+	return true;
 }
 
 
@@ -306,7 +306,7 @@ void Configuration::parseAudio(void* _n)
 		else if (attribute->name() == AUDIO_CFG_CHANNELS)
 		{
 			attribute->queryIntValue(mStereoChannels);
-			
+
 			if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
 			{
 				std::cout << "Invalid audio channels setting '" << mStereoChannels << "'. Expected 1 or 2. Setting to default of 2." << std::endl;
@@ -381,7 +381,7 @@ void Configuration::parseOptions(void* _n)
 
 				attribute = attribute->next();
 			}
-			
+
 			if (name.empty() || value.empty())
 				std::cout << "Invalid name/value pair in <option> tag in configuration file on row " << node->row() << ". This option will be ignored." << std::endl;
 			else
@@ -653,7 +653,7 @@ void Configuration::option(const std::string option, const std::string& value, b
 {
 	if(!overwrite && mOptions.find(option) != mOptions.end())
 		return;
-		
+
 	mOptions[option] = value;
 	mOptionChanged = true;
 }
@@ -689,7 +689,7 @@ const std::string& Configuration::option(const std::string& key)
 void Configuration::deleteOption(const std::string option)
 {
 	Options::iterator it = mOptions.find(option);
-	
+
 	if(it != mOptions.end())
 	{
 		mOptions.erase(it);

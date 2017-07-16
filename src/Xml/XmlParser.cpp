@@ -517,7 +517,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 
 		if (in.good())
 		{
-			// We now have something we presume to be a node of  some sort.
+			// We now have something we presume to be a node of some sort.
 			// Identify it, and call the node to continue streaming.
 			XmlNode* node = identify(tag.c_str() + tagIndex);
 

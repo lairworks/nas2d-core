@@ -417,7 +417,7 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 	glColor4ub(r, g, b, a);
 
 	int offset = 0;
-    GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
+	GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
 	if (gml.empty()) return;
 	GlyphMetrics gm;
 	for (size_t i = 0; i < text.size(); i++)
@@ -606,7 +606,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
 	if(vsync)
 		SDL_GL_SetSwapInterval(1);
@@ -842,7 +842,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	{
 		x1-tx-Rx-cx, y1-ty-Ry-cy, //fading edge1
 		x2-tx-Rx+cx, y2-ty-Ry+cy,
-		x1-tx-cx,y1-ty-cy,	  //core
+		x1-tx-cx,y1-ty-cy,        //core
 		x2-tx+cx,y2-ty+cy,
 		x1+tx-cx,y1+ty-cy,
 		x2+tx+cx,y2+ty+cy,

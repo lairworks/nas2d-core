@@ -58,7 +58,7 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 	{
 		throw std::runtime_error("Unexpected exception occured while creating a Mixer.");
 	}
-	
+
 	std::cout << "Initializing Event Handler... ";
 	Utility<EventHandler>::get();
 	std::cout << "done." << std::endl << std::endl;

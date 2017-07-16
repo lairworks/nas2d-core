@@ -637,7 +637,7 @@ XmlElement* XmlNode::nextSiblingElement()
  *
  * \return \c nullptr if there is not another element.
  */
-const XmlElement* XmlNode::nextSiblingElement(const std::string&  _value) const
+const XmlElement* XmlNode::nextSiblingElement(const std::string& _value) const
 {
 	const XmlNode* node = nullptr;
 

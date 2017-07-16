@@ -85,10 +85,10 @@ void Mixer_SDL::init()
 
 	if(SDL_Init(SDL_INIT_AUDIO) < 0)
 		throw mixer_backend_init_failure(SDL_GetError());
-	
+
 	Configuration& c = Utility<Configuration>::get();
 
-    if(Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
+	if(Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
 		throw mixer_backend_init_failure(Mix_GetError());
 
 	soundVolume(c.audioSfxVolume());

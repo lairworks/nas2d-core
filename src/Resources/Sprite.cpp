@@ -255,7 +255,7 @@ void Sprite::decrementFrame()
 {
 	if (mCurrentFrame == 0)
 		mCurrentFrame = mActions[mCurrentAction].size();
-	
+
 	--mCurrentFrame;
 }
 
@@ -465,14 +465,14 @@ void Sprite::processActions(void* root)
 void Sprite::processFrames(const std::string& action, void* _node)
 {
 	XmlNode* node = static_cast<XmlNode*>(_node);
-	
+
 	FrameList frameList;
 
 	XmlNode* frame = nullptr;
 	while((frame = node->iterateChildren(frame)))
 	{
 		int currentRow = frame->row();
-		
+
 		if(frame->value() == "frame" && frame->toElement())
 		{
 			string sheetId;
@@ -522,7 +522,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				cout << "Value 'y' is out of bounds." << endTag(currentRow, name()) << endl;
 				continue;
 			}
-			
+
 			// Width
 			if(width < 1)
 			{
@@ -535,7 +535,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				cout << "'x' + 'width' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
 				continue;
 			}
-			
+
 			// Height
 			if(height < 1)
 			{
@@ -705,7 +705,7 @@ Sprite::SpriteFrame& Sprite::SpriteFrame::operator=(const SpriteFrame &rhs)
 	mAnchorX = rhs.mAnchorX;
 	mAnchorY = rhs.mAnchorY;
 	mRect = rhs.mRect;
-	
+
 	return *this;
 }
 

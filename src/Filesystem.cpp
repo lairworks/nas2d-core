@@ -202,7 +202,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 		for(char **i = rc; *i != nullptr; i++)
 		{
 			std::string tmpStr = *i;
-            if(tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
+			if(tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
 				fileList.push_back(*i);
 		}
 	}
@@ -390,7 +390,7 @@ bool Filesystem::write(const File& file, bool overwrite) const
 	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
 	if(!myFile)
 	{
-		if (mVerbose) std::cout << "Couldn't open '" << file.filename()  << "' for writing: " << PHYSFS_getLastError() << std::endl;
+		if (mVerbose) std::cout << "Couldn't open '" << file.filename() << "' for writing: " << PHYSFS_getLastError() << std::endl;
 		return false;
 	}
 

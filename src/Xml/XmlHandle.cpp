@@ -53,7 +53,7 @@ XmlHandle XmlHandle::operator=(const XmlHandle& ref)
 {
 	if (&ref != this)
 		this->node = ref.node;
-	
+
 	return *this;
 }
 

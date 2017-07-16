@@ -46,11 +46,11 @@ unsigned int FpsCounter::fps()
 	CURRENT_TICK = SDL_GetTicks();
 
 	TICK_DELTA = CURRENT_TICK - LAST_TICK;
-	
+
 	if(TICK_DELTA == 0) TICK_DELTA = 1;
 
 	FPS_COUNTS[++INDEX] = 1000 / TICK_DELTA;
-	
+
 	if(INDEX >= FPS_COUNTS_SIZE)
 		INDEX = 0;
 

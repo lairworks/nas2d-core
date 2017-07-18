@@ -162,7 +162,7 @@ void updateMusicReferenceCount(const std::string& name)
 			Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
 
 		if (it->second.buffer)
-			delete it->second.buffer;
+			delete static_cast<File*>(it->second.buffer);
 
 		MUSIC_REF_MAP.erase(it);
 	}

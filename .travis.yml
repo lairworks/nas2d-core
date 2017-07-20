@@ -26,7 +26,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf glew physfs; fi
 
 script:
-  - make
+  - make -k   # Use -k to continue after errors. This will allow more errors to be caught and listed in the logs
 
 notifications:
   email: false

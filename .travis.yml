@@ -23,7 +23,7 @@ addons:
     - libphysfs-dev
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install sdl2; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf glew physfs; fi
 
 script:
   - make

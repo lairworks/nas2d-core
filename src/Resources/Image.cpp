@@ -16,16 +16,13 @@
 
 #include "NAS2D/Renderer/Primitives.h"
 
-#ifdef __APPLE__
-#include "SDL2_image/SDL_image.h"
-#elif __linux__
+#ifdef __linux__
 #include "GL/glew.h"
-#include "SDL2/SDL_image.h"
 #elif _WIN32
 #include "GL/glew.h"
 #define NO_SDL_GLEXT
-#include "SDL_image.h"
 #endif
+#include <SDL_image.h>
 
 #include <iostream>
 #include <map>

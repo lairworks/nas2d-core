@@ -13,16 +13,8 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_mixer.h"
-#else
-#include "SDL.h"
-#include "SDL_mixer.h"
-#endif
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 #include <iostream>
 #include <string>

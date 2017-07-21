@@ -108,6 +108,8 @@ public:
 	NAS2D::Signals::Signal0<void>& fadeComplete() const;
 
 	virtual void showSystemPointer(bool);
+	virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy);
+	virtual void setCursor(int cursorId);
 
 	void clearScreen(const Color_4ub& color);
 	virtual void clearScreen(int r, int g, int b);

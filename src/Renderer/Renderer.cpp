@@ -657,8 +657,28 @@ void Renderer::showSystemPointer(bool _b)
 
 
 /**
+ * Adds a mouse cursor ready to be displayed
+ * \param	filePath	Self explanatory
+ * \param	cursorId	Identifier used for setCursor, usually from an enum
+ * \param	offx		Offset of the hotspot from the top left corner in pixels
+ * \param	offy		Same as offx but for the vertical coordinate
+ */
+void Renderer::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
+{}
+
+
+/**
+ * Sets the current mouse cursor
+ * \param	cursorId	Identifier for the cursor, as provided
+ *						to addCursor.
+ */
+void Renderer::setCursor(int cursorId)
+{}
+
+
+/**
  * Sets fullscreen mode.
- * 
+ *
  * \param	fs			True for fullscreen, false for windowed mode.
  * \param	maintain	Boolean flag indicating whether or not resolution from
  *						windowed mode should be maintained or if the native

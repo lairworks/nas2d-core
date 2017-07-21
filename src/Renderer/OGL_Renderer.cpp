@@ -204,13 +204,27 @@ void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, f
 void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
 {
 	glColor4ub(255, 255, 255, 255);
-	fillVertexArray(x, y, w, h);
+
+	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id);
 
 	// Change texture mode to repeat at edges.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, true);
+	fillVertexArray(x, y, w, h);
+
+	TEXTURE_COORD_ARRAY[0] = 0.0f; TEXTURE_COORD_ARRAY[1] = 0.0f;
+	TEXTURE_COORD_ARRAY[2] = 0.0f; TEXTURE_COORD_ARRAY[3] = h / image.height();
+	TEXTURE_COORD_ARRAY[4] = w / image.width(); TEXTURE_COORD_ARRAY[5] = h / image.height();
+
+	TEXTURE_COORD_ARRAY[6] = w / image.width(); TEXTURE_COORD_ARRAY[7] = h / image.height();
+	TEXTURE_COORD_ARRAY[8] = w / image.width(); TEXTURE_COORD_ARRAY[9] = 0.0f;
+	TEXTURE_COORD_ARRAY[10] = 0.0f; TEXTURE_COORD_ARRAY[11] = 0.0f;
+
+	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
+
+	glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

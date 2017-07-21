@@ -1,34 +1,39 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
-SRC = ./src
-INC = ./include
-BIN = ./lib
+SRCDIR := src
+INCDIR := include
+BUILDDIR := build
+BINDIR := $(BUILDDIR)/lib
+OBJDIR := $(BUILDDIR)/obj
+DEPDIR := $(BUILDDIR)/deps
 
-DEPDIR := .d
-$(shell mkdir -p $(DEPDIR) >/dev/null)
+CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) $(shell sdl2-config --cflags)
+LDFLAGS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
+
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
-
-CFLAGS = -std=c++11 -g -Wall -I$(INC) `sdl2-config --cflags`
-LDFLAGS = -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
 
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
-SRCS = $(shell find $(SRC) -name '*.cpp')
-OBJ = $(patsubst %.cpp,%.o,$(SRCS))
-EXE = $(BIN)/libnas2d.a
+FOLDERS := $(shell find $(SRCDIR) -type d)
+SRCS := $(shell find $(SRCDIR) -name '*.cpp')
+OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
+EXE := $(BINDIR)/libnas2d.a
 
 all: $(EXE)
 
-$(EXE): $(OBJ)
+$(EXE): $(OBJS)
 	@mkdir -p ${@D}
 	ar rcs $@ $^
 
-%.o : %.cpp
-$(OBJ): %.o : %.cpp $(DEPDIR)/%.d
-	@mkdir -p $(?D) > /dev/null
+$(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d | build-folder
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
+
+.PHONY:build-folder
+build-folder:
+	@mkdir -p $(patsubst $(SRCDIR)/%,$(OBJDIR)/%, $(FOLDERS))
+	@mkdir -p $(patsubst $(SRCDIR)/%,$(DEPDIR)/%, $(FOLDERS))
 
 $(DEPDIR)/%.d: ;
 .PRECIOUS: $(DEPDIR)/%.d
@@ -37,9 +42,9 @@ include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS))))
 
 .PHONY:clean
 clean:
-	-rm -fr $(OBJ)
-	-rm -fr $(EXE)
+	-rm -fr $(BUILDDIR)
 
+.PHONY:clean-deps
 clean-deps:
 	-rm -fr $(DEPDIR)
 

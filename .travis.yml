@@ -1,127 +1,32 @@
-  # Based on https://github.com/ldionne/hana/blob/master/.travis.yml
 
 language: cpp
-dist: trusty
-sudo: required
 
-cache:
-  directories:
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.5.2/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.6.2/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.7.1/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.8.1/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.9.0/install
+sudo: false
 
-matrix:
-  include:
-    - env: BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode8
-      compiler: clang
-    - env: BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode8
-      compiler: clang
-    - env: CLANG_VERSION=3.6 BUILD_TYPE=Debug
-      os: linux
-      addons: &clang36
-        apt:
-          packages:
-            - clang-3.6
-            - g++-5
-          sources: &sources
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-    - env: CLANG_VERSION=3.6 BUILD_TYPE=Release
-      os: linux
-      addons: *clang36
-    - env: CLANG_VERSION=3.7 BUILD_TYPE=Debug
-      os: linux
-      addons: &clang37
-        apt:
-          packages:
-            - clang-3.7
-            - g++-5
-          sources: &sources
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
+os:
+  - linux
+  - osx
 
-    - env: CLANG_VERSION=3.7 BUILD_TYPE=Release
-      os: linux
-      addons: *clang37
-    - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug
-      os: linux
-      addons: &clang38
-        apt:
-          packages:
-            - clang-3.8
-            - g++-5
-          sources: &sources
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-    - env: CLANG_VERSION=3.8 BUILD_TYPE=Release
-      os: linux
-      addons: *clang38
-    - env: GCC_VERSION=5 BUILD_TYPE=Debug
-      os: linux
-      addons: &gcc5
-        apt:
-          packages: g++-5
-          sources: *sources
-    - env: GCC_VERSION=5 BUILD_TYPE=Release
-      os: linux
-      addons: *gcc5
-    - env: GCC_VERSION=6 BUILD_TYPE=Debug
-      os: linux
-      addons: &gcc6
-        apt:
-          packages: g++-6
-          sources: *sources
-    - env: GCC_VERSION=6 BUILD_TYPE=Release
-      os: linux
-      addons: *gcc6
+compiler:
+  - gcc
+  - clang
 
-install:
-  - if [[ -n "$CLANG_VERSION" ]]; then export CXX=clang++-$CLANG_VERSION CC=clang-$CLANG_VERSION; fi
-  - if [[ -n "$GCC_VERSION" ]]; then export CXX=g++-$GCC_VERSION CC=gcc-$GCC_VERSION; fi
-  - JOBS=2
-  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-  - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
+addons:
+  apt:
+    packages:
+    - libsdl2-dev
+    - libsdl2-mixer-dev
+    - libsdl2-image-dev
+    - libsdl2-ttf-dev
+    - libglew-dev
+    - glee-dev
+    - libphysfs-dev
 
-  ############################################################################
-  # [linux]: Install the right version of libc++
-  ############################################################################
-  - |
-    if [[ -n "$CLANG_VERSION" && "${TRAVIS_OS_NAME}" == "linux" && "${STDLIB}" != "libstdc++" ]]; then
-      if [[ "$CLANG_VERSION" == "3.5" ]]; then LLVM_VERSION="3.5.2"; fi
-      if [[ "$CLANG_VERSION" == "3.6" ]]; then LLVM_VERSION="3.6.2"; fi
-      if [[ "$CLANG_VERSION" == "3.7" ]]; then LLVM_VERSION="3.7.1"; fi
-      if [[ "$CLANG_VERSION" == "3.8" ]]; then LLVM_VERSION="3.8.1"; fi
-      if [[ "$CLANG_VERSION" == "3.9" ]]; then LLVM_VERSION="3.9.0"; fi
-      LLVM_ROOT="${DEPS_DIR}/llvm-${LLVM_VERSION}"
-      LLVM_URL="http://llvm.org/releases/${LLVM_VERSION}/llvm-${LLVM_VERSION}.src.tar.xz"
-      LIBCXX_URL="http://llvm.org/releases/${LLVM_VERSION}/libcxx-${LLVM_VERSION}.src.tar.xz"
-      LIBCXXABI_URL="http://llvm.org/releases/${LLVM_VERSION}/libcxxabi-${LLVM_VERSION}.src.tar.xz"
-      if [[ -z "$(ls -A ${LLVM_ROOT}/install/include)" ]]; then
-        mkdir -p "${LLVM_ROOT}" "${LLVM_ROOT}/build" "${LLVM_ROOT}/projects/libcxx" "${LLVM_ROOT}/projects/libcxxabi"
-        travis_retry wget --quiet -O - "${LLVM_URL}" | tar --strip-components=1 -xJ -C "${LLVM_ROOT}"
-        travis_retry wget --quiet -O - "${LIBCXX_URL}" | tar --strip-components=1 -xJ -C "${LLVM_ROOT}/projects/libcxx"
-        travis_retry wget --quiet -O - "${LIBCXXABI_URL}" | tar --strip-components=1 -xJ -C "${LLVM_ROOT}/projects/libcxxabi"
-        (cd "${LLVM_ROOT}/build" && cmake .. -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="${LLVM_ROOT}/install" -DCMAKE_BUILD_TYPE=$BUILD_TYPE)
-        (cd "${LLVM_ROOT}/build/projects/libcxx" && make install -j$JOBS)
-        (cd "${LLVM_ROOT}/build/projects/libcxxabi" && make install -j$JOBS)
-      fi
-      export CXXFLAGS="-I ${LLVM_ROOT}/install/include/c++/v1"
-      export LDFLAGS="-L ${LLVM_ROOT}/install/lib -lc++ -lc++abi"
-      export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${LLVM_ROOT}/install/lib"
-    fi
-    
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update && sudo apt-get install -y libsdl2-dev; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install sdl2 && sudo brew link sdl2; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf glew physfs; fi
 
 script:
-  - cd ../ && make
+  - make -k   # Use -k to continue after errors. This will allow more errors to be caught and listed in the logs
 
 notifications:
   email: false

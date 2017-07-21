@@ -11,13 +11,10 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Exception.h"
 
-#if defined(__linux__)
-#include "physfs.h"
-#elif __APPLE__
-#include "physfs.h"
+#include <physfs.h>
+
+#if defined(__APPLE__)
 #include <CoreFoundation/CoreFoundation.h>
-#else
-#include "physfs.h"
 #endif
 
 #include <climits>

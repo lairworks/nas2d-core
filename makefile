@@ -3,7 +3,7 @@
 SRCDIR := ./src
 INCDIR := ./include
 BINDIR := ./lib
-
+OBJDIR := $(SRCDIR)
 DEPDIR := .d
 
 $(shell mkdir -p $(DEPDIR) >/dev/null)
@@ -17,7 +17,7 @@ COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
-OBJS := $(patsubst %.cpp,%.o,$(SRCS))
+OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
 EXE := $(BINDIR)/libnas2d.a
 
 all: $(EXE)
@@ -26,7 +26,7 @@ $(EXE): $(OBJS)
 	@mkdir -p ${@D}
 	ar rcs $@ $^
 
-$(OBJS): %.o : %.cpp $(DEPDIR)/%.d
+$(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d
 	@mkdir -p $(?D) > /dev/null
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)

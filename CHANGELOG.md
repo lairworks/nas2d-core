@@ -1,3 +1,13 @@
+# [1.5.0] - UNRELEASED
+
+This is a feature release.
+
+## Fixed
+
+- OGL_Renderer::drawImageRepeated() now draws a texture repeated across a given face as expected.
+
+---
+
 # [1.4.2] - 2017-05-15
 
 This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.1 release.

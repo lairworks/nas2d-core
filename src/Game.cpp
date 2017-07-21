@@ -18,6 +18,7 @@
 #include "NAS2D/Mixer/Mixer_SDL.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
+#include <SDL.h>
 
 #include <iostream>
 

@@ -1,10 +1,11 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
-SRCDIR := ./src
-INCDIR := ./include
-BINDIR := ./lib
-OBJDIR := $(SRCDIR)
-DEPDIR := .d
+SRCDIR := src
+INCDIR := include
+BUILDDIR := build
+BINDIR := $(BUILDDIR)/lib
+OBJDIR := $(BUILDDIR)/obj
+DEPDIR := $(BUILDDIR)/deps
 
 CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) $(shell sdl2-config --cflags)
 LDFLAGS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL

@@ -470,7 +470,7 @@ std::string Filesystem::extension(const std::string path)
 	// This is a naive approach but works for most cases.
 	size_t pos = path.find_last_of(".");
 
-	if(pos >= 0)
+	if(pos != std::string::npos)
 	{
 		return path.substr(pos + 1);
 	}

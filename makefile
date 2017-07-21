@@ -41,9 +41,8 @@ $(DEPDIR)/%.d: ;
 include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS))))
 
 .PHONY:clean
-clean: clean-deps
-	-rm -fr $(OBJS)
-	-rm -fr $(EXE)
+clean:
+	-rm -fr $(BUILDDIR)
 
 .PHONY:clean-deps
 clean-deps:

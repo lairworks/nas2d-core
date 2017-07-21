@@ -26,7 +26,6 @@ $(EXE): $(OBJS)
 	@mkdir -p ${@D}
 	ar rcs $@ $^
 
-%.o : %.cpp
 $(OBJS): %.o : %.cpp $(DEPDIR)/%.d
 	@mkdir -p $(?D) > /dev/null
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<

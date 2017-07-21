@@ -1,8 +1,8 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
-SRC = ./src
-INC = ./include
-BIN = ./lib
+SRC := ./src
+INC := ./include
+BIN := ./lib
 
 DEPDIR := .d
 $(shell mkdir -p $(DEPDIR) >/dev/null)
@@ -14,9 +14,9 @@ LDFLAGS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
-SRCS = $(shell find $(SRC) -name '*.cpp')
-OBJ = $(patsubst %.cpp,%.o,$(SRCS))
-EXE = $(BIN)/libnas2d.a
+SRCS := $(shell find $(SRC) -name '*.cpp')
+OBJ := $(patsubst %.cpp,%.o,$(SRCS))
+EXE := $(BIN)/libnas2d.a
 
 all: $(EXE)
 

@@ -49,6 +49,8 @@ public:
     void drawText(NAS2D::Font& font, const std::string& text, float x, float y, int r, int g, int b, int a);
 
 	virtual void showSystemPointer(bool);
+	void addCursor(const std::string& filePath, int cursorId, int offx, int offy);
+	void setCursor(int cursorId);
 
 	void clearScreen(int r, int g, int b);
     

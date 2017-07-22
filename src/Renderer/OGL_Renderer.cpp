@@ -53,6 +53,9 @@ GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0
 GLfloat		VERTEX_ARRAY[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
 GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
+/** Mouse cursors */
+std::map<int, SDL_Cursor*> CURSORS;
+
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
 extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
@@ -447,6 +450,43 @@ void OGL_Renderer::showSystemPointer(bool _b)
 }
 
 
+void OGL_Renderer::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
+{
+	/* FIXME proper cleanup */
+	File imageFile = Utility<Filesystem>::get().open(filePath);
+	if(imageFile.size() == 0) {
+		std::cout << "OGL_Renderer::addCursor(): '" << name() << "' is empty." << std::endl;
+		return;
+	}
+
+	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
+	if(!pixels) {
+		std::cout << "OGL_Renderer::addCursor(): " << SDL_GetError() << std::endl;
+		return;
+	}
+
+	SDL_Cursor* cur = SDL_CreateColorCursor(pixels, offx, offy);
+	if(!cur) {
+		std::cout << "OGL_Renderer::addCursor(): " << SDL_GetError() << std::endl;
+		return;
+	}
+
+	if (CURSORS.count(cursorId))
+		SDL_FreeCursor(CURSORS[cursorId]);
+
+	CURSORS[cursorId] = cur;
+
+	if (1 == CURSORS.size())
+		setCursor(cursorId);
+}
+
+
+void OGL_Renderer::setCursor(int cursorId)
+{
+	SDL_SetCursor(CURSORS[cursorId]);
+}
+
+
 void OGL_Renderer::clearScreen(int r, int g, int b)
 {
 	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0 );
@@ -647,7 +687,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	}
 	#endif
 
-	SDL_ShowCursor(false);
+	SDL_ShowCursor(true);
 	glewInit();
 	initGL();
 

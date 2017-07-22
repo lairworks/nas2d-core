@@ -544,7 +544,7 @@ void OGL_Renderer::fullscreen(bool fs, bool maintain)
 	else
 	{
 		SDL_SetWindowFullscreen(_WINDOW, 0);
-		SDL_SetWindowSize(_WINDOW, width(), height());
+		SDL_SetWindowSize(_WINDOW, static_cast<int>(width()), static_cast<int>(height()));
 		SDL_SetWindowPosition(_WINDOW, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }
@@ -582,7 +582,7 @@ void OGL_Renderer::_resize(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 
 	if(!fullscreen())
-		_size()(w, h);
+		_size()(static_cast<float>(w), static_cast<float>(h));
 }
 
 
@@ -610,7 +610,7 @@ void OGL_Renderer::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	_resize(width(), height());
+	_resize(static_cast<int>(width()), static_cast<int>(height()));
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
@@ -671,7 +671,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	if (!_WINDOW)
 		throw renderer_window_creation_failure();
 
-	_size()(resX, resY);
+	_size()(static_cast<float>(resX), static_cast<float>(resY));
 
 	CONTEXT = SDL_GL_CreateContext(_WINDOW);
 	if (!CONTEXT)

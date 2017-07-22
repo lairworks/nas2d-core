@@ -11,18 +11,12 @@
 #ifdef WINDOWS
 #define NO_SDL_GLEXT
 #include "GL/glew.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#elif __APPLE__
-#include <SDL2/SDL.h>
 #elif __linux__
 #include "GL/glew.h"
-#include "SDL2/SDL.h"
-#include "SDL_image.h"
-//#include "SDL2/SDL_opengl.h"
-#else
-#include "SDL2.h"
 #endif
+
+#include <SDL.h>
+#include <SDL_image.h>
 
 #include "NAS2D/Trig.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"

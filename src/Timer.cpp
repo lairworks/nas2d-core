@@ -10,13 +10,7 @@
 
 #include "NAS2D/Timer.h"
 
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#elif __linux__
-#include "SDL2/SDL.h"
-#else
-#include "SDL.h"
-#endif
+#include <SDL.h>
 
 using namespace NAS2D;
 

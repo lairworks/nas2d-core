@@ -14,19 +14,15 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
-#ifdef __APPLE__
-#include "SDL2_image/SDL_image.h"
-#include "SDL2_ttf/SDL_ttf.h"
-#elif _WIN32
+#ifdef _WIN32
 #include "GL/glew.h"
 #define NO_SDL_GLEXT
-#include "SDL_image.h"
-#include "SDL_ttf.h"
 #else
 #include "GL/glew.h"
-#include "SDL2/SDL_image.h"
-#include "SDL2/SDL_ttf.h"
 #endif
+
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #include <iostream>
 #include <math.h>

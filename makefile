@@ -85,3 +85,22 @@ install-deps-centos:
 	# Install development packages (-y answers "yes" to prompts)
 	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
 
+
+## Generic SDL2 source build ##
+
+SdlVer := SDL2-2.0.5
+SdlArchive := $(SdlVer).tar.gz
+SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
+SdlDir := $(BUILDDIR)/sdl2
+
+.PHONY:install-deps-source-sdl2
+install-deps-source-sdl2:
+	# Create source build folder
+	mkdir -p $(SdlDir)
+	# Download source archive
+	wget --no-clobber --directory-prefix=$(SdlDir) $(SdlUrl)
+	# Unpack archive
+	cd $(SdlDir) && tar -xzvf $(SdlArchive)
+	# Compile package
+	cd $(SdlDir)/$(SdlVer) && ./configure --enable-mir-shared=no && make
+

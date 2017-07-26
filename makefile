@@ -6,6 +6,7 @@ BUILDDIR := build
 BINDIR := $(BUILDDIR)/lib
 OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
+EXE := $(BINDIR)/libnas2d.a
 
 CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) $(shell sdl2-config --cflags)
 LDFLAGS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
@@ -15,10 +16,9 @@ DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
-FOLDERS := $(shell find $(SRCDIR) -type d)
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
-EXE := $(BINDIR)/libnas2d.a
+FOLDERS := $(sort $(dir $(SRCS)))
 
 all: $(EXE)
 

@@ -29,7 +29,7 @@ before_install:
 
 script:
   # Use -k to continue after errors, ensuring full build log with all errors
-  - make -k ADDITIONAL_INCLUDES=build/sdl2/SDL2-2.0.5/include/
+  - make -k
 
 notifications:
   email: false

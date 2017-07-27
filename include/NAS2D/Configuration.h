@@ -9,15 +9,6 @@
 // ==================================================================================
 #pragma once
 
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#elif WINDOWS
-#include "GL/glew.h"
-#define NO_SDL_GLEXT
-#else
-#include <GL/gl.h>
-#endif
-
 #include <map>
 
 #include "Common.h"

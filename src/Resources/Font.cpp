@@ -14,12 +14,7 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
-#ifdef _WIN32
-#include "GL/glew.h"
-#define NO_SDL_GLEXT
-#else
-#include "GL/glew.h"
-#endif
+#include <GL/glew.h>
 
 #include <SDL_image.h>
 #include <SDL_ttf.h>

@@ -16,12 +16,7 @@
 
 #include "NAS2D/Renderer/Primitives.h"
 
-#ifdef __linux__
-#include "GL/glew.h"
-#elif _WIN32
-#include "GL/glew.h"
-#define NO_SDL_GLEXT
-#endif
+#include <GL/glew.h>
 #include <SDL_image.h>
 
 #include <iostream>

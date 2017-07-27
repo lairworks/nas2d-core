@@ -91,16 +91,19 @@ install-deps-centos:
 SdlVer := SDL2-2.0.5
 SdlArchive := $(SdlVer).tar.gz
 SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
-SdlDir := $(BUILDDIR)/sdl2
+SdlPackageDir := $(BUILDDIR)/sdl2
+SdlDir := $(SdlPackageDir)/$(SdlVer)
 
 .PHONY:install-deps-source-sdl2
 install-deps-source-sdl2:
 	# Create source build folder
 	mkdir -p $(SdlDir)
 	# Download source archive
-	wget --no-clobber --directory-prefix=$(SdlDir) $(SdlUrl)
+	wget --no-clobber --directory-prefix=$(SdlPackageDir) $(SdlUrl)
 	# Unpack archive
-	cd $(SdlDir) && tar -xzf $(SdlArchive)
+	cd $(SdlPackageDir) && tar -xzf $(SdlArchive)
+	# Configure package
+	cd $(SdlDir) && ./configure --quiet --enable-mir-shared=no
 	# Compile package
-	cd $(SdlDir)/$(SdlVer) && ./configure --enable-mir-shared=no --quiet && make
+	cd $(SdlDir) && make
 

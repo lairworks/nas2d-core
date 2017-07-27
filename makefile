@@ -50,13 +50,19 @@ $(DEPDIR)/%.d: ;
 
 include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS))))
 
-.PHONY:clean
+.PHONY:clean, clean-deps, clean-sdl, clean-sdl-all, clean-all
 clean:
-	-rm -fr $(BUILDDIR)
-
-.PHONY:clean-deps
+	-rm -fr $(OBJDIR)
+	-rm -fr $(DEPDIR)
+	-rm -fr $(BINDIR)
 clean-deps:
 	-rm -fr $(DEPDIR)
+clean-sdl:
+	-rm -fr $(SdlDir)
+clean-sdl-all:
+	-rm -fr $(SdlPackageDir)
+clean-all:
+	-rm -rf $(BUILDDIR)
 
 # vim: filetype=make
 

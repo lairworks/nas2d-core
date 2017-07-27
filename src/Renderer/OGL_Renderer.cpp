@@ -8,12 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#ifdef WINDOWS
-#define NO_SDL_GLEXT
 #include "GL/glew.h"
-#elif __linux__
-#include "GL/glew.h"
-#endif
 
 #include <SDL.h>
 #include <SDL_image.h>

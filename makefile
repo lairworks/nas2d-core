@@ -8,7 +8,7 @@ OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 EXE := $(BINDIR)/libnas2d.a
 
-CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) $(shell sdl2-config --cflags)
+CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) -I$(ADDITIONAL_INCLUDES) $(shell sdl2-config --cflags)
 LDFLAGS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td

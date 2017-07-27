@@ -14,19 +14,22 @@ compiler:
 addons:
   apt:
     packages:
-    - libsdl2-dev
+    - libsdl2-dev # Need sdl2-config. Ubuntu repos only have 2.0.4 available
     - libsdl2-mixer-dev
     - libsdl2-image-dev
     - libsdl2-ttf-dev
     - libglew-dev
-    - glee-dev
     - libphysfs-dev
 
 before_install:
+  # OSX: Install packages using brew
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update && brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf glew physfs; fi
+  # Linux: Build SDL2 from source to ensure up-to-date 2.0.5 package
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make install-deps-source-sdl2; fi
 
 script:
-  - make -k   # Use -k to continue after errors. This will allow more errors to be caught and listed in the logs
+  # Use -k to continue after errors, ensuring full build log with all errors
+  - make -k ADDITIONAL_INCLUDES=build/sdl2/SDL2-2.0.5/include/
 
 notifications:
   email: false

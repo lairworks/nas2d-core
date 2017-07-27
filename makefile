@@ -8,7 +8,7 @@ OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 EXE := $(BINDIR)/libnas2d.a
 
-CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) $(shell sdl2-config --cflags)
+CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) -I$(ADDITIONAL_INCLUDES) $(shell sdl2-config --cflags)
 LDFLAGS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
@@ -84,4 +84,26 @@ install-repos-centos:
 install-deps-centos:
 	# Install development packages (-y answers "yes" to prompts)
 	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
+
+
+## Generic SDL2 source build ##
+
+SdlVer := SDL2-2.0.5
+SdlArchive := $(SdlVer).tar.gz
+SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
+SdlPackageDir := $(BUILDDIR)/sdl2
+SdlDir := $(SdlPackageDir)/$(SdlVer)
+
+.PHONY:install-deps-source-sdl2
+install-deps-source-sdl2:
+	# Create source build folder
+	mkdir -p $(SdlDir)
+	# Download source archive
+	wget --no-clobber --directory-prefix=$(SdlPackageDir) $(SdlUrl)
+	# Unpack archive
+	cd $(SdlPackageDir) && tar -xzf $(SdlArchive)
+	# Configure package
+	cd $(SdlDir) && ./configure --quiet --enable-mir-shared=no
+	# Compile package
+	cd $(SdlDir) && make
 

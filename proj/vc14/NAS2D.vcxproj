@@ -241,12 +241,10 @@
     <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp" />
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
-    <ClCompile Include="..\..\src\Renderer\ShaderManager.cpp" />
     <ClCompile Include="..\..\src\Resources\Font.cpp" />
     <ClCompile Include="..\..\src\Resources\Image.cpp" />
     <ClCompile Include="..\..\src\Resources\Music.cpp" />
     <ClCompile Include="..\..\src\Resources\Resource.cpp" />
-    <ClCompile Include="..\..\src\Resources\Shader.cpp" />
     <ClCompile Include="..\..\src\Resources\Sound.cpp" />
     <ClCompile Include="..\..\src\Resources\Sprite.cpp" />
     <ClCompile Include="..\..\src\StateManager.cpp" />
@@ -282,7 +280,6 @@
     <ClInclude Include="..\..\include\NAS2D\Renderer\OGL_Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
-    <ClInclude Include="..\..\include\NAS2D\Renderer\ShaderManager.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Font.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\FontInfo.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Image.h" />
@@ -290,7 +287,6 @@
     <ClInclude Include="..\..\include\NAS2D\Resources\Music.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\MusicInfo.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Resource.h" />
-    <ClInclude Include="..\..\include\NAS2D\Resources\Shader.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Sound.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Sprite.h" />
     <ClInclude Include="..\..\include\NAS2D\Signal.h" />

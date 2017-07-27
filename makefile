@@ -100,7 +100,7 @@ install-deps-source-sdl2:
 	# Download source archive
 	wget --no-clobber --directory-prefix=$(SdlDir) $(SdlUrl)
 	# Unpack archive
-	cd $(SdlDir) && tar -xzvf $(SdlArchive)
+	cd $(SdlDir) && tar -xzf $(SdlArchive)
 	# Compile package
-	cd $(SdlDir)/$(SdlVer) && ./configure --enable-mir-shared=no && make
+	cd $(SdlDir)/$(SdlVer) && ./configure --enable-mir-shared=no --quiet && make
 

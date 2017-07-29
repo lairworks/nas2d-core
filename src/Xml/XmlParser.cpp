@@ -23,8 +23,8 @@
 #include "NAS2D/Xml/Xml.h"
 
 #include <assert.h>
-#include <ctype.h>
 #include <stddef.h>
+#include <cctype>
 #include <fstream>
 #include <cstring>
 

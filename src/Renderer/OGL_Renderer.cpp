@@ -8,7 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "GL/glew.h"
+#include <GL/glew.h>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -671,16 +671,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	CONTEXT = SDL_GL_CreateContext(_WINDOW);
 	if (!CONTEXT)
 		throw renderer_opengl_context_failure();
-
-	#ifdef __APPLE__
-	if (vsync)
-	{
-		// FIXME: The SDL 2.0 method above may work fine which would allow us to pull this code.
-		vsync = false;
-		const GLint VBL = 1;
-		CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
-	}
-	#endif
 
 	SDL_ShowCursor(true);
 	glewInit();

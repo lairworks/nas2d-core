@@ -8,7 +8,17 @@ OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 EXE := $(BINDIR)/libnas2d.a
 
-CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) -I$(ADDITIONAL_INCLUDES) $(shell sdl2-config --cflags)
+# SDL2 source build variables
+SdlVer := SDL2-2.0.5
+SdlArchive := $(SdlVer).tar.gz
+SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
+SdlPackageDir := $(BUILDDIR)/sdl2
+SdlDir := $(SdlPackageDir)/$(SdlVer)
+# Include folder for newer source build
+# (Must be searched before system folder returned by sdl2-config)
+SdlInc := $(SdlDir)/include
+
+CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
 LDFLAGS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
@@ -40,13 +50,19 @@ $(DEPDIR)/%.d: ;
 
 include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS))))
 
-.PHONY:clean
+.PHONY:clean, clean-deps, clean-sdl, clean-sdl-all, clean-all
 clean:
-	-rm -fr $(BUILDDIR)
-
-.PHONY:clean-deps
+	-rm -fr $(OBJDIR)
+	-rm -fr $(DEPDIR)
+	-rm -fr $(BINDIR)
 clean-deps:
 	-rm -fr $(DEPDIR)
+clean-sdl:
+	-rm -fr $(SdlDir)
+clean-sdl-all:
+	-rm -fr $(SdlPackageDir)
+clean-all:
+	-rm -rf $(BUILDDIR)
 
 # vim: filetype=make
 
@@ -87,12 +103,6 @@ install-deps-centos:
 
 
 ## Generic SDL2 source build ##
-
-SdlVer := SDL2-2.0.5
-SdlArchive := $(SdlVer).tar.gz
-SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
-SdlPackageDir := $(BUILDDIR)/sdl2
-SdlDir := $(SdlPackageDir)/$(SdlVer)
 
 .PHONY:install-deps-source-sdl2
 install-deps-source-sdl2:

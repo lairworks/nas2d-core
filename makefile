@@ -48,7 +48,7 @@ build-folder:
 $(DEPDIR)/%.d: ;
 .PRECIOUS: $(DEPDIR)/%.d
 
-include $(patsubst $(SRCDIR)/%.cpp,$(DEPDIR)/%.d,$(SRCS))
+include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(DEPDIR)/%.d,$(SRCS)))
 
 .PHONY:clean, clean-deps, clean-sdl, clean-sdl-all, clean-all
 clean:

@@ -27,9 +27,7 @@
 #include <stddef.h>
 #include <fstream>
 #include <cstring>
-#include <locale>
 
-#include <locale>
 
 //#define DEBUG_PARSER
 #if defined( DEBUG_PARSER )
@@ -61,10 +59,9 @@ XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] =
 
 int XmlBase::isAlpha(unsigned char anyByte)
 {
-	std::locale loc;
 
 	if (anyByte < 127)
-		return std::isalpha(anyByte, loc);
+		return isalpha(anyByte);
 	else
 		return 1;	// What else to do? The unicode set is huge...get the english ones right.
 }
@@ -72,10 +69,9 @@ int XmlBase::isAlpha(unsigned char anyByte)
 
 int XmlBase::isAlphaNum(unsigned char anyByte)
 {
-	std::locale loc;
 
 	if (anyByte < 127)
-		return std::isalnum(anyByte, loc);
+		return isalnum(anyByte);
 	else
 		return 1;	// What else to do? The unicode set is huge...get the english ones right.
 }

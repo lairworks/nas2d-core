@@ -27,6 +27,7 @@
 #include <cctype>
 #include <fstream>
 #include <cstring>
+#include <string>
 
 
 //#define DEBUG_PARSER

@@ -19,6 +19,7 @@
 
 #include <climits>
 #include <cstring>
+#include <string>
 #include <iostream>
 #include <sstream>
 

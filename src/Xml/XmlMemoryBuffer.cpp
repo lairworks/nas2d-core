@@ -60,7 +60,7 @@ bool XmlMemoryBuffer::visitEnter(const XmlElement& element, const XmlAttribute* 
 	{
 		_buffer += ">";
 		line_break(_lineBreak, _buffer);
-}
+	}
 	++depth;
 	return true;
 }

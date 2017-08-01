@@ -465,7 +465,7 @@ EventHandler::QuitEventCallback& EventHandler::quit()
  */
 void EventHandler::grabMouse()
 {
-	if(_WINDOW) { SDL_SetWindowGrab(_WINDOW, SDL_TRUE); }
+	if (_WINDOW) { SDL_SetWindowGrab(_WINDOW, SDL_TRUE); }
 }
 
 
@@ -489,7 +489,7 @@ void EventHandler::releaseMouse()
  */
 void EventHandler::warpMouse(int x, int y)
 {
-	if(_WINDOW) { SDL_WarpMouseInWindow(_WINDOW, x, y); }
+	if (_WINDOW) { SDL_WarpMouseInWindow(_WINDOW, x, y); }
 }
 
 

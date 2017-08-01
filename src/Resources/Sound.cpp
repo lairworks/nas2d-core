@@ -42,7 +42,7 @@ _chunk(nullptr)
  */
 Sound::~Sound()
 {
-	if(_chunk)
+	if (_chunk)
 	{
 		Mix_FreeChunk(static_cast<Mix_Chunk*>(_chunk));
 		_chunk = nullptr;

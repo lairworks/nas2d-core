@@ -100,7 +100,7 @@ Music::~Music()
  */
 void Music::load()
 {
-	if(MUSIC_REF_MAP.find(name()) != MUSIC_REF_MAP.end())
+	if (MUSIC_REF_MAP.find(name()) != MUSIC_REF_MAP.end())
 	{
 		MUSIC_REF_MAP.find(name())->second.ref_count++;
 		loaded(true);

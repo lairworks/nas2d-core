@@ -318,7 +318,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &images)
 {
 	// We need 9 images in order to render a rectangle, one for each corner, one for each edge and one for the background.
-	if(images.size() == 9)
+	if (images.size() == 9)
 		drawImageRect(x, y, w, h, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
 }
 
@@ -353,7 +353,7 @@ void Renderer::setFadeColor(const Color_4ub& color)
  */
 void Renderer::fadeIn(float delay)
 {
-	if(delay == 0)
+	if (delay == 0)
 	{
 		mCurrentFade = 0.0f;
 		CURRENT_FADE = FADE_NONE;
@@ -375,7 +375,7 @@ void Renderer::fadeIn(float delay)
  */
 void Renderer::fadeOut(float delay)
 {
-	if(delay == 0)
+	if (delay == 0)
 	{
 		mCurrentFade = 255.0f;
 		CURRENT_FADE = FADE_NONE;
@@ -909,7 +909,7 @@ void Renderer::clearScreen(int r, int g, int b)
  */
 void Renderer::update()
 {
-	if(CURRENT_FADE != FADE_NONE)
+	if (CURRENT_FADE != FADE_NONE)
 	{
 		float fade = (_TIMER.delta() * mFadeStep) * CURRENT_FADE;
 
@@ -923,6 +923,6 @@ void Renderer::update()
 		}
 	}
 
-	if(mCurrentFade > 0.0f)
+	if (mCurrentFade > 0.0f)
 		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), (int)mCurrentFade);
 }

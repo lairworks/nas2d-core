@@ -228,7 +228,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glColor4ub(255, 255, 255, 255);
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if(dstPoint.x() > destination.width() || dstPoint.y() > destination.height())
+	if (dstPoint.x() > destination.width() || dstPoint.y() > destination.height())
 		return;
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -241,7 +241,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	(static_cast<int>(dstPoint.y()) + source.height()) > destination.height() ? clipRect.height(source.height() - ((static_cast<int>(dstPoint.y()) + source.height()) - destination.height())) : clipRect.height(source.height());
 
 	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
-	if(clipRect.width() < 1 || clipRect.height() < 1)
+	if (clipRect.width() < 1 || clipRect.height() < 1)
 		return;
 
 	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
@@ -313,7 +313,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 
 	// During each iteration of the for loop, two indecies are accessed
 	// so we need to be sure that we step two index places for each loop.
-	for(int i = 0; i < num_segments * 2; i += 2)
+	for (int i = 0; i < num_segments * 2; i += 2)
 	{
 		verts[i]		= x * scale_x + cx;
 		verts[i + 1]	= y * scale_y + cy;
@@ -785,39 +785,39 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 
 	// HOLY CRAP magic numbers!
 	//determine parameters t,R
-	if(w >= 0.0f && w < 1.0f)
+	if (w >= 0.0f && w < 1.0f)
 	{
 		t = 0.05f;
 		R = 0.48f + 0.32f * f;
 
 		A *= f;
 	}
-	else if(w >= 1.0f && w < 2.0f)
+	else if (w >= 1.0f && w < 2.0f)
 	{
 		t = 0.05f + f * 0.33f;
 		R = 0.768f + 0.312f * f;
 	}
-	else if(w >= 2.0f && w < 3.0f)
+	else if (w >= 2.0f && w < 3.0f)
 	{
 		t = 0.38f + f * 0.58f;
 		R = 1.08f;
 	}
-	else if(w >= 3.0f && w < 4.0f)
+	else if (w >= 3.0f && w < 4.0f)
 	{
 		t = 0.96f + f * 0.48f;
 		R = 1.08f;
 	}
-	else if(w >= 4.0f && w < 5.0f)
+	else if (w >= 4.0f && w < 5.0f)
 	{
 		t = 1.44f + f * 0.46f;
 		R = 1.08f;
 	}
-	else if(w >= 5.0f && w < 6.0f)
+	else if (w >= 5.0f && w < 6.0f)
 	{
 		t = 1.9f + f * 0.6f;
 		R = 1.08f;
 	}
-	else if(w >= 6.0f)
+	else if (w >= 6.0f)
 	{
 		float ff = w - 6.0f;
 		t = 2.5f + ff * 0.50f;
@@ -833,23 +833,23 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float dx = x2 - x1;
 	float dy = y2 - y1;
 
-	if(_ABS(dx) < ALW)
+	if (_ABS(dx) < ALW)
 	{
 		//vertical
 		tx = t; ty = 0.0f;
 		Rx = R; Ry = 0.0f;
-		if(w > 0.0f && w <= 1.0f)
+		if (w > 0.0f && w <= 1.0f)
 		{
 			tx = 0.5f;
 			Rx = 0.0f;
 		}
 	}
-	else if(_ABS(dy) < ALW)
+	else if (_ABS(dy) < ALW)
 	{
 		//horizontal
 		tx = 0.0f; ty = t;
 		Rx = 0.0f; Ry = R;
-		if(w > 0.0f && w <= 1.0f)
+		if (w > 0.0f && w <= 1.0f)
 		{
 			ty = 0.5f;
 			Ry = 0.0f;
@@ -912,7 +912,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
 
 	// Line End Caps
-	if(w > 3.0f) // <<< Arbitrary number.
+	if (w > 3.0f) // <<< Arbitrary number.
 	{
 		float line_vertex[]=
 		{

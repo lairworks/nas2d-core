@@ -57,7 +57,7 @@ public:
 	 */
 	static T& get()
 	{
-		if(!mInstance)
+		if (!mInstance)
 			mInstance = new T();
 
 		return *mInstance;
@@ -81,10 +81,10 @@ public:
 	 */
 	static void instantiateDerived(T* t)
 	{
-		if(mInstance == t)
+		if (mInstance == t)
 			return;
 
-		if(mInstance)
+		if (mInstance)
 		{
 			delete mInstance;
 			mInstance = 0;
@@ -102,7 +102,7 @@ public:
 	 */
 	static void clear()
 	{
-		if(mInstance)
+		if (mInstance)
 		{
 			delete mInstance;
 			mInstance = nullptr;

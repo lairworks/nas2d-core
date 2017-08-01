@@ -122,7 +122,7 @@ void Game::go(State *state)
 	stateManager.setState(state);
 
 	// Game Loop
-	while(stateManager.update())
+	while (stateManager.update())
 	{
 		Utility<Renderer>::get().update();
 	}

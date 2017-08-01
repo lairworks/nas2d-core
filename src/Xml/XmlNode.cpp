@@ -408,13 +408,13 @@ XmlNode* XmlNode::lastChild(const std::string& value)
  *
  * One way to iterate over nodes is:
  * \code{.cpp}
- * for(child = parent->firstChild(); child; child = child->nextSibling())
+ * for (child = parent->firstChild(); child; child = child->nextSibling())
  * \endcode
  *
  * IterateChildren does the same thing with the syntax:
  * \code{.cpp}
  * child = nullptr;
- * while(child = parent->iterateChildren(child))
+ * while (child = parent->iterateChildren(child))
  * \endcode
  *
  * \param	previous	Pointer to the previous child of the node and finds

@@ -75,12 +75,12 @@ void Mixer_SDL::init()
 {
 	std::cout << "Initializing Mixer... ";
 
-	if(SDL_Init(SDL_INIT_AUDIO) < 0)
+	if (SDL_Init(SDL_INIT_AUDIO) < 0)
 		throw mixer_backend_init_failure(SDL_GetError());
 
 	Configuration& c = Utility<Configuration>::get();
 
-	if(Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
+	if (Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
 		throw mixer_backend_init_failure(Mix_GetError());
 
 	soundVolume(c.audioSfxVolume());
@@ -101,7 +101,7 @@ void Mixer_SDL::music_finished_hook()
 
 void Mixer_SDL::playSound(Sound& sound)
 {
-	if(!sound.loaded())
+	if (!sound.loaded())
 		return;
 
 	Mix_PlayChannel(-1, static_cast<Mix_Chunk*>(sound.sound()), 0);

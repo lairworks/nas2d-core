@@ -378,7 +378,7 @@ const XmlNode* XmlNode::lastChild(const std::string& value) const
 	const XmlNode* node = nullptr;
 	for (node = _lastChild; node; node = node->_prev)
 	{
-		if (node->value() == _value)
+		if (node->value() == value)
 			return node;
 	}
 	return nullptr;
@@ -397,9 +397,9 @@ const XmlNode* XmlNode::lastChild(const std::string& value) const
  * 
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-XmlNode* XmlNode::lastChild(const std::string& _value)
+XmlNode* XmlNode::lastChild(const std::string& value)
 {
-	return const_cast<XmlNode*> ((const_cast<const XmlNode*>(this))->lastChild(_value));
+	return const_cast<XmlNode*> ((const_cast<const XmlNode*>(this))->lastChild(value));
 }
 
 
@@ -637,11 +637,11 @@ XmlElement* XmlNode::nextSiblingElement()
  *
  * \return \c nullptr if there is not another element.
  */
-const XmlElement* XmlNode::nextSiblingElement(const std::string& _value) const
+const XmlElement* XmlNode::nextSiblingElement(const std::string& value) const
 {
 	const XmlNode* node = nullptr;
 
-	for (node = nextSibling(_value); node; node = node->nextSibling(_value))
+	for (node = nextSibling(value); node; node = node->nextSibling(value))
 	{
 		if (node->toElement())
 			return node->toElement();
@@ -735,9 +735,9 @@ XmlNode* XmlNode::firstChild()
 /**
  * The first child of this node with the matching 'value'. Will be \c nullptr if none found.
  */
-XmlNode* XmlNode::firstChild(const std::string& _value)
+XmlNode* XmlNode::firstChild(const std::string& value)
 {
-	return const_cast<XmlNode*> ((const_cast<const XmlNode*>(this))->firstChild(_value));
+	return const_cast<XmlNode*> ((const_cast<const XmlNode*>(this))->firstChild(value));
 }
 
 

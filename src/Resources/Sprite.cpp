@@ -424,7 +424,6 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 }
 
 
-
 /**
  * Iterates through all elements of a Sprite XML definition looking
  * for 'action' elements and processes them.

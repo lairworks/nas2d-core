@@ -131,7 +131,6 @@ bool XmlDocument::error() const
 }
 
 
-
 /**
  * Get the root element -- the only top level element -- of the document. In well formed XML,
  * there should only be one. TinyXml is tolerant of multiple elements at the document level.

@@ -279,7 +279,6 @@ EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonDown()
 }
 
 
-
 /**
  * \brief Gets the handler slot associated with this event.
  * 

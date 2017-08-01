@@ -699,7 +699,6 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 }
 
 
-
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================

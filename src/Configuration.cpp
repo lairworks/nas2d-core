@@ -54,7 +54,6 @@ const std::string		GRAPHICS_CFG_FULLSCREEN		= "fullscreen";
 const std::string		GRAPHICS_CFG_VSYNC			= "vsync";
 
 
-
 /**
  * C'tor
  */

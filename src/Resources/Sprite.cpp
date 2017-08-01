@@ -160,8 +160,10 @@ void Sprite::resume()
  */
 void Sprite::skip(int frames)
 {
-	if(mActions.find(toLowercase(mCurrentAction)) == mActions.end())
+	if (mActions.find(toLowercase(mCurrentAction)) == mActions.end())
+	{
 		return;
+	}
 
 	mCurrentFrame = frames % mActions[mCurrentAction].size();
 }
@@ -192,8 +194,10 @@ void Sprite::update(float x, float y)
 			mFrameCallback();		// Notifiy any frame listeners that the animation sequence has completed.
 		}
 	}
-	else if(frame.frameDelay() == FRAME_PAUSE)
+	else if (frame.frameDelay() == FRAME_PAUSE)
+	{
 		mFrameCallback();
+	}
 
 	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), static_cast<float>(frame.x()), static_cast<float>(frame.y()), static_cast<float>(frame.width()), static_cast<float>(frame.height()), mRotationAngle, mColor);
 }
@@ -231,7 +235,9 @@ StringList Sprite::actions()
 	StringList list;
 
 	for (auto it = mActions.begin(); it != mActions.end(); ++it)
+	{
 		list.push_back(it->first);
+	}
 
 	return list;
 }
@@ -244,7 +250,9 @@ void Sprite::incrementFrame()
 {
 	++mCurrentFrame;
 	if (mCurrentFrame >= mActions[mCurrentAction].size())
+	{
 		mCurrentFrame = 0;
+	}
 }
 
 
@@ -254,7 +262,9 @@ void Sprite::incrementFrame()
 void Sprite::decrementFrame()
 {
 	if (mCurrentFrame == 0)
+	{
 		mCurrentFrame = mActions[mCurrentAction].size();
+	}
 
 	--mCurrentFrame;
 }
@@ -354,10 +364,8 @@ void Sprite::processImageSheets(void* root)
 			XmlAttribute* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{
-				if (toLowercase(attribute->name()) == "id")
-					id = attribute->value();
-				else if (toLowercase(attribute->name()) == "src")
-					src = attribute->value();
+				if (toLowercase(attribute->name()) == "id") { id = attribute->value(); }
+				else if (toLowercase(attribute->name()) == "src") { src = attribute->value(); }
 
 				attribute = attribute->next();
 			}
@@ -439,7 +447,9 @@ void Sprite::processActions(void* root)
 			while (attribute)
 			{
 				if (toLowercase(attribute->name()) == "name")
+				{
 					action_name = attribute->value();
+				}
 
 				attribute = attribute->next();
 			}
@@ -450,10 +460,14 @@ void Sprite::processActions(void* root)
 				continue;
 			}
 
-			if(mActions.find(toLowercase(action_name)) == mActions.end())
+			if (mActions.find(toLowercase(action_name)) == mActions.end())
+			{
 				processFrames(action_name, node);
+			}
 			else
+			{
 				cout << "Redefinition of action '" << action_name << "'. First definition will be used." << endTag(node->row(), name()) << endl;
+			}
 		}
 	}
 }
@@ -484,30 +498,23 @@ void Sprite::processFrames(const std::string& action, void* _node)
 			XmlAttribute* attribute = frame->toElement()->firstAttribute();
 			while (attribute)
 			{
-				if (toLowercase(attribute->name()) == "sheetid")
-					sheetId = attribute->value();
-				else if (toLowercase(attribute->name()) == "delay")
-					attribute->queryIntValue(delay);
-				else if (toLowercase(attribute->name()) == "x")
-					attribute->queryIntValue(x);
-				else if (toLowercase(attribute->name()) == "y")
-					attribute->queryIntValue(y);
-				else if (toLowercase(attribute->name()) == "width")
-					attribute->queryIntValue(width);
-				else if (toLowercase(attribute->name()) == "height")
-					attribute->queryIntValue(height);
-				else if (toLowercase(attribute->name()) == "anchorx")
-					attribute->queryIntValue(anchorx);
-				else if (toLowercase(attribute->name()) == "anchory")
-					attribute->queryIntValue(anchory);
-				else
-					std::cout << "Unexpected attribute '" << attribute->name() << "' found on row " << currentRow << std::endl;
+				if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }
+				else if (toLowercase(attribute->name()) == "delay") { attribute->queryIntValue(delay); }
+				else if (toLowercase(attribute->name()) == "x") { attribute->queryIntValue(x); }
+				else if (toLowercase(attribute->name()) == "y") { attribute->queryIntValue(y); }
+				else if (toLowercase(attribute->name()) == "width") { attribute->queryIntValue(width); }
+				else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
+				else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
+				else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
+				else { std::cout << "Unexpected attribute '" << attribute->name() << "' found on row " << currentRow << std::endl; }
 
 				attribute = attribute->next();
 			}
 
-			if(!validateSheetId(sheetId, currentRow))
+			if (!validateSheetId(sheetId, currentRow))
+			{
 				continue;
+			}
 
 			// X-Coordinate
 			if( x < 0 || x > mImageSheets.find(sheetId)->second.width())
@@ -552,14 +559,20 @@ void Sprite::processFrames(const std::string& action, void* _node)
 			frameList.push_back(SpriteFrame(sheetId, x, y, width, height, anchorx, anchory, delay));
 		}
 		else
+		{
 			cout << "Unexpected tag '<" << frame->value() << ">'." << endTag(currentRow, name()) << endl;
+		}
 	}
 
 	// Add the frame list to the action container.
-	if(frameList.size() > 0)
+	if (frameList.size() > 0)
+	{
 		mActions[toLowercase(action)] = frameList;
+	}
 	else
+	{
 		cout << "Action '" << action << "' contains no valid frames. (" << name() << ")" << endl;
+	}
 }
 
 

@@ -235,7 +235,8 @@ XmlNode* XmlNode::insertBeforeChild(XmlNode* beforeThis, const XmlNode& addThis)
  */
 XmlNode* XmlNode::insertAfterChild(XmlNode* afterThis, const XmlNode& addThis)
 {
-	if (!afterThis || afterThis->_parent != this) {
+	if (!afterThis || afterThis->_parent != this)
+	{
 		return nullptr;
 	}
 	if (addThis.type() == XmlNode::XML_DOCUMENT)

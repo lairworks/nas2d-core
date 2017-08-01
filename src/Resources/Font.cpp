@@ -217,7 +217,6 @@ int NAS2D::Font::ptSize() const
 }
 
 
-
 // ==================================================================================
 // = Unexposed module-level functions defined here that don't need to be part of the
 // = API interface.

@@ -69,9 +69,7 @@ bool XmlMemoryBuffer::visitEnter(const XmlElement& element, const XmlAttribute* 
 bool XmlMemoryBuffer::visitExit(const XmlElement& element)
 {
 	--depth;
-	if (!element.firstChild())
-		;
-	else
+	if (element.firstChild())
 	{
 		indent(depth, _indent, _buffer);
 		_buffer += "</";

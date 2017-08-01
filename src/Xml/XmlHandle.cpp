@@ -168,10 +168,8 @@ XmlHandle XmlHandle::child(int index) const
 	if (node)
 	{
 		XmlNode* child = node->firstChild();
-		for (int i = 0; child && i < index; child = child->nextSibling(), ++i)
-			; // Nothing
-		if (child)
-			return XmlHandle(child);
+		for (int i = 0; child && i < index; child = child->nextSibling(), ++i) {} // Nothing
+		if (child) { return XmlHandle(child); }
 	}
 
 	return XmlHandle(nullptr);

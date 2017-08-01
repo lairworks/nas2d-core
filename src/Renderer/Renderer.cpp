@@ -713,7 +713,6 @@ bool Renderer::resizeable()
 }
 
 
-
 /**
  * Returns the primary display's Width.
  */

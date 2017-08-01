@@ -43,7 +43,6 @@ XmlAttribute::XmlAttribute(const std::string &name, std::string &value) :	XmlBas
 {}
 
 
-
 /**
  * Get the next sibling attribute.
  *

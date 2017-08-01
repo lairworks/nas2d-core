@@ -130,7 +130,6 @@ void Music::load()
 }
 
 
-
 // ==================================================================================
 // = Unexposed module-level functions defined here that don't need to be part of the
 // = API interface.

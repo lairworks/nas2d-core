@@ -29,15 +29,12 @@ using namespace NAS2D::Exception;
 extern std::map<std::string, MusicInfo>	MUSIC_REF_MAP;
 
 
-
 // ==================================================================================
 // INTEROP WITH SDL2_MIXER
 // ==================================================================================
 NAS2D::Signals::Signal0<void> MIXER_HOOK_CALLBACK_SIGNAL;
 void MIXER_HOOK() { MIXER_HOOK_CALLBACK_SIGNAL(); }
 // ==================================================================================
-
-
 
 
 /*

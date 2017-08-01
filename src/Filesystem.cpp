@@ -288,7 +288,6 @@ File Filesystem::open(const std::string& filename) const
 		return File();
 	}
 
-	std::string returnStr(fileBuffer, fileLength);
 	File file(std::string(fileBuffer, fileLength), filename);
 	closeFile(myFile);
 	delete[] fileBuffer;

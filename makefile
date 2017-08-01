@@ -3,7 +3,7 @@
 SRCDIR := src
 INCDIR := include
 BUILDDIR := build
-BINDIR := $(BUILDDIR)/lib
+BINDIR := lib
 OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 EXE := $(BINDIR)/libnas2d.a

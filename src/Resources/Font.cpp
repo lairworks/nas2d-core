@@ -40,7 +40,7 @@ const int	BITS_32				= 32;
 std::map<std::string, FontInfo>	FONTMAP;
 
 
-extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit = true);
+extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 
 // ==================================================================================
 // = UNEXPOSED FUNCTION PROTOTYPES
@@ -331,7 +331,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		}
 	}
 
-	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
+	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
 
 	// Add generated texture id to texture ID map.
 	FONTMAP[path].texture_id = texture_id;
@@ -421,7 +421,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 		}
 	}
 
-	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h, false);
+	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
 
 	// Add generated texture id to texture ID map.
 	FONTMAP[name].texture_id = texture_id;

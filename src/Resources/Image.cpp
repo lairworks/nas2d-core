@@ -39,7 +39,7 @@ int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
 // = UNEXPOSED FUNCTION PROTOTYPES
 // ==================================================================================
 bool checkTextureId(const std::string& name);
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit = true);
+unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 void updateImageReferenceCount(const std::string& name);
 
 
@@ -98,10 +98,14 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
 	if (buffer == nullptr)
+	{
 		throw image_null_data();
+	}
 
 	if (bytesPerPixel != 3 && bytesPerPixel != 4)
+	{
 		throw image_unsupported_bit_depth();
+	}
 
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
 
@@ -127,7 +131,9 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
 {
 	if (!src.loaded())
+	{
 		throw image_bad_copy();
+	}
 
 	loaded(src.loaded());
 	IMAGE_ID_MAP[name()].ref_count++;
@@ -150,8 +156,7 @@ Image::~Image()
  */
 Image& Image::operator=(const Image& rhs)
 {
-	if (this == &rhs) // attempting to copy ones self.
-		return *this; // Should this throw an exception?
+	if (this == &rhs) { return *this; }
 
 	updateImageReferenceCount(name());
 
@@ -239,13 +244,14 @@ int Image::height() const
  */
 Color_4ub Image::pixelColor(int x, int y) const
 {
-	if(x < 0 || x > width() || y < 0 || y > height())
+	if (x < 0 || x > width() || y < 0 || y > height())
+	{
 		return Color_4ub(0, 0, 0, 255);
+	}
 
 	SDL_Surface* pixels = static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels);
 
-	if (!pixels)
-		throw image_null_data();
+	if (!pixels) { throw image_null_data(); }
 
 	SDL_LockSurface(pixels);
 	int bpp = pixels->format->BytesPerPixel;
@@ -253,30 +259,30 @@ Color_4ub Image::pixelColor(int x, int y) const
 
 	unsigned int c = 0;
 
-	switch(bpp)
+	switch (bpp)
 	{
-		case 1:
-			c = *p;
-			break;
+	case 1:
+		c = *p;
+		break;
 
-		case 2:
-			c = *(Uint16 *)p;
-			break;
+	case 2:
+		c = *(Uint16 *)p;
+		break;
 
-		case 3:
-			if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-				c = p[0] << 16 | p[1] << 8 | p[2];
-			else
-				c = p[0] | p[1] << 8 | p[2] << 16;
-			break;
+	case 3:
+		if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+			c = p[0] << 16 | p[1] << 8 | p[2];
+		else
+			c = p[0] | p[1] << 8 | p[2] << 16;
+		break;
 
-		case 4:
-			c = *(Uint32*)p;
-			break;
+	case 4:
+		c = *(Uint32*)p;
+		break;
 
-		default:	// Should never be possible.
-			throw image_bad_data();
-			break;
+	default:	// Should never be possible.
+		throw image_bad_data();
+		break;
 	}
 
 	Uint8 r, g, b, a;
@@ -310,12 +316,16 @@ void updateImageReferenceCount(const std::string& name)
 	if (it->second.ref_count < 1)
 	{
 		if (it->second.texture_id == 0)
+		{
 			return;
+		}
 
 		glDeleteTextures(1, &it->second.texture_id);
 
 		if (it->second.fbo_id != 0)
+		{
 			glDeleteBuffers(1, &it->second.fbo_id);
+		}
 
 		if (it->second.pixels != nullptr)
 		{
@@ -326,6 +336,7 @@ void updateImageReferenceCount(const std::string& name)
 		IMAGE_ID_MAP.erase(it);
 	}
 }
+
 
 /**
 * Checks to see if a texture has already been generated
@@ -348,9 +359,9 @@ bool checkTextureId(const std::string& name)
 
 
 /**
-* Generates a new OpenGL texture from an SDL_Surface.
-*/
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height, bool support_24bit)
+ * Generates a new OpenGL texture from an SDL_Surface.
+ */
+unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
 {
 	GLenum textureFormat = 0;
 	switch (bytesPerPixel)

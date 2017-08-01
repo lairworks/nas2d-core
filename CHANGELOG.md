@@ -2,6 +2,9 @@
 
 This is a feature release.
 
+## Added
+- Added EventHandler::alt() which returns true if the key modifier is either alt key (or both).
+
 ## Fixed
 
 - OGL_Renderer::drawImageRepeated() now draws a texture repeated across a given face as expected.

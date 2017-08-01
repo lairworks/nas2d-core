@@ -465,8 +465,7 @@ EventHandler::QuitEventCallback& EventHandler::quit()
  */
 void EventHandler::grabMouse()
 {
-	if(_WINDOW)
-		SDL_SetWindowGrab(_WINDOW, SDL_TRUE);
+	if(_WINDOW) { SDL_SetWindowGrab(_WINDOW, SDL_TRUE); }
 }
 
 
@@ -475,8 +474,7 @@ void EventHandler::grabMouse()
  */
 void EventHandler::releaseMouse()
 {
-	if(_WINDOW)
-		SDL_SetWindowGrab(_WINDOW, SDL_FALSE);
+	if (_WINDOW) { SDL_SetWindowGrab(_WINDOW, SDL_FALSE); }
 }
 
 
@@ -491,8 +489,7 @@ void EventHandler::releaseMouse()
  */
 void EventHandler::warpMouse(int x, int y)
 {
-	if(_WINDOW)
-		SDL_WarpMouseInWindow(_WINDOW, x, y);
+	if(_WINDOW) { SDL_WarpMouseInWindow(_WINDOW, x, y); }
 }
 
 
@@ -515,94 +512,85 @@ void EventHandler::pump()
 	SDL_Event event;
 
 	int count = 0;
-	while((SDL_PollEvent(&event) != 0) && (count < MAX_MESSAGE_PROCESSING))
+	while ((SDL_PollEvent(&event) != 0) && (count < MAX_MESSAGE_PROCESSING))
 	{
-		switch(event.type)
+		switch (event.type)
 		{
-			case SDL_MOUSEMOTION:
-				mMouseMotionEvent(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
-				break;
+		case SDL_MOUSEMOTION:
+			mMouseMotionEvent(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
+			break;
 
-			case SDL_KEYDOWN:
-				mKeyDownEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod), event.key.repeat != 0 ? true : false);
-				break;
+		case SDL_KEYDOWN:
+			mKeyDownEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod), event.key.repeat != 0 ? true : false);
+			break;
 
-			case SDL_KEYUP:
-				mKeyUpEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
-				break;
+		case SDL_KEYUP:
+			mKeyUpEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
+			break;
 
-			case SDL_TEXTINPUT:
-				mTextInput(event.text.text);
-				break;
+		case SDL_TEXTINPUT:
+			mTextInput(event.text.text);
+			break;
 
-			case SDL_MOUSEBUTTONDOWN:
-				if (event.button.clicks == 2)
-					mMouseDoubleClick(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+		case SDL_MOUSEBUTTONDOWN:
+			if (event.button.clicks == 2)
+			{
+				mMouseDoubleClick(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+			}
 
-				mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
-				break;
+			mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+			break;
 
-			case SDL_MOUSEBUTTONUP:
-				mMouseButtonUpEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
-				break;
+		case SDL_MOUSEBUTTONUP:
+			mMouseButtonUpEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+			break;
 
-			case SDL_MOUSEWHEEL:
-				mMouseWheelEvent(event.wheel.x, event.wheel.y);
-				break;
+		case SDL_MOUSEWHEEL:
+			mMouseWheelEvent(event.wheel.x, event.wheel.y);
+			break;
 
-			case SDL_JOYAXISMOTION:
-				mJoystickAxisMotionEvent(event.jaxis.which, event.jaxis.axis, event.jaxis.value);
-				break;
+		case SDL_JOYAXISMOTION:
+			mJoystickAxisMotionEvent(event.jaxis.which, event.jaxis.axis, event.jaxis.value);
+			break;
 
-			case SDL_JOYBALLMOTION:
-				mJoystickBallMotionEvent(event.jball.which, event.jball.ball, event.jball.xrel, event.jball.yrel);
-				break;
+		case SDL_JOYBALLMOTION:
+			mJoystickBallMotionEvent(event.jball.which, event.jball.ball, event.jball.xrel, event.jball.yrel);
+			break;
 
-			case SDL_JOYHATMOTION:
-				mJoystickHatMotionEvent(event.jhat.which, event.jhat.hat, event.jhat.value);
-				break;
+		case SDL_JOYHATMOTION:
+			mJoystickHatMotionEvent(event.jhat.which, event.jhat.hat, event.jhat.value);
+			break;
 
-			case SDL_JOYBUTTONDOWN:
-				mJoystickButtonDownEvent(event.jbutton.which, event.jbutton.button);
-				break;
+		case SDL_JOYBUTTONDOWN:
+			mJoystickButtonDownEvent(event.jbutton.which, event.jbutton.button);
+			break;
 
-			case SDL_JOYBUTTONUP:
-				mJoystickButtonUpEvent(event.jbutton.which, event.jbutton.button);
-				break;
+		case SDL_JOYBUTTONUP:
+			mJoystickButtonUpEvent(event.jbutton.which, event.jbutton.button);
+			break;
 
-			case SDL_WINDOWEVENT:
-				// Not completely happy with this but meh, it works.
-				if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-					mActivateEvent(true);
-				else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-					mActivateEvent(false);
-				else if (event.window.event == SDL_WINDOWEVENT_SHOWN)
-					mWindowHiddenEventCallback(false);
-				else if (event.window.event == SDL_WINDOWEVENT_HIDDEN)
-					mWindowHiddenEventCallback(true);
-				else if (event.window.event == SDL_WINDOWEVENT_EXPOSED)
-					mWindowExposedEventCallback();
-				else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED)
-					mWindowMinimizedEventCallback();
-				else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED)
-					mWindowMaximizedEventCallback();
-				else if (event.window.event == SDL_WINDOWEVENT_RESTORED)
-					mWindowRestoredEventCallback();
-				else if (event.window.event == SDL_WINDOWEVENT_ENTER)
-					mWindowMouseEnterEventCallback();
-				else if (event.window.event == SDL_WINDOWEVENT_LEAVE)
-					mWindowMouseLeaveEventCallback();
-				else if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-					mWindowResizedEventCallback(event.window.data1, event.window.data2);
-				break;
+		case SDL_WINDOWEVENT:
+			// Not completely happy with this but meh, it works.
+			if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) { mActivateEvent(true); }
+			else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) { mActivateEvent(false); }
+			else if (event.window.event == SDL_WINDOWEVENT_SHOWN) { mWindowHiddenEventCallback(false); }
+			else if (event.window.event == SDL_WINDOWEVENT_HIDDEN) { mWindowHiddenEventCallback(true); }
+			else if (event.window.event == SDL_WINDOWEVENT_EXPOSED) { mWindowExposedEventCallback(); }
+			else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) { mWindowMinimizedEventCallback(); }
+			else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED) { mWindowMaximizedEventCallback(); }
+			else if (event.window.event == SDL_WINDOWEVENT_RESTORED) { mWindowRestoredEventCallback(); }
+			else if (event.window.event == SDL_WINDOWEVENT_ENTER) { mWindowMouseEnterEventCallback(); }
+			else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { mWindowMouseLeaveEventCallback(); }
+			else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedEventCallback(event.window.data1, event.window.data2); }
+			break;
 
-			case SDL_QUIT:
-				mQuitEvent();
-				break;
+		case SDL_QUIT:
+			mQuitEvent();
+			break;
 
-			default:
-				// Ignore any cases not handled.
-				break;
+		default:
+			// Ignore any cases not handled.
+			break;
 		}
 		count++;
 	}
@@ -616,8 +604,8 @@ void EventHandler::pump()
  */
 void EventHandler::textInputMode(bool _b)
 {
-	if (_b) SDL_StartTextInput();
-	else SDL_StopTextInput();
+	if (_b) { SDL_StartTextInput(); }
+	else { SDL_StopTextInput(); }
 }
 
 
@@ -635,9 +623,20 @@ bool EventHandler::textInputMode()
  * 
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::shift(KeyModifier mod)
+bool EventHandler::shift(KeyModifier mod) const
 {
 	return ((mod & KEY_MOD_SHIFT) || (mod & KEY_MOD_CAPS));
+}
+
+
+/**
+ * Decodes a KeyModifier and determines if the Shift keymod is applied.
+ * 
+ * \param mod	Modifier value to decode.
+ */
+bool EventHandler::alt(KeyModifier mod) const
+{
+	return ((mod & KEY_MOD_LALT) || (mod & KEY_MOD_RALT));
 }
 
 
@@ -646,7 +645,7 @@ bool EventHandler::shift(KeyModifier mod)
  * 
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::numlock(KeyModifier mod)
+bool EventHandler::numlock(KeyModifier mod) const
 {
 	return (mod & KEY_MOD_NUM) != 0;
 }
@@ -657,7 +656,7 @@ bool EventHandler::numlock(KeyModifier mod)
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::control(KeyModifier mod)
+bool EventHandler::control(KeyModifier mod) const
 {
 	return (mod & KEY_MOD_CTRL) != 0;
 }
@@ -666,7 +665,7 @@ bool EventHandler::control(KeyModifier mod)
 /**
  * Queries state of the Shift key modifier.
  */
-bool EventHandler::query_shift()
+bool EventHandler::query_shift() const
 {
 	return (SDL_GetModState() & KEY_MOD_SHIFT) != 0;
 }
@@ -675,7 +674,7 @@ bool EventHandler::query_shift()
 /**
  * Queries state of the Shift key modifier.
  */
-bool EventHandler::query_numlock()
+bool EventHandler::query_numlock() const
 {
 	return (SDL_GetModState() & KEY_MOD_NUM) != 0;
 }
@@ -684,7 +683,7 @@ bool EventHandler::query_numlock()
 /**
  * Queries state of the Shift key modifier.
  */
-bool EventHandler::query_control()
+bool EventHandler::query_control() const
 {
 	return (SDL_GetModState() & KEY_MOD_CTRL) != 0;
 }

@@ -571,13 +571,14 @@ public:
 	void textInputMode(bool);
 	bool textInputMode();
 
-	bool shift(KeyModifier mod);
-	bool numlock(KeyModifier mod);
-	bool control(KeyModifier mod);
+	bool shift(KeyModifier mod) const;
+	bool numlock(KeyModifier mod) const;
+	bool control(KeyModifier mod) const;
+	bool alt(KeyModifier mod) const;
 
-	bool query_shift();
-	bool query_numlock();
-	bool query_control();
+	bool query_shift() const;
+	bool query_numlock() const;
+	bool query_control() const;
 
 	void pump();
 

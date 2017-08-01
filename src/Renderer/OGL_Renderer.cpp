@@ -79,7 +79,7 @@ GLuint generate_fbo();
  *
  * \param title	Title of the application window.
  */
-OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer", title)
+OGL_Renderer::OGL_Renderer(const std::string& title) : Renderer("OpenGL Renderer", title)
 {
 	std::cout << "Starting " << name() << ":" << std::endl;
 
@@ -304,7 +304,6 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	float theta = PI_2 / static_cast<float>(num_segments);
 	float c = cosf(theta);
 	float s = sinf(theta);
-	float t;
 
 	float x = radius;
 	float y = 0;
@@ -319,7 +318,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 		verts[i + 1]	= y * scale_y + cy;
 
 		// Apply the rotation matrix
-		t = x;
+		float t = x;
 		x = c * x - s * y;
 		y = s * t + c * y;
 	}
@@ -780,17 +779,12 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float R = 0.0f;
 	float f = w - static_cast<int>(w);
 
-	// Alpha component?
-	float A = Ca;
-
 	// HOLY CRAP magic numbers!
 	//determine parameters t, R
 	if (w >= 0.0f && w < 1.0f)
 	{
 		t = 0.05f;
 		R = 0.48f + 0.32f * f;
-
-		A *= f;
 	}
 	else if (w >= 1.0f && w < 2.0f)
 	{

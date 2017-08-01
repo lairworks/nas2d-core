@@ -50,7 +50,7 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 	{
 		Utility<Mixer>::instantiateDerived(new Mixer_SDL());
 	}
-	catch (std::exception e)
+	catch (std::exception& e)
 	{
 		std::cout << "Unable to create SDL Audio Mixer: " << e.what() << ". Setting NULL driver." << std::endl;
 		Utility<Mixer>::instantiateDerived(new Mixer());

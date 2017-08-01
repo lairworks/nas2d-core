@@ -647,7 +647,7 @@ void Configuration::audioBufferSize(int size)
  * \note	Option values are stored and read as strings. How the program
  *			interprets the data contained in value is up to the programmer.
  */
-void Configuration::option(const std::string option, const std::string& value, bool overwrite)
+void Configuration::option(const std::string& option, const std::string& value, bool overwrite)
 {
 	if (!overwrite && mOptions.find(option) != mOptions.end())
 		return;
@@ -684,7 +684,7 @@ const std::string& Configuration::option(const std::string& key)
  * \note	It is safe to call this function if the named
  *			option has not been defined.
  */
-void Configuration::deleteOption(const std::string option)
+void Configuration::deleteOption(const std::string& option)
 {
 	Options::iterator it = mOptions.find(option);
 

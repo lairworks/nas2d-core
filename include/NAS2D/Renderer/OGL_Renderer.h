@@ -22,7 +22,7 @@ namespace NAS2D {
 class OGL_Renderer: public Renderer
 {
 public:
-	OGL_Renderer(const std::string title);
+	OGL_Renderer(const std::string& title);
 
 	~OGL_Renderer();
 

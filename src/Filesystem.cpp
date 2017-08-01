@@ -471,7 +471,7 @@ std::string Filesystem::workingPath(const std::string& filename) const
  * \return	Returns a string containing the file extension. An empty string will be
  *			returned if the file has no extension or if it's a directory.
  */
-std::string Filesystem::extension(const std::string path)
+std::string Filesystem::extension(const std::string& path)
 {
 	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
 

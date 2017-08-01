@@ -45,12 +45,12 @@ extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, 
 // ==================================================================================
 // = UNEXPOSED FUNCTION PROTOTYPES
 // ==================================================================================
-bool load(const std::string path, unsigned int ptSize);
+bool load(const std::string& path, unsigned int ptSize);
 bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
 bool fontAlreadyLoaded(const std::string& name);
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
-void updateFontReferenceCount(const std::string name);
+void updateFontReferenceCount(const std::string& name);
 
 
 unsigned nextPowerOf2(unsigned n)
@@ -180,10 +180,9 @@ int NAS2D::Font::width(const std::string& str) const
 	GlyphMetricsList& gml = FONTMAP[name()].metrics;
 	if (gml.empty()) { return 0; }
 
-	int glyph = 0;
 	for (size_t i = 0; i < str.size(); i++)
 	{
-		glyph = clamp(str[i], 0, 255);
+		int glyph = clamp(str[i], 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;
 	}
 
@@ -230,7 +229,7 @@ int NAS2D::Font::ptSize() const
  * \param	path	Path to the TTF or OTF font file.
  * \param	ptSize	Point size to use when loading the font.
  */
-bool load(const std::string path, unsigned int ptSize)
+bool load(const std::string& path, unsigned int ptSize)
 {
 	std::string fontname = path + string_format("_%ipt", ptSize);
 	if (fontAlreadyLoaded(fontname))
@@ -473,7 +472,7 @@ void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, u
  *
  * \param	name	Name of the Font to check against.
  */
-void updateFontReferenceCount(const std::string name)
+void updateFontReferenceCount(const std::string& name)
 {
 	auto it = FONTMAP.find(name);
 	if (it == FONTMAP.end())

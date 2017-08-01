@@ -304,7 +304,6 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	float theta = PI_2 / static_cast<float>(num_segments);
 	float c = cosf(theta);
 	float s = sinf(theta);
-	float t;
 
 	float x = radius;
 	float y = 0;
@@ -319,7 +318,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 		verts[i + 1]	= y * scale_y + cy;
 
 		// Apply the rotation matrix
-		t = x;
+		float t = x;
 		x = c * x - s * y;
 		y = s * t + c * y;
 	}

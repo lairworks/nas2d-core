@@ -187,5 +187,4 @@ int XmlDocument::errorRow() const
 int XmlDocument::errorCol() const
 {
 	return _errorLocation.second + 1;
-
 }

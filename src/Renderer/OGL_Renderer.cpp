@@ -784,7 +784,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float A = Ca;
 
 	// HOLY CRAP magic numbers!
-	//determine parameters t,R
+	//determine parameters t, R
 	if (w >= 0.0f && w < 1.0f)
 	{
 		t = 0.05f;
@@ -823,7 +823,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		t = 2.5f + ff * 0.50f;
 		R = 1.08f;
 	}
-	//printf( "w=%f, f=%f, C=%.4f\n", w,f,C);
+	//printf( "w=%f, f=%f, C=%.4f\n", w, f, C);
 
 	//determine angle of the line to horizontal
 	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
@@ -886,10 +886,10 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	{
 		x1-tx-Rx-cx, y1-ty-Ry-cy, //fading edge1
 		x2-tx-Rx+cx, y2-ty-Ry+cy,
-		x1-tx-cx,y1-ty-cy,        //core
-		x2-tx+cx,y2-ty+cy,
-		x1+tx-cx,y1+ty-cy,
-		x2+tx+cx,y2+ty+cy,
+		x1-tx-cx, y1-ty-cy,        //core
+		x2-tx+cx, y2-ty+cy,
+		x1+tx-cx, y1+ty-cy,
+		x2+tx+cx, y2+ty+cy,
 		x1+tx+Rx-cx, y1+ty+Ry-cy, //fading edge2
 		x2+tx+Rx+cx, y2+ty+Ry+cy
 	};
@@ -933,18 +933,18 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 
 		float line_color[]=
 		{
-			Cr,Cg,Cb, 0, //cap1
-			Cr,Cg,Cb, 0,
-			Cr,Cg,Cb, Ca,
-			Cr,Cg,Cb, 0,
-			Cr,Cg,Cb, Ca,
-			Cr,Cg,Cb, 0,
-			Cr,Cg,Cb, 0, //cap2
-			Cr,Cg,Cb, 0,
-			Cr,Cg,Cb, Ca,
-			Cr,Cg,Cb, 0,
-			Cr,Cg,Cb, Ca,
-			Cr,Cg,Cb, 0
+			Cr, Cg, Cb, 0, //cap1
+			Cr, Cg, Cb, 0,
+			Cr, Cg, Cb, Ca,
+			Cr, Cg, Cb, 0,
+			Cr, Cg, Cb, Ca,
+			Cr, Cg, Cb, 0,
+			Cr, Cg, Cb, 0, //cap2
+			Cr, Cg, Cb, 0,
+			Cr, Cg, Cb, Ca,
+			Cr, Cg, Cb, 0,
+			Cr, Cg, Cb, Ca,
+			Cr, Cg, Cb, 0
 		};
 		glColorPointer(4, GL_FLOAT, 0, line_color);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);

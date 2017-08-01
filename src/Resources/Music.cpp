@@ -49,8 +49,10 @@ Music::Music(const std::string& filePath):	Resource(filePath)
 Music::Music(const Music& rhs): Resource(rhs.name())
 {
 	auto it = MUSIC_REF_MAP.find(name());
-	if(it != MUSIC_REF_MAP.end())
+	if (it != MUSIC_REF_MAP.end())
+	{
 		it->second.ref_count++;
+	}
 
 	loaded(rhs.loaded());
 }
@@ -61,8 +63,7 @@ Music::Music(const Music& rhs): Resource(rhs.name())
  */
 Music& Music::operator=(const Music& rhs)
 {
-	if (this == &rhs) // ignore self copy
-		return *this; // Should this throw?
+	if (this == &rhs) { return *this; }
 
 	updateMusicReferenceCount(name());
 
@@ -75,7 +76,9 @@ Music& Music::operator=(const Music& rhs)
 		loaded(rhs.loaded());
 	}
 	else
+	{
 		loaded(false);
+	}
 
 	return *this;
 }
@@ -143,7 +146,9 @@ void updateMusicReferenceCount(const std::string& name)
 {
 	auto it = MUSIC_REF_MAP.find(name);
 	if (it == MUSIC_REF_MAP.end())
+	{
 		return;
+	}
 
 	--it->second.ref_count;
 
@@ -151,10 +156,14 @@ void updateMusicReferenceCount(const std::string& name)
 	if (it->second.ref_count < 1)
 	{
 		if (it->second.music)
+		{
 			Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
+		}
 
 		if (it->second.buffer)
+		{
 			delete static_cast<File*>(it->second.buffer);
+		}
 
 		MUSIC_REF_MAP.erase(it);
 	}

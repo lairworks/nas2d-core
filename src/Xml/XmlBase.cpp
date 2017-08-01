@@ -19,8 +19,7 @@ std::vector<std::string> XML_ERROR_TABLE;
 
 void fillErrorTable()
 {
-	if (!XML_ERROR_TABLE.empty())
-		return;
+	if (!XML_ERROR_TABLE.empty()) { return; }
 
 	XML_ERROR_TABLE.push_back("No error");
 	XML_ERROR_TABLE.push_back("Unspecified Error");

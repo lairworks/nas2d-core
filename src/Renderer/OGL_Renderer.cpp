@@ -416,9 +416,7 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, in
 
 void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
 {
-	// Ignore if font isn't loaded or string is empty
-	if(!font.loaded() || text.empty())
-		return;
+	if (!font.loaded() || text.empty()) { return; }
 
 	glColor4ub(r, g, b, a);
 
@@ -447,32 +445,39 @@ void OGL_Renderer::showSystemPointer(bool _b)
 
 void OGL_Renderer::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
 {
-	/* FIXME proper cleanup */
+	/// \fixme proper cleanup
 	File imageFile = Utility<Filesystem>::get().open(filePath);
-	if(imageFile.size() == 0) {
+	if (imageFile.size() == 0)
+	{
 		std::cout << "OGL_Renderer::addCursor(): '" << name() << "' is empty." << std::endl;
 		return;
 	}
 
 	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
-	if(!pixels) {
+	if (!pixels)
+	{
 		std::cout << "OGL_Renderer::addCursor(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
 	SDL_Cursor* cur = SDL_CreateColorCursor(pixels, offx, offy);
-	if(!cur) {
+	if (!cur)
+	{
 		std::cout << "OGL_Renderer::addCursor(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
 	if (CURSORS.count(cursorId))
+	{
 		SDL_FreeCursor(CURSORS[cursorId]);
+	}
 
 	CURSORS[cursorId] = cur;
 
-	if (1 == CURSORS.size())
+	if (CURSORS.size() == 1)
+	{
 		setCursor(cursorId);
+	}
 }
 
 
@@ -576,15 +581,16 @@ void OGL_Renderer::_resize(int w, int h)
 	glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 
-	if(!fullscreen())
+	if (!fullscreen())
+	{
 		_size()(static_cast<float>(w), static_cast<float>(h));
+	}
 }
 
 
 void OGL_Renderer::window_icon(const std::string& path)
 {
-	if (!Utility<Filesystem>::get().exists(path))
-		return;
+	if (!Utility<Filesystem>::get().exists(path)) { return; }
 
 	File f = Utility<Filesystem>::get().open(path);
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(f.raw_bytes(), static_cast<int>(f.size())), 0);
@@ -627,7 +633,9 @@ void OGL_Renderer::initGL()
 
 	std::string glsl_v = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 	if (glsl_v.empty())
+	{
 		throw renderer_no_glsl();
+	}
 
 	std::cout << "\tGLSL Version: " << glsl_v << std::endl;
 
@@ -644,33 +652,36 @@ void OGL_Renderer::initGL()
 void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
 		throw renderer_backend_init_failure(SDL_GetError());
+	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
-	if(vsync)
-		SDL_GL_SetSwapInterval(1);
-	else
-		SDL_GL_SetSwapInterval(0);
+	if (vsync) { SDL_GL_SetSwapInterval(1); }
+	else { SDL_GL_SetSwapInterval(0); }
 
 	Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
-	if(fullscreen)
-		sdlFlags = sdlFlags | SDL_WINDOW_FULLSCREEN;
+	if (fullscreen) { sdlFlags = sdlFlags | SDL_WINDOW_FULLSCREEN; }
 
 	_WINDOW = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
 
 	if (!_WINDOW)
+	{
 		throw renderer_window_creation_failure();
+	}
 
 	_size()(static_cast<float>(resX), static_cast<float>(resY));
 
 	CONTEXT = SDL_GL_CreateContext(_WINDOW);
 	if (!CONTEXT)
+	{
 		throw renderer_opengl_context_failure();
+	}
 
 	SDL_ShowCursor(true);
 	glewInit();

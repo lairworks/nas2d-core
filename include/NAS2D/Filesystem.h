@@ -46,7 +46,7 @@ public:
 	bool del(const std::string& path) const;
 	bool exists(const std::string& filename) const;
 
-	std::string extension(const std::string path);
+	std::string extension(const std::string& path);
 
 	bool isDirectory(const std::string& path) const;
 	bool makeDirectory(const std::string& path) const;

@@ -64,9 +64,9 @@ public:
 	void audioBufferSize(int size);
 	void mixer(const std::string& mixer);
 
-	void option(const std::string option, const std::string& value, bool overwrite = true);
+	void option(const std::string& option, const std::string& value, bool overwrite = true);
 	const std::string& option(const std::string& key);
-	void deleteOption(const std::string option);
+	void deleteOption(const std::string& option);
 
 	void setDefaultValues();
 

@@ -79,7 +79,7 @@ GLuint generate_fbo();
  *
  * \param title	Title of the application window.
  */
-OGL_Renderer::OGL_Renderer(const std::string title) : Renderer("OpenGL Renderer", title)
+OGL_Renderer::OGL_Renderer(const std::string& title) : Renderer("OpenGL Renderer", title)
 {
 	std::cout << "Starting " << name() << ":" << std::endl;
 

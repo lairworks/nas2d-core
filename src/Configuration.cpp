@@ -22,7 +22,6 @@ using namespace NAS2D::Xml;
 const int				AUDIO_LOW_QUALITY			= 11025;
 const int				AUDIO_MEDIUM_QUALITY		= 22050;
 const int				AUDIO_HIGH_QUALITY			= 44100;
-const int				AUDIO_CHANNELS				= 16;
 const int				AUDIO_SFX_MIN_VOLUME		= 0;
 const int				AUDIO_SFX_MAX_VOLUME		= 128;
 const int				AUDIO_SFX_VOLUME			= 128;
@@ -70,8 +69,7 @@ Configuration::Configuration():	mScreenWidth(GRAPHICS_WIDTH),
 								mBufferLength(AUDIO_BUFFER_SIZE),
 								mMixerName("SDL"),
 								mOptionChanged(false)
-{
-}
+{}
 
 
 /**

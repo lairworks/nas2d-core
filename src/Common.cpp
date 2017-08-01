@@ -13,14 +13,11 @@
 #include <algorithm>
 #include <sstream>
 
-#if defined(WINDOWS)
-#include <windows.h>
-#endif
-
 
 const int NAS2D_MAJOR_VERSION = 1;
 const int NAS2D_MINOR_VERSION = 4;
 const int NAS2D_PATCH_VERSION = 2;
+
 
 /**
  * Gets a string containing the version of NAS2D being used.

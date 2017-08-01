@@ -25,8 +25,6 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-const unsigned int	CLOSE_MAX_ATTEMPTS			= 3;
-const unsigned int	CLOSE_ATTEMPT_TIMEOUT		= 5;	// Seconds
 
 bool				FILESYSTEM_INITIALIZED		= false;
 

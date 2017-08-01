@@ -77,7 +77,7 @@ Configuration::Configuration():	mScreenWidth(GRAPHICS_WIDTH),
  */
 Configuration::~Configuration()
 {
-	if(mOptionChanged)
+	if (mOptionChanged)
 		save();
 
 	std::cout << "Configuration Terminated." << std::endl;
@@ -95,13 +95,13 @@ void Configuration::load(const std::string& filePath)
 
 	mConfigPath = filePath;
 
-	if(!Utility<Filesystem>::get().exists(filePath))
+	if (!Utility<Filesystem>::get().exists(filePath))
 	{
 		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
 		mOptionChanged = true;
 	}
 	// Read in the Config File.
-	else if(!readConfig(filePath))
+	else if (!readConfig(filePath))
 	{
 		mOptionChanged = true;
 		std::cout << "unable to process '" << filePath << "'. Using default options." << std::endl;
@@ -130,10 +130,10 @@ void Configuration::save()
 	graphics->attribute("screenheight", mScreenHeight);
 	graphics->attribute("bitdepth", mScreenBpp);
 
-	if(mFullScreen)	graphics->attribute("fullscreen", "true");
+	if (mFullScreen)	graphics->attribute("fullscreen", "true");
 	else graphics->attribute("fullscreen", "false");
 
-	if(mVSync) graphics->attribute("vsync", "true");
+	if (mVSync) graphics->attribute("vsync", "true");
 	else graphics->attribute("vsync", "false");
 
 	root->linkEndChild(graphics);
@@ -196,7 +196,7 @@ bool Configuration::readConfig(const std::string& filePath)
 
 	XmlDocument config;
 	config.parse(xmlFile.raw_bytes());
-	if(config.error())
+	if (config.error())
 	{
 		std::cout << "Error parsing configuration file '" << filePath << "' on Row " << config.errorRow() << ", Column " << config.errorCol() << ": " << config.errorDesc() << std::endl;
 		return false;
@@ -204,7 +204,7 @@ bool Configuration::readConfig(const std::string& filePath)
 	else
 	{
 		XmlElement* root = config.firstChildElement("configuration");
-		if(!root)
+		if (!root)
 		{
 			std::cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << std::endl;
 			return false;
@@ -213,7 +213,7 @@ bool Configuration::readConfig(const std::string& filePath)
 
 		// Start parsing through the Config.xml file.
 		XmlNode *xmlNode = nullptr;
-		while((xmlNode = root->iterateChildren(xmlNode)))
+		while ((xmlNode = root->iterateChildren(xmlNode)))
 		{
 			if (xmlNode->value() == "graphics")
 				parseGraphics(xmlNode);
@@ -362,9 +362,9 @@ void Configuration::parseOptions(void* _n)
 	}
 
 	XmlNode *node = nullptr;
-	while((node = element->iterateChildren(node)))
+	while ((node = element->iterateChildren(node)))
 	{
-		if(node->value() == "option")
+		if (node->value() == "option")
 		{
 			XmlAttribute* attribute = node->toElement()->firstAttribute();
 			std::string name, value;
@@ -564,7 +564,7 @@ void Configuration::vsync(bool vsync)
  */
 void Configuration::audioMixRate(int mixrate)
 {
-	if(mixrate != AUDIO_LOW_QUALITY && mixrate != AUDIO_MEDIUM_QUALITY && mixrate != AUDIO_HIGH_QUALITY)
+	if (mixrate != AUDIO_LOW_QUALITY && mixrate != AUDIO_MEDIUM_QUALITY && mixrate != AUDIO_HIGH_QUALITY)
 		mixrate = AUDIO_MEDIUM_QUALITY;
 
 	mMixRate = mixrate;
@@ -649,7 +649,7 @@ void Configuration::audioBufferSize(int size)
  */
 void Configuration::option(const std::string option, const std::string& value, bool overwrite)
 {
-	if(!overwrite && mOptions.find(option) != mOptions.end())
+	if (!overwrite && mOptions.find(option) != mOptions.end())
 		return;
 
 	mOptions[option] = value;
@@ -669,7 +669,7 @@ void Configuration::option(const std::string option, const std::string& value, b
  */
 const std::string& Configuration::option(const std::string& key)
 {
-	if(mOptions.find(key) != mOptions.end())
+	if (mOptions.find(key) != mOptions.end())
 		mOptionChanged = true;
 
 	return mOptions[key];
@@ -688,7 +688,7 @@ void Configuration::deleteOption(const std::string option)
 {
 	Options::iterator it = mOptions.find(option);
 
-	if(it != mOptions.end())
+	if (it != mOptions.end())
 	{
 		mOptions.erase(it);
 		mOptionChanged = true;

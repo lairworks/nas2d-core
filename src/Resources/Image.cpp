@@ -189,14 +189,14 @@ void Image::load()
 	}
 
 	File imageFile = Utility<Filesystem>::get().open(name());
-	if(imageFile.size() == 0)
+	if (imageFile.size() == 0)
 	{
 		std::cout << "Image::load(): '" << name() << "' is empty." << std::endl;
 		return;
 	}
 
 	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
-	if(!pixels)
+	if (!pixels)
 	{
 		std::cout << "Image::load(): " << SDL_GetError() << std::endl;
 		return;

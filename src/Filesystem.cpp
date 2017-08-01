@@ -235,7 +235,7 @@ bool Filesystem::del(const std::string& filename) const
 {
 	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
 
-	if(PHYSFS_delete(filename.c_str()) == 0)
+	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
 		std::cout << "Unable to delete '" << filename << "':" << PHYSFS_getLastError() << std::endl;
 		return false;

@@ -78,16 +78,16 @@ bool NAS2D::lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Poi
 
 	float t = -(((p.x() - c.x()) * dx) + ((p.y() - c.y()) * dy)) / ((dx * dx) + (dy * dy));
 
-	if(t < 0.0)
+	if (t < 0.0)
 		t = 0.0;
-	else if(t > 1.0)
+	else if (t > 1.0)
 		t = 1.0;
 
 	dx = (p.x() + (t * (q.x() - p.x()))) - c.x();
 	dy = (p.y() + (t * (q.y() - p.y()))) - c.y();
 	float rt = (dx * dx) + (dy * dy);
 
-	if(rt < (r * r))
+	if (rt < (r * r))
 		return true;
 
 	return false;

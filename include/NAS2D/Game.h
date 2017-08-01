@@ -42,11 +42,11 @@ namespace NAS2D {
  *		game.mount("gfx.zip");
  *		game.go(new MyState());
  *	}
- *	catch(const std::exception& e)
+ *	catch (const std::exception& e)
  *	{
  *		std::cout << "Error: " << e.what() << std::endl;
  *	}
- *	catch(...)
+ *	catch (...)
  *	{
  *	}
  *	return 0;

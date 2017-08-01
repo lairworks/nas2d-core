@@ -112,13 +112,13 @@ void Sprite::play(const std::string& action)
 	// Set the current frame list to the defined action. If action
 	// isn't found, set to default and reset frame counter.
 	ActionList::iterator actionIt = mActions.find(toLowercase(action));
-	if(actionIt == mActions.end())
+	if (actionIt == mActions.end())
 	{
 		cout << "Named action '" << action << "' is not defined in '" << name() << "'." << endl;
 		mCurrentAction = DEFAULT_ACTION;
 		mCurrentFrame = 0;
 	}
-	else if(mCurrentAction == toLowercase(action))
+	else if (mCurrentAction == toLowercase(action))
 	{
 		// Reset the frame counter.
 		mCurrentFrame = 0;
@@ -179,16 +179,16 @@ void Sprite::update(float x, float y)
 {
 	SpriteFrame frame = mActions[mCurrentAction][mCurrentFrame];
 
-	if(!mPaused && (frame.frameDelay() != FRAME_PAUSE))
+	if (!mPaused && (frame.frameDelay() != FRAME_PAUSE))
 	{
-		while(frame.frameDelay() > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay())
+		while (frame.frameDelay() > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay())
 		{
 			mTimer.adjust_accumulator(frame.frameDelay());
 			mCurrentFrame++;
 		}
 
 		// Check that our frame count is within bounds.
-		if(mCurrentFrame >= mActions[mCurrentAction].size())
+		if (mCurrentFrame >= mActions[mCurrentAction].size())
 		{
 			mCurrentFrame = 0;
 			mFrameCallback();		// Notifiy any frame listeners that the animation sequence has completed.
@@ -279,7 +279,7 @@ void Sprite::processXml(const std::string& filePath)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
-	if(!fs.exists(filePath))
+	if (!fs.exists(filePath))
 	{
 		cout << "Sprite file '" << filePath << "' doesn't exist." << endl;
 		addDefaultAction();
@@ -289,7 +289,7 @@ void Sprite::processXml(const std::string& filePath)
 	File xmlFile = fs.open(filePath);
 
 	// Load the file
-	if(xmlFile.empty())
+	if (xmlFile.empty())
 	{
 		cout << "Sprite file '" << filePath << "' is empty." << endl;
 		addDefaultAction();
@@ -301,7 +301,7 @@ void Sprite::processXml(const std::string& filePath)
 
 	// Load the XML document and handle any errors if occuring
 	docXml.parse(xmlFile.raw_bytes());
-	if(docXml.error())
+	if (docXml.error())
 	{
 		cout << "Malformed XML. Row: " << docXml.errorRow() << " Column: " << docXml.errorCol() << ": " << docXml.errorDesc() << " (" << name() << ")" << endl;
 		addDefaultAction();
@@ -311,7 +311,7 @@ void Sprite::processXml(const std::string& filePath)
 	{
 		// Find the Sprite node.
 		xmlRootElement = docXml.firstChildElement("sprite");
-		if(!xmlRootElement)
+		if (!xmlRootElement)
 		{
 			cout << "Specified file '" << filePath << "' doesn't contain a <sprite> tag." << endl;
 			addDefaultAction();
@@ -326,7 +326,7 @@ void Sprite::processXml(const std::string& filePath)
 			addDefaultAction();
 			return;
 		}
-		else if(version && version->value() != SPRITE_VERSION)
+		else if (version && version->value() != SPRITE_VERSION)
 		{
 			cout << "Sprite version mismatch (" << versionString() << ") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
 			addDefaultAction();
@@ -357,9 +357,9 @@ void Sprite::processImageSheets(void* root)
 
 	XmlNode* node = nullptr;
 	string id, src;
-	while((node = e->iterateChildren(node)))
+	while ((node = e->iterateChildren(node)))
 	{
-		if(node->value() == "imagesheet" && node->toElement())
+		if (node->value() == "imagesheet" && node->toElement())
 		{
 			XmlAttribute* attribute = node->toElement()->firstAttribute();
 			while (attribute)
@@ -370,13 +370,13 @@ void Sprite::processImageSheets(void* root)
 				attribute = attribute->next();
 			}
 
-			if(id.empty())
+			if (id.empty())
 			{
 				cout << "Zero-length 'id' value in Imagesheet definition." << endTag(node->row(), name()) << endl;
 				continue;
 			}
 
-			if(src.empty())
+			if (src.empty())
 			{
 				cout << "Zero-length 'src' value in Imagesheet definition." << endTag(node->row(), name()) << endl;
 				continue;
@@ -403,11 +403,11 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 	Filesystem& fs = Utility<Filesystem>::get();
 
 	// Search for an image sheet with 'id'. If not found, add it.
-	if(mImageSheets.find(toLowercase(id)) == mImageSheets.end())
+	if (mImageSheets.find(toLowercase(id)) == mImageSheets.end())
 	{
 		string imagePath = fs.workingPath(mSpriteName);
 		imagePath += src;
-		if(!fs.exists(imagePath))
+		if (!fs.exists(imagePath))
 		{
 			cout << "Couldn't find '" << imagePath << "' defined in sprite file '" << name() << "'." << endl;
 			mImageSheets[toLowercase(id)]; // Add a default image
@@ -437,9 +437,9 @@ void Sprite::processActions(void* root)
 	XmlElement* element = static_cast<XmlElement*>(root);
 
 	XmlNode* node = nullptr;
-	while((node = element->iterateChildren(node)))
+	while ((node = element->iterateChildren(node)))
 	{
-		if(toLowercase(node->value()) == "action" && node->toElement())
+		if (toLowercase(node->value()) == "action" && node->toElement())
 		{
 
 			string action_name;
@@ -454,7 +454,7 @@ void Sprite::processActions(void* root)
 				attribute = attribute->next();
 			}
 
-			if(action_name.empty())
+			if (action_name.empty())
 			{
 				cout << "Zero-length 'name' value in Action definition." << endTag(node->row(), name()) << endl;
 				continue;
@@ -483,11 +483,11 @@ void Sprite::processFrames(const std::string& action, void* _node)
 	FrameList frameList;
 
 	XmlNode* frame = nullptr;
-	while((frame = node->iterateChildren(frame)))
+	while ((frame = node->iterateChildren(frame)))
 	{
 		int currentRow = frame->row();
 
-		if(frame->value() == "frame" && frame->toElement())
+		if (frame->value() == "frame" && frame->toElement())
 		{
 			string sheetId;
 			int delay = 0;
@@ -517,40 +517,40 @@ void Sprite::processFrames(const std::string& action, void* _node)
 			}
 
 			// X-Coordinate
-			if( x < 0 || x > mImageSheets.find(sheetId)->second.width())
+			if ( x < 0 || x > mImageSheets.find(sheetId)->second.width())
 			{
 				cout << "Value 'x' is out of bounds." << endTag(currentRow, name()) << endl;
 				continue;
 			}
 
 			// Y-Coordinate
-			if(y < 0 || y > mImageSheets.find(sheetId)->second.height())
+			if (y < 0 || y > mImageSheets.find(sheetId)->second.height())
 			{
 				cout << "Value 'y' is out of bounds." << endTag(currentRow, name()) << endl;
 				continue;
 			}
 
 			// Width
-			if(width < 1)
+			if (width < 1)
 			{
 				width = 1;
 				cout << "'width' value must be greater than 0." << endTag(currentRow, name()) << endl;
 				continue;
 			}
-			else if(x + width > mImageSheets.find(sheetId)->second.width())
+			else if (x + width > mImageSheets.find(sheetId)->second.width())
 			{
 				cout << "'x' + 'width' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
 				continue;
 			}
 
 			// Height
-			if(height < 1)
+			if (height < 1)
 			{
 				height = 1;
 				cout << "'height' value must be greater than 0." << endTag(currentRow, name()) << endl;
 				continue;
 			}
-			else if(y + height > mImageSheets.find(sheetId)->second.height())
+			else if (y + height > mImageSheets.find(sheetId)->second.height())
 			{
 				cout << "'y' + 'height' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
 				continue;
@@ -578,17 +578,17 @@ void Sprite::processFrames(const std::string& action, void* _node)
 
 bool Sprite::validateSheetId(const std::string& sheetId, int row)
 {
-	if(sheetId.empty())
+	if (sheetId.empty())
 	{
 		cout << "Frame definition has a zero-length 'sheetid' value. Frame is being ignored." << endTag(row, name()) << endl;
 		return false;
 	}
-	else if(mImageSheets.find(sheetId) == mImageSheets.end())
+	else if (mImageSheets.find(sheetId) == mImageSheets.end())
 	{
 		cout << "Frame definition references an undefined imagesheet '" << sheetId << "'." << endTag(row, name()) << endl;
 		return false;
 	}
-	else if(!mImageSheets.find(sheetId)->second.loaded())
+	else if (!mImageSheets.find(sheetId)->second.loaded())
 	{
 		cout << "Frame definition references an imagesheet that failed to load." << endTag(row, name()) << endl;
 		return false;
@@ -606,7 +606,7 @@ bool Sprite::validateSheetId(const std::string& sheetId, int row)
  */
 void Sprite::addDefaultAction()
 {
-	if(mActions.find("default") == mActions.end())
+	if (mActions.find("default") == mActions.end())
 	{
 		mImageSheets["default"];	// Adds a default sheet. //-V607
 

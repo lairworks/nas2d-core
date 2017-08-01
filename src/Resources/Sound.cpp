@@ -59,12 +59,16 @@ Sound::~Sound()
 void Sound::load()
 {
 	File soundFile = Utility<Filesystem>::get().open(name());
-	if(soundFile.empty())
+	if (soundFile.empty())
+	{
 		return;
+	}
 
 	_chunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
-	if(!_chunk)
+	if (!_chunk)
+	{
 		return;
+	}
 
 	loaded(true);
 }

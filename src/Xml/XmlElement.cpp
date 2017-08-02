@@ -73,7 +73,10 @@ std::string XmlElement::attribute(const std::string& name) const
 {
 	const XmlAttribute* node = attributeSet.find(name);
 	if (node)
+	{
 		return node->value();
+	}
+
 	return "";
 }
 
@@ -91,7 +94,9 @@ void XmlElement::attribute(const std::string& name, int i)
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 
 	if (attrib)
+	{
 		attrib->intValue(i);
+	}
 }
 
 
@@ -107,7 +112,9 @@ void XmlElement::attribute(const std::string& name, double d)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 	if (attrib)
+	{
 		attrib->doubleValue(d);
+	}
 }
 
 
@@ -138,7 +145,9 @@ void XmlElement::attribute(const std::string& name, const std::string& s)
 void XmlElement::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; ++i)
+	{
 		buf += "\t";
+	}
 
 	buf += "<" + _value;
 
@@ -166,8 +175,7 @@ void XmlElement::write(std::string& buf, int depth) const
 
 		for (node = _firstChild; node; node = node->nextSibling())
 		{
-			if (!node->toText())
-				buf += "\n";
+			if (!node->toText()) { buf += "\n"; }
 
 			node->write(buf, depth + 1);
 		}
@@ -175,7 +183,9 @@ void XmlElement::write(std::string& buf, int depth) const
 		buf += "\n";
 
 		for (int i = 0; i < depth; ++i)
+		{
 			buf += "\t";
+		}
 
 		buf += "</" + _value + ">";
 	}
@@ -212,8 +222,7 @@ bool XmlElement::accept(void* visitor) const
 	{
 		for (const XmlNode* node = firstChild(); node; node = node->nextSibling())
 		{
-			if (!node->accept(visitor))
-				break;
+			if (!node->accept(visitor)) { break; }
 		}
 	}
 	return static_cast<XmlVisitor*>(visitor)->visitExit(*this);
@@ -227,7 +236,9 @@ XmlNode* XmlElement::clone() const
 {
 	XmlElement* clone = new XmlElement(value());
 	if (!clone)
+	{
 		return nullptr;
+	}
 
 	copyTo(clone);
 	return clone;

@@ -141,17 +141,22 @@ void XmlNode::clear()
 XmlNode* XmlNode::linkEndChild(XmlNode* node)
 {
 	if (!node)
+	{
 		return nullptr;
+	}
 	else if (node->_parent != nullptr && node->_parent != this)
+	{
 		return nullptr;
+	}
 	else if (node->document() != nullptr && node->document() != this->document())
+	{
 		return nullptr;
+	}
 
 	if (node->type() == XmlNode::XML_DOCUMENT)
 	{
 		delete node;
-		if (document())
-			document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+		if (document()) { document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 		return nullptr;
 	}
 
@@ -160,10 +165,8 @@ XmlNode* XmlNode::linkEndChild(XmlNode* node)
 	node->_prev = _lastChild;
 	node->_next = nullptr;
 
-	if (_lastChild)
-		_lastChild->_next = node;
-	else
-		_firstChild = node; // it was an empty list.
+	if (_lastChild) { _lastChild->_next = node; }
+	else { _firstChild = node; } // it was an empty list.
 
 	_lastChild = node;
 	return node;
@@ -178,14 +181,16 @@ XmlNode* XmlNode::insertEndChild(const XmlNode& node)
 {
 	if (node.type() == XmlNode::XML_DOCUMENT)
 	{
-		if (document())
-			document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+		if (document()) { document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 
 		return nullptr;
 	}
+	
 	XmlNode* n = node.clone();
 	if (!n)
+	{
 		return nullptr;
+	}
 
 	return linkEndChild(n);
 }
@@ -199,18 +204,18 @@ XmlNode* XmlNode::insertEndChild(const XmlNode& node)
 XmlNode* XmlNode::insertBeforeChild(XmlNode* beforeThis, const XmlNode& addThis)
 {
 	if (!beforeThis || beforeThis->_parent != this)
+	{
 		return nullptr;
+	}
 
 	if (addThis.type() == XmlNode::XML_DOCUMENT)
 	{
-		if (document())
-			document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+		if (document()) { document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 		return nullptr;
 	}
 
 	XmlNode* node = addThis.clone();
-	if (!node)
-		return nullptr;
+	if (!node) { return nullptr; }
 	node->_parent = this;
 
 	node->_next = beforeThis;
@@ -241,14 +246,12 @@ XmlNode* XmlNode::insertAfterChild(XmlNode* afterThis, const XmlNode& addThis)
 	}
 	if (addThis.type() == XmlNode::XML_DOCUMENT)
 	{
-		if (document())
-			document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+		if (document()) { document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 		return nullptr;
 	}
 
 	XmlNode* node = addThis.clone();
-	if (!node)
-		return nullptr;
+	if (!node) { return nullptr; }
 
 	node->_parent = this;
 
@@ -275,37 +278,29 @@ XmlNode* XmlNode::insertAfterChild(XmlNode* afterThis, const XmlNode& addThis)
  */
 XmlNode* XmlNode::replaceChild(XmlNode* replaceThis, const XmlNode& withThis)
 {
-	if (!replaceThis)
-		return nullptr;
+	if (!replaceThis) { return nullptr; }
 
-	if (replaceThis->_parent != this)
-		return nullptr;
+	if (replaceThis->_parent != this) { return nullptr; }
 
 	if (withThis.toDocument())
 	{
 		// A document can never be a child.	Thanks to Noam.
 		XmlDocument* doc = document();
-		if (doc)
-			doc->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0);
+		if (doc) { doc->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 		return nullptr;
 	}
 
 	XmlNode* node = withThis.clone();
-	if (!node)
-		return nullptr;
+	if (!node) { return nullptr; }
 
 	node->_next = replaceThis->_next;
 	node->_prev = replaceThis->_prev;
 
-	if (replaceThis->_next)
-		replaceThis->_next->_prev = node;
-	else
-		_lastChild = node;
+	if (replaceThis->_next) { replaceThis->_next->_prev = node; }
+	else { _lastChild = node; }
 
-	if (replaceThis->_prev)
-		replaceThis->_prev->_next = node;
-	else
-		_firstChild = node;
+	if (replaceThis->_prev) { replaceThis->_prev->_next = node; }
+	else { _firstChild = node; }
 
 	delete replaceThis;
 	node->_parent = this;
@@ -318,8 +313,7 @@ XmlNode* XmlNode::replaceChild(XmlNode* replaceThis, const XmlNode& withThis)
  */
 bool XmlNode::removeChild(XmlNode* node)
 {
-	if (!node)
-		return false;
+	if (!node) { return false; }
 
 	if (node->_parent != this)
 	{
@@ -327,15 +321,11 @@ bool XmlNode::removeChild(XmlNode* node)
 		return false;
 	}
 
-	if (node->_next)
-		node->_next->_prev = node->_prev;
-	else
-		_lastChild = node->_prev;
+	if (node->_next) { node->_next->_prev = node->_prev; }
+	else { _lastChild = node->_prev; }
 
-	if (node->_prev)
-		node->_prev->_next = node->_next;
-	else
-		_firstChild = node->_next;
+	if (node->_prev) { node->_prev->_next = node->_next; }
+	else { _firstChild = node->_next; }
 
 	delete node;
 	return true;
@@ -358,7 +348,9 @@ const XmlNode* XmlNode::firstChild(const std::string& value) const
 	for (node = _firstChild; node; node = node->_next)
 	{
 		if (node->value() == value)
+		{
 			return node;
+		}
 	}
 	return nullptr;
 }
@@ -380,7 +372,9 @@ const XmlNode* XmlNode::lastChild(const std::string& value) const
 	for (node = _lastChild; node; node = node->_prev)
 	{
 		if (node->value() == value)
+		{
 			return node;
+		}
 	}
 	return nullptr;
 }
@@ -512,7 +506,9 @@ const XmlNode* XmlNode::nextSibling(const std::string& value) const
 	for (node = _next; node; node = node->_next)
 	{
 		if (node->value() == value)
+		{
 			return node;
+		}
 	}
 	return nullptr;
 }
@@ -536,7 +532,9 @@ const XmlNode* XmlNode::previousSibling(const std::string& value) const
 	for (node = _prev; node; node = node->_prev)
 	{
 		if (node->value() == value)
+		{
 			return node;
+		}
 	}
 	return nullptr;
 }
@@ -561,7 +559,9 @@ const XmlElement* XmlNode::firstChildElement() const
 	for (node = firstChild(); node; node = node->nextSibling())
 	{
 		if (node->toElement())
+		{
 			return node->toElement();
+		}
 	}
 	return nullptr;
 }
@@ -586,7 +586,9 @@ const XmlElement* XmlNode::firstChildElement(const std::string& value) const
 	for (node = firstChild(value); node; node = node->nextSibling(value))
 	{
 		if (node->toElement())
+		{
 			return node->toElement();
+		}
 	}
 	return nullptr;
 }
@@ -614,7 +616,9 @@ const XmlElement* XmlNode::nextSiblingElement() const
 	for (node = nextSibling(); node; node = node->nextSibling())
 	{
 		if (node->toElement())
+		{
 			return node->toElement();
+		}
 	}
 	return nullptr;
 }
@@ -645,7 +649,9 @@ const XmlElement* XmlNode::nextSiblingElement(const std::string& value) const
 	for (node = nextSibling(value); node; node = node->nextSibling(value))
 	{
 		if (node->toElement())
+		{
 			return node->toElement();
+		}
 	}
 
 	return nullptr;
@@ -674,7 +680,9 @@ const XmlDocument* XmlNode::document() const
 	for (node = this; node; node = node->_parent)
 	{
 		if (node->toDocument())
+		{
 			return node->toDocument();
+		}
 	}
 	return nullptr;
 }

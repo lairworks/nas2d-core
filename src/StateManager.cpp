@@ -56,7 +56,9 @@ StateManager::~StateManager()
 void StateManager::setState(State* state)
 {
 	if (!state)
+	{
 		return;
+	}
 
 	Utility<Mixer>::get().stopAllAudio();
 

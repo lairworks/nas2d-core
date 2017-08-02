@@ -71,7 +71,9 @@ XmlAttribute* XmlAttributeSet::find(const std::string& name) const
 	for (XmlAttribute* node = sentinel._next; node != &sentinel; node = node->_next)
 	{
 		if (node->_name == name)
+		{
 			return node;
+		}
 	}
 	return nullptr;
 }

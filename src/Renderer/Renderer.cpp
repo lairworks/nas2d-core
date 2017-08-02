@@ -319,7 +319,9 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
 {
 	// We need 9 images in order to render a rectangle, one for each corner, one for each edge and one for the background.
 	if (images.size() == 9)
+	{
 		drawImageRect(x, y, w, h, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
+	}
 }
 
 
@@ -923,5 +925,7 @@ void Renderer::update()
 	}
 
 	if (mCurrentFade > 0.0f)
-		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), (int)mCurrentFade);
+	{
+		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), static_cast<int>(mCurrentFade));
+	}
 }

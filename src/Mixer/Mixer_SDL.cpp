@@ -135,7 +135,6 @@ void Mixer_SDL::stopMusic()
 }
 
 
-
 void Mixer_SDL::pauseMusic()
 {
 	Mix_PauseMusic();

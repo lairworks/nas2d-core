@@ -25,7 +25,9 @@ using namespace NAS2D::Xml;
 inline void indent(int depth, const std::string& indent, std::string& buffer)
 {
 	for (int i = 0; i < depth; ++i)
+	{
 		buffer += indent;
+	}
 }
 
 

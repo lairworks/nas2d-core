@@ -52,7 +52,9 @@ const XmlAttribute* XmlAttribute::next() const
 {
 	// We are using knowledge of the sentinel. The sentinel have a value or name.
 	if (_next->_value.empty() && _next->_name.empty())
+	{
 		return nullptr;
+	}
 
 	return _next;
 }
@@ -78,7 +80,9 @@ const XmlAttribute* XmlAttribute::previous() const
 {
 	// We are using knowledge of the sentinel. The sentinel have a value or name.
 	if (_prev->_value.empty() && _prev->_name.empty())
+	{
 		return nullptr;
+	}
 
 	return _prev;
 }

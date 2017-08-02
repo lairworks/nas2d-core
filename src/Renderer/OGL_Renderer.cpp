@@ -422,8 +422,10 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 	glColor4ub(r, g, b, a);
 
 	int offset = 0;
+	
 	GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
-	if (gml.empty()) return;
+	if (gml.empty()) { return; }
+	
 	GlyphMetrics gm;
 	for (size_t i = 0; i < text.size(); i++)
 	{
@@ -542,8 +544,8 @@ void OGL_Renderer::fullscreen(bool fs, bool maintain)
 {
 	if (fs)
 	{
-		if (!maintain) SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN_DESKTOP);
-		else SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN);
+		if (!maintain) { SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN_DESKTOP); }
+		else { SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN); }
 		SDL_SetWindowResizable(_WINDOW, SDL_FALSE);
 	}
 	else

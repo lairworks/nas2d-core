@@ -311,20 +311,26 @@ void Configuration::parseAudio(void* _n)
 			attribute->queryIntValue(mSfxVolume);
 
 			if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
+			{
 				audioSfxVolume(clamp(mSfxVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
+			}
 		}
 		else if (attribute->name() == AUDIO_CFG_MUS_VOLUME)
 		{
 			attribute->queryIntValue(mMusicVolume);
 
 			if (mMusicVolume < AUDIO_SFX_MIN_VOLUME || mMusicVolume > AUDIO_SFX_MAX_VOLUME)
+			{
 				audioSfxVolume(clamp(mMusicVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
+			}
 		}
 		else if (attribute->name() == AUDIO_CFG_BUFFER_SIZE)
 		{
 			attribute->queryIntValue(mBufferLength);
 			if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
+			{
 				audioBufferSize(clamp(mBufferLength, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE));
+			}
 		}
 		else if (attribute->name() == AUDIO_CFG_MIXER)
 		{

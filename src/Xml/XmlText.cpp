@@ -38,7 +38,9 @@ void XmlText::write(std::string& buf, int depth) const
 	{
 		buf += "\n";
 		for (int i = 0; i < depth; i++)
+		{
 			buf += "\t";
+		}
 
 		buf += "<![CDATA[" + value() + "]]>\n"; // unformatted output
 	}
@@ -68,8 +70,12 @@ XmlNode* XmlText::clone() const
 bool XmlText::blank() const
 {
 	for (unsigned i = 0; i < _value.length(); ++i)
+	{
 		if (!white_space(_value[i]))
+		{
 			return false;
+		}
+	}
 
 	return true;
 }

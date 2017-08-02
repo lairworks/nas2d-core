@@ -782,7 +782,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 		}
 	}
 
-	if (tag.length() < 3) return;
+	if (tag.length() < 3) { return; }
 
 	// Okay...if we are a "/>" tag, then we're done. We've read a complete tag.
 	// If not, identify and stream.
@@ -1009,7 +1009,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			}
 			else
 			{
-				if (doc) doc->error(XML_ERROR_READING_END_TAG, p, data);
+				if (doc) { doc->error(XML_ERROR_READING_END_TAG, p, data); }
 				return nullptr;
 			}
 		}

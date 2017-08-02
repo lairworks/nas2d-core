@@ -1,4 +1,14 @@
 // ==================================================================================
+// = NAS2D
+// = Copyright © 2008 - 2017 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software under the terms of the zlib license.
+// = 
+// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// ==================================================================================
+// = Originally based on TinyXML. See Xml.h for additional details.
+// ==================================================================================
 // = www.sourceforge.net/projects/tinyxml
 // = Original code by Lee Thomason (www.grinninglizard.com)
 // ==================================================================================
@@ -60,21 +70,27 @@ XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] =
 
 int XmlBase::isAlpha(unsigned char anyByte)
 {
-
 	if (anyByte < 127)
+	{
 		return isalpha(anyByte);
+	}
 	else
+	{
 		return 1;	// What else to do? The unicode set is huge...get the english ones right.
+	}
 }
 
 
 int XmlBase::isAlphaNum(unsigned char anyByte)
 {
-
 	if (anyByte < 127)
+	{
 		return isalnum(anyByte);
+	}
 	else
+	{
 		return 1;	// What else to do? The unicode set is huge...get the english ones right.
+	}
 }
 
 
@@ -131,8 +147,7 @@ void XmlParsingData::stamp(const char* now)
 			++p;
 
 			// Check for \r\n sequence, and treat this as a single character
-			if (*p == '\n')
-				++p;
+			if (*p == '\n') { ++p; }
 			break;
 
 		case '\n':
@@ -144,8 +159,8 @@ void XmlParsingData::stamp(const char* now)
 			++p;
 
 			// Check for \n\r sequence, and treat this as a single character.
-			if (*p == '\r')
-				++p;
+			if (*p == '\r') { ++p; }
+
 			break;
 
 		case '\t':
@@ -158,10 +173,13 @@ void XmlParsingData::stamp(const char* now)
 			++col;
 		}
 	}
+
 	_cursor.first = row;
 	_cursor.second = col;
+
 	assert(_cursor.first >= -1);
 	assert(_cursor.second >= -1);
+
 	_stamp = p;
 	assert(_stamp);
 }
@@ -170,10 +188,14 @@ void XmlParsingData::stamp(const char* now)
 const char* XmlBase::skipWhiteSpace(const char* p)
 {
 	if (!p || !*p)
+	{
 		return nullptr;
+	}
 
 	while (*p && white_space(*p))
+	{
 		++p;
+	}
 
 	return p;
 }
@@ -183,12 +205,14 @@ bool XmlBase::streamWhiteSpace(std::istream& in, std::string& tag)
 {
 	for (;;)
 	{
-		if (!in.good()) return false;
+		if (!in.good()) { return false; }
 
 		int c = in.peek();
 		// At this scope, we can't get to a document. So fail silently.
 		if (!white_space(c) || c <= 0)
+		{
 			return true;
+		}
 
 		tag += static_cast<char>(in.get());
 	}
@@ -201,13 +225,19 @@ bool XmlBase::streamTo(std::istream& in, int character, std::string& tag)
 	{
 		int c = in.peek();
 		if (c == character)
+		{
 			return true;
+		}
+
 		if (c <= 0)		// Silent failure: can't get document at this scope
+		{
 			return false;
+		}
 
 		in.get();
 		tag += static_cast<char>(c);
 	}
+
 	return false;
 }
 
@@ -234,19 +264,22 @@ const char* XmlBase::readName(const char* p, std::string& name)
 	{
 		const char* start = p;
 		while (p && *p && (isAlphaNum((unsigned char)*p)
-					|| *p == '_'
-					|| *p == '-'
-					|| *p == '.'
-					|| *p == ':'))
+			|| *p == '_'
+			|| *p == '-'
+			|| *p == '.'
+			|| *p == ':'))
 		{
 			++p;
 		}
+
 		if (p - start > 0)
 		{
 			name.assign(start, p - start);
 		}
+
 		return p;
 	}
+
 	return nullptr;
 }
 
@@ -270,26 +303,23 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 		if (*(p + 2) == 'x')
 		{
 			// Hexadecimal.
-			if (!*(p + 3)) return nullptr;
+			if (!*(p + 3)) { return nullptr; }
 
 			const char* q = p + 3;
 			q = strchr(q, ';');
 
-			if (!q || !*q) return nullptr;
+			if (!q || !*q) { return nullptr; }
 
 			delta = q - p;
 			--q;
 
 			while (*q != 'x')
 			{
-				if (*q >= '0' && *q <= '9')
-					ucs += mult * (*q - '0');
-				else if (*q >= 'a' && *q <= 'f')
-					ucs += mult * (*q - 'a' + 10);
-				else if (*q >= 'A' && *q <= 'F')
-					ucs += mult * (*q - 'A' + 10);
-				else
-					return nullptr;
+				if (*q >= '0' && *q <= '9') { ucs += mult * (*q - '0'); }
+				else if (*q >= 'a' && *q <= 'f') { ucs += mult * (*q - 'a' + 10); }
+				else if (*q >= 'A' && *q <= 'F') { ucs += mult * (*q - 'A' + 10); }
+				else { return nullptr; }
+
 				mult *= 16;
 				--q;
 			}
@@ -302,7 +332,7 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 			const char* q = p + 2;
 			q = strchr(q, ';');
 
-			if (!q || !*q) return nullptr;
+			if (!q || !*q) { return nullptr; }
 
 			delta = q - p;
 			--q;
@@ -310,9 +340,14 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 			while (*q != '#')
 			{
 				if (*q >= '0' && *q <= '9')
+				{
 					ucs += mult * (*q - '0');
+				}
 				else
+				{
 					return nullptr;
+				}
+
 				mult *= 10;
 				--q;
 			}
@@ -354,8 +389,7 @@ const char* XmlBase::getChar(const char* p, char* _value, int* length)
 
 	if (*length == 1)
 	{
-		if (*p == '&')
-			return getEntity(p, _value, length);
+		if (*p == '&') { return getEntity(p, _value, length); }
 		*_value = *p;
 		return p + 1;
 	}
@@ -367,6 +401,7 @@ const char* XmlBase::getChar(const char* p, char* _value, int* length)
 		{
 			_value[i] = p[i];
 		}
+
 		return p + (*length);
 	}
 	else
@@ -386,6 +421,7 @@ bool XmlBase::stringEqual(const char* p, const char* tag, bool ignoreCase)
 {
 	assert(p);
 	assert(tag);
+
 	if (!p || !*p)
 	{
 		assert(0);
@@ -402,8 +438,7 @@ bool XmlBase::stringEqual(const char* p, const char* tag, bool ignoreCase)
 			++tag;
 		}
 
-		if (*tag == 0)
-			return true;
+		if (*tag == 0) { return true; }
 	}
 	else
 	{
@@ -414,8 +449,11 @@ bool XmlBase::stringEqual(const char* p, const char* tag, bool ignoreCase)
 		}
 
 		if (*tag == 0)		// Have we found the end of the tag, and everything equal?
+		{
 			return true;
+		}
 	}
+
 	return false;
 }
 
@@ -476,14 +514,22 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 				char cArr[4] = { 0, 0, 0, 0 };
 				p = getChar(p, cArr, &len);
 				if (len == 1)
+				{
 					(*text) += cArr[0];	// more efficient
+				}
 				else
+				{
 					text->append(cArr, len);
+				}
 			}
 		}
 	}
+	
 	if (p && *p)
+	{
 		p += strlen(endTag);
+	}
+	
 	return (p && *p) ? p : 0;
 }
 
@@ -496,7 +542,6 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 	//
 	// This "pre-streaming" will never read the closing ">" so the
 	// sub-tag can orient itself.
-
 	if (!streamTo(in, '<', tag))
 	{
 		error(XML_ERROR_PARSING_EMPTY, 0, 0);
@@ -528,12 +573,11 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 				node->streamIn(in, tag);
 				bool isElement = node->toElement() != 0;
 				delete node;
-				node = 0;
+				node = nullptr;
 
 				// If this is the root element, we're done. Parsing will be
 				// done by the >> operator.
-				if (isElement)
-					return;
+				if (isElement) { return; }
 			}
 			else
 			{
@@ -614,10 +658,14 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 {
 	// The first error in a chain is more accurate - don't set again!
 	if (_error)
+	{
 		return;
+	}
 
 	if (XML_ERROR_TABLE.empty())
+	{
 		fillErrorTable();
+	}
 
 	assert(err > 0 && err < XML_ERROR_STRING_COUNT);
 	_error = true;
@@ -644,12 +692,16 @@ XmlNode* XmlNode::identify(const char* p)
 
 	p = skipWhiteSpace(p);
 	if (!p || !*p || *p != '<')
+	{
 		return nullptr;
+	}
 
 	p = skipWhiteSpace(p);
 
 	if (!p || !*p)
+	{
 		return nullptr;
+	}
 
 
 	// What is this thing?
@@ -718,14 +770,16 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc)
-				doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
+			if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
 			return;
 		}
+
 		tag += static_cast<char>(c);
 
 		if (c == '>')
+		{
 			break;
+		}
 	}
 
 	if (tag.length() < 3) return;
@@ -762,8 +816,13 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 
 			// We now have either a closing tag...or another node.
 			// We should be at a "<", regardless.
-			if (!in.good()) return;
+			if (!in.good())
+			{
+				return;
+			}
+			
 			assert(in.peek() == '<');
+			
 			int tagIndex = (int)tag.length();
 
 			bool closingTag = false;
@@ -772,19 +831,22 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 			for (;;)
 			{
 				if (!in.good())
+				{
 					return;
+				}
 
 				int c = in.peek();
 				if (c <= 0)
 				{
 					XmlDocument* doc = document();
-					if (doc)
-						doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
+					if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
 					return;
 				}
 
 				if (c == '>')
+				{
 					break;
+				}
 
 				tag += static_cast<char>(c);
 				in.get();
@@ -805,7 +867,9 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				{
 					firstCharFound = true;
 					if (c == '/')
+					{
 						closingTag = true;
+					}
 				}
 			}
 			// If it was a closing tag, then read in the closing '>' to clean up the input stream.
@@ -813,14 +877,15 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 			if (closingTag)
 			{
 				if (!in.good())
+				{
 					return;
+				}
 
 				int c = in.get();
 				if (c <= 0)
 				{
 					XmlDocument* doc = document();
-					if (doc)
-						doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
+					if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
 					return;
 				}
 				assert(c == '>');
@@ -834,8 +899,8 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				// If not a closing tag, id it, and stream.
 				const char* tagloc = tag.c_str() + tagIndex;
 				XmlNode* node = identify(tagloc);
-				if (!node)
-					return;
+				if (!node) { return; }
+				
 				node->streamIn(in, tag);
 				delete node;
 				node = nullptr;
@@ -858,7 +923,7 @@ const char* XmlElement::parse(const char* p, void* data)
 
 	if (!p || !*p)
 	{
-		if (doc) doc->error(XML_ERROR_PARSING_ELEMENT, 0, 0);
+		if (doc) { doc->error(XML_ERROR_PARSING_ELEMENT, 0, 0); }
 		return nullptr;
 	}
 
@@ -870,7 +935,7 @@ const char* XmlElement::parse(const char* p, void* data)
 
 	if (*p != '<')
 	{
-		if (doc) doc->error(XML_ERROR_PARSING_ELEMENT, p, data);
+		if (doc) { doc->error(XML_ERROR_PARSING_ELEMENT, p, data); }
 		return nullptr;
 	}
 
@@ -882,7 +947,7 @@ const char* XmlElement::parse(const char* p, void* data)
 	p = readName(p, _value);
 	if (!p || !*p)
 	{
-		if (doc) doc->error(XML_ERROR_FAILED_TO_READ_ELEMENT_NAME, pErr, data);
+		if (doc) { doc->error(XML_ERROR_FAILED_TO_READ_ELEMENT_NAME, pErr, data); }
 		return nullptr;
 	}
 
@@ -897,7 +962,7 @@ const char* XmlElement::parse(const char* p, void* data)
 		p = skipWhiteSpace(p);
 		if (!p || !*p)
 		{
-			if (doc) doc->error(XML_ERROR_READING_ATTRIBUTES, pErr, data);
+			if (doc) { doc->error(XML_ERROR_READING_ATTRIBUTES, pErr, data); }
 			return nullptr;
 		}
 		if (*p == '/')
@@ -906,7 +971,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			// Empty tag.
 			if (*p != '>')
 			{
-				if (doc) doc->error(XML_ERROR_PARSING_EMPTY, p, data);
+				if (doc) { doc->error(XML_ERROR_PARSING_EMPTY, p, data); }
 				return nullptr;
 			}
 			return (p + 1);
@@ -921,7 +986,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			{
 				// We were looking for the end tag, but found nothing.
 				// Fix for [ 1663758 ] Failure to report error on bad XML
-				if (doc) doc->error(XML_ERROR_READING_END_TAG, p, data);
+				if (doc) { doc->error(XML_ERROR_READING_END_TAG, p, data); }
 				return nullptr;
 			}
 
@@ -939,7 +1004,7 @@ const char* XmlElement::parse(const char* p, void* data)
 					++p;
 					return p;
 				}
-				if (doc) doc->error(XML_ERROR_READING_END_TAG, p, data);
+				if (doc) { doc->error(XML_ERROR_READING_END_TAG, p, data); }
 				return nullptr;
 			}
 			else
@@ -973,7 +1038,7 @@ const char* XmlElement::parse(const char* p, void* data)
 
 			if (node)
 			{
-				if (doc) doc->error(XML_ERROR_PARSING_ELEMENT, pErr, data);
+				if (doc) { doc->error(XML_ERROR_PARSING_ELEMENT, pErr, data); }
 				delete attrib;
 				return nullptr;
 			}
@@ -981,6 +1046,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			attributeSet.add(attrib);
 		}
 	}
+
 	return p;
 }
 
@@ -1017,9 +1083,13 @@ const char* XmlElement::readValue(const char* p, void* data)
 			}
 
 			if (!textNode->blank())
+			{
 				linkEndChild(textNode);
+			}
 			else
+			{
 				delete textNode;
+			}
 		}
 		else
 		{
@@ -1064,14 +1134,15 @@ void XmlUnknown::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc)
-				doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
+			if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
 			return;
 		}
 		tag += static_cast<char>(c);
 
 		if (c == '>')
+		{
 			return;
+		}
 	}
 }
 
@@ -1089,7 +1160,7 @@ const char* XmlUnknown::parse(const char* p, void* data)
 
 	if (!p || !*p || *p != '<')
 	{
-		if (doc) doc->error(XML_ERROR_PARSING_UNKNOWN, p, data);
+		if (doc) { doc->error(XML_ERROR_PARSING_UNKNOWN, p, data); }
 		return nullptr;
 	}
 
@@ -1104,11 +1175,13 @@ const char* XmlUnknown::parse(const char* p, void* data)
 
 	if (!p)
 	{
-		if (doc)
-			doc->error(XML_ERROR_PARSING_UNKNOWN, 0, 0);
+		if (doc) { doc->error(XML_ERROR_PARSING_UNKNOWN, 0, 0); }
 	}
+	
 	if (p && *p == '>')
+	{
 		return p + 1;
+	}
 
 	return p;
 }
@@ -1121,8 +1194,7 @@ void XmlComment::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc)
-				doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
+			if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
 			return;
 		}
 
@@ -1160,10 +1232,10 @@ const char* XmlComment::parse(const char* p, void* data)
 
 	if (!stringEqual(p, startTag, false))
 	{
-		if (doc)
-			doc->error(XML_ERROR_PARSING_COMMENT, p, data);
+		if (doc) { doc->error(XML_ERROR_PARSING_COMMENT, p, data); }
 		return nullptr;
 	}
+
 	p += strlen(startTag);
 
 	_value = "";
@@ -1173,8 +1245,11 @@ const char* XmlComment::parse(const char* p, void* data)
 		_value.append(p, 1);
 		++p;
 	}
+
 	if (p && *p)
+	{
 		p += strlen(endTag);
+	}
 
 	return p;
 }
@@ -1241,13 +1316,15 @@ const char* XmlAttribute::parse(const char* p, void* data)
 				// [ 1451649 ] Attribute values with trailing quotes not handled correctly
 				// We did not have an opening quote but seem to have a
 				// closing one. Give up and throw an error.
-				if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, p, data);
+				if (_document) { _document->error(XML_ERROR_READING_ATTRIBUTES, p, data); }
 				return nullptr;
 			}
+
 			_value += *p;
 			++p;
 		}
 	}
+
 	return p;
 }
 
@@ -1264,8 +1341,7 @@ void XmlText::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc)
-				doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0);
+			if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
 
 			return;
 		}
@@ -1305,8 +1381,8 @@ const char* XmlText::parse(const char* p, void* data)
 
 		if (!stringEqual(p, startTag, false))
 		{
-			if (doc)
-				doc->error(XML_ERROR_PARSING_CDATA, p, data);
+			if (doc) { doc->error(XML_ERROR_PARSING_CDATA, p, data); }
+
 			return nullptr;
 		}
 		p += strlen(startTag);
@@ -1329,10 +1405,15 @@ const char* XmlText::parse(const char* p, void* data)
 		const char* end = "<";
 		p = readText(p, &_value, ignoreWhite, end, false);
 		if (p && *p)
-			return p - 1; // don't truncate the '<'
+		{
+			// don't truncate the '<'
+			return p - 1;
+		}
+
 		return nullptr;
 	}
 }
+
 
 } // namespace Xml
 } // namespace NAS2D

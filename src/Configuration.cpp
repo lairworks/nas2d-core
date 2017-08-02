@@ -77,7 +77,9 @@ Configuration::Configuration():	mScreenWidth(GRAPHICS_WIDTH),
 Configuration::~Configuration()
 {
 	if (mOptionChanged)
+	{
 		save();
+	}
 
 	std::cout << "Configuration Terminated." << std::endl;
 }
@@ -99,14 +101,15 @@ void Configuration::load(const std::string& filePath)
 		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
 		mOptionChanged = true;
 	}
-	// Read in the Config File.
-	else if (!readConfig(filePath))
+	else if (!readConfig(filePath)) // Read in the Config File.
 	{
 		mOptionChanged = true;
 		std::cout << "unable to process '" << filePath << "'. Using default options." << std::endl;
 	}
 	else
+	{
 		std::cout << "done." << std::endl;
+	}
 
 }
 
@@ -129,11 +132,11 @@ void Configuration::save()
 	graphics->attribute("screenheight", mScreenHeight);
 	graphics->attribute("bitdepth", mScreenBpp);
 
-	if (mFullScreen)	graphics->attribute("fullscreen", "true");
-	else graphics->attribute("fullscreen", "false");
+	if (mFullScreen) { graphics->attribute("fullscreen", "true"); }
+	else { graphics->attribute("fullscreen", "false"); }
 
-	if (mVSync) graphics->attribute("vsync", "true");
-	else graphics->attribute("vsync", "false");
+	if (mVSync) { graphics->attribute("vsync", "true"); }
+	else { graphics->attribute("vsync", "false"); }
 
 	root->linkEndChild(graphics);
 
@@ -218,7 +221,8 @@ bool Configuration::readConfig(const std::string& filePath)
 			else if (xmlNode->value() == "audio") { parseAudio(xmlNode); }
 			else if (xmlNode->value() == "options") { parseOptions(xmlNode); }
 			else if (xmlNode->type() == XmlNode::XML_COMMENT) {} // Ignore comments
-			else {
+			else
+			{
 				std::cout << "Unexpected tag '<" << xmlNode->value() << ">' found in '" << filePath << "' on row " << xmlNode->row() << "." << std::endl;
 			}
 		}
@@ -249,22 +253,17 @@ void Configuration::parseGraphics(void* _n)
 	XmlAttribute* attribute = element->firstAttribute();
 	while (attribute)
 	{
-		if (attribute->name() == GRAPHICS_CFG_SCREEN_WIDTH)
-			attribute->queryIntValue(mScreenWidth);
-		else if (attribute->name() == GRAPHICS_CFG_SCREEN_HEIGHT)
-			attribute->queryIntValue(mScreenHeight);
-		else if (attribute->name() == GRAPHICS_CFG_SCREEN_DEPTH)
-			attribute->queryIntValue(mScreenBpp);
-		else if (attribute->name() == GRAPHICS_CFG_FULLSCREEN)
-			fullscreen(toLowercase(attribute->value()) == "true");
-		else if (attribute->name() == GRAPHICS_CFG_VSYNC)
-			vsync(toLowercase(attribute->value()) == "true");
-		else
-			std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
+		if (attribute->name() == GRAPHICS_CFG_SCREEN_WIDTH) { attribute->queryIntValue(mScreenWidth); }
+		else if (attribute->name() == GRAPHICS_CFG_SCREEN_HEIGHT) { attribute->queryIntValue(mScreenHeight); }
+		else if (attribute->name() == GRAPHICS_CFG_SCREEN_DEPTH) { attribute->queryIntValue(mScreenBpp); }
+		else if (attribute->name() == GRAPHICS_CFG_FULLSCREEN) { fullscreen(toLowercase(attribute->value()) == "true"); }
+		else if (attribute->name() == GRAPHICS_CFG_VSYNC) { vsync(toLowercase(attribute->value()) == "true"); }
+		else { std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl; }
 
 		attribute = attribute->next();
 	}
 }
+
 
 /**
  * Parses audio information from an XML node.
@@ -332,7 +331,9 @@ void Configuration::parseAudio(void* _n)
 			mMixerName = attribute->value();
 		}
 		else
+		{
 			std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
+		}
 
 		attribute = attribute->next();
 	}
@@ -347,7 +348,6 @@ void Configuration::parseAudio(void* _n)
 void Configuration::parseOptions(void* _n)
 {
 	// NOTE: Void pointer used to avoid implementation details in the class declaration.
-
 	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
 
 	// Probably not a necessary check but here for robustness.
@@ -363,26 +363,39 @@ void Configuration::parseOptions(void* _n)
 		if (node->value() == "option")
 		{
 			XmlAttribute* attribute = node->toElement()->firstAttribute();
+
 			std::string name, value;
 			while (attribute)
 			{
 				if (attribute->name() == "name")
+				{
 					name = attribute->value();
+				}
 				else if (attribute->name() == "value")
+				{
 					value = attribute->value();
+				}
 				else
+				{
 					std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
+				}
 
 				attribute = attribute->next();
 			}
 
 			if (name.empty() || value.empty())
+			{
 				std::cout << "Invalid name/value pair in <option> tag in configuration file on row " << node->row() << ". This option will be ignored." << std::endl;
+			}
 			else
+			{
 				mOptions[name] = value;
+			}
 		}
 		else
+		{
 			std::cout << "Unexpected tag '<" << node->value() << ">' found in configuration on row " << node->row() << "." << std::endl;
+		}
 	}
 }
 
@@ -561,7 +574,9 @@ void Configuration::vsync(bool vsync)
 void Configuration::audioMixRate(int mixrate)
 {
 	if (mixrate != AUDIO_LOW_QUALITY && mixrate != AUDIO_MEDIUM_QUALITY && mixrate != AUDIO_HIGH_QUALITY)
+	{
 		mixrate = AUDIO_MEDIUM_QUALITY;
+	}
 
 	mMixRate = mixrate;
 	mOptionChanged = true;
@@ -646,7 +661,9 @@ void Configuration::audioBufferSize(int size)
 void Configuration::option(const std::string& option, const std::string& value, bool overwrite)
 {
 	if (!overwrite && mOptions.find(option) != mOptions.end())
+	{
 		return;
+	}
 
 	mOptions[option] = value;
 	mOptionChanged = true;
@@ -666,7 +683,9 @@ void Configuration::option(const std::string& option, const std::string& value, 
 const std::string& Configuration::option(const std::string& key)
 {
 	if (mOptions.find(key) != mOptions.end())
+	{
 		mOptionChanged = true;
+	}
 
 	return mOptions[key];
 }

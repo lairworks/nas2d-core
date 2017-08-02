@@ -229,10 +229,11 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if (dstPoint.x() > destination.width() || dstPoint.y() > destination.height())
+	{
 		return;
+	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
 
 	Rectangle_2d clipRect;
@@ -242,7 +243,9 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
 	if (clipRect.width() < 1 || clipRect.height() < 1)
+	{
 		return;
+	}
 
 	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
 	if (fbo == 0)
@@ -260,7 +263,6 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	drawVertexArray(IMAGE_ID_MAP[source.name()].texture_id);
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-
 }
 
 
@@ -314,8 +316,8 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	// so we need to be sure that we step two index places for each loop.
 	for (int i = 0; i < num_segments * 2; i += 2)
 	{
-		verts[i]		= x * scale_x + cx;
-		verts[i + 1]	= y * scale_y + cy;
+		verts[i] = x * scale_x + cx;
+		verts[i + 1] = y * scale_y + cy;
 
 		// Apply the rotation matrix
 		float t = x;
@@ -332,7 +334,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 	 * 			eliminate the alloc/dealloc overhead (at the cost of increased code
 	 * 			size).
 	 */
-	delete [] verts;
+	delete[] verts;
 
 	glEnable(GL_TEXTURE_2D);
 }
@@ -488,7 +490,7 @@ void OGL_Renderer::setCursor(int cursorId)
 
 void OGL_Renderer::clearScreen(int r, int g, int b)
 {
-	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0 );
+	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -503,7 +505,9 @@ void OGL_Renderer::update()
 float OGL_Renderer::width()
 {
 	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+	{
 		return DESKTOP_RESOLUTION.x();
+	}
 
 	return _size().x();
 }
@@ -512,7 +516,9 @@ float OGL_Renderer::width()
 float OGL_Renderer::height()
 {
 	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+	{
 		return DESKTOP_RESOLUTION.y();
+	}
 
 	return _size().y();
 }
@@ -559,7 +565,9 @@ bool OGL_Renderer::fullscreen()
 void OGL_Renderer::resizeable(bool _r)
 {
 	if (fullscreen())
+	{
 		return;
+	}
 
 	// Not happy with the cast but I suppose it's a necessary evil.
 	SDL_SetWindowResizable(_WINDOW, static_cast<SDL_bool>(_r));
@@ -723,8 +731,8 @@ void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
 	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
 
 	// Choose from the default texture coordinates or from a custom set.
-	if (defaultTextureCoords) glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
-	else glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY);
+	if (defaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS); }
+	else { glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY); }
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
@@ -875,21 +883,21 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	y2 -= cy * 0.5f;
 
 	//draw the line by triangle strip
-	float line_vertex[]=
+	float line_vertex[] =
 	{
-		x1-tx-Rx-cx, y1-ty-Ry-cy, //fading edge1
-		x2-tx-Rx+cx, y2-ty-Ry+cy,
-		x1-tx-cx, y1-ty-cy,        //core
-		x2-tx+cx, y2-ty+cy,
-		x1+tx-cx, y1+ty-cy,
-		x2+tx+cx, y2+ty+cy,
-		x1+tx+Rx-cx, y1+ty+Ry-cy, //fading edge2
-		x2+tx+Rx+cx, y2+ty+Ry+cy
+		x1 - tx - Rx - cx, y1 - ty - Ry - cy, //fading edge1
+		x2 - tx - Rx + cx, y2 - ty - Ry + cy,
+		x1 - tx - cx, y1 - ty - cy,        //core
+		x2 - tx + cx, y2 - ty + cy,
+		x1 + tx - cx, y1 + ty - cy,
+		x2 + tx + cx, y2 + ty + cy,
+		x1 + tx + Rx - cx, y1 + ty + Ry - cy, //fading edge2
+		x2 + tx + Rx + cx, y2 + ty + Ry + cy
 	};
 
 	glVertexPointer(2, GL_FLOAT, 0, line_vertex);
 
-	float line_color[]=
+	float line_color[] =
 	{
 		Cr, Cg, Cb, 0,
 		Cr, Cg, Cb, 0,
@@ -907,24 +915,24 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	// Line End Caps
 	if (w > 3.0f) // <<< Arbitrary number.
 	{
-		float line_vertex[]=
+		float line_vertex[] =
 		{
-			x1-tx-Rx-cx, y1-ty-Ry-cy, //cap1
-			x1-tx-Rx, y1-ty-Ry,
-			x1-tx-cx, y1-ty-cy,
-			x1+tx+Rx, y1+ty+Ry,
-			x1+tx-cx, y1+ty-cy,
-			x1+tx+Rx-cx, y1+ty+Ry-cy,
-			x2-tx-Rx+cx, y2-ty-Ry+cy, //cap2
-			x2-tx-Rx, y2-ty-Ry,
-			x2-tx+cx, y2-ty+cy,
-			x2+tx+Rx, y2+ty+Ry,
-			x2+tx+cx, y2+ty+cy,
-			x2+tx+Rx+cx, y2+ty+Ry+cy
+			x1 - tx - Rx - cx, y1 - ty - Ry - cy, //cap1
+			x1 - tx - Rx, y1 - ty - Ry,
+			x1 - tx - cx, y1 - ty - cy,
+			x1 + tx + Rx, y1 + ty + Ry,
+			x1 + tx - cx, y1 + ty - cy,
+			x1 + tx + Rx - cx, y1 + ty + Ry - cy,
+			x2 - tx - Rx + cx, y2 - ty - Ry + cy, //cap2
+			x2 - tx - Rx, y2 - ty - Ry,
+			x2 - tx + cx, y2 - ty + cy,
+			x2 + tx + Rx, y2 + ty + Ry,
+			x2 + tx + cx, y2 + ty + cy,
+			x2 + tx + Rx + cx, y2 + ty + Ry + cy
 		};
 		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
 
-		float line_color[]=
+		float line_color[] =
 		{
 			Cr, Cg, Cb, 0, //cap1
 			Cr, Cg, Cb, 0,

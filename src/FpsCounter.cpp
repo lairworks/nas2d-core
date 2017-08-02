@@ -41,16 +41,17 @@ unsigned int FpsCounter::fps()
 
 	TICK_DELTA = CURRENT_TICK - LAST_TICK;
 
-	if (TICK_DELTA == 0) TICK_DELTA = 1;
+	if (TICK_DELTA == 0) { TICK_DELTA = 1; }
 
 	FPS_COUNTS[++INDEX] = 1000 / TICK_DELTA;
 
-	if (INDEX >= FPS_COUNTS_SIZE)
-		INDEX = 0;
+	if (INDEX >= FPS_COUNTS_SIZE) { INDEX = 0; }
 
 	ACCUMULATOR = 0;
 	for (auto i : FPS_COUNTS)
+	{
 		ACCUMULATOR += i;
+	}
 
 	return ACCUMULATOR / FPS_COUNTS_SIZE;
 }

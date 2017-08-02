@@ -59,7 +59,9 @@ XmlComment& XmlComment::operator=(const XmlComment& base)
 void XmlComment::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; i++)
+	{
 		buf += "\t";
+	}
 
 	buf += "<!--" + _value + "-->";
 }
@@ -73,9 +75,7 @@ void XmlComment::write(std::string& buf, int depth) const
 XmlNode* XmlComment::clone() const
 {
 	XmlComment* clone = new XmlComment();
-
-	if (!clone)
-		return nullptr;
+	if (!clone) { return nullptr; }
 
 	copyTo(clone);
 	return clone;

@@ -165,7 +165,9 @@ Image& Image::operator=(const Image& rhs)
 
 	auto it = IMAGE_ID_MAP.find(name());
 	if (it == IMAGE_ID_MAP.end())
+	{
 		throw image_bad_data();
+	}
 
 	loaded(rhs.loaded());
 	++it->second.ref_count;
@@ -271,9 +273,13 @@ Color_4ub Image::pixelColor(int x, int y) const
 
 	case 3:
 		if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+		{
 			c = p[0] << 16 | p[1] << 8 | p[2];
+		}
 		else
+		{
 			c = p[0] | p[1] << 8 | p[2] << 16;
+		}
 		break;
 
 	case 4:
@@ -308,7 +314,9 @@ void updateImageReferenceCount(const std::string& name)
 {
 	auto it = IMAGE_ID_MAP.find(name);
 	if (it == IMAGE_ID_MAP.end())
+	{
 		return;
+	}
 
 	--it->second.ref_count;
 

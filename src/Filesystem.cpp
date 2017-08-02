@@ -380,7 +380,7 @@ bool Filesystem::closeFile(void* file) const
  */
 bool Filesystem::write(const File& file, bool overwrite) const
 {
-	if (!FILESYSTEM_INITIALIZED) throw filesystem_not_initialized();
+	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
 
 	if (file.empty())
 	{
@@ -446,7 +446,7 @@ std::string Filesystem::dataPath() const
  */
 std::string Filesystem::workingPath(const std::string& filename) const
 {
-	if (!FILESYSTEM_INITIALIZED) throw filesystem_not_initialized();
+	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
 	if (!filename.empty())
 	{
 		std::string tmpStr(filename);

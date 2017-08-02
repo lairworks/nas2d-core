@@ -37,7 +37,9 @@ XmlUnknown& XmlUnknown::operator=(const XmlUnknown& copy)
 void XmlUnknown::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; i++)
+	{
 		buf += "\t";
+	}
 
 	buf += "<" + value() + ">";
 }
@@ -48,7 +50,9 @@ XmlNode* XmlUnknown::clone() const
 	XmlUnknown* clone = new XmlUnknown();
 
 	if (!clone)
+	{
 		return nullptr;
+	}
 
 	copyTo(clone);
 	return clone;

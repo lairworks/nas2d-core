@@ -126,7 +126,7 @@ void somefunc(int val)
 {
 	if (val == 1)
 		std::cout << "val == 1" << std::endl;
-		return;									// Everything beyond this line is never reached.
+		return;	// Everything beyond this line is never reached.
 	if (val == 2)
 	{
 		std::cout << "val == 2" << std::endl;

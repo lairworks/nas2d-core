@@ -1,3 +1,14 @@
+// ==================================================================================
+// = NAS2D
+// = Copyright © 2008 - 2017 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software under the terms of the zlib license.
+// = 
+// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// ==================================================================================
+// = Originally based on TinyXML. See Xml.h for additional details.
+// ==================================================================================
 #include "NAS2D/Xml/XmlDocument.h"
 
 using namespace NAS2D::Xml;
@@ -62,15 +73,16 @@ void XmlDocument::copyTo(XmlDocument* target) const
 
 	XmlNode* node = nullptr;
 	for (node = _firstChild; node; node = node->nextSibling())
+	{
 		target->linkEndChild(node->clone());
+	}
 }
 
 
 XmlNode* XmlDocument::clone() const
 {
 	XmlDocument* clone = new XmlDocument();
-	if (!clone)
-		return nullptr;
+	if (!clone) { return nullptr; }
 
 	copyTo(clone);
 	return clone;
@@ -97,7 +109,9 @@ bool XmlDocument::accept(void* visitor) const
 		for (const XmlNode* node = firstChild(); node; node = node->nextSibling())
 		{
 			if (!node->accept(visitor))
+			{
 				break;
+			}
 		}
 	}
 

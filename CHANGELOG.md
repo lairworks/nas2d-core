@@ -4,6 +4,7 @@ This is a feature release.
 
 ## Added
 - Added EventHandler::alt() which returns true if the key modifier is either alt key (or both).
+- Added a clip area function to the renderer (clipRect series of functions).
 
 ## Fixed
 

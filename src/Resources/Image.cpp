@@ -74,16 +74,11 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
 	_size = std::make_pair(width, height);
 
-	// MAGIC NUMBER: 4 == 4 1-byte color channels (RGBA)
-	unsigned char* buffer = new unsigned char[4 * (width * height)] ();
-	generateTexture(buffer, 4, width, height);
-
 	// Update resource management.
-	IMAGE_ID_MAP[name()].texture_id = IMAGE_ID_MAP[name()].texture_id;
+	IMAGE_ID_MAP[name()].texture_id = 0;
 	IMAGE_ID_MAP[name()].w = width;
 	IMAGE_ID_MAP[name()].h = height;
 	IMAGE_ID_MAP[name()].ref_count++;
-	delete [] buffer;
 }
 
 
@@ -332,7 +327,7 @@ void updateImageReferenceCount(const std::string& name)
 
 		if (it->second.fbo_id != 0)
 		{
-			glDeleteBuffers(1, &it->second.fbo_id);
+			glDeleteFramebuffers(1, &it->second.fbo_id);
 		}
 
 		if (it->second.pixels != nullptr)

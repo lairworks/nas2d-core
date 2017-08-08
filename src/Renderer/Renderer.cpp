@@ -880,6 +880,43 @@ void Renderer::drawTextShadow(Font& font, const std::string& text, float x, floa
 
 
 /**
+ * Sets a rectangular area of the screen outside of which nothing is drawn.
+ * 
+ * \param	rect	Reference to a Rectangle_2df representing to area to clip against.
+ * 
+ * \see clipRectClear()
+ */
+void Renderer::clipRect(const Rectangle_2df& rect)
+{
+	clipRect(rect.x(), rect.y(), rect.width(), rect.height());
+}
+
+
+/**
+ * Sets a rectangular area of the screen outside of which nothing is drawn.
+ * 
+ * \param	x		X-Coordinate of the area to clip against.
+ * \param	y		Y-Coordinate of the area to clip against.
+ * \param	width	Width of the area to clip against.
+ * \param	height	Height of the area to clip against.
+ * 
+ * \note	To turn off the clipper, set the width or height
+ *			paramters to 0.
+ */
+void Renderer::clipRect(float x, float y, float width, float height)
+{}
+
+
+/**
+ * Clears the clipping rectangle.
+ */
+void Renderer::clipRectClear()
+{
+	clipRect(0, 0, 0, 0);
+}
+
+
+/**
  * Clears the screen with a given Color_4ub.
  *
  * \param color	A reference to a Color_4ub.

@@ -125,6 +125,10 @@ public:
 	float center_x();
 	float center_y();
 
+	void clipRect(const Rectangle_2df& rect);
+	void clipRectClear();
+	virtual void clipRect(float x, float y, float width, float height);
+
 	virtual void fullscreen(bool fs, bool maintain = false);
 	virtual bool fullscreen();
 

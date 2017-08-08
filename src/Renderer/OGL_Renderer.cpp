@@ -69,7 +69,7 @@ void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
 void drawVertexArray(GLuint textureId, bool defaultTextureCoords = true);
 
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
-GLuint generate_fbo();
+GLuint generate_fbo(Image& image);
 
 
 /**
@@ -228,10 +228,8 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glColor4ub(255, 255, 255, 255);
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if (dstPoint.x() > destination.width() || dstPoint.y() > destination.height())
-	{
+	if (!isRectInRect(dstPoint.x(), dstPoint.y(), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
 		return;
-	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
@@ -250,19 +248,17 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
 	if (fbo == 0)
 	{
-		fbo = generate_fbo();
-		IMAGE_ID_MAP[destination.name()].fbo_id = fbo;
+		fbo = generate_fbo(destination);
 	}
 
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id, 0);
-
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipRect.width()), static_cast<float>(-clipRect.height()));
 
 	drawVertexArray(IMAGE_ID_MAP[source.name()].texture_id);
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 
@@ -487,6 +483,20 @@ void OGL_Renderer::addCursor(const std::string& filePath, int cursorId, int offx
 void OGL_Renderer::setCursor(int cursorId)
 {
 	SDL_SetCursor(CURSORS[cursorId]);
+}
+
+
+void OGL_Renderer::clipRect(float x, float y, float width, float height)
+{
+	if (width == 0 || height == 0)
+	{
+		glDisable(GL_SCISSOR_TEST);
+		return;
+	}
+
+	glScissor(x, OGL_Renderer::height() - y - height, width, height);
+
+	glEnable(GL_SCISSOR_TEST);
 }
 
 
@@ -716,11 +726,30 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 /**
  * Generates an OpenGL Frame Buffer Object.
  */
-GLuint generate_fbo()
+GLuint generate_fbo(Image& image)
 {
-	GLuint fbo = 0;
-	glGenBuffers(1, &fbo);
-	return fbo;
+	unsigned int framebuffer;
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+	unsigned int textureColorbuffer;
+	glGenTextures(1, &textureColorbuffer);
+	glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+	GLenum textureFormat = 0;
+	SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
+
+	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, image.width(), image.height(), 0, textureFormat, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
+	// Update resource management.
+	IMAGE_ID_MAP[image.name()].texture_id = textureColorbuffer;
+	IMAGE_ID_MAP[image.name()].fbo_id = framebuffer;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	return framebuffer;
 }
 
 

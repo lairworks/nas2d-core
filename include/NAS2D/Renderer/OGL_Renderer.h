@@ -66,6 +66,8 @@ public:
 	virtual void resizeable(bool _r);
 	virtual bool resizeable();
 
+	virtual void clipRect(float x, float y, float width, float height) final;
+
 	virtual void window_icon(const std::string& path);
 
 	void update();

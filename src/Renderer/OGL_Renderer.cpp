@@ -108,7 +108,7 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r,
 {
 	glColor4ub(r, g, b, a);
 
-	fillVertexArray(x, y, static_cast<float>(image.width()), static_cast<float>(image.height()));
+	fillVertexArray(x, y, static_cast<float>(image.width() * scale), static_cast<float>(image.height() * scale));
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
 	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
 }
@@ -171,6 +171,13 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 
 	// Adjust the translation so that images appear where expected.
 	glTranslatef(x + imgHalfW, y + imgHalfH, 0.0f);
+
+	float _deg = degrees;
+	if (_deg < 0.0f)
+	{
+		_deg += 360.0f;
+	}
+
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	glColor4ub(r, g, b, a);

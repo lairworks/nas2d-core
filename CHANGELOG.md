@@ -10,6 +10,7 @@ This is a feature release.
 
 - OGL_Renderer::drawImageRepeated() now draws a texture repeated across a given face as expected.
 - Fixed an issue with XmlNode::lastChild(const std::string&) functions that would test against an internal value string instead of the value passed in as a parameter.
+- Fixed a mistake in OGL_Renderer::drawImage() that ignored the 'scale' paramter.
 
 ---
 

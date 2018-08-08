@@ -26,4 +26,9 @@ USER user
 VOLUME /code
 WORKDIR /code
 
+# The MAINTAINER tag was deprecated in Docker 1.13. The alternative is to use a LABEL tag.
+# This is probably better off not being in the Dockerfile at all though for open source projects.
+# Specifying maintainers in source files is known to discourage other people from making updates.
+LABEL maintainer="WhoEverWantsToEdit <anybody@anywhere.com>"
+
 CMD ["make", "-k"]

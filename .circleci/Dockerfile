@@ -15,11 +15,11 @@ FROM ubuntu:18.04
 
 # Install CircleCI tools needed for primary containers
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    ssh \
-    tar \
-    gzip \
-    ca-certificates \
+    git=1:2.17.1-* \
+    ssh=1:7.6p1-* \
+    tar=1.29b-* \
+    gzip=1.6-* \
+    ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
 # Install NAS2D specific dependencies

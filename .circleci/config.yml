@@ -1,13 +1,8 @@
-version: 2
+version: 2.0
 jobs:
   build:
     docker:
-      - image: debian:stretch
+      - image: outpostuniverse/ubuntu-18.04-circleci-gcc-sdl2
     steps:
       - checkout
-      - run:
-          name: Greeting
-          command: echo Hello, world.
-      - run:
-          name: Print the Current Time
-          command: date
+      - run: make -k

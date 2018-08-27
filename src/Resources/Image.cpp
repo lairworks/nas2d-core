@@ -370,10 +370,10 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 	switch (bytesPerPixel)
 	{
 	case 4:
-		SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGRA : textureFormat = GL_RGBA;
+		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
 		break;
 	case 3:
-		SDL_BYTEORDER == SDL_BIG_ENDIAN ? textureFormat = GL_BGR : textureFormat = GL_RGB;
+		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGR : GL_RGB;
 		break;
 
 	default:

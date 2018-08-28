@@ -5,3 +5,5 @@ platform:
   - x64
 build:
   project: proj/vc14/NAS2D.sln
+init:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

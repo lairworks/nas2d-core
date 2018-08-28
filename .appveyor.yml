@@ -1,0 +1,7 @@
+image: Visual Studio 2017
+configuration: Release
+platform:
+  - x86
+  - x64
+build:
+  project: proj/vc14/NAS2D.sln

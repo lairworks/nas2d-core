@@ -185,6 +185,10 @@ void Image::load()
 		return;
 	}
 
+	#ifdef _DEBUG
+	//std::cout << "Loading image '" << name() << "'" << std::endl;
+	#endif
+
 	File imageFile = Utility<Filesystem>::get().open(name());
 	if (imageFile.size() == 0)
 	{

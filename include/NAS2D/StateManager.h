@@ -35,11 +35,14 @@ public:
 
 	bool active() const;
 
+	void forceStopAudio(bool);
+
 private:
 	void handleQuit();
 
 	State			*mActiveState;
 	bool			mActive;
+	bool			mForceStopAudio = true;
 };
 
 } // namespace

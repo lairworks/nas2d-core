@@ -68,11 +68,8 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 #if defined(WINDOWS) || defined(__APPLE__)
 	std::string basePath = PHYSFS_getBaseDir();
 
-	mDataPath = basePath + mStartPath;
-	if (mDataPath.back() != mDirSeparator)
-	{
-		mDataPath += mDirSeparator;
-	}
+	// Note: Multiple trailing dir separators are safely ignored
+	mDataPath = basePath + mStartPath + mDirSeparator;
 
 #elif defined(__linux__)
 	std::string userDir = PHYSFS_getUserDir();

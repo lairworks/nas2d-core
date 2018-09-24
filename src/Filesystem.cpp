@@ -78,14 +78,16 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 	}
 
 #elif defined(__linux__)
-	std::string mTempWritePath = PHYSFS_getUserDir();
-	std::string mDirName = ".lom/data/";
-	mDataPath = mTempWritePath + mDirName;
+	std::string userDir = PHYSFS_getUserDir();
+	std::string appUserDataDir = ".lom/data/";
+	mDataPath = userDir + appUserDataDir;
 
+	// Create write directory if it does not exist
 	if (PHYSFS_exists(mDataPath.c_str()) == 0)
 	{
-		PHYSFS_setWriteDir(mTempWritePath.c_str());
-		PHYSFS_mkdir(mDirName.c_str());
+		// Must set write directory before we can modify filesystem
+		PHYSFS_setWriteDir(userDir.c_str());
+		PHYSFS_mkdir(appUserDataDir.c_str());
 	}
 #else
 #error Filesystem support for this platform has not been developed.

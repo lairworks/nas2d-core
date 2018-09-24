@@ -81,7 +81,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 
 	if (PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
 	{
-		std::cout << std::endl << "Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
+		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
 	}
 
 #elif defined(__linux__)
@@ -101,7 +101,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 	if (PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
 	{
 		//mErrorMessages.push_back(PHYSFS_getLastError());
-		std::cout << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
+		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
 	}
 
 #else

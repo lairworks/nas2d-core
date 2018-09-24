@@ -68,10 +68,10 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 #if defined(WINDOWS) || defined(__APPLE__)
 	std::string basePath = PHYSFS_getBaseDir();
 
-	mDataPath = basePath;
-	if (mStartPath.size() > 0)
+	mDataPath = basePath + mStartPath;
+	if (mDataPath.back() != mDirSeparator)
 	{
-		mDataPath += mStartPath + mDirSeparator;
+		mDataPath += mDirSeparator;
 	}
 
 #elif defined(__linux__)

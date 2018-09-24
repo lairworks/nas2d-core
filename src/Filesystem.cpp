@@ -77,12 +77,12 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 		mDataPath = basePath + mStartPath + mDirSeparator;
 	}
 
+	PHYSFS_setWriteDir(mDataPath.c_str());
+
 	if (PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
 	{
 		std::cout << std::endl << "Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
 	}
-
-	PHYSFS_setWriteDir(mDataPath.c_str());
 
 #elif defined(__linux__)
 	std::string mTempWritePath = PHYSFS_getUserDir();

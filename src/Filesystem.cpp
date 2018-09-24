@@ -8,6 +8,10 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
+#if !(defined(WINDOWS) || defined(__APPLE__) || defined(__linux__))
+#error Filesystem support for this platform has not been developed.
+#endif
+
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Exception.h"
 
@@ -25,7 +29,6 @@
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
-
 
 bool FILESYSTEM_INITIALIZED = false;
 
@@ -80,8 +83,6 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 	PHYSFS_setWriteDir(userDir.c_str());
 	// Create directory if it does not exist
 	PHYSFS_mkdir(appUserDataDir.c_str());
-#else
-#error Filesystem support for this platform has not been developed.
 #endif
 
 	PHYSFS_setWriteDir(mDataPath.c_str());
@@ -117,7 +118,6 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 		return false;
 	}
 
-#if defined(WINDOWS) || defined(__APPLE__) || defined(__linux__)
 	std::string searchPath(mDataPath + path);
 
 	if (PHYSFS_addToSearchPath(searchPath.c_str(), 1) == 0)
@@ -125,9 +125,6 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 		std::cout << "Couldn't add '" << path << "' to search path. " << PHYSFS_getLastError() << "." << std::endl;
 		return false;
 	}
-#else
-#error Filesystem support for this platform has not been developed.
-#endif
 
 	if (mVerbose) { std::cout << "Added '" << path << "' to search path." << std::endl; }
 

@@ -63,10 +63,10 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 	}
 
 	mStartPath = startPath;
+	mDirSeparator = PHYSFS_getDirSeparator();
 
 #if defined(WINDOWS) || defined(__APPLE__)
 	std::string basePath = PHYSFS_getBaseDir();
-	mDirSeparator = PHYSFS_getDirSeparator();
 
 	if (mStartPath.size() < 1)
 	{

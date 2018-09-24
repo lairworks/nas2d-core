@@ -8,10 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#if !(defined(WINDOWS) || defined(__APPLE__) || defined(__linux__))
-#error Filesystem support for this platform has not been developed.
-#endif
-
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Exception.h"
 

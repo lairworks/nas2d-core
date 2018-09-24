@@ -82,10 +82,9 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 	std::string mDirName = ".lom/data/";
 	mDataPath = mTempWritePath + mDirName;
 
-	PHYSFS_setWriteDir(mTempWritePath.c_str());
-
 	if (PHYSFS_exists(mDataPath.c_str()) == 0)
 	{
+		PHYSFS_setWriteDir(mTempWritePath.c_str());
 		PHYSFS_mkdir(mDirName.c_str());
 	}
 #else

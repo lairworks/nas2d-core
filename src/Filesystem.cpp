@@ -26,7 +26,6 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-
 bool FILESYSTEM_INITIALIZED = false;
 
 
@@ -63,50 +62,32 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 	}
 
 	mStartPath = startPath;
+	mDirSeparator = PHYSFS_getDirSeparator();
 
 #if defined(WINDOWS) || defined(__APPLE__)
 	std::string basePath = PHYSFS_getBaseDir();
-	mDirSeparator = PHYSFS_getDirSeparator();
 
-	if (mStartPath.size() < 1)
-	{
-		mDataPath = basePath;
-	}
-	else
-	{
-		mDataPath = basePath + mStartPath + mDirSeparator;
-	}
-
-	if (PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
-	{
-		std::cout << std::endl << "Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
-	}
-
-	PHYSFS_setWriteDir(mDataPath.c_str());
+	// Note: Multiple trailing dir separators are safely ignored
+	mDataPath = basePath + mStartPath + mDirSeparator;
 
 #elif defined(__linux__)
-	std::string mTempWritePath = PHYSFS_getUserDir();
-	std::string mDirName = ".lom/data/";
-	mDataPath = mTempWritePath + mDirName;
+	std::string userDir = PHYSFS_getUserDir();
+	std::string appUserDataDir = ".lom/data/";
+	mDataPath = userDir + appUserDataDir;
 
-	PHYSFS_setWriteDir(mTempWritePath.c_str());
-
-	if (PHYSFS_exists(mDataPath.c_str()) == 0)
-	{
-		PHYSFS_mkdir(mDirName.c_str());
-	}
+	// Must set write directory before we can modify filesystem
+	PHYSFS_setWriteDir(userDir.c_str());
+	// Create directory if it does not exist
+	PHYSFS_mkdir(appUserDataDir.c_str());
+#endif
 
 	PHYSFS_setWriteDir(mDataPath.c_str());
 
 	if (PHYSFS_addToSearchPath(mDataPath.c_str(), 0) == 0)
 	{
 		//mErrorMessages.push_back(PHYSFS_getLastError());
-		std::cout << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
+		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
 	}
-
-#else
-#error Filesystem support for this platform has not been developed.
-#endif
 
 	FILESYSTEM_INITIALIZED = true;
 
@@ -133,7 +114,6 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 		return false;
 	}
 
-#if defined(WINDOWS) || defined(__APPLE__) || defined(__linux__)
 	std::string searchPath(mDataPath + path);
 
 	if (PHYSFS_addToSearchPath(searchPath.c_str(), 1) == 0)
@@ -141,9 +121,6 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 		std::cout << "Couldn't add '" << path << "' to search path. " << PHYSFS_getLastError() << "." << std::endl;
 		return false;
 	}
-#else
-#error Filesystem support for this platform has not been developed.
-#endif
 
 	if (mVerbose) { std::cout << "Added '" << path << "' to search path." << std::endl; }
 

@@ -3,7 +3,7 @@
 # Note: This variable can be overridden from the command line
 # Example:
 #   make DepBuildDir=alternatePath
-DepBuildDir := dependencies
+DepBuildDir := ../build/dependencies
 
 UrlList := $(shell grep -o '^[^\#]*' SourcePackageList.txt)
 ArchiveList := $(addprefix ${DepBuildDir}/,$(notdir ${UrlList}))

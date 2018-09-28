@@ -257,7 +257,7 @@ File Filesystem::open(const std::string& filename) const
 	char *fileBuffer = new char[fileLength + 1];
 
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
-	if (PHYSFS_read(myFile, fileBuffer, sizeof(char), fileLength) < fileLength)
+	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
 	{
 		std::cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << std::endl;
 		delete[] fileBuffer;

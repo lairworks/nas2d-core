@@ -80,12 +80,6 @@ UrlList := $(shell grep -o '^[^\#]*' SourcePackageList.txt)
 ArchiveList := $(addprefix ${DepBuildDir}/,$(notdir ${UrlList}))
 BuildDirList := $(patsubst %.tar.gz,%,$(patsubst %.tgz,%,$(patsubst %.tar.bz2,%,${ArchiveList})))
 
-# Find path to an SDL2 source folder (used for SDL2 addon modules)
-# Note: This allows modules to compile without an already installed SDL2.h
-SDL2RootFolder := $(filter ${DepBuildDir}/SDL2-%, ${BuildDirList})
-export SDL2_CONFIG := $(abspath ${SDL2RootFolder})/sdl2-config
-export INCLUDES := -I${SDL2RootFolder}
-
 # Build rules which do not name a target file
 .PHONY: all download unpack configure compile install clean cleanbuild cleanpackages
 

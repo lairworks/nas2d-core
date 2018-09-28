@@ -60,7 +60,7 @@ void StateManager::setState(State* state)
 		return;
 	}
 
-	Utility<Mixer>::get().stopAllAudio();
+	if (mForceStopAudio) { Utility<Mixer>::get().stopAllAudio(); }
 
 	if (mActiveState != nullptr)
 	{
@@ -124,4 +124,14 @@ void StateManager::handleQuit()
 bool StateManager::active() const
 {
 	return mActive;
+}
+
+
+/**
+ * Sets whether or not the StateManager force stops all audio
+ * between state changes. Default is true.
+ */
+void StateManager::forceStopAudio(bool b)
+{
+	mForceStopAudio = b;
 }

@@ -16,9 +16,9 @@
 
 # Source pakcage URLs
 Sdl2PackageUrl := https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
-Sdl2ModulePackageUrls := https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.3.tar.gz \
-	https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.2.tar.gz \
-	https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.tar.gz
+Sdl2ImagePackageUrl := https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.3.tar.gz
+Sdl2MixerPackageUrl := https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.2.tar.gz
+Sdl2TtfPackageUrl := https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.tar.gz
 PhysfsPackageUrl := https://icculus.org/physfs/downloads/physfs-3.0.1.tar.bz2
 GlewPackageUrl := https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.tgz
 
@@ -33,47 +33,61 @@ PackageName = $(addprefix ${DepBuildDir}/,$(notdir $(1)))
 PackageFolder = $(patsubst %.tar.gz,%,$(patsubst %.tgz,%,$(patsubst %.tar.bz2,%,$(1))))
 
 
-#### SDL2 core ####
+#### Generic Source Install Rules ####
 
-# Less interesting sub-steps
-.PHONY: unpack-sdl2 configure-sdl2 compile-sdl2 clean-package-sdl2
+define SourcePackageInstallRules =
+.PHONY: download-$(1) unpack-$(1) configure-$(1) compile-$(1) $(1) install-$(1)
+.PHONY: clean-$(1) clean-package-$(1) clean-all-$(1)
 
-Sdl2Package := $(call PackageName,${Sdl2PackageUrl})
-Sdl2Folder := $(call PackageFolder,${Sdl2Package})
+SourcePackage_$(1) := $$(call PackageName,$(2))
+SourceFolder_$(1) := $$(call PackageFolder,$${SourcePackage_$(1)})
 
-${Sdl2Package}:
-	@echo "\nDownloading SDL2 source package..."
-	wget --no-clobber --directory-prefix=${DepBuildDir} ${Sdl2PackageUrl}
-download-sdl2: ${Sdl2Package}
+$${SourcePackage_$(1)}:
+	@echo "\nDownloading $(1) source package..."
+	wget -4 --no-clobber --directory-prefix=${DepBuildDir} $(2)
+download-$(1): $${SourcePackage_$(1)}
 
-${Sdl2Folder}: ${Sdl2Package}
-	@echo "\nUnpacking SDL2 source package..."
-	tar -C "${DepBuildDir}" -xf ${Sdl2Package}
-unpack-sdl2: | ${Sdl2Folder}
+$${SourceFolder_$(1)}: $${SourcePackage_$(1)}
+	@echo "\nUnpacking $(1) source package..."
+	tar -C "${DepBuildDir}" -xf $${SourcePackage_$(1)}
+unpack-$(1): | $${SourceFolder_$(1)}
 
-${Sdl2Folder}/Makefile: | ${Sdl2Folder}
-	@echo "\nConfiguring SDL2 source package..."
-	cd ${Sdl2Folder} && ./configure
-configure-sdl2: ${Sdl2Folder}/Makefile
+$${SourceFolder_$(1)}/Makefile: | $${SourceFolder_$(1)}
+	@echo "\nConfiguring $(1) source package..."
+	cd $${SourceFolder_$(1)} && { \
+			{ [ -f configure ] && ./configure; } || \
+			{ [ ! -f CMakeLists.txt ] || cmake ./; }; \
+		}
+configure-$(1): $${SourceFolder_$(1)}/Makefile
 
-${Sdl2Folder}/build/libSDL2.la: ${Sdl2Folder}/Makefile
-	@echo "\nCompiling SDL2 source package..."
-	make -C ${Sdl2Folder}
-compile-sdl2: ${Sdl2Folder}/build/libSDL2.la
+compile-$(1): $${SourceFolder_$(1)}/Makefile
+	@echo "\nCompiling $(1) source package..."
+	make -C $${SourceFolder_$(1)}
+$(1): compile-$(1)
 
-sdl2: compile-sdl2
+install-$(1): $(1)
+	@echo "\nInstalling $(1) source package..."
+	cd $${SourceFolder_$(1)} && make install
 
-install-sdl2: sdl2
-	@echo "\nInstalling SDL2 source package..."
-	cd ${Sdl2Folder} && make install
-
-clean-sdl2:
-	rm -r ${Sdl2Folder}
-clean-package-sdl2:
-	rm ${Sdl2Package}
-clean-all-sdl2: clean-sdl2 clean-package-sdl2
+clean-$(1):
+	rm -r $${SourceFolder_$(1)}
+clean-package-$(1):
+	rm $${SourcePackage_$(1)}
+clean-all-$(1): clean-$(1) clean-package-$(1)
+endef
 
 
+#### Setup generic rules for each package ####
+
+$(eval $(call SourcePackageInstallRules,sdl2,${Sdl2PackageUrl}))
+$(eval $(call SourcePackageInstallRules,sdl2-image,${Sdl2ImagePackageUrl}))
+$(eval $(call SourcePackageInstallRules,sdl2-mixer,${Sdl2MixerPackageUrl}))
+$(eval $(call SourcePackageInstallRules,sdl2-ttf,${Sdl2TtfPackageUrl}))
+$(eval $(call SourcePackageInstallRules,physfs,${PhysfsPackageUrl}))
+$(eval $(call SourcePackageInstallRules,glew,${GlewPackageUrl}))
+
+
+####
 ####
 
 UrlList := $(shell grep -o '^[^\#]*' SourcePackageList.txt)

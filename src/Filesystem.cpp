@@ -378,7 +378,7 @@ bool Filesystem::write(const File& file, bool overwrite) const
 		return false;
 	}
 
-	if (PHYSFS_write(myFile, file.bytes().c_str(), sizeof(char), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
+	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
 	{
 		if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << PHYSFS_getLastError() << std::endl; }
 		closeFile(myFile);

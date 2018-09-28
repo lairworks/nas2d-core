@@ -297,7 +297,9 @@ bool Filesystem::makeDirectory(const std::string& path) const
 bool Filesystem::isDirectory(const std::string& path) const
 {
 	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
-	return PHYSFS_isDirectory(path.c_str()) != 0;
+
+	PHYSFS_Stat stat;
+	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
 }
 
 

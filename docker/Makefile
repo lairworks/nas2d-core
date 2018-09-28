@@ -91,20 +91,3 @@ $(eval $(call SourcePackageInstallRules,sdl2-mixer,${Sdl2MixerPackageUrl}))
 $(eval $(call SourcePackageInstallRules,sdl2-ttf,${Sdl2TtfPackageUrl}))
 $(eval $(call SourcePackageInstallRules,physfs,${PhysfsPackageUrl}))
 $(eval $(call SourcePackageInstallRules,glew,${GlewPackageUrl}))
-
-
-#### Docker related build rules ####
-
-# Note: MAKEFILE_LIST's last entry is the last processed Makefile.
-#       That should be the current Makefile, assuming no includes
-MakefilePath := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
-TopLevelFolder := $(abspath ${MakefilePath}/..)
-
-build-ubuntu-16.04-image:
-	docker build ${MakefilePath}/ --file Ubuntu-16.04.BuildEnv.Dockerfile --tag ubuntu-16.04-gcc-sdl2
-compile-on-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code ubuntu-16.04-gcc-sdl2
-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive ubuntu-16.04-gcc-sdl2 bash
-root-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 ubuntu-16.04-gcc-sdl2 bash

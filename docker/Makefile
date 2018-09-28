@@ -9,9 +9,16 @@
 
 # Build rules (which do not name a target file)
 .PHONY: all download-all
+.PHONY: download-sdl2-modules compile-sdl2-modules install-sdl2-modules
+.PHONY: clean-sdl2-modules clean-all-sdl2-modules
 
-all: install-sdl2 install-sdl2-image install-sdl2-mixer install-sdl2-ttf install-glew install-physfs
-download-all: download-sdl2 download-sdl2-image download-sdl2-mixer download-sdl2-ttf download-glew download-physfs
+all: install-sdl2 install-sdl2-modules install-glew install-physfs
+download-all: download-sdl2 download-sdl2-modules download-glew download-physfs
+download-sdl2-modules: download-sdl2-image download-sdl2-mixer download-sdl2-ttf
+compile-sdl2-modules: compile-sdl2-image compile-sdl2-mixer compile-sdl2-ttf
+install-sdl2-modules: install-sdl2-image install-sdl2-mixer install-sdl2-ttf
+clean-sdl2-modules: clean-sdl2-image clean-sdl2-mixer clean-sdl2-ttf
+clean-all-sdl2-modules: clean-all-sdl2-image clean-all-sdl2-mixer clean-all-sdl2-ttf
 
 # Source pakcage URLs
 Sdl2PackageUrl := https://www.libsdl.org/release/SDL2-2.0.8.tar.gz

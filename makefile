@@ -1,5 +1,10 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
+# Capture top level folder before any Makefile includes
+# Note: MAKEFILE_LIST's last entry is the last processed Makefile.
+#       That should be the current Makefile, assuming no includes
+TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
+
 SRCDIR := src
 INCDIR := include
 BUILDDIR := build
@@ -117,3 +122,20 @@ install-deps-source-sdl2:
 	# Compile package
 	cd $(SdlDir) && make
 
+
+#### Docker related build rules ####
+
+# Build rules relating to Docker images
+.PHONY: build-image-ubuntu-16.04 compile-on-ubuntu-16.04
+.PHONY: debug-image-ubuntu-16.04 root-debug-image-ubuntu-16.04
+
+DockerFolder := ${TopLevelFolder}/docker
+
+build-image-ubuntu-16.04:
+	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-16.04.BuildEnv.Dockerfile --tag ubuntu-16.04-gcc-sdl2
+compile-on-ubuntu-16.04:
+	docker run --rm --tty --volume ${TopLevelFolder}:/code ubuntu-16.04-gcc-sdl2
+debug-image-ubuntu-16.04:
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive ubuntu-16.04-gcc-sdl2 bash
+root-debug-image-ubuntu-16.04:
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 ubuntu-16.04-gcc-sdl2 bash

@@ -8,11 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include <GL/glew.h>
-
-#include <SDL.h>
-#include <SDL_image.h>
-
 #include "NAS2D/Trig.h"
 #include "NAS2D/Renderer/OGL_Renderer.h"
 
@@ -24,6 +19,10 @@
 #include "NAS2D/Resources/ImageInfo.h"
 #include "NAS2D/Utility.h"
 
+#include <GL/glew.h>
+
+#include <SDL.h>
+#include <SDL_image.h>
 
 #include <iostream>
 #include <math.h>

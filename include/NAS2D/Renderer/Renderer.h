@@ -10,12 +10,12 @@
 
 #pragma once
 
-#include <string>
-
 #include "NAS2D/Signal.h"
 #include "NAS2D/Renderer/Primitives.h"
 #include "NAS2D/Resources/Image.h"
 #include "NAS2D/Resources/Font.h"
+
+#include <string>
 
 namespace NAS2D {
 

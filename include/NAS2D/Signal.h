@@ -61,7 +61,7 @@ public:
 	void disconnect(Y * obj, void (X::*func)() const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void clear() { delegateList.clear(); }
-	void emit() const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(); }
+	void emit() const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(); }
 	void operator() () const { emit(); }
 	bool empty() const { return delegateList.empty(); }
 
@@ -101,7 +101,7 @@ public:
 	void disconnect(Y * obj, void (X::*func)(Param1 p1) const) { delegateList.erase(MakeDelegate(obj, func)); }
 	
 	void clear() { delegateList.clear(); }
-	void emit(Param1 p1) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1); }
+	void emit(Param1 p1) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1); }
 	void operator() (Param1 p1) const { emit(p1); }
 	bool empty() const { return delegateList.empty(); }
 
@@ -143,7 +143,7 @@ public:
 
 	void clear() { delegateList.clear(); }
 	void operator() (Param1 p1, Param2 p2) const { emit(p1, p2); }
-	void emit(Param1 p1, Param2 p2) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1, p2); }
+	void emit(Param1 p1, Param2 p2) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1, p2); }
 	bool empty() const { return delegateList.empty(); }
 
 private:
@@ -183,7 +183,7 @@ public:
 	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void clear() { delegateList.clear(); }
-	void emit(Param1 p1, Param2 p2, Param3 p3) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1, p2, p3); }
+	void emit(Param1 p1, Param2 p2, Param3 p3) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1, p2, p3); }
 	void operator() (Param1 p1, Param2 p2, Param3 p3) const { emit(p1, p2, p3); }
 	bool empty() const { return delegateList.empty(); }
 
@@ -224,7 +224,7 @@ public:
 	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void clear() { delegateList.clear(); }
-	void emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1, p2, p3, p4); }
+	void emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1, p2, p3, p4); }
 	void operator() (Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { emit(p1, p2, p3, p4); }
 	bool empty() const { return delegateList.empty(); }
 
@@ -265,7 +265,7 @@ public:
 	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void clear() { delegateList.clear(); }
-	void emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ) (*(i++))(p1, p2, p3, p4, p5); }
+	void emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1, p2, p3, p4, p5); }
 	void operator() (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { emit(p1, p2, p3, p4, p5); }
 	bool empty() const { return delegateList.empty(); }
 

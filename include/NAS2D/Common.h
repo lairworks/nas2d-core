@@ -9,11 +9,11 @@
 // ==================================================================================
 #pragma once
 
+#include "NAS2D/Renderer/Primitives.h"
+
 #include <memory>
 #include <string>
 #include <vector>
-
-#include "NAS2D/Renderer/Primitives.h"
 
 namespace NAS2D {
 

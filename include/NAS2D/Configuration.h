@@ -9,10 +9,10 @@
 // ==================================================================================
 #pragma once
 
-#include <map>
-
 #include "Common.h"
 #include "Exception.h"
+
+#include <map>
 
 namespace NAS2D {
 

@@ -9,10 +9,10 @@
 // ==================================================================================
 #include "NAS2D/EventHandler.h"
 
-#include <SDL.h>
-
 // UGLY ASS HACK for mouse window grabbing
 #include "NAS2D/Renderer/OGL_Renderer.h"
+
+#include <SDL.h>
 
 #include <iostream>
 

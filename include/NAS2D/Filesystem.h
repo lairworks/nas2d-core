@@ -11,10 +11,8 @@
 #pragma once
 
 #include "Common.h"
-
-#include <string>
-
 #include "File.h"
+#include <string>
 
 namespace NAS2D {
 

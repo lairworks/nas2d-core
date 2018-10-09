@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2017 New Age Software
+// = Copyright Â© 2008 - 2017 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -9,9 +9,9 @@
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
-#include <stdexcept>
 
 #include "NAS2D/Xml/XmlAttribute.h"
+#include <stdexcept>
 
 using namespace std;
 using namespace NAS2D::Xml;

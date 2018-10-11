@@ -26,10 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY Makefile /buildDependencies/build/
 RUN cd /buildDependencies/build/ && make compile-sdl2 && make install-sdl2 && make clean-all-sdl2
 RUN cd /buildDependencies/build/ && make compile-sdl2-modules && make install-sdl2-modules && make clean-all-sdl2-modules
-RUN cd /buildDependencies/build/ \
-  && make compile-physfs PhysfsPackageUrl="https://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2" \
-  && make install-physfs PhysfsPackageUrl="https://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2" \
-  && make clean-physfs PhysfsPackageUrl="https://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2"
+RUN cd /buildDependencies/build/ && make compile-physfs && make install-physfs && make clean-physfs
 
 RUN useradd user
 USER user

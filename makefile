@@ -7,7 +7,7 @@ TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 
 SRCDIR := src
 INCDIR := include
-BUILDDIR := build
+BUILDDIR := .build
 BINDIR := lib
 OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps

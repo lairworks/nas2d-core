@@ -50,7 +50,7 @@ Filesystem::~Filesystem()
 /**
  * Shuts down PhysFS and cleans up.
  */
-void Filesystem::init(const std::string& argv_0, const std::string& dataPath)
+void Filesystem::init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
 {
 	if (FILESYSTEM_INITIALIZED) { throw filesystem_already_initialized(); }
 

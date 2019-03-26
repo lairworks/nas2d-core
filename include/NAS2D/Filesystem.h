@@ -28,7 +28,7 @@ public:
 	Filesystem();
 	~Filesystem();
 
-	void init(const std::string& argv_0, const std::string& dataPath);
+	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
 
 	std::string userPath() const;
 	std::string dataPath() const;

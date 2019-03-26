@@ -48,12 +48,12 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 
 	try
 	{
-		Utility<Mixer>::instantiateDerived(new Mixer_SDL());
+		Utility<Mixer>::init<Mixer_SDL>();
 	}
 	catch (std::exception& e)
 	{
 		std::cout << "Unable to create SDL Audio Mixer: " << e.what() << ". Setting NULL driver." << std::endl;
-		Utility<Mixer>::instantiateDerived(new Mixer());
+		Utility<Mixer>::init();
 	}
 	catch (...)
 	{
@@ -64,7 +64,7 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 	Utility<EventHandler>::get();
 	std::cout << "done." << std::endl << std::endl;
 
-	Utility<Renderer>::instantiateDerived(new OGL_Renderer(title));
+	Utility<Renderer>::init<OGL_Renderer>(title);
 
 	std::cout << std::endl << "Subsystems initialized." << std::endl << std::endl;
 	std::cout << "===================================" << std::endl << std::endl;

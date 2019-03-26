@@ -129,6 +129,9 @@ install-deps-source-sdl2:
 .PHONY: build-image-ubuntu-16.04 compile-on-ubuntu-16.04
 .PHONY: debug-image-ubuntu-16.04 root-debug-image-ubuntu-16.04
 
+.PHONY: build-image-ubuntu-18.04 compile-on-ubuntu-18.04
+.PHONY: debug-image-ubuntu-18.04 root-debug-image-ubuntu-18.04
+
 DockerFolder := ${TopLevelFolder}/docker
 
 build-image-ubuntu-16.04:
@@ -139,3 +142,12 @@ debug-image-ubuntu-16.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive ubuntu-16.04-gcc-sdl2 bash
 root-debug-image-ubuntu-16.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 ubuntu-16.04-gcc-sdl2 bash
+
+build-image-ubuntu-18.04:
+	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs
+compile-on-ubuntu-18.04:
+	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs
+debug-image-ubuntu-18.04:
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs bash
+root-debug-image-ubuntu-18.04:
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs bash

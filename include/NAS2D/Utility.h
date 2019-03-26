@@ -102,10 +102,7 @@ public:
 		// Instantiate a new object with forwarded constructor arguments
 		auto newInstance = new Type(std::forward<Args>(args)...);
 
-		if (mInstance)
-		{
-			delete mInstance;
-		}
+		delete mInstance;
 
 		mInstance = newInstance;
 		return *newInstance;

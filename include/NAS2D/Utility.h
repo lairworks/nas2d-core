@@ -90,10 +90,14 @@ public:
 	 *
 	 * \param	args	A list of arguments to be forwarded to the \c Type objects's constructor
 	 *
+	 * \return Reference to the newly created object as \c Type.
+	 * This allows further method calls to complete initialization or setup
+	 * of the object, using the full interface of the derived type.
+	 *
 	 * \note	This method should be called before <tt>Utility::get()</tt>.
 	 */
 	template<typename Type = T, typename... Args>
-	static void init(Args&&... args)
+	static Type& init(Args&&... args)
 	{
 		// Instantiate a new object with forwarded constructor arguments
 		auto newInstance = new Type(std::forward<Args>(args)...);
@@ -104,6 +108,7 @@ public:
 		}
 
 		mInstance = newInstance;
+		return *newInstance;
 	}
 
 

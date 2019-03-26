@@ -13,6 +13,7 @@ FROM ubuntu:16.04
 RUN apt-get update && apt-get install -y --no-install-recommends \
     g++=4:5.3.1-* \
     make=4.1-6 \
+    cmake=3.5.1-* \
     wget=1.17.1-* \
     bzip2=1.0.6-8 \
     ca-certificates=* \
@@ -25,6 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY Makefile /buildDependencies/build/
 RUN cd /buildDependencies/build/ && make compile-sdl2 && make install-sdl2 && make clean-all-sdl2
 RUN cd /buildDependencies/build/ && make compile-sdl2-modules && make install-sdl2-modules && make clean-all-sdl2-modules
+RUN cd /buildDependencies/build/ && make compile-physfs && make install-physfs && make clean-physfs
 
 RUN useradd user
 USER user

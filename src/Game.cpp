@@ -30,30 +30,32 @@ using namespace NAS2D;
  * setting up any default values should they be needed.
  *
  * \param	title		The title that should be used for the game window.
+ * \param appName		The name of the app (used to create an app data write path)
+ * \param organiationName		The name of the organization (used to create an app data write path)
  * \param	argv_0		argv[0] from main()'s argument list. Necessary for Linux compatibility.
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Intitial data path. Defaults to 'data'.
  */
-Game::Game(const std::string& title, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
+Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
 {
 	std::cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << std::endl;
 	std::cout << "NAS2D VERSION: " << NAS2D::versionString() << std::endl << std::endl;
 
 	std::cout << "Initializing subsystems..." << std::endl << std::endl;
 
-	Utility<Filesystem>::get().init(argv_0, dataPath);
+	Utility<Filesystem>::get().init(argv_0, appName, organizationName, dataPath);
 
 	Configuration& cf = Utility<Configuration>::get();
 	cf.load(configPath);
 
 	try
 	{
-		Utility<Mixer>::instantiateDerived(new Mixer_SDL());
+		Utility<Mixer>::init<Mixer_SDL>();
 	}
 	catch (std::exception& e)
 	{
 		std::cout << "Unable to create SDL Audio Mixer: " << e.what() << ". Setting NULL driver." << std::endl;
-		Utility<Mixer>::instantiateDerived(new Mixer());
+		Utility<Mixer>::init();
 	}
 	catch (...)
 	{
@@ -64,7 +66,7 @@ Game::Game(const std::string& title, const std::string& argv_0, const std::strin
 	Utility<EventHandler>::get();
 	std::cout << "done." << std::endl << std::endl;
 
-	Utility<Renderer>::instantiateDerived(new OGL_Renderer(title));
+	Utility<Renderer>::init<OGL_Renderer>(title);
 
 	std::cout << std::endl << "Subsystems initialized." << std::endl << std::endl;
 	std::cout << "===================================" << std::endl << std::endl;

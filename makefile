@@ -155,11 +155,13 @@ root-debug-image-ubuntu-18.04:
 
 #### CircleCI related build rules ####
 
-.PHONY: build-image-circleci push-image-circleci circleci-build
+.PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
 
 build-image-circleci:
 	docker build .circleci/ --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
 push-image-circleci:
 	docker push outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+circleci-validate:
+	circleci config validate
 circleci-build:
 	circleci build

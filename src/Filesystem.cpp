@@ -50,7 +50,7 @@ Filesystem::~Filesystem()
 /**
  * Shuts down PhysFS and cleans up.
  */
-void Filesystem::init(const std::string& argv_0, const std::string& startPath)
+void Filesystem::init(const std::string& argv_0, const std::string& dataPath)
 {
 	if (FILESYSTEM_INITIALIZED) { throw filesystem_already_initialized(); }
 
@@ -61,7 +61,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 		throw filesystem_backend_init_failure(PHYSFS_getLastError());
 	}
 
-	mStartPath = startPath;
+	mStartPath = dataPath;
 	mDirSeparator = PHYSFS_getDirSeparator();
 
 #if defined(WINDOWS) || defined(__APPLE__)

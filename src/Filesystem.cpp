@@ -28,6 +28,12 @@ using namespace NAS2D::Exception;
 
 bool FILESYSTEM_INITIALIZED = false;
 
+enum MountPosition
+{
+	Prepend = 0,
+	Append = 1,
+};
+
 
 /**
  * Default c'tor.
@@ -83,7 +89,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 
 	PHYSFS_setWriteDir(mDataPath.c_str());
 
-	if (PHYSFS_mount(mDataPath.c_str(), "", 0) == 0)
+	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::Prepend) == 0)
 	{
 		//mErrorMessages.push_back(PHYSFS_getLastError());
 		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
@@ -116,7 +122,7 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 
 	std::string searchPath(mDataPath + path);
 
-	if (PHYSFS_mount(searchPath.c_str(), "", 1) == 0)
+	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::Append) == 0)
 	{
 		std::cout << "Couldn't add '" << path << "' to search path. " << PHYSFS_getLastError() << "." << std::endl;
 		return false;

@@ -15,7 +15,7 @@
 FROM outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs
 
 USER root
-# Install CircleCI tools needed for primary CircleCI containers
+# Install tools needed for primary CircleCI containers
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git=1:2.17.1-* \
     ssh=1:7.6p1-* \

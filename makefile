@@ -151,3 +151,15 @@ debug-image-ubuntu-18.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs bash
 root-debug-image-ubuntu-18.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs bash
+
+
+#### CircleCI related build rules ####
+
+.PHONY: build-image-circleci push-image-circleci circleci-build
+
+build-image-circleci:
+	docker build .circleci/ --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+push-image-circleci:
+	docker push outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+circleci-build:
+	circleci build

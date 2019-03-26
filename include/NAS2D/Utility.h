@@ -122,7 +122,7 @@ public:
 	 *			created object or deallocating the object will yield
 	 *			undefined behavior.
 	 */
-	[[deprecated]]
+	[[deprecated("Consider using Utility::init instead")]]
 	static void instantiateDerived(T* t)
 	{
 		if (mInstance == t)

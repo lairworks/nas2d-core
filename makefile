@@ -135,13 +135,13 @@ install-deps-source-sdl2:
 DockerFolder := ${TopLevelFolder}/docker
 
 build-image-ubuntu-16.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-16.04.BuildEnv.Dockerfile --tag ubuntu-16.04-gcc-sdl2
+	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-16.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
 compile-on-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code ubuntu-16.04-gcc-sdl2
+	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
 debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive ubuntu-16.04-gcc-sdl2 bash
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
 root-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 ubuntu-16.04-gcc-sdl2 bash
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
 
 build-image-ubuntu-18.04:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs

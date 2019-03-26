@@ -50,7 +50,7 @@ Filesystem::~Filesystem()
 /**
  * Shuts down PhysFS and cleans up.
  */
-void Filesystem::init(const std::string& argv_0, const std::string& startPath)
+void Filesystem::init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
 {
 	if (FILESYSTEM_INITIALIZED) { throw filesystem_already_initialized(); }
 
@@ -61,7 +61,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& startPath)
 		throw filesystem_backend_init_failure(PHYSFS_getLastError());
 	}
 
-	mStartPath = startPath;
+	mStartPath = dataPath;
 	mDirSeparator = PHYSFS_getDirSeparator();
 
 #if defined(WINDOWS) || defined(__APPLE__)
@@ -257,7 +257,7 @@ File Filesystem::open(const std::string& filename) const
 	char *fileBuffer = new char[fileLength + 1];
 
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
-	if (PHYSFS_read(myFile, fileBuffer, sizeof(char), fileLength) < fileLength)
+	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
 	{
 		std::cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << std::endl;
 		delete[] fileBuffer;
@@ -297,7 +297,9 @@ bool Filesystem::makeDirectory(const std::string& path) const
 bool Filesystem::isDirectory(const std::string& path) const
 {
 	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
-	return PHYSFS_isDirectory(path.c_str()) != 0;
+
+	PHYSFS_Stat stat;
+	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
 }
 
 
@@ -378,7 +380,7 @@ bool Filesystem::write(const File& file, bool overwrite) const
 		return false;
 	}
 
-	if (PHYSFS_write(myFile, file.bytes().c_str(), sizeof(char), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
+	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
 	{
 		if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << PHYSFS_getLastError() << std::endl; }
 		closeFile(myFile);

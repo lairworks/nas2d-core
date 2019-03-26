@@ -122,6 +122,7 @@ public:
 	 *			created object or deallocating the object will yield
 	 *			undefined behavior.
 	 */
+	[[deprecated]]
 	static void instantiateDerived(T* t)
 	{
 		if (mInstance == t)

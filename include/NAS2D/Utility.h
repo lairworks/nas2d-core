@@ -65,6 +65,51 @@ public:
 
 
 	/**
+	 * Creates a \c Utility<T> interface for a newly created object of type
+	 * \c Type. \c Type must be derived from type \c T specified in the
+	 * template class argument list, and defaults to \c T if not explicitly
+	 * specified.
+	 *
+	 * \c Type should be explicitly specified when instantiating a derived type
+	 * and polymorphic behavior is desired.
+	 *
+	 * \code{.cpp}
+	 * // Instantiate Mixer (default Type is Mixer)
+	 * Utility<Mixer>::init();
+	 * \endcode
+	 *
+	 * \code{.cpp}
+	 * // Instantiate derived type Mixer_SDL, of base type Mixer
+	 * Utility<Mixer>::init<Mixer_SDL>();
+	 * \endcode
+	 *
+	 * \code{.cpp}
+	 * // Instantiate derived type with constructor arguments, as base type reference
+	 * Utility<Base>::init<Derived>(arg1, arg2, arg3);
+	 * \endcode
+	 *
+	 * \param	args	A list of arguments to be forwarded to the \c Type objects's constructor
+	 *
+	 * \return Reference to the newly created object as \c Type.
+	 * This allows further method calls to complete initialization or setup
+	 * of the object, using the full interface of the derived type.
+	 *
+	 * \note	This method should be called before <tt>Utility::get()</tt>.
+	 */
+	template<typename Type = T, typename... Args>
+	static Type& init(Args&&... args)
+	{
+		// Instantiate a new object with forwarded constructor arguments
+		auto newInstance = new Type(std::forward<Args>(args)...);
+
+		delete mInstance;
+
+		mInstance = newInstance;
+		return *newInstance;
+	}
+
+
+	/**
 	 * Creates a \c Utility<T> interface using a derived type \c T* for
 	 * derived implementation. This is useful when you need polymorphic
 	 * behavior in an object that you need global access to.
@@ -79,6 +124,7 @@ public:
 	 *			created object or deallocating the object will yield
 	 *			undefined behavior.
 	 */
+	[[deprecated("Consider using Utility::init instead")]]
 	static void instantiateDerived(T* t)
 	{
 		if (mInstance == t)

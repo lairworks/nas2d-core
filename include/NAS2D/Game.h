@@ -38,7 +38,7 @@ namespace NAS2D {
  * {
  *	try
  *	{
- *		Game game("My NAS2D Application", argv[0]);
+ *		Game game("My NAS2D Application", "ApplicationName", "OrganizationName", argv[0]);
  *		game.mount("gfx.zip");
  *		game.go(new MyState());
  *	}
@@ -56,7 +56,7 @@ namespace NAS2D {
 class Game
 {
 public:
-	Game(const std::string& appTitle, const std::string& argv_0, const std::string& configPath = "config.xml", const std::string& dataPath = "data");
+	Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& argv_0, const std::string& configPath = "config.xml", const std::string& dataPath = "data");
 	~Game();
 
 	void mount(const std::string& path);

@@ -130,12 +130,8 @@ public:
 		if (mInstance == t)
 			return;
 
-		if (mInstance)
-		{
-			delete mInstance;
-			mInstance = 0;
-		}
-		
+		delete mInstance;
+
 		mInstance = t;
 	}
 

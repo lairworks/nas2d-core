@@ -62,11 +62,7 @@ void StateManager::setState(State* state)
 
 	if (mForceStopAudio) { Utility<Mixer>::get().stopAllAudio(); }
 
-	if (mActiveState != nullptr)
-	{
-		delete mActiveState;
-		mActiveState = nullptr;
-	}
+	delete mActiveState;
 
 	// Initialize the new one
 	mActiveState = state;

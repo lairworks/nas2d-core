@@ -58,7 +58,7 @@ private:
 	bool closeFile(void *file) const;
 
 private:
-	std::string			mDataPath;			/**< Data path string. Specific to each platform. */
+	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
 	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 };
 

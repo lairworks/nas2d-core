@@ -59,13 +59,6 @@ private:
 
 private:
 	std::string			mDataPath;			/**< Data path string. Specific to each platform. */
-	std::string			mStartPath;			/**< Path to start in. This will typically be 'data/'. */
-	std::string			mDirSeparator;		/**< Platform dependant directory separator. */
-
-	#ifdef __APPLE__
-	std::string			mBundlePath;		/**< Apple Bundle Directory. */
-	#endif
-
 	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 };
 

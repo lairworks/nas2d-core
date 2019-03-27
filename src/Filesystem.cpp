@@ -91,7 +91,6 @@ void Filesystem::init(const std::string& argv_0, const std::string& appName, con
 
 	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
 	{
-		//mErrorMessages.push_back(PHYSFS_getLastError());
 		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
 	}
 

@@ -144,11 +144,8 @@ public:
 	 */
 	static void clear()
 	{
-		if (mInstance)
-		{
-			delete mInstance;
-			mInstance = nullptr;
-		}
+		delete mInstance;
+		mInstance = nullptr;
 	}
 
 private:

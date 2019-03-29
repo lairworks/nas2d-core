@@ -67,31 +67,14 @@ void Filesystem::init(const std::string& argv_0, const std::string& appName, con
 		throw filesystem_backend_init_failure(PHYSFS_getLastError());
 	}
 
-	mStartPath = dataPath;
-	mDirSeparator = PHYSFS_getDirSeparator();
+	if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
+	{
+		std::cout << std::endl << "(FSYS) Error setting sane config. " << PHYSFS_getLastError() << "." << std::endl;
+	}
 
-#if defined(WINDOWS) || defined(__APPLE__)
-	std::string basePath = PHYSFS_getBaseDir();
-
-	// Note: Multiple trailing dir separators are safely ignored
-	mDataPath = basePath + mStartPath + mDirSeparator;
-
-#elif defined(__linux__)
-	std::string userDir = PHYSFS_getUserDir();
-	std::string appUserDataDir = ".lom/data/";
-	mDataPath = userDir + appUserDataDir;
-
-	// Must set write directory before we can modify filesystem
-	PHYSFS_setWriteDir(userDir.c_str());
-	// Create directory if it does not exist
-	PHYSFS_mkdir(appUserDataDir.c_str());
-#endif
-
-	PHYSFS_setWriteDir(mDataPath.c_str());
-
+	mDataPath = dataPath;
 	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
 	{
-		//mErrorMessages.push_back(PHYSFS_getLastError());
 		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
 	}
 

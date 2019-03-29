@@ -56,6 +56,7 @@ private:
 	Filesystem& operator= (const Filesystem&);	// Intentionally left undefined.
 
 	bool closeFile(void *file) const;
+	const char* getLastPhysfsError() const;
 
 private:
 	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */

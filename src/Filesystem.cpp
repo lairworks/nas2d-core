@@ -91,7 +91,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& appName, con
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::addToSearchPath(const std::string& path) const
+bool Filesystem::mount(const std::string& path) const
 {
 	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
 

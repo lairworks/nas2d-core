@@ -103,7 +103,7 @@ Game::~Game()
  */
 void Game::mount(const std::string& path)
 {
-	Utility<Filesystem>::get().addToSearchPath(path);
+	Utility<Filesystem>::get().mount(path);
 }
 
 

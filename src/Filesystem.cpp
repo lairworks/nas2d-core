@@ -458,5 +458,5 @@ std::string Filesystem::extension(const std::string& path)
 
 const char* Filesystem::getLastPhysfsError() const
 {
-	return PHYSFS_getLastError();
+	return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
 }

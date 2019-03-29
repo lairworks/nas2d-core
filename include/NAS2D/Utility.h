@@ -130,12 +130,8 @@ public:
 		if (mInstance == t)
 			return;
 
-		if (mInstance)
-		{
-			delete mInstance;
-			mInstance = 0;
-		}
-		
+		delete mInstance;
+
 		mInstance = t;
 	}
 
@@ -148,11 +144,8 @@ public:
 	 */
 	static void clear()
 	{
-		if (mInstance)
-		{
-			delete mInstance;
-			mInstance = nullptr;
-		}
+		delete mInstance;
+		mInstance = nullptr;
 	}
 
 private:

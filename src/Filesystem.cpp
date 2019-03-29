@@ -97,12 +97,6 @@ bool Filesystem::addToSearchPath(const std::string& path) const
 
 	if (mVerbose) { std::cout << "Adding '" << path << "' to search path." << std::endl; }
 
-	if (PHYSFS_exists(path.c_str()) == 0)
-	{
-		std::cout << "File '" << path << "' does not exist as specified." << std::endl;
-		return false;
-	}
-
 	std::string searchPath(mDataPath + path);
 
 	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)

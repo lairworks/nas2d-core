@@ -133,19 +133,6 @@ StringList Filesystem::searchPath() const
  * Returns a list of files within a given directory.
  *
  * \param	dir	Directory to search within the searchpath.
- *
- * \note	This function will also return the names of any directories in a specified search path
- */
-StringList Filesystem::directoryList(const std::string& dir) const
-{
-	return directoryList(dir, std::string(""));
-}
-
-
-/**
- * Returns a list of files within a given directory.
- *
- * \param	dir	Directory to search within the searchpath.
  * \param	filter		Optional extension filter. Only use the extension without a wildcard (*) character or period (e.g., 'png' vs '*.png' or '.png').
  *
  * \note	This function will also return the names of any directories in a specified search path

@@ -52,8 +52,8 @@ public:
 	void toggleVerbose() const;
 
 private:
-	Filesystem(const Filesystem&);				// Intentionally left undefined.
-	Filesystem& operator= (const Filesystem&);	// Intentionally left undefined.
+	Filesystem(const Filesystem&) = delete;
+	Filesystem& operator= (const Filesystem&) = delete;
 
 	bool closeFile(void *file) const;
 

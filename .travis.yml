@@ -26,7 +26,7 @@ before_install:
   # Linux: Build SDL2 from source to ensure up-to-date 2.0.5 package
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make install-deps-source-sdl2; fi
   # Linux: Build PhysFS from source to ensure up-to-date 3.0.1 package
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make -C docker/ install-physfs; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make -C docker/ compile-physfs && sudo make -C docker/ install-physfs; fi
 
 script:
   # Use -k to continue after errors, ensuring full build log with all errors

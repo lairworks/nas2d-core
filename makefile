@@ -70,6 +70,69 @@ clean-all:
 	-rm -rf $(BUILDDIR)
 
 
+## Unit Test project ##
+
+.PHONY: gtest gmock check
+
+# Either of these should be a complete combined package. Only build one.
+GTESTSRCDIR := /usr/src/gtest/
+GMOCKSRCDIR := /usr/src/gmock/
+GTESTDIR := $(BUILDDIR)/gtest
+GMOCKDIR := $(BUILDDIR)/gmock
+
+gtest:
+	mkdir -p $(GTESTDIR)
+	cd $(GTESTDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GTESTSRCDIR)
+	make -C $(GTESTDIR)
+
+gmock:
+	mkdir -p $(GMOCKDIR)
+	cd $(GMOCKDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GMOCKSRCDIR)
+	make -C $(GMOCKDIR)
+
+# This is used to detect if a separate GMock library was built, in which case, use it
+GMOCKLIB := $(wildcard $(GMOCKDIR)/libgmock.a)
+
+TESTDIR := test
+TESTOBJDIR := $(BUILDDIR)/testObj
+TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
+TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.o,$(TESTSRCS))
+TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
+TESTCPPFLAGS := -I$(INCDIR) -I$(GMOCKSRCDIR)/gtest/include
+TESTLDFLAGS := -L$(BINDIR) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
+TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs $(LDLIBS)
+TESTOUTPUT := $(BUILDDIR)/testBin/runTests
+# Conditionally add GMock if we built it separately
+# This is conditional to avoid errors in case the library is not found
+ifneq ($(strip $(GMOCKLIB)),)
+	TESTLIBS := -lgmock $(TESTLIBS)
+endif
+
+TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTOBJDIR)/$*.Td
+TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
+TESTPOSTCOMPILE = @mv -f $(TESTOBJDIR)/$*.Td $(TESTOBJDIR)/$*.d && touch $@
+
+check: $(TESTOUTPUT)
+	cd test && ../$(TESTOUTPUT)
+
+$(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
+	@mkdir -p ${@D}
+	$(CXX) $(TESTOBJS) $(TESTLDFLAGS) $(TESTLIBS) -o $@
+
+$(TESTOBJS): $(TESTOBJDIR)/%.o : $(TESTDIR)/%.cpp $(TESTOBJDIR)/%.d | test-build-folder
+	$(TESTCOMPILE.cpp) $(OUTPUT_OPTION) -I$(SRCDIR) $<
+	$(TESTPOSTCOMPILE)
+
+.PHONY: test-build-folder
+test-build-folder:
+	@mkdir -p $(patsubst $(TESTDIR)/%,$(TESTOBJDIR)/%, $(TESTFOLDERS))
+
+$(TESTOBJDIR)/%.d: ;
+.PRECIOUS: $(TESTOBJDIR)/%.d
+
+include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.d,$(TESTSRCS)))
+
+
 ### Linux development package dependencies ###
 # This section contains install rules to aid setup and compiling on Linux.
 # Only a few common Linux distributions are covered. Other distributions

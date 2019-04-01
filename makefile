@@ -35,6 +35,7 @@ SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
 FOLDERS := $(sort $(dir $(SRCS)))
 
+.PHONY: all
 all: $(EXE)
 
 $(EXE): $(OBJS)
@@ -45,7 +46,7 @@ $(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d | build-folder
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
 
-.PHONY:build-folder
+.PHONY: build-folder
 build-folder:
 	@mkdir -p $(patsubst $(SRCDIR)/%,$(OBJDIR)/%, $(FOLDERS))
 	@mkdir -p $(patsubst $(SRCDIR)/%,$(DEPDIR)/%, $(FOLDERS))
@@ -55,7 +56,7 @@ $(DEPDIR)/%.d: ;
 
 include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(DEPDIR)/%.d,$(SRCS)))
 
-.PHONY:clean, clean-deps, clean-sdl, clean-sdl-all, clean-all
+.PHONY: clean clean-deps clean-sdl clean-sdl-all clean-all
 clean:
 	-rm -fr $(OBJDIR)
 	-rm -fr $(DEPDIR)
@@ -81,27 +82,27 @@ clean-all:
 
 ## Arch Linux ##
 
-.PHONY:install-deps-arch
+.PHONY: install-deps-arch
 install-deps-arch:
 	pacman -S sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
 
 
 ## Ubuntu ##
 
-.PHONY:install-deps-ubuntu
+.PHONY: install-deps-ubuntu
 install-deps-ubuntu:
 	apt install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libphysfs-dev
 
 
 ## CentOS ##
 
-.PHONY:install-repos-centos
+.PHONY: install-repos-centos
 install-repos-centos:
 	# Default CentOS repositories only contain SDL1
 	# For SDL2 use EPEL repo (EPEL = Extra Packages for Enterprise Linux)
 	yum install epel-release
 
-.PHONY:install-deps-centos
+.PHONY: install-deps-centos
 install-deps-centos:
 	# Install development packages (-y answers "yes" to prompts)
 	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
@@ -109,7 +110,7 @@ install-deps-centos:
 
 ## Generic SDL2 source build ##
 
-.PHONY:install-deps-source-sdl2
+.PHONY: install-deps-source-sdl2
 install-deps-source-sdl2:
 	# Create source build folder
 	mkdir -p $(SdlDir)

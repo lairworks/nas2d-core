@@ -23,12 +23,12 @@ SdlDir := $(SdlPackageDir)/$(SdlVer)
 # (Must be searched before system folder returned by sdl2-config)
 SdlInc := $(SdlDir)/include
 
-CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
+CXXFLAGS := -std=c++11 -g -Wall -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
 LDLIBS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(TARGET_ARCH) -c
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')

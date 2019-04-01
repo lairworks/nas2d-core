@@ -24,7 +24,7 @@ SdlDir := $(SdlPackageDir)/$(SdlVer)
 SdlInc := $(SdlDir)/include
 
 CFLAGS := -std=c++11 -g -Wall -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
-LDFLAGS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
+LDLIBS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 

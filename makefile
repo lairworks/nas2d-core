@@ -11,7 +11,7 @@ BUILDDIR := .build
 BINDIR := lib
 OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
-EXE := $(BINDIR)/libnas2d.a
+OUTPUT := $(BINDIR)/libnas2d.a
 
 # SDL2 source build variables
 SdlVer := SDL2-2.0.5
@@ -35,9 +35,9 @@ SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
 FOLDERS := $(sort $(dir $(SRCS)))
 
-all: $(EXE)
+all: $(OUTPUT)
 
-$(EXE): $(OBJS)
+$(OUTPUT): $(OBJS)
 	@mkdir -p ${@D}
 	ar rcs $@ $^
 

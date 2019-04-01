@@ -69,9 +69,6 @@ clean-sdl-all:
 clean-all:
 	-rm -rf $(BUILDDIR)
 
-# vim: filetype=make
-
-
 
 ### Linux development package dependencies ###
 # This section contains install rules to aid setup and compiling on Linux.

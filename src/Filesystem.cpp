@@ -105,8 +105,6 @@ bool Filesystem::mount(const std::string& path) const
 		return false;
 	}
 
-	if (mVerbose) { std::cout << "Added '" << path << "' to search path." << std::endl; }
-
 	return true;
 }
 

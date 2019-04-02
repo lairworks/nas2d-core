@@ -64,18 +64,18 @@ void Filesystem::init(const std::string& argv_0, const std::string& appName, con
 
 	if (PHYSFS_init(argv_0.c_str()) == 0)
 	{
-		throw filesystem_backend_init_failure(PHYSFS_getLastError());
+		throw filesystem_backend_init_failure(getLastPhysfsError());
 	}
 
 	if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
 	{
-		std::cout << std::endl << "(FSYS) Error setting sane config. " << PHYSFS_getLastError() << "." << std::endl;
+		std::cout << std::endl << "(FSYS) Error setting sane config. " << getLastPhysfsError() << "." << std::endl;
 	}
 
 	mDataPath = dataPath;
 	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
 	{
-		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << PHYSFS_getLastError() << "." << std::endl;
+		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
 	}
 
 	FILESYSTEM_INITIALIZED = true;
@@ -101,11 +101,9 @@ bool Filesystem::mount(const std::string& path) const
 
 	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
 	{
-		std::cout << "Couldn't add '" << path << "' to search path. " << PHYSFS_getLastError() << "." << std::endl;
+		std::cout << "Couldn't add '" << path << "' to search path. " << getLastPhysfsError() << "." << std::endl;
 		return false;
 	}
-
-	if (mVerbose) { std::cout << "Added '" << path << "' to search path." << std::endl; }
 
 	return true;
 }
@@ -120,25 +118,14 @@ StringList Filesystem::searchPath() const
 
 	StringList searchPath;
 
-	for (char **i = PHYSFS_getSearchPath(); *i != nullptr; i++)
+	auto searchPathList = PHYSFS_getSearchPath();
+	for (char **i = searchPathList; *i != nullptr; ++i)
 	{
 		searchPath.push_back(*i);
 	}
+	PHYSFS_freeList(searchPathList);
 
 	return searchPath;
-}
-
-
-/**
- * Returns a list of files within a given directory.
- *
- * \param	dir	Directory to search within the searchpath.
- *
- * \note	This function will also return the names of any directories in a specified search path
- */
-StringList Filesystem::directoryList(const std::string& dir) const
-{
-	return directoryList(dir, std::string(""));
 }
 
 
@@ -197,7 +184,7 @@ bool Filesystem::del(const std::string& filename) const
 
 	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
-		std::cout << "Unable to delete '" << filename << "':" << PHYSFS_getLastError() << std::endl;
+		std::cout << "Unable to delete '" << filename << "':" << getLastPhysfsError() << std::endl;
 		return false;
 	}
 
@@ -221,7 +208,7 @@ File Filesystem::open(const std::string& filename) const
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
 	if (!myFile)
 	{
-		std::cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << std::endl;
+		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
 		closeFile(myFile);
 		return File();
 	}
@@ -242,7 +229,7 @@ File Filesystem::open(const std::string& filename) const
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
 	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
 	{
-		std::cout << "Unable to load '" << filename << "'. " << PHYSFS_getLastError() << "." << std::endl;
+		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
 		delete[] fileBuffer;
 		closeFile(myFile);
 		return File();
@@ -328,7 +315,7 @@ bool Filesystem::closeFile(void* file) const
 
 	if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
 
-	throw filesystem_file_handle_still_open(PHYSFS_getLastError());
+	throw filesystem_file_handle_still_open(getLastPhysfsError());
 }
 
 
@@ -359,13 +346,13 @@ bool Filesystem::write(const File& file, bool overwrite) const
 	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
 	if (!myFile)
 	{
-		if (mVerbose) { std::cout << "Couldn't open '" << file.filename() << "' for writing: " << PHYSFS_getLastError() << std::endl; }
+		if (mVerbose) { std::cout << "Couldn't open '" << file.filename() << "' for writing: " << getLastPhysfsError() << std::endl; }
 		return false;
 	}
 
 	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
 	{
-		if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << PHYSFS_getLastError() << std::endl; }
+		if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << getLastPhysfsError() << std::endl; }
 		closeFile(myFile);
 		return false;
 	}
@@ -453,4 +440,10 @@ std::string Filesystem::extension(const std::string& path)
 		if (mVerbose) { std::cout << "Filesystem::extension(): File '" << path << "' has no extension." << std::endl; }
 		return std::string();
 	}
+}
+
+
+const char* Filesystem::getLastPhysfsError() const
+{
+	return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
 }

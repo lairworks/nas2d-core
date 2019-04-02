@@ -36,8 +36,7 @@ public:
 	StringList searchPath() const;
 	bool mount(const std::string& path) const;
 
-	StringList directoryList(const std::string& dir) const;
-	StringList directoryList(const std::string& dir, const std::string& filter) const;
+	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
 
 	File open(const std::string& filename) const;
 	bool write(const File& file, bool overwrite = true) const;
@@ -52,10 +51,11 @@ public:
 	void toggleVerbose() const;
 
 private:
-	Filesystem(const Filesystem&);				// Intentionally left undefined.
-	Filesystem& operator= (const Filesystem&);	// Intentionally left undefined.
+	Filesystem(const Filesystem&) = delete;
+	Filesystem& operator= (const Filesystem&) = delete;
 
 	bool closeFile(void *file) const;
+	const char* getLastPhysfsError() const;
 
 private:
 	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */

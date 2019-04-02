@@ -11,6 +11,7 @@
 
 #include <utility>
 #include <type_traits>
+#include <stdexcept>
 
 
 namespace NAS2D {
@@ -63,8 +64,14 @@ public:
 	{
 		if (!mInstance)
 		{
-			static_assert(std::is_default_constructible<T>::value, "Type must be default constructible");
-			mInstance = new T();
+			if constexpr(std::is_default_constructible<T>::value)
+			{
+				mInstance = new T();
+			}
+			else
+			{
+				throw std::runtime_error("Type must be default constructible or initialized with `init`");
+			}
 		}
 
 		return *mInstance;

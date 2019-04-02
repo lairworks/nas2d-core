@@ -17,6 +17,7 @@
 [Rr]eleases/
 x64/
 x86/
+packages/
 .build/
 bld/
 lib/
@@ -221,3 +222,6 @@ ModelManifest.xml
 /*.exe
 /*.dll
 /proj/vc14/.leu
+
+# MacOS dependencies
+proj/xcode/Frameworks/

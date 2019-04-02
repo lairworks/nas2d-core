@@ -9,6 +9,11 @@
 // ==================================================================================
 #pragma once
 
+#include <utility>
+#include <type_traits>
+#include <stdexcept>
+
+
 namespace NAS2D {
 
 /**
@@ -58,7 +63,16 @@ public:
 	static T& get()
 	{
 		if (!mInstance)
-			mInstance = new T();
+		{
+			if constexpr(std::is_default_constructible<T>::value)
+			{
+				mInstance = new T();
+			}
+			else
+			{
+				throw std::runtime_error("Type must be default constructible or initialized with `init`");
+			}
+		}
 
 		return *mInstance;
 	}
@@ -130,12 +144,8 @@ public:
 		if (mInstance == t)
 			return;
 
-		if (mInstance)
-		{
-			delete mInstance;
-			mInstance = 0;
-		}
-		
+		delete mInstance;
+
 		mInstance = t;
 	}
 
@@ -148,11 +158,8 @@ public:
 	 */
 	static void clear()
 	{
-		if (mInstance)
-		{
-			delete mInstance;
-			mInstance = nullptr;
-		}
+		delete mInstance;
+		mInstance = nullptr;
 	}
 
 private:

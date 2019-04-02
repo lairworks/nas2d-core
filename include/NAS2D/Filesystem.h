@@ -34,10 +34,9 @@ public:
 	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
-	bool addToSearchPath(const std::string& path) const;
+	bool mount(const std::string& path) const;
 
-	StringList directoryList(const std::string& dir) const;
-	StringList directoryList(const std::string& dir, const std::string& filter) const;
+	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
 
 	File open(const std::string& filename) const;
 	bool write(const File& file, bool overwrite = true) const;
@@ -52,20 +51,14 @@ public:
 	void toggleVerbose() const;
 
 private:
-	Filesystem(const Filesystem&);				// Intentionally left undefined.
-	Filesystem& operator= (const Filesystem&);	// Intentionally left undefined.
+	Filesystem(const Filesystem&) = delete;
+	Filesystem& operator= (const Filesystem&) = delete;
 
 	bool closeFile(void *file) const;
+	const char* getLastPhysfsError() const;
 
 private:
-	std::string			mDataPath;			/**< Data path string. Specific to each platform. */
-	std::string			mStartPath;			/**< Path to start in. This will typically be 'data/'. */
-	std::string			mDirSeparator;		/**< Platform dependant directory separator. */
-
-	#ifdef __APPLE__
-	std::string			mBundlePath;		/**< Apple Bundle Directory. */
-	#endif
-
+	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
 	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 };
 

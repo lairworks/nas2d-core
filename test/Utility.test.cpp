@@ -9,7 +9,6 @@ TEST(Utility, DefaultConstructibleType) {
 	EXPECT_NO_THROW(NAS2D::Utility<DefaultConstructible>::get());
 }
 
-/*
 TEST(Utility, NonDefaultConstructibleType) {
 	struct NonDefaultConstructible {
 		NonDefaultConstructible() = delete;
@@ -19,4 +18,3 @@ TEST(Utility, NonDefaultConstructibleType) {
 	NAS2D::Utility<NonDefaultConstructible>::init(0);
 	NAS2D::Utility<NonDefaultConstructible>::get();
 }
-*/

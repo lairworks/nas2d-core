@@ -9,6 +9,10 @@
 // ==================================================================================
 #pragma once
 
+#include <utility>
+#include <type_traits>
+
+
 namespace NAS2D {
 
 /**
@@ -58,7 +62,10 @@ public:
 	static T& get()
 	{
 		if (!mInstance)
+		{
+			static_assert(std::is_default_constructible<T>::value, "Type must be default constructible");
 			mInstance = new T();
+		}
 
 		return *mInstance;
 	}

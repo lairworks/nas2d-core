@@ -120,10 +120,12 @@ StringList Filesystem::searchPath() const
 
 	StringList searchPath;
 
-	for (char **i = PHYSFS_getSearchPath(); *i != nullptr; i++)
+	auto searchPathList = PHYSFS_getSearchPath();
+	for (char **i = searchPathList; *i != nullptr; ++i)
 	{
 		searchPath.push_back(*i);
 	}
+	PHYSFS_freeList(searchPathList);
 
 	return searchPath;
 }

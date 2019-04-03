@@ -59,19 +59,35 @@ public:
 	/**
 	 * Gets a reference to a global instance of the specified type
 	 * \c T. If an instance doesn't exist, one is created.
+	 * Type \c T must be default constructible to use this overload.
 	 */
-	static T& get()
+	template<typename Type = T>
+	static
+	std::enable_if_t<std::is_default_constructible<Type>::value, T&>
+	get()
 	{
 		if (!mInstance)
 		{
-			if constexpr(std::is_default_constructible<T>::value)
-			{
-				mInstance = new T();
-			}
-			else
-			{
-				throw std::runtime_error("Type must be default constructible or initialized with `init`");
-			}
+			mInstance = new T();
+		}
+
+		return *mInstance;
+	}
+
+
+	/**
+	 * Gets a reference to a global instance of the specified type
+	 * \c T. If an instance doesn't exist, an exception is thrown.
+	 * Type \c T is not default constructible for this overload.
+	 */
+	template<typename Type = T>
+	static
+	std::enable_if_t<!std::is_default_constructible<Type>::value, T&>
+	get()
+	{
+		if (!mInstance)
+		{
+			throw std::runtime_error("Type must be default constructible or initialized with `init`");
 		}
 
 		return *mInstance;

@@ -26,7 +26,6 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-bool FILESYSTEM_INITIALIZED = false;
 
 enum MountPosition
 {
@@ -47,8 +46,7 @@ Filesystem::Filesystem(): mVerbose(false)
  */
 Filesystem::~Filesystem()
 {
-	PHYSFS_deinit();
-	FILESYSTEM_INITIALIZED = false;
+	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
 	std::cout << "Filesystem Terminated." << std::endl;
 }
 
@@ -58,7 +56,7 @@ Filesystem::~Filesystem()
  */
 void Filesystem::init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
 {
-	if (FILESYSTEM_INITIALIZED) { throw filesystem_already_initialized(); }
+	if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
 
 	std::cout << "Initializing Filesystem... ";
 
@@ -78,8 +76,6 @@ void Filesystem::init(const std::string& argv_0, const std::string& appName, con
 		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
 	}
 
-	FILESYSTEM_INITIALIZED = true;
-
 	std::cout << "done." << std::endl;
 }
 
@@ -93,7 +89,7 @@ void Filesystem::init(const std::string& argv_0, const std::string& appName, con
  */
 bool Filesystem::mount(const std::string& path) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	if (mVerbose) { std::cout << "Adding '" << path << "' to search path." << std::endl; }
 
@@ -114,7 +110,7 @@ bool Filesystem::mount(const std::string& path) const
  */
 StringList Filesystem::searchPath() const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	StringList searchPath;
 
@@ -139,7 +135,7 @@ StringList Filesystem::searchPath() const
  */
 StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	char **rc = PHYSFS_enumerateFiles(dir.c_str());
 
@@ -180,7 +176,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
  */
 bool Filesystem::del(const std::string& filename) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
@@ -201,7 +197,7 @@ bool Filesystem::del(const std::string& filename) const
  */
 File Filesystem::open(const std::string& filename) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	if (mVerbose) { std::cout << "Attempting to load '" << filename << std::endl; }
 
@@ -254,7 +250,7 @@ File Filesystem::open(const std::string& filename) const
  */
 bool Filesystem::makeDirectory(const std::string& path) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	return PHYSFS_mkdir(path.c_str()) != 0;
 }
 
@@ -266,7 +262,7 @@ bool Filesystem::makeDirectory(const std::string& path) const
  */
 bool Filesystem::isDirectory(const std::string& path) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	PHYSFS_Stat stat;
 	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
@@ -282,7 +278,7 @@ bool Filesystem::isDirectory(const std::string& path) const
  */
 bool Filesystem::exists(const std::string& filename) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	return PHYSFS_exists(filename.c_str()) != 0;
 }
@@ -309,7 +305,7 @@ void Filesystem::toggleVerbose() const
  */
 bool Filesystem::closeFile(void* file) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	if (!file) { return false; }
 
@@ -329,7 +325,7 @@ bool Filesystem::closeFile(void* file) const
  */
 bool Filesystem::write(const File& file, bool overwrite) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	if (file.empty())
 	{
@@ -371,7 +367,7 @@ bool Filesystem::write(const File& file, bool overwrite) const
  */
 std::string Filesystem::userPath() const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	return PHYSFS_getUserDir();
 }
 
@@ -381,7 +377,7 @@ std::string Filesystem::userPath() const
  */
 std::string Filesystem::dataPath() const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	return mDataPath;
 }
 
@@ -395,7 +391,7 @@ std::string Filesystem::dataPath() const
  */
 std::string Filesystem::workingPath(const std::string& filename) const
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	if (!filename.empty())
 	{
 		std::string tmpStr(filename);
@@ -421,7 +417,7 @@ std::string Filesystem::workingPath(const std::string& filename) const
  */
 std::string Filesystem::extension(const std::string& path)
 {
-	if (!FILESYSTEM_INITIALIZED) { throw filesystem_not_initialized(); }
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	// This is a naive approach but works for most cases.
 	size_t pos = path.find_last_of(".");

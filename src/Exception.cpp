@@ -39,6 +39,12 @@ filesystem_file_handle_still_open::filesystem_file_handle_still_open(const std::
 {}
 
 
+filesystem_file_not_found::filesystem_file_not_found() : runtime_error("Unable to find file.")
+{}
+
+filesystem_file_not_found::filesystem_file_not_found(const std::string& description) : runtime_error("Unable to find file(s): " + description)
+{}
+
 font_bad_data::font_bad_data() : runtime_error("Font contains invalid data.")
 {}
 

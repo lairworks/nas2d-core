@@ -355,15 +355,15 @@ void Sprite::processImageSheets(void* root)
 {
 	XmlElement* e = static_cast<XmlElement*>(root);
 
-	XmlNode* node = nullptr;
-	string id, src;
-	while ((node = e->iterateChildren(node)))
+    std::string id;
+    std::string src;
+    XmlNode* node = nullptr;
+	while((node = e->iterateChildren(node)) != nullptr)
 	{
 		if (node->value() == "imagesheet" && node->toElement())
 		{
-			XmlAttribute* attribute = node->toElement()->firstAttribute();
-			while (attribute)
-			{
+			while (XmlAttribute* attribute = node->toElement()->firstAttribute())
+            {
 				if (toLowercase(attribute->name()) == "id") { id = attribute->value(); }
 				else if (toLowercase(attribute->name()) == "src") { src = attribute->value(); }
 
@@ -435,15 +435,14 @@ void Sprite::processActions(void* root)
 {
 	XmlElement* element = static_cast<XmlElement*>(root);
 
-	XmlNode* node = nullptr;
-	while ((node = element->iterateChildren(node)))
+    XmlNode* node = nullptr;
+	while ((node = element->iterateChildren(node)) != nullptr)
 	{
 		if (toLowercase(node->value()) == "action" && node->toElement())
 		{
 
 			string action_name;
-			XmlAttribute* attribute = node->toElement()->firstAttribute();
-			while (attribute)
+			while (XmlAttribute* attribute = node->toElement()->firstAttribute())
 			{
 				if (toLowercase(attribute->name()) == "name")
 				{
@@ -481,8 +480,8 @@ void Sprite::processFrames(const std::string& action, void* _node)
 
 	FrameList frameList;
 
-	XmlNode* frame = nullptr;
-	while ((frame = node->iterateChildren(frame)))
+    XmlNode* frame = nullptr;
+	while ((frame = node->iterateChildren(frame)) != nullptr)
 	{
 		int currentRow = frame->row();
 
@@ -494,8 +493,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 			int width = 0, height = 0;
 			int anchorx = 0, anchory = 0;
 
-			XmlAttribute* attribute = frame->toElement()->firstAttribute();
-			while (attribute)
+			while (XmlAttribute* attribute = frame->toElement()->firstAttribute())
 			{
 				if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }
 				else if (toLowercase(attribute->name()) == "delay") { attribute->queryIntValue(delay); }

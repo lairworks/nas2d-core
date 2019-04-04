@@ -348,7 +348,7 @@ public:
 #else
 
 	template<class DerivedClass>
-	inline void CopyFrom(DerivedClass *pParent, const DelegateMemento &right) { SetMementoFrom(right); }
+    inline void CopyFrom(DerivedClass *pParent, const DelegateMemento &right) { (void)pParent; SetMementoFrom(right); }
 
 	template <class DerivedClass, class ParentInvokerSig>
 	inline void bindstaticfunc(DerivedClass *pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)

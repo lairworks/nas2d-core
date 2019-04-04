@@ -9,8 +9,10 @@
 // ==================================================================================
 #include "NAS2D/Common.h"
 
-#include <cctype>
 #include <algorithm>
+#include <cctype>
+#include <locale>
+#include <numeric>
 #include <sstream>
 
 
@@ -140,11 +142,10 @@ bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  * 
  * \return	Returns the converted string.
  */
-std::string NAS2D::toLowercase(const std::string& str)
+std::string NAS2D::toLowercase(std::string str)
 {
-	std::string transformStr(str);
-	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int(*)(int))std::tolower);
-	return transformStr;
+    std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) -> unsigned char { return std::tolower(c, std::locale("")); });
+    return str;
 }
 
 
@@ -157,13 +158,71 @@ std::string NAS2D::toLowercase(const std::string& str)
  * 
  * \return	Returns the converted string.
  */
-std::string NAS2D::toUppercase(const std::string& str)
+std::string NAS2D::toUppercase(std::string str)
 {
-	std::string transformStr(str);
-	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int(*)(int))std::toupper);
-	return transformStr;
+    std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) -> unsigned char { return std::toupper(c, std::locale("")); });
+    return str;
 }
 
+std::vector<std::string> NAS2D::split(const std::string& str, char delim /*= ','*/, bool skip_empty /*= true*/) {
+    std::size_t potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
+    std::vector<std::string> result;
+    result.reserve(potential_count);
+
+    std::stringstream ss{ str };
+    ss.seekg(0);
+    ss.seekp(0);
+    ss.clear();
+
+    std::string curString;
+    while(std::getline(ss, curString, delim)) {
+        if(skip_empty && curString.empty()) continue;
+        result.push_back(curString);
+    }
+    result.shrink_to_fit();
+    return result;
+}
+
+std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, char delim) {
+    auto delim_loc = str.find_first_of(delim);
+    return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+}
+
+std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, char delim) {
+    auto delim_loc = str.find_last_of(delim);
+    return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+}
+
+std::string NAS2D::join(const std::vector<std::string>& strs, char delim /*= ','*/, bool skip_empty /*= true*/) {
+    //Calculate the total size of the result string including any empty strings + delimiters
+    auto acc_op = [](const std::size_t& a, const std::string& b)->std::size_t { return a + static_cast<std::size_t>(1u) + b.size(); };
+    auto total_size = std::accumulate(std::begin(strs), std::end(strs), static_cast<std::size_t>(0u), acc_op);
+    std::string result{};
+    result.reserve(total_size);
+    for(auto iter = std::begin(strs); iter != std::end(strs); ++iter) {
+        if(skip_empty && (*iter).empty()) continue;
+        result += (*iter);
+        if(iter != std::end(strs) - 1) {
+            result.push_back(delim);
+        }
+    }
+    result.shrink_to_fit();
+    return result;
+}
+
+std::string NAS2D::join(const std::vector<std::string>& strs, bool skip_empty /*= true*/) {
+    //Calculate the total size of the result string including any empty strings
+    auto acc_op = [](const std::size_t& a, const std::string& b) { return a + b.size(); };
+    std::size_t total_size = std::accumulate(std::begin(strs), std::end(strs), static_cast<std::size_t>(0u), acc_op);
+    std::string result;
+    result.reserve(total_size);
+    for(const auto& string : strs) {
+        if(skip_empty && string.empty()) continue;
+        result += string;
+    }
+    result.shrink_to_fit();
+    return result;
+}
 
 /**
  * \fn clamp(int x, int a, int b)

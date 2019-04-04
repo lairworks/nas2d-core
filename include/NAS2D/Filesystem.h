@@ -12,7 +12,11 @@
 
 #include "Common.h"
 #include "File.h"
+
+#include <filesystem>
+#include <functional>
 #include <string>
+#include <vector>
 
 namespace NAS2D {
 
@@ -25,12 +29,15 @@ namespace NAS2D {
 class Filesystem
 {
 public:
-	Filesystem();
+    Filesystem() = default;
 	~Filesystem();
+    Filesystem(const Filesystem&) = delete;
+    Filesystem& operator= (const Filesystem&) = delete;
+    Filesystem(Filesystem&&) = delete;
+    Filesystem& operator=(Filesystem&&) = delete;
 
 	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
 
-	std::string userPath() const;
 	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
@@ -50,16 +57,64 @@ public:
 
 	void toggleVerbose() const;
 
-private:
-	Filesystem(const Filesystem&) = delete;
-	Filesystem& operator= (const Filesystem&) = delete;
-
-	bool closeFile(void *file) const;
-	const char* getLastPhysfsError() const;
+    void setWorkingDirectory(const std::filesystem::path& p);
+    std::filesystem::path getWorkingDirectory();
 
 private:
-	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
-	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
+
+    std::filesystem::path getExePath() const;
+
+    bool isInit() const;
+    bool exists(const std::filesystem::path& p) const;
+
+    void forEachFileInFolder(const std::filesystem::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const std::filesystem::path&)>& callback = [](const std::filesystem::path& p) { (void)p; }, bool recursive = false) const;
+    void forEachFileInFolder(const std::filesystem::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const std::filesystem::path&)>& callback = [](const std::filesystem::path& p) { (void)p; }, bool recursive = false);
+
+    template<typename DirectoryIteratorType>
+    void forEachFileInFolder(const std::filesystem::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const std::filesystem::path&)>& callback = [](const std::filesystem::path& p) { (void)p; }, bool recursive = false) const;
+
+    bool readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const;
+    bool readBufferFromFile(std::string& out_buffer, const std::string& filePath) const;
+
+    bool writeBufferToFile(void* buffer, std::size_t size, const std::string& filePath) const;
+    bool writeBufferToFile(const std::string& buffer, const std::string& filePath) const;
+
+
+    mutable std::vector<std::filesystem::path> mSearchPath{};
+    std::filesystem::path              mDataPath{};            /**< Data path string. This will typically be 'data/'. */
+    std::string                        mOrganizationName{};    /**< The organization name. Only used for compatibility while transitioning from PhysFS */
+    std::string                        mAppName{};             /**< The application name. Only used for compatibility while transitioning from PhysFS */
+    std::filesystem::path              mWorkingDirectory{};  /**< The working directory. Typically 'mDataPath/mOrganizationName/mAppName/' */
+    std::filesystem::path              mExePath{};           /**< Path to the executable.*/
+    mutable bool                       mVerbose{ false };      /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
+    mutable bool                       mIsInit{ false };       /**< Has the file system been initialized? */
 };
+
+template<typename DirectoryIteratorType>
+void forEachFileInFolders(const std::filesystem::path& preferred_folderpath, const std::vector<std::string>& validExtensions, const std::function<void(const std::filesystem::path&)>& callback) {
+    if(validExtensions.empty()) {
+        std::for_each(DirectoryIteratorType{ preferred_folderpath }, DirectoryIteratorType{},
+            [&callback](const std::filesystem::directory_entry& entry) {
+            const auto& cur_path = entry.path();
+            bool is_directory = std::filesystem::is_directory(cur_path);
+            if(!is_directory) {
+                callback(cur_path);
+            }
+        });
+        return;
+    }
+    std::for_each(DirectoryIteratorType{ preferred_folderpath }, DirectoryIteratorType{},
+        [&validExtensions, &callback](const std::filesystem::directory_entry& entry) {
+        const auto& cur_path = entry.path();
+        bool is_directory = std::filesystem::is_directory(cur_path);
+        std::string my_extension = toLowercase(cur_path.extension().string());
+        bool valid_file_by_extension = std::find(std::begin(validExtensions), std::end(validExtensions), my_extension) != std::end(validExtensions);
+        if(!is_directory) {
+            if(valid_file_by_extension) {
+                callback(cur_path);
+            }
+        }
+    });
+}
 
 };

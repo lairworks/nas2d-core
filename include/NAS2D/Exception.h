@@ -55,6 +55,14 @@ class filesystem_file_handle_still_open : public std::runtime_error { public: fi
 
 
 /**
+ * \class filesystem_file_not_found
+ *
+ * Thrown when the Filesystem is unable to find a file.
+ */
+class filesystem_file_not_found : public std::runtime_error { public: filesystem_file_not_found(const std::string& filepath); filesystem_file_not_found(); };
+
+
+/**
  * \class font_bad_data
  *
  * Thrown when Font::operator=() is called but the font hasn't been loaded yet.

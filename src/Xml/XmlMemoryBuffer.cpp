@@ -67,6 +67,13 @@ bool XmlMemoryBuffer::visitEnter(const XmlElement& element, const XmlAttribute* 
 	return true;
 }
 
+bool XmlMemoryBuffer::visitEnter(const XmlDocument& /*doc*/) {
+    return true;
+}
+
+bool XmlMemoryBuffer::visitExit(const XmlDocument& /*doc*/) {
+    return true;
+}
 
 bool XmlMemoryBuffer::visitExit(const XmlElement& element)
 {

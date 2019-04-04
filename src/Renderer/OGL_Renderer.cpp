@@ -105,7 +105,7 @@ OGL_Renderer::~OGL_Renderer()
 
 void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 
 	fillVertexArray(x, y, static_cast<float>(image.width() * scale), static_cast<float>(image.height() * scale));
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
@@ -115,7 +115,7 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r,
 
 void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a)
 {
-	glColor4ub(r, g, b, a);
+    glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 
 	fillVertexArray(rasterX, rasterY, width, height);
 
@@ -141,7 +141,7 @@ void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float raster
 	glTranslatef(rasterX + tX, rasterY + tY, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(r, g, b, a);
+    glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
@@ -179,7 +179,7 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(r, g, b, a);
+    glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
@@ -191,7 +191,7 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 
 void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
 {
-	glColor4ub(r, g, b, a);
+    glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(x, y, w, h);
@@ -234,7 +234,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glColor4ub(255, 255, 255, 255);
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if (!isRectInRect(dstPoint.x(), dstPoint.y(), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
+	if (!isRectInRect(static_cast<int>(dstPoint.x()), static_cast<int>(dstPoint.y()), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
 		return;
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -272,7 +272,7 @@ void OGL_Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
 {
 	glDisable(GL_TEXTURE_2D);
 
-	glColor4ub(r, g, b, a);
+    glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 
 	POINT_VERTEX_ARRAY[0] = x + 0.5f; POINT_VERTEX_ARRAY[1] = y + 0.5f;
 
@@ -303,7 +303,7 @@ void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, 
 void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
 {
 	glDisable(GL_TEXTURE_2D);
-	glColor4ub(r, g, b, a);
+    glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 
 	float theta = PI_2 / static_cast<float>(num_segments);
 	float c = cosf(theta);
@@ -407,7 +407,7 @@ void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, i
 
 void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
 {
-	glColor4ub(r, g, b, a);
+    glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 	glDisable(GL_TEXTURE_2D);
 
 	fillVertexArray(x, y, width, height);
@@ -421,7 +421,7 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 {
 	if (!font.loaded() || text.empty()) { return; }
 
-	glColor4ub(r, g, b, a);
+    glColor4ub(static_cast<GLubyte>(r), static_cast<GLubyte>(g), static_cast<GLubyte>(b), static_cast<GLubyte>(a));
 
 	int offset = 0;
 	
@@ -500,7 +500,7 @@ void OGL_Renderer::clipRect(float x, float y, float width, float height)
 		return;
 	}
 
-	glScissor(x, OGL_Renderer::height() - y - height, width, height);
+	glScissor(static_cast<GLint>(x), static_cast<GLint>(OGL_Renderer::height() - y - height), static_cast<GLsizei>(width), static_cast<GLsizei>(height));
 
 	glEnable(GL_SCISSOR_TEST);
 }
@@ -674,7 +674,7 @@ void OGL_Renderer::initGL()
 }
 
 
-void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
+void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int /*bpp*/, bool fullscreen, bool vsync)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -920,7 +920,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	y2 -= cy * 0.5f;
 
 	//draw the line by triangle strip
-	float line_vertex[] =
+	float line_vertex_strip[] =
 	{
 		x1 - tx - Rx - cx, y1 - ty - Ry - cy, //fading edge1
 		x2 - tx - Rx + cx, y2 - ty - Ry + cy,
@@ -932,7 +932,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		x2 + tx + Rx + cx, y2 + ty + Ry + cy
 	};
 
-	glVertexPointer(2, GL_FLOAT, 0, line_vertex);
+	glVertexPointer(2, GL_FLOAT, 0, line_vertex_strip);
 
 	float line_color[] =
 	{
@@ -952,7 +952,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	// Line End Caps
 	if (w > 3.0f) // <<< Arbitrary number.
 	{
-		float line_vertex[] =
+		float line_vertex_caps[] =
 		{
 			x1 - tx - Rx - cx, y1 - ty - Ry - cy, //cap1
 			x1 - tx - Rx, y1 - ty - Ry,
@@ -967,9 +967,9 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			x2 + tx + cx, y2 + ty + cy,
 			x2 + tx + Rx + cx, y2 + ty + Ry + cy
 		};
-		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
+		glVertexPointer(2, GL_FLOAT, 0, line_vertex_caps);
 
-		float line_color[] =
+		float line_color_caps[] =
 		{
 			Cr, Cg, Cb, 0, //cap1
 			Cr, Cg, Cb, 0,
@@ -984,7 +984,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			Cr, Cg, Cb, Ca,
 			Cr, Cg, Cb, 0
 		};
-		glColorPointer(4, GL_FLOAT, 0, line_color);
+		glColorPointer(4, GL_FLOAT, 0, line_color_caps);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	}
 }

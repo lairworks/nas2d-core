@@ -24,20 +24,18 @@ class File
 {
 public:
 
-	typedef char byte; /**< Byte. */
-	typedef const char const_byte; /**< Const byte. */
-	typedef const_byte* RawByteStream; /**< Pointer to a const_byte. */
+    using byte = char; /**< Byte. */
+	using const_byte = const char; /**< Const byte. */
+	using RawByteStream = const_byte*; /**< Pointer to a const_byte. */
 
-	typedef std::string::iterator iterator; /**< Forward iterator for a File byte stream. */
-	typedef std::string::reverse_iterator reverse_iterator; /**< Reverse iterator for a File byte stream. */
-	typedef std::string ByteStream; /**< Byte stream. */
-
+	using iterator = std::string::iterator; /**< Forward iterator for a File byte stream. */
+	using reverse_iterator = std::string::reverse_iterator; /**< Reverse iterator for a File byte stream. */
+	using ByteStream = std::string; /**< Byte stream. */
 
 	/**
 	 * Default C'tor
 	 */
-	File()
-	{}
+    File() = default;
 
 	/**
 	 * C'tor
@@ -51,35 +49,19 @@ public:
 	/**
 	 * D'tor
 	 */
-	~File()
-	{}
+    ~File() = default;
 
 
 	/**
 	 * Copy c'tor
 	 */
-	File(const File& _f):	mByteStream(_f.mByteStream), mFileName(_f.mFileName)
-	{}
+    File(const File& _f) = default;
 
 
 	/**
 	 * Copy operator.
 	 */
-	File& operator=(const File& _f)
-	{
-		mByteStream = _f.mByteStream;
-		mFileName = _f.mFileName;
-		return *this;
-	}
-
-	/**
-	 * Gets a reference to the internal ByteStream.
-	 *
-	 * \note	This gets a \c non-const reference to the internal \c ByteStream
-	 *			so that modifications can be made as necessary.
-	 */
-	ByteStream& bytes() { return mByteStream; }
-
+    File& operator=(const File& _f) = default;
 
 	/**
 	 * Gets a reference to the internal ByteStream.
@@ -88,6 +70,14 @@ public:
 	 */
 	const ByteStream& bytes() const { return mByteStream; }
 
+
+    /**
+     * Gets a reference to the internal ByteStream.
+     *
+     * \note	This gets a \c non-const reference to the internal \c ByteStream
+     *			so that modifications can be made as necessary.
+     */
+    ByteStream& bytes() { return const_cast<ByteStream&>(static_cast<const File&>(*this).bytes()); }
 
 	/**
 	 * Gets a raw pointer to a \c const \c byte stream.
@@ -176,16 +166,6 @@ public:
 	reverse_iterator rseek(size_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
 
 	/**
-	 * Gets a byte from the byte stream at a specified position.
-	 * 
-	 * \param pos Position of the byte to get.
-	 * 
-	 * \warning	Out of range positions yield undefined behavior. Some compilers will
-	 *			throw an \c out_of_range exception.
-	 */
-	byte& operator[](size_t pos) { return mByteStream[pos]; }
-
-	/**
 	 * Gets a const byte from the byte stream at a specified position.
 	 * 
 	 * \param pos Position of the byte to get.
@@ -194,6 +174,16 @@ public:
 	 *			throw an \c out_of_range exception.
 	 */
 	const_byte& operator[](size_t pos) const { return mByteStream[pos]; }
+
+    /**
+     * Gets a byte from the byte stream at a specified position.
+     *
+     * \param pos Position of the byte to get.
+     *
+     * \warning	Out of range positions yield undefined behavior. Some compilers will
+     *			throw an \c out_of_range exception.
+     */
+    byte& operator[](size_t pos) { return const_cast<byte&>(static_cast<const File&>(*this).operator[](pos)); }
 
 	/**
 	 * Clears the File and leaves it completely empty.
@@ -207,7 +197,7 @@ public:
 	 * \note	Filenames include both the individual file's
 	 *			name and full directory path.
 	 */
-	std::string filename() const { return mFileName; }
+	const std::string& filename() const { return mFileName; }
 
 private:
 	ByteStream	mByteStream;	/**< Internal stream of bytes. */

@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace NAS2D {
@@ -36,8 +37,14 @@ int divideUp(int to_divide, int divisor);
 
 
 // String functions & types
-std::string toLowercase(const std::string& str);
-std::string toUppercase(const std::string& str);
+std::string toLowercase(std::string str);
+std::string toUppercase(std::string str);
+std::vector<std::string> split(const std::string& str, char delim = ',', bool skip_empty = true);
+std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim);
+std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim);
+std::string join(const std::vector<std::string>& strs, char delim = ',', bool skip_empty = true);
+std::string join(const std::vector<std::string>& strs, bool skip_empty = true);
+
 
 /**
  * Simple helper function to provide a printf like function.
@@ -59,6 +66,6 @@ std::string string_format(const std::string& format, Args ... args)
  * The StringList is provided primarily as a convenience typedef
  * but is also used by some of NAS2D's functions.
  */
-typedef std::vector<std::string> StringList;
+using StringList = std::vector<std::string>;
 
 }

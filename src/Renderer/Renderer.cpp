@@ -111,7 +111,7 @@ void Renderer::drawImage(Image& image, float x, float y, float scale)
  * \param	b		Blue value to tint the image at (0 - 255).
  * \param	a		Alpha value to draw the image at (0 - 255).
  */
-void Renderer::drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a)
+void Renderer::drawImage(Image& /*image*/, float /*x*/, float /*y*/, float /*scale*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/)
 {}
 
 
@@ -147,7 +147,7 @@ void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x,
  * \param	b			Blue value to tint the image at (0 - 255).
  * \param	a			Alpha value to draw the image at (0 - 255).
  */
-void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a)
+void Renderer::drawSubImage(Image& /*image*/, float /*rasterX*/, float /*rasterY*/, float /*x*/, float /*y*/, float /*width*/, float /*height*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/)
 {}
 
 
@@ -186,7 +186,7 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
  * \param	b			Blue value to tint the image at (0 - 255).
  * \param	a			Alpha value to draw the image at (0 - 255).
  */
-void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a)
+void Renderer::drawSubImageRotated(Image& /*image*/, float /*rasterX*/, float /*rasterY*/, float /*x*/, float /*y*/, float /*width*/, float /*height*/, float /*degrees*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/)
 {}
 
 
@@ -219,7 +219,7 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, c
  * \param	a		Alpha value to draw the image at (0 - 255).
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale)
+void Renderer::drawImageRotated(Image& /*image*/, float /*x*/, float /*y*/, float /*degrees*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/, float /*scale*/)
 {}
 
 
@@ -252,7 +252,7 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
  * \param	b		Blue value to tint the image at (0 - 255).
  * \param	a		Alpha value to draw the image at (0 - 255).
  */
-void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
+void Renderer::drawImageStretched(Image& /*image*/, float /*x*/, float /*y*/, float /*w*/, float /*h*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/)
 {}
 
 
@@ -265,7 +265,7 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
  * \param	w		Comment me!
  * \param	h		Comment me!
  */
-void Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
+void Renderer::drawImageRepeated(Image& /*image*/, float /*x*/, float /*y*/, float /*w*/, float /*h*/)
 {}
 
 
@@ -332,7 +332,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
  * \param	destination	A reference to the destination Image.
  * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
  */
-void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
+void Renderer::drawImageToImage(Image& /*source*/, Image& /*destination*/, const Point_2df& /*dstPoint*/)
 {}
 
 
@@ -441,7 +441,7 @@ void Renderer::drawPoint(float x, float y, const Color_4ub& color)
  * \param	b	Blue Color Value. Must be between 0 - 255.
  * \param	a	Alpha Value. Must be between 0 - 255. Defaults to 255.
  */
-void Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
+void Renderer::drawPoint(float /*x*/, float /*y*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/)
 {}
 
 
@@ -474,7 +474,7 @@ void Renderer::drawLine(float x, float y, float x2, float y2, const Color_4ub& c
  * \param	a			Alpha Value. Must be between 0 - 255. Defaults to 255.
  * \param	line_width	Width, in pixels, of the line to draw.
  */
-void Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width)
+void Renderer::drawLine(float /*x*/, float /*y*/, float /*x2*/, float /*y2*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/, int /*line_width*/)
 {}
 
 
@@ -520,7 +520,7 @@ void Renderer::drawBox(const Rectangle_2df& rect, int r, int g, int b, int a)
  * \param	b	Blue Color Value. Must be between 0 - 255.
  * \param	a	Alhpa value to use. Must be between 0 (completely transparent) - 255 (completely opaque).
  */
-void Renderer::drawBox(float x, float y, float w, float h, int r, int g, int b, int a)
+void Renderer::drawBox(float /*x*/, float /*y*/, float /*w*/, float /*h*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/)
 {}
 
 
@@ -566,7 +566,7 @@ void Renderer::drawBoxFilled(const Rectangle_2df& rect, int r, int g, int b, int
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha value. Must be between 0 - 255.
  */
-void Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
+void Renderer::drawBoxFilled(float /*x*/, float /*y*/, float /*width*/, float /*height*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/)
 {}
 
 
@@ -584,7 +584,7 @@ void Renderer::drawBoxFilled(float x, float y, float width, float height, int r,
  * \param	scale_x			Width scale of the circle. Used to draw ellipses.
  * \param	scale_y			Height scale of the circle. Used to draw ellipses.
  */
-void Renderer::drawCircle(float x, float y, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
+void Renderer::drawCircle(float /*x*/, float /*y*/, float /*radius*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/, int /*num_segments*/, float /*scale_x*/, float /*scale_y*/)
 {}
 
 
@@ -620,7 +620,11 @@ void Renderer::drawCircle(float x, float y, float radius, int r, int g, int b, i
  * \param	b4	Blue value for point 4.
  * \param	a4	Alpha value for point 4.
  */
-void Renderer::drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4)
+void Renderer::drawGradient(float /*x*/, float /*y*/, float /*w*/, float /*h*/,
+                            int /*r1*/, int /*g1*/, int /*b1*/, int /*a1*/,
+                            int /*r2*/, int /*g2*/, int /*b2*/, int /*a2*/,
+                            int /*r3*/, int /*g3*/, int /*b3*/, int /*a3*/,
+                            int /*r4*/, int /*g4*/, int /*b4*/, int /*a4*/)
 {}
 
 
@@ -654,7 +658,7 @@ void Renderer::drawGradient(float x, float y, float w, float h, const Color_4ub&
  * Shows or hides the system mouse pointer.
  * \param	_b	True shows the pointer, false hides it.
  */
-void Renderer::showSystemPointer(bool _b)
+void Renderer::showSystemPointer(bool /*_b*/)
 {}
 
 
@@ -665,7 +669,7 @@ void Renderer::showSystemPointer(bool _b)
  * \param	offx		Offset of the hotspot from the top left corner in pixels
  * \param	offy		Same as offx but for the vertical coordinate
  */
-void Renderer::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
+void Renderer::addCursor(const std::string& /*filePath*/, int /*cursorId*/, int /*offx*/, int /*offy*/)
 {}
 
 
@@ -674,7 +678,7 @@ void Renderer::addCursor(const std::string& filePath, int cursorId, int offx, in
  * \param	cursorId	Identifier for the cursor, as provided
  *						to addCursor.
  */
-void Renderer::setCursor(int cursorId)
+void Renderer::setCursor(int /*cursorId*/)
 {}
 
 
@@ -686,7 +690,7 @@ void Renderer::setCursor(int cursorId)
  *						windowed mode should be maintained or if the native
  *						desktop resolution should be used.
  */
-void Renderer::fullscreen(bool fs, bool maintain)
+void Renderer::fullscreen(bool /*fs*/, bool /*maintain*/)
 {}
 
 
@@ -702,7 +706,7 @@ bool Renderer::fullscreen()
 /**
  * Sets whether or not the app's window can be resized with the mouse.
  */
-void Renderer::resizeable(bool _r)
+void Renderer::resizeable(bool /*_r*/)
 {}
 
 
@@ -745,7 +749,7 @@ const Point_2df& Renderer::size()
 /**
  * Sets the minimum size of the application window / screen resolution.
  */
-void Renderer::minimum_size(int w, int h)
+void Renderer::minimum_size(int /*w*/, int /*h*/)
 {}
 
 
@@ -761,7 +765,7 @@ Point_2df& Renderer::_size()
 /**
  * Sets the video resolution.
  */
-void Renderer::size(int w, int h)
+void Renderer::size(int /*w*/, int /*h*/)
 {}
 
 
@@ -836,7 +840,7 @@ void Renderer::title(const std::string& title)
  * 
  * \param path	Path to an image file to use for the window icon.
  */
-void Renderer::window_icon(const std::string& path)
+void Renderer::window_icon(const std::string& /*path*/)
 {}
 
 
@@ -852,7 +856,7 @@ void Renderer::window_icon(const std::string& path)
  * \param b			Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
+void Renderer::drawText(Font& /*font*/, const std::string& /*text*/, float /*x*/, float /*y*/, int /*r*/, int /*g*/, int /*b*/, int /*a*/)
 {}
 
 
@@ -903,7 +907,7 @@ void Renderer::clipRect(const Rectangle_2df& rect)
  * \note	To turn off the clipper, set the width or height
  *			paramters to 0.
  */
-void Renderer::clipRect(float x, float y, float width, float height)
+void Renderer::clipRect(float /*x*/, float /*y*/, float /*width*/, float /*height*/)
 {}
 
 
@@ -935,7 +939,7 @@ void Renderer::clearScreen(const Color_4ub& color)
  * \param b	Blue Color Value between 0 - 255.
  *
  */
-void Renderer::clearScreen(int r, int g, int b)
+void Renderer::clearScreen(int /*r*/, int /*g*/, int /*b*/)
 {}
 
 
@@ -966,3 +970,6 @@ void Renderer::update()
 		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), static_cast<int>(mCurrentFade));
 	}
 }
+
+void NAS2D::Renderer::initVideo(unsigned int /*resX*/, unsigned int /*resY*/, unsigned int /*bpp*/, bool /*fullscreen*/, bool /*vsync*/)
+{}

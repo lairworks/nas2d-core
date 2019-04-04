@@ -16,6 +16,10 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#if defined(__linux__)
+#define PLATFORM_LINUX
+#endif
+
 #include <climits>
 #include <cstring>
 #include <fstream>
@@ -161,13 +165,13 @@ bool Filesystem::del(const std::string& filename) const
 
 
 /**
- * Opens a file.
+ * Reads a file from disk into memory
  *
  * \param filename	Path of the file to load.
  *
  * \return Returns a File.
  */
-File Filesystem::open(const std::string& filename) const
+File Filesystem::read(const std::string& filename) const
 {
     if(!isInit()) { throw filesystem_not_initialized(); }
 
@@ -268,10 +272,10 @@ bool Filesystem::write(const File& file, bool overwrite) const
 		return false;
 	}
 
-    { //Temporary file
+    { //Check permissions of directory before writing and bail if can't write.
         auto status = FS::status(FS::directory_entry{ FS::absolute(FS::path{filename}.parent_path()) });
         auto perms = status.permissions();
-        if(FS::perms::none == (perms & FS::perms::group_write | FS::perms::others_write | FS::perms::owner_write)) {
+        if(FS::perms::none == (perms & (FS::perms::group_write | FS::perms::others_write | FS::perms::owner_write))) {
             if(mVerbose) { std::cout << "Could not open '" << filename << "' for writing. Access denied for directory location." << std::endl; }
         }
     }
@@ -341,6 +345,11 @@ std::string Filesystem::extension(const std::string& path)
 
 void Filesystem::setWorkingDirectory(const std::filesystem::path& p)
 {
+    static_cast<const Filesystem&>(*this).setWorkingDirectory(p);
+}
+
+void Filesystem::setWorkingDirectory(const std::filesystem::path& p) const 
+{
     try {
         std::filesystem::current_path(p);
         mWorkingDirectory = p;
@@ -357,8 +366,7 @@ void Filesystem::setWorkingDirectory(const std::filesystem::path& p)
     }
 }
 
-
-std::filesystem::path Filesystem::getWorkingDirectory()
+std::filesystem::path Filesystem::getWorkingDirectory() const
 {
     //Update the cache if it isn't correct.
     const auto& cur_path = std::filesystem::current_path();
@@ -440,24 +448,81 @@ bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& 
     return true;
 }
 
-//TODO: Needs Linux/MacOSX implementations!
 std::filesystem::path NAS2D::Filesystem::getExePath() const {
-    namespace FS = std::filesystem;
-    FS::path result{};
+    //Cache result because OS calls may dynamically allocate
+    //and that can get expensive.
+    if(mExePath.empty()) {
 #ifdef PLATFORM_WINDOWS
-    {
-        TCHAR filename[MAX_PATH];
-        ::GetModuleFileName(nullptr, filename, MAX_PATH);
-        result = FS::path(filename);
-        result.make_preferred();
-    }
-    return result;
+        mExePath = DoWindowsQueryExePath();
 #elif PLATFORM_APPLE
-    return FS::current_path();
+        mExePath = DoAppleQueryExePath();
 #elif PLATFORM_LINUX
-    return FS::current_path();
+        mExePath = DoLinuxQueryExePath();
 #endif
+    }
+    return mExePath;
 }
+
+#ifdef PLATFORM_WINDOWS
+std::filesystem::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
+    namespace FS = std::filesystem;
+    TCHAR filename[MAX_PATH];
+    ::GetModuleFileName(nullptr, filename, MAX_PATH);
+    auto result = std::filesystem::path(filename);
+    //Canonical converts to absolute first "because the standard says so."
+    //So there's no need to explicitly call absolute.
+    result = FS::canonical(result);
+    result.make_preferred();
+    return result;
+}
+#else
+std::filesystem::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
+    return std::filesystem::path{};
+}
+#endif
+
+#ifdef PLATFORM_LINUX
+std::filesystem::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
+    namespace FS = std::filesystem;
+    FS::path p{ "/proc/self/exe" };
+    if(!FS::exists(p)) {
+        return std::filesystem::path{};
+    }
+    if(FS::is_symlink(p)) {
+        //Follow the symbolic link to the actual file.
+        p = FS::read_symlink(p);
+    }
+    //Canonical converts to absolute first "because the standard says so."
+    //So there's no need to explicitly call absolute.
+    p = FS::canonical(p);
+    p.make_preferred();
+    return p;
+}
+#else
+std::filesystem::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
+    return std::filesystem::path{};
+}
+#endif
+
+#ifdef PLATFORM_APPLE
+std::filesystem::path NAS2D::Filesystem::DoAppleQueryExePath() const {
+    uint32_t size = 0;
+    std::string path{};
+    _NSGetExecutablePath(path.data(), &size);
+    path.resize(size);
+    _NSGetExecutablePath(path.data(), &size);
+    std::filesystem::path p{ path };
+    //Canonical converts to absolute first "because the standard says so."
+    //So there's no need to explicitly call absolute.
+    p = FS::canonical(p);
+    p.make_preferred();
+    return p;
+}
+#else
+std::filesystem::path NAS2D::Filesystem::DoAppleQueryExePath() const {
+    return std::filesystem::path{};
+}
+#endif
 
 bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const std::string& filePath) const {
     namespace FS = std::filesystem;
@@ -473,7 +538,6 @@ bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const 
     ofs.open(p.string(), std::ios_base::binary);
     if(ofs) {
         ofs.write(reinterpret_cast<const char*>(buffer), size);
-        ofs.close();
         return true;
     }
     return false;
@@ -492,7 +556,6 @@ bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::
     std::ofstream ofs{ p };
     if(ofs) {
         ofs.write(reinterpret_cast<const char*>(buffer.data()), buffer.size());
-        ofs.close();
         return true;
     }
     return false;

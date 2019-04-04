@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 
-TEST(Filesystem, DISABLED_ConstructDestruct) {
+TEST(Filesystem, ConstructDestruct) {
 	// Check if object can be safely constructed and destructed
 	EXPECT_NO_THROW(NAS2D::Filesystem fs);
 }

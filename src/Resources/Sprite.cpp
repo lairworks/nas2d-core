@@ -286,7 +286,7 @@ void Sprite::processXml(const std::string& filePath)
 		return;
 	}
 
-	File xmlFile = fs.open(filePath);
+	File xmlFile = fs.read(filePath);
 
 	// Load the file
 	if (xmlFile.empty())

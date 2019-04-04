@@ -45,7 +45,7 @@ public:
 
 	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
 
-	File open(const std::string& filename) const;
+	File read(const std::string& filename) const;
 	bool write(const File& file, bool overwrite = true) const;
 	bool del(const std::string& path) const;
 	bool exists(const std::string& filename) const;
@@ -58,11 +58,20 @@ public:
 	void toggleVerbose() const;
 
     void setWorkingDirectory(const std::filesystem::path& p);
-    std::filesystem::path getWorkingDirectory();
+    std::filesystem::path getWorkingDirectory() const;
+
+    //Gets the path to the execuable. Returns an empty path if there's an error.
+    std::filesystem::path getExePath() const;
 
 private:
+    void setWorkingDirectory(const std::filesystem::path& p) const;
 
-    std::filesystem::path getExePath() const;
+    //OS-specific delegate. Do not call this directly. Use getExePath instead.
+    std::filesystem::path DoWindowsQueryExePath() const;
+    //OS-specific delegate. Do not call this directly. Use getExePath instead.
+    std::filesystem::path DoAppleQueryExePath() const;
+    //OS-specific delegate. Do not call this directly. Use getExePath instead.
+    std::filesystem::path DoLinuxQueryExePath() const;
 
     bool isInit() const;
     bool exists(const std::filesystem::path& p) const;
@@ -84,8 +93,8 @@ private:
     std::filesystem::path              mDataPath{};            /**< Data path string. This will typically be 'data/'. */
     std::string                        mOrganizationName{};    /**< The organization name. Only used for compatibility while transitioning from PhysFS */
     std::string                        mAppName{};             /**< The application name. Only used for compatibility while transitioning from PhysFS */
-    std::filesystem::path              mWorkingDirectory{};  /**< The working directory. Typically 'mDataPath/mOrganizationName/mAppName/' */
-    std::filesystem::path              mExePath{};           /**< Path to the executable.*/
+    mutable std::filesystem::path              mWorkingDirectory{};  /**< The working directory. Typically 'mDataPath/mOrganizationName/mAppName/' */
+    mutable std::filesystem::path              mExePath{};           /**< Path to the executable.*/
     mutable bool                       mVerbose{ false };      /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
     mutable bool                       mIsInit{ false };       /**< Has the file system been initialized? */
 };

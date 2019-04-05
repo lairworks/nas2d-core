@@ -30,26 +30,15 @@ namespace FS = std::filesystem;
 #endif
 
 #ifdef PLATFORM_APPLE
-#pragma message("Apple Build")
 #include <filesystem>
 namespace FS = std::experimental::filesystem;
 #endif
 
 #ifdef PLATFORM_CLANG
 #if defined(__clang_major__) && __clang_major__ >= 5
-#if __clang_major == 5
-#pragma message("Clang == 5")
-#endif
-#if __clang_major == 6
-#pragma message("Clang == 6")
-#endif
-#if __clang_major == 7
-#pragma message("Clang == 7")
-#endif
-#include <experimental/filesystem>
-namespace FS = std::experimental::filesystem;
+#include <filesystem>
+namespace FS = std::filesystem;
 #else
-#pragma message("Clang < 5, using <experimetal/filesystem>")
 #include <experimental/filesystem>
 namespace FS = std::experimental::filesystem;
 #endif

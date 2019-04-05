@@ -36,9 +36,11 @@ namespace FS = std::experimental::filesystem;
 
 #ifdef PLATFORM_CLANG
 #if defined(__clang_major__) && __clang_major__ >= 5
+#pragma message("Clang 5+")
 #include <filesystem>
 namespace FS = std::filesystem;
 #else
+#pragma message("Clang 4-")
 #include <experimental/filesystem>
 namespace FS = std::experimental::filesystem;
 #endif

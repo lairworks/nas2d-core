@@ -12,7 +12,6 @@
 #include "NAS2D/Exception.h"
 
 #ifdef PLATFORM_APPLE
-namespace FS = std::experimental::filesystem;
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -24,29 +23,10 @@ namespace FS = std::experimental::filesystem;
 #include <sstream>
 
 #ifdef PLATFORM_WINDOWS
-namespace FS = std::filesystem;
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
 #endif
-
-#ifdef PLATFORM_CLANG
-#if defined(__clang_major__) && __clang_major__ >= 5
-namespace FS = std::filesystem;
-#else
-namespace FS = std::experimental::filesystem;
-#endif
-#endif
-
-
-#ifdef PLATFORM_GNUC
-#if defined(__GNUC__) && __GNUC__ >= 8
-namespace FS = std::filesystem;
-#else
-namespace FS = std::experimental::filesystem;
-#endif
-#endif
-
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;

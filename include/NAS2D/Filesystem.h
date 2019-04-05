@@ -25,7 +25,6 @@
 #include <vector>
 
 #ifdef PLATFORM_WINDOWS
-#pragma message("Windows Build")
 #include <filesystem>
 namespace FS = std::filesystem;
 #endif
@@ -38,9 +37,17 @@ namespace FS = std::experimental::filesystem;
 
 #ifdef PLATFORM_CLANG
 #if defined(__clang_major__) && __clang_major__ >= 5
-#pragma message("Clang >= 5, using <filesystem>")
-#include <filesystem>
-namespace FS = std::filesystem;
+#if __clang_major == 5
+#pragma message("Clang == 5")
+#endif
+#if __clang_major == 6
+#pragma message("Clang == 6")
+#endif
+#if __clang_major == 7
+#pragma message("Clang == 7")
+#endif
+#include <experimental/filesystem>
+namespace FS = std::experimental::filesystem;
 #else
 #pragma message("Clang < 5, using <experimetal/filesystem>")
 #include <experimental/filesystem>
@@ -51,11 +58,9 @@ namespace FS = std::experimental::filesystem;
 
 #ifdef PLATFORM_GNUC
 #if defined(__GNUC__) && __GNUC__ >= 8
-#pragma message("GCC >= 8, using <filesystem>")
 #include <filesystem>
 namespace FS = std::filesystem;
 #else
-#pragma message("GCC < 8, using <experimental/filesystem>")
 #include <experimental/filesystem>
 namespace FS = std::experimental::filesystem;
 #endif

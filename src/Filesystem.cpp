@@ -363,16 +363,6 @@ bool Filesystem::write(const File& file, bool overwrite) const
 
 
 /**
- * Gets the current User path.
- */
-std::string Filesystem::userPath() const
-{
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-	return PHYSFS_getUserDir();
-}
-
-
-/**
  * Gets the base data path.
  */
 std::string Filesystem::dataPath() const

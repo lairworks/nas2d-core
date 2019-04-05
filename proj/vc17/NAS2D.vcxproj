@@ -277,6 +277,7 @@
     <ClCompile Include="..\..\src\Xml\XmlUnknown.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\NAS2D\BuildConfig.h" />
     <ClInclude Include="..\..\include\NAS2D\Common.h" />
     <ClInclude Include="..\..\include\NAS2D\Configuration.h" />
     <ClInclude Include="..\..\include\NAS2D\Delegate.h" />

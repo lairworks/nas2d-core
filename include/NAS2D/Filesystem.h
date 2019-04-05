@@ -14,21 +14,20 @@
 #include "Common.h"
 #include "File.h"
 
-#include <functional>
-#include <string>
-#include <vector>
-
 #ifdef PLATFORM_APPLE
-#include <filesystem>
+#include <experimental/filesystem>
 namespace FS = std::experimental::filesystem;
 #endif
 
+#include <algorithm>
 #include <climits>
 #include <cstring>
 #include <fstream>
-#include <string>
+#include <functional>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #ifdef PLATFORM_WINDOWS
 #include <filesystem>

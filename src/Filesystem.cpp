@@ -11,13 +11,9 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Exception.h"
 
-#if defined(__APPLE__)
-#define PLATFORM_APPLE
+#ifdef PLATFORM_APPLE
+namespace FS = std::experimental::filesystem;
 #include <CoreFoundation/CoreFoundation.h>
-#endif
-
-#if defined(__linux__)
-#define PLATFORM_LINUX
 #endif
 
 #include <climits>
@@ -27,12 +23,28 @@
 #include <iostream>
 #include <sstream>
 
-
-#if defined(_WIN32) || defined(_WIN64)
-#define PLATFORM_WINDOWS
+#ifdef PLATFORM_WINDOWS
+namespace FS = std::filesystem;
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
+#endif
+
+#ifdef PLATFORM_CLANG
+#if defined(__clang_major__) && __clang_major__ >= 5
+namespace FS = std::filesystem;
+#else
+namespace FS = std::experimental::filesystem;
+#endif
+#endif
+
+
+#ifdef PLATFORM_GNUC
+#if defined(__GNUC__) && __GNUC__ >= 8
+namespace FS = std::filesystem;
+#else
+namespace FS = std::experimental::filesystem;
+#endif
 #endif
 
 
@@ -60,7 +72,6 @@ Filesystem::~Filesystem()
  */
 void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
 {
-    namespace FS = std::filesystem;
     if(mIsInit) { throw filesystem_already_initialized(); }
 
 	std::cout << "Initializing Filesystem... ";
@@ -85,7 +96,6 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
  */
 bool Filesystem::mount(const std::string& path) const
 {
-    namespace FS = std::filesystem;
     if(!isInit()) { throw filesystem_not_initialized(); }
 
     auto p = FS::path{ path };
@@ -125,7 +135,6 @@ StringList Filesystem::searchPath() const
  */
 StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const
 {
-    namespace FS = std::filesystem;
     if(!isInit()) { throw filesystem_not_initialized(); }
     StringList paths{};
     auto add_path_cb = [&paths](const FS::path& p) { paths.push_back(p.string()); };
@@ -146,7 +155,6 @@ bool Filesystem::del(const std::string& filename) const
 {
     if(!isInit()) { throw filesystem_not_initialized(); }
 
-    namespace FS = std::filesystem;
     try {
         FS::remove(FS::path{ filename });
 	    return true;
@@ -200,7 +208,6 @@ File Filesystem::read(const std::string& filename) const
  */
 bool Filesystem::makeDirectory(const std::string& path) const
 {
-    namespace FS = std::filesystem;
     if(this->isInit()) { throw filesystem_not_initialized(); }
 
     return FS::create_directories(FS::path{ path });
@@ -214,7 +221,6 @@ bool Filesystem::makeDirectory(const std::string& path) const
  */
 bool Filesystem::isDirectory(const std::string& path) const
 {
-    namespace FS = std::filesystem;
     if(this->isInit()) { throw filesystem_not_initialized(); }
 
     return FS::is_directory(FS::path{ path });
@@ -231,7 +237,7 @@ bool Filesystem::isDirectory(const std::string& path) const
 bool Filesystem::exists(const std::string& filename) const
 {
 	if (!isInit()) { throw filesystem_not_initialized(); }
-    return exists(std::filesystem::path{ filename });
+    return exists(FS::path{ filename });
 }
 
 
@@ -256,7 +262,6 @@ void Filesystem::toggleVerbose() const
  */
 bool Filesystem::write(const File& file, bool overwrite) const
 {
-    namespace FS = std::filesystem;
 	if (!isInit()) { throw filesystem_not_initialized(); }
 
     const auto& filename = file.filename();
@@ -312,7 +317,7 @@ std::string Filesystem::workingPath(const std::string& filename) const
         if(mVerbose) { std::cout << "Filesystem::workingPath(): empty string provided." << std::endl; }
         return std::string();
     }
-    return std::filesystem::path{ filename }.parent_path().string();
+    return FS::path{ filename }.parent_path().string();
 }
 
 
@@ -326,7 +331,6 @@ std::string Filesystem::workingPath(const std::string& filename) const
  */
 std::string Filesystem::extension(const std::string& path)
 {
-    namespace FS = std::filesystem;
 	if (!isInit()) { throw filesystem_not_initialized(); }
 
     auto p = FS::path{ path };
@@ -343,17 +347,17 @@ std::string Filesystem::extension(const std::string& path)
     return p.extension().string();
 }
 
-void Filesystem::setWorkingDirectory(const std::filesystem::path& p)
+void Filesystem::setWorkingDirectory(const FS::path& p)
 {
     static_cast<const Filesystem&>(*this).setWorkingDirectory(p);
 }
 
-void Filesystem::setWorkingDirectory(const std::filesystem::path& p) const 
+void Filesystem::setWorkingDirectory(const FS::path& p) const 
 {
     try {
-        std::filesystem::current_path(p);
+        FS::current_path(p);
         mWorkingDirectory = p;
-    } catch(const std::filesystem::filesystem_error& e) {
+    } catch(const FS::filesystem_error& e) {
         std::cout << "Filesystem::extension(): std::filesystem reported an error:"
             << "\n  What: " << e.what()
             << "\n  Code: " << e.code()
@@ -366,10 +370,10 @@ void Filesystem::setWorkingDirectory(const std::filesystem::path& p) const
     }
 }
 
-std::filesystem::path Filesystem::getWorkingDirectory() const
+FS::path Filesystem::getWorkingDirectory() const
 {
     //Update the cache if it isn't correct.
-    const auto& cur_path = std::filesystem::current_path();
+    const auto& cur_path = FS::current_path();
     if(mWorkingDirectory != cur_path) {
         setWorkingDirectory(cur_path);
         mWorkingDirectory = cur_path;
@@ -382,13 +386,12 @@ bool Filesystem::isInit() const
     return mIsInit;
 }
 
-bool Filesystem::exists(const std::filesystem::path& p) const
+bool Filesystem::exists(const FS::path& p) const
 {
-    return std::filesystem::exists(p);
+    return FS::exists(p);
 }
 
-void Filesystem::forEachFileInFolder(const std::filesystem::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const std::filesystem::path&)>& callback /*= [](const std::filesystem::path& p) { (void)p; }*/, bool recursive /*= false*/) const {
-    namespace FS = std::filesystem;
+void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/) const {
     auto preferred_folderpath = folderpath;
     preferred_folderpath.make_preferred();
     bool exists = FS::exists(preferred_folderpath);
@@ -405,12 +408,11 @@ void Filesystem::forEachFileInFolder(const std::filesystem::path& folderpath, co
     }
 }
 
-void Filesystem::forEachFileInFolder(const std::filesystem::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const std::filesystem::path&)>& callback /*= [](const std::filesystem::path& p) { (void)p; }*/, bool recursive /*= false*/) {
+void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/) {
     static_cast<const Filesystem&>(*this).forEachFileInFolder(folderpath, validExtensionList, callback, recursive);
 }
 
 bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const {
-    namespace FS = std::filesystem;
     FS::path p(filePath);
     p.make_preferred();
     bool path_is_directory = FS::is_directory(p);
@@ -432,7 +434,6 @@ bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, cons
 }
 
 bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& filePath) const {
-    namespace FS = std::filesystem;
     FS::path p(filePath);
     p.make_preferred();
     bool path_is_directory = FS::is_directory(p);
@@ -448,7 +449,7 @@ bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& 
     return true;
 }
 
-std::filesystem::path NAS2D::Filesystem::getExePath() const {
+FS::path NAS2D::Filesystem::getExePath() const {
     //Cache result because OS calls may dynamically allocate
     //and that can get expensive.
     if(mExePath.empty()) {
@@ -464,11 +465,10 @@ std::filesystem::path NAS2D::Filesystem::getExePath() const {
 }
 
 #ifdef PLATFORM_WINDOWS
-std::filesystem::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
-    namespace FS = std::filesystem;
+FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
     TCHAR filename[MAX_PATH];
     ::GetModuleFileName(nullptr, filename, MAX_PATH);
-    auto result = std::filesystem::path(filename);
+    auto result = FS::path(filename);
     //Canonical converts to absolute first "because the standard says so."
     //So there's no need to explicitly call absolute.
     result = FS::canonical(result);
@@ -476,17 +476,16 @@ std::filesystem::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
     return result;
 }
 #else
-std::filesystem::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
-    return std::filesystem::path{};
+FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
+    return FS::path{};
 }
 #endif
 
 #ifdef PLATFORM_LINUX
-std::filesystem::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
-    namespace FS = std::filesystem;
+FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
     FS::path p{ "/proc/self/exe" };
     if(!FS::exists(p)) {
-        return std::filesystem::path{};
+        return FS::path{};
     }
     if(FS::is_symlink(p)) {
         //Follow the symbolic link to the actual file.
@@ -499,19 +498,19 @@ std::filesystem::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
     return p;
 }
 #else
-std::filesystem::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
-    return std::filesystem::path{};
+FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
+    return FS::path{};
 }
 #endif
 
 #ifdef PLATFORM_APPLE
-std::filesystem::path NAS2D::Filesystem::DoAppleQueryExePath() const {
+FS::path NAS2D::Filesystem::DoAppleQueryExePath() const {
     uint32_t size = 0;
     std::string path{};
     _NSGetExecutablePath(path.data(), &size);
     path.resize(size);
     _NSGetExecutablePath(path.data(), &size);
-    std::filesystem::path p{ path };
+    FS::path p{ path };
     //Canonical converts to absolute first "because the standard says so."
     //So there's no need to explicitly call absolute.
     p = FS::canonical(p);
@@ -519,13 +518,12 @@ std::filesystem::path NAS2D::Filesystem::DoAppleQueryExePath() const {
     return p;
 }
 #else
-std::filesystem::path NAS2D::Filesystem::DoAppleQueryExePath() const {
-    return std::filesystem::path{};
+FS::path NAS2D::Filesystem::DoAppleQueryExePath() const {
+    return FS::path{};
 }
 #endif
 
 bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const std::string& filePath) const {
-    namespace FS = std::filesystem;
     FS::path p(filePath);
     p.make_preferred();
     bool not_valid_path = FS::is_directory(p);
@@ -544,7 +542,6 @@ bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const 
 }
 
 bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::string& filePath) const {
-    namespace FS = std::filesystem;
     FS::path p(filePath);
     p.make_preferred();
     bool not_valid_path = FS::is_directory(p);

@@ -64,7 +64,8 @@ public:
 	{
 		if (!mInstance)
 		{
-			if constexpr(std::is_default_constructible<T>::value)
+            auto is_def_ctor = std::is_default_constructible_v<T>;
+			if(is_def_ctor)
 			{
 				mInstance = new T();
 			}

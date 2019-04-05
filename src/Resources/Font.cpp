@@ -454,7 +454,8 @@ bool fontAlreadyLoaded(const std::string& name)
  */
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
 {
-	if constexpr (SDL_BYTEORDER == SDL_LIL_ENDIAN)
+    bool is_lil_endian = SDL_BYTEORDER == SDL_LIL_ENDIAN;
+	if (is_lil_endian)
 	{
 		rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
 	}

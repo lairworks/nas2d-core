@@ -271,16 +271,15 @@ Color_4ub Image::pixelColor(int x, int y) const
 		break;
 
 	case 3:
-		if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-		{
-			c = p[0] << 16 | p[1] << 8 | p[2];
-		}
-		else
-		{
-			c = p[0] | p[1] << 8 | p[2] << 16;
-		}
-		break;
-
+    {
+        bool is_big_endian = SDL_BYTEORDER == SDL_BIG_ENDIAN;
+        if(is_big_endian) {
+            c = p[0] << 16 | p[1] << 8 | p[2];
+        } else {
+            c = p[0] | p[1] << 8 | p[2] << 16;
+        }
+        break;
+    }
 	case 4:
 		c = *(Uint32*)p;
 		break;

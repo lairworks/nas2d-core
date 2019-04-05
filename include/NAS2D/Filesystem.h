@@ -31,7 +31,7 @@ namespace FS = std::filesystem;
 
 #ifdef PLATFORM_APPLE
 #pragma message("Apple Build")
-#include <experimental/filesystem>
+#include <filesystem>
 namespace FS = std::experimental::filesystem;
 #endif
 

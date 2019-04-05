@@ -246,7 +246,7 @@ bool load(const std::string& path, unsigned int ptSize)
 		}
 	}
 
-	File fontBuffer = Utility<Filesystem>::get().open(path);
+	File fontBuffer = Utility<Filesystem>::get().read(path);
 	if (fontBuffer.empty())
 	{
 		return false;
@@ -284,7 +284,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		return true;
 	}
 
-	File fontBuffer = Utility<Filesystem>::get().open(path);
+	File fontBuffer = Utility<Filesystem>::get().read(path);
 	if (fontBuffer.empty())
 	{
 		return false;

@@ -194,7 +194,7 @@ void Configuration::setDefaultValues()
  */
 bool Configuration::readConfig(const std::string& filePath)
 {
-	File xmlFile = Utility<Filesystem>::get().open(filePath);
+	File xmlFile = Utility<Filesystem>::get().read(filePath);
 
 	XmlDocument config;
 	config.parse(xmlFile.raw_bytes());

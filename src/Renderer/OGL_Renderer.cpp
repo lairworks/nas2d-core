@@ -451,7 +451,7 @@ void OGL_Renderer::showSystemPointer(bool _b)
 void OGL_Renderer::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
 {
 	/// \fixme proper cleanup
-	File imageFile = Utility<Filesystem>::get().open(filePath);
+	File imageFile = Utility<Filesystem>::get().read(filePath);
 	if (imageFile.size() == 0)
 	{
 		std::cout << "OGL_Renderer::addCursor(): '" << name() << "' is empty." << std::endl;
@@ -617,7 +617,7 @@ void OGL_Renderer::window_icon(const std::string& path)
 {
 	if (!Utility<Filesystem>::get().exists(path)) { return; }
 
-	File f = Utility<Filesystem>::get().open(path);
+	File f = Utility<Filesystem>::get().read(path);
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(f.raw_bytes(), static_cast<int>(f.size())), 0);
 	if (!icon)
 	{

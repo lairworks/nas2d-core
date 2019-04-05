@@ -189,7 +189,7 @@ void Image::load()
 	//std::cout << "Loading image '" << name() << "'" << std::endl;
 	#endif
 
-	File imageFile = Utility<Filesystem>::get().open(name());
+	File imageFile = Utility<Filesystem>::get().read(name());
 	if (imageFile.size() == 0)
 	{
 		std::cout << "Image::load(): '" << name() << "' is empty." << std::endl;

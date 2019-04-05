@@ -9,9 +9,9 @@
 // ==================================================================================
 #pragma once
 
-#include <utility>
-#include <type_traits>
 #include <stdexcept>
+#include <type_traits>
+#include <utility>
 
 
 namespace NAS2D {
@@ -64,7 +64,7 @@ public:
 	{
 		if (!mInstance)
 		{
-            auto is_def_ctor = std::is_default_constructible_v<T>;
+            auto is_def_ctor = std::is_default_constructible<T>::value;
 			if(is_def_ctor)
 			{
 				mInstance = new T();

@@ -315,6 +315,9 @@
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlUnknown.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlVisitor.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

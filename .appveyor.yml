@@ -3,8 +3,6 @@ configuration: Release
 platform:
   - x86
   - x64
-before_build:
-  - nuget restore proj/vc17
+before_build: nuget restore proj/vc17
 build:
-  project:
-    - proj/vc17/NAS2D.sln
+  project: proj/vc17/NAS2D.sln

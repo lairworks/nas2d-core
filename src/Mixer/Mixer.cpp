@@ -8,8 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#pragma once
-
 #include "NAS2D/Mixer/Mixer.h"
 
 #include "NAS2D/Resources/Sound.h"

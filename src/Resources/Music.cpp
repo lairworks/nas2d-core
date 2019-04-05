@@ -107,7 +107,7 @@ void Music::load()
 		return;
 	}
 
-	File* file = new File(Utility<Filesystem>::get().open(name()));
+	File* file = new File(Utility<Filesystem>::get().read(name()));
 	if (file->empty())
 	{
 		delete file;

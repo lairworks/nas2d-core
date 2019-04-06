@@ -99,7 +99,7 @@ StringList Filesystem::searchPath() const
     if(!isInit()) { throw filesystem_not_initialized(); }
 
     StringList searchPath{};
-    for(const auto& p : this->mSearchPath) { searchPath.push_back(p.string()); }
+    for(const auto& p : mSearchPath) { searchPath.push_back(p.string()); }
 	return searchPath;
 }
 
@@ -163,7 +163,7 @@ File Filesystem::read(const std::string& filename) const
     if(!isInit()) { throw filesystem_not_initialized(); }
 
     std::string fileBuffer{};
-    if(!this->readBufferFromFile(fileBuffer, filename))
+    if(!readBufferFromFile(fileBuffer, filename))
     {
         std::cout << "Unable to load '" << filename << "'. " << std::endl;
         return File();

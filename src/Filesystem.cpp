@@ -52,7 +52,7 @@ Filesystem::~Filesystem()
  */
 void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
 {
-    if(mIsInit) { throw filesystem_already_initialized(); }
+    if(isInit()) { throw filesystem_already_initialized(); }
 
 	std::cout << "Initializing Filesystem... ";
 

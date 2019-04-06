@@ -80,12 +80,11 @@ bool Filesystem::mount(const std::string& path) const
 
     auto p = FS::path{ path };
 
-    if(!exists(p)) {
+    if(!exists(p))
+    {
         std::cout << "Couldn't add '" << path << "' to search path. Path: " << path << " could not be found." << std::endl;
         return false;
     }
-
-	if (mVerbose) { std::cout << "Adding '" << path << "' to search path." << std::endl; }
 
     mSearchPath.push_back(p);
 	return true;
@@ -100,7 +99,8 @@ StringList Filesystem::searchPath() const
     if(!isInit()) { throw filesystem_not_initialized(); }
 
     StringList searchPath{};
-    for(const auto& p : this->mSearchPath) {
+    for(const auto& p : this->mSearchPath)
+    {
         searchPath.push_back(p.string());
     }
 	return searchPath;
@@ -163,8 +163,6 @@ File Filesystem::read(const std::string& filename) const
 {
     if(!isInit()) { throw filesystem_not_initialized(); }
 
-	if (mVerbose) { std::cout << "Attempting to load '" << filename << std::endl; }
-
     std::string fileBuffer{};
     if(!this->readBufferFromFile(fileBuffer, filename)) {
         std::cout << "Unable to load '" << filename << "'. " << std::endl;
@@ -172,8 +170,6 @@ File Filesystem::read(const std::string& filename) const
     }
 
 	File file(std::string(fileBuffer.data(), fileBuffer.size()), filename);
-
-	if (mVerbose) { std::cout << "Loaded '" << filename << "' successfully." << std::endl; }
 
 	return file;
 }
@@ -220,18 +216,6 @@ bool Filesystem::exists(const std::string& filename) const
     return exists(FS::path{ filename });
 }
 
-
-/**
- * Toggles Verbose Mode.
- *
- * When Verbose mode is off, only critical messages are displayed.
- * Verbose Mode is generally useful for debugging purposes.
- */
-void Filesystem::toggleVerbose() const
-{
-	mVerbose = !mVerbose;
-}
-
 /**
  * Writes a file to disk.
  *
@@ -240,7 +224,7 @@ void Filesystem::toggleVerbose() const
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::write(const File& file, bool overwrite) const
+bool Filesystem::write(const File& file) const
 {
 	if (!isInit()) { throw filesystem_not_initialized(); }
 
@@ -250,26 +234,10 @@ bool Filesystem::write(const File& file, bool overwrite) const
 		std::cout << "Attempted to write empty file '" << filename << "'" << std::endl;
 		return false;
 	}
-
-	if (!overwrite && exists(filename))
-	{
-		if (mVerbose) { std::cout << "Attempted to overwrite a file '" << filename << "' that already exists." << std::endl; }
-		return false;
-	}
-
-    { //Check permissions of directory before writing and bail if can't write.
-        auto status = FS::status(FS::directory_entry{ FS::absolute(FS::path{filename}.parent_path()) });
-        auto perms = status.permissions();
-        if(FS::perms::none == (perms & (FS::perms::group_write | FS::perms::others_write | FS::perms::owner_write))) {
-            if(mVerbose) { std::cout << "Could not open '" << filename << "' for writing. Access denied for directory location." << std::endl; }
-        }
-    }
-    if(!writeBufferToFile(file.bytes(), filename)) {
-        if(mVerbose) { std::cout << "Error occured while writing to file '" << filename << "'" << std::endl; }
+    if(!writeBufferToFile(file.bytes(), filename))
+    {
         return false;
     }
-
-    if(mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << filename << "'." << std::endl; }
 	return true;
 }
 
@@ -293,8 +261,8 @@ std::string Filesystem::dataPath() const
 std::string Filesystem::workingPath(const std::string& filename) const
 {
 	if (!isInit()) { throw filesystem_not_initialized(); }
-    if(filename.empty()) {
-        if(mVerbose) { std::cout << "Filesystem::workingPath(): empty string provided." << std::endl; }
+    if(filename.empty())
+    {
         return std::string();
     }
     return FS::path{ filename }.parent_path().string();
@@ -314,13 +282,13 @@ std::string Filesystem::extension(const std::string& path)
 	if (!isInit()) { throw filesystem_not_initialized(); }
 
     auto p = FS::path{ path };
-    if(!p.has_extension()) {
-        if(mVerbose) { std::cout << "Filesystem::extension(): File '" << path << "' has no extension." << std::endl; }
+    if(!p.has_extension())
+    {
         return std::string();
     }
 
-    if(FS::is_directory(p)) {
-        if(mVerbose) { std::cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << std::endl; }
+    if(FS::is_directory(p))
+    {
         return std::string();
     }
 

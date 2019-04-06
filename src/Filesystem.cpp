@@ -350,9 +350,7 @@ void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::stri
     bool exists = FS::exists(preferred_folderpath);
     bool is_directory = FS::is_directory(preferred_folderpath);
     bool is_folder = exists && is_directory;
-    if(!is_folder) {
-        return;
-    }
+    if(!is_folder) { return; }
     
     auto validExtensions = split(toLowercase(validExtensionList));
     
@@ -378,10 +376,7 @@ bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, cons
     bool path_is_directory = FS::is_directory(p);
     bool path_not_exist = !FS::exists(p);
     bool not_valid_path = path_is_directory || path_not_exist;
-    if(not_valid_path)
-    {
-        return false;
-    }
+    if(not_valid_path) { return false; }
 
     auto byte_size = static_cast<std::size_t>(FS::file_size(p));
     out_buffer.resize(byte_size);
@@ -401,10 +396,7 @@ bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& 
     bool path_is_directory = FS::is_directory(p);
     bool path_not_exist = !FS::exists(p);
     bool not_valid_path = path_is_directory || path_not_exist;
-    if(not_valid_path)
-    {
-        return false;
-    }
+    if(not_valid_path) { return false; }
 
     std::ifstream ifs{ p };
     //Dump ifstream buffer directly into stringstream and convert to string
@@ -452,15 +444,9 @@ FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const
 FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const
 {
     FS::path p{ "/proc/self/exe" };
-    if(!FS::exists(p))
-    {
-        return FS::path{};
-    }
-    if(FS::is_symlink(p))
-    {
-        //Follow the symbolic link to the actual file.
-        p = FS::read_symlink(p);
-    }
+    if(!FS::exists(p)) { return FS::path{}; }
+    //Follow the symbolic link to the actual file.
+    if(FS::is_symlink(p)) { p = FS::read_symlink(p); }
     //Canonical converts to absolute first "because the standard says so."
     //So there's no need to explicitly call absolute.
     p = FS::canonical(p);
@@ -502,10 +488,7 @@ bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const 
     p.make_preferred();
     bool not_valid_path = FS::is_directory(p);
     bool invalid = not_valid_path;
-    if(invalid)
-    {
-        return false;
-    }
+    if(invalid) { return false; }
 
     std::ofstream ofs;
     ofs.open(p.string(), std::ios_base::binary);
@@ -523,10 +506,7 @@ bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::
     p.make_preferred();
     bool not_valid_path = FS::is_directory(p);
     bool invalid = not_valid_path;
-    if(invalid)
-    {
-        return false;
-    }
+    if(invalid) { return false; }
 
     std::ofstream ofs{ p };
     if(ofs)

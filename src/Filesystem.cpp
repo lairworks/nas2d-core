@@ -343,6 +343,18 @@ bool Filesystem::exists(const FS::path& p) const
     return FS::exists(p);
 }
 
+
+/**
+ * Calls a delegate callback for each file in a directory, optionally recursing to subdirectories
+ *
+ * \param	folderpath         The root folder to search.
+ * \param   validExtentionList CSV list of valid extensions to call [callback] on. pattern is ".txt,.pdf,.png" etc, note the leading dot.
+                               Leave empty to search every file.
+ * \param   callback           A free function, std::function or lambda that
+                               returns void and takes a single std::filesystem::path by const-ref
+                               represenging the current file being touched.
+ * \param   recursive          Should I search subfolders?
+ */
 void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/) const
 {
     auto preferred_folderpath = folderpath;
@@ -369,6 +381,13 @@ void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::stri
     static_cast<const Filesystem&>(*this).forEachFileInFolder(folderpath, validExtensionList, callback, recursive);
 }
 
+/**
+ * Reads binary file into memory.
+ *
+ * \param	out_buffer	a std::vector of binary data containing the contents of the file.
+ * \param   filePath the path to read from. Must exist. Must not be a directory.
+ * \return	Returns true if the file was successfully read. False otherwise.
+ */
 bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const
 {
     FS::path p(filePath);
@@ -389,6 +408,13 @@ bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, cons
 
 }
 
+/**
+ * Reads a text file into memory.
+ *
+ * \param	out_buffer	a string containing the contents of the file.
+ * \param   filePath the path to read from. Must exist. Must not be a directory.
+ * \return	Returns true if the file was successfully read. False otherwise.
+ */
 bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& filePath) const
 {
     FS::path p(filePath);
@@ -404,6 +430,11 @@ bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& 
     return true;
 }
 
+/**
+ * Gets the path of the binary we are running.
+ *
+ * \return	The path to the binary or an empty path if there was an error.
+ */
 FS::path NAS2D::Filesystem::getExePath() const
 {
     //Cache result because OS calls may dynamically allocate
@@ -465,6 +496,9 @@ FS::path NAS2D::Filesystem::DoAppleQueryExePath() const
 {
     uint32_t size = 0;
     std::string path{};
+    //This will intentionally fail but fill 'size' with the required file size
+    //and since we are immediately calling it again with the correct size
+    //there's no need to check the return codes.
     _NSGetExecutablePath(path.data(), &size);
     path.resize(size);
     _NSGetExecutablePath(path.data(), &size);
@@ -482,6 +516,14 @@ FS::path NAS2D::Filesystem::DoAppleQueryExePath() const
 }
 #endif
 
+
+/**
+ * Writes a binary data buffer to a file.
+ *
+ * \param	buffer	a binary-only buffer that contains the data to write.
+ * \param   filePath the path to write to. Must not be a directory.
+ * \return	Returns true if the file was successfully written. False otherwise.
+ */
 bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const std::string& filePath) const
 {
     FS::path p(filePath);
@@ -500,6 +542,14 @@ bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const 
     return false;
 }
 
+
+/**
+ * Writes a text buffer/string to a file.
+ *
+ * \param	buffer	a text-only, non-binary buffer that contains the data to write.
+ * \param   filePath the path to write to. Must not be a directory.
+ * \return	Returns true if the file was successfully written. False otherwise.
+ */
 bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::string& filePath) const
 {
     FS::path p(filePath);
@@ -511,6 +561,10 @@ bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::
     std::ofstream ofs{ p };
     if(ofs)
     {
+        //Reviewer: cugone
+        //TODO: Might need to change this to output stream operator because explicitly dealing with non-binary data.
+        //TODO: and line-breaks are not normalized across OSes when .write is called like with the stream operators.
+        //TODO: Until otherwise proven with a Unit test, I'm gonna leave it.
         ofs.write(reinterpret_cast<const char*>(buffer.data()), buffer.size());
         return true;
     }

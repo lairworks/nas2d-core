@@ -52,7 +52,7 @@ Filesystem::~Filesystem()
  */
 void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
 {
-    if(isInit()) { throw filesystem_already_initialized(); }
+    if(!isInit()) { throw filesystem_already_initialized(); }
 
 	std::cout << "Initializing Filesystem... ";
 
@@ -184,7 +184,7 @@ File Filesystem::read(const std::string& filename) const
  */
 bool Filesystem::makeDirectory(const std::string& path) const
 {
-    if(this->isInit()) { throw filesystem_not_initialized(); }
+    if(!isInit()) { throw filesystem_not_initialized(); }
 
     return FS::create_directories(FS::path{ path });
 }
@@ -197,7 +197,7 @@ bool Filesystem::makeDirectory(const std::string& path) const
  */
 bool Filesystem::isDirectory(const std::string& path) const
 {
-    if(this->isInit()) { throw filesystem_not_initialized(); }
+    if(!isInit()) { throw filesystem_not_initialized(); }
 
     return FS::is_directory(FS::path{ path });
 }

@@ -135,26 +135,33 @@ private:
 };
 
 template<typename DirectoryIteratorType>
-void forEachFileInFolders(const FS::path& preferred_folderpath, const std::vector<std::string>& validExtensions, const std::function<void(const FS::path&)>& callback) {
-    if(validExtensions.empty()) {
+void forEachFileInFolders(const FS::path& preferred_folderpath, const std::vector<std::string>& validExtensions, const std::function<void(const FS::path&)>& callback)
+{
+    if(validExtensions.empty())
+    {
         std::for_each(DirectoryIteratorType{ preferred_folderpath }, DirectoryIteratorType{},
-            [&callback](const FS::directory_entry& entry) {
+        [&callback](const FS::directory_entry& entry)
+        {
             const auto& cur_path = entry.path();
             bool is_directory = FS::is_directory(cur_path);
-            if(!is_directory) {
+            if(!is_directory)
+            {
                 callback(cur_path);
             }
         });
         return;
     }
     std::for_each(DirectoryIteratorType{ preferred_folderpath }, DirectoryIteratorType{},
-        [&validExtensions, &callback](const FS::directory_entry& entry) {
+    [&validExtensions, &callback](const FS::directory_entry& entry)
+    {
         const auto& cur_path = entry.path();
         bool is_directory = FS::is_directory(cur_path);
         std::string my_extension = toLowercase(cur_path.extension().string());
         bool valid_file_by_extension = std::find(std::begin(validExtensions), std::end(validExtensions), my_extension) != std::end(validExtensions);
-        if(!is_directory) {
-            if(valid_file_by_extension) {
+        if(!is_directory)
+        {
+            if(valid_file_by_extension)
+            {
                 callback(cur_path);
             }
         }

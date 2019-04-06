@@ -84,7 +84,7 @@ public:
 	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
 
 	File read(const std::string& filename) const;
-	bool write(const File& file, bool overwrite = true) const;
+	bool write(const File& file) const;
 	bool del(const std::string& path) const;
 	bool exists(const std::string& filename) const;
 
@@ -92,8 +92,6 @@ public:
 
 	bool isDirectory(const std::string& path) const;
 	bool makeDirectory(const std::string& path) const;
-
-	void toggleVerbose() const;
 
     void setWorkingDirectory(const FS::path& p);
     FS::path getWorkingDirectory() const;
@@ -133,7 +131,6 @@ private:
     std::string                   mAppName{};             /**< The application name. Only used for compatibility while transitioning from PhysFS */
     mutable FS::path              mWorkingDirectory{};    /**< The working directory. Typically 'mDataPath/mOrganizationName/mAppName/' */
     mutable FS::path              mExePath{};             /**< Path to the executable.*/
-    mutable bool                  mVerbose{ false };      /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
     mutable bool                  mIsInit{ false };       /**< Has the file system been initialized? */
 };
 

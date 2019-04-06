@@ -138,7 +138,9 @@ bool Filesystem::del(const std::string& filename) const
     try {
         FS::remove(FS::path{ filename });
 	    return true;
-    } catch(const FS::filesystem_error& e) {
+    }
+    catch(const FS::filesystem_error& e)
+    {
         std::cout << "Filesystem::del(): std::filesystem reported an error:"
             << "\n  What: " << e.what()
             << "\n  Code: " << e.code()
@@ -164,7 +166,8 @@ File Filesystem::read(const std::string& filename) const
     if(!isInit()) { throw filesystem_not_initialized(); }
 
     std::string fileBuffer{};
-    if(!this->readBufferFromFile(fileBuffer, filename)) {
+    if(!this->readBufferFromFile(fileBuffer, filename))
+    {
         std::cout << "Unable to load '" << filename << "'. " << std::endl;
         return File();
     }
@@ -230,7 +233,7 @@ bool Filesystem::write(const File& file) const
 
     const auto& filename = file.filename();
 	if (file.empty())
-	{
+    {
 		std::cout << "Attempted to write empty file '" << filename << "'" << std::endl;
 		return false;
 	}
@@ -302,10 +305,13 @@ void Filesystem::setWorkingDirectory(const FS::path& p)
 
 void Filesystem::setWorkingDirectory(const FS::path& p) const 
 {
-    try {
+    try
+    {
         FS::current_path(p);
         mWorkingDirectory = p;
-    } catch(const FS::filesystem_error& e) {
+    }
+    catch(const FS::filesystem_error& e)
+    {
         std::cout << "Filesystem::extension(): std::filesystem reported an error:"
             << "\n  What: " << e.what()
             << "\n  Code: " << e.code()
@@ -322,7 +328,8 @@ FS::path Filesystem::getWorkingDirectory() const
 {
     //Update the cache if it isn't correct.
     const auto& cur_path = FS::current_path();
-    if(mWorkingDirectory != cur_path) {
+    if(mWorkingDirectory != cur_path)
+    {
         setWorkingDirectory(cur_path);
         mWorkingDirectory = cur_path;
     }
@@ -339,7 +346,8 @@ bool Filesystem::exists(const FS::path& p) const
     return FS::exists(p);
 }
 
-void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/) const {
+void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/) const
+{
     auto preferred_folderpath = folderpath;
     preferred_folderpath.make_preferred();
     bool exists = FS::exists(preferred_folderpath);
@@ -348,25 +356,33 @@ void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::stri
     if(!is_folder) {
         return;
     }
+    
     auto validExtensions = split(toLowercase(validExtensionList));
-    if(!recursive) {
+    
+    if(!recursive)
+    {
         forEachFileInFolders<FS::directory_iterator>(preferred_folderpath, validExtensions, callback);
-    } else {
+    }
+    else
+    {
         forEachFileInFolders<FS::recursive_directory_iterator>(preferred_folderpath, validExtensions, callback);
     }
 }
 
-void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/) {
+void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/)
+{
     static_cast<const Filesystem&>(*this).forEachFileInFolder(folderpath, validExtensionList, callback, recursive);
 }
 
-bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const {
+bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const
+{
     FS::path p(filePath);
     p.make_preferred();
     bool path_is_directory = FS::is_directory(p);
     bool path_not_exist = !FS::exists(p);
     bool not_valid_path = path_is_directory || path_not_exist;
-    if(not_valid_path) {
+    if(not_valid_path)
+    {
         return false;
     }
 
@@ -381,13 +397,15 @@ bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, cons
 
 }
 
-bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& filePath) const {
+bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& filePath) const
+{
     FS::path p(filePath);
     p.make_preferred();
     bool path_is_directory = FS::is_directory(p);
     bool path_not_exist = !FS::exists(p);
     bool not_valid_path = path_is_directory || path_not_exist;
-    if(not_valid_path) {
+    if(not_valid_path)
+    {
         return false;
     }
 
@@ -397,10 +415,12 @@ bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& 
     return true;
 }
 
-FS::path NAS2D::Filesystem::getExePath() const {
+FS::path NAS2D::Filesystem::getExePath() const
+{
     //Cache result because OS calls may dynamically allocate
     //and that can get expensive.
-    if(mExePath.empty()) {
+    if(mExePath.empty())
+    {
 #ifdef PLATFORM_WINDOWS
         mExePath = DoWindowsQueryExePath();
 #elif PLATFORM_APPLE
@@ -413,7 +433,8 @@ FS::path NAS2D::Filesystem::getExePath() const {
 }
 
 #ifdef PLATFORM_WINDOWS
-FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
+FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const
+{
     TCHAR filename[MAX_PATH];
     ::GetModuleFileName(nullptr, filename, MAX_PATH);
     auto result = FS::path(filename);
@@ -424,18 +445,22 @@ FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
     return result;
 }
 #else
-FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const {
+FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const
+{
     return FS::path{};
 }
 #endif
 
 #ifdef PLATFORM_LINUX
-FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
+FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const
+{
     FS::path p{ "/proc/self/exe" };
-    if(!FS::exists(p)) {
+    if(!FS::exists(p))
+    {
         return FS::path{};
     }
-    if(FS::is_symlink(p)) {
+    if(FS::is_symlink(p))
+    {
         //Follow the symbolic link to the actual file.
         p = FS::read_symlink(p);
     }
@@ -446,13 +471,15 @@ FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
     return p;
 }
 #else
-FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const {
+FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const
+{
     return FS::path{};
 }
 #endif
 
 #ifdef PLATFORM_APPLE
-FS::path NAS2D::Filesystem::DoAppleQueryExePath() const {
+FS::path NAS2D::Filesystem::DoAppleQueryExePath() const
+{
     uint32_t size = 0;
     std::string path{};
     _NSGetExecutablePath(path.data(), &size);
@@ -466,40 +493,47 @@ FS::path NAS2D::Filesystem::DoAppleQueryExePath() const {
     return p;
 }
 #else
-FS::path NAS2D::Filesystem::DoAppleQueryExePath() const {
+FS::path NAS2D::Filesystem::DoAppleQueryExePath() const
+{
     return FS::path{};
 }
 #endif
 
-bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const std::string& filePath) const {
+bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const std::string& filePath) const
+{
     FS::path p(filePath);
     p.make_preferred();
     bool not_valid_path = FS::is_directory(p);
     bool invalid = not_valid_path;
-    if(invalid) {
+    if(invalid)
+    {
         return false;
     }
 
     std::ofstream ofs;
     ofs.open(p.string(), std::ios_base::binary);
-    if(ofs) {
+    if(ofs)
+    {
         ofs.write(reinterpret_cast<const char*>(buffer), size);
         return true;
     }
     return false;
 }
 
-bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::string& filePath) const {
+bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::string& filePath) const
+{
     FS::path p(filePath);
     p.make_preferred();
     bool not_valid_path = FS::is_directory(p);
     bool invalid = not_valid_path;
-    if(invalid) {
+    if(invalid)
+    {
         return false;
     }
 
     std::ofstream ofs{ p };
-    if(ofs) {
+    if(ofs)
+    {
         ofs.write(reinterpret_cast<const char*>(buffer.data()), buffer.size());
         return true;
     }

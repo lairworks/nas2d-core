@@ -164,7 +164,8 @@ std::string NAS2D::toUppercase(std::string str)
     return str;
 }
 
-std::vector<std::string> NAS2D::split(const std::string& str, char delim /*= ','*/, bool skip_empty /*= true*/) {
+std::vector<std::string> NAS2D::split(const std::string& str, char delim /*= ','*/, bool skip_empty /*= true*/)
+{
     std::size_t potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
     std::vector<std::string> result;
     result.reserve(potential_count);
@@ -183,26 +184,31 @@ std::vector<std::string> NAS2D::split(const std::string& str, char delim /*= ','
     return result;
 }
 
-std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, char delim) {
+std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, char delim)
+{
     auto delim_loc = str.find_first_of(delim);
     return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
 }
 
-std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, char delim) {
+std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, char delim)
+{
     auto delim_loc = str.find_last_of(delim);
     return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
 }
 
-std::string NAS2D::join(const std::vector<std::string>& strs, char delim /*= ','*/, bool skip_empty /*= true*/) {
+std::string NAS2D::join(const std::vector<std::string>& strs, char delim /*= ','*/, bool skip_empty /*= true*/)
+{
     //Calculate the total size of the result string including any empty strings + delimiters
     auto acc_op = [](const std::size_t& a, const std::string& b)->std::size_t { return a + static_cast<std::size_t>(1u) + b.size(); };
     auto total_size = std::accumulate(std::begin(strs), std::end(strs), static_cast<std::size_t>(0u), acc_op);
     std::string result{};
     result.reserve(total_size);
-    for(auto iter = std::begin(strs); iter != std::end(strs); ++iter) {
+    for(auto iter = std::begin(strs); iter != std::end(strs); ++iter)
+    {
         if(skip_empty && (*iter).empty()) continue;
         result += (*iter);
-        if(iter != std::end(strs) - 1) {
+        if(iter != std::end(strs) - 1)
+        {
             result.push_back(delim);
         }
     }
@@ -210,7 +216,8 @@ std::string NAS2D::join(const std::vector<std::string>& strs, char delim /*= ','
     return result;
 }
 
-std::string NAS2D::join(const std::vector<std::string>& strs, bool skip_empty /*= true*/) {
+std::string NAS2D::join(const std::vector<std::string>& strs, bool skip_empty /*= true*/)
+{
     //Calculate the total size of the result string including any empty strings
     auto acc_op = [](const std::size_t& a, const std::string& b) { return a + b.size(); };
     std::size_t total_size = std::accumulate(std::begin(strs), std::end(strs), static_cast<std::size_t>(0u), acc_op);

@@ -43,7 +43,9 @@ namespace FS = std::filesystem;
 namespace FS = std::experimental::filesystem;
 #endif
 #if defined(__clang_major__)
-#pragma message("Clang major: " __clang_major__)
+#pragma message("~~~~~~~~~~~~~~~~CLANG MAJOR~~~~~~~~~~~~~~~~~~~")
+#pragma message(__clang_major__)
+#pragma message("~~~~~~~~~~~~~~~~CLANG MAJOR~~~~~~~~~~~~~~~~~~~")
 #endif
 #endif
 
@@ -57,7 +59,9 @@ namespace FS = std::filesystem;
 namespace FS = std::experimental::filesystem;
 #endif
 #if defined(__GNUC__)
-#pragma message("GNUC: " __GNUC__)
+#pragma message("~~~~~~~~~~~~~~~~~~~~~GNUC~~~~~~~~~~~~~~~~~~~")
+#pragma message(__GNUC__)
+#pragma message("~~~~~~~~~~~~~~~~~~~~~GNUC~~~~~~~~~~~~~~~~~~~")
 #endif
 #endif
 

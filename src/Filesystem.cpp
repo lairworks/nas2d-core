@@ -479,18 +479,18 @@ FS::path NAS2D::Filesystem::getExePath() const
     if(mExePath.empty())
     {
 #if defined(PLATFORM_WINDOWS)
-        mExePath = DoWindowsQueryExePath();
+        mExePath = doWindowsQueryExePath();
 #elif defined(PLATFORM_APPLE)
-        mExePath = DoAppleQueryExePath();
+        mExePath = doAppleQueryExePath();
 #elif defined(PLATFORM_LINUX)
-        mExePath = DoLinuxQueryExePath();
+        mExePath = doLinuxQueryExePath();
 #endif
     }
     return mExePath;
 }
 
 #ifdef PLATFORM_WINDOWS
-FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const
+FS::path NAS2D::Filesystem::doWindowsQueryExePath() const
 {
     TCHAR filename[MAX_PATH];
     ::GetModuleFileName(nullptr, filename, MAX_PATH);
@@ -502,14 +502,14 @@ FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const
     return result;
 }
 #else
-FS::path NAS2D::Filesystem::DoWindowsQueryExePath() const
+FS::path NAS2D::Filesystem::doWindowsQueryExePath() const
 {
     return FS::path{};
 }
 #endif
 
 #ifdef PLATFORM_LINUX
-FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const
+FS::path NAS2D::Filesystem::doLinuxQueryExePath() const
 {
     FS::path p{ "/proc/self/exe" };
     if(!FS::exists(p)) { return FS::path{}; }
@@ -522,14 +522,14 @@ FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const
     return p;
 }
 #else
-FS::path NAS2D::Filesystem::DoLinuxQueryExePath() const
+FS::path NAS2D::Filesystem::doLinuxQueryExePath() const
 {
     return FS::path{};
 }
 #endif
 
 #ifdef PLATFORM_APPLE
-FS::path NAS2D::Filesystem::DoAppleQueryExePath() const
+FS::path NAS2D::Filesystem::doAppleQueryExePath() const
 {
     uint32_t size = 0;
     std::string path{};
@@ -547,7 +547,7 @@ FS::path NAS2D::Filesystem::DoAppleQueryExePath() const
     return p;
 }
 #else
-FS::path NAS2D::Filesystem::DoAppleQueryExePath() const
+FS::path NAS2D::Filesystem::doAppleQueryExePath() const
 {
     return FS::path{};
 }

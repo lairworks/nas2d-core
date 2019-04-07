@@ -104,11 +104,11 @@ namespace NAS2D {
         void setWorkingDirectory(const FS::path& p) const;
 
         //OS-specific delegate. Do not call this directly. Use getExePath instead.
-        FS::path DoWindowsQueryExePath() const;
+        FS::path doWindowsQueryExePath() const;
         //OS-specific delegate. Do not call this directly. Use getExePath instead.
-        FS::path DoAppleQueryExePath() const;
+        FS::path doAppleQueryExePath() const;
         //OS-specific delegate. Do not call this directly. Use getExePath instead.
-        FS::path DoLinuxQueryExePath() const;
+        FS::path doLinuxQueryExePath() const;
 
         bool isInit() const;
         bool exists(const FS::path& p) const;

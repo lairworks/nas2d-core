@@ -85,7 +85,6 @@ namespace NAS2D {
 
         File read(const std::string& filename) const;
         bool write(const File& file) const;
-        [[deprecated("Consider using remove. This function will be deleted in a future update.")]]
         bool del(const std::string& path) const;
         bool remove(const std::string& path) const;
         bool exists(const std::string& filename) const;

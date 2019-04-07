@@ -38,9 +38,9 @@ namespace FS = std::experimental::filesystem;
 #if defined(__clang_major__) && __clang_major >= 6
 #include <filesystem>
 namespace FS = std::filesystem;
-#elif defined(__clang_major__) && __clang_major < 6
-#include <experimental/filesystem>
-namespace FS = std::experimental::filesystem;
+//#elif defined(__clang_major__) && __clang_major < 6
+//#include <experimental/filesystem>
+//namespace FS = std::experimental::filesystem;
 #endif
 #endif
 
@@ -49,9 +49,9 @@ namespace FS = std::experimental::filesystem;
 #if defined(__GNUC__) && __GNUC__ >= 8
 #include <filesystem>
 namespace FS = std::filesystem;
-#else
-#include <experimental/filesystem>
-namespace FS = std::experimental::filesystem;
+//#else
+//#include <experimental/filesystem>
+//namespace FS = std::experimental::filesystem;
 #endif
 #endif
 

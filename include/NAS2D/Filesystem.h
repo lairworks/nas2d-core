@@ -52,7 +52,7 @@ namespace FS = std::experimental::filesystem;
 #if __GNUC__ >= 8
 #include <filesystem>
 namespace FS = std::filesystem;
-#else __GNUC__ < 8
+#elif __GNUC__ < 8
 #include <experimental/filesystem>
 namespace FS = std::experimental::filesystem;
 #endif

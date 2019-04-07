@@ -5,7 +5,7 @@ executors:
       - image: outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
   macos-executor:
     macos:
-      xcode: "10.0.0"
+      xcode: "10.2"
 jobs:
   build-linux:
     executor: docker-executor

@@ -58,114 +58,115 @@ namespace FS = std::experimental::filesystem;
 
 namespace NAS2D {
 
-/**
- * \class Filesystem
- * \brief Implements a virtual file system.
- *
- * Provides cross-platform and transparent archive Filesystem functions.
- */
-class Filesystem
-{
-public:
-    Filesystem() = default;
-	~Filesystem();
-    Filesystem(const Filesystem&) = delete;
-    Filesystem& operator= (const Filesystem&) = delete;
-    Filesystem(Filesystem&&) = delete;
-    Filesystem& operator=(Filesystem&&) = delete;
+    /**
+     * \class Filesystem
+     * \brief Implements a virtual file system.
+     *
+     * Provides cross-platform and transparent archive Filesystem functions.
+     */
+    class Filesystem
+    {
+    public:
+        Filesystem() = default;
+        ~Filesystem();
+        Filesystem(const Filesystem&) = delete;
+        Filesystem& operator= (const Filesystem&) = delete;
+        Filesystem(Filesystem&&) = delete;
+        Filesystem& operator=(Filesystem&&) = delete;
 
-	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
+        void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
 
-	std::string dataPath() const;
-	std::string workingPath(const std::string& filename) const;
-	StringList searchPath() const;
-	bool mount(const std::string& path) const;
+        std::string dataPath() const;
+        std::string workingPath(const std::string& filename) const;
+        StringList searchPath() const;
+        bool mount(const std::string& path) const;
 
-	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
+        StringList directoryList(const std::string& dir, const std::string& filter = "") const;
 
-	File read(const std::string& filename) const;
-	bool write(const File& file) const;
-	bool del(const std::string& path) const;
-	bool exists(const std::string& filename) const;
+        File read(const std::string& filename) const;
+        bool write(const File& file) const;
+        bool del(const std::string& path) const;
+        bool remove(const std::string& path) const;
+        bool exists(const std::string& filename) const;
 
-	std::string extension(const std::string& path);
+        std::string extension(const std::string& path);
 
-	bool isDirectory(const std::string& path) const;
-	bool makeDirectory(const std::string& path) const;
+        bool isDirectory(const std::string& path) const;
+        bool makeDirectory(const std::string& path) const;
+        bool removeDirectory(const std::string& path) const;
 
-    void setWorkingDirectory(const FS::path& p);
-    FS::path getWorkingDirectory() const;
+        void setWorkingDirectory(const FS::path& p);
+        FS::path getWorkingDirectory() const;
 
-    //Gets the path to the execuable. Returns an empty path if there's an error.
-    FS::path getExePath() const;
+        FS::path getExePath() const;
 
-private:
-    void setWorkingDirectory(const FS::path& p) const;
+    private:
+        void setWorkingDirectory(const FS::path& p) const;
 
-    //OS-specific delegate. Do not call this directly. Use getExePath instead.
-    FS::path DoWindowsQueryExePath() const;
-    //OS-specific delegate. Do not call this directly. Use getExePath instead.
-    FS::path DoAppleQueryExePath() const;
-    //OS-specific delegate. Do not call this directly. Use getExePath instead.
-    FS::path DoLinuxQueryExePath() const;
+        //OS-specific delegate. Do not call this directly. Use getExePath instead.
+        FS::path DoWindowsQueryExePath() const;
+        //OS-specific delegate. Do not call this directly. Use getExePath instead.
+        FS::path DoAppleQueryExePath() const;
+        //OS-specific delegate. Do not call this directly. Use getExePath instead.
+        FS::path DoLinuxQueryExePath() const;
 
-    bool isInit() const;
-    bool exists(const FS::path& p) const;
+        bool isInit() const;
+        bool exists(const FS::path& p) const;
 
-    void forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const FS::path&)>& callback = [](const FS::path& p) { (void)p; }, bool recursive = false) const;
-    void forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const FS::path&)>& callback = [](const FS::path& p) { (void)p; }, bool recursive = false);
+        void forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const FS::path&)>& callback = [](const FS::path& p) { (void)p; }, bool recursive = false) const;
+        void forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const FS::path&)>& callback = [](const FS::path& p) { (void)p; }, bool recursive = false);
+
+        template<typename DirectoryIteratorType>
+        void forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const FS::path&)>& callback = [](const FS::path& p) { (void)p; }, bool recursive = false) const;
+
+        bool readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const;
+        bool readBufferFromFile(std::string& out_buffer, const std::string& filePath) const;
+
+        bool writeBufferToFile(void* buffer, std::size_t size, const std::string& filePath) const;
+        bool writeBufferToFile(const std::string& buffer, const std::string& filePath) const;
+
+
+        mutable std::vector<FS::path> mSearchPath{};
+        FS::path                      mDataPath{};            /**< Data path string. This will typically be 'data/'. */
+        std::string                   mOrganizationName{};    /**< The organization name. Only used for compatibility while transitioning from PhysFS */
+        std::string                   mAppName{};             /**< The application name. Only used for compatibility while transitioning from PhysFS */
+        mutable FS::path              mWorkingDirectory{};    /**< The working directory. Typically 'mDataPath/mOrganizationName/mAppName/' */
+        mutable FS::path              mExePath{};             /**< Path to the executable.*/
+        mutable bool                  mIsInit{ false };       /**< Has the file system been initialized? */
+    };
 
     template<typename DirectoryIteratorType>
-    void forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList = std::string{}, const std::function<void(const FS::path&)>& callback = [](const FS::path& p) { (void)p; }, bool recursive = false) const;
-
-    bool readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const;
-    bool readBufferFromFile(std::string& out_buffer, const std::string& filePath) const;
-
-    bool writeBufferToFile(void* buffer, std::size_t size, const std::string& filePath) const;
-    bool writeBufferToFile(const std::string& buffer, const std::string& filePath) const;
-
-
-    mutable std::vector<FS::path> mSearchPath{};
-    FS::path                      mDataPath{};            /**< Data path string. This will typically be 'data/'. */
-    std::string                   mOrganizationName{};    /**< The organization name. Only used for compatibility while transitioning from PhysFS */
-    std::string                   mAppName{};             /**< The application name. Only used for compatibility while transitioning from PhysFS */
-    mutable FS::path              mWorkingDirectory{};    /**< The working directory. Typically 'mDataPath/mOrganizationName/mAppName/' */
-    mutable FS::path              mExePath{};             /**< Path to the executable.*/
-    mutable bool                  mIsInit{ false };       /**< Has the file system been initialized? */
-};
-
-template<typename DirectoryIteratorType>
-void forEachFileInFolders(const FS::path& preferred_folderpath, const std::vector<std::string>& validExtensions, const std::function<void(const FS::path&)>& callback)
-{
-    if(validExtensions.empty())
+    void forEachFileInFolders(const FS::path& preferred_folderpath, const std::vector<std::string>& validExtensions, const std::function<void(const FS::path&)>& callback)
     {
+        if(validExtensions.empty())
+        {
+            std::for_each(DirectoryIteratorType{ preferred_folderpath }, DirectoryIteratorType{},
+            [&callback](const FS::directory_entry& entry)
+            {
+                const auto& cur_path = entry.path();
+                bool is_directory = FS::is_directory(cur_path);
+                if(!is_directory)
+                {
+                    callback(cur_path);
+                }
+            });
+            return;
+        }
         std::for_each(DirectoryIteratorType{ preferred_folderpath }, DirectoryIteratorType{},
-        [&callback](const FS::directory_entry& entry)
+        [&validExtensions, &callback](const FS::directory_entry& entry)
         {
             const auto& cur_path = entry.path();
             bool is_directory = FS::is_directory(cur_path);
+            std::string my_extension = toLowercase(cur_path.extension().string());
+            bool valid_file_by_extension = std::find(std::begin(validExtensions), std::end(validExtensions), my_extension) != std::end(validExtensions);
             if(!is_directory)
             {
-                callback(cur_path);
+                if(valid_file_by_extension)
+                {
+                    callback(cur_path);
+                }
             }
         });
-        return;
     }
-    std::for_each(DirectoryIteratorType{ preferred_folderpath }, DirectoryIteratorType{},
-    [&validExtensions, &callback](const FS::directory_entry& entry)
-    {
-        const auto& cur_path = entry.path();
-        bool is_directory = FS::is_directory(cur_path);
-        std::string my_extension = toLowercase(cur_path.extension().string());
-        bool valid_file_by_extension = std::find(std::begin(validExtensions), std::end(validExtensions), my_extension) != std::end(validExtensions);
-        if(!is_directory)
-        {
-            if(valid_file_by_extension)
-            {
-                callback(cur_path);
-            }
-        }
-    });
-}
 
 };

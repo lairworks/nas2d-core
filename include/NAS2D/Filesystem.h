@@ -35,23 +35,29 @@ namespace FS = std::experimental::filesystem;
 #endif
 
 #ifdef PLATFORM_CLANG
-#if defined(__clang_major__) && __clang_major >= 6
+#if defined(__clang_major__) && __clang_major__ >= 6
 #include <filesystem>
 namespace FS = std::filesystem;
-//#elif defined(__clang_major__) && __clang_major < 6
-//#include <experimental/filesystem>
-//namespace FS = std::experimental::filesystem;
+#elif defined(__clang_major__) && __clang_major__ < 6
+#include <experimental/filesystem>
+namespace FS = std::experimental::filesystem;
+#endif
+#if defined(__clang_major__)
+#pragma message("Clang major: " __clang_major__)
 #endif
 #endif
 
 
 #ifdef PLATFORM_GNUC
-#if defined(__GNUC__) && __GNUC__ >= 8
+#if __GNUC__ >= 8
 #include <filesystem>
 namespace FS = std::filesystem;
-//#else
-//#include <experimental/filesystem>
-//namespace FS = std::experimental::filesystem;
+#else __GNUC__ < 8
+#include <experimental/filesystem>
+namespace FS = std::experimental::filesystem;
+#endif
+#if defined(__GNUC__)
+#pragma message("GNUC: " __GNUC__)
 #endif
 #endif
 

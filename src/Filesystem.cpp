@@ -478,11 +478,11 @@ FS::path NAS2D::Filesystem::getExePath() const
     //and that can get expensive.
     if(mExePath.empty())
     {
-#ifdef PLATFORM_WINDOWS
+#if defined(PLATFORM_WINDOWS)
         mExePath = DoWindowsQueryExePath();
-#elif PLATFORM_APPLE
+#elif defined(PLATFORM_APPLE)
         mExePath = DoAppleQueryExePath();
-#elif PLATFORM_LINUX
+#elif defined(PLATFORM_LINUX)
         mExePath = DoLinuxQueryExePath();
 #endif
     }

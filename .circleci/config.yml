@@ -20,6 +20,6 @@ jobs:
 workflows:
   version: 2
   linux_macos_build:
-  jobs:
-   - build-linux
-   - build-macos
+    jobs:
+      - build-linux
+      - build-macos

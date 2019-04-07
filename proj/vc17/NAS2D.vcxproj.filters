@@ -278,5 +278,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\..\_clang-format" />
   </ItemGroup>
 </Project>

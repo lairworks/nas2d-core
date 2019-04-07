@@ -9,9 +9,9 @@ executors:
 jobs:
   build-linux:
     executor: docker-executor
-      steps:
-        - checkout
-        - run: make -k
+    steps:
+      - checkout
+      - run: make -k
   build-macos:
     executor: macos-executor
     steps:

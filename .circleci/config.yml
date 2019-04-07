@@ -7,14 +7,19 @@ executors:
     macos:
       xcode: "10.0.0"
 jobs:
-  build:
-    docker-job:
-      executor: docker-executor
+  build-linux:
+    executor: docker-executor
       steps:
         - checkout
         - run: make -k
-    macos-executor:
-      executor: macos-executor
-      steps:
-        - checkout
-        - run: make -k
+  build-macos:
+    executor: macos-executor
+    steps:
+      - checkout
+      - run: make -k
+workflows:
+  version: 2
+  linux_macos_build:
+  jobs:
+   - build-linux
+   - build-macos

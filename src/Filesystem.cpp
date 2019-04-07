@@ -58,9 +58,9 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
 
     mOrganizationName = organizationName;
     mAppName = appName;
-    mDataPath = FS::path{ dataPath };
-    mWorkingDirectory = FS::current_path();
-    mOrgAppPath = FS::path{ mOrganizationName } / FS::path{ mAppName };
+    mDataPath = FS::path{ dataPath }.make_preferred();
+    mWorkingDirectory = FS::current_path().make_preferred();
+    mOrgAppPath = (FS::path{ mOrganizationName } / FS::path{ mAppName }).make_preferred();
     mExePath = getExePath();
     mIsInit = true;
 
@@ -79,7 +79,7 @@ bool Filesystem::mount(const std::string& path) const
 {
     if(!isInit()) { throw filesystem_not_initialized(); }
 
-    auto p = FS::path{ path };
+    auto p = FS::path{ path }.make_preferred();
 
     if(!exists(p))
     {
@@ -249,7 +249,7 @@ std::string Filesystem::workingPath(const std::string& filename) const
     {
         return std::string();
     }
-    return FS::path{ filename }.parent_path().string();
+    return FS::path{ filename }.parent_path().make_preferred().string();
 }
 
 
@@ -265,7 +265,7 @@ std::string Filesystem::extension(const std::string& path)
 {
     if(!isInit()) { throw filesystem_not_initialized(); }
 
-    auto p = FS::path{ path };
+    auto p = FS::path{ path }.make_preferred();
     if(!p.has_extension()) { return std::string{}; }
     if(FS::is_directory(p)) { return std::string{}; }
 
@@ -305,7 +305,6 @@ FS::path Filesystem::getWorkingDirectory() const
     if(mWorkingDirectory != cur_path)
     {
         setWorkingDirectory(cur_path);
-        mWorkingDirectory = cur_path;
     }
     return mWorkingDirectory;
 }
@@ -367,8 +366,7 @@ void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::stri
  */
 bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const
 {
-    FS::path p(filePath);
-    p.make_preferred();
+    auto p{ FS::path(filePath).make_preferred() };
     bool path_is_directory = FS::is_directory(p);
     bool path_not_exist = !FS::exists(p);
     bool not_valid_path = path_is_directory || path_not_exist;
@@ -394,8 +392,7 @@ bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, cons
  */
 bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& filePath) const
 {
-    FS::path p(filePath);
-    p.make_preferred();
+    auto p{ FS::path(filePath).make_preferred() };
     bool path_is_directory = FS::is_directory(p);
     bool path_not_exist = !FS::exists(p);
     bool not_valid_path = path_is_directory || path_not_exist;
@@ -593,7 +590,7 @@ bool NAS2D::Filesystem::writeBufferToFile(void* buffer, std::size_t size, const 
  */
 bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::string& filePath) const
 {
-    FS::path p(filePath);
+    FS::path p{ filePath };
     p.make_preferred();
     bool not_valid_path = FS::is_directory(p);
     bool invalid = not_valid_path;

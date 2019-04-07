@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 
 #include "NAS2D/Filesystem.h"
@@ -107,7 +107,7 @@ StringList Filesystem::searchPath() const
 /**
  * Returns a list of files within a given directory.
  *
- * \param	dir	Directory to search within the searchpath.
+ * \param	dir         Directory to search.
  * \param	filter		Optional extension filter comma-separated list. Only use the extension without a wildcard (*) character (e.g., '.png' vs '*.png').
  *
  */
@@ -204,7 +204,6 @@ bool Filesystem::exists(const std::string& filename) const
  * Writes a file to disk.
  *
  * \param	file		A reference to a \c const \c File object.
- * \param	overwrite	Flag indicating if a file should be overwritten if it already exists. Default is true.
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
@@ -258,8 +257,8 @@ std::string Filesystem::workingPath(const std::string& filename) const
  *
  * \param	path	Path to check for an extension.
  *
- * \return	Returns a string containing the file extension. An empty string will be
- *			returned if the file has no extension or if it's a directory.
+ * \return	Returns a string containing the file extension in the form ".ext".
+            An empty string will be returned if the file has no extension or if it's a directory.
  */
 std::string Filesystem::extension(const std::string& path)
 {
@@ -328,8 +327,8 @@ bool Filesystem::exists(const FS::path& p) const
                                Leave empty to search every file.
  * \param   callback           A free function, std::function or lambda that
                                returns void and takes a single std::filesystem::path by const-ref
-                               represenging the current file being touched.
- * \param   recursive          Should I search subfolders?
+                               representing the current file being touched.
+ * \param   recursive          Should I search subdirectories?
  */
 void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/) const
 {
@@ -360,9 +359,9 @@ void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::stri
 /**
  * Reads binary file into memory.
  *
- * \param	out_buffer	a std::vector of binary data containing the contents of the file.
- * \param   filePath the path to read from. Must exist. Must not be a directory.
- * \return	Returns true if the file was successfully read. False otherwise.
+ * \param	out_buffer      a std::vector of binary data containing the contents of the file.
+ * \param   filePath        the path to read from. Must exist. Must not be a directory.
+ * \return  Returns true if the file was successfully read. False otherwise.
  */
 bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, const std::string& filePath) const
 {
@@ -386,9 +385,9 @@ bool Filesystem::readBufferFromFile(std::vector<unsigned char>& out_buffer, cons
 /**
  * Reads a text file into memory.
  *
- * \param	out_buffer	a string containing the contents of the file.
- * \param   filePath the path to read from. Must exist. Must not be a directory.
- * \return	Returns true if the file was successfully read. False otherwise.
+ * \param	out_buffer      a string containing the contents of the file.
+ * \param   filePath the    path to read from. Must exist. Must not be a directory.
+ * \return  Returns true if the file was successfully read. False otherwise.
  */
 bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& filePath) const
 {

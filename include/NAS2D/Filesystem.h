@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // = 
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 
 #pragma once
@@ -126,13 +126,13 @@ namespace NAS2D {
         bool writeBufferToFile(const std::string& buffer, const std::string& filePath) const;
 
 
-        mutable std::vector<FS::path> mSearchPath{};
+        mutable std::vector<FS::path> mSearchPath{};          /**< Not used in this version as std::filesystem doesn't care where things are.*/
         FS::path                      mDataPath{};            /**< Data path string. This will typically be 'data/'. */
-        std::string                   mOrganizationName{};    /**< The organization name. Only used for compatibility while transitioning from PhysFS */
-        std::string                   mAppName{};             /**< The application name. Only used for compatibility while transitioning from PhysFS */
-        mutable FS::path              mWorkingDirectory{};    /**< The working directory. Typically 'mDataPath/mOrganizationName/mAppName/' */
-        mutable FS::path              mExePath{};             /**< Path to the executable.*/
-        mutable FS::path              mOrgAppPath{};          /**< Subdirectory path of mOrganizationName/mAppName for use in Home/AppData/UserDir/PrefDir known folder paths. */
+        std::string                   mOrganizationName{};    /**< The organization name. */
+        std::string                   mAppName{};             /**< The application name. */
+        mutable FS::path              mWorkingDirectory{};    /**< The working directory from where the binary was run. */
+        mutable FS::path              mExePath{};             /**< Path to the binary.*/
+        mutable FS::path              mOrgAppPath{};          /**< Convenience path variable that is the subdirectory 'mOrganizationName/mAppName/' for use in Home/AppData/UserDir/PrefDir known folder paths. */
         mutable bool                  mIsInit{ false };       /**< Has the file system been initialized? */
     };
 

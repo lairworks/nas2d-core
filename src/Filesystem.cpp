@@ -34,8 +34,8 @@ using namespace NAS2D::Exception;
 
 enum MountPosition
 {
-	MOUNT_PREPEND = 0,
-	MOUNT_APPEND = 1,
+    MOUNT_PREPEND = 0,
+    MOUNT_APPEND = 1,
 };
 
 /**
@@ -43,7 +43,7 @@ enum MountPosition
  */
 Filesystem::~Filesystem()
 {
-	std::cout << "Filesystem Terminated." << std::endl;
+    std::cout << "Filesystem Terminated." << std::endl;
 }
 
 
@@ -54,7 +54,7 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
 {
     if(isInit()) { throw filesystem_already_initialized(); }
 
-	std::cout << "Initializing Filesystem... ";
+    std::cout << "Initializing Filesystem... ";
 
     mOrganizationName = organizationName;
     mAppName = appName;
@@ -63,7 +63,7 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
     mExePath = getExePath();
     mIsInit = true;
 
-	std::cout << "done." << std::endl;
+    std::cout << "done." << std::endl;
 }
 
 
@@ -87,7 +87,7 @@ bool Filesystem::mount(const std::string& path) const
     }
 
     mSearchPath.push_back(p);
-	return true;
+    return true;
 }
 
 
@@ -100,7 +100,7 @@ StringList Filesystem::searchPath() const
 
     StringList searchPath{};
     for(const auto& p : mSearchPath) { searchPath.push_back(p.string()); }
-	return searchPath;
+    return searchPath;
 }
 
 /**
@@ -130,24 +130,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
  */
 bool Filesystem::del(const std::string& filename) const
 {
-    if(!isInit()) { throw filesystem_not_initialized(); }
-
-    try {
-        FS::remove(FS::path{ filename });
-	    return true;
-    }
-    catch(const FS::filesystem_error& e)
-    {
-        std::cout << "Filesystem::del(): std::filesystem reported an error:"
-            << "\n  What: " << e.what()
-            << "\n  Code: " << e.code()
-            << "\n  Path1: \"" << e.path1() << '\"'
-            << "\n  Path2: \"" << e.path2() << '\"'
-            << "\nRethrowing as NAS2D::Exception::filesystem_file_not_found";
-        std::cout.flush();
-        std::string desc{ "Path 1: " + e.path1().string() + "Path 2: " + e.path2().string() };
-        throw NAS2D::Exception::filesystem_file_not_found(desc);
-    }
+    return remove(filename);
 }
 
 
@@ -169,9 +152,9 @@ File Filesystem::read(const std::string& filename) const
         return File();
     }
 
-	File file(std::string(fileBuffer.data(), fileBuffer.size()), filename);
+    File file(std::string(fileBuffer.data(), fileBuffer.size()), filename);
 
-	return file;
+    return file;
 }
 
 
@@ -212,7 +195,7 @@ bool Filesystem::isDirectory(const std::string& path) const
  */
 bool Filesystem::exists(const std::string& filename) const
 {
-	if (!isInit()) { throw filesystem_not_initialized(); }
+    if(!isInit()) { throw filesystem_not_initialized(); }
     return exists(FS::path{ filename });
 }
 
@@ -226,19 +209,19 @@ bool Filesystem::exists(const std::string& filename) const
  */
 bool Filesystem::write(const File& file) const
 {
-	if (!isInit()) { throw filesystem_not_initialized(); }
+    if(!isInit()) { throw filesystem_not_initialized(); }
 
     const auto& filename = file.filename();
-	if (file.empty())
+    if(file.empty())
     {
-		std::cout << "Attempted to write empty file '" << filename << "'" << std::endl;
-		return false;
-	}
+        std::cout << "Attempted to write empty file '" << filename << "'" << std::endl;
+        return false;
+    }
     if(!writeBufferToFile(file.bytes(), filename))
     {
         return false;
     }
-	return true;
+    return true;
 }
 
 /**
@@ -246,8 +229,8 @@ bool Filesystem::write(const File& file) const
  */
 std::string Filesystem::dataPath() const
 {
-	if (!isInit()) { throw filesystem_not_initialized(); }
-	return mDataPath.string();
+    if(!isInit()) { throw filesystem_not_initialized(); }
+    return mDataPath.string();
 }
 
 
@@ -260,7 +243,7 @@ std::string Filesystem::dataPath() const
  */
 std::string Filesystem::workingPath(const std::string& filename) const
 {
-	if (!isInit()) { throw filesystem_not_initialized(); }
+    if(!isInit()) { throw filesystem_not_initialized(); }
     if(filename.empty())
     {
         return std::string();
@@ -279,18 +262,11 @@ std::string Filesystem::workingPath(const std::string& filename) const
  */
 std::string Filesystem::extension(const std::string& path)
 {
-	if (!isInit()) { throw filesystem_not_initialized(); }
+    if(!isInit()) { throw filesystem_not_initialized(); }
 
     auto p = FS::path{ path };
-    if(!p.has_extension())
-    {
-        return std::string();
-    }
-
-    if(FS::is_directory(p))
-    {
-        return std::string();
-    }
+    if(!p.has_extension()) { return std::string{}; }
+    if(FS::is_directory(p)) { return std::string{}; }
 
     return p.extension().string();
 }
@@ -300,7 +276,7 @@ void Filesystem::setWorkingDirectory(const FS::path& p)
     static_cast<const Filesystem&>(*this).setWorkingDirectory(p);
 }
 
-void Filesystem::setWorkingDirectory(const FS::path& p) const 
+void Filesystem::setWorkingDirectory(const FS::path& p) const
 {
     try
     {
@@ -363,9 +339,9 @@ void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::stri
     bool is_directory = FS::is_directory(preferred_folderpath);
     bool is_folder = exists && is_directory;
     if(!is_folder) { return; }
-    
+
     auto validExtensions = split(toLowercase(validExtensionList));
-    
+
     if(!recursive)
     {
         forEachFileInFolders<FS::directory_iterator>(preferred_folderpath, validExtensions, callback);
@@ -428,6 +404,70 @@ bool Filesystem::readBufferFromFile(std::string& out_buffer, const std::string& 
     //Dump ifstream buffer directly into stringstream and convert to string
     out_buffer = std::string(static_cast<const std::stringstream&>(std::stringstream() << ifs.rdbuf()).str());
     return true;
+}
+
+/**
+ * Removes a specified file.
+ *
+ * \param	filename	Path of the file to delete.
+ * \note    Must be either a file or an empty directory.
+ *          Non-empty directories will throw an error.
+ *          To delete an entire directory and all its contents use FileSystem::removeDirectory.
+ *
+ */
+bool NAS2D::Filesystem::remove(const std::string& path) const
+{
+    if(!isInit()) { throw filesystem_not_initialized(); }
+
+    try
+    {
+        FS::remove(FS::path{ path });
+        return true;
+    }
+    catch(const FS::filesystem_error& e)
+    {
+        std::cout << "Filesystem::remove(): std::filesystem reported an error:"
+            << "\n  What: " << e.what()
+            << "\n  Code: " << e.code()
+            << "\n  Path1: \"" << e.path1() << '\"'
+            << "\n  Path2: \"" << e.path2() << '\"'
+            << "\nRethrowing as NAS2D::Exception::filesystem_file_not_found";
+        std::cout.flush();
+        std::string desc{ "Path 1: " + e.path1().string() + "Path 2: " + e.path2().string() };
+        throw NAS2D::Exception::filesystem_file_not_found(desc);
+    }
+}
+
+
+/**
+ * Removes a directory and all its contents.
+ *
+ * \param	filename	Path of the directory to remove.
+ * \return  True if successful. False otherwise.
+ *
+ */
+bool NAS2D::Filesystem::removeDirectory(const std::string& path) const
+{
+    if(!isInit()) { throw filesystem_not_initialized(); };
+
+    try
+    {
+        auto removedFilesAndDirectoriesCount = FS::remove_all(FS::path{ path });
+        std::cout << "Removed " << removedFilesAndDirectoriesCount << "files/folders" << std::endl;
+        return true;
+    }
+    catch(const FS::filesystem_error& e)
+    {
+        std::cout << "Filesystem::removeDirectory(): std::filesystem reported an error:"
+            << "\n  What: " << e.what()
+            << "\n  Code: " << e.code()
+            << "\n  Path1: \"" << e.path1() << '\"'
+            << "\n  Path2: \"" << e.path2() << '\"'
+            << "\nRethrowing as NAS2D::Exception::filesystem_file_not_found";
+        std::cout.flush();
+        std::string desc{ "Path 1: " + e.path1().string() + "Path 2: " + e.path2().string() };
+        throw NAS2D::Exception::filesystem_file_not_found(desc);
+    }
 }
 
 /**

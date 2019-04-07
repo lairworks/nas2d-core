@@ -132,6 +132,7 @@ namespace NAS2D {
         std::string                   mAppName{};             /**< The application name. Only used for compatibility while transitioning from PhysFS */
         mutable FS::path              mWorkingDirectory{};    /**< The working directory. Typically 'mDataPath/mOrganizationName/mAppName/' */
         mutable FS::path              mExePath{};             /**< Path to the executable.*/
+        mutable FS::path              mOrgAppPath{};          /**< Subdirectory path of mOrganizationName/mAppName for use in Home/AppData/UserDir/PrefDir known folder paths. */
         mutable bool                  mIsInit{ false };       /**< Has the file system been initialized? */
     };
 

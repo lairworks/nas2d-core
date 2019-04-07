@@ -59,7 +59,8 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
     mOrganizationName = organizationName;
     mAppName = appName;
     mDataPath = FS::path{ dataPath };
-    mWorkingDirectory = FS::current_path(); // mDataPath / FS::path{ mOrganizationName } / FS::path{ mAppName };
+    mWorkingDirectory = FS::current_path();
+    mOrgAppPath = FS::path{ mOrganizationName } / FS::path{ mAppName };
     mExePath = getExePath();
     mIsInit = true;
 

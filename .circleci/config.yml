@@ -1,22 +1,14 @@
 version: 2.1
-executors:
-  linux-executor:
-    docker:
-      - image: outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
-  macos-executor:
-    macos:
-      xcode: "10.0.0"
-      
+
 jobs:
   build:
-    macos:
-      xcode: "10.0.0"
-    steps:
-      - checkout
-      - run: make -k
     docker:
       - image: outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
-    steps:
-      - checkout
-      - run: make -k
-      
+      steps:
+        - checkout
+        - run: make -k
+    macos:
+      xcode: "10.0.0"
+      steps:
+        - checkout
+        - run: make -k

@@ -42,6 +42,7 @@ namespace FS = std::filesystem;
 #include <experimental/filesystem>
 namespace FS = std::experimental::filesystem;
 #endif
+#pragma message("~~~~~~~~~~~CLANG~~~~~~~~~~")
 #pragma message(__VERSION__)
 #endif
 
@@ -53,6 +54,7 @@ namespace FS = std::filesystem;
 #include <experimental/filesystem>
 namespace FS = std::experimental::filesystem;
 #endif
+#pragma message("~~~~~~~~~~GNUC~~~~~~~~~~~")
 #pragma message(__VERSION__)
 #endif
 

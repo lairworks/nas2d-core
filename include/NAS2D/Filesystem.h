@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include "BuildConfig.h"
-#include "Common.h"
-#include "File.h"
+#include "Nas2D/BuildConfig.h"
+#include "Nas2D/Common.h"
+#include "Nas2D/File.h"
 
 #include <algorithm>
 #include <climits>

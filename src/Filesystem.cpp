@@ -332,22 +332,23 @@ bool Filesystem::exists(const FS::path& p) const
  */
 void Filesystem::forEachFileInFolder(const FS::path& folderpath, const std::string& validExtensionList /*= std::string{}*/, const std::function<void(const FS::path&)>& callback /*= [](const FS::path& p) { (void)p; }*/, bool recursive /*= false*/) const
 {
-    auto preferred_folderpath = folderpath;
-    preferred_folderpath.make_preferred();
-    bool exists = FS::exists(preferred_folderpath);
-    bool is_directory = FS::is_directory(preferred_folderpath);
-    bool is_folder = exists && is_directory;
-    if(!is_folder) { return; }
+	bool exists = FS::exists(folderpath);
+	if(!exists) { return; }
+	auto fp_copy = folderpath;
+	fp_copy = FS::canonical(fp_copy);
+	fp_copy.make_preferred();
+    bool is_directory = FS::is_directory(fp_copy);
+    if(!is_directory) { return; }
 
     auto validExtensions = split(toLowercase(validExtensionList));
 
     if(!recursive)
     {
-        forEachFileInFolders<FS::directory_iterator>(preferred_folderpath, validExtensions, callback);
+		forEachFileInFolders<FS::directory_iterator>(fp_copy, validExtensions, callback);
     }
     else
     {
-        forEachFileInFolders<FS::recursive_directory_iterator>(preferred_folderpath, validExtensions, callback);
+		forEachFileInFolders<FS::recursive_directory_iterator>(fp_copy, validExtensions, callback);
     }
 }
 

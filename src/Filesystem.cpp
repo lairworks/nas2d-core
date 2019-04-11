@@ -9,11 +9,505 @@
 // ==================================================================================
 
 #include "NAS2D/Filesystem.h"
+
+//Hacky fix until Apple gets off its butt.
+#if defined(PLATFORM_APPLE)
+
 #include "NAS2D/Exception.h"
 
-#ifdef PLATFORM_APPLE
+
+#if defined PLATFORM_APPLE
+#include <physfs.h>
 #include <CoreFoundation/CoreFoundation.h>
 #endif
+
+#include <climits>
+#include <cstring>
+#include <string>
+#include <iostream>
+#include <sstream>
+
+using namespace NAS2D;
+using namespace NAS2D::Exception;
+
+
+enum MountPosition
+{
+	MOUNT_PREPEND = 0,
+	MOUNT_APPEND = 1,
+};
+
+
+/**
+ * Default c'tor.
+ */
+Filesystem::Filesystem(): mVerbose(false)
+{}
+
+
+/**
+ * Shuts down PhysFS and cleans up.
+ */
+Filesystem::~Filesystem()
+{
+#ifdef PLATFORM_APPLE
+	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
+#endif
+	std::cout << "Filesystem Terminated." << std::endl;
+}
+
+
+/**
+ * Shuts down PhysFS and cleans up.
+ */
+void Filesystem::init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
+{
+	std::cout << "Initializing Filesystem... ";
+#ifdef PLATFORM_APPLE
+	if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
+
+	if (PHYSFS_init(argv_0.c_str()) == 0)
+	{
+		throw filesystem_backend_init_failure(getLastPhysfsError());
+	}
+
+	if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
+	{
+		std::cout << std::endl << "(FSYS) Error setting sane config. " << getLastPhysfsError() << "." << std::endl;
+	}
+
+	mDataPath = dataPath;
+	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
+	{
+		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
+	}
+#endif
+
+	std::cout << "done." << std::endl;
+}
+
+
+/**
+ * Adds a directory or supported archive to the Search Path.
+ *
+ * \param path	File path to add.
+ *
+ * \return Returns \c true if successful. Otherwise, returns \c false.
+ */
+bool Filesystem::mount(const std::string& path) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	if (mVerbose) { std::cout << "Adding '" << path << "' to search path." << std::endl; }
+
+	std::string searchPath(mDataPath + path);
+
+	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
+	{
+		std::cout << "Couldn't add '" << path << "' to search path. " << getLastPhysfsError() << "." << std::endl;
+		return false;
+	}
+
+	return true;
+#endif
+}
+
+
+/**
+ * Returns a list of directories in the Search Path.
+ */
+StringList Filesystem::searchPath() const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	StringList searchPath;
+
+	auto searchPathList = PHYSFS_getSearchPath();
+	for (char **i = searchPathList; *i != nullptr; ++i)
+	{
+		searchPath.push_back(*i);
+	}
+	PHYSFS_freeList(searchPathList);
+
+	return searchPath;
+#endif
+}
+
+
+/**
+ * Returns a list of files within a given directory.
+ *
+ * \param	dir	Directory to search within the searchpath.
+ * \param	filter		Optional extension filter. Only use the extension without a wildcard (*) character or period (e.g., 'png' vs '*.png' or '.png').
+ *
+ * \note	This function will also return the names of any directories in a specified search path
+ */
+StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	char **rc = PHYSFS_enumerateFiles(dir.c_str());
+
+	StringList fileList;
+	if (filter.empty())
+	{
+		for (char **i = rc; *i != nullptr; i++)
+		{
+			fileList.push_back(*i);
+		}
+	}
+	else
+	{
+		size_t filterLen = filter.size();
+		for (char **i = rc; *i != nullptr; i++)
+		{
+			std::string tmpStr = *i;
+			if (tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
+			{
+				fileList.push_back(*i);
+			}
+		}
+	}
+
+	PHYSFS_freeList(rc);
+
+	return fileList;
+#endif
+}
+
+
+/**
+ * Deletes a specified file.
+ *
+ * \param	filename	Path of the file to delete relative to the Filesystem root directory.
+ *
+ * \note	This function is not named 'delete' due to
+ *			language limitations.
+ */
+bool Filesystem::del(const std::string& filename) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	if (PHYSFS_delete(filename.c_str()) == 0)
+	{
+		std::cout << "Unable to delete '" << filename << "':" << getLastPhysfsError() << std::endl;
+		return false;
+	}
+
+	return true;
+#endif
+}
+
+/**
+ * Removes a specified file.
+ *
+ * \param	filename	Path of the file to delete relative to the Filesystem root directory.
+ *
+ */
+bool Filesystem::remove(const std::string& filename) const
+{
+	return del(filename);
+}
+
+
+/**
+ * Opens a file.
+ *
+ * \param filename	Path of the file to load.
+ *
+ * \return Returns a File.
+ */
+File Filesystem::open(const std::string& filename) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	if (mVerbose) { std::cout << "Attempting to load '" << filename << std::endl; }
+
+	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
+	if (!myFile)
+	{
+		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
+		closeFile(myFile);
+		return File();
+	}
+
+	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
+	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
+	if (len < 0 || len > UINT_MAX)
+	{
+		std::cout << "File '" << filename << "' is too large to load." << std::endl;
+		closeFile(myFile);
+		return File();
+	}
+
+	// Create a char* buffer large enough to hold the entire file.
+	PHYSFS_uint32 fileLength = static_cast<PHYSFS_uint32>(len);
+	char *fileBuffer = new char[fileLength + 1];
+
+	// If we read less then the file length, return an empty File object, log a message and free any used memory.
+	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
+	{
+		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
+		delete[] fileBuffer;
+		closeFile(myFile);
+		return File();
+	}
+
+	File file(std::string(fileBuffer, fileLength), filename);
+	closeFile(myFile);
+	delete[] fileBuffer;
+
+	if (mVerbose) { std::cout << "Loaded '" << filename << "' successfully." << std::endl; }
+
+	return file;
+#endif
+}
+
+
+/**
+ * Creates a new directory within the primary search path.
+ *
+ * \param path	Path of the directory to create.
+ *
+ * \return Returns \c true if successful. Otherwise, returns \c false.
+ */
+bool Filesystem::makeDirectory(const std::string& path) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	return PHYSFS_mkdir(path.c_str()) != 0;
+#endif
+}
+
+
+/**
+ * Determines if a given path is a directory rather than a file.
+ *
+ * \param path	Path to check.
+ */
+bool Filesystem::isDirectory(const std::string& path) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	PHYSFS_Stat stat;
+	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
+#endif
+}
+
+
+/**
+ * Checks for the existence of a file.
+ *
+ * \param	filename	File path to check.
+ *
+ * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
+ */
+bool Filesystem::exists(const std::string& filename) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	return PHYSFS_exists(filename.c_str()) != 0;
+#endif
+}
+
+
+/**
+ * Toggles Verbose Mode.
+ *
+ * When Verbose mode is off, only critical messages are displayed.
+ * Verbose Mode is generally useful for debugging purposes.
+ */
+void Filesystem::toggleVerbose() const
+{
+	mVerbose = !mVerbose;
+}
+
+
+#ifdef PLATFORM_APPLE
+/**
+ * Closes a file handle.
+ *
+ * \param	file	A handle to a PHYSFS_file.
+ *
+ * \return	True on success, false otherwise.
+ */
+bool Filesystem::closeFile(void* file) const
+{
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	if (!file) { return false; }
+
+	if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
+
+	throw filesystem_file_handle_still_open(getLastPhysfsError());
+}
+#endif
+
+
+/**
+ * Writes a file to disk.
+ *
+ * \param	file		A reference to a \c const \c File object.
+ * \param	overwrite	Flag indicating if a file should be overwritten if it already exists. Default is true.
+ *
+ * \return Returns \c true if successful. Otherwise, returns \c false.
+ */
+bool Filesystem::write(const File& file, bool overwrite) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	if (file.empty())
+	{
+		std::cout << "Attempted to write empty file '" << file.filename() << "'" << std::endl;
+		return false;
+	}
+
+	if (!overwrite && exists(file.filename()))
+	{
+		if (mVerbose) { std::cout << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl; }
+		return false;
+	}
+
+	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
+	if (!myFile)
+	{
+		if (mVerbose) { std::cout << "Couldn't open '" << file.filename() << "' for writing: " << getLastPhysfsError() << std::endl; }
+		return false;
+	}
+
+	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
+	{
+		if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << getLastPhysfsError() << std::endl; }
+		closeFile(myFile);
+		return false;
+	}
+	else
+	{
+		closeFile(myFile);
+		if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
+	}
+
+	return true;
+#endif
+}
+
+
+/**
+ * Gets the current User path.
+ */
+std::string Filesystem::userPath() const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	return PHYSFS_getUserDir();
+#endif
+}
+
+
+/**
+ * Gets the base data path.
+ */
+std::string Filesystem::dataPath() const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	return mDataPath;
+#endif
+}
+
+
+/**
+ * Convenience function to get the working directory of a file.
+ *
+ * \param filename	A file path.
+ *
+ * \note	File paths should not have any trailing '/' characters.
+ */
+std::string Filesystem::workingPath(const std::string& filename) const
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	if (!filename.empty())
+	{
+		std::string tmpStr(filename);
+		size_t pos = tmpStr.rfind("/");
+		tmpStr = tmpStr.substr(0, pos + 1);
+		return tmpStr;
+	}
+	else
+	{
+		if (mVerbose) { std::cout << "Filesystem::workingPath(): empty string provided." << std::endl; }
+		return std::string();
+	}
+#endif
+}
+
+
+/**
+ * Gets the extension of a given file path.
+ *
+ * \param	path	Path to check for an extension.
+ *
+ * \return	Returns a string containing the file extension. An empty string will be
+ *			returned if the file has no extension or if it's a directory.
+ */
+std::string Filesystem::extension(const std::string& path)
+{
+#ifdef PLATFORM_APPLE
+	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	// This is a naive approach but works for most cases.
+	size_t pos = path.find_last_of(".");
+
+	if (pos != std::string::npos)
+	{
+		return path.substr(pos + 1);
+	}
+	else if (isDirectory(path))
+	{
+		if (mVerbose) { std::cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << std::endl; }
+		return std::string();
+	}
+	else
+	{
+		if (mVerbose) { std::cout << "Filesystem::extension(): File '" << path << "' has no extension." << std::endl; }
+		return std::string();
+	}
+#endif
+}
+
+#ifdef PLATFORM_APPLE
+const char* Filesystem::getLastPhysfsError() const
+{
+	return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
+}
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#else
+
+#include "NAS2D/Exception.h"
 
 #include <climits>
 #include <cstring>
@@ -608,3 +1102,4 @@ bool NAS2D::Filesystem::writeBufferToFile(const std::string& buffer, const std::
     }
     return false;
 }
+#endif

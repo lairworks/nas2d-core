@@ -11,6 +11,79 @@
 #pragma once
 
 #include "NAS2D/BuildConfig.h"
+
+//Hacky fix until Apple gets off its butt.
+#if defined(PLATFORM_APPLE)
+// ==================================================================================
+// = NAS2D
+// = Copyright © 2008 - 2018 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software under the terms of the zlib license.
+// = 
+// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// ==================================================================================
+
+#pragma once
+
+#include "Common.h"
+#include "File.h"
+#include <string>
+
+namespace NAS2D {
+
+/**
+ * \class Filesystem
+ * \brief Implements a virtual file system.
+ *
+ * Provides cross-platform and transparent archive Filesystem functions.
+ */
+class Filesystem
+{
+public:
+	Filesystem();
+	~Filesystem();
+
+	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
+
+	std::string userPath() const;
+	std::string dataPath() const;
+	std::string workingPath(const std::string& filename) const;
+	StringList searchPath() const;
+	bool mount(const std::string& path) const;
+
+	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
+
+	File read(const std::string& filename) const;
+	bool del(const std::string& path) const;
+	bool write(const File& file, bool overwrite = true) const;
+	bool remove(const std::string& path) const;
+	bool exists(const std::string& filename) const;
+
+	std::string extension(const std::string& path);
+
+	bool isDirectory(const std::string& path) const;
+	bool makeDirectory(const std::string& path) const;
+
+	void toggleVerbose() const;
+
+private:
+	Filesystem(const Filesystem&) = delete;
+	Filesystem& operator= (const Filesystem&) = delete;
+#ifdef PLATFORM_APPLE
+	bool closeFile(void *file) const;
+	const char* getLastPhysfsError() const;
+#endif
+
+private:
+	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
+	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
+};
+
+};
+
+#else
+	
 #include "NAS2D/Common.h"
 #include "NAS2D/File.h"
 
@@ -27,11 +100,6 @@
 #ifdef PLATFORM_WINDOWS
 #include <filesystem>
 namespace FS = std::filesystem;
-#endif
-
-#ifdef PLATFORM_APPLE
-#include <experimental/filesystem>
-namespace FS = std::experimental::filesystem;
 #endif
 
 #ifdef PLATFORM_CLANG
@@ -167,3 +235,4 @@ namespace NAS2D
 	}
 
 }; // namespace NAS2D
+#endif

@@ -11,12 +11,12 @@ jobs:
     executor: docker-executor
     steps:
       - checkout
-      - run: make -k
+      - run: make -k --jobs
   build-macos:
     executor: macos-executor
     steps:
       - checkout
-      - run: make -k
+      - run: make -k --jobs
 workflows:
   version: 2
   linux_macos_build:

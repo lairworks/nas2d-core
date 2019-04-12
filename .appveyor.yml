@@ -14,8 +14,8 @@ install:
   - vcpkg install sdl2:x64-windows
   - vcpkg install sdl2-image:x86-windows
   - vcpkg install sdl2-image:x64-windows
-  - vcpkg install sdl2-tiff:x86-windows
-  - vcpkg install sdl2-tiff:x64-windows
+  - vcpkg install sdl2-tff:x86-windows
+  - vcpkg install sdl2-tff:x64-windows
   - vcpkg install sdl2-mixer:x86-windows
   - vcpkg install sdl2-mixer:x64-windows
   - vcpkg install physfs:x86-windows

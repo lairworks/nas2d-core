@@ -6,6 +6,7 @@ platform:
 cache:
   - C:\tools\vcpkg\installed\
   - C:\projects\nas2d-core\proj\vc14\packages -> proj\vc14\packages.config
-before_build: nuget restore proj/vc14
+install:
+  - nuget restore proj/vc14
 build:
   project: proj/vc14/NAS2D.sln

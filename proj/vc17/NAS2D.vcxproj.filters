@@ -270,7 +270,4 @@
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
 </Project>

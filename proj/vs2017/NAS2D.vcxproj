@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Gold|Win32">
+      <Configuration>Release Gold</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Gold|x64">
+      <Configuration>Release Gold</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3350562D-6204-42FC-898A-C85FD62E04E8}</ProjectGuid>
+    <RootNamespace>NAS2D</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\API\glew-1.13.0\include;C:\API\physfs-2.0.3\;C:\API\SDL2-2.0.5\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\API\glew-1.13.0\lib\Release\x64;C:\API\physfs-2.0.3\lib\x64;C:\API\SDL2-2.0.5\lib\x64;C:\API\SDL2_image-2.0.0\lib\x64;C:\API\SDL2_mixer-2.0.0\lib\x64;C:\API\SDL2_ttf-2.0.12\lib\x64;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)_d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\API\glew-1.13.0\include;C:\API\physfs-2.0.3\;C:\API\SDL2-2.0.5\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\API\glew-1.13.0\lib\Release\x64;C:\API\physfs-2.0.3\lib\x64;C:\API\SDL2-2.0.5\lib\x64;C:\API\SDL2_image-2.0.0\lib\x64;C:\API\SDL2_mixer-2.0.0\lib\x64;C:\API\SDL2_ttf-2.0.12\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|x64'">
+    <IncludePath>C:\API\glew-1.13.0\include;C:\API\physfs-2.0.3\;C:\API\SDL2-2.0.5\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\API\glew-1.13.0\lib\Release\x64;C:\API\physfs-2.0.3\lib\x64;C:\API\SDL2-2.0.5\lib\x64;C:\API\SDL2_image-2.0.0\lib\x64;C:\API\SDL2_mixer-2.0.0\lib\x64;C:\API\SDL2_ttf-2.0.12\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>E:\API\glew-2.1.0\include;E:\API\physfs-3.0.2\src\;E:\API\SDL2-2.0.9\include;E:\API\SDL2_image-2.0.4\include;E:\API\SDL2_mixer-2.0.4\include;E:\API\SDL2_ttf-2.0.15\include;..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\API\glew-2.1.0\lib\Release\Win32;E:\API\physfs-3.0.2\MinSizeRel;E:\API\SDL2-2.0.9\lib\x86;E:\API\SDL2_image-2.0.4\lib\x86;E:\API\SDL2_mixer-2.0.4\lib\x86;E:\API\SDL2_ttf-2.0.15\lib\x86;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>E:\API\glew-2.1.0\include;E:\API\physfs-3.0.2\src\;E:\API\SDL2-2.0.9\include;E:\API\SDL2_image-2.0.4\include;E:\API\SDL2_mixer-2.0.4\include;E:\API\SDL2_ttf-2.0.15\include;..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\API\glew-2.1.0\lib\Release\Win32;E:\API\physfs-3.0.2\MinSizeRel;E:\API\SDL2-2.0.9\lib\x86;E:\API\SDL2_image-2.0.4\lib\x86;E:\API\SDL2_mixer-2.0.4\lib\x86;E:\API\SDL2_ttf-2.0.15\lib\x86;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'">
+    <IncludePath>E:\API\glew-2.1.0\include;E:\API\physfs-3.0.2\src\;E:\API\SDL2-2.0.9\include;E:\API\SDL2_image-2.0.4\include;E:\API\SDL2_mixer-2.0.4\include;E:\API\SDL2_ttf-2.0.15\include;..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\API\glew-2.1.0\lib\Release\Win32;E:\API\physfs-3.0.2\MinSizeRel;E:\API\SDL2-2.0.9\lib\x86;E:\API\SDL2_image-2.0.4\lib\x86;E:\API\SDL2_mixer-2.0.4\lib\x86;E:\API\SDL2_ttf-2.0.15\lib\x86;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32s.lib;physfs.lib;sdl2.lib;sdl2_image.lib;sdl2_mixer.lib;sdl2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include;C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include\NAS2D\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glew32s.lib;physfs.lib;sdl2.lib;sdl2_image.lib;sdl2_mixer.lib;sdl2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glew32s.lib;physfs.lib;sdl2.lib;sdl2_image.lib;sdl2_mixer.lib;sdl2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include;C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include\NAS2D\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Gold|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MinSpace</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include;C:\Users\Leeor Dicker\Documents\GitHubVisualStudio\nas2d-core\include\NAS2D\tinyxml;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Common.cpp" />
+    <ClCompile Include="..\..\src\Configuration.cpp" />
+    <ClCompile Include="..\..\src\EventHandler.cpp" />
+    <ClCompile Include="..\..\src\Exception.cpp" />
+    <ClCompile Include="..\..\src\Filesystem.cpp" />
+    <ClCompile Include="..\..\src\FpsCounter.cpp" />
+    <ClCompile Include="..\..\src\Game.cpp" />
+    <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp" />
+    <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp" />
+    <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />
+    <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
+    <ClCompile Include="..\..\src\Resources\Font.cpp" />
+    <ClCompile Include="..\..\src\Resources\Image.cpp" />
+    <ClCompile Include="..\..\src\Resources\Music.cpp" />
+    <ClCompile Include="..\..\src\Resources\Resource.cpp" />
+    <ClCompile Include="..\..\src\Resources\Sound.cpp" />
+    <ClCompile Include="..\..\src\Resources\Sprite.cpp" />
+    <ClCompile Include="..\..\src\StateManager.cpp" />
+    <ClCompile Include="..\..\src\Timer.cpp" />
+    <ClCompile Include="..\..\src\Trig.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlNode.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlAttribute.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlAttributeSet.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlBase.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlComment.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlDocument.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlElement.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlHandle.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlMemoryBuffer.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlParser.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlText.cpp" />
+    <ClCompile Include="..\..\src\Xml\XmlUnknown.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\NAS2D\Common.h" />
+    <ClInclude Include="..\..\include\NAS2D\Configuration.h" />
+    <ClInclude Include="..\..\include\NAS2D\Delegate.h" />
+    <ClInclude Include="..\..\include\NAS2D\Documentation.h" />
+    <ClInclude Include="..\..\include\NAS2D\EventHandler.h" />
+    <ClInclude Include="..\..\include\NAS2D\Exception.h" />
+    <ClInclude Include="..\..\include\NAS2D\File.h" />
+    <ClInclude Include="..\..\include\NAS2D\Filesystem.h" />
+    <ClInclude Include="..\..\include\NAS2D\FpsCounter.h" />
+    <ClInclude Include="..\..\include\NAS2D\Game.h" />
+    <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer.h" />
+    <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer_SDL.h" />
+    <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\OGL_Renderer.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\Font.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\FontInfo.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\Image.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\ImageInfo.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\Music.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\MusicInfo.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\Resource.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\Sound.h" />
+    <ClInclude Include="..\..\include\NAS2D\Resources\Sprite.h" />
+    <ClInclude Include="..\..\include\NAS2D\Signal.h" />
+    <ClInclude Include="..\..\include\NAS2D\State.h" />
+    <ClInclude Include="..\..\include\NAS2D\StateManager.h" />
+    <ClInclude Include="..\..\include\NAS2D\Timer.h" />
+    <ClInclude Include="..\..\include\NAS2D\Trig.h" />
+    <ClInclude Include="..\..\include\NAS2D\Utility.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\Xml.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttribute.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeSet.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlBase.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlComment.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlDocument.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlElement.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlHandle.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlMemoryBuffer.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlNode.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlText.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlUnknown.h" />
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlVisitor.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

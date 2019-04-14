@@ -269,6 +269,9 @@
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlMemoryBuffer.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\BuildConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

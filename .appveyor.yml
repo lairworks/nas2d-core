@@ -13,3 +13,7 @@ install:
   - nuget restore proj/vs2017
 build:
   project: proj/vs2017/NAS2D.sln
+test_script:
+  - cd %APPVEYOR_BUILD_FOLDER%\test
+  - '%APPVEYOR_BUILD_FOLDER%\%PLATFORM%\%CONFIGURATION%\test.exe'
+  - cd %APPVEYOR_BUILD_FOLDER%

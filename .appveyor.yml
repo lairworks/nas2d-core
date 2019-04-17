@@ -16,6 +16,4 @@ install:
 build:
   project: proj/vs2017/NAS2D.sln
 test_script:
-  - echo Current working directory = '%CD%'
-  - echo Test exe path = '%APPVEYOR_BUILD_FOLDER%\test\%PLATFORM%\%CONFIGURATION%\test.exe'
   - '%APPVEYOR_BUILD_FOLDER%\test\%PLATFORM%\%CONFIGURATION%\test.exe'

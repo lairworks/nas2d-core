@@ -118,7 +118,7 @@ void someFunction(int foo)
 
 ```
 
-Please note that in all cases braces are used including for simple single line if/for/while blocks. While somewhat verbose this is intended to avoid common mistakes mistakes that are easy to overlook. For example:
+Please note that in all cases braces are used including for simple single line if/for/while blocks. While somewhat verbose this is intended to avoid common mistakes that are easy to overlook. For example:
 
 ```cpp
 

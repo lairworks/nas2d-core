@@ -15,7 +15,7 @@ jobs:
   test-linux:
     executor: docker-executor
     steps:
-     - run: echo "Running Fake Linux Tests..."
+     - run: make --keep-going check
   build-macos:
     executor: macos-executor
     steps:
@@ -34,7 +34,7 @@ jobs:
   test-macos:
     executor: macos-executor
     steps:
-     - run: echo "Running Fake MacOS Tests..."
+     - run: make --keep-going check
 workflows:
   build_and_test:
     jobs:

@@ -12,7 +12,7 @@ TEST(Utility, DefaultConstructibleType) {
 TEST(Utility, NonDefaultConstructibleType) {
 	struct NonDefaultConstructible {
 		NonDefaultConstructible() = delete;
-		NonDefaultConstructible(int) {}
+		explicit NonDefaultConstructible(int) {}
 	};
 
 	NAS2D::Utility<NonDefaultConstructible>::init(0);

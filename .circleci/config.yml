@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: outpostuniverse/nas2d-circleci
+      - image: outpostuniverse/nas2d-circleci:1.1
     steps:
       - checkout
       - run: make --keep-going

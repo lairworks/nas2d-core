@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run: make --keep-going
-      - run: make --keep-going check
+      - run: echo "Testing disabled" || make --keep-going check
   build-macos:
     executor: macos-executor
     steps:
@@ -28,7 +28,7 @@ jobs:
           key: deps-v2-NAS2D-{{ arch }}
           name: Caching brew install deps
       - run: make --keep-going
-      - run: make --keep-going check
+      - run: echo "Testing disabled" || make --keep-going check
 workflows:
   build_and_test:
     jobs:

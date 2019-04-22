@@ -2,7 +2,7 @@ version: 2.1
 executors:
   docker-executor:
     docker:
-      - image: outpostuniverse/nas2d-circleci
+      - image: outpostuniverse/nas2d-circleci:1.1
   macos-executor:
     macos:
       xcode: "10.0.0"

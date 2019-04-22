@@ -12,10 +12,7 @@ jobs:
     steps:
       - checkout
       - run: make --keep-going
-  test-linux:
-    executor: docker-executor
-    steps:
-     - run: make --keep-going check
+      - run: make --keep-going check
   build-macos:
     executor: macos-executor
     steps:
@@ -31,18 +28,9 @@ jobs:
           key: deps-v2-NAS2D-{{ arch }}
           name: Caching brew install deps
       - run: make --keep-going
-  test-macos:
-    executor: macos-executor
-    steps:
-     - run: make --keep-going check
+      - run: make --keep-going check
 workflows:
   build_and_test:
     jobs:
       - build-linux
       - build-macos
-      - test-linux:
-          requires:
-            - build-linux
-      - test-macos:
-          requires:
-            - build-macos

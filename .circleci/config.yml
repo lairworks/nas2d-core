@@ -5,4 +5,5 @@ jobs:
       - image: outpostuniverse/nas2d-circleci
     steps:
       - checkout
-      - run: make -k
+      - run: make --keep-going
+      - run: make --keep-going check

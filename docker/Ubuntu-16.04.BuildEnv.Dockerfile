@@ -24,7 +24,7 @@ RUN make compile-physfs && make install-physfs && make clean-physfs
 RUN useradd user
 USER user
 
-VOLUME /code
 WORKDIR /code
+VOLUME /code
 
 CMD ["make", "--keep-going", "check"]

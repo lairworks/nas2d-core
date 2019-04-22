@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run: make --keep-going
-      - run: echo "Testing disabled" || make --keep-going check
+      - run: make --keep-going check
   build-macos:
     executor: macos-executor
     steps:

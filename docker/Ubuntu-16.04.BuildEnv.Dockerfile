@@ -39,4 +39,4 @@ WORKDIR /code
 # Specifying maintainers in source files is known to discourage other people from making updates.
 MAINTAINER "WhoEverWantsToEdit <anybody@anywhere.com>"
 
-CMD ["make", "-k"]
+CMD ["make", "--keep-going"]

@@ -1,15 +1,4 @@
-# Based on Ubuntu 18.04, with tools needed to run on CircleCI, and dependencies for NAS2D
-
-# Build from the root project folder with:
-#   docker build .circleci/ --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
-# Push image to DockerHub with:
-#   docker login
-#   docker push outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
-
-# Run locally using the CircleCI command line interface:
-#   circleci build
-# Validate .circleci/config.yml file with:
-#   circleci config validate
+# See Docker and CircleCI section of makefile in root project folder for usage.
 
 # Depend on local build image
 FROM outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs

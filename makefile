@@ -221,9 +221,9 @@ root-debug-image-ubuntu-18.04:
 .PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
 
 build-image-circleci:
-	docker build .circleci/ --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.0
 push-image-circleci:
-	docker push outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+	docker push outpostuniverse/nas2d-circleci
 circleci-validate:
 	circleci config validate
 circleci-build:

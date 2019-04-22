@@ -15,10 +15,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 # Download and install dependencies from source
-COPY Makefile /buildDependencies/build/
-RUN cd /buildDependencies/build/ && make compile-sdl2 && make install-sdl2 && make clean-all-sdl2
-RUN cd /buildDependencies/build/ && make compile-sdl2-modules && make install-sdl2-modules && make clean-all-sdl2-modules
-RUN cd /buildDependencies/build/ && make compile-physfs && make install-physfs && make clean-physfs
+WORKDIR /buildDependencies/build/
+COPY Makefile .
+RUN make compile-sdl2 && make install-sdl2 && make clean-all-sdl2
+RUN make compile-sdl2-modules && make install-sdl2-modules && make clean-all-sdl2-modules
+RUN make compile-physfs && make install-physfs && make clean-physfs
 
 RUN useradd user
 USER user

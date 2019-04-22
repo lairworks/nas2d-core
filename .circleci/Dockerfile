@@ -1,7 +1,7 @@
 # See Docker and CircleCI section of makefile in root project folder for usage.
 
 # Depend on local build image
-FROM outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs:latest
+FROM outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs
 
 USER root
 # Install tools needed for primary CircleCI containers

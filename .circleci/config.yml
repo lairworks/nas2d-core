@@ -6,15 +6,9 @@ executors:
   macos-executor:
     macos:
       xcode: "10.0.0"
-jobs:
-  build-linux:
-    executor: docker-executor
-    steps:
-      - checkout
-      - run: make --keep-going
-      - run: make --keep-going check
-  build-macos:
-    executor: macos-executor
+commands:
+  brew-install:
+    description: "Brew install MacOS dependencies (or restore from cache)"
     steps:
       - restore_cache:
           name: Restoring brew dependencies
@@ -27,6 +21,17 @@ jobs:
             - /Users/distiller/Library/Caches/Homebrew
             - /usr/local/Cellar
       - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+jobs:
+  build-linux:
+    executor: docker-executor
+    steps:
+      - checkout
+      - run: make --keep-going
+      - run: make --keep-going check
+  build-macos:
+    executor: macos-executor
+    steps:
+      - brew-install
       - checkout
       - run: make --keep-going
       - run: echo "Testing disabled" || make --keep-going check

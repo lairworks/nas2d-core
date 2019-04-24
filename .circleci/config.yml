@@ -19,13 +19,13 @@ jobs:
       - restore_cache:
           key: deps-v2-NAS2D-{{ arch }}
       - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
-      - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
       - save_cache:
           paths:
             - /Users/distiller/Library/Caches/Homebrew
             - /usr/local/Cellar
           key: deps-v2-NAS2D-{{ arch }}
           name: Caching brew install deps
+      - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
       - checkout
       - run: make --keep-going
       - run: echo "Testing disabled" || make --keep-going check

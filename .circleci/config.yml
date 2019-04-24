@@ -16,7 +16,6 @@ jobs:
   build-macos:
     executor: macos-executor
     steps:
-      - checkout
       - restore_cache:
           key: deps-v2-NAS2D-{{ arch }}
       - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
@@ -27,6 +26,7 @@ jobs:
             - /usr/local/Cellar
           key: deps-v2-NAS2D-{{ arch }}
           name: Caching brew install deps
+      - checkout
       - run: make --keep-going
       - run: echo "Testing disabled" || make --keep-going check
 workflows:

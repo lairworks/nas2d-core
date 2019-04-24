@@ -2,7 +2,7 @@ version: 2.1
 executors:
   docker-executor:
     docker:
-      - image: outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+      - image: outpostuniverse/nas2d-circleci:1.1
   macos-executor:
     macos:
       xcode: "10.0.0"
@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run: make --keep-going
-      - run: echo "Testing disabled" || make --keep-going check
+      - run: make --keep-going check
   build-macos:
     executor: macos-executor
     steps:

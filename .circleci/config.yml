@@ -1,8 +1,36 @@
-version: 2.0
-jobs:
-  build:
+version: 2.1
+executors:
+  docker-executor:
     docker:
       - image: outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+  macos-executor:
+    macos:
+      xcode: "10.0.0"
+jobs:
+  build-linux:
+    executor: docker-executor
     steps:
       - checkout
-      - run: make -k
+      - run: make --keep-going
+      - run: echo "Testing disabled" || make --keep-going check
+  build-macos:
+    executor: macos-executor
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps-v2-NAS2D-{{ arch }}
+      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+      - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+      - save_cache:
+          paths:
+            - /Users/distiller/Library/Caches/Homebrew
+            - /usr/local/Cellar
+          key: deps-v2-NAS2D-{{ arch }}
+          name: Caching brew install deps
+      - run: make --keep-going
+      - run: echo "Testing disabled" || make --keep-going check
+workflows:
+  build_and_test:
+    jobs:
+      - build-linux
+      - build-macos

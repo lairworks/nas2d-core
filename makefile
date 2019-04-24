@@ -205,23 +205,25 @@ root-debug-image-ubuntu-16.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
 
 build-image-ubuntu-18.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs
+	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04-gcc.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc:latest --tag outpostuniverse/ubuntu-18.04-gcc:1.0
+	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04-gcc-gtest.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc-gtest:latest --tag outpostuniverse/ubuntu-18.04-gcc-gtest:1.1
+	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.1
 compile-on-ubuntu-18.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs
+	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/nas2d
 debug-image-ubuntu-18.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs bash
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/nas2d bash
 root-debug-image-ubuntu-18.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs bash
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/nas2d bash
 
 
 #### CircleCI related build rules ####
 
 .PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
 
-build-image-circleci:
-	docker build .circleci/ --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+build-image-circleci: | build-image-ubuntu-18.04
+	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.1
 push-image-circleci:
-	docker push outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+	docker push outpostuniverse/nas2d-circleci
 circleci-validate:
 	circleci config validate
 circleci-build:

@@ -1,9 +1,9 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:18.04
+FROM outpostuniverse/ubuntu-18.04-gcc-gtest:1.0
 
+# Install NAS2D specific dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    g++=4:7.3.0-* \
     libglew-dev=2.0.0-* \
     libphysfs-dev=3.0.1-* \
     libsdl2-dev=2.0.8+* \

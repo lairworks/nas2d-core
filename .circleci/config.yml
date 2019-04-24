@@ -2,8 +2,7 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: outpostuniverse/nas2d-circleci:1.1
+      - image: outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
     steps:
       - checkout
-      - run: make --keep-going
-      - run: make --keep-going check
+      - run: make -k

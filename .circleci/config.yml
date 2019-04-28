@@ -37,6 +37,7 @@ commands:
       - run:
           name: "Download and build Google Test"
           command: |
+            set -x
             if [[ ! -d << parameters.buildPrefix >> ]]; then
               pushd /tmp
               curl --silent --location https://github.com/google/googletest/archive/release-1.8.1.tar.gz | tar xz -

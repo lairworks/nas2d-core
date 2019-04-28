@@ -21,6 +21,43 @@ commands:
             - /Users/distiller/Library/Caches/Homebrew
             - /usr/local/Cellar
       - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+  build-googletest:
+    description: "Install Google Test from source package"
+    parameters:
+      buildPrefix:
+        type: string
+        default: ~/googletest/
+      installPrefix:
+        type: string
+        default: /usr/local/
+    steps:
+      - restore_cache:
+          name: Restoring Google Test
+          key: v2-gtest-{{ arch }}
+      - run:
+          name: "Download and build Google Test"
+          command: |
+            if [[ ! -d << parameters.buildPrefix >> ]]; then
+              pushd /tmp
+              curl --silent --location https://github.com/google/googletest/archive/release-1.8.1.tar.gz | tar xz -
+              cd googletest-release-1.8.1/
+              cmake -DCMAKE_CXX_FLAGS="-std=c++17"
+              make
+              mkdir -p << parameters.buildPrefix >>
+              cp -r googletest/include << parameters.buildPrefix >>
+              cp -r googlemock/include << parameters.buildPrefix >>
+              mkdir -p << parameters.buildPrefix >>lib/
+              find . -name 'lib*.a' -exec cp {} << parameters.buildPrefix >>lib/ \;
+              popd
+            fi
+      - save_cache:
+          name: Caching Google Test
+          key: v2-gtest-{{ arch }}
+          paths:
+            - << parameters.buildPrefix >>
+      - run:
+          name: "Install Google Test system wide"
+          command: cp -r << parameters.buildPrefix >> << parameters.installPrefix >>
 jobs:
   build-linux:
     executor: docker-executor
@@ -32,6 +69,7 @@ jobs:
     executor: macos-executor
     steps:
       - brew-install
+      - build-googletest
       - checkout
       - run: make --keep-going
       - run: echo "Testing disabled" || make --keep-going check

@@ -18,7 +18,6 @@ commands:
           name: Caching brew dependencies
           key: deps-v2-NAS2D-{{ arch }}
           paths:
-            - /Users/distiller/Library/Caches/Homebrew
             - /usr/local/Cellar
       - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
   build-googletest:

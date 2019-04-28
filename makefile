@@ -73,7 +73,7 @@ clean-all:
 
 ## Unit Test project ##
 
-.PHONY: gtest gmock check
+.PHONY: gtest gmock test check
 
 # Either of these should be a complete combined package. Only build one.
 GTESTSRCDIR := /usr/src/gtest/
@@ -113,7 +113,8 @@ TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTOBJDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 TESTPOSTCOMPILE = @mv -f $(TESTOBJDIR)/$*.Td $(TESTOBJDIR)/$*.d && touch $@
 
-check: $(TESTOUTPUT)
+test: $(TESTOUTPUT)
+check: | test
 	cd test && ../$(TESTOUTPUT)
 
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)

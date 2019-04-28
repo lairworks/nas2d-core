@@ -73,7 +73,7 @@ jobs:
       - build-googletest
       - checkout
       - run: make --keep-going
-      - run: echo "Testing disabled" || make --keep-going check
+      - run: make --keep-going check
 workflows:
   build_and_test:
     jobs:

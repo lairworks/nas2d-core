@@ -8,12 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "NAS2D/EventHandler.h"
-
-// UGLY ASS HACK for mouse window grabbing
-#include "NAS2D/Renderer/OGL_Renderer.h"
-
 #include <SDL.h>
-
 #include <iostream>
 
 // UGLY ASS HACK!

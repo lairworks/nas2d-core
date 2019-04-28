@@ -62,6 +62,7 @@ commands:
   build-and-test:
     steps:
       - run: make --keep-going
+      - run: make --keep-going test
       - run: make --keep-going check
 jobs:
   build-linux:

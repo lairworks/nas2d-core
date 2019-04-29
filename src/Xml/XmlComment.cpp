@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -22,9 +22,9 @@ XmlComment::XmlComment() : XmlNode(XmlNode::XML_COMMENT)
 
 /**
  * C'tor.
- * 
+ *
  * Constructs an XML Comment with a value.
- * 
+ *
  * \param	_value	Reference to a \c std::string with the value to use for the comment.
  */
 XmlComment::XmlComment(const std::string& _value) : XmlNode(XmlNode::XML_COMMENT)
@@ -69,7 +69,7 @@ void XmlComment::write(std::string& buf, int depth) const
 
 /**
  * Creates a clone of the Comment.
- * 
+ *
  * \returns	A pointer to an XmlNode.
  */
 XmlNode* XmlComment::clone() const

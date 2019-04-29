@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "NAS2D/Resources/Music.h"
@@ -34,7 +34,7 @@ Music::Music():	Resource()
 
 /**
  * C'tor.
- * 
+ *
  * \param filePath	Path of the music file to load.
  */
 Music::Music(const std::string& filePath):	Resource(filePath)
@@ -95,7 +95,7 @@ Music::~Music()
 
 /**
  * Loads a specified music file.
- * 
+ *
  * \note	This function is called internally during instantiation.
  */
 void Music::load()

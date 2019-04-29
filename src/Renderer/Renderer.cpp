@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -62,7 +62,7 @@ Renderer::Renderer() :	mRendererName("NULL Renderer"),
 
 /**
  * Internal constructor used by derived types to set the name of the Renderer.
- * 
+ *
  * This c'tor is not public and can't be invoked externally.
  */
 Renderer::Renderer(const std::string& rendererName, const std::string& appTitle):	mRendererName(rendererName),
@@ -192,7 +192,7 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
 
 /**
  * Draws a rotated and scaled image.
- * 
+ *
  * \param	image	A reference to an Image Resource.
  * \param	x		X-Coordinate to draw the Image at.
  * \param	y		Y-Coordinate to draw the Image at.
@@ -208,7 +208,7 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, c
 
 /**
  * Draws a rotated and scaled image.
- * 
+ *
  * \param	image	A reference to an Image Resource.
  * \param	x		X-Coordinate to draw the Image at.
  * \param	y		Y-Coordinate to draw the Image at.
@@ -225,7 +225,7 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, i
 
 /**
  * Draws a stretched image using a Color_4ub color structure.
- * 
+ *
  * \param	image	A reference to an Image Resource.
  * \param	x		X-Coordinate to draw the Image at.
  * \param	y		Y-Coordinate to draw the Image at.
@@ -241,7 +241,7 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
 
 /**
  * Draws a stretched image.
- * 
+ *
  * \param	image	A reference to an Image Resource.
  * \param	x		X-Coordinate to draw the Image at.
  * \param	y		Y-Coordinate to draw the Image at.
@@ -296,9 +296,9 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
  *
  * This function expects an ImageList with 9 images in it: four corners,
  * four edges and a center image to fill the rest in with.
- * 
+ *
  * Images in the ImageList are used in the following order:
- * 
+ *
  * \code
  * +---+---+---+
  * | 0 | 1 | 2 |
@@ -327,7 +327,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
 
 /**
  * Draws a source image to a destination image.
- * 
+ *
  * \param	source		A reference to a source Image.
  * \param	destination	A reference to the destination Image.
  * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
@@ -338,7 +338,7 @@ void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2
 
 /**
  * Sets the color of the fade.
- * 
+ *
  * \param	color	A reference to aColor_4ub.
  */
 void Renderer::setFadeColor(const Color_4ub& color)
@@ -447,7 +447,7 @@ void Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
 
 /**
  * Draws a line from (x, y) - (x2, y2) on the primary surface.
- * 
+ *
  * \param	x			X-Coordinate of the start of the line.
  * \param	y			Y-Coordinate of the start of the line.
  * \param	x2			X-Coordinate of the end of the line.
@@ -572,7 +572,7 @@ void Renderer::drawBoxFilled(float x, float y, float width, float height, int r,
 
 /**
  * Draws a circle.
- * 
+ *
  * \param	x				X-Coordinate of the center of the circle.
  * \param	y				Y-Coordinate of the center of the circle.
  * \param	radius			Radius of the circle.
@@ -590,15 +590,15 @@ void Renderer::drawCircle(float x, float y, float radius, int r, int g, int b, i
 
 /**
  * Draws a rectangular area with a color gradient.
- * 
+ *
  * Each point of the rectangular area can be given a different color value to
  * produce a variety of effects. The vertex orders are as follows:
- * 
+ *
  * 1-----4
  * |     |
  * |     |
  * 2-----3
- * 
+ *
  * \param	x	X-Position of the rectangular area to draw.
  * \param	y	Y-Position of the rectangular area to draw.
  * \param	w	Width of the rectangular area to draw.
@@ -626,15 +626,15 @@ void Renderer::drawGradient(float x, float y, float w, float h, int r1, int g1, 
 
 /**
  * Draws a rectangular area with a color gradient.
- * 
+ *
  * Each point of the rectangular area can be given a different color value to
  * produce a variety of effects. The vertex orders are as follows:
- * 
+ *
  * 1-----4
  * |     |
  * |     |
  * 2-----3
- * 
+ *
  * \param	x	X-Position of the rectangular area to draw.
  * \param	y	Y-Position of the rectangular area to draw.
  * \param	w	Width of the rectangular area to draw.
@@ -803,7 +803,7 @@ const std::string& Renderer::driverName()
 
 /**
  * Sets the driver name.
- * 
+ *
  * \note	Internal function used only by derived
  *			renderer types.
  */
@@ -833,7 +833,7 @@ void Renderer::title(const std::string& title)
 
 /**
  * Sets an icon for the window to use from an image file.
- * 
+ *
  * \param path	Path to an image file to use for the window icon.
  */
 void Renderer::window_icon(const std::string& path)
@@ -881,9 +881,9 @@ void Renderer::drawTextShadow(Font& font, const std::string& text, float x, floa
 
 /**
  * Sets a rectangular area of the screen outside of which nothing is drawn.
- * 
+ *
  * \param	rect	Reference to a Rectangle_2df representing to area to clip against.
- * 
+ *
  * \see clipRectClear()
  */
 void Renderer::clipRect(const Rectangle_2df& rect)
@@ -894,12 +894,12 @@ void Renderer::clipRect(const Rectangle_2df& rect)
 
 /**
  * Sets a rectangular area of the screen outside of which nothing is drawn.
- * 
+ *
  * \param	x		X-Coordinate of the area to clip against.
  * \param	y		Y-Coordinate of the area to clip against.
  * \param	width	Width of the area to clip against.
  * \param	height	Height of the area to clip against.
- * 
+ *
  * \note	To turn off the clipper, set the width or height
  *			paramters to 0.
  */
@@ -941,7 +941,7 @@ void Renderer::clearScreen(int r, int g, int b)
 
 /**
  * Updates the screen.
- * 
+ *
  * \note	All derived Renderer objects must call Renderer::update()
  *			before performing screen refreshes.
  */

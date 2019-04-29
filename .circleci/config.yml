@@ -59,21 +59,24 @@ commands:
       - run:
           name: "Install Google Test system wide"
           command: cp -r << parameters.buildPrefix >> << parameters.installPrefix >>
+  build-and-test:
+    steps:
+      - run: make --keep-going
+      - run: make --keep-going test
+      - run: make --keep-going check
 jobs:
   build-linux:
     executor: docker-executor
     steps:
       - checkout
-      - run: make --keep-going
-      - run: make --keep-going check
+      - build-and-test
   build-macos:
     executor: macos-executor
     steps:
       - brew-install
       - build-googletest
       - checkout
-      - run: make --keep-going
-      - run: echo "Testing disabled" || make --keep-going check
+      - build-and-test
 workflows:
   build_and_test:
     jobs:

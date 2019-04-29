@@ -11,6 +11,9 @@
 
 #include "NAS2D/Signal.h"
 
+#include <string>
+
+
 namespace NAS2D {
 
 #define SCANCODE_MASK (1<<30)

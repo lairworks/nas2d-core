@@ -271,7 +271,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="..\..\.clang-format" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

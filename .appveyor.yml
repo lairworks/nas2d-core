@@ -10,6 +10,7 @@ install:
   - vcpkg integrate install
   - vcpkg install physfs:x86-windows
   - vcpkg install physfs:x64-windows
+  - vcpkg install glew
   - nuget restore proj/vs2017
 build:
   project: proj/vs2017/NAS2D.sln

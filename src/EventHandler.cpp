@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -8,12 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "NAS2D/EventHandler.h"
-
-// UGLY ASS HACK for mouse window grabbing
-#include "NAS2D/Renderer/OGL_Renderer.h"
-
 #include <SDL.h>
-
 #include <iostream>
 
 // UGLY ASS HACK!

@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -235,7 +235,9 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if (!isRectInRect(dstPoint.x(), dstPoint.y(), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
+	{
 		return;
+	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);

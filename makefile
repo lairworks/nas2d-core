@@ -24,7 +24,7 @@ SdlDir := $(SdlPackageDir)/$(SdlVer)
 SdlInc := $(SdlDir)/include
 
 CXXFLAGS := -std=c++14 -g -Wall -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
-LDLIBS := -lstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lphysfs -lGLU -lGL
+LDLIBS := -lstdc++ -lphysfs # -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
@@ -73,7 +73,7 @@ clean-all:
 
 ## Unit Test project ##
 
-.PHONY: gtest gmock check
+.PHONY: gtest gmock test check
 
 # Either of these should be a complete combined package. Only build one.
 GTESTSRCDIR := /usr/src/gtest/
@@ -101,7 +101,7 @@ TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.o,$(TESTSRCS))
 TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
 TESTCPPFLAGS := -I$(INCDIR) -I$(GMOCKSRCDIR)/gtest/include
 TESTLDFLAGS := -L$(BINDIR) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
-TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs $(LDLIBS)
+TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests
 # Conditionally add GMock if we built it separately
 # This is conditional to avoid errors in case the library is not found
@@ -113,7 +113,8 @@ TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTOBJDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 TESTPOSTCOMPILE = @mv -f $(TESTOBJDIR)/$*.Td $(TESTOBJDIR)/$*.d && touch $@
 
-check: $(TESTOUTPUT)
+test: $(TESTOUTPUT)
+check: | test
 	cd test && ../$(TESTOUTPUT)
 
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
@@ -205,23 +206,25 @@ root-debug-image-ubuntu-16.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
 
 build-image-ubuntu-18.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs
+	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04-gcc.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc:latest --tag outpostuniverse/ubuntu-18.04-gcc:1.0
+	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04-gcc-gtest.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc-gtest:latest --tag outpostuniverse/ubuntu-18.04-gcc-gtest:1.1
+	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.1
 compile-on-ubuntu-18.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs
+	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/nas2d
 debug-image-ubuntu-18.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs bash
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/nas2d bash
 root-debug-image-ubuntu-18.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs bash
+	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/nas2d bash
 
 
 #### CircleCI related build rules ####
 
 .PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
 
-build-image-circleci:
-	docker build .circleci/ --tag outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+build-image-circleci: | build-image-ubuntu-18.04
+	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.1
 push-image-circleci:
-	docker push outpostuniverse/ubuntu-18.04-gcc-sdl2-physfs-circleci
+	docker push outpostuniverse/nas2d-circleci
 circleci-validate:
 	circleci config validate
 circleci-build:

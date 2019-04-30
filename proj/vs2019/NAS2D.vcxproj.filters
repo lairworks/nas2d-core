@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Mixer">
+      <UniqueIdentifier>{38850f27-88ca-4a9f-8398-c4fc4063e7d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderer">
+      <UniqueIdentifier>{1b4aff9c-81d5-485b-bdc7-1b5850a90ff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{abe87a21-5242-47d5-a2e5-cd4d11c06440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mixer">
+      <UniqueIdentifier>{e726c591-8921-4e48-bcd1-b31f16365f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Renderer">
+      <UniqueIdentifier>{f835e375-3047-4a58-8cf1-a8c2ac3a580c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resources">
+      <UniqueIdentifier>{8fc63a46-a921-4817-8885-8e16d6d47335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Xml">
+      <UniqueIdentifier>{7d97d5b5-2a02-45fa-b77b-5421848a65aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Xml">
+      <UniqueIdentifier>{f77ff9a8-6639-4ae0-8705-c016859865d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\EventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Filesystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FpsCounter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StateManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Trig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Resources\Font.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Resources\Image.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Resources\Music.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Resources\Resource.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Resources\Sound.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Resources\Sprite.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Renderer\Primitives.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Renderer\Renderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlParser.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlBase.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlMemoryBuffer.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlHandle.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlAttributeSet.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlUnknown.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlElement.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlText.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlComment.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlAttribute.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlDocument.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Xml\XmlNode.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\NAS2D\Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Configuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Delegate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Documentation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\EventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\FpsCounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\NAS2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Signal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\State.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\StateManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Trig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\Font.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\Image.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\Music.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\Resource.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\Sound.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\Sprite.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Renderer\OGL_Renderer.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer_SDL.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\ImageInfo.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\MusicInfo.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Resources\FontInfo.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\Xml.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlVisitor.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlBase.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlNode.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttribute.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeSet.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlElement.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlComment.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlText.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlUnknown.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlDocument.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlHandle.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Xml\XmlMemoryBuffer.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.clang-format" />
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

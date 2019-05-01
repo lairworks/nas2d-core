@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -426,10 +426,10 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 	glColor4ub(r, g, b, a);
 
 	int offset = 0;
-	
+
 	GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
 	if (gml.empty()) { return; }
-	
+
 	GlyphMetrics gm;
 	for (size_t i = 0; i < text.size(); i++)
 	{

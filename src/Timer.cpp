@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -46,7 +46,7 @@ unsigned int Timer::delta()
 
 /**
  * Updates the Accumulator value.
- * 
+ *
  * \return	Returns an accumulator value.
  */
 unsigned int Timer::accumulator()
@@ -59,7 +59,7 @@ unsigned int Timer::accumulator()
 
 /**
  * Adjusts the Accumulator value by a given amount.
- * 
+ *
  * \param	a	Amount to adjust the Accumulator by.
  */
 void Timer::adjust_accumulator(unsigned int a)

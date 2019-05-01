@@ -1,19 +1,14 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "NAS2D/EventHandler.h"
-
-// UGLY ASS HACK for mouse window grabbing
-#include "NAS2D/Renderer/OGL_Renderer.h"
-
 #include <SDL.h>
-
 #include <iostream>
 
 // UGLY ASS HACK!
@@ -26,7 +21,7 @@ using namespace NAS2D;
 
 const int MAX_MESSAGE_PROCESSING = 100;	/**
 										 * Maximum number of events to process each frame.
-										 * 
+										 *
 										 * \todo	Make this configurable?
 										 */
 
@@ -47,14 +42,14 @@ EventHandler::~EventHandler()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::ActivateEventCallback for paramter listing.
  */
 EventHandler::ActivateEventCallback& EventHandler::activate()
@@ -65,14 +60,14 @@ EventHandler::ActivateEventCallback& EventHandler::activate()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::WindowHiddenEventCallback for paramter listing.
  */
 EventHandler::WindowHiddenEventCallback& EventHandler::windowHidden()
@@ -83,14 +78,14 @@ EventHandler::WindowHiddenEventCallback& EventHandler::windowHidden()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::WindowExposedEventCallback for paramter listing.
  */
 EventHandler::WindowExposedEventCallback& EventHandler::windowExposed()
@@ -101,14 +96,14 @@ EventHandler::WindowExposedEventCallback& EventHandler::windowExposed()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::WindowMinimizedEventCallback for paramter listing.
  */
 EventHandler::WindowMinimizedEventCallback& EventHandler::windowMinimized()
@@ -119,14 +114,14 @@ EventHandler::WindowMinimizedEventCallback& EventHandler::windowMinimized()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::WindowMaximizedEventCallback for paramter listing.
  */
 EventHandler::WindowMaximizedEventCallback& EventHandler::windowMaximized()
@@ -137,14 +132,14 @@ EventHandler::WindowMaximizedEventCallback& EventHandler::windowMaximized()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::WindowRestoredEventCallback for paramter listing.
  */
 EventHandler::WindowRestoredEventCallback& EventHandler::windowRestored()
@@ -155,14 +150,14 @@ EventHandler::WindowRestoredEventCallback& EventHandler::windowRestored()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::WindowResizedEventCallback for paramter listing.
  */
 EventHandler::WindowResizedEventCallback& EventHandler::windowResized()
@@ -173,14 +168,14 @@ EventHandler::WindowResizedEventCallback& EventHandler::windowResized()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::WindowMouseEnterEventCallback for paramter listing.
  */
 EventHandler::WindowMouseEnterEventCallback& EventHandler::windowMouseEnter()
@@ -191,14 +186,14 @@ EventHandler::WindowMouseEnterEventCallback& EventHandler::windowMouseEnter()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::WindowMouseLeaveEventCallback for paramter listing.
  */
 EventHandler::WindowMouseLeaveEventCallback& EventHandler::windowMouseLeave()
@@ -209,14 +204,14 @@ EventHandler::WindowMouseLeaveEventCallback& EventHandler::windowMouseLeave()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::JoystickAxisMotionEventCallback for paramter listing.
  */
 EventHandler::JoystickAxisMotionEventCallback& EventHandler::joystickAxisMotion()
@@ -227,14 +222,14 @@ EventHandler::JoystickAxisMotionEventCallback& EventHandler::joystickAxisMotion(
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::JoystickBallMotionEventCallback for paramter listing.
  */
 EventHandler::JoystickBallMotionEventCallback& EventHandler::joystickBallMotion()
@@ -245,14 +240,14 @@ EventHandler::JoystickBallMotionEventCallback& EventHandler::joystickBallMotion(
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::JoystickButtonEventCallback for paramter listing.
  */
 EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonUp()
@@ -263,14 +258,14 @@ EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonUp()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::JoystickButtonEventCallback for paramter listing.
  */
 EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonDown()
@@ -281,14 +276,14 @@ EventHandler::JoystickButtonEventCallback& EventHandler::joystickButtonDown()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::JoystickHatMotionEventCallback for paramter listing.
  */
 EventHandler::JoystickHatMotionEventCallback& EventHandler::joystickHatMotion()
@@ -299,14 +294,14 @@ EventHandler::JoystickHatMotionEventCallback& EventHandler::joystickHatMotion()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::KeyEventCallback for paramter listing.
  */
 EventHandler::KeyUpEventCallback& EventHandler::keyUp()
@@ -317,14 +312,14 @@ EventHandler::KeyUpEventCallback& EventHandler::keyUp()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::KeyEventCallback for paramter listing.
  */
 EventHandler::KeyDownEventCallback& EventHandler::keyDown()
@@ -353,14 +348,14 @@ EventHandler::TextInputEventCallback& EventHandler::textInput()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::MouseButtonEventCallback for paramter listing.
  */
 EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonUp()
@@ -371,14 +366,14 @@ EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonUp()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::MouseButtonEventCallback for paramter listing.
  */
 EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonDown()
@@ -407,50 +402,50 @@ EventHandler::MouseButtonEventCallback& EventHandler::mouseDoubleClick()
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::MouseMotionEventCallback for paramter listing.
  */
 EventHandler::MouseMotionEventCallback& EventHandler::mouseMotion()
 {
-	return mMouseMotionEvent; 
+	return mMouseMotionEvent;
 }
 
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::MouseWheelEventCallback for paramter listing.
  */
 EventHandler::MouseWheelEventCallback& EventHandler::mouseWheel()
 {
-	return mMouseWheelEvent; 
+	return mMouseWheelEvent;
 }
 
 
 /**
  * \brief Gets the handler slot associated with this event.
- * 
+ *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
- * 
+ *
  * \code
  * connect(this, &Object::function);
  * \endcode
- * 
+ *
  * See EventHandler::QuitEventCallback for paramter listing.
  */
 EventHandler::QuitEventCallback& EventHandler::quit()
@@ -479,10 +474,10 @@ void EventHandler::releaseMouse()
 
 /**
  * Sets the mouse pointer to a specified location within the application window.
- * 
+ *
  * \param x X-Coordinate.
  * \param y Y-Coordinate.
- * 
+ *
  * \note	Coordinates can only be set within the bounds of the application's
  *			window. Coordinates will be clamped for all other values.
  */
@@ -494,7 +489,7 @@ void EventHandler::warpMouse(int x, int y)
 
 /**
  * Sets mouse updates to relative or absolute mostion.
- * 
+ *
  * \param	rel		True for relative mode. False for absolute mode.
  */
 void EventHandler::mouseRelativeMode(bool rel)
@@ -598,7 +593,7 @@ void EventHandler::pump()
 
 /**
  * Turns on/off text input mode.
- * 
+ *
  * \param _b Boolean value. True to turn on text input, false to turn it off.
  */
 void EventHandler::textInputMode(bool _b)
@@ -619,7 +614,7 @@ bool EventHandler::textInputMode()
 
 /**
  * Decodes a KeyModifier and determines if the Shift keymod is applied.
- * 
+ *
  * \param mod	Modifier value to decode.
  */
 bool EventHandler::shift(KeyModifier mod) const
@@ -630,7 +625,7 @@ bool EventHandler::shift(KeyModifier mod) const
 
 /**
  * Decodes a KeyModifier and determines if the Shift keymod is applied.
- * 
+ *
  * \param mod	Modifier value to decode.
  */
 bool EventHandler::alt(KeyModifier mod) const
@@ -641,7 +636,7 @@ bool EventHandler::alt(KeyModifier mod) const
 
 /**
  * Decodes a KeyModifier and determines if the Numlock keymod is applied.
- * 
+ *
  * \param mod	Modifier value to decode.
  */
 bool EventHandler::numlock(KeyModifier mod) const

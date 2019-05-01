@@ -12,13 +12,12 @@ commands:
     steps:
       - restore_cache:
           name: Restoring brew dependencies
-          key: deps-v2-NAS2D-{{ arch }}
+          key: deps-v3-NAS2D-{{ arch }}
       - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
       - save_cache:
           name: Caching brew dependencies
-          key: deps-v2-NAS2D-{{ arch }}
+          key: deps-v3-NAS2D-{{ arch }}
           paths:
-            - /Users/distiller/Library/Caches/Homebrew
             - /usr/local/Cellar
       - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
   build-googletest:
@@ -59,21 +58,24 @@ commands:
       - run:
           name: "Install Google Test system wide"
           command: cp -r << parameters.buildPrefix >> << parameters.installPrefix >>
+  build-and-test:
+    steps:
+      - run: make --keep-going
+      - run: make --keep-going test
+      - run: make --keep-going check
 jobs:
   build-linux:
     executor: docker-executor
     steps:
       - checkout
-      - run: make --keep-going
-      - run: make --keep-going check
+      - build-and-test
   build-macos:
     executor: macos-executor
     steps:
       - brew-install
       - build-googletest
       - checkout
-      - run: make --keep-going
-      - run: echo "Testing disabled" || make --keep-going check
+      - build-and-test
 workflows:
   build_and_test:
     jobs:

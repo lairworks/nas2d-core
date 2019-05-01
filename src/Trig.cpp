@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -65,7 +65,7 @@ Point_2df NAS2D::getDirectionVector(float angle)
 
 /**
  * Determines if a given line intersects a given circle.
- * 
+ *
  * \param	p	First point of a line segment.
  * \param	q	Second point of a line segment.
  * \param	c	Center point of a circle.

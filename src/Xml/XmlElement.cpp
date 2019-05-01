@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -63,9 +63,9 @@ void XmlElement::clearThis()
 
 /**
  * Gets the value of an attribute matching 'name'.
- * 
+ *
  * \param name	Name of the attribute to find.
- * 
+ *
  * \returns The value of the named attribute or an empty string if
  *			the attribute wasn't found.
  */
@@ -83,9 +83,9 @@ std::string XmlElement::attribute(const std::string& name) const
 
 /**
  * Sets a value to a named attribute.
- * 
+ *
  * \note	If no named attribute is found, one is created.
- * 
+ *
  * \param name	Name of the attribute to find.
  * \param i		\c int value to set to the attribute.
  */
@@ -102,9 +102,9 @@ void XmlElement::attribute(const std::string& name, int i)
 
 /**
  * Sets a value to a named attribute.
- * 
+ *
  * \note	If no named attribute is found, one is created.
- * 
+ *
  * \param name	Name of the attribute to find.
  * \param d		\c double value to set to the attribute.
  */
@@ -120,9 +120,9 @@ void XmlElement::attribute(const std::string& name, double d)
 
 /**
  * Sets a value to a named attribute.
- * 
+ *
  * \note	If no named attribute is found, one is created.
- * 
+ *
  * \param name	Name of the attribute to find.
  * \param s		String value to set to the attribute.
  */
@@ -138,7 +138,7 @@ void XmlElement::attribute(const std::string& name, const std::string& s)
 
 /**
  * Writes the element to a string buffer.
- * 
+ *
  * \param buf	String buffer to write to.
  * \param depth	Indent depth to use when writing the element.
  */
@@ -197,7 +197,7 @@ void XmlElement::copyTo(XmlElement* target) const
 	// superclass:
 	XmlNode::copyTo(target);
 
-	// Element class: 
+	// Element class:
 	// Clone the attributes, then clone the children.
 	const XmlAttribute* attribute = nullptr;
 	for (attribute = attributeSet.first(); attribute; attribute = attribute->next())
@@ -247,7 +247,7 @@ XmlNode* XmlElement::clone() const
 
 /**
  * Deletes an attribute with the given name.
- * 
+ *
  * \param name	Name of the attribute to delete.
  */
 void XmlElement::removeAttribute(const std::string& name)
@@ -263,7 +263,7 @@ void XmlElement::removeAttribute(const std::string& name)
 
 /**
  * Get the first attribute of the XmlElement.
- * 
+ *
  * \returns Pointer to an XmlAttribute or nullptr if the
  *			element has no attributes.
  */
@@ -275,9 +275,9 @@ const XmlAttribute* XmlElement::firstAttribute() const
 
 /**
  * Get the first attribute of the XmlElement.
- * 
+ *
  * Non-const version of firstAttribute().
- * 
+ *
  * \returns Pointer to an XmlAttribute or nullptr if the
  *			element has no attributes.
  */

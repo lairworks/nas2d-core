@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -20,7 +20,7 @@ namespace Xml {
  * Any tag that's unrecogmized is saved as an unknown. It is a tag of text,
  * but should not be modified. It will be written back to the XML, unchanged,
  * when the file is saved.
- * 
+ *
  * Declarations and DTD tags get thrown into XmlUnknown's.
  */
 class XmlUnknown : public XmlNode
@@ -33,7 +33,7 @@ public:
 	XmlUnknown& operator=(const XmlUnknown& copy);
 
 	virtual XmlNode* clone() const;
-	
+
 	/**
 	 * Print the Unknown to a buffer.
 	 */

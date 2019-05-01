@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -41,7 +41,7 @@ public:
 
 	/**
 	 * C'tor
-	 * 
+	 *
 	 * \param	stream	A ByteStream representing the file.
 	 * \param	name	The full name of the file including path.
 	 */
@@ -112,9 +112,9 @@ public:
 
 	/**
 	 * Resizes the File.
-	 * 
+	 *
 	 * \param	size	Number of bytes to resize the File to.
-	 * 
+	 *
 	 * \warning		Providing a size parameter smaller than the current File
 	 *				will truncate the existing data. There is no way to
 	 *				recover the data once the File is resized.
@@ -124,10 +124,10 @@ public:
 
 	/**
 	 * Resizes the File.
-	 * 
+	 *
 	 * \param	size	Number of bytes to resize the File to.
-	 * \param	b		Byte value to use to fill any additional bytes gained after resizing. 
-	 * 
+	 * \param	b		Byte value to use to fill any additional bytes gained after resizing.
+	 *
 	 * \warning		Providing a size parameter smaller than the current File
 	 *				will truncate the existing data. There is no way to
 	 *				recover the data once the File is resized.
@@ -161,25 +161,25 @@ public:
 
 	/**
 	 * Gets an iterator to the byte at a specified position.
-	 * 
+	 *
 	 * \param pos	Position of the iterator to get.
 	 */
 	iterator seek(size_t pos) { iterator it = mByteStream.begin() + pos; return it; }
 
 	/**
 	 * Gets a reverse iterator to the byte at a specified position.
-	 * 
+	 *
 	 * \param pos	Position of the iterator to get.
-	 * 
+	 *
 	 * \see seek
 	 */
 	reverse_iterator rseek(size_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
 
 	/**
 	 * Gets a byte from the byte stream at a specified position.
-	 * 
+	 *
 	 * \param pos Position of the byte to get.
-	 * 
+	 *
 	 * \warning	Out of range positions yield undefined behavior. Some compilers will
 	 *			throw an \c out_of_range exception.
 	 */
@@ -187,9 +187,9 @@ public:
 
 	/**
 	 * Gets a const byte from the byte stream at a specified position.
-	 * 
+	 *
 	 * \param pos Position of the byte to get.
-	 * 
+	 *
 	 * \warning	Out of range positions yield undefined behavior. Some compilers will
 	 *			throw an \c out_of_range exception.
 	 */

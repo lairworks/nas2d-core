@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #pragma once
@@ -78,7 +78,7 @@ public:
 
 private:
 	typedef std::map<std::string, std::string> Options;
-	
+
 	Configuration(const Configuration&);			// Intentionally left undefined.
 	Configuration& operator=(const Configuration&);	// Intentionally left undefined.
 

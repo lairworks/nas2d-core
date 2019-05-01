@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -30,9 +30,9 @@ Color_4ub::Color_4ub():	mR(static_cast<unsigned char>(255)),
 
 /**
  * C'tor
- * 
+ *
  * Instantiates a Color_4ub with a given RGBA value set.
- * 
+ *
  * \param r	Red compontent. Valid values are 0 - 255.
  * \param g	Green compontent. Valid values are 0 - 255.
  * \param b	Blue compontent. Valid values are 0 - 255.
@@ -47,7 +47,7 @@ Color_4ub::Color_4ub(int r, int g, int b, int a):	mR(static_cast<unsigned char>(
 
 /**
  * Sets a Color_4ub with a given RGBA value set.
- * 
+ *
  * \param r	Red compontent. Valid values are 0 - 255.
  * \param g	Green compontent. Valid values are 0 - 255.
  * \param b	Blue compontent. Valid values are 0 - 255.
@@ -100,7 +100,7 @@ int Color_4ub::alpha() const
 
 /**
  * Sets the red component value of the color.
- * 
+ *
  * \param red Red value. Valid values are 0 - 255.
  */
 void Color_4ub::red(int red)
@@ -111,7 +111,7 @@ void Color_4ub::red(int red)
 
 /**
  * Sets the green component value of the color.
- * 
+ *
  * \param green Green value. Valid values are 0 - 255.
  */
 void Color_4ub::green(int green)
@@ -122,7 +122,7 @@ void Color_4ub::green(int green)
 
 /**
  * Sets the blue component value of the color.
- * 
+ *
  * \param blue Blue value. Valid values are 0 - 255.
  */
 void Color_4ub::blue(int blue)
@@ -133,7 +133,7 @@ void Color_4ub::blue(int blue)
 
 /**
  * Sets the alpha component value of the color.
- * 
+ *
  * \param alpha Alpha value. Valid values are 0 - 255.
  */
 void Color_4ub::alpha(int alpha)
@@ -158,9 +158,9 @@ Rectangle_2d::Rectangle_2d():	mX(0),
 
 /**
  * C'tor.
- * 
+ *
  * Instantiates a Rectangle_2d to a given set of values.
- * 
+ *
  * \param x	X-Coordinate.
  * \param y Y-Coordinate.
  * \param w	Width of the Rectangle_2d.
@@ -175,7 +175,7 @@ Rectangle_2d::Rectangle_2d(int x, int y, int w, int h):	mX(x),
 
 /**
  * Copy c'tor.
- * 
+ *
  * \param rect Rectangle_2d to copy.
  */
 Rectangle_2d::Rectangle_2d(const Rectangle_2df& rect):	mX(static_cast<int>(rect.x())),
@@ -187,7 +187,7 @@ Rectangle_2d::Rectangle_2d(const Rectangle_2df& rect):	mX(static_cast<int>(rect.
 
 /**
  * Sets a Rectangle_2d with a given size.
- * 
+ *
  * \param _x X-Coordinate.
  * \param _y Y-Coordinate.
  * \param _w Width of the Rectangle_2d.
@@ -204,9 +204,9 @@ void Rectangle_2d::operator()(int _x, int _y, int _w, int _h)
 
 /**
  * Compares two rectangles.
- * 
+ *
  * \param rect	Rectangle_2d to compare against.
- * 
+ *
  * \returns True if the two rectangles are equivalent.
  */
 bool Rectangle_2d::operator==(const Rectangle_2d& rect)
@@ -217,9 +217,9 @@ bool Rectangle_2d::operator==(const Rectangle_2d& rect)
 
 /**
  * Compares two rectangles, \c float version.
- * 
+ *
  * \param rect	Rectangle_2df to compare against.
- * 
+ *
  * \returns True if the two rectangles are equivalent.
  */
 bool Rectangle_2d::operator==(const Rectangle_2df& rect)
@@ -230,9 +230,9 @@ bool Rectangle_2d::operator==(const Rectangle_2df& rect)
 
 /**
  * Compares two rectangles.
- * 
+ *
  * \param rect	Rectangle_2d to compare against.
- * 
+ *
  * \returns True if the two rectangles are not equivalent.
  */
 bool Rectangle_2d::operator!=(const Rectangle_2d& rect)
@@ -243,9 +243,9 @@ bool Rectangle_2d::operator!=(const Rectangle_2d& rect)
 
 /**
  * Compares two rectangles, \c float version.
- * 
+ *
  * \param rect	Rectangle_2d to compare against.
- * 
+ *
  * \returns True if the two rectangles are not equivalent.
  */
 bool Rectangle_2d::operator!=(const Rectangle_2df& rect)
@@ -567,9 +567,9 @@ Rectangle_2df::Rectangle_2df():	mX(0),
 
 /**
  * C'tor.
- * 
+ *
  * Instantiates a Rectangle_2df to a given set of values.
- * 
+ *
  * \param x	X-Coordinate.
  * \param y Y-Coordinate.
  * \param w	Width of the Rectangle_2d.
@@ -584,7 +584,7 @@ Rectangle_2df::Rectangle_2df(float x, float y, float w, float h):	mX(x),
 
 /**
  * Sets a Rectangle_2df with a given size.
- * 
+ *
  * \param _x X-Coordinate.
  * \param _y Y-Coordinate.
  * \param _w Width of the Rectangle_2d.
@@ -601,9 +601,9 @@ void Rectangle_2df::operator()(float _x, float _y, float _w, float _h)
 
 /**
  * Compares two rectangles.
- * 
+ *
  * \param rect	Rectangle_2d to compare against.
- * 
+ *
  * \returns True if the two rectangles are equivalent.
  */
 bool Rectangle_2df::operator==(const Rectangle_2d& rect)
@@ -614,9 +614,9 @@ bool Rectangle_2df::operator==(const Rectangle_2d& rect)
 
 /**
  * Compares two rectangles.
- * 
+ *
  * \param rect	Rectangle_2df to compare against.
- * 
+ *
  * \returns True if the two rectangles are equivalent.
  */
 bool Rectangle_2df::operator==(const Rectangle_2df& rect)
@@ -627,9 +627,9 @@ bool Rectangle_2df::operator==(const Rectangle_2df& rect)
 
 /**
  * Compares two rectangles.
- * 
+ *
  * \param rect	Rectangle_2d to compare against.
- * 
+ *
  * \returns True if the two rectangles are not equivalent.
  */
 bool Rectangle_2df::operator!=(const Rectangle_2d& rect)
@@ -640,9 +640,9 @@ bool Rectangle_2df::operator!=(const Rectangle_2d& rect)
 
 /**
  * Compares two rectangles.
- * 
+ *
  * \param rect	Rectangle_2df to compare against.
- * 
+ *
  * \returns True if the two rectangles are not equivalent.
  */
 bool Rectangle_2df::operator!=(const Rectangle_2df& rect)
@@ -962,9 +962,9 @@ Point_2d::Point_2d():	mX(0),
 
 /**
  * C'tor
- * 
+ *
  * Instantiates a Point_2d with a given value set.
- * 
+ *
  * \param x	X-Coordinate.
  * \param y	Y-Coordinate.
  */

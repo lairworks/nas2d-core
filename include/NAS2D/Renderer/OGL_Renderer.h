@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #pragma once
@@ -27,7 +27,7 @@ public:
 	~OGL_Renderer();
 
 	void drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a);
-	
+
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a);
 	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a);
 
@@ -53,7 +53,7 @@ public:
 	void setCursor(int cursorId);
 
 	void clearScreen(int r, int g, int b);
-    
+
 	virtual float width();
 	virtual float height();
 

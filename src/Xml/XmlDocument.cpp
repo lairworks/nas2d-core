@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -18,7 +18,7 @@ using namespace NAS2D::Xml;
  */
 XmlDocument::XmlDocument() :	XmlNode(XmlNode::XML_DOCUMENT),
 								_errorId(0),
-								_error(false)							
+								_error(false)
 {
 	clearError();
 }
@@ -26,7 +26,7 @@ XmlDocument::XmlDocument() :	XmlNode(XmlNode::XML_DOCUMENT),
 
 /**
  * C'tor
- * 
+ *
  * \param documentName	Name of the document.
  */
 XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML_DOCUMENT),
@@ -40,7 +40,7 @@ XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML
 
 /**
  * Copy c'tor.
- * 
+ *
  * \param copy XmlDocument to copy.
  */
 XmlDocument::XmlDocument(const XmlDocument& copy) : XmlNode(XmlNode::XML_DOCUMENT)
@@ -51,7 +51,7 @@ XmlDocument::XmlDocument(const XmlDocument& copy) : XmlNode(XmlNode::XML_DOCUMEN
 
 /**
  * Copy assignment operator.
- * 
+ *
  * \param copy XmlDocument to copy.
  */
 XmlDocument& XmlDocument::operator=(const XmlDocument& copy)

@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #pragma once
@@ -55,7 +55,7 @@ std::string string_format(const std::string& format, Args ... args)
 /**
  * \typedef StringList
  * \brief	A list of std::string's.
- * 
+ *
  * The StringList is provided primarily as a convenience typedef
  * but is also used by some of NAS2D's functions.
  */

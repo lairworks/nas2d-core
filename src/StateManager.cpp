@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -29,7 +29,7 @@ StateManager::StateManager():	mActiveState(nullptr),
 
 /**
  * D'tor.
- * 
+ *
  * \note	The active State is destroyed when the StateManager is destroyed.
  */
 StateManager::~StateManager()
@@ -46,10 +46,10 @@ StateManager::~StateManager()
  * Sets the StateManager to run specified State.
  *
  * \param	state	A pointer to a State.
- * 
+ *
  * \note	Passing a nullptr to this function will terminate the
  * 			application.
- * 
+ *
  * \warning	The pointer given to the StateManager becomes owned by
  *			the StateManager.
  */
@@ -84,7 +84,7 @@ bool StateManager::update()
 
 		if (!nextState)
 		{
-			mActive = false;	
+			mActive = false;
 		}
 		else if (nextState != mActiveState)
 		{
@@ -104,7 +104,7 @@ bool StateManager::update()
 
 /**
  * Called when a quit event is raised.
- * 
+ *
  * Used to ensure that quit events are responded to
  * if a State doesn't.
  */

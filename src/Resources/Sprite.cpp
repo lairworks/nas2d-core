@@ -1,10 +1,10 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2018 New Age Software
+// = Copyright © 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -31,9 +31,9 @@ string endTag(int row, const std::string& name)
 
 /**
  * Default c'tor.
- * 
+ *
  * Provided to allow sprites to be used in STL containers.
- * 
+ *
  * \warning	Generally speaking, Sprites should not be instantiated
  *			with the default c'tor.
  */
@@ -126,7 +126,7 @@ void Sprite::play(const std::string& action)
 	else
 	{
 		// Set the current action to the named action.
-		mCurrentFrame = 0;	
+		mCurrentFrame = 0;
 		mCurrentAction = toLowercase(action);
 	}
 
@@ -155,7 +155,7 @@ void Sprite::resume()
 
 /**
  * Skips animation playback frames.
- * 
+ *
  * \param	frames	Number of frames to skip.
  */
 void Sprite::skip(int frames)
@@ -205,7 +205,7 @@ void Sprite::update(float x, float y)
 
 /**
  * Sets the rotation angle of the Sprite.
- * 
+ *
  * \param	angle	Angle of rotation in degrees.
  */
 void Sprite::rotation(float angle)
@@ -216,7 +216,7 @@ void Sprite::rotation(float angle)
 
 /**
  * Gets the rotation angle of the Sprite.
- * 
+ *
  * \return	Angle of rotation in degrees.
  */
 float Sprite::rotation() const
@@ -346,7 +346,7 @@ void Sprite::processXml(const std::string& filePath)
 /**
  * Iterates through all elements of a Sprite XML definition looking
  * for 'imagesheet' elements and processes them.
- * 
+ *
  * \note	Since 'imagesheet' elements are processed before any other
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
@@ -390,10 +390,10 @@ void Sprite::processImageSheets(void* root)
 
 /**
  * Adds an image sheet to the Sprite.
- * 
+ *
  * \note	Imagesheet ID's are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
- * 
+ *
  * \param	id		String ID for the image sheet.
  * \param	src		Image sheet file path.
  * \param	node	XML Node (for error information).
@@ -427,7 +427,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 /**
  * Iterates through all elements of a Sprite XML definition looking
  * for 'action' elements and processes them.
- * 
+ *
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
@@ -621,7 +621,7 @@ void Sprite::addDefaultAction()
 
 /**
  * Gets the width of the Sprite.
- * 
+ *
  * \note	This gets the width of the current frame. For most
  *			most sprites this will be the same for all frames
  *			but can be surprising if frame sizes vary.
@@ -634,7 +634,7 @@ int Sprite::width()
 
 /**
  * Gets the height of the Sprite.
- * 
+ *
  * \note	This gets the height of the current frame. For most
  *			most sprites this will be the same for all frames
  *			but can be surprising if frame sizes vary.
@@ -647,7 +647,7 @@ int Sprite::height()
 
 /**
  * Gets the origin X-Coordinate of the Sprite.
- * 
+ *
  * \note	This gets the origin of the current frame. For most
  *			most sprites this will be the same for all frames
  *			but can be surprising if frame sizes vary.
@@ -660,7 +660,7 @@ int Sprite::originX(int x)
 
 /**
  * Gets the origin Y-Coordinate of the Sprite.
- * 
+ *
  * \note	This gets the origin of the current frame. For most
  *			most sprites this will be the same for all frames
  *			but can be surprising if frame sizes vary.

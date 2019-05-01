@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -49,7 +49,7 @@ private:
 	virtual void load() = 0;
 
 	std::string mResourceName;		/**< File path and internal identifier. */
-	
+
 	bool mIsLoaded;					/**< Flag indicating whether or not this Resource has loaded properly. */
 };
 

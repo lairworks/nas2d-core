@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -20,9 +20,9 @@ namespace Xml {
  * An XmlHandle is a class that wraps a node pointer with null checks; this is
  * an incredibly useful thing. Note that XmlHandle is not part of the TinyXml
  * DOM structure. It is a separate utility class.
- * 
+ *
  * Take an example:
- * 
+ *
  * \code{.xml}
  * <Document>
  *	<Element attributeA = "valueA">
@@ -31,10 +31,10 @@ namespace Xml {
  *	</Element>
  * </Document>
  * \endcode
- * 
+ *
  * Assuming you want the value of "attributeB" in the 2nd "Child" element, it's very
  * easy to write a *lot* of code that looks like:
- * 
+ *
  * \code{.cpp}
  * XmlElement* root = document.firstChildElement("Document");
  * if (root)

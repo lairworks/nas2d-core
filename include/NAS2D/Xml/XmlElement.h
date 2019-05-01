@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -46,7 +46,7 @@ public:
 	XmlAttribute* lastAttribute();
 
 	virtual XmlNode* clone() const;
-	
+
 	virtual void write(std::string& buf, int depth) const;
 
 	virtual const char* parse(const char* p, void* data);
@@ -64,7 +64,7 @@ protected:
 
 private:
 	XmlAttributeSet attributeSet;
-};	
-	
+};
+
 } // namespace Xml
 } // namespace NAS2D

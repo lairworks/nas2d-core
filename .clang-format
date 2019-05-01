@@ -77,7 +77,7 @@ SpaceBeforeAssignmentOperators: true
 #Unsupported in VS2017-included ClangFormat 6.0 we'll see about VS2019's ClangFormat 7.0
 #SpaceBeforeInheritanceColon: true
 
-SpaceBeforeParens: Never
+SpaceBeforeParens: ControlStatements
 
 #Unsupported in VS2017-included ClangFormat 6.0 we'll see about VS2019's ClangFormat 7.0
 #SpaceBeforeRangeBasedForLoopColon: false

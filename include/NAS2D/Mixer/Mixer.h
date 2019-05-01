@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -40,10 +40,10 @@ public:
 	 * D'tor
 	 */
 	virtual ~Mixer() {}
-		
+
 	/**
 	 * Plays a sound on the first available sound channel.
-	 * 
+	 *
 	 * \param	sound	A reference to a Sound Resource.
 	 */
 	virtual void playSound(Sound& sound) {}
@@ -65,7 +65,7 @@ public:
 
 	/**
 	 * Starts playing a Music track.
-	 * 
+	 *
 	 * \param music	Reference to a Music Resource.
 	 * \param loops	Number of times to repeat the music.
 	 */
@@ -83,14 +83,14 @@ public:
 
 	/**
 	 * Resumes the currently paused Music.
-	 * 
+	 *
 	 * \note	It is safe to call this function if the music is stopped or already playing.
 	 */
 	virtual void resumeMusic() {}
-	
+
 	/**
 	 * Starts a Music track and fades it in to the current Music volume.
-	 * 
+	 *
 	 * \param	music	Reference to a Music Resource.
 	 * \param	loops	Number of times the Music should be repeated. -1 for continuous loop.
 	 * \param	time	Time, in miliseconds, for the fade to last. Default is 500.
@@ -99,7 +99,7 @@ public:
 
 	/**
 	 * Fades out the currently playing Music track.
-	 * 
+	 *
 	 * \param	time	Time, in miliseconds, for the fade to last. Default is 500.
 	 */
 	virtual void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) {}
@@ -143,14 +143,14 @@ public:
 
 	/**
 	 * Sets the music volume.
-	 * 
+	 *
 	 * \param	level	Volume level to set. Valid values are 0 - 128.
 	 */
 	virtual void musicVolume(int level) {};
 
 	/**
 	 * Gets the name of the Mixer.
-	 * 
+	 *
 	 * \return	A /c std::string containing the name of the Mixer.
 	 */
 	const std::string& name() const { return mName; }
@@ -164,7 +164,7 @@ public:
 protected:
 	/**
 	 * Internal constructor used by derived types to set the name of the Mixer.
-	 * 
+	 *
 	 * This c'tor is not public and can't be invoked externally.
 	 */
 	Mixer(const std::string& name) : mName(name)

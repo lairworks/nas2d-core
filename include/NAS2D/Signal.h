@@ -4,20 +4,20 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = SIGNAL.H
 // ==================================================================================
 // = This file is provided under the terms of the MIT license and is included as part
 // = of NAS2D's library interface.
-// = 
+// =
 // = Modifications include:
 // =	- Condensed lines for a more compact file
 // =	- Removed templates for parameter lists 6 - 8
 // =	- Replaced for loops using C++11 range-based loops
 // =	- Added doxygen comments for automatic generation of documentation.
-// = 
+// =
 // = Created by Patrick Hogan on 5/18/09.
 // = https://github.com/pbhogan/Signals
 // ==================================================================================
@@ -34,7 +34,7 @@ namespace Signals {
 /**
  * \class Signal0
  * \brief Signal with no paramters.
- * 
+ *
  * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
 template<class Param0 = void>
@@ -99,7 +99,7 @@ public:
 
 	template<class X, class Y>
 	void disconnect(Y * obj, void (X::*func)(Param1 p1) const) { delegateList.erase(MakeDelegate(obj, func)); }
-	
+
 	void clear() { delegateList.clear(); }
 	void emit(Param1 p1) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1); }
 	void operator() (Param1 p1) const { emit(p1); }

@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -267,7 +267,7 @@ void Configuration::parseGraphics(void* _n)
 
 /**
  * Parses audio information from an XML node.
- * 
+ *
  * \note	If any values are invalid or non-existant, this
  *			function will set default values.
  */
@@ -348,7 +348,7 @@ void Configuration::parseAudio(void* _n)
 
 /**
  * Parses program options from an XML node.
- * 
+ *
  * \note	Use of void pointer in declaration to avoid implementation details in header.
  */
 void Configuration::parseOptions(void* _n)
@@ -543,7 +543,7 @@ void Configuration::graphicsColorDepth(int bpp)
 
 /**
  * Sets fullscreen mode.
- * 
+ *
  * \param	fullscreen	Sets fullscreen mode when \c true.
  */
 void Configuration::fullscreen(bool fullscreen)
@@ -555,9 +555,9 @@ void Configuration::fullscreen(bool fullscreen)
 
 /**
  * Toggles vertical sync.
- * 
+ *
  * \param	vsync	Turns on vertical synch when \c true.
- * 
+ *
  * \note	This option does nothing when the graphics driver
  *			is set to a forced mode outside of the application.
  *			This is commonly seen on nVidia GPU's with global
@@ -574,7 +574,7 @@ void Configuration::vsync(bool vsync)
  * Sets the audio mixrate.
  *
  * \param	mixrate		Audio mix quality. Can either be AUDIO_LOW_QUALITY, AUDIO_MEDIUM_QUALITY or AUDIO_HIGH_QUALITY.
- * 
+ *
  * \note	If the specified mixrate is not one of the three valid values, AUDIO_MEDIUM_QUALITY will be used instead.
  */
 void Configuration::audioMixRate(int mixrate)
@@ -591,9 +591,9 @@ void Configuration::audioMixRate(int mixrate)
 
 /**
  * Sets the audio mixer.
- * 
+ *
  * \param	mixer	Sets the name of the mixer driver to use.
- * 
+ *
  * \note	The following values are available: "SDL"
  */
 void Configuration::mixer(const std::string& mixer)
@@ -605,7 +605,7 @@ void Configuration::mixer(const std::string& mixer)
 
 /**
  * Sets the number of sound channels.
- * 
+ *
  * \param	channels	Number of audio channels. Can either be AUDIO_MONO or AUDIO_STEREO.
  */
 void Configuration::audioStereoChannels(int channels)
@@ -617,7 +617,7 @@ void Configuration::audioStereoChannels(int channels)
 
 /**
  * Sets the Sound Effects volume.
- * 
+ *
  * \param	volume	Sound volume. Can be anywhere between AUDIO_SFX_MIN_VOLUME and AUDIO_SFX_MAX_VOLUME.
  */
 void Configuration::audioSfxVolume(int volume)
@@ -629,7 +629,7 @@ void Configuration::audioSfxVolume(int volume)
 
 /**
  * Sets the Music volume.
- * 
+ *
  * \param	volume	Music volume. Can be anywhere between AUDIO_MUSIC_MIN_VOLUME
  *					and AUDIO_MUSIC_MAX_VOLUME.
  */
@@ -642,7 +642,7 @@ void Configuration::audioMusicVolume(int volume)
 
 /**
  * Sets the size of the audio buffer.
- * 
+ *
  * \param	size	Size, in bytes, of the audio buffer. Setting this value too high can
  *					cause noticable lag while setting it too low can cause popping and
  *					crackling. A good all-around value is 1024.
@@ -656,11 +656,11 @@ void Configuration::audioBufferSize(int size)
 
 /**
  * Sets a program option.
- * 
+ *
  * \param	option		Name of the option.
  * \param	value		Value of the option.
  * \param	overwrite	Overwrites an existing option's value. Default is \c true.
- * 
+ *
  * \note	Option values are stored and read as strings. How the program
  *			interprets the data contained in value is up to the programmer.
  */
@@ -678,11 +678,11 @@ void Configuration::option(const std::string& option, const std::string& value, 
 
 /**
  * Gets an option's value.
- * 
+ *
  * \note	If the option was not defined when loading the configuration
  *			file, calling this function will create the option with an
  *			empty value.
- * 
+ *
  * \note	Option values are stored and read as strings. How the program
  *			interprets the data contained in value is up to the programmer.
  */
@@ -699,9 +699,9 @@ const std::string& Configuration::option(const std::string& key)
 
 /**
  * Erases an option.
- * 
+ *
  * \param	option	Name of the option to erase.
- * 
+ *
  * \note	It is safe to call this function if the named
  *			option has not been defined.
  */

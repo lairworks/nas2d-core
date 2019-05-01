@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -98,7 +98,7 @@ Game::~Game()
 /**
  * Adds an additional directory or archive to the search path
  * of the Filesystem.
- * 
+ *
  * \param path	Path to add to the search path.
  */
 void Game::mount(const std::string& path)
@@ -111,7 +111,7 @@ void Game::mount(const std::string& path)
  * Primes the EventHandler and StateManager and enters the main game loop.
  *
  * \param state	A pointer to a State object.
- * 
+ *
  * \warning	The State object becomes owned by the StateManager. Do not delete
  *			the State.
  */

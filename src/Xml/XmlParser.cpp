@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -524,12 +524,12 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 			}
 		}
 	}
-	
+
 	if (p && *p)
 	{
 		p += strlen(endTag);
 	}
-	
+
 	return (p && *p) ? p : 0;
 }
 
@@ -820,9 +820,9 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 			{
 				return;
 			}
-			
+
 			assert(in.peek() == '<');
-			
+
 			int tagIndex = (int)tag.length();
 
 			bool closingTag = false;
@@ -900,7 +900,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				const char* tagloc = tag.c_str() + tagIndex;
 				XmlNode* node = identify(tagloc);
 				if (!node) { return; }
-				
+
 				node->streamIn(in, tag);
 				delete node;
 				node = nullptr;
@@ -1177,7 +1177,7 @@ const char* XmlUnknown::parse(const char* p, void* data)
 	{
 		if (doc) { doc->error(XML_ERROR_PARSING_UNKNOWN, 0, 0); }
 	}
-	
+
 	if (p && *p == '>')
 	{
 		return p + 1;

@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -31,9 +31,9 @@ XmlNode::XmlNode() :	XmlBase(),
 
 /**
  * C'tor.
- * 
+ *
  * Construct a node with a given type.
- * 
+ *
  * \param	type	Type of the node. See XmlNode::NodeType.
  */
 XmlNode::XmlNode(NodeType type) :	XmlBase(),
@@ -76,14 +76,14 @@ void XmlNode::copyTo(XmlNode* target) const
 
 /**
  * Changes the value of the node.
- * 
+ *
  * The type of node changes the meaning of its value:
  * \li <b>Document:</b> filename of the XML file.
  * \li <b>Element:</b> name of the Element.
  * \li <b>Comment:</b> the Comment text.
  * \li <b>Unknown:</b> the Tag contents.
  * \li <b>Text:</b> the Text string.
- * 
+ *
  * \param	value	\c std::string containing the value to set.
  */
 void XmlNode::value(const std::string& value)
@@ -94,14 +94,14 @@ void XmlNode::value(const std::string& value)
 
 /**
  * Changes the value of the node.
- * 
+ *
  * The type of node changes the meaning of its value:
  * \li <b>Document:</b> filename of the XML file.
  * \li <b>Element:</b> name of the Element.
  * \li <b>Comment:</b> the Comment text.
  * \li <b>Unknown:</b> the Tag contents.
  * \li <b>Text:</b> the Text string.
- * 
+ *
  * \returns	The value of the node.
  */
 const std::string& XmlNode::value() const
@@ -185,7 +185,7 @@ XmlNode* XmlNode::insertEndChild(const XmlNode& node)
 
 		return nullptr;
 	}
-	
+
 	XmlNode* n = node.clone();
 	if (!n)
 	{
@@ -334,12 +334,12 @@ bool XmlNode::removeChild(XmlNode* node)
 
 /**
  * Gets the first child of the node matching 'value'.
- * 
+ *
  * \param	value	Value of the child to look for.
- * 
+ *
  * \returns	The first child of the node with a matching value or
  *			\c nullptr if not available.
- * 
+ *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
 const XmlNode* XmlNode::firstChild(const std::string& value) const
@@ -358,12 +358,12 @@ const XmlNode* XmlNode::firstChild(const std::string& value) const
 
 /**
  * The last child of this node matching 'value'.
- * 
+ *
  * \param value Value of the node to look for.
- * 
+ *
  * \returns Child node matching 'value' or \c nullptr if
  *			node isn't found.
- * 
+ *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
 const XmlNode* XmlNode::lastChild(const std::string& value) const
@@ -382,14 +382,14 @@ const XmlNode* XmlNode::lastChild(const std::string& value) const
 
 /**
  * The last child of this node matching 'value'.
- * 
+ *
  * \note Non-const version. See XmlNode::lastChild(const std::string&)
- * 
+ *
  * \param value Value of the node to look for.
- * 
+ *
  * \returns Child node matching 'value' or \c nullptr if
  *			node isn't found.
- * 
+ *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
 XmlNode* XmlNode::lastChild(const std::string& value)
@@ -415,7 +415,7 @@ XmlNode* XmlNode::lastChild(const std::string& value)
  * \param	previous	Pointer to the previous child of the node and finds
  *						the next one. If the previous child is \c nullptr,
  *						this function returns the first child.
- * 
+ *
  * \returns	Pointer to the next child of the node. Will return \c nullptr
  *			when there are no children left.
  */
@@ -435,14 +435,14 @@ const XmlNode* XmlNode::iterateChildren(const XmlNode* previous) const
 
 /**
  * Non-const version of XmlNode::iterateChildren(const XmlNode*).
- * 
+ *
  * \param	previous	Pointer to the previous child of the node and finds
  *						the next one. If the previous child is \c nullptr,
  *						this function returns the first child.
  *
  * \returns	Pointer to the next child of the node. Will return \c nullptr
  *			when there are no children left.
- * 
+ *
  * \see See XmlNode::iterateChildren(const XmlNode*) const
  */
 XmlNode* XmlNode::iterateChildren(const XmlNode* previous)
@@ -453,7 +453,7 @@ XmlNode* XmlNode::iterateChildren(const XmlNode* previous)
 
 /**
  * Search for children with a particular 'value'.
- * 
+ *
  * \param value		Value of the node to search against.
  * \param previous	Pointer to the previous child of the node and finds
  *					the next one. If the previous child is \c nullptr,
@@ -478,7 +478,7 @@ const XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode*
 
 /**
  * Non-const version of XmlNode::iterateChildren(const std::string&, const XmlNode*) const.
- * 
+ *
  * \param value		Value of the node to search against.
  * \param previous	Pointer to the previous child of the node and finds
  *					the next one. If the previous child is \c nullptr,
@@ -486,7 +486,7 @@ const XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode*
  *
  * \returns	Pointer to the next child of the node. Will return \c nullptr
  *			when there are no children left.
- * 
+ *
  * \see See XmlNode::iterateChildren(const std::string&, const XmlNode*) const
  */
 XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode* previous)
@@ -497,7 +497,7 @@ XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode* previ
 
 /**
  * Navigate to a sibling node with a given 'value'.
- * 
+ *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
 const XmlNode* XmlNode::nextSibling(const std::string& value) const
@@ -699,7 +699,7 @@ XmlDocument* XmlNode::document()
 
 /**
  * Gets the parent of the node.
- * 
+ *
  * \returns	Pointer to the node's parent. \c nullptr if no parent.
  */
 XmlNode* XmlNode::parent()
@@ -710,7 +710,7 @@ XmlNode* XmlNode::parent()
 
 /**
  * Gets the parent of the node.
- * 
+ *
  * \returns	Pointer to the node's parent. \c nullptr if no parent.
  */
 const XmlNode* XmlNode::parent() const
@@ -721,7 +721,7 @@ const XmlNode* XmlNode::parent() const
 
 /**
  * Get the first child of the node.
- * 
+ *
  * \returns	Pointer to the first child of the node. \c nullptr if no parent.
  */
 const XmlNode* XmlNode::firstChild() const
@@ -732,7 +732,7 @@ const XmlNode* XmlNode::firstChild() const
 
 /**
  * Get the first child of the node.
- * 
+ *
  * \returns	Pointer to the first child of the node. \c nullptr if no parent.
  */
 XmlNode* XmlNode::firstChild()
@@ -752,7 +752,7 @@ XmlNode* XmlNode::firstChild(const std::string& value)
 
 /**
  * Gets the last child of this node.
- * 
+ *
  * \returns The last child of the node or \c nullptr if
  *			there are no children.
  */
@@ -764,7 +764,7 @@ const XmlNode* XmlNode::lastChild() const
 
 /**
  * Gets the last child of this node.
- * 
+ *
  * \returns The last child of the node or \c nullptr if
  *			there are no children.
  */

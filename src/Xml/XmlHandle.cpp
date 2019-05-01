@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
@@ -26,9 +26,9 @@ XmlHandle::XmlHandle() : node(nullptr)
 
 /**
  * C'tor
- * 
+ *
  * \param _node	Pointer to an XmlNode.
- * 
+ *
  * \note	XmlHandle does not take ownership of the pointer.
  */
 XmlHandle::XmlHandle(XmlNode* _node) : node(_node)
@@ -37,7 +37,7 @@ XmlHandle::XmlHandle(XmlNode* _node) : node(_node)
 
 /**
  * Copy c'tor.
- * 
+ *
  * \param ref	XmlHandle to copy.
  */
 XmlHandle::XmlHandle(const XmlHandle& ref) : node(ref.node)
@@ -46,7 +46,7 @@ XmlHandle::XmlHandle(const XmlHandle& ref) : node(ref.node)
 
 /**
  * Copy assignment operator.
- * 
+ *
  * \param ref	XmlHandle to copy.
  */
 XmlHandle XmlHandle::operator=(const XmlHandle& ref)
@@ -62,7 +62,7 @@ XmlHandle XmlHandle::operator=(const XmlHandle& ref)
 
 /**
  * Get the first child node.
- * 
+ *
  * \returns	A handle to the first child node or nullptr
  *			if there are no children.
  */
@@ -82,13 +82,13 @@ XmlHandle XmlHandle::firstChild() const
 
 /**
  * Get the first child node matching 'value'.
- * 
+ *
  * \param value	Value of the child node to find.
- * 
+ *
  * \returns	A handle to the first child node matching 'value. Will
  *			return nullptr if there are no children or if no
  *			children match 'value'.
- * 
+ *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
 XmlHandle XmlHandle::firstChild(const std::string& value) const
@@ -107,7 +107,7 @@ XmlHandle XmlHandle::firstChild(const std::string& value) const
 
 /**
  * Get the first child element.
- * 
+ *
  * \returns	A handle to the first child element or nullptr
  *			if there are no children.
  */
@@ -127,13 +127,13 @@ XmlHandle XmlHandle::firstChildElement() const
 
 /**
  * Get the first child element matching 'value'.
- * 
+ *
  * \param value	Value of the child element to find.
- * 
+ *
  * \returns	A handle to the first child element matching 'value. Will
  *			return nullptr if there are no children or if no
  *			children match 'value'.
- * 
+ *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
 XmlHandle XmlHandle::firstChildElement(const std::string& value) const
@@ -153,9 +153,9 @@ XmlHandle XmlHandle::firstChildElement(const std::string& value) const
 
 /**
  * Get a handle to child in a specific index order.
- * 
+ *
  * For example, assuming you have the following XML:
- * 
+ *
  * \code{.xml}
  * <document>
  *	<element_a />
@@ -163,12 +163,12 @@ XmlHandle XmlHandle::firstChildElement(const std::string& value) const
  *	<element_c />
  * </document>
  * \endcode
- * 
+ *
  * Using '1' for the \c index paramter will return a handle to
  * an XmlNode with the value "element_b".
- * 
+ *
  * \param index	Index position of the child.
- * 
+ *
  * \return	Returns a handle to a child node or nullptr
  *			if there are no children or 'count' is past
  *			the number of children contained in the node.
@@ -191,9 +191,9 @@ XmlHandle XmlHandle::child(int index) const
 
 /**
  * Get a handle to child 'value' in a specific index order.
- * 
+ *
  * For example, assuming you have the following XML:
- * 
+ *
  * \code{.xml}
  * <document>
  *	<element_a />
@@ -202,17 +202,17 @@ XmlHandle XmlHandle::child(int index) const
  *	<element_c />
  * </document>
  * \endcode
- * 
+ *
  * Using parameters 'element_a' '1' for the \c index paramter will
  * return a handle to the second node 'element_a'.
- * 
+ *
  * \param value Value of the node to look for.
  * \param index	Index position of the child.
- * 
+ *
  * \return	Returns a handle to a child node or nullptr
  *			if there are no children or 'count' is past
  *			the number of children contained in the node.
- * 
+ *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
 XmlHandle XmlHandle::child(const std::string& value, int index) const
@@ -233,9 +233,9 @@ XmlHandle XmlHandle::child(const std::string& value, int index) const
 
 /**
  * Get a handle to child in a specific index order.
- * 
+ *
  * For example, assuming you have the following XML:
- * 
+ *
  * \code{.xml}
  * <document>
  *	<element_a />
@@ -243,16 +243,16 @@ XmlHandle XmlHandle::child(const std::string& value, int index) const
  *	<element_b />
  * </document>
  * \endcode
- * 
+ *
  * Using '1' for the \c index paramter will return a handle to
  * an XmlNode with the value "element_b".
- * 
+ *
  * \param index	Index position of the child.
- * 
+ *
  * \return	Returns a handle to a child node or nullptr
  *			if there are no children or 'count' is past
  *			the number of children contained in the node.
- * 
+ *
  * \note	Only Elements are indexed. Other types are ignored.
  */
 XmlHandle XmlHandle::childElement(int index) const
@@ -274,9 +274,9 @@ XmlHandle XmlHandle::childElement(int index) const
 
 /**
  * Get a handle to child 'value' in a specific index order.
- * 
+ *
  * For example, assuming you have the following XML:
- * 
+ *
  * \code{.xml}
  * <document>
  *	<element_a />
@@ -285,19 +285,19 @@ XmlHandle XmlHandle::childElement(int index) const
  *	<element_c />
  * </document>
  * \endcode
- * 
+ *
  * Using parameters 'element_a' '1' for the \c index paramter will
  * return a handle to the second node 'element_a'.
- * 
+ *
  * \param value Value of the node to look for.
  * \param index	Index position of the child.
- * 
+ *
  * \return	Returns a handle to a child node or nullptr
  *			if there are no children or 'count' is past
  *			the number of children contained in the node.
- * 
+ *
  * \note Only Elements are indexed. Other types are ignored.
- * 
+ *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
 XmlHandle XmlHandle::childElement(const std::string& value, int count) const
@@ -306,7 +306,7 @@ XmlHandle XmlHandle::childElement(const std::string& value, int count) const
 	{
 		XmlElement* child = node->firstChildElement(value);
 		for (int i = 0; child && i < count; child = child->nextSiblingElement(value), ++i) {}
-		
+
 		if (child)
 		{
 			return XmlHandle(child);
@@ -319,7 +319,7 @@ XmlHandle XmlHandle::childElement(const std::string& value, int count) const
 
 /**
  * Get a handle as an XmlNode.
- * 
+ *
  * \returns	A handle to an XmlNode or nullptr if
  *			not a node.
  */
@@ -331,7 +331,7 @@ XmlNode* XmlHandle::toNode() const
 
 /**
  * Get a handle as an XmlElement.
- * 
+ *
  * \returns	A handle to an XmlElement or nullptr if
  *			not an Element.
  */
@@ -343,7 +343,7 @@ XmlElement* XmlHandle::toElement() const
 
 /**
  * Get a handle as an XmlText.
- * 
+ *
  * \returns	A handle to an XmlText or nullptr if
  *			not a text element.
  */
@@ -355,7 +355,7 @@ XmlText* XmlHandle::toText() const
 
 /**
  * Get a handle as an XmlUnknown.
- * 
+ *
  * \returns	A handle to an XmlUnknown or nullptr if
  *			not an unknown element.
  */

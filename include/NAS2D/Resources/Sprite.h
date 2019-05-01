@@ -4,7 +4,7 @@
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
-// = 
+// =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
@@ -36,7 +36,7 @@ public:
 	Sprite();
 	Sprite(const std::string& filePath);
 	Sprite(const Sprite &sprite);
-	
+
 	/**
 	 * D'tor
 	 */
@@ -57,11 +57,11 @@ public:
 
 	/**
 	 * Sets the alpha value for the Sprite.
-	 * 
+	 *
 	 * \param	alpha	Alpha value to set between 0 - 255.
 	 */
 	void alpha(int alpha) { mColor.alpha(alpha); }
-	
+
 	/**
 	 * Gets the alpha value for the Sprite.
 	 */
@@ -69,14 +69,14 @@ public:
 
 	/**
 	 * Sets the color of the Sprite.
-	 * 
+	 *
 	 * \param	color	Reference to a Color_4ub object.
 	 */
 	void color(const Color_4ub& color) { mColor = color; }
 
 	/**
 	 * Sets the color of the Sprite.
-	 * 
+	 *
 	 * \param	red		Red value to set between 0 - 255.
 	 * \param	green	Green value to set between 0 - 255.
 	 * \param	blue	Blue value to set between 0 - 255.
@@ -111,7 +111,7 @@ protected:
 private:
 	/**
 	 * \class	spriteFrame
-	 * \brief	Contains 
+	 * \brief	Contains
 	 */
 	class SpriteFrame
 	{
@@ -124,10 +124,10 @@ private:
 		~SpriteFrame() {}
 
 		const std::string& sheetId() const { return mSheetId; }
-		
+
 		int anchorX() const { return mAnchorX; }
 		int anchorY() const { return mAnchorY; }
-		
+
 		int width() const { return mRect.width(); }
 		int height() const { return mRect.height(); }
 		int x() const { return mRect.x(); }

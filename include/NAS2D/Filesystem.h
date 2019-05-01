@@ -30,7 +30,6 @@ public:
 
 	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
 
-	std::string userPath() const;
 	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;

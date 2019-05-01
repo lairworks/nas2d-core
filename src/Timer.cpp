@@ -10,7 +10,7 @@
 
 #include "NAS2D/Timer.h"
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 using namespace NAS2D;
 

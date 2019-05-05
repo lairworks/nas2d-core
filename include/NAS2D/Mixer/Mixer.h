@@ -107,7 +107,7 @@ public:
 	/**
 	 * Gets whether or not music is currently playing.
 	 */
-	virtual bool musicPlaying() const { return false; }
+	virtual bool musicPlaying() const = 0;
 
 	/**
 	 * Mutes all audio.

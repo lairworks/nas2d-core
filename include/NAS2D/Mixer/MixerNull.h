@@ -21,27 +21,27 @@ public:
 	~MixerNull() = default;
 
 	// Sound Functions
-	void playSound(Sound&) override {}
-	void stopSound() override {}
-	void pauseSound() override {}
-	void resumeSound() override {}
+	void playSound(Sound& sound) override;
+	void stopSound() override;
+	void pauseSound() override;
+	void resumeSound() override;
 
 	// Music Functions
-	void stopMusic() override {}
-	void pauseMusic() override {}
-	void resumeMusic() override {}
+	void stopMusic() override;
+	void pauseMusic() override;
+	void resumeMusic() override;
 
-	void fadeInMusic(Music&, int, int) override {}
-	void fadeOutMusic(int) override {}
+	void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) override;
+	void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) override;
 
-	bool musicPlaying() const override { return false; }
+	bool musicPlaying() const override;
 
 	// Global Functions
-	void soundVolume(int) override {}
-	void musicVolume(int) override {}
+	void soundVolume(int level) override;
+	void musicVolume(int level) override;
 
-	void mute() override {}
-	void unmute() override {}
+	void mute() override;
+	void unmute() override;
 };
 
 }

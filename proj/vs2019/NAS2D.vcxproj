@@ -234,6 +234,8 @@
     <ClCompile Include="..\..\src\Filesystem.cpp" />
     <ClCompile Include="..\..\src\FpsCounter.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />
+    <ClCompile Include="..\..\src\Mixer\Mixer.cpp" />
+    <ClCompile Include="..\..\src\Mixer\MixerNull.cpp" />
     <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp" />
     <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp" />
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />

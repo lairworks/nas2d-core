@@ -21,7 +21,7 @@ public:
 	~MixerNull() = default;
 
 	// Sound Functions
-	void playSound(Sound& sound) override {}
+	void playSound(Sound&) override {}
 	void stopSound() override {}
 	void pauseSound() override {}
 	void resumeSound() override {}
@@ -31,14 +31,14 @@ public:
 	void pauseMusic() override {}
 	void resumeMusic() override {}
 
-	void fadeInMusic(Music& music, int loops, int time) override {}
-	void fadeOutMusic(int time) override {}
+	void fadeInMusic(Music&, int, int) override {}
+	void fadeOutMusic(int) override {}
 
 	bool musicPlaying() const override { return false; }
 
 	// Global Functions
-	void soundVolume(int level) override {}
-	void musicVolume(int level) override {}
+	void soundVolume(int) override {}
+	void musicVolume(int) override {}
 
 	void mute() override {}
 	void unmute() override {}

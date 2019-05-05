@@ -269,6 +269,7 @@
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer_SDL.h" />
     <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\OGL_Renderer.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Font.h" />

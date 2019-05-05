@@ -100,22 +100,6 @@ void Renderer::drawImage(Image& image, float x, float y, float scale)
 
 
 /**
- * Draws an Image to the screen.
- *
- * \param	image	A reference to an Image Resource.
- * \param	x		X-Coordinate of the Image to draw.
- * \param	y		Y-Coordinate of the Image to draw.
- * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
- * \param	r		Red value to tint the image at (0 - 255).
- * \param	g		Green value to tint the image at (0 - 255).
- * \param	b		Blue value to tint the image at (0 - 255).
- * \param	a		Alpha value to draw the image at (0 - 255).
- */
-void Renderer::drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a)
-{}
-
-
-/**
  * Draws a portion of a given Image to the screen.
  *
  * \param	image		A refernece to an Image Resource.
@@ -130,25 +114,6 @@ void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x,
 {
 	drawSubImage(image, rasterX, rasterY, x, y, width, height, 255, 255, 255, 255);
 }
-
-
-/**
- * Draws a portion of a given Image to the screen.
- *
- * \param	image		A refernece to an Image Resource.
- * \param	rasterX		X-Coordinate to draw the Image at.
- * \param	rasterY		Y-Coordinate to draw the Image at.
- * \param	x			X-Coordinate of the area to start getting pixel data from.
- * \param	y			Y-Coordinate of the area to start getting pixel data from.
- * \param	width		Width of the area to start getting pixel data from.
- * \param	height		Height of the area to start getting pixel data from.
- * \param	r			Red value to tint the image at (0 - 255).
- * \param	g			Green value to tint the image at (0 - 255).
- * \param	b			Blue value to tint the image at (0 - 255).
- * \param	a			Alpha value to draw the image at (0 - 255).
- */
-void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a)
-{}
 
 
 /**
@@ -171,26 +136,6 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
 
 
 /**
- * Draws a portion of a given Image to the screen with optional rotation.
- *
- * \param	image		A refernece to an Image Resource.
- * \param	rasterX		X-Coordinate to draw the Image at.
- * \param	rasterY		Y-Coordinate to draw the Image at.
- * \param	x			X-Coordinate of the area to start getting pixel data from.
- * \param	y			Y-Coordinate of the area to start getting pixel data from.
- * \param	width		Width of the area to start getting pixel data from.
- * \param	height		Height of the area to start getting pixel data from.
- * \param	degrees		Angle of rotation in degrees.
- * \param	r			Red value to tint the image at (0 - 255).
- * \param	g			Green value to tint the image at (0 - 255).
- * \param	b			Blue value to tint the image at (0 - 255).
- * \param	a			Alpha value to draw the image at (0 - 255).
- */
-void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a)
-{}
-
-
-/**
  * Draws a rotated and scaled image.
  *
  * \param	image	A reference to an Image Resource.
@@ -207,23 +152,6 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, c
 
 
 /**
- * Draws a rotated and scaled image.
- *
- * \param	image	A reference to an Image Resource.
- * \param	x		X-Coordinate to draw the Image at.
- * \param	y		Y-Coordinate to draw the Image at.
- * \param	degrees	Angle of rotation in degrees (0.0 - 360.0).
- * \param	r		Red value to tint the image at (0 - 255).
- * \param	g		Green value to tint the image at (0 - 255).
- * \param	b		Blue value to tint the image at (0 - 255).
- * \param	a		Alpha value to draw the image at (0 - 255).
- * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
- */
-void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale)
-{}
-
-
-/**
  * Draws a stretched image using a Color_4ub color structure.
  *
  * \param	image	A reference to an Image Resource.
@@ -237,36 +165,6 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
 {
 	drawImageStretched(image, x, y, w, h, color.red(), color.green(), color.blue(), color.alpha());
 }
-
-
-/**
- * Draws a stretched image.
- *
- * \param	image	A reference to an Image Resource.
- * \param	x		X-Coordinate to draw the Image at.
- * \param	y		Y-Coordinate to draw the Image at.
- * \param	w		Width to use for drawing the Image.
- * \param	h		Height to use for drawing the Image.
- * \param	r		Red value to tint the image at (0 - 255).
- * \param	g		Green value to tint the image at (0 - 255).
- * \param	b		Blue value to tint the image at (0 - 255).
- * \param	a		Alpha value to draw the image at (0 - 255).
- */
-void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
-{}
-
-
-/**
- * Trevor, Comment Me!
- *
- * \param	image	A reference to an Image Resource.
- * \param	x		Comment me!
- * \param	y		Comment me!
- * \param	w		Comment me!
- * \param	h		Comment me!
- */
-void Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
-{}
 
 
 /**
@@ -323,17 +221,6 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
 		drawImageRect(x, y, w, h, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
 	}
 }
-
-
-/**
- * Draws a source image to a destination image.
- *
- * \param	source		A reference to a source Image.
- * \param	destination	A reference to the destination Image.
- * \param	dstPoint	A point indicating where to draw the source Image on the destination Image.
- */
-void Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
-{}
 
 
 /**
@@ -432,20 +319,6 @@ void Renderer::drawPoint(float x, float y, const Color_4ub& color)
 
 
 /**
- * Draws a single Pixel to the primary surface.
- *
- * \param	x	X-Coordinate of the pixel to draw.
- * \param	y	Y-Coordinate of the pixel to draw.
- * \param	r	Red Color Value. Must be between 0 - 255.
- * \param	g	Green Color Value. Must be between 0 - 255.
- * \param	b	Blue Color Value. Must be between 0 - 255.
- * \param	a	Alpha Value. Must be between 0 - 255. Defaults to 255.
- */
-void Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
-{}
-
-
-/**
  * Draws a line from (x, y) - (x2, y2) on the primary surface.
  *
  * \param	x			X-Coordinate of the start of the line.
@@ -459,23 +332,6 @@ void Renderer::drawLine(float x, float y, float x2, float y2, const Color_4ub& c
 {
 	drawLine(x, y, x2, y2, color.red(), color.green(), color.blue(), color.alpha(), line_width);
 }
-
-
-/**
- * Draws a line from (x, y) - (x2, y2) on the primary surface.
- *
- * \param	x			X-Coordinate of the start of the line.
- * \param	y			Y-Coordinate of the start of the line.
- * \param	x2			X-Coordinate of the end of the line.
- * \param	y2			Y-Coordinate of the end of the line.
- * \param	r			Red Color Value. Must be between 0 - 255.
- * \param	g			Green Color Value. Must be between 0 - 255.
- * \param	b			Blue Color Value. Must be between 0 - 255.
- * \param	a			Alpha Value. Must be between 0 - 255. Defaults to 255.
- * \param	line_width	Width, in pixels, of the line to draw.
- */
-void Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width)
-{}
 
 
 /**
@@ -509,22 +365,6 @@ void Renderer::drawBox(const Rectangle_2df& rect, int r, int g, int b, int a)
 
 
 /**
- * Draws a hollow box on the primary surface.
- *
- * \param	x	X-Coordinate of the box.
- * \param	y	Y-Coordinate of the box.
- * \param	w	Width, in pixels, of the box.
- * \param	h	Height, in pixels, of the box.
- * \param	r	Red Color Value. Must be between 0 - 255.
- * \param	g	Green Color Value. Must be between 0 - 255.
- * \param	b	Blue Color Value. Must be between 0 - 255.
- * \param	a	Alhpa value to use. Must be between 0 (completely transparent) - 255 (completely opaque).
- */
-void Renderer::drawBox(float x, float y, float w, float h, int r, int g, int b, int a)
-{}
-
-
-/**
  * Fills a given area with a solid color.
  *
  * \param	rect	A reference to a Rectangle_2df defining the box dimensions.
@@ -555,76 +395,6 @@ void Renderer::drawBoxFilled(const Rectangle_2df& rect, int r, int g, int b, int
 
 
 /**
- * Fills a given area with a solid color.
- *
- * \param	x		X-Coordinate of the area to fill.
- * \param	y		Y-Coordinate of the area to fill.
- * \param	width	Width, in pixels, of the area to fill.
- * \param	height	Height, in pixels, of the area to fill.
- * \param	r		Red Color Value. Must be between 0 - 255.
- * \param	g		Green Color Value. Must be between 0 - 255.
- * \param	b		Blue Color Value. Must be between 0 - 255.
- * \param	a		Alpha value. Must be between 0 - 255.
- */
-void Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
-{}
-
-
-/**
- * Draws a circle.
- *
- * \param	x				X-Coordinate of the center of the circle.
- * \param	y				Y-Coordinate of the center of the circle.
- * \param	radius			Radius of the circle.
- * \param	r				Red Color Value. Must be between 0 - 255.
- * \param	g				Green Color Value. Must be between 0 - 255.
- * \param	b				Blue Color Value. Must be between 0 - 255.
- * \param	a				Alpha value. Must be between 0 - 255.
- * \param	num_segments	Number of segments to use to draw the circle. The higher the number, the smoother the circle will appear.
- * \param	scale_x			Width scale of the circle. Used to draw ellipses.
- * \param	scale_y			Height scale of the circle. Used to draw ellipses.
- */
-void Renderer::drawCircle(float x, float y, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
-{}
-
-
-/**
- * Draws a rectangular area with a color gradient.
- *
- * Each point of the rectangular area can be given a different color value to
- * produce a variety of effects. The vertex orders are as follows:
- *
- * 1-----4
- * |     |
- * |     |
- * 2-----3
- *
- * \param	x	X-Position of the rectangular area to draw.
- * \param	y	Y-Position of the rectangular area to draw.
- * \param	w	Width of the rectangular area to draw.
- * \param	h	Height of the rectangular area to draw.
- * \param	r1	Red value for point 1.
- * \param	g1	Green value for point 1.
- * \param	b1	Blue value for point 1.
- * \param	a1	Alpha value for point 1.
- * \param	r2	Red value for point 2.
- * \param	g2	Green value for point 2.
- * \param	b2	Blue value for point 2.
- * \param	a2	Alpha value for point 2.
- * \param	r3	Red value for point 3.
- * \param	g3	Green value for point 3.
- * \param	b3	Blue value for point 3.
- * \param	a3	Alpha value for point 3.
- * \param	r4	Red value for point 4.
- * \param	g4	Green value for point 4.
- * \param	b4	Blue value for point 4.
- * \param	a4	Alpha value for point 4.
- */
-void Renderer::drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4)
-{}
-
-
-/**
  * Draws a rectangular area with a color gradient.
  *
  * Each point of the rectangular area can be given a different color value to
@@ -651,89 +421,6 @@ void Renderer::drawGradient(float x, float y, float w, float h, const Color_4ub&
 
 
 /**
- * Shows or hides the system mouse pointer.
- * \param	_b	True shows the pointer, false hides it.
- */
-void Renderer::showSystemPointer(bool _b)
-{}
-
-
-/**
- * Adds a mouse cursor ready to be displayed
- * \param	filePath	Self explanatory
- * \param	cursorId	Identifier used for setCursor, usually from an enum
- * \param	offx		Offset of the hotspot from the top left corner in pixels
- * \param	offy		Same as offx but for the vertical coordinate
- */
-void Renderer::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
-{}
-
-
-/**
- * Sets the current mouse cursor
- * \param	cursorId	Identifier for the cursor, as provided
- *						to addCursor.
- */
-void Renderer::setCursor(int cursorId)
-{}
-
-
-/**
- * Sets fullscreen mode.
- *
- * \param	fs			True for fullscreen, false for windowed mode.
- * \param	maintain	Boolean flag indicating whether or not resolution from
- *						windowed mode should be maintained or if the native
- *						desktop resolution should be used.
- */
-void Renderer::fullscreen(bool fs, bool maintain)
-{}
-
-
-/**
- * Gets whether or not the app is in fullscreen mode or not.
- */
-bool Renderer::fullscreen()
-{
-	return false;
-}
-
-
-/**
- * Sets whether or not the app's window can be resized with the mouse.
- */
-void Renderer::resizeable(bool _r)
-{}
-
-
-/**
- * Gets whether or not the app's window can be resized with the mouse.
- */
-bool Renderer::resizeable()
-{
-	return false;
-}
-
-
-/**
- * Returns the primary display's Width.
- */
-float Renderer::width()
-{
-	return 0.0f;
-}
-
-
-/**
- * Returns the primary display's Height.
- */
-float Renderer::height()
-{
-	return 0.0f;
-}
-
-
-/**
  * Gets the current screen resolution as a Point_2df.
  */
 const Point_2df& Renderer::size()
@@ -743,26 +430,12 @@ const Point_2df& Renderer::size()
 
 
 /**
- * Sets the minimum size of the application window / screen resolution.
- */
-void Renderer::minimum_size(int w, int h)
-{}
-
-
-/**
  * Internal accessor function for derived Renderer types.
  */
 Point_2df& Renderer::_size()
 {
 	return mResolution;
 }
-
-
-/**
- * Sets the video resolution.
- */
-void Renderer::size(int w, int h)
-{}
 
 
 /**
@@ -832,31 +505,6 @@ void Renderer::title(const std::string& title)
 
 
 /**
- * Sets an icon for the window to use from an image file.
- *
- * \param path	Path to an image file to use for the window icon.
- */
-void Renderer::window_icon(const std::string& path)
-{}
-
-
-/*
- * Renders Text in the Color specified.
- *
- * \param font		A reference to a Font Resource.
- * \param text		The text to draw.
- * \param x			X-Coordinate to render text string.
- * \param y			Y-Coordinate to render text string.
- * \param r			Red color value between 0 - 255.
- * \param g			Green color value between 0 - 255.
- * \param b			Blue color value between 0 - 255.
- * \param a			Alpha color value between 0 - 255.
- */
-void Renderer::drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
-{}
-
-
-/**
  * Renders a text string with a drop shadow.
  *
  * \param font		A reference to a Font Resource.
@@ -893,21 +541,6 @@ void Renderer::clipRect(const Rectangle_2df& rect)
 
 
 /**
- * Sets a rectangular area of the screen outside of which nothing is drawn.
- *
- * \param	x		X-Coordinate of the area to clip against.
- * \param	y		Y-Coordinate of the area to clip against.
- * \param	width	Width of the area to clip against.
- * \param	height	Height of the area to clip against.
- *
- * \note	To turn off the clipper, set the width or height
- *			paramters to 0.
- */
-void Renderer::clipRect(float x, float y, float width, float height)
-{}
-
-
-/**
  * Clears the clipping rectangle.
  */
 void Renderer::clipRectClear()
@@ -925,18 +558,6 @@ void Renderer::clearScreen(const Color_4ub& color)
 {
 	clearScreen(color.red(), color.green(), color.blue());
 }
-
-
-/**
- * Clears the screen with a given RGB value.
- *
- * \param r	Red color value between 0 - 255.
- * \param g	Green Color Value between 0 - 255.
- * \param b	Blue Color Value between 0 - 255.
- *
- */
-void Renderer::clearScreen(int r, int g, int b)
-{}
 
 
 /**

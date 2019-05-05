@@ -87,6 +87,9 @@
     <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Renderer\RendererNull.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>

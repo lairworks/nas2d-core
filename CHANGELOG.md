@@ -1,4 +1,4 @@
-# [1.5.0] - UNRELEASED
+# \[1.5.0\] - UNRELEASED
 
 This is a feature release.
 
@@ -14,7 +14,7 @@ This is a feature release.
 
 ---
 
-# [1.4.2] - 2017-05-15
+# \[1.4.2\] - 2017-05-15
 
 This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.1 release.
 
@@ -24,7 +24,7 @@ This is a small patch to NAS2D that corrects a few minor issues not caught in th
 
 ---
 
-# [1.4.1] - 2017-05-14
+# \[1.4.1\] - 2017-05-14
 
 This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.0 release.
 
@@ -35,7 +35,7 @@ This is a small patch to NAS2D that corrects a few minor issues not caught in th
 
 ---
 
-# [1.4.0] - 2017-05-14
+# \[1.4.0\] - 2017-05-14
 
 This version of NAS2D introduces several new features to make it easier to use geometric primitives, switch between fullscreen and windowed modes and resize the window.
 
@@ -63,7 +63,7 @@ This release now links to SDL 2.0.5, be sure to use the updated SDL binary files
 
 ---
 
-# [1.3.1] - 2017-04-05
+# \[1.3.1\] - 2017-04-05
 
 This is a patch to NAS2D that fixes a few minor bugs.
 
@@ -78,7 +78,7 @@ This is a patch to NAS2D that fixes a few minor bugs.
 
 ---
 
-# [1.3.0] - 2017-03-23
+# \[1.3.0\] - 2017-03-23
 
 This version of NAS2D focuses on cleaning up the public interface headers and removing as much of the implementation details as possible. This is to help make NAS2D a lot easier to use to set up new projects and will reduce reliance on backend library interface headers unless the user specifically wants/needs direct access to these libraries.
 
@@ -145,7 +145,7 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 
 ---
 
-# [1.2.1] - 2017-03-02
+# \[1.2.1\] - 2017-03-02
 
 ## Added
 

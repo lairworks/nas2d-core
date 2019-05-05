@@ -50,7 +50,6 @@ This version of NAS2D introduces several new features to make it easier to use g
 - Added ability to set the minimum size for an applications window.
 - Added the ability to set an application window as resizeable.
 
-
 ### Changed
 
 - Renamed Renderer::screenSize() to Renderer::size();

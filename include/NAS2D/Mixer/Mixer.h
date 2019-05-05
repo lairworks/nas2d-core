@@ -34,7 +34,7 @@ public:
 	/**
 	 * C'Tor
 	 */
-	Mixer() {}
+	Mixer() = default;
 
 	/**
 	 * D'tor

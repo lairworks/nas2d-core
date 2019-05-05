@@ -43,11 +43,11 @@ public:
 	void fadeInMusic(Music& music, int loops, int time) override;
 	void fadeOutMusic(int time) override;
 
-	virtual bool musicPlaying() const override;
+	bool musicPlaying() const override;
 
 	// Global Functions
-	virtual void soundVolume(int level) override;
-	virtual void musicVolume(int level) override;
+	void soundVolume(int level) override;
+	void musicVolume(int level) override;
 
 	void mute() override;
 	void unmute() override;

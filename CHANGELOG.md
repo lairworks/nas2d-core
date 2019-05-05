@@ -1,12 +1,14 @@
-# [1.5.0] - UNRELEASED
+# Releases
+
+## \[1.5.0\] - UNRELEASED
 
 This is a feature release.
 
-## Added
+### Added
 - Added EventHandler::alt() which returns true if the key modifier is either alt key (or both).
 - Added a clip area function to the renderer (clipRect series of functions).
 
-## Fixed
+### Fixed
 
 - OGL_Renderer::drawImageRepeated() now draws a texture repeated across a given face as expected.
 - Fixed an issue with XmlNode::lastChild(const std::string&) functions that would test against an internal value string instead of the value passed in as a parameter.
@@ -14,32 +16,32 @@ This is a feature release.
 
 ---
 
-# [1.4.2] - 2017-05-15
+## \[1.4.2\] - 2017-05-15
 
 This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.1 release.
 
-## Fixed
+### Fixed
 
 - Rectangle_2d/Rectangle_2df center_x/center_y functions were not marked as const causing a variety of issues when attempting to use these functions.
 
 ---
 
-# [1.4.1] - 2017-05-14
+## \[1.4.1\]  2017-05-14
 
 This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.0 release.
 
-## Fixed
+### Fixed
 
 - Version information has been corrected.
 - Window will now center itself when switching out of fullscreen mode.
 
 ---
 
-# [1.4.0] - 2017-05-14
+## \[1.4.0\] - 2017-05-14
 
 This version of NAS2D introduces several new features to make it easier to use geometric primitives, switch between fullscreen and windowed modes and resize the window.
 
-## Added
+### Added
 - Added Window Resize events to the EventHandler.
 - Added center_x/center_y functions to Rectangle_2d/Rectangle_2df.
 - Added ability to set an applications window icon.
@@ -48,14 +50,13 @@ This version of NAS2D introduces several new features to make it easier to use g
 - Added ability to set the minimum size for an applications window.
 - Added the ability to set an application window as resizeable.
 
-
-## Changed
+### Changed
 
 - Renamed Renderer::screenSize() to Renderer::size();
 - Renamed Renderer::screenCenterX()/Renderer::screenCenterY() to Renderer::center_x()/Renderer::center_y().
 - Renderer will now respond to window resize events as they happen.
 
-### IMPORTANT NOTES ABOUT BREAKING CHANGES
+#### IMPORTANT NOTES ABOUT BREAKING CHANGES
 
 Very little has changed internally but some functions have been renamed, particularly in the Renderer (```screenSize```, ```screenCenterX``` and ```screenCenterY```). Your applications will need to be adjusted to account for this.
 
@@ -63,26 +64,26 @@ This release now links to SDL 2.0.5, be sure to use the updated SDL binary files
 
 ---
 
-# [1.3.1] - 2017-04-05
+## \[1.3.1\] - 2017-04-05
 
 This is a patch to NAS2D that fixes a few minor bugs.
 
-## Changed
+### Changed
 
 - Improved Renderer's handling of fading and fade callbacks.
 
-## Fixed
+### Fixed
 
 - Fixed a mistake in Configuration's XML processing of Options tags.
 - Fixed an issue in OGL_Renderer's drawText that could result in an out of bounds exception being thrown.
 
 ---
 
-# [1.3.0] - 2017-03-23
+## \[1.3.0\] - 2017-03-23
 
 This version of NAS2D focuses on cleaning up the public interface headers and removing as much of the implementation details as possible. This is to help make NAS2D a lot easier to use to set up new projects and will reduce reliance on backend library interface headers unless the user specifically wants/needs direct access to these libraries.
 
-## Added
+### Added
 - Renderer fade completed signal.
 - Mixer music completed signal.
 - Added EventHandler::textInputMode(bool) to turn on and off text input modes.
@@ -90,7 +91,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Added EventHandller::query_control(), EventHandller::query_numlock() and EventHandller::query_shift() to query key modifier states.
 - Added Renderer::showSystemPointer() method.
 
-## Changed
+### Changed
 
 - Clarified origin and licensing information for Signal.h and Delegate.h.
 - Updated documentation on most interfaces.
@@ -107,7 +108,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - OGL_Renderer sets line quality for circle drawing code based on configuration's texture quality.
 - Merged TinyXML into the NAS2D namespace. See [Task #14](https://github.com/lairworks/nas2d-core/issues/14) for additional information.
 
-## Deprecated
+### Deprecated
 
 - Removed Exception class in favor of specific exception types derived from std::runtime_error. See [Exceptions](https://github.com/lairworks/nas2d-core/wiki/Exceptions-&-Exception-Handling-in-NAS2D).
 - Removed Renderer::toggleCinematic().
@@ -120,7 +121,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Removed Sprite::debug().
 - Texture Quality configuration option has been removed.
 
-## Fixed
+### Fixed
 
 - Fixed a bug in Font::width(const std::string&) that would report incorrect widths when using TrueType or OpenType fonts.
 - Fixed a possible resource leak in Font copy assignment operator.
@@ -129,7 +130,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Fixed OGL_Renderer::drawGradient() showing incorrect colors.
 
 
-### IMPORTANT NOTES ABOUT BREAKING CHANGES
+#### IMPORTANT NOTES ABOUT BREAKING CHANGES
 
 Since the `Exception` class has been removed, any code using `NAS2D::Exception` will need to be replaced. The easiest method to do this is to use `std::runtime_error()` or you may use a built-in exception type from the `NAS2D::exception` namespace. See [Issue #13](https://github.com/lairworks/nas2d-core/issues/13) for an explanation of the decision behind deprecating this class.
 
@@ -145,9 +146,9 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 
 ---
 
-# [1.2.1] - 2017-03-02
+## \[1.2.1\] - 2017-03-02
 
-## Added
+### Added
 
 - Added Visual Studio 2015 project files.
 - Added version information coded into the library.
@@ -160,7 +161,7 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 - Added a function to Sprite that allows for skipping frames.
 - Added color tinting to Renderer::drawImage() and Renderer::drawSubImage().
 
-## Changed
+### Changed
 
 - Renamed SDL_Mixer to Mixer_SDL.
 - Pulled out a lot of unnecessary debug code.
@@ -174,7 +175,7 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 - Updated OpenGL Renderer to use Triangle Strips for drawing primitives instead quads. This allows use of OpenGL Core context's without having to enable debug or compatibility modes.
 - Moved raw pixel data in Image to the static resource table. Significantly improves memory overhead and load times when lots of Sprite's or Image's acre created.
 
-## Fixed
+### Fixed
 
 - Fixed a mistake in Sprite which assumed that mCurrentFrame could be a negative (it is an unsigned int).
 - Fixed a crash when terminating a Mixer_SDL when no audio output device is available.
@@ -184,7 +185,7 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 - Fixed color issues when using OGL_Renderer::drawImageStretched().
 - Fixed the bugginess in Renderer::drawImageRect().
 
-### IMPORTANT NOTES ABOUT BREAKING CHANGES
+#### IMPORTANT NOTES ABOUT BREAKING CHANGES
 
 The StateManager no longer automatically disconnects listeners from the EventHandler when states are switched. This provides a fix for objects that connect themselves to the EventHandler before a State is fully initialized being disconnected.
 

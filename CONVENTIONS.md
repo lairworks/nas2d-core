@@ -58,7 +58,6 @@ if (country_code == "US")
 
 The comments here only repeat what the code does and make it harder to read the code.
 
-
 ### Rules of Thumb
 
 * Comments should not restate what code does.

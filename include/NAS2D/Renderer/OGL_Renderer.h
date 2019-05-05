@@ -48,27 +48,27 @@ public:
 
 	void drawText(NAS2D::Font& font, const std::string& text, float x, float y, int r, int g, int b, int a) override;
 
-	virtual void showSystemPointer(bool) override;
+	void showSystemPointer(bool) override;
 	void addCursor(const std::string& filePath, int cursorId, int offx, int offy) override;
 	void setCursor(int cursorId) override;
 
 	void clearScreen(int r, int g, int b) override;
 
-	virtual float width() override;
-	virtual float height() override;
+	float width() override;
+	float height() override;
 
-	virtual void size(int w, int h) override;
-	virtual void minimum_size(int w, int h) override;
+	void size(int w, int h) override;
+	void minimum_size(int w, int h) override;
 
-	virtual void fullscreen(bool fs, bool maintain = false) override;
-	virtual bool fullscreen() override;
+	void fullscreen(bool fs, bool maintain = false) override;
+	bool fullscreen() override;
 
-	virtual void resizeable(bool _r) override;
-	virtual bool resizeable() override;
+	void resizeable(bool _r) override;
+	bool resizeable() override;
 
-	virtual void clipRect(float x, float y, float width, float height) final override;
+	void clipRect(float x, float y, float width, float height) final override;
 
-	virtual void window_icon(const std::string& path) override;
+	void window_icon(const std::string& path) override;
 
 	void update() override;
 

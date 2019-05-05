@@ -145,25 +145,6 @@ protected:
 	Point_2df& _size();
 
 private:
-	/**
-	 * Copy c'tor.
-	 *
-	 * The copy c'tor is intentionally private and undefined. It should
-	 * never be invoked at any time.
-	 */
-	Renderer(const Renderer&);
-
-	/**
-	 * Copy operator.
-	 *
-	 * The copy operator is intentionally private and undefined. It should
-	 * never be invoked at any time.
-	 */
-	Renderer& operator=(const Renderer&);
-
-
-
-private:
 	std::string			mRendererName;	/**< Internal name of the Renderer. */
 	std::string			mDriverName;	/**< OS Driver name */
 	std::string			mTitle;			/**< Title to use for the application. */

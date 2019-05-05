@@ -330,7 +330,7 @@ public:
 #if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 
 public:
-	template< lass DerivedClass>
+	template<class DerivedClass>
 	inline void CopyFrom(DerivedClass *pParent, const DelegateMemento &x)
 	{
 		SetMementoFrom(x);

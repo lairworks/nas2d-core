@@ -221,6 +221,9 @@
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer_SDL.h">
       <Filter>Header Files\Mixer</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Mixer\MixerNull.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Resources\ImageInfo.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>

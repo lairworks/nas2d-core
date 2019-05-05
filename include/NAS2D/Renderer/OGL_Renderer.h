@@ -77,7 +77,7 @@ private:
 	OGL_Renderer& operator=(const OGL_Renderer&);	// Intentionally left undefined;
 
 	void initGL();
-	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync) override;
+	void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
 
 	void _resize(int w, int h);
 };

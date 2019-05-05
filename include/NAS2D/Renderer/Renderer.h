@@ -140,7 +140,6 @@ public:
 protected:
 	Renderer(const std::string& rendererName, const std::string& appTitle);
 
-	virtual void initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync);
 	void driverName(const std::string& name);
 
 	Point_2df& _size();

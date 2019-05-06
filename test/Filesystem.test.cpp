@@ -1,5 +1,6 @@
 #include "NAS2D/Filesystem.h"
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 
 TEST(Filesystem, ConstructDestruct) {
@@ -32,4 +33,17 @@ TEST_F(FilesystemTest, workingPath) {
 	EXPECT_EQ("data/subfolder/", fs.workingPath("data/subfolder/file.extension"));
 	EXPECT_EQ("anotherFolder/", fs.workingPath("anotherFolder/file.extension"));
 	EXPECT_EQ("", fs.workingPath("file.extension"));
+}
+
+TEST_F(FilesystemTest, searchPath) {
+	auto pathList = fs.searchPath();
+	EXPECT_EQ(3, pathList.size());
+	EXPECT_THAT(pathList, Contains(testing::HasSubstr("NAS2DUnitTests/")));
+	EXPECT_THAT(pathList, Contains(testing::HasSubstr("data/")));
+}
+
+TEST_F(FilesystemTest, directoryList) {
+	auto pathList = fs.directoryList("");
+	EXPECT_LE(1, pathList.size());
+	EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
 }

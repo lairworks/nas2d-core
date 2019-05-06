@@ -85,3 +85,19 @@ TEST_F(FilesystemTest, writeReadDeleteExists) {
 	fs.del(testFilename);
 	EXPECT_FALSE(fs.exists(testFilename));
 }
+
+TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
+	const std::string fileName = "file.txt";
+	const std::string folderName = "subfolder/";
+
+	EXPECT_TRUE(fs.exists(fileName));
+	EXPECT_FALSE(fs.isDirectory(fileName));
+
+	fs.makeDirectory(folderName);
+	EXPECT_TRUE(fs.exists(folderName));
+	EXPECT_TRUE(fs.isDirectory(folderName));
+
+	fs.del(folderName);
+	EXPECT_FALSE(fs.exists(folderName));
+	EXPECT_FALSE(fs.isDirectory(folderName));
+}

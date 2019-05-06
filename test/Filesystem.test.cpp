@@ -48,7 +48,31 @@ TEST_F(FilesystemTest, directoryList) {
 	EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
 }
 
+TEST_F(FilesystemTest, exists) {
+	EXPECT_TRUE(fs.exists("file.txt"));
+}
+
 TEST_F(FilesystemTest, open) {
 	const auto file = fs.open("file.txt");
 	EXPECT_EQ("Test data\n", file.bytes());
+}
+
+// Test a few related methods. Some don't test well standalone.
+TEST_F(FilesystemTest, writeReadDeleteExists) {
+	const std::string testFilename = "TestFile.txt";
+	const std::string testData = "Test file contents";
+	const auto file = NAS2D::File(testData, testFilename);
+
+	EXPECT_TRUE(fs.write(file));
+	EXPECT_TRUE(fs.exists(testFilename));
+
+	// Try to overwrite file, with and without permission
+	EXPECT_TRUE(fs.write(file));
+	EXPECT_FALSE(fs.write(file, false));
+
+	const auto fileRead = fs.open(testFilename);
+	EXPECT_EQ(testData, fileRead.bytes());
+
+	fs.del(testFilename);
+	EXPECT_FALSE(fs.exists(testFilename));
 }

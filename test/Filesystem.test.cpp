@@ -101,3 +101,15 @@ TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
 	EXPECT_FALSE(fs.exists(folderName));
 	EXPECT_FALSE(fs.isDirectory(folderName));
 }
+
+TEST_F(FilesystemTest, mount) {
+	const std::string extraMount = "extraData/";
+	const std::string extraFile = "extraFile.txt";
+
+	EXPECT_FALSE(fs.exists(extraFile));
+	EXPECT_TRUE(fs.mount(extraMount));
+	EXPECT_THAT(fs.searchPath(), Contains(testing::HasSubstr(extraMount)));
+	EXPECT_TRUE(fs.exists(extraFile));
+
+	EXPECT_FALSE(fs.mount("nonExistentPath/"));
+}

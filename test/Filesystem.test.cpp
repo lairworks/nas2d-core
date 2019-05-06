@@ -47,3 +47,8 @@ TEST_F(FilesystemTest, directoryList) {
 	EXPECT_LE(1, pathList.size());
 	EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
 }
+
+TEST_F(FilesystemTest, open) {
+	const auto file = fs.open("file.txt");
+	EXPECT_EQ("Test data\n", file.bytes());
+}

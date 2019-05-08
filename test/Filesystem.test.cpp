@@ -33,8 +33,9 @@ TEST_F(FilesystemTest, extension) {
 	EXPECT_EQ("txt", fs.extension("file.txt"));
 	EXPECT_EQ("reallyLongExtensionName", fs.extension("file.reallyLongExtensionName"));
 	EXPECT_EQ("a", fs.extension("file.a"));
-	EXPECT_EQ("", fs.extension("file."));
 	EXPECT_EQ("file", fs.extension(".file"));
+	EXPECT_EQ("", fs.extension("file."));
+	EXPECT_EQ("", fs.extension("file"));
 }
 
 TEST_F(FilesystemTest, workingPath) {

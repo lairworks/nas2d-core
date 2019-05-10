@@ -133,7 +133,7 @@ bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  */
 std::string NAS2D::toLowercase(std::string str)
 {
-	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
+	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
 	return str;
 }
 
@@ -148,7 +148,7 @@ std::string NAS2D::toLowercase(std::string str)
  */
 std::string NAS2D::toUppercase(std::string str)
 {
-	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
+	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
 	return str;
 }
 

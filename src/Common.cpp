@@ -188,7 +188,7 @@ std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, c
 
 std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_empty /*= true*/)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + std::size_t{1u} + b.size(); };
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept -> std::size_t { return a + std::size_t{1u} + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
 	result.reserve(total_size);
@@ -209,20 +209,20 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_emp
 
 std::string NAS2D::trimWhitespace(std::string string)
 {
-	auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
-	auto last_non_space = string.find_last_not_of(" \r\n\t\v\f");
+	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
+	const auto last_non_space = string.find_last_not_of(" \r\n\t\v\f");
 	return string.substr(first_non_space, last_non_space - first_non_space + 1);
 }
 
-bool NAS2D::startsWith(const std::string& string, const std::string& start)
+bool NAS2D::startsWith(const std::string& string, const std::string& start) noexcept
 {
-	auto found_loc = string.find(start);
+	const auto found_loc = string.find(start);
 	return found_loc != std::string::npos && found_loc == 0;
 }
 
-bool NAS2D::endsWith(const std::string& string, const std::string& end)
+bool NAS2D::endsWith(const std::string& string, const std::string& end) noexcept
 {
-	auto found_loc = string.rfind(end);
+	const auto found_loc = string.rfind(end);
 	return found_loc != std::string::npos && found_loc == string.size() - end.size();
 }
 
@@ -238,7 +238,7 @@ bool NAS2D::endsWith(const std::string& string, char end)
 
 std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + std::size_t{1u} + b.size(); };
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept -> std::size_t { return a + std::size_t{1u} + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
 	result.reserve(total_size);

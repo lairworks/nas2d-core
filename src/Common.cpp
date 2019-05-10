@@ -9,15 +9,13 @@
 // ==================================================================================
 #include "NAS2D/Common.h"
 
-#include <cctype>
 #include <algorithm>
+#include <cctype>
 #include <sstream>
-
 
 const int NAS2D_MAJOR_VERSION = 1;
 const int NAS2D_MINOR_VERSION = 4;
 const int NAS2D_PATCH_VERSION = 2;
-
 
 /**
  * Gets a string containing the version of NAS2D being used.
@@ -29,7 +27,6 @@ std::string NAS2D::versionString()
 	return ss.str();
 }
 
-
 /**
  * Gets version major.
  */
@@ -37,7 +34,6 @@ int NAS2D::versionMajor()
 {
 	return NAS2D_MAJOR_VERSION;
 }
-
 
 /**
  * Gets version minor.
@@ -47,7 +43,6 @@ int NAS2D::versionMinor()
 	return NAS2D_MINOR_VERSION;
 }
 
-
 /**
  * Gets version patch.
  */
@@ -55,7 +50,6 @@ int NAS2D::versionPatch()
 {
 	return NAS2D_PATCH_VERSION;
 }
-
 
 /**
  * \fn isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)
@@ -76,7 +70,6 @@ bool NAS2D::isPointInRect(int pointX, int pointY, int rectX, int rectY, int rect
 	return (pointX >= rectX && pointX <= rectX + rectW && pointY >= rectY && pointY <= rectY + rectH);
 }
 
-
 /**
  * \fn isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
  *
@@ -91,7 +84,6 @@ bool NAS2D::isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
 {
 	return (point.x() >= rect.x() && point.x() <= rect.x() + rect.width() && point.y() >= rect.y() && point.y() <= rect.y() + rect.height());
 }
-
 
 /**
  * \fn isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int bX2, int bY2)
@@ -114,7 +106,6 @@ bool NAS2D::isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int b
 	return (aX <= bX2 && aX2 >= bX && aY <= bY2 && aY2 >= bY);
 }
 
-
 /**
  * \fn isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  *
@@ -130,7 +121,6 @@ bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
 	return (a.x() <= (b.x() + b.width()) && (a.x() + a.width()) >= b.x() && a.y() <= (b.y() + b.height()) && (a.y() + a.height()) >= b.y());
 }
 
-
 /**
  * \fn toLowercase(const std::string& str)
  *
@@ -143,10 +133,9 @@ bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
 std::string NAS2D::toLowercase(const std::string& str)
 {
 	std::string transformStr(str);
-	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int(*)(int))std::tolower);
+	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int (*)(int))std::tolower);
 	return transformStr;
 }
-
 
 /**
  * \fn toUppercase(const std::string& str)
@@ -160,10 +149,30 @@ std::string NAS2D::toLowercase(const std::string& str)
 std::string NAS2D::toUppercase(const std::string& str)
 {
 	std::string transformStr(str);
-	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int(*)(int))std::toupper);
+	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int (*)(int))std::toupper);
 	return transformStr;
 }
 
+std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, bool skip_empty /*= true*/)
+{
+	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
+	NAS2D::StringList result{};
+	result.reserve(potential_count);
+
+	std::stringstream ss{};
+	ss.str(str);
+	ss.seekg(0);
+	ss.seekp(0);
+	ss.clear();
+
+	std::string curString{};
+    while(std::getline(ss, curString, delim)) {
+        if(skip_empty && curString.empty()) { continue; }
+		result.push_back(curString);
+    }
+	result.shrink_to_fit();
+	return result;
+}
 
 /**
  * \fn clamp(int x, int a, int b)
@@ -181,7 +190,6 @@ int NAS2D::clamp(int x, int min, int max)
 	return x < min ? min : (x > max ? max : x);
 }
 
-
 /**
  * \fn float clamp(float x, float a, float b)
  *
@@ -197,7 +205,6 @@ float NAS2D::clamp(float x, float min, float max)
 {
 	return x < min ? min : (x > max ? max : x);
 }
-
 
 /**
  * \fn int divideUp(int a, int b)

@@ -207,6 +207,21 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_emp
 	return result;
 }
 
+std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
+{
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
+	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+	std::string result;
+	result.reserve(total_size);
+	for (const auto& s : strs)
+	{
+		if (skip_empty && s.empty()) { continue; }
+		result += s;
+	}
+	result.shrink_to_fit();
+	return result;
+}
+
 std::string NAS2D::trimWhitespace(std::string string)
 {
 	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
@@ -236,21 +251,6 @@ bool NAS2D::endsWith(const std::string& string, char end)
 {
 	if (string.empty()) { return false; }
 	return string.back() == end;
-}
-
-std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
-{
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept -> std::size_t { return a + std::size_t{1u} + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
-	std::string result;
-	result.reserve(total_size);
-	for (const auto& s : strs)
-	{
-		if (skip_empty && s.empty()) { continue; }
-		result += s;
-	}
-	result.shrink_to_fit();
-	return result;
 }
 
 /**

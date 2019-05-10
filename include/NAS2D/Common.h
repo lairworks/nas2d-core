@@ -44,6 +44,7 @@ std::pair<std::string, std::string> splitOnFirst(const std::string& str, char de
 std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim);
 std::string join(std::vector<std::string> strs, char delim, bool skip_empty = true);
 std::string join(std::vector<std::string> strs, bool skip_empty = true);
+std::string trimWhitespace(std::string string);
 
 /**
  * Simple helper function to provide a printf like function.

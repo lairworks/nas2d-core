@@ -133,7 +133,7 @@ bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  */
 std::string NAS2D::toLowercase(std::string str)
 {
-	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
+	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::tolower(c)); });
 	return str;
 }
 
@@ -148,7 +148,7 @@ std::string NAS2D::toLowercase(std::string str)
  */
 std::string NAS2D::toUppercase(std::string str)
 {
-	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
+	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::toupper(c)); });
 	return str;
 }
 
@@ -180,7 +180,6 @@ std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, 
 	return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
 }
 
-
 std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, char delim)
 {
 	const auto delim_loc = str.find_last_of(delim);
@@ -208,6 +207,12 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_emp
 	return result;
 }
 
+std::string NAS2D::trimWhitespace(std::string string)
+{
+	auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
+	auto last_non_space = string.find_last_not_of(" \r\n\t\v\f");
+	return string.substr(first_non_space, last_non_space - first_non_space + 1);
+}
 
 std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
 {

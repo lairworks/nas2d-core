@@ -175,6 +175,18 @@ std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, boo
 	return result;
 }
 
+std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, char delim)
+{
+	const auto delim_loc = str.find_first_of(delim);
+	return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+}
+
+
+std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, char delim)
+{
+	const auto delim_loc = str.find_last_of(delim);
+	return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+}
 
 std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_empty /*= true*/)
 {

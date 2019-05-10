@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace NAS2D {
@@ -39,6 +40,8 @@ int divideUp(int to_divide, int divisor);
 std::string toLowercase(std::string str);
 std::string toUppercase(std::string str);
 std::vector<std::string> split(std::string str, char delim = ',', bool skip_empty = true);
+std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim);
+std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim);
 std::string join(std::vector<std::string> strs, char delim, bool skip_empty = true);
 std::string join(std::vector<std::string> strs, bool skip_empty = true);
 

@@ -36,8 +36,8 @@ int divideUp(int to_divide, int divisor);
 
 
 // String functions & types
-std::string toLowercase(const std::string& str);
-std::string toUppercase(const std::string& str);
+std::string toLowercase(std::string str);
+std::string toUppercase(std::string str);
 std::vector<std::string> split(std::string str, char delim = ',', bool skip_empty = true);
 std::string join(std::vector<std::string> strs, char delim, bool skip_empty = true);
 std::string join(std::vector<std::string> strs, bool skip_empty = true);

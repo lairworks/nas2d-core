@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <locale>
 #include <numeric>
 #include <sstream>
 
@@ -131,11 +132,10 @@ bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  *
  * \return	Returns the converted string.
  */
-std::string NAS2D::toLowercase(const std::string& str)
+std::string NAS2D::toLowercase(std::string str)
 {
-	std::string transformStr(str);
-	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int (*)(int))std::tolower);
-	return transformStr;
+	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) -> unsigned char { return std::tolower(c, std::locale("")); });
+	return str;
 }
 
 /**
@@ -147,11 +147,10 @@ std::string NAS2D::toLowercase(const std::string& str)
  *
  * \return	Returns the converted string.
  */
-std::string NAS2D::toUppercase(const std::string& str)
+std::string NAS2D::toUppercase(std::string str)
 {
-	std::string transformStr(str);
-	std::transform(transformStr.begin(), transformStr.end(), transformStr.begin(), (int (*)(int))std::toupper);
-	return transformStr;
+	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) -> unsigned char { return std::toupper(c, std::locale("")); });
+	return str;
 }
 
 std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, bool skip_empty /*= true*/)

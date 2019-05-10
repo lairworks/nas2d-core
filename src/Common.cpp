@@ -226,6 +226,16 @@ bool NAS2D::endsWith(const std::string& string, const std::string& end)
 	return found_loc != std::string::npos && found_loc == string.size() - end.size();
 }
 
+bool NAS2D::startsWith(const std::string& string, char start)
+{
+	return *std::begin(string) == start;
+}
+
+bool NAS2D::endsWith(const std::string& string, char end)
+{
+	return *(std::end(string) - 1) == end;
+}
+
 std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + std::size_t{1u} + b.size(); };

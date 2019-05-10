@@ -47,6 +47,8 @@ std::string join(std::vector<std::string> strs, bool skip_empty = true);
 std::string trimWhitespace(std::string string);
 bool startsWith(const std::string& string, const std::string& start);
 bool endsWith(const std::string& string, const std::string& end);
+bool startsWith(const std::string& string, char start);
+bool endsWith(const std::string& string, char end);
 
 /**
  * Simple helper function to provide a printf like function.

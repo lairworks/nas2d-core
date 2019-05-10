@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <clocale>
 #include <locale>
 #include <numeric>
 #include <sstream>

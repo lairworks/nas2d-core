@@ -11,8 +11,6 @@
 
 #include <algorithm>
 #include <cctype>
-#include <clocale>
-#include <locale>
 #include <numeric>
 #include <sstream>
 
@@ -135,7 +133,7 @@ bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  */
 std::string NAS2D::toLowercase(std::string str)
 {
-	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) -> unsigned char { return std::tolower(c, std::locale("")); });
+	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
 	return str;
 }
 
@@ -150,7 +148,7 @@ std::string NAS2D::toLowercase(std::string str)
  */
 std::string NAS2D::toUppercase(std::string str)
 {
-	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) -> unsigned char { return std::toupper(c, std::locale("")); });
+	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
 	return str;
 }
 

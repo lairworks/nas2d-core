@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <numeric>
 #include <sstream>
 
 const int NAS2D_MAJOR_VERSION = 1;
@@ -166,10 +167,49 @@ std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, boo
 	ss.clear();
 
 	std::string curString{};
-    while(std::getline(ss, curString, delim)) {
-        if(skip_empty && curString.empty()) { continue; }
+	while (std::getline(ss, curString, delim))
+	{
+		if (skip_empty && curString.empty()) { continue; }
 		result.push_back(curString);
-    }
+	}
+	result.shrink_to_fit();
+	return result;
+}
+
+
+std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_empty /*= true*/)
+{
+	auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + static_cast<std::size_t>(1u) + b.size(); };
+	auto total_size = std::accumulate(std::begin(strs), std::end(strs), static_cast<std::size_t>(0u), acc_op);
+	std::string result;
+	result.reserve(total_size);
+
+	for (auto iter = std::begin(strs); iter != std::end(strs); ++iter)
+	{
+		if (skip_empty && (*iter).empty()) { continue; }
+		result += (*iter);
+		if (iter != std::end(strs) - 1)
+		{
+			result.push_back(delim);
+		}
+	}
+
+	result.shrink_to_fit();
+	return result;
+}
+
+
+std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
+{
+	auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + static_cast<std::size_t>(1u) + b.size(); };
+	auto total_size = std::accumulate(std::begin(strs), std::end(strs), static_cast<std::size_t>(0u), acc_op);
+	std::string result;
+	result.reserve(total_size);
+	for (const auto& s : strs)
+	{
+		if (skip_empty && s.empty()) { continue; }
+		result += s;
+	}
 	result.shrink_to_fit();
 	return result;
 }

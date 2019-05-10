@@ -62,6 +62,6 @@ std::string string_format(const std::string& format, Args ... args)
  * The StringList is provided primarily as a convenience typedef
  * but is also used by some of NAS2D's functions.
  */
-typedef std::vector<std::string> StringList;
+using StringList = std::vector<std::string>;
 
 }

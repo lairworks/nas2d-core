@@ -229,13 +229,13 @@ bool NAS2D::endsWith(const std::string& string, const std::string& end) noexcept
 bool NAS2D::startsWith(const std::string& string, char start)
 {
 	if (string.empty()) { return false; }
-	return *std::begin(string) == start;
+	return string.front() == start;
 }
 
 bool NAS2D::endsWith(const std::string& string, char end)
 {
 	if (string.empty()) { return false; }
-	return *(std::end(string) - 1) == end;
+	return string.back() == end;
 }
 
 std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)

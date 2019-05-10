@@ -48,7 +48,7 @@ TEST_F(FilesystemTest, workingPath) {
 TEST_F(FilesystemTest, searchPath) {
 	auto pathList = fs.searchPath();
 	EXPECT_EQ(3, pathList.size());
-	EXPECT_THAT(pathList, Contains(testing::HasSubstr("NAS2DUnitTests/")));
+	EXPECT_THAT(pathList, Contains(testing::HasSubstr("NAS2DUnitTests")));
 	EXPECT_THAT(pathList, Contains(testing::HasSubstr("data/")));
 }
 

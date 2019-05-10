@@ -18,4 +18,5 @@ install:
 build:
   project: proj/vs2019/NAS2D.sln
 test_script:
+  - cd %APPVEYOR_BUILD_FOLDER%\test
   - '%APPVEYOR_BUILD_FOLDER%\test\%PLATFORM%\%CONFIGURATION%\test.exe'

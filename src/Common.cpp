@@ -189,8 +189,8 @@ std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, c
 
 std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_empty /*= true*/)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + static_cast<std::size_t>(1u) + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), static_cast<std::size_t>(0u), acc_op);
+	const auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + std::size_t{1u} + b.size(); };
+	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
 	result.reserve(total_size);
 
@@ -211,8 +211,8 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_emp
 
 std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + static_cast<std::size_t>(1u) + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), static_cast<std::size_t>(0u), acc_op);
+	const auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + std::size_t{1u} + b.size(); };
+	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
 	result.reserve(total_size);
 	for (const auto& s : strs)

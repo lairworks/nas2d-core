@@ -214,6 +214,18 @@ std::string NAS2D::trimWhitespace(std::string string)
 	return string.substr(first_non_space, last_non_space - first_non_space + 1);
 }
 
+bool NAS2D::startsWith(const std::string& string, const std::string& start)
+{
+	auto found_loc = string.find(start);
+	return found_loc != std::string::npos && found_loc == 0;
+}
+
+bool NAS2D::endsWith(const std::string& string, const std::string& end)
+{
+	auto found_loc = string.rfind(end);
+	return found_loc != std::string::npos && found_loc == string.size() - end.size();
+}
+
 std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) -> std::size_t { return a + std::size_t{1u} + b.size(); };

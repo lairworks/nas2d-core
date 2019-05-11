@@ -135,6 +135,12 @@
     <ClCompile Include="..\..\src\Xml\XmlNode.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Mixer\Mixer.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Mixer\MixerNull.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\NAS2D\Common.h">

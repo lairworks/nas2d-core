@@ -171,12 +171,6 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 	// Adjust the translation so that images appear where expected.
 	glTranslatef(x + imgHalfW, y + imgHalfH, 0.0f);
 
-	float _deg = degrees;
-	if (_deg < 0.0f)
-	{
-		_deg += 360.0f;
-	}
-
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	glColor4ub(r, g, b, a);

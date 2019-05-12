@@ -17,7 +17,7 @@
 #include "NAS2D/Renderer/Primitives.h"
 
 #include <GL/glew.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 
 #include <iostream>
 #include <map>

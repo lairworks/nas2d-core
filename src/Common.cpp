@@ -247,16 +247,14 @@ std::string NAS2D::trimWhitespace(std::string string)
 	return string.substr(first_non_space, last_non_space - first_non_space + 1);
 }
 
-bool NAS2D::startsWith(const std::string& string, const std::string& start) noexcept
+bool NAS2D::startsWith(const std::string_view& string, const std::string& start) noexcept
 {
-	const auto found_loc = string.find(start);
-	return found_loc != std::string::npos && found_loc == 0;
+	return string.compare(0, start.size(), start) == 0;
 }
 
-bool NAS2D::endsWith(const std::string& string, const std::string& end) noexcept
+bool NAS2D::endsWith(const std::string_view& string, const std::string& end) noexcept
 {
-	const auto found_loc = string.rfind(end);
-	return found_loc != std::string::npos && found_loc == string.size() - end.size();
+	return string.compare(string.size() - end.size(), end.size(), end) == 0;
 }
 
 bool NAS2D::startsWith(const std::string& string, char start)

@@ -202,7 +202,7 @@ std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, c
 
 std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_empty /*= true*/)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept -> std::size_t { return a + std::size_t{1u} + b.size(); };
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
 	result.reserve(total_size);
@@ -239,6 +239,10 @@ std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*
 std::string NAS2D::trimWhitespace(std::string string)
 {
 	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
+	if (first_non_space == std::string::npos)
+	{
+		return std::string{};
+	}
 	const auto last_non_space = string.find_last_not_of(" \r\n\t\v\f");
 	return string.substr(first_non_space, last_non_space - first_non_space + 1);
 }

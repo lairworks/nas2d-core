@@ -259,14 +259,12 @@ bool NAS2D::endsWith(const std::string_view& string, const std::string& end) noe
 
 bool NAS2D::startsWith(const std::string& string, char start)
 {
-	if (string.empty()) { return false; }
-	return string.front() == start;
+	return !string.empty() && string.front() == start;
 }
 
 bool NAS2D::endsWith(const std::string& string, char end)
 {
-	if (string.empty()) { return false; }
-	return string.back() == end;
+	return !string.empty() && string.back() == end;
 }
 
 /**

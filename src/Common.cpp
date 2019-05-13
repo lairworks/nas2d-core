@@ -223,7 +223,7 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_emp
 
 std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
 	result.reserve(total_size);

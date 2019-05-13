@@ -179,7 +179,7 @@ std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, 
 	const auto delim_loc = str.find_first_of(delim);
 	if (delim_loc == std::string::npos)
 	{
-		return std::make_pair(std::string{}, str);
+		return std::make_pair(str, std::string{});
 	}
 	else
 	{
@@ -192,7 +192,7 @@ std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, c
 	const auto delim_loc = str.find_last_of(delim);
 	if (delim_loc == std::string::npos)
 	{
-		return std::make_pair(str, std::string{});
+		return std::make_pair(std::string{}, str);
 	}
 	else
 	{

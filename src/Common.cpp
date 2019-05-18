@@ -107,6 +107,7 @@ bool NAS2D::isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int b
 	return (aX <= bX2 && aX2 >= bX && aY <= bY2 && aY2 >= bY);
 }
 
+
 /**
  * \fn isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  *

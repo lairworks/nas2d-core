@@ -20,33 +20,33 @@ public:
 
 	~RendererNull() override {}
 
-	void drawImage(Image&, float, float, float, int, int, int, int) override {}
+	void drawImage(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
-	void drawSubImage(Image&, float, float, float, float, float, float, int, int, int, int) override {}
-	void drawSubImageRotated(Image&, float, float, float, float, float, float, float, int, int, int, int) override {}
+	void drawSubImage(Image&, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawSubImageRotated(Image&, float, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
-	void drawImageRotated(Image&, float, float, float, int, int, int, int, float) override {}
-	void drawImageStretched(Image&, float, float, float, float, int, int, int, int) override {}
+	void drawImageRotated(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, float) override {}
+	void drawImageStretched(Image&, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
 	void drawImageRepeated(Image&, float, float, float, float) override {}
 
 	void drawImageToImage(Image&, Image&, const Point_2df&) override {}
 
-	void drawPoint(float, float, int, int, int, int) override {}
-	void drawLine(float, float, float, float, int, int, int, int, int) override {}
-	void drawBox(float, float, float, float, int, int, int, int) override {}
-	void drawBoxFilled(float, float, float, float, int, int, int, int) override {}
-	void drawCircle(float, float, float, int, int, int, int, int, float, float) override {}
+	void drawPoint(float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawLine(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int) override {}
+	void drawBox(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawBoxFilled(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawCircle(float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int, float, float) override {}
 
-	void drawGradient(float, float, float, float, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int) override {}
+	void drawGradient(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
-	void drawText(NAS2D::Font&, const std::string&, float, float, int, int, int, int) override {}
+	void drawText(NAS2D::Font&, const std::string&, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
 	void showSystemPointer(bool) override {}
 	void addCursor(const std::string&, int, int, int) override {}
 	void setCursor(int) override {}
 
-	void clearScreen(int, int, int) override {}
+	void clearScreen(uint8_t, uint8_t, uint8_t) override {}
 
 	float width() override { return 0.0f; }
 	float height() override { return 0.0f; }

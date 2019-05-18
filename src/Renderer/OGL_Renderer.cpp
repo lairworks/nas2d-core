@@ -83,7 +83,7 @@ OGL_Renderer::OGL_Renderer(const std::string& title) : Renderer("OpenGL Renderer
 	std::cout << "Starting " << name() << ":" << std::endl;
 
 	Configuration& cf = Utility<Configuration>::get();
-	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
+	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.fullscreen(), cf.vsync());
 }
 
 
@@ -103,7 +103,7 @@ OGL_Renderer::~OGL_Renderer()
 }
 
 
-void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a)
+void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 
@@ -113,7 +113,7 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r,
 }
 
 
-void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a)
+void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 
@@ -129,7 +129,7 @@ void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, floa
 }
 
 
-void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a)
+void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glPushMatrix();
 
@@ -157,7 +157,7 @@ void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float raster
 }
 
 
-void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale)
+void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
 {
 	glPushMatrix();
 
@@ -183,7 +183,7 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 }
 
 
-void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
+void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -228,7 +228,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	glColor4ub(255, 255, 255, 255);
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if (!isRectInRect(dstPoint.x(), dstPoint.y(), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
+	if (!isRectInRect(static_cast<int>(dstPoint.x()), static_cast<int>(dstPoint.y()), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
 	{
 		return;
 	}
@@ -264,7 +264,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 }
 
 
-void OGL_Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
+void OGL_Renderer::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glDisable(GL_TEXTURE_2D);
 
@@ -279,7 +279,7 @@ void OGL_Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
 }
 
 
-void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
+void OGL_Renderer::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width = 1)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -296,7 +296,7 @@ void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, 
  *
  * Modified to support X/Y scaling to draw an ellipse.
  */
-void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
+void OGL_Renderer::drawCircle(float cx, float cy, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
 {
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(r, g, b, a);
@@ -338,7 +338,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 }
 
 
-void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4)
+void OGL_Renderer::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
 {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
@@ -384,7 +384,7 @@ void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int 
 }
 
 
-void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
+void OGL_Renderer::drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -401,7 +401,7 @@ void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, i
 }
 
 
-void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
+void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 	glDisable(GL_TEXTURE_2D);
@@ -413,7 +413,7 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, in
 }
 
 
-void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
+void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	if (!font.loaded() || text.empty()) { return; }
 
@@ -496,15 +496,15 @@ void OGL_Renderer::clipRect(float x, float y, float width, float height)
 		return;
 	}
 
-	glScissor(x, OGL_Renderer::height() - y - height, width, height);
+	glScissor(static_cast<int>(x), static_cast<int>(OGL_Renderer::height() - y - height), static_cast<int>(width), static_cast<int>(height));
 
 	glEnable(GL_SCISSOR_TEST);
 }
 
 
-void OGL_Renderer::clearScreen(int r, int g, int b)
+void OGL_Renderer::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 {
-	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0);
+	glClearColor(static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f, static_cast<float>(b) / 255.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -670,7 +670,7 @@ void OGL_Renderer::initGL()
 }
 
 
-void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
+void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -928,8 +928,6 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		x2 + tx + Rx + cx, y2 + ty + Ry + cy
 	};
 
-	glVertexPointer(2, GL_FLOAT, 0, line_vertex);
-
 	float line_color[] =
 	{
 		Cr, Cg, Cb, 0,
@@ -942,16 +940,15 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		Cr, Cg, Cb, 0
 	};
 
+	glVertexPointer(2, GL_FLOAT, 0, line_vertex);
 	glColorPointer(4, GL_FLOAT, 0, line_color);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
 
 	// Line End Caps
 	if (w > 3.0f) // <<< Arbitrary number.
 	{
-		float line_vertex[] =
+		float line_vertex2[] =
 		{
-			x1 - tx - Rx - cx, y1 - ty - Ry - cy, //cap1
-			x1 - tx - Rx, y1 - ty - Ry,
 			x1 - tx - cx, y1 - ty - cy,
 			x1 + tx + Rx, y1 + ty + Ry,
 			x1 + tx - cx, y1 + ty - cy,
@@ -963,9 +960,8 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			x2 + tx + cx, y2 + ty + cy,
 			x2 + tx + Rx + cx, y2 + ty + Ry + cy
 		};
-		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
 
-		float line_color[] =
+		float line_color2[] =
 		{
 			Cr, Cg, Cb, 0, //cap1
 			Cr, Cg, Cb, 0,
@@ -980,7 +976,9 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			Cr, Cg, Cb, Ca,
 			Cr, Cg, Cb, 0
 		};
-		glColorPointer(4, GL_FLOAT, 0, line_color);
+
+		glVertexPointer(2, GL_FLOAT, 0, line_vertex2);
+		glColorPointer(4, GL_FLOAT, 0, line_color2);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	}
 }

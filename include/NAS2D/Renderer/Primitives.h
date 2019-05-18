@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace NAS2D {
 
 /**
@@ -19,24 +21,24 @@ namespace NAS2D {
 class Color_4ub
 {
 public:
-	Color_4ub();
+	Color_4ub() = default;
+	Color_4ub(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-	Color_4ub(int r, int g, int b, int a);
+public:
+	void operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-	void operator()(int r, int g, int b, int a);
+	uint8_t red() const;
+	uint8_t green() const;
+	uint8_t blue() const;
+	uint8_t alpha() const;
 
-	int red() const;
-	int green() const;
-	int blue() const;
-	int alpha() const;
-
-	void red(int red);
-	void green(int green);
-	void blue(int blue);
-	void alpha(int alpha);
+	void red(uint8_t red);
+	void green(uint8_t green);
+	void blue(uint8_t blue);
+	void alpha(uint8_t alpha);
 
 private:
-	unsigned char mR, mG, mB, mA;
+	unsigned char mR = 255, mG = 255, mB = 255, mA = 255;
 };
 
 

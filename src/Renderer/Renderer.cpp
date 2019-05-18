@@ -228,7 +228,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
  *
  * \param	color	A reference to aColor_4ub.
  */
-void Renderer::setFadeColor(const Color_4ub& color)
+void Renderer::fadeColor(const Color_4ub& color)
 {
 	mFadeColor = color;
 }
@@ -343,7 +343,7 @@ void Renderer::drawLine(float x, float y, float x2, float y2, const Color_4ub& c
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBox(const Rectangle_2d& rect, int r, int g, int b, int a)
+void Renderer::drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	drawBox(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.width()), static_cast<float>(rect.height()), r, g, b, a);
 }
@@ -358,7 +358,7 @@ void Renderer::drawBox(const Rectangle_2d& rect, int r, int g, int b, int a)
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBox(const Rectangle_2df& rect, int r, int g, int b, int a)
+void Renderer::drawBox(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
@@ -373,7 +373,7 @@ void Renderer::drawBox(const Rectangle_2df& rect, int r, int g, int b, int a)
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBoxFilled(const Rectangle_2d& rect, int r, int g, int b, int a)
+void Renderer::drawBoxFilled(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	drawBoxFilled(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.width()), static_cast<float>(rect.height()), r, g, b, a);
 }
@@ -388,7 +388,7 @@ void Renderer::drawBoxFilled(const Rectangle_2d& rect, int r, int g, int b, int 
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBoxFilled(const Rectangle_2df& rect, int r, int g, int b, int a)
+void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
@@ -520,7 +520,7 @@ void Renderer::title(const std::string& title)
  * \param sb		Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextShadow(Font& font, const std::string& text, float x, float y, int distance, int r, int g, int b, int sr, int sg, int sb, int a )
+void Renderer::drawTextShadow(Font& font, const std::string& text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a )
 {
 	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
 	drawText(font, text, x, y, r, g, b, a);
@@ -584,6 +584,6 @@ void Renderer::update()
 
 	if (mCurrentFade > 0.0f)
 	{
-		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), static_cast<int>(mCurrentFade));
+		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), static_cast<uint8_t>(mCurrentFade));
 	}
 }

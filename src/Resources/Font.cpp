@@ -404,7 +404,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 			// less bad.
 			if (glyph == 0) { continue; }
 
-			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
+			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
 			if (!srf)
 			{
 				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
@@ -454,7 +454,7 @@ bool fontAlreadyLoaded(const std::string& name)
  */
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
 {
-	if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
+	if constexpr (SDL_BYTEORDER == SDL_LIL_ENDIAN)
 	{
 		rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
 	}

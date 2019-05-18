@@ -58,19 +58,19 @@ public:
 	virtual void window_icon(const std::string& path) = 0;
 
 	void drawImage(Image& image, float x, float y, float scale = 1.0f);
-	virtual void drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a) = 0;
+	virtual void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
-	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a) = 0;
+	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
 	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const NAS2D::Color_4ub& color = NAS2D::COLOR_NORMAL);
-	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a) = 0;
+	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
 	void drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color = COLOR_NORMAL, float scale = 1.0f);
-	virtual void drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale = 1.0f) = 0;
+	virtual void drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale = 1.0f) = 0;
 
 	void drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color = COLOR_NORMAL);
-	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a) = 0;
+	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
 	virtual void drawImageRepeated(Image& image, float x, float y, float w, float h) = 0;
 	void drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
@@ -79,28 +79,28 @@ public:
 	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint) = 0;
 
 	void drawPoint(float x, float y, const Color_4ub& color = COLOR_WHITE);
-	virtual void drawPoint(float x, float y, int r, int g, int b, int a = 255) = 0;
+	virtual void drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 
 	void drawLine(float x, float y, float x2, float y2, const Color_4ub& color = COLOR_WHITE, int line_width = 1);
-	virtual void drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a = 255, int line_width = 1) = 0;
+	virtual void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255, int line_width = 1) = 0;
 
-	void drawBox(const Rectangle_2d& rect, int r, int g, int b, int a = 255);
-	void drawBox(const Rectangle_2df& rect, int r, int g, int b, int a = 255);
-	virtual void drawBox(float x, float y, float w, float h, int r, int g, int b, int a = 255) = 0;
+	void drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	void drawBox(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	virtual void drawBox(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 
-	void drawBoxFilled(const Rectangle_2d& rect, int r, int g, int b, int a = 255);
-	void drawBoxFilled(const Rectangle_2df& rect, int r, int g, int b, int a = 255);
-	virtual void drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a = 255) = 0;
+	void drawBoxFilled(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	void drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	virtual void drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 
-	virtual void drawCircle(float x, float y, float radius, int r, int g, int b, int a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f) = 0;
+	virtual void drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f) = 0;
 
 	void drawGradient(float x, float y, float w, float h, const Color_4ub& c1, const Color_4ub& c2, const Color_4ub& c3, const Color_4ub& c4);
-	virtual void drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4) = 0;
+	virtual void drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4) = 0;
 
-	virtual void drawText(Font& font, const std::string& text, float x, float y, int r, int g, int b, int a = 255) = 0;
-	void drawTextShadow(Font& font, const std::string& text, float x, float y, int sDistance, int r, int g, int b, int sr, int sg, int sb, int a = 255);
+	virtual void drawText(Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
+	void drawTextShadow(Font& font, const std::string& text, float x, float y, int sDistance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a = 255);
 
-	void setFadeColor(const Color_4ub& color);
+	void fadeColor(const Color_4ub& color);
 	void fadeIn(float delayTime);
 	void fadeOut(float delayTime);
 	bool isFading() const;
@@ -112,7 +112,7 @@ public:
 	virtual void setCursor(int cursorId) = 0;
 
 	void clearScreen(const Color_4ub& color);
-	virtual void clearScreen(int r, int g, int b) = 0;
+	virtual void clearScreen(uint8_t r, uint8_t g, uint8_t b) = 0;
 
 	virtual float width() = 0;
 	virtual float height() = 0;

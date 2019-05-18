@@ -255,8 +255,8 @@ Color_4ub Image::pixelColor(int x, int y) const
 	if (!pixels) { throw image_null_data(); }
 
 	SDL_LockSurface(pixels);
-	int bpp = pixels->format->BytesPerPixel;
-	Uint8 *p = (Uint8*)pixels->pixels + y * pixels->pitch + x * bpp;
+	uint8_t bpp = pixels->format->BytesPerPixel;
+	uint8_t*p = (uint8_t*)pixels->pixels + y * pixels->pitch + x * bpp;
 
 	unsigned int c = 0;
 
@@ -267,7 +267,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 		break;
 
 	case 2:
-		c = *(Uint16 *)p;
+		c = *(uint16_t*)p;
 		break;
 
 	case 3:
@@ -282,7 +282,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 		break;
 
 	case 4:
-		c = *(Uint32*)p;
+		c = *(uint32_t*)p;
 		break;
 
 	default:	// Should never be possible.
@@ -290,7 +290,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 		break;
 	}
 
-	Uint8 r, g, b, a;
+	uint8_t r, g, b, a;
 	SDL_GetRGBA(c, pixels->format, &r, &g, &b, &a);
 	SDL_UnlockSurface(pixels);
 

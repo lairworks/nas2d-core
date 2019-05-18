@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -45,10 +46,10 @@ std::pair<std::string, std::string> splitOnLast(const std::string& str, char del
 std::string join(std::vector<std::string> strs, char delim, bool skip_empty = true);
 std::string join(std::vector<std::string> strs, bool skip_empty = true);
 std::string trimWhitespace(std::string string);
-bool startsWith(const std::string& string, const std::string& start) noexcept;
-bool endsWith(const std::string& string, const std::string& end) noexcept;
-bool startsWith(const std::string& string, char start);
-bool endsWith(const std::string& string, char end);
+bool startsWith(std::string_view string, std::string_view start) noexcept;
+bool endsWith(std::string_view string, std::string_view end) noexcept;
+bool startsWith(std::string_view string, char start) noexcept;
+bool endsWith(std::string_view string, char end) noexcept;
 
 /**
  * Simple helper function to provide a printf like function.

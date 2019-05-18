@@ -177,18 +177,32 @@ std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, boo
 std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, char delim)
 {
 	const auto delim_loc = str.find_first_of(delim);
-	return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+	if (delim_loc == std::string::npos)
+	{
+		return std::make_pair(str, std::string{});
+	}
+	else
+	{
+		return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+	}
 }
 
 std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, char delim)
 {
 	const auto delim_loc = str.find_last_of(delim);
-	return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+	if (delim_loc == std::string::npos)
+	{
+		return std::make_pair(std::string{}, str);
+	}
+	else
+	{
+		return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+	}
 }
 
 std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_empty /*= true*/)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept -> std::size_t { return a + std::size_t{1u} + b.size(); };
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
 	result.reserve(total_size);
@@ -209,7 +223,7 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_emp
 
 std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
 	result.reserve(total_size);
@@ -225,32 +239,32 @@ std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*
 std::string NAS2D::trimWhitespace(std::string string)
 {
 	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
+	if (first_non_space == std::string::npos)
+	{
+		return std::string{};
+	}
 	const auto last_non_space = string.find_last_not_of(" \r\n\t\v\f");
 	return string.substr(first_non_space, last_non_space - first_non_space + 1);
 }
 
-bool NAS2D::startsWith(const std::string& string, const std::string& start) noexcept
+bool NAS2D::startsWith(std::string_view string, std::string_view start) noexcept
 {
-	const auto found_loc = string.find(start);
-	return found_loc != std::string::npos && found_loc == 0;
+	return string.compare(0, start.size(), start) == 0;
 }
 
-bool NAS2D::endsWith(const std::string& string, const std::string& end) noexcept
+bool NAS2D::endsWith(std::string_view string, std::string_view end) noexcept
 {
-	const auto found_loc = string.rfind(end);
-	return found_loc != std::string::npos && found_loc == string.size() - end.size();
+	return string.compare(string.size() - end.size(), end.size(), end) == 0;
 }
 
-bool NAS2D::startsWith(const std::string& string, char start)
+bool NAS2D::startsWith(std::string_view string, char start) noexcept
 {
-	if (string.empty()) { return false; }
-	return string.front() == start;
+	return !string.empty() && string.front() == start;
 }
 
-bool NAS2D::endsWith(const std::string& string, char end)
+bool NAS2D::endsWith(std::string_view string, char end) noexcept
 {
-	if (string.empty()) { return false; }
-	return string.back() == end;
+	return !string.empty() && string.back() == end;
 }
 
 /**

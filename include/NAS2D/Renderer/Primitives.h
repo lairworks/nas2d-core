@@ -53,10 +53,11 @@ class Rectangle_2df;
 class Rectangle_2d
 {
 public:
-	Rectangle_2d();
+	Rectangle_2d() = default;
 	Rectangle_2d(int x, int y, int w, int h);
 	Rectangle_2d(const Rectangle_2df& rect);
 
+public:
 	void operator()(int x, int y, int w, int h);
 
 	bool operator==(const Rectangle_2d& rect);
@@ -83,6 +84,7 @@ public:
 	const Rectangle_2d operator*(const Rectangle_2d& rect);
 	const Rectangle_2d operator*(const Rectangle_2df& rect);
 
+public:
 	bool null();
 
 	void x(int x);
@@ -105,7 +107,7 @@ public:
 	int center_y() const;
 
 private:
-	int mX, mY, mW, mH;
+	int mX = 0, mY = 0, mW = 0, mH = 0;
 };
 
 
@@ -116,9 +118,10 @@ private:
 class Rectangle_2df
 {
 public:
-	Rectangle_2df();
+	Rectangle_2df() = default;
 	Rectangle_2df(float x, float y, float w, float h);
 
+public:
 	void operator()(float x, float y, float w, float h);
 
 	bool operator==(const Rectangle_2d& rect);
@@ -145,6 +148,7 @@ public:
 	const Rectangle_2df operator*(const Rectangle_2d& rect);
 	const Rectangle_2df operator*(const Rectangle_2df& rect);
 
+public:
 	bool null();
 
 	void x(float x);
@@ -167,7 +171,7 @@ public:
 	float center_y() const;
 
 private:
-	float mX, mY, mW, mH;
+	float mX = 0.0f, mY = 0.0f, mW = 0.0f, mH = 0.0f;
 };
 
 
@@ -182,10 +186,11 @@ class Point_2df;
 class Point_2d
 {
 public:
-	Point_2d();
+	Point_2d() = default;
 	Point_2d(int x, int y);
 	Point_2d(const Point_2df& _p);
 
+public:
 	void operator()(int x, int y);
 
 	bool operator==(const Point_2d& pt);
@@ -212,6 +217,7 @@ public:
 	const Point_2d operator*(const Point_2d& pt);
 	const Point_2d operator*(const Point_2df& pt);
 
+public:
 	void x(int x);
 	int x() const;
 	int& x();
@@ -221,7 +227,7 @@ public:
 	int& y();
 
 private:
-	int mX, mY;
+	int mX = 0, mY = 0;
 };
 
 
@@ -232,10 +238,11 @@ private:
 class Point_2df
 {
 public:
-	Point_2df();
+	Point_2df() = default;
 	Point_2df(float x, float y);
 	Point_2df(const Point_2d& _p);
 
+public:
 	void operator()(float _x, float _y);
 
 	bool operator==(const Point_2d& pt);
@@ -262,6 +269,7 @@ public:
 	const Point_2df operator*(const Point_2d& pt);
 	const Point_2df operator*(const Point_2df& pt);
 
+public:
 	void x(float x);
 	float x() const;
 	float& x();
@@ -271,7 +279,7 @@ public:
 	float& y();
 
 private:
-	float mX, mY;
+	float mX = 0.0f, mY = 0.0f;
 };
 
 } // namespace

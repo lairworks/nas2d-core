@@ -133,15 +133,6 @@ void Color_4ub::alpha(uint8_t alpha)
 // = Rectangle_2d Implementation
 // ==================================================================================
 
-/**
- * Default c'tor.
- */
-Rectangle_2d::Rectangle_2d():	mX(0),
-								mY(0),
-								mW(0),
-								mH(0)
-{}
-
 
 /**
  * C'tor.
@@ -542,15 +533,6 @@ int Rectangle_2d::center_y() const
 // = Rectangle_2df Implementation
 // ==================================================================================
 
-/**
- * Default c'tor
- */
-Rectangle_2df::Rectangle_2df():	mX(0),
-								mY(0),
-								mW(0),
-								mH(0)
-{}
-
 
 /**
  * C'tor.
@@ -939,13 +921,6 @@ float Rectangle_2df::center_y() const
 // = Point_2d Implementation
 // ==================================================================================
 
-/**
- * Default c'tor.
- */
-Point_2d::Point_2d():	mX(0),
-						mY(0)
-{}
-
 
 /**
  * C'tor
@@ -1136,11 +1111,6 @@ int& Point_2d::y()
 // ==================================================================================
 // = Point_2df Implementation
 // ==================================================================================
-
-Point_2df::Point_2df():	mX(0.0f),
-						mY(0.0f)
-{}
-
 
 Point_2df::Point_2df(float x, float y):	mX(x),
 										mY(y)

@@ -355,7 +355,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 	GlyphMetricsList& glm = FONTMAP[name].metrics;
 
 	// Go through each glyph and determine how much space we need in the texture.
-	for (int i = 0; i < ASCII_TABLE_COUNT; i++)
+	for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 	{
 		GlyphMetrics metrics;
 

@@ -16,7 +16,7 @@ namespace NAS2D {
 class RendererNull : public Renderer
 {
 public:
-	RendererNull();
+	RendererNull() = default;
 
 	~RendererNull() override {}
 

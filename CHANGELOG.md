@@ -1,18 +1,30 @@
 # Releases
 
-## \[1.5.0\] - UNRELEASED
+## \[1.5.0\] - 2019-05-19
 
 This is a feature release.
 
 ### Added
 - Added EventHandler::alt() which returns true if the key modifier is either alt key (or both).
 - Added a clip area function to the renderer (clipRect series of functions).
+- Added center_x/center_y functions to Image. This maintains a previously computed value based on the last loaded Image.
+- Visual Studio 2019 solution and project files have been added.
+- A null Renderer (RendererNull) has been added for fallback and testing purposes.
+- A null Mixer (MixerNull) has been added for fallback and testing purposes.
+
+### Changed
+- All prior versions of Visual Studio solutions/projects have been removed in favor of Visual Studio 2019.
+- Visual Studio solution now takes advantage of NuGet. PhysFS and GLEW still need to be provided by the user as the NuGet versions are very out of date. We recommend using vcpkg.
+- OGL_Renderer has been renamed to RendererOpenGL.
+- Mixer_SDL has been renamed to MixerSDL.
 
 ### Fixed
 
 - OGL_Renderer::drawImageRepeated() now draws a texture repeated across a given face as expected.
 - Fixed an issue with XmlNode::lastChild(const std::string&) functions that would test against an internal value string instead of the value passed in as a parameter.
 - Fixed a mistake in OGL_Renderer::drawImage() that ignored the 'scale' paramter.
+- Renderer::drawImageToImage() will no longer clear the previously loaded image before a call to this function was made.
+- A defect in the Filesystem was corrected related to edge cases where the underlying library PhysFS is asked to deinit itself before it was ever initialized.
 
 ---
 

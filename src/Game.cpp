@@ -70,7 +70,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 
 	try
 	{
-		Utility<Renderer>::init<OGL_Renderer>(title);
+		Utility<Renderer>::init<RendererOpenGL>(title);
 	}
 	catch (const std::exception& e)
 	{

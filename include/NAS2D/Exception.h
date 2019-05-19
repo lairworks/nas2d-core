@@ -114,7 +114,7 @@ class mixer_backend_init_failure : public std::runtime_error { public: mixer_bac
 /**
 * \class renderer_no_glsl
 *
-* Thrown when the OGL_Renderer determines that no GLSL shading language is available.
+* Thrown when the RendererOpenGL determines that no GLSL shading language is available.
 */
 class renderer_no_glsl : public std::runtime_error { public: renderer_no_glsl(); };
 
@@ -138,7 +138,7 @@ class renderer_window_creation_failure : public std::runtime_error { public: ren
 /**
 * \class renderer_opengl_context_failure
 *
-* Thrown when the OGL_Renderer can't create an OpenGL context.
+* Thrown when the RendererOpenGL can't create an OpenGL context.
 */
 class renderer_opengl_context_failure : public std::runtime_error { public: renderer_opengl_context_failure(); };
 

@@ -73,6 +73,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
 	_size = std::make_pair(width, height);
+	_center = std::make_pair(width / 2, height / 2);
 
 	// Update resource management.
 	IMAGE_ID_MAP[name()].texture_id = 0;
@@ -107,6 +108,8 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
 	_size = std::make_pair(width, height);
+	_center = std::make_pair(pixels->w / 2, pixels->h / 2);
+
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
@@ -157,6 +160,7 @@ Image& Image::operator=(const Image& rhs)
 
 	name(rhs.name());
 	_size = rhs._size;
+	_center = rhs._center;
 
 	auto it = IMAGE_ID_MAP.find(name());
 	if (it == IMAGE_ID_MAP.end())
@@ -204,6 +208,7 @@ void Image::load()
 	}
 
 	_size = std::make_pair(pixels->w, pixels->h);
+	_center = std::make_pair(pixels->w / 2, pixels->h / 2);
 
 	unsigned int texture_id = generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
 
@@ -234,6 +239,18 @@ int Image::width() const
 int Image::height() const
 {
 	return _size.second;
+}
+
+
+int Image::center_x() const
+{
+	return _center.first;
+}
+
+
+int Image::center_y() const
+{
+	return _center.second;
 }
 
 

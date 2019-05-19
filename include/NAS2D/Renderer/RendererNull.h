@@ -29,7 +29,7 @@ public:
 	void drawImageStretched(Image&, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
 	void drawImageRepeated(Image&, float, float, float, float) override {}
-	void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) override {}
+	void drawSubImageRepeated(Image&, float, float, float, float, float, float, float, float) override {}
 
 	void drawImageToImage(Image&, Image&, const Point_2df&) override {}
 

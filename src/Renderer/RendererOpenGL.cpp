@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Trig.h"
-#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Renderer/RendererOpenGL.h"
 
 #include "NAS2D/Configuration.h"
 #include "NAS2D/EventHandler.h"
@@ -74,11 +74,11 @@ GLuint generate_fbo(Image& image);
 /**
  * C'tor
  *
- * Instantiates an OGL_Renderer object with the title of the application window.
+ * Instantiates an RendererOpenGL object with the title of the application window.
  *
  * \param title	Title of the application window.
  */
-OGL_Renderer::OGL_Renderer(const std::string& title) : Renderer("OpenGL Renderer", title)
+RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer("OpenGL Renderer", title)
 {
 	std::cout << "Starting " << name() << ":" << std::endl;
 
@@ -90,9 +90,9 @@ OGL_Renderer::OGL_Renderer(const std::string& title) : Renderer("OpenGL Renderer
 /**
  * D'tor.
  */
-OGL_Renderer::~OGL_Renderer()
+RendererOpenGL::~RendererOpenGL()
 {
-	Utility<EventHandler>::get().windowResized().disconnect(this, &OGL_Renderer::_resize);
+	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::_resize);
 
 	SDL_GL_DeleteContext(CONTEXT);
 	SDL_DestroyWindow(_WINDOW);
@@ -103,7 +103,7 @@ OGL_Renderer::~OGL_Renderer()
 }
 
 
-void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 
@@ -113,7 +113,7 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, uint8_
 }
 
 
-void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 
@@ -129,7 +129,7 @@ void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, floa
 }
 
 
-void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glPushMatrix();
 
@@ -157,7 +157,7 @@ void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float raster
 }
 
 
-void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
+void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
 {
 	glPushMatrix();
 
@@ -183,7 +183,7 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 }
 
 
-void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -193,7 +193,7 @@ void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, f
 }
 
 
-void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
+void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, float h)
 {
 	glColor4ub(255, 255, 255, 255);
 
@@ -228,13 +228,13 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
  * texture and reference it that way (bit of overhead to do a texture lookup and would
  * get unmanagable very quickly.
  */
-void OGL_Renderer::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
+void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
 {
 	float widthReach = w / (subW - subX);
 	float heightReach = h / (subH - subY);
 
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(static_cast<int>(rasterX), static_cast<int>(OGL_Renderer::height() - rasterY - h), static_cast<int>(w), static_cast<int>(h));
+	glScissor(static_cast<int>(rasterX), static_cast<int>(RendererOpenGL::height() - rasterY - h), static_cast<int>(w), static_cast<int>(h));
 
 
 	for (size_t row = 0; row <= heightReach; ++row)
@@ -249,7 +249,7 @@ void OGL_Renderer::drawSubImageRepeated(Image& image, float rasterX, float raste
 }
 
 
-void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
+void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
 	glColor4ub(255, 255, 255, 255);
 
@@ -290,7 +290,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 }
 
 
-void OGL_Renderer::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glDisable(GL_TEXTURE_2D);
 
@@ -305,7 +305,7 @@ void OGL_Renderer::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, 
 }
 
 
-void OGL_Renderer::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width = 1)
+void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width = 1)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -322,7 +322,7 @@ void OGL_Renderer::drawLine(float x, float y, float x2, float y2, uint8_t r, uin
  *
  * Modified to support X/Y scaling to draw an ellipse.
  */
-void OGL_Renderer::drawCircle(float cx, float cy, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
+void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
 {
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(r, g, b, a);
@@ -364,7 +364,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, uint8_t r, uint8
 }
 
 
-void OGL_Renderer::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
+void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
 {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
@@ -410,7 +410,7 @@ void OGL_Renderer::drawGradient(float x, float y, float w, float h, uint8_t r1, 
 }
 
 
-void OGL_Renderer::drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -427,7 +427,7 @@ void OGL_Renderer::drawBox(float x, float y, float width, float height, uint8_t 
 }
 
 
-void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 	glDisable(GL_TEXTURE_2D);
@@ -439,7 +439,7 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, ui
 }
 
 
-void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	if (!font.loaded() || text.empty()) { return; }
 
@@ -464,33 +464,33 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 }
 
 
-void OGL_Renderer::showSystemPointer(bool _b)
+void RendererOpenGL::showSystemPointer(bool _b)
 {
 	SDL_ShowCursor(static_cast<int>(_b));
 }
 
 
-void OGL_Renderer::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
+void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
 {
 	/// \fixme proper cleanup
 	File imageFile = Utility<Filesystem>::get().open(filePath);
 	if (imageFile.size() == 0)
 	{
-		std::cout << "OGL_Renderer::addCursor(): '" << name() << "' is empty." << std::endl;
+		std::cout << "RendererOpenGL::addCursor(): '" << name() << "' is empty." << std::endl;
 		return;
 	}
 
 	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
 	if (!pixels)
 	{
-		std::cout << "OGL_Renderer::addCursor(): " << SDL_GetError() << std::endl;
+		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
 	SDL_Cursor* cur = SDL_CreateColorCursor(pixels, offx, offy);
 	if (!cur)
 	{
-		std::cout << "OGL_Renderer::addCursor(): " << SDL_GetError() << std::endl;
+		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
@@ -508,13 +508,13 @@ void OGL_Renderer::addCursor(const std::string& filePath, int cursorId, int offx
 }
 
 
-void OGL_Renderer::setCursor(int cursorId)
+void RendererOpenGL::setCursor(int cursorId)
 {
 	SDL_SetCursor(CURSORS[cursorId]);
 }
 
 
-void OGL_Renderer::clipRect(float x, float y, float width, float height)
+void RendererOpenGL::clipRect(float x, float y, float width, float height)
 {
 	if (width == 0 || height == 0)
 	{
@@ -522,27 +522,27 @@ void OGL_Renderer::clipRect(float x, float y, float width, float height)
 		return;
 	}
 
-	glScissor(static_cast<int>(x), static_cast<int>(OGL_Renderer::height() - y - height), static_cast<int>(width), static_cast<int>(height));
+	glScissor(static_cast<int>(x), static_cast<int>(RendererOpenGL::height() - y - height), static_cast<int>(width), static_cast<int>(height));
 
 	glEnable(GL_SCISSOR_TEST);
 }
 
 
-void OGL_Renderer::clearScreen(uint8_t r, uint8_t g, uint8_t b)
+void RendererOpenGL::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 {
 	glClearColor(static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f, static_cast<float>(b) / 255.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 
-void OGL_Renderer::update()
+void RendererOpenGL::update()
 {
 	Renderer::update();
 	SDL_GL_SwapWindow(_WINDOW);
 }
 
 
-float OGL_Renderer::width()
+float RendererOpenGL::width()
 {
 	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
@@ -553,7 +553,7 @@ float OGL_Renderer::width()
 }
 
 
-float OGL_Renderer::height()
+float RendererOpenGL::height()
 {
 	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
@@ -564,7 +564,7 @@ float OGL_Renderer::height()
 }
 
 
-void OGL_Renderer::size(int w, int h)
+void RendererOpenGL::size(int w, int h)
 {
 	SDL_SetWindowSize(_WINDOW, w, h);
 	_resize(w, h);
@@ -572,13 +572,13 @@ void OGL_Renderer::size(int w, int h)
 }
 
 
-void OGL_Renderer::minimum_size(int w, int h)
+void RendererOpenGL::minimum_size(int w, int h)
 {
 	SDL_SetWindowMinimumSize(_WINDOW, w, h);
 }
 
 
-void OGL_Renderer::fullscreen(bool fs, bool maintain)
+void RendererOpenGL::fullscreen(bool fs, bool maintain)
 {
 	if (fs)
 	{
@@ -595,14 +595,14 @@ void OGL_Renderer::fullscreen(bool fs, bool maintain)
 }
 
 
-bool OGL_Renderer::fullscreen()
+bool RendererOpenGL::fullscreen()
 {
 	return	((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
 			((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
-void OGL_Renderer::resizeable(bool _r)
+void RendererOpenGL::resizeable(bool _r)
 {
 	if (fullscreen())
 	{
@@ -614,13 +614,13 @@ void OGL_Renderer::resizeable(bool _r)
 }
 
 
-bool OGL_Renderer::resizeable()
+bool RendererOpenGL::resizeable()
 {
 	return (SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
 }
 
 
-void OGL_Renderer::_resize(int w, int h)
+void RendererOpenGL::_resize(int w, int h)
 {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
@@ -635,7 +635,7 @@ void OGL_Renderer::_resize(int w, int h)
 }
 
 
-void OGL_Renderer::window_icon(const std::string& path)
+void RendererOpenGL::window_icon(const std::string& path)
 {
 	if (!Utility<Filesystem>::get().exists(path)) { return; }
 
@@ -643,7 +643,7 @@ void OGL_Renderer::window_icon(const std::string& path)
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(f.raw_bytes(), static_cast<int>(f.size())), 0);
 	if (!icon)
 	{
-		std::cout << "OGL_Renderer::window_icon(): " << SDL_GetError() << std::endl;
+		std::cout << "RendererOpenGL::window_icon(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
@@ -652,7 +652,7 @@ void OGL_Renderer::window_icon(const std::string& path)
 }
 
 
-void OGL_Renderer::initGL()
+void RendererOpenGL::initGL()
 {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -696,7 +696,7 @@ void OGL_Renderer::initGL()
 }
 
 
-void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync)
+void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -734,7 +734,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, bool fullscre
 	glewInit();
 	initGL();
 
-	Utility<EventHandler>::get().windowResized().connect(this, &OGL_Renderer::_resize);
+	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::_resize);
 
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)

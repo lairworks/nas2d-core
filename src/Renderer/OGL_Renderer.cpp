@@ -259,9 +259,6 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 		return;
 	}
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
-
 	Rectangle_2d clipRect;
 
 	(static_cast<int>(dstPoint.x()) + source.width()) > destination.width() ? clipRect.width(source.width() - ((static_cast<int>(dstPoint.x()) + source.width()) - destination.width())) : clipRect.width(source.width());
@@ -272,6 +269,9 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	{
 		return;
 	}
+
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
 
 	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
 	if (fbo == 0)
@@ -759,20 +759,22 @@ GLuint generate_fbo(Image& image)
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	
+	if (IMAGE_ID_MAP[image.name()].texture_id == 0)
+	{
+		unsigned int textureColorbuffer;
+		glGenTextures(1, &textureColorbuffer);
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		GLenum textureFormat = 0;
+		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
 
-	unsigned int textureColorbuffer;
-	glGenTextures(1, &textureColorbuffer);
-	glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-	GLenum textureFormat = 0;
-	textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
+		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, image.width(), image.height(), 0, textureFormat, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
 
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, image.width(), image.height(), 0, textureFormat, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id, 0);
 
-	// Update resource management.
-	IMAGE_ID_MAP[image.name()].texture_id = textureColorbuffer;
 	IMAGE_ID_MAP[image.name()].fbo_id = framebuffer;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

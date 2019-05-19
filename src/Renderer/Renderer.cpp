@@ -168,6 +168,15 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
 
 
 /**
+ * Draws part of an Image repeated over a rectangular area.
+ */
+void Renderer::drawSubImageRepeated(Image& image, const Rectangle_2df& source, const Rectangle_2df& destination)
+{
+	drawSubImageRepeated(image, destination.x(), destination.y(), destination.width(), destination.height(), source.x(), source.y(), source.width(), source.height());
+}
+
+
+/**
  * Comment me!
  */
 void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)

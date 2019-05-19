@@ -35,6 +35,7 @@ public:
 	void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 
 	void drawImageRepeated(Image& image, float x, float y, float w, float h) override;
+	void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) override;
 
 	void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint) override;
 

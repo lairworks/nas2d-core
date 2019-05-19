@@ -73,6 +73,10 @@ public:
 	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
 	virtual void drawImageRepeated(Image& image, float x, float y, float w, float h) = 0;
+	
+	void drawSubImageRepeated(Image& image, const Rectangle_2df& source, const Rectangle_2df& destination);
+	virtual void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) = 0;
+
 	void drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
 	void drawImageRect(float x, float y, float w, float h, ImageList& images);
 

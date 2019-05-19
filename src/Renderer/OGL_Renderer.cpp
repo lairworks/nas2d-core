@@ -204,14 +204,7 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	fillVertexArray(x, y, w, h);
-
-	TEXTURE_COORD_ARRAY[0] = 0.0f; TEXTURE_COORD_ARRAY[1] = 0.0f;
-	TEXTURE_COORD_ARRAY[2] = 0.0f; TEXTURE_COORD_ARRAY[3] = h / image.height();
-	TEXTURE_COORD_ARRAY[4] = w / image.width(); TEXTURE_COORD_ARRAY[5] = h / image.height();
-
-	TEXTURE_COORD_ARRAY[6] = w / image.width(); TEXTURE_COORD_ARRAY[7] = h / image.height();
-	TEXTURE_COORD_ARRAY[8] = w / image.width(); TEXTURE_COORD_ARRAY[9] = 0.0f;
-	TEXTURE_COORD_ARRAY[10] = 0.0f; TEXTURE_COORD_ARRAY[11] = 0.0f;
+	fillTextureArray(0.0f, 0.0f, w / image.width(), h / image.height());
 
 	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
 
@@ -220,6 +213,39 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+}
+
+
+/**
+ * Draws part of a larger texture repeated.
+ * 
+ * This is a brute force method of doing this. Unfortunately OpenGL doesn't do texture
+ * wrapping for only part of a texture, it only does it if geometry area is larger than
+ * an entire texture.
+ * 
+ * There are two possible ways to get much better performance out of this: Use a fragment
+ * shader (probably the simplest) or have the Renderer save the texture portion as a new
+ * texture and reference it that way (bit of overhead to do a texture lookup and would
+ * get unmanagable very quickly.
+ */
+void OGL_Renderer::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
+{
+	float widthReach = w / (subW - subX);
+	float heightReach = h / (subH - subY);
+
+	glEnable(GL_SCISSOR_TEST);
+	glScissor(static_cast<int>(rasterX), static_cast<int>(OGL_Renderer::height() - rasterY - h), static_cast<int>(w), static_cast<int>(h));
+
+
+	for (size_t row = 0; row <= heightReach; ++row)
+	{
+		for (size_t col = 0; col <= widthReach; ++col)
+		{
+			drawSubImage(image, rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY)), subX, subY, subW, subH, 255, 255, 255, 255);
+		}
+	}
+
+	glDisable(GL_SCISSOR_TEST);
 }
 
 

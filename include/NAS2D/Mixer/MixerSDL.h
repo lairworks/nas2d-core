@@ -15,7 +15,7 @@
 namespace NAS2D {
 
 /**
- * \class Mixer_SDL
+ * \class MixerSDL
  * \brief SDL Mixer.
  *
  * Implements all Mixer functions with the SDL API.
@@ -23,11 +23,11 @@ namespace NAS2D {
  * \warning	Ensure that the mixer is not playing any audio resources
  *			before freeing them. Not doing so results in crashes.
  */
-class Mixer_SDL : public Mixer
+class MixerSDL : public Mixer
 {
 public:
-	Mixer_SDL();
-	virtual ~Mixer_SDL();
+	MixerSDL();
+	virtual ~MixerSDL();
 
 	// Sound Functions
 	void playSound(Sound& sound);
@@ -54,8 +54,8 @@ public:
 
 private:
 	// No default copy constructor or copy operator
-	Mixer_SDL(const Mixer_SDL&) = delete;
-	Mixer_SDL& operator=(const Mixer_SDL&) = delete;
+	MixerSDL(const MixerSDL&) = delete;
+	MixerSDL& operator=(const MixerSDL&) = delete;
 
 	void init();
 	void music_finished_hook();

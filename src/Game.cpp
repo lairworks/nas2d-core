@@ -16,7 +16,7 @@
 #include "NAS2D/Utility.h"
 
 #include "NAS2D/Mixer/NullMixer.h"
-#include "NAS2D/Mixer/Mixer_SDL.h"
+#include "NAS2D/Mixer/MixerSDL.h"
 #include "NAS2D/Renderer/RendererOpenGL.h"
 #include "NAS2D/Renderer/RendererNull.h"
 
@@ -52,7 +52,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 
 	try
 	{
-		Utility<Mixer>::init<Mixer_SDL>();
+		Utility<Mixer>::init<MixerSDL>();
 	}
 	catch (std::exception& e)
 	{

@@ -30,7 +30,7 @@ public:
 	~Sound();
 
 protected:
-	friend class Mixer_SDL;
+	friend class MixerSDL;
 
 	void* sound() const;
 

@@ -27,7 +27,7 @@ class Mixer_SDL : public Mixer
 {
 public:
 	Mixer_SDL();
-	~Mixer_SDL();
+	virtual ~Mixer_SDL();
 
 	// Sound Functions
 	void playSound(Sound& sound);

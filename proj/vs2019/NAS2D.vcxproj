@@ -235,7 +235,7 @@
     <ClCompile Include="..\..\src\FpsCounter.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />
     <ClCompile Include="..\..\src\Mixer\Mixer.cpp" />
-    <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp" />
+    <ClCompile Include="..\..\src\Mixer\MixerSDL.cpp" />
     <ClCompile Include="..\..\src\Mixer\NullMixer.cpp" />
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
@@ -274,7 +274,7 @@
     <ClInclude Include="..\..\include\NAS2D\FpsCounter.h" />
     <ClInclude Include="..\..\include\NAS2D\Game.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer.h" />
-    <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer_SDL.h" />
+    <ClInclude Include="..\..\include\NAS2D\Mixer\MixerSDL.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\NullMixer.h" />
     <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />

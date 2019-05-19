@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Trig.h"
-#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Renderer/RendererOpenGL.h"
 
 #include "NAS2D/Configuration.h"
 #include "NAS2D/EventHandler.h"

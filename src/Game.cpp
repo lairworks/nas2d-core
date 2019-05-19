@@ -17,7 +17,7 @@
 
 #include "NAS2D/Mixer/NullMixer.h"
 #include "NAS2D/Mixer/Mixer_SDL.h"
-#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Renderer/RendererOpenGL.h"
 #include "NAS2D/Renderer/RendererNull.h"
 
 #include <SDL.h>

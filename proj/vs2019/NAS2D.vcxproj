@@ -237,9 +237,9 @@
     <ClCompile Include="..\..\src\Mixer\Mixer.cpp" />
     <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp" />
     <ClCompile Include="..\..\src\Mixer\NullMixer.cpp" />
-    <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp" />
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
+    <ClCompile Include="..\..\src\Renderer\RendererOpenGL.cpp" />
     <ClCompile Include="..\..\src\Resources\Font.cpp" />
     <ClCompile Include="..\..\src\Resources\Image.cpp" />
     <ClCompile Include="..\..\src\Resources\Music.cpp" />
@@ -277,10 +277,10 @@
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer_SDL.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\NullMixer.h" />
     <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
-    <ClInclude Include="..\..\include\NAS2D\Renderer\OGL_Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\RendererOpenGL.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Font.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\FontInfo.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Image.h" />

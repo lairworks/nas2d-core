@@ -52,7 +52,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 
 	try
 	{
-		Utility<Mixer>::init<Mixer_SDL>();
+		Utility<Mixer>::init<MixerSDL>();
 	}
 	catch (std::exception& e)
 	{

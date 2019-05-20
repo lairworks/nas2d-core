@@ -23,7 +23,7 @@ const int NAS2D_PATCH_VERSION = 2;
  */
 std::string NAS2D::versionString()
 {
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << versionMajor() << "." << versionMinor() << "." << versionPatch();
 	return ss.str();
 }

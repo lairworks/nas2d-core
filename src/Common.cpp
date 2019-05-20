@@ -159,11 +159,7 @@ std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, boo
 	NAS2D::StringList result{};
 	result.reserve(potential_count);
 
-	std::stringstream ss{};
-	ss.str(str);
-	ss.seekg(0);
-	ss.seekp(0);
-	ss.clear();
+	std::istringstream ss(str);
 
 	std::string curString{};
 	while (std::getline(ss, curString, delim))

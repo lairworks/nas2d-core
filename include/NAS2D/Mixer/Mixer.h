@@ -139,14 +139,14 @@ public:
 	 *
 	 * \param	level	Volume level to set. Valid values are 0 - 128.
 	 */
-	virtual void soundVolume(int level);;
+	virtual void soundVolume(int level);
 
 	/**
 	 * Sets the music volume.
 	 *
 	 * \param	level	Volume level to set. Valid values are 0 - 128.
 	 */
-	virtual void musicVolume(int level);;
+	virtual void musicVolume(int level);
 
 	/**
 	 * Gets the name of the Mixer.

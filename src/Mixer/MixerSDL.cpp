@@ -9,19 +9,16 @@
 // ==================================================================================
 
 #include "NAS2D/Mixer/MixerSDL.h"
-
 #include "NAS2D/Configuration.h"
 #include "NAS2D/Exception.h"
-
 #include "NAS2D/Resources/MusicInfo.h"
-
 #include "NAS2D/Utility.h"
-
-#include <iostream>
-#include <functional>
 
 #include <SDL.h>
 #include <SDL_mixer.h>
+
+#include <iostream>
+#include <functional>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;

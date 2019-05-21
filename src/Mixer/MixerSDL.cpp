@@ -17,11 +17,12 @@
 
 #include "NAS2D/Utility.h"
 
-#include <iostream>
-#include <functional>
-
 #include <SDL.h>
 #include <SDL_mixer.h>
+
+#include <iostream>
+#include <functional>
+#include <algorithm>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;

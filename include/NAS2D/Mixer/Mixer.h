@@ -31,37 +31,31 @@ public:
 	static const int DEFAULT_FADE_TIME = 500; /**< Default fade time. */
 
 public:
-	/**
-	 * C'Tor
-	 */
-	Mixer();
-
-	/**
-	 * D'tor
-	 */
+	Mixer() = default;
 	virtual ~Mixer() = 0;
 
+public:
 	/**
 	 * Plays a sound on the first available sound channel.
 	 *
 	 * \param	sound	A reference to a Sound Resource.
 	 */
-	virtual void playSound(Sound& sound);
+	virtual void playSound(Sound& sound) = 0;
 
 	/**
 	 * Stops playing all sounds on all channels.
 	 */
-	virtual void stopSound();
+	virtual void stopSound() = 0;
 
 	/**
 	 * Pauses sound on all channels.
 	 */
-	virtual void pauseSound();
+	virtual void pauseSound() = 0;
 
 	/**
 	 * Resumes sound on all channels.
 	 */
-	virtual void resumeSound();
+	virtual void resumeSound() = 0;
 
 	/**
 	 * Starts playing a Music track.
@@ -74,19 +68,19 @@ public:
 	/**
 	 * Stops all playing music.
 	 */
-	virtual void stopMusic();
+	virtual void stopMusic() = 0;
 
 	/**
 	 * Pauses the currently playing Music.
 	 */
-	virtual void pauseMusic();
+	virtual void pauseMusic() = 0;
 
 	/**
 	 * Resumes the currently paused Music.
 	 *
 	 * \note	It is safe to call this function if the music is stopped or already playing.
 	 */
-	virtual void resumeMusic();
+	virtual void resumeMusic() = 0;
 
 	/**
 	 * Starts a Music track and fades it in to the current Music volume.
@@ -95,29 +89,29 @@ public:
 	 * \param	loops	Number of times the Music should be repeated. -1 for continuous loop.
 	 * \param	time	Time, in miliseconds, for the fade to last. Default is 500.
 	 */
-	virtual void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME);
+	virtual void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) = 0;
 
 	/**
 	 * Fades out the currently playing Music track.
 	 *
 	 * \param	time	Time, in miliseconds, for the fade to last. Default is 500.
 	 */
-	virtual void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME);
+	virtual void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) = 0;
 
 	/**
 	 * Gets whether or not music is currently playing.
 	 */
-	virtual bool musicPlaying() const;
+	virtual bool musicPlaying() const = 0;
 
 	/**
 	 * Mutes all audio.
 	 */
-	virtual void mute();
+	virtual void mute() = 0;
 
 	/**
 	 * Unmutes all audio.
 	 */
-	virtual void unmute();
+	virtual void unmute() = 0;
 
 	/**
 	 * Stops all music and sound.
@@ -139,14 +133,14 @@ public:
 	 *
 	 * \param	level	Volume level to set. Valid values are 0 - 128.
 	 */
-	virtual void soundVolume(int level);;
+	virtual void soundVolume(int level) = 0;
 
 	/**
 	 * Sets the music volume.
 	 *
 	 * \param	level	Volume level to set. Valid values are 0 - 128.
 	 */
-	virtual void musicVolume(int level);;
+	virtual void musicVolume(int level) = 0;
 
 	/**
 	 * Gets the name of the Mixer.
@@ -169,7 +163,7 @@ protected:
 	 */
 	Mixer(const std::string& name);
 
-    NAS2D::Signals::Signal0<void>	_music_complete; /**< Callback used when music finished playing. */
+    NAS2D::Signals::Signal0<void> _music_complete; /**< Callback used when music finished playing. */
 
 private:
 	// No default copy constructor or copy operator
@@ -177,7 +171,8 @@ private:
 	Mixer(const Mixer&) = delete;
 	Mixer& operator=(const Mixer&) = delete;
 
-    std::string		mName;		/**< Internal name of the Renderer. */
+private:
+    std::string mName; /**< Internal name of the Renderer. */
 };
 
 } // namespace

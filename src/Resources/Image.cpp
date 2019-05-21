@@ -73,6 +73,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
 	_size = std::make_pair(width, height);
+	_center = std::make_pair(width / 2, height / 2);
 
 	// Update resource management.
 	IMAGE_ID_MAP[name()].texture_id = 0;
@@ -107,6 +108,8 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
 	_size = std::make_pair(width, height);
+	_center = std::make_pair(pixels->w / 2, pixels->h / 2);
+
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
@@ -157,6 +160,7 @@ Image& Image::operator=(const Image& rhs)
 
 	name(rhs.name());
 	_size = rhs._size;
+	_center = rhs._center;
 
 	auto it = IMAGE_ID_MAP.find(name());
 	if (it == IMAGE_ID_MAP.end())
@@ -204,6 +208,7 @@ void Image::load()
 	}
 
 	_size = std::make_pair(pixels->w, pixels->h);
+	_center = std::make_pair(pixels->w / 2, pixels->h / 2);
 
 	unsigned int texture_id = generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
 
@@ -237,6 +242,18 @@ int Image::height() const
 }
 
 
+int Image::center_x() const
+{
+	return _center.first;
+}
+
+
+int Image::center_y() const
+{
+	return _center.second;
+}
+
+
 /**
  * Gets the color of a pixel at a given coordinate.
  *
@@ -255,8 +272,8 @@ Color_4ub Image::pixelColor(int x, int y) const
 	if (!pixels) { throw image_null_data(); }
 
 	SDL_LockSurface(pixels);
-	int bpp = pixels->format->BytesPerPixel;
-	Uint8 *p = (Uint8*)pixels->pixels + y * pixels->pitch + x * bpp;
+	uint8_t bpp = pixels->format->BytesPerPixel;
+	uint8_t*p = (uint8_t*)pixels->pixels + y * pixels->pitch + x * bpp;
 
 	unsigned int c = 0;
 
@@ -267,11 +284,11 @@ Color_4ub Image::pixelColor(int x, int y) const
 		break;
 
 	case 2:
-		c = *(Uint16 *)p;
+		c = *(uint16_t*)p;
 		break;
 
 	case 3:
-		if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+		if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
 		{
 			c = p[0] << 16 | p[1] << 8 | p[2];
 		}
@@ -282,7 +299,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 		break;
 
 	case 4:
-		c = *(Uint32*)p;
+		c = *(uint32_t*)p;
 		break;
 
 	default:	// Should never be possible.
@@ -290,7 +307,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 		break;
 	}
 
-	Uint8 r, g, b, a;
+	uint8_t r, g, b, a;
 	SDL_GetRGBA(c, pixels->format, &r, &g, &b, &a);
 	SDL_UnlockSurface(pixels);
 

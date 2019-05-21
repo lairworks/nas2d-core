@@ -15,9 +15,10 @@
 #include "NAS2D/Game.h"
 #include "NAS2D/Utility.h"
 
-#include "NAS2D/Mixer/Mixer_SDL.h"
 #include "NAS2D/Mixer/MixerNull.h"
-#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Mixer/MixerSDL.h"
+#include "NAS2D/Renderer/RendererOpenGL.h"
+#include "NAS2D/Renderer/RendererNull.h"
 
 #include <SDL.h>
 
@@ -51,7 +52,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 
 	try
 	{
-		Utility<Mixer>::init<Mixer_SDL>();
+		Utility<Mixer>::init<MixerSDL>();
 	}
 	catch (std::exception& e)
 	{
@@ -67,7 +68,16 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	Utility<EventHandler>::get();
 	std::cout << "done." << std::endl << std::endl;
 
-	Utility<Renderer>::init<OGL_Renderer>(title);
+	try
+	{
+		Utility<Renderer>::init<RendererOpenGL>(title);
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Unable to create OGL Renderer: " << e.what() << ". Setting NULL driver." << std::endl;
+		Utility<Renderer>::init<RendererNull>();
+	}
+
 
 	std::cout << std::endl << "Subsystems initialized." << std::endl << std::endl;
 	std::cout << "===================================" << std::endl << std::endl;

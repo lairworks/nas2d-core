@@ -31,16 +31,10 @@ public:
 	static const int DEFAULT_FADE_TIME = 500; /**< Default fade time. */
 
 public:
-	/**
-	 * C'Tor
-	 */
 	Mixer() = default;
-
-	/**
-	 * D'tor
-	 */
 	virtual ~Mixer() = 0;
 
+public:
 	/**
 	 * Plays a sound on the first available sound channel.
 	 *
@@ -169,8 +163,7 @@ protected:
 	 */
 	Mixer(const std::string& name);
 
-protected:
-	NAS2D::Signals::Signal0<void>	_music_complete; /**< Callback used when music finished playing. */
+    NAS2D::Signals::Signal0<void> _music_complete; /**< Callback used when music finished playing. */
 
 private:
 	// No default copy constructor or copy operator
@@ -179,7 +172,7 @@ private:
 	Mixer& operator=(const Mixer&) = delete;
 
 private:
-	std::string		mName;		/**< Internal name of the Renderer. */
+    std::string mName; /**< Internal name of the Renderer. */
 };
 
 } // namespace

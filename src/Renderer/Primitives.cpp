@@ -19,16 +19,6 @@ using namespace NAS2D;
 
 
 /**
- * Default c'tor.
- */
-Color_4ub::Color_4ub():	mR(static_cast<unsigned char>(255)),
-						mG(static_cast<unsigned char>(255)),
-						mB(static_cast<unsigned char>(255)),
-						mA(static_cast<unsigned char>(255))
-{}
-
-
-/**
  * C'tor
  *
  * Instantiates a Color_4ub with a given RGBA value set.
@@ -38,10 +28,7 @@ Color_4ub::Color_4ub():	mR(static_cast<unsigned char>(255)),
  * \param b	Blue compontent. Valid values are 0 - 255.
  * \param a	Alpha compontent. Valid values are 0 - 255.
  */
-Color_4ub::Color_4ub(int r, int g, int b, int a):	mR(static_cast<unsigned char>(clamp(r, 0, 255))),
-													mG(static_cast<unsigned char>(clamp(g, 0, 255))),
-													mB(static_cast<unsigned char>(clamp(b, 0, 255))),
-													mA(static_cast<unsigned char>(clamp(a, 0, 255)))
+Color_4ub::Color_4ub(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : mR(r), mG(g), mB(b), mA(a)
 {}
 
 
@@ -53,48 +40,48 @@ Color_4ub::Color_4ub(int r, int g, int b, int a):	mR(static_cast<unsigned char>(
  * \param b	Blue compontent. Valid values are 0 - 255.
  * \param a	Alpha compontent. Valid values are 0 - 255.
  */
-void Color_4ub::operator()(int r, int g, int b, int a)
+void Color_4ub::operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	red(clamp(r, 0, 255));
-	green(clamp(g, 0, 255));
-	blue(clamp(b, 0, 255));
-	alpha(clamp(a, 0, 255));
+	red(r);
+	green(g);
+	blue(b);
+	alpha(a);
 }
 
 
 /**
  * Gets the red component value of the color.
  */
-int Color_4ub::red() const
+uint8_t Color_4ub::red() const
 {
-	return static_cast<int>(mR);
+	return mR;
 }
 
 
 /**
  * Gets the green component value of the color.
  */
-int Color_4ub::green() const
+uint8_t Color_4ub::green() const
 {
-	return static_cast<int>(mG);
+	return mG;
 }
 
 
 /**
  * Gets the blue component value of the color.
  */
-int Color_4ub::blue() const
+uint8_t Color_4ub::blue() const
 {
-	return static_cast<int>(mB);
+	return mB;
 }
 
 
 /**
  * Gets the alpha component value of the color.
  */
-int Color_4ub::alpha() const
+uint8_t Color_4ub::alpha() const
 {
-	return static_cast<int>(mA);
+	return mA;
 }
 
 
@@ -103,9 +90,9 @@ int Color_4ub::alpha() const
  *
  * \param red Red value. Valid values are 0 - 255.
  */
-void Color_4ub::red(int red)
+void Color_4ub::red(uint8_t red)
 {
-	mR = static_cast<unsigned char>(clamp(red, 0, 255));
+	mR = red;
 }
 
 
@@ -114,9 +101,9 @@ void Color_4ub::red(int red)
  *
  * \param green Green value. Valid values are 0 - 255.
  */
-void Color_4ub::green(int green)
+void Color_4ub::green(uint8_t green)
 {
-	mG = static_cast<unsigned char>(clamp(green, 0, 255));
+	mG = green;
 }
 
 
@@ -125,9 +112,9 @@ void Color_4ub::green(int green)
  *
  * \param blue Blue value. Valid values are 0 - 255.
  */
-void Color_4ub::blue(int blue)
+void Color_4ub::blue(uint8_t blue)
 {
-	mB = static_cast<unsigned char>(clamp(blue, 0, 255));
+	mB = blue;
 }
 
 
@@ -136,24 +123,15 @@ void Color_4ub::blue(int blue)
  *
  * \param alpha Alpha value. Valid values are 0 - 255.
  */
-void Color_4ub::alpha(int alpha)
+void Color_4ub::alpha(uint8_t alpha)
 {
-	mA = static_cast<unsigned char>(clamp(alpha, 0, 255));
+	mA = alpha;
 }
 
 
 // ==================================================================================
 // = Rectangle_2d Implementation
 // ==================================================================================
-
-/**
- * Default c'tor.
- */
-Rectangle_2d::Rectangle_2d():	mX(0),
-								mY(0),
-								mW(0),
-								mH(0)
-{}
 
 
 /**
@@ -555,15 +533,6 @@ int Rectangle_2d::center_y() const
 // = Rectangle_2df Implementation
 // ==================================================================================
 
-/**
- * Default c'tor
- */
-Rectangle_2df::Rectangle_2df():	mX(0),
-								mY(0),
-								mW(0),
-								mH(0)
-{}
-
 
 /**
  * C'tor.
@@ -952,13 +921,6 @@ float Rectangle_2df::center_y() const
 // = Point_2d Implementation
 // ==================================================================================
 
-/**
- * Default c'tor.
- */
-Point_2d::Point_2d():	mX(0),
-						mY(0)
-{}
-
 
 /**
  * C'tor
@@ -1149,11 +1111,6 @@ int& Point_2d::y()
 // ==================================================================================
 // = Point_2df Implementation
 // ==================================================================================
-
-Point_2df::Point_2df():	mX(0.0f),
-						mY(0.0f)
-{}
-
 
 Point_2df::Point_2df(float x, float y):	mX(x),
 										mY(y)

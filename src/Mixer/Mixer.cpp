@@ -3,15 +3,15 @@
 using namespace NAS2D;
 
 
-Mixer::Mixer(const std::string& name)
-: mName(name)
-{
-}
+Mixer::Mixer(const std::string& name): mName(name)
+{}
+
 
 void Mixer::playMusic(Music& music, int loops /*= Mixer::CONTINUOUS*/)
 {
 	fadeInMusic(music, loops, 0);
 }
+
 
 void Mixer::stopAllAudio()
 {
@@ -19,11 +19,13 @@ void Mixer::stopAllAudio()
 	stopSound();
 }
 
+
 void Mixer::pauseAllAudio()
 {
 	pauseMusic();
 	pauseSound();
 }
+
 
 void Mixer::resumeAllAudio()
 {
@@ -31,10 +33,12 @@ void Mixer::resumeAllAudio()
 	resumeSound();
 }
 
+
 const std::string& Mixer::name() const
 {
 	return mName;
 }
+
 
 Signals::Signal0<void>& Mixer::musicComplete()
 {

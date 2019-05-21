@@ -52,13 +52,17 @@ public:
 	int width() const;
 	int height() const;
 
+	int center_x() const;
+	int center_y() const;
+
 	Color_4ub pixelColor(int x, int y) const;
 
 private:
 	void load();
 
 private:
-	std::pair<int, int>		_size;			/**< Width/Height information about the Image. */
+	std::pair<int, int>				_size;		/**< Width/Height information about the Image. */
+	std::pair<uint32_t, uint32_t>	_center;	/**<  */
 };
 
 

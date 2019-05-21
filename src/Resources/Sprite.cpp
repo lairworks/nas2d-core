@@ -357,7 +357,7 @@ void Sprite::processImageSheets(void* root)
 
 	XmlNode* node = nullptr;
 	string id, src;
-	while ((node = e->iterateChildren(node)))
+	while (node = e->iterateChildren(node)) // warning C4706: intended
 	{
 		if (node->value() == "imagesheet" && node->toElement())
 		{
@@ -436,7 +436,7 @@ void Sprite::processActions(void* root)
 	XmlElement* element = static_cast<XmlElement*>(root);
 
 	XmlNode* node = nullptr;
-	while ((node = element->iterateChildren(node)))
+	while (node = element->iterateChildren(node)) // warning C4706: intended
 	{
 		if (toLowercase(node->value()) == "action" && node->toElement())
 		{
@@ -482,7 +482,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 	FrameList frameList;
 
 	XmlNode* frame = nullptr;
-	while ((frame = node->iterateChildren(frame)))
+	while (frame = node->iterateChildren(frame)) // warning C4706: intended
 	{
 		int currentRow = frame->row();
 

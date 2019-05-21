@@ -14,6 +14,7 @@
 #include "NAS2D/Xml/Xml.h"
 
 #include <iostream>
+#include <algorithm>
 
 using namespace NAS2D;
 using namespace NAS2D::Xml;
@@ -215,7 +216,7 @@ bool Configuration::readConfig(const std::string& filePath)
 
 		// Start parsing through the Config.xml file.
 		XmlNode *xmlNode = nullptr;
-		while ((xmlNode = root->iterateChildren(xmlNode)))
+		while (xmlNode = root->iterateChildren(xmlNode)) // warning C4706: intended
 		{
 			if (xmlNode->value() == "graphics") { parseGraphics(xmlNode); }
 			else if (xmlNode->value() == "audio") { parseAudio(xmlNode); }
@@ -312,7 +313,7 @@ void Configuration::parseAudio(void* _n)
 
 			if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
 			{
-				audioSfxVolume(clamp(mSfxVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
+				audioSfxVolume(std::clamp(mSfxVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
 			}
 		}
 		else if (attribute->name() == AUDIO_CFG_MUS_VOLUME)
@@ -321,7 +322,7 @@ void Configuration::parseAudio(void* _n)
 
 			if (mMusicVolume < AUDIO_SFX_MIN_VOLUME || mMusicVolume > AUDIO_SFX_MAX_VOLUME)
 			{
-				audioSfxVolume(clamp(mMusicVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
+				audioSfxVolume(std::clamp(mMusicVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
 			}
 		}
 		else if (attribute->name() == AUDIO_CFG_BUFFER_SIZE)
@@ -329,7 +330,7 @@ void Configuration::parseAudio(void* _n)
 			attribute->queryIntValue(mBufferLength);
 			if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
 			{
-				audioBufferSize(clamp(mBufferLength, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE));
+				audioBufferSize(std::clamp(mBufferLength, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE));
 			}
 		}
 		else if (attribute->name() == AUDIO_CFG_MIXER)
@@ -364,7 +365,7 @@ void Configuration::parseOptions(void* _n)
 	}
 
 	XmlNode *node = nullptr;
-	while ((node = element->iterateChildren(node)))
+	while (node = element->iterateChildren(node)) // warning C4706: intended
 	{
 		if (node->value() == "option")
 		{
@@ -610,7 +611,7 @@ void Configuration::mixer(const std::string& mixer)
  */
 void Configuration::audioStereoChannels(int channels)
 {
-	mStereoChannels = clamp(channels, AUDIO_MONO, AUDIO_STEREO);
+	mStereoChannels = std::clamp(channels, AUDIO_MONO, AUDIO_STEREO);
 	mOptionChanged = true;
 }
 
@@ -622,7 +623,7 @@ void Configuration::audioStereoChannels(int channels)
  */
 void Configuration::audioSfxVolume(int volume)
 {
-	mSfxVolume = clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
+	mSfxVolume = std::clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
 	mOptionChanged = true;
 }
 
@@ -635,7 +636,7 @@ void Configuration::audioSfxVolume(int volume)
  */
 void Configuration::audioMusicVolume(int volume)
 {
-	mMusicVolume = clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
+	mMusicVolume = std::clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
 	mOptionChanged = true;
 }
 

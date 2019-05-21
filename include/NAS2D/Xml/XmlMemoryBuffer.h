@@ -37,8 +37,8 @@ class XmlMemoryBuffer : public XmlVisitor
 public:
 	XmlMemoryBuffer();
 
-	virtual bool visitEnter(const XmlDocument& doc) { return true; }
-	virtual bool visitExit(const XmlDocument& doc) { return true; }
+	virtual bool visitEnter(const XmlDocument&) { return true; }
+	virtual bool visitExit(const XmlDocument&) { return true; }
 
 	virtual bool visitEnter(const XmlElement& element, const XmlAttribute* firstAttribute);
 	virtual bool visitExit(const XmlElement& element);

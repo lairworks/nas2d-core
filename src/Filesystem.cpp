@@ -47,7 +47,6 @@ Filesystem::Filesystem(): mVerbose(false)
 Filesystem::~Filesystem()
 {
 	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
-	std::cout << "Filesystem Terminated." << std::endl;
 }
 
 
@@ -57,8 +56,6 @@ Filesystem::~Filesystem()
 void Filesystem::init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
 {
 	if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
-
-	std::cout << "Initializing Filesystem... ";
 
 	if (PHYSFS_init(argv_0.c_str()) == 0)
 	{
@@ -75,8 +72,6 @@ void Filesystem::init(const std::string& argv_0, const std::string& appName, con
 	{
 		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
 	}
-
-	std::cout << "done." << std::endl;
 }
 
 

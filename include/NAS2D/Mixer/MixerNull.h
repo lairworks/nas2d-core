@@ -1,47 +1,50 @@
-// ==================================================================================
-// = NAS2D
-// = Copyright © 2008 - 2019 New Age Software
-// ==================================================================================
-// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
-// = modify and distribute the software under the terms of the zlib license.
-// =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
-// ==================================================================================
-
 #pragma once
 
-#include "Mixer.h"
+#include "NAS2D/Mixer/Mixer.h"
 
-namespace NAS2D {
-
-class MixerNull : public Mixer
+namespace NAS2D
 {
-public:
-	MixerNull() = default;
-	~MixerNull() = default;
 
-	// Sound Functions
-	void playSound(Sound& sound) override;
-	void stopSound() override;
-	void pauseSound() override;
-	void resumeSound() override;
+	class MixerNull : public Mixer
+	{
+	  public:
+		MixerNull() = default;
+		MixerNull(const MixerNull& other) = default;
+		MixerNull(MixerNull&& other) = default;
+		MixerNull& operator=(const MixerNull& other) = default;
+		MixerNull& operator=(MixerNull&& other) = default;
+		virtual ~MixerNull() = default;
 
-	// Music Functions
-	void stopMusic() override;
-	void pauseMusic() override;
-	void resumeMusic() override;
+		virtual void playSound(Sound& sound) override;
 
-	void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) override;
-	void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) override;
+		virtual void stopSound() override;
 
-	bool musicPlaying() const override;
+		virtual void pauseSound() override;
 
-	// Global Functions
-	void soundVolume(int level) override;
-	void musicVolume(int level) override;
+		virtual void resumeSound() override;
 
-	void mute() override;
-	void unmute() override;
-};
+		virtual void stopMusic() override;
 
-}
+		virtual void pauseMusic() override;
+
+		virtual void resumeMusic() override;
+
+		virtual void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) override;
+
+		virtual void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) override;
+
+		virtual bool musicPlaying() const override;
+
+		virtual void mute() override;
+
+		virtual void unmute() override;
+
+		virtual void soundVolume(int level) override;
+
+		virtual void musicVolume(int level) override;
+
+	  protected:
+	  private:
+	};
+
+} // namespace NAS2D

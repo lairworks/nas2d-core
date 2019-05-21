@@ -43,7 +43,7 @@ IncludeCategories:
     - Regex: '\"([[:alnum:]_]+\/)+[[:alnum:]_]+\.(h|c)(pp)?\"'
     - Priority: 4
 #Then local project-specific includes
-# e.g. #include "Mixer.h" in Mixer_SDL.h file
+# e.g. #include "Mixer.h" in MixerSDL.h file
     - Regex: '\"[[:alnum:]_]+\.(h|c)(pp)?\"'
     - Priority: 3
 #Followed by global STL and Library headers

@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <algorithm>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -182,7 +183,7 @@ int NAS2D::Font::width(const std::string& str) const
 
 	for (size_t i = 0; i < str.size(); i++)
 	{
-		int glyph = clamp(str[i], 0, 255);
+		auto glyph = std::clamp<std::size_t>(str[i], 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;
 	}
 
@@ -355,7 +356,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 	GlyphMetricsList& glm = FONTMAP[name].metrics;
 
 	// Go through each glyph and determine how much space we need in the texture.
-	for (int i = 0; i < ASCII_TABLE_COUNT; i++)
+	for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 	{
 		GlyphMetrics metrics;
 
@@ -404,7 +405,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 			// less bad.
 			if (glyph == 0) { continue; }
 
-			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, glyph, white);
+			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
 			if (!srf)
 			{
 				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
@@ -454,7 +455,7 @@ bool fontAlreadyLoaded(const std::string& name)
  */
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
 {
-	if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
+	if constexpr (SDL_BYTEORDER == SDL_LIL_ENDIAN)
 	{
 		rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
 	}

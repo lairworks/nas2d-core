@@ -109,8 +109,8 @@ public:
 	 * \endcode
 	 *
 	 * \code{.cpp}
-	 * // Instantiate derived type Mixer_SDL, of base type Mixer
-	 * Utility<Mixer>::init<Mixer_SDL>();
+	 * // Instantiate derived type MixerSDL, of base type Mixer
+	 * Utility<Mixer>::init<MixerSDL>();
 	 * \endcode
 	 *
 	 * \code{.cpp}

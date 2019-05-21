@@ -84,17 +84,11 @@
     <ClCompile Include="..\..\src\Resources\Sprite.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Renderer\OGL_Renderer.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp">
       <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Mixer\Mixer_SDL.cpp">
-      <Filter>Source Files\Mixer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Exception.cpp">
       <Filter>Source Files</Filter>
@@ -139,6 +133,12 @@
       <Filter>Source Files\Mixer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Mixer\MixerNull.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Renderer\RendererOpenGL.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Mixer\MixerSDL.cpp">
       <Filter>Source Files\Mixer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -215,7 +215,7 @@
     <ClInclude Include="..\..\include\NAS2D\Resources\Sprite.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Renderer\OGL_Renderer.h">
+    <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h">
@@ -223,12 +223,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h">
       <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer_SDL.h">
-      <Filter>Header Files\Mixer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Mixer\MixerNull.h">
-      <Filter>Header Files\Mixer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Resources\ImageInfo.h">
       <Filter>Header Files\Resources</Filter>
@@ -279,6 +273,12 @@
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerNull.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Renderer\RendererOpenGL.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Mixer\MixerSDL.h">
       <Filter>Header Files\Mixer</Filter>
     </ClInclude>
   </ItemGroup>

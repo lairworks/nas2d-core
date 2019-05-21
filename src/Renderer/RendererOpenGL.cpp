@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Trig.h"
-#include "NAS2D/Renderer/OGL_Renderer.h"
+#include "NAS2D/Renderer/RendererOpenGL.h"
 
 #include "NAS2D/Configuration.h"
 #include "NAS2D/EventHandler.h"
@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <algorithm>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -74,25 +75,25 @@ GLuint generate_fbo(Image& image);
 /**
  * C'tor
  *
- * Instantiates an OGL_Renderer object with the title of the application window.
+ * Instantiates an RendererOpenGL object with the title of the application window.
  *
  * \param title	Title of the application window.
  */
-OGL_Renderer::OGL_Renderer(const std::string& title) : Renderer("OpenGL Renderer", title)
+RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer("OpenGL Renderer", title)
 {
 	std::cout << "Starting " << name() << ":" << std::endl;
 
 	Configuration& cf = Utility<Configuration>::get();
-	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.graphicsColorDepth(), cf.fullscreen(), cf.vsync());
+	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.fullscreen(), cf.vsync());
 }
 
 
 /**
  * D'tor.
  */
-OGL_Renderer::~OGL_Renderer()
+RendererOpenGL::~RendererOpenGL()
 {
-	Utility<EventHandler>::get().windowResized().disconnect(this, &OGL_Renderer::_resize);
+	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::_resize);
 
 	SDL_GL_DeleteContext(CONTEXT);
 	SDL_DestroyWindow(_WINDOW);
@@ -103,7 +104,7 @@ OGL_Renderer::~OGL_Renderer()
 }
 
 
-void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r, int g, int b, int a)
+void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 
@@ -113,7 +114,7 @@ void OGL_Renderer::drawImage(Image& image, float x, float y, float scale, int r,
 }
 
 
-void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, int r, int g, int b, int a)
+void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 
@@ -129,7 +130,7 @@ void OGL_Renderer::drawSubImage(Image& image, float rasterX, float rasterY, floa
 }
 
 
-void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, int r, int g, int b, int a)
+void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glPushMatrix();
 
@@ -157,7 +158,7 @@ void OGL_Renderer::drawSubImageRotated(Image& image, float rasterX, float raster
 }
 
 
-void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degrees, int r, int g, int b, int a, float scale)
+void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
 {
 	glPushMatrix();
 
@@ -171,12 +172,6 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 	// Adjust the translation so that images appear where expected.
 	glTranslatef(x + imgHalfW, y + imgHalfH, 0.0f);
 
-	float _deg = degrees;
-	if (_deg < 0.0f)
-	{
-		_deg += 360.0f;
-	}
-
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	glColor4ub(r, g, b, a);
@@ -189,7 +184,7 @@ void OGL_Renderer::drawImageRotated(Image& image, float x, float y, float degree
 }
 
 
-void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, int r, int g, int b, int a)
+void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -199,7 +194,7 @@ void OGL_Renderer::drawImageStretched(Image& image, float x, float y, float w, f
 }
 
 
-void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
+void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, float h)
 {
 	glColor4ub(255, 255, 255, 255);
 
@@ -210,14 +205,7 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	fillVertexArray(x, y, w, h);
-
-	TEXTURE_COORD_ARRAY[0] = 0.0f; TEXTURE_COORD_ARRAY[1] = 0.0f;
-	TEXTURE_COORD_ARRAY[2] = 0.0f; TEXTURE_COORD_ARRAY[3] = h / image.height();
-	TEXTURE_COORD_ARRAY[4] = w / image.width(); TEXTURE_COORD_ARRAY[5] = h / image.height();
-
-	TEXTURE_COORD_ARRAY[6] = w / image.width(); TEXTURE_COORD_ARRAY[7] = h / image.height();
-	TEXTURE_COORD_ARRAY[8] = w / image.width(); TEXTURE_COORD_ARRAY[9] = 0.0f;
-	TEXTURE_COORD_ARRAY[10] = 0.0f; TEXTURE_COORD_ARRAY[11] = 0.0f;
+	fillTextureArray(0.0f, 0.0f, w / image.width(), h / image.height());
 
 	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
 
@@ -229,18 +217,48 @@ void OGL_Renderer::drawImageRepeated(Image& image, float x, float y, float w, fl
 }
 
 
-void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
+/**
+ * Draws part of a larger texture repeated.
+ * 
+ * This is a brute force method of doing this. Unfortunately OpenGL doesn't do texture
+ * wrapping for only part of a texture, it only does it if geometry area is larger than
+ * an entire texture.
+ * 
+ * There are two possible ways to get much better performance out of this: Use a fragment
+ * shader (probably the simplest) or have the Renderer save the texture portion as a new
+ * texture and reference it that way (bit of overhead to do a texture lookup and would
+ * get unmanagable very quickly.
+ */
+void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
+{
+	float widthReach = w / (subW - subX);
+	float heightReach = h / (subH - subY);
+
+	glEnable(GL_SCISSOR_TEST);
+	glScissor(static_cast<int>(rasterX), static_cast<int>(RendererOpenGL::height() - rasterY - h), static_cast<int>(w), static_cast<int>(h));
+
+
+	for (size_t row = 0; row <= heightReach; ++row)
+	{
+		for (size_t col = 0; col <= widthReach; ++col)
+		{
+			drawSubImage(image, rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY)), subX, subY, subW, subH, 255, 255, 255, 255);
+		}
+	}
+
+	glDisable(GL_SCISSOR_TEST);
+}
+
+
+void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
 	glColor4ub(255, 255, 255, 255);
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if (!isRectInRect(dstPoint.x(), dstPoint.y(), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
+	if (!isRectInRect(static_cast<int>(dstPoint.x()), static_cast<int>(dstPoint.y()), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
 	{
 		return;
 	}
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
 
 	Rectangle_2d clipRect;
 
@@ -252,6 +270,9 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 	{
 		return;
 	}
+
+	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
 
 	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
 	if (fbo == 0)
@@ -270,7 +291,7 @@ void OGL_Renderer::drawImageToImage(Image& source, Image& destination, const Poi
 }
 
 
-void OGL_Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
+void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glDisable(GL_TEXTURE_2D);
 
@@ -285,7 +306,7 @@ void OGL_Renderer::drawPoint(float x, float y, int r, int g, int b, int a)
 }
 
 
-void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, int b, int a, int line_width = 1)
+void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width = 1)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -302,7 +323,7 @@ void OGL_Renderer::drawLine(float x, float y, float x2, float y2, int r, int g, 
  *
  * Modified to support X/Y scaling to draw an ellipse.
  */
-void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, int b, int a, int num_segments, float scale_x, float scale_y)
+void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
 {
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(r, g, b, a);
@@ -344,7 +365,7 @@ void OGL_Renderer::drawCircle(float cx, float cy, float radius, int r, int g, in
 }
 
 
-void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int g1, int b1, int a1, int r2, int g2, int b2, int a2, int r3, int g3, int b3, int a3, int r4, int g4, int b4, int a4)
+void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
 {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
@@ -390,7 +411,7 @@ void OGL_Renderer::drawGradient(float x, float y, float w, float h, int r1, int 
 }
 
 
-void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, int g, int b, int a)
+void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -407,7 +428,7 @@ void OGL_Renderer::drawBox(float x, float y, float width, float height, int r, i
 }
 
 
-void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, int r, int g, int b, int a)
+void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	glColor4ub(r, g, b, a);
 	glDisable(GL_TEXTURE_2D);
@@ -419,7 +440,7 @@ void OGL_Renderer::drawBoxFilled(float x, float y, float width, float height, in
 }
 
 
-void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x, float y, int r, int g, int b, int a)
+void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	if (!font.loaded() || text.empty()) { return; }
 
@@ -430,10 +451,9 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 	GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
 	if (gml.empty()) { return; }
 
-	GlyphMetrics gm;
 	for (size_t i = 0; i < text.size(); i++)
 	{
-		gm = gml[clamp(text[i], 0, 255)];
+		GlyphMetrics& gm = gml[std::clamp<std::size_t>(text[i], 0, 255)];
 
 		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
@@ -444,33 +464,33 @@ void OGL_Renderer::drawText(NAS2D::Font& font, const std::string& text, float x,
 }
 
 
-void OGL_Renderer::showSystemPointer(bool _b)
+void RendererOpenGL::showSystemPointer(bool _b)
 {
 	SDL_ShowCursor(static_cast<int>(_b));
 }
 
 
-void OGL_Renderer::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
+void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
 {
 	/// \fixme proper cleanup
 	File imageFile = Utility<Filesystem>::get().open(filePath);
 	if (imageFile.size() == 0)
 	{
-		std::cout << "OGL_Renderer::addCursor(): '" << name() << "' is empty." << std::endl;
+		std::cout << "RendererOpenGL::addCursor(): '" << name() << "' is empty." << std::endl;
 		return;
 	}
 
 	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
 	if (!pixels)
 	{
-		std::cout << "OGL_Renderer::addCursor(): " << SDL_GetError() << std::endl;
+		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
 	SDL_Cursor* cur = SDL_CreateColorCursor(pixels, offx, offy);
 	if (!cur)
 	{
-		std::cout << "OGL_Renderer::addCursor(): " << SDL_GetError() << std::endl;
+		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
@@ -488,13 +508,13 @@ void OGL_Renderer::addCursor(const std::string& filePath, int cursorId, int offx
 }
 
 
-void OGL_Renderer::setCursor(int cursorId)
+void RendererOpenGL::setCursor(int cursorId)
 {
 	SDL_SetCursor(CURSORS[cursorId]);
 }
 
 
-void OGL_Renderer::clipRect(float x, float y, float width, float height)
+void RendererOpenGL::clipRect(float x, float y, float width, float height)
 {
 	if (width == 0 || height == 0)
 	{
@@ -502,27 +522,27 @@ void OGL_Renderer::clipRect(float x, float y, float width, float height)
 		return;
 	}
 
-	glScissor(x, OGL_Renderer::height() - y - height, width, height);
+	glScissor(static_cast<int>(x), static_cast<int>(RendererOpenGL::height() - y - height), static_cast<int>(width), static_cast<int>(height));
 
 	glEnable(GL_SCISSOR_TEST);
 }
 
 
-void OGL_Renderer::clearScreen(int r, int g, int b)
+void RendererOpenGL::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 {
-	glClearColor((GLfloat)r / 255, (GLfloat)g / 255, (GLfloat)b / 255, 0.0);
+	glClearColor(static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f, static_cast<float>(b) / 255.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 
-void OGL_Renderer::update()
+void RendererOpenGL::update()
 {
 	Renderer::update();
 	SDL_GL_SwapWindow(_WINDOW);
 }
 
 
-float OGL_Renderer::width()
+float RendererOpenGL::width()
 {
 	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
@@ -533,7 +553,7 @@ float OGL_Renderer::width()
 }
 
 
-float OGL_Renderer::height()
+float RendererOpenGL::height()
 {
 	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
@@ -544,7 +564,7 @@ float OGL_Renderer::height()
 }
 
 
-void OGL_Renderer::size(int w, int h)
+void RendererOpenGL::size(int w, int h)
 {
 	SDL_SetWindowSize(_WINDOW, w, h);
 	_resize(w, h);
@@ -552,13 +572,13 @@ void OGL_Renderer::size(int w, int h)
 }
 
 
-void OGL_Renderer::minimum_size(int w, int h)
+void RendererOpenGL::minimum_size(int w, int h)
 {
 	SDL_SetWindowMinimumSize(_WINDOW, w, h);
 }
 
 
-void OGL_Renderer::fullscreen(bool fs, bool maintain)
+void RendererOpenGL::fullscreen(bool fs, bool maintain)
 {
 	if (fs)
 	{
@@ -575,14 +595,14 @@ void OGL_Renderer::fullscreen(bool fs, bool maintain)
 }
 
 
-bool OGL_Renderer::fullscreen()
+bool RendererOpenGL::fullscreen()
 {
 	return	((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
 			((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
-void OGL_Renderer::resizeable(bool _r)
+void RendererOpenGL::resizeable(bool _r)
 {
 	if (fullscreen())
 	{
@@ -594,13 +614,13 @@ void OGL_Renderer::resizeable(bool _r)
 }
 
 
-bool OGL_Renderer::resizeable()
+bool RendererOpenGL::resizeable()
 {
 	return (SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
 }
 
 
-void OGL_Renderer::_resize(int w, int h)
+void RendererOpenGL::_resize(int w, int h)
 {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
@@ -615,7 +635,7 @@ void OGL_Renderer::_resize(int w, int h)
 }
 
 
-void OGL_Renderer::window_icon(const std::string& path)
+void RendererOpenGL::window_icon(const std::string& path)
 {
 	if (!Utility<Filesystem>::get().exists(path)) { return; }
 
@@ -623,7 +643,7 @@ void OGL_Renderer::window_icon(const std::string& path)
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(f.raw_bytes(), static_cast<int>(f.size())), 0);
 	if (!icon)
 	{
-		std::cout << "OGL_Renderer::window_icon(): " << SDL_GetError() << std::endl;
+		std::cout << "RendererOpenGL::window_icon(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
@@ -632,7 +652,7 @@ void OGL_Renderer::window_icon(const std::string& path)
 }
 
 
-void OGL_Renderer::initGL()
+void RendererOpenGL::initGL()
 {
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -676,7 +696,7 @@ void OGL_Renderer::initGL()
 }
 
 
-void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int bpp, bool fullscreen, bool vsync)
+void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -714,7 +734,7 @@ void OGL_Renderer::initVideo(unsigned int resX, unsigned int resY, unsigned int 
 	glewInit();
 	initGL();
 
-	Utility<EventHandler>::get().windowResized().connect(this, &OGL_Renderer::_resize);
+	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::_resize);
 
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
@@ -739,20 +759,22 @@ GLuint generate_fbo(Image& image)
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	
+	if (IMAGE_ID_MAP[image.name()].texture_id == 0)
+	{
+		unsigned int textureColorbuffer;
+		glGenTextures(1, &textureColorbuffer);
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		GLenum textureFormat = 0;
+		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
 
-	unsigned int textureColorbuffer;
-	glGenTextures(1, &textureColorbuffer);
-	glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-	GLenum textureFormat = 0;
-	textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
+		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, image.width(), image.height(), 0, textureFormat, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
 
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, image.width(), image.height(), 0, textureFormat, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id, 0);
 
-	// Update resource management.
-	IMAGE_ID_MAP[image.name()].texture_id = textureColorbuffer;
 	IMAGE_ID_MAP[image.name()].fbo_id = framebuffer;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -934,8 +956,6 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		x2 + tx + Rx + cx, y2 + ty + Ry + cy
 	};
 
-	glVertexPointer(2, GL_FLOAT, 0, line_vertex);
-
 	float line_color[] =
 	{
 		Cr, Cg, Cb, 0,
@@ -948,16 +968,15 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		Cr, Cg, Cb, 0
 	};
 
+	glVertexPointer(2, GL_FLOAT, 0, line_vertex);
 	glColorPointer(4, GL_FLOAT, 0, line_color);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
 
 	// Line End Caps
 	if (w > 3.0f) // <<< Arbitrary number.
 	{
-		float line_vertex[] =
+		float line_vertex2[] =
 		{
-			x1 - tx - Rx - cx, y1 - ty - Ry - cy, //cap1
-			x1 - tx - Rx, y1 - ty - Ry,
 			x1 - tx - cx, y1 - ty - cy,
 			x1 + tx + Rx, y1 + ty + Ry,
 			x1 + tx - cx, y1 + ty - cy,
@@ -969,9 +988,8 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			x2 + tx + cx, y2 + ty + cy,
 			x2 + tx + Rx + cx, y2 + ty + Ry + cy
 		};
-		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
 
-		float line_color[] =
+		float line_color2[] =
 		{
 			Cr, Cg, Cb, 0, //cap1
 			Cr, Cg, Cb, 0,
@@ -986,7 +1004,9 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			Cr, Cg, Cb, Ca,
 			Cr, Cg, Cb, 0
 		};
-		glColorPointer(4, GL_FLOAT, 0, line_color);
+
+		glVertexPointer(2, GL_FLOAT, 0, line_vertex2);
+		glColorPointer(4, GL_FLOAT, 0, line_color2);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	}
 }

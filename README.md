@@ -1,16 +1,19 @@
 # NAS2D: Core
 
-[![Travis-CI Badge](https://travis-ci.org/lairworks/nas2d-core.svg?branch=master)](https://travis-ci.org/lairworks/nas2d-core/)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bcf32f1b0a864f3ead9d45ae6099d07c)](https://www.codacy.com/app/ldicker83/nas2d-core)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/lairworks/nas2d-core?branch=master&svg=true)](https://ci.appveyor.com/project/OPU/nas2d-core)
+[![TravisCI](https://travis-ci.org/lairworks/nas2d-core.svg?branch=master)](https://travis-ci.org/lairworks/nas2d-core/)
+[![CircleCI](https://circleci.com/gh/lairworks/nas2d-core/tree/master.svg?style=svg)](https://circleci.com/gh/lairworks/nas2d-core/tree/master)
+[![Codacy](https://api.codacy.com/project/badge/Grade/bcf32f1b0a864f3ead9d45ae6099d07c)](https://www.codacy.com/app/ldicker83/nas2d-core)
 
 *NAS2D* is an open source, object oriented 2D game development framework written in portable C++. It was designed to make the development of games and other applications that needed a 2D interface easier by providing a high-level interface. It handles the low-level tasks of setting up the video display, input, sound mixing, file loading, etc.
 
 One of the primary goals of *NAS2D* was to be cross-platform. A lot of effort has gone into the code to make it as platform independant as possible. The few areas that are different from platform to platform are hidden from the interface and is virtually transparent to the user.
 
-## Why another 2D API?
+## Why another 2D API
 
 *NAS2D* isn't just another 2D renderer. It's a complete set of classes and functions that let you jump into building a game right away.
 
-## What Platforms are Supported?
+## What Platforms are Supported
 
 Officially, *NAS2D* is supported on Windows (Vista+) and MacOS X (10.8+). Binaries, source code and IDE Project files are provided and maintained for these platforms.
 

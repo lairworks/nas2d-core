@@ -132,7 +132,7 @@
     <ClCompile Include="..\..\src\Mixer\Mixer.cpp">
       <Filter>Source Files\Mixer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Mixer\NullMixer.cpp">
+    <ClCompile Include="..\..\src\Mixer\MixerNull.cpp">
       <Filter>Source Files\Mixer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Renderer\RendererOpenGL.cpp">
@@ -272,7 +272,7 @@
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlMemoryBuffer.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Mixer\NullMixer.h">
+    <ClInclude Include="..\..\include\NAS2D\Mixer\MixerNull.h">
       <Filter>Header Files\Mixer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererOpenGL.h">

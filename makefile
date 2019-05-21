@@ -23,7 +23,7 @@ SdlDir := $(SdlPackageDir)/$(SdlVer)
 # (Must be searched before system folder returned by sdl2-config)
 SdlInc := $(SdlDir)/include
 
-CXXFLAGS := -std=c++17 -g -Wall -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
+CXXFLAGS := -std=c++17 -g -Wall -Wpedantic -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
 LDLIBS := -lstdc++ -lphysfs # -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td

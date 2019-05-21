@@ -17,11 +17,12 @@
 
 #include "NAS2D/Utility.h"
 
-#include <iostream>
-#include <functional>
-
 #include <SDL.h>
 #include <SDL_mixer.h>
+
+#include <iostream>
+#include <functional>
+#include <algorithm>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -172,13 +173,13 @@ bool MixerSDL::musicPlaying() const
 
 void MixerSDL::soundVolume(int volume)
 {
-	Mix_Volume(-1, clamp(volume, 0, SDL_MIX_MAXVOLUME));
+	Mix_Volume(-1, std::clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 
 void MixerSDL::musicVolume(int volume)
 {
-	Mix_VolumeMusic(clamp(volume, 0, SDL_MIX_MAXVOLUME));
+	Mix_VolumeMusic(std::clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 

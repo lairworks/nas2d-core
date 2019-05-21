@@ -265,38 +265,6 @@ bool NAS2D::endsWith(std::string_view string, char end) noexcept
 }
 
 /**
- * \fn clamp(int x, int a, int b)
- *
- * Clamps an \c int value to a specified range.
- *
- * \param	x	Value to clamp.
- * \param	min	Minimum value to clamp to.
- * \param	max	Maximum value to clamp to.
- *
- * \return	Clamped value.
- */
-int NAS2D::clamp(int x, int min, int max)
-{
-	return x < min ? min : (x > max ? max : x);
-}
-
-/**
- * \fn float clamp(float x, float a, float b)
- *
- * Clamps a \c float value to a specified range.
- *
- * \param	x	Value to clamp.
- * \param	min	Minimum value to clamp to.
- * \param	max	Maximum value to clamp to.
- *
- * \return	Clamped value.
- */
-float NAS2D::clamp(float x, float min, float max)
-{
-	return x < min ? min : (x > max ? max : x);
-}
-
-/**
  * \fn int divideUp(int a, int b)
  *
  * Basic integer division that rounds up to the nearest whole number.

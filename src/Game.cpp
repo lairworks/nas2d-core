@@ -15,7 +15,7 @@
 #include "NAS2D/Game.h"
 #include "NAS2D/Utility.h"
 
-#include "NAS2D/Mixer/NullMixer.h"
+#include "NAS2D/Mixer/MixerNull.h"
 #include "NAS2D/Mixer/MixerSDL.h"
 #include "NAS2D/Renderer/RendererOpenGL.h"
 #include "NAS2D/Renderer/RendererNull.h"
@@ -57,7 +57,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	catch (std::exception& e)
 	{
 		std::cout << "Unable to create SDL Audio Mixer: " << e.what() << ". Setting NULL driver." << std::endl;
-		Utility<Mixer>::init<NullMixer>();
+		Utility<Mixer>::init<MixerNull>();
 	}
 	catch (...)
 	{

@@ -23,7 +23,7 @@ const int NAS2D_PATCH_VERSION = 2;
  */
 std::string NAS2D::versionString()
 {
-	std::stringstream ss;
+	std::ostringstream ss;
 	ss << versionMajor() << "." << versionMinor() << "." << versionPatch();
 	return ss.str();
 }
@@ -159,11 +159,7 @@ std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, boo
 	NAS2D::StringList result{};
 	result.reserve(potential_count);
 
-	std::stringstream ss{};
-	ss.str(str);
-	ss.seekg(0);
-	ss.seekp(0);
-	ss.clear();
+	std::istringstream ss(str);
 
 	std::string curString{};
 	while (std::getline(ss, curString, delim))
@@ -266,38 +262,6 @@ bool NAS2D::startsWith(std::string_view string, char start) noexcept
 bool NAS2D::endsWith(std::string_view string, char end) noexcept
 {
 	return !string.empty() && string.back() == end;
-}
-
-/**
- * \fn clamp(int x, int a, int b)
- *
- * Clamps an \c int value to a specified range.
- *
- * \param	x	Value to clamp.
- * \param	min	Minimum value to clamp to.
- * \param	max	Maximum value to clamp to.
- *
- * \return	Clamped value.
- */
-int NAS2D::clamp(int x, int min, int max)
-{
-	return x < min ? min : (x > max ? max : x);
-}
-
-/**
- * \fn float clamp(float x, float a, float b)
- *
- * Clamps a \c float value to a specified range.
- *
- * \param	x	Value to clamp.
- * \param	min	Minimum value to clamp to.
- * \param	max	Maximum value to clamp to.
- *
- * \return	Clamped value.
- */
-float NAS2D::clamp(float x, float min, float max)
-{
-	return x < min ? min : (x > max ? max : x);
 }
 
 /**

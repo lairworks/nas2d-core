@@ -14,6 +14,7 @@
 #include "NAS2D/Timer.h"
 
 #include <iostream>
+#include <algorithm>
 
 using namespace NAS2D;
 
@@ -585,7 +586,7 @@ void Renderer::update()
 
 		if (mCurrentFade < 0.0f || mCurrentFade > 255.0f)
 		{
-			mCurrentFade = clamp(mCurrentFade, 0.0f, 255.0f);
+			mCurrentFade = std::clamp(mCurrentFade, 0.0f, 255.0f);
 			CURRENT_FADE = FADE_NONE;
 			_FADE_COMPLETE();
 		}

@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <algorithm>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -453,7 +454,7 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 	GlyphMetrics gm;
 	for (size_t i = 0; i < text.size(); i++)
 	{
-		gm = gml[clamp(text[i], 0, 255)];
+		gm = gml[std::clamp<std::size_t>(text[i], 0, 255)];
 
 		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);

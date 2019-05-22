@@ -145,7 +145,6 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 -   Fixed a possible resource leak in Music copy assignment operator.
 -   Fixed OGL_Renderer::drawGradient() showing incorrect colors.
 
-
 #### IMPORTANT NOTES ABOUT BREAKING CHANGES
 
 Since the `Exception` class has been removed, any code using `NAS2D::Exception` will need to be replaced. The easiest method to do this is to use `std::runtime_error()` or you may use a built-in exception type from the `NAS2D::exception` namespace. See [Issue #13](https://github.com/lairworks/nas2d-core/issues/13) for an explanation of the decision behind deprecating this class.

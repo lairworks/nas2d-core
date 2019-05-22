@@ -47,14 +47,14 @@ TEST_F(FilesystemTest, workingPath) {
 
 TEST_F(FilesystemTest, searchPath) {
 	auto pathList = fs.searchPath();
-	EXPECT_EQ(3, pathList.size());
+	EXPECT_EQ(3u, pathList.size());
 	EXPECT_THAT(pathList, Contains(testing::HasSubstr("NAS2DUnitTests")));
 	EXPECT_THAT(pathList, Contains(testing::HasSubstr("data/")));
 }
 
 TEST_F(FilesystemTest, directoryList) {
 	auto pathList = fs.directoryList("");
-	EXPECT_LE(1, pathList.size());
+	EXPECT_LE(1u, pathList.size());
 	EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
 }
 

@@ -5,6 +5,7 @@
 This is a feature release.
 
 ### Added
+
 -   Added EventHandler::alt() which returns true if the key modifier is either alt key (or both).
 -   Added a clip area function to the renderer (clipRect series of functions).
 -   Added center_x/center_y functions to Image. This maintains a previously computed value based on the last loaded Image.
@@ -13,12 +14,14 @@ This is a feature release.
 -   A null Mixer (MixerNull) has been added for fallback and testing purposes.
 
 ### Changed
+
 -   All prior versions of Visual Studio solutions/projects have been removed in favor of Visual Studio 2019.
 -   Visual Studio solution now takes advantage of NuGet. PhysFS and GLEW still need to be provided by the user as the NuGet versions are very out of date. We recommend using vcpkg.
 -   OGL_Renderer has been renamed to RendererOpenGL.
 -   Mixer_SDL has been renamed to MixerSDL.
 
 ### Fixed
+
 -   OGL_Renderer::drawImageRepeated() now draws a texture repeated across a given face as expected.
 -   Fixed an issue with XmlNode::lastChild(const std::string&) functions that would test against an internal value string instead of the value passed in as a parameter.
 -   Fixed a mistake in OGL_Renderer::drawImage() that ignored the 'scale' paramter.
@@ -42,6 +45,7 @@ This is a small patch to NAS2D that corrects a few minor issues not caught in th
 This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.0 release.
 
 ### Fixed
+
 -   Version information has been corrected.
 -   Window will now center itself when switching out of fullscreen mode.
 
@@ -52,6 +56,7 @@ This is a small patch to NAS2D that corrects a few minor issues not caught in th
 This version of NAS2D introduces several new features to make it easier to use geometric primitives, switch between fullscreen and windowed modes and resize the window.
 
 ### Added
+
 -   Added Window Resize events to the EventHandler.
 -   Added center_x/center_y functions to Rectangle_2d/Rectangle_2df.
 -   Added ability to set an applications window icon.
@@ -61,6 +66,7 @@ This version of NAS2D introduces several new features to make it easier to use g
 -   Added the ability to set an application window as resizeable.
 
 ### Changed
+
 -   Renamed Renderer::screenSize() to Renderer::size();
 -   Renamed Renderer::screenCenterX()/Renderer::screenCenterY() to Renderer::center_x()/Renderer::center_y().
 -   Renderer will now respond to window resize events as they happen.
@@ -78,9 +84,11 @@ This release now links to SDL 2.0.5, be sure to use the updated SDL binary files
 This is a patch to NAS2D that fixes a few minor bugs.
 
 ### Changed
+
 -   Improved Renderer's handling of fading and fade callbacks.
 
 ### Fixed
+
 -   Fixed a mistake in Configuration's XML processing of Options tags.
 -   Fixed an issue in OGL_Renderer's drawText that could result in an out of bounds exception being thrown.
 
@@ -91,6 +99,7 @@ This is a patch to NAS2D that fixes a few minor bugs.
 This version of NAS2D focuses on cleaning up the public interface headers and removing as much of the implementation details as possible. This is to help make NAS2D a lot easier to use to set up new projects and will reduce reliance on backend library interface headers unless the user specifically wants/needs direct access to these libraries.
 
 ### Added
+
 -   Renderer fade completed signal.
 -   Mixer music completed signal.
 -   Added EventHandler::textInputMode(bool) to turn on and off text input modes.
@@ -99,6 +108,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 -   Added Renderer::showSystemPointer() method.
 
 ### Changed
+
 -   Clarified origin and licensing information for Signal.h and Delegate.h.
 -   Updated documentation on most interfaces.
 -   Filesystem now throws an exception when any function is used before Filesystem::init() is called.
@@ -115,6 +125,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 -   Merged TinyXML into the NAS2D namespace. See [Task #14](https://github.com/lairworks/nas2d-core/issues/14) for additional information.
 
 ### Deprecated
+
 -   Removed Exception class in favor of specific exception types derived from std::runtime_error. See [Exceptions](https://github.com/lairworks/nas2d-core/wiki/Exceptions-&-Exception-Handling-in-NAS2D).
 -   Removed Renderer::toggleCinematic().
 -   Removed Renderer::toggleLetterbox().
@@ -127,6 +138,7 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 -   Texture Quality configuration option has been removed.
 
 ### Fixed
+
 -   Fixed a bug in Font::width(const std::string&) that would report incorrect widths when using TrueType or OpenType fonts.
 -   Fixed a possible resource leak in Font copy assignment operator.
 -   Fixed a possible resource leak in Image copy assignment operator.
@@ -153,6 +165,7 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 ## \[1.2.1\] - 2017-03-02
 
 ### Added
+
 -   Added Visual Studio 2015 project files.
 -   Added version information coded into the library.
 -   Added several functions to get the numeric major/minor/patch versions of NAS2D.
@@ -165,6 +178,7 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 -   Added color tinting to Renderer::drawImage() and Renderer::drawSubImage().
 
 ### Changed
+
 -   Renamed SDL_Mixer to Mixer_SDL.
 -   Pulled out a lot of unnecessary debug code.
 -   StateManager no longer disconnects all event handlers when switching states.
@@ -178,6 +192,7 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 -   Moved raw pixel data in Image to the static resource table. Significantly improves memory overhead and load times when lots of Sprite's or Image's acre created.
 
 ### Fixed
+
 -   Fixed a mistake in Sprite which assumed that mCurrentFrame could be a negative (it is an unsigned int).
 -   Fixed a crash when terminating a Mixer_SDL when no audio output device is available.
 -   Fixed an edge case where loading an image from disk could result in mPixels being left NULL causing pixelColor() to fail unexpectedly.

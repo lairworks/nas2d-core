@@ -59,6 +59,7 @@ if (country_code == "US")
 The comments here only repeat what the code does and make it harder to read the code.
 
 ### Rules of Thumb
+
 -   Comments should not restate what code does.
 -   If a code block needs comments to explain what it does, it's too complex. Refactor it and make it readable.
 -   Assumptions that the code makes should be noted.
@@ -144,6 +145,7 @@ void somefunc(int val)
 This may seem like an obvious problem but it's known to occur in production code. For a recent high profile example, see [Apple's goto fail bug](https://en.wikipedia.org/wiki/Unreachable_code#goto_fail_bug).
 
 ## Naming Scheme
+
 -   Class names are CamelCase with an uppercase first letter.
 -   Function and class method names are camelCase with a lowercase first letter.
 -   Class member variables always begin with a lowercase 'm' and are CamelCase afterward.

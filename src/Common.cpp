@@ -153,7 +153,7 @@ std::string NAS2D::toUppercase(std::string str)
 	return str;
 }
 
-std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, bool skip_empty /*= true*/)
+std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/)
 {
 	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
 	NAS2D::StringList result{};
@@ -164,7 +164,23 @@ std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/, boo
 	std::string curString{};
 	while (std::getline(ss, curString, delim))
 	{
-		if (skip_empty && curString.empty()) { continue; }
+		result.push_back(curString);
+	}
+	result.shrink_to_fit();
+	return result;
+}
+std::vector<std::string> NAS2D::splitSkipEmpty(std::string str, char delim /*= ','*/)
+{
+	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
+	NAS2D::StringList result{};
+	result.reserve(potential_count);
+
+	std::istringstream ss(str);
+
+	std::string curString{};
+	while (std::getline(ss, curString, delim))
+	{
+		if (curString.empty()) { continue; }
 		result.push_back(curString);
 	}
 	result.shrink_to_fit();
@@ -197,7 +213,21 @@ std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, c
 	}
 }
 
-std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_empty /*= true*/)
+std::string NAS2D::join(std::vector<std::string> strs)
+{
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
+	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+	std::string result;
+	result.reserve(total_size);
+	for (const auto& s : strs)
+	{
+		result += s;
+	}
+	result.shrink_to_fit();
+	return result;
+}
+
+std::string NAS2D::join(std::vector<std::string> strs, char delim)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
@@ -206,7 +236,6 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_emp
 
 	for (auto iter = std::begin(strs); iter != std::end(strs); ++iter)
 	{
-		if (skip_empty && (*iter).empty()) { continue; }
 		result += (*iter);
 		if (iter != std::end(strs) - 1)
 		{
@@ -217,8 +246,7 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim, bool skip_emp
 	result.shrink_to_fit();
 	return result;
 }
-
-std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*/)
+std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
@@ -226,9 +254,30 @@ std::string NAS2D::join(std::vector<std::string> strs, bool skip_empty /*= true*
 	result.reserve(total_size);
 	for (const auto& s : strs)
 	{
-		if (skip_empty && s.empty()) { continue; }
+		if (s.empty()) { continue; }
 		result += s;
 	}
+	result.shrink_to_fit();
+	return result;
+}
+
+std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs, char delim)
+{
+	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
+	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+	std::string result;
+	result.reserve(total_size);
+
+	for (auto iter = std::begin(strs); iter != std::end(strs); ++iter)
+	{
+		if ((*iter).empty()) { continue; }
+		result += (*iter);
+		if (iter != std::end(strs) - 1)
+		{
+			result.push_back(delim);
+		}
+	}
+
 	result.shrink_to_fit();
 	return result;
 }

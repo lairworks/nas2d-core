@@ -97,7 +97,7 @@ private:
 	bool				mFullScreen;					/**< Screen Mode */
 	bool				mVSync;							/**< Vertical Sync */
 
-    int					mMixRate;						/**< */
+	int					mMixRate;						/**< */
 	int					mStereoChannels;				/**< Either AUDIO_STEREO or AUDIO_MONO */
 	int					mSfxVolume, mMusicVolume;		/**< Audio Volume Levels */
 	int					mBufferLength;					/**< Audio Buffer Length */

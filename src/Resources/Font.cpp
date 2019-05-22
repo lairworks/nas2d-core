@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <algorithm>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -182,7 +183,7 @@ int NAS2D::Font::width(const std::string& str) const
 
 	for (size_t i = 0; i < str.size(); i++)
 	{
-		int glyph = clamp(str[i], 0, 255);
+		auto glyph = std::clamp<std::size_t>(str[i], 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;
 	}
 

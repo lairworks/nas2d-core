@@ -19,7 +19,6 @@ This is a feature release.
 - Mixer_SDL has been renamed to MixerSDL.
 
 ### Fixed
-
 - OGL_Renderer::drawImageRepeated() now draws a texture repeated across a given face as expected.
 - Fixed an issue with XmlNode::lastChild(const std::string&) functions that would test against an internal value string instead of the value passed in as a parameter.
 - Fixed a mistake in OGL_Renderer::drawImage() that ignored the 'scale' paramter.
@@ -43,7 +42,6 @@ This is a small patch to NAS2D that corrects a few minor issues not caught in th
 This is a small patch to NAS2D that corrects a few minor issues not caught in the 1.4.0 release.
 
 ### Fixed
-
 - Version information has been corrected.
 - Window will now center itself when switching out of fullscreen mode.
 
@@ -63,7 +61,6 @@ This version of NAS2D introduces several new features to make it easier to use g
 - Added the ability to set an application window as resizeable.
 
 ### Changed
-
 - Renamed Renderer::screenSize() to Renderer::size();
 - Renamed Renderer::screenCenterX()/Renderer::screenCenterY() to Renderer::center_x()/Renderer::center_y().
 - Renderer will now respond to window resize events as they happen.
@@ -81,11 +78,9 @@ This release now links to SDL 2.0.5, be sure to use the updated SDL binary files
 This is a patch to NAS2D that fixes a few minor bugs.
 
 ### Changed
-
 - Improved Renderer's handling of fading and fade callbacks.
 
 ### Fixed
-
 - Fixed a mistake in Configuration's XML processing of Options tags.
 - Fixed an issue in OGL_Renderer's drawText that could result in an out of bounds exception being thrown.
 
@@ -104,7 +99,6 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Added Renderer::showSystemPointer() method.
 
 ### Changed
-
 - Clarified origin and licensing information for Signal.h and Delegate.h.
 - Updated documentation on most interfaces.
 - Filesystem now throws an exception when any function is used before Filesystem::init() is called.
@@ -121,7 +115,6 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Merged TinyXML into the NAS2D namespace. See [Task #14](https://github.com/lairworks/nas2d-core/issues/14) for additional information.
 
 ### Deprecated
-
 - Removed Exception class in favor of specific exception types derived from std::runtime_error. See [Exceptions](https://github.com/lairworks/nas2d-core/wiki/Exceptions-&-Exception-Handling-in-NAS2D).
 - Removed Renderer::toggleCinematic().
 - Removed Renderer::toggleLetterbox().
@@ -134,7 +127,6 @@ This version of NAS2D focuses on cleaning up the public interface headers and re
 - Texture Quality configuration option has been removed.
 
 ### Fixed
-
 - Fixed a bug in Font::width(const std::string&) that would report incorrect widths when using TrueType or OpenType fonts.
 - Fixed a possible resource leak in Font copy assignment operator.
 - Fixed a possible resource leak in Image copy assignment operator.
@@ -161,7 +153,6 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 ## \[1.2.1\] - 2017-03-02
 
 ### Added
-
 - Added Visual Studio 2015 project files.
 - Added version information coded into the library.
 - Added several functions to get the numeric major/minor/patch versions of NAS2D.
@@ -174,7 +165,6 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 - Added color tinting to Renderer::drawImage() and Renderer::drawSubImage().
 
 ### Changed
-
 - Renamed SDL_Mixer to Mixer_SDL.
 - Pulled out a lot of unnecessary debug code.
 - StateManager no longer disconnects all event handlers when switching states.
@@ -188,7 +178,6 @@ TinyXML's interface has been merged into the `NAS2D::Xml` namespace, all objects
 - Moved raw pixel data in Image to the static resource table. Significantly improves memory overhead and load times when lots of Sprite's or Image's acre created.
 
 ### Fixed
-
 - Fixed a mistake in Sprite which assumed that mCurrentFrame could be a negative (it is an unsigned int).
 - Fixed a crash when terminating a Mixer_SDL when no audio output device is available.
 - Fixed an edge case where loading an image from disk could result in mPixels being left NULL causing pixelColor() to fail unexpectedly.

@@ -5,15 +5,15 @@
 namespace NAS2D
 {
 
-	class NullMixer : public Mixer
+	class MixerNull : public Mixer
 	{
-	  public:
-		NullMixer() = default;
-		NullMixer(const NullMixer& other) = default;
-		NullMixer(NullMixer&& other) = default;
-		NullMixer& operator=(const NullMixer& other) = default;
-		NullMixer& operator=(NullMixer&& other) = default;
-		virtual ~NullMixer() = default;
+	public:
+		MixerNull() = default;
+		MixerNull(const MixerNull& other) = default;
+		MixerNull(MixerNull&& other) = default;
+		MixerNull& operator=(const MixerNull& other) = default;
+		MixerNull& operator=(MixerNull&& other) = default;
+		virtual ~MixerNull() = default;
 
 		virtual void playSound(Sound& sound) override;
 
@@ -43,8 +43,8 @@ namespace NAS2D
 
 		virtual void musicVolume(int level) override;
 
-	  protected:
-	  private:
+	protected:
+	private:
 	};
 
 } // namespace NAS2D

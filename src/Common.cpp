@@ -237,7 +237,7 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim)
 	for (auto iter = std::begin(strs); iter != std::end(strs); ++iter)
 	{
 		result += (*iter);
-		if (iter != std::end(strs) - 1)
+		if (iter + 1 != std::end(strs))
 		{
 			result.push_back(delim);
 		}
@@ -272,7 +272,7 @@ std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs, char delim)
 	{
 		if ((*iter).empty()) { continue; }
 		result += (*iter);
-		if (iter != std::end(strs) - 1)
+		if (iter + 1 != std::end(strs))
 		{
 			result.push_back(delim);
 		}

@@ -4,7 +4,7 @@
 
 
 TEST(Version, versionString) {
-	EXPECT_THAT(NAS2D::versionString(), testing::MatchesRegex("[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+"));
+	EXPECT_THAT(NAS2D::versionString(), testing::MatchesRegex("[0-9]+\\.[0-9]+\\.[0-9]+"));
 }
 
 TEST(String, split)

@@ -166,6 +166,9 @@ std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/)
 	{
 		result.push_back(curString);
 	}
+    if(ss.eof() && str.back() == delim) {
+		result.push_back(std::string{});
+    }
 	result.shrink_to_fit();
 	return result;
 }

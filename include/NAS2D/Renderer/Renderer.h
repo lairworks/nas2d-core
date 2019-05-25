@@ -47,7 +47,7 @@ class Renderer
 {
 public:
 	Renderer();
-	virtual ~Renderer() = 0;
+	virtual ~Renderer();
 
 	const std::string& name();
 	const std::string& driverName();

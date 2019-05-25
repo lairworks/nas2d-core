@@ -32,7 +32,7 @@ public:
 
 public:
 	Mixer() = default;
-	virtual ~Mixer() = 0;
+	virtual ~Mixer() = default;
 
 public:
 	/**

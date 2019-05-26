@@ -141,6 +141,12 @@
     <ClCompile Include="..\..\src\Mixer\MixerSDL.cpp">
       <Filter>Source Files\Mixer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\StringUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MathUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\NAS2D\Common.h">
@@ -280,6 +286,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerSDL.h">
       <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\StringUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\MathUtils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

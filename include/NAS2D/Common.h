@@ -9,5 +9,7 @@
 // ==================================================================================
 #pragma once
 
+#pragma message("Common.h/.cpp is deprecated and will be removed in a future release. Please update usage to MathUtils.h or StringUtils.h")
+
 #include "NAS2D/MathUtils.h"
 #include "NAS2D/StringUtils.h"

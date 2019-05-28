@@ -14,10 +14,6 @@
 #include <numeric>
 #include <sstream>
 
-const int NAS2D_MAJOR_VERSION = 1;
-const int NAS2D_MINOR_VERSION = 4;
-const int NAS2D_PATCH_VERSION = 2;
-
 /**
  * \fn toLowercase(const std::string& str)
  *

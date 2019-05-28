@@ -21,21 +21,21 @@ namespace NAS2D
 	/**
     * Gets a string containing the version of NAS2D being used.
     */
-	const std::string NAS2D::versionString() noexcept;
+	const std::string versionString() noexcept;
 
 	/**
     * Gets version major.
     */
-	constexpr int NAS2D::versionMajor() noexcept;
+	constexpr int versionMajor() noexcept;
 
 	/**
     * Gets version minor.
     */
-	constexpr int NAS2D::versionMinor() noexcept;
+	constexpr int versionMinor() noexcept;
 
 	/**
     * Gets version patch.
     */
-	constexpr int NAS2D::versionPatch() noexcept;
+	constexpr int versionPatch() noexcept;
 
 } // namespace NAS2D

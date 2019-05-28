@@ -29,3 +29,4 @@ namespace NAS2D
 	int divideUp(int to_divide, int divisor);
 
 } // namespace NAS2D
+

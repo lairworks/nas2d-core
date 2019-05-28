@@ -251,6 +251,7 @@
     <ClCompile Include="..\..\src\StringUtils.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Trig.cpp" />
+    <ClCompile Include="..\..\src\Version.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlNode.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlAttribute.cpp" />
     <ClCompile Include="..\..\src\Xml\XmlAttributeSet.cpp" />
@@ -300,6 +301,7 @@
     <ClInclude Include="..\..\include\NAS2D\Timer.h" />
     <ClInclude Include="..\..\include\NAS2D\Trig.h" />
     <ClInclude Include="..\..\include\NAS2D\Utility.h" />
+    <ClInclude Include="..\..\include\NAS2D\Version.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\Xml.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttribute.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlAttributeSet.h" />

@@ -18,12 +18,6 @@
 namespace NAS2D
 {
 
-	std::string versionString();
-
-	int versionMajor();
-	int versionMinor();
-	int versionPatch();
-
 	std::string toLowercase(std::string str);
 	std::string toUppercase(std::string str);
 	std::vector<std::string> split(std::string str, char delim = ',');

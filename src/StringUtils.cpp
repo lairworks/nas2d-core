@@ -19,40 +19,6 @@ const int NAS2D_MINOR_VERSION = 4;
 const int NAS2D_PATCH_VERSION = 2;
 
 /**
- * Gets a string containing the version of NAS2D being used.
- */
-std::string NAS2D::versionString()
-{
-	std::ostringstream ss;
-	ss << versionMajor() << "." << versionMinor() << "." << versionPatch();
-	return ss.str();
-}
-
-/**
- * Gets version major.
- */
-int NAS2D::versionMajor()
-{
-	return NAS2D_MAJOR_VERSION;
-}
-
-/**
- * Gets version minor.
- */
-int NAS2D::versionMinor()
-{
-	return NAS2D_MINOR_VERSION;
-}
-
-/**
- * Gets version patch.
- */
-int NAS2D::versionPatch()
-{
-	return NAS2D_PATCH_VERSION;
-}
-
-/**
  * \fn toLowercase(const std::string& str)
  *
  * Converts a string to lowercase.

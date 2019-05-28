@@ -9,5 +9,3 @@
 // ==================================================================================
 #include "NAS2D/Common.h"
 
-#include "MathUtils.cpp"
-#include "StringUtils.cpp"

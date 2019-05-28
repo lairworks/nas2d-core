@@ -15,24 +15,24 @@
 namespace NAS2D
 {
 
-	const std::string versionString() noexcept
+	const std::string versionString()
 	{
 		std::ostringstream ss;
 		ss << versionMajor() << "." << versionMinor() << "." << versionPatch();
 		return ss.str();
 	}
 
-	constexpr int versionMajor() noexcept
+	constexpr int versionMajor()
 	{
 		return NAS2D_MAJOR_VERSION;
 	}
 
-	constexpr int versionMinor() noexcept
+	constexpr int versionMinor()
 	{
 		return NAS2D_MINOR_VERSION;
 	}
 
-	constexpr int versionPatch() noexcept
+	constexpr int versionPatch()
 	{
 		return NAS2D_PATCH_VERSION;
 	}

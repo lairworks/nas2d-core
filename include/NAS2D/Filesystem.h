@@ -10,6 +10,7 @@
 
 #pragma once
 
+#pragma message("Filesystem Class is deprecated and wil be removed in a future release.")
 #include "StringUtils.h"
 #include "File.h"
 #include <string>

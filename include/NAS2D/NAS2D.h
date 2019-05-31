@@ -8,13 +8,15 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Common.h"
 #include "NAS2D/Configuration.h"
 #include "NAS2D/EventHandler.h"
 #include "NAS2D/Exception.h"
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/FpsCounter.h"
 #include "NAS2D/Game.h"
+#include "NAS2D/StringUtils.h"
+#include "NAS2D/MathUtils.h"
+#include "NAS2D/Version.h"
 #include "NAS2D/Utility.h"
 #include "NAS2D/StateManager.h"
 #include "NAS2D/Timer.h"

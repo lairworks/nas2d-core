@@ -110,73 +110,79 @@ std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, c
 
 std::vector<std::string> NAS2D::splitOnUnquoted(const std::string& str, char delim /*= ','*/)
 {
-	bool in_quote = false;
+	bool inQuote = false;
 	std::vector<std::string> result{};
-	auto potential_count = 1u + std::count(std::begin(str), std::end(str), delim);
+	std::size_t potential_count = 1u + std::count(std::begin(str), std::end(str), delim);
 	result.reserve(potential_count);
-	auto substring_start = std::begin(str);
-	auto substring_end = std::end(str);
+	auto start = std::begin(str);
+	auto end = std::end(str);
 	for (auto iter = std::begin(str); iter != std::end(str); /* DO NOTHING */)
 	{
 		if (*iter == '"')
 		{
-			in_quote = !in_quote;
+			inQuote = !inQuote;
 			++iter;
 			continue;
 		}
-		if (in_quote || *iter != delim)
+		if (!inQuote)
 		{
-			++iter;
-			continue;
+			if (*iter == delim)
+			{
+				end = iter++;
+				std::string s(start, end);
+				result.push_back(std::string(start, end));
+				start = iter;
+				continue;
+			}
 		}
-		substring_end = iter++;
-		std::string substring(substring_start, substring_end);
-		result.push_back(substring);
-		substring_start = iter;
+		++iter;
 	}
-	substring_end = std::end(str);
-	auto last_string = std::string(substring_start, substring_end);
-	result.push_back(last_string);
+	end = std::end(str);
+	auto last_s = std::string(start, end);
+	result.push_back(std::string(start, end));
 	result.shrink_to_fit();
 	return result;
 }
 
 std::vector<std::string> NAS2D::splitOnUnquotedSkipEmpty(const std::string& str, char delim /*= ','*/)
 {
-	bool in_quote = false;
+	bool inQuote = false;
 	std::vector<std::string> result{};
-	auto potential_count = 1u + std::count(std::begin(str), std::end(str), delim);
+	std::size_t potential_count = 1u + std::count(std::begin(str), std::end(str), delim);
 	result.reserve(potential_count);
-	auto substring_start = std::begin(str);
-	auto substring_end = std::end(str);
+	auto start = std::begin(str);
+	auto end = std::end(str);
 	for (auto iter = std::begin(str); iter != std::end(str); /* DO NOTHING */)
 	{
 		if (*iter == '"')
 		{
-			in_quote = !in_quote;
+			inQuote = !inQuote;
 			++iter;
 			continue;
 		}
-		if (in_quote || *iter != delim)
+		if (!inQuote)
 		{
-			++iter;
-			continue;
+			if (*iter == delim)
+			{
+				end = iter++;
+				std::string s(start, end);
+				if (s.empty())
+				{
+					start = iter;
+					continue;
+				}
+				result.push_back(std::string(start, end));
+				start = iter;
+				continue;
+			}
 		}
-		substring_end = iter++;
-		std::string substring(substring_start, substring_end);
-		if (substring.empty())
-		{
-			substring_start = iter;
-			continue;
-		}
-		result.push_back(substring);
-		substring_start = iter;
+		++iter;
 	}
-	substring_end = std::end(str);
-	auto last_string = std::string(substring_start, substring_end);
-	if (!last_string.empty())
+	end = std::end(str);
+	auto last_s = std::string(start, end);
+	if (!last_s.empty())
 	{
-		result.push_back(last_string);
+		result.push_back(std::string(start, end));
 	}
 	result.shrink_to_fit();
 	return result;

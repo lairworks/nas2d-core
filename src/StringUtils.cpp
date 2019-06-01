@@ -131,27 +131,11 @@ std::vector<std::string> NAS2D::splitOnUnquoted(const std::string& str, char del
 		}
 		substring_end = iter++;
 		std::string substring(substring_start, substring_end);
-		if (substring.front() == '"')
-		{
-			substring.erase(0, 1);
-		}
-		if (substring.back() == '"')
-		{
-			substring.pop_back();
-		}
 		result.push_back(substring);
 		substring_start = iter;
 	}
 	substring_end = std::end(str);
 	auto last_string = std::string(substring_start, substring_end);
-	if (last_string.front() == '"')
-	{
-		last_string.erase(0, 1);
-	}
-	if (last_string.back() == '"')
-	{
-		last_string.pop_back();
-	}
 	result.push_back(last_string);
 	result.shrink_to_fit();
 	return result;
@@ -180,15 +164,10 @@ std::vector<std::string> NAS2D::splitOnUnquotedSkipEmpty(const std::string& str,
 		}
 		substring_end = iter++;
 		std::string substring(substring_start, substring_end);
-		if (substring.empty()) { continue; }
-		if (substring.front() == '"')
-		{
-			substring.erase(0, 1);
-		}
-		if (substring.back() == '"')
-		{
-			substring.pop_back();
-		}
+		if (substring.empty()) { 
+            substring_start = iter;
+            continue;
+        }
 		result.push_back(substring);
 		substring_start = iter;
 	}
@@ -196,14 +175,6 @@ std::vector<std::string> NAS2D::splitOnUnquotedSkipEmpty(const std::string& str,
 	auto last_string = std::string(substring_start, substring_end);
 	if (!last_string.empty())
 	{
-		if (last_string.front() == '"')
-		{
-			last_string.erase(0, 1);
-		}
-		if (last_string.back() == '"')
-		{
-			last_string.pop_back();
-		}
 		result.push_back(last_string);
 	}
 	result.shrink_to_fit();

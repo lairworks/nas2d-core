@@ -131,6 +131,14 @@ std::vector<std::string> NAS2D::splitOnUnquoted(const std::string& str, char del
 		}
 		substring_end = iter++;
 		std::string substring(substring_start, substring_end);
+		if (substring.front() == '"')
+		{
+			substring.erase(0, 1);
+		}
+		if (substring.back() == '"')
+		{
+			substring.pop_back();
+		}
 		result.push_back(substring);
 		substring_start = iter;
 	}
@@ -164,10 +172,19 @@ std::vector<std::string> NAS2D::splitOnUnquotedSkipEmpty(const std::string& str,
 		}
 		substring_end = iter++;
 		std::string substring(substring_start, substring_end);
-		if (substring.empty()) { 
-            substring_start = iter;
-            continue;
-        }
+		if (substring.front() == '"')
+		{
+			substring.erase(0, 1);
+		}
+		if (substring.back() == '"')
+		{
+			substring.pop_back();
+		}
+		if (substring.empty())
+		{
+			substring_start = iter;
+			continue;
+		}
 		result.push_back(substring);
 		substring_start = iter;
 	}

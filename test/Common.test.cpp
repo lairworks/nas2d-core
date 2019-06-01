@@ -40,7 +40,7 @@ TEST(String, splitOnUnquoted)
 	EXPECT_EQ((NAS2D::StringList{"a,b,c", "abc", "def"}), NAS2D::splitOnUnquoted(R"("a,b,c",abc,def)"));
 	EXPECT_EQ((NAS2D::StringList{"abc", "a,b,c", "def"}), NAS2D::splitOnUnquoted(R"(abc,"a,b,c",def)"));
 	EXPECT_EQ((NAS2D::StringList{"abc", "def", "a,b,c"}), NAS2D::splitOnUnquoted(R"(abc,def,"a,b,c")"));
-	EXPECT_EQ((NAS2D::StringList{"", "abc", "def"}), NAS2D::splitOnUnquoted(R"("",abc,def)"));
+	EXPECT_EQ((NAS2D::StringList{"","abc", "def"}), NAS2D::splitOnUnquoted(R"("",abc,def)"));
 	EXPECT_EQ((NAS2D::StringList{"abc", "", "def"}), NAS2D::splitOnUnquoted(R"(abc,"",def)"));
 	EXPECT_EQ((NAS2D::StringList{"abc", "def", ""}), NAS2D::splitOnUnquoted(R"(abc,def,"")"));
 
@@ -79,27 +79,34 @@ TEST(String, splitSkipEmpty)
 	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitSkipEmpty("abc.", '.'));
 }
 
-TEST(String, splitOnUnquotedSkipEmpty)
+TEST(StringUtils, SplitOnUnquotedSkipEmpty)
 {
-	EXPECT_EQ((NAS2D::StringList{"a", "b", "c"}), NAS2D::splitOnUnquotedSkipEmpty("a,b,c"));
-	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitOnUnquotedSkipEmpty("abc"));
-	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitOnUnquotedSkipEmpty(",abc"));
-	EXPECT_EQ((NAS2D::StringList{"a", "bc"}), NAS2D::splitOnUnquotedSkipEmpty("a,bc"));
-	EXPECT_EQ((NAS2D::StringList{"ab", "c"}), NAS2D::splitOnUnquotedSkipEmpty("ab,c"));
-	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitOnUnquotedSkipEmpty("abc,"));
-	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("\"\",abc,def"));
-	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("abc,\"\",def"));
-	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("abc,def,\"\""));
+	using StringList = std::vector<std::string>;
+	std::string input =
+		R"(
+a=b
 
-	EXPECT_EQ((NAS2D::StringList{"a", "b", "c"}), NAS2D::splitOnUnquotedSkipEmpty("a.b.c", '.'));
-	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitOnUnquotedSkipEmpty("abc", '.'));
-	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitOnUnquotedSkipEmpty(".abc", '.'));
-	EXPECT_EQ((NAS2D::StringList{"a", "bc"}), NAS2D::splitOnUnquotedSkipEmpty("a.bc", '.'));
-	EXPECT_EQ((NAS2D::StringList{"ab", "c"}), NAS2D::splitOnUnquotedSkipEmpty("ab.c", '.'));
-	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitOnUnquotedSkipEmpty("abc.", '.'));
-	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("\"\".abc.def", '.'));
-	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("abc.\"\".def", '.'));
-	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("abc.def.\"\"", '.'));
-	EXPECT_EQ((NAS2D::StringList{"Hello", " ", "World"}), NAS2D::splitOnUnquotedSkipEmpty("Hello \" \" World", ' '));
-	EXPECT_EQ((NAS2D::StringList{"Hello", "World"}), NAS2D::splitOnUnquotedSkipEmpty("Hello \"\" World", ' '));
+c=d
+e="Hello
+World"
+)";
+	auto a = StringList{"a=b", "c=d", "e=\"Hello\nWorld\""};
+	auto b = NAS2D::splitOnUnquotedSkipEmpty(input, '\n');
+	EXPECT_EQ(a, b);
+}
+
+TEST(StringUtils, SplitOnUnquotedNoSkipEmpty)
+{
+	using StringList = std::vector<std::string>;
+	std::string input =
+		R"(
+a=b
+
+c=d
+e="Hello
+World"
+)";
+	auto a = StringList{"", "a=b", "", "c=d", "e=\"Hello\nWorld\"", ""};
+	auto b = NAS2D::splitOnUnquoted(input, '\n');
+	EXPECT_EQ(a, b);
 }

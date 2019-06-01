@@ -56,6 +56,10 @@ TEST(String, splitOnUnquoted)
 	EXPECT_EQ((NAS2D::StringList{"", "abc", "def"}), NAS2D::splitOnUnquoted("\"\".abc.def", '.'));
 	EXPECT_EQ((NAS2D::StringList{"abc", "", "def"}), NAS2D::splitOnUnquoted("abc.\"\".def", '.'));
 	EXPECT_EQ((NAS2D::StringList{"abc", "def", ""}), NAS2D::splitOnUnquoted("abc.def.\"\"", '.'));
+	EXPECT_EQ((NAS2D::StringList{"Hello", "Hello World", "World"}), NAS2D::splitOnUnquoted("Hello \"Hello World\" World", ' '));
+	EXPECT_EQ((NAS2D::StringList{"Hello", " ", "World"}), NAS2D::splitOnUnquoted("Hello \" \" World", ' '));
+	EXPECT_EQ((NAS2D::StringList{"Hello", "", "World"}), NAS2D::splitOnUnquoted("Hello \"\" World", ' '));
+
 }
 
 TEST(String, splitSkipEmpty)
@@ -96,5 +100,6 @@ TEST(String, splitOnUnquotedSkipEmpty)
 	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("\"\".abc.def", '.'));
 	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("abc.\"\".def", '.'));
 	EXPECT_EQ((NAS2D::StringList{"abc", "def"}), NAS2D::splitOnUnquotedSkipEmpty("abc.def.\"\"", '.'));
-
+	EXPECT_EQ((NAS2D::StringList{"Hello", " ", "World"}), NAS2D::splitOnUnquotedSkipEmpty("Hello \" \" World", ' '));
+	EXPECT_EQ((NAS2D::StringList{"Hello", "World"}), NAS2D::splitOnUnquotedSkipEmpty("Hello \"\" World", ' '));
 }

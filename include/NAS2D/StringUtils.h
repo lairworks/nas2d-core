@@ -24,6 +24,9 @@ namespace NAS2D
 	std::vector<std::string> splitSkipEmpty(std::string str, char delim = ',');
 	std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim);
 	std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim);
+	std::vector<std::string> splitOnUnquoted(const std::string& str, char delim = ',');
+	std::vector<std::string> splitOnUnquotedSkipEmpty(const std::string& str, char delim = ',');
+
 	std::string join(std::vector<std::string> strs);
 	std::string join(std::vector<std::string> strs, char delim);
 	std::string joinSkipEmpty(std::vector<std::string> strs);

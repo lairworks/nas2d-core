@@ -108,6 +108,76 @@ std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, c
 	}
 }
 
+std::vector<std::string> NAS2D::splitOnUnquoted(const std::string& str, char delim /*= ','*/)
+{
+	bool in_quote = false;
+	std::vector<std::string> result{};
+	auto potential_count = 1u + std::count(std::begin(str), std::end(str), delim);
+	result.reserve(potential_count);
+	auto substring_start = std::begin(str);
+	auto substring_end = std::end(str);
+	for (auto iter = std::begin(str); iter != std::end(str); /* DO NOTHING */)
+	{
+		if (*iter == '"')
+		{
+			in_quote = !in_quote;
+			++iter;
+			continue;
+		}
+		if (in_quote || *iter != delim)
+		{
+			++iter;
+			continue;
+		}
+		substring_end = iter++;
+		std::string substring(substring_start, substring_end);
+		result.push_back(substring);
+		substring_start = iter;
+	}
+	substring_end = std::end(str);
+	auto last_string = std::string(substring_start, substring_end);
+	result.push_back(last_string);
+	result.shrink_to_fit();
+	return result;
+}
+
+std::vector<std::string> NAS2D::splitOnUnquotedSkipEmpty(const std::string& str, char delim /*= ','*/)
+{
+	bool in_quote = false;
+	std::vector<std::string> result{};
+	auto potential_count = 1u + std::count(std::begin(str), std::end(str), delim);
+	result.reserve(potential_count);
+	auto substring_start = std::begin(str);
+	auto substring_end = std::end(str);
+	for (auto iter = std::begin(str); iter != std::end(str); /* DO NOTHING */)
+	{
+		if (*iter == '"')
+		{
+			in_quote = !in_quote;
+			++iter;
+			continue;
+		}
+		if (in_quote || *iter != delim)
+		{
+			++iter;
+			continue;
+		}
+		substring_end = iter++;
+		std::string substring(substring_start, substring_end);
+		if (substring.empty()) { continue; }
+		result.push_back(substring);
+		substring_start = iter;
+	}
+	substring_end = std::end(str);
+	auto last_string = std::string(substring_start, substring_end);
+	if (!last_string.empty())
+	{
+		result.push_back(last_string);
+	}
+	result.shrink_to_fit();
+	return result;
+}
+
 std::string NAS2D::join(std::vector<std::string> strs)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };

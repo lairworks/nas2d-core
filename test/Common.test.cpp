@@ -79,7 +79,7 @@ TEST(String, splitSkipEmpty)
 	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitSkipEmpty("abc.", '.'));
 }
 
-TEST(StringUtils, SplitOnUnquotedSkipEmpty)
+TEST(String, SplitOnUnquotedSkipEmpty)
 {
 	using StringList = std::vector<std::string>;
 	std::string input =
@@ -95,7 +95,7 @@ World"
 	EXPECT_EQ(a, b);
 }
 
-TEST(StringUtils, SplitOnUnquotedNoSkipEmpty)
+TEST(String, SplitOnUnquotedNoSkipEmpty)
 {
 	using StringList = std::vector<std::string>;
 	std::string input =

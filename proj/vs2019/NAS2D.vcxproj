@@ -235,6 +235,11 @@
     <ClCompile Include="..\..\src\FpsCounter.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />
     <ClCompile Include="..\..\src\MathUtils.cpp" />
+    <ClCompile Include="..\..\src\Math\AABB2.cpp" />
+    <ClCompile Include="..\..\src\Math\Matrix4.cpp" />
+    <ClCompile Include="..\..\src\Math\Vector2.cpp" />
+    <ClCompile Include="..\..\src\Math\Vector3.cpp" />
+    <ClCompile Include="..\..\src\Math\Vector4.cpp" />
     <ClCompile Include="..\..\src\Mixer\Mixer.cpp" />
     <ClCompile Include="..\..\src\Mixer\MixerSDL.cpp" />
     <ClCompile Include="..\..\src\Mixer\MixerNull.cpp" />
@@ -277,6 +282,11 @@
     <ClInclude Include="..\..\include\NAS2D\FpsCounter.h" />
     <ClInclude Include="..\..\include\NAS2D\Game.h" />
     <ClInclude Include="..\..\include\NAS2D\MathUtils.h" />
+    <ClInclude Include="..\..\include\NAS2D\Math\AABB2.h" />
+    <ClInclude Include="..\..\include\NAS2D\Math\Matrix4.h" />
+    <ClInclude Include="..\..\include\NAS2D\Math\Vector2.h" />
+    <ClInclude Include="..\..\include\NAS2D\Math\Vector3.h" />
+    <ClInclude Include="..\..\include\NAS2D\Math\Vector4.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\Mixer.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerSDL.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerNull.h" />

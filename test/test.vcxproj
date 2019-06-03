@@ -49,7 +49,10 @@
   <ItemGroup>
     <ClCompile Include="Common.test.cpp" />
     <ClCompile Include="Filesystem.test.cpp" />
+    <ClCompile Include="MathUtils.test.cpp" />
+    <ClCompile Include="StringUtils.test.cpp" />
     <ClCompile Include="Utility.test.cpp" />
+    <ClCompile Include="Version.test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\proj\vs2019\NAS2D.vcxproj">

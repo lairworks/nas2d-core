@@ -9,6 +9,16 @@
 // ==================================================================================
 #include "NAS2D/MathUtils.h"
 
+constexpr float NAS2D::convertDegreesToRadians(float degrees) noexcept
+{
+	return degrees * (Constants::M_PI / 180.0f);
+}
+
+constexpr float NAS2D::convertRadiansToDegrees(float radians) noexcept
+{
+	return radians * (180.0f * Constants::M_1_PI);
+}
+
 /**
  * \fn isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)
  *

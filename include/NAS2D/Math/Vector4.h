@@ -42,7 +42,7 @@ namespace NAS2D
 		static const Vector4 XYZW_Axis;
 		static const Vector4 One;
 
-		static Vector4 calcHomogeneous(const Vector4& v);
+		static Vector4 calcHomogeneous(const Vector4& v) noexcept;
 
 		Vector4() = default;
 		Vector4(const Vector4& rhs) = default;
@@ -77,8 +77,8 @@ namespace NAS2D
 		bool operator==(const Vector4& rhs) const noexcept;
 		bool operator!=(const Vector4& rhs) const noexcept;
 
-		Vector2 getXY() const;
-		Vector2 getZW() const;
+		Vector2 getXY() const noexcept;
+		Vector2 getZW() const noexcept;
 
 		void getXYZ(float& x, float& y, float& z) const noexcept;
 		void getXYZW(float& x, float& y, float& z, float w) const noexcept;

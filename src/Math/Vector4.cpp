@@ -174,12 +174,12 @@ namespace NAS2D
 		return !(*this == rhs);
 	}
 
-	Vector2 Vector4::getXY() const
+	Vector2 Vector4::getXY() const noexcept
 	{
 		return {x, y};
 	}
 
-	Vector2 Vector4::getZW() const
+	Vector2 Vector4::getZW() const noexcept
 	{
 		return {z, w};
 	}
@@ -241,10 +241,10 @@ namespace NAS2D
 
 	float Vector4::normalize3D() noexcept
 	{
-		float length = calcLength3D();
+		const float length = calcLength3D();
 		if (length > 0.0f)
 		{
-			float inv_length = 1.0f / length;
+			const float inv_length = 1.0f / length;
 			x *= inv_length;
 			y *= inv_length;
 			z *= inv_length;
@@ -256,10 +256,10 @@ namespace NAS2D
 
 	float Vector4::normalize4D() noexcept
 	{
-		float length = calcLength4D();
+		const float length = calcLength4D();
 		if (length > 0.0f)
 		{
-			float inv_length = 1.0f / length;
+			const float inv_length = 1.0f / length;
 			x *= inv_length;
 			y *= inv_length;
 			z *= inv_length;
@@ -271,10 +271,10 @@ namespace NAS2D
 
 	Vector4 Vector4::getNormalize3D() const noexcept
 	{
-		float length = calcLength3D();
+		const float length = calcLength3D();
 		if (length > 0.0f)
 		{
-			float inv_length = 1.0f / length;
+			const float inv_length = 1.0f / length;
 			return Vector4{x * inv_length, y * inv_length, z * inv_length, w};
 		}
 		return Vector4::Zero;
@@ -282,16 +282,16 @@ namespace NAS2D
 
 	Vector4 Vector4::getNormalize4D() const noexcept
 	{
-		float length = calcLength4D();
+		const float length = calcLength4D();
 		if (length > 0.0f)
 		{
-			float inv_length = 1.0f / length;
+			const float inv_length = 1.0f / length;
 			return Vector4{x * inv_length, y * inv_length, z * inv_length, w * inv_length};
 		}
 		return Vector4::Zero;
 	}
 
-	Vector4 Vector4::calcHomogeneous(const Vector4& v)
+	Vector4 Vector4::calcHomogeneous(const Vector4& v) noexcept
 	{
 		return std::fabs(v.w - 0.0f) < 0.0001f == false ? v / v.w : v;
 	}

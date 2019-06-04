@@ -1,8 +1,7 @@
 #include "NAS2D/Math/Vector3.h"
 
-#include "NAS2D/MathUtils.h"
-
 #include "NAS2D/Math/Vector2.h"
+#include "NAS2D/MathUtils.h"
 
 #include <cmath>
 
@@ -156,7 +155,7 @@ namespace NAS2D
 
 	float Vector3::calcLengthSquared() const noexcept
 	{
-		return x * x + y * y;
+		return x * x + y * y + z * z;
 	}
 
 	void Vector3::setXYZ(float newX, float newY, float newZ) noexcept

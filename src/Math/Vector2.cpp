@@ -211,7 +211,9 @@ namespace NAS2D
 	Vector2 Vector2::getNormalize() const noexcept
 	{
 		const float inv_length = calcInverseLength();
-		return {x * inv_length, y * inv_length};
+		float newX = x * inv_length;
+		float newY = y * inv_length;
+		return {newX, newY};
 	}
 
 	void Vector2::rotate90Degrees() noexcept
@@ -241,9 +243,10 @@ namespace NAS2D
 	float Vector2::calcInverseLength() const noexcept
 	{
 		const auto length = calcLength();
-        if(length > 0.0f) {
+		if (length > 0.0f)
+		{
 			return 1.0f / length;
-        }
+		}
 		return 0.0f;
 	}
 

@@ -30,7 +30,7 @@ namespace NAS2D
 		Vector2& operator=(Vector2&& r_other) = default;
 		~Vector2() = default;
 		Vector2(float x, float y) noexcept;
-        //TODO: Construct from std::string
+		//TODO: Construct from std::string
 
 		Vector2 operator+(const Vector2& rhs) const noexcept;
 		Vector2& operator+=(const Vector2& rhs) noexcept;
@@ -80,7 +80,7 @@ namespace NAS2D
 
 		friend void swap(Vector2& a, Vector2& b) noexcept;
 
-        //TODO: streaming operations
+		//TODO: streaming operations
 
 		float x = 0.0f;
 		float y = 0.0f;

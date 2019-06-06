@@ -272,13 +272,20 @@ namespace NAS2D
 	Vector4 Vector4::getNormalize3D() const noexcept
 	{
 		const float inv_length = calcInverseLength3D();
-		return {x * inv_length, y * inv_length, z * inv_length, w};
+		float newX = x * inv_length;
+		float newY = y * inv_length;
+		float newZ = z * inv_length;
+		return {newX, newY, newZ, w};
 	}
 
 	Vector4 Vector4::getNormalize4D() const noexcept
 	{
-		const float inv_length = calcInverseLength4D();
-		return {x * inv_length, y * inv_length, z * inv_length, w * inv_length};
+		const float inv_length = calcInverseLength3D();
+		float newX = x * inv_length;
+		float newY = y * inv_length;
+		float newZ = z * inv_length;
+		float newW = w * inv_length;
+		return {newX, newY, newZ, newW};
 	}
 
 	float Vector4::calcInverseLength3D() const noexcept

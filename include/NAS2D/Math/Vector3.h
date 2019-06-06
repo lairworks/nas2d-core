@@ -13,7 +13,7 @@
 namespace NAS2D
 {
 
-    class Vector2;
+	class Vector2;
 
 	class Vector3
 	{

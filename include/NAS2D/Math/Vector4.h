@@ -109,6 +109,8 @@ namespace NAS2D
 
 	  protected:
 	  private:
+		float calcInverseLength3D() const noexcept;
+		float calcInverseLength4D() const noexcept;
 	};
 
 } // namespace NAS2D

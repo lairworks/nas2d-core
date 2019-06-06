@@ -83,6 +83,7 @@ namespace NAS2D
 
 	  protected:
 	  private:
+		float calcInverseLength() const noexcept;
 	};
 
 } // namespace NAS2D

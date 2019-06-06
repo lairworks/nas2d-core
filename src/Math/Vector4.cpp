@@ -271,24 +271,34 @@ namespace NAS2D
 
 	Vector4 Vector4::getNormalize3D() const noexcept
 	{
-		const float length = calcLength3D();
-		if (length > 0.0f)
-		{
-			const float inv_length = 1.0f / length;
-			return Vector4{x * inv_length, y * inv_length, z * inv_length, w};
-		}
-		return Vector4::Zero;
+		const float inv_length = calcInverseLength3D();
+		return {x * inv_length, y * inv_length, z * inv_length, w};
 	}
 
 	Vector4 Vector4::getNormalize4D() const noexcept
 	{
+		const float inv_length = calcInverseLength4D();
+		return {x * inv_length, y * inv_length, z * inv_length, w * inv_length};
+	}
+
+	float Vector4::calcInverseLength3D() const noexcept
+	{
+		const float length = calcLength3D();
+		if (length > 0.0f)
+		{
+			return 1.0f / length;
+		}
+		return 0.0f;
+	}
+
+	float Vector4::calcInverseLength4D() const noexcept
+	{
 		const float length = calcLength4D();
 		if (length > 0.0f)
 		{
-			const float inv_length = 1.0f / length;
-			return Vector4{x * inv_length, y * inv_length, z * inv_length, w * inv_length};
+			return 1.0f / length;
 		}
-		return Vector4::Zero;
+		return 0.0f;
 	}
 
 	Vector4 Vector4::calcHomogeneous(const Vector4& v) noexcept

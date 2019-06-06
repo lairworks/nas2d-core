@@ -167,10 +167,10 @@ namespace NAS2D
 
 	float Vector3::normalize() noexcept
 	{
-		const float length = calcLength();
+		const auto length = calcLength();
 		if (length > 0.0f)
 		{
-			const float inv_length = 1.0f / length;
+			const auto inv_length = 1.0f / length;
 			x *= inv_length;
 			y *= inv_length;
 			z *= inv_length;
@@ -181,10 +181,10 @@ namespace NAS2D
 
 	Vector3 Vector3::getNormalize() const noexcept
 	{
-		const float inv_length = calcInverseLength();
-		float newX = x * inv_length;
-		float newY = y * inv_length;
-		float newZ = z * inv_length;
+		const auto inv_length = calcInverseLength();
+		const auto newX = x * inv_length;
+		const auto newY = y * inv_length;
+		const auto newZ = z * inv_length;
 		return {newX, newY, newZ};
 	}
 

@@ -241,10 +241,10 @@ namespace NAS2D
 
 	float Vector4::normalize3D() noexcept
 	{
-		const float length = calcLength3D();
+		const auto length = calcLength3D();
 		if (length > 0.0f)
 		{
-			const float inv_length = 1.0f / length;
+			const auto inv_length = 1.0f / length;
 			x *= inv_length;
 			y *= inv_length;
 			z *= inv_length;
@@ -256,10 +256,10 @@ namespace NAS2D
 
 	float Vector4::normalize4D() noexcept
 	{
-		const float length = calcLength4D();
+		const auto length = calcLength4D();
 		if (length > 0.0f)
 		{
-			const float inv_length = 1.0f / length;
+			const auto inv_length = 1.0f / length;
 			x *= inv_length;
 			y *= inv_length;
 			z *= inv_length;
@@ -271,26 +271,26 @@ namespace NAS2D
 
 	Vector4 Vector4::getNormalize3D() const noexcept
 	{
-		const float inv_length = calcInverseLength3D();
-		float newX = x * inv_length;
-		float newY = y * inv_length;
-		float newZ = z * inv_length;
+		const auto inv_length = calcInverseLength3D();
+		const auto newX = x * inv_length;
+		const auto newY = y * inv_length;
+		const auto newZ = z * inv_length;
 		return {newX, newY, newZ, w};
 	}
 
 	Vector4 Vector4::getNormalize4D() const noexcept
 	{
-		const float inv_length = calcInverseLength3D();
-		float newX = x * inv_length;
-		float newY = y * inv_length;
-		float newZ = z * inv_length;
-		float newW = w * inv_length;
+		const auto inv_length = calcInverseLength3D();
+		const auto newX = x * inv_length;
+		const auto newY = y * inv_length;
+		const auto newZ = z * inv_length;
+		const auto newW = w * inv_length;
 		return {newX, newY, newZ, newW};
 	}
 
 	float Vector4::calcInverseLength3D() const noexcept
 	{
-		const float length = calcLength3D();
+		const auto length = calcLength3D();
 		if (length > 0.0f)
 		{
 			return 1.0f / length;
@@ -300,7 +300,7 @@ namespace NAS2D
 
 	float Vector4::calcInverseLength4D() const noexcept
 	{
-		const float length = calcLength4D();
+		const auto length = calcLength4D();
 		if (length > 0.0f)
 		{
 			return 1.0f / length;

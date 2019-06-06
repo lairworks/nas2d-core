@@ -154,7 +154,7 @@ namespace NAS2D
 
 	void Vector2::setHeadingRadians(float headingRadians) noexcept
 	{
-		const float R = calcLength();
+		const auto R = calcLength();
 		x = R * std::cos(headingRadians);
 		y = R * std::sin(headingRadians);
 	}
@@ -177,8 +177,8 @@ namespace NAS2D
 
 	float Vector2::setLength(float length) noexcept
 	{
-		const float old_length = calcLength();
-		const float theta = calcHeadingRadians();
+		const auto old_length = calcLength();
+		const auto theta = calcHeadingRadians();
 		x = length * std::cos(theta);
 		y = length * std::sin(theta);
 		return old_length;
@@ -197,7 +197,7 @@ namespace NAS2D
 
 	float Vector2::normalize() noexcept
 	{
-		const float length = calcLength();
+		const auto length = calcLength();
 		if (length > 0.0f)
 		{
 			const float inv_length = 1.0f / length;
@@ -210,9 +210,9 @@ namespace NAS2D
 
 	Vector2 Vector2::getNormalize() const noexcept
 	{
-		const float inv_length = calcInverseLength();
-		float newX = x * inv_length;
-		float newY = y * inv_length;
+		const auto inv_length = calcInverseLength();
+		const auto newX = x * inv_length;
+		const auto newY = y * inv_length;
 		return {newX, newY};
 	}
 
@@ -228,9 +228,9 @@ namespace NAS2D
 
 	void Vector2::rotateRadians(float radiansToAdd) noexcept
 	{
-		const float R = calcLength();
-		const float old_angle = std::atan2(y, x);
-		const float new_angle = old_angle + radiansToAdd;
+		const auto R = calcLength();
+		const auto old_angle = std::atan2(y, x);
+		const auto new_angle = old_angle + radiansToAdd;
 		x = R * std::cos(new_angle);
 		y = R * std::sin(new_angle);
 	}

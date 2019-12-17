@@ -8,6 +8,7 @@
 // = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 #include "NAS2D/MathUtils.h"
+#include <stdexcept>
 
 /**
  * \fn isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH)
@@ -91,5 +92,8 @@ bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
  */
 int NAS2D::divideUp(int to_divide, int divisor)
 {
+	if (divisor == 0) {
+		throw std::domain_error("Division by zero: divideUp(to_divide, 0)");
+	}
 	return (to_divide + (divisor - 1)) / divisor;
 }

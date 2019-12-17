@@ -6,10 +6,10 @@
 
 TEST(MathUtils, divideUpByZero)
 {
-	EXPECT_DEATH(NAS2D::divideUp(0, 0), "divideUp(0,0) divide by zero.");
-	EXPECT_DEATH(NAS2D::divideUp(1, 0), "divideUp(1,0) divide by zero.");
-	EXPECT_DEATH(NAS2D::divideUp(2, 0), "divideUp(2,0) divide by zero.");
-	EXPECT_DEATH(NAS2D::divideUp(256, 0), "divideUp(256,0) divide by zero.");
+	EXPECT_THROW(NAS2D::divideUp(0, 0), std::domain_error);
+	EXPECT_THROW(NAS2D::divideUp(1, 0), std::domain_error);
+	EXPECT_THROW(NAS2D::divideUp(2, 0), std::domain_error);
+	EXPECT_THROW(NAS2D::divideUp(256, 0), std::domain_error);
 }
 
 TEST(MathUtils, divideUp)

@@ -29,4 +29,4 @@ Point_2df getDirectionVector(float angle);
 
 bool lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r);
 
-};
+}

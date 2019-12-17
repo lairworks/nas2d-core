@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Common.h"
+#include "NAS2D/StringUtils.h"
 #include "File.h"
 #include <string>
 

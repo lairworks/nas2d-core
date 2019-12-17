@@ -227,7 +227,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Common.cpp" />
     <ClCompile Include="..\..\src\Configuration.cpp" />
     <ClCompile Include="..\..\src\EventHandler.cpp" />
     <ClCompile Include="..\..\src\Exception.cpp" />

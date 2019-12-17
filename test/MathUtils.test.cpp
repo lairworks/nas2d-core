@@ -4,22 +4,26 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-TEST(MathUtils, divideUp)
+TEST(MathUtils, divideUpByZero)
 {
 	EXPECT_DEATH(NAS2D::divideUp(0, 0), "divideUp(0,0) divide by zero.");
+	EXPECT_DEATH(NAS2D::divideUp(1, 0), "divideUp(1,0) divide by zero.");
+	EXPECT_DEATH(NAS2D::divideUp(2, 0), "divideUp(2,0) divide by zero.");
+	EXPECT_DEATH(NAS2D::divideUp(256, 0), "divideUp(256,0) divide by zero.");
+}
+
+TEST(MathUtils, divideUp)
+{
 	EXPECT_EQ(0, NAS2D::divideUp(0, 1));
 	EXPECT_EQ(0, NAS2D::divideUp(0, 2));
 	EXPECT_EQ(0, NAS2D::divideUp(0, 3));
-	EXPECT_DEATH(NAS2D::divideUp(1, 0), "divideUp(1,0) divide by zero.");
 	EXPECT_EQ(1, NAS2D::divideUp(1, 1));
 	EXPECT_EQ(1, NAS2D::divideUp(1, 2));
 	EXPECT_EQ(1, NAS2D::divideUp(1, 3));
-	EXPECT_DEATH(NAS2D::divideUp(2, 0), "divideUp(2,0) divide by zero.");
 	EXPECT_EQ(2, NAS2D::divideUp(2, 1));
 	EXPECT_EQ(1, NAS2D::divideUp(2, 2));
 	EXPECT_EQ(1, NAS2D::divideUp(2, 3));
 	EXPECT_EQ(1, NAS2D::divideUp(5, 8));
-	EXPECT_DEATH(NAS2D::divideUp(256, 0), "divideUp(256,0) divide by zero.");
 	EXPECT_EQ(256, NAS2D::divideUp(256, 1));
 	EXPECT_EQ(128, NAS2D::divideUp(256, 2));
 	EXPECT_EQ(86, NAS2D::divideUp(256, 3));

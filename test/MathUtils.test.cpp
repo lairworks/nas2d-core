@@ -29,8 +29,8 @@ TEST(MathUtils, divideUp)
 	EXPECT_EQ(86, NAS2D::divideUp(256, 3));
 	EXPECT_EQ(64, NAS2D::divideUp(256, 4));
 	EXPECT_EQ(52, NAS2D::divideUp(256, 5));
-	EXPECT_EQ(44, NAS2D::divideUp(256, 6));
-	EXPECT_EQ(38, NAS2D::divideUp(256, 7));
+	EXPECT_EQ(43, NAS2D::divideUp(256, 6));
+	EXPECT_EQ(37, NAS2D::divideUp(256, 7));
 	EXPECT_EQ(32, NAS2D::divideUp(256, 8));
 	EXPECT_EQ(29, NAS2D::divideUp(256, 9));
 	EXPECT_EQ(26, NAS2D::divideUp(256, 10));

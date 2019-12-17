@@ -61,4 +61,4 @@ private:
 	void music_finished_hook();
 };
 
-};
+}

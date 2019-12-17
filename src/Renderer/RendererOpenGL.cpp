@@ -15,6 +15,7 @@
 #include "NAS2D/EventHandler.h"
 #include "NAS2D/Exception.h"
 #include "NAS2D/Filesystem.h"
+#include "NAS2D/MathUtils.h"
 #include "NAS2D/Resources/FontInfo.h"
 #include "NAS2D/Resources/ImageInfo.h"
 #include "NAS2D/Utility.h"

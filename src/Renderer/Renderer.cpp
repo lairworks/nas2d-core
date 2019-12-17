@@ -10,7 +10,6 @@
 
 #include "NAS2D/Renderer/Renderer.h"
 
-#include "NAS2D/Common.h"
 #include "NAS2D/Timer.h"
 
 #include <iostream>

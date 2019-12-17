@@ -9,7 +9,6 @@
 // ==================================================================================
 
 #include "NAS2D/Renderer/Primitives.h"
-#include "NAS2D/Common.h"
 
 using namespace NAS2D;
 

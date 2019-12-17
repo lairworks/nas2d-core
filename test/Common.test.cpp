@@ -1,4 +1,6 @@
-#include "NAS2D/Common.h"
+#include "NAS2D/StringUtils.h"
+#include "NAS2D/Version.h"
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 

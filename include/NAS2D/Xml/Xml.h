@@ -43,18 +43,18 @@
 #pragma warning(disable : 4786)
 #endif
 
-#include "NAS2D/Xml/XmlAttribute.h"
-#include "NAS2D/Xml/XmlAttributeSet.h"
-#include "NAS2D/Xml/XmlBase.h"
-#include "NAS2D/Xml/XmlComment.h"
-#include "NAS2D/Xml/XmlDocument.h"
-#include "NAS2D/Xml/XmlElement.h"
-#include "NAS2D/Xml/XmlHandle.h"
-#include "NAS2D/Xml/XmlMemoryBuffer.h"
-#include "NAS2D/Xml/XmlNode.h"
-#include "NAS2D/Xml/XmlText.h"
-#include "NAS2D/Xml/XmlVisitor.h"
-#include "NAS2D/Xml/XmlUnknown.h"
+#include "XmlAttribute.h"
+#include "XmlAttributeSet.h"
+#include "XmlBase.h"
+#include "XmlComment.h"
+#include "XmlDocument.h"
+#include "XmlElement.h"
+#include "XmlHandle.h"
+#include "XmlMemoryBuffer.h"
+#include "XmlNode.h"
+#include "XmlText.h"
+#include "XmlVisitor.h"
+#include "XmlUnknown.h"
 
 #ifdef _MSC_VER
 #pragma warning(pop)

@@ -11,8 +11,8 @@
 // ==================================================================================
 #pragma once
 
-#include "NAS2D/Xml/XmlBase.h"
-#include "NAS2D/Xml/XmlVisitor.h"
+#include "XmlBase.h"
+#include "XmlVisitor.h"
 
 namespace NAS2D {
 namespace Xml {

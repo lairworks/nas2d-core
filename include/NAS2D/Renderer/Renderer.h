@@ -10,10 +10,10 @@
 
 #pragma once
 
-#include "NAS2D/Signal.h"
-#include "NAS2D/Renderer/Primitives.h"
-#include "NAS2D/Resources/Image.h"
-#include "NAS2D/Resources/Font.h"
+#include "Primitives.h"
+#include "../Signal.h"
+#include "../Resources/Image.h"
+#include "../Resources/Font.h"
 
 #include <string>
 

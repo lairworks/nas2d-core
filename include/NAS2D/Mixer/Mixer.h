@@ -10,10 +10,10 @@
 
 #pragma once
 
-#include "NAS2D/Signal.h"
+#include "../Signal.h"
 
-#include "NAS2D/Resources/Sound.h"
-#include "NAS2D/Resources/Music.h"
+#include "../Resources/Sound.h"
+#include "../Resources/Music.h"
 
 namespace NAS2D {
 

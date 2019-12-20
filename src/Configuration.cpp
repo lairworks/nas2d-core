@@ -20,64 +20,47 @@ using namespace NAS2D;
 using namespace NAS2D::Xml;
 
 // Set some basic constants.
-const int				AUDIO_LOW_QUALITY			= 11025;
-const int				AUDIO_MEDIUM_QUALITY		= 22050;
-const int				AUDIO_HIGH_QUALITY			= 44100;
-const int				AUDIO_SFX_MIN_VOLUME		= 0;
-const int				AUDIO_SFX_MAX_VOLUME		= 128;
-const int				AUDIO_SFX_VOLUME			= 128;
-const int				AUDIO_MUSIC_MIN_VOLUME		= 0;
-const int				AUDIO_MUSIC_MAX_VOLUME		= 128;
-const int				AUDIO_MUSIC_VOLUME			= 100;
-const int				AUDIO_BUFFER_SIZE			= 1024;
-const int				AUDIO_BUFFER_MIN_SIZE		= 256;
-const int				AUDIO_BUFFER_MAX_SIZE		= 4096;
-const int				AUDIO_MONO					= 1;
-const int				AUDIO_STEREO				= 2;
-const std::string		AUDIO_MIXER					= "SDL";
+const int AUDIO_LOW_QUALITY = 11025;
+const int AUDIO_MEDIUM_QUALITY = 22050;
+const int AUDIO_HIGH_QUALITY = 44100;
+const int AUDIO_SFX_MIN_VOLUME = 0;
+const int AUDIO_SFX_MAX_VOLUME = 128;
+const int AUDIO_SFX_VOLUME = 128;
+const int AUDIO_MUSIC_MIN_VOLUME = 0;
+const int AUDIO_MUSIC_MAX_VOLUME = 128;
+const int AUDIO_MUSIC_VOLUME = 100;
+const int AUDIO_BUFFER_SIZE = 1024;
+const int AUDIO_BUFFER_MIN_SIZE = 256;
+const int AUDIO_BUFFER_MAX_SIZE = 4096;
+const int AUDIO_MONO = 1;
+const int AUDIO_STEREO = 2;
+const std::string AUDIO_MIXER = "SDL";
 
-const std::string		AUDIO_CFG_MIXRATE			= "mixrate";
-const std::string		AUDIO_CFG_CHANNELS			= "channels";
-const std::string		AUDIO_CFG_SFX_VOLUME		= "sfxvolume";
-const std::string		AUDIO_CFG_MUS_VOLUME		= "musicvolume";
-const std::string		AUDIO_CFG_BUFFER_SIZE		= "bufferlength";
-const std::string		AUDIO_CFG_MIXER				= "mixer";
+const std::string AUDIO_CFG_MIXRATE = "mixrate";
+const std::string AUDIO_CFG_CHANNELS = "channels";
+const std::string AUDIO_CFG_SFX_VOLUME = "sfxvolume";
+const std::string AUDIO_CFG_MUS_VOLUME = "musicvolume";
+const std::string AUDIO_CFG_BUFFER_SIZE = "bufferlength";
+const std::string AUDIO_CFG_MIXER = "mixer";
 
-const int				GRAPHICS_WIDTH				= 800;
-const int				GRAPHICS_HEIGHT				= 600;
-const int				GRAPHICS_BITDEPTH			= 32;
-const bool				GRAPHICS_FULLSCREEN			= false;
+const int GRAPHICS_WIDTH = 800;
+const int GRAPHICS_HEIGHT = 600;
+const int GRAPHICS_BITDEPTH = 32;
+const bool GRAPHICS_FULLSCREEN = false;
+const bool GRAPHICS_VSYNC = false;
 
-const std::string		GRAPHICS_CFG_SCREEN_WIDTH	= "screenwidth";
-const std::string		GRAPHICS_CFG_SCREEN_HEIGHT	= "screenheight";
-const std::string		GRAPHICS_CFG_SCREEN_DEPTH	= "bitdepth";
-const std::string		GRAPHICS_CFG_FULLSCREEN		= "fullscreen";
-const std::string		GRAPHICS_CFG_VSYNC			= "vsync";
-
-
-/**
- * C'tor
- */
-Configuration::Configuration():	mScreenWidth(GRAPHICS_WIDTH),
-								mScreenHeight(GRAPHICS_HEIGHT),
-								mScreenBpp(GRAPHICS_BITDEPTH),
-								mFullScreen(false),
-								mMixRate(AUDIO_MEDIUM_QUALITY),
-								mStereoChannels(AUDIO_STEREO),
-								mSfxVolume(AUDIO_SFX_VOLUME),
-								mMusicVolume(AUDIO_MUSIC_VOLUME),
-								mBufferLength(AUDIO_BUFFER_SIZE),
-								mMixerName("SDL"),
-								mOptionChanged(false)
-{}
-
+const std::string GRAPHICS_CFG_SCREEN_WIDTH = "screenwidth";
+const std::string GRAPHICS_CFG_SCREEN_HEIGHT = "screenheight";
+const std::string GRAPHICS_CFG_SCREEN_DEPTH = "bitdepth";
+const std::string GRAPHICS_CFG_FULLSCREEN = "fullscreen";
+const std::string GRAPHICS_CFG_VSYNC = "vsync";
 
 /**
  * D'tor
  */
 Configuration::~Configuration()
 {
-	if (mOptionChanged)
+	if(mOptionChanged)
 	{
 		save();
 	}
@@ -179,12 +162,14 @@ void Configuration::setDefaultValues()
 	mScreenHeight = GRAPHICS_HEIGHT;
 	mScreenBpp = GRAPHICS_BITDEPTH;
 	mFullScreen = GRAPHICS_FULLSCREEN;
+	mVSync = GRAPHICS_VSYNC;
 
 	mMixRate = AUDIO_MEDIUM_QUALITY;
 	mStereoChannels = AUDIO_STEREO;
 	mSfxVolume = AUDIO_SFX_VOLUME;
 	mMusicVolume = AUDIO_MUSIC_VOLUME;
 	mBufferLength = AUDIO_BUFFER_SIZE;
+	mOptionChanged = true;
 }
 
 

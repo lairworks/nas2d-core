@@ -26,7 +26,11 @@ class Configuration
 {
 public:
 
-	Configuration();
+	Configuration() = default;
+	Configuration(const Configuration&) = delete;
+	Configuration& operator=(const Configuration&) = delete;
+	Configuration(Configuration&&) = delete;
+	Configuration& operator=(Configuration&&) = delete;
 	~Configuration();
 
 	void save();
@@ -75,11 +79,9 @@ public:
 	 */
 	bool optionChanged() const { return mOptionChanged; }
 
+protected:
 private:
 	typedef std::map<std::string, std::string> Options;
-
-	Configuration(const Configuration&);			// Intentionally left undefined.
-	Configuration& operator=(const Configuration&);	// Intentionally left undefined.
 
 	bool readConfig(const std::string& filePath);
 
@@ -87,24 +89,25 @@ private:
 	void parseAudio(void *node);
 	void parseOptions(void *node);
 
-private:
-	Options				mOptions;						/**< Options table containing option/value pairs. */
+	Options mOptions{};
 
-	int					mScreenWidth, mScreenHeight;	/**< Screen Resolution */
-	int					mScreenBpp;						/**< Color Depth */
+	int mScreenWidth{800};
+	int mScreenHeight{600};
+	int mScreenBpp{32};
 
-	bool				mFullScreen;					/**< Screen Mode */
-	bool				mVSync;							/**< Vertical Sync */
+	bool mFullScreen{false};
+	bool mVSync{false};
 
-	int					mMixRate;						/**< */
-	int					mStereoChannels;				/**< Either AUDIO_STEREO or AUDIO_MONO */
-	int					mSfxVolume, mMusicVolume;		/**< Audio Volume Levels */
-	int					mBufferLength;					/**< Audio Buffer Length */
-	std::string			mMixerName;						/**< Renderer to use. */
+	int mMixRate{22050};
+	int mStereoChannels{2};
+	int mSfxVolume{128};
+	int mMusicVolume{100};
+	int mBufferLength{1024};
+	std::string mMixerName{"SDL"};
 
-	std::string			mConfigPath;					/**< Path for the config file. */
+	std::string mConfigPath{};
 
-	bool				mOptionChanged;					/**< Flags whether or not an option was changed. */
+	bool mOptionChanged{false};
 };
 
 } // namespace

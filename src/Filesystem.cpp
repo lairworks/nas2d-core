@@ -128,7 +128,7 @@ StringList Filesystem::searchPath() const
  *
  * \note	This function will also return the names of any directories in a specified search path
  */
-StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const
+StringList Filesystem::directoryList(const std::string& dir, const std::string& filter /*= std::string{}*/) const
 {
 	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 

@@ -35,7 +35,7 @@ public:
 	StringList searchPath() const;
 	bool mount(const std::string& path) const;
 
-	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
+	StringList directoryList(const std::string& dir, const std::string& filter = std::string {}) const;
 
 	File open(const std::string& filename) const;
 	bool write(const File& file, bool overwrite = true) const;

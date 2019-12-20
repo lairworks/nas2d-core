@@ -206,7 +206,7 @@ bool Configuration::readConfig(const std::string& filePath)
 			if (xmlNode->value() == "graphics") { parseGraphics(xmlNode); }
 			else if (xmlNode->value() == "audio") { parseAudio(xmlNode); }
 			else if (xmlNode->value() == "options") { parseOptions(xmlNode); }
-			else if (xmlNode->type() == XmlNode::XML_COMMENT) {} // Ignore comments
+			else if (xmlNode->type() == XmlNode::NodeType::XML_COMMENT) {} // Ignore comments
 			else
 			{
 				std::cout << "Unexpected tag '<" << xmlNode->value() << ">' found in '" << filePath << "' on row " << xmlNode->row() << "." << std::endl;

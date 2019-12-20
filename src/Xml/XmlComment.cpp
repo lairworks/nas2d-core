@@ -16,7 +16,7 @@ using namespace NAS2D::Xml;
 /**
  * Default c'tor.
  */
-XmlComment::XmlComment() : XmlNode(XmlNode::XML_COMMENT)
+XmlComment::XmlComment() : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {}
 
 
@@ -27,7 +27,7 @@ XmlComment::XmlComment() : XmlNode(XmlNode::XML_COMMENT)
  *
  * \param	_value	Reference to a \c std::string with the value to use for the comment.
  */
-XmlComment::XmlComment(const std::string& _value) : XmlNode(XmlNode::XML_COMMENT)
+XmlComment::XmlComment(const std::string& _value) : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {
 	value(_value);
 }

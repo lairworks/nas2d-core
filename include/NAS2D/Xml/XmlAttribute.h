@@ -25,7 +25,7 @@ namespace Xml {
 class XmlAttribute : public XmlBase
 {
 public:
-	enum QueryResult
+	enum class QueryResult
 	{
 		XML_SUCCESS,
 		XML_NO_ATTRIBUTE,

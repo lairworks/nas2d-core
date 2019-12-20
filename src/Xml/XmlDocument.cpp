@@ -16,7 +16,7 @@ using namespace NAS2D::Xml;
 /**
  * Default c'tor
  */
-XmlDocument::XmlDocument() :	XmlNode(XmlNode::XML_DOCUMENT),
+XmlDocument::XmlDocument() :	XmlNode(XmlNode::NodeType::XML_DOCUMENT),
 								_errorId(0),
 								_error(false)
 {
@@ -29,7 +29,9 @@ XmlDocument::XmlDocument() :	XmlNode(XmlNode::XML_DOCUMENT),
  *
  * \param documentName	Name of the document.
  */
-XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML_DOCUMENT),
+XmlDocument::XmlDocument(const std::string& documentName)
+: XmlNode(XmlNode::NodeType::XML_DOCUMENT)
+,
 															_errorId(0),
 															_error(false)
 {
@@ -43,7 +45,8 @@ XmlDocument::XmlDocument(const std::string& documentName) :	XmlNode(XmlNode::XML
  *
  * \param copy XmlDocument to copy.
  */
-XmlDocument::XmlDocument(const XmlDocument& copy) : XmlNode(XmlNode::XML_DOCUMENT)
+XmlDocument::XmlDocument(const XmlDocument& copy)
+: XmlNode(XmlNode::NodeType::XML_DOCUMENT)
 {
 	copy.copyTo(this);
 }

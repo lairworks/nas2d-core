@@ -61,4 +61,4 @@ private:
 	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 };
 
-};
+}

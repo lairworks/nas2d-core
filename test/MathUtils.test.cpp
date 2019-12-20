@@ -140,102 +140,82 @@ TEST(MathUtils, isPointInRectClass)
 
 TEST(MathUtils, isRectInRectComponent)
 {
-	//Neghbors
-	EXPECT_EQ(false, NAS2D::isRectInRect(3, 3, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(4, 3, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(5, 3, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(6, 3, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(7, 3, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(7, 4, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(7, 5, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(7, 6, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(7, 7, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(6, 7, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(5, 7, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(4, 7, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(3, 7, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(3, 6, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(3, 5, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(3, 4, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(3, 3, 1, 1, 5, 5, 1, 1));
+	// Coincident
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 5, 5, 6, 6));
+	// Contained all sides, both directions
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 4, 4, 7, 7));
+	EXPECT_EQ(true, NAS2D::isRectInRect(4, 4, 7, 7, 5, 5, 6, 6));
 
-	//Top
-	EXPECT_EQ(false, NAS2D::isRectInRect(4, 5, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(true, NAS2D::isRectInRect(6, 5, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(7, 5, 1, 1, 5, 5, 1, 1));
+	// Contained 1 size coincident
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 4, 4, 7, 6));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 4, 4, 6, 7));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 4, 5, 7, 7));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 5, 4, 7, 7));
 
-	//Bottom
-	EXPECT_EQ(false, NAS2D::isRectInRect(4, 6, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(true, NAS2D::isRectInRect(5, 6, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(true, NAS2D::isRectInRect(6, 6, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(7, 6, 1, 1, 5, 5, 1, 1));
+	// Touching at point (top left, top right, bottom left, bottom right)
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 4, 6, 5, 7));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 6, 6, 7, 7));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 4, 4, 5, 5));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 6, 4, 7, 5));
 
-	//Left
-	EXPECT_EQ(false, NAS2D::isRectInRect(5, 4, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(true, NAS2D::isRectInRect(5, 6, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(5, 7, 1, 1, 5, 5, 1, 1));
+	// Touching along edge (top, right, bottom, left)
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 5, 6, 6, 7));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 6, 5, 7, 6));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 5, 4, 6, 5));
+	EXPECT_EQ(true, NAS2D::isRectInRect(5, 5, 6, 6, 4, 5, 5, 6));
 
-	//Right
-	EXPECT_EQ(false, NAS2D::isRectInRect(6, 4, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(true, NAS2D::isRectInRect(6, 5, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(true, NAS2D::isRectInRect(6, 6, 1, 1, 5, 5, 1, 1));
-	EXPECT_EQ(false, NAS2D::isRectInRect(6, 7, 1, 1, 5, 5, 1, 1));
+	// Disjoint x
+	EXPECT_EQ(false, NAS2D::isRectInRect(5, 5, 6, 6, 7, 5, 8, 6));
+	EXPECT_EQ(false, NAS2D::isRectInRect(5, 5, 6, 6, 3, 5, 4, 6));
+	// Disjoint y
+	EXPECT_EQ(false, NAS2D::isRectInRect(5, 5, 6, 6, 5, 3, 6, 4));
+	EXPECT_EQ(false, NAS2D::isRectInRect(5, 5, 6, 6, 5, 7, 6, 8));
 
-	//Center
-	EXPECT_EQ(false, NAS2D::isRectInRect(3, 6, 1, 1, 5, 5, 2, 2));
-	EXPECT_EQ(true, NAS2D::isRectInRect(4, 6, 1, 1, 5, 5, 2, 2));
-	EXPECT_EQ(true, NAS2D::isRectInRect(5, 6, 1, 1, 5, 5, 2, 2));
-	EXPECT_EQ(true, NAS2D::isRectInRect(6, 6, 1, 1, 5, 5, 2, 2));
-	EXPECT_EQ(true, NAS2D::isRectInRect(7, 6, 1, 1, 5, 5, 2, 2));
-	EXPECT_EQ(false, NAS2D::isRectInRect(8, 6, 1, 1, 5, 5, 2, 2));
+	// Disjoint x/y
+	EXPECT_EQ(false, NAS2D::isRectInRect(5, 5, 6, 6, 3, 7, 4, 8));
+	EXPECT_EQ(false, NAS2D::isRectInRect(5, 5, 6, 6, 7, 7, 8, 8));
+	EXPECT_EQ(false, NAS2D::isRectInRect(5, 5, 6, 6, 3, 3, 4, 4));
+	EXPECT_EQ(false, NAS2D::isRectInRect(5, 5, 6, 6, 7, 3, 8, 4));
 }
 
 TEST(MathUtils, isRectInRectClass)
 {
 	using namespace NAS2D;
-	//Neghbors
-	EXPECT_EQ(false, NAS2D::isRectInRect({4, 4, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({5, 4, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({6, 4, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({7, 4, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({7, 5, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({7, 6, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({7, 7, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({6, 7, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({5, 7, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({4, 7, 1, 1}, {5, 5, 1, 1}));
 
-	//Top
-	EXPECT_EQ(false, NAS2D::isRectInRect({4, 5, 1, 1}, {5, 5, 1, 1}));
+	// Coincident
 	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({6, 5, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({7, 5, 1, 1}, {5, 5, 1, 1}));
+	// Contained all sides, both directions
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {4, 4, 3, 3}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({4, 4, 3, 3}, {5, 5, 1, 1}));
 
-	//Bottom
-	EXPECT_EQ(false, NAS2D::isRectInRect({4, 6, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({5, 6, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({6, 6, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({7, 6, 1, 1}, {5, 5, 1, 1}));
+	// Contained 1 size coincident
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {4, 4, 3, 2}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {4, 4, 2, 3}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {4, 5, 3, 2}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {5, 4, 2, 3}));
 
-	//Left
-	EXPECT_EQ(false, NAS2D::isRectInRect({5, 4, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({5, 6, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({5, 7, 1, 1}, {5, 5, 1, 1}));
+	// Touching at point (top left, top right, bottom left, bottom right)
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {4, 6, 1, 1}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {6, 6, 1, 1}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {4, 4, 1, 1}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {6, 4, 1, 1}));
 
-	//Right
-	EXPECT_EQ(false, NAS2D::isRectInRect({6, 4, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({6, 5, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({6, 6, 1, 1}, {5, 5, 1, 1}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({6, 7, 1, 1}, {5, 5, 1, 1}));
+	// Touching along edge (top, right, bottom, left)
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {5, 6, 1, 1}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {6, 5, 1, 1}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {5, 4, 1, 1}));
+	EXPECT_EQ(true, NAS2D::isRectInRect({5, 5, 1, 1}, {4, 5, 1, 1}));
 
-	//Center
-	EXPECT_EQ(false, NAS2D::isRectInRect({3, 6, 1, 1}, {5, 5, 2, 2}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({4, 6, 1, 1}, {5, 5, 2, 2}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({5, 6, 1, 1}, {5, 5, 2, 2}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({6, 6, 1, 1}, {5, 5, 2, 2}));
-	EXPECT_EQ(true, NAS2D::isRectInRect({7, 6, 1, 1}, {5, 5, 2, 2}));
-	EXPECT_EQ(false, NAS2D::isRectInRect({8, 6, 1, 1}, {5, 5, 2, 2}));
+	// Disjoint x
+	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {7, 5, 1, 1}));
+	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {3, 5, 1, 1}));
+	// Disjoint y
+	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {5, 3, 1, 1}));
+	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {5, 7, 1, 1}));
+
+	// Disjoint x/y
+	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {3, 7, 1, 1}));
+	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {7, 7, 1, 1}));
+	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {3, 3, 1, 1}));
+	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {7, 3, 1, 1}));
 }

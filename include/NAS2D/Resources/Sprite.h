@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "NAS2D/NAS2D.h"
+#include "../NAS2D.h"
 
 #include <map>
 #include <string>

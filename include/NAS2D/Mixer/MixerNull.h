@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NAS2D/Mixer/Mixer.h"
+#include "Mixer.h"
 
 namespace NAS2D
 {

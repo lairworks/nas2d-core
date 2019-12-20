@@ -11,7 +11,7 @@
 #pragma once
 
 #include "State.h"
-#include "NAS2D/Utility.h"
+#include "Utility.h"
 
 namespace NAS2D {
 

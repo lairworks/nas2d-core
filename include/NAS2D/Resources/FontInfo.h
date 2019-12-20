@@ -9,7 +9,7 @@
 // ==================================================================================
 #pragma once
 
-#include "NAS2D/Renderer/Primitives.h"
+#include "../Renderer/Primitives.h"
 
 #include <iostream>
 

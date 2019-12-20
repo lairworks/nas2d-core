@@ -12,7 +12,7 @@
 #pragma message("Common.h/.cpp is deprecated and will be removed in a future release.")
 #pragma message("Please update usage to MathUtils.h or StringUtils.h or Version.h")
 
-#include "NAS2D/MathUtils.h"
-#include "NAS2D/StringUtils.h"
-#include "NAS2D/Version.h"
+#include "MathUtils.h"
+#include "StringUtils.h"
+#include "Version.h"
 

@@ -11,7 +11,7 @@
 // ==================================================================================
 #pragma once
 
-#include "NAS2D/Xml/XmlBase.h"
+#include "XmlBase.h"
 
 #include <string>
 

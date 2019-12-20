@@ -11,7 +11,7 @@
 // ==================================================================================
 #pragma once
 
-#include "NAS2D/Xml/XmlNode.h"
+#include "XmlNode.h"
 
 namespace NAS2D {
 namespace Xml {

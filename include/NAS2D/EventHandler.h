@@ -9,7 +9,7 @@
 // ==================================================================================
 #pragma once
 
-#include "NAS2D/Signal.h"
+#include "Signal.h"
 
 #include <string>
 

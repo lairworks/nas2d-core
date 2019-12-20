@@ -9,8 +9,8 @@
 // ==================================================================================
 #pragma once
 
-#include "NAS2D/Resources/Resource.h"
-#include "NAS2D/Renderer/Primitives.h"
+#include "Resource.h"
+#include "../Renderer/Primitives.h"
 
 #include <vector>
 #include <utility>

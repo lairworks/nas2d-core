@@ -11,7 +11,7 @@
 // ==================================================================================
 #pragma once
 
-#include "NAS2D/Xml/XmlVisitor.h"
+#include "XmlVisitor.h"
 
 #include <string>
 

@@ -29,7 +29,7 @@ namespace NAS2D {
  * Most NAS2D applications that use the Game object will look something like this:
  *
  * \code{.cpp}
- * #include "NAS2D/NAS2D.h"
+ * #include "NAS2D.h"
  * #include "MyState.h"
  *
  * #include <iostream>

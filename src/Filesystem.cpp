@@ -392,23 +392,30 @@ const std::string& Filesystem::dataPath() const noexcept
  *
  * \note	File paths should not have any trailing '/' characters.
  */
-std::string Filesystem::workingPath(const std::string& filename) const
+std::string Filesystem::workingPath(const std::string& filename) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-	if (!filename.empty())
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	if (!mIsInit)
 	{
-		std::string tmpStr(filename);
-		size_t pos = tmpStr.rfind("/");
-		tmpStr = tmpStr.substr(0, pos + 1);
-		return tmpStr;
-	}
-	else
+		return {};
+	};
+	if (filename.empty())
 	{
 		if (mVerbose) { std::cout << "Filesystem::workingPath(): empty string provided." << std::endl; }
-		return std::string();
+		return {};
 	}
-}
+	namespace FS = std::filesystem;
+	auto p = FS::path{filename};
+	return (p.parent_path() / "").make_preferred().string();
 
+	//if (!filename.empty())
+	//{
+	//	std::string tmpStr(filename);
+	//	size_t pos = tmpStr.rfind("/");
+	//	tmpStr = tmpStr.substr(0, pos + 1);
+	//	return tmpStr;
+	//}
+}
 
 /**
  * Gets the extension of a given file path.

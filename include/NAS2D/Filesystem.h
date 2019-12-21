@@ -35,7 +35,7 @@ public:
 	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath) noexcept;
 
 	const std::string& dataPath() const noexcept;
-	std::string workingPath(const std::string& filename) const;
+	std::string workingPath(const std::string& filename) const noexcept;
 	StringList searchPath() const;
 	bool mount(const std::string& path) const;
 

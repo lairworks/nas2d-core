@@ -378,9 +378,9 @@ bool Filesystem::write(const File& file, bool overwrite) const
 /**
  * Gets the base data path.
  */
-std::string Filesystem::dataPath() const
+const std::string& Filesystem::dataPath() const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	return mDataPath;
 }
 

@@ -37,14 +37,15 @@ enum MountPosition
 /**
  * Default c'tor.
  */
-Filesystem::Filesystem(): mVerbose(false)
+Filesystem::Filesystem() noexcept
+	: mVerbose(false)
 {}
 
 
 /**
  * Shuts down PhysFS and cleans up.
  */
-Filesystem::~Filesystem()
+Filesystem::~Filesystem() noexcept
 {
 	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
 }
@@ -285,7 +286,7 @@ bool Filesystem::exists(const std::string& filename) const
  * When Verbose mode is off, only critical messages are displayed.
  * Verbose Mode is generally useful for debugging purposes.
  */
-void Filesystem::toggleVerbose() const
+void Filesystem::toggleVerbose() const noexcept
 {
 	mVerbose = !mVerbose;
 }
@@ -424,7 +425,7 @@ std::string Filesystem::extension(const std::string& path)
 }
 
 
-const char* Filesystem::getLastPhysfsError() const
+const char* Filesystem::getLastPhysfsError() const noexcept
 {
 	return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
 }

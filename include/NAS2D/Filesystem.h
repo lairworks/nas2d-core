@@ -25,12 +25,12 @@ namespace NAS2D {
 class Filesystem
 {
 public:
-	Filesystem();
+	Filesystem() noexcept;
 	Filesystem(const Filesystem&) = delete;
 	Filesystem& operator=(const Filesystem&) = delete;
 	Filesystem(Filesystem&&) = delete;
 	Filesystem& operator=(Filesystem&&) = delete;
-	~Filesystem();
+	~Filesystem() noexcept;
 
 	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
 
@@ -51,16 +51,16 @@ public:
 	bool isDirectory(const std::string& path) const;
 	bool makeDirectory(const std::string& path) const;
 
-	void toggleVerbose() const;
+	void toggleVerbose() const noexcept;
 
 private:
-	bool closeFile(void *file) const;
-	const char* getLastPhysfsError() const;
+	bool closeFile(void* file) const;
+	const char* getLastPhysfsError() const noexcept;
 
 private:
 	std::string mDataPath{}; /**< Data path string. This will typically be 'data/'. */
 	mutable bool mVerbose{false}; /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
-	mutable bool mIsInit{false}; /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
+	mutable bool mIsInit{false};
 };
 
 }

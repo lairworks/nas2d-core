@@ -37,18 +37,18 @@ enum MountPosition
 /**
  * Default c'tor.
  */
-Filesystem::Filesystem() noexcept
-	: mVerbose(false)
-{}
+//Filesystem::Filesystem() noexcept
+//	: mVerbose(false)
+//{}
 
 
 /**
  * Shuts down PhysFS and cleans up.
  */
-Filesystem::~Filesystem() noexcept
-{
-	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
-}
+//Filesystem::~Filesystem() noexcept
+//{
+//	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
+//}
 
 
 /**

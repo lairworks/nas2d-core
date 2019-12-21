@@ -25,12 +25,12 @@ namespace NAS2D {
 class Filesystem
 {
 public:
-	Filesystem() noexcept;
+	Filesystem() = default;
 	Filesystem(const Filesystem&) = delete;
 	Filesystem& operator=(const Filesystem&) = delete;
 	Filesystem(Filesystem&&) = delete;
 	Filesystem& operator=(Filesystem&&) = delete;
-	~Filesystem() noexcept;
+	~Filesystem() = default;
 
 	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
 

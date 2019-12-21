@@ -19,6 +19,7 @@
 
 #include <climits>
 #include <cstring>
+#include <filesystem>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -32,7 +33,6 @@ enum MountPosition
 	MOUNT_PREPEND = 0,
 	MOUNT_APPEND = 1,
 };
-
 
 /**
  * Default c'tor.
@@ -54,25 +54,42 @@ enum MountPosition
 /**
  * Shuts down PhysFS and cleans up.
  */
-void Filesystem::init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
+void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appName*/, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
 {
-	if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
-
-	if (PHYSFS_init(argv_0.c_str()) == 0)
-	{
-		throw filesystem_backend_init_failure(getLastPhysfsError());
+	if(mIsInit) {
+		return;
 	}
+	//if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
 
-	if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
+	//if (PHYSFS_init(argv_0.c_str()) == 0)
+	//{
+	//	throw filesystem_backend_init_failure(getLastPhysfsError());
+	//}
+
+	//if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
+	//{
+	//	std::cout << std::endl << "(FSYS) Error setting sane config. " << getLastPhysfsError() << "." << std::endl;
+	//}
+
+	namespace FS = std::filesystem;
+	FS::path p = dataPath;
+	std::error_code ec{};
+	p = FS::canonical(p, ec);
+	if(ec)
 	{
-		std::cout << std::endl << "(FSYS) Error setting sane config. " << getLastPhysfsError() << "." << std::endl;
+		std::cerr << "Filesystem::init failed:\n"
+				  << "dataPath: " << p
+				  << "\nReasons for failure:\n"
+				  << ec.message();
+		return;
 	}
 
 	mDataPath = dataPath;
-	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
-	{
-		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
-	}
+	mIsInit = true;
+	//if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
+	//{
+	//	std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
+	//}
 }
 
 

@@ -32,7 +32,7 @@ public:
 	Filesystem& operator=(Filesystem&&) = delete;
 	~Filesystem() = default;
 
-	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
+	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath) noexcept;
 
 	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;

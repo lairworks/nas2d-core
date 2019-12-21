@@ -57,8 +57,9 @@ private:
 	const char* getLastPhysfsError() const;
 
 private:
-	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
-	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
+	std::string mDataPath{}; /**< Data path string. This will typically be 'data/'. */
+	mutable bool mVerbose{false}; /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
+	mutable bool mIsInit{false}; /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 };
 
 }

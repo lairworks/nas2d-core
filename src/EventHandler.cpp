@@ -672,7 +672,7 @@ bool EventHandler::alt(KeyModifier mod) const
  */
 bool EventHandler::numlock(KeyModifier mod) const
 {
-	return (mod & KeyModifier::KEY_MOD_NUM) != KeyModifier::KEY_MOD_NONE;
+	return KeyModifier::KEY_MOD_NONE != (mod & KeyModifier::KEY_MOD_NUM);
 }
 
 
@@ -683,7 +683,7 @@ bool EventHandler::numlock(KeyModifier mod) const
  */
 bool EventHandler::control(KeyModifier mod) const
 {
-	return (mod & KEY_MOD_CTRL) != KeyModifier::KEY_MOD_NONE;
+	return KeyModifier::KEY_MOD_NONE != (mod & KEY_MOD_CTRL);
 }
 
 

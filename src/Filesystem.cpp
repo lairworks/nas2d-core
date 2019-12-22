@@ -102,19 +102,24 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::mount(const std::string& path) const
+bool Filesystem::mount(const std::string& path) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	if (!mIsInit) { return false; }
 
-	if (mVerbose) { std::cout << "Adding '" << path << "' to search path." << std::endl; }
+	if (mVerbose) { std::clog << "Adding '" << path << "' to search path.\n"; }
 
 	std::string searchPath(mDataPath + path);
-
-	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
-	{
-		std::cout << "Couldn't add '" << path << "' to search path. " << getLastPhysfsError() << "." << std::endl;
+	auto [where,wasInserted] = mSearchPath.insert(searchPath);
+	if (!wasInserted) {
+		std::cerr << "Couldn't add " << path << " to search path.\n";
 		return false;
 	}
+	//if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
+	//{
+	//	std::cout << "Couldn't add '" << path << "' to search path. " << getLastPhysfsError() << "." << std::endl;
+	//	return false;
+	//}
 
 	return true;
 }

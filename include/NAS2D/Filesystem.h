@@ -39,7 +39,7 @@ public:
 	const std::string& dataPath() const noexcept;
 	std::string workingPath(const std::string& filename) const noexcept;
 	StringList searchPath() const noexcept;
-	bool mount(const std::string& path) const;
+	bool mount(const std::string& path) const noexcept;
 
 	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
 

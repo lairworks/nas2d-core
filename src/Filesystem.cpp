@@ -282,12 +282,14 @@ bool Filesystem::makeDirectory(const std::string& path) const
  *
  * \param path	Path to check.
  */
-bool Filesystem::isDirectory(const std::string& path) const
+bool Filesystem::isDirectory(const std::string& path) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	namespace FS = std::filesystem;
+	return FS::is_directory(FS::path{path});
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
-	PHYSFS_Stat stat;
-	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
+	//PHYSFS_Stat stat;
+	//return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
 }
 
 

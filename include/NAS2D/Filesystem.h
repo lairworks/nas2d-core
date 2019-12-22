@@ -51,7 +51,7 @@ public:
 	std::string extension(const std::string& path) noexcept;
 
 	bool isDirectory(const std::string& path) const noexcept;
-	bool makeDirectory(const std::string& path) const;
+	bool makeDirectory(const std::string& path) const noexcept;
 
 	void toggleVerbose() const noexcept;
 

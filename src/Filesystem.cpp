@@ -270,10 +270,13 @@ File Filesystem::open(const std::string& filename) const
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::makeDirectory(const std::string& path) const
+bool Filesystem::makeDirectory(const std::string& path) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-	return PHYSFS_mkdir(path.c_str()) != 0;
+	namespace FS = std::filesystem;
+	std::error_code ec{};
+	return FS::create_directories(FS::path{path}, ec);
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	//return PHYSFS_mkdir(path.c_str()) != 0;
 }
 
 

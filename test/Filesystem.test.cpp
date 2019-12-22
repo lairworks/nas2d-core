@@ -95,7 +95,7 @@ TEST_F(FilesystemTest, writeReadDeleteExists) {
 }
 
 TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
-	const std::string fileName = "file.txt";
+	const std::string fileName = "data/file.txt";
 	const std::string folderName = "subfolder/";
 
 	EXPECT_TRUE(fs.exists(fileName));

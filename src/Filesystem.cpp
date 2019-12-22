@@ -53,7 +53,7 @@ enum MountPosition
 /**
  * Shuts down PhysFS and cleans up.
  */
-void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
+void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appName*/, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
 {
 	if (mIsInit)
 	{
@@ -85,7 +85,6 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
 	}
 
 	mDataPath = dataPath;
-	mSearchPath.insert(appName);
 	mSearchPath.insert(mDataPath);
 	mIsInit = true;
 	//if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
@@ -109,8 +108,20 @@ bool Filesystem::mount(const std::string& path) const noexcept
 	if (mVerbose) { std::clog << "Adding '" << path << "' to search path.\n"; }
 
 	std::string searchPath(mDataPath + path);
-	auto [where, wasInserted] = mSearchPath.insert(searchPath);
-	if (!wasInserted)
+	namespace FS = std::filesystem;
+	FS::path p{FS::path{mDataPath} / path};
+	bool does_exist = exists(p.string());
+	if (does_exist)
+	{
+		auto [where, wasInserted] = mSearchPath.insert(searchPath);
+		if (!wasInserted)
+		{
+			std::cerr << "Couldn't add " << path << " to search path.\n";
+			return false;
+		}
+		return true;
+	}
+	else
 	{
 		std::cerr << "Couldn't add " << path << " to search path.\n";
 		return false;
@@ -121,7 +132,7 @@ bool Filesystem::mount(const std::string& path) const noexcept
 	//	return false;
 	//}
 
-	return true;
+	//return true;
 }
 
 /**
@@ -270,13 +281,13 @@ File Filesystem::open(const std::string& filename) const noexcept
 	std::error_code ec{};
 	const auto p = FS::path{filename};
 	const auto size = FS::file_size(p, ec);
-	if(size == static_cast<std::uintmax_t>(-1))
+	if (size == static_cast<std::uintmax_t>(-1))
 	{
 		if (mVerbose) { std::cerr << "Failed. std::filesystem::file_size failed to get the size.\n"; }
 		return File();
 	}
 
-    std::ifstream ifs{p};
+	std::ifstream ifs{p};
 	std::string buffer = std::string(static_cast<const std::stringstream&>(std::stringstream() << ifs.rdbuf()).str());
 	return File(buffer, filename);
 
@@ -366,7 +377,21 @@ bool Filesystem::exists(const std::string& filename) const noexcept
 {
 	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	std::error_code ec{};
-	return std::filesystem::exists(filename, ec);
+	namespace FS = std::filesystem;
+	bool does_not_exist = !FS::exists(filename, ec);
+	if (does_not_exist)
+	{
+		for (const auto& cur_path_string : mSearchPath)
+		{
+			const auto cur_path = FS::path{cur_path_string} / filename;
+			if(FS::exists(cur_path, ec))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -431,9 +456,9 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
 		return false;
 	}
 
-	if(!myFile.write(reinterpret_cast<const char*>(file.bytes().data()), file.bytes().size()))
+	if (!myFile.write(reinterpret_cast<const char*>(file.bytes().data()), file.bytes().size()))
 	{
-		if(mVerbose) std::cerr << "Error occured while writing to file '" << file.filename() << "'\n";
+		if (mVerbose) std::cerr << "Error occured while writing to file '" << file.filename() << "'\n";
 	}
 	else
 	{

@@ -29,11 +29,11 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-enum MountPosition
-{
-	MOUNT_PREPEND = 0,
-	MOUNT_APPEND = 1,
-};
+//enum MountPosition
+//{
+//	MOUNT_PREPEND = 0,
+//	MOUNT_APPEND = 1,
+//};
 
 /**
  * Default c'tor.
@@ -412,15 +412,16 @@ void Filesystem::toggleVerbose() const noexcept
  *
  * \return	True on success, false otherwise.
  */
-bool Filesystem::closeFile(void* file) const
+bool Filesystem::closeFile(void* /*file*/) const
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	return true;
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
-	if (!file) { return false; }
+	//if (!file) { return false; }
 
-	if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
+	//if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
 
-	throw filesystem_file_handle_still_open(getLastPhysfsError());
+	//throw filesystem_file_handle_still_open(getLastPhysfsError());
 }
 
 /**
@@ -504,7 +505,7 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
 	};
 	if (filename.empty())
 	{
-		if (mVerbose) { std::cout << "Filesystem::workingPath(): empty string provided." << std::endl; }
+		if (mVerbose) { std::cerr << "Filesystem::workingPath(): empty string provided.\n"; }
 		return {};
 	}
 	namespace FS = std::filesystem;
@@ -571,5 +572,6 @@ std::string Filesystem::extension(const std::string& path) noexcept
 
 const char* Filesystem::getLastPhysfsError() const noexcept
 {
-	return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
+	//return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
+	return nullptr;
 }

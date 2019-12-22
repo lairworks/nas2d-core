@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Filesystem.h"
+
 #include "NAS2D/Exception.h"
 
 #include <physfs.h>
@@ -20,13 +21,12 @@
 #include <climits>
 #include <cstring>
 #include <filesystem>
-#include <string>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
-
 
 enum MountPosition
 {
@@ -41,7 +41,6 @@ enum MountPosition
 //	: mVerbose(false)
 //{}
 
-
 /**
  * Shuts down PhysFS and cleans up.
  */
@@ -50,13 +49,13 @@ enum MountPosition
 //	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
 //}
 
-
 /**
  * Shuts down PhysFS and cleans up.
  */
 void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
 {
-	if(mIsInit) {
+	if (mIsInit)
+	{
 		return;
 	}
 	//if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
@@ -75,7 +74,7 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
 	FS::path p = dataPath;
 	std::error_code ec{};
 	p = FS::canonical(p, ec);
-	if(ec)
+	if (ec)
 	{
 		std::cerr << "Filesystem::init failed:\n"
 				  << "dataPath: " << p
@@ -94,7 +93,6 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName,
 	//}
 }
 
-
 /**
  * Adds a directory or supported archive to the Search Path.
  *
@@ -110,8 +108,9 @@ bool Filesystem::mount(const std::string& path) const noexcept
 	if (mVerbose) { std::clog << "Adding '" << path << "' to search path.\n"; }
 
 	std::string searchPath(mDataPath + path);
-	auto [where,wasInserted] = mSearchPath.insert(searchPath);
-	if (!wasInserted) {
+	auto [where, wasInserted] = mSearchPath.insert(searchPath);
+	if (!wasInserted)
+	{
 		std::cerr << "Couldn't add " << path << " to search path.\n";
 		return false;
 	}
@@ -124,14 +123,14 @@ bool Filesystem::mount(const std::string& path) const noexcept
 	return true;
 }
 
-
 /**
  * Returns a list of directories in the Search Path.
  */
 StringList Filesystem::searchPath() const noexcept
 {
 	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-	if(!mIsInit) {
+	if (!mIsInit)
+	{
 		return {};
 	}
 	StringList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
@@ -146,47 +145,78 @@ StringList Filesystem::searchPath() const noexcept
 	return searchPath;
 }
 
-
 /**
  * Returns a list of files within a given directory.
  *
  * \param	dir	Directory to search within the searchpath.
- * \param	filter		Optional extension filter. Only use the extension without a wildcard (*) character or period (e.g., 'png' vs '*.png' or '.png').
+ * \param	filter		Optional extension filter.
  *
  * \note	This function will also return the names of any directories in a specified search path
  */
-StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const
+StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	char **rc = PHYSFS_enumerateFiles(dir.c_str());
-
-	StringList fileList;
-	if (filter.empty())
+	StringList result{};
+	namespace FS = std::filesystem;
+	std::error_code ec{};
+	FS::path root{};
+	if (dir.empty())
 	{
-		for (char **i = rc; *i != nullptr; i++)
-		{
-			fileList.push_back(*i);
-		}
+		root = FS::absolute(FS::path{mDataPath}, ec);
 	}
-	else
+	if (!FS::is_directory(root))
 	{
-		size_t filterLen = filter.size();
-		for (char **i = rc; *i != nullptr; i++)
+		return {};
+	}
+	for (auto& f : FS::directory_iterator{root, ec})
+	{
+		if (filter.empty())
 		{
-			std::string tmpStr = *i;
-			if (tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
+			if (FS::is_regular_file(f))
 			{
-				fileList.push_back(*i);
+				result.push_back(f.path().filename().string());
+			}
+		}
+		else
+		{
+			if (FS::is_regular_file(f))
+			{
+				if (f.path().extension() == filter)
+				{
+					result.push_back(f.path().filename().string());
+				}
 			}
 		}
 	}
+	return result;
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
-	PHYSFS_freeList(rc);
+	//char **rc = PHYSFS_enumerateFiles(dir.c_str());
 
-	return fileList;
+	//StringList fileList;
+	//if (filter.empty())
+	//{
+	//	for (char **i = rc; *i != nullptr; i++)
+	//	{
+	//		fileList.push_back(*i);
+	//	}
+	//}
+	//else
+	//{
+	//	size_t filterLen = filter.size();
+	//	for (char **i = rc; *i != nullptr; i++)
+	//	{
+	//		std::string tmpStr = *i;
+	//		if (tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
+	//		{
+	//			fileList.push_back(*i);
+	//		}
+	//	}
+	//}
+
+	//PHYSFS_freeList(rc);
+
+	//return fileList;
 }
-
 
 /**
  * Deletes a specified file.
@@ -208,7 +238,6 @@ bool Filesystem::del(const std::string& filename) const
 
 	return true;
 }
-
 
 /**
  * Opens a file.
@@ -242,7 +271,7 @@ File Filesystem::open(const std::string& filename) const
 
 	// Create a char* buffer large enough to hold the entire file.
 	PHYSFS_uint32 fileLength = static_cast<PHYSFS_uint32>(len);
-	char *fileBuffer = new char[fileLength + 1];
+	char* fileBuffer = new char[fileLength + 1];
 
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
 	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
@@ -262,7 +291,6 @@ File Filesystem::open(const std::string& filename) const
 	return file;
 }
 
-
 /**
  * Creates a new directory within the primary search path.
  *
@@ -279,7 +307,6 @@ bool Filesystem::makeDirectory(const std::string& path) const noexcept
 	//return PHYSFS_mkdir(path.c_str()) != 0;
 }
 
-
 /**
  * Determines if a given path is a directory rather than a file.
  *
@@ -294,7 +321,6 @@ bool Filesystem::isDirectory(const std::string& path) const noexcept
 	//PHYSFS_Stat stat;
 	//return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
 }
-
 
 /**
  * Checks for the existence of a file.
@@ -321,7 +347,6 @@ void Filesystem::toggleVerbose() const noexcept
 	mVerbose = !mVerbose;
 }
 
-
 /**
  * Closes a file handle.
  *
@@ -339,7 +364,6 @@ bool Filesystem::closeFile(void* file) const
 
 	throw filesystem_file_handle_still_open(getLastPhysfsError());
 }
-
 
 /**
  * Writes a file to disk.
@@ -387,7 +411,6 @@ bool Filesystem::write(const File& file, bool overwrite) const
 	return true;
 }
 
-
 /**
  * Gets the base data path.
  */
@@ -396,7 +419,6 @@ const std::string& Filesystem::dataPath() const noexcept
 	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	return mDataPath;
 }
-
 
 /**
  * Convenience function to get the working directory of a file.

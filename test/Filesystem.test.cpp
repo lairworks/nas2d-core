@@ -66,7 +66,7 @@ TEST_F(FilesystemTest, directoryList) {
 }
 
 TEST_F(FilesystemTest, exists) {
-	EXPECT_TRUE(fs.exists("file.txt"));
+	EXPECT_TRUE(fs.exists("data/file.txt"));
 }
 
 TEST_F(FilesystemTest, open) {

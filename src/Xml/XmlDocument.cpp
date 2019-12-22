@@ -29,9 +29,7 @@ XmlDocument::XmlDocument() :	XmlNode(XmlNode::NodeType::XML_DOCUMENT),
  *
  * \param documentName	Name of the document.
  */
-XmlDocument::XmlDocument(const std::string& documentName)
-: XmlNode(XmlNode::NodeType::XML_DOCUMENT)
-,
+XmlDocument::XmlDocument(const std::string& documentName) : XmlNode(XmlNode::NodeType::XML_DOCUMENT),
 															_errorId(0),
 															_error(false)
 {

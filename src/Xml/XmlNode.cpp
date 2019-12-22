@@ -19,9 +19,9 @@ using namespace NAS2D::Xml;
 /**
  * Default c'tor.
  */
-XmlNode::XmlNode() :	XmlBase(), _parent(nullptr)
-, _type(NodeType::XML_UNKNOWN)
-,
+XmlNode::XmlNode() :	XmlBase(),
+						_parent(nullptr),
+						_type(NodeType::XML_UNKNOWN),
 						_firstChild(nullptr),
 						_lastChild(nullptr),
 						_prev(nullptr),

@@ -54,7 +54,7 @@ enum MountPosition
 /**
  * Shuts down PhysFS and cleans up.
  */
-void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appName*/, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
+void Filesystem::init(const std::string& /*argv_0*/, const std::string& appName, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
 {
 	if(mIsInit) {
 		return;
@@ -85,6 +85,8 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appNam
 	}
 
 	mDataPath = dataPath;
+	mSearchPath.insert(appName);
+	mSearchPath.insert(mDataPath);
 	mIsInit = true;
 	//if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
 	//{
@@ -121,18 +123,20 @@ bool Filesystem::mount(const std::string& path) const
 /**
  * Returns a list of directories in the Search Path.
  */
-StringList Filesystem::searchPath() const
+StringList Filesystem::searchPath() const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	StringList searchPath;
-
-	auto searchPathList = PHYSFS_getSearchPath();
-	for (char **i = searchPathList; *i != nullptr; ++i)
-	{
-		searchPath.push_back(*i);
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	if(!mIsInit) {
+		return {};
 	}
-	PHYSFS_freeList(searchPathList);
+	StringList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
+
+	//auto searchPathList = PHYSFS_getSearchPath();
+	//for (char **i = searchPathList; *i != nullptr; ++i)
+	//{
+	//	searchPath.push_back(*i);
+	//}
+	//PHYSFS_freeList(searchPathList);
 
 	return searchPath;
 }

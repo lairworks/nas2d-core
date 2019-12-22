@@ -12,6 +12,8 @@
 
 #include "StringUtils.h"
 #include "File.h"
+
+#include <set>
 #include <string>
 
 namespace NAS2D {
@@ -36,7 +38,7 @@ public:
 
 	const std::string& dataPath() const noexcept;
 	std::string workingPath(const std::string& filename) const noexcept;
-	StringList searchPath() const;
+	StringList searchPath() const noexcept;
 	bool mount(const std::string& path) const;
 
 	StringList directoryList(const std::string& dir, const std::string& filter = "") const;
@@ -61,6 +63,7 @@ private:
 	std::string mDataPath{}; /**< Data path string. This will typically be 'data/'. */
 	mutable bool mVerbose{false}; /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 	mutable bool mIsInit{false};
+	mutable std::set<std::string> mSearchPath{}; //This really should be std::filesystem::path
 };
 
 }

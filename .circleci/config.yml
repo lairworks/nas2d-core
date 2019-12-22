@@ -5,7 +5,7 @@ executors:
       - image: outpostuniverse/nas2d-circleci:1.1
   macos-executor:
     macos:
-      xcode: "10.0.0"
+      xcode: "11.3.0"
 commands:
   brew-install:
     description: "Brew install MacOS dependencies (or restore from cache)"

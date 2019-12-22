@@ -650,7 +650,7 @@ bool EventHandler::textInputMode()
  */
 bool EventHandler::shift(KeyModifier mod) const
 {
-	return KeyModifier::KEY_MOD_NONE != ((mod & KEY_MOD_SHIFT) | (mod & KeyModifier::KEY_MOD_CAPS));
+	return KeyModifier::KEY_MOD_NONE != (mod & (KEY_MOD_SHIFT | KeyModifier::KEY_MOD_CAPS));
 }
 
 
@@ -661,7 +661,7 @@ bool EventHandler::shift(KeyModifier mod) const
  */
 bool EventHandler::alt(KeyModifier mod) const
 {
-	return KeyModifier::KEY_MOD_NONE != ((mod & KeyModifier::KEY_MOD_LALT) | (mod & KeyModifier::KEY_MOD_RALT));
+	return KeyModifier::KEY_MOD_NONE != (mod & (KeyModifier::KEY_MOD_LALT | KeyModifier::KEY_MOD_RALT));
 }
 
 

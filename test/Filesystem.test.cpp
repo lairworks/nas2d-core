@@ -70,7 +70,7 @@ TEST_F(FilesystemTest, exists) {
 }
 
 TEST_F(FilesystemTest, open) {
-	const auto file = fs.open("file.txt");
+	const auto file = fs.open("data/file.txt");
 	EXPECT_EQ("Test data\n", file.bytes());
 }
 

@@ -21,6 +21,7 @@
 #include <climits>
 #include <cstring>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -230,7 +231,7 @@ bool Filesystem::del(const std::string& filename) const noexcept
 {
 	namespace FS = std::filesystem;
 	std::error_code ec{};
-	if(!FS::remove(FS::path{filename}, ec))
+	if (!FS::remove(FS::path{filename}, ec))
 	{
 		std::cerr << "Unable to delete " << filename << ".\n";
 		return false;
@@ -254,49 +255,72 @@ bool Filesystem::del(const std::string& filename) const noexcept
  *
  * \return Returns a File.
  */
-File Filesystem::open(const std::string& filename) const
+File Filesystem::open(const std::string& filename) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
-	if (mVerbose) { std::cout << "Attempting to load '" << filename << std::endl; }
+	if (mVerbose) { std::cerr << "Attempting to load '" << filename << "..."; }
 
-	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
-	if (!myFile)
+	namespace FS = std::filesystem;
+	if (!exists(filename))
 	{
-		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
-		closeFile(myFile);
+		if (mVerbose) { std::cerr << "Failed. File does not exist.\n"; }
 		return File();
 	}
 
-	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
-	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
-	if (len < 0 || len > UINT_MAX)
+	std::error_code ec{};
+	const auto p = FS::path{filename};
+	const auto size = FS::file_size(p, ec);
+	if(size == static_cast<std::uintmax_t>(-1))
 	{
-		std::cout << "File '" << filename << "' is too large to load." << std::endl;
-		closeFile(myFile);
+		if (mVerbose) { std::cerr << "Failed. std::filesystem::file_size failed to get the size.\n"; }
 		return File();
 	}
 
-	// Create a char* buffer large enough to hold the entire file.
-	PHYSFS_uint32 fileLength = static_cast<PHYSFS_uint32>(len);
-	char* fileBuffer = new char[fileLength + 1];
+    std::ifstream ifs{p};
+	std::string buffer = std::string(static_cast<const std::stringstream&>(std::stringstream() << ifs.rdbuf()).str());
+	return File(buffer, filename);
 
-	// If we read less then the file length, return an empty File object, log a message and free any used memory.
-	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
-	{
-		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
-		delete[] fileBuffer;
-		closeFile(myFile);
-		return File();
-	}
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
-	File file(std::string(fileBuffer, fileLength), filename);
-	closeFile(myFile);
-	delete[] fileBuffer;
+	//if (mVerbose) { std::cout << "Attempting to load '" << filename << std::endl; }
 
-	if (mVerbose) { std::cout << "Loaded '" << filename << "' successfully." << std::endl; }
+	//PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
+	//if (!myFile)
+	//{
+	//	std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
+	//	closeFile(myFile);
+	//	return File();
+	//}
 
-	return file;
+	//// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
+	//PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
+	//if (len < 0 || len > UINT_MAX)
+	//{
+	//	std::cout << "File '" << filename << "' is too large to load." << std::endl;
+	//	closeFile(myFile);
+	//	return File();
+	//}
+
+	//// Create a char* buffer large enough to hold the entire file.
+	//PHYSFS_uint32 fileLength = static_cast<PHYSFS_uint32>(len);
+	//char* fileBuffer = new char[fileLength + 1];
+
+	//// If we read less then the file length, return an empty File object, log a message and free any used memory.
+	//if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
+	//{
+	//	std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
+	//	delete[] fileBuffer;
+	//	closeFile(myFile);
+	//	return File();
+	//}
+
+	//File file(std::string(fileBuffer, fileLength), filename);
+	//closeFile(myFile);
+	//delete[] fileBuffer;
+
+	//if (mVerbose) { std::cout << "Loaded '" << filename << "' successfully." << std::endl; }
+
+	//return file;
 }
 
 /**

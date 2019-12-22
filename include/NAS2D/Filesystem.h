@@ -43,7 +43,7 @@ public:
 
 	StringList directoryList(const std::string& dir, const std::string& filter = "") const noexcept;
 
-	File open(const std::string& filename) const;
+	File open(const std::string& filename) const noexcept;
 	bool write(const File& file, bool overwrite = true) const;
 	bool del(const std::string& path) const noexcept;
 	bool exists(const std::string& filename) const noexcept;

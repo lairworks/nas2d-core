@@ -226,17 +226,25 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
  * \note	This function is not named 'delete' due to
  *			language limitations.
  */
-bool Filesystem::del(const std::string& filename) const
+bool Filesystem::del(const std::string& filename) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	if (PHYSFS_delete(filename.c_str()) == 0)
+	namespace FS = std::filesystem;
+	std::error_code ec{};
+	if(!FS::remove(FS::path{filename}, ec))
 	{
-		std::cout << "Unable to delete '" << filename << "':" << getLastPhysfsError() << std::endl;
+		std::cerr << "Unable to delete " << filename << ".\n";
 		return false;
 	}
-
 	return true;
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	//if (PHYSFS_delete(filename.c_str()) == 0)
+	//{
+	//	std::cout << "Unable to delete '" << filename << "':" << getLastPhysfsError() << std::endl;
+	//	return false;
+	//}
+
+	//return true;
 }
 
 /**
@@ -302,7 +310,8 @@ bool Filesystem::makeDirectory(const std::string& path) const noexcept
 {
 	namespace FS = std::filesystem;
 	std::error_code ec{};
-	return FS::create_directories(FS::path{path}, ec);
+	auto p = FS::path{path};
+	return FS::create_directories(p, ec);
 	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	//return PHYSFS_mkdir(path.c_str()) != 0;
 }

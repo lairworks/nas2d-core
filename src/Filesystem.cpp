@@ -406,40 +406,50 @@ bool Filesystem::closeFile(void* file) const
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::write(const File& file, bool overwrite) const
+bool Filesystem::write(const File& file, bool overwrite) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 
 	if (file.empty())
 	{
-		std::cout << "Attempted to write empty file '" << file.filename() << "'" << std::endl;
+		std::cerr << "Attempted to write empty file '" << file.filename() << "'\n";
 		return false;
 	}
 
 	if (!overwrite && exists(file.filename()))
 	{
-		if (mVerbose) { std::cout << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl; }
+		if (mVerbose) { std::cerr << "Attempted to overwrite a file '" << file.filename() << "' that already exists.\n"; }
 		return false;
 	}
 
-	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
+	//PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
+	namespace FS = std::filesystem;
+	std::ofstream myFile{FS::path{file.filename()}, std::ios_base::binary};
 	if (!myFile)
 	{
-		if (mVerbose) { std::cout << "Couldn't open '" << file.filename() << "' for writing: " << getLastPhysfsError() << std::endl; }
+		if (mVerbose) { std::cerr << "Couldn't open '" << file.filename() << "' for writing.\n"; }
 		return false;
 	}
 
-	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
+	if(!myFile.write(reinterpret_cast<const char*>(file.bytes().data()), file.bytes().size()))
 	{
-		if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << getLastPhysfsError() << std::endl; }
-		closeFile(myFile);
-		return false;
+		if(mVerbose) std::cerr << "Error occured while writing to file '" << file.filename() << "'\n";
 	}
 	else
 	{
-		closeFile(myFile);
-		if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
+		if (mVerbose) std::clog << "Wrote " << file.bytes().size() << " bytes to file '" << file.filename() << "'\n";
 	}
+	//if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
+	//{
+	//	if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << getLastPhysfsError() << std::endl; }
+	//	closeFile(myFile);
+	//	return false;
+	//}
+	//else
+	//{
+	//	closeFile(myFile);
+	//	if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
+	//}
 
 	return true;
 }

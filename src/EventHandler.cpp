@@ -661,7 +661,7 @@ bool EventHandler::shift(KeyModifier mod) const
  */
 bool EventHandler::alt(KeyModifier mod) const
 {
-	return KeyModifier::KEY_MOD_NONE != (mod & (KeyModifier::KEY_MOD_LALT | KeyModifier::KEY_MOD_RALT));
+	return KeyModifier::KEY_MOD_NONE != (mod & KEY_MOD_ALT);
 }
 
 

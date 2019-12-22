@@ -298,13 +298,12 @@ bool Filesystem::isDirectory(const std::string& path) const
  *
  * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
  */
-bool Filesystem::exists(const std::string& filename) const
+bool Filesystem::exists(const std::string& filename) const noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	return PHYSFS_exists(filename.c_str()) != 0;
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	std::error_code ec{};
+	return std::filesystem::exists(filename, ec);
 }
-
 
 /**
  * Toggles Verbose Mode.

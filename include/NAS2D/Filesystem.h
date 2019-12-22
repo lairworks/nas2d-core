@@ -46,7 +46,7 @@ public:
 	File open(const std::string& filename) const;
 	bool write(const File& file, bool overwrite = true) const;
 	bool del(const std::string& path) const;
-	bool exists(const std::string& filename) const;
+	bool exists(const std::string& filename) const noexcept;
 
 	std::string extension(const std::string& path);
 

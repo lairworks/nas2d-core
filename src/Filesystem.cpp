@@ -433,29 +433,46 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
  * \return	Returns a string containing the file extension. An empty string will be
  *			returned if the file has no extension or if it's a directory.
  */
-std::string Filesystem::extension(const std::string& path)
+std::string Filesystem::extension(const std::string& path) noexcept
 {
-	if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
+
+	const auto p = std::filesystem::path{path};
+	if (std::filesystem::is_directory(p))
+	{
+		return {};
+	}
+	if (p.has_extension())
+	{
+		return p.extension().string();
+	}
+	if (p.stem() == p.filename())
+	{
+		if (p.stem().string().find_first_of('.') != std::string::npos)
+		{
+			return p.stem().string();
+		}
+	}
+	return {};
 
 	// This is a naive approach but works for most cases.
-	size_t pos = path.find_last_of(".");
+	//size_t pos = path.find_last_of(".");
 
-	if (pos != std::string::npos)
-	{
-		return path.substr(pos + 1);
-	}
-	else if (isDirectory(path))
-	{
-		if (mVerbose) { std::cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << std::endl; }
-		return std::string();
-	}
-	else
-	{
-		if (mVerbose) { std::cout << "Filesystem::extension(): File '" << path << "' has no extension." << std::endl; }
-		return std::string();
-	}
+	//if (pos != std::string::npos)
+	//{
+	//	return path.substr(pos + 1);
+	//}
+	//else if (isDirectory(path))
+	//{
+	//	if (mVerbose) { std::cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << std::endl; }
+	//	return std::string();
+	//}
+	//else
+	//{
+	//	if (mVerbose) { std::cout << "Filesystem::extension(): File '" << path << "' has no extension." << std::endl; }
+	//	return std::string();
+	//}
 }
-
 
 const char* Filesystem::getLastPhysfsError() const noexcept
 {

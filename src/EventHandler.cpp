@@ -25,31 +25,31 @@ const int MAX_MESSAGE_PROCESSING = 100;	/**
 										 * \todo	Make this configurable?
 										 */
 
-KeyModifier& operator|=(KeyModifier& a, const KeyModifier& b) noexcept
+EventHandler::KeyModifier& operator|=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept
 {
-	using underlying = std::underlying_type_t<KeyModifier>;
+	using underlying = std::underlying_type_t<EventHandler::KeyModifier>;
 	auto underlying_a = static_cast<underlying>(a);
 	auto underlying_b = static_cast<underlying>(b);
-	a = static_cast<KeyModifier>(underlying_a | underlying_b);
+	a = static_cast<EventHandler::KeyModifier>(underlying_a | underlying_b);
 	return a;
 }
 
-KeyModifier& operator&=(KeyModifier& a, const KeyModifier& b) noexcept
+EventHandler::KeyModifier& operator&=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept
 {
-	using underlying = std::underlying_type_t<KeyModifier>;
+	using underlying = std::underlying_type_t<EventHandler::KeyModifier>;
 	auto underlying_a = static_cast<underlying>(a);
 	auto underlying_b = static_cast<underlying>(b);
-	a = static_cast<KeyModifier>(underlying_a & underlying_b);
+	a = static_cast<EventHandler::KeyModifier>(underlying_a & underlying_b);
 	return a;
 }
 
-KeyModifier operator|(KeyModifier a, const KeyModifier& b) noexcept
+EventHandler::KeyModifier operator|(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept
 {
 	NAS2D::operator|=(a, b); //Disambiguate from free function
 	return a;
 }
 
-KeyModifier operator&(KeyModifier a, const KeyModifier& b) noexcept
+EventHandler::KeyModifier operator&(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept
 {
 	NAS2D::operator&=(a, b); //Disambiguate from free function
 	return a;

@@ -46,7 +46,7 @@ extern const NAS2D::Color_4ub COLOR_NORMAL;
 class Renderer
 {
 public:
-	Renderer();
+	Renderer() = default;
 	Renderer(const Renderer& rhs) = default;
 	Renderer& operator=(const Renderer& rhs) = default;
 	Renderer(Renderer&& rhs) = default;
@@ -153,15 +153,23 @@ protected:
 	Point_2df& _size();
 
 private:
-	std::string			mRendererName;	/**< Internal name of the Renderer. */
-	std::string			mDriverName;	/**< OS Driver name */
-	std::string			mTitle;			/**< Title to use for the application. */
+	enum class FadeType
+	{
+		In = -1,
+		None = 0,
+		Out = 1
+	};
 
-	Color_4ub			mFadeColor;		/**< Fade Color. */
-	float				mFadeStep;		/**< Amount of fading to do per milisecond. */
-	float				mCurrentFade;	/**< Current fade amount. */
+	std::string mRendererName{"NULL Renderer"}; /**< Internal name of the Renderer. */
+	std::string mDriverName{"NULL Renderer"};	/**< OS Driver name */
+	std::string mTitle{"Default Application"};	/**< Title to use for the application. */
 
-	Point_2df			mResolution;	/**< Screen resolution. */
+	Color_4ub mFadeColor{0,0,0,255}; /**< Fade Color. */
+	float mFadeStep{0.0f}; /**< Amount of fading to do per milisecond. */
+	float mCurrentFade{0.0f}; /**< Current fade amount. */
+
+	Point_2df mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
+	FadeType mCurrentFadeType{FadeType::None};
 };
 
 } // namespace

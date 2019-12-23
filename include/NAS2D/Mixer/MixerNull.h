@@ -5,7 +5,7 @@
 namespace NAS2D
 {
 
-	class MixerNull : public Mixer
+	class MixerNull final : public Mixer
 	{
 	public:
 		MixerNull() = default;

@@ -46,13 +46,13 @@ namespace NAS2D {
 
 	EventHandler::KeyModifier operator|(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept
 	{
-		operator|=(a, b);
+		a |= b;
 		return a;
 	}
 
 	EventHandler::KeyModifier operator&(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept
 	{
-		operator&=(a, b);
+		a &= b;
 		return a;
 	}
 }

@@ -29,6 +29,8 @@ public:
 	MixerSDL();
 	MixerSDL(const MixerSDL&) = delete;
 	MixerSDL& operator=(const MixerSDL&) = delete;
+	MixerSDL(MixerSDL&&) = default;
+	MixerSDL& operator=(MixerSDL&&) = default;
 	virtual ~MixerSDL();
 
 	// Sound Functions

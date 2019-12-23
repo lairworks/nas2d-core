@@ -27,6 +27,8 @@ class MixerSDL : public Mixer
 {
 public:
 	MixerSDL();
+	MixerSDL(const MixerSDL&) = delete;
+	MixerSDL& operator=(const MixerSDL&) = delete;
 	virtual ~MixerSDL();
 
 	// Sound Functions
@@ -53,10 +55,6 @@ public:
 	void unmute() override;
 
 private:
-	// No default copy constructor or copy operator
-	MixerSDL(const MixerSDL&) = delete;
-	MixerSDL& operator=(const MixerSDL&) = delete;
-
 	void init();
 	void music_finished_hook();
 };

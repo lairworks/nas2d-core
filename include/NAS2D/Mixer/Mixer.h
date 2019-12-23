@@ -32,8 +32,10 @@ public:
 
 public:
 	Mixer() = default;
-	Mixer(const Mixer&) = delete;
-	Mixer& operator=(const Mixer&) = delete;
+	Mixer(const Mixer&) = default;
+	Mixer& operator=(const Mixer&) = default;
+	Mixer(Mixer&&) = default;
+	Mixer& operator=(Mixer&&) = default;
 	virtual ~Mixer() = default;
 
 public:

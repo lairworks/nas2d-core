@@ -47,6 +47,10 @@ class Renderer
 {
 public:
 	Renderer();
+	Renderer(const Renderer& rhs) = default;
+	Renderer& operator=(const Renderer& rhs) = default;
+	Renderer(Renderer&& rhs) = default;
+	Renderer& operator=(Renderer&& rhs) = default;
 	virtual ~Renderer();
 
 	const std::string& name();

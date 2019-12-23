@@ -38,7 +38,7 @@ NAS2D::Timer		_TIMER;
 
 NAS2D::Signals::Signal0<void>	_FADE_COMPLETE;
 
-enum FadeType
+enum class FadeType
 {
 	FADE_IN = -1,
 	FADE_NONE = 0,
@@ -46,7 +46,7 @@ enum FadeType
 };
 
 
-FadeType				CURRENT_FADE = FADE_NONE;
+FadeType				CURRENT_FADE = FadeType::FADE_NONE;
 
 
 Renderer::Renderer() :	mRendererName("NULL Renderer"),
@@ -56,7 +56,7 @@ Renderer::Renderer() :	mRendererName("NULL Renderer"),
 						mFadeStep(0.0f),
 						mCurrentFade(0.0f)
 {
-	CURRENT_FADE = FADE_NONE;
+	CURRENT_FADE = FadeType::FADE_NONE;
 }
 
 
@@ -71,7 +71,7 @@ Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
 																					mFadeStep(0.0f),
 																					mCurrentFade(0.0f)
 {
-	CURRENT_FADE = FADE_NONE;
+	CURRENT_FADE = FadeType::FADE_NONE;
 }
 
 
@@ -254,11 +254,11 @@ void Renderer::fadeIn(float delay)
 	if (delay == 0)
 	{
 		mCurrentFade = 0.0f;
-		CURRENT_FADE = FADE_NONE;
+		CURRENT_FADE = FadeType::FADE_NONE;
 		return;
 	}
 
-	CURRENT_FADE = FADE_IN;
+	CURRENT_FADE = FadeType::FADE_IN;
 	mFadeStep = 255.0f / delay;
 
 	_TIMER.delta();	// clear timer
@@ -276,11 +276,11 @@ void Renderer::fadeOut(float delay)
 	if (delay == 0)
 	{
 		mCurrentFade = 255.0f;
-		CURRENT_FADE = FADE_NONE;
+		CURRENT_FADE = FadeType::FADE_NONE;
 		return;
 	}
 
-	CURRENT_FADE = FADE_OUT;
+	CURRENT_FADE = FadeType::FADE_OUT;
 	mFadeStep = 255.0f / delay;
 
 	_TIMER.delta(); // clear timer
@@ -292,7 +292,7 @@ void Renderer::fadeOut(float delay)
  */
 bool Renderer::isFading() const
 {
-	return (CURRENT_FADE != FADE_NONE);
+	return (CURRENT_FADE != FadeType::FADE_NONE);
 }
 
 
@@ -577,16 +577,16 @@ void Renderer::clearScreen(const Color_4ub& color)
  */
 void Renderer::update()
 {
-	if (CURRENT_FADE != FADE_NONE)
+	if (CURRENT_FADE != FadeType::FADE_NONE)
 	{
-		float fade = (_TIMER.delta() * mFadeStep) * CURRENT_FADE;
+		float fade = (_TIMER.delta() * mFadeStep) * static_cast<int>(CURRENT_FADE);
 
 		mCurrentFade += fade;
 
 		if (mCurrentFade < 0.0f || mCurrentFade > 255.0f)
 		{
 			mCurrentFade = std::clamp(mCurrentFade, 0.0f, 255.0f);
-			CURRENT_FADE = FADE_NONE;
+			CURRENT_FADE = FadeType::FADE_NONE;
 			_FADE_COMPLETE();
 		}
 	}

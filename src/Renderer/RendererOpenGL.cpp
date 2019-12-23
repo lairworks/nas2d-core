@@ -336,7 +336,7 @@ void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uin
 	float x = radius;
 	float y = 0;
 
-	GLfloat* verts = new GLfloat[num_segments * 2]; // Two coords per vertex
+	GLfloat* verts = new GLfloat[static_cast<std::size_t>(num_segments) * std::size_t{2}]; // Two coords per vertex
 
 	// During each iteration of the for loop, two indecies are accessed
 	// so we need to be sure that we step two index places for each loop.

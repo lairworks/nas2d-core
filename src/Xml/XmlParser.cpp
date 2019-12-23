@@ -544,7 +544,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 	// sub-tag can orient itself.
 	if (!streamTo(in, '<', tag))
 	{
-		error(XML_ERROR_PARSING_EMPTY, 0, 0);
+		error(XmlErrorCode::XML_ERROR_PARSING_EMPTY, 0, 0);
 		return;
 	}
 
@@ -556,7 +556,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 			int c = in.get();
 			if (c <= 0)
 			{
-				error(XML_ERROR_EMBEDDED_NULL, 0, 0);
+				error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0);
 				break;
 			}
 			tag += static_cast<char>(c);
@@ -581,14 +581,14 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 			}
 			else
 			{
-				error(XML_ERROR, 0, 0);
+				error(XmlErrorCode::XML_ERROR, 0, 0);
 				return;
 			}
 		}
 	}
 
 	// We should have returned sooner.
-	error(XML_ERROR, 0, 0);
+	error(XmlErrorCode::XML_ERROR, 0, 0);
 }
 
 
@@ -600,7 +600,7 @@ const char* XmlDocument::parse(const char* p, void* prevData)
 	// other tags, most of what happens here is skipping white space.
 	if (!p || !*p)
 	{
-		error(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
@@ -623,7 +623,7 @@ const char* XmlDocument::parse(const char* p, void* prevData)
 	p = skipWhiteSpace(p);
 	if (!p)
 	{
-		error(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
@@ -646,7 +646,7 @@ const char* XmlDocument::parse(const char* p, void* prevData)
 	// Was this empty?
 	if (!_firstChild)
 	{
-		error(XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, 0, 0);
 		return nullptr;
 	}
 
@@ -667,9 +667,9 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 		fillErrorTable();
 	}
 
-	assert(err > 0 && err < XML_ERROR_STRING_COUNT);
+	assert(XmlErrorCode::XML_NO_ERROR < err && err < XmlErrorCode::XML_ERROR_STRING_COUNT);
 	_error = true;
-	_errorId = err;
+	_errorId = static_cast<std::underlying_type_t<XmlErrorCode>>(err);
 	_errorDesc = XML_ERROR_TABLE[_errorId];
 
 	_errorLocation.first = 0;
@@ -770,7 +770,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
 			return;
 		}
 
@@ -839,7 +839,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				if (c <= 0)
 				{
 					XmlDocument* doc = document();
-					if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
+					if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
 					return;
 				}
 
@@ -885,7 +885,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				if (c <= 0)
 				{
 					XmlDocument* doc = document();
-					if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
+					if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
 					return;
 				}
 				assert(c == '>');
@@ -923,7 +923,7 @@ const char* XmlElement::parse(const char* p, void* data)
 
 	if (!p || !*p)
 	{
-		if (doc) { doc->error(XML_ERROR_PARSING_ELEMENT, 0, 0); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, 0, 0); }
 		return nullptr;
 	}
 
@@ -935,7 +935,7 @@ const char* XmlElement::parse(const char* p, void* data)
 
 	if (*p != '<')
 	{
-		if (doc) { doc->error(XML_ERROR_PARSING_ELEMENT, p, data); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, p, data); }
 		return nullptr;
 	}
 
@@ -947,7 +947,7 @@ const char* XmlElement::parse(const char* p, void* data)
 	p = readName(p, _value);
 	if (!p || !*p)
 	{
-		if (doc) { doc->error(XML_ERROR_FAILED_TO_READ_ELEMENT_NAME, pErr, data); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_FAILED_TO_READ_ELEMENT_NAME, pErr, data); }
 		return nullptr;
 	}
 
@@ -962,7 +962,7 @@ const char* XmlElement::parse(const char* p, void* data)
 		p = skipWhiteSpace(p);
 		if (!p || !*p)
 		{
-			if (doc) { doc->error(XML_ERROR_READING_ATTRIBUTES, pErr, data); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_READING_ATTRIBUTES, pErr, data); }
 			return nullptr;
 		}
 		if (*p == '/')
@@ -971,7 +971,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			// Empty tag.
 			if (*p != '>')
 			{
-				if (doc) { doc->error(XML_ERROR_PARSING_EMPTY, p, data); }
+				if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_EMPTY, p, data); }
 				return nullptr;
 			}
 			return (p + 1);
@@ -986,7 +986,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			{
 				// We were looking for the end tag, but found nothing.
 				// Fix for [ 1663758 ] Failure to report error on bad XML
-				if (doc) { doc->error(XML_ERROR_READING_END_TAG, p, data); }
+				if (doc) { doc->error(XmlErrorCode::XML_ERROR_READING_END_TAG, p, data); }
 				return nullptr;
 			}
 
@@ -1004,12 +1004,12 @@ const char* XmlElement::parse(const char* p, void* data)
 					++p;
 					return p;
 				}
-				if (doc) { doc->error(XML_ERROR_READING_END_TAG, p, data); }
+				if (doc) { doc->error(XmlErrorCode::XML_ERROR_READING_END_TAG, p, data); }
 				return nullptr;
 			}
 			else
 			{
-				if (doc) { doc->error(XML_ERROR_READING_END_TAG, p, data); }
+				if (doc) { doc->error(XmlErrorCode::XML_ERROR_READING_END_TAG, p, data); }
 				return nullptr;
 			}
 		}
@@ -1028,7 +1028,7 @@ const char* XmlElement::parse(const char* p, void* data)
 
 			if (!p || !*p)
 			{
-				if (doc) doc->error(XML_ERROR_PARSING_ELEMENT, pErr, data);
+				if (doc) doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, pErr, data);
 				delete attrib;
 				return nullptr;
 			}
@@ -1038,7 +1038,7 @@ const char* XmlElement::parse(const char* p, void* data)
 
 			if (node)
 			{
-				if (doc) { doc->error(XML_ERROR_PARSING_ELEMENT, pErr, data); }
+				if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, pErr, data); }
 				delete attrib;
 				return nullptr;
 			}
@@ -1120,7 +1120,7 @@ const char* XmlElement::readValue(const char* p, void* data)
 
 	if (!p)
 	{
-		if (doc) doc->error(XML_ERROR_READING_ELEMENT_VALUE, 0, 0);
+		if (doc) doc->error(XmlErrorCode::XML_ERROR_READING_ELEMENT_VALUE, 0, 0);
 	}
 	return p;
 }
@@ -1134,7 +1134,7 @@ void XmlUnknown::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
 			return;
 		}
 		tag += static_cast<char>(c);
@@ -1160,7 +1160,7 @@ const char* XmlUnknown::parse(const char* p, void* data)
 
 	if (!p || !*p || *p != '<')
 	{
-		if (doc) { doc->error(XML_ERROR_PARSING_UNKNOWN, p, data); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_UNKNOWN, p, data); }
 		return nullptr;
 	}
 
@@ -1175,7 +1175,7 @@ const char* XmlUnknown::parse(const char* p, void* data)
 
 	if (!p)
 	{
-		if (doc) { doc->error(XML_ERROR_PARSING_UNKNOWN, 0, 0); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_UNKNOWN, 0, 0); }
 	}
 
 	if (p && *p == '>')
@@ -1194,7 +1194,7 @@ void XmlComment::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
 			return;
 		}
 
@@ -1232,7 +1232,7 @@ const char* XmlComment::parse(const char* p, void* data)
 
 	if (!stringEqual(p, startTag, false))
 	{
-		if (doc) { doc->error(XML_ERROR_PARSING_COMMENT, p, data); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_COMMENT, p, data); }
 		return nullptr;
 	}
 
@@ -1270,13 +1270,13 @@ const char* XmlAttribute::parse(const char* p, void* data)
 	p = readName(p, _name);
 	if (!p || !*p)
 	{
-		if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, pErr, data);
+		if (_document) _document->error(XmlErrorCode::XML_ERROR_READING_ATTRIBUTES, pErr, data);
 		return nullptr;
 	}
 	p = skipWhiteSpace(p);
 	if (!p || !*p || *p != '=')
 	{
-		if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, p, data);
+		if (_document) _document->error(XmlErrorCode::XML_ERROR_READING_ATTRIBUTES, p, data);
 		return nullptr;
 	}
 
@@ -1284,7 +1284,7 @@ const char* XmlAttribute::parse(const char* p, void* data)
 	p = skipWhiteSpace(p);
 	if (!p || !*p)
 	{
-		if (_document) _document->error(XML_ERROR_READING_ATTRIBUTES, p, data);
+		if (_document) _document->error(XmlErrorCode::XML_ERROR_READING_ATTRIBUTES, p, data);
 		return nullptr;
 	}
 
@@ -1316,7 +1316,7 @@ const char* XmlAttribute::parse(const char* p, void* data)
 				// [ 1451649 ] Attribute values with trailing quotes not handled correctly
 				// We did not have an opening quote but seem to have a
 				// closing one. Give up and throw an error.
-				if (_document) { _document->error(XML_ERROR_READING_ATTRIBUTES, p, data); }
+				if (_document) { _document->error(XmlErrorCode::XML_ERROR_READING_ATTRIBUTES, p, data); }
 				return nullptr;
 			}
 
@@ -1341,7 +1341,7 @@ void XmlText::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc) { doc->error(XML_ERROR_EMBEDDED_NULL, 0, 0); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
 
 			return;
 		}
@@ -1381,7 +1381,7 @@ const char* XmlText::parse(const char* p, void* data)
 
 		if (!stringEqual(p, startTag, false))
 		{
-			if (doc) { doc->error(XML_ERROR_PARSING_CDATA, p, data); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_CDATA, p, data); }
 
 			return nullptr;
 		}

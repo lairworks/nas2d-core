@@ -31,7 +31,7 @@ public:
 	 * The types of XML nodes supported by TinyXml. (All the unsupported
 	 * types are picked up by UNKNOWN.)
 	 */
-	enum NodeType
+	enum class NodeType
 	{
 		XML_DOCUMENT,
 		XML_ELEMENT,
@@ -50,7 +50,7 @@ public:
 
 	void clear();
 
-	int type() const;
+	XmlNode::NodeType type() const;
 
 	bool hasChildren() const;
 

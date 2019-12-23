@@ -37,7 +37,7 @@ namespace NAS2D
 	template<typename... Args>
 	std::string string_format(const std::string& format, Args... args)
 	{
-		size_t size = snprintf(nullptr, 0, format.c_str(), args...) + 1;
+		std::size_t size = snprintf(nullptr, std::size_t{0u}, format.c_str(), args...) + std::size_t{1u};
 		std::unique_ptr<char[]> buffer(new char[size]);
 		snprintf(buffer.get(), size, format.c_str(), args...);
 		return std::string(buffer.get(), buffer.get() + size - 1);

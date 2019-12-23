@@ -26,6 +26,10 @@ class Filesystem
 {
 public:
 	Filesystem();
+	Filesystem(const Filesystem&) = delete;
+	Filesystem& operator=(const Filesystem&) = delete;
+	Filesystem(Filesystem&&) = delete;
+	Filesystem& operator=(Filesystem&&) = delete;
 	~Filesystem();
 
 	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
@@ -50,9 +54,6 @@ public:
 	void toggleVerbose() const;
 
 private:
-	Filesystem(const Filesystem&) = delete;
-	Filesystem& operator= (const Filesystem&) = delete;
-
 	bool closeFile(void *file) const;
 	const char* getLastPhysfsError() const;
 

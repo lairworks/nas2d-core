@@ -29,12 +29,16 @@ enum class KeyModifier : uint16_t
 	KEY_MOD_NONE = 0x0000,
 	KEY_MOD_LSHIFT = 0x0001,
 	KEY_MOD_RSHIFT = 0x0002,
+	KEY_MOD_SHIFT = KEY_MOD_LSHIFT | KEY_MOD_RSHIFT,
 	KEY_MOD_LCTRL = 0x0040,
 	KEY_MOD_RCTRL = 0x0080,
+	KEY_MOD_CTRL = KEY_MOD_LCTRL | KEY_MOD_RCTRL,
 	KEY_MOD_LALT = 0x0100,
 	KEY_MOD_RALT = 0x0200,
+	KEY_MOD_ALT = KEY_MOD_LALT | KEY_MOD_RALT,
 	KEY_MOD_LMETA = 0x0400,
 	KEY_MOD_RMETA = 0x0800,
+	KEY_MOD_META = KEY_MOD_LMETA | KEY_MOD_RMETA,
 	KEY_MOD_NUM = 0x1000,
 	KEY_MOD_CAPS = 0x2000,
 	KEY_MOD_MODE = 0x4000,
@@ -45,11 +49,6 @@ KeyModifier& operator|=(KeyModifier& a, const KeyModifier& b) noexcept;
 KeyModifier& operator&=(KeyModifier& a, const KeyModifier& b) noexcept;
 KeyModifier operator|(KeyModifier a, const KeyModifier& b) noexcept;
 KeyModifier operator&(KeyModifier a, const KeyModifier& b) noexcept;
-
-const KeyModifier KEY_MOD_ALT = KeyModifier::KEY_MOD_LALT | KeyModifier::KEY_MOD_RALT;		 /**< Combines Left and Right alt keys. */
-const KeyModifier KEY_MOD_CTRL = KeyModifier::KEY_MOD_LCTRL | KeyModifier::KEY_MOD_RCTRL;	 /**< Combines Left and Right control keys. */
-const KeyModifier KEY_MOD_META = KeyModifier::KEY_MOD_LMETA | KeyModifier::KEY_MOD_RMETA;	 /**< Combines Left and Right meta keys. */
-const KeyModifier KEY_MOD_SHIFT = KeyModifier::KEY_MOD_LSHIFT | KeyModifier::KEY_MOD_RSHIFT; /**< Combines Left and Right shift keys. */
 
 
 	/**

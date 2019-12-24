@@ -176,6 +176,7 @@
     <ClCompile Include="..\..\src\Mixer\MixerSDL.cpp" />
     <ClCompile Include="..\..\src\Mixer\MixerNull.cpp" />
     <ClCompile Include="..\..\src\Renderer\Color.cpp" />
+    <ClCompile Include="..\..\src\Renderer\Point.cpp" />
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
     <ClCompile Include="..\..\src\Renderer\RendererOpenGL.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Color.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Point.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererOpenGL.h" />

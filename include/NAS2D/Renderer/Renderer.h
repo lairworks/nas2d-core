@@ -11,6 +11,7 @@
 #pragma once
 
 #include "Color.h"
+#include "Point.h"
 #include "Primitives.h"
 #include "../Signal.h"
 #include "../Resources/Image.h"

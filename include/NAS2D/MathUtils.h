@@ -9,6 +9,7 @@
 // ==================================================================================
 #pragma once
 
+#include "Renderer/Point.h"
 #include "Renderer/Primitives.h"
 
 #include <memory>

@@ -84,6 +84,9 @@
     <ClCompile Include="..\..\src\Renderer\Color.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Renderer\Point.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\Renderer\Primitives.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
@@ -228,6 +231,9 @@
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Renderer\Color.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Point.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h">

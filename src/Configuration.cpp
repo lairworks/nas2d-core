@@ -124,7 +124,7 @@ void Configuration::save()
 	audio->attribute("channels", mStereoChannels);
 	audio->attribute("sfxvolume", mSfxVolume);
 	audio->attribute("musicvolume", mMusicVolume);
-	audio->attribute("bufferlength", static_cast<int>(mBufferLength));
+	audio->attribute("bufferlength", mBufferLength);
 	audio->attribute("mixer", mMixerName);
 	root->linkEndChild(audio);
 

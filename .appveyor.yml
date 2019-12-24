@@ -12,6 +12,7 @@ install:
   - vcpkg install glew:%PLATFORM%-windows
   - vcpkg install gtest:%PLATFORM%-windows
   - nuget restore proj/vs2019
+  - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:
   project: proj/vs2019/NAS2D.sln
 test_script:

@@ -477,7 +477,7 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 	File imageFile = Utility<Filesystem>::get().open(filePath);
 	if (imageFile.size() == 0)
 	{
-		std::cout << "RendererOpenGL::addCursor(): '" << name() << "' is empty." << std::endl;
+		std::cout << "RendererOpenGL::addCursor(): '" << filePath << "' is empty." << std::endl;
 		return;
 	}
 

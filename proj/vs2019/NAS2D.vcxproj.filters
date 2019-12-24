@@ -87,7 +87,7 @@
     <ClCompile Include="..\..\src\Renderer\Point.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Renderer\Primitives.cpp">
+    <ClCompile Include="..\..\src\Renderer\Rectangle.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp">
@@ -236,7 +236,7 @@
     <ClInclude Include="..\..\include\NAS2D\Renderer\Point.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h">
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Rectangle.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h">

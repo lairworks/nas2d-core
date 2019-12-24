@@ -10,7 +10,7 @@
 #pragma once
 
 #include "Renderer/Point.h"
-#include "Renderer/Primitives.h"
+#include "Renderer/Rectangle.h"
 
 #include <memory>
 #include <string>

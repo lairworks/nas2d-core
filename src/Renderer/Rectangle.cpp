@@ -8,7 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Renderer/Primitives.h"
+#include "NAS2D/Renderer/Rectangle.h"
 
 using namespace NAS2D;
 

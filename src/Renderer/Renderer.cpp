@@ -38,40 +38,16 @@ NAS2D::Timer		_TIMER;
 
 NAS2D::Signals::Signal0<void>	_FADE_COMPLETE;
 
-enum class FadeType
-{
-	FADE_IN = -1,
-	FADE_NONE = 0,
-	FADE_OUT = 1
-};
-
-
-FadeType				CURRENT_FADE = FadeType::FADE_NONE;
-
-
-Renderer::Renderer() :	mRendererName("NULL Renderer"),
-						mDriverName("NULL Renderer"),
-						mTitle("Default Application"),
-						mFadeColor(COLOR_BLACK),
-						mFadeStep(0.0f),
-						mCurrentFade(0.0f)
-{
-	CURRENT_FADE = FadeType::FADE_NONE;
-}
-
-
 /**
  * Internal constructor used by derived types to set the name of the Renderer.
  *
  * This c'tor is not public and can't be invoked externally.
  */
-Renderer::Renderer(const std::string& rendererName, const std::string& appTitle):	mRendererName(rendererName),
-																					mTitle(appTitle),
-																					mFadeColor(COLOR_BLACK),
-																					mFadeStep(0.0f),
-																					mCurrentFade(0.0f)
+Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
+    : mRendererName(rendererName)
+	, mTitle(appTitle)
 {
-	CURRENT_FADE = FadeType::FADE_NONE;
+	/* DO NOTHING */
 }
 
 
@@ -254,11 +230,11 @@ void Renderer::fadeIn(float delay)
 	if (delay == 0)
 	{
 		mCurrentFade = 0.0f;
-		CURRENT_FADE = FadeType::FADE_NONE;
+		mCurrentFadeType = FadeType::None;
 		return;
 	}
 
-	CURRENT_FADE = FadeType::FADE_IN;
+	mCurrentFadeType = FadeType::In;
 	mFadeStep = 255.0f / delay;
 
 	_TIMER.delta();	// clear timer
@@ -276,11 +252,11 @@ void Renderer::fadeOut(float delay)
 	if (delay == 0)
 	{
 		mCurrentFade = 255.0f;
-		CURRENT_FADE = FadeType::FADE_NONE;
+		mCurrentFadeType = FadeType::None;
 		return;
 	}
 
-	CURRENT_FADE = FadeType::FADE_OUT;
+	mCurrentFadeType = FadeType::None;
 	mFadeStep = 255.0f / delay;
 
 	_TIMER.delta(); // clear timer
@@ -292,7 +268,7 @@ void Renderer::fadeOut(float delay)
  */
 bool Renderer::isFading() const
 {
-	return (CURRENT_FADE != FadeType::FADE_NONE);
+	return (mCurrentFadeType != FadeType::None);
 }
 
 
@@ -577,16 +553,16 @@ void Renderer::clearScreen(const Color_4ub& color)
  */
 void Renderer::update()
 {
-	if (CURRENT_FADE != FadeType::FADE_NONE)
+	if (mCurrentFadeType != FadeType::None)
 	{
-		float fade = (_TIMER.delta() * mFadeStep) * static_cast<int>(CURRENT_FADE);
+		float fade = (_TIMER.delta() * mFadeStep) * static_cast<int>(mCurrentFadeType);
 
 		mCurrentFade += fade;
 
 		if (mCurrentFade < 0.0f || mCurrentFade > 255.0f)
 		{
 			mCurrentFade = std::clamp(mCurrentFade, 0.0f, 255.0f);
-			CURRENT_FADE = FadeType::FADE_NONE;
+			mCurrentFadeType = FadeType::None;
 			_FADE_COMPLETE();
 		}
 	}

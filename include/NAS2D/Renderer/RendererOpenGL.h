@@ -22,9 +22,13 @@ namespace NAS2D {
 class RendererOpenGL: public Renderer
 {
 public:
+	RendererOpenGL() = delete;
 	RendererOpenGL(const std::string& title);
-
-	~RendererOpenGL() override;
+	RendererOpenGL(const RendererOpenGL& other) = delete;
+	RendererOpenGL(RendererOpenGL&& other) = delete;
+	RendererOpenGL& operator=(const RendererOpenGL& rhs) = delete;
+	RendererOpenGL& operator=(RendererOpenGL&& rhs) = delete;
+	virtual ~RendererOpenGL() override;
 
 	void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 
@@ -74,8 +78,6 @@ public:
 	void update() override;
 
 private:
-	RendererOpenGL(const RendererOpenGL&);				// Intentionally left undefined;
-	RendererOpenGL& operator=(const RendererOpenGL&);	// Intentionally left undefined;
 
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync);

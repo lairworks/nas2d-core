@@ -10,7 +10,7 @@
 #pragma once
 
 #include "Resource.h"
-#include "../Renderer/Primitives.h"
+#include "../Renderer/Color.h"
 
 #include <vector>
 #include <utility>

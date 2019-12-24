@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "Color.h"
 #include "Primitives.h"
 #include "../Signal.h"
 #include "../Resources/Image.h"

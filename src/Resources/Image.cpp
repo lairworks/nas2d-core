@@ -14,8 +14,6 @@
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
-#include "NAS2D/Renderer/Primitives.h"
-
 #include <GL/glew.h>
 #include <SDL_image.h>
 

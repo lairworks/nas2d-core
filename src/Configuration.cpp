@@ -200,8 +200,9 @@ bool Configuration::readConfig(const std::string& filePath)
 
 
 		// Start parsing through the Config.xml file.
-		XmlNode *xmlNode = nullptr;
-		while ((xmlNode = root->iterateChildren(xmlNode)))
+		for (auto xmlNode = root->iterateChildren(nullptr);
+			 xmlNode != nullptr;
+			 xmlNode = root->iterateChildren(xmlNode))
 		{
 			if (xmlNode->value() == "graphics") { parseGraphics(xmlNode); }
 			else if (xmlNode->value() == "audio") { parseAudio(xmlNode); }
@@ -349,12 +350,13 @@ void Configuration::parseOptions(void* _n)
 		return;
 	}
 
-	XmlNode *node = nullptr;
-	while ((node = element->iterateChildren(node)))
+	for (auto xmlNode = element->iterateChildren(nullptr);
+		 xmlNode != nullptr;
+		 xmlNode = element->iterateChildren(xmlNode))
 	{
-		if (node->value() == "option")
+		if (xmlNode->value() == "option")
 		{
-			XmlAttribute* attribute = node->toElement()->firstAttribute();
+			XmlAttribute* attribute = xmlNode->toElement()->firstAttribute();
 
 			std::string name, value;
 			while (attribute)
@@ -377,7 +379,7 @@ void Configuration::parseOptions(void* _n)
 
 			if (name.empty() || value.empty())
 			{
-				std::cout << "Invalid name/value pair in <option> tag in configuration file on row " << node->row() << ". This option will be ignored." << std::endl;
+				std::cout << "Invalid name/value pair in <option> tag in configuration file on row " << xmlNode->row() << ". This option will be ignored." << std::endl;
 			}
 			else
 			{
@@ -386,7 +388,7 @@ void Configuration::parseOptions(void* _n)
 		}
 		else
 		{
-			std::cout << "Unexpected tag '<" << node->value() << ">' found in configuration on row " << node->row() << "." << std::endl;
+			std::cout << "Unexpected tag '<" << xmlNode->value() << ">' found in configuration on row " << xmlNode->row() << "." << std::endl;
 		}
 	}
 }

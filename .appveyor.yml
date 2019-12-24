@@ -1,5 +1,7 @@
 image: Visual Studio 2019 Preview
-configuration: Release
+configuration:
+  - Release
+  - Debug
 platform:
   - x86
   - x64

@@ -4,13 +4,11 @@ platform:
   - x86
   - x64
 cache:
-  - C:\tools\vcpkg\installed\
+  - C:\tools\vcpkg\installed\ -> InstallVcpkgDeps.bat
   - C:\projects\nas2d-core\proj\vs2019\packages -> proj\vs2019\packages.config
 install:
   - vcpkg integrate install
-  - vcpkg install physfs:%PLATFORM%-windows
-  - vcpkg install glew:%PLATFORM%-windows
-  - vcpkg install gtest:%PLATFORM%-windows
+  - call InstallVcpkgDeps.bat
   - nuget restore proj/vs2019
   - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:

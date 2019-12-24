@@ -115,13 +115,8 @@ void Configuration::save()
 	graphics->attribute("screenwidth", mScreenWidth);
 	graphics->attribute("screenheight", mScreenHeight);
 	graphics->attribute("bitdepth", mScreenBpp);
-
-	if (mFullScreen) { graphics->attribute("fullscreen", "true"); }
-	else { graphics->attribute("fullscreen", "false"); }
-
-	if (mVSync) { graphics->attribute("vsync", "true"); }
-	else { graphics->attribute("vsync", "false"); }
-
+	graphics->attribute("fullscreen", mFullScreen ? "true" : "false");
+	graphics->attribute("vsync", mVSync ? "true" : "false");
 	root->linkEndChild(graphics);
 
 	XmlElement* audio = new XmlElement("audio");

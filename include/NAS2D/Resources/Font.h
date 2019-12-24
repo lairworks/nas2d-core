@@ -10,7 +10,6 @@
 #pragma once
 
 #include "Resource.h"
-#include "../Renderer/Primitives.h"
 
 #include <map>
 #include <vector>

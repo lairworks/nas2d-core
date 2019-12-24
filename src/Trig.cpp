@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "NAS2D/Trig.h"
-#include "NAS2D/Renderer/Primitives.h"
+#include "NAS2D/Renderer/Point.h"
 
 #include <cmath>
 

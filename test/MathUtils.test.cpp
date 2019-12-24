@@ -1,5 +1,4 @@
 #include "NAS2D/MathUtils.h"
-#include "NAS2D/Renderer/Primitives.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

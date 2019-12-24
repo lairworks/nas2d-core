@@ -457,7 +457,7 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
 		return false;
 	}
 
-	if (!myFile.write(reinterpret_cast<const char*>(file.bytes().data()), file.bytes().size()))
+	if (!myFile.write(file.bytes().data(), file.bytes().size()))
 	{
 		if (mVerbose) std::cerr << "Error occured while writing to file '" << file.filename() << "'\n";
 	}

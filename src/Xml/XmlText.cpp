@@ -13,13 +13,16 @@
 
 using namespace NAS2D::Xml;
 
-XmlText::XmlText(const std::string& initValue) : XmlNode(XmlNode::XML_TEXT), cdata(false)
+XmlText::XmlText(const std::string& initValue)
+: XmlNode(XmlNode::NodeType::XML_TEXT)
+, cdata(false)
 {
 	value(initValue);
 }
 
 
-XmlText::XmlText(const XmlText& copy) : XmlNode(XmlNode::XML_TEXT)
+XmlText::XmlText(const XmlText& copy)
+: XmlNode(XmlNode::NodeType::XML_TEXT)
 {
 	copy.copyTo(this);
 }

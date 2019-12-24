@@ -21,7 +21,7 @@ using namespace NAS2D::Xml;
  */
 XmlNode::XmlNode() :	XmlBase(),
 						_parent(nullptr),
-						_type(XML_UNKNOWN),
+						_type(NodeType::XML_UNKNOWN),
 						_firstChild(nullptr),
 						_lastChild(nullptr),
 						_prev(nullptr),
@@ -153,10 +153,10 @@ XmlNode* XmlNode::linkEndChild(XmlNode* node)
 		return nullptr;
 	}
 
-	if (node->type() == XmlNode::XML_DOCUMENT)
+	if (node->type() == XmlNode::NodeType::XML_DOCUMENT)
 	{
 		delete node;
-		if (document()) { document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
+		if (document()) { document()->error(XmlErrorCode::XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 		return nullptr;
 	}
 
@@ -179,9 +179,9 @@ XmlNode* XmlNode::linkEndChild(XmlNode* node)
  */
 XmlNode* XmlNode::insertEndChild(const XmlNode& node)
 {
-	if (node.type() == XmlNode::XML_DOCUMENT)
+	if (node.type() == XmlNode::NodeType::XML_DOCUMENT)
 	{
-		if (document()) { document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
+		if (document()) { document()->error(XmlErrorCode::XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 
 		return nullptr;
 	}
@@ -208,9 +208,9 @@ XmlNode* XmlNode::insertBeforeChild(XmlNode* beforeThis, const XmlNode& addThis)
 		return nullptr;
 	}
 
-	if (addThis.type() == XmlNode::XML_DOCUMENT)
+	if (addThis.type() == XmlNode::NodeType::XML_DOCUMENT)
 	{
-		if (document()) { document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
+		if (document()) { document()->error(XmlErrorCode::XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 		return nullptr;
 	}
 
@@ -244,9 +244,9 @@ XmlNode* XmlNode::insertAfterChild(XmlNode* afterThis, const XmlNode& addThis)
 	{
 		return nullptr;
 	}
-	if (addThis.type() == XmlNode::XML_DOCUMENT)
+	if (addThis.type() == XmlNode::NodeType::XML_DOCUMENT)
 	{
-		if (document()) { document()->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
+		if (document()) { document()->error(XmlErrorCode::XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 		return nullptr;
 	}
 
@@ -286,7 +286,7 @@ XmlNode* XmlNode::replaceChild(XmlNode* replaceThis, const XmlNode& withThis)
 	{
 		// A document can never be a child.	Thanks to Noam.
 		XmlDocument* doc = document();
-		if (doc) { doc->error(XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_DOCUMENT_TOP_ONLY, 0, 0); }
 		return nullptr;
 	}
 
@@ -815,7 +815,7 @@ XmlNode* XmlNode::nextSibling()
 *
 * \see XmlNode::NodeType
 */
-int XmlNode::type() const
+XmlNode::NodeType XmlNode::type() const
 {
 	return _type;
 }

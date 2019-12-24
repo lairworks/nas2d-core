@@ -71,7 +71,7 @@ public:
 
 	virtual const char* parse(const char* p, void* data) = 0;
 
-	enum XmlErrorCode
+	enum class XmlErrorCode
 	{
 		XML_NO_ERROR = 0,
 		XML_ERROR,

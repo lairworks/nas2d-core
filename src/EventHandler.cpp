@@ -25,6 +25,39 @@ const int MAX_MESSAGE_PROCESSING = 100;	/**
 										 * \todo	Make this configurable?
 										 */
 
+namespace NAS2D {
+	EventHandler::KeyModifier& operator|=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept
+	{
+		using underlying = std::underlying_type_t<EventHandler::KeyModifier>;
+		auto underlying_a = static_cast<underlying>(a);
+		auto underlying_b = static_cast<underlying>(b);
+		a = static_cast<EventHandler::KeyModifier>(underlying_a | underlying_b);
+		return a;
+	}
+
+	EventHandler::KeyModifier& operator&=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept
+	{
+		using underlying = std::underlying_type_t<EventHandler::KeyModifier>;
+		auto underlying_a = static_cast<underlying>(a);
+		auto underlying_b = static_cast<underlying>(b);
+		a = static_cast<EventHandler::KeyModifier>(underlying_a & underlying_b);
+		return a;
+	}
+
+	EventHandler::KeyModifier operator|(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept
+	{
+		a |= b;
+		return a;
+	}
+
+	EventHandler::KeyModifier operator&(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept
+	{
+		a &= b;
+		return a;
+	}
+}
+
+
 /**
  * Default c'tor.
  */
@@ -619,7 +652,7 @@ bool EventHandler::textInputMode()
  */
 bool EventHandler::shift(KeyModifier mod) const
 {
-	return ((mod & KEY_MOD_SHIFT) || (mod & KEY_MOD_CAPS));
+	return KeyModifier::KEY_MOD_NONE != (mod & (KeyModifier::KEY_MOD_SHIFT | KeyModifier::KEY_MOD_CAPS));
 }
 
 
@@ -630,7 +663,7 @@ bool EventHandler::shift(KeyModifier mod) const
  */
 bool EventHandler::alt(KeyModifier mod) const
 {
-	return ((mod & KEY_MOD_LALT) || (mod & KEY_MOD_RALT));
+	return KeyModifier::KEY_MOD_NONE != (mod & KeyModifier::KEY_MOD_ALT);
 }
 
 
@@ -641,7 +674,7 @@ bool EventHandler::alt(KeyModifier mod) const
  */
 bool EventHandler::numlock(KeyModifier mod) const
 {
-	return (mod & KEY_MOD_NUM) != 0;
+	return KeyModifier::KEY_MOD_NONE != (mod & KeyModifier::KEY_MOD_NUM);
 }
 
 
@@ -652,7 +685,7 @@ bool EventHandler::numlock(KeyModifier mod) const
  */
 bool EventHandler::control(KeyModifier mod) const
 {
-	return (mod & KEY_MOD_CTRL) != 0;
+	return KeyModifier::KEY_MOD_NONE != (mod & KeyModifier::KEY_MOD_CTRL);
 }
 
 
@@ -661,7 +694,8 @@ bool EventHandler::control(KeyModifier mod) const
  */
 bool EventHandler::query_shift() const
 {
-	return (SDL_GetModState() & KEY_MOD_SHIFT) != 0;
+	using underlying = std::underlying_type_t<KeyModifier>;
+	return KeyModifier::KEY_MOD_NONE != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::KEY_MOD_SHIFT));
 }
 
 
@@ -670,7 +704,8 @@ bool EventHandler::query_shift() const
  */
 bool EventHandler::query_numlock() const
 {
-	return (SDL_GetModState() & KEY_MOD_NUM) != 0;
+    using underlying = std::underlying_type_t<KeyModifier>;
+	return KeyModifier::KEY_MOD_NONE != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::KEY_MOD_NUM));
 }
 
 
@@ -679,7 +714,8 @@ bool EventHandler::query_numlock() const
  */
 bool EventHandler::query_control() const
 {
-	return (SDL_GetModState() & KEY_MOD_CTRL) != 0;
+	using underlying = std::underlying_type_t<KeyModifier>;
+	return KeyModifier::KEY_MOD_NONE != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::KEY_MOD_CTRL));
 }
 
 

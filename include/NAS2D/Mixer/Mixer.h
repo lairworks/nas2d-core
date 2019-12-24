@@ -32,6 +32,10 @@ public:
 
 public:
 	Mixer() = default;
+	Mixer(const Mixer&) = default;
+	Mixer& operator=(const Mixer&) = default;
+	Mixer(Mixer&&) = default;
+	Mixer& operator=(Mixer&&) = default;
 	virtual ~Mixer() = default;
 
 public:
@@ -164,12 +168,6 @@ protected:
 	Mixer(const std::string& name);
 
 	NAS2D::Signals::Signal0<void> _music_complete; /**< Callback used when music finished playing. */
-
-private:
-	// No default copy constructor or copy operator
-	// Calling these any any time should result in an error
-	Mixer(const Mixer&) = delete;
-	Mixer& operator=(const Mixer&) = delete;
 
 private:
 	std::string mName; /**< Internal name of the Renderer. */

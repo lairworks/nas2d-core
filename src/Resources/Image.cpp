@@ -273,7 +273,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 
 	SDL_LockSurface(pixels);
 	uint8_t bpp = pixels->format->BytesPerPixel;
-	uint8_t*p = (uint8_t*)pixels->pixels + y * pixels->pitch + x * bpp;
+	uint8_t* p = (uint8_t*)pixels->pixels + static_cast<std::size_t>(y) * pixels->pitch + static_cast<std::size_t>(x) * bpp;
 
 	unsigned int c = 0;
 

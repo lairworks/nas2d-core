@@ -19,6 +19,7 @@ namespace NAS2D {
 #define SCANCODE_MASK (1<<30)
 #define SCANCODE_TO_KEYCODE(X) (X | SCANCODE_MASK)
 
+
 /**
  * \class	EventHandler
  * \brief	Handles and dispatches low-level events.
@@ -28,10 +29,36 @@ class EventHandler
 {
 public:
 	/**
-	* \enum KeyCode
-	* \brief Keyboard scan codes.
+	* \enum KeyModifier
+	* \brief Key Modifiers
 	*/
-	enum KeyCode
+	enum class KeyModifier : uint16_t
+	{
+		KEY_MOD_NONE = 0x0000,
+		KEY_MOD_LSHIFT = 0x0001,
+		KEY_MOD_RSHIFT = 0x0002,
+		KEY_MOD_SHIFT = KEY_MOD_LSHIFT | KEY_MOD_RSHIFT,
+		KEY_MOD_LCTRL = 0x0040,
+		KEY_MOD_RCTRL = 0x0080,
+		KEY_MOD_CTRL = KEY_MOD_LCTRL | KEY_MOD_RCTRL,
+		KEY_MOD_LALT = 0x0100,
+		KEY_MOD_RALT = 0x0200,
+		KEY_MOD_ALT = KEY_MOD_LALT | KEY_MOD_RALT,
+		KEY_MOD_LMETA = 0x0400,
+		KEY_MOD_RMETA = 0x0800,
+		KEY_MOD_META = KEY_MOD_LMETA | KEY_MOD_RMETA,
+		KEY_MOD_NUM = 0x1000,
+		KEY_MOD_CAPS = 0x2000,
+		KEY_MOD_MODE = 0x4000,
+		KEY_MOD_RESERVED = 0x8000
+	};
+
+
+		/**
+		* \enum KeyCode
+		* \brief Keyboard scan codes.
+		*/
+	enum class KeyCode : uint32_t
 	{
 		KEY_UNKNOWN = 0,
 		KEY_FIRST = 0,
@@ -207,37 +234,10 @@ public:
 	};
 
 	/**
-	* \enum KeyModifier
-	* \brief Key Modifiers
-	*/
-	enum KeyModifier
-	{
-		KEY_MOD_NONE = 0x0000,
-		KEY_MOD_LSHIFT = 0x0001,
-		KEY_MOD_RSHIFT = 0x0002,
-		KEY_MOD_LCTRL = 0x0040,
-		KEY_MOD_RCTRL = 0x0080,
-		KEY_MOD_LALT = 0x0100,
-		KEY_MOD_RALT = 0x0200,
-		KEY_MOD_LMETA = 0x0400,
-		KEY_MOD_RMETA = 0x0800,
-		KEY_MOD_NUM = 0x1000,
-		KEY_MOD_CAPS = 0x2000,
-		KEY_MOD_MODE = 0x4000,
-		KEY_MOD_RESERVED = 0x8000
-	};
-
-	const int KEY_MOD_ALT = KEY_MOD_LALT | KEY_MOD_RALT; /**< Combines Left and Right alt keys. */
-	const int KEY_MOD_CTRL = KEY_MOD_LCTRL | KEY_MOD_RCTRL; /**< Combines Left and Right control keys. */
-	const int KEY_MOD_META = KEY_MOD_LMETA | KEY_MOD_RMETA; /**< Combines Left and Right meta keys. */
-	const int KEY_MOD_SHIFT = KEY_MOD_LSHIFT | KEY_MOD_RSHIFT; /**< Combines Left and Right shift keys. */
-
-public:
-	/**
 	* \enum		MouseButton
 	* \brief	Mouse button identifiers.
 	*/
-	enum MouseButton
+	enum class MouseButton
 	{
 		BUTTON_NONE,
 		BUTTON_LEFT,
@@ -245,7 +245,7 @@ public:
 		BUTTON_RIGHT
 	};
 
-public:
+
 	/**
 	 * \typedef	ActivateEventCallback
 	 * \brief	Triggered whenever the application gains or loses focus.
@@ -620,5 +620,12 @@ private:
 };
 
 void postQuitEvent();
+
+
+EventHandler::KeyModifier& operator|=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept;
+EventHandler::KeyModifier& operator&=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept;
+EventHandler::KeyModifier operator|(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept;
+EventHandler::KeyModifier operator&(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept;
+
 
 } // namespace

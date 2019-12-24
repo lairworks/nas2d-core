@@ -195,10 +195,10 @@ XmlAttribute::QueryResult XmlAttribute::queryIntValue(int& i) const
 	}
 	catch (std::invalid_argument)
 	{
-		return XML_WRONG_TYPE;
+		return QueryResult::XML_WRONG_TYPE;
 	}
 
-	return XML_SUCCESS;
+	return QueryResult::XML_SUCCESS;
 }
 
 
@@ -220,10 +220,10 @@ XmlAttribute::QueryResult XmlAttribute::queryDoubleValue(double& d) const
 	}
 	catch (std::invalid_argument)
 	{
-		return XML_WRONG_TYPE;
+		return QueryResult::XML_WRONG_TYPE;
 	}
 
-	return XML_SUCCESS;
+	return QueryResult::XML_SUCCESS;
 }
 
 

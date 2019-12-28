@@ -42,17 +42,11 @@ public:
 	Point_2d& operator-=(const Point_2d& pt);
 	Point_2d& operator-=(const Point_2df& pt);
 
-	Point_2d& operator*=(const Point_2d& pt);
-	Point_2d& operator*=(const Point_2df& pt);
-
 	const Point_2d operator+(const Point_2d& pt);
 	const Point_2d operator+(const Point_2df& pt);
 
 	const Point_2d operator-(const Point_2d& pt);
 	const Point_2d operator-(const Point_2df& pt);
-
-	const Point_2d operator*(const Point_2d& pt);
-	const Point_2d operator*(const Point_2df& pt);
 
 public:
 	void x(int x);
@@ -94,17 +88,11 @@ public:
 	Point_2df& operator-=(const Point_2d& pt);
 	Point_2df& operator-=(const Point_2df& pt);
 
-	Point_2df& operator*=(const Point_2d& pt);
-	Point_2df& operator*=(const Point_2df& pt);
-
 	const Point_2df operator+(const Point_2d& pt);
 	const Point_2df operator+(const Point_2df& pt);
 
 	const Point_2df operator-(const Point_2d& pt);
 	const Point_2df operator-(const Point_2df& pt);
-
-	const Point_2df operator*(const Point_2d& pt);
-	const Point_2df operator*(const Point_2df& pt);
 
 public:
 	void x(float x);

@@ -10,6 +10,7 @@
 
 #include "NAS2D/Resources/Sprite.h"
 #include "NAS2D/Version.h"
+#include "NAS2D/Xml/Xml.h"
 
 #include <iostream>
 
@@ -320,7 +321,7 @@ void Sprite::processXml(const std::string& filePath)
 		}
 
 		// Get the Sprite version.
-		XmlAttribute* version = xmlRootElement->firstAttribute();
+		const XmlAttribute* version = xmlRootElement->firstAttribute();
 		if (!version || version->value().empty())
 		{
 			cout << "Root element in sprite file '" << filePath << "' doesn't define a version." << endl;
@@ -362,7 +363,7 @@ void Sprite::processImageSheets(void* root)
 	{
 		if (node->value() == "imagesheet" && node->toElement())
 		{
-			XmlAttribute* attribute = node->toElement()->firstAttribute();
+			const XmlAttribute* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{
 				if (toLowercase(attribute->name()) == "id") { id = attribute->value(); }
@@ -443,7 +444,7 @@ void Sprite::processActions(void* root)
 		{
 
 			string action_name;
-			XmlAttribute* attribute = node->toElement()->firstAttribute();
+			const XmlAttribute* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{
 				if (toLowercase(attribute->name()) == "name")
@@ -495,7 +496,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 			int width = 0, height = 0;
 			int anchorx = 0, anchory = 0;
 
-			XmlAttribute* attribute = frame->toElement()->firstAttribute();
+			const XmlAttribute* attribute = frame->toElement()->firstAttribute();
 			while (attribute)
 			{
 				if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }

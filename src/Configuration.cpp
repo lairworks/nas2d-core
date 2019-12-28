@@ -232,7 +232,7 @@ void Configuration::parseGraphics(void* _n)
 		return;
 	}
 
-	XmlAttribute* attribute = element->firstAttribute();
+	const XmlAttribute* attribute = element->firstAttribute();
 	while (attribute)
 	{
 		if (attribute->name() == GRAPHICS_CFG_SCREEN_WIDTH) { attribute->queryIntValue(mScreenWidth); }
@@ -266,7 +266,7 @@ void Configuration::parseAudio(void* _n)
 		return;
 	}
 
-	XmlAttribute* attribute = element->firstAttribute();
+	const XmlAttribute* attribute = element->firstAttribute();
 	while (attribute)
 	{
 		if (attribute->name() == AUDIO_CFG_MIXRATE)
@@ -351,7 +351,7 @@ void Configuration::parseOptions(void* _n)
 	{
 		if (xmlNode->value() == "option")
 		{
-			XmlAttribute* attribute = xmlNode->toElement()->firstAttribute();
+			const XmlAttribute* attribute = xmlNode->toElement()->firstAttribute();
 
 			std::string name, value;
 			while (attribute)

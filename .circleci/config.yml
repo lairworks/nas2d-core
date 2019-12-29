@@ -41,7 +41,7 @@ commands:
               pushd /tmp
               curl --silent --location https://github.com/google/googletest/archive/release-1.8.1.tar.gz | tar xz -
               cd googletest-release-1.8.1/
-              cmake -DCMAKE_CXX_FLAGS="-std=c++17"
+              cmake -DCMAKE_CXX_FLAGS="-std=c++1z"
               make
               mkdir -p << parameters.buildPrefix >>
               cp -r googletest/include << parameters.buildPrefix >>

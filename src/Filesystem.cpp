@@ -29,47 +29,13 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-//enum MountPosition
-//{
-//	MOUNT_PREPEND = 0,
-//	MOUNT_APPEND = 1,
-//};
-
-/**
- * Default c'tor.
- */
-//Filesystem::Filesystem() noexcept
-//	: mVerbose(false)
-//{}
-
-/**
- * Shuts down PhysFS and cleans up.
- */
-//Filesystem::~Filesystem() noexcept
-//{
-//	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
-//}
 
 /**
  * Shuts down PhysFS and cleans up.
  */
 void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appName*/, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
 {
-	if (mIsInit)
-	{
-		return;
-	}
-	//if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
-
-	//if (PHYSFS_init(argv_0.c_str()) == 0)
-	//{
-	//	throw filesystem_backend_init_failure(getLastPhysfsError());
-	//}
-
-	//if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
-	//{
-	//	std::cout << std::endl << "(FSYS) Error setting sane config. " << getLastPhysfsError() << "." << std::endl;
-	//}
+	if (mIsInit) { return; }
 
 	namespace FS = std::filesystem;
 	FS::path p = dataPath;
@@ -77,9 +43,9 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appNam
 	p = FS::canonical(p, ec);
 	if (ec)
 	{
-		std::cerr << "Filesystem::init failed:\n"
-				  << "dataPath: " << p
-				  << "\nReasons for failure:\n"
+		std::cerr << "Filesystem::init failed:" << std::endl
+				  << "dataPath: " << p << std::endl
+				  << "Reasons for failure:" << std::endl
 				  << ec.message();
 		return;
 	}
@@ -87,11 +53,8 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appNam
 	mDataPath = dataPath;
 	mSearchPath.insert(mDataPath);
 	mIsInit = true;
-	//if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
-	//{
-	//	std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
-	//}
 }
+
 
 /**
  * Adds a directory or supported archive to the Search Path.
@@ -126,13 +89,6 @@ bool Filesystem::mount(const std::string& path) const noexcept
 		std::cerr << "Couldn't add " << path << " to search path.\n";
 		return false;
 	}
-	//if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
-	//{
-	//	std::cout << "Couldn't add '" << path << "' to search path. " << getLastPhysfsError() << "." << std::endl;
-	//	return false;
-	//}
-
-	//return true;
 }
 
 /**
@@ -140,19 +96,9 @@ bool Filesystem::mount(const std::string& path) const noexcept
  */
 StringList Filesystem::searchPath() const noexcept
 {
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-	if (!mIsInit)
-	{
-		return {};
-	}
-	StringList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
+	if (!mIsInit) { return {}; }
 
-	//auto searchPathList = PHYSFS_getSearchPath();
-	//for (char **i = searchPathList; *i != nullptr; ++i)
-	//{
-	//	searchPath.push_back(*i);
-	//}
-	//PHYSFS_freeList(searchPathList);
+	StringList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
 
 	return searchPath;
 }
@@ -160,8 +106,8 @@ StringList Filesystem::searchPath() const noexcept
 /**
  * Returns a list of files within a given directory.
  *
- * \param	dir	Directory to search within the searchpath.
- * \param	filter		Optional extension filter.
+ * \param	dir		Directory to search within the searchpath.
+ * \param	filter	Extension filter. Provide an empty string for no filter.
  *
  * \note	This function will also return the names of any directories in a specified search path
  */
@@ -171,14 +117,9 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 	namespace FS = std::filesystem;
 	std::error_code ec{};
 	FS::path root{};
-	if (dir.empty())
-	{
-		root = FS::absolute(FS::path{mDataPath}, ec);
-	}
-	if (!FS::is_directory(root))
-	{
-		return {};
-	}
+	if (dir.empty()) { root = FS::absolute(FS::path{mDataPath}, ec); }
+	if (!FS::is_directory(root)) { return {}; }
+
 	for (auto& f : FS::directory_iterator{root, ec})
 	{
 		if (filter.empty())
@@ -199,36 +140,10 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 			}
 		}
 	}
+
 	return result;
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	//char **rc = PHYSFS_enumerateFiles(dir.c_str());
-
-	//StringList fileList;
-	//if (filter.empty())
-	//{
-	//	for (char **i = rc; *i != nullptr; i++)
-	//	{
-	//		fileList.push_back(*i);
-	//	}
-	//}
-	//else
-	//{
-	//	size_t filterLen = filter.size();
-	//	for (char **i = rc; *i != nullptr; i++)
-	//	{
-	//		std::string tmpStr = *i;
-	//		if (tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
-	//		{
-	//			fileList.push_back(*i);
-	//		}
-	//	}
-	//}
-
-	//PHYSFS_freeList(rc);
-
-	//return fileList;
 }
+
 
 /**
  * Deletes a specified file.
@@ -247,16 +162,8 @@ bool Filesystem::del(const std::string& filename) const noexcept
 		std::cerr << "Unable to delete " << filename << ".\n";
 		return false;
 	}
+
 	return true;
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	//if (PHYSFS_delete(filename.c_str()) == 0)
-	//{
-	//	std::cout << "Unable to delete '" << filename << "':" << getLastPhysfsError() << std::endl;
-	//	return false;
-	//}
-
-	//return true;
 }
 
 /**
@@ -268,13 +175,12 @@ bool Filesystem::del(const std::string& filename) const noexcept
  */
 File Filesystem::open(const std::string& filename) const noexcept
 {
-
 	if (mVerbose) { std::cerr << "Attempting to load '" << filename << "..."; }
 
 	namespace FS = std::filesystem;
 	if (!exists(filename))
 	{
-		if (mVerbose) { std::cerr << "Failed. File does not exist.\n"; }
+		if (mVerbose) { std::cerr << "Failed. File does not exist." << std::endl; }
 		return File();
 	}
 
@@ -283,56 +189,15 @@ File Filesystem::open(const std::string& filename) const noexcept
 	const auto size = FS::file_size(p, ec);
 	if (size == static_cast<std::uintmax_t>(-1))
 	{
-		if (mVerbose) { std::cerr << "Failed. std::filesystem::file_size failed to get the size.\n"; }
+		if (mVerbose) { std::cerr << "Failed. std::filesystem::file_size failed to get the size." << std::endl; }
 		return File();
 	}
 
 	std::ifstream ifs{p};
 	std::string buffer = std::string(static_cast<const std::stringstream&>(std::stringstream() << ifs.rdbuf()).str());
 	return File(buffer, filename);
-
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	//if (mVerbose) { std::cout << "Attempting to load '" << filename << std::endl; }
-
-	//PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
-	//if (!myFile)
-	//{
-	//	std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
-	//	closeFile(myFile);
-	//	return File();
-	//}
-
-	//// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
-	//PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
-	//if (len < 0 || len > UINT_MAX)
-	//{
-	//	std::cout << "File '" << filename << "' is too large to load." << std::endl;
-	//	closeFile(myFile);
-	//	return File();
-	//}
-
-	//// Create a char* buffer large enough to hold the entire file.
-	//PHYSFS_uint32 fileLength = static_cast<PHYSFS_uint32>(len);
-	//char* fileBuffer = new char[fileLength + 1];
-
-	//// If we read less then the file length, return an empty File object, log a message and free any used memory.
-	//if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
-	//{
-	//	std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
-	//	delete[] fileBuffer;
-	//	closeFile(myFile);
-	//	return File();
-	//}
-
-	//File file(std::string(fileBuffer, fileLength), filename);
-	//closeFile(myFile);
-	//delete[] fileBuffer;
-
-	//if (mVerbose) { std::cout << "Loaded '" << filename << "' successfully." << std::endl; }
-
-	//return file;
 }
+
 
 /**
  * Creates a new directory within the primary search path.
@@ -347,9 +212,8 @@ bool Filesystem::makeDirectory(const std::string& path) const noexcept
 	std::error_code ec{};
 	auto p = FS::path{path};
 	return FS::create_directories(p, ec);
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-	//return PHYSFS_mkdir(path.c_str()) != 0;
 }
+
 
 /**
  * Determines if a given path is a directory rather than a file.
@@ -360,11 +224,8 @@ bool Filesystem::isDirectory(const std::string& path) const noexcept
 {
 	namespace FS = std::filesystem;
 	return FS::is_directory(FS::path{path});
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	//PHYSFS_Stat stat;
-	//return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
 }
+
 
 /**
  * Checks for the existence of a file.
@@ -375,7 +236,6 @@ bool Filesystem::isDirectory(const std::string& path) const noexcept
  */
 bool Filesystem::exists(const std::string& filename) const noexcept
 {
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	std::error_code ec{};
 	namespace FS = std::filesystem;
 	bool does_not_exist = !FS::exists(filename, ec);
@@ -391,8 +251,10 @@ bool Filesystem::exists(const std::string& filename) const noexcept
 		}
 		return false;
 	}
+
 	return true;
 }
+
 
 /**
  * Toggles Verbose Mode.
@@ -405,6 +267,7 @@ void Filesystem::toggleVerbose() const noexcept
 	mVerbose = !mVerbose;
 }
 
+
 /**
  * Closes a file handle.
  *
@@ -415,14 +278,8 @@ void Filesystem::toggleVerbose() const noexcept
 bool Filesystem::closeFile(void* /*file*/) const
 {
 	return true;
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
-	//if (!file) { return false; }
-
-	//if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
-
-	//throw filesystem_file_handle_still_open(getLastPhysfsError());
 }
+
 
 /**
  * Writes a file to disk.
@@ -434,48 +291,34 @@ bool Filesystem::closeFile(void* /*file*/) const
  */
 bool Filesystem::write(const File& file, bool overwrite) const noexcept
 {
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
 	if (file.empty())
 	{
-		std::cerr << "Attempted to write empty file '" << file.filename() << "'\n";
+		std::cerr << "Attempted to write empty file '" << file.filename() << std::endl;
 		return false;
 	}
 
 	if (!overwrite && exists(file.filename()))
 	{
-		if (mVerbose) { std::cerr << "Attempted to overwrite a file '" << file.filename() << "' that already exists.\n"; }
+		if (mVerbose) { std::cerr << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl; }
 		return false;
 	}
 
-	//PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
 	namespace FS = std::filesystem;
 	std::ofstream myFile{FS::path{file.filename()}, std::ios_base::binary};
 	if (!myFile)
 	{
-		if (mVerbose) { std::cerr << "Couldn't open '" << file.filename() << "' for writing.\n"; }
+		if (mVerbose) { std::cerr << "Couldn't open '" << file.filename() << "' for writing." << std::endl; }
 		return false;
 	}
 
-	if (!myFile.write(file.bytes().data(), file.bytes().size()))
+	if (!myFile.write(file.raw_bytes(), file.bytes().size()))
 	{
-		if (mVerbose) std::cerr << "Error occured while writing to file '" << file.filename() << "'\n";
+		if (mVerbose) std::cerr << "Error occured while writing to file '" << file.filename() << std::endl;
 	}
 	else
 	{
-		if (mVerbose) std::clog << "Wrote " << file.bytes().size() << " bytes to file '" << file.filename() << "'\n";
+		if (mVerbose) std::clog << "Wrote " << file.bytes().size() << " bytes to file '" << file.filename() << std::endl;
 	}
-	//if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
-	//{
-	//	if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << getLastPhysfsError() << std::endl; }
-	//	closeFile(myFile);
-	//	return false;
-	//}
-	//else
-	//{
-	//	closeFile(myFile);
-	//	if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
-	//}
 
 	return true;
 }
@@ -485,9 +328,9 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
  */
 const std::string& Filesystem::dataPath() const noexcept
 {
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	return mDataPath;
 }
+
 
 /**
  * Convenience function to get the working directory of a file.
@@ -498,28 +341,19 @@ const std::string& Filesystem::dataPath() const noexcept
  */
 std::string Filesystem::workingPath(const std::string& filename) const noexcept
 {
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-	if (!mIsInit)
-	{
-		return {};
-	};
+	if (!mIsInit) { return {}; }
+
 	if (filename.empty())
 	{
 		if (mVerbose) { std::cerr << "Filesystem::workingPath(): empty string provided.\n"; }
 		return {};
 	}
+
 	namespace FS = std::filesystem;
 	auto p = FS::path{filename};
 	return (p.parent_path() / "").make_preferred().string();
-
-	//if (!filename.empty())
-	//{
-	//	std::string tmpStr(filename);
-	//	size_t pos = tmpStr.rfind("/");
-	//	tmpStr = tmpStr.substr(0, pos + 1);
-	//	return tmpStr;
-	//}
 }
+
 
 /**
  * Gets the extension of a given file path.
@@ -531,8 +365,6 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
  */
 std::string Filesystem::extension(const std::string& path) noexcept
 {
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-
 	const auto p = std::filesystem::path{path};
 	if (std::filesystem::is_directory(p))
 	{
@@ -549,29 +381,13 @@ std::string Filesystem::extension(const std::string& path) noexcept
 			return p.stem().string();
 		}
 	}
+
 	return {};
 
-	// This is a naive approach but works for most cases.
-	//size_t pos = path.find_last_of(".");
-
-	//if (pos != std::string::npos)
-	//{
-	//	return path.substr(pos + 1);
-	//}
-	//else if (isDirectory(path))
-	//{
-	//	if (mVerbose) { std::cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << std::endl; }
-	//	return std::string();
-	//}
-	//else
-	//{
-	//	if (mVerbose) { std::cout << "Filesystem::extension(): File '" << path << "' has no extension." << std::endl; }
-	//	return std::string();
-	//}
 }
+
 
 const char* Filesystem::getLastPhysfsError() const noexcept
 {
-	//return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
 	return nullptr;
 }

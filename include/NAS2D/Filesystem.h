@@ -51,15 +51,12 @@ public:
 	bool isDirectory(const std::string& path) const;
 	void makeDirectory(const std::string& path) const;
 
-	void toggleVerbose() const;
-
 private:
 	bool closeFile(void *file) const;
 	const char* getLastPhysfsError() const;
 
 private:
 	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
-	mutable bool		mVerbose;			/**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 };
 
 }

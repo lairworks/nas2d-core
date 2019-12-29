@@ -45,13 +45,13 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 
 	if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
 	{
-		std::cout << std::endl << "(FSYS) Error setting sane config. " << getLastPhysfsError() << "." << std::endl;
+		throw filesystem_backend_init_failure(std::string("Unable to set a sane configuration: ") + getLastPhysfsError());
 	}
 
 	mDataPath = dataPath;
 	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
 	{
-		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
+		throw filesystem_backend_init_failure(std::string("Couldn't find data path: ") + getLastPhysfsError());
 	}
 }
 

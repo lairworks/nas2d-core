@@ -49,7 +49,7 @@ public:
 	std::string extension(const std::string& path);
 
 	bool isDirectory(const std::string& path) const;
-	bool makeDirectory(const std::string& path) const;
+	void makeDirectory(const std::string& path) const;
 
 	void toggleVerbose() const;
 

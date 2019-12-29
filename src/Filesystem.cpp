@@ -206,12 +206,13 @@ File Filesystem::open(const std::string& filename) const
  * Creates a new directory within the primary search path.
  *
  * \param path	Path of the directory to create.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::makeDirectory(const std::string& path) const
+void Filesystem::makeDirectory(const std::string& path) const
 {
-	return PHYSFS_mkdir(path.c_str()) != 0;
+	if (PHYSFS_mkdir(path.c_str()) == 0)
+	{
+		throw std::runtime_error(std::string("Unable to create directory '" + path + "': ") + getLastPhysfsError());
+	}
 }
 
 

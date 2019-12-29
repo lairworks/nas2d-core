@@ -293,11 +293,9 @@ void Filesystem::write(const File& file, bool overwrite) const
 		closeFile(myFile);
 		throw std::runtime_error(std::string("Error occured while writing to file '") + file.filename() + "': " + getLastPhysfsError());
 	}
-	else
-	{
-		closeFile(myFile);
-		if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
-	}
+
+	closeFile(myFile);
+	if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
 }
 
 

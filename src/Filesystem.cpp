@@ -349,7 +349,7 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
 	}
 
 	auto p = FS::path{filename};
-	return (p.parent_path() / "").make_preferred().string();
+	return p.parent_path().make_preferred().string();
 }
 
 

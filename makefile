@@ -101,6 +101,13 @@ TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.o,$(TESTSRCS))
 TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
 TESTCPPFLAGS := -I$(INCDIR) -I$(GMOCKSRCDIR)/gtest/include
 TESTLDFLAGS := -L$(BINDIR) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs $(LDLIBS)
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread $(LDLIBS)
+endif()
+
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests
 # Conditionally add GMock if we built it separately

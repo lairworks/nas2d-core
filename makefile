@@ -104,9 +104,8 @@ TESTLDFLAGS := -L$(BINDIR) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
 
 $(info $$CC is [$(CXX)])
 
-
-# Check compiler
-ifeq ($(shell $(CXX) -v 2>&1 | grep -c "clang version"), 1)
+# This seems like a naive way to do this
+ifeq ($(CXX),c++)
   TESTLIBS = -lnas2d -lgtest -lgtest_main -lpthread
 else
   TESTLIBS = -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs

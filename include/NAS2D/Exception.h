@@ -31,14 +31,6 @@ class filesystem_backend_init_failure : public std::runtime_error { public: file
 
 
 /**
- * \class filesystem_not_initialized
- *
- * Thrown when any Filesystem operations are attempted before Filesystem::init() is called.
- */
-class filesystem_not_initialized : public std::runtime_error { public: filesystem_not_initialized(); };
-
-
-/**
  * \class filesystem_already_initialized
  *
  * Thrown when Filesystem::init() is called but the Filesystem is already initialized.

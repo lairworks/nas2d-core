@@ -27,10 +27,6 @@ filesystem_backend_init_failure::filesystem_backend_init_failure(const std::stri
 {}
 
 
-filesystem_not_initialized::filesystem_not_initialized() : runtime_error("Fileystem is not initialized.")
-{}
-
-
 filesystem_file_handle_still_open::filesystem_file_handle_still_open() : runtime_error("Unable to close file handle.")
 {}
 

@@ -121,7 +121,13 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 	StringList result{};
 	std::error_code ec{};
 	FS::path root{};
+
+	#if defined(__GNUC__) || defined(__GNUG__)  // YUCK
+	if (dir.empty()) { root = FS::absolute(FS::path{mDataPath}); }
+	#else
 	if (dir.empty()) { root = FS::absolute(FS::path{mDataPath}, ec); }
+	#endif
+	
 	if (!FS::is_directory(root)) { return {}; }
 
 	for (auto& f : FS::directory_iterator{root, ec})

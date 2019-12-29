@@ -102,11 +102,11 @@ TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
 TESTCPPFLAGS := -I$(INCDIR) -I$(GMOCKSRCDIR)/gtest/include
 TESTLDFLAGS := -L$(BINDIR) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
 
-$(info $$CC is [$(CC)])
+$(info $$CC is [$(CXX)])
 
 
 # Check compiler
-ifeq ($(shell $(CC) -v 2>&1 | grep -c "clang version"), 1)
+ifeq ($(shell $(CXX) -v 2>&1 | grep -c "clang version"), 1)
   TESTLIBS = -lnas2d -lgtest -lgtest_main -lpthread
 else
   TESTLIBS = -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs

@@ -72,8 +72,6 @@ Filesystem::~Filesystem()
  */
 void Filesystem::mount(const std::string& path) const
 {
-	if (mVerbose) { std::cout << "Adding '" << path << "' to search path." << std::endl; }
-
 	std::string searchPath(mDataPath + path);
 
 	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
@@ -163,8 +161,6 @@ void Filesystem::del(const std::string& filename) const
  */
 File Filesystem::open(const std::string& filename) const
 {
-	if (mVerbose) { std::cout << "Attempting to load '" << filename << std::endl; }
-
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
 	if (!myFile)
 	{
@@ -195,8 +191,6 @@ File Filesystem::open(const std::string& filename) const
 	File file(std::string(fileBuffer, fileLength), filename);
 	closeFile(myFile);
 	delete[] fileBuffer;
-
-	if (mVerbose) { std::cout << "Loaded '" << filename << "' successfully." << std::endl; }
 
 	return file;
 }
@@ -238,18 +232,6 @@ bool Filesystem::isDirectory(const std::string& path) const
 bool Filesystem::exists(const std::string& filename) const
 {
 	return PHYSFS_exists(filename.c_str()) != 0;
-}
-
-
-/**
- * Toggles Verbose Mode.
- *
- * When Verbose mode is off, only critical messages are displayed.
- * Verbose Mode is generally useful for debugging purposes.
- */
-void Filesystem::toggleVerbose() const
-{
-	mVerbose = !mVerbose;
 }
 
 
@@ -296,7 +278,6 @@ void Filesystem::write(const File& file, bool overwrite) const
 	}
 
 	closeFile(myFile);
-	if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
 }
 
 
@@ -327,7 +308,6 @@ std::string Filesystem::workingPath(const std::string& filename) const
 	}
 	else
 	{
-		if (mVerbose) { std::cout << "Filesystem::workingPath(): empty string provided." << std::endl; }
 		return std::string();
 	}
 }
@@ -352,12 +332,10 @@ std::string Filesystem::extension(const std::string& path)
 	}
 	else if (isDirectory(path))
 	{
-		if (mVerbose) { std::cout << "Filesystem::extension(): Given path '" << path << "' is a directory, not a file." << std::endl; }
 		return std::string();
 	}
 	else
 	{
-		if (mVerbose) { std::cout << "Filesystem::extension(): File '" << path << "' has no extension." << std::endl; }
 		return std::string();
 	}
 }

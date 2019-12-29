@@ -21,39 +21,47 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3350562D-6204-42FC-898A-C85FD62E04E8}</ProjectGuid>
     <RootNamespace>NAS2D</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="packages\sdl2.nuget.redist.2.0.10\build\native\sdl2.nuget.redist.targets" Condition="Exists('packages\sdl2.nuget.redist.2.0.10\build\native\sdl2.nuget.redist.targets')" />
+    <Import Project="packages\sdl2.nuget.2.0.10\build\native\sdl2.nuget.targets" Condition="Exists('packages\sdl2.nuget.2.0.10\build\native\sdl2.nuget.targets')" />
+    <Import Project="packages\sdl2_image.nuget.redist.2.0.5\build\native\sdl2_image.nuget.redist.targets" Condition="Exists('packages\sdl2_image.nuget.redist.2.0.5\build\native\sdl2_image.nuget.redist.targets')" />
+    <Import Project="packages\sdl2_image.nuget.2.0.5\build\native\sdl2_image.nuget.targets" Condition="Exists('packages\sdl2_image.nuget.2.0.5\build\native\sdl2_image.nuget.targets')" />
+    <Import Project="packages\sdl2_mixer.nuget.redist.2.0.4\build\native\sdl2_mixer.nuget.redist.targets" Condition="Exists('packages\sdl2_mixer.nuget.redist.2.0.4\build\native\sdl2_mixer.nuget.redist.targets')" />
+    <Import Project="packages\sdl2_mixer.nuget.2.0.4\build\native\sdl2_mixer.nuget.targets" Condition="Exists('packages\sdl2_mixer.nuget.2.0.4\build\native\sdl2_mixer.nuget.targets')" />
+    <Import Project="packages\sdl2_ttf.nuget.redist.2.0.15\build\native\sdl2_ttf.nuget.redist.targets" Condition="Exists('packages\sdl2_ttf.nuget.redist.2.0.15\build\native\sdl2_ttf.nuget.redist.targets')" />
+    <Import Project="packages\sdl2_ttf.nuget.2.0.15\build\native\sdl2_ttf.nuget.targets" Condition="Exists('packages\sdl2_ttf.nuget.2.0.15\build\native\sdl2_ttf.nuget.targets')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -69,7 +77,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>$(ProjectName)_d</TargetName>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
@@ -78,15 +85,10 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <TargetName>$(ProjectName)_d</TargetName>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
@@ -104,6 +106,12 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)../../InstallVcpkgDeps.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Installing vcpkg dependencies</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -119,6 +127,12 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)../../InstallVcpkgDeps.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Installing vcpkg dependencies</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -141,6 +155,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)../../InstallVcpkgDeps.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Installing vcpkg dependencies</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -163,6 +183,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)../../InstallVcpkgDeps.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Installing vcpkg dependencies</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Configuration.cpp" />
@@ -175,7 +201,9 @@
     <ClCompile Include="..\..\src\Mixer\Mixer.cpp" />
     <ClCompile Include="..\..\src\Mixer\MixerSDL.cpp" />
     <ClCompile Include="..\..\src\Mixer\MixerNull.cpp" />
-    <ClCompile Include="..\..\src\Renderer\Primitives.cpp" />
+    <ClCompile Include="..\..\src\Renderer\Color.cpp" />
+    <ClCompile Include="..\..\src\Renderer\Point.cpp" />
+    <ClCompile Include="..\..\src\Renderer\Rectangle.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
     <ClCompile Include="..\..\src\Renderer\RendererOpenGL.cpp" />
     <ClCompile Include="..\..\src\Resources\Font.cpp" />
@@ -219,7 +247,9 @@
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerNull.h" />
     <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />
-    <ClInclude Include="..\..\include\NAS2D\Renderer\Primitives.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Color.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Point.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Rectangle.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererOpenGL.h" />
     <ClInclude Include="..\..\include\NAS2D\Resources\Font.h" />
@@ -258,26 +288,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="packages\sdl2.nuget.redist.2.0.9\build\native\sdl2.nuget.redist.targets" Condition="Exists('packages\sdl2.nuget.redist.2.0.9\build\native\sdl2.nuget.redist.targets')" />
-    <Import Project="packages\sdl2.nuget.2.0.9\build\native\sdl2.nuget.targets" Condition="Exists('packages\sdl2.nuget.2.0.9\build\native\sdl2.nuget.targets')" />
-    <Import Project="packages\sdl2_mixer.nuget.redist.2.0.4\build\native\sdl2_mixer.nuget.redist.targets" Condition="Exists('packages\sdl2_mixer.nuget.redist.2.0.4\build\native\sdl2_mixer.nuget.redist.targets')" />
-    <Import Project="packages\sdl2_mixer.nuget.2.0.4\build\native\sdl2_mixer.nuget.targets" Condition="Exists('packages\sdl2_mixer.nuget.2.0.4\build\native\sdl2_mixer.nuget.targets')" />
-    <Import Project="packages\sdl2_image.nuget.redist.2.0.4\build\native\sdl2_image.nuget.redist.targets" Condition="Exists('packages\sdl2_image.nuget.redist.2.0.4\build\native\sdl2_image.nuget.redist.targets')" />
-    <Import Project="packages\sdl2_image.nuget.2.0.4\build\native\sdl2_image.nuget.targets" Condition="Exists('packages\sdl2_image.nuget.2.0.4\build\native\sdl2_image.nuget.targets')" />
-    <Import Project="packages\sdl2_ttf.nuget.redist.2.0.15\build\native\sdl2_ttf.nuget.redist.targets" Condition="Exists('packages\sdl2_ttf.nuget.redist.2.0.15\build\native\sdl2_ttf.nuget.redist.targets')" />
-    <Import Project="packages\sdl2_ttf.nuget.2.0.15\build\native\sdl2_ttf.nuget.targets" Condition="Exists('packages\sdl2_ttf.nuget.2.0.15\build\native\sdl2_ttf.nuget.targets')" />
-  </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\sdl2.nuget.redist.2.0.9\build\native\sdl2.nuget.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2.nuget.redist.2.0.9\build\native\sdl2.nuget.redist.targets'))" />
-    <Error Condition="!Exists('packages\sdl2.nuget.2.0.9\build\native\sdl2.nuget.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2.nuget.2.0.9\build\native\sdl2.nuget.targets'))" />
+    <Error Condition="!Exists('packages\sdl2.nuget.redist.2.0.10\build\native\sdl2.nuget.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2.nuget.redist.2.0.10\build\native\sdl2.nuget.redist.targets'))" />
+    <Error Condition="!Exists('packages\sdl2.nuget.2.0.10\build\native\sdl2.nuget.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2.nuget.2.0.10\build\native\sdl2.nuget.targets'))" />
+    <Error Condition="!Exists('packages\sdl2_image.nuget.redist.2.0.5\build\native\sdl2_image.nuget.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2_image.nuget.redist.2.0.5\build\native\sdl2_image.nuget.redist.targets'))" />
+    <Error Condition="!Exists('packages\sdl2_image.nuget.2.0.5\build\native\sdl2_image.nuget.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2_image.nuget.2.0.5\build\native\sdl2_image.nuget.targets'))" />
     <Error Condition="!Exists('packages\sdl2_mixer.nuget.redist.2.0.4\build\native\sdl2_mixer.nuget.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2_mixer.nuget.redist.2.0.4\build\native\sdl2_mixer.nuget.redist.targets'))" />
     <Error Condition="!Exists('packages\sdl2_mixer.nuget.2.0.4\build\native\sdl2_mixer.nuget.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2_mixer.nuget.2.0.4\build\native\sdl2_mixer.nuget.targets'))" />
-    <Error Condition="!Exists('packages\sdl2_image.nuget.redist.2.0.4\build\native\sdl2_image.nuget.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2_image.nuget.redist.2.0.4\build\native\sdl2_image.nuget.redist.targets'))" />
-    <Error Condition="!Exists('packages\sdl2_image.nuget.2.0.4\build\native\sdl2_image.nuget.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2_image.nuget.2.0.4\build\native\sdl2_image.nuget.targets'))" />
     <Error Condition="!Exists('packages\sdl2_ttf.nuget.redist.2.0.15\build\native\sdl2_ttf.nuget.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2_ttf.nuget.redist.2.0.15\build\native\sdl2_ttf.nuget.redist.targets'))" />
     <Error Condition="!Exists('packages\sdl2_ttf.nuget.2.0.15\build\native\sdl2_ttf.nuget.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sdl2_ttf.nuget.2.0.15\build\native\sdl2_ttf.nuget.targets'))" />
   </Target>

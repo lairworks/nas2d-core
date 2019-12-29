@@ -20,19 +20,19 @@ namespace NAS2D {
  *
  * The File object represents a file as a stream of bytes.
  */
-class File
+class File final
 {
 public:
+	using byte = char; /**< Byte. */
+	using const_byte = const byte; /**< Const byte. */
 
-	typedef char byte; /**< Byte. */
-	typedef const char const_byte; /**< Const byte. */
-	typedef const_byte* RawByteStream; /**< Pointer to a const_byte. */
+	using iterator = std::string::iterator; /**< Forward iterator for a File byte stream. */
+	using reverse_iterator = std::string::reverse_iterator; /**< Reverse iterator for a File byte stream. */
 
-	typedef std::string::iterator iterator; /**< Forward iterator for a File byte stream. */
-	typedef std::string::reverse_iterator reverse_iterator; /**< Reverse iterator for a File byte stream. */
-	typedef std::string ByteStream; /**< Byte stream. */
+	using ByteStream = std::string; /**< Byte stream. */
+	using RawByteStream = const_byte*; /**< Pointer to a const_byte. */
 
-
+public:
 	/**
 	 * Default C'tor
 	 */
@@ -139,25 +139,30 @@ public:
 	 */
 	bool empty() const { return mByteStream.empty(); }
 
+
 	/**
 	 * Gets an iterator to the beginning of the File's byte stream.
 	 */
 	iterator begin() { return mByteStream.begin(); }
+
 
 	/**
 	 * Gets an iterator to the end of the File's byte stream.
 	 */
 	iterator end() { return mByteStream.end(); }
 
+
 	/**
 	 * Gets a reverse iterator to the beginning of the File's byte stream.
 	 */
 	reverse_iterator rbegin() { return mByteStream.rbegin(); }
 
+
 	/**
 	 * Gets a reverse iterator to the end of the File's byte stream.
 	 */
 	reverse_iterator rend() { return mByteStream.rend(); }
+
 
 	/**
 	 * Gets an iterator to the byte at a specified position.
@@ -165,6 +170,7 @@ public:
 	 * \param pos	Position of the iterator to get.
 	 */
 	iterator seek(size_t pos) { iterator it = mByteStream.begin() + pos; return it; }
+
 
 	/**
 	 * Gets a reverse iterator to the byte at a specified position.
@@ -174,6 +180,7 @@ public:
 	 * \see seek
 	 */
 	reverse_iterator rseek(size_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
+
 
 	/**
 	 * Gets a byte from the byte stream at a specified position.
@@ -185,6 +192,7 @@ public:
 	 */
 	byte& operator[](size_t pos) { return mByteStream[pos]; }
 
+
 	/**
 	 * Gets a const byte from the byte stream at a specified position.
 	 *
@@ -195,10 +203,11 @@ public:
 	 */
 	const_byte& operator[](size_t pos) const { return mByteStream[pos]; }
 
+
 	/**
 	 * Clears the File and leaves it completely empty.
 	 */
-	void clear() { mByteStream = ""; mFileName = ""; }
+	void clear() { mByteStream.clear(); mFileName.clear(); }
 
 
 	/**
@@ -207,7 +216,7 @@ public:
 	 * \note	Filenames include both the individual file's
 	 *			name and full directory path.
 	 */
-	std::string filename() const { return mFileName; }
+	const std::string& filename() const { return mFileName; }
 
 private:
 	ByteStream	mByteStream;	/**< Internal stream of bytes. */

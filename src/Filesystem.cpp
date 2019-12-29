@@ -20,11 +20,18 @@
 
 #include <climits>
 #include <cstring>
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
+
+#if defined(__GNUC__) || defined(__GNUG__)
+#include <experimental/filesystem>
+namespace FS = std::experimental::filesystem;
+#else
+#include <filesystem>
+namespace FS = std::filesystem;
+#endif
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -37,7 +44,6 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appNam
 {
 	if (mIsInit) { return; }
 
-	namespace FS = std::filesystem;
 	FS::path p = dataPath;
 	std::error_code ec{};
 	p = FS::canonical(p, ec);
@@ -71,7 +77,6 @@ bool Filesystem::mount(const std::string& path) const noexcept
 	std::clog << "Adding '" << path << "' to search path." << std::endl;
 
 	std::string searchPath(mDataPath + path);
-	namespace FS = std::filesystem;
 	FS::path p{FS::path{mDataPath} / path};
 	bool does_exist = exists(p.string());
 	if (does_exist)
@@ -114,7 +119,6 @@ StringList Filesystem::searchPath() const noexcept
 StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const noexcept
 {
 	StringList result{};
-	namespace FS = std::filesystem;
 	std::error_code ec{};
 	FS::path root{};
 	if (dir.empty()) { root = FS::absolute(FS::path{mDataPath}, ec); }
@@ -155,7 +159,6 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
  */
 bool Filesystem::del(const std::string& filename) const noexcept
 {
-	namespace FS = std::filesystem;
 	std::error_code ec{};
 	if (!FS::remove(FS::path{filename}, ec))
 	{
@@ -179,7 +182,6 @@ File Filesystem::open(const std::string& filename) const noexcept
 	std::cerr << "Attempting to load '" << filename << "...";
 	#endif
 	
-	namespace FS = std::filesystem;
 	if (!exists(filename))
 	{
 		#if defined(DEBUG)
@@ -215,7 +217,6 @@ File Filesystem::open(const std::string& filename) const noexcept
  */
 bool Filesystem::makeDirectory(const std::string& path) const noexcept
 {
-	namespace FS = std::filesystem;
 	std::error_code ec{};
 	auto p = FS::path{path};
 	return FS::create_directories(p, ec);
@@ -229,7 +230,6 @@ bool Filesystem::makeDirectory(const std::string& path) const noexcept
  */
 bool Filesystem::isDirectory(const std::string& path) const noexcept
 {
-	namespace FS = std::filesystem;
 	return FS::is_directory(FS::path{path});
 }
 
@@ -244,7 +244,6 @@ bool Filesystem::isDirectory(const std::string& path) const noexcept
 bool Filesystem::exists(const std::string& filename) const noexcept
 {
 	std::error_code ec{};
-	namespace FS = std::filesystem;
 	bool does_not_exist = !FS::exists(filename, ec);
 	if (does_not_exist)
 	{
@@ -288,7 +287,6 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
 		return false;
 	}
 
-	namespace FS = std::filesystem;
 	std::ofstream myFile{FS::path{file.filename()}, std::ios_base::binary};
 	if (!myFile)
 	{
@@ -344,7 +342,6 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
 		return {};
 	}
 
-	namespace FS = std::filesystem;
 	auto p = FS::path{filename};
 	return (p.parent_path() / "").make_preferred().string();
 }
@@ -360,8 +357,8 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
  */
 std::string Filesystem::extension(const std::string& path) noexcept
 {
-	const auto p = std::filesystem::path{path};
-	if (std::filesystem::is_directory(p))
+	const auto p = FS::path{path};
+	if (FS::is_directory(p))
 	{
 		return {};
 	}

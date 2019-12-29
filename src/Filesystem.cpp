@@ -279,12 +279,6 @@ bool Filesystem::closeFile(void* file) const
  */
 bool Filesystem::write(const File& file, bool overwrite) const
 {
-	if (file.empty())
-	{
-		std::cout << "Attempted to write empty file '" << file.filename() << "'" << std::endl;
-		return false;
-	}
-
 	if (!overwrite && exists(file.filename()))
 	{
 		if (mVerbose) { std::cout << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl; }

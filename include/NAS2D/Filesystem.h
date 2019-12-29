@@ -37,7 +37,7 @@ public:
 	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
-	bool mount(const std::string& path) const;
+	void mount(const std::string& path) const;
 
 	StringList directoryList(const std::string& dir, const std::string& filter = std::string {}) const;
 

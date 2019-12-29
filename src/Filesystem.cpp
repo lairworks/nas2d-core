@@ -69,10 +69,8 @@ Filesystem::~Filesystem()
  * Adds a directory or supported archive to the Search Path.
  *
  * \param path	File path to add.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::mount(const std::string& path) const
+void Filesystem::mount(const std::string& path) const
 {
 	if (mVerbose) { std::cout << "Adding '" << path << "' to search path." << std::endl; }
 
@@ -80,11 +78,8 @@ bool Filesystem::mount(const std::string& path) const
 
 	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
 	{
-		std::cout << "Couldn't add '" << path << "' to search path. " << getLastPhysfsError() << "." << std::endl;
-		return false;
+		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + getLastPhysfsError());
 	}
-
-	return true;
 }
 
 

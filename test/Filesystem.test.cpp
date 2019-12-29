@@ -101,9 +101,9 @@ TEST_F(FilesystemTest, mount) {
 	const std::string extraFile = "extraFile.txt";
 
 	EXPECT_FALSE(fs.exists(extraFile));
-	EXPECT_TRUE(fs.mount(extraMount));
+	EXPECT_NO_THROW(fs.mount(extraMount));
 	EXPECT_THAT(fs.searchPath(), Contains(testing::HasSubstr(extraMount)));
 	EXPECT_TRUE(fs.exists(extraFile));
 
-	EXPECT_FALSE(fs.mount("nonExistentPath/"));
+	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
 }

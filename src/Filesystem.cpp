@@ -144,19 +144,13 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
  * Deletes a specified file.
  *
  * \param	filename	Path of the file to delete relative to the Filesystem root directory.
- *
- * \note	This function is not named 'delete' due to
- *			language limitations.
  */
-bool Filesystem::del(const std::string& filename) const
+void Filesystem::del(const std::string& filename) const
 {
 	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
-		std::cout << "Unable to delete '" << filename << "':" << getLastPhysfsError() << std::endl;
-		return false;
+		throw std::runtime_error(std::string("Unable to delete '") + filename + "':" + getLastPhysfsError());
 	}
-
-	return true;
 }
 
 

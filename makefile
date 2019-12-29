@@ -112,11 +112,6 @@ else
 endif
 
 
-
-
-
-
-TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests
 # Conditionally add GMock if we built it separately
 # This is conditional to avoid errors in case the library is not found

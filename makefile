@@ -102,11 +102,13 @@ TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
 TESTCPPFLAGS := -I$(INCDIR) -I$(GMOCKSRCDIR)/gtest/include
 TESTLDFLAGS := -L$(BINDIR) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs $(LDLIBS)
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread $(LDLIBS)
-endif()
+
+# Detect if CXX is clang++ or g++, in this order.
+ifneq '' '$(findstring clang++,$(CXX))'
+  TESTLIBS = -lnas2d -lgtest -lgtest_main -lpthread
+else ifneq '' '$(findstring g++,$(CXX))'
+  TESTLIBS = -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs
+endif
 
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests

@@ -274,37 +274,30 @@ bool Filesystem::closeFile(void* file) const
  *
  * \param	file		A reference to a \c const \c File object.
  * \param	overwrite	Flag indicating if a file should be overwritten if it already exists. Default is true.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::write(const File& file, bool overwrite) const
+void Filesystem::write(const File& file, bool overwrite) const
 {
 	if (!overwrite && exists(file.filename()))
 	{
-		if (mVerbose) { std::cout << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl; }
-		return false;
+		throw std::runtime_error(std::string("File exists: ") + file.filename());
 	}
 
 	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
 	if (!myFile)
 	{
-		if (mVerbose) { std::cout << "Couldn't open '" << file.filename() << "' for writing: " << getLastPhysfsError() << std::endl; }
-		return false;
+		throw std::runtime_error(std::string("Couldn't open '") + file.filename() + "' for writing: " + getLastPhysfsError());
 	}
 
 	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
 	{
-		if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << getLastPhysfsError() << std::endl; }
 		closeFile(myFile);
-		return false;
+		throw std::runtime_error(std::string("Error occured while writing to file '") + file.filename() + "': " + getLastPhysfsError());
 	}
 	else
 	{
 		closeFile(myFile);
 		if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
 	}
-
-	return true;
 }
 
 

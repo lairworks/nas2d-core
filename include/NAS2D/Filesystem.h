@@ -42,7 +42,7 @@ public:
 	StringList directoryList(const std::string& dir, const std::string& filter = std::string {}) const;
 
 	File open(const std::string& filename) const;
-	bool write(const File& file, bool overwrite = true) const;
+	void write(const File& file, bool overwrite = true) const;
 	void del(const std::string& path) const;
 	bool exists(const std::string& filename) const;
 

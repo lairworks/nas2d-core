@@ -9,7 +9,7 @@ TEST(Filesystem, ConstructDestruct) {
 
 class FilesystemTest : public ::testing::Test {
   protected:
-	FilesystemTest::FilesystemTest() :
+	FilesystemTest() :
 		fs("", "NAS2DUnitTests", "LairWorks", "data/")
 	{}
 

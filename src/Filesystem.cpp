@@ -13,10 +13,6 @@
 
 #include <physfs.h>
 
-#if defined(__APPLE__)
-#include <CoreFoundation/CoreFoundation.h>
-#endif
-
 #include <climits>
 #include <cstring>
 #include <string>

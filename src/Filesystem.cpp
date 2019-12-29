@@ -168,18 +168,16 @@ File Filesystem::open(const std::string& filename) const
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
 	if (!myFile)
 	{
-		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
 		closeFile(myFile);
-		return File();
+		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + getLastPhysfsError());
 	}
 
 	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
 	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
 	if (len < 0 || len > UINT_MAX)
 	{
-		std::cout << "File '" << filename << "' is too large to load." << std::endl;
 		closeFile(myFile);
-		return File();
+		throw std::runtime_error(std::string("File '") + filename + "' is too large or size could not be determined");
 	}
 
 	// Create a char* buffer large enough to hold the entire file.
@@ -189,10 +187,9 @@ File Filesystem::open(const std::string& filename) const
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
 	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
 	{
-		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
 		delete[] fileBuffer;
 		closeFile(myFile);
-		return File();
+		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + getLastPhysfsError());
 	}
 
 	File file(std::string(fileBuffer, fileLength), filename);

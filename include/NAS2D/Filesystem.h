@@ -34,6 +34,7 @@ public:
 	Filesystem& operator=(Filesystem&&) = delete;
 	~Filesystem() = default;
 
+public:
 	void init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath) noexcept;
 
 	const std::string& dataPath() const noexcept;
@@ -53,15 +54,8 @@ public:
 	bool isDirectory(const std::string& path) const noexcept;
 	bool makeDirectory(const std::string& path) const noexcept;
 
-	void toggleVerbose() const noexcept;
-
-private:
-	bool closeFile(void* file) const;
-	const char* getLastPhysfsError() const noexcept;
-
 private:
 	std::string mDataPath{}; /**< Data path string. This will typically be 'data/'. */
-	mutable bool mVerbose{false}; /**< Displays lots of messages when true. Otherwise only critical messages are displayed. */
 	mutable bool mIsInit{false};
 	mutable std::set<std::string> mSearchPath{}; //This really should be std::filesystem::path
 };

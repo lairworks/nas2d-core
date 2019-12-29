@@ -68,7 +68,7 @@ bool Filesystem::mount(const std::string& path) const noexcept
 	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
 	if (!mIsInit) { return false; }
 
-	if (mVerbose) { std::clog << "Adding '" << path << "' to search path.\n"; }
+	std::clog << "Adding '" << path << "' to search path." << std::endl;
 
 	std::string searchPath(mDataPath + path);
 	namespace FS = std::filesystem;
@@ -175,12 +175,17 @@ bool Filesystem::del(const std::string& filename) const noexcept
  */
 File Filesystem::open(const std::string& filename) const noexcept
 {
-	if (mVerbose) { std::cerr << "Attempting to load '" << filename << "..."; }
-
+	#if defined(DEBUG)
+	std::cerr << "Attempting to load '" << filename << "...";
+	#endif
+	
 	namespace FS = std::filesystem;
 	if (!exists(filename))
 	{
-		if (mVerbose) { std::cerr << "Failed. File does not exist." << std::endl; }
+		#if defined(DEBUG)
+		std::cerr << "Failed. File does not exist." << std::endl;
+		#endif
+
 		return File();
 	}
 
@@ -189,7 +194,9 @@ File Filesystem::open(const std::string& filename) const noexcept
 	const auto size = FS::file_size(p, ec);
 	if (size == static_cast<std::uintmax_t>(-1))
 	{
-		if (mVerbose) { std::cerr << "Failed. std::filesystem::file_size failed to get the size." << std::endl; }
+		#if defined(DEBUG)
+		std::cerr << "Failed. std::filesystem::file_size failed to get the size." << std::endl;
+		#endif
 		return File();
 	}
 
@@ -257,31 +264,6 @@ bool Filesystem::exists(const std::string& filename) const noexcept
 
 
 /**
- * Toggles Verbose Mode.
- *
- * When Verbose mode is off, only critical messages are displayed.
- * Verbose Mode is generally useful for debugging purposes.
- */
-void Filesystem::toggleVerbose() const noexcept
-{
-	mVerbose = !mVerbose;
-}
-
-
-/**
- * Closes a file handle.
- *
- * \param	file	A handle to a PHYSFS_file.
- *
- * \return	True on success, false otherwise.
- */
-bool Filesystem::closeFile(void* /*file*/) const
-{
-	return true;
-}
-
-
-/**
  * Writes a file to disk.
  *
  * \param	file		A reference to a \c const \c File object.
@@ -299,7 +281,10 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
 
 	if (!overwrite && exists(file.filename()))
 	{
-		if (mVerbose) { std::cerr << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl; }
+		#if defined(DEBUG)
+		std::cerr << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl;
+		#endif
+
 		return false;
 	}
 
@@ -307,17 +292,24 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
 	std::ofstream myFile{FS::path{file.filename()}, std::ios_base::binary};
 	if (!myFile)
 	{
-		if (mVerbose) { std::cerr << "Couldn't open '" << file.filename() << "' for writing." << std::endl; }
+		#if defined(DEBUG)
+		std::cerr << "Couldn't open '" << file.filename() << "' for writing." << std::endl;
+		#endif
+
 		return false;
 	}
 
 	if (!myFile.write(file.raw_bytes(), file.bytes().size()))
 	{
-		if (mVerbose) std::cerr << "Error occured while writing to file '" << file.filename() << std::endl;
+		#if defined(DEBUG)
+		std::cerr << "Error occured while writing to file '" << file.filename() << std::endl;
+		#endif
 	}
 	else
 	{
-		if (mVerbose) std::clog << "Wrote " << file.bytes().size() << " bytes to file '" << file.filename() << std::endl;
+		#if defined(DEBUG)
+		std::clog << "Wrote " << file.bytes().size() << " bytes to file '" << file.filename() << std::endl;
+		#endif
 	}
 
 	return true;
@@ -345,7 +337,10 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
 
 	if (filename.empty())
 	{
-		if (mVerbose) { std::cerr << "Filesystem::workingPath(): empty string provided.\n"; }
+		#if defined(DEBUG)
+		std::cerr << "Filesystem::workingPath(): empty string provided.\n";
+		#endif
+	
 		return {};
 	}
 
@@ -384,10 +379,4 @@ std::string Filesystem::extension(const std::string& path) noexcept
 
 	return {};
 
-}
-
-
-const char* Filesystem::getLastPhysfsError() const noexcept
-{
-	return nullptr;
 }

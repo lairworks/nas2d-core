@@ -88,7 +88,7 @@ TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
 	EXPECT_TRUE(fs.exists(fileName));
 	EXPECT_FALSE(fs.isDirectory(fileName));
 
-	fs.makeDirectory(folderName);
+	EXPECT_NO_THROW(fs.makeDirectory(folderName));
 	EXPECT_TRUE(fs.exists(folderName));
 	EXPECT_TRUE(fs.isDirectory(folderName));
 

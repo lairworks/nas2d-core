@@ -69,10 +69,8 @@ Filesystem::~Filesystem()
  * Adds a directory or supported archive to the Search Path.
  *
  * \param path	File path to add.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::mount(const std::string& path) const
+void Filesystem::mount(const std::string& path) const
 {
 	if (mVerbose) { std::cout << "Adding '" << path << "' to search path." << std::endl; }
 
@@ -80,11 +78,8 @@ bool Filesystem::mount(const std::string& path) const
 
 	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
 	{
-		std::cout << "Couldn't add '" << path << "' to search path. " << getLastPhysfsError() << "." << std::endl;
-		return false;
+		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + getLastPhysfsError());
 	}
-
-	return true;
 }
 
 
@@ -149,19 +144,13 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
  * Deletes a specified file.
  *
  * \param	filename	Path of the file to delete relative to the Filesystem root directory.
- *
- * \note	This function is not named 'delete' due to
- *			language limitations.
  */
-bool Filesystem::del(const std::string& filename) const
+void Filesystem::del(const std::string& filename) const
 {
 	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
-		std::cout << "Unable to delete '" << filename << "':" << getLastPhysfsError() << std::endl;
-		return false;
+		throw std::runtime_error(std::string("Unable to delete '") + filename + "':" + getLastPhysfsError());
 	}
-
-	return true;
 }
 
 
@@ -179,18 +168,16 @@ File Filesystem::open(const std::string& filename) const
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
 	if (!myFile)
 	{
-		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
 		closeFile(myFile);
-		return File();
+		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + getLastPhysfsError());
 	}
 
 	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
 	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
 	if (len < 0 || len > UINT_MAX)
 	{
-		std::cout << "File '" << filename << "' is too large to load." << std::endl;
 		closeFile(myFile);
-		return File();
+		throw std::runtime_error(std::string("File '") + filename + "' is too large or size could not be determined");
 	}
 
 	// Create a char* buffer large enough to hold the entire file.
@@ -200,10 +187,9 @@ File Filesystem::open(const std::string& filename) const
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
 	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
 	{
-		std::cout << "Unable to load '" << filename << "'. " << getLastPhysfsError() << "." << std::endl;
 		delete[] fileBuffer;
 		closeFile(myFile);
-		return File();
+		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + getLastPhysfsError());
 	}
 
 	File file(std::string(fileBuffer, fileLength), filename);
@@ -220,12 +206,13 @@ File Filesystem::open(const std::string& filename) const
  * Creates a new directory within the primary search path.
  *
  * \param path	Path of the directory to create.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::makeDirectory(const std::string& path) const
+void Filesystem::makeDirectory(const std::string& path) const
 {
-	return PHYSFS_mkdir(path.c_str()) != 0;
+	if (PHYSFS_mkdir(path.c_str()) == 0)
+	{
+		throw std::runtime_error(std::string("Unable to create directory '" + path + "': ") + getLastPhysfsError());
+	}
 }
 
 
@@ -288,43 +275,28 @@ bool Filesystem::closeFile(void* file) const
  *
  * \param	file		A reference to a \c const \c File object.
  * \param	overwrite	Flag indicating if a file should be overwritten if it already exists. Default is true.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::write(const File& file, bool overwrite) const
+void Filesystem::write(const File& file, bool overwrite) const
 {
-	if (file.empty())
-	{
-		std::cout << "Attempted to write empty file '" << file.filename() << "'" << std::endl;
-		return false;
-	}
-
 	if (!overwrite && exists(file.filename()))
 	{
-		if (mVerbose) { std::cout << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl; }
-		return false;
+		throw std::runtime_error(std::string("File exists: ") + file.filename());
 	}
 
 	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
 	if (!myFile)
 	{
-		if (mVerbose) { std::cout << "Couldn't open '" << file.filename() << "' for writing: " << getLastPhysfsError() << std::endl; }
-		return false;
+		throw std::runtime_error(std::string("Couldn't open '") + file.filename() + "' for writing: " + getLastPhysfsError());
 	}
 
 	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
 	{
-		if (mVerbose) { std::cout << "Error occured while writing to file '" << file.filename() << "': " << getLastPhysfsError() << std::endl; }
 		closeFile(myFile);
-		return false;
-	}
-	else
-	{
-		closeFile(myFile);
-		if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
+		throw std::runtime_error(std::string("Error occured while writing to file '") + file.filename() + "': " + getLastPhysfsError());
 	}
 
-	return true;
+	closeFile(myFile);
+	if (mVerbose) { std::cout << "Wrote '" << file.size() << "' bytes to file '" << file.filename() << "'." << std::endl; }
 }
 
 

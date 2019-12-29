@@ -37,19 +37,19 @@ public:
 	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
-	bool mount(const std::string& path) const;
+	void mount(const std::string& path) const;
 
 	StringList directoryList(const std::string& dir, const std::string& filter = std::string {}) const;
 
 	File open(const std::string& filename) const;
-	bool write(const File& file, bool overwrite = true) const;
-	bool del(const std::string& path) const;
+	void write(const File& file, bool overwrite = true) const;
+	void del(const std::string& path) const;
 	bool exists(const std::string& filename) const;
 
 	std::string extension(const std::string& path);
 
 	bool isDirectory(const std::string& path) const;
-	bool makeDirectory(const std::string& path) const;
+	void makeDirectory(const std::string& path) const;
 
 	void toggleVerbose() const;
 

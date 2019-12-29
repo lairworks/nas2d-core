@@ -66,18 +66,19 @@ TEST_F(FilesystemTest, writeReadDeleteExists) {
 	const std::string testData = "Test file contents";
 	const auto file = NAS2D::File(testData, testFilename);
 
-	EXPECT_TRUE(fs.write(file));
+	EXPECT_NO_THROW(fs.write(file));
 	EXPECT_TRUE(fs.exists(testFilename));
 
 	// Try to overwrite file, with and without permission
-	EXPECT_TRUE(fs.write(file));
-	EXPECT_FALSE(fs.write(file, false));
+	EXPECT_NO_THROW(fs.write(file));
+	EXPECT_THROW(fs.write(file, false), std::runtime_error);
 
 	const auto fileRead = fs.open(testFilename);
 	EXPECT_EQ(testData, fileRead.bytes());
 
-	fs.del(testFilename);
+	EXPECT_NO_THROW(fs.del(testFilename));
 	EXPECT_FALSE(fs.exists(testFilename));
+	EXPECT_THROW(fs.del(testFilename), std::runtime_error);
 }
 
 TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
@@ -87,7 +88,7 @@ TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
 	EXPECT_TRUE(fs.exists(fileName));
 	EXPECT_FALSE(fs.isDirectory(fileName));
 
-	fs.makeDirectory(folderName);
+	EXPECT_NO_THROW(fs.makeDirectory(folderName));
 	EXPECT_TRUE(fs.exists(folderName));
 	EXPECT_TRUE(fs.isDirectory(folderName));
 
@@ -101,9 +102,9 @@ TEST_F(FilesystemTest, mount) {
 	const std::string extraFile = "extraFile.txt";
 
 	EXPECT_FALSE(fs.exists(extraFile));
-	EXPECT_TRUE(fs.mount(extraMount));
+	EXPECT_NO_THROW(fs.mount(extraMount));
 	EXPECT_THAT(fs.searchPath(), Contains(testing::HasSubstr(extraMount)));
 	EXPECT_TRUE(fs.exists(extraFile));
 
-	EXPECT_FALSE(fs.mount("nonExistentPath/"));
+	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
 }

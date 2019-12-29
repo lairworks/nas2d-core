@@ -76,8 +76,9 @@ TEST_F(FilesystemTest, writeReadDeleteExists) {
 	const auto fileRead = fs.open(testFilename);
 	EXPECT_EQ(testData, fileRead.bytes());
 
-	fs.del(testFilename);
+	EXPECT_NO_THROW(fs.del(testFilename));
 	EXPECT_FALSE(fs.exists(testFilename));
+	EXPECT_THROW(fs.del(testFilename), std::runtime_error);
 }
 
 TEST_F(FilesystemTest, isDirectoryMakeDirectory) {

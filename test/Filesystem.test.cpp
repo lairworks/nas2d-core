@@ -4,21 +4,14 @@
 
 
 TEST(Filesystem, ConstructDestruct) {
-	// Check if object can be safely constructed and destructed
-	EXPECT_NO_THROW(NAS2D::Filesystem fs);
+	EXPECT_NO_THROW(NAS2D::Filesystem fs("", "NAS2DUnitTests", "LairWorks", "./"));
 }
-
-TEST(Filesystem, Init) {
-	NAS2D::Filesystem fs;
-	EXPECT_NO_THROW(fs.init("", "NAS2DUnitTests", "LairWorks", "./"));
-}
-
 
 class FilesystemTest : public ::testing::Test {
-protected:
-	void SetUp() override {
-		fs.init("", "NAS2DUnitTests", "LairWorks", "data/");
-	}
+  protected:
+	FilesystemTest::FilesystemTest() :
+		fs("", "NAS2DUnitTests", "LairWorks", "data/")
+	{}
 
 	NAS2D::Filesystem fs;
 };

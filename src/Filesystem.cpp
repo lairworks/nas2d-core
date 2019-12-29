@@ -34,26 +34,7 @@ enum MountPosition
 };
 
 
-/**
- * Default c'tor.
- */
-Filesystem::Filesystem(): mVerbose(false)
-{}
-
-
-/**
- * Shuts down PhysFS and cleans up.
- */
-Filesystem::~Filesystem()
-{
-	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
-}
-
-
-/**
- * Shuts down PhysFS and cleans up.
- */
-void Filesystem::init(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
+NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
 {
 	if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
 
@@ -72,6 +53,15 @@ void Filesystem::init(const std::string& argv_0, const std::string& appName, con
 	{
 		std::cout << std::endl << "(FSYS) Couldn't find data path '" << mDataPath << "'. " << getLastPhysfsError() << "." << std::endl;
 	}
+}
+
+
+/**
+ * Shuts down PhysFS and cleans up.
+ */
+Filesystem::~Filesystem()
+{
+	if (PHYSFS_isInit()) { PHYSFS_deinit(); }
 }
 
 

@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM outpostuniverse/ubuntu-18.04-gcc-gtest:1.0
+FROM outpostuniverse/ubuntu-18.04-gcc-gtest:1.2
 
 # Install NAS2D specific dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \

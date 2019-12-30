@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM outpostuniverse/ubuntu-18.04-gcc:1.0
+FROM outpostuniverse/ubuntu-18.04-gcc:1.1
 
 # Install Google Test source package
 RUN apt-get update && apt-get install -y --no-install-recommends \

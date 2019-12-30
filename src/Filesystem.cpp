@@ -326,14 +326,7 @@ std::string Filesystem::extension(const std::string& path)
 	{
 		return path.substr(pos + 1);
 	}
-	else if (isDirectory(path))
-	{
-		return std::string();
-	}
-	else
-	{
-		return std::string();
-	}
+	return std::string();
 }
 
 

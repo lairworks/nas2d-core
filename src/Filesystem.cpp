@@ -23,6 +23,17 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
+static bool closeFile(void* file)
+{
+	if (!file) { return false; }
+
+	if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
+
+	throw filesystem_file_handle_still_open(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+}
+
+
+
 enum MountPosition
 {
 	MOUNT_PREPEND = 0,
@@ -228,23 +239,6 @@ bool Filesystem::isDirectory(const std::string& path) const
 bool Filesystem::exists(const std::string& filename) const
 {
 	return PHYSFS_exists(filename.c_str()) != 0;
-}
-
-
-/**
- * Closes a file handle.
- *
- * \param	file	A handle to a PHYSFS_file.
- *
- * \return	True on success, false otherwise.
- */
-bool Filesystem::closeFile(void* file) const
-{
-	if (!file) { return false; }
-
-	if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
-
-	throw filesystem_file_handle_still_open(getLastPhysfsError());
 }
 
 

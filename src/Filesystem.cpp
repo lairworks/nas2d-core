@@ -47,18 +47,18 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 
 	if (PHYSFS_init(argv_0.c_str()) == 0)
 	{
-		throw filesystem_backend_init_failure(getLastPhysfsError());
+		throw filesystem_backend_init_failure(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
 	{
-		throw filesystem_backend_init_failure(std::string("Unable to set a sane configuration: ") + getLastPhysfsError());
+		throw filesystem_backend_init_failure(std::string("Unable to set a sane configuration: ") + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	mDataPath = dataPath;
 	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
 	{
-		throw filesystem_backend_init_failure(std::string("Couldn't find data path: ") + getLastPhysfsError());
+		throw filesystem_backend_init_failure(std::string("Couldn't find data path: ") + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 
@@ -83,7 +83,7 @@ void Filesystem::mount(const std::string& path) const
 
 	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
 	{
-		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + getLastPhysfsError());
+		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 
@@ -154,7 +154,7 @@ void Filesystem::del(const std::string& filename) const
 {
 	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string("Unable to delete '") + filename + "':" + getLastPhysfsError());
+		throw std::runtime_error(std::string("Unable to delete '") + filename + "':" + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 
@@ -172,7 +172,7 @@ File Filesystem::open(const std::string& filename) const
 	if (!myFile)
 	{
 		closeFile(myFile);
-		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + getLastPhysfsError());
+		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
@@ -192,7 +192,7 @@ File Filesystem::open(const std::string& filename) const
 	{
 		delete[] fileBuffer;
 		closeFile(myFile);
-		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + getLastPhysfsError());
+		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	File file(std::string(fileBuffer, fileLength), filename);
@@ -212,7 +212,7 @@ void Filesystem::makeDirectory(const std::string& path) const
 {
 	if (PHYSFS_mkdir(path.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string("Unable to create directory '" + path + "': ") + getLastPhysfsError());
+		throw std::runtime_error(std::string("Unable to create directory '" + path + "': ") + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 
@@ -258,13 +258,13 @@ void Filesystem::write(const File& file, bool overwrite) const
 	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
 	if (!myFile)
 	{
-		throw std::runtime_error(std::string("Couldn't open '") + file.filename() + "' for writing: " + getLastPhysfsError());
+		throw std::runtime_error(std::string("Couldn't open '") + file.filename() + "' for writing: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
 	{
 		closeFile(myFile);
-		throw std::runtime_error(std::string("Error occured while writing to file '") + file.filename() + "': " + getLastPhysfsError());
+		throw std::runtime_error(std::string("Error occured while writing to file '") + file.filename() + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	closeFile(myFile);
@@ -321,10 +321,4 @@ std::string Filesystem::extension(const std::string& path)
 		return path.substr(pos + 1);
 	}
 	return std::string();
-}
-
-
-const char* Filesystem::getLastPhysfsError() const
-{
-	return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
 }

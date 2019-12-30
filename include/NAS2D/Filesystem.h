@@ -52,9 +52,6 @@ public:
 	void makeDirectory(const std::string& path) const;
 
 private:
-	const char* getLastPhysfsError() const;
-
-private:
 	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
 };
 

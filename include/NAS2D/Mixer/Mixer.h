@@ -157,6 +157,7 @@ public:
 	 * Gets a reference to a NAS2D::Signals::Signal0<void>, a signal raised
 	 * when a Music track has finished playing.
 	 */
+	 [[deprecated("Deprecated: Please use addMusicCompleteHandler and removeMusicCompleteHandler")]]
 	NAS2D::Signals::Signal0<>& musicComplete();
 
 	void addMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler);

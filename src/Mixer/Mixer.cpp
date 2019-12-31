@@ -40,7 +40,7 @@ const std::string& Mixer::name() const
 }
 
 
-Signals::Signal0<void>& Mixer::musicComplete()
+Signals::Signal0<>& Mixer::musicComplete()
 {
 	return _music_complete;
 }

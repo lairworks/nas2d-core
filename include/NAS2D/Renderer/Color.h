@@ -21,6 +21,23 @@ namespace NAS2D {
 class Color_4ub
 {
 public:
+	static const Color_4ub Black;
+	static const Color_4ub Blue;
+	static const Color_4ub Bright_green;
+	static const Color_4ub Cyan;
+	static const Color_4ub Green;
+	static const Color_4ub Grey;
+	static const Color_4ub Magenta;
+	static const Color_4ub Navy;
+	static const Color_4ub Orange;
+	static const Color_4ub Red;
+	static const Color_4ub Silver;
+	static const Color_4ub White;
+	static const Color_4ub Yellow;
+	static const Color_4ub Normal;
+	static const Color_4ub NormalZ;
+	static const Color_4ub NoAlpha;
+
 	Color_4ub() = default;
 	Color_4ub(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
@@ -38,7 +55,10 @@ public:
 	void alpha(uint8_t alpha);
 
 private:
-	unsigned char mR = 255, mG = 255, mB = 255, mA = 255;
+	unsigned char mR = 255;
+	unsigned char mG = 255;
+	unsigned char mB = 255;
+	unsigned char mA = 255;
 };
 
 } // namespace

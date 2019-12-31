@@ -357,9 +357,10 @@ void Sprite::processImageSheets(void* root)
 {
 	XmlElement* e = static_cast<XmlElement*>(root);
 
-	XmlNode* node = nullptr;
 	string id, src;
-	while ((node = e->iterateChildren(node)))
+	for (XmlNode* node = e->iterateChildren(nullptr);
+		node != nullptr;
+		node = e->iterateChildren(node))
 	{
 		if (node->value() == "imagesheet" && node->toElement())
 		{
@@ -437,8 +438,9 @@ void Sprite::processActions(void* root)
 {
 	XmlElement* element = static_cast<XmlElement*>(root);
 
-	XmlNode* node = nullptr;
-	while ((node = element->iterateChildren(node)))
+	for (XmlNode* node = element->iterateChildren(nullptr);
+		node != nullptr;
+		node = element->iterateChildren(node))
 	{
 		if (toLowercase(node->value()) == "action" && node->toElement())
 		{
@@ -483,8 +485,9 @@ void Sprite::processFrames(const std::string& action, void* _node)
 
 	FrameList frameList;
 
-	XmlNode* frame = nullptr;
-	while ((frame = node->iterateChildren(frame)))
+	for (XmlNode* frame = node->iterateChildren(nullptr);
+		frame != nullptr;
+		frame = node->iterateChildren(frame))
 	{
 		int currentRow = frame->row();
 

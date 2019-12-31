@@ -55,10 +55,10 @@ public:
 	void alpha(uint8_t alpha);
 
 private:
-	unsigned char mR = 255;
-	unsigned char mG = 255;
-	unsigned char mB = 255;
-	unsigned char mA = 255;
+	uint8_t mR = 255;
+	uint8_t mG = 255;
+	uint8_t mB = 255;
+	uint8_t mA = 255;
 };
 
 } // namespace

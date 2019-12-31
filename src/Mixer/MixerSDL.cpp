@@ -94,7 +94,7 @@ void MixerSDL::init()
 
 void MixerSDL::music_finished_hook()
 {
-	_music_complete.emit();
+	mMusicComplete.emit();
 }
 
 

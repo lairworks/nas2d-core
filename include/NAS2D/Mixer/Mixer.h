@@ -171,7 +171,7 @@ protected:
 	 */
 	Mixer(const std::string& name);
 
-	NAS2D::Signals::Signal0<> _music_complete; /**< Callback used when music finished playing. */
+	NAS2D::Signals::Signal0<> mMusicComplete; /**< Callback used when music finished playing. */
 
 private:
 	std::string mName; /**< Internal name of the Renderer. */

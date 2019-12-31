@@ -159,6 +159,9 @@ public:
 	 */
 	NAS2D::Signals::Signal0<>& musicComplete();
 
+	void addMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler);
+	void removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler);
+
 protected:
 	/**
 	 * Internal constructor used by derived types to set the name of the Mixer.

@@ -458,6 +458,26 @@ using Delegate5 = DelegateX<RetType, Param1, Param2, Param3, Param4, Param5>;
 template <typename Signature>
 class Delegate;
 
+template<typename R, typename ... Params>
+class Delegate<R(Params...)> : public DelegateX<R, Params...>
+{
+public:
+	typedef Delegate<R(Params...)> BaseType;
+	typedef Delegate SelfType;
+
+	Delegate() : BaseType() {}
+
+	template <class X, class Y>
+	Delegate(Y * pthis, R(X::* function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}
+
+	template <class X, class Y>
+	Delegate(const Y *pthis, R(X::* function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
+
+	Delegate(R(*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
+	void operator = (const BaseType &x) { *static_cast<BaseType*>(this) = x; }
+};
+
+
 template<typename R>
 class Delegate<R()> : public Delegate0 <R>
 {

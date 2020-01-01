@@ -376,6 +376,64 @@ public:
 }
 
 
+template<class RetType, typename ... Params>
+class DelegateX
+{
+private:
+	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
+	typedef DesiredRetType(*StaticFunctionPtr)(Params...);
+	typedef RetType(*UnvoidStaticFunctionPtr)(Params...);
+	typedef RetType(detail::GenericClass::*GenericMemFn)(Params...);
+	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
+	ClosureType m_Closure;
+
+public:
+	typedef DelegateX type;
+
+	DelegateX() { clear(); }
+	DelegateX(const DelegateX &x) { m_Closure.CopyFrom(this, x.m_Closure); }
+	void operator = (const DelegateX &x) { m_Closure.CopyFrom(this, x.m_Closure); }
+	bool operator ==(const DelegateX &x) const { return m_Closure.IsEqual(x.m_Closure); }
+	bool operator !=(const DelegateX &x) const { return !m_Closure.IsEqual(x.m_Closure); }
+	bool operator <(const DelegateX &x) const { return m_Closure.IsLess(x.m_Closure); }
+	bool operator >(const DelegateX &x) const { return x.m_Closure.IsLess(m_Closure); }
+
+	template < class X, class Y >
+	DelegateX(Y *pthis, DesiredRetType(X::* function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
+	template < class X, class Y >
+	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
+
+	template < class X, class Y >
+	DelegateX(const Y *pthis, DesiredRetType(X::* function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
+	template < class X, class Y >
+	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
+
+	DelegateX(DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
+	void operator = (DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
+	inline void Bind(DesiredRetType(*function_to_bind)(Params...)) { m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind); }
+	RetType operator() (Params...params) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...); }
+
+private:
+	typedef struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; } UselessTypedef;
+	typedef StaticFunctionPtr SafeBoolStruct::*unspecified_bool_type;
+
+public:
+	operator unspecified_bool_type() const { return empty() ? 0 : &SafeBoolStruct::m_nonzero; }
+
+	inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
+	inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }
+	inline bool operator ! () const { return !m_Closure; }
+	inline bool empty() const { return !m_Closure; }
+	void clear() { m_Closure.clear(); }
+
+	const DelegateMemento & GetMemento() { return m_Closure; }
+	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
+
+private:
+	RetType InvokeStaticFunction(Params...params) const { return (*(m_Closure.GetStaticFunction()))(params...); }
+};
+
+
 template<class RetType = detail::DefaultVoid>
 class Delegate0
 {

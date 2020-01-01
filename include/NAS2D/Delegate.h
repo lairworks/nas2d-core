@@ -481,6 +481,11 @@ public:
 
 #define FASTDLGT_RETTYPE RetType
 
+template <class X, class Y, class RetType, typename ... Params>
+DelegateX<FASTDLGT_RETTYPE, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...)) { return DelegateX<FASTDLGT_RETTYPE, Params...>(x, func); }
+template <class X, class Y, class RetType, typename ... Params>
+DelegateX<FASTDLGT_RETTYPE, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...) const) { return DelegateX<FASTDLGT_RETTYPE, Params...>(x, func); }
+
 template <class X, class Y, class RetType>
 Delegate0<FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)()) { return Delegate0<FASTDLGT_RETTYPE>(x, func); }
 template <class X, class Y, class RetType>

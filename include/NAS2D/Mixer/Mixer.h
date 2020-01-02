@@ -147,13 +147,6 @@ public:
 	virtual void musicVolume(int level) = 0;
 
 	/**
-	 * Gets the name of the Mixer.
-	 *
-	 * \return	A /c std::string containing the name of the Mixer.
-	 */
-	const std::string& name() const;
-
-	/**
 	 * Gets a reference to a NAS2D::Signals::Signal0<void>, a signal raised
 	 * when a Music track has finished playing.
 	 */
@@ -164,17 +157,9 @@ public:
 	void removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler);
 
 protected:
-	/**
-	 * Internal constructor used by derived types to set the name of the Mixer.
-	 *
-	 * This c'tor is not public and can't be invoked externally.
-	 */
-	Mixer(const std::string& name);
-
 	NAS2D::Signals::Signal0<> mMusicComplete; /**< Callback used when music finished playing. */
 
 private:
-	std::string mName; /**< Internal name of the Renderer. */
 };
 
 } // namespace

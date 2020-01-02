@@ -18,8 +18,8 @@ extern const float DEG2RAD;
 extern const float RAD2DEG;
 
 
-class Point_2d;
-class Point_2df;
+struct Point_2d;
+struct Point_2df;
 
 
 float degToRad(float degree);

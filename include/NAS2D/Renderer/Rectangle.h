@@ -13,15 +13,15 @@
 namespace NAS2D {
 
 
-class Rectangle_2d;
-class Rectangle_2df;
+struct Rectangle_2d;
+struct Rectangle_2df;
 
 
 /**
  * \class	Rectangle_2d
  * \brief	2D rectangle.
  */
-class Rectangle_2d
+struct Rectangle_2d
 {
 public:
 	Rectangle_2d() = default;
@@ -86,7 +86,7 @@ private:
  * \class	Rectangle_2df
  * \brief	Floating point 2D Rectangle.
  */
-class Rectangle_2df
+struct Rectangle_2df
 {
 public:
 	Rectangle_2df() = default;

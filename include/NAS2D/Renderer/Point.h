@@ -12,15 +12,15 @@
 
 namespace NAS2D {
 
-class Point_2d;
-class Point_2df;
+struct Point_2d;
+struct Point_2df;
 
 
 /**
  * \class	Point_2d
  * \brief	2D point.
  */
-class Point_2d
+struct Point_2d
 {
 public:
 	Point_2d() = default;
@@ -66,7 +66,7 @@ private:
  * \class	Point_2df
  * \brief	Floating point 2D Point.
  */
-class Point_2df
+struct Point_2df
 {
 public:
 	Point_2df() = default;

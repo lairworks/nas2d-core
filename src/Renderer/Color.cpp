@@ -12,10 +12,28 @@
 
 using namespace NAS2D;
 
+const Color_4ub Color_4ub::Black(0, 0, 0, 255);
+const Color_4ub Color_4ub::Blue(0, 0, 255, 255);
+const Color_4ub Color_4ub::Bright_green(0, 255, 0, 255);
+const Color_4ub Color_4ub::Cyan(0, 255, 255, 255);
+const Color_4ub Color_4ub::Green(0, 128, 0, 255);
+const Color_4ub Color_4ub::Grey(128, 128, 128, 255);
+const Color_4ub Color_4ub::Magenta(255, 0, 255, 255);
+const Color_4ub Color_4ub::Navy(35, 60, 85, 255);
+const Color_4ub Color_4ub::Orange(255, 128, 0, 255);
+const Color_4ub Color_4ub::Red(255, 0, 0, 255);
+const Color_4ub Color_4ub::Silver(192, 192, 192, 255);
+const Color_4ub Color_4ub::White(255, 255, 255, 255);
+const Color_4ub Color_4ub::Yellow(255, 255, 0, 255);
+const Color_4ub Color_4ub::Normal(255, 255, 255, 255);
+const Color_4ub Color_4ub::NormalZ(128, 128, 255, 255);
+const Color_4ub Color_4ub::NoAlpha(0, 0, 0, 0);
+
+
+
 // ==================================================================================
 // = Color_4ub Implementation
 // ==================================================================================
-
 
 /**
  * C'tor

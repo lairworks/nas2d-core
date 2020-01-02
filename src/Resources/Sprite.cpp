@@ -42,7 +42,7 @@ string endTag(int row, const std::string& name)
 Sprite::Sprite():	mSpriteName("Default Constructed"),
 					mCurrentAction(DEFAULT_ACTION),
 					mCurrentFrame(0),
-					mColor(COLOR_NORMAL),
+					mColor(Color_4ub::Normal),
 					mRotationAngle(0.0f),
 					mPaused(false)
 {
@@ -58,7 +58,7 @@ Sprite::Sprite():	mSpriteName("Default Constructed"),
 Sprite::Sprite(const std::string& filePath):	mSpriteName(filePath),
 												mCurrentAction(DEFAULT_ACTION),
 												mCurrentFrame(0),
-												mColor(COLOR_NORMAL),
+												mColor(Color_4ub::Normal),
 												mRotationAngle(0.0f),
 												mPaused(false)
 {

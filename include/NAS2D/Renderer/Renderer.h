@@ -21,23 +21,6 @@
 
 namespace NAS2D {
 
-// Color Presets
-extern const NAS2D::Color_4ub COLOR_BLACK;
-extern const NAS2D::Color_4ub COLOR_BLUE;
-extern const NAS2D::Color_4ub COLOR_BRIGHT_GREEN;
-extern const NAS2D::Color_4ub COLOR_CYAN;
-extern const NAS2D::Color_4ub COLOR_GREEN;
-extern const NAS2D::Color_4ub COLOR_GREY;
-extern const NAS2D::Color_4ub COLOR_MAGENTA;
-extern const NAS2D::Color_4ub COLOR_NAVY;
-extern const NAS2D::Color_4ub COLOR_ORANGE;
-extern const NAS2D::Color_4ub COLOR_RED;
-extern const NAS2D::Color_4ub COLOR_SILVER;
-extern const NAS2D::Color_4ub COLOR_WHITE;
-extern const NAS2D::Color_4ub COLOR_YELLOW;
-
-extern const NAS2D::Color_4ub COLOR_NORMAL;
-
 /**
  * \class Renderer
  * \brief Renderer base class.
@@ -69,13 +52,13 @@ public:
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
 	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
-	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const NAS2D::Color_4ub& color = NAS2D::COLOR_NORMAL);
+	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color_4ub& color = Color_4ub::Normal);
 	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
-	void drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color = COLOR_NORMAL, float scale = 1.0f);
+	void drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color = Color_4ub::Normal, float scale = 1.0f);
 	virtual void drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale = 1.0f) = 0;
 
-	void drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color = COLOR_NORMAL);
+	void drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color = Color_4ub::Normal);
 	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
 	virtual void drawImageRepeated(Image& image, float x, float y, float w, float h) = 0;
@@ -88,10 +71,10 @@ public:
 
 	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint) = 0;
 
-	void drawPoint(float x, float y, const Color_4ub& color = COLOR_WHITE);
+	void drawPoint(float x, float y, const Color_4ub& color = Color_4ub::White);
 	virtual void drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 
-	void drawLine(float x, float y, float x2, float y2, const Color_4ub& color = COLOR_WHITE, int line_width = 1);
+	void drawLine(float x, float y, float x2, float y2, const Color_4ub& color = Color_4ub::White, int line_width = 1);
 	virtual void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255, int line_width = 1) = 0;
 
 	void drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);

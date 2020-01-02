@@ -17,23 +17,6 @@
 
 using namespace NAS2D;
 
-// Preset Colors
-const Color_4ub NAS2D::COLOR_BLACK(0, 0, 0, 255);
-const Color_4ub NAS2D::COLOR_BLUE(0, 0, 255, 255);
-const Color_4ub NAS2D::COLOR_BRIGHT_GREEN(0, 255, 0, 255);
-const Color_4ub NAS2D::COLOR_CYAN(0, 255, 255, 255);
-const Color_4ub NAS2D::COLOR_GREEN(0, 185, 0, 255);
-const Color_4ub NAS2D::COLOR_GREY(128, 128, 128, 255);
-const Color_4ub NAS2D::COLOR_MAGENTA(255, 0, 255, 255);
-const Color_4ub NAS2D::COLOR_NAVY(35, 60, 85, 255);
-const Color_4ub NAS2D::COLOR_ORANGE(255, 127, 0, 255);
-const Color_4ub NAS2D::COLOR_RED(255, 0, 0, 255);
-const Color_4ub NAS2D::COLOR_SILVER(192, 192, 192, 255);
-const Color_4ub NAS2D::COLOR_WHITE(255, 255, 255, 255);
-const Color_4ub NAS2D::COLOR_YELLOW(255, 255, 0, 255);
-
-const Color_4ub NAS2D::COLOR_NORMAL = NAS2D::COLOR_WHITE;
-
 NAS2D::Timer		_TIMER;
 
 NAS2D::Signals::Signal0<void>	_FADE_COMPLETE;

@@ -131,7 +131,7 @@ public:
 	virtual void update();
 
 protected:
-	Renderer(const std::string& rendererName, const std::string& appTitle);
+	Renderer(const std::string& appTitle);
 
 	void driverName(const std::string& name);
 

@@ -26,12 +26,8 @@ NAS2D::Signals::Signal0<void>	_FADE_COMPLETE;
  *
  * This c'tor is not public and can't be invoked externally.
  */
-Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
-    : mRendererName(rendererName)
-	, mTitle(appTitle)
-{
-	/* DO NOTHING */
-}
+Renderer::Renderer(const std::string& appTitle): mTitle(appTitle)
+{}
 
 
 /**

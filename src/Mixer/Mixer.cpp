@@ -40,7 +40,19 @@ const std::string& Mixer::name() const
 }
 
 
-Signals::Signal0<void>& Mixer::musicComplete()
+Signals::Signal0<>& Mixer::musicComplete()
 {
-	return _music_complete;
+	return mMusicComplete;
+}
+
+
+void Mixer::addMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler)
+{
+	return mMusicComplete.connect(handler);
+}
+
+
+void Mixer::removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler)
+{
+	return mMusicComplete.disconnect(handler);
 }

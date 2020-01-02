@@ -157,7 +157,11 @@ public:
 	 * Gets a reference to a NAS2D::Signals::Signal0<void>, a signal raised
 	 * when a Music track has finished playing.
 	 */
-	NAS2D::Signals::Signal0<void>& musicComplete();
+	 [[deprecated("Deprecated: Please use addMusicCompleteHandler and removeMusicCompleteHandler")]]
+	NAS2D::Signals::Signal0<>& musicComplete();
+
+	void addMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler);
+	void removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler);
 
 protected:
 	/**
@@ -167,7 +171,7 @@ protected:
 	 */
 	Mixer(const std::string& name);
 
-	NAS2D::Signals::Signal0<void> _music_complete; /**< Callback used when music finished playing. */
+	NAS2D::Signals::Signal0<> mMusicComplete; /**< Callback used when music finished playing. */
 
 private:
 	std::string mName; /**< Internal name of the Renderer. */

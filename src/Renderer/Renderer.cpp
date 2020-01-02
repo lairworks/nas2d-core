@@ -421,15 +421,6 @@ float Renderer::center_y()
 
 
 /**
- * Returns the name of the Renderer.
- */
-const std::string& Renderer::name()
-{
-	return mRendererName;
-}
-
-
-/**
  * Returns the name of the driver as named by the operating system.
  */
 const std::string& Renderer::driverName()

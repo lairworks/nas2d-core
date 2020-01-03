@@ -206,7 +206,7 @@ root-debug-image-ubuntu-16.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
 
 build-image-ubuntu-18.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.2
+	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.3
 compile-on-ubuntu-18.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/nas2d
 debug-image-ubuntu-18.04:
@@ -220,7 +220,7 @@ root-debug-image-ubuntu-18.04:
 .PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
 
 build-image-circleci: | build-image-ubuntu-18.04
-	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.2
+	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.3
 push-image-circleci:
 	docker push outpostuniverse/nas2d-circleci
 circleci-validate:

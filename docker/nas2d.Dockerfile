@@ -8,19 +8,35 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake=3.10.2-* \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Google Test source package
+# Install curl (so an updated GoogleTest can be downloaded)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    googletest=1.8.0-* \
+    curl=7.58.0-* \
+    ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
-# Compile and install Google Test
+# Download, compile, and install Google Test source package
 WORKDIR /tmp/gtest/
-RUN cmake -DCMAKE_CXX_FLAGS="-std=c++17" /usr/src/googletest/ && \
+RUN curl --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | \
+  tar -xz && \
+  cmake -DCMAKE_CXX_FLAGS="-std=c++17" googletest-release-1.10.0/ && \
   make && \
-  cp googlemock/gtest/lib*.a /usr/lib && \
-  cp googlemock/lib*.a /usr/lib && \
+  cmake -DCMAKE_CXX_FLAGS="-std=c++17" -DBUILD_SHARED_LIBS=ON googletest-release-1.10.0/ && \
+  make && \
+  cp -r lib/ /usr/local/ && \
+  cp -r \
+    googletest-release-1.10.0/googletest/include/ \
+    googletest-release-1.10.0/googlemock/include/ \
+    /usr/local/ && \
+  cp --parents -r \
+    googletest-release-1.10.0/CMakeLists.txt \
+    googletest-release-1.10.0/googletest/CMakeLists.txt \
+    googletest-release-1.10.0/googletest/cmake/ \
+    googletest-release-1.10.0/googletest/src/ \
+    googletest-release-1.10.0/googlemock/CMakeLists.txt \
+    googletest-release-1.10.0/googlemock/cmake/ \
+    googletest-release-1.10.0/googlemock/src/ \
+    /usr/local/src/ && \
   rm -rf /tmp/gtest/
-WORKDIR /
 
 # Install NAS2D specific dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \

@@ -15,31 +15,31 @@
 namespace NAS2D {
 
 /**
- * \class	Color_4ub
+ * \class	Color
  * \brief	RGBA Color.
  */
-class Color_4ub
+class Color
 {
 public:
-	static const Color_4ub Black;
-	static const Color_4ub Blue;
-	static const Color_4ub Bright_green;
-	static const Color_4ub Cyan;
-	static const Color_4ub Green;
-	static const Color_4ub Grey;
-	static const Color_4ub Magenta;
-	static const Color_4ub Navy;
-	static const Color_4ub Orange;
-	static const Color_4ub Red;
-	static const Color_4ub Silver;
-	static const Color_4ub White;
-	static const Color_4ub Yellow;
-	static const Color_4ub Normal;
-	static const Color_4ub NormalZ;
-	static const Color_4ub NoAlpha;
+	static const Color Black;
+	static const Color Blue;
+	static const Color Bright_green;
+	static const Color Cyan;
+	static const Color Green;
+	static const Color Grey;
+	static const Color Magenta;
+	static const Color Navy;
+	static const Color Orange;
+	static const Color Red;
+	static const Color Silver;
+	static const Color White;
+	static const Color Yellow;
+	static const Color Normal;
+	static const Color NormalZ;
+	static const Color NoAlpha;
 
-	Color_4ub() = default;
-	Color_4ub(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	Color() = default;
+	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 public:
 	void operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a);

@@ -51,13 +51,13 @@ public:
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
 	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
-	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color_4ub& color = Color_4ub::Normal);
+	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color& color = Color::Normal);
 	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
-	void drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color = Color_4ub::Normal, float scale = 1.0f);
+	void drawImageRotated(Image& image, float x, float y, float degrees, const Color& color = Color::Normal, float scale = 1.0f);
 	virtual void drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale = 1.0f) = 0;
 
-	void drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color = Color_4ub::Normal);
+	void drawImageStretched(Image& image, float x, float y, float w, float h, Color color = Color::Normal);
 	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
 	virtual void drawImageRepeated(Image& image, float x, float y, float w, float h) = 0;
@@ -70,10 +70,10 @@ public:
 
 	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint) = 0;
 
-	void drawPoint(float x, float y, const Color_4ub& color = Color_4ub::White);
+	void drawPoint(float x, float y, const Color& color = Color::White);
 	virtual void drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 
-	void drawLine(float x, float y, float x2, float y2, const Color_4ub& color = Color_4ub::White, int line_width = 1);
+	void drawLine(float x, float y, float x2, float y2, const Color& color = Color::White, int line_width = 1);
 	virtual void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255, int line_width = 1) = 0;
 
 	void drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
@@ -86,13 +86,13 @@ public:
 
 	virtual void drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f) = 0;
 
-	void drawGradient(float x, float y, float w, float h, const Color_4ub& c1, const Color_4ub& c2, const Color_4ub& c3, const Color_4ub& c4);
+	void drawGradient(float x, float y, float w, float h, const Color& c1, const Color& c2, const Color& c3, const Color& c4);
 	virtual void drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4) = 0;
 
 	virtual void drawText(Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 	void drawTextShadow(Font& font, const std::string& text, float x, float y, int sDistance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a = 255);
 
-	void fadeColor(const Color_4ub& color);
+	void fadeColor(const Color& color);
 	void fadeIn(float delayTime);
 	void fadeOut(float delayTime);
 	bool isFading() const;
@@ -103,7 +103,7 @@ public:
 	virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;
 	virtual void setCursor(int cursorId) = 0;
 
-	void clearScreen(const Color_4ub& color);
+	void clearScreen(const Color& color);
 	virtual void clearScreen(uint8_t r, uint8_t g, uint8_t b) = 0;
 
 	virtual float width() = 0;
@@ -147,7 +147,7 @@ private:
 	std::string mDriverName{"NULL Renderer"};	/**< OS Driver name */
 	std::string mTitle{"Default Application"};	/**< Title to use for the application. */
 
-	Color_4ub mFadeColor{0,0,0,255}; /**< Fade Color. */
+	Color mFadeColor{0,0,0,255}; /**< Fade Color. */
 	float mFadeStep{0.0f}; /**< Amount of fading to do per milisecond. */
 	float mCurrentFade{0.0f}; /**< Current fade amount. */
 

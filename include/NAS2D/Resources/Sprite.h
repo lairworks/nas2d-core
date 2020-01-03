@@ -70,9 +70,9 @@ public:
 	/**
 	 * Sets the color of the Sprite.
 	 *
-	 * \param	color	Reference to a Color_4ub object.
+	 * \param	color	Reference to a Color object.
 	 */
-	void color(const Color_4ub& color) { mColor = color; }
+	void color(const Color& color) { mColor = color; }
 
 	/**
 	 * Sets the color of the Sprite.
@@ -82,12 +82,12 @@ public:
 	 * \param	blue	Blue value to set between 0 - 255.
 	 * \param	alpha	Alpha value to set between 0 - 255.
 	 */
-	void color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) { color(Color_4ub(red, green, blue, alpha)); }
+	void color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) { color(Color(red, green, blue, alpha)); }
 
 	/**
 	 * Gets the color of the Sprite.
 	 */
-	const Color_4ub& color() const { return mColor; }
+	const Color& color() const { return mColor; }
 
 	int width();
 	int height();
@@ -174,7 +174,7 @@ private:
 
 	Callback			mFrameCallback;		/**< Callback to signal a listener whenever an animation sequence completes. */
 
-	Color_4ub			mColor;				/**< Color value to use for drawing the sprite. */
+	Color			mColor;				/**< Color value to use for drawing the sprite. */
 
 	float				mRotationAngle;		/**< Angle of rotation in degrees. */
 

@@ -80,9 +80,9 @@ GLuint generate_fbo(Image& image);
  *
  * \param title	Title of the application window.
  */
-RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer("OpenGL Renderer", title)
+RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
 {
-	std::cout << "Starting " << name() << ":" << std::endl;
+	std::cout << "Starting OpenGL Renderer:" << std::endl;
 
 	Configuration& cf = Utility<Configuration>::get();
 	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.fullscreen(), cf.vsync());

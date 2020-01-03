@@ -38,7 +38,6 @@ public:
 	Renderer& operator=(Renderer&& rhs) = default;
 	virtual ~Renderer();
 
-	const std::string& name();
 	const std::string& driverName();
 
 	const std::string& title();
@@ -131,7 +130,7 @@ public:
 	virtual void update();
 
 protected:
-	Renderer(const std::string& rendererName, const std::string& appTitle);
+	Renderer(const std::string& appTitle);
 
 	void driverName(const std::string& name);
 
@@ -145,7 +144,6 @@ private:
 		Out = 1
 	};
 
-	std::string mRendererName{"NULL Renderer"}; /**< Internal name of the Renderer. */
 	std::string mDriverName{"NULL Renderer"};	/**< OS Driver name */
 	std::string mTitle{"Default Application"};	/**< Title to use for the application. */
 

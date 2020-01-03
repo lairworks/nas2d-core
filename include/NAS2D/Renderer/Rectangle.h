@@ -83,24 +83,6 @@ public:
 	bool operator!=(const Rectangle_2d& rect);
 	bool operator!=(const Rectangle_2df& rect);
 
-	Rectangle_2df& operator+=(const Rectangle_2d& rect);
-	Rectangle_2df& operator+=(const Rectangle_2df& rect);
-
-	Rectangle_2df& operator-=(const Rectangle_2d& rect);
-	Rectangle_2df& operator-=(const Rectangle_2df& rect);
-
-	Rectangle_2df& operator*=(const Rectangle_2d& rect);
-	Rectangle_2df& operator*=(const Rectangle_2df& rect);
-
-	const Rectangle_2df operator+(const Rectangle_2d& rect);
-	const Rectangle_2df operator+(const Rectangle_2df& rect);
-
-	const Rectangle_2df operator-(const Rectangle_2d& rect);
-	const Rectangle_2df operator-(const Rectangle_2df& rect);
-
-	const Rectangle_2df operator*(const Rectangle_2d& rect);
-	const Rectangle_2df operator*(const Rectangle_2df& rect);
-
 public:
 	bool null();
 

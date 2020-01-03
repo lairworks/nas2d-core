@@ -158,8 +158,6 @@ public:
 
 protected:
 	NAS2D::Signals::Signal0<> mMusicComplete; /**< Callback used when music finished playing. */
-
-private:
 };
 
 } // namespace

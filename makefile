@@ -206,8 +206,6 @@ root-debug-image-ubuntu-16.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
 
 build-image-ubuntu-18.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04-gcc.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc:latest --tag outpostuniverse/ubuntu-18.04-gcc:1.1
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04-gcc-gtest.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc-gtest:latest --tag outpostuniverse/ubuntu-18.04-gcc-gtest:1.2
 	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.2
 compile-on-ubuntu-18.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/nas2d

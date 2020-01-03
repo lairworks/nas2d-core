@@ -55,7 +55,7 @@ public:
 	int center_x() const;
 	int center_y() const;
 
-	Color_4ub pixelColor(int x, int y) const;
+	Color pixelColor(int x, int y) const;
 
 private:
 	void load();

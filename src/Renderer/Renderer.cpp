@@ -84,7 +84,7 @@ void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x,
  * \param	degrees		Angle of rotation in degrees.
  * \param	color		Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color_4ub& color)
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color& color)
 {
 	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -100,14 +100,14 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color, float scale)
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color& color, float scale)
 {
 	drawImageRotated(image, x, y, degrees, color.red(), color.green(), color.blue(), color.alpha(), scale);
 }
 
 
 /**
- * Draws a stretched image using a Color_4ub color structure.
+ * Draws a stretched image using a Color color structure.
  *
  * \param	image	A reference to an Image Resource.
  * \param	x		X-Coordinate to draw the Image at.
@@ -116,7 +116,7 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, c
  * \param	h		Height to use for drawing the Image.
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color)
+void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color color)
 {
 	drawImageStretched(image, x, y, w, h, color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -192,7 +192,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
  *
  * \param	color	A reference to aColor_4ub.
  */
-void Renderer::fadeColor(const Color_4ub& color)
+void Renderer::fadeColor(const Color& color)
 {
 	mFadeColor = color;
 }
@@ -274,9 +274,9 @@ NAS2D::Signals::Signal0<void>& Renderer::fadeComplete() const
  *
  * \param	x		X-Coordinate of the pixel to draw.
  * \param	y		Y-Coordinate of the pixel to draw.
- * \param	color	A references to a Color_4ub.
+ * \param	color	A references to a Color.
  */
-void Renderer::drawPoint(float x, float y, const Color_4ub& color)
+void Renderer::drawPoint(float x, float y, const Color& color)
 {
 	drawPoint(x, y, color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -289,10 +289,10 @@ void Renderer::drawPoint(float x, float y, const Color_4ub& color)
  * \param	y			Y-Coordinate of the start of the line.
  * \param	x2			X-Coordinate of the end of the line.
  * \param	y2			Y-Coordinate of the end of the line.
- * \param	color		A reference to a Color_4ub.
+ * \param	color		A reference to a Color.
  * \param	line_width	Width, in pixels, of the line to draw.
  */
-void Renderer::drawLine(float x, float y, float x2, float y2, const Color_4ub& color, int line_width)
+void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color, int line_width)
 {
 	drawLine(x, y, x2, y2, color.red(), color.green(), color.blue(), color.alpha(), line_width);
 }
@@ -373,12 +373,12 @@ void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, ui
  * \param	y	Y-Position of the rectangular area to draw.
  * \param	w	Width of the rectangular area to draw.
  * \param	h	Height of the rectangular area to draw.
- * \param	c1	A Color_4ub color value used for point 1.
- * \param	c2	A Color_4ub color value used for point 2.
- * \param	c3	A Color_4ub color value used for point 3.
- * \param	c4	A Color_4ub color value used for point 4.
+ * \param	c1	A Color color value used for point 1.
+ * \param	c2	A Color color value used for point 2.
+ * \param	c3	A Color color value used for point 3.
+ * \param	c4	A Color color value used for point 4.
  */
-void Renderer::drawGradient(float x, float y, float w, float h, const Color_4ub& c1, const Color_4ub& c2, const Color_4ub& c3, const Color_4ub& c4)
+void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
 {
 	drawGradient(x, y, w, h, c1.red(), c1.green(), c1.blue(), c1.alpha(), c2.red(), c2.green(), c2.blue(), c2.alpha(), c3.red(), c3.green(), c3.blue(), c3.alpha(), c4.red(), c4.green(), c4.blue(), c4.alpha());
 }
@@ -505,11 +505,11 @@ void Renderer::clipRectClear()
 
 
 /**
- * Clears the screen with a given Color_4ub.
+ * Clears the screen with a given Color.
  *
- * \param color	A reference to a Color_4ub.
+ * \param color	A reference to a Color.
  */
-void Renderer::clearScreen(const Color_4ub& color)
+void Renderer::clearScreen(const Color& color)
 {
 	clearScreen(color.red(), color.green(), color.blue());
 }

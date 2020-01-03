@@ -32,6 +32,47 @@ namespace NAS2D {
 namespace Signals {
 
 /**
+ * \class Signal
+ * \brief Signal with preset number of parameters
+ *
+ * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
+ */
+template<typename ... Params>
+class Signal
+{
+public:
+	typedef DelegateX<void, Params...> _Delegate;
+
+public:
+	void connect(_Delegate delegate) { delegateList.insert(delegate); }
+
+	template<class X, class Y>
+	void connect(Y * obj, void (X::*func)(Params...)) { delegateList.insert(MakeDelegate(obj, func)); }
+
+	template<class X, class Y>
+	void connect(Y * obj, void (X::*func)(Params...) const) { delegateList.insert(MakeDelegate(obj, func)); }
+
+	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
+
+	template<class X, class Y>
+	void disconnect(Y * obj, void (X::*func)(Params...)) { delegateList.erase(MakeDelegate(obj, func)); }
+
+	template<class X, class Y>
+	void disconnect(Y * obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
+
+	void clear() { delegateList.clear(); }
+	void emit(Params...params) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(params...); }
+	void operator() (Params...params) const { emit(params...); }
+	bool empty() const { return delegateList.empty(); }
+
+private:
+	typedef std::set<_Delegate> DelegateList;
+	typedef typename DelegateList::const_iterator DelegateIterator;
+	DelegateList delegateList;
+};
+
+
+/**
  * \class Signal0
  * \brief Signal with no paramters.
  *

@@ -235,7 +235,7 @@ void Renderer::fadeOut(float delay)
 		return;
 	}
 
-	mCurrentFadeType = FadeType::None;
+	mCurrentFadeType = FadeType::Out;
 	mFadeStep = 255.0f / delay;
 
 	_TIMER.delta(); // clear timer

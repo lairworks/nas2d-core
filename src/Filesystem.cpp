@@ -79,7 +79,7 @@ Filesystem::~Filesystem()
  */
 void Filesystem::mount(const std::string& path) const
 {
-	std::string searchPath(mDataPath + path);
+	std::string searchPath(mDataPath + "/" + path);
 
 	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
 	{

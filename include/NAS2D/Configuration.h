@@ -81,7 +81,7 @@ public:
 
 protected:
 private:
-	typedef std::map<std::string, std::string> Options;
+	using Options = std::map<std::string, std::string>;
 
 	bool readConfig(const std::string& filePath);
 

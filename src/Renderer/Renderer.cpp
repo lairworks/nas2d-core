@@ -19,7 +19,7 @@ using namespace NAS2D;
 
 NAS2D::Timer		_TIMER;
 
-NAS2D::Signals::Signal0<void>	_FADE_COMPLETE;
+NAS2D::Signals::Signal0<void>	fadeCompleteSignal;
 
 /**
  * Internal constructor used by derived types to set the name of the Renderer.
@@ -35,7 +35,7 @@ Renderer::Renderer(const std::string& appTitle): mTitle(appTitle)
  */
 Renderer::~Renderer()
 {
-	_FADE_COMPLETE.clear();
+	fadeCompleteSignal.clear();
 	std::cout << "Renderer Terminated." << std::endl;
 }
 
@@ -265,7 +265,7 @@ bool Renderer::isFaded() const
  */
 NAS2D::Signals::Signal0<void>& Renderer::fadeComplete() const
 {
-	return _FADE_COMPLETE;
+	return fadeCompleteSignal;
 }
 
 
@@ -533,7 +533,7 @@ void Renderer::update()
 		{
 			mCurrentFade = std::clamp(mCurrentFade, 0.0f, 255.0f);
 			mCurrentFadeType = FadeType::None;
-			_FADE_COMPLETE();
+			fadeCompleteSignal();
 		}
 	}
 

@@ -9,17 +9,20 @@ executors:
 commands:
   brew-install:
     description: "Brew install MacOS dependencies (or restore from cache)"
+    parameters:
+      packages:
+        type: string
     steps:
       - restore_cache:
           name: Restoring brew dependencies
           key: deps-v3-NAS2D-{{ arch }}
-      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install << parameters.packages >>
       - save_cache:
           name: Caching brew dependencies
           key: deps-v3-NAS2D-{{ arch }}
           paths:
             - /usr/local/Cellar
-      - run: brew link cmake physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+      - run: brew link << parameters.packages >>
   build-googletest:
     description: "Install Google Test from source package"
     parameters:
@@ -72,7 +75,8 @@ jobs:
   build-macos:
     executor: macos-executor
     steps:
-      - brew-install
+      - brew-install:
+          packages: physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew cmake
       - build-googletest
       - checkout
       - build-and-test

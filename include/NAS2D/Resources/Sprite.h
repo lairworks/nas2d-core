@@ -30,7 +30,7 @@ extern const std::string SPRITE_VERSION;
 class Sprite
 {
 public:
-	typedef NAS2D::Signals::Signal0<> Callback;	/**< Signal used when action animations complete. */
+	using Callback = NAS2D::Signals::Signal0<>;	/**< Signal used when action animations complete. */
 
 public:
 	Sprite();
@@ -145,9 +145,9 @@ private:
 	};
 
 private:
-	typedef std::vector<SpriteFrame>			FrameList;
-	typedef std::map<std::string, FrameList>	ActionList;
-	typedef std::map<std::string, Image>		SheetList;
+	using FrameList = std::vector<SpriteFrame>;
+	using ActionList = std::map<std::string, FrameList>;
+	using SheetList = std::map<std::string, Image>;
 
 private:
 	void processXml(const std::string& filePath);

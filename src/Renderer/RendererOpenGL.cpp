@@ -28,6 +28,7 @@
 #include <iostream>
 #include <math.h>
 #include <algorithm>
+#include <cmath>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -829,7 +830,6 @@ void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 	TEXTURE_COORD_ARRAY[10] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[11] = static_cast<GLfloat>(y);
 }
 
-
 /**
  * The following code was developed by Chris Tsang and lifted from:
  *
@@ -839,8 +839,6 @@ void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
  *
  * This is drop-in code that may be replaced in the future.
  */
-static inline float _ABS(float x) { return x > 0 ? x : -x; }
-
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca)
 {
 	// What are these values for?
@@ -896,7 +894,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float dx = x2 - x1;
 	float dy = y2 - y1;
 
-	if (_ABS(dx) < ALW)
+	if (std::abs(dx) < ALW)
 	{
 		//vertical
 		tx = t; ty = 0.0f;
@@ -907,7 +905,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			Rx = 0.0f;
 		}
 	}
-	else if (_ABS(dy) < ALW)
+	else if (std::abs(dy) < ALW)
 	{
 		//horizontal
 		tx = 0.0f; ty = t;

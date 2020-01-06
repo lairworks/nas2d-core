@@ -258,7 +258,7 @@ public:
 	 *
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef NAS2D::Signals::Signal1<bool>				ActivateEventCallback;
+	using ActivateEventCallback = NAS2D::Signals::Signal1<bool>;
 
 	/**
 	 * \typedef	WindowHiddenEventCallback
@@ -272,7 +272,7 @@ public:
 	 *
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	typedef NAS2D::Signals::Signal1<bool>				WindowHiddenEventCallback;
+	using WindowHiddenEventCallback = NAS2D::Signals::Signal1<bool>;
 
 	/**
 	 * \typedef	WindowExposedEventCallback
@@ -282,7 +282,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	typedef NAS2D::Signals::Signal0<void>				WindowExposedEventCallback;
+	using WindowExposedEventCallback = NAS2D::Signals::Signal0<void>;
 
 	/**
 	 * \typedef	WindowMinimizedEventCallback
@@ -292,7 +292,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	typedef NAS2D::Signals::Signal0<void>				WindowMinimizedEventCallback;
+	using WindowMinimizedEventCallback = NAS2D::Signals::Signal0<void>;
 
 	/**
 	 * \typedef	WindowMaximizedEventCallback
@@ -302,7 +302,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	typedef NAS2D::Signals::Signal0<void>				WindowMaximizedEventCallback;
+	using WindowMaximizedEventCallback = NAS2D::Signals::Signal0<void>;
 
 	/**
 	 * \typedef	WindowRestoredEventCallback
@@ -312,7 +312,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	typedef NAS2D::Signals::Signal0<void>				WindowRestoredEventCallback;
+	using WindowRestoredEventCallback = NAS2D::Signals::Signal0<void>;
 
 	/**
 	 * \typedef	WindowMouseEnterEventCallback
@@ -322,7 +322,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	typedef NAS2D::Signals::Signal0<void>				WindowMouseEnterEventCallback;
+	using WindowMouseEnterEventCallback = NAS2D::Signals::Signal0<void>;
 
 	/**
 	 * \typedef	WindowMouseLeaveEventCallback
@@ -332,7 +332,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	typedef NAS2D::Signals::Signal0<void>				WindowMouseLeaveEventCallback;
+	using WindowMouseLeaveEventCallback = NAS2D::Signals::Signal0<void>;
 
 	/**
 	 * \typedef	WindowResizedEventCallback
@@ -345,7 +345,7 @@ public:
 	 * \arg \c width	Width of the resized window.
 	 * \arg \c height	Height of the resized window.
 	 */
-	typedef NAS2D::Signals::Signal2<int, int>				WindowResizedEventCallback;
+	using WindowResizedEventCallback = NAS2D::Signals::Signal2<int, int>;
 
 	/**
 	 * \typedef	JoystickAxisMotionEventCallback
@@ -363,7 +363,7 @@ public:
 						use additional axis as buttons.
 	 * \arg \c pos		Current position of the axis.
 	 */
-	typedef NAS2D::Signals::Signal3<int, int, int>		JoystickAxisMotionEventCallback;
+	using JoystickAxisMotionEventCallback = NAS2D::Signals::Signal3<int, int, int>;
 
 	/**
 	 * \typedef	JoystickBallMotionEventCallback
@@ -381,7 +381,7 @@ public:
 	 * \arg \c xChange	Change in relative position of the X position.
 	 * \arg \c yChange	Change in relative position of the Y position.
 	 */
-	typedef NAS2D::Signals::Signal4<int, int, int, int>	JoystickBallMotionEventCallback;
+	using JoystickBallMotionEventCallback = NAS2D::Signals::Signal4<int, int, int, int>;
 
 	/**
 	 * \typedef	JoystickButtonEventCallback
@@ -398,7 +398,7 @@ public:
 	 * \arg \c deviceId	Joystick ID which this event was generated from.
 	 * \arg \c buttonId	Button ID which the event was generated from.
 	 */
-	typedef NAS2D::Signals::Signal2<int, int>			JoystickButtonEventCallback;
+	using JoystickButtonEventCallback = NAS2D::Signals::Signal2<int, int>;
 
 	/**
 	 * \typedef	JoystickHatMotionEventCallback
@@ -415,7 +415,7 @@ public:
 	 * \arg \c hatId	Hat ID.
 	 * \arg \c pos		Current position of the hat.
 	 */
-	typedef NAS2D::Signals::Signal3<int, int, int>		JoystickHatMotionEventCallback;
+	using JoystickHatMotionEventCallback = NAS2D::Signals::Signal3<int, int, int>;
 
 	/**
 	 * \typedef	KeyDownEventCallback
@@ -433,7 +433,7 @@ public:
 	 * \arg \c mod		Keyboard modifier.
 	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
 	 */
-	typedef NAS2D::Signals::Signal3<KeyCode, KeyModifier, bool>	KeyDownEventCallback;
+	using KeyDownEventCallback = NAS2D::Signals::Signal3<KeyCode, KeyModifier, bool>;
 
 	/**
 	 * \typedef	KeyUpEventCallback
@@ -450,7 +450,7 @@ public:
 	 * \arg \c mod		Keyboard modifier.
 	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
 	 */
-	typedef NAS2D::Signals::Signal2<KeyCode, KeyModifier>	KeyUpEventCallback;
+	using KeyUpEventCallback = NAS2D::Signals::Signal2<KeyCode, KeyModifier>;
 
 	/**
 	 * \typedef	MouseButtonEventCallback
@@ -467,7 +467,7 @@ public:
 	 * \arg	\c x:		X position of the mouse button event.
 	 * \arg	\c y:		Y position of the mouse button event.
 	 */
-	typedef NAS2D::Signals::Signal3<MouseButton, int, int>	MouseButtonEventCallback;
+	using MouseButtonEventCallback = NAS2D::Signals::Signal3<MouseButton, int, int>;
 
 	/**
 	 * \typedef	MouseMotionEventCallback
@@ -485,7 +485,7 @@ public:
 	 * \arg	\c relX:	X position of the mouse relative to its last position.
 	 * \arg	\c relY;	Y position of the mouse relative to its last position.
 	 */
-	typedef NAS2D::Signals::Signal4<int, int, int, int>	MouseMotionEventCallback;
+	using MouseMotionEventCallback = NAS2D::Signals::Signal4<int, int, int, int>;
 
 	/**
 	 * \typedef	MouseWheelEventCallback
@@ -506,7 +506,7 @@ public:
 	 * 			more than one (on Windows this value is typical 120,
 	 * 			not 1).
 	 */
-	typedef NAS2D::Signals::Signal2<int, int>	MouseWheelEventCallback;
+	using MouseWheelEventCallback = NAS2D::Signals::Signal2<int, int>;
 
 	/**
 	* \typedef	TextInputEventCallback
@@ -516,7 +516,7 @@ public:
 	* void function(const std::string&);
 	* \endcode
 	*/
-	typedef NAS2D::Signals::Signal1<const std::string&> TextInputEventCallback;
+	using TextInputEventCallback = NAS2D::Signals::Signal1<const std::string&>;
 
 	/**
 	 * \typedef	QuitEventCallback
@@ -528,7 +528,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	typedef NAS2D::Signals::Signal0<>					QuitEventCallback;
+	using QuitEventCallback = NAS2D::Signals::Signal0<>;
 
 public:
 	EventHandler();

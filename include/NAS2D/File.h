@@ -24,13 +24,13 @@ class File
 {
 public:
 
-	typedef char byte; /**< Byte. */
-	typedef const char const_byte; /**< Const byte. */
-	typedef const_byte* RawByteStream; /**< Pointer to a const_byte. */
+	using byte = char; /**< Byte. */
+	using const_byte = const char; /**< Const byte. */
+	using RawByteStream = const_byte*; /**< Pointer to a const_byte. */
 
-	typedef std::string::iterator iterator; /**< Forward iterator for a File byte stream. */
-	typedef std::string::reverse_iterator reverse_iterator; /**< Reverse iterator for a File byte stream. */
-	typedef std::string ByteStream; /**< Byte stream. */
+	using iterator = std::string::iterator; /**< Forward iterator for a File byte stream. */
+	using reverse_iterator = std::string::reverse_iterator; /**< Reverse iterator for a File byte stream. */
+	using ByteStream = std::string; /**< Byte stream. */
 
 
 	/**

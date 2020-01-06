@@ -9,17 +9,20 @@ executors:
 commands:
   brew-install:
     description: "Brew install MacOS dependencies (or restore from cache)"
+    parameters:
+      packages:
+        type: string
     steps:
       - restore_cache:
           name: Restoring brew dependencies
           key: deps-v3-NAS2D-{{ arch }}
-      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install << parameters.packages >>
       - save_cache:
           name: Caching brew dependencies
           key: deps-v3-NAS2D-{{ arch }}
           paths:
             - /usr/local/Cellar
-      - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+      - run: brew link << parameters.packages >>
   build-googletest:
     description: "Install Google Test from source package"
     parameters:
@@ -32,15 +35,15 @@ commands:
     steps:
       - restore_cache:
           name: Restoring Google Test
-          key: v2-gtest-{{ arch }}
+          key: v3-gtest-{{ arch }}
       - run:
           name: "Download and build Google Test"
           command: |
             set -x
             if [[ ! -d << parameters.buildPrefix >> ]]; then
               pushd /tmp
-              curl --silent --location https://github.com/google/googletest/archive/release-1.8.1.tar.gz | tar xz -
-              cd googletest-release-1.8.1/
+              curl --silent --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar xz -
+              cd googletest-release-1.10.0/
               cmake -DCMAKE_CXX_FLAGS="-std=c++17"
               make
               mkdir -p << parameters.buildPrefix >>
@@ -52,7 +55,7 @@ commands:
             fi
       - save_cache:
           name: Caching Google Test
-          key: v2-gtest-{{ arch }}
+          key: v3-gtest-{{ arch }}
           paths:
             - << parameters.buildPrefix >>
       - run:
@@ -72,7 +75,8 @@ jobs:
   build-macos:
     executor: macos-executor
     steps:
-      - brew-install
+      - brew-install:
+          packages: physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew cmake
       - build-googletest
       - checkout
       - build-and-test

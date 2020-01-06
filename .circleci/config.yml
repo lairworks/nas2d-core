@@ -19,7 +19,7 @@ commands:
           key: deps-v3-NAS2D-{{ arch }}
           paths:
             - /usr/local/Cellar
-      - run: brew link physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
+      - run: brew link cmake physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf glew
   build-googletest:
     description: "Install Google Test from source package"
     parameters:

@@ -35,15 +35,15 @@ commands:
     steps:
       - restore_cache:
           name: Restoring Google Test
-          key: v2-gtest-{{ arch }}
+          key: v3-gtest-{{ arch }}
       - run:
           name: "Download and build Google Test"
           command: |
             set -x
             if [[ ! -d << parameters.buildPrefix >> ]]; then
               pushd /tmp
-              curl --silent --location https://github.com/google/googletest/archive/release-1.8.1.tar.gz | tar xz -
-              cd googletest-release-1.8.1/
+              curl --silent --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar xz -
+              cd googletest-release-1.10.0/
               cmake -DCMAKE_CXX_FLAGS="-std=c++17"
               make
               mkdir -p << parameters.buildPrefix >>
@@ -55,7 +55,7 @@ commands:
             fi
       - save_cache:
           name: Caching Google Test
-          key: v2-gtest-{{ arch }}
+          key: v3-gtest-{{ arch }}
           paths:
             - << parameters.buildPrefix >>
       - run:

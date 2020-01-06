@@ -17,7 +17,7 @@
 
 using namespace NAS2D;
 
-NAS2D::Timer		_TIMER;
+NAS2D::Timer		fadeTimer;
 
 NAS2D::Signals::Signal0<void>	fadeCompleteSignal;
 
@@ -216,7 +216,7 @@ void Renderer::fadeIn(float delay)
 	mCurrentFadeType = FadeType::In;
 	mFadeStep = 255.0f / delay;
 
-	_TIMER.delta();	// clear timer
+	fadeTimer.delta();	// clear timer
 }
 
 
@@ -238,7 +238,7 @@ void Renderer::fadeOut(float delay)
 	mCurrentFadeType = FadeType::Out;
 	mFadeStep = 255.0f / delay;
 
-	_TIMER.delta(); // clear timer
+	fadeTimer.delta(); // clear timer
 }
 
 
@@ -525,7 +525,7 @@ void Renderer::update()
 {
 	if (mCurrentFadeType != FadeType::None)
 	{
-		float fade = (_TIMER.delta() * mFadeStep) * static_cast<int>(mCurrentFadeType);
+		float fade = (fadeTimer.delta() * mFadeStep) * static_cast<int>(mCurrentFadeType);
 
 		mCurrentFade += fade;
 

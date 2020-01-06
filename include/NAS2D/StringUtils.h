@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D
-// = Copyright © 2008 - 2019 New Age Software
+// = Copyright ï¿½ 2008 - 2019 New Age Software
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
@@ -37,10 +37,12 @@ namespace NAS2D
 	template<typename... Args>
 	std::string string_format(const std::string& format, Args... args)
 	{
-		std::size_t size = snprintf(nullptr, std::size_t{0u}, format.c_str(), args...) + std::size_t{1u};
-		std::unique_ptr<char[]> buffer(new char[size]);
-		snprintf(buffer.get(), size, format.c_str(), args...);
-		return std::string(buffer.get(), buffer.get() + size - 1);
+		std::string buffer;
+		std::size_t size = snprintf(buffer.data(), buffer.size(), format.c_str(), args...);
+		buffer.resize(size + 1); // Including null (avoid clipping/undefined behavior)
+		snprintf(buffer.data(), buffer.size(), format.c_str(), args...);
+		buffer.resize(size); // Strip null temrinator
+		return buffer;
 	}
 
 	/**

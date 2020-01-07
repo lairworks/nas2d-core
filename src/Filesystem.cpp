@@ -42,7 +42,6 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 	//FS::canonical will automatically throw std::filesystem_error on failure.
 	mExePath = FS::canonical(mExePath);
 	mExePath = mExePath.make_preferred();
-	mSearchPath.insert(mExePath.string());
 }
 
 /**
@@ -56,7 +55,7 @@ bool Filesystem::mount(const std::string& path) const noexcept
 {
 	std::clog << "Adding '" << path << "' to search path." << std::endl;
 
-	FS::path p{FS::path{mExePath} / path};
+	FS::path p{path};
 	bool does_exist = exists(p.string());
 	if (does_exist)
 	{

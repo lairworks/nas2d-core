@@ -66,7 +66,6 @@ public:
 
 private:
 	std::string mDataPath{}; /**< Data path string. This will typically be 'data/'. */
-	mutable bool mIsInit{false};
 	mutable std::set<std::string> mSearchPath{}; //This really should be std::filesystem::path
 };
 

@@ -34,8 +34,6 @@ using namespace NAS2D::Exception;
  */
 void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appName*/, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
 {
-	if (mIsInit) { return; }
-
 	FS::path p = dataPath;
 	std::error_code ec{};
 	p = FS::canonical(p, ec);
@@ -50,7 +48,6 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appNam
 
 	mDataPath = dataPath;
 	mSearchPath.insert(mDataPath);
-	mIsInit = true;
 }
 
 
@@ -63,9 +60,6 @@ void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appNam
  */
 bool Filesystem::mount(const std::string& path) const noexcept
 {
-	//if (!PHYSFS_isInit()) { throw filesystem_not_initialized(); }
-	if (!mIsInit) { return false; }
-
 	std::clog << "Adding '" << path << "' to search path." << std::endl;
 
 	std::string searchPath(mDataPath + path);
@@ -93,10 +87,7 @@ bool Filesystem::mount(const std::string& path) const noexcept
  */
 StringList Filesystem::searchPath() const noexcept
 {
-	if (!mIsInit) { return {}; }
-
 	StringList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
-
 	return searchPath;
 }
 
@@ -329,8 +320,6 @@ const std::string& Filesystem::dataPath() const noexcept
  */
 std::string Filesystem::workingPath(const std::string& filename) const noexcept
 {
-	if (!mIsInit) { return {}; }
-
 	if (filename.empty())
 	{
 		#if defined(DEBUG)

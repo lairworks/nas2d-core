@@ -25,14 +25,6 @@
 #include <sstream>
 #include <string>
 
-#if defined(__GNUC__) || defined(__GNUG__)
-#include <experimental/filesystem>
-namespace FS = std::experimental::filesystem;
-#else
-#include <filesystem>
-namespace FS = std::filesystem;
-#endif
-
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 

@@ -72,6 +72,7 @@ FS::path getPathToBinaryWindows()
 			}
 			filename = filename.substr(0, buffer_length);
 			result = FS::path(filename);
+			break;
 		}
 	}
 #endif

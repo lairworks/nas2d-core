@@ -46,22 +46,21 @@ public:
 
 	Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 
-	std::string workingPath(const std::string& filename) const noexcept;
-	StringList searchPath() const noexcept;
 	bool mount(const std::string& path) const noexcept;
 	bool unmount(const std::string& path) const noexcept;
 
 	StringList directoryList(const std::string& dir, const std::string& filter = std::string{}) const noexcept;
+	StringList searchPath() const noexcept;
 
 	File open(const std::string& filename) const noexcept;
 	bool write(const File& file, bool overwrite = true) const noexcept;
 	bool del(const std::string& path) const noexcept;
-	bool exists(const std::string& filename) const noexcept;
-
-	std::string extension(const std::string& path) noexcept;
-
-	bool isDirectory(const std::string& path) const noexcept;
 	bool makeDirectory(const std::string& path) const noexcept;
+
+	bool exists(const std::string& filename) const noexcept;
+	std::string workingPath(const std::string& filename) const noexcept;
+	std::string extension(const std::string& path) noexcept;
+	bool isDirectory(const std::string& path) const noexcept;
 
 private:
 	FS::path mExePath{};

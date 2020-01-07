@@ -105,15 +105,6 @@ bool NAS2D::Filesystem::unmount(const std::string& path) const noexcept
 }
 
 /**
- * Returns a list of directories in the Search Path.
- */
-StringList Filesystem::searchPath() const noexcept
-{
-	StringList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
-	return searchPath;
-}
-
-/**
  * Returns a list of files within a given directory.
  *
  * \param	dir		Directory to search within the searchpath.
@@ -154,6 +145,103 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 	return result;
 }
 
+/**
+ * Returns a list of directories in the Search Path.
+ */
+StringList Filesystem::searchPath() const noexcept
+{
+	StringList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
+	return searchPath;
+}
+
+/**
+ * Opens a file.
+ *
+ * \param filename	Path of the file to load.
+ *
+ * \return Returns a File.
+ */
+File Filesystem::open(const std::string& filename) const noexcept
+{
+#if defined(DEBUG)
+	std::cerr << "Attempting to load '" << filename << "...";
+#endif
+
+	if (!exists(filename))
+	{
+#if defined(DEBUG)
+		std::cerr << "Failed. File does not exist." << std::endl;
+#endif
+
+		return File();
+	}
+
+	std::error_code ec{};
+	const auto p = FS::path{filename};
+	const auto size = FS::file_size(p, ec);
+	if (size == static_cast<std::uintmax_t>(-1))
+	{
+#if defined(DEBUG)
+		std::cerr << "Failed. std::filesystem::file_size failed to get the size." << std::endl;
+#endif
+		return File();
+	}
+
+	std::ifstream ifs{p};
+	std::string buffer = std::string(static_cast<const std::stringstream&>(std::stringstream() << ifs.rdbuf()).str());
+	return File(buffer, filename);
+}
+
+/**
+ * Writes a file to disk.
+ *
+ * \param	file		A reference to a \c const \c File object.
+ * \param	overwrite	Flag indicating if a file should be overwritten if it already exists. Default is true.
+ *
+ * \return Returns \c true if successful. Otherwise, returns \c false.
+ */
+bool Filesystem::write(const File& file, bool overwrite) const noexcept
+{
+	if (file.empty())
+	{
+		std::cerr << "Attempted to write empty file '" << file.filename() << std::endl;
+		return false;
+	}
+
+	if (!overwrite && exists(file.filename()))
+	{
+#if defined(DEBUG)
+		std::cerr << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl;
+#endif
+
+		return false;
+	}
+
+	std::ofstream myFile{FS::path{file.filename()}, std::ios_base::binary};
+	if (!myFile)
+	{
+#if defined(DEBUG)
+		std::cerr << "Couldn't open '" << file.filename() << "' for writing." << std::endl;
+#endif
+
+		return false;
+	}
+
+	if (!myFile.write(file.raw_bytes(), file.bytes().size()))
+	{
+#if defined(DEBUG)
+		std::cerr << "Error occured while writing to file '" << file.filename() << std::endl;
+#endif
+	}
+	else
+	{
+#if defined(DEBUG)
+		std::clog << "Wrote " << file.bytes().size() << " bytes to file '" << file.filename() << std::endl;
+#endif
+	}
+
+	return true;
+}
 
 /**
  * Deletes a specified file.
@@ -176,45 +264,6 @@ bool Filesystem::del(const std::string& filename) const noexcept
 }
 
 /**
- * Opens a file.
- *
- * \param filename	Path of the file to load.
- *
- * \return Returns a File.
- */
-File Filesystem::open(const std::string& filename) const noexcept
-{
-	#if defined(DEBUG)
-	std::cerr << "Attempting to load '" << filename << "...";
-	#endif
-	
-	if (!exists(filename))
-	{
-		#if defined(DEBUG)
-		std::cerr << "Failed. File does not exist." << std::endl;
-		#endif
-
-		return File();
-	}
-
-	std::error_code ec{};
-	const auto p = FS::path{filename};
-	const auto size = FS::file_size(p, ec);
-	if (size == static_cast<std::uintmax_t>(-1))
-	{
-		#if defined(DEBUG)
-		std::cerr << "Failed. std::filesystem::file_size failed to get the size." << std::endl;
-		#endif
-		return File();
-	}
-
-	std::ifstream ifs{p};
-	std::string buffer = std::string(static_cast<const std::stringstream&>(std::stringstream() << ifs.rdbuf()).str());
-	return File(buffer, filename);
-}
-
-
-/**
  * Creates a new directory within the primary search path.
  *
  * \param path	Path of the directory to create.
@@ -227,18 +276,6 @@ bool Filesystem::makeDirectory(const std::string& path) const noexcept
 	auto p = FS::path{path};
 	return FS::create_directories(p, ec);
 }
-
-
-/**
- * Determines if a given path is a directory rather than a file.
- *
- * \param path	Path to check.
- */
-bool Filesystem::isDirectory(const std::string& path) const noexcept
-{
-	return FS::is_directory(FS::path{path});
-}
-
 
 /**
  * Checks for the existence of a file.
@@ -262,58 +299,6 @@ bool Filesystem::exists(const std::string& filename) const noexcept
 			}
 		}
 		return false;
-	}
-
-	return true;
-}
-
-
-/**
- * Writes a file to disk.
- *
- * \param	file		A reference to a \c const \c File object.
- * \param	overwrite	Flag indicating if a file should be overwritten if it already exists. Default is true.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
- */
-bool Filesystem::write(const File& file, bool overwrite) const noexcept
-{
-	if (file.empty())
-	{
-		std::cerr << "Attempted to write empty file '" << file.filename() << std::endl;
-		return false;
-	}
-
-	if (!overwrite && exists(file.filename()))
-	{
-		#if defined(DEBUG)
-		std::cerr << "Attempted to overwrite a file '" << file.filename() << "' that already exists." << std::endl;
-		#endif
-
-		return false;
-	}
-
-	std::ofstream myFile{FS::path{file.filename()}, std::ios_base::binary};
-	if (!myFile)
-	{
-		#if defined(DEBUG)
-		std::cerr << "Couldn't open '" << file.filename() << "' for writing." << std::endl;
-		#endif
-
-		return false;
-	}
-
-	if (!myFile.write(file.raw_bytes(), file.bytes().size()))
-	{
-		#if defined(DEBUG)
-		std::cerr << "Error occured while writing to file '" << file.filename() << std::endl;
-		#endif
-	}
-	else
-	{
-		#if defined(DEBUG)
-		std::clog << "Wrote " << file.bytes().size() << " bytes to file '" << file.filename() << std::endl;
-		#endif
 	}
 
 	return true;
@@ -371,4 +356,14 @@ std::string Filesystem::extension(const std::string& path) noexcept
 
 	return {};
 
+}
+
+/**
+ * Determines if a given path is a directory rather than a file.
+ *
+ * \param path	Path to check.
+ */
+bool Filesystem::isDirectory(const std::string& path) const noexcept
+{
+	return FS::is_directory(FS::path{path});
 }

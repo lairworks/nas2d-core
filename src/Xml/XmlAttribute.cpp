@@ -193,7 +193,7 @@ XmlAttribute::QueryResult XmlAttribute::queryIntValue(int& i) const
 	{
 		i = std::stoi(_value);
 	}
-	catch (std::invalid_argument)
+	catch (const std::invalid_argument&)
 	{
 		return QueryResult::XML_WRONG_TYPE;
 	}
@@ -218,7 +218,7 @@ XmlAttribute::QueryResult XmlAttribute::queryDoubleValue(double& d) const
 	{
 		d = std::stod(_value);
 	}
-	catch (std::invalid_argument)
+	catch (const std::invalid_argument&)
 	{
 		return QueryResult::XML_WRONG_TYPE;
 	}

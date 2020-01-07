@@ -46,7 +46,6 @@ public:
 
 	Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 
-	const std::string& dataPath() const noexcept;
 	std::string workingPath(const std::string& filename) const noexcept;
 	StringList searchPath() const noexcept;
 	bool mount(const std::string& path) const noexcept;

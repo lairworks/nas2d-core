@@ -30,6 +30,11 @@ using namespace NAS2D::Exception;
 
 FS::path getPathToBinary(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 
+FS::path getPathToBinary(const std::string& /*argv_0*/, const std::string& /*appName*/, const std::string& /*organizationName*/) {
+	//TODO: Get path to binary from OS.
+	return {"./"};
+}
+
 NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName)
 {
 	mExePath = getPathToBinary(argv_0, appName, organizationName);

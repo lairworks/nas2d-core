@@ -5,28 +5,13 @@
 
 TEST(Filesystem, ConstructDestruct) {
 	// Check if object can be safely constructed and destructed
-	EXPECT_NO_THROW(NAS2D::Filesystem fs);
+	NAS2D::Filesystem fs{"", "NAS2DUnitTests", "LairWorks"}; //gtest fails the test if uncaught exceptions escape.
 }
-
-TEST(Filesystem, Init) {
-	NAS2D::Filesystem fs;
-	EXPECT_NO_THROW(fs.init("", "NAS2DUnitTests", "LairWorks", "./"));
-}
-
 
 class FilesystemTest : public ::testing::Test {
 protected:
-	void SetUp() override {
-		fs.init("", "NAS2DUnitTests", "LairWorks", "data/");
-	}
-
-	NAS2D::Filesystem fs;
+	NAS2D::Filesystem fs{"", "NAS2DUnitTests", "LairWorks"};
 };
-
-
-TEST_F(FilesystemTest, dataPath) {
-	EXPECT_EQ("data/", fs.dataPath());
-}
 
 TEST_F(FilesystemTest, extension) {
 	EXPECT_EQ(".txt", fs.extension("subdir/file.txt"));

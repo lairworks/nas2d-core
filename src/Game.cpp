@@ -39,14 +39,14 @@ using namespace NAS2D;
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Intitial data path. Defaults to 'data'.
  */
-Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
+Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& argv_0, const std::string& configPath, const std::string& /*dataPath*/)
 {
 	std::cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << std::endl;
 	std::cout << "NAS2D VERSION: " << NAS2D::versionString() << std::endl << std::endl;
 
 	std::cout << "Initializing subsystems..." << std::endl << std::endl;
 
-	Utility<Filesystem>::init(argv_0, appName, organizationName, dataPath);
+	Utility<Filesystem>::init(argv_0, appName, organizationName);
 
 	Configuration& cf = Utility<Configuration>::get();
 	cf.load(configPath);

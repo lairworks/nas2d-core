@@ -12,6 +12,13 @@
 
 #include "NAS2D/Exception.h"
 
+#include <climits>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+
 #include <physfs.h>
 
 #if defined(__APPLE__)
@@ -23,13 +30,6 @@
 #define NOMINMAX
 #include <windows.h>
 #endif
-
-#include <climits>
-#include <cstring>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;

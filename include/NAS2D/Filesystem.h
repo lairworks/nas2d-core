@@ -37,7 +37,7 @@ namespace NAS2D {
 class Filesystem
 {
 public:
-	Filesystem() = default;
+	Filesystem() = delete;
 	Filesystem(const Filesystem&) = delete;
 	Filesystem& operator=(const Filesystem&) = delete;
 	Filesystem(Filesystem&&) = delete;
@@ -65,7 +65,7 @@ public:
 	bool makeDirectory(const std::string& path) const noexcept;
 
 private:
-	std::string mDataPath{}; /**< Data path string. This will typically be 'data/'. */
+	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
 	mutable std::set<std::string> mSearchPath{}; //This really should be std::filesystem::path
 };
 

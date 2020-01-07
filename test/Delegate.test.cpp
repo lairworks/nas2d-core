@@ -6,8 +6,8 @@
 namespace {
 	class MockHandler {
 	public:
-		MOCK_METHOD(void, MockMethod, (int value), (const));
-		MOCK_METHOD(void, MockMethod2, (int value), (const));
+		MOCK_CONST_METHOD1(MockMethod, void(int value));
+		MOCK_CONST_METHOD1(MockMethod2, void(int value));
 	};
 }
 

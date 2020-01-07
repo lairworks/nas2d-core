@@ -51,6 +51,7 @@ FS::path getPathToBinary([[maybe_unused]] const std::string& argv_0, [[maybe_unu
 #endif
 	result = FS::canonical(result);
 	result.make_preferred();
+	return result;
 }
 
 FS::path getPathToBinaryWindows()

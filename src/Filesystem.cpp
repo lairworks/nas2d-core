@@ -130,8 +130,8 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
  */
 void NAS2D::Filesystem::mountDefault() noexcept
 {
-	mount(mExePath.string());
-	mount((mExePath / FS::path{"data"}).make_preferred().string());
+	mount(mExePath.parent_path().string());
+	mount((mExePath.parent_path() / FS::path{"data"}).make_preferred().string());
 }
 
 /**
@@ -207,7 +207,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 	StringList result{};
 	FS::path root{};
 
-	if (dir.empty()) { root = FS::absolute(FS::path{mExePath}); }
+	if (dir.empty()) { root = FS::absolute(FS::path{mExePath}.parent_path()); }
 
 	if (!FS::is_directory(root)) { return {}; }
 

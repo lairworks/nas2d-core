@@ -53,7 +53,7 @@ FS::path getPathToBinary([[maybe_unused]] const std::string& argv_0, [[maybe_unu
 	result = getPathToBinaryLinux();
 #endif
 	result = FS::canonical(result);
-	result.make_preferred();
+	result = result.make_preferred();
 	return result;
 }
 

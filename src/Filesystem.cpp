@@ -18,6 +18,12 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#if defined(_WIN32)
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
+#endif
+
 #include <climits>
 #include <cstring>
 #include <fstream>
@@ -28,11 +34,79 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-FS::path getPathToBinary(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
+FS::path getPathToBinary([[maybe_unused]] const std::string& argv_0, [[maybe_unused]] const std::string& appName, [[maybe_unused]] const std::string& organizationName);
+FS::path getPathToBinaryWindows();
+FS::path getPathToBinaryApple();
+FS::path getPathToBinaryLinux();
 
-FS::path getPathToBinary(const std::string& /*argv_0*/, const std::string& /*appName*/, const std::string& /*organizationName*/) {
-	//TODO: Get path to binary from OS.
-	return {"./"};
+FS::path getPathToBinary([[maybe_unused]] const std::string& argv_0, [[maybe_unused]] const std::string& appName, [[maybe_unused]] const std::string& organizationName)
+{
+	FS::path result{"./"};
+#if defined(_WIN32)
+	result = getPathToBinaryWindows();
+#elif defined(__APPLE__)
+	result = getPathToBinaryApple();
+#elif defined(__linux__)
+	result = getPathToBinaryLinux();
+#endif
+	result = FS::canonical(result);
+	result.make_preferred();
+}
+
+FS::path getPathToBinaryWindows()
+{
+	FS::path result{"./"};
+#if defined(_WIN32)
+	{
+		std::basic_string<TCHAR> filename(MAX_PATH, '\0');
+		while (DWORD buffer_length = ::GetModuleFileName(nullptr, filename.data(), static_cast<DWORD>(filename.size())))
+		{
+			if (::GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+			{
+				filename.resize(filename.size() * 2);
+				continue;
+			}
+			filename = filename.substr(0, buffer_length);
+			result = FS::path(filename);
+		}
+	}
+#endif
+	return result;
+}
+
+FS::path getPathToBinaryApple()
+{
+	FS::path result{"./"};
+#if defined(__APPLE__)
+	{
+		uint32_t size = 0;
+		//Will return -1 at first because size is not large enough.
+		//_NSGetExecutablePath sets size if it fails.
+		_NSGetExecutablePath(nullptr, &size);
+		{
+			result.resize(size);
+			if (_NSGetExecutablePath(result.data(), size) == 0)
+			{
+				//Path may be a symlink!
+				while (FS::is_symlink(result)) { result = FS::read_symlink(result); }
+			}
+		}
+	}
+#endif
+	return result;
+}
+
+FS::path getPathToBinaryLinux()
+{
+	FS::path result{"./"};
+#if defined(__linux__)
+	{
+		//Using '/proc/self/exe' isn't necessarily portable on mobile or older platforms.
+		result = FS::path{"/proc/self/exe"};
+		while(FS::is_symlink(result)) { result = FS::read_symlink(result); }
+	}
+#endif
+	return result;
 }
 
 NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName)
@@ -43,7 +117,6 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 	mExePath = FS::canonical(mExePath);
 	mExePath = mExePath.make_preferred();
 }
-
 
 /**
  * Adds the default paths to the Search Path:
@@ -130,7 +203,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 	FS::path root{};
 
 	if (dir.empty()) { root = FS::absolute(FS::path{mExePath}); }
-	
+
 	if (!FS::is_directory(root)) { return {}; }
 
 	for (auto& f : FS::directory_iterator{root})
@@ -305,7 +378,7 @@ bool Filesystem::exists(const std::string& filename) const noexcept
 		for (const auto& cur_path_string : mSearchPath)
 		{
 			const auto cur_path = FS::path{cur_path_string} / filename;
-			if(FS::exists(cur_path, ec))
+			if (FS::exists(cur_path, ec))
 			{
 				return true;
 			}
@@ -327,17 +400,16 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
 {
 	if (filename.empty())
 	{
-		#if defined(DEBUG)
+#if defined(DEBUG)
 		std::cerr << "Filesystem::workingPath(): empty string provided.\n";
-		#endif
-	
+#endif
+
 		return {};
 	}
 
 	auto p = FS::path{filename};
 	return p.parent_path().make_preferred().string();
 }
-
 
 /**
  * Gets the extension of a given file path.
@@ -367,7 +439,6 @@ std::string Filesystem::extension(const std::string& path) noexcept
 	}
 
 	return {};
-
 }
 
 /**

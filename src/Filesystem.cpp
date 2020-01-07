@@ -44,6 +44,18 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 	mExePath = mExePath.make_preferred();
 }
 
+
+/**
+ * Adds the default paths to the Search Path:
+ * Default read path: the path to the application binary.
+ * Default read/write path: ./data path next to the application binary.
+ */
+void NAS2D::Filesystem::mountDefault() noexcept
+{
+	mount(mExePath.string());
+	mount((mExePath / FS::path{"data"}).make_preferred().string());
+}
+
 /**
  * Adds a directory or supported archive to the Search Path.
  *

@@ -46,6 +46,7 @@ public:
 
 	Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 
+	void mountDefault() noexcept;
 	bool mount(const std::string& path) const noexcept;
 	bool unmount(const std::string& path) const noexcept;
 
@@ -63,6 +64,7 @@ public:
 	bool isDirectory(const std::string& path) const noexcept;
 
 private:
+	//TODO: Need "write path" member.
 	FS::path mExePath{};
 	mutable std::set<std::string> mSearchPath{}; //This really should be std::filesystem::path
 };

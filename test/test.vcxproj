@@ -47,8 +47,10 @@
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="Delegate.test.cpp" />
     <ClCompile Include="Filesystem.test.cpp" />
     <ClCompile Include="MathUtils.test.cpp" />
+    <ClCompile Include="Signal.test.cpp" />
     <ClCompile Include="StringUtils.test.cpp" />
     <ClCompile Include="Utility.test.cpp" />
     <ClCompile Include="Version.test.cpp" />

@@ -76,6 +76,36 @@ bool Filesystem::mount(const std::string& path) const noexcept
 }
 
 /**
+ * Removes a directory or supported archive from the Search Path.
+ *
+ * \param path	File path to remove.
+ *
+ * \return Returns \c true if successful. Otherwise, returns \c false.
+ */
+bool NAS2D::Filesystem::unmount(const std::string& path) const noexcept
+{
+	std::clog << "Removing '" << path << "' from search path." << std::endl;
+
+	FS::path p{path};
+	bool does_exist = exists(p.string());
+	if (does_exist)
+	{
+		auto erase_count = mSearchPath.erase(p.string());
+		if (!erase_count)
+		{
+			std::cerr << "Couldn't remove " << path << " from search path.\n";
+			return false;
+		}
+		return true;
+	}
+	else
+	{
+		std::cerr << "Couldn't remove " << path << " from search path.\n";
+		return false;
+	}
+}
+
+/**
  * Returns a list of directories in the Search Path.
  */
 StringList Filesystem::searchPath() const noexcept

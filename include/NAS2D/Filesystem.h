@@ -49,6 +49,7 @@ public:
 	std::string workingPath(const std::string& filename) const noexcept;
 	StringList searchPath() const noexcept;
 	bool mount(const std::string& path) const noexcept;
+	bool unmount(const std::string& path) const noexcept;
 
 	StringList directoryList(const std::string& dir, const std::string& filter = std::string{}) const noexcept;
 

@@ -28,28 +28,17 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
+FS::path getPathToBinary(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 
-/**
- * Shuts down PhysFS and cleans up.
- */
-void Filesystem::init(const std::string& /*argv_0*/, const std::string& /*appName*/, const std::string& /*organizationName*/, const std::string& dataPath) noexcept
+NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName)
 {
-	FS::path p = dataPath;
-	std::error_code ec{};
-	p = FS::canonical(p, ec);
-	if (ec)
-	{
-		std::cerr << "Filesystem::init failed:" << std::endl
-				  << "dataPath: " << p << std::endl
-				  << "Reasons for failure:" << std::endl
-				  << ec.message();
-		return;
-	}
-
-	mDataPath = dataPath;
-	mSearchPath.insert(mDataPath);
+	mExePath = getPathToBinary(argv_0, appName, organizationName);
+	//Path to executable is required to exist for program to be well-formed.
+	//FS::canonical will automatically throw std::filesystem_error on failure.
+	mExePath = FS::canonical(mExePath);
+	mExePath = mExePath.make_preferred();
+	mSearchPath.insert(mExePath.string());
 }
-
 
 /**
  * Adds a directory or supported archive to the Search Path.
@@ -62,12 +51,11 @@ bool Filesystem::mount(const std::string& path) const noexcept
 {
 	std::clog << "Adding '" << path << "' to search path." << std::endl;
 
-	std::string searchPath(mDataPath + path);
-	FS::path p{FS::path{mDataPath} / path};
+	FS::path p{FS::path{mExePath} / path};
 	bool does_exist = exists(p.string());
 	if (does_exist)
 	{
-		auto [where, wasInserted] = mSearchPath.insert(searchPath);
+		auto [where, wasInserted] = mSearchPath.insert(p.string());
 		if (!wasInserted)
 		{
 			std::cerr << "Couldn't add " << path << " to search path.\n";
@@ -102,18 +90,13 @@ StringList Filesystem::searchPath() const noexcept
 StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const noexcept
 {
 	StringList result{};
-	std::error_code ec{};
 	FS::path root{};
 
-	#if defined(__GNUC__) || defined(__GNUG__)  // YUCK
-	if (dir.empty()) { root = FS::absolute(FS::path{mDataPath}); }
-	#else
-	if (dir.empty()) { root = FS::absolute(FS::path{mDataPath}, ec); }
-	#endif
+	if (dir.empty()) { root = FS::absolute(FS::path{mExePath}); }
 	
 	if (!FS::is_directory(root)) { return {}; }
 
-	for (auto& f : FS::directory_iterator{root, ec})
+	for (auto& f : FS::directory_iterator{root})
 	{
 		if (filter.empty())
 		{
@@ -301,15 +284,6 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
 
 	return true;
 }
-
-/**
- * Gets the base data path.
- */
-const std::string& Filesystem::dataPath() const noexcept
-{
-	return mDataPath;
-}
-
 
 /**
  * Convenience function to get the working directory of a file.

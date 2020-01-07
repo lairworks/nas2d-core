@@ -13,7 +13,7 @@
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
-extern SDL_Window* _WINDOW;
+extern SDL_Window* underlyingWindow;
 
 
 using namespace std;
@@ -492,7 +492,7 @@ EventHandler::QuitEventCallback& EventHandler::quit()
  */
 void EventHandler::grabMouse()
 {
-	if (_WINDOW) { SDL_SetWindowGrab(_WINDOW, SDL_TRUE); }
+	if (underlyingWindow) { SDL_SetWindowGrab(underlyingWindow, SDL_TRUE); }
 }
 
 
@@ -501,7 +501,7 @@ void EventHandler::grabMouse()
  */
 void EventHandler::releaseMouse()
 {
-	if (_WINDOW) { SDL_SetWindowGrab(_WINDOW, SDL_FALSE); }
+	if (underlyingWindow) { SDL_SetWindowGrab(underlyingWindow, SDL_FALSE); }
 }
 
 
@@ -516,7 +516,7 @@ void EventHandler::releaseMouse()
  */
 void EventHandler::warpMouse(int x, int y)
 {
-	if (_WINDOW) { SDL_WarpMouseInWindow(_WINDOW, x, y); }
+	if (underlyingWindow) { SDL_WarpMouseInWindow(underlyingWindow, x, y); }
 }
 
 

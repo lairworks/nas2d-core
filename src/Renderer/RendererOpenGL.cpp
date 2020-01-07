@@ -28,6 +28,7 @@
 #include <iostream>
 #include <math.h>
 #include <algorithm>
+#include <cmath>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -59,7 +60,7 @@ extern std::map<std::string, FontInfo> FONTMAP;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
-SDL_Window*			_WINDOW = nullptr;
+SDL_Window*			underlyingWindow = nullptr;
 
 SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
 
@@ -97,8 +98,8 @@ RendererOpenGL::~RendererOpenGL()
 	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::_resize);
 
 	SDL_GL_DeleteContext(CONTEXT);
-	SDL_DestroyWindow(_WINDOW);
-	_WINDOW = nullptr;
+	SDL_DestroyWindow(underlyingWindow);
+	underlyingWindow = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	std::cout << "OpenGL Renderer Terminated." << std::endl;
@@ -539,13 +540,13 @@ void RendererOpenGL::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 void RendererOpenGL::update()
 {
 	Renderer::update();
-	SDL_GL_SwapWindow(_WINDOW);
+	SDL_GL_SwapWindow(underlyingWindow);
 }
 
 
 float RendererOpenGL::width()
 {
-	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
 		return DESKTOP_RESOLUTION.x();
 	}
@@ -556,7 +557,7 @@ float RendererOpenGL::width()
 
 float RendererOpenGL::height()
 {
-	if ((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
 		return DESKTOP_RESOLUTION.y();
 	}
@@ -567,15 +568,15 @@ float RendererOpenGL::height()
 
 void RendererOpenGL::size(int w, int h)
 {
-	SDL_SetWindowSize(_WINDOW, w, h);
+	SDL_SetWindowSize(underlyingWindow, w, h);
 	_resize(w, h);
-	SDL_SetWindowPosition(_WINDOW, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
 
 void RendererOpenGL::minimum_size(int w, int h)
 {
-	SDL_SetWindowMinimumSize(_WINDOW, w, h);
+	SDL_SetWindowMinimumSize(underlyingWindow, w, h);
 }
 
 
@@ -583,23 +584,23 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 {
 	if (fs)
 	{
-		if (!maintain) { SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN_DESKTOP); }
-		else { SDL_SetWindowFullscreen(_WINDOW, SDL_WINDOW_FULLSCREEN); }
-		SDL_SetWindowResizable(_WINDOW, SDL_FALSE);
+		if (!maintain) { SDL_SetWindowFullscreen(underlyingWindow, SDL_WINDOW_FULLSCREEN_DESKTOP); }
+		else { SDL_SetWindowFullscreen(underlyingWindow, SDL_WINDOW_FULLSCREEN); }
+		SDL_SetWindowResizable(underlyingWindow, SDL_FALSE);
 	}
 	else
 	{
-		SDL_SetWindowFullscreen(_WINDOW, 0);
-		SDL_SetWindowSize(_WINDOW, static_cast<int>(width()), static_cast<int>(height()));
-		SDL_SetWindowPosition(_WINDOW, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+		SDL_SetWindowFullscreen(underlyingWindow, 0);
+		SDL_SetWindowSize(underlyingWindow, static_cast<int>(width()), static_cast<int>(height()));
+		SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }
 
 
 bool RendererOpenGL::fullscreen()
 {
-	return	((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
-			((SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return	((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
+			((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
@@ -611,13 +612,13 @@ void RendererOpenGL::resizeable(bool _r)
 	}
 
 	// Not happy with the cast but I suppose it's a necessary evil.
-	SDL_SetWindowResizable(_WINDOW, static_cast<SDL_bool>(_r));
+	SDL_SetWindowResizable(underlyingWindow, static_cast<SDL_bool>(_r));
 }
 
 
 bool RendererOpenGL::resizeable()
 {
-	return (SDL_GetWindowFlags(_WINDOW) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
+	return (SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
 }
 
 
@@ -648,7 +649,7 @@ void RendererOpenGL::window_icon(const std::string& path)
 		return;
 	}
 
-	SDL_SetWindowIcon(_WINDOW, icon);
+	SDL_SetWindowIcon(underlyingWindow, icon);
 	SDL_FreeSurface(icon);
 }
 
@@ -716,16 +717,16 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 
 	if (fullscreen) { sdlFlags = sdlFlags | SDL_WINDOW_FULLSCREEN; }
 
-	_WINDOW = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
+	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
 
-	if (!_WINDOW)
+	if (!underlyingWindow)
 	{
 		throw renderer_window_creation_failure();
 	}
 
 	_size()(static_cast<float>(resX), static_cast<float>(resY));
 
-	CONTEXT = SDL_GL_CreateContext(_WINDOW);
+	CONTEXT = SDL_GL_CreateContext(underlyingWindow);
 	if (!CONTEXT)
 	{
 		throw renderer_opengl_context_failure();
@@ -829,7 +830,6 @@ void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 	TEXTURE_COORD_ARRAY[10] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[11] = static_cast<GLfloat>(y);
 }
 
-
 /**
  * The following code was developed by Chris Tsang and lifted from:
  *
@@ -839,8 +839,6 @@ void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
  *
  * This is drop-in code that may be replaced in the future.
  */
-static inline float _ABS(float x) { return x > 0 ? x : -x; }
-
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca)
 {
 	// What are these values for?
@@ -896,7 +894,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float dx = x2 - x1;
 	float dy = y2 - y1;
 
-	if (_ABS(dx) < ALW)
+	if (std::abs(dx) < ALW)
 	{
 		//vertical
 		tx = t; ty = 0.0f;
@@ -907,7 +905,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 			Rx = 0.0f;
 		}
 	}
-	else if (_ABS(dy) < ALW)
+	else if (std::abs(dy) < ALW)
 	{
 		//horizontal
 		tx = 0.0f; ty = t;

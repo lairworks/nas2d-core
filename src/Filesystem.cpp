@@ -39,6 +39,11 @@ FS::path getPathToBinaryWindows();
 FS::path getPathToBinaryApple();
 FS::path getPathToBinaryLinux();
 
+
+/**
+ * Returns the canonical, preferred path to the current process/binary, or the current path if there was an error.
+ * 
+ */
 FS::path getPathToBinary([[maybe_unused]] const std::string& argv_0, [[maybe_unused]] const std::string& appName, [[maybe_unused]] const std::string& organizationName)
 {
 	FS::path result{"./"};

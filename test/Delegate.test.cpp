@@ -12,7 +12,8 @@ namespace {
 }
 
 
-TEST(Delegate, DelegateCall) {
+// Disabled due to GoogleMock crashes on Windows
+TEST(Delegate, DISABLED_DelegateCall) {
 	MockHandler handler;
 	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
 	EXPECT_CALL(handler, MockMethod(0));
@@ -21,7 +22,8 @@ TEST(Delegate, DelegateCall) {
 	delegate(1);
 }
 
-TEST(Delegate, DelegateCallConst) {
+// Disabled due to GoogleMock crashes on Windows
+TEST(Delegate, DISABLED_DelegateCallConst) {
 	const MockHandler handler;
 	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
 	EXPECT_CALL(handler, MockMethod(0));

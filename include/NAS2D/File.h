@@ -45,7 +45,9 @@ public:
 	 * \param	stream	A ByteStream representing the file.
 	 * \param	name	The full name of the file including path.
 	 */
-	File(const ByteStream& stream, const std::string& name):	mByteStream(stream), mFileName(name)
+	File(const ByteStream& stream, const std::string& name) :
+		mByteStream(stream),
+		mFileName(name)
 	{}
 
 	/**
@@ -58,7 +60,9 @@ public:
 	/**
 	 * Copy c'tor
 	 */
-	File(const File& _f):	mByteStream(_f.mByteStream), mFileName(_f.mFileName)
+	File(const File& _f) :
+		mByteStream(_f.mByteStream),
+		mFileName(_f.mFileName)
 	{}
 
 

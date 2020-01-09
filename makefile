@@ -152,22 +152,10 @@ install-deps-centos:
 #### Docker related build rules ####
 
 # Build rules relating to Docker images
-.PHONY: build-image-ubuntu-16.04 compile-on-ubuntu-16.04
-.PHONY: debug-image-ubuntu-16.04 root-debug-image-ubuntu-16.04
-
 .PHONY: build-image-ubuntu-18.04 compile-on-ubuntu-18.04
 .PHONY: debug-image-ubuntu-18.04 root-debug-image-ubuntu-18.04
 
 DockerFolder := ${TopLevelFolder}/docker
-
-build-image-ubuntu-16.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-16.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs:1.1
-compile-on-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
-root-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
 
 build-image-ubuntu-18.04:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.3

@@ -59,7 +59,7 @@ void Rectangle_2d::operator()(int _x, int _y, int _w, int _h)
  *
  * \returns True if the two rectangles are equivalent.
  */
-bool Rectangle_2d::operator==(const Rectangle_2d& rect)
+bool Rectangle_2d::operator==(const Rectangle_2d& rect) const
 {
 	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
@@ -72,7 +72,7 @@ bool Rectangle_2d::operator==(const Rectangle_2d& rect)
  *
  * \returns True if the two rectangles are not equivalent.
  */
-bool Rectangle_2d::operator!=(const Rectangle_2d& rect)
+bool Rectangle_2d::operator!=(const Rectangle_2d& rect) const
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
@@ -270,7 +270,7 @@ void Rectangle_2df::operator()(float _x, float _y, float _w, float _h)
  *
  * \returns True if the two rectangles are equivalent.
  */
-bool Rectangle_2df::operator==(const Rectangle_2df& rect)
+bool Rectangle_2df::operator==(const Rectangle_2df& rect) const
 {
 	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
@@ -283,7 +283,7 @@ bool Rectangle_2df::operator==(const Rectangle_2df& rect)
  *
  * \returns True if the two rectangles are not equivalent.
  */
-bool Rectangle_2df::operator!=(const Rectangle_2df& rect)
+bool Rectangle_2df::operator!=(const Rectangle_2df& rect) const
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }

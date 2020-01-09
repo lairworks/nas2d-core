@@ -30,8 +30,8 @@ public:
 public:
 	void operator()(int x, int y, int w, int h);
 
-	bool operator==(const Rectangle_2d& rect);
-	bool operator!=(const Rectangle_2d& rect);
+	bool operator==(const Rectangle_2d& rect) const;
+	bool operator!=(const Rectangle_2d& rect) const;
 
 	operator Rectangle_2df() const;
 
@@ -75,8 +75,8 @@ public:
 public:
 	void operator()(float x, float y, float w, float h);
 
-	bool operator==(const Rectangle_2df& rect);
-	bool operator!=(const Rectangle_2df& rect);
+	bool operator==(const Rectangle_2df& rect) const;
+	bool operator!=(const Rectangle_2df& rect) const;
 
 	operator Rectangle_2d() const;
 

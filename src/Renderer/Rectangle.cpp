@@ -36,18 +36,6 @@ Rectangle_2d::Rectangle_2d(int x, int y, int w, int h):	mX(x),
 
 
 /**
- * Copy c'tor.
- *
- * \param rect Rectangle_2d to copy.
- */
-Rectangle_2d::Rectangle_2d(const Rectangle_2df& rect):	mX(static_cast<int>(rect.x())),
-														mY(static_cast<int>(rect.y())),
-														mW(static_cast<int>(rect.width())),
-														mH(static_cast<int>(rect.height()))
-{}
-
-
-/**
  * Sets a Rectangle_2d with a given size.
  *
  * \param _x X-Coordinate.
@@ -339,6 +327,17 @@ bool Rectangle_2df::operator!=(const Rectangle_2d& rect)
 bool Rectangle_2df::operator!=(const Rectangle_2df& rect)
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
+}
+
+
+Rectangle_2df::operator Rectangle_2d() const
+{
+	return Rectangle_2d{
+		static_cast<int>(mX),
+		static_cast<int>(mY),
+		static_cast<int>(mW),
+		static_cast<int>(mH)
+	};
 }
 
 

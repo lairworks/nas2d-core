@@ -104,6 +104,17 @@ bool Rectangle_2d::operator!=(const Rectangle_2df& rect)
 }
 
 
+Rectangle_2d::operator Rectangle_2df() const
+{
+	return Rectangle_2df{
+		static_cast<float>(mX),
+		static_cast<float>(mY),
+		static_cast<float>(mW),
+		static_cast<float>(mH)
+	};
+}
+
+
 /**
  * Indicates a rectangle has a size of 0.
  */

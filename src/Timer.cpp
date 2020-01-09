@@ -17,9 +17,10 @@ using namespace NAS2D;
 /**
  * C'tor
  */
-Timer::Timer():	mCurrentTick(0),
-				mLastTick(0),
-				mAccumulator(0)
+Timer::Timer() :
+	mCurrentTick(0),
+	mLastTick(0),
+	mAccumulator(0)
 {
 }
 

@@ -19,16 +19,15 @@ SdlArchive := $(SdlVer).tar.gz
 SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
 SdlPackageDir := $(BUILDDIR)/sdl2
 SdlDir := $(SdlPackageDir)/$(SdlVer)
-# Include folder for newer source build
-# (Must be searched before system folder returned by sdl2-config)
-SdlInc := $(SdlDir)/include
 
-CXXFLAGS := -std=c++17 -g -Wall -Wpedantic -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
+CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
+CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
+LDFLAGS := $(LDFLAGS.EXTRA)
 LDLIBS := -lstdc++ -lphysfs # -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
@@ -91,23 +90,15 @@ gmock:
 	cd $(GMOCKDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GMOCKSRCDIR)
 	make -C $(GMOCKDIR)
 
-# This is used to detect if a separate GMock library was built, in which case, use it
-GMOCKLIB := $(wildcard $(GMOCKDIR)/libgmock.a)
-
 TESTDIR := test
 TESTOBJDIR := $(BUILDDIR)/testObj
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.o,$(TESTSRCS))
 TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
-TESTCPPFLAGS := -I$(INCDIR) -I$(GMOCKSRCDIR)/gtest/include
-TESTLDFLAGS := -L$(BINDIR) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
+TESTCPPFLAGS := $(CPPFLAGS)
+TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests
-# Conditionally add GMock if we built it separately
-# This is conditional to avoid errors in case the library is not found
-ifneq ($(strip $(GMOCKLIB)),)
-	TESTLIBS := -lgmock $(TESTLIBS)
-endif
 
 TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTOBJDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c

@@ -75,10 +75,7 @@ public:
 public:
 	void operator()(float x, float y, float w, float h);
 
-	bool operator==(const Rectangle_2d& rect);
 	bool operator==(const Rectangle_2df& rect);
-
-	bool operator!=(const Rectangle_2d& rect);
 	bool operator!=(const Rectangle_2df& rect);
 
 	operator Rectangle_2d() const;

@@ -31,7 +31,7 @@ GlewPackageUrl := https://github.com/nigels-com/glew/releases/download/glew-2.1.
 # Note: This variable can be overridden from the command line
 # Example:
 #   make DepBuildDir=alternatePath
-DepBuildDir := ../build/dependencies
+DepBuildDir := ../.build/dependencies
 
 # Note: Functions are not simply expanded (Must use "=" instead of ":=" )
 # Function to convert URL to package name, and package name to folder name

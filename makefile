@@ -152,18 +152,18 @@ install-deps-centos:
 #### Docker related build rules ####
 
 # Build rules relating to Docker images
-.PHONY: build-image-ubuntu-18.04 compile-on-ubuntu-18.04
-.PHONY: debug-image-ubuntu-18.04 root-debug-image-ubuntu-18.04
+.PHONY: build-image-ubuntu compile-on-ubuntu
+.PHONY: debug-image-ubuntu root-debug-image-ubuntu
 
 DockerFolder := ${TopLevelFolder}/docker
 
-build-image-ubuntu-18.04:
+build-image-ubuntu:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.3
-compile-on-ubuntu-18.04:
+compile-on-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/nas2d
-debug-image-ubuntu-18.04:
+debug-image-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/nas2d bash
-root-debug-image-ubuntu-18.04:
+root-debug-image-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/nas2d bash
 
 
@@ -171,7 +171,7 @@ root-debug-image-ubuntu-18.04:
 
 .PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
 
-build-image-circleci: | build-image-ubuntu-18.04
+build-image-circleci: | build-image-ubuntu
 	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.3
 push-image-circleci:
 	docker push outpostuniverse/nas2d-circleci

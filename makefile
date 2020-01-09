@@ -13,13 +13,6 @@ OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 OUTPUT := $(BINDIR)/libnas2d.a
 
-# SDL2 source build variables
-SdlVer := SDL2-2.0.5
-SdlArchive := $(SdlVer).tar.gz
-SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
-SdlPackageDir := $(BUILDDIR)/sdl2
-SdlDir := $(SdlPackageDir)/$(SdlVer)
-
 CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
 CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS.EXTRA)
@@ -62,10 +55,6 @@ clean:
 	-rm -fr $(BINDIR)
 clean-deps:
 	-rm -fr $(DEPDIR)
-clean-sdl:
-	-rm -fr $(SdlDir)
-clean-sdl-all:
-	-rm -fr $(SdlPackageDir)
 clean-all:
 	-rm -rf $(BUILDDIR)
 
@@ -158,22 +147,6 @@ install-repos-centos:
 install-deps-centos:
 	# Install development packages (-y answers "yes" to prompts)
 	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
-
-
-## Generic SDL2 source build ##
-
-.PHONY: install-deps-source-sdl2
-install-deps-source-sdl2:
-	# Create source build folder
-	mkdir -p $(SdlDir)
-	# Download source archive
-	wget --no-clobber --directory-prefix=$(SdlPackageDir) $(SdlUrl)
-	# Unpack archive
-	cd $(SdlPackageDir) && tar -xzf $(SdlArchive)
-	# Configure package
-	cd $(SdlDir) && ./configure --quiet --enable-mir-shared=no
-	# Compile package
-	cd $(SdlDir) && make
 
 
 #### Docker related build rules ####

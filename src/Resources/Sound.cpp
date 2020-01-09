@@ -21,8 +21,9 @@ using namespace NAS2D;
 /**
  * Default C'tor.
  */
-Sound::Sound(): Resource(),
-				_chunk(nullptr)
+Sound::Sound() :
+	Resource(),
+	_chunk(nullptr)
 {}
 
 /**
@@ -30,8 +31,9 @@ Sound::Sound(): Resource(),
  *
  * \param	filePath	File path of the sound file to load.
  */
-Sound::Sound(const std::string& filePath):	Resource(filePath),
-_chunk(nullptr)
+Sound::Sound(const std::string& filePath) :
+	Resource(filePath),
+	_chunk(nullptr)
 {
 	load();
 }

@@ -66,19 +66,6 @@ bool Rectangle_2d::operator==(const Rectangle_2d& rect)
 
 
 /**
- * Compares two rectangles, \c float version.
- *
- * \param rect	Rectangle_2df to compare against.
- *
- * \returns True if the two rectangles are equivalent.
- */
-bool Rectangle_2d::operator==(const Rectangle_2df& rect)
-{
-	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
-}
-
-
-/**
  * Compares two rectangles.
  *
  * \param rect	Rectangle_2d to compare against.
@@ -86,19 +73,6 @@ bool Rectangle_2d::operator==(const Rectangle_2df& rect)
  * \returns True if the two rectangles are not equivalent.
  */
 bool Rectangle_2d::operator!=(const Rectangle_2d& rect)
-{
-	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
-}
-
-
-/**
- * Compares two rectangles, \c float version.
- *
- * \param rect	Rectangle_2d to compare against.
- *
- * \returns True if the two rectangles are not equivalent.
- */
-bool Rectangle_2d::operator!=(const Rectangle_2df& rect)
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }

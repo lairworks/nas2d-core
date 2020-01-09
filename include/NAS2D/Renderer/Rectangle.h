@@ -31,10 +31,7 @@ public:
 	void operator()(int x, int y, int w, int h);
 
 	bool operator==(const Rectangle_2d& rect);
-	bool operator==(const Rectangle_2df& rect);
-
 	bool operator!=(const Rectangle_2d& rect);
-	bool operator!=(const Rectangle_2df& rect);
 
 	operator Rectangle_2df() const;
 

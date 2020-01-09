@@ -19,9 +19,6 @@ SdlArchive := $(SdlVer).tar.gz
 SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
 SdlPackageDir := $(BUILDDIR)/sdl2
 SdlDir := $(SdlPackageDir)/$(SdlVer)
-# Include folder for newer source build
-# (Must be searched before system folder returned by sdl2-config)
-SdlInc := $(SdlDir)/include
 
 CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
 CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
@@ -93,9 +90,6 @@ gmock:
 	cd $(GMOCKDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GMOCKSRCDIR)
 	make -C $(GMOCKDIR)
 
-# This is used to detect if a separate GMock library was built, in which case, use it
-GMOCKLIB := $(wildcard $(GMOCKDIR)/libgmock.a)
-
 TESTDIR := test
 TESTOBJDIR := $(BUILDDIR)/testObj
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
@@ -105,11 +99,6 @@ TESTCPPFLAGS := $(CPPFLAGS)
 TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests
-# Conditionally add GMock if we built it separately
-# This is conditional to avoid errors in case the library is not found
-ifneq ($(strip $(GMOCKLIB)),)
-	TESTLIBS := -lgmock $(TESTLIBS)
-endif
 
 TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTOBJDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c

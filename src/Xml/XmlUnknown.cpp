@@ -13,8 +13,8 @@
 
 using namespace NAS2D::Xml;
 
-XmlUnknown::XmlUnknown()
-: XmlNode(XmlNode::NodeType::XML_UNKNOWN)
+XmlUnknown::XmlUnknown() :
+	XmlNode(XmlNode::NodeType::XML_UNKNOWN)
 {}
 
 
@@ -22,8 +22,8 @@ XmlUnknown::~XmlUnknown()
 {}
 
 
-XmlUnknown::XmlUnknown(const XmlUnknown& copy)
-: XmlNode(XmlNode::NodeType::XML_UNKNOWN)
+XmlUnknown::XmlUnknown(const XmlUnknown& copy) :
+	XmlNode(XmlNode::NodeType::XML_UNKNOWN)
 {
 	copy.copyTo(this);
 }

@@ -7,11 +7,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     make=4.1-6 \
     cmake=3.5.1-* \
     wget=1.17.1-* \
-    bzip2=1.0.6-8 \
+    bzip2=1.0.6-* \
     ca-certificates=* \
     libfreetype6-dev=2.6.1-* \
     libglew-dev=1.13.0-2 \
-    libphysfs-dev=2.0.3-3 \
   && rm -rf /var/lib/apt/lists/*
 
 # Download and install dependencies from source

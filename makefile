@@ -161,7 +161,7 @@ install-deps-centos:
 DockerFolder := ${TopLevelFolder}/docker
 
 build-image-ubuntu-16.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-16.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
+	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-16.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs:1.1
 compile-on-ubuntu-16.04:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
 debug-image-ubuntu-16.04:

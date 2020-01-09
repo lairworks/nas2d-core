@@ -23,7 +23,7 @@ SdlDir := $(SdlPackageDir)/$(SdlVer)
 # (Must be searched before system folder returned by sdl2-config)
 SdlInc := $(SdlDir)/include
 
-CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/ -I$(SdlInc)
+CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
 CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS.EXTRA)
 LDLIBS := -lstdc++ -lphysfs # -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL
@@ -101,8 +101,8 @@ TESTOBJDIR := $(BUILDDIR)/testObj
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.o,$(TESTSRCS))
 TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
-TESTCPPFLAGS := $(CPPFLAGS) -I$(GMOCKSRCDIR)/gtest/include
-TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
+TESTCPPFLAGS := $(CPPFLAGS)
+TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests
 # Conditionally add GMock if we built it separately

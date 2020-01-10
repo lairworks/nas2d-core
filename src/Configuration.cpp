@@ -294,16 +294,16 @@ void Configuration::parseAudio(void* _n)
 
 			if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
 			{
-				audioSfxVolume(std::clamp(mSfxVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
+				audioSfxVolume(mSfxVolume);
 			}
 		}
 		else if (attribute->name() == AUDIO_CFG_MUS_VOLUME)
 		{
 			attribute->queryIntValue(mMusicVolume);
 
-			if (mMusicVolume < AUDIO_SFX_MIN_VOLUME || mMusicVolume > AUDIO_SFX_MAX_VOLUME)
+			if (mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
 			{
-				audioSfxVolume(std::clamp(mMusicVolume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME));
+				audioMusicVolume(mMusicVolume);
 			}
 		}
 		else if (attribute->name() == AUDIO_CFG_BUFFER_SIZE)

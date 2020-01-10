@@ -13,13 +13,6 @@ OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 OUTPUT := $(BINDIR)/libnas2d.a
 
-# SDL2 source build variables
-SdlVer := SDL2-2.0.5
-SdlArchive := $(SdlVer).tar.gz
-SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
-SdlPackageDir := $(BUILDDIR)/sdl2
-SdlDir := $(SdlPackageDir)/$(SdlVer)
-
 CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
 CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS.EXTRA)
@@ -62,10 +55,6 @@ clean:
 	-rm -fr $(BINDIR)
 clean-deps:
 	-rm -fr $(DEPDIR)
-clean-sdl:
-	-rm -fr $(SdlDir)
-clean-sdl-all:
-	-rm -fr $(SdlPackageDir)
 clean-all:
 	-rm -rf $(BUILDDIR)
 
@@ -160,49 +149,21 @@ install-deps-centos:
 	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
 
 
-## Generic SDL2 source build ##
-
-.PHONY: install-deps-source-sdl2
-install-deps-source-sdl2:
-	# Create source build folder
-	mkdir -p $(SdlDir)
-	# Download source archive
-	wget --no-clobber --directory-prefix=$(SdlPackageDir) $(SdlUrl)
-	# Unpack archive
-	cd $(SdlPackageDir) && tar -xzf $(SdlArchive)
-	# Configure package
-	cd $(SdlDir) && ./configure --quiet --enable-mir-shared=no
-	# Compile package
-	cd $(SdlDir) && make
-
-
 #### Docker related build rules ####
 
 # Build rules relating to Docker images
-.PHONY: build-image-ubuntu-16.04 compile-on-ubuntu-16.04
-.PHONY: debug-image-ubuntu-16.04 root-debug-image-ubuntu-16.04
-
-.PHONY: build-image-ubuntu-18.04 compile-on-ubuntu-18.04
-.PHONY: debug-image-ubuntu-18.04 root-debug-image-ubuntu-18.04
+.PHONY: build-image-ubuntu compile-on-ubuntu
+.PHONY: debug-image-ubuntu root-debug-image-ubuntu
 
 DockerFolder := ${TopLevelFolder}/docker
 
-build-image-ubuntu-16.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-16.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
-compile-on-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
-root-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
-
-build-image-ubuntu-18.04:
+build-image-ubuntu:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.3
-compile-on-ubuntu-18.04:
+compile-on-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/nas2d
-debug-image-ubuntu-18.04:
+debug-image-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/nas2d bash
-root-debug-image-ubuntu-18.04:
+root-debug-image-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/nas2d bash
 
 
@@ -210,7 +171,7 @@ root-debug-image-ubuntu-18.04:
 
 .PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
 
-build-image-circleci: | build-image-ubuntu-18.04
+build-image-circleci: | build-image-ubuntu
 	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.3
 push-image-circleci:
 	docker push outpostuniverse/nas2d-circleci

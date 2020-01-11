@@ -68,7 +68,7 @@ Point_2d& Point_2d::operator-=(const Point_2d& pt)
 }
 
 
-const Point_2d Point_2d::operator+(const Point_2d& pt)
+Point_2d Point_2d::operator+(const Point_2d& pt)
 {
 	Point_2d r = *this;
 	r += pt;
@@ -76,7 +76,7 @@ const Point_2d Point_2d::operator+(const Point_2d& pt)
 }
 
 
-const Point_2d Point_2d::operator-(const Point_2d& pt)
+Point_2d Point_2d::operator-(const Point_2d& pt)
 {
 	Point_2d r = *this;
 	r -= pt;
@@ -175,7 +175,7 @@ Point_2df& Point_2df::operator-=(const Point_2df& pt)
 }
 
 
-const Point_2df Point_2df::operator+(const Point_2df& pt)
+Point_2df Point_2df::operator+(const Point_2df& pt)
 {
 	Point_2df r = *this;
 	r += pt;
@@ -183,7 +183,7 @@ const Point_2df Point_2df::operator+(const Point_2df& pt)
 }
 
 
-const Point_2df Point_2df::operator-(const Point_2df& pt)
+Point_2df Point_2df::operator-(const Point_2df& pt)
 {
 	Point_2df r = *this;
 	r -= pt;

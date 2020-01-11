@@ -35,8 +35,8 @@ public:
 	Point_2d& operator+=(const Point_2d& pt);
 	Point_2d& operator-=(const Point_2d& pt);
 
-	const Point_2d operator+(const Point_2d& pt);
-	const Point_2d operator-(const Point_2d& pt);
+	Point_2d operator+(const Point_2d& pt);
+	Point_2d operator-(const Point_2d& pt);
 
 	operator Point_2df() const;
 
@@ -73,8 +73,8 @@ public:
 	Point_2df& operator+=(const Point_2df& pt);
 	Point_2df& operator-=(const Point_2df& pt);
 
-	const Point_2df operator+(const Point_2df& pt);
-	const Point_2df operator-(const Point_2df& pt);
+	Point_2df operator+(const Point_2df& pt);
+	Point_2df operator-(const Point_2df& pt);
 
 	operator Point_2d() const;
 

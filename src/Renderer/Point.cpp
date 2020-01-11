@@ -138,21 +138,10 @@ Point_2df::Point_2df(float x, float y):	mX(x),
 {}
 
 
-Point_2df::Point_2df(const Point_2d& _p):	mX(static_cast<float>(_p.x())),
-											mY(static_cast<float>(_p.y()))
-{}
-
-
 void Point_2df::operator()(float _x, float _y)
 {
 	x(_x);
 	y(_y);
-}
-
-
-bool Point_2df::operator==(const Point_2d& pt)
-{
-	return (mX == pt.x()) && (mY == pt.y());
 }
 
 
@@ -162,24 +151,9 @@ bool Point_2df::operator==(const Point_2df& pt)
 }
 
 
-bool Point_2df::operator!=(const Point_2d& pt)
-{
-	return (x() != pt.x()) || (y() != pt.y());
-}
-
-
 bool Point_2df::operator!=(const Point_2df& pt)
 {
 	return (x() != pt.x()) || (y() != pt.y());
-}
-
-
-Point_2df& Point_2df::operator+=(const Point_2d& pt)
-{
-	mX += pt.x();
-	mY += pt.y();
-
-	return *this;
 }
 
 
@@ -187,15 +161,6 @@ Point_2df& Point_2df::operator+=(const Point_2df& pt)
 {
 	mX += pt.x();
 	mY += pt.y();
-
-	return *this;
-}
-
-
-Point_2df& Point_2df::operator-=(const Point_2d& pt)
-{
-	mX -= pt.x();
-	mY -= pt.y();
 
 	return *this;
 }
@@ -210,26 +175,10 @@ Point_2df& Point_2df::operator-=(const Point_2df& pt)
 }
 
 
-const Point_2df Point_2df::operator+(const Point_2d& pt)
-{
-	Point_2df r = *this;
-	r += pt;
-	return r;
-}
-
-
 const Point_2df Point_2df::operator+(const Point_2df& pt)
 {
 	Point_2df r = *this;
 	r += pt;
-	return r;
-}
-
-
-const Point_2df Point_2df::operator-(const Point_2d& pt)
-{
-	Point_2df r = *this;
-	r -= pt;
 	return r;
 }
 

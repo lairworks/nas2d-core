@@ -38,13 +38,13 @@ void Point_2d::operator()(int _x, int _y)
 }
 
 
-bool Point_2d::operator==(const Point_2d& pt)
+bool Point_2d::operator==(const Point_2d& pt) const
 {
 	return (x() == pt.x()) && (y() == pt.y());
 }
 
 
-bool Point_2d::operator!=(const Point_2d& pt)
+bool Point_2d::operator!=(const Point_2d& pt) const
 {
 	return (x() != pt.x()) || (y() != pt.y());
 }
@@ -68,7 +68,7 @@ Point_2d& Point_2d::operator-=(const Point_2d& pt)
 }
 
 
-Point_2d Point_2d::operator+(const Point_2d& pt)
+Point_2d Point_2d::operator+(const Point_2d& pt) const
 {
 	Point_2d r = *this;
 	r += pt;
@@ -76,7 +76,7 @@ Point_2d Point_2d::operator+(const Point_2d& pt)
 }
 
 
-Point_2d Point_2d::operator-(const Point_2d& pt)
+Point_2d Point_2d::operator-(const Point_2d& pt) const
 {
 	Point_2d r = *this;
 	r -= pt;
@@ -145,13 +145,13 @@ void Point_2df::operator()(float _x, float _y)
 }
 
 
-bool Point_2df::operator==(const Point_2df& pt)
+bool Point_2df::operator==(const Point_2df& pt) const
 {
 	return (mX == pt.x()) && (mY == pt.y());
 }
 
 
-bool Point_2df::operator!=(const Point_2df& pt)
+bool Point_2df::operator!=(const Point_2df& pt) const
 {
 	return (x() != pt.x()) || (y() != pt.y());
 }
@@ -175,7 +175,7 @@ Point_2df& Point_2df::operator-=(const Point_2df& pt)
 }
 
 
-Point_2df Point_2df::operator+(const Point_2df& pt)
+Point_2df Point_2df::operator+(const Point_2df& pt) const
 {
 	Point_2df r = *this;
 	r += pt;
@@ -183,7 +183,7 @@ Point_2df Point_2df::operator+(const Point_2df& pt)
 }
 
 
-Point_2df Point_2df::operator-(const Point_2df& pt)
+Point_2df Point_2df::operator-(const Point_2df& pt) const
 {
 	Point_2df r = *this;
 	r -= pt;

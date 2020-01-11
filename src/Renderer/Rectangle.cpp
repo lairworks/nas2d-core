@@ -36,18 +36,6 @@ Rectangle_2d::Rectangle_2d(int x, int y, int w, int h):	mX(x),
 
 
 /**
- * Copy c'tor.
- *
- * \param rect Rectangle_2d to copy.
- */
-Rectangle_2d::Rectangle_2d(const Rectangle_2df& rect):	mX(static_cast<int>(rect.x())),
-														mY(static_cast<int>(rect.y())),
-														mW(static_cast<int>(rect.width())),
-														mH(static_cast<int>(rect.height()))
-{}
-
-
-/**
  * Sets a Rectangle_2d with a given size.
  *
  * \param _x X-Coordinate.
@@ -71,20 +59,7 @@ void Rectangle_2d::operator()(int _x, int _y, int _w, int _h)
  *
  * \returns True if the two rectangles are equivalent.
  */
-bool Rectangle_2d::operator==(const Rectangle_2d& rect)
-{
-	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
-}
-
-
-/**
- * Compares two rectangles, \c float version.
- *
- * \param rect	Rectangle_2df to compare against.
- *
- * \returns True if the two rectangles are equivalent.
- */
-bool Rectangle_2d::operator==(const Rectangle_2df& rect)
+bool Rectangle_2d::operator==(const Rectangle_2d& rect) const
 {
 	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
@@ -97,22 +72,20 @@ bool Rectangle_2d::operator==(const Rectangle_2df& rect)
  *
  * \returns True if the two rectangles are not equivalent.
  */
-bool Rectangle_2d::operator!=(const Rectangle_2d& rect)
+bool Rectangle_2d::operator!=(const Rectangle_2d& rect) const
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
 
-/**
- * Compares two rectangles, \c float version.
- *
- * \param rect	Rectangle_2d to compare against.
- *
- * \returns True if the two rectangles are not equivalent.
- */
-bool Rectangle_2d::operator!=(const Rectangle_2df& rect)
+Rectangle_2d::operator Rectangle_2df() const
 {
-	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
+	return Rectangle_2df{
+		static_cast<float>(mX),
+		static_cast<float>(mY),
+		static_cast<float>(mW),
+		static_cast<float>(mH)
+	};
 }
 
 
@@ -293,11 +266,11 @@ void Rectangle_2df::operator()(float _x, float _y, float _w, float _h)
 /**
  * Compares two rectangles.
  *
- * \param rect	Rectangle_2d to compare against.
+ * \param rect	Rectangle_2df to compare against.
  *
  * \returns True if the two rectangles are equivalent.
  */
-bool Rectangle_2df::operator==(const Rectangle_2d& rect)
+bool Rectangle_2df::operator==(const Rectangle_2df& rect) const
 {
 	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
 }
@@ -308,37 +281,22 @@ bool Rectangle_2df::operator==(const Rectangle_2d& rect)
  *
  * \param rect	Rectangle_2df to compare against.
  *
- * \returns True if the two rectangles are equivalent.
- */
-bool Rectangle_2df::operator==(const Rectangle_2df& rect)
-{
-	return (x() == rect.x()) && (y() == rect.y()) && (width() == rect.width()) && (height() == rect.height());
-}
-
-
-/**
- * Compares two rectangles.
- *
- * \param rect	Rectangle_2d to compare against.
- *
  * \returns True if the two rectangles are not equivalent.
  */
-bool Rectangle_2df::operator!=(const Rectangle_2d& rect)
+bool Rectangle_2df::operator!=(const Rectangle_2df& rect) const
 {
 	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
 }
 
 
-/**
- * Compares two rectangles.
- *
- * \param rect	Rectangle_2df to compare against.
- *
- * \returns True if the two rectangles are not equivalent.
- */
-bool Rectangle_2df::operator!=(const Rectangle_2df& rect)
+Rectangle_2df::operator Rectangle_2d() const
 {
-	return (x() != rect.x()) || (y() != rect.y()) || (width() != rect.width()) || (height() != rect.height());
+	return Rectangle_2d{
+		static_cast<int>(mX),
+		static_cast<int>(mY),
+		static_cast<int>(mW),
+		static_cast<int>(mH)
+	};
 }
 
 

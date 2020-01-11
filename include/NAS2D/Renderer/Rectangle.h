@@ -26,16 +26,14 @@ struct Rectangle_2d
 public:
 	Rectangle_2d() = default;
 	Rectangle_2d(int x, int y, int w, int h);
-	Rectangle_2d(const Rectangle_2df& rect);
 
 public:
 	void operator()(int x, int y, int w, int h);
 
-	bool operator==(const Rectangle_2d& rect);
-	bool operator==(const Rectangle_2df& rect);
+	bool operator==(const Rectangle_2d& rect) const;
+	bool operator!=(const Rectangle_2d& rect) const;
 
-	bool operator!=(const Rectangle_2d& rect);
-	bool operator!=(const Rectangle_2df& rect);
+	operator Rectangle_2df() const;
 
 public:
 	bool null();
@@ -77,11 +75,10 @@ public:
 public:
 	void operator()(float x, float y, float w, float h);
 
-	bool operator==(const Rectangle_2d& rect);
-	bool operator==(const Rectangle_2df& rect);
+	bool operator==(const Rectangle_2df& rect) const;
+	bool operator!=(const Rectangle_2df& rect) const;
 
-	bool operator!=(const Rectangle_2d& rect);
-	bool operator!=(const Rectangle_2df& rect);
+	operator Rectangle_2d() const;
 
 public:
 	bool null();

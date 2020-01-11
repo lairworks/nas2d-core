@@ -94,6 +94,8 @@ public:
 	const Point_2df operator-(const Point_2d& pt);
 	const Point_2df operator-(const Point_2df& pt);
 
+	operator Point_2d() const;
+
 public:
 	void x(float x);
 	float x() const;

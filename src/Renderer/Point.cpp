@@ -134,6 +134,15 @@ const Point_2d Point_2d::operator-(const Point_2df& pt)
 }
 
 
+Point_2d::operator Point_2df() const
+{
+	return Point_2df{
+		static_cast<float>(mX),
+		static_cast<float>(mY)
+	};
+}
+
+
 void Point_2d::x(int x)
 {
 	mX = x;

@@ -48,6 +48,8 @@ public:
 	const Point_2d operator-(const Point_2d& pt);
 	const Point_2d operator-(const Point_2df& pt);
 
+	operator Point_2df() const;
+
 public:
 	void x(int x);
 	int x() const;

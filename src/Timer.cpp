@@ -15,15 +15,6 @@
 using namespace NAS2D;
 
 /**
- * C'tor
- */
-Timer::Timer() :
-	mCurrentTick(0),
-	mAccumulator(0)
-{
-}
-
-/**
  * Gets the current tick.
  */
 unsigned int Timer::tick() const

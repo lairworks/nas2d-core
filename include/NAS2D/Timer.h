@@ -56,7 +56,7 @@ namespace NAS2D {
 class Timer
 {
 public:
-	Timer();
+	Timer() = default;
 
 	unsigned int tick() const;
 	unsigned int delta();
@@ -68,8 +68,8 @@ public:
 
 private:
 
-	unsigned int	mCurrentTick;
-	unsigned int	mAccumulator;
+	unsigned int	mCurrentTick = 0;
+	unsigned int	mAccumulator = 0;
 };
 
 } // namespace

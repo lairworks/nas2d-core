@@ -25,28 +25,18 @@ struct Point_2d
 public:
 	Point_2d() = default;
 	Point_2d(int x, int y);
-	Point_2d(const Point_2df& _p);
 
 public:
 	void operator()(int x, int y);
 
 	bool operator==(const Point_2d& pt);
-	bool operator==(const Point_2df& pt);
-
 	bool operator!=(const Point_2d& pt);
-	bool operator!=(const Point_2df& pt);
 
 	Point_2d& operator+=(const Point_2d& pt);
-	Point_2d& operator+=(const Point_2df& pt);
-
 	Point_2d& operator-=(const Point_2d& pt);
-	Point_2d& operator-=(const Point_2df& pt);
 
 	const Point_2d operator+(const Point_2d& pt);
-	const Point_2d operator+(const Point_2df& pt);
-
 	const Point_2d operator-(const Point_2d& pt);
-	const Point_2d operator-(const Point_2df& pt);
 
 	operator Point_2df() const;
 

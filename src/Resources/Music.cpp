@@ -28,7 +28,7 @@ void updateMusicReferenceCount(const std::string& name);
 /**
  * Default c'tor.
  */
-Music::Music():	Resource()
+Music::Music() : Resource()
 {}
 
 
@@ -37,7 +37,7 @@ Music::Music():	Resource()
  *
  * \param filePath	Path of the music file to load.
  */
-Music::Music(const std::string& filePath):	Resource(filePath)
+Music::Music(const std::string& filePath) : Resource(filePath)
 {
 	load();
 }
@@ -46,7 +46,7 @@ Music::Music(const std::string& filePath):	Resource(filePath)
 /**
  * Copy c'tor.
  */
-Music::Music(const Music& rhs): Resource(rhs.name())
+Music::Music(const Music& rhs) : Resource(rhs.name())
 {
 	auto it = MUSIC_REF_MAP.find(name());
 	if (it != MUSIC_REF_MAP.end())

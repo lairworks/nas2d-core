@@ -23,15 +23,15 @@ using namespace NAS2D::Xml;
 
 const std::string NAS2D_EMPTY_STR = "";
 
-XmlElement::XmlElement(const std::string& value)
-: XmlNode(XmlNode::NodeType::XML_ELEMENT)
+XmlElement::XmlElement(const std::string& value) :
+	XmlNode(XmlNode::NodeType::XML_ELEMENT)
 {
 	_value = value;
 }
 
 
-XmlElement::XmlElement(const XmlElement& copy)
-: XmlNode(XmlNode::NodeType::XML_ELEMENT)
+XmlElement::XmlElement(const XmlElement& copy) :
+	XmlNode(XmlNode::NodeType::XML_ELEMENT)
 {
 	copy.copyTo(this);
 }

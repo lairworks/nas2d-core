@@ -69,8 +69,6 @@ public:
 private:
 
 	unsigned int	mCurrentTick;
-	unsigned int	mLastTick;
-
 	unsigned int	mAccumulator;
 };
 

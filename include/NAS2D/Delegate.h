@@ -376,42 +376,42 @@ public:
 }
 
 
-template<class RetType = detail::DefaultVoid>
-class Delegate0
+template<class RetType, typename ... Params>
+class DelegateX
 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType(*StaticFunctionPtr)();
-	typedef RetType(*UnvoidStaticFunctionPtr)();
-	typedef RetType(detail::GenericClass::*GenericMemFn)();
+	typedef DesiredRetType(*StaticFunctionPtr)(Params...);
+	typedef RetType(*UnvoidStaticFunctionPtr)(Params...);
+	typedef RetType(detail::GenericClass::*GenericMemFn)(Params...);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
 
 public:
-	typedef Delegate0 type;
+	typedef DelegateX type;
 
-	Delegate0() { clear(); }
-	Delegate0(const Delegate0 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	void operator = (const Delegate0 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	bool operator ==(const Delegate0 &x) const { return m_Closure.IsEqual(x.m_Closure); }
-	bool operator !=(const Delegate0 &x) const { return !m_Closure.IsEqual(x.m_Closure); }
-	bool operator <(const Delegate0 &x) const { return m_Closure.IsLess(x.m_Closure); }
-	bool operator >(const Delegate0 &x) const { return x.m_Closure.IsLess(m_Closure); }
-
-	template < class X, class Y >
-	Delegate0(Y *pthis, DesiredRetType(X::* function_to_bind)()) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-	template < class X, class Y >
-	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)()) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
+	DelegateX() { clear(); }
+	DelegateX(const DelegateX &x) { m_Closure.CopyFrom(this, x.m_Closure); }
+	void operator = (const DelegateX &x) { m_Closure.CopyFrom(this, x.m_Closure); }
+	bool operator ==(const DelegateX &x) const { return m_Closure.IsEqual(x.m_Closure); }
+	bool operator !=(const DelegateX &x) const { return !m_Closure.IsEqual(x.m_Closure); }
+	bool operator <(const DelegateX &x) const { return m_Closure.IsLess(x.m_Closure); }
+	bool operator >(const DelegateX &x) const { return x.m_Closure.IsLess(m_Closure); }
 
 	template < class X, class Y >
-	Delegate0(const Y *pthis, DesiredRetType(X::* function_to_bind)() const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
+	DelegateX(Y *pthis, DesiredRetType(X::* function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
-	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)() const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
+	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 
-	Delegate0(DesiredRetType(*function_to_bind)()) { Bind(function_to_bind); }
-	void operator = (DesiredRetType(*function_to_bind)()) { Bind(function_to_bind); }
-	inline void Bind(DesiredRetType(*function_to_bind)()) { m_Closure.bindstaticfunc(this, &Delegate0::InvokeStaticFunction, function_to_bind); }
-	RetType operator() () const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(); }
+	template < class X, class Y >
+	DelegateX(const Y *pthis, DesiredRetType(X::* function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
+	template < class X, class Y >
+	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
+
+	DelegateX(DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
+	void operator = (DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
+	inline void Bind(DesiredRetType(*function_to_bind)(Params...)) { m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind); }
+	RetType operator() (Params...params) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...); }
 
 private:
 	typedef struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; } UselessTypedef;
@@ -430,449 +430,61 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:
-	RetType InvokeStaticFunction() const { return (*(m_Closure.GetStaticFunction()))(); }
+	RetType InvokeStaticFunction(Params...params) const { return (*(m_Closure.GetStaticFunction()))(params...); }
 };
 
+
+template<class RetType = detail::DefaultVoid>
+using Delegate0 = DelegateX<RetType>;
 
 template<class Param1, class RetType = detail::DefaultVoid>
-class Delegate1
-{
-private:
-	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType(*StaticFunctionPtr)(Param1 p1);
-	typedef RetType(*UnvoidStaticFunctionPtr)(Param1 p1);
-	typedef RetType(detail::GenericClass::*GenericMemFn)(Param1 p1);
-	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
-	ClosureType m_Closure;
-
-public:
-	typedef Delegate1 type;
-
-	Delegate1() { clear(); }
-	Delegate1(const Delegate1 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	void operator = (const Delegate1 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	bool operator ==(const Delegate1 &x) const { return m_Closure.IsEqual(x.m_Closure); }
-	bool operator !=(const Delegate1 &x) const { return !m_Closure.IsEqual(x.m_Closure); }
-	bool operator <(const Delegate1 &x) const { return m_Closure.IsLess(x.m_Closure); }
-	bool operator >(const Delegate1 &x) const { return x.m_Closure.IsLess(m_Closure); }
-
-	template <class X, class Y>
-	Delegate1(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-
-	template <class X, class Y>
-	Delegate1(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
-	template < class X, class Y >
-	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1) const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
-
-	Delegate1(DesiredRetType(*function_to_bind)(Param1 p1)) { Bind(function_to_bind); }
-	void operator = (DesiredRetType(*function_to_bind)(Param1 p1)) { Bind(function_to_bind); }
-	inline void Bind(DesiredRetType(*function_to_bind)(Param1 p1)) { m_Closure.bindstaticfunc(this, &Delegate1::InvokeStaticFunction, function_to_bind); }
-	RetType operator() (Param1 p1) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(p1); }
-
-private:
-	typedef struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; } UselessTypedef;
-	typedef StaticFunctionPtr SafeBoolStruct::*unspecified_bool_type;
-
-public:
-	operator unspecified_bool_type() const { return empty() ? 0 : &SafeBoolStruct::m_nonzero; }
-
-	inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator ! () const { return !m_Closure; }
-	inline bool empty() const {return !m_Closure; }
-	void clear() { m_Closure.clear(); }
-
-	const DelegateMemento & GetMemento() { return m_Closure; }
-	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
-
-private:
-	RetType InvokeStaticFunction(Param1 p1) const { return (*(m_Closure.GetStaticFunction()))(p1); }
-};
-
+using Delegate1 = DelegateX<RetType, Param1>;
 
 template<class Param1, class Param2, class RetType = detail::DefaultVoid>
-class Delegate2
-{
-private:
-	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType(*StaticFunctionPtr)(Param1 p1, Param2 p2);
-	typedef RetType(*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2);
-	typedef RetType(detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2);
-	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
-	ClosureType m_Closure;
-
-public:
-	typedef Delegate2 type;
-
-	Delegate2() { clear(); }
-	Delegate2(const Delegate2 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	void operator = (const Delegate2 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	bool operator ==(const Delegate2 &x) const { return m_Closure.IsEqual(x.m_Closure); }
-	bool operator !=(const Delegate2 &x) const { return !m_Closure.IsEqual(x.m_Closure); }
-	bool operator <(const Delegate2 &x) const { return m_Closure.IsLess(x.m_Closure); }
-	bool operator >(const Delegate2 &x) const { return x.m_Closure.IsLess(m_Closure); }
-
-	template <class X, class Y>
-	Delegate2(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-
-	template <class X, class Y>
-	Delegate2(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2) const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
-
-	Delegate2(DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2)) { Bind(function_to_bind); }
-	void operator = (DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2)) { Bind(function_to_bind); }
-	inline void Bind(DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2)) { m_Closure.bindstaticfunc(this, &Delegate2::InvokeStaticFunction, function_to_bind); }
-	RetType operator() (Param1 p1, Param2 p2) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(p1, p2); }
-
-private:
-	typedef struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; } UselessTypedef;
-	typedef StaticFunctionPtr SafeBoolStruct::*unspecified_bool_type;
-
-public:
-	operator unspecified_bool_type() const { return empty() ? 0 : &SafeBoolStruct::m_nonzero; }
-
-	inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator ! () const { return !m_Closure; }
-	inline bool empty() const { return !m_Closure; }
-	void clear() { m_Closure.clear(); }
-	const DelegateMemento & GetMemento() { return m_Closure; }
-	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
-
-private:
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2) const { return (*(m_Closure.GetStaticFunction()))(p1, p2); }
-};
-
+using Delegate2 = DelegateX<RetType, Param1, Param2>;
 
 template<class Param1, class Param2, class Param3, class RetType = detail::DefaultVoid>
-class Delegate3
-{
-private:
-	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType(*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3);
-	typedef RetType(*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3);
-	typedef RetType(detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3);
-	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
-	ClosureType m_Closure;
-
-public:
-	typedef Delegate3 type;
-
-	Delegate3() { clear(); }
-	Delegate3(const Delegate3 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	void operator = (const Delegate3 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	bool operator ==(const Delegate3 &x) const { return m_Closure.IsEqual(x.m_Closure); }
-	bool operator !=(const Delegate3 &x) const { return !m_Closure.IsEqual(x.m_Closure); }
-	bool operator <(const Delegate3 &x) const { return m_Closure.IsLess(x.m_Closure); }
-	bool operator >(const Delegate3 &x) const { return x.m_Closure.IsLess(m_Closure); }
-
-	template <class X, class Y>
-	Delegate3(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-
-	template <class X, class Y>
-	Delegate3(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3) const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
-
-	Delegate3(DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) { Bind(function_to_bind); }
-	void operator = (DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) { Bind(function_to_bind); }
-	inline void Bind(DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) { m_Closure.bindstaticfunc(this, &Delegate3::InvokeStaticFunction, function_to_bind); }
-	RetType operator() (Param1 p1, Param2 p2, Param3 p3) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(p1, p2, p3); }
-
-private:
-	typedef struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; } UselessTypedef;
-	typedef StaticFunctionPtr SafeBoolStruct::*unspecified_bool_type;
-
-public:
-	operator unspecified_bool_type() const { return empty() ? 0 : &SafeBoolStruct::m_nonzero; }
-
-	inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator ! () const { return !m_Closure; }
-	inline bool empty() const { return !m_Closure; }
-	void clear() { m_Closure.clear(); }
-	const DelegateMemento & GetMemento() { return m_Closure; }
-	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
-
-private:
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3) const { return (*(m_Closure.GetStaticFunction()))(p1, p2, p3); }
-};
-
+using Delegate3 = DelegateX<RetType, Param1, Param2, Param3>;
 
 template<class Param1, class Param2, class Param3, class Param4, class RetType=detail::DefaultVoid>
-class Delegate4
-{
-private:
-	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType(*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4);
-	typedef RetType(*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4);
-	typedef RetType(detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3, Param4 p4);
-	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
-	ClosureType m_Closure;
-
-public:
-	typedef Delegate4 type;
-
-	Delegate4() { clear(); }
-	Delegate4(const Delegate4 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	void operator = (const Delegate4 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	bool operator ==(const Delegate4 &x) const { return m_Closure.IsEqual(x.m_Closure); }
-	bool operator !=(const Delegate4 &x) const { return !m_Closure.IsEqual(x.m_Closure); }
-	bool operator <(const Delegate4 &x) const { return m_Closure.IsLess(x.m_Closure); }
-	bool operator >(const Delegate4 &x) const { return x.m_Closure.IsLess(m_Closure); }
-
-	template <class X, class Y>
-	Delegate4(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-
-	template <class X, class Y>
-	Delegate4(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-
-	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
-	Delegate4(DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) { Bind(function_to_bind); }
-	void operator = (DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) { Bind(function_to_bind); }
-	inline void Bind(DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) { m_Closure.bindstaticfunc(this, &Delegate4::InvokeStaticFunction, function_to_bind); }
-	RetType operator() (Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(p1, p2, p3, p4); }
-
-private:
-	typedef struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; } UselessTypedef;
-	typedef StaticFunctionPtr SafeBoolStruct::*unspecified_bool_type;
-
-public:
-	operator unspecified_bool_type() const { return empty() ? 0 : &SafeBoolStruct::m_nonzero; }
-	inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator ! () const { return !m_Closure; }
-	inline bool empty() const { return !m_Closure; }
-	void clear() { m_Closure.clear(); }
-	const DelegateMemento & GetMemento() { return m_Closure; }
-	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
-
-private:
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { return (*(m_Closure.GetStaticFunction()))(p1, p2, p3, p4); }
-};
-
+using Delegate4 = DelegateX<RetType, Param1, Param2, Param3, Param4>;
 
 template<class Param1, class Param2, class Param3, class Param4, class Param5, class RetType=detail::DefaultVoid>
-class Delegate5
-{
-private:
-	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType(*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5);
-	typedef RetType(*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5);
-	typedef RetType(detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5);
-	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
-	ClosureType m_Closure;
+using Delegate5 = DelegateX<RetType, Param1, Param2, Param3, Param4, Param5>;
 
-public:
-	typedef Delegate5 type;
-
-	Delegate5() { clear(); }
-	Delegate5(const Delegate5 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	void operator = (const Delegate5 &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	bool operator ==(const Delegate5 &x) const { return m_Closure.IsEqual(x.m_Closure); }
-	bool operator !=(const Delegate5 &x) const { return !m_Closure.IsEqual(x.m_Closure); }
-	bool operator <(const Delegate5 &x) const { return m_Closure.IsLess(x.m_Closure); }
-	bool operator >(const Delegate5 &x) const { return x.m_Closure.IsLess(m_Closure); }
-
-	template <class X, class Y>
-	Delegate5(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-
-	template <class X, class Y>
-	Delegate5(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
-	template <class X, class Y>
-	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
-
-	Delegate5(DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) { Bind(function_to_bind); }
-	void operator = (DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) { Bind(function_to_bind); }
-	inline void Bind(DesiredRetType(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) { m_Closure.bindstaticfunc(this, &Delegate5::InvokeStaticFunction, function_to_bind); }
-	RetType operator() (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(p1, p2, p3, p4, p5); }
-
-private:
-	typedef struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; } UselessTypedef;
-	typedef StaticFunctionPtr SafeBoolStruct::*unspecified_bool_type;
-
-public:
-	operator unspecified_bool_type() const { return empty() ? 0 : &SafeBoolStruct::m_nonzero; }
-	inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator ! () const { return !m_Closure; }
-	inline bool empty() const { return !m_Closure; }
-	void clear() { m_Closure.clear(); }
-	const DelegateMemento & GetMemento() { return m_Closure; }
-	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
-
-private:
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { return (*(m_Closure.GetStaticFunction()))(p1, p2, p3, p4, p5); }
-};
 
 #ifdef FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
 
 template <typename Signature>
 class Delegate;
 
-template<typename R>
-class Delegate<R()> : public Delegate0 <R>
+template<typename R, typename ... Params>
+class Delegate<R(Params...)> : public DelegateX<R, Params...>
 {
 public:
-	typedef Delegate0<R> BaseType;
+	typedef Delegate<R(Params...)> BaseType;
 	typedef Delegate SelfType;
 
 	Delegate() : BaseType() {}
 
 	template <class X, class Y>
-	Delegate(Y * pthis, R(X::* function_to_bind)()) : BaseType(pthis, function_to_bind) {}
+	Delegate(Y * pthis, R(X::* function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}
 
 	template <class X, class Y>
-	Delegate(const Y *pthis, R(X::* function_to_bind)() const) : BaseType(pthis, function_to_bind) {}
+	Delegate(const Y *pthis, R(X::* function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
 
-	Delegate(R(*function_to_bind)()) : BaseType(function_to_bind) {}
+	Delegate(R(*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
 	void operator = (const BaseType &x) { *static_cast<BaseType*>(this) = x; }
 };
 
-
-template<typename R, class Param1>
-class Delegate<R (Param1)> : public Delegate1 <Param1, R>
-{
-public:
-	typedef Delegate1 < Param1, R > BaseType;
-	typedef Delegate SelfType;
-
-	Delegate() : BaseType() {}
-
-	template <class X, class Y>
-	Delegate(Y * pthis, R(X::* function_to_bind)(Param1 p1)) : BaseType(pthis, function_to_bind) {}
-
-	template <class X, class Y>
-	Delegate(const Y *pthis, R(X::* function_to_bind)(Param1 p1) const) : BaseType(pthis, function_to_bind) {}
-
-	Delegate(R(*function_to_bind)(Param1 p1)) : BaseType(function_to_bind) {}
-	void operator = (const BaseType &x) { *static_cast<BaseType*>(this) = x; }
-};
-
-
-template<typename R, class Param1, class Param2>
-class Delegate<R (Param1, Param2)> : public Delegate2 <Param1, Param2, R>
-{
-public:
-	typedef Delegate2 < Param1, Param2, R > BaseType;
-	typedef Delegate SelfType;
-
-	Delegate() : BaseType() {}
-
-	template <class X, class Y>
-	Delegate(Y * pthis, R(X::* function_to_bind)(Param1 p1, Param2 p2)) : BaseType(pthis, function_to_bind) {}
-
-	template <class X, class Y>
-	Delegate(const Y *pthis, R(X::* function_to_bind)(Param1 p1, Param2 p2) const) : BaseType(pthis, function_to_bind) {}
-
-	Delegate(R(*function_to_bind)(Param1 p1, Param2 p2)) : BaseType(function_to_bind) {}
-	void operator = (const BaseType &x) { *static_cast<BaseType*>(this) = x; }
-};
-
-
-template<typename R, class Param1, class Param2, class Param3>
-class Delegate<R ( Param1, Param2, Param3 )> : public Delegate3 <Param1, Param2, Param3, R>
-{
-public:
-	typedef Delegate3 <Param1, Param2, Param3, R> BaseType;
-	typedef Delegate SelfType;
-
-	Delegate() : BaseType() {}
-
-	template <class X, class Y>
-	Delegate(Y * pthis, R(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) : BaseType(pthis, function_to_bind) {}
-
-	template <class X, class Y>
-	Delegate(const Y *pthis, R(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3) const) : BaseType(pthis, function_to_bind) {}
-
-	Delegate(R(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) : BaseType(function_to_bind) {}
-	void operator = (const BaseType &x) { *static_cast<BaseType*>(this) = x; }
-};
-
-
-template<typename R, class Param1, class Param2, class Param3, class Param4>
-class Delegate<R (Param1, Param2, Param3, Param4)> : public Delegate4 <Param1, Param2, Param3, Param4, R>
-{
-public:
-	typedef Delegate4 <Param1, Param2, Param3, Param4, R> BaseType;
-	typedef Delegate SelfType;
-
-	Delegate() : BaseType() {}
-
-	template <class X, class Y>
-	Delegate(Y * pthis, R(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) : BaseType(pthis, function_to_bind) {}
-
-	template <class X, class Y>
-	Delegate(const Y *pthis, R(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) : BaseType(pthis, function_to_bind) {}
-
-	Delegate(R(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) : BaseType(function_to_bind) {}
-	void operator = (const BaseType &x) { *static_cast<BaseType*>(this) = x; }
-};
-
-
-template<typename R, class Param1, class Param2, class Param3, class Param4, class Param5>
-class Delegate<R(Param1, Param2, Param3, Param4, Param5)> : public Delegate5 <Param1, Param2, Param3, Param4, Param5, R>
-{
-public:
-	typedef Delegate5 <Param1, Param2, Param3, Param4, Param5, R> BaseType;
-	typedef Delegate SelfType;
-
-	Delegate() : BaseType() {}
-
-	template <class X, class Y>
-	Delegate(Y * pthis, R(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) : BaseType(pthis, function_to_bind) {}
-
-	template <class X, class Y>
-	Delegate(const Y *pthis, R(X::* function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) : BaseType(pthis, function_to_bind) {}
-
-	Delegate(R(*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) : BaseType(function_to_bind) {}
-	void operator = (const BaseType &x) { *static_cast<BaseType*>(this) = x; }
-};
 #endif
 
 #define FASTDLGT_RETTYPE RetType
 
-template <class X, class Y, class RetType>
-Delegate0<FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)()) { return Delegate0<FASTDLGT_RETTYPE>(x, func); }
-template <class X, class Y, class RetType>
-Delegate0<FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)() const) { return Delegate0<FASTDLGT_RETTYPE>(x, func); }
-
-template <class X, class Y, class Param1, class RetType>
-Delegate1<Param1, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1)) { return Delegate1<Param1, FASTDLGT_RETTYPE>(x, func); }
-template <class X, class Y, class Param1, class RetType>
-Delegate1<Param1, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1) const) { return Delegate1<Param1, FASTDLGT_RETTYPE>(x, func); }
-
-template <class X, class Y, class Param1, class Param2, class RetType>
-Delegate2<Param1, Param2, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1, Param2 p2)) { return Delegate2<Param1, Param2, FASTDLGT_RETTYPE>(x, func); }
-template <class X, class Y, class Param1, class Param2, class RetType>
-Delegate2<Param1, Param2, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1, Param2 p2) const) { return Delegate2<Param1, Param2, FASTDLGT_RETTYPE>(x, func); }
-
-template <class X, class Y, class Param1, class Param2, class Param3, class RetType>
-Delegate3<Param1, Param2, Param3, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1, Param2 p2, Param3 p3)) { return Delegate3<Param1, Param2, Param3, FASTDLGT_RETTYPE>(x, func); }
-template <class X, class Y, class Param1, class Param2, class Param3, class RetType>
-Delegate3<Param1, Param2, Param3, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1, Param2 p2, Param3 p3) const) { return Delegate3<Param1, Param2, Param3, FASTDLGT_RETTYPE>(x, func); }
-
-template <class X, class Y, class Param1, class Param2, class Param3, class Param4, class RetType>
-Delegate4<Param1, Param2, Param3, Param4, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) { return Delegate4<Param1, Param2, Param3, Param4, FASTDLGT_RETTYPE>(x, func); }
-template <class X, class Y, class Param1, class Param2, class Param3, class Param4, class RetType>
-Delegate4<Param1, Param2, Param3, Param4, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) { return Delegate4<Param1, Param2, Param3, Param4, FASTDLGT_RETTYPE>(x, func); }
-
-template <class X, class Y, class Param1, class Param2, class Param3, class Param4, class Param5, class RetType>
-Delegate5<Param1, Param2, Param3, Param4, Param5, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) { return Delegate5<Param1, Param2, Param3, Param4, Param5, FASTDLGT_RETTYPE>(x, func); }
-template <class X, class Y, class Param1, class Param2, class Param3, class Param4, class Param5, class RetType>
-Delegate5<Param1, Param2, Param3, Param4, Param5, FASTDLGT_RETTYPE> MakeDelegate(Y* x, RetType(X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) { return Delegate5<Param1, Param2, Param3, Param4, Param5, FASTDLGT_RETTYPE>(x, func); }
+template <class X, class Y, class RetType, typename ... Params>
+DelegateX<FASTDLGT_RETTYPE, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...)) { return DelegateX<FASTDLGT_RETTYPE, Params...>(x, func); }
+template <class X, class Y, class RetType, typename ... Params>
+DelegateX<FASTDLGT_RETTYPE, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...) const) { return DelegateX<FASTDLGT_RETTYPE, Params...>(x, func); }
 
 #undef FASTDLGT_RETTYPE
 

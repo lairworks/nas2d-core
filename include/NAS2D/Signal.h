@@ -32,248 +32,64 @@ namespace NAS2D {
 namespace Signals {
 
 /**
- * \class Signal0
- * \brief Signal with no paramters.
+ * \class Signal
+ * \brief Signal with preset number of parameters
  *
  * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
+template<typename ... Params>
+class Signal
+{
+public:
+	typedef DelegateX<void, Params...> _Delegate;
+
+public:
+	void connect(_Delegate delegate) { delegateList.insert(delegate); }
+
+	template<class X, class Y>
+	void connect(Y * obj, void (X::*func)(Params...)) { delegateList.insert(MakeDelegate(obj, func)); }
+
+	template<class X, class Y>
+	void connect(Y * obj, void (X::*func)(Params...) const) { delegateList.insert(MakeDelegate(obj, func)); }
+
+	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
+
+	template<class X, class Y>
+	void disconnect(Y * obj, void (X::*func)(Params...)) { delegateList.erase(MakeDelegate(obj, func)); }
+
+	template<class X, class Y>
+	void disconnect(Y * obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
+
+	void clear() { delegateList.clear(); }
+	void emit(Params...params) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(params...); }
+	void operator() (Params...params) const { emit(params...); }
+	bool empty() const { return delegateList.empty(); }
+
+private:
+	typedef std::set<_Delegate> DelegateList;
+	typedef typename DelegateList::const_iterator DelegateIterator;
+	DelegateList delegateList;
+};
+
+
 template<class Param0 = void>
-class Signal0
-{
-public:
-	typedef Delegate0<void> _Delegate;
+using Signal0 = Signal<>;
 
-public:
-	void connect(_Delegate delegate) { delegateList.insert(delegate); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)()) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)() const) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)()) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)() const) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	void clear() { delegateList.clear(); }
-	void emit() const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(); }
-	void operator() () const { emit(); }
-	bool empty() const { return delegateList.empty(); }
-
-private:
-	typedef std::set<_Delegate> DelegateList;
-	typedef typename DelegateList::const_iterator DelegateIterator;
-	DelegateList delegateList;
-};
-
-
-/**
- * \class Signal1
- * \brief Signal with one paramter.
- *
- * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
- */
 template<class Param1>
-class Signal1
-{
-public:
-	typedef Delegate1<Param1> _Delegate;
+using Signal1 = Signal<Param1>;
 
-public:
-	void connect(_Delegate delegate) { delegateList.insert(delegate); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1)) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	template<class X, class Y> void connect(Y * obj, void (X::*func)(Param1 p1) const) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1)) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1) const) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	void clear() { delegateList.clear(); }
-	void emit(Param1 p1) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1); }
-	void operator() (Param1 p1) const { emit(p1); }
-	bool empty() const { return delegateList.empty(); }
-
-private:
-	typedef std::set<_Delegate> DelegateList;
-	typedef typename DelegateList::const_iterator DelegateIterator;
-	DelegateList delegateList;
-};
-
-
-/**
- * \class Signal2
- * \brief Signal with two paramters.
- *
- * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
- */
 template<class Param1, class Param2>
-class Signal2
-{
-public:
-	typedef Delegate2<Param1, Param2> _Delegate;
+using Signal2 = Signal<Param1, Param2>;
 
-public:
-	void connect(_Delegate delegate) { delegateList.insert(delegate); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1, Param2 p2)) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1, Param2 p2) const) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2)) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2) const) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	void clear() { delegateList.clear(); }
-	void operator() (Param1 p1, Param2 p2) const { emit(p1, p2); }
-	void emit(Param1 p1, Param2 p2) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1, p2); }
-	bool empty() const { return delegateList.empty(); }
-
-private:
-	typedef std::set<_Delegate> DelegateList;
-	typedef typename DelegateList::const_iterator DelegateIterator;
-	DelegateList delegateList;
-};
-
-
-/**
- * \class Signal3
- * \brief Signal with three paramters.
- *
- * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
- */
 template<class Param1, class Param2, class Param3>
-class Signal3
-{
-public:
-	typedef Delegate3<Param1, Param2, Param3> _Delegate;
+using Signal3 = Signal<Param1, Param2, Param3>;
 
-public:
-	void connect(_Delegate delegate) { delegateList.insert(delegate); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3)) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3) const) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3)) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3) const) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	void clear() { delegateList.clear(); }
-	void emit(Param1 p1, Param2 p2, Param3 p3) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1, p2, p3); }
-	void operator() (Param1 p1, Param2 p2, Param3 p3) const { emit(p1, p2, p3); }
-	bool empty() const { return delegateList.empty(); }
-
-private:
-	typedef std::set<_Delegate> DelegateList;
-	typedef typename DelegateList::const_iterator DelegateIterator;
-	DelegateList delegateList;
-};
-
-
-/**
- * \class Signal4
- * \brief Signal with four paramters.
- *
- * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
- */
 template<class Param1, class Param2, class Param3, class Param4>
-class Signal4
-{
-public:
-	typedef Delegate4<Param1, Param2, Param3, Param4> _Delegate;
+using Signal4 = Signal<Param1, Param2, Param3, Param4>;
 
-public:
-	void connect(_Delegate delegate) { delegateList.insert(delegate); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	void clear() { delegateList.clear(); }
-	void emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1, p2, p3, p4); }
-	void operator() (Param1 p1, Param2 p2, Param3 p3, Param4 p4) const { emit(p1, p2, p3, p4); }
-	bool empty() const { return delegateList.empty(); }
-
-private:
-	typedef std::set<_Delegate> DelegateList;
-	typedef typename DelegateList::const_iterator DelegateIterator;
-	DelegateList delegateList;
-};
-
-
-/**
- * \class Signal5
- * \brief Signal with five paramters.
- *
- * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
- */
 template<class Param1, class Param2, class Param3, class Param4, class Param5>
-class Signal5
-{
-public:
-	typedef Delegate5<Param1, Param2, Param3, Param4, Param5> _Delegate;
+using Signal5 = Signal<Param1, Param2, Param3, Param4, Param5>;
 
-public:
-	void connect(_Delegate delegate) { delegateList.insert(delegate); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void connect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	template<class X, class Y>
-	void disconnect(Y * obj, void (X::*func)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	void clear() { delegateList.clear(); }
-	void emit(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(p1, p2, p3, p4, p5); }
-	void operator() (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const { emit(p1, p2, p3, p4, p5); }
-	bool empty() const { return delegateList.empty(); }
-
-private:
-	typedef std::set<_Delegate> DelegateList;
-	typedef typename DelegateList::const_iterator DelegateIterator;
-	DelegateList delegateList;
-};
 
 } // namespace
 } // namespace

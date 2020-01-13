@@ -611,8 +611,8 @@ void RendererOpenGL::resizeable(bool _r)
 		return;
 	}
 
-	// Not happy with the cast but I suppose it's a necessary evil.
-	SDL_SetWindowResizable(underlyingWindow, static_cast<SDL_bool>(_r));
+	SDL_bool resizable = _r ? SDL_TRUE : SDL_FALSE;
+	SDL_SetWindowResizable(underlyingWindow, resizable);
 }
 
 

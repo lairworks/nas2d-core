@@ -41,7 +41,7 @@ template<typename ... Params>
 class Signal
 {
 public:
-	typedef DelegateX<void, Params...> _Delegate;
+	using _Delegate = DelegateX<void, Params...>;
 
 public:
 	void connect(_Delegate delegate) { delegateList.insert(delegate); }
@@ -66,8 +66,8 @@ public:
 	bool empty() const { return delegateList.empty(); }
 
 private:
-	typedef std::set<_Delegate> DelegateList;
-	typedef typename DelegateList::const_iterator DelegateIterator;
+	using DelegateList = std::set<_Delegate>;
+	using DelegateIterator = typename DelegateList::const_iterator;
 	DelegateList delegateList;
 };
 

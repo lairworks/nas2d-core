@@ -71,8 +71,6 @@ public:
 	Rectangle_2df(float x, float y, float w, float h);
 
 public:
-	void operator()(float x, float y, float w, float h);
-
 	bool operator==(const Rectangle_2df& rect) const;
 	bool operator!=(const Rectangle_2df& rect) const;
 

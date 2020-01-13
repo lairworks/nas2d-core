@@ -31,13 +31,6 @@ Point_2d::Point_2d(int x, int y):	mX(x),
 {}
 
 
-void Point_2d::operator()(int _x, int _y)
-{
-	x(_x);
-	y(_y);
-}
-
-
 bool Point_2d::operator==(const Point_2d& pt) const
 {
 	return (x() == pt.x()) && (y() == pt.y());

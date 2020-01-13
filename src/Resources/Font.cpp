@@ -337,7 +337,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 	FONTMAP[path].pt_size = glyphHeight;
 	FONTMAP[path].height = glyphHeight;
 	FONTMAP[path].ref_count++;
-	FONTMAP[path].glyph_size(glyphWidth, glyphHeight);
+	FONTMAP[path].glyph_size = {glyphWidth, glyphHeight};
 	SDL_FreeSurface(glyphMap);
 
 	return true;

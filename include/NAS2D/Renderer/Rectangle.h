@@ -28,8 +28,6 @@ public:
 	Rectangle_2d(int x, int y, int w, int h);
 
 public:
-	void operator()(int x, int y, int w, int h);
-
 	bool operator==(const Rectangle_2d& rect) const;
 	bool operator!=(const Rectangle_2d& rect) const;
 

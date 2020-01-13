@@ -551,7 +551,7 @@ float RendererOpenGL::width()
 		return DESKTOP_RESOLUTION.x();
 	}
 
-	return _size().x();
+	return mResolution.x();
 }
 
 
@@ -562,7 +562,7 @@ float RendererOpenGL::height()
 		return DESKTOP_RESOLUTION.y();
 	}
 
-	return _size().y();
+	return mResolution.y();
 }
 
 
@@ -632,7 +632,7 @@ void RendererOpenGL::_resize(int w, int h)
 
 	if (!fullscreen())
 	{
-		_size()(static_cast<float>(w), static_cast<float>(h));
+		mResolution(static_cast<float>(w), static_cast<float>(h));
 	}
 }
 
@@ -724,7 +724,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 		throw renderer_window_creation_failure();
 	}
 
-	_size()(static_cast<float>(resX), static_cast<float>(resY));
+	mResolution(static_cast<float>(resX), static_cast<float>(resY));
 
 	CONTEXT = SDL_GL_CreateContext(underlyingWindow);
 	if (!CONTEXT)

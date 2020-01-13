@@ -134,7 +134,7 @@ protected:
 
 	void driverName(const std::string& name);
 
-	Point_2df& _size();
+	Point_2df mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
 
 private:
 	enum class FadeType
@@ -151,7 +151,6 @@ private:
 	float mFadeStep{0.0f}; /**< Amount of fading to do per milisecond. */
 	float mCurrentFade{0.0f}; /**< Current fade amount. */
 
-	Point_2df mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
 	FadeType mCurrentFadeType{FadeType::None};
 };
 

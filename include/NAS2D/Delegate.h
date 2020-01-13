@@ -141,7 +141,7 @@ struct SimplifyMemFunc< SINGLE_MEMFUNCPTR_SIZE + sizeof(int) >
 			struct { GenericMemFuncType funcaddress; int delta; } s;
 		} u;
 
-		typedef int ERROR_CantUsehorrible_cast[sizeof(function_to_bind) == sizeof(u.s) ? 1 : -1];
+		static_assert(sizeof(function_to_bind) == sizeof(u.s), "Can't use horrible cast");
 		u.func = function_to_bind;
 		bound_func = u.s.funcaddress;
 		return reinterpret_cast<GenericClass *>(reinterpret_cast<char *>(pthis) + u.s.delta);
@@ -175,7 +175,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2*sizeof(int) >
 		bound_func = reinterpret_cast<GenericMemFuncType>(u.s.codeptr);
 		union { GenericVirtualClass::ProbePtrType virtfunc; MicrosoftVirtualMFP s; } u2;
 
-		typedef int ERROR_CantUsehorrible_cast[sizeof(function_to_bind) == sizeof(u.s) && sizeof(function_to_bind) == sizeof(u.ProbeFunc) && sizeof(u2.virtfunc) == sizeof(u2.s) ? 1 : -1];
+		static_assert(sizeof(function_to_bind) == sizeof(u.s) && sizeof(function_to_bind) == sizeof(u.ProbeFunc) && sizeof(u2.virtfunc) == sizeof(u2.s), "Can't use horrible cast");
 
 		u2.virtfunc = &GenericVirtualClass::GetThis;
 		u.s.codeptr = u2.s.codeptr;

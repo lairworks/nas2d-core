@@ -36,13 +36,13 @@ Signals::Signal0<>& Mixer::musicComplete()
 }
 
 
-void Mixer::addMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler)
+void Mixer::addMusicCompleteHandler(NAS2D::Signals::Signal0<>::DelegateType handler)
 {
 	return mMusicComplete.connect(handler);
 }
 
 
-void Mixer::removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::_Delegate handler)
+void Mixer::removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::DelegateType handler)
 {
 	return mMusicComplete.disconnect(handler);
 }

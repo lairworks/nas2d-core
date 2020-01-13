@@ -41,10 +41,10 @@ template<typename ... Params>
 class Signal
 {
 public:
-	using _Delegate = DelegateX<void, Params...>;
+	using DelegateType = DelegateX<void, Params...>;
 
 public:
-	void connect(_Delegate delegate) { delegateList.insert(delegate); }
+	void connect(DelegateType delegate) { delegateList.insert(delegate); }
 
 	template<class X, class Y>
 	void connect(Y * obj, void (X::*func)(Params...)) { delegateList.insert(MakeDelegate(obj, func)); }
@@ -52,7 +52,7 @@ public:
 	template<class X, class Y>
 	void connect(Y * obj, void (X::*func)(Params...) const) { delegateList.insert(MakeDelegate(obj, func)); }
 
-	void disconnect(_Delegate delegate) { delegateList.erase(delegate); }
+	void disconnect(DelegateType delegate) { delegateList.erase(delegate); }
 
 	template<class X, class Y>
 	void disconnect(Y * obj, void (X::*func)(Params...)) { delegateList.erase(MakeDelegate(obj, func)); }
@@ -66,7 +66,7 @@ public:
 	bool empty() const { return delegateList.empty(); }
 
 private:
-	using DelegateList = std::set<_Delegate>;
+	using DelegateList = std::set<DelegateType>;
 	using DelegateIterator = typename DelegateList::const_iterator;
 	DelegateList delegateList;
 };

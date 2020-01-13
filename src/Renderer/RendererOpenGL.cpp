@@ -604,15 +604,14 @@ bool RendererOpenGL::fullscreen()
 }
 
 
-void RendererOpenGL::resizeable(bool _r)
+void RendererOpenGL::resizeable(bool resizable)
 {
 	if (fullscreen())
 	{
 		return;
 	}
 
-	// Not happy with the cast but I suppose it's a necessary evil.
-	SDL_SetWindowResizable(underlyingWindow, static_cast<SDL_bool>(_r));
+	SDL_SetWindowResizable(underlyingWindow, resizable ? SDL_TRUE : SDL_FALSE);
 }
 
 

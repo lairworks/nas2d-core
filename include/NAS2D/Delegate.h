@@ -71,21 +71,21 @@ inline OutputClass horrible_cast(const InputClass input)
 // ==================================================================================
 // = WORKAROUNDS
 // ==================================================================================
-typedef void DefaultVoid;
+using DefaultVoid = void;
 
 // Translate from 'DefaultVoid' to 'void'.
 template <class T>
-struct DefaultVoidToVoid { typedef T type; };
+struct DefaultVoidToVoid { using type = T; };
 
 template <>
-struct DefaultVoidToVoid<DefaultVoid> { typedef void type; };
+struct DefaultVoidToVoid<DefaultVoid> { using type = void; };
 
 // Translate from 'void' into 'DefaultVoid'
 template <class T>
-struct VoidToDefaultVoid { typedef T type; };
+struct VoidToDefaultVoid { using type = T; };
 
 template <>
-struct VoidToDefaultVoid<void> { typedef DefaultVoid type; };
+struct VoidToDefaultVoid<void> { using type = DefaultVoid; };
 
 // GenericClass is a fake class, ONLY used to provide a type. It is vitally important
 // that it is never defined.
@@ -141,7 +141,7 @@ struct SimplifyMemFunc< SINGLE_MEMFUNCPTR_SIZE + sizeof(int) >
 			struct { GenericMemFuncType funcaddress; int delta; } s;
 		} u;
 
-		typedef int ERROR_CantUsehorrible_cast[sizeof(function_to_bind) == sizeof(u.s) ? 1 : -1];
+		static_assert(sizeof(function_to_bind) == sizeof(u.s), "Can't use horrible cast");
 		u.func = function_to_bind;
 		bound_func = u.s.funcaddress;
 		return reinterpret_cast<GenericClass *>(reinterpret_cast<char *>(pthis) + u.s.delta);
@@ -159,7 +159,7 @@ struct MicrosoftVirtualMFP
 
 struct GenericVirtualClass : virtual public GenericClass
 {
-	typedef GenericVirtualClass * (GenericVirtualClass::*ProbePtrType)();
+	using ProbePtrType = GenericVirtualClass * (GenericVirtualClass::*)();
 	GenericVirtualClass * GetThis() { return this; }
 };
 
@@ -175,7 +175,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2*sizeof(int) >
 		bound_func = reinterpret_cast<GenericMemFuncType>(u.s.codeptr);
 		union { GenericVirtualClass::ProbePtrType virtfunc; MicrosoftVirtualMFP s; } u2;
 
-		typedef int ERROR_CantUsehorrible_cast[sizeof(function_to_bind) == sizeof(u.s) && sizeof(function_to_bind) == sizeof(u.ProbeFunc) && sizeof(u2.virtfunc) == sizeof(u2.s) ? 1 : -1];
+		static_assert(sizeof(function_to_bind) == sizeof(u.s) && sizeof(function_to_bind) == sizeof(u.ProbeFunc) && sizeof(u2.virtfunc) == sizeof(u2.s), "Can't use horrible cast");
 
 		u2.virtfunc = &GenericVirtualClass::GetThis;
 		u.s.codeptr = u2.s.codeptr;
@@ -225,12 +225,12 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3 * sizeof(int)>
 class DelegateMemento
 {
 protected:
-	typedef void (detail::GenericClass::*GenericMemFuncType)();
+	using GenericMemFuncType = void (detail::GenericClass::*)();
 	detail::GenericClass *m_pthis;
 	GenericMemFuncType m_pFunction;
 
 #if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-	typedef void(*GenericFuncPtr)();
+	using GenericFuncPtr = void(*)();
 	GenericFuncPtr m_pStaticFunction;
 #endif
 
@@ -380,15 +380,15 @@ template<class RetType, typename ... Params>
 class DelegateX
 {
 private:
-	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType(*StaticFunctionPtr)(Params...);
-	typedef RetType(*UnvoidStaticFunctionPtr)(Params...);
-	typedef RetType(detail::GenericClass::*GenericMemFn)(Params...);
-	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
+	using DesiredRetType = typename detail::DefaultVoidToVoid<RetType>::type;
+	using StaticFunctionPtr = DesiredRetType(*)(Params...);
+	using UnvoidStaticFunctionPtr = RetType(*)(Params...);
+	using GenericMemFn = RetType(detail::GenericClass::*)(Params...);
+	using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr>;
 	ClosureType m_Closure;
 
 public:
-	typedef DelegateX type;
+	using type = DelegateX;
 
 	DelegateX() { clear(); }
 	DelegateX(const DelegateX &x) { m_Closure.CopyFrom(this, x.m_Closure); }
@@ -414,8 +414,8 @@ public:
 	RetType operator() (Params...params) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...); }
 
 private:
-	typedef struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; } UselessTypedef;
-	typedef StaticFunctionPtr SafeBoolStruct::*unspecified_bool_type;
+	using UselessTypedef = struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; };
+	using unspecified_bool_type = StaticFunctionPtr SafeBoolStruct::*;
 
 public:
 	operator unspecified_bool_type() const { return empty() ? 0 : &SafeBoolStruct::m_nonzero; }
@@ -462,8 +462,8 @@ template<typename R, typename ... Params>
 class Delegate<R(Params...)> : public DelegateX<R, Params...>
 {
 public:
-	typedef Delegate<R(Params...)> BaseType;
-	typedef Delegate SelfType;
+	using BaseType = Delegate<R(Params...)>;
+	using SelfType = Delegate;
 
 	Delegate() : BaseType() {}
 

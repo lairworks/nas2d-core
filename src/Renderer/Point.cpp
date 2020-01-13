@@ -131,13 +131,6 @@ Point_2df::Point_2df(float x, float y):	mX(x),
 {}
 
 
-void Point_2df::operator()(float _x, float _y)
-{
-	x(_x);
-	y(_y);
-}
-
-
 bool Point_2df::operator==(const Point_2df& pt) const
 {
 	return (mX == pt.x()) && (mY == pt.y());

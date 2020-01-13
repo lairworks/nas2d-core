@@ -63,8 +63,6 @@ public:
 	Point_2df(float x, float y);
 
 public:
-	void operator()(float _x, float _y);
-
 	bool operator==(const Point_2df& pt) const;
 	bool operator!=(const Point_2df& pt) const;
 

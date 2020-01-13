@@ -632,7 +632,7 @@ void RendererOpenGL::_resize(int w, int h)
 
 	if (!fullscreen())
 	{
-		mResolution(static_cast<float>(w), static_cast<float>(h));
+		mResolution = {static_cast<float>(w), static_cast<float>(h)};
 	}
 }
 
@@ -724,7 +724,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 		throw renderer_window_creation_failure();
 	}
 
-	mResolution(static_cast<float>(resX), static_cast<float>(resY));
+	mResolution = {static_cast<float>(resX), static_cast<float>(resY)};
 
 	CONTEXT = SDL_GL_CreateContext(underlyingWindow);
 	if (!CONTEXT)
@@ -745,7 +745,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 		throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
 	}
 
-	DESKTOP_RESOLUTION(static_cast<float>(dm.w), static_cast<float>(dm.h));
+	DESKTOP_RESOLUTION = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
 }
 
 

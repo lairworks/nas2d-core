@@ -28,8 +28,6 @@ public:
 	Rectangle_2d(int x, int y, int w, int h);
 
 public:
-	void operator()(int x, int y, int w, int h);
-
 	bool operator==(const Rectangle_2d& rect) const;
 	bool operator!=(const Rectangle_2d& rect) const;
 
@@ -73,8 +71,6 @@ public:
 	Rectangle_2df(float x, float y, float w, float h);
 
 public:
-	void operator()(float x, float y, float w, float h);
-
 	bool operator==(const Rectangle_2df& rect) const;
 	bool operator!=(const Rectangle_2df& rect) const;
 

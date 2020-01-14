@@ -36,23 +36,6 @@ Rectangle_2d::Rectangle_2d(int x, int y, int w, int h):	mX(x),
 
 
 /**
- * Sets a Rectangle_2d with a given size.
- *
- * \param _x X-Coordinate.
- * \param _y Y-Coordinate.
- * \param _w Width of the Rectangle_2d.
- * \param _h Height of the Rectangle_2d.
- */
-void Rectangle_2d::operator()(int _x, int _y, int _w, int _h)
-{
-	x(_x);
-	y(_y);
-	width(_w);
-	height(_h);
-}
-
-
-/**
  * Compares two rectangles.
  *
  * \param rect	Rectangle_2d to compare against.
@@ -244,23 +227,6 @@ Rectangle_2df::Rectangle_2df(float x, float y, float w, float h):	mX(x),
 																	mW(w),
 																	mH(h)
 {}
-
-
-/**
- * Sets a Rectangle_2df with a given size.
- *
- * \param _x X-Coordinate.
- * \param _y Y-Coordinate.
- * \param _w Width of the Rectangle_2d.
- * \param _h Height of the Rectangle_2d.
- */
-void Rectangle_2df::operator()(float _x, float _y, float _w, float _h)
-{
-	x(_x);
-	y(_y);
-	width(_w);
-	height(_h);
-}
 
 
 /**

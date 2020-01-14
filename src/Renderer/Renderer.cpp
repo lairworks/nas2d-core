@@ -394,15 +394,6 @@ const Point_2df& Renderer::size()
 
 
 /**
- * Internal accessor function for derived Renderer types.
- */
-Point_2df& Renderer::_size()
-{
-	return mResolution;
-}
-
-
-/**
  * Gets the center X-Coordinate of the screen.
  */
 float Renderer::center_x()

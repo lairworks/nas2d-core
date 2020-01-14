@@ -27,8 +27,6 @@ public:
 	Point_2d(int x, int y);
 
 public:
-	void operator()(int x, int y);
-
 	bool operator==(const Point_2d& pt) const;
 	bool operator!=(const Point_2d& pt) const;
 
@@ -65,8 +63,6 @@ public:
 	Point_2df(float x, float y);
 
 public:
-	void operator()(float _x, float _y);
-
 	bool operator==(const Point_2df& pt) const;
 	bool operator!=(const Point_2df& pt) const;
 

@@ -12,6 +12,83 @@
 
 namespace NAS2D {
 
+
+template <typename BaseType>
+struct Point {
+	Point() = default;
+	Point(const Point& point) = default;
+	Point& operator=(const Point& other) = default;
+
+	Point(BaseType x, BaseType y) :
+		mX(x),
+		mY(y)
+	{}
+
+	bool operator==(const Point& point) const {
+		return (mX == point.mX) && (mY == point.mY);
+	}
+	bool operator!=(const Point& point) const {
+		return !(*this == point);
+	}
+
+	Point& operator+=(const Point& point) {
+		mX += point.mX;
+		mY += point.mY;
+		return *this;
+	}
+	Point& operator-=(const Point& point) {
+		mX -= point.mX;
+		mY -= point.mY;
+		return *this;
+	}
+
+	Point operator+(const Point& point) const {
+		return {
+			mX + point.mX,
+			mY + point.mY
+		};
+	}
+	Point operator-(const Point& point) const {
+		return {
+			mX - point.mX,
+			mY - point.mY
+		};
+	}
+
+	template <typename NewBaseType>
+	operator Point<NewBaseType>() const {
+		return {
+			static_cast<NewBaseType>(mX),
+			static_cast<NewBaseType>(mY)
+		};
+	}
+
+	void x(BaseType x) {
+		mX = x;
+	}
+	BaseType x() const {
+		return mX;
+	}
+	BaseType& x() {
+		return mX;
+	}
+
+	void y(BaseType y) {
+		mY = y;
+	}
+	BaseType y() const {
+		return mY;
+	}
+	BaseType& y() {
+		return mY;
+	}
+
+private:
+	BaseType mX = 0;
+	BaseType mY = 0;
+};
+
+
 struct Point_2d;
 struct Point_2df;
 

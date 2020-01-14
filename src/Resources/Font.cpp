@@ -22,6 +22,7 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include <cstddef>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -315,12 +316,11 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		glm[i].minX = glyphWidth;
 	}
 
-	int glyph = 0;
 	for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
 	{
 		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
-			glyph = (row * GLYPH_MATRIX_SIZE) + col;
+			const std::size_t glyph = (row * GLYPH_MATRIX_SIZE) + col;
 
 			glm[glyph].uvX = (float)(col * glyphWidth) / (float)glyphMap->w;
 			glm[glyph].uvY = (float)(row * glyphHeight) / (float)glyphMap->h;

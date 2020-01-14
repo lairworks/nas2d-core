@@ -20,7 +20,7 @@
 #include <SDL_ttf.h>
 
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 
 using namespace NAS2D;

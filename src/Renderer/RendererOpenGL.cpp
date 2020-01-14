@@ -26,7 +26,6 @@
 #include <SDL_image.h>
 
 #include <iostream>
-#include <math.h>
 #include <algorithm>
 #include <cmath>
 

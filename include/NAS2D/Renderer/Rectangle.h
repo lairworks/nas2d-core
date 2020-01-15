@@ -11,6 +11,7 @@
 #pragma once
 
 #include "Point.h"
+#include "Vector.h"
 
 
 namespace NAS2D {
@@ -29,6 +30,26 @@ struct Rectangle
 		mW(width),
 		mH(height)
 	{}
+
+	// Factory method
+	static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size) {
+		return {
+			startPoint.x(),
+			startPoint.y(),
+			size.x,
+			size.y
+		};
+	}
+
+	// Factory method
+	static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint) {
+		return {
+			startPoint.x(),
+			startPoint.y(),
+			endPoint.x() - startPoint.x(),
+			endPoint.y() - startPoint.y()
+		};
+	}
 
 	bool operator==(const Rectangle& rect) const {
 		return (mX == rect.mX) && (mY == rect.mY) && (mW == rect.mW) && (mH == rect.mH);

@@ -2,6 +2,16 @@
 #include <gtest/gtest.h>
 
 
+TEST(Rectangle, CreatePointVector) {
+	EXPECT_EQ((NAS2D::Rectangle{0, 0, 1, 1}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{0, 0}, NAS2D::Vector<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 2, 3}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{1, 1}, NAS2D::Vector<int>{2, 3}));
+}
+
+TEST(Rectangle, CreatePointPoint) {
+	EXPECT_EQ((NAS2D::Rectangle{0, 0, 1, 1}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{0, 0}, NAS2D::Point<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 2}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{1, 1}, NAS2D::Point<int>{2, 3}));
+}
+
 TEST(Rectangle, contains) {
 	NAS2D::Rectangle rect = {1, 1, 2, 2};
 

@@ -31,34 +31,6 @@ struct Point {
 		return !(*this == point);
 	}
 
-	[[deprecated("Please use Vector class instead")]]
-	Point& operator+=(const Point& point) {
-		mX += point.mX;
-		mY += point.mY;
-		return *this;
-	}
-	[[deprecated("Please use Vector class instead")]]
-	Point& operator-=(const Point& point) {
-		mX -= point.mX;
-		mY -= point.mY;
-		return *this;
-	}
-
-	[[deprecated("Please use Vector class instead")]]
-	Point operator+(const Point& point) const {
-		return {
-			mX + point.mX,
-			mY + point.mY
-		};
-	}
-	[[deprecated("Please use Vector class instead")]]
-	Point operator-(const Point& point) const {
-		return {
-			mX - point.mX,
-			mY - point.mY
-		};
-	}
-
 	template <typename NewBaseType>
 	operator Point<NewBaseType>() const {
 		return {

@@ -31,30 +31,6 @@ struct Point {
 		return !(*this == point);
 	}
 
-	Point& operator+=(const Point& point) {
-		mX += point.mX;
-		mY += point.mY;
-		return *this;
-	}
-	Point& operator-=(const Point& point) {
-		mX -= point.mX;
-		mY -= point.mY;
-		return *this;
-	}
-
-	Point operator+(const Point& point) const {
-		return {
-			mX + point.mX,
-			mY + point.mY
-		};
-	}
-	Point operator-(const Point& point) const {
-		return {
-			mX - point.mX,
-			mY - point.mY
-		};
-	}
-
 	template <typename NewBaseType>
 	operator Point<NewBaseType>() const {
 		return {

@@ -47,6 +47,7 @@
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="Renderer/Point.test.cpp" />
     <ClCompile Include="Renderer/Rectangle.test.cpp" />
     <ClCompile Include="Delegate.test.cpp" />
     <ClCompile Include="Filesystem.test.cpp" />

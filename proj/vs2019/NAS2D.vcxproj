@@ -249,6 +249,7 @@
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Color.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Point.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Vector.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Rectangle.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererOpenGL.h" />

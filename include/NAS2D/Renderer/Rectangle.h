@@ -59,6 +59,12 @@ struct Rectangle
 		return ((mX <= px) && (px < mX + mW)) && ((mY <= py) && (py < mY + mH));
 	}
 
+	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
+	// Area in interval notation: [x .. x + width), [y .. y + height)
+	bool overlaps(const Rectangle& rect) const {
+		return ((mX < rect.mX + rect.mW) && (rect.mX < mX + mW)) && ((mY < rect.mY + rect.mH) && (rect.mY < mY + mH));
+	}
+
 	void x(BaseType x) {
 		mX = x;
 	}

@@ -89,6 +89,22 @@ void Filesystem::mount(const std::string& path) const
 
 
 /**
+ * Removes a directory or supported archive from the Search Path.
+ *
+ * \param path	File path to remove.
+ */
+void Filesystem::unmount(const std::string& path) const
+{
+	std::string searchPath(mDataPath + "/" + path);
+
+	if (PHYSFS_unmount(searchPath.c_str()) == 0)
+	{
+		throw std::runtime_error(std::string("Couldn't remove '") + path + "' from search path : " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+	}
+}
+
+
+/**
  * Returns a list of directories in the Search Path.
  */
 StringList Filesystem::searchPath() const

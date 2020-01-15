@@ -38,6 +38,7 @@ public:
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
 	void mount(const std::string& path) const;
+	void unmount(const std::string& path) const;
 
 	StringList directoryList(const std::string& dir, const std::string& filter = std::string {}) const;
 

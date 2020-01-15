@@ -10,6 +10,9 @@
 
 #pragma once
 
+#include "Point.h"
+
+
 namespace NAS2D {
 
 
@@ -46,6 +49,14 @@ struct Rectangle
 			static_cast<NewBaseType>(mW),
 			static_cast<NewBaseType>(mH)
 		};
+	}
+
+	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
+	// Area in interval notation: [x .. x + width), [y .. y + height)
+	bool contains(const Point<BaseType>& point) const {
+		auto px = point.x();
+		auto py = point.y();
+		return ((mX <= px) && (px < mX + mW)) && ((mY <= py) && (py < mY + mH));
 	}
 
 	void x(BaseType x) {

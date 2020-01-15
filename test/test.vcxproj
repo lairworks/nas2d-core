@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="Renderer/Rectangle.test.cpp" />
+    <ClCompile Include="Renderer/Vector.test.cpp" />
     <ClCompile Include="Delegate.test.cpp" />
     <ClCompile Include="Filesystem.test.cpp" />
     <ClCompile Include="MathUtils.test.cpp" />

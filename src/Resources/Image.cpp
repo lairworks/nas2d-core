@@ -223,6 +223,15 @@ void Image::load()
 
 
 /**
+ * Gets the dimensions in pixels of the image.
+ */
+Vector<int> Image::size() const
+{
+	return {_size.first, _size.second};
+}
+
+
+/**
  * Gets the width in pixels of the image.
  */
 int Image::width() const

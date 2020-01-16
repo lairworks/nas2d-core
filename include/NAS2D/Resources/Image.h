@@ -11,6 +11,7 @@
 
 #include "Resource.h"
 #include "../Renderer/Color.h"
+#include "../Renderer/Vector.h"
 
 #include <vector>
 #include <utility>
@@ -48,6 +49,8 @@ public:
 	Image& operator=(const Image& rhs);
 
 	~Image();
+
+	Vector<int> size() const;
 
 	int width() const;
 	int height() const;

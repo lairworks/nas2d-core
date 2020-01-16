@@ -12,6 +12,24 @@ TEST(Rectangle, CreatePointPoint) {
 	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 2}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{1, 1}, NAS2D::Point<int>{2, 3}));
 }
 
+TEST(Rectangle, size) {
+	EXPECT_EQ((NAS2D::Vector<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.size()));
+	EXPECT_EQ((NAS2D::Vector<int>{1, 1}), (NAS2D::Rectangle{0, 0, 1, 1}.size()));
+	EXPECT_EQ((NAS2D::Vector<int>{3, 4}), (NAS2D::Rectangle{1, 2, 3, 4}.size()));
+}
+
+TEST(Rectangle, startPoint) {
+	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.startPoint()));
+	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 1, 1}.startPoint()));
+	EXPECT_EQ((NAS2D::Point<int>{1, 2}), (NAS2D::Rectangle{1, 2, 3, 4}.startPoint()));
+}
+
+TEST(Rectangle, endPoint) {
+	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.endPoint()));
+	EXPECT_EQ((NAS2D::Point<int>{1, 1}), (NAS2D::Rectangle{0, 0, 1, 1}.endPoint()));
+	EXPECT_EQ((NAS2D::Point<int>{4, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.endPoint()));
+}
+
 TEST(Rectangle, contains) {
 	NAS2D::Rectangle rect = {1, 1, 2, 2};
 

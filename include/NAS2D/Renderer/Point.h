@@ -10,6 +10,9 @@
 
 #pragma once
 
+#include "Vector.h"
+
+
 namespace NAS2D {
 
 
@@ -29,6 +32,20 @@ struct Point {
 	}
 	bool operator!=(const Point& point) const {
 		return !(*this == point);
+	}
+
+	Point& operator+=(const Vector<BaseType>& vector) {
+		mX += vector.x;
+		mY += vector.y;
+		return *this;
+	}
+
+	Point operator+(const Vector<BaseType>& vector) const {
+		return {mX + vector.x, mY + vector.y};
+	}
+
+	Vector<BaseType> operator-(const Point& point) const {
+		return {mX - point.mX, mY - point.mY};
 	}
 
 	template <typename NewBaseType>

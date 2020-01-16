@@ -58,6 +58,18 @@ struct Rectangle
 		return !(*this == rect);
 	}
 
+	Vector<BaseType> size() const {
+		return {mW, mH};
+	}
+
+	Point<BaseType> startPoint() const {
+		return {mX, mY};
+	}
+
+	Point<BaseType> endPoint() const {
+		return Point<BaseType>{mX, mY} + Vector<BaseType>{mW, mH};
+	}
+
 	bool null() const {
 		return (mW == 0) || (mH == 0);
 	}

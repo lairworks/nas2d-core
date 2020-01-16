@@ -43,3 +43,23 @@ TEST(Vector, Add) {
 TEST(Vector, Subtract) {
 	EXPECT_EQ((NAS2D::Vector<int>{1, 1}), (NAS2D::Vector<int>{2, 3}) - (NAS2D::Vector<int>{1, 2}));
 }
+
+TEST(Vector, SelfMultiplyScalar) {
+	NAS2D::Vector<int> vector{1, 2};
+	EXPECT_EQ(&vector, &(vector *= 2));
+	EXPECT_EQ((NAS2D::Vector<int>{2, 4}), vector);
+}
+
+TEST(Vector, SelfDivideScalar) {
+	NAS2D::Vector<int> vector{2, 4};
+	EXPECT_EQ(&vector, &(vector /= 2));
+	EXPECT_EQ((NAS2D::Vector<int>{1, 2}), vector);
+}
+
+TEST(Vector, MultiplyScalar) {
+	EXPECT_EQ((NAS2D::Vector<int>{2, 4}), (NAS2D::Vector<int>{1, 2} * 2));
+}
+
+TEST(Vector, DivideScalar) {
+	EXPECT_EQ((NAS2D::Vector<int>{1, 2}), (NAS2D::Vector<int>{2, 4} / 2));
+}

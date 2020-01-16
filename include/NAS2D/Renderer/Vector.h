@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdexcept>
+
+
 namespace NAS2D {
 
 
@@ -37,6 +40,30 @@ struct Vector {
 			x - vector.x,
 			y - vector.y
 		};
+	}
+
+	Vector& operator*=(BaseType scalar) {
+		x *= scalar;
+		y *= scalar;
+		return *this;
+	}
+	Vector& operator/=(BaseType scalar) {
+		if (scalar == 0) {
+			throw std::domain_error("Cannot divide vector by 0");
+		}
+		x /= scalar;
+		y /= scalar;
+		return *this;
+	}
+
+	Vector operator*(BaseType scalar) const {
+		return {x * scalar, y * scalar};
+	}
+	Vector operator/(BaseType scalar) const {
+		if (scalar == 0) {
+			throw std::domain_error("Cannot divide vector by 0");
+		}
+		return {x / scalar, y / scalar};
 	}
 
 	template <typename NewBaseType>

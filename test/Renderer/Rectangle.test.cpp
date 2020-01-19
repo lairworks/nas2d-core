@@ -88,3 +88,10 @@ TEST(Rectangle, overlaps) {
 	// No overlap for zero area, even if start point matches
 	EXPECT_FALSE((NAS2D::Rectangle{0, 0, 0, 0}.overlaps(NAS2D::Rectangle{0, 0, 0, 0})));
 }
+
+TEST(Rectangle, Center) {
+	EXPECT_EQ((NAS2D::Point{0, 0}), (NAS2D::Rectangle{-1, -1, 2, 2}.center()));
+	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Rectangle{0, 0, 2, 2}.center()));
+	EXPECT_EQ((NAS2D::Point{2, 5}), (NAS2D::Rectangle{0, 0, 4, 10}.center()));
+	EXPECT_EQ((NAS2D::Point{3, 8}), (NAS2D::Rectangle{1, 3, 4, 10}.center()));
+}

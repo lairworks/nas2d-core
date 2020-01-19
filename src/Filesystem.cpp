@@ -138,8 +138,6 @@ void NAS2D::Filesystem::mountDefault() noexcept
  * Adds a directory or supported archive to the Search Path.
  *
  * \param path	File path to add.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
  */
 bool Filesystem::mount(const std::string& path) const noexcept
 {
@@ -287,8 +285,6 @@ File Filesystem::open(const std::string& filename) const noexcept
  *
  * \param	file		A reference to a \c const \c File object.
  * \param	overwrite	Flag indicating if a file should be overwritten if it already exists. Default is true.
- *
- * \return Returns \c true if successful. Otherwise, returns \c false.
  */
 bool Filesystem::write(const File& file, bool overwrite) const noexcept
 {
@@ -330,7 +326,7 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
 #endif
 	}
 
-	return true;
+	closeFile(myFile);
 }
 
 /**

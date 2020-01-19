@@ -15,15 +15,6 @@
 using namespace NAS2D;
 
 /**
- * C'tor
- */
-Timer::Timer():	mCurrentTick(0),
-				mLastTick(0),
-				mAccumulator(0)
-{
-}
-
-/**
  * Gets the current tick.
  */
 unsigned int Timer::tick() const
@@ -37,7 +28,7 @@ unsigned int Timer::tick() const
  */
 unsigned int Timer::delta()
 {
-	mLastTick = mCurrentTick;
+	unsigned int mLastTick = mCurrentTick;
 	mCurrentTick = SDL_GetTicks();
 
 	return mCurrentTick - mLastTick;

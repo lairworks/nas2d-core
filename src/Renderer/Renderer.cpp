@@ -17,38 +17,17 @@
 
 using namespace NAS2D;
 
-// Preset Colors
-const Color_4ub NAS2D::COLOR_BLACK(0, 0, 0, 255);
-const Color_4ub NAS2D::COLOR_BLUE(0, 0, 255, 255);
-const Color_4ub NAS2D::COLOR_BRIGHT_GREEN(0, 255, 0, 255);
-const Color_4ub NAS2D::COLOR_CYAN(0, 255, 255, 255);
-const Color_4ub NAS2D::COLOR_GREEN(0, 185, 0, 255);
-const Color_4ub NAS2D::COLOR_GREY(128, 128, 128, 255);
-const Color_4ub NAS2D::COLOR_MAGENTA(255, 0, 255, 255);
-const Color_4ub NAS2D::COLOR_NAVY(35, 60, 85, 255);
-const Color_4ub NAS2D::COLOR_ORANGE(255, 127, 0, 255);
-const Color_4ub NAS2D::COLOR_RED(255, 0, 0, 255);
-const Color_4ub NAS2D::COLOR_SILVER(192, 192, 192, 255);
-const Color_4ub NAS2D::COLOR_WHITE(255, 255, 255, 255);
-const Color_4ub NAS2D::COLOR_YELLOW(255, 255, 0, 255);
+NAS2D::Timer		fadeTimer;
 
-const Color_4ub NAS2D::COLOR_NORMAL = NAS2D::COLOR_WHITE;
-
-NAS2D::Timer		_TIMER;
-
-NAS2D::Signals::Signal0<void>	_FADE_COMPLETE;
+NAS2D::Signals::Signal0<void>	fadeCompleteSignal;
 
 /**
  * Internal constructor used by derived types to set the name of the Renderer.
  *
  * This c'tor is not public and can't be invoked externally.
  */
-Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
-    : mRendererName(rendererName)
-	, mTitle(appTitle)
-{
-	/* DO NOTHING */
-}
+Renderer::Renderer(const std::string& appTitle) : mTitle(appTitle)
+{}
 
 
 /**
@@ -56,7 +35,7 @@ Renderer::Renderer(const std::string& rendererName, const std::string& appTitle)
  */
 Renderer::~Renderer()
 {
-	_FADE_COMPLETE.clear();
+	fadeCompleteSignal.clear();
 	std::cout << "Renderer Terminated." << std::endl;
 }
 
@@ -105,7 +84,7 @@ void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x,
  * \param	degrees		Angle of rotation in degrees.
  * \param	color		Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color_4ub& color)
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color& color)
 {
 	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -121,14 +100,14 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color_4ub& color, float scale)
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color& color, float scale)
 {
 	drawImageRotated(image, x, y, degrees, color.red(), color.green(), color.blue(), color.alpha(), scale);
 }
 
 
 /**
- * Draws a stretched image using a Color_4ub color structure.
+ * Draws a stretched image using a Color color structure.
  *
  * \param	image	A reference to an Image Resource.
  * \param	x		X-Coordinate to draw the Image at.
@@ -137,7 +116,7 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, c
  * \param	h		Height to use for drawing the Image.
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color_4ub color)
+void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color color)
 {
 	drawImageStretched(image, x, y, w, h, color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -213,7 +192,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
  *
  * \param	color	A reference to aColor_4ub.
  */
-void Renderer::fadeColor(const Color_4ub& color)
+void Renderer::fadeColor(const Color& color)
 {
 	mFadeColor = color;
 }
@@ -237,7 +216,7 @@ void Renderer::fadeIn(float delay)
 	mCurrentFadeType = FadeType::In;
 	mFadeStep = 255.0f / delay;
 
-	_TIMER.delta();	// clear timer
+	fadeTimer.delta();	// clear timer
 }
 
 
@@ -256,10 +235,10 @@ void Renderer::fadeOut(float delay)
 		return;
 	}
 
-	mCurrentFadeType = FadeType::None;
+	mCurrentFadeType = FadeType::Out;
 	mFadeStep = 255.0f / delay;
 
-	_TIMER.delta(); // clear timer
+	fadeTimer.delta(); // clear timer
 }
 
 
@@ -286,7 +265,7 @@ bool Renderer::isFaded() const
  */
 NAS2D::Signals::Signal0<void>& Renderer::fadeComplete() const
 {
-	return _FADE_COMPLETE;
+	return fadeCompleteSignal;
 }
 
 
@@ -295,9 +274,9 @@ NAS2D::Signals::Signal0<void>& Renderer::fadeComplete() const
  *
  * \param	x		X-Coordinate of the pixel to draw.
  * \param	y		Y-Coordinate of the pixel to draw.
- * \param	color	A references to a Color_4ub.
+ * \param	color	A references to a Color.
  */
-void Renderer::drawPoint(float x, float y, const Color_4ub& color)
+void Renderer::drawPoint(float x, float y, const Color& color)
 {
 	drawPoint(x, y, color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -310,10 +289,10 @@ void Renderer::drawPoint(float x, float y, const Color_4ub& color)
  * \param	y			Y-Coordinate of the start of the line.
  * \param	x2			X-Coordinate of the end of the line.
  * \param	y2			Y-Coordinate of the end of the line.
- * \param	color		A reference to a Color_4ub.
+ * \param	color		A reference to a Color.
  * \param	line_width	Width, in pixels, of the line to draw.
  */
-void Renderer::drawLine(float x, float y, float x2, float y2, const Color_4ub& color, int line_width)
+void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color, int line_width)
 {
 	drawLine(x, y, x2, y2, color.red(), color.green(), color.blue(), color.alpha(), line_width);
 }
@@ -394,12 +373,12 @@ void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, ui
  * \param	y	Y-Position of the rectangular area to draw.
  * \param	w	Width of the rectangular area to draw.
  * \param	h	Height of the rectangular area to draw.
- * \param	c1	A Color_4ub color value used for point 1.
- * \param	c2	A Color_4ub color value used for point 2.
- * \param	c3	A Color_4ub color value used for point 3.
- * \param	c4	A Color_4ub color value used for point 4.
+ * \param	c1	A Color color value used for point 1.
+ * \param	c2	A Color color value used for point 2.
+ * \param	c3	A Color color value used for point 3.
+ * \param	c4	A Color color value used for point 4.
  */
-void Renderer::drawGradient(float x, float y, float w, float h, const Color_4ub& c1, const Color_4ub& c2, const Color_4ub& c3, const Color_4ub& c4)
+void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
 {
 	drawGradient(x, y, w, h, c1.red(), c1.green(), c1.blue(), c1.alpha(), c2.red(), c2.green(), c2.blue(), c2.alpha(), c3.red(), c3.green(), c3.blue(), c3.alpha(), c4.red(), c4.green(), c4.blue(), c4.alpha());
 }
@@ -409,15 +388,6 @@ void Renderer::drawGradient(float x, float y, float w, float h, const Color_4ub&
  * Gets the current screen resolution as a Point_2df.
  */
 const Point_2df& Renderer::size()
-{
-	return mResolution;
-}
-
-
-/**
- * Internal accessor function for derived Renderer types.
- */
-Point_2df& Renderer::_size()
 {
 	return mResolution;
 }
@@ -438,15 +408,6 @@ float Renderer::center_x()
 float Renderer::center_y()
 {
 	return height() / 2;
-}
-
-
-/**
- * Returns the name of the Renderer.
- */
-const std::string& Renderer::name()
-{
-	return mRendererName;
 }
 
 
@@ -535,11 +496,11 @@ void Renderer::clipRectClear()
 
 
 /**
- * Clears the screen with a given Color_4ub.
+ * Clears the screen with a given Color.
  *
- * \param color	A reference to a Color_4ub.
+ * \param color	A reference to a Color.
  */
-void Renderer::clearScreen(const Color_4ub& color)
+void Renderer::clearScreen(const Color& color)
 {
 	clearScreen(color.red(), color.green(), color.blue());
 }
@@ -555,7 +516,7 @@ void Renderer::update()
 {
 	if (mCurrentFadeType != FadeType::None)
 	{
-		float fade = (_TIMER.delta() * mFadeStep) * static_cast<int>(mCurrentFadeType);
+		float fade = (fadeTimer.delta() * mFadeStep) * static_cast<int>(mCurrentFadeType);
 
 		mCurrentFade += fade;
 
@@ -563,7 +524,7 @@ void Renderer::update()
 		{
 			mCurrentFade = std::clamp(mCurrentFade, 0.0f, 255.0f);
 			mCurrentFadeType = FadeType::None;
-			_FADE_COMPLETE();
+			fadeCompleteSignal();
 		}
 	}
 

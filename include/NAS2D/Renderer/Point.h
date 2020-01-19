@@ -10,101 +10,92 @@
 
 #pragma once
 
+#include "Vector.h"
+
+
 namespace NAS2D {
 
-class Point_2d;
-class Point_2df;
+
+template <typename BaseType>
+struct Point {
+	Point() = default;
+	Point(const Point& point) = default;
+	Point& operator=(const Point& other) = default;
+
+	Point(BaseType x, BaseType y) :
+		mX(x),
+		mY(y)
+	{}
+
+	bool operator==(const Point& point) const {
+		return (mX == point.mX) && (mY == point.mY);
+	}
+	bool operator!=(const Point& point) const {
+		return !(*this == point);
+	}
+
+	Point& operator+=(const Vector<BaseType>& vector) {
+		mX += vector.x;
+		mY += vector.y;
+		return *this;
+	}
+
+	Point operator+(const Vector<BaseType>& vector) const {
+		return {mX + vector.x, mY + vector.y};
+	}
+
+	Vector<BaseType> operator-(const Point& point) const {
+		return {mX - point.mX, mY - point.mY};
+	}
+
+	template <typename NewBaseType>
+	operator Point<NewBaseType>() const {
+		return {
+			static_cast<NewBaseType>(mX),
+			static_cast<NewBaseType>(mY)
+		};
+	}
+
+	void x(BaseType x) {
+		mX = x;
+	}
+	BaseType x() const {
+		return mX;
+	}
+	BaseType& x() {
+		return mX;
+	}
+
+	void y(BaseType y) {
+		mY = y;
+	}
+	BaseType y() const {
+		return mY;
+	}
+	BaseType& y() {
+		return mY;
+	}
+
+private:
+	BaseType mX = 0;
+	BaseType mY = 0;
+};
 
 
 /**
  * \class	Point_2d
  * \brief	2D point.
  */
-class Point_2d
-{
-public:
-	Point_2d() = default;
-	Point_2d(int x, int y);
-	Point_2d(const Point_2df& _p);
-
-public:
-	void operator()(int x, int y);
-
-	bool operator==(const Point_2d& pt);
-	bool operator==(const Point_2df& pt);
-
-	bool operator!=(const Point_2d& pt);
-	bool operator!=(const Point_2df& pt);
-
-	Point_2d& operator+=(const Point_2d& pt);
-	Point_2d& operator+=(const Point_2df& pt);
-
-	Point_2d& operator-=(const Point_2d& pt);
-	Point_2d& operator-=(const Point_2df& pt);
-
-	const Point_2d operator+(const Point_2d& pt);
-	const Point_2d operator+(const Point_2df& pt);
-
-	const Point_2d operator-(const Point_2d& pt);
-	const Point_2d operator-(const Point_2df& pt);
-
-public:
-	void x(int x);
-	int x() const;
-	int& x();
-
-	void y(int y);
-	int y() const;
-	int& y();
-
-private:
-	int mX = 0, mY = 0;
-};
+using Point_2d = Point<int>;
+extern template struct Point<int>;
 
 
 /**
  * \class	Point_2df
  * \brief	Floating point 2D Point.
  */
-class Point_2df
-{
-public:
-	Point_2df() = default;
-	Point_2df(float x, float y);
-	Point_2df(const Point_2d& _p);
+using Point_2df = Point<float>;
+extern template struct Point<float>;
 
-public:
-	void operator()(float _x, float _y);
-
-	bool operator==(const Point_2d& pt);
-	bool operator==(const Point_2df& pt);
-
-	bool operator!=(const Point_2d& pt);
-	bool operator!=(const Point_2df& pt);
-
-	Point_2df& operator+=(const Point_2d& pt);
-	Point_2df& operator+=(const Point_2df& pt);
-
-	Point_2df& operator-=(const Point_2d& pt);
-	Point_2df& operator-=(const Point_2df& pt);
-
-	const Point_2df operator+(const Point_2d& pt);
-	const Point_2df operator+(const Point_2df& pt);
-
-	const Point_2df operator-(const Point_2d& pt);
-	const Point_2df operator-(const Point_2df& pt);
-
-public:
-	void x(float x);
-	float x() const;
-	float& x();
-
-	void y(float y);
-	float y() const;
-	float& y();
-
-private:
-	float mX = 0.0f, mY = 0.0f;
-};
 
 } // namespace

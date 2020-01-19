@@ -68,7 +68,7 @@ public:
 	void fullscreen(bool fs, bool maintain = false) override;
 	bool fullscreen() override;
 
-	void resizeable(bool _r) override;
+	void resizeable(bool resizable) override;
 	bool resizeable() override;
 
 	void clipRect(float x, float y, float width, float height) final override;

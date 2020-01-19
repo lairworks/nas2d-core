@@ -10,16 +10,14 @@
 
 #pragma once
 
+#include "Renderer/Point.h"
+
 namespace NAS2D {
 
 extern const float PI;
 extern const float PI_2;
 extern const float DEG2RAD;
 extern const float RAD2DEG;
-
-
-class Point_2d;
-class Point_2df;
 
 
 float degToRad(float degree);

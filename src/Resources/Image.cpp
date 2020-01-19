@@ -28,7 +28,7 @@ const std::string DEFAULT_IMAGE_NAME	= "Default Image";
 const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
 
 
-typedef std::map<std::string, ImageInfo> TextureIdMap;
+using TextureIdMap = std::map<std::string, ImageInfo>;
 
 TextureIdMap	IMAGE_ID_MAP;			/*< Lookup table for OpenGL Texture ID's. */
 int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
@@ -258,11 +258,11 @@ int Image::center_y() const
  * \param	x	X-Coordinate of the pixel to check.
  * \param	y	Y-Coordinate of the pixel to check.
  */
-Color_4ub Image::pixelColor(int x, int y) const
+Color Image::pixelColor(int x, int y) const
 {
 	if (x < 0 || x > width() || y < 0 || y > height())
 	{
-		return Color_4ub(0, 0, 0, 255);
+		return Color(0, 0, 0, 255);
 	}
 
 	SDL_Surface* pixels = static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels);
@@ -309,7 +309,7 @@ Color_4ub Image::pixelColor(int x, int y) const
 	SDL_GetRGBA(c, pixels->format, &r, &g, &b, &a);
 	SDL_UnlockSurface(pixels);
 
-	return Color_4ub(r, g, b, a);
+	return Color(r, g, b, a);
 }
 
 

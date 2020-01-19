@@ -12,34 +12,52 @@
 
 using namespace NAS2D;
 
-// ==================================================================================
-// = Color_4ub Implementation
-// ==================================================================================
+const Color Color::Black(0, 0, 0, 255);
+const Color Color::Blue(0, 0, 255, 255);
+const Color Color::Bright_green(0, 255, 0, 255);
+const Color Color::Cyan(0, 255, 255, 255);
+const Color Color::Green(0, 128, 0, 255);
+const Color Color::Grey(128, 128, 128, 255);
+const Color Color::Magenta(255, 0, 255, 255);
+const Color Color::Navy(35, 60, 85, 255);
+const Color Color::Orange(255, 128, 0, 255);
+const Color Color::Red(255, 0, 0, 255);
+const Color Color::Silver(192, 192, 192, 255);
+const Color Color::White(255, 255, 255, 255);
+const Color Color::Yellow(255, 255, 0, 255);
+const Color Color::Normal(255, 255, 255, 255);
+const Color Color::NormalZ(128, 128, 255, 255);
+const Color Color::NoAlpha(0, 0, 0, 0);
 
+
+
+// ==================================================================================
+// = Color Implementation
+// ==================================================================================
 
 /**
  * C'tor
  *
- * Instantiates a Color_4ub with a given RGBA value set.
+ * Instantiates a Color with a given RGBA value set.
  *
  * \param r	Red compontent. Valid values are 0 - 255.
  * \param g	Green compontent. Valid values are 0 - 255.
  * \param b	Blue compontent. Valid values are 0 - 255.
  * \param a	Alpha compontent. Valid values are 0 - 255.
  */
-Color_4ub::Color_4ub(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : mR(r), mG(g), mB(b), mA(a)
+Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : mR(r), mG(g), mB(b), mA(a)
 {}
 
 
 /**
- * Sets a Color_4ub with a given RGBA value set.
+ * Sets a Color with a given RGBA value set.
  *
  * \param r	Red compontent. Valid values are 0 - 255.
  * \param g	Green compontent. Valid values are 0 - 255.
  * \param b	Blue compontent. Valid values are 0 - 255.
  * \param a	Alpha compontent. Valid values are 0 - 255.
  */
-void Color_4ub::operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Color::operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	red(r);
 	green(g);
@@ -51,7 +69,7 @@ void Color_4ub::operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 /**
  * Gets the red component value of the color.
  */
-uint8_t Color_4ub::red() const
+uint8_t Color::red() const
 {
 	return mR;
 }
@@ -60,7 +78,7 @@ uint8_t Color_4ub::red() const
 /**
  * Gets the green component value of the color.
  */
-uint8_t Color_4ub::green() const
+uint8_t Color::green() const
 {
 	return mG;
 }
@@ -69,7 +87,7 @@ uint8_t Color_4ub::green() const
 /**
  * Gets the blue component value of the color.
  */
-uint8_t Color_4ub::blue() const
+uint8_t Color::blue() const
 {
 	return mB;
 }
@@ -78,7 +96,7 @@ uint8_t Color_4ub::blue() const
 /**
  * Gets the alpha component value of the color.
  */
-uint8_t Color_4ub::alpha() const
+uint8_t Color::alpha() const
 {
 	return mA;
 }
@@ -89,7 +107,7 @@ uint8_t Color_4ub::alpha() const
  *
  * \param red Red value. Valid values are 0 - 255.
  */
-void Color_4ub::red(uint8_t red)
+void Color::red(uint8_t red)
 {
 	mR = red;
 }
@@ -100,7 +118,7 @@ void Color_4ub::red(uint8_t red)
  *
  * \param green Green value. Valid values are 0 - 255.
  */
-void Color_4ub::green(uint8_t green)
+void Color::green(uint8_t green)
 {
 	mG = green;
 }
@@ -111,7 +129,7 @@ void Color_4ub::green(uint8_t green)
  *
  * \param blue Blue value. Valid values are 0 - 255.
  */
-void Color_4ub::blue(uint8_t blue)
+void Color::blue(uint8_t blue)
 {
 	mB = blue;
 }
@@ -122,7 +140,7 @@ void Color_4ub::blue(uint8_t blue)
  *
  * \param alpha Alpha value. Valid values are 0 - 255.
  */
-void Color_4ub::alpha(uint8_t alpha)
+void Color::alpha(uint8_t alpha)
 {
 	mA = alpha;
 }

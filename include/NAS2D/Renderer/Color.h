@@ -15,14 +15,31 @@
 namespace NAS2D {
 
 /**
- * \class	Color_4ub
+ * \class	Color
  * \brief	RGBA Color.
  */
-class Color_4ub
+class Color
 {
 public:
-	Color_4ub() = default;
-	Color_4ub(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	static const Color Black;
+	static const Color Blue;
+	static const Color Bright_green;
+	static const Color Cyan;
+	static const Color Green;
+	static const Color Grey;
+	static const Color Magenta;
+	static const Color Navy;
+	static const Color Orange;
+	static const Color Red;
+	static const Color Silver;
+	static const Color White;
+	static const Color Yellow;
+	static const Color Normal;
+	static const Color NormalZ;
+	static const Color NoAlpha;
+
+	Color() = default;
+	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 public:
 	void operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
@@ -38,7 +55,10 @@ public:
 	void alpha(uint8_t alpha);
 
 private:
-	unsigned char mR = 255, mG = 255, mB = 255, mA = 255;
+	uint8_t mR = 255;
+	uint8_t mG = 255;
+	uint8_t mB = 255;
+	uint8_t mA = 255;
 };
 
 } // namespace

@@ -19,10 +19,11 @@ using namespace NAS2D::Xml;
 /**
  * Default c'tor.
  */
-XmlAttribute::XmlAttribute() :	XmlBase(),
-								_document(nullptr),
-								_prev(nullptr),
-								_next(nullptr)
+XmlAttribute::XmlAttribute() :
+	XmlBase(),
+	_document(nullptr),
+	_prev(nullptr),
+	_next(nullptr)
 {}
 
 
@@ -34,12 +35,13 @@ XmlAttribute::XmlAttribute() :	XmlBase(),
  * \param	name	Name of the attribute.
  * \param	value	Value of the attribute.
  */
-XmlAttribute::XmlAttribute(const std::string &name, std::string &value) :	XmlBase(),
-																			_document(nullptr),
-																			_name(name),
-																			_value(value),
-																			_prev(nullptr),
-																			_next(nullptr)
+XmlAttribute::XmlAttribute(const std::string &name, std::string &value) :
+	XmlBase(),
+	_document(nullptr),
+	_name(name),
+	_value(value),
+	_prev(nullptr),
+	_next(nullptr)
 {}
 
 
@@ -193,7 +195,7 @@ XmlAttribute::QueryResult XmlAttribute::queryIntValue(int& i) const
 	{
 		i = std::stoi(_value);
 	}
-	catch (std::invalid_argument)
+	catch (const std::invalid_argument&)
 	{
 		return QueryResult::XML_WRONG_TYPE;
 	}
@@ -218,7 +220,7 @@ XmlAttribute::QueryResult XmlAttribute::queryDoubleValue(double& d) const
 	{
 		d = std::stod(_value);
 	}
-	catch (std::invalid_argument)
+	catch (const std::invalid_argument&)
 	{
 		return QueryResult::XML_WRONG_TYPE;
 	}

@@ -39,12 +39,13 @@ string endTag(int row, const std::string& name)
  * \warning	Generally speaking, Sprites should not be instantiated
  *			with the default c'tor.
  */
-Sprite::Sprite():	mSpriteName("Default Constructed"),
-					mCurrentAction(DEFAULT_ACTION),
-					mCurrentFrame(0),
-					mColor(COLOR_NORMAL),
-					mRotationAngle(0.0f),
-					mPaused(false)
+Sprite::Sprite() :
+	mSpriteName("Default Constructed"),
+	mCurrentAction(DEFAULT_ACTION),
+	mCurrentFrame(0),
+	mColor(Color::Normal),
+	mRotationAngle(0.0f),
+	mPaused(false)
 {
 	addDefaultAction();
 }
@@ -55,12 +56,13 @@ Sprite::Sprite():	mSpriteName("Default Constructed"),
  *
  * \param filePath	File path of the Sprite definition file.
  */
-Sprite::Sprite(const std::string& filePath):	mSpriteName(filePath),
-												mCurrentAction(DEFAULT_ACTION),
-												mCurrentFrame(0),
-												mColor(COLOR_NORMAL),
-												mRotationAngle(0.0f),
-												mPaused(false)
+Sprite::Sprite(const std::string& filePath) :
+	mSpriteName(filePath),
+	mCurrentAction(DEFAULT_ACTION),
+	mCurrentFrame(0),
+	mColor(Color::Normal),
+	mRotationAngle(0.0f),
+	mPaused(false)
 {
 	processXml(filePath);
 }
@@ -69,14 +71,15 @@ Sprite::Sprite(const std::string& filePath):	mSpriteName(filePath),
 /**
  * Copy C'tor
  */
-Sprite::Sprite(const Sprite &sprite):	mImageSheets(sprite.mImageSheets),
-										mActions(sprite.mActions),
-										mSpriteName(sprite.mSpriteName),
-										mCurrentAction(sprite.mCurrentAction),
-										mCurrentFrame(sprite.mCurrentFrame),
-										mColor(sprite.mColor),
-										mRotationAngle(sprite.mRotationAngle),
-										mPaused(sprite.mPaused)
+Sprite::Sprite(const Sprite &sprite) :
+	mImageSheets(sprite.mImageSheets),
+	mActions(sprite.mActions),
+	mSpriteName(sprite.mSpriteName),
+	mCurrentAction(sprite.mCurrentAction),
+	mCurrentFrame(sprite.mCurrentFrame),
+	mColor(sprite.mColor),
+	mRotationAngle(sprite.mRotationAngle),
+	mPaused(sprite.mPaused)
 {}
 
 
@@ -328,7 +331,7 @@ void Sprite::processXml(const std::string& filePath)
 			addDefaultAction();
 			return;
 		}
-		else if (version && version->value() != SPRITE_VERSION)
+		else if (version->value() != SPRITE_VERSION)
 		{
 			cout << "Sprite version mismatch (" << versionString() << ") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
 			addDefaultAction();
@@ -693,22 +696,24 @@ int Sprite::originY(int y)
  * \param	aY	Y-Axis of the Anchor Point for this spriteFrame.
  * \param	d	Length of time milliseconds to display this spriteFrame during animation playback.
  */
-Sprite::SpriteFrame::SpriteFrame(const std::string& sId, int x, int y, int w, int h, int aX, int aY, int d):	mSheetId(sId),
-																												mFrameDelay(d),
-																												mAnchorX(aX),
-																												mAnchorY(aY),
-																												mRect(x, y, w, h)
+Sprite::SpriteFrame::SpriteFrame(const std::string& sId, int x, int y, int w, int h, int aX, int aY, int d) :
+	mSheetId(sId),
+	mFrameDelay(d),
+	mAnchorX(aX),
+	mAnchorY(aY),
+	mRect(x, y, w, h)
 {}
 
 
 /**
  * Copy C'tor
  */
-Sprite::SpriteFrame::SpriteFrame(const SpriteFrame &sf):	mSheetId(sf.mSheetId),
-															mFrameDelay(sf.mFrameDelay),
-															mAnchorX(sf.mAnchorX),
-															mAnchorY(sf.mAnchorY),
-															mRect(sf.mRect)
+Sprite::SpriteFrame::SpriteFrame(const SpriteFrame &sf) :
+	mSheetId(sf.mSheetId),
+	mFrameDelay(sf.mFrameDelay),
+	mAnchorX(sf.mAnchorX),
+	mAnchorY(sf.mAnchorY),
+	mRect(sf.mRect)
 {}
 
 

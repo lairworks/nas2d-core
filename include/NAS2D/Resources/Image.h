@@ -55,7 +55,7 @@ public:
 	int center_x() const;
 	int center_y() const;
 
-	Color_4ub pixelColor(int x, int y) const;
+	Color pixelColor(int x, int y) const;
 
 private:
 	void load();
@@ -70,13 +70,13 @@ private:
  * \typedef	ImagePtrList
  * \brief	A list of pointers to Image objects.
  */
-typedef std::vector<Image*> ImagePtrList;
+using ImagePtrList = std::vector<Image*>;
 
 
 /**
  * \typedef	ImageList
  * \brief	A list of Image objects.
  */
-typedef std::vector<Image> ImageList;
+using ImageList = std::vector<Image>;
 
 } // namespace

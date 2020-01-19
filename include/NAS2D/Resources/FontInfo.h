@@ -24,7 +24,7 @@ struct GlyphMetrics
 	int advance;
 };
 
-typedef std::vector<GlyphMetrics> GlyphMetricsList;
+using GlyphMetricsList = std::vector<GlyphMetrics>;
 
 /**
  * Struct containing basic information related to Fonts. Not part of the public

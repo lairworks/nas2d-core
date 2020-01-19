@@ -13,22 +13,21 @@ OBJDIR := $(BUILDDIR)/obj
 DEPDIR := $(BUILDDIR)/deps
 OUTPUT := $(BINDIR)/libnas2d.a
 
-# SDL2 source build variables
-SdlVer := SDL2-2.0.5
-SdlArchive := $(SdlVer).tar.gz
-SdlUrl := "https://www.libsdl.org/release/$(SdlArchive)"
-SdlPackageDir := $(BUILDDIR)/sdl2
-SdlDir := $(SdlPackageDir)/$(SdlVer)
-# Include folder for newer source build
-# (Must be searched before system folder returned by sdl2-config)
-SdlInc := $(SdlDir)/include
+# Determine OS (Linux, Darwin, ...)
+OS := $(shell uname 2>/dev/null || echo Unknown)
 
-CXXFLAGS := -std=c++17 -g -Wall -Wpedantic -I$(INCDIR) -I$(SdlInc) $(shell sdl2-config --cflags)
-LDLIBS := -lstdc++ -lphysfs # -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL
+Linux_OpenGL_LIBS := -lGLEW -lGL
+Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
+OpenGL_LIBS := $($(OS)_OpenGL_LIBS)
+
+CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
+CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
+LDFLAGS := $(LDFLAGS.EXTRA)
+LDLIBS := -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(shell sdl2-config --static-libs) $(OpenGL_LIBS)
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
@@ -63,10 +62,6 @@ clean:
 	-rm -fr $(BINDIR)
 clean-deps:
 	-rm -fr $(DEPDIR)
-clean-sdl:
-	-rm -fr $(SdlDir)
-clean-sdl-all:
-	-rm -fr $(SdlPackageDir)
 clean-all:
 	-rm -rf $(BUILDDIR)
 
@@ -91,33 +86,15 @@ gmock:
 	cd $(GMOCKDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GMOCKSRCDIR)
 	make -C $(GMOCKDIR)
 
-# This is used to detect if a separate GMock library was built, in which case, use it
-GMOCKLIB := $(wildcard $(GMOCKDIR)/libgmock.a)
-
 TESTDIR := test
 TESTOBJDIR := $(BUILDDIR)/testObj
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.o,$(TESTSRCS))
 TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
-TESTCPPFLAGS := -I$(INCDIR) -I$(GMOCKSRCDIR)/gtest/include
-TESTLDFLAGS := -L$(BINDIR) -L$(GMOCKDIR) -L$(GMOCKDIR)/gtest/ -L$(GTESTDIR)
-
-$(info $$CC is [$(CXX)])
-
-# This seems like a naive way to do this
-ifeq ($(CXX),c++)
-  TESTLIBS = -lnas2d -lgtest -lgtest_main -lpthread
-else
-  TESTLIBS = -lnas2d -lgtest -lgtest_main -lpthread -lstdc++fs
-endif
-
-
+TESTCPPFLAGS := $(CPPFLAGS)
+TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
+TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests
-# Conditionally add GMock if we built it separately
-# This is conditional to avoid errors in case the library is not found
-ifneq ($(strip $(GMOCKLIB)),)
-	TESTLIBS := -lgmock $(TESTLIBS)
-endif
 
 TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTOBJDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
@@ -179,51 +156,21 @@ install-deps-centos:
 	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
 
 
-## Generic SDL2 source build ##
-
-.PHONY: install-deps-source-sdl2
-install-deps-source-sdl2:
-	# Create source build folder
-	mkdir -p $(SdlDir)
-	# Download source archive
-	wget --no-clobber --directory-prefix=$(SdlPackageDir) $(SdlUrl)
-	# Unpack archive
-	cd $(SdlPackageDir) && tar -xzf $(SdlArchive)
-	# Configure package
-	cd $(SdlDir) && ./configure --quiet --enable-mir-shared=no
-	# Compile package
-	cd $(SdlDir) && make
-
-
 #### Docker related build rules ####
 
 # Build rules relating to Docker images
-.PHONY: build-image-ubuntu-16.04 compile-on-ubuntu-16.04
-.PHONY: debug-image-ubuntu-16.04 root-debug-image-ubuntu-16.04
-
-.PHONY: build-image-ubuntu-18.04 compile-on-ubuntu-18.04
-.PHONY: debug-image-ubuntu-18.04 root-debug-image-ubuntu-18.04
+.PHONY: build-image-ubuntu compile-on-ubuntu
+.PHONY: debug-image-ubuntu root-debug-image-ubuntu
 
 DockerFolder := ${TopLevelFolder}/docker
 
-build-image-ubuntu-16.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-16.04.BuildEnv.Dockerfile --tag outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
-compile-on-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs
-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
-root-debug-image-ubuntu-16.04:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/ubuntu-16.04-gcc-sdl2-physfs bash
-
-build-image-ubuntu-18.04:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04-gcc.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc:latest --tag outpostuniverse/ubuntu-18.04-gcc:1.0
-	docker build ${DockerFolder}/ --file ${DockerFolder}/Ubuntu-18.04-gcc-gtest.Dockerfile --tag outpostuniverse/ubuntu-18.04-gcc-gtest:latest --tag outpostuniverse/ubuntu-18.04-gcc-gtest:1.1
-	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.1
-compile-on-ubuntu-18.04:
+build-image-ubuntu:
+	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.3
+compile-on-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/nas2d
-debug-image-ubuntu-18.04:
+debug-image-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/nas2d bash
-root-debug-image-ubuntu-18.04:
+root-debug-image-ubuntu:
 	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/nas2d bash
 
 
@@ -231,8 +178,8 @@ root-debug-image-ubuntu-18.04:
 
 .PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
 
-build-image-circleci: | build-image-ubuntu-18.04
-	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.1
+build-image-circleci: | build-image-ubuntu
+	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.3
 push-image-circleci:
 	docker push outpostuniverse/nas2d-circleci
 circleci-validate:

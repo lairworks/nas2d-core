@@ -32,8 +32,8 @@
 // ==================================================================================
 #include "NAS2D/Xml/Xml.h"
 
-#include <assert.h>
-#include <stddef.h>
+#include <cassert>
+#include <cstddef>
 #include <cctype>
 #include <fstream>
 #include <cstring>

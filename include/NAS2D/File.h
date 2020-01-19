@@ -26,11 +26,13 @@ public:
 	using byte = char; /**< Byte. */
 	using const_byte = const byte; /**< Const byte. */
 
+	using byte = char; /**< Byte. */
+	using const_byte = const char; /**< Const byte. */
+	using RawByteStream = const_byte*; /**< Pointer to a const_byte. */
+
 	using iterator = std::string::iterator; /**< Forward iterator for a File byte stream. */
 	using reverse_iterator = std::string::reverse_iterator; /**< Reverse iterator for a File byte stream. */
-
 	using ByteStream = std::string; /**< Byte stream. */
-	using RawByteStream = const_byte*; /**< Pointer to a const_byte. */
 
 public:
 	/**
@@ -45,7 +47,9 @@ public:
 	 * \param	stream	A ByteStream representing the file.
 	 * \param	name	The full name of the file including path.
 	 */
-	File(const ByteStream& stream, const std::string& name):	mByteStream(stream), mFileName(name)
+	File(const ByteStream& stream, const std::string& name) :
+		mByteStream(stream),
+		mFileName(name)
 	{}
 
 	/**
@@ -58,7 +62,9 @@ public:
 	/**
 	 * Copy c'tor
 	 */
-	File(const File& _f):	mByteStream(_f.mByteStream), mFileName(_f.mFileName)
+	File(const File& _f) :
+		mByteStream(_f.mByteStream),
+		mFileName(_f.mFileName)
 	{}
 
 

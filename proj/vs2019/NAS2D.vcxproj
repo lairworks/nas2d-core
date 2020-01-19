@@ -107,7 +107,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)../../InstallVcpkgDeps.bat</Command>
+      <Command>$(ProjectDir)../../InstallVcpkgDeps.bat</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Installing vcpkg dependencies</Message>
@@ -128,7 +128,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)../../InstallVcpkgDeps.bat</Command>
+      <Command>$(ProjectDir)../../InstallVcpkgDeps.bat</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Installing vcpkg dependencies</Message>
@@ -156,7 +156,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)../../InstallVcpkgDeps.bat</Command>
+      <Command>$(ProjectDir)../../InstallVcpkgDeps.bat</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Installing vcpkg dependencies</Message>
@@ -184,7 +184,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)../../InstallVcpkgDeps.bat</Command>
+      <Command>$(ProjectDir)../../InstallVcpkgDeps.bat</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Installing vcpkg dependencies</Message>
@@ -249,6 +249,7 @@
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Color.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Point.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Vector.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Rectangle.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererOpenGL.h" />

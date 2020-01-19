@@ -38,7 +38,7 @@ void MIXER_HOOK() { MIXER_HOOK_CALLBACK_SIGNAL(); }
 /*
  * C'tor.
  */
-MixerSDL::MixerSDL():	Mixer("SDL Mixer")
+MixerSDL::MixerSDL()
 {
 	init();
 }
@@ -94,7 +94,7 @@ void MixerSDL::init()
 
 void MixerSDL::music_finished_hook()
 {
-	musicComplete().emit();
+	mMusicComplete.emit();
 }
 
 

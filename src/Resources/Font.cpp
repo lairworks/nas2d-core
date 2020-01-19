@@ -20,8 +20,9 @@
 #include <SDL_ttf.h>
 
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <algorithm>
+#include <cstddef>
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -315,12 +316,11 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		glm[i].minX = glyphWidth;
 	}
 
-	int glyph = 0;
 	for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
 	{
 		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
-			glyph = (row * GLYPH_MATRIX_SIZE) + col;
+			const std::size_t glyph = (row * GLYPH_MATRIX_SIZE) + col;
 
 			glm[glyph].uvX = (float)(col * glyphWidth) / (float)glyphMap->w;
 			glm[glyph].uvY = (float)(row * glyphHeight) / (float)glyphMap->h;
@@ -337,7 +337,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 	FONTMAP[path].pt_size = glyphHeight;
 	FONTMAP[path].height = glyphHeight;
 	FONTMAP[path].ref_count++;
-	FONTMAP[path].glyph_size(glyphWidth, glyphHeight);
+	FONTMAP[path].glyph_size = {glyphWidth, glyphHeight};
 	SDL_FreeSurface(glyphMap);
 
 	return true;

@@ -3,10 +3,6 @@
 using namespace NAS2D;
 
 
-Mixer::Mixer(const std::string& name): mName(name)
-{}
-
-
 void Mixer::playMusic(Music& music, int loops /*= Mixer::CONTINUOUS*/)
 {
 	fadeInMusic(music, loops, 0);
@@ -34,13 +30,19 @@ void Mixer::resumeAllAudio()
 }
 
 
-const std::string& Mixer::name() const
+Signals::Signal0<>& Mixer::musicComplete()
 {
-	return mName;
+	return mMusicComplete;
 }
 
 
-Signals::Signal0<void>& Mixer::musicComplete()
+void Mixer::addMusicCompleteHandler(NAS2D::Signals::Signal0<>::DelegateType handler)
 {
-	return _music_complete;
+	return mMusicComplete.connect(handler);
+}
+
+
+void Mixer::removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::DelegateType handler)
+{
+	return mMusicComplete.disconnect(handler);
 }

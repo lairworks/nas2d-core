@@ -25,9 +25,6 @@ class File final
 public:
 	using byte = char; /**< Byte. */
 	using const_byte = const byte; /**< Const byte. */
-
-	using byte = char; /**< Byte. */
-	using const_byte = const char; /**< Const byte. */
 	using RawByteStream = const_byte*; /**< Pointer to a const_byte. */
 
 	using iterator = std::string::iterator; /**< Forward iterator for a File byte stream. */

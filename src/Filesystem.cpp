@@ -85,9 +85,11 @@ FS::path getPathToBinaryApple()
 		//_NSGetExecutablePath sets size if it fails.
 		_NSGetExecutablePath(nullptr, &size);
 		{
-			result.resize(size);
-			if (_NSGetExecutablePath(result.data(), size) == 0)
+			std::string filename{};
+			filename.resize(size);
+			if (_NSGetExecutablePath(filename.data(), size) == 0)
 			{
+				result = FS::path{filename};
 				//Path may be a symlink!
 				while (FS::is_symlink(result)) { result = FS::read_symlink(result); }
 			}

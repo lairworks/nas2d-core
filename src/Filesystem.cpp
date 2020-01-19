@@ -25,6 +25,10 @@
 #include <windows.h>
 #endif
 
+#if defined(__APPLE__)
+#include <mach-o/dyld.h>
+#endif
+
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 

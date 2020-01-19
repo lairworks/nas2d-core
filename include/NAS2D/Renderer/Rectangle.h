@@ -145,6 +145,10 @@ struct Rectangle
 		return mY + (mH / 2);
 	}
 
+	Point<BaseType> center() const {
+		return {mX + (mW / 2), mY + (mH / 2)};
+	}
+
 private:
 	BaseType mX = 0;
 	BaseType mY = 0;

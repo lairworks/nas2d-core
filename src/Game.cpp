@@ -21,7 +21,7 @@
 #include "NAS2D/Renderer/RendererOpenGL.h"
 #include "NAS2D/Renderer/RendererNull.h"
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include <iostream>
 

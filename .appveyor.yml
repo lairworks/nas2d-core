@@ -6,11 +6,9 @@ platform:
   - x64
 cache:
   - C:\tools\vcpkg\installed\ -> InstallVcpkgDeps.bat
-  - C:\projects\nas2d-core\proj\vs2019\packages -> proj\vs2019\packages.config
 install:
   - vcpkg integrate install
   - call InstallVcpkgDeps.bat
-  - nuget restore proj/vs2019
   - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:
   project: proj/vs2019/NAS2D.sln

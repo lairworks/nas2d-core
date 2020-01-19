@@ -325,8 +325,7 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
 		std::clog << "Wrote " << file.bytes().size() << " bytes to file '" << file.filename() << std::endl;
 #endif
 	}
-
-	closeFile(myFile);
+	return true;
 }
 
 /**

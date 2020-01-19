@@ -17,13 +17,13 @@
 #include <string>
 
 
-#if defined(__GNUC__) || defined(__GNUG__)
-#include <experimental/filesystem>
-namespace FS = std::experimental::filesystem;
-#else
+//#if defined(__GNUC__) || defined(__GNUG__)
+//#include <experimental/filesystem>
+//namespace FS = std::experimental::filesystem;
+//#else
 #include <filesystem>
 namespace FS = std::filesystem;
-#endif
+//#endif
 
 
 namespace NAS2D {

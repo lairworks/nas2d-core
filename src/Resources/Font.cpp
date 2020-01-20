@@ -316,9 +316,9 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		glm[i].minX = glyphWidth;
 	}
 
-	for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
+	for (std::size_t row = 0; row < GLYPH_MATRIX_SIZE; row++)
 	{
-		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
+		for (std::size_t col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
 			const std::size_t glyph = (row * GLYPH_MATRIX_SIZE) + col;
 

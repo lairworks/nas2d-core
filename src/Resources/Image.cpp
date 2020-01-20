@@ -15,7 +15,7 @@
 #include "NAS2D/Utility.h"
 
 #include <GL/glew.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 
 #include <iostream>
 #include <map>
@@ -219,6 +219,15 @@ void Image::load()
 	IMAGE_ID_MAP[name()].pixels = pixels;
 
 	loaded(true);
+}
+
+
+/**
+ * Gets the dimensions in pixels of the image.
+ */
+Vector<int> Image::size() const
+{
+	return {_size.first, _size.second};
 }
 
 

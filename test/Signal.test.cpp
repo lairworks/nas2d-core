@@ -21,9 +21,8 @@ TEST(Signal, ConnectEmitDisconnect) {
 	signal.connect(delegate);
 	EXPECT_FALSE(signal.empty());
 
-	// Disabled due to GoogleMock crashes on Windows
-	// EXPECT_CALL(handler, MockMethod());
-	// signal.emit();
+	EXPECT_CALL(handler, MockMethod());
+	signal.emit();
 
 	signal.disconnect(delegate);
 	EXPECT_TRUE(signal.empty());

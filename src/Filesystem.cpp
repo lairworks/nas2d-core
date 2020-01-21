@@ -28,7 +28,6 @@
 #if defined(__APPLE__)
 #include <mach-o/dyld.h>
 #include <limits.h>
-#include <dlfcn.h>
 #endif
 
 using namespace NAS2D;

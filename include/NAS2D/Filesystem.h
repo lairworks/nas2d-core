@@ -68,7 +68,7 @@ public:
 private:
 	FS::path mExePath{"./"};
 	FS::path mWritePath{"./data"};
-	mutable std::set<FS::path> mSearchPath{}; //This really should be std::filesystem::path
+	mutable std::set<FS::path> mSearchPath{};
 };
 
 }

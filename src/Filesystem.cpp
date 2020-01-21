@@ -22,10 +22,18 @@
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
+#include <ShlObj.h>
 #include <windows.h>
 #endif
 
+#if defined(__linux__)
+#include <pwd.h>
+#include <sys/types.h>
+#include <unistd.h>
+#endif
+
 #if defined(__APPLE__)
+#include <CoreServices/CoreServices.h>
 #include <limits.h>
 #include <mach-o/dyld.h>
 #endif
@@ -38,6 +46,10 @@ FS::path getPathToBinaryWindows();
 FS::path getPathToBinaryApple();
 FS::path getPathToBinaryLinux();
 
+FS::path getWritePath([[maybe_unused]] const std::string& argv_0, [[maybe_unused]] const std::string& appName, [[maybe_unused]] const std::string& organizationName);
+FS::path getWritePathWindows([[maybe_unused]] const std::string& appName, [[maybe_unused]] const std::string& organizationName);
+FS::path getWritePathApple([[maybe_unused]] const std::string& appName);
+FS::path getWritePathLinux([[maybe_unused]] const std::string& appName);
 
 /**
  * Returns the canonical, preferred path to the current process/binary, or the current path if there was an error.
@@ -123,13 +135,110 @@ FS::path getPathToBinaryLinux()
 	return result;
 }
 
+FS::path getWritePath([[maybe_unused]] const std::string& argv_0, [[maybe_unused]] const std::string& appName, [[maybe_unused]] const std::string& organizationName)
+{
+	FS::path result{"./data"};
+#if defined(_WIN32)
+	result = getWritePathWindows(appName, organizationName);
+#elif defined(__APPLE__)
+	result = getWritePathApple(appName);
+#elif defined(__linux__)
+	result = getWritePathLinux(appName);
+#endif
+	return result;
+}
+
+FS::path getAppDataPath()
+{
+	FS::path p{};
+#if defined(_WIN32)
+	{
+		PWSTR ppszPath = nullptr;
+		const auto hr_path = ::SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_DEFAULT, nullptr, &ppszPath);
+		const auto success = SUCCEEDED(hr_path);
+		if (success)
+		{
+			p = FS::path(ppszPath);
+			::CoTaskMemFree(ppszPath);
+			p = FS::canonical(p);
+		}
+	}
+	p.make_preferred();
+#endif
+	return p;
+}
+
+FS::path getWritePathWindows([[maybe_unused]] const std::string& appName, [[maybe_unused]] const std::string& organizationName)
+{
+	FS::path result{"./data"};
+#if defined(_WIN32)
+	result = getAppDataPath() / organizationName / appName;
+#endif
+	return result;
+}
+
+FS::path getApplicationSupportPath()
+{
+	FS::path result{};
+#if defined(__APPLE__)
+	FSRef ref;
+	OSType folderType = kApplicationSupportFolderType;
+	char path[PATH_MAX];
+
+	FSFindFolder(kUserDomain, folderType, kCreateFolder, &ref);
+
+	FSRefMakePath(&ref, (UInt8*)&path, PATH_MAX);
+	result = FS::path{path} / appName;
+	result = FS::canonical(result);
+	result.make_preferred();
+#endif
+	return result;
+}
+
+FS::path getWritePathApple([[maybe_unused]] const std::string& appName)
+{
+	FS::path result{"./data"};
+#if defined(__APPLE__)
+	result = getApplicationSupportPath() / appName;
+#endif
+	return result;
+}
+
+FS::path getLocalSharePath()
+{
+	FS::path result{};
+#if defined(__linux__)
+	char* xdg_data_home = getenv("XDG_DATA_HOME");
+	if (!xdg_data_home)
+	{
+		char* homedir = getenv("HOME");
+		if (!homedir)
+		{
+			homedir = getpwuid(getuid())->pw_dir;
+		}
+	}
+	result = xdg_data_home ? (FS::path{xdg_data_home}) : (homedir ? (FS::path{homedir} / ".local/share") : FS::path{"~/.local/share"});
+	result = FS::canonical(result);
+	result.make_preferred();
+#endif
+	return result;
+}
+
+FS::path getWritePathLinux([[maybe_unused]] const std::string& appName)
+{
+	FS::path result{"./data"};
+#if defined(__linux__)
+	result = getLocalSharePath() / appName;
+	result = FS::canonical(result);
+	result.make_preferred();
+#endif
+	return result;
+}
+
 NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName)
 {
 	mExePath = getPathToBinary(argv_0, appName, organizationName);
-	//Path to executable is required to exist for program to be well-formed.
-	//FS::canonical will automatically throw std::filesystem_error on failure.
-	mWritePath = FS::absolute(mWritePath).make_preferred();
-
+	mWritePath = getWritePath(argv_0, appName, organizationName);
 }
 
 /**

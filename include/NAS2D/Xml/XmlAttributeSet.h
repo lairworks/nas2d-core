@@ -31,6 +31,8 @@ class XmlAttributeSet
 {
 public:
 	XmlAttributeSet();
+	XmlAttributeSet(const XmlAttributeSet&) = delete;
+	void operator=(const XmlAttributeSet&) = delete;
 	~XmlAttributeSet();
 
 	void add(XmlAttribute* attribute);
@@ -44,11 +46,7 @@ public:
 	XmlAttribute* find(const std::string& _name) const;
 	XmlAttribute* findOrCreate(const std::string& _name);
 
-
 private:
-	XmlAttributeSet(const XmlAttributeSet&); // Explicitly disallowed.
-	void operator=(const XmlAttributeSet&); // Explicitly disallowed.
-
 	XmlAttribute sentinel;	/**< Comment me. */
 };
 

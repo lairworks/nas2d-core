@@ -15,13 +15,15 @@
 
 struct GlyphMetrics
 {
-	GlyphMetrics() : uvX(0.0f), uvY(0.0f), uvW(0.0f), uvH(0.0f), minX(0), minY(0), maxX(0), maxY(0), advance(0) {}
-
-	float uvX, uvY;	// Texture coordinates.
-	float uvW, uvH; // Texture coordinates.
-	int minX, minY;
-	int maxX, maxY;
-	int advance;
+	float uvX{0.0f};
+	float uvY{0.0f};
+	float uvW{0.0f};
+	float uvH{0.0f};
+	int minX{0};
+	int minY{0};
+	int maxX{0};
+	int maxY{0};
+	int advance{0};
 };
 
 using GlyphMetricsList = std::vector<GlyphMetrics>;
@@ -32,17 +34,11 @@ using GlyphMetricsList = std::vector<GlyphMetrics>;
  */
 struct FontInfo
 {
-	FontInfo() : texture_id(0), pt_size(0), height(0), ascent(0), ref_count(0)
-	{}
-
-	unsigned int		texture_id;
-	unsigned int		pt_size;
-
-	int					height;
-	int					ascent;
-
-	int					ref_count;
-
-	NAS2D::Point_2d		glyph_size;
-	GlyphMetricsList	metrics;
+	unsigned int texture_id{0u};
+	unsigned int pt_size{0u};
+	int height{0};
+	int ascent{0};
+	int ref_count{0};
+	NAS2D::Point_2d glyph_size{};
+	GlyphMetricsList metrics{};
 };

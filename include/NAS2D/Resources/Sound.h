@@ -25,7 +25,7 @@ class Sound: public Resource
 public:
 
 	Sound();
-	Sound(const std::string& filePath);
+	explicit Sound(const std::string& filePath);
 
 	~Sound();
 

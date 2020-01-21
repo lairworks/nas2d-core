@@ -26,8 +26,11 @@
 #endif
 
 #if defined(__APPLE__)
-#include <CoreFoundation/CoreFoundation.h>
 #include <mach-o/dyld.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <dlfcn.h>
 #endif
 
 using namespace NAS2D;
@@ -92,7 +95,7 @@ FS::path getPathToBinaryApple()
 		{
 			std::string filename{};
 			filename.resize(size);
-			if (_NSGetExecutablePath(filename.data(), size) == 0)
+			if (_NSGetExecutablePath(filename.data(), &size) == 0)
 			{
 				result = FS::path{filename};
 				//Path may be a symlink!

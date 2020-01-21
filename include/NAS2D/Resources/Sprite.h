@@ -32,17 +32,11 @@ class Sprite
 public:
 	using Callback = NAS2D::Signals::Signal0<>;	/**< Signal used when action animations complete. */
 
-public:
 	Sprite();
 	explicit Sprite(const std::string& filePath);
-	Sprite(const Sprite &sprite);
-
-	/**
-	 * D'tor
-	 */
-	~Sprite() {}
-
-	Sprite& operator=(const Sprite &rhs);
+	Sprite(const Sprite& sprite) = default;
+	Sprite& operator=(const Sprite& rhs) = default;
+	~Sprite() = default;
 
 	void play(const std::string& action);
 	void pause();
@@ -117,11 +111,9 @@ private:
 	{
 	public:
 		SpriteFrame(const std::string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
-		SpriteFrame(const SpriteFrame &spriteframe);
-
-		SpriteFrame& operator=(const SpriteFrame &rhs);
-
-		~SpriteFrame() {}
+		SpriteFrame(const SpriteFrame &spriteframe) = default;
+		SpriteFrame& operator=(const SpriteFrame& rhs) = default;
+		~SpriteFrame() = default;
 
 		const std::string& sheetId() const { return mSheetId; }
 
@@ -137,11 +129,9 @@ private:
 
 	private:
 		std::string mSheetId;
-
 		int mFrameDelay;
 		int mAnchorX;
 		int mAnchorY;
-
 		Rectangle_2d mRect;
 	};
 
@@ -150,7 +140,6 @@ private:
 	using ActionList = std::map<std::string, FrameList>;
 	using SheetList = std::map<std::string, Image>;
 
-private:
 	void processXml(const std::string& filePath);
 	void processImageSheets(void* root);
 	void addImageSheet(const std::string& id, const std::string& src, void* node);

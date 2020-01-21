@@ -26,8 +26,8 @@
 #endif
 
 #if defined(__APPLE__)
-#include <mach-o/dyld.h>
 #include <limits.h>
+#include <mach-o/dyld.h>
 #endif
 
 using namespace NAS2D;
@@ -96,7 +96,10 @@ FS::path getPathToBinaryApple()
 			{
 				result = FS::path{filename};
 				//Path may be a symlink!
-				while (FS::is_symlink(result)) { result = FS::read_symlink(result); }
+				while (FS::is_symlink(result))
+				{
+					result = FS::read_symlink(result);
+				}
 			}
 		}
 	}
@@ -111,7 +114,10 @@ FS::path getPathToBinaryLinux()
 	{
 		//Using '/proc/self/exe' isn't necessarily portable on mobile or older platforms.
 		result = FS::path{"/proc/self/exe"};
-		while(FS::is_symlink(result)) { result = FS::read_symlink(result); }
+		while (FS::is_symlink(result))
+		{
+			result = FS::read_symlink(result);
+		}
 	}
 #endif
 	return result;
@@ -359,12 +365,13 @@ bool Filesystem::del(const FS::path& filename) const noexcept
 bool Filesystem::makeDirectory(const FS::path& path) const noexcept
 {
 	std::error_code ec{};
-	if(FS::create_directories(path, ec)) {
+	if (FS::create_directories(path, ec))
+	{
 		return true;
 	}
 	else
 	{
-		if(FS::exists(path))
+		if (FS::exists(path))
 		{
 			return true;
 		}

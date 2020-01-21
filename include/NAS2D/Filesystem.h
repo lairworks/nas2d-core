@@ -64,8 +64,8 @@ public:
 	bool isDirectory(const std::string& path) const noexcept;
 
 private:
-	//TODO: Need "write path" member.
 	FS::path mExePath{};
+	FS::path mWritePath{};
 	mutable std::set<std::string> mSearchPath{}; //This really should be std::filesystem::path
 };
 

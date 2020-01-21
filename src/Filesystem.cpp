@@ -124,6 +124,8 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 	//FS::canonical will automatically throw std::filesystem_error on failure.
 	mExePath = FS::canonical(mExePath);
 	mExePath = mExePath.make_preferred();
+	mWritePath = (mExePath.parent_path() / FS::path{"data"}).make_preferred();
+
 }
 
 /**

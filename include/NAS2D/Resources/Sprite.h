@@ -34,7 +34,7 @@ public:
 
 public:
 	Sprite();
-	Sprite(const std::string& filePath);
+	explicit Sprite(const std::string& filePath);
 	Sprite(const Sprite &sprite);
 
 	/**

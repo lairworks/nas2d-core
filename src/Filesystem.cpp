@@ -122,9 +122,7 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 	mExePath = getPathToBinary(argv_0, appName, organizationName);
 	//Path to executable is required to exist for program to be well-formed.
 	//FS::canonical will automatically throw std::filesystem_error on failure.
-	mExePath = FS::canonical(mExePath);
-	mExePath = mExePath.make_preferred();
-	mWritePath = (mExePath.parent_path() / FS::path{"data"}).make_preferred();
+	mWritePath = FS::absolute(mWritePath).make_preferred();
 
 }
 
@@ -135,8 +133,8 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
  */
 void NAS2D::Filesystem::mountDefault() noexcept
 {
-	mount(mExePath.parent_path().string());
-	mount((mExePath.parent_path() / FS::path{"data"}).make_preferred().string());
+	mount(mExePath);
+	mount(mWritePath);
 }
 
 /**
@@ -144,15 +142,14 @@ void NAS2D::Filesystem::mountDefault() noexcept
  *
  * \param path	File path to add.
  */
-bool Filesystem::mount(const std::string& path) const noexcept
+bool Filesystem::mount(const FS::path& path) const noexcept
 {
 	std::clog << "Adding '" << path << "' to search path." << std::endl;
 
-	FS::path p{path};
-	bool does_exist = exists(p.string());
+	bool does_exist = exists(path);
 	if (does_exist)
 	{
-		auto [where, wasInserted] = mSearchPath.insert(p.string());
+		auto [where, wasInserted] = mSearchPath.insert(path);
 		if (!wasInserted)
 		{
 			std::cerr << "Couldn't add " << path << " to search path.\n";
@@ -174,15 +171,14 @@ bool Filesystem::mount(const std::string& path) const noexcept
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool NAS2D::Filesystem::unmount(const std::string& path) const noexcept
+bool NAS2D::Filesystem::unmount(const FS::path& path) const noexcept
 {
 	std::clog << "Removing '" << path << "' from search path." << std::endl;
 
-	FS::path p{path};
-	bool does_exist = exists(p.string());
+	bool does_exist = exists(path);
 	if (does_exist)
 	{
-		auto erase_count = mSearchPath.erase(p.string());
+		auto erase_count = mSearchPath.erase(path);
 		if (!erase_count)
 		{
 			std::cerr << "Couldn't remove " << path << " from search path.\n";
@@ -205,12 +201,12 @@ bool NAS2D::Filesystem::unmount(const std::string& path) const noexcept
  *
  * \note	This function will also return the names of any directories in a specified search path
  */
-StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const noexcept
+PathList Filesystem::directoryList(const FS::path& dir, const std::string& filter) const noexcept
 {
-	StringList result{};
+	PathList result{};
 	FS::path root{};
 
-	if (dir.empty()) { root = FS::absolute(FS::path{mExePath}.parent_path()); }
+	if (dir.empty()) { root = FS::absolute(mExePath.parent_path()); }
 
 	if (!FS::is_directory(root)) { return {}; }
 
@@ -220,7 +216,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 		{
 			if (FS::is_regular_file(f))
 			{
-				result.push_back(f.path().filename().string());
+				result.push_back(f.path().filename());
 			}
 		}
 		else
@@ -229,7 +225,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 			{
 				if (f.path().extension() == filter)
 				{
-					result.push_back(f.path().filename().string());
+					result.push_back(f.path().filename());
 				}
 			}
 		}
@@ -241,9 +237,9 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 /**
  * Returns a list of directories in the Search Path.
  */
-StringList Filesystem::searchPath() const noexcept
+PathList Filesystem::searchPath() const noexcept
 {
-	StringList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
+	PathList searchPath{std::begin(mSearchPath), std::end(mSearchPath)};
 	return searchPath;
 }
 
@@ -254,7 +250,7 @@ StringList Filesystem::searchPath() const noexcept
  *
  * \return Returns a File.
  */
-File Filesystem::open(const std::string& filename) const noexcept
+File Filesystem::open(const FS::path& filename) const noexcept
 {
 #if defined(DEBUG)
 	std::cerr << "Attempting to load '" << filename << "...";
@@ -270,7 +266,7 @@ File Filesystem::open(const std::string& filename) const noexcept
 	}
 
 	std::error_code ec{};
-	const auto p = FS::path{filename};
+	const auto p = FS::absolute(filename).make_preferred();
 	const auto size = FS::file_size(p, ec);
 	if (size == static_cast<std::uintmax_t>(-1))
 	{
@@ -282,7 +278,7 @@ File Filesystem::open(const std::string& filename) const noexcept
 
 	std::ifstream ifs{p};
 	std::string buffer = std::string(static_cast<const std::stringstream&>(std::stringstream() << ifs.rdbuf()).str());
-	return File(buffer, filename);
+	return File(buffer, p);
 }
 
 /**
@@ -341,10 +337,10 @@ bool Filesystem::write(const File& file, bool overwrite) const noexcept
  * \note	This function is not named 'delete' due to
  *			language limitations.
  */
-bool Filesystem::del(const std::string& filename) const noexcept
+bool Filesystem::del(const FS::path& filename) const noexcept
 {
 	std::error_code ec{};
-	if (!FS::remove(FS::path{filename}, ec))
+	if (!FS::remove(filename, ec))
 	{
 		std::cerr << "Unable to delete " << filename << ".\n";
 		return false;
@@ -360,11 +356,20 @@ bool Filesystem::del(const std::string& filename) const noexcept
  *
  * \return Returns \c true if successful. Otherwise, returns \c false.
  */
-bool Filesystem::makeDirectory(const std::string& path) const noexcept
+bool Filesystem::makeDirectory(const FS::path& path) const noexcept
 {
 	std::error_code ec{};
-	auto p = FS::path{path};
-	return FS::create_directories(p, ec);
+	if(FS::create_directories(path, ec)) {
+		return true;
+	}
+	else
+	{
+		if(FS::exists(path))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 /**
@@ -374,16 +379,16 @@ bool Filesystem::makeDirectory(const std::string& path) const noexcept
  *
  * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
  */
-bool Filesystem::exists(const std::string& filename) const noexcept
+bool Filesystem::exists(FS::path filename) const noexcept
 {
 	std::error_code ec{};
 	bool does_not_exist = !FS::exists(filename, ec);
 	if (does_not_exist)
 	{
-		for (const auto& cur_path_string : mSearchPath)
+		for (const auto& cur_path : mSearchPath)
 		{
-			const auto cur_path = FS::path{cur_path_string} / filename;
-			if (FS::exists(cur_path, ec))
+			const auto cur_path_with_filename = FS::path{cur_path} / filename;
+			if (FS::exists(cur_path_with_filename, ec))
 			{
 				return true;
 			}
@@ -401,7 +406,7 @@ bool Filesystem::exists(const std::string& filename) const noexcept
  *
  * \note	File paths should not have any trailing '/' characters.
  */
-std::string Filesystem::workingPath(const std::string& filename) const noexcept
+FS::path Filesystem::workingPath(const FS::path& filename) const noexcept
 {
 	if (filename.empty())
 	{
@@ -412,8 +417,7 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
 		return {};
 	}
 
-	auto p = FS::path{filename};
-	return p.parent_path().make_preferred().string();
+	return filename.parent_path().make_preferred();
 }
 
 /**
@@ -424,22 +428,21 @@ std::string Filesystem::workingPath(const std::string& filename) const noexcept
  * \return	Returns a string containing the file extension. An empty string will be
  *			returned if the file has no extension or if it's a directory.
  */
-std::string Filesystem::extension(const std::string& path) noexcept
+FS::path Filesystem::extension(const FS::path& path) noexcept
 {
-	const auto p = FS::path{path};
-	if (FS::is_directory(p))
+	if (FS::is_directory(path))
 	{
 		return {};
 	}
-	if (p.has_extension())
+	if (path.has_extension())
 	{
-		return p.extension().string();
+		return path.extension();
 	}
-	if (p.stem() == p.filename())
+	if (path.stem() == path.filename())
 	{
-		if (p.stem().string().find_first_of('.') != std::string::npos)
+		if (path.stem().string().find_first_of('.') != std::string::npos)
 		{
-			return p.stem().string();
+			return path.stem();
 		}
 	}
 
@@ -451,7 +454,7 @@ std::string Filesystem::extension(const std::string& path) noexcept
  *
  * \param path	Path to check.
  */
-bool Filesystem::isDirectory(const std::string& path) const noexcept
+bool Filesystem::isDirectory(const FS::path& path) const noexcept
 {
-	return FS::is_directory(FS::path{path});
+	return FS::is_directory(path);
 }

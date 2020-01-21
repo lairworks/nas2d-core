@@ -15,7 +15,7 @@
 
 #include <set>
 #include <string>
-
+#include <vector>
 
 #if defined(__GNUC__) || defined(__GNUG__)
 #include <experimental/filesystem>
@@ -27,6 +27,8 @@ namespace FS = std::filesystem;
 
 
 namespace NAS2D {
+
+	using PathList = std::vector<FS::path>;
 
 /**
  * \class Filesystem
@@ -47,26 +49,26 @@ public:
 	Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 
 	void mountDefault() noexcept;
-	bool mount(const std::string& path) const noexcept;
-	bool unmount(const std::string& path) const noexcept;
+	bool mount(const FS::path& path) const noexcept;
+	bool unmount(const FS::path& path) const noexcept;
 
-	StringList directoryList(const std::string& dir, const std::string& filter = std::string{}) const noexcept;
-	StringList searchPath() const noexcept;
+	PathList directoryList(const FS::path& dir, const std::string& filter = std::string{}) const noexcept;
+	PathList searchPath() const noexcept;
 
-	File open(const std::string& filename) const noexcept;
+	File open(const FS::path& filename) const noexcept;
 	bool write(const File& file, bool overwrite = true) const noexcept;
-	bool del(const std::string& path) const noexcept;
-	bool makeDirectory(const std::string& path) const noexcept;
+	bool del(const FS::path& path) const noexcept;
+	bool makeDirectory(const FS::path& path) const noexcept;
 
-	bool exists(const std::string& filename) const noexcept;
-	std::string workingPath(const std::string& filename) const noexcept;
-	std::string extension(const std::string& path) noexcept;
-	bool isDirectory(const std::string& path) const noexcept;
+	bool exists(FS::path filename) const noexcept;
+	FS::path workingPath(const FS::path& filename) const noexcept;
+	FS::path extension(const FS::path& path) noexcept;
+	bool isDirectory(const FS::path& path) const noexcept;
 
 private:
-	FS::path mExePath{};
-	FS::path mWritePath{};
-	mutable std::set<std::string> mSearchPath{}; //This really should be std::filesystem::path
+	FS::path mExePath{"./"};
+	FS::path mWritePath{"./data"};
+	mutable std::set<FS::path> mSearchPath{}; //This really should be std::filesystem::path
 };
 
 }

@@ -12,6 +12,15 @@
 
 #include <string>
 
+//Needed to prevent circular include references
+#if defined(__GNUC__) || defined(__GNUG__)
+#include <experimental/filesystem>
+namespace FS = std::experimental::filesystem;
+#else
+#include <filesystem>
+namespace FS = std::filesystem;
+#endif
+
 namespace NAS2D {
 
 /**
@@ -44,7 +53,7 @@ public:
 	 * \param	stream	A ByteStream representing the file.
 	 * \param	name	The full name of the file including path.
 	 */
-	File(const ByteStream& stream, const std::string& name) :
+	File(const ByteStream& stream, const FS::path& name) :
 		mByteStream(stream),
 		mFileName(name)
 	{}
@@ -219,11 +228,11 @@ public:
 	 * \note	Filenames include both the individual file's
 	 *			name and full directory path.
 	 */
-	const std::string& filename() const { return mFileName; }
+	const FS::path& filename() const { return mFileName; }
 
 private:
 	ByteStream	mByteStream;	/**< Internal stream of bytes. */
-	std::string	mFileName;		/**< Internal filename including directory path. */
+	FS::path	mFileName;		/**< Internal filename including directory path. */
 };
 
 } // namespace

@@ -411,7 +411,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 	// Search for an image sheet with 'id'. If not found, add it.
 	if (mImageSheets.find(toLowercase(id)) == mImageSheets.end())
 	{
-		string imagePath = fs.workingPath(mSpriteName);
+		auto imagePath = fs.workingPath(mSpriteName);
 		imagePath += src;
 		if (!fs.exists(imagePath))
 		{
@@ -420,7 +420,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 		}
 		else
 		{
-			mImageSheets[id] = Image(imagePath);
+			mImageSheets[id] = Image(imagePath.string());
 		}
 	}
 	else

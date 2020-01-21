@@ -20,16 +20,16 @@ namespace NAS2D {
  *  \class Music
  *  \brief Music Resource.
  */
-class Music: public Resource
+class Music : public Resource
 {
 public:
-	Music();
+	Music() = default;
 	Music(const std::string& filePath);
 
 	Music(const Music& rhs);
 	Music& operator=(const Music& rhs);
 
-	~Music();
+	virtual ~Music();
 
 private:
 	void load();

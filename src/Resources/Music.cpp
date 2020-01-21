@@ -26,13 +26,6 @@ std::map<std::string, MusicInfo>	MUSIC_REF_MAP;		/*< Lookup table for music reso
 void updateMusicReferenceCount(const std::string& name);
 
 /**
- * Default c'tor.
- */
-Music::Music() : Resource()
-{}
-
-
-/**
  * C'tor.
  *
  * \param filePath	Path of the music file to load.

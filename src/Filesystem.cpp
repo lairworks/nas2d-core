@@ -216,8 +216,12 @@ FS::path getLocalSharePath()
 		{
 			homedir = getpwuid(getuid())->pw_dir;
 		}
+		result = homedir ? FS::path{homedir} / ".local/share" : FS::path{"~/.local/share"};
 	}
-	result = xdg_data_home ? (FS::path{xdg_data_home}) : (homedir ? (FS::path{homedir} / ".local/share") : FS::path{"~/.local/share"});
+	else
+	{
+		result = FS::path{xdg_data_home};
+	}
 	result = FS::canonical(result);
 	result.make_preferred();
 #endif

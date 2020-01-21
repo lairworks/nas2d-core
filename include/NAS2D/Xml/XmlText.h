@@ -29,7 +29,7 @@ public:
 	 * Constructor for text element. By default, it is treated as normal, encoded text.
 	 * If you want it be output as a CDATA text	element, call \c CDATA(true).
 	 */
-	XmlText(const std::string& initValue);
+	explicit XmlText(const std::string& initValue);
 	virtual ~XmlText() {}
 
 	XmlText(const XmlText& copy);

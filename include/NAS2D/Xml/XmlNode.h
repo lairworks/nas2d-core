@@ -145,7 +145,7 @@ public:
 	virtual void streamIn(std::istream& in, std::string& tag) = 0;
 
 protected:
-	XmlNode(NodeType _type);
+	explicit XmlNode(NodeType _type);
 
 	void copyTo(XmlNode* target) const;
 	XmlNode* identify(const char* start);

@@ -24,10 +24,13 @@ class Sound: public Resource
 {
 public:
 
-	Sound();
+	Sound() = default;
+	Sound(const Sound& other) = default;
+	Sound& operator=(const Sound& rhs) = default;
+	Sound(Sound&& other) = default;
+	Sound& operator=(Sound&& other) = default;
 	Sound(const std::string& filePath);
-
-	~Sound();
+	virtual ~Sound();
 
 protected:
 	friend class MixerSDL;
@@ -37,7 +40,7 @@ protected:
 private:
 	void load();
 
-	void*	_chunk;
+	void* _chunk{nullptr};
 };
 
 } // namespace

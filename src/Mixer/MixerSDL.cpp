@@ -40,34 +40,6 @@ void MIXER_HOOK() { MIXER_HOOK_CALLBACK_SIGNAL(); }
  */
 MixerSDL::MixerSDL()
 {
-	init();
-}
-
-
-/*
- * D'tor.
- */
-MixerSDL::~MixerSDL()
-{
-	// Save current volume levels in the Configuration.
-	Utility<Configuration>::get().audioSfxVolume(Mix_Volume(-1, -1));
-	Utility<Configuration>::get().audioMusicVolume(Mix_VolumeMusic(-1));
-
-	stopAllAudio();
-
-	Mix_CloseAudio();
-
-	MIXER_HOOK_CALLBACK_SIGNAL.disconnect(this, &MixerSDL::music_finished_hook);
-	Mix_HookMusicFinished(nullptr);
-
-	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-
-	std::cout << "Mixer Terminated." << std::endl;
-}
-
-
-void MixerSDL::init()
-{
 	std::cout << "Initializing Mixer... ";
 
 	if (SDL_Init(SDL_INIT_AUDIO) < 0)
@@ -91,6 +63,27 @@ void MixerSDL::init()
 	std::cout << "done." << std::endl;
 }
 
+
+/*
+ * D'tor.
+ */
+MixerSDL::~MixerSDL()
+{
+	// Save current volume levels in the Configuration.
+	Utility<Configuration>::get().audioSfxVolume(Mix_Volume(-1, -1));
+	Utility<Configuration>::get().audioMusicVolume(Mix_VolumeMusic(-1));
+
+	stopAllAudio();
+
+	Mix_CloseAudio();
+
+	MIXER_HOOK_CALLBACK_SIGNAL.disconnect(this, &MixerSDL::music_finished_hook);
+	Mix_HookMusicFinished(nullptr);
+
+	SDL_QuitSubSystem(SDL_INIT_AUDIO);
+
+	std::cout << "Mixer Terminated." << std::endl;
+}
 
 void MixerSDL::music_finished_hook()
 {

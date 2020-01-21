@@ -16,6 +16,10 @@ OUTPUT := $(BINDIR)/libnas2d.a
 # Determine OS (Linux, Darwin, ...)
 OS := $(shell uname 2>/dev/null || echo Unknown)
 
+Linux_CXX_LIBS := -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lstdc++fs
+Darwin_CXX_LIBS := -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+CXX_LIBS := $($(OS)_CXX_LIBS)
+
 Linux_OpenGL_LIBS := -lGLEW -lGL
 Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
 OpenGL_LIBS := $($(OS)_OpenGL_LIBS)
@@ -23,7 +27,7 @@ OpenGL_LIBS := $($(OS)_OpenGL_LIBS)
 CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
 CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS.EXTRA)
-LDLIBS := -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lstdc++fs $(shell sdl2-config --static-libs) $(OpenGL_LIBS)
+LDLIBS := $(CXX_LIBS) $(shell sdl2-config --static-libs) $(OpenGL_LIBS)
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 

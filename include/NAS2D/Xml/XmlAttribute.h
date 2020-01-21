@@ -32,8 +32,9 @@ public:
 		XML_WRONG_TYPE
 	};
 
-public:
 	XmlAttribute();
+	XmlAttribute(const XmlAttribute&) = delete;
+	void operator=(const XmlAttribute& base) = delete;
 	XmlAttribute(const std::string& name, std::string& value);
 
 	const std::string& name() const;
@@ -79,10 +80,6 @@ protected:
 private:
 	friend class XmlAttributeSet;
 
-	XmlAttribute(const XmlAttribute&); // Explicitly disallowed.
-	void operator=(const XmlAttribute& base); // Explicitly disallowed.
-
-private:
 	XmlDocument*	_document;	/**< Comment Me. */
 	std::string		_name;		/**< Comment Me. */
 	std::string		_value;		/**< Comment Me. */

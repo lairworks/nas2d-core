@@ -188,7 +188,7 @@ FS::path getApplicationSupportPath()
 	FSFindFolder(kUserDomain, folderType, kCreateFolder, &ref);
 
 	FSRefMakePath(&ref, (UInt8*)&path, PATH_MAX);
-	result = FS::path{path} / appName;
+	result = FS::path{path};
 	result = FS::canonical(result);
 	result.make_preferred();
 #endif

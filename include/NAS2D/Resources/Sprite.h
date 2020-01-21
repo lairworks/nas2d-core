@@ -32,17 +32,11 @@ class Sprite
 public:
 	using Callback = NAS2D::Signals::Signal0<>;	/**< Signal used when action animations complete. */
 
-public:
 	Sprite();
 	Sprite(const std::string& filePath);
-	Sprite(const Sprite &sprite);
-
-	/**
-	 * D'tor
-	 */
-	~Sprite() {}
-
-	Sprite& operator=(const Sprite &rhs);
+	Sprite(const Sprite& sprite) = default;
+	Sprite& operator=(const Sprite& rhs) = default;
+	~Sprite() = default;
 
 	void play(const std::string& action);
 	void pause();
@@ -117,11 +111,9 @@ private:
 	{
 	public:
 		SpriteFrame(const std::string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
-		SpriteFrame(const SpriteFrame &spriteframe);
-
-		SpriteFrame& operator=(const SpriteFrame &rhs);
-
-		~SpriteFrame() {}
+		SpriteFrame(const SpriteFrame &spriteframe) = default;
+		SpriteFrame& operator=(const SpriteFrame& rhs) = default;
+		~SpriteFrame() = default;
 
 		const std::string& sheetId() const { return mSheetId; }
 
@@ -136,12 +128,11 @@ private:
 		int frameDelay() const { return mFrameDelay; }
 
 	private:
-		std::string		mSheetId;
-
-		int				mFrameDelay;
-		int				mAnchorX, mAnchorY;
-
-		Rectangle_2d	mRect;
+		std::string mSheetId{};
+		int mFrameDelay{0};
+		int mAnchorX{0};
+		int mAnchorY{0};
+		Rectangle_2d mRect{};
 	};
 
 private:
@@ -149,7 +140,6 @@ private:
 	using ActionList = std::map<std::string, FrameList>;
 	using SheetList = std::map<std::string, Image>;
 
-private:
 	void processXml(const std::string& filePath);
 	void processImageSheets(void* root);
 	void addImageSheet(const std::string& id, const std::string& src, void* node);
@@ -161,24 +151,23 @@ private:
 
 	void addDefaultAction();
 
-private:
-	Timer				mTimer;				/**< Internal time keeper. */
+	Timer mTimer{}; /**< Internal time keeper. */
 
-	SheetList			mImageSheets;		/**< Imagesheets */
-	ActionList			mActions;			/**< A list of Actions and their associated Frames. */
+	SheetList mImageSheets{}; /**< Imagesheets */
+	ActionList mActions{};	  /**< A list of Actions and their associated Frames. */
 
-	std::string			mSpriteName;		/**< Name of this Sprite. */
-	std::string			mCurrentAction;		/**< The current Action being performed. */
+	std::string mSpriteName{"Default Constructed"}; /**< Name of this Sprite. */
+	std::string mCurrentAction{"default"}; /**< The current Action being performed. */
 
-	size_t				mCurrentFrame;		/**< The current frame index in the current Action's frame list. */
+	size_t mCurrentFrame{0u}; /**< The current frame index in the current Action's frame list. */
 
-	Callback			mFrameCallback;		/**< Callback to signal a listener whenever an animation sequence completes. */
+	Callback mFrameCallback{}; /**< Callback to signal a listener whenever an animation sequence completes. */
 
-	Color			mColor;				/**< Color value to use for drawing the sprite. */
+	Color mColor{Color::Normal}; /**< Color value to use for drawing the sprite. */
 
-	float				mRotationAngle;		/**< Angle of rotation in degrees. */
+	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
 
-	bool				mPaused;			/**< Indicate whether or not the animation for this Sprite is paused. */
+	bool mPaused{false}; /**< Indicate whether or not the animation for this Sprite is paused. */
 };
 
 } // namespace

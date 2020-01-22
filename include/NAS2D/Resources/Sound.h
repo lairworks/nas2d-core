@@ -25,11 +25,10 @@ class Sound: public Resource
 public:
 
 	Sound() = default;
-	Sound(const Sound& other) = default;
+	explicit Sound(const std::string& filePath);
 	Sound& operator=(const Sound& rhs) = default;
 	Sound(Sound&& other) = default;
 	Sound& operator=(Sound&& other) = default;
-	Sound(const std::string& filePath);
 	virtual ~Sound();
 
 protected:

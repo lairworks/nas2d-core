@@ -33,7 +33,7 @@ public:
 	using Callback = NAS2D::Signals::Signal0<>;	/**< Signal used when action animations complete. */
 
 	Sprite();
-	Sprite(const std::string& filePath);
+	explicit Sprite(const std::string& filePath);
 	Sprite(const Sprite& sprite) = default;
 	Sprite& operator=(const Sprite& rhs) = default;
 	~Sprite() = default;

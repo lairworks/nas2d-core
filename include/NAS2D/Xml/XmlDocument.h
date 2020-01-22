@@ -12,7 +12,7 @@ class XmlDocument : public XmlNode
 {
 public:
 	XmlDocument();
-	XmlDocument(const std::string& documentName);
+	explicit XmlDocument(const std::string& documentName);
 
 	XmlDocument(const XmlDocument& copy);
 	XmlDocument& operator=(const XmlDocument& copy);

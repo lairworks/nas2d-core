@@ -41,7 +41,7 @@ class Image: public Resource
 {
 public:
     Image();
-    Image(const std::string& filePath);
+	explicit Image(const std::string& filePath);
 	Image(void* buffer, int bytesPerPixel, int width, int height);
 	Image(int width, int height);
 

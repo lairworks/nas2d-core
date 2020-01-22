@@ -40,10 +40,10 @@ namespace NAS2D {
 class Image: public Resource
 {
 public:
-	Image(const std::string& filePath);
+    Image();
+    Image(const std::string& filePath);
 	Image(void* buffer, int bytesPerPixel, int width, int height);
 	Image(int width, int height);
-	Image();
 
 	Image(const Image &rhs);
 	Image& operator=(const Image& rhs);
@@ -64,8 +64,8 @@ private:
 	void load();
 
 private:
-	std::pair<int, int>				_size;		/**< Width/Height information about the Image. */
-	std::pair<uint32_t, uint32_t>	_center;	/**<  */
+    std::pair<int, int> _size{0,0};		   /**< Width/Height information about the Image. */
+    std::pair<uint32_t, uint32_t> _center{0u,0u}; /**<  */
 };
 
 

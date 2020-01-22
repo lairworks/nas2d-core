@@ -161,6 +161,7 @@
     <ClCompile Include="..\..\src\Configuration.cpp" />
     <ClCompile Include="..\..\src\EventHandler.cpp" />
     <ClCompile Include="..\..\src\Exception.cpp" />
+    <ClCompile Include="..\..\src\FileLogger.cpp" />
     <ClCompile Include="..\..\src\Filesystem.cpp" />
     <ClCompile Include="..\..\src\FpsCounter.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="..\..\include\NAS2D\EventHandler.h" />
     <ClInclude Include="..\..\include\NAS2D\Exception.h" />
     <ClInclude Include="..\..\include\NAS2D\File.h" />
+    <ClInclude Include="..\..\include\NAS2D\FileLogger.h" />
     <ClInclude Include="..\..\include\NAS2D\Filesystem.h" />
     <ClInclude Include="..\..\include\NAS2D\FpsCounter.h" />
     <ClInclude Include="..\..\include\NAS2D\Game.h" />

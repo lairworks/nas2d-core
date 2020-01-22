@@ -105,7 +105,7 @@ class XmlHandle
 {
 public:
 	XmlHandle();
-	XmlHandle(XmlNode* _node);
+	explicit XmlHandle(XmlNode* _node);
 	XmlHandle(const XmlHandle& ref);
 	XmlHandle operator=(const XmlHandle& ref);
 

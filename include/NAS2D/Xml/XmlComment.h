@@ -24,7 +24,7 @@ class XmlComment : public XmlNode
 public:
 	XmlComment();
 
-	XmlComment(const std::string& _value);
+	explicit XmlComment(const std::string& _value);
 	XmlComment(const XmlComment& copy);
 	XmlComment& operator=(const XmlComment& base);
 

@@ -26,7 +26,7 @@ namespace Xml {
 class XmlElement : public XmlNode
 {
 public:
-	XmlElement(const std::string& _value);
+	explicit XmlElement(const std::string& _value);
 	XmlElement(const XmlElement& copy);
 	virtual ~XmlElement();
 

@@ -24,7 +24,7 @@ class Music: public Resource
 {
 public:
 	Music();
-	Music(const std::string& filePath);
+	explicit Music(const std::string& filePath);
 
 	Music(const Music& rhs);
 	Music& operator=(const Music& rhs);

@@ -23,7 +23,7 @@ class RendererOpenGL: public Renderer
 {
 public:
 	RendererOpenGL() = delete;
-	RendererOpenGL(const std::string& title);
+	explicit RendererOpenGL(const std::string& title);
 	RendererOpenGL(const RendererOpenGL& other) = delete;
 	RendererOpenGL(RendererOpenGL&& other) = delete;
 	RendererOpenGL& operator=(const RendererOpenGL& rhs) = delete;

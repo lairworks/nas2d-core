@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -235,6 +235,7 @@
     <ClInclude Include="..\..\include\NAS2D\State.h" />
     <ClInclude Include="..\..\include\NAS2D\StateManager.h" />
     <ClInclude Include="..\..\include\NAS2D\StringUtils.h" />
+    <ClInclude Include="..\..\include\NAS2D\ThreadSafeQueue.h" />
     <ClInclude Include="..\..\include\NAS2D\Timer.h" />
     <ClInclude Include="..\..\include\NAS2D\Trig.h" />
     <ClInclude Include="..\..\include\NAS2D\Utility.h" />

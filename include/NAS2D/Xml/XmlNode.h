@@ -41,8 +41,9 @@ public:
 		XML_TYPECOUNT
 	};
 
-public:
 	XmlNode();
+	XmlNode(const XmlNode&) = delete;
+	void operator=(const XmlNode& base) = delete;
 	virtual ~XmlNode();
 
 	const std::string& value() const;
@@ -150,7 +151,6 @@ protected:
 	void copyTo(XmlNode* target) const;
 	XmlNode* identify(const char* start);
 
-protected:
 	XmlNode*		_parent;		/**< Parent of the XmlNode. */
 	NodeType		_type;			/**< Type of the XmlNode. */
 
@@ -165,9 +165,6 @@ protected:
 private:
 	friend class XmlDocument;
 	friend class XmlElement;
-
-	XmlNode(const XmlNode&); // Explicitly disallowed.
-	void operator=(const XmlNode& base); // Explicitly disallowed.
 };
 
 

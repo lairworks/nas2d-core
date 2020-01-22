@@ -53,6 +53,8 @@ class XmlBase
 
 public:
 	XmlBase() {}
+	XmlBase(const XmlBase&) = delete;
+	void operator=(const XmlBase& base) = delete;
 	virtual ~XmlBase() {}
 
 	/**
@@ -114,12 +116,7 @@ protected:
 
 	inline static int toLower(int v) { return tolower(v); }
 
-protected:
 	std::pair<int, int> location;
-
-private:
-	XmlBase(const XmlBase&); // Explicitly disallowed.
-	void operator=(const XmlBase& base); // Explicitly disallowed.
 
 private:
 	struct Entity

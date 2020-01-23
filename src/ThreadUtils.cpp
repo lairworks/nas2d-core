@@ -1,10 +1,10 @@
 #include "NAS2D/ThreadUtils.h"
 
-/**********************************************/
-/* Non Windows implementation references:   *
- * https://stackoverflow.com/a/7989973/421178 *
- * https://stackoverflow.com/questions/2057960/how-to-set-a-threadname-in-macosx *
-/**********************************************/
+/*********************************************************************************/
+/* Non Windows implementation references:                                        */
+/* https://stackoverflow.com/a/7989973/421178                                    */
+/* https://stackoverflow.com/questions/2057960/how-to-set-a-threadname-in-macosx */
+/*********************************************************************************/
 
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
@@ -120,12 +120,12 @@ std::string ConvertUnicodeToMultiByte(const std::wstring& unicode_string) noexce
 }
 #endif
 
+#if defined(_WIN32)
 void NAS2D::ThreadUtils::SetThreadDescription(std::thread& thread, const std::wstring& description)
 {
-#if defined(_WIN32)
 	SetThreadDescriptionWindows(thread, description);
-#endif
 }
+#endif
 
 void SetThreadDescriptionWindows([[maybe_unused]] std::thread& thread, [[maybe_unused]] const std::wstring& description)
 {
@@ -165,16 +165,16 @@ void GetThreadDescriptionWindows([[maybe_unused]] std::thread& thread, [[maybe_u
 #endif
 }
 
+#if defined(_WIN32)
 void GetThreadDescriptionWindows([[maybe_unused]] std::thread& thread, [[maybe_unused]] std::wstring& description)
 {
-#if defined(_WIN32)
 	PWSTR d{};
 	::GetThreadDescription(thread.native_handle(), &d);
 	description.assign(d);
 	::LocalFree(d);
 	d = nullptr;
-#endif
 }
+#endif
 
 void GetThreadDescriptionLinux([[maybe_unused]] std::thread& thread, [[maybe_unused]] std::string& description)
 {

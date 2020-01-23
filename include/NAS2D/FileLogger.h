@@ -24,17 +24,17 @@ public:
 	FileLogger& operator=(FileLogger&& other) = delete;
 	~FileLogger();
 
-	void log(const std::string& msg);
-	void logLine(const std::string& msg);
+	void Log(const std::string& msg);
+	void LogLine(const std::string& msg);
 
 protected:
 private:
-	bool isRunning() const;
-	void setIsRunning(bool value);
-	void initialize(const std::string& logName);
-	void shutdown();
+	bool IsRunning() const;
+	void SetIsRunning(bool value);
+	void Initialize(const std::string& logName);
+	void Shutdown();
 
-	void logWorker();
+	void LogWorker();
 
 	std::streambuf* mOldCout{nullptr};
 	std::ofstream mStreamBuffer{};

@@ -9,9 +9,9 @@
 
 using namespace NAS2D;
 
-void NAS2D::FileLogger::logWorker()
+void NAS2D::FileLogger::LogWorker()
 {
-	while (isRunning())
+	while (IsRunning())
 	{
 		std::unique_lock lock(_cs);
 		//Wake up when not running or queue isn't empty
@@ -29,15 +29,15 @@ void NAS2D::FileLogger::logWorker()
 
 FileLogger::FileLogger(const std::string& logName)
 {
-	initialize(logName);
+	Initialize(logName);
 }
 
 FileLogger::~FileLogger()
 {
-	shutdown();
+	Shutdown();
 }
 
-bool FileLogger::isRunning() const
+bool FileLogger::IsRunning() const
 {
 	bool running = false;
 	{
@@ -47,15 +47,15 @@ bool FileLogger::isRunning() const
 	return running;
 }
 
-void FileLogger::setIsRunning(bool value)
+void FileLogger::SetIsRunning(bool value)
 {
 	std::scoped_lock lock(_cs);
 	mIsRunning = value;
 }
 
-void FileLogger::initialize(const std::string& logName)
+void FileLogger::Initialize(const std::string& logName)
 {
-	if (isRunning())
+	if (IsRunning())
 	{
 		std::cout << "FileLogger already running." << std::endl;
 		return;
@@ -72,15 +72,15 @@ void FileLogger::initialize(const std::string& logName)
 		return;
 	}
 	mOldCout = std::cout.rdbuf(mStreamBuffer.rdbuf());
-	mWorker = std::thread(&FileLogger::logWorker, this);
+	mWorker = std::thread(&FileLogger::LogWorker, this);
 	ThreadUtils::SetThreadDescription(mWorker, std::string{"FileLogger"});
 }
 
-void FileLogger::shutdown()
+void FileLogger::Shutdown()
 {
-	if (isRunning())
+	if (IsRunning())
 	{
-		setIsRunning(false);
+		SetIsRunning(false);
 		if (mWorker.joinable())
 		{
 			mWorker.join();
@@ -91,7 +91,7 @@ void FileLogger::shutdown()
 }
 
 
-void NAS2D::FileLogger::log(const std::string& msg)
+void NAS2D::FileLogger::Log(const std::string& msg)
 {
 	{
 		std::scoped_lock lock(_cs);
@@ -100,7 +100,7 @@ void NAS2D::FileLogger::log(const std::string& msg)
 	mSignal.notify_all();
 }
 
-void NAS2D::FileLogger::logLine(const std::string& msg)
+void NAS2D::FileLogger::LogLine(const std::string& msg)
 {
-	log(msg + '\n');
+	Log(msg + '\n');
 }

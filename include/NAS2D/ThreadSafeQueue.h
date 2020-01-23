@@ -9,12 +9,12 @@ namespace NAS2D
 	class ThreadSafeQueue
 	{
 	  public:
-		void push(const T& t) noexcept(noexcept(mQueue.push()))
+		void push(const T& t)
 		{
 			std::scoped_lock lock(_cs);
-			mQueue.push();
+			mQueue.push(t);
 		}
-		void pop() noexcept(noexcept(mQueue.pop()))
+		void pop()
 		{
 			std::scoped_lock lock(_cs);
 			mQueue.pop();

@@ -68,7 +68,7 @@ void FileLogger::Initialize(const std::string& logName)
 	{
 		std::cout << "Could not initialize FileLogger." << std::endl;
 		mStreamBuffer.clear();
-		mIsRunning = false;
+		SetIsRunning(false);
 		return;
 	}
 	mOldCout = std::cout.rdbuf(mStreamBuffer.rdbuf());
@@ -93,6 +93,7 @@ void FileLogger::Shutdown()
 
 void NAS2D::FileLogger::Log(const std::string& msg)
 {
+	if(IsRunning())
 	{
 		std::scoped_lock lock(_cs);
 		mQueue.push(msg);

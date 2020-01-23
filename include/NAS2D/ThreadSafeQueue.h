@@ -19,38 +19,38 @@ namespace NAS2D
 			std::scoped_lock lock(_cs);
 			mQueue.pop();
 		}
-		bool empty() const noexcept(noexcept(mQueue.empty()))
+		bool empty() const noexcept
 		{
 			std::scoped_lock lock(_cs);
 			return mQueue.empty();
 		}
-		decltype(auto) size() const noexcept(noexcept(mQueue.size()))
+		decltype(auto) size() const noexcept
 		{
 			std::scoped_lock lock(_cs);
 			return mQueue.size();
 		}
 
-		T& back() const noexcept(noexcept(mQueue.back()))
+		T& back() const noexcept
 		{
 			std::scoped_lock lock(_cs);
 			return mQueue.back();
 		}
-		T& back() noexcept(noexcept(mQueue.back()))
+		T& back() noexcept
 		{
 			std::scoped_lock lock(_cs);
 			return mQueue.back();
 		}
-		T& front() const noexcept(noexcept(mQueue.front()))
+		T& front() const noexcept
 		{
 			std::scoped_lock lock(_cs);
 			return mQueue.front();
 		}
-		T& front() noexcept(noexcept(mQueue.front()))
+		T& front() noexcept
 		{
 			std::scoped_lock lock(_cs);
 			return mQueue.front();
 		}
-		void swap(ThreadSafeQueue<T>& b) noexcept(noexcept(mQueue.swap()))
+		void swap(ThreadSafeQueue<T>& b) noexcept
 		{
 			std::scoped_lock lock(_cs, b._cs);
 			mQueue.swap(b.mQueue);

@@ -19,7 +19,6 @@ using namespace NAS2D;
 using namespace NAS2D::Xml;
 
 const string NAS2D::SPRITE_VERSION("0.99");
-const string DEFAULT_ACTION("default");
 
 const int FRAME_PAUSE = -1;
 
@@ -75,7 +74,7 @@ void Sprite::play(const std::string& action)
 	if (actionIt == mActions.end())
 	{
 		cout << "Named action '" << action << "' is not defined in '" << name() << "'." << endl;
-		mCurrentAction = DEFAULT_ACTION;
+		mCurrentAction = "default";
 		mCurrentFrame = 0;
 	}
 	else if (mCurrentAction == toLowercase(action))

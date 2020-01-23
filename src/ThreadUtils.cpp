@@ -13,8 +13,7 @@
 #endif
 
 #if defined(__linux__)
-#include <pthread.h>	//Remove whichever one does not exist!
-#include <pthread_np.h> //Remove whichever one does not exist!
+#include <pthread.h>
 #endif
 
 #if defined(__APPLE__)

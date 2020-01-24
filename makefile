@@ -62,7 +62,7 @@ clean:
 	-rm -fr $(BINDIR)
 clean-deps:
 	-rm -fr $(DEPDIR)
-clean-all:
+clean-all: | clean
 	-rm -rf $(BUILDDIR)
 
 

@@ -55,7 +55,7 @@ $(DEPDIR)/%.d: ;
 
 include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(DEPDIR)/%.d,$(SRCS)))
 
-.PHONY: clean clean-deps clean-sdl clean-sdl-all clean-all
+.PHONY: clean clean-deps clean-all
 clean:
 	-rm -fr $(OBJDIR)
 	-rm -fr $(DEPDIR)

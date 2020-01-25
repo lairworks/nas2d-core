@@ -172,24 +172,24 @@ DockerRepository := outpostuniverse
 ImageName := nas2d
 ImageVersion := 1.4
 
-.PHONY: build-image-ubuntu
-build-image-ubuntu:
+.PHONY: build-image
+build-image:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}
 
-.PHONY: run-image-ubuntu
-run-image-ubuntu:
+.PHONY: run-image
+run-image:
 	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/${ImageName}
 
-.PHONY: debug-image-ubuntu
-debug-image-ubuntu:
+.PHONY: debug-image
+debug-image:
 	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/${ImageName} bash
 
-.PHONY: root-debug-image-ubuntu
-root-debug-image-ubuntu:
+.PHONY: root-debug-image
+root-debug-image:
 	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/${ImageName} bash
 
-.PHONY: push-image-ubuntu
-push-image-ubuntu:
+.PHONY: push-image
+push-image:
 	docker push ${DockerRepository}/${ImageName}
 
 #### CircleCI related build rules ####

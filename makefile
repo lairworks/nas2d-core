@@ -172,6 +172,9 @@ DockerRepository := outpostuniverse
 ImageName := nas2d
 ImageVersion := 1.4
 
+ImageName_mingw := nas2d-mingw
+ImageVersion_mingw := 1.0
+
 .PHONY: build-image
 build-image:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}
@@ -191,6 +194,23 @@ root-debug-image:
 .PHONY: push-image
 push-image:
 	docker push ${DockerRepository}/${ImageName}
+
+.PHONY: build-image-mingw
+build-image-mingw: ImageName := ${ImageName_mingw}
+build-image-mingw: ImageVersion := ${ImageVersion_mingw}
+build-image-mingw: | build-image
+.PHONY: run-image-mingw
+run-image-mingw: ImageName := ${ImageName_mingw}
+run-image-mingw: | run-image
+.PHONY: debug-image-mingw
+debug-image-mingw: ImageName := ${ImageName_mingw}
+debug-image-mingw: | debug-image
+.PHONY: root-debug-image-mingw
+root-debug-image-mingw: ImageName := ${ImageName_mingw}
+root-debug-image-mingw: | root-debug-image
+.PHONY: push-image-mingw
+push-image-mingw: ImageName := ${ImageName_mingw}
+push-image-mingw: | push-image
 
 #### CircleCI related build rules ####
 

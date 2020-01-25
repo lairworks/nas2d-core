@@ -27,6 +27,9 @@ CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS.EXTRA)
 LDLIBS := -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(shell sdl2-config --static-libs) $(OpenGL_LIBS)
 
+Windows_RUN_PREFIX := wine
+RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
+
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
@@ -104,7 +107,7 @@ TESTPOSTCOMPILE = @mv -f $(TESTOBJDIR)/$*.Td $(TESTOBJDIR)/$*.d && touch $@
 
 test: $(TESTOUTPUT)
 check: | test
-	cd test && ../$(TESTOUTPUT)
+	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
 
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
 	@mkdir -p ${@D}

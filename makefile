@@ -14,16 +14,21 @@ DEPDIR := $(BUILDDIR)/deps
 OUTPUT := $(BINDIR)/libnas2d.a
 
 # Determine OS (Linux, Darwin, ...)
-OS := $(shell uname 2>/dev/null || echo Unknown)
+CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
+TARGET_OS ?= $(CURRENT_OS)
 
 Linux_OpenGL_LIBS := -lGLEW -lGL
 Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
-OpenGL_LIBS := $($(OS)_OpenGL_LIBS)
+Windows_OpenGL_LIBS := -lglew32 -lopengl32
+OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
 CXXFLAGS := -std=c++17 -g -Wall -Wpedantic $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS.EXTRA)
 LDLIBS := -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(shell sdl2-config --static-libs) $(OpenGL_LIBS)
+
+Windows_RUN_PREFIX := wine
+RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
@@ -102,7 +107,7 @@ TESTPOSTCOMPILE = @mv -f $(TESTOBJDIR)/$*.Td $(TESTOBJDIR)/$*.d && touch $@
 
 test: $(TESTOUTPUT)
 check: | test
-	cd test && ../$(TESTOUTPUT)
+	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
 
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
 	@mkdir -p ${@D}

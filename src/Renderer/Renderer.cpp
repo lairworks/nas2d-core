@@ -12,8 +12,11 @@
 
 #include "NAS2D/Timer.h"
 
+#include "NAS2D/Renderer/Texture.h"
+
 #include <iostream>
 #include <algorithm>
+#include <memory>
 
 using namespace NAS2D;
 
@@ -532,4 +535,38 @@ void Renderer::update()
 	{
 		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), static_cast<uint8_t>(mCurrentFade));
 	}
+}
+
+Texture* Renderer::GetTexture(const std::string& nameOrFilepath)
+{
+	auto found_iter = mTextures.find(nameOrFilepath);
+    if(found_iter == mTextures.end())
+    {
+		return nullptr;
+    }
+	return found_iter->second.get();
+}
+
+Texture* Renderer::CreateTexture([[maybe_unused]] const std::string& nameOrFilepath)
+{
+	return nullptr;
+}
+
+Texture* Renderer::CreateOrGetTexture(const std::string& nameOrFilepath)
+{
+    if(auto* texture = GetTexture(nameOrFilepath))
+    {
+		return texture;
+    }
+	return CreateTexture(nameOrFilepath);
+}
+
+bool Renderer::RegisterTexture(const std::string& nameOrFilepath, std::unique_ptr<Texture> texture)
+{
+	auto found_iter = mTextures.find(nameOrFilepath);
+    if(found_iter == std::end(mTextures)) {
+		mTextures.try_emplace(nameOrFilepath, std::move(texture));
+		return true;
+    }
+	return false;
 }

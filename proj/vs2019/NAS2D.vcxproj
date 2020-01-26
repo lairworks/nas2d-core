@@ -169,10 +169,12 @@
     <ClCompile Include="..\..\src\Mixer\MixerSDL.cpp" />
     <ClCompile Include="..\..\src\Mixer\MixerNull.cpp" />
     <ClCompile Include="..\..\src\Renderer\Color.cpp" />
+    <ClCompile Include="..\..\src\Renderer\OpenGL\TextureOpenGL.cpp" />
     <ClCompile Include="..\..\src\Renderer\Point.cpp" />
     <ClCompile Include="..\..\src\Renderer\Rectangle.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
     <ClCompile Include="..\..\src\Renderer\RendererOpenGL.cpp" />
+    <ClCompile Include="..\..\src\Renderer\Texture.cpp" />
     <ClCompile Include="..\..\src\Resources\Font.cpp" />
     <ClCompile Include="..\..\src\Resources\Image.cpp" />
     <ClCompile Include="..\..\src\Resources\Music.cpp" />
@@ -181,6 +183,7 @@
     <ClCompile Include="..\..\src\Resources\Sprite.cpp" />
     <ClCompile Include="..\..\src\StateManager.cpp" />
     <ClCompile Include="..\..\src\StringUtils.cpp" />
+    <ClCompile Include="..\..\src\Thirdparty\stb.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Trig.cpp" />
     <ClCompile Include="..\..\src\Version.cpp" />
@@ -213,9 +216,11 @@
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerSDL.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerNull.h" />
     <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\OpenGL\TextureOpenGL.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Color.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Point.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Texture.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Vector.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Rectangle.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Renderer.h" />
@@ -250,6 +255,8 @@
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlText.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlUnknown.h" />
     <ClInclude Include="..\..\include\NAS2D\Xml\XmlVisitor.h" />
+    <ClInclude Include="..\..\include\Thirdparty\stb\stb_image.h" />
+    <ClInclude Include="..\..\include\Thirdparty\stb\stb_image_write.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.clang-format" />

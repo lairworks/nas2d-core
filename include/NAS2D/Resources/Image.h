@@ -9,18 +9,17 @@
 // ==================================================================================
 #pragma once
 
-#include "Resource.h"
 #include "../Renderer/Color.h"
 #include "../Renderer/Vector.h"
 
-#include <vector>
+#include <mutex>
+#include <string>
 #include <utility>
+#include <vector>
 
-
-namespace NAS2D {
-
-
-/**
+namespace NAS2D
+{
+	/**
  * \class Image
  * \brief Image Class
  *
@@ -32,54 +31,59 @@ namespace NAS2D {
  * - TGA
  * - TIFF
  * - WEBP
+ * - PSD
+ * - GIF (including Animated GIF89a or GIF87a
+ * - HDR
+ * - PIC
+ * - PNM
  *
  * \note	Image currently only supports 24-bit and 32-bit images (true-color with
  *			and without an alpha channel).
  *
  */
-class Image: public Resource
-{
-public:
-	explicit Image(const std::string& filePath);
-	Image(void* buffer, int bytesPerPixel, int width, int height);
-	Image(int width, int height);
-	Image();
+	class Image
+	{
+	  public:
+		Image() = default;
+		explicit Image(const std::string& filePath, bool openGL_flipOnLoad = false);
+		Image(uint8_t* buffer, int width, int height);
+		Image(int width, int height);
 
-	Image(const Image &rhs);
-	Image& operator=(const Image& rhs);
+		Image(Image&& rhs) noexcept;
+		Image& operator=(Image&& rhs) noexcept;
+		Image(const Image& rhs) = delete;
+		Image& operator=(const Image& rhs) = delete;
 
-	~Image();
+		~Image() = default;
 
-	Vector<int> size() const;
+		Vector<int> size() const;
+		int width() const;
+		int height() const;
 
-	int width() const;
-	int height() const;
+		void setTexelColor(const Vector<int> texelPos, const Color& color);
+		Color getTexelColor(const Vector<int> texelPos) const;
+		
+		const std::string& GetFilepath() const noexcept;
 
-	int center_x() const;
-	int center_y() const;
+		const uint8_t* GetData() const noexcept;
+	  private:
+		Vector<int> _size{};
+		int _bytesPerTexel{4};
+		std::string _filepath{};
+		std::vector<uint8_t> _texelBytes{};
+		std::mutex _cs{};
+	};
 
-	Color pixelColor(int x, int y) const;
-
-private:
-	void load();
-
-private:
-	std::pair<int, int>				_size;		/**< Width/Height information about the Image. */
-	std::pair<uint32_t, uint32_t>	_center;	/**<  */
-};
-
-
-/**
+	/**
  * \typedef	ImagePtrList
  * \brief	A list of pointers to Image objects.
  */
-using ImagePtrList = std::vector<Image*>;
+	using ImagePtrList = std::vector<Image*>;
 
-
-/**
+	/**
  * \typedef	ImageList
  * \brief	A list of Image objects.
  */
-using ImageList = std::vector<Image>;
+	using ImageList = std::vector<Image>;
 
-} // namespace
+} // namespace NAS2D

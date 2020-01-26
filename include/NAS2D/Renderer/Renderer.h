@@ -17,9 +17,14 @@
 #include "../Resources/Image.h"
 #include "../Resources/Font.h"
 
+#include "NAS2D/Renderer/Texture.h"
+
 #include <string>
+#include <memory>
 
 namespace NAS2D {
+
+	class Texture;
 
 /**
  * \class Renderer
@@ -129,7 +134,14 @@ public:
 
 	virtual void update();
 
-protected:
+	virtual Texture* GetTexture(const std::string& nameOrFilepath) = 0;
+	virtual Texture* CreateTexture([[maybe_unused]] const std::string& nameOrFilepath) = 0;
+	Texture* CreateOrGetTexture(const std::string& nameOrFilepath);
+
+	virtual void BindTexture(Texture* texture, unsigned int slot = 0) noexcept = 0;
+	virtual void UnbindTexture([[maybe_unused]] Texture* tex, [[maybe_unused]] unsigned int slot = 0) noexcept = 0;
+	bool RegisterTexture(const std::string& nameOrFilepath, std::unique_ptr<Texture> texture);
+  protected:
 	Renderer(const std::string& appTitle);
 
 	void driverName(const std::string& name);
@@ -152,6 +164,7 @@ private:
 	float mCurrentFade{0.0f}; /**< Current fade amount. */
 
 	FadeType mCurrentFadeType{FadeType::None};
+	std::map<std::string, std::unique_ptr<Texture>> mTextures{};
 };
 
 } // namespace

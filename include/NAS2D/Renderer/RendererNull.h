@@ -66,6 +66,11 @@ public:
 	void window_icon(const std::string&) override {}
 
 	void update() override {}
+
+	Texture* GetTexture(const std::string&) override { return nullptr; }
+	Texture* CreateTexture(const std::string&) override { return nullptr; }
+	void BindTexture(Texture*, unsigned int) noexcept override {}
+	void UnbindTexture(Texture*, unsigned int) noexcept override {}
 };
 
 } // namespace

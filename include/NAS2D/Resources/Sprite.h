@@ -35,14 +35,16 @@ public:
 public:
 	Sprite();
 	explicit Sprite(const std::string& filePath);
-	Sprite(const Sprite &sprite);
+	Sprite(Sprite&& sprite)=default;
+	Sprite(const Sprite& sprite)=delete;
 
 	/**
 	 * D'tor
 	 */
-	~Sprite() {}
+	~Sprite() = default;
 
-	Sprite& operator=(const Sprite &rhs);
+	Sprite& operator=(const Sprite& rhs) = delete;
+	Sprite& operator=(Sprite&& rhs) = default;
 
 	void play(const std::string& action);
 	void pause();

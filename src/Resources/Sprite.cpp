@@ -67,40 +67,6 @@ Sprite::Sprite(const std::string& filePath) :
 	processXml(filePath);
 }
 
-
-/**
- * Copy C'tor
- */
-Sprite::Sprite(const Sprite &sprite) :
-	mImageSheets(sprite.mImageSheets),
-	mActions(sprite.mActions),
-	mSpriteName(sprite.mSpriteName),
-	mCurrentAction(sprite.mCurrentAction),
-	mCurrentFrame(sprite.mCurrentFrame),
-	mColor(sprite.mColor),
-	mRotationAngle(sprite.mRotationAngle),
-	mPaused(sprite.mPaused)
-{}
-
-
-/**
- * Assignment Operator
- */
-Sprite& Sprite::operator=(const Sprite &rhs)
-{
-	mImageSheets	= rhs.mImageSheets;
-	mActions		= rhs.mActions;
-	mSpriteName		= rhs.mSpriteName;
-	mCurrentAction	= rhs.mCurrentAction;
-	mCurrentFrame	= rhs.mCurrentFrame;
-	mColor			= rhs.mColor;
-	mRotationAngle	= rhs.mRotationAngle;
-	mPaused			= rhs.mPaused;
-
-	return *this;
-}
-
-
 /**
  * Plays an action animation.
  *
@@ -593,11 +559,6 @@ bool Sprite::validateSheetId(const std::string& sheetId, int row)
 	else if (mImageSheets.find(sheetId) == mImageSheets.end())
 	{
 		cout << "Frame definition references an undefined imagesheet '" << sheetId << "'." << endTag(row, name()) << endl;
-		return false;
-	}
-	else if (!mImageSheets.find(sheetId)->second.loaded())
-	{
-		cout << "Frame definition references an imagesheet that failed to load." << endTag(row, name()) << endl;
 		return false;
 	}
 

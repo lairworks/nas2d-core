@@ -77,12 +77,19 @@ public:
 
 	void update() override;
 
-private:
 
+	Texture* CreateTexture(const std::string& nameOrFilepath) override;
+	Texture* GetTexture(const std::string& nameOrFilepath) override;
+	void BindTexture(Texture* tex, unsigned int slot = 0) noexcept override;
+	void UnbindTexture([[maybe_unused]] Texture* tex, [[maybe_unused]] unsigned int slot = 0) noexcept override;
+  private:
+	
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync);
 
 	void _resize(int w, int h);
+
+	std::vector<unsigned int> _texture_ids;
 };
 
 } // namespace

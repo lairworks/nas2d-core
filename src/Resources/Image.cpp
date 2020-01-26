@@ -8,14 +8,18 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "NAS2D/Resources/Image.h"
-#include "NAS2D/Resources/ImageInfo.h"
 
 #include "NAS2D/Exception.h"
+#include "NAS2D/File.h"
+#include "NAS2D/Filesystem.h"
+#include "NAS2D/Resources/ImageInfo.h"
+#include "NAS2D/StringUtils.h"
+#include "NAS2D/Utility.h"
+
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
 
-#include <GL/glew.h>
-#include <SDL2/SDL_image.h>
+#include "Thirdparty/stb/stb_image.h"
 
 #include <iostream>
 #include <map>
@@ -24,42 +28,38 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-const std::string DEFAULT_IMAGE_NAME	= "Default Image";
-const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
-
-
-using TextureIdMap = std::map<std::string, ImageInfo>;
-
-TextureIdMap	IMAGE_ID_MAP;			/*< Lookup table for OpenGL Texture ID's. */
-int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
-
-// ==================================================================================
-// = UNEXPOSED FUNCTION PROTOTYPES
-// ==================================================================================
-bool checkTextureId(const std::string& name);
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
-void updateImageReferenceCount(const std::string& name);
-
-
 /**
  * Loads an Image from disk.
  *
  * \param filePath Path to an image file.
  */
-Image::Image(const std::string& filePath) : Resource(filePath)
+Image::Image(const std::string& filePath, bool openGL_flipOnLoad /*= false*/)
+: _filepath(filePath)
 {
-	load();
+	auto file = Utility<Filesystem>::get().open(_filepath);
+	if(file.empty()) {
+		std::cout << "Could not load " << _filepath << std::endl;
+		throw std::runtime_error("file not found");
+	}
+	else
+	{
+		int comp = 0;
+		int req_comp = 4;
+		std::vector<uint8_t> buffer(file.bytes().begin(), file.bytes().end());
+		file.clear();
+		stbi_set_flip_vertically_on_load(openGL_flipOnLoad ? 1 : 0);
+		auto texel_bytes = stbi_load_from_memory(buffer.data(), static_cast<int>(buffer.size()), &_size.x, &_size.y, &comp, req_comp);
+		if(!texel_bytes)
+		{
+			throw NAS2D::Exception::image_bad_data();
+		}
+		buffer.clear();
+		buffer.shrink_to_fit();
+		_bytesPerTexel = req_comp;
+		_texelBytes = std::vector<uint8_t>(texel_bytes, texel_bytes + (static_cast<std::size_t>(_size.x) * _size.y * _bytesPerTexel));
+		stbi_image_free(texel_bytes);
+	}
 }
-
-
-/**
- * Default C'tor.
- */
-Image::Image() : Resource(DEFAULT_IMAGE_NAME)
-{
-	loaded(true);
-}
-
 
 /**
  * Create a blank Image of X, Y dimensions.
@@ -67,360 +67,118 @@ Image::Image() : Resource(DEFAULT_IMAGE_NAME)
  * \param	width	Width of the Image.
  * \param	height	Height of the Image.
  */
-Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
+Image::Image(int width, int height)
+: _size{width, height}
+, _bytesPerTexel{4}
+, _texelBytes(static_cast<std::size_t>(width) * height * _bytesPerTexel, 0u)
 {
-	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
-	_size = std::make_pair(width, height);
-	_center = std::make_pair(width / 2, height / 2);
-
-	// Update resource management.
-	IMAGE_ID_MAP[name()].texture_id = 0;
-	IMAGE_ID_MAP[name()].w = width;
-	IMAGE_ID_MAP[name()].h = height;
-	IMAGE_ID_MAP[name()].ref_count++;
+	/* DO NOTHING */
 }
-
 
 /**
  * Create an Image from a raw data buffer.
  *
  * \param	buffer			Pointer to a data buffer.
- * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
  * \param	width			Width of the Image.
  * \param	height			Height of the Image.
  */
-Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
+Image::Image(uint8_t* buffer, int width, int height)
+: _size{width, height}
+, _bytesPerTexel(4)
+, _texelBytes(buffer, buffer + (static_cast<std::size_t>(width) * height * _bytesPerTexel))
 {
-	if (buffer == nullptr)
-	{
-		throw image_null_data();
-	}
-
-	if (bytesPerPixel != 3 && bytesPerPixel != 4)
-	{
-		throw image_unsupported_bit_depth();
-	}
-
-	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
-
-	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
-
-	_size = std::make_pair(width, height);
-	_center = std::make_pair(pixels->w / 2, pixels->h / 2);
-
-	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
-
-	// Update resource management.
-	IMAGE_ID_MAP[name()].texture_id = texture_id;
-	IMAGE_ID_MAP[name()].w = width;
-	IMAGE_ID_MAP[name()].h = height;
-	IMAGE_ID_MAP[name()].ref_count++;
-	IMAGE_ID_MAP[name()].pixels = pixels;
+	/* DO NOTHING */
 }
 
-
-/**
- * Copy C'tor.
- *
- * \param	src		Image to copy.
- */
-Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
+Image::Image(Image&& rhs) noexcept
+: _size(std::move(rhs._size))
+, _bytesPerTexel(std::move(rhs._bytesPerTexel))
+, _filepath(std::move(rhs._filepath))
 {
-	if (!src.loaded())
-	{
-		throw image_bad_copy();
-	}
-
-	loaded(src.loaded());
-	IMAGE_ID_MAP[name()].ref_count++;
+	std::scoped_lock<std::mutex, std::mutex> lock(_cs, rhs._cs);
+	_texelBytes = std::move(rhs._texelBytes);
 }
 
-
-/**
- * D'tor
- */
-Image::~Image()
+Image& Image::operator=(Image&& rhs) noexcept
 {
-	updateImageReferenceCount(name());
-}
+	std::scoped_lock<std::mutex, std::mutex> lock(_cs, rhs._cs);
+	_bytesPerTexel = std::move(rhs._bytesPerTexel);
+	_size = std::move(rhs._size);
+	_filepath = std::move(rhs._filepath);
+	_texelBytes = std::move(rhs._texelBytes);
 
-
-/**
- * Copy assignment operator.
- *
- * \param	rhs		Image to copy.
- */
-Image& Image::operator=(const Image& rhs)
-{
-	if (this == &rhs) { return *this; }
-
-	updateImageReferenceCount(name());
-
-	name(rhs.name());
-	_size = rhs._size;
-	_center = rhs._center;
-
-	auto it = IMAGE_ID_MAP.find(name());
-	if (it == IMAGE_ID_MAP.end())
-	{
-		throw image_bad_data();
-	}
-
-	loaded(rhs.loaded());
-	++it->second.ref_count;
-
+	rhs._bytesPerTexel = 0;
+	rhs._size = Vector<int>{};
+	rhs._filepath = std::string{};
+	rhs._texelBytes.clear();
+	rhs._texelBytes.shrink_to_fit();
 	return *this;
 }
-
-
-/**
- * Loads an image file from disk.
- *
- * \note	If loading fails, Image will be set to a valid internal state.
- */
-void Image::load()
-{
-	if (checkTextureId(name()))
-	{
-		_size = std::make_pair(IMAGE_ID_MAP[name()].w, IMAGE_ID_MAP[name()].h);
-		loaded(true);
-		return;
-	}
-
-	#ifdef _DEBUG
-	//std::cout << "Loading image '" << name() << "'" << std::endl;
-	#endif
-
-	File imageFile = Utility<Filesystem>::get().open(name());
-	if (imageFile.size() == 0)
-	{
-		std::cout << "Image::load(): '" << name() << "' is empty." << std::endl;
-		return;
-	}
-
-	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
-	if (!pixels)
-	{
-		std::cout << "Image::load(): " << SDL_GetError() << std::endl;
-		return;
-	}
-
-	_size = std::make_pair(pixels->w, pixels->h);
-	_center = std::make_pair(pixels->w / 2, pixels->h / 2);
-
-	unsigned int texture_id = generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
-
-	// Add generated texture id to texture ID map.
-	IMAGE_ID_MAP[name()].texture_id = texture_id;
-	IMAGE_ID_MAP[name()].w = width();
-	IMAGE_ID_MAP[name()].h = height();
-	IMAGE_ID_MAP[name()].ref_count++;
-
-	IMAGE_ID_MAP[name()].pixels = pixels;
-
-	loaded(true);
-}
-
 
 /**
  * Gets the dimensions in pixels of the image.
  */
 Vector<int> Image::size() const
 {
-	return {_size.first, _size.second};
+	return _size;
 }
-
 
 /**
  * Gets the width in pixels of the image.
  */
 int Image::width() const
 {
-	return _size.first;
+	return _size.x;
 }
-
 
 /**
  * Gets the height in pixels of the image.
  */
 int Image::height() const
 {
-	return _size.second;
+	return _size.y;
 }
 
-
-int Image::center_x() const
+void Image::setTexelColor(const Vector<int> texelPos, const Color& color)
 {
-	return _center.first;
-}
+	const std::size_t index = static_cast<std::size_t>(texelPos.x) + texelPos.y * static_cast<std::size_t>(_size.x);
+	const std::size_t offset = index * _bytesPerTexel;
 
-
-int Image::center_y() const
-{
-	return _center.second;
-}
-
-
-/**
- * Gets the color of a pixel at a given coordinate.
- *
- * \param	x	X-Coordinate of the pixel to check.
- * \param	y	Y-Coordinate of the pixel to check.
- */
-Color Image::pixelColor(int x, int y) const
-{
-	if (x < 0 || x > width() || y < 0 || y > height())
+	_texelBytes[offset + 0u] = color.red();
+	_texelBytes[offset + 1u] = color.green();
+	_texelBytes[offset + 2u] = color.blue();
+	if(_bytesPerTexel == 4)
 	{
-		return Color(0, 0, 0, 255);
-	}
-
-	SDL_Surface* pixels = static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels);
-
-	if (!pixels) { throw image_null_data(); }
-
-	SDL_LockSurface(pixels);
-	uint8_t bpp = pixels->format->BytesPerPixel;
-	uint8_t* p = (uint8_t*)pixels->pixels + static_cast<std::size_t>(y) * pixels->pitch + static_cast<std::size_t>(x) * bpp;
-
-	unsigned int c = 0;
-
-	switch (bpp)
-	{
-	case 1:
-		c = *p;
-		break;
-
-	case 2:
-		c = *(uint16_t*)p;
-		break;
-
-	case 3:
-		if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-		{
-			c = p[0] << 16 | p[1] << 8 | p[2];
-		}
-		else
-		{
-			c = p[0] | p[1] << 8 | p[2] << 16;
-		}
-		break;
-
-	case 4:
-		c = *(uint32_t*)p;
-		break;
-
-	default:	// Should never be possible.
-		throw image_bad_data();
-		break;
-	}
-
-	uint8_t r, g, b, a;
-	SDL_GetRGBA(c, pixels->format, &r, &g, &b, &a);
-	SDL_UnlockSurface(pixels);
-
-	return Color(r, g, b, a);
-}
-
-
-// ==================================================================================
-// = Unexposed module-level functions defined here that don't need to be part of the
-// = API interface.
-// ==================================================================================
-
-/**
-* Internal function used to clean up references to fonts when the Image
-* destructor or copy assignment operators are called.
-*
-* \param	name	Name of the Image to check against.
-*/
-void updateImageReferenceCount(const std::string& name)
-{
-	auto it = IMAGE_ID_MAP.find(name);
-	if (it == IMAGE_ID_MAP.end())
-	{
-		return;
-	}
-
-	--it->second.ref_count;
-
-	// if texture id reference count is 0, delete the texture.
-	if (it->second.ref_count < 1)
-	{
-		if (it->second.texture_id == 0)
-		{
-			return;
-		}
-
-		glDeleteTextures(1, &it->second.texture_id);
-
-		if (it->second.fbo_id != 0)
-		{
-			glDeleteFramebuffers(1, &it->second.fbo_id);
-		}
-
-		if (it->second.pixels != nullptr)
-		{
-			SDL_FreeSurface(static_cast<SDL_Surface*>(it->second.pixels));
-			it->second.pixels = nullptr;
-		}
-
-		IMAGE_ID_MAP.erase(it);
+		_texelBytes[offset + 3u] = color.alpha();
 	}
 }
 
-
-/**
-* Checks to see if a texture has already been generated
-* and if it has, increases the reference count.
-*
-* \return	True if texture already exists. False otherwise.
-*/
-bool checkTextureId(const std::string& name)
+Color Image::getTexelColor(const Vector<int> texelPos) const
 {
-	auto it = IMAGE_ID_MAP.find(name);
+	const std::size_t index = static_cast<std::size_t>(texelPos.x) + texelPos.y * static_cast<std::size_t>(_size.x);
+	const std::size_t offset = index * _bytesPerTexel;
+	Color color;
 
-	if (it != IMAGE_ID_MAP.end())
+	color.red(_texelBytes[offset + 0u]);
+	color.green(_texelBytes[offset + 1u]);
+	color.blue(_texelBytes[offset + 2u]);
+	if(_bytesPerTexel == 4)
 	{
-		++IMAGE_ID_MAP[name].ref_count;
-		return true;
+		color.alpha(_texelBytes[offset + 3u]);
 	}
-
-	return false;
+	else
+	{
+		color.alpha(255);
+	}
+	return color;
 }
 
-
-/**
- * Generates a new OpenGL texture from an SDL_Surface.
- */
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
+const std::string& NAS2D::Image::GetFilepath() const noexcept
 {
-	GLenum textureFormat = 0;
-	switch (bytesPerPixel)
-	{
-	case 4:
-		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
-		break;
-	case 3:
-		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGR : GL_RGB;
-		break;
+	return _filepath;
+}
 
-	default:
-		throw image_unsupported_bit_depth();
-		break;
-	}
-
-	GLuint texture_id;
-	glGenTextures(1, &texture_id);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
-
-	// Set texture and pixel handling states.
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
-
-	return texture_id;
+const uint8_t* NAS2D::Image::GetData() const noexcept
+{
+	return _texelBytes.data();
 }

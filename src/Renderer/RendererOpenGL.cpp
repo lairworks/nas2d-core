@@ -20,6 +20,10 @@
 #include "NAS2D/Resources/ImageInfo.h"
 #include "NAS2D/Utility.h"
 
+#include "NAS2D/Renderer/OpenGL/TextureOpenGL.h"
+
+#include "Thirdparty/stb/stb_image.h"
+
 #include <GL/glew.h>
 
 #include <SDL2/SDL.h>
@@ -31,6 +35,48 @@
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
+
+GLenum TextureSlotToGLTextureSlot(unsigned int slot);
+
+GLenum TextureSlotToGLTextureSlot(unsigned int slot)
+{
+	switch(slot)
+	{
+	case 0: return GL_TEXTURE0;
+	case 1: return GL_TEXTURE1;
+	case 2: return GL_TEXTURE2;
+	case 3: return GL_TEXTURE3;
+	case 4: return GL_TEXTURE4;
+	case 5: return GL_TEXTURE5;
+	case 6: return GL_TEXTURE6;
+	case 7: return GL_TEXTURE7;
+	case 8: return GL_TEXTURE8;
+	case 9: return GL_TEXTURE9;
+	case 10: return GL_TEXTURE10;
+	case 11: return GL_TEXTURE11;
+	case 12: return GL_TEXTURE12;
+	case 13: return GL_TEXTURE13;
+	case 14: return GL_TEXTURE14;
+	case 15: return GL_TEXTURE15;
+	case 16: return GL_TEXTURE16;
+	case 17: return GL_TEXTURE17;
+	case 18: return GL_TEXTURE18;
+	case 19: return GL_TEXTURE19;
+	case 20: return GL_TEXTURE20;
+	case 21: return GL_TEXTURE21;
+	case 22: return GL_TEXTURE22;
+	case 23: return GL_TEXTURE23;
+	case 24: return GL_TEXTURE24;
+	case 25: return GL_TEXTURE25;
+	case 26: return GL_TEXTURE26;
+	case 27: return GL_TEXTURE27;
+	case 28: return GL_TEXTURE28;
+	case 29: return GL_TEXTURE29;
+	case 30: return GL_TEXTURE30;
+	case 31: return GL_TEXTURE31;
+	default: return GL_TEXTURE0;
+	}
+}
 
 /** Desktop resolution. To avoid unnecessary function calls. */
 Point_2df DESKTOP_RESOLUTION;
@@ -94,6 +140,7 @@ RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
  */
 RendererOpenGL::~RendererOpenGL()
 {
+	glDeleteTextures(static_cast<int>(_texture_ids.size()), _texture_ids.data());
 	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::_resize);
 
 	SDL_GL_DeleteContext(CONTEXT);
@@ -111,7 +158,7 @@ void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint
 
 	fillVertexArray(x, y, static_cast<float>(image.width() * scale), static_cast<float>(image.height() * scale));
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(IMAGE_ID_MAP[image.GetFilepath()].texture_id);
 }
 
 
@@ -127,7 +174,7 @@ void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, fl
 						y / image.height() + height / image.height()
 					);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
+	drawVertexArray(IMAGE_ID_MAP[image.GetFilepath()].texture_id, false);
 }
 
 
@@ -153,7 +200,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rast
 						y / image.height() + height / image.height()
 					);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
+	drawVertexArray(IMAGE_ID_MAP[image.GetFilepath()].texture_id, false);
 
 	glPopMatrix();
 }
@@ -180,7 +227,7 @@ void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degr
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(IMAGE_ID_MAP[image.GetFilepath()].texture_id);
 	glPopMatrix();
 }
 
@@ -191,7 +238,7 @@ void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w,
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(x, y, w, h);
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(IMAGE_ID_MAP[image.GetFilepath()].texture_id);
 }
 
 
@@ -199,7 +246,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 {
 	glColor4ub(255, 255, 255, 255);
 
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[image.GetFilepath()].texture_id);
 
 	// Change texture mode to repeat at edges.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -273,21 +320,21 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	}
 
 	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.GetFilepath()].texture_id);
 
-	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
+	GLuint fbo = IMAGE_ID_MAP[destination.GetFilepath()].fbo_id;
 	if (fbo == 0)
 	{
 		fbo = generate_fbo(destination);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.GetFilepath()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipRect.width()), static_cast<float>(-clipRect.height()));
 
-	drawVertexArray(IMAGE_ID_MAP[source.name()].texture_id);
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
+	drawVertexArray(IMAGE_ID_MAP[source.GetFilepath()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.GetFilepath()].texture_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -746,6 +793,42 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 	DESKTOP_RESOLUTION = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
 }
 
+Texture* RendererOpenGL::CreateTexture(const std::string& nameOrFilepath)
+{
+	Image img(nameOrFilepath, true);
+	unsigned int id = 0;
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, img.size().x, img.size().y, 0, GL_RGBA, GL_UNSIGNED_BYTE, img.GetData());
+	glBindTexture(GL_TEXTURE_2D, 0);
+	_texture_ids.push_back(id);
+
+	auto tex = std::make_unique<TextureOpenGL>(id);
+	auto tex_ptr = tex.get();
+	Renderer::RegisterTexture(nameOrFilepath, std::move(tex));
+	return tex_ptr;
+}
+
+Texture* RendererOpenGL::GetTexture(const std::string& nameOrFilepath)
+{
+	return Renderer::GetTexture(nameOrFilepath);
+}
+
+void RendererOpenGL::BindTexture(Texture* tex, unsigned int slot /*= 0*/) noexcept
+{
+	glActiveTexture(TextureSlotToGLTextureSlot(slot));
+	auto* texAsOGL = dynamic_cast<TextureOpenGL*>(tex);
+	glBindTexture(GL_TEXTURE_2D, texAsOGL->Id());
+}
+
+void RendererOpenGL::UnbindTexture([[maybe_unused]] Texture* tex, [[maybe_unused]] unsigned int slot /*= 0*/) noexcept
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
 
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
@@ -760,7 +843,7 @@ GLuint generate_fbo(Image& image)
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	
-	if (IMAGE_ID_MAP[image.name()].texture_id == 0)
+	if (IMAGE_ID_MAP[image.GetFilepath()].texture_id == 0)
 	{
 		unsigned int textureColorbuffer;
 		glGenTextures(1, &textureColorbuffer);
@@ -773,9 +856,9 @@ GLuint generate_fbo(Image& image)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[image.GetFilepath()].texture_id, 0);
 
-	IMAGE_ID_MAP[image.name()].fbo_id = framebuffer;
+	IMAGE_ID_MAP[image.GetFilepath()].fbo_id = framebuffer;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

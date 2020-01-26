@@ -37,6 +37,15 @@
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{f77ff9a8-6639-4ae0-8705-c016859865d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Thirdparty">
+      <UniqueIdentifier>{7b3c0eb7-c08d-41e7-9dff-296b58763c75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Renderer\OpenGL">
+      <UniqueIdentifier>{4eba20fb-af7e-4b5a-bc09-43018b52ccce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderer\OpenGL">
+      <UniqueIdentifier>{d85e55b0-3b84-4576-8f39-3ec0d00a4a12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Configuration.cpp">
@@ -152,6 +161,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Version.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Thirdparty\stb.cpp">
+      <Filter>Thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Renderer\Texture.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Renderer\OpenGL\TextureOpenGL.cpp">
+      <Filter>Source Files\Renderer\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +328,18 @@
     </ClInclude>
     <ClInclude Include="..\..\include\NAS2D\Version.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Thirdparty\stb\stb_image_write.h">
+      <Filter>Thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Thirdparty\stb\stb_image.h">
+      <Filter>Thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Renderer\Texture.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NAS2D\Renderer\OpenGL\TextureOpenGL.h">
+      <Filter>Header Files\Renderer\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,7 @@ namespace NAS2D {
 class Resource
 {
 public:
-	Resource();
+	Resource() = default;
 	explicit Resource(const std::string& filePath);
 	virtual ~Resource();
 
@@ -48,9 +48,9 @@ private:
 	 */
 	virtual void load() = 0;
 
-	std::string mResourceName;		/**< File path and internal identifier. */
+	std::string mResourceName{"Default Resource"};		/**< File path and internal identifier. */
 
-	bool mIsLoaded;					/**< Flag indicating whether or not this Resource has loaded properly. */
+	bool mIsLoaded{false};					/**< Flag indicating whether or not this Resource has loaded properly. */
 };
 
 } // namespace

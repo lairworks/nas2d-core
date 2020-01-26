@@ -12,14 +12,6 @@
 
 using namespace NAS2D;
 
-/**
- * Default c'tor.
- */
-Resource::Resource() :
-	mResourceName("Default Resource"),
-	mIsLoaded(false)
-{}
-
 
 /**
  * C'tor.
@@ -27,8 +19,7 @@ Resource::Resource() :
  * \param filePath Sets the name of the Resource to \c filePath.
  */
 Resource::Resource(const std::string& filePath) :
-	mResourceName(filePath),
-	mIsLoaded(false)
+	mResourceName(filePath)
 {}
 
 

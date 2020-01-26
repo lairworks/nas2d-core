@@ -37,7 +37,7 @@ namespace NAS2D {
  *			and without an alpha channel).
  *
  */
-class Image: public Resource
+class Image : public Resource
 {
 public:
 	Image();
@@ -64,8 +64,8 @@ private:
 	void load();
 
 private:
-	std::pair<int, int>				_size;		/**< Width/Height information about the Image. */
-	std::pair<uint32_t, uint32_t>	_center;	/**<  */
+	std::pair<int, int> _size; /**< Width/Height information about the Image. */
+	std::pair<uint32_t, uint32_t> _center; /**<  */
 };
 
 

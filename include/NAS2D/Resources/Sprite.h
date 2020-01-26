@@ -163,23 +163,25 @@ private:
 	void addDefaultAction();
 
 private:
+	static inline const std::string DEFAULT_ACTION{"default"};
+
 	Timer mTimer; /**< Internal time keeper. */
 
 	SheetList mImageSheets; /**< Imagesheets */
 	ActionList mActions; /**< A list of Actions and their associated Frames. */
 
-	std::string mSpriteName; /**< Name of this Sprite. */
-	std::string mCurrentAction; /**< The current Action being performed. */
+	std::string mSpriteName{"Default Constructed"}; /**< Name of this Sprite. */
+	std::string mCurrentAction{DEFAULT_ACTION}; /**< The current Action being performed. */
 
-	size_t mCurrentFrame; /**< The current frame index in the current Action's frame list. */
+	size_t mCurrentFrame{0}; /**< The current frame index in the current Action's frame list. */
 
 	Callback mFrameCallback; /**< Callback to signal a listener whenever an animation sequence completes. */
 
-	Color mColor; /**< Color value to use for drawing the sprite. */
+	Color mColor{Color::Normal}; /**< Color value to use for drawing the sprite. */
 
-	float mRotationAngle; /**< Angle of rotation in degrees. */
+	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
 
-	bool mPaused; /**< Indicate whether or not the animation for this Sprite is paused. */
+	bool mPaused{false}; /**< Indicate whether or not the animation for this Sprite is paused. */
 };
 
 } // namespace

@@ -25,11 +25,13 @@ class Sound: public Resource
 public:
 
 	Sound() = default;
-	explicit Sound(const std::string& filePath);
+	Sound(const Sound& other) = default;
 	Sound& operator=(const Sound& rhs) = default;
 	Sound(Sound&& other) = default;
 	Sound& operator=(Sound&& other) = default;
 	virtual ~Sound();
+
+	explicit Sound(const std::string& filePath);
 
 protected:
 	friend class MixerSDL;

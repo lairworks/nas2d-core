@@ -55,40 +55,6 @@ Sprite::Sprite(const std::string& filePath) :
 	processXml(filePath);
 }
 
-
-/**
- * Copy C'tor
- */
-Sprite::Sprite(const Sprite &sprite) :
-	mImageSheets(sprite.mImageSheets),
-	mActions(sprite.mActions),
-	mSpriteName(sprite.mSpriteName),
-	mCurrentAction(sprite.mCurrentAction),
-	mCurrentFrame(sprite.mCurrentFrame),
-	mColor(sprite.mColor),
-	mRotationAngle(sprite.mRotationAngle),
-	mPaused(sprite.mPaused)
-{}
-
-
-/**
- * Assignment Operator
- */
-Sprite& Sprite::operator=(const Sprite &rhs)
-{
-	mImageSheets	= rhs.mImageSheets;
-	mActions		= rhs.mActions;
-	mSpriteName		= rhs.mSpriteName;
-	mCurrentAction	= rhs.mCurrentAction;
-	mCurrentFrame	= rhs.mCurrentFrame;
-	mColor			= rhs.mColor;
-	mRotationAngle	= rhs.mRotationAngle;
-	mPaused			= rhs.mPaused;
-
-	return *this;
-}
-
-
 /**
  * Plays an action animation.
  *
@@ -691,31 +657,3 @@ Sprite::SpriteFrame::SpriteFrame(const std::string& sId, int x, int y, int w, in
 	mAnchorY(aY),
 	mRect(x, y, w, h)
 {}
-
-
-/**
- * Copy C'tor
- */
-Sprite::SpriteFrame::SpriteFrame(const SpriteFrame &sf) :
-	mSheetId(sf.mSheetId),
-	mFrameDelay(sf.mFrameDelay),
-	mAnchorX(sf.mAnchorX),
-	mAnchorY(sf.mAnchorY),
-	mRect(sf.mRect)
-{}
-
-
-/**
- * Assignment Operator
- */
-Sprite::SpriteFrame& Sprite::SpriteFrame::operator=(const SpriteFrame &rhs)
-{
-	mSheetId = rhs.mSheetId;
-	mFrameDelay = rhs.mFrameDelay;
-	mAnchorX = rhs.mAnchorX;
-	mAnchorY = rhs.mAnchorY;
-	mRect = rhs.mRect;
-
-	return *this;
-}
-

@@ -24,7 +24,7 @@ class Sound: public Resource
 {
 public:
 
-	Sound();
+	Sound() = default;
 	explicit Sound(const std::string& filePath);
 
 	~Sound();
@@ -37,7 +37,7 @@ protected:
 private:
 	void load();
 
-	void*	_chunk;
+	void* _chunk{nullptr};
 };
 
 } // namespace

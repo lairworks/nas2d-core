@@ -15,10 +15,7 @@
  */
 struct MusicInfo
 {
-	MusicInfo() : buffer(nullptr), music(nullptr), ref_count(0)
-	{}
-
-	void*	buffer;
-	void*	music;
-	int		ref_count;
+	void* buffer{nullptr};
+	void* music{nullptr};
+	int ref_count{0};
 };

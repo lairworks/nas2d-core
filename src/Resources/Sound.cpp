@@ -19,21 +19,12 @@
 using namespace NAS2D;
 
 /**
- * Default C'tor.
- */
-Sound::Sound() :
-	Resource(),
-	_chunk(nullptr)
-{}
-
-/**
  * C'tor.
  *
  * \param	filePath	File path of the sound file to load.
  */
 Sound::Sound(const std::string& filePath) :
-	Resource(filePath),
-	_chunk(nullptr)
+	Resource(filePath)
 {
 	load();
 }

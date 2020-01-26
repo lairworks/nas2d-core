@@ -16,13 +16,10 @@
  */
 struct ImageInfo
 {
-	ImageInfo() : pixels(nullptr), texture_id(0), fbo_id(0), w(0), h(0), ref_count(0) {}
-
-	void*			pixels;
-
-	unsigned int	texture_id;
-	unsigned int	fbo_id;
-	int				w;
-	int				h;
-	int				ref_count;
+	void* pixels{nullptr};
+	unsigned int texture_id{0u};
+	unsigned int fbo_id{0u};
+	int w{0};
+	int h{0};
+	int ref_count{0};
 };

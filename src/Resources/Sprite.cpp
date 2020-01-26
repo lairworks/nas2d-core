@@ -19,7 +19,6 @@ using namespace NAS2D;
 using namespace NAS2D::Xml;
 
 const string NAS2D::SPRITE_VERSION("0.99");
-const string DEFAULT_ACTION("default");
 
 const int FRAME_PAUSE = -1;
 
@@ -39,13 +38,7 @@ string endTag(int row, const std::string& name)
  * \warning	Generally speaking, Sprites should not be instantiated
  *			with the default c'tor.
  */
-Sprite::Sprite() :
-	mSpriteName("Default Constructed"),
-	mCurrentAction(DEFAULT_ACTION),
-	mCurrentFrame(0),
-	mColor(Color::Normal),
-	mRotationAngle(0.0f),
-	mPaused(false)
+Sprite::Sprite()
 {
 	addDefaultAction();
 }
@@ -57,12 +50,7 @@ Sprite::Sprite() :
  * \param filePath	File path of the Sprite definition file.
  */
 Sprite::Sprite(const std::string& filePath) :
-	mSpriteName(filePath),
-	mCurrentAction(DEFAULT_ACTION),
-	mCurrentFrame(0),
-	mColor(Color::Normal),
-	mRotationAngle(0.0f),
-	mPaused(false)
+	mSpriteName(filePath)
 {
 	processXml(filePath);
 }

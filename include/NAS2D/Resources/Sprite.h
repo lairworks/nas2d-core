@@ -136,12 +136,13 @@ private:
 		int frameDelay() const { return mFrameDelay; }
 
 	private:
-		std::string		mSheetId;
+		std::string mSheetId;
 
-		int				mFrameDelay;
-		int				mAnchorX, mAnchorY;
+		int mFrameDelay;
+		int mAnchorX;
+		int mAnchorY;
 
-		Rectangle_2d	mRect;
+		Rectangle_2d mRect;
 	};
 
 private:
@@ -162,23 +163,25 @@ private:
 	void addDefaultAction();
 
 private:
-	Timer				mTimer;				/**< Internal time keeper. */
+	static inline const std::string DEFAULT_ACTION{"default"};
 
-	SheetList			mImageSheets;		/**< Imagesheets */
-	ActionList			mActions;			/**< A list of Actions and their associated Frames. */
+	Timer mTimer; /**< Internal time keeper. */
 
-	std::string			mSpriteName;		/**< Name of this Sprite. */
-	std::string			mCurrentAction;		/**< The current Action being performed. */
+	SheetList mImageSheets; /**< Imagesheets */
+	ActionList mActions; /**< A list of Actions and their associated Frames. */
 
-	size_t				mCurrentFrame;		/**< The current frame index in the current Action's frame list. */
+	std::string mSpriteName{"Default Constructed"}; /**< Name of this Sprite. */
+	std::string mCurrentAction{DEFAULT_ACTION}; /**< The current Action being performed. */
 
-	Callback			mFrameCallback;		/**< Callback to signal a listener whenever an animation sequence completes. */
+	size_t mCurrentFrame{0}; /**< The current frame index in the current Action's frame list. */
 
-	Color			mColor;				/**< Color value to use for drawing the sprite. */
+	Callback mFrameCallback; /**< Callback to signal a listener whenever an animation sequence completes. */
 
-	float				mRotationAngle;		/**< Angle of rotation in degrees. */
+	Color mColor{Color::Normal}; /**< Color value to use for drawing the sprite. */
 
-	bool				mPaused;			/**< Indicate whether or not the animation for this Sprite is paused. */
+	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
+
+	bool mPaused{false}; /**< Indicate whether or not the animation for this Sprite is paused. */
 };
 
 } // namespace

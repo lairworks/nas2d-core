@@ -188,6 +188,10 @@ debug-image-ubuntu:
 root-debug-image-ubuntu:
 	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/${ImageName} bash
 
+.PHONY: push-image-ubuntu
+push-image-ubuntu:
+	docker push ${DockerRepository}/${ImageName}
+
 #### CircleCI related build rules ####
 
 .PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build

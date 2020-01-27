@@ -164,8 +164,6 @@ install-deps-centos:
 #### Docker related build rules ####
 
 # Build rules relating to Docker images
-.PHONY: build-image-ubuntu compile-on-ubuntu
-.PHONY: debug-image-ubuntu root-debug-image-ubuntu
 
 DockerFolder := ${TopLevelFolder}/docker
 DockerRunFlags := --volume ${TopLevelFolder}:/code
@@ -174,12 +172,19 @@ DockerRepository := outpostuniverse
 ImageName := nas2d
 ImageVersion := 1.3
 
+.PHONY: build-image-ubuntu
 build-image-ubuntu:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}
+
+.PHONY: compile-on-ubuntu
 compile-on-ubuntu:
 	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/${ImageName}
+
+.PHONY: debug-image-ubuntu
 debug-image-ubuntu:
 	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/${ImageName} bash
+
+.PHONY: root-debug-image-ubuntu
 root-debug-image-ubuntu:
 	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/${ImageName} bash
 

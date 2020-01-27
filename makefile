@@ -176,8 +176,8 @@ ImageVersion := 1.3
 build-image-ubuntu:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}
 
-.PHONY: compile-on-ubuntu
-compile-on-ubuntu:
+.PHONY: run-image-ubuntu
+run-image-ubuntu:
 	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/${ImageName}
 
 .PHONY: debug-image-ubuntu

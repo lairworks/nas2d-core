@@ -164,20 +164,33 @@ install-deps-centos:
 #### Docker related build rules ####
 
 # Build rules relating to Docker images
-.PHONY: build-image-ubuntu compile-on-ubuntu
-.PHONY: debug-image-ubuntu root-debug-image-ubuntu
 
 DockerFolder := ${TopLevelFolder}/docker
+DockerRunFlags := --volume ${TopLevelFolder}:/code
+DockerRepository := outpostuniverse
 
+ImageName := nas2d
+ImageVersion := 1.3
+
+.PHONY: build-image-ubuntu
 build-image-ubuntu:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d.Dockerfile --tag outpostuniverse/nas2d:latest --tag outpostuniverse/nas2d:1.3
-compile-on-ubuntu:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code outpostuniverse/nas2d
-debug-image-ubuntu:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive outpostuniverse/nas2d bash
-root-debug-image-ubuntu:
-	docker run --rm --tty --volume ${TopLevelFolder}:/code --interactive --user=0 outpostuniverse/nas2d bash
+	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}
 
+.PHONY: run-image-ubuntu
+run-image-ubuntu:
+	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/${ImageName}
+
+.PHONY: debug-image-ubuntu
+debug-image-ubuntu:
+	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/${ImageName} bash
+
+.PHONY: root-debug-image-ubuntu
+root-debug-image-ubuntu:
+	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/${ImageName} bash
+
+.PHONY: push-image-ubuntu
+push-image-ubuntu:
+	docker push ${DockerRepository}/${ImageName}
 
 #### CircleCI related build rules ####
 

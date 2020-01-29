@@ -1,11 +1,5 @@
 version: 2.1
-executors:
-  docker-executor:
-    docker:
-      - image: outpostuniverse/nas2d:1.4
-  macos-executor:
-    macos:
-      xcode: "11.3.0"
+
 commands:
   brew-install:
     description: "Brew install MacOS dependencies (or restore from cache)"
@@ -66,22 +60,33 @@ commands:
       - run: make --keep-going
       - run: make --keep-going test
       - run: make --keep-going check
+
 jobs:
-  build-linux:
-    executor: docker-executor
-    steps:
-      - checkout
-      - build-and-test
   build-macos:
-    executor: macos-executor
+    macos:
+      xcode: "11.3.0"
     steps:
       - brew-install:
           packages: physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf libpng libjpeg libtiff webp libmodplug libvorbis libogg freetype glew cmake
       - build-googletest
       - checkout
       - build-and-test
+  build-linux:
+    docker:
+      - image: outpostuniverse/nas2d:1.4
+    steps:
+      - checkout
+      - build-and-test
+  build-linux-mingw:
+    docker:
+      - image: outpostuniverse/nas2d-mingw:1.2
+    steps:
+      - checkout
+      - build-and-test
+
 workflows:
   build_and_test:
     jobs:
-      - build-linux
       - build-macos
+      - build-linux
+      - build-linux-mingw

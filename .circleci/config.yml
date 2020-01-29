@@ -1,4 +1,5 @@
 version: 2.1
+
 executors:
   docker-executor:
     docker:
@@ -6,6 +7,7 @@ executors:
   macos-executor:
     macos:
       xcode: "11.3.0"
+
 commands:
   brew-install:
     description: "Brew install MacOS dependencies (or restore from cache)"
@@ -66,12 +68,8 @@ commands:
       - run: make --keep-going
       - run: make --keep-going test
       - run: make --keep-going check
+
 jobs:
-  build-linux:
-    executor: docker-executor
-    steps:
-      - checkout
-      - build-and-test
   build-macos:
     executor: macos-executor
     steps:
@@ -80,8 +78,14 @@ jobs:
       - build-googletest
       - checkout
       - build-and-test
+  build-linux:
+    executor: docker-executor
+    steps:
+      - checkout
+      - build-and-test
+
 workflows:
   build_and_test:
     jobs:
-      - build-linux
       - build-macos
+      - build-linux

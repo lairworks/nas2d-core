@@ -77,9 +77,16 @@ jobs:
     steps:
       - checkout
       - build-and-test
+  build-linux-mingw:
+    docker:
+      - image: outpostuniverse/nas2d-mingw:1.2
+    steps:
+      - checkout
+      - build-and-test
 
 workflows:
   build_and_test:
     jobs:
       - build-macos
       - build-linux
+      - build-linux-mingw

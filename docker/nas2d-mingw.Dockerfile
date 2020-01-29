@@ -56,20 +56,20 @@ ENV INSTALL64=${INSTALL_PREFIX}${ARCH64}/
 ENV INSTALL32=${INSTALL_PREFIX}${ARCH32}/
 
 # Create directories for local install of libraries
-RUN mkdir --parents ${INSTALL64} ${INSTALL32}
+RUN mkdir --parents "${INSTALL64}" "${INSTALL32}"
 
 # Download, compile, and install Google Test source package
 WORKDIR /tmp/gtest/
 RUN curl --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar -xz && \
-  cmake -Hgoogletest-release-1.10.0/ -B${ARCH64}/ -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C ${ARCH64}/ && \
-  cmake -Hgoogletest-release-1.10.0/ -B${ARCH64}/ -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C ${ARCH64}/ && \
-  cmake -Hgoogletest-release-1.10.0/ -B${ARCH32}/ -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C ${ARCH32}/ && \
-  cmake -Hgoogletest-release-1.10.0/ -B${ARCH32}/ -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C ${ARCH32}/ && \
+  cmake -Hgoogletest-release-1.10.0/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH64}" && \
+  cmake -Hgoogletest-release-1.10.0/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH64}" && \
+  cmake -Hgoogletest-release-1.10.0/ -B"${ARCH32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH32}" && \
+  cmake -Hgoogletest-release-1.10.0/ -B"${ARCH32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH32}" && \
   cp --parents -r \
-    ${ARCH64}/bin/ \
-    ${ARCH64}/lib/ \
-    ${ARCH32}/bin/ \
-    ${ARCH32}/lib/ \
+    "${ARCH64}/bin/" \
+    "${ARCH64}/lib/" \
+    "${ARCH32}/bin/" \
+    "${ARCH32}/lib/" \
     "${INSTALL_PREFIX}" && \
   mkdir -p \
     "${INSTALL_PREFIX}share/mingw-w64/" \
@@ -112,11 +112,11 @@ RUN curl --location https://github.com/nigels-com/glew/releases/download/glew-2.
   make -C glew-2.1.0/ SYSTEM=linux-mingw-w64 CC="${CC32}" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
   rm -rf glew-2.1.0/ glew.*
 RUN curl https://icculus.org/physfs/downloads/physfs-3.0.2.tar.bz2 | tar -xj && \
-  cmake -Hphysfs-3.0.2/ -B${ARCH64}/ -DCMAKE_INSTALL_PREFIX="${INSTALL64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
-  make -C ${ARCH64}/ install && \
-  cmake -Hphysfs-3.0.2/ -B${ARCH32}/ -DCMAKE_INSTALL_PREFIX="${INSTALL32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
-  make -C ${ARCH32}/ install && \
-  rm -rf physfs-3.0.2/ ${ARCH64}/ ${ARCH32}/
+  cmake -H"physfs-3.0.2/" -B"${ARCH64}" -DCMAKE_INSTALL_PREFIX="${INSTALL64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
+  make -C "${ARCH64}" install && \
+  cmake -H"physfs-3.0.2/" -B"${ARCH32}" -DCMAKE_INSTALL_PREFIX="${INSTALL32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
+  make -C "${ARCH32}" install && \
+  rm -rf physfs-3.0.2/ "${ARCH64}" "${ARCH32}"
 
 # Custom variables for install locations
 ENV INCLUDE64=${INSTALL64}include/

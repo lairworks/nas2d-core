@@ -173,7 +173,7 @@ ImageName := nas2d
 ImageVersion := 1.4
 
 ImageName_mingw := nas2d-mingw
-ImageVersion_mingw := 1.0
+ImageVersion_mingw := 1.1
 
 .PHONY: build-image
 build-image:

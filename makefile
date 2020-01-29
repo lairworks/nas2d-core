@@ -170,7 +170,7 @@ DockerRunFlags := --volume ${TopLevelFolder}:/code
 DockerRepository := outpostuniverse
 
 ImageName := nas2d
-ImageVersion := 1.3
+ImageVersion := 1.4
 
 .PHONY: build-image-ubuntu
 build-image-ubuntu:
@@ -194,12 +194,8 @@ push-image-ubuntu:
 
 #### CircleCI related build rules ####
 
-.PHONY: build-image-circleci push-image-circleci circleci-validate circleci-build
+.PHONY: circleci-validate circleci-build
 
-build-image-circleci: | build-image-ubuntu
-	docker build .circleci/ --tag outpostuniverse/nas2d-circleci:latest --tag outpostuniverse/nas2d-circleci:1.3
-push-image-circleci:
-	docker push outpostuniverse/nas2d-circleci
 circleci-validate:
 	circleci config validate
 circleci-build:

@@ -3,14 +3,16 @@
 FROM ubuntu:18.04
 
 # Install base development tools
+# Includes tools to build download, unpack, and build source packages
+# Includes tools needed for primary CircleCI containers
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential=12.4* \
     cmake=3.10.2-* \
-  && rm -rf /var/lib/apt/lists/*
-
-# Install curl (so an updated GoogleTest can be downloaded)
-RUN apt-get update && apt-get install -y --no-install-recommends \
     curl=7.58.0-* \
+    git=1:2.17.1-* \
+    ssh=1:7.6p1-* \
+    tar=1.29b-* \
+    gzip=1.6-* \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 

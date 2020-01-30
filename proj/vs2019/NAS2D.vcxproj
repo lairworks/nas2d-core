@@ -169,6 +169,7 @@
     <ClCompile Include="..\..\src\Mixer\MixerSDL.cpp" />
     <ClCompile Include="..\..\src\Mixer\MixerNull.cpp" />
     <ClCompile Include="..\..\src\Renderer\Color.cpp" />
+    <ClCompile Include="..\..\src\Renderer\DisplayDesc.cpp" />
     <ClCompile Include="..\..\src\Renderer\Point.cpp" />
     <ClCompile Include="..\..\src\Renderer\Rectangle.cpp" />
     <ClCompile Include="..\..\src\Renderer\Renderer.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerSDL.h" />
     <ClInclude Include="..\..\include\NAS2D\Mixer\MixerNull.h" />
     <ClInclude Include="..\..\include\NAS2D\NAS2D.h" />
+    <ClInclude Include="..\..\include\NAS2D\Renderer\DisplayDesc.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\RendererNull.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Color.h" />
     <ClInclude Include="..\..\include\NAS2D\Renderer\Point.h" />

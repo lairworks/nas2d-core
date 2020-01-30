@@ -172,6 +172,9 @@ DockerRepository := outpostuniverse
 ImageName := nas2d
 ImageVersion := 1.4
 
+ImageName_clang := nas2d-clang
+ImageVersion_clang := 1.0
+
 ImageName_mingw := nas2d-mingw
 ImageVersion_mingw := 1.2
 
@@ -194,6 +197,23 @@ root-debug-image:
 .PHONY: push-image
 push-image:
 	docker push ${DockerRepository}/${ImageName}
+
+.PHONY: build-image-clang
+build-image-clang: ImageName := ${ImageName_clang}
+build-image-clang: ImageVersion := ${ImageVersion_clang}
+build-image-clang: | build-image
+.PHONY: run-image-clang
+run-image-clang: ImageName := ${ImageName_clang}
+run-image-clang: | run-image
+.PHONY: debug-image-clang
+debug-image-clang: ImageName := ${ImageName_clang}
+debug-image-clang: | debug-image
+.PHONY: root-debug-image-clang
+root-debug-image-clang: ImageName := ${ImageName_clang}
+root-debug-image-clang: | root-debug-image
+.PHONY: push-image-clang
+push-image-clang: ImageName := ${ImageName_clang}
+push-image-clang: | push-image
 
 .PHONY: build-image-mingw
 build-image-mingw: ImageName := ${ImageName_mingw}

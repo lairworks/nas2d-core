@@ -77,6 +77,12 @@ jobs:
     steps:
       - checkout
       - build-and-test
+  build-linux-clang:
+    docker:
+      - image: outpostuniverse/nas2d-clang:1.0
+    steps:
+      - checkout
+      - build-and-test
   build-linux-mingw:
     docker:
       - image: outpostuniverse/nas2d-mingw:1.2
@@ -89,4 +95,5 @@ workflows:
     jobs:
       - build-macos
       - build-linux
+      - build-linux-clang
       - build-linux-mingw

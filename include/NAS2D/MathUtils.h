@@ -11,6 +11,7 @@
 
 #include "Renderer/Point.h"
 #include "Renderer/Rectangle.h"
+#include "Renderer/Vector.h"
 
 #include <memory>
 #include <string>
@@ -28,6 +29,27 @@ namespace NAS2D
 	bool isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b);
 
 	int divideUp(int to_divide, int divisor);
+
+	
+
+/**
+ * \fn T convertDomainToRange(T a, T b)
+ *
+ * Applies a linear conversion to map an input domain to an output range for built-in types.
+ *
+ * \param	value: The value to be converted from the input domain to the output range.
+ * \param	minDomain: Smallest value of the domain.
+ * \param	maxDomain: Largest value of the domain.
+ * \param	minRange: Smallest value of the range.
+ * \param	maxRange: Largest value of the range.
+ *
+ * \return	Returns the mapped value in the closed range [minOutputRange,maxOutputRange]
+ */
+template<typename T>
+T convertDomainToRange(const T& value, const T& minDomain, const T& maxDomain, const T& minRange, const T& maxRange)
+{
+	return (value - minDomain) * (maxRange - minRange) / (maxDomain - minDomain) + minRange;
+}
 
 } // namespace NAS2D
 

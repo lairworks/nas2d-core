@@ -32,7 +32,7 @@ public:
 	virtual ~Music();
 
 private:
-	void load();
+	void load() override;
 };
 
 } // namespace

@@ -61,7 +61,7 @@ public:
 	Color pixelColor(int x, int y) const;
 
 private:
-	void load();
+	void load() override;
 
 private:
 	std::pair<int, int> _size; /**< Width/Height information about the Image. */

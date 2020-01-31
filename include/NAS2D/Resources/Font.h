@@ -50,7 +50,7 @@ public:
 	const int glyphCellHeight() const;
 
 private:
-	void load() {}
+	void load() override {}
 };
 
 } // namespace

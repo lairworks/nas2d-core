@@ -324,17 +324,17 @@ std::string Filesystem::workingPath(const std::string& filename) const
  *
  * \param	path	Path to check for an extension.
  *
- * \return	Returns a string containing the file extension. An empty string will be
- *			returned if the file has no extension or if it's a directory.
+ * \return	Returns a string containing the file extension, including the dot (".").
+ *			An empty string will be returned if the file has no extension.
  */
-std::string Filesystem::extension(const std::string& path)
+std::string Filesystem::extension(const std::string& path) const
 {
 	// This is a naive approach but works for most cases.
 	size_t pos = path.find_last_of(".");
 
 	if (pos != std::string::npos)
 	{
-		return path.substr(pos + 1);
+		return path.substr(pos);
 	}
 	return std::string();
 }

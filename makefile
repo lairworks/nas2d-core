@@ -42,16 +42,13 @@ FOLDERS := $(sort $(dir $(SRCS)))
 all: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
-	@mkdir -p ${@D}
+	@mkdir -p "${@D}"
 	ar rcs $@ $^
 
-$(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d | build-folder
+$(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
+	@mkdir -p "${@D}"
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
-
-.PHONY: build-folder
-build-folder:
-	@mkdir -p $(patsubst $(SRCDIR)/%,$(INTDIR)/%, $(FOLDERS))
 
 $(INTDIR)/%.d: ;
 .PRECIOUS: $(INTDIR)/%.d
@@ -107,16 +104,13 @@ check: | test
 	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
 
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
-	@mkdir -p ${@D}
+	@mkdir -p "${@D}"
 	$(CXX) $(TESTOBJS) $(TESTLDFLAGS) $(TESTLIBS) -o $@
 
-$(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d | test-build-folder
+$(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
+	@mkdir -p "${@D}"
 	$(TESTCOMPILE.cpp) $(OUTPUT_OPTION) -I$(SRCDIR) $<
 	$(TESTPOSTCOMPILE)
-
-.PHONY: test-build-folder
-test-build-folder:
-	@mkdir -p $(patsubst $(TESTDIR)/%,$(TESTINTDIR)/%, $(TESTFOLDERS))
 
 $(TESTINTDIR)/%.d: ;
 .PRECIOUS: $(TESTINTDIR)/%.d

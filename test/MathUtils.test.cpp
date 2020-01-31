@@ -222,12 +222,12 @@ TEST(MathUtils, isRectInRectClass)
 TEST(MathUtils, mapDomainToRange)
 {
 	// Fahrenheit to Celcius
-	EXPECT_NEAR(0.0f, NAS2D::convertDomainToRange(32.0f, 32.0f, 41.0f, 0.0f, 5.0f), 0.0001f);
-	EXPECT_NEAR(100.0f, NAS2D::convertDomainToRange(212.0f, 32.0f, 41.0f, 0.0f, 5.0f), 0.0001f);
+	EXPECT_NEAR(0.0f, NAS2D::convertDomainToRange(32.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
+	EXPECT_NEAR(100.0f, NAS2D::convertDomainToRange(212.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 
 	// Celcius to Fahrenheit
-	EXPECT_NEAR(32.0f, NAS2D::convertDomainToRange(0.0f, 0.0f, 5.0f, 32.0f, 41.0f), 0.0001f);
-	EXPECT_NEAR(212.0f, NAS2D::convertDomainToRange(100.0f, 0.0f, 5.0f, 32.0f, 41.0f), 0.0001f);
+	EXPECT_NEAR(32.0f, NAS2D::convertDomainToRange(0.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
+	EXPECT_NEAR(212.0f, NAS2D::convertDomainToRange(100.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
 
 	// unsigned char to normalized float
 	EXPECT_NEAR(0.0f, NAS2D::convertDomainToRange(0.0f, 0.0f, 255.0f, 0.0f, 1.0f), 0.01f);

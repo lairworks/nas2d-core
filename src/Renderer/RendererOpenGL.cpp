@@ -746,6 +746,20 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 	DESKTOP_RESOLUTION = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
 }
 
+std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
+{
+	const auto display_index = SDL_GetWindowDisplayIndex(underlyingWindow);
+	const auto num_resolutions = SDL_GetNumDisplayModes(display_index);
+	std::vector<NAS2D::DisplayDesc> result{};
+	result.reserve(num_resolutions);
+	for (int i = 0; i < num_resolutions; ++i)
+	{
+		SDL_DisplayMode cur_mode{};
+		SDL_GetDisplayMode(display_index, i, &cur_mode);
+		result.push_back({cur_mode.w, cur_mode.h, cur_mode.refresh_rate});
+	}
+	return result;
+}
 
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION

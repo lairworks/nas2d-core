@@ -30,6 +30,8 @@ public:
 	RendererOpenGL& operator=(RendererOpenGL&& rhs) = delete;
 	virtual ~RendererOpenGL() override;
 
+	std::vector<DisplayDesc> getDisplayModes() const override;
+
 	void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;

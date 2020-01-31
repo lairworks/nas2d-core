@@ -58,9 +58,9 @@ include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
 .PHONY: clean clean-all
 clean:
 	-rm -fr $(INTDIR)
-	-rm -fr $(BINDIR)
 clean-all: | clean
 	-rm -rf $(BUILDDIR)
+	-rm -fr $(BINDIR)
 
 
 ## Unit Test project ##

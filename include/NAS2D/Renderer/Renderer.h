@@ -11,6 +11,7 @@
 #pragma once
 
 #include "Color.h"
+#include "DisplayDesc.h"
 #include "Point.h"
 #include "Rectangle.h"
 #include "../Signal.h"
@@ -18,6 +19,7 @@
 #include "../Resources/Font.h"
 
 #include <string>
+#include <vector>
 
 namespace NAS2D {
 
@@ -37,6 +39,8 @@ public:
 	Renderer(Renderer&& rhs) = default;
 	Renderer& operator=(Renderer&& rhs) = default;
 	virtual ~Renderer();
+	
+	virtual std::vector<DisplayDesc> getDisplayModes() const = 0;
 
 	const std::string& driverName();
 

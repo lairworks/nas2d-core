@@ -327,7 +327,7 @@ std::string Filesystem::workingPath(const std::string& filename) const
  * \return	Returns a string containing the file extension, including the dot (".").
  *			An empty string will be returned if the file has no extension.
  */
-std::string Filesystem::extension(const std::string& path)
+std::string Filesystem::extension(const std::string& path) const
 {
 	// This is a naive approach but works for most cases.
 	size_t pos = path.find_last_of(".");

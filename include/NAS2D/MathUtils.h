@@ -33,17 +33,28 @@ namespace NAS2D
 	
 
 /**
- * \fn T convertDomainToRange(T a, T b)
+ * \fn OutputType scaleLinear(const InputType& a, const OutputType& b)
  *
- * Applies a linear conversion to map an input domain to an output range for built-in types.
+ * Applies a linear conversion to map an input domain to an output range.
  *
  * \param	value: The value to be converted from the input domain to the output range.
- * \param	minDomain: Smallest value of the domain.
- * \param	maxDomain: Largest value of the domain.
- * \param	minRange: Smallest value of the range.
- * \param	maxRange: Largest value of the range.
+ * \param	domainPoint1: A known lower fixed point in the domain. Must be less than domainPoint2.
+ * \param	domainPoint2: A known upper fixed point in the domain. Must be greater than domainPoint1.
+ * \param	rangePoint1: A known lower fixed point in the range. Must be less than or equal to rangePoint2.
+ * \param	rangePoint2: A known upper fixed point in the range. Must be greater than or equal to rangePoint1.
+ * \return	Returns value as mapped to the output range.
+ * \remarks
+ * `value` is not required to start within [domainPoint1,domainPoint2]. E.g. temperature conversions:
  *
- * \return	Returns the mapped value in the closed range [minOutputRange,maxOutputRange]
+ *     scaleLinear(0.0f, 32.0f, 212.0f, 0.0f, 100.0f)
+ *
+ * will convert 0 degees Fahrenheit to its corresponding value `-17.77777` degrees Celsius.
+ * 
+ * Avoid inputs such that the difference of domainPoint2 and domainPoint1 is zero. Otherwise, a divide by zero error could occur.
+ * 
+ * If the difference of rangePoint2 and rangePoint1 is zero. The result of the function is always rangePoint1.
+ * 
+ * InputType and OutputType must support all arithmetic operators and all arithmetic operators between each other.
  */
 template<typename InputType, typename OutputType>
 OutputType scaleLinear(const InputType& value, const InputType& domainPoint1, const InputType& domainPoint2, const OutputType& rangePoint1, const OutputType& rangePoint2)

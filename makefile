@@ -9,8 +9,7 @@ SRCDIR := src
 INCDIR := include
 BUILDDIR := .build
 BINDIR := lib
-OBJDIR := $(BUILDDIR)/obj
-DEPDIR := $(BUILDDIR)/deps
+INTDIR := $(BUILDDIR)/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
 
 # Determine OS (Linux, Darwin, ...)
@@ -30,45 +29,38 @@ LDLIBS := $(LDLIBS.EXTRA) -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
 
-DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
+DEPFLAGS = -MT $@ -MMD -MP -MF $(INTDIR)/$*.Td
 
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
-POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
+POSTCOMPILE = @mv -f $(INTDIR)/$*.Td $(INTDIR)/$*.d && touch $@
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
-OBJS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
+OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 FOLDERS := $(sort $(dir $(SRCS)))
 
 .PHONY: all
 all: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
-	@mkdir -p ${@D}
+	@mkdir -p "${@D}"
 	ar rcs $@ $^
 
-$(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d | build-folder
+$(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
+	@mkdir -p "${@D}"
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
 
-.PHONY: build-folder
-build-folder:
-	@mkdir -p $(patsubst $(SRCDIR)/%,$(OBJDIR)/%, $(FOLDERS))
-	@mkdir -p $(patsubst $(SRCDIR)/%,$(DEPDIR)/%, $(FOLDERS))
+$(INTDIR)/%.d: ;
+.PRECIOUS: $(INTDIR)/%.d
 
-$(DEPDIR)/%.d: ;
-.PRECIOUS: $(DEPDIR)/%.d
+include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
 
-include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(DEPDIR)/%.d,$(SRCS)))
-
-.PHONY: clean clean-deps clean-all
+.PHONY: clean clean-all
 clean:
-	-rm -fr $(OBJDIR)
-	-rm -fr $(DEPDIR)
-	-rm -fr $(BINDIR)
-clean-deps:
-	-rm -fr $(DEPDIR)
+	-rm -fr $(INTDIR)
 clean-all: | clean
 	-rm -rf $(BUILDDIR)
+	-rm -fr $(BINDIR)
 
 
 ## Unit Test project ##
@@ -92,39 +84,36 @@ gmock:
 	make -C $(GMOCKDIR)
 
 TESTDIR := test
-TESTOBJDIR := $(BUILDDIR)/testObj
+TESTINTDIR := $(BUILDDIR)/testIntermediate
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
-TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.o,$(TESTSRCS))
+TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
 TESTCPPFLAGS := $(CPPFLAGS)
 TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIR)/testBin/runTests
 
-TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTOBJDIR)/$*.Td
+TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTINTDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
-TESTPOSTCOMPILE = @mv -f $(TESTOBJDIR)/$*.Td $(TESTOBJDIR)/$*.d && touch $@
+TESTPOSTCOMPILE = @mv -f $(TESTINTDIR)/$*.Td $(TESTINTDIR)/$*.d && touch $@
 
 test: $(TESTOUTPUT)
 check: | test
 	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
 
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
-	@mkdir -p ${@D}
+	@mkdir -p "${@D}"
 	$(CXX) $(TESTOBJS) $(TESTLDFLAGS) $(TESTLIBS) -o $@
 
-$(TESTOBJS): $(TESTOBJDIR)/%.o : $(TESTDIR)/%.cpp $(TESTOBJDIR)/%.d | test-build-folder
+$(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
+	@mkdir -p "${@D}"
 	$(TESTCOMPILE.cpp) $(OUTPUT_OPTION) -I$(SRCDIR) $<
 	$(TESTPOSTCOMPILE)
 
-.PHONY: test-build-folder
-test-build-folder:
-	@mkdir -p $(patsubst $(TESTDIR)/%,$(TESTOBJDIR)/%, $(TESTFOLDERS))
+$(TESTINTDIR)/%.d: ;
+.PRECIOUS: $(TESTINTDIR)/%.d
 
-$(TESTOBJDIR)/%.d: ;
-.PRECIOUS: $(TESTOBJDIR)/%.d
-
-include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTOBJDIR)/%.d,$(TESTSRCS)))
+include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 
 
 ### Linux development package dependencies ###

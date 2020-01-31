@@ -68,7 +68,6 @@ public:
 	void window_icon(const std::string&) override {}
 
 	void update() override {}
-
 };
 
 } // namespace

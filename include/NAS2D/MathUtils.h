@@ -46,9 +46,9 @@ namespace NAS2D
  * \return	Returns the mapped value in the closed range [minOutputRange,maxOutputRange]
  */
 template<typename InputType, typename OutputType>
-OutputType convertDomainToRange(const InputType& value, const InputType& minDomain, const InputType& maxDomain, const OutputType& minRange, const OutputType& maxRange)
+OutputType convertDomainToRange(const InputType& value, const InputType& domainPoint1, const InputType& domainPoint2, const OutputType& rangePoint1, const OutputType& rangePoint2)
 {
-	return (value - minDomain) * (maxRange - minRange) / (maxDomain - minDomain) + minRange;
+	return (value - domainPoint1) * (rangePoint2 - rangePoint1) / (domainPoint2 - domainPoint1) + rangePoint1;
 }
 
 } // namespace NAS2D

@@ -23,9 +23,9 @@ Windows_OpenGL_LIBS := -lglew32 -lopengl32
 OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 CPPFLAGS := $(CPPFLAGS.EXTRA) -Iinclude/
-CXXFLAGS := -std=c++17 -g -Wall -Wpedantic -Werror $(shell sdl2-config --cflags)
+CXXFLAGS := $(CXXFLAGS.EXTRA) -std=c++17 -g -Wall -Wpedantic -Werror $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS.EXTRA)
-LDLIBS := -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(shell sdl2-config --static-libs) $(OpenGL_LIBS)
+LDLIBS := $(LDLIBS.EXTRA) -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(shell sdl2-config --static-libs) $(OpenGL_LIBS)
 
 Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)

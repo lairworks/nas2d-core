@@ -223,6 +223,8 @@ TEST(MathUtils, mapDomainToRange)
 {
 	// Fahrenheit to Celcius
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
+	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 212.0f, 32.0f, 100.0f, 0.0f), 0.0001f);
+
 	EXPECT_NEAR(0.0f, NAS2D::scaleLinear(32.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(-17.77777f, NAS2D::scaleLinear(0.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(-17.22222f, NAS2D::scaleLinear(1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);

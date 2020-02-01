@@ -38,17 +38,17 @@ namespace NAS2D
  * Applies a linear conversion to map an input domain to an output range.
  *
  * \param	value: The value to be converted from the input domain to the output range.
- * \param	domainPoint1: A known lower fixed point in the domain. Must be less than domainPoint2.
- * \param	domainPoint2: A known upper fixed point in the domain. Must be greater than domainPoint1.
- * \param	rangePoint1: A known lower fixed point in the range. Must be less than or equal to rangePoint2.
- * \param	rangePoint2: A known upper fixed point in the range. Must be greater than or equal to rangePoint1.
+ * \param	domainPoint1: A known fixed point in the domain.
+ * \param	domainPoint2: Another corresponding known fixed point in the domain.
+ * \param	rangePoint1: A known fixed point in the range.
+ * \param	rangePoint2: Another corresponding known fixed point in the range.
  * \return	Returns value as mapped to the output range.
  * \remarks
  * `value` is not required to start within [domainPoint1,domainPoint2]. E.g. temperature conversions:
  *
- *     scaleLinear(0.0f, 32.0f, 212.0f, 0.0f, 100.0f)
+ *     scaleLinear(98.6f, 32.0f, 212.0f, 0.0f, 100.0f)
  *
- * will convert 0 degees Fahrenheit to its corresponding value `-17.77777` degrees Celsius.
+ * will convert 98.6 degees Fahrenheit (average human body temperature) to its corresponding value `37.0` degrees Celsius.
  * 
  * Avoid inputs such that the difference of domainPoint2 and domainPoint1 is zero. Otherwise, a divide by zero error could occur.
  * 

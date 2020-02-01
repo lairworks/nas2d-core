@@ -237,12 +237,12 @@ TEST(MathUtils, mapDomainToRange)
 	EXPECT_NEAR(212.0f, NAS2D::scaleLinear(100.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
 
 	// unsigned char to normalized float
-	EXPECT_NEAR(0.0f, NAS2D::scaleLinear(0.0f, 0.0f, 255.0f, 0.0f, 1.0f), 0.01f);
-	EXPECT_NEAR(0.5f, NAS2D::scaleLinear(128.0f, 0.0f, 255.0f, 0.0f, 1.0f), 0.01f);
-	EXPECT_NEAR(1.0f, NAS2D::scaleLinear(255.0f, 0.0f, 255.0f, 0.0f, 1.0f), 0.01f);
+	EXPECT_NEAR(0.0f, NAS2D::scaleLinear(static_cast<unsigned char>(0), static_cast<unsigned char>(0), static_cast<unsigned char>(255), 0.0f, 1.0f), 0.01f);
+	EXPECT_NEAR(0.5f, NAS2D::scaleLinear(static_cast<unsigned char>(128), static_cast<unsigned char>(0), static_cast<unsigned char>(255), 0.0f, 1.0f), 0.01f);
+	EXPECT_NEAR(1.0f, NAS2D::scaleLinear(static_cast<unsigned char>(255), static_cast<unsigned char>(0), static_cast<unsigned char>(255), 0.0f, 1.0f), 0.01f);
 
-	EXPECT_NEAR(-1.0f, NAS2D::scaleLinear(0.0f, 0.0f, 255.0f, -1.0f, 1.0f), 0.01f);
-	EXPECT_NEAR(0.0f, NAS2D::scaleLinear(128.0f, 0.0f, 255.0f, -1.0f, 1.0f), 0.01f);
-	EXPECT_NEAR(1.0f, NAS2D::scaleLinear(255.0f, 0.0f, 255.0f, -1.0f, 1.0f), 0.01f);
+	EXPECT_NEAR(-1.0f, NAS2D::scaleLinear(static_cast<unsigned char>(0), static_cast<unsigned char>(0), static_cast<unsigned char>(255), -1.0f, 1.0f), 0.01f);
+	EXPECT_NEAR(0.0f, NAS2D::scaleLinear(static_cast<unsigned char>(128), static_cast<unsigned char>(0), static_cast<unsigned char>(255), -1.0f, 1.0f), 0.01f);
+	EXPECT_NEAR(1.0f, NAS2D::scaleLinear(static_cast<unsigned char>(255), static_cast<unsigned char>(0), static_cast<unsigned char>(255), -1.0f, 1.0f), 0.01f);
 
 }

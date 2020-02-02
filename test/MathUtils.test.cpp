@@ -218,3 +218,31 @@ TEST(MathUtils, isRectInRectClass)
 	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {3, 3, 1, 1}));
 	EXPECT_EQ(false, NAS2D::isRectInRect({5, 5, 1, 1}, {7, 3, 1, 1}));
 }
+
+TEST(MathUtils, mapDomainToRange)
+{
+	// Fahrenheit to Celcius
+	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
+	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 212.0f, 32.0f, 100.0f, 0.0f), 0.0001f);
+
+	EXPECT_NEAR(0.0f, NAS2D::scaleLinear(32.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
+	EXPECT_NEAR(-17.77777f, NAS2D::scaleLinear(0.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
+	EXPECT_NEAR(-17.22222f, NAS2D::scaleLinear(1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
+	EXPECT_NEAR(100.0f, NAS2D::scaleLinear(212.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
+
+	// Celcius to Fahrenheit
+	EXPECT_NEAR(30.2f, NAS2D::scaleLinear(-1.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
+	EXPECT_NEAR(32.0f, NAS2D::scaleLinear(0.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
+	EXPECT_NEAR(33.8f, NAS2D::scaleLinear(1.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
+	EXPECT_NEAR(212.0f, NAS2D::scaleLinear(100.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
+
+	// unsigned char to normalized float
+	EXPECT_NEAR(0.0f, (NAS2D::scaleLinear<unsigned char, float>(0, 0, 255, 0.0f, 1.0f)), 0.01f);
+	EXPECT_NEAR(0.5f, (NAS2D::scaleLinear<unsigned char, float>(128, 0, 255, 0.0f, 1.0f)), 0.01f);
+	EXPECT_NEAR(1.0f, (NAS2D::scaleLinear<unsigned char, float>(255, 0, 255, 0.0f, 1.0f)), 0.01f);
+
+	EXPECT_NEAR(-1.0f, (NAS2D::scaleLinear<unsigned char, float>(0, 0, 255, -1.0f, 1.0f)), 0.01f);
+	EXPECT_NEAR(0.0f, (NAS2D::scaleLinear<unsigned char, float>(128, 0, 255, -1.0f, 1.0f)), 0.01f);
+	EXPECT_NEAR(1.0f, (NAS2D::scaleLinear<unsigned char, float>(255, 0, 255, -1.0f, 1.0f)), 0.01f);
+
+}

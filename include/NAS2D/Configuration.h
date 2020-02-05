@@ -11,6 +11,7 @@
 
 #include "Exception.h"
 
+#include <string>
 #include <map>
 
 namespace NAS2D {

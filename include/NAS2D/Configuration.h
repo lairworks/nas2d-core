@@ -16,6 +16,11 @@
 namespace NAS2D {
 
 
+namespace Xml {
+	class XmlElement;
+}
+
+
 /**
  * \class Configuration
  * \brief Configuration Parser.
@@ -85,9 +90,9 @@ private:
 
 	bool readConfig(const std::string& filePath);
 
-	void parseGraphics(void *node);
-	void parseAudio(void *node);
-	void parseOptions(void *node);
+	void parseGraphics(NAS2D::Xml::XmlElement *node);
+	void parseAudio(NAS2D::Xml::XmlElement *node);
+	void parseOptions(NAS2D::Xml::XmlElement *node);
 
 	Options mOptions{};
 

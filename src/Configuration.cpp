@@ -219,12 +219,8 @@ bool Configuration::readConfig(const std::string& filePath)
  *
  * \todo	Check for sane configurations, particularly screen resolution.
  */
-void Configuration::parseGraphics(void* _n)
+void Configuration::parseGraphics(XmlElement* element)
 {
-	// NOTE: Void pointer used to avoid implementation details in the class declaration.
-
-	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
-
 	const XmlAttribute* attribute = element->firstAttribute();
 	while (attribute)
 	{
@@ -246,12 +242,8 @@ void Configuration::parseGraphics(void* _n)
  * \note	If any values are invalid or non-existant, this
  *			function will set default values.
  */
-void Configuration::parseAudio(void* _n)
+void Configuration::parseAudio(XmlElement* element)
 {
-	// NOTE: Void pointer used to avoid implementation details in the class declaration.
-
-	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
-
 	const XmlAttribute* attribute = element->firstAttribute();
 	while (attribute)
 	{
@@ -319,11 +311,8 @@ void Configuration::parseAudio(void* _n)
  *
  * \note	Use of void pointer in declaration to avoid implementation details in header.
  */
-void Configuration::parseOptions(void* _n)
+void Configuration::parseOptions(XmlElement* element)
 {
-	// NOTE: Void pointer used to avoid implementation details in the class declaration.
-	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
-
 	for (auto setting = element->firstChildElement();
 		 setting != nullptr;
 		 setting = setting->nextSiblingElement())

@@ -225,13 +225,6 @@ void Configuration::parseGraphics(void* _n)
 
 	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
 
-	// Probably not a necessary check but here for robustness.
-	if (!element)
-	{
-		std::cout << "Unexpected XML tag '" << static_cast<XmlNode*>(_n)->value() << "' found in configuration file while processing the '<graphics>' element." << std::endl;
-		return;
-	}
-
 	const XmlAttribute* attribute = element->firstAttribute();
 	while (attribute)
 	{
@@ -258,13 +251,6 @@ void Configuration::parseAudio(void* _n)
 	// NOTE: Void pointer used to avoid implementation details in the class declaration.
 
 	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
-
-	// Probably not a necessary check but here for robustness.
-	if (!element)
-	{
-		std::cout << "Unexpected XML tag '" << static_cast<XmlNode*>(_n)->value() << "' found in configuration file while processing the '<audio>' element." << std::endl;
-		return;
-	}
 
 	const XmlAttribute* attribute = element->firstAttribute();
 	while (attribute)
@@ -337,13 +323,6 @@ void Configuration::parseOptions(void* _n)
 {
 	// NOTE: Void pointer used to avoid implementation details in the class declaration.
 	XmlElement* element = static_cast<XmlNode*>(_n)->toElement();
-
-	// Probably not a necessary check but here for robustness.
-	if (!element)
-	{
-		std::cout << "Unexpected XML tag '" << static_cast<XmlNode*>(_n)->value() << "' found in configuration file while processing the '<graphics>' element." << std::endl;
-		return;
-	}
 
 	for (auto setting = element->firstChildElement();
 		 setting != nullptr;

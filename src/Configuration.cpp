@@ -195,9 +195,9 @@ bool Configuration::readConfig(const std::string& filePath)
 
 
 		// Start parsing through the Config.xml file.
-		for (auto xmlNode = root->firstChild();
+		for (auto xmlNode = root->firstChildElement();
 			 xmlNode != nullptr;
-			 xmlNode = xmlNode->nextSibling())
+			 xmlNode = xmlNode->nextSiblingElement())
 		{
 			if (xmlNode->value() == "graphics") { parseGraphics(xmlNode); }
 			else if (xmlNode->value() == "audio") { parseAudio(xmlNode); }
@@ -345,9 +345,9 @@ void Configuration::parseOptions(void* _n)
 		return;
 	}
 
-	for (auto xmlNode = element->firstChild();
+	for (auto xmlNode = element->firstChildElement();
 		 xmlNode != nullptr;
-		 xmlNode = xmlNode->nextSibling())
+		 xmlNode = xmlNode->nextSiblingElement())
 	{
 		if (xmlNode->value() == "option")
 		{

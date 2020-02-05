@@ -319,7 +319,7 @@ void Configuration::parseOptions(XmlElement* element)
 	{
 		if (setting->value() == "option")
 		{
-			const XmlAttribute* attribute = setting->toElement()->firstAttribute();
+			const XmlAttribute* attribute = setting->firstAttribute();
 
 			std::string name, value;
 			while (attribute)

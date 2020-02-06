@@ -111,3 +111,10 @@ TEST_F(FilesystemTest, mountUnmount) {
 
 	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
 }
+
+TEST_F(FilesystemTest, dirSeparator) {
+	// Varies by platform, so we can't know the exact value ("/", "\", ":")
+	// New platforms may choose a new unique value
+	// Some platforms may not even have a hierarchal filesystem ("")
+	EXPECT_NO_THROW(fs.dirSeparator());
+}

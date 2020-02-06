@@ -41,7 +41,9 @@ enum MountPosition
 };
 
 
-NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath)
+NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath) :
+	mAppName(appName),
+	mOrganizationName(organizationName)
 {
 	if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
 
@@ -80,6 +82,21 @@ Filesystem::~Filesystem()
 std::string Filesystem::basePath() const
 {
 	return PHYSFS_getBaseDir();
+}
+
+
+/**
+ * Determines the path to the folder where user preferences are stored
+ *
+ * The user should have write access to the preferences folder, which is generally under their user folder.
+ *
+ * \note This path is dependent on the Operating System (OS).
+ * \note Path may be empty if the folder could not be created.
+ */
+std::string Filesystem::prefPath() const
+{
+	auto prefDir = PHYSFS_getPrefDir(mOrganizationName.c_str(), mAppName.c_str());
+	return (prefDir != nullptr) ? prefDir : "";
 }
 
 

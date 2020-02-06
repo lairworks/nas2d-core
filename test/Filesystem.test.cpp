@@ -9,8 +9,12 @@ TEST(Filesystem, ConstructDestruct) {
 
 class FilesystemTest : public ::testing::Test {
   protected:
+
+	static constexpr auto AppName = "NAS2DUnitTests";
+	static constexpr auto OrganizationName = "LairWorks";
+
 	FilesystemTest() :
-		fs("", "NAS2DUnitTests", "LairWorks", "data/")
+		fs("", AppName, OrganizationName, "data/")
 	{}
 
 	NAS2D::Filesystem fs;

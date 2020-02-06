@@ -4,14 +4,16 @@
 
 
 TEST(Filesystem, ConstructDestruct) {
-	EXPECT_NO_THROW(NAS2D::Filesystem fs("", "NAS2DUnitTests", "LairWorks", "./"));
+	EXPECT_NO_THROW(NAS2D::Filesystem fs("", "NAS2DUnitTests", "LairWorks"));
 }
 
 class FilesystemTest : public ::testing::Test {
   protected:
 	FilesystemTest() :
-		fs("", "NAS2DUnitTests", "LairWorks", "data/")
-	{}
+		fs("", "NAS2DUnitTests", "LairWorks")
+	{
+		fs.mount("data/");
+	}
 
 	NAS2D::Filesystem fs;
 };
@@ -25,10 +27,6 @@ TEST_F(FilesystemTest, basePath) {
 TEST_F(FilesystemTest, prefPath) {
 	// Result is a directory, and should end with a directory separator
 	EXPECT_THAT(fs.prefPath(), testing::EndsWith(fs.dirSeparator()));
-}
-
-TEST_F(FilesystemTest, dataPath) {
-	EXPECT_EQ("data/", fs.dataPath());
 }
 
 TEST_F(FilesystemTest, extension) {

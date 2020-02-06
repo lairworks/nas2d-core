@@ -68,9 +68,9 @@ public:
 	 * Attribute parsing starts: first letter of the name
 	 * returns: the next char after the value end quote
 	 */
-	virtual const char* parse(const char* p, void* data);
+	const char* parse(const char* p, void* data) override;
 
-	virtual void write(std::string& buf, int depth) const;
+	void write(std::string& buf, int depth) const override;
 
 protected:
 	friend class XmlElement;

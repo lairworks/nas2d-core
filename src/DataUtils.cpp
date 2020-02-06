@@ -72,16 +72,7 @@ void NAS2D::Xml::validateXMLElement(
 	actualChildNames.erase(std::unique(std::begin(actualChildNames), std::end(actualChildNames)), std::end(actualChildNames));
 
 	// getAttributeNames
-	auto actualAttributeNames = [&element]() -> StringList {
-		NAS2D::StringList result{};
-		for (auto iter = element.firstAttribute();
-			 iter != nullptr;
-			 iter = iter->next())
-		{
-			result.push_back(iter->name());
-		}
-		return result;
-	}(); // Immediately Invoked Initializing Lambda (IIIL)
+	auto actualAttributeNames = getAttributeNames(element);
 	std::sort(std::begin(actualAttributeNames), std::end(actualAttributeNames));
 	actualAttributeNames.erase(std::unique(std::begin(actualAttributeNames), std::end(actualAttributeNames)), std::end(actualAttributeNames));
 
@@ -208,6 +199,18 @@ NAS2D::StringList NAS2D::Xml::getChildElementNames(const XmlElement& element)
 		 iter = iter->nextSiblingElement())
 	{
 		result.push_back(iter->value());
+	}
+	return result;
+}
+
+NAS2D::StringList NAS2D::Xml::getAttributeNames(const XmlElement& element)
+{
+	NAS2D::StringList result{};
+	for (auto iter = element.firstAttribute();
+		 iter != nullptr;
+		 iter = iter->next())
+	{
+		result.push_back(iter->name());
 	}
 	return result;
 }

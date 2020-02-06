@@ -18,6 +18,7 @@ namespace NAS2D
 								const std::string& optionalAttributes = std::string{});
 
 		StringList getChildElementNames(const NAS2D::Xml::XmlElement& element);
+		StringList getAttributeNames(const NAS2D::Xml::XmlElement& element);
 
 	} // namespace Xml
 

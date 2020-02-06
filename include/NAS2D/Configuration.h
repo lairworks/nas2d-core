@@ -89,9 +89,9 @@ private:
 
 	bool readConfig(const std::string& filePath);
 
-	void parseGraphics(NAS2D::Xml::XmlElement *node);
-	void parseAudio(NAS2D::Xml::XmlElement *node);
-	void parseOptions(NAS2D::Xml::XmlElement *node);
+	void parseGraphics(NAS2D::Xml::XmlElement* node);
+	void parseAudio(NAS2D::Xml::XmlElement* node);
+	void parseOptions(NAS2D::Xml::XmlElement* node);
 
 	Options mOptions{};
 

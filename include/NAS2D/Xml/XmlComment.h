@@ -30,20 +30,20 @@ public:
 
 	virtual ~XmlComment() {}
 
-	virtual XmlNode* clone() const;
+	XmlNode* clone() const override;
 
-	virtual void write(std::string& buf, int depth) const;
+	void write(std::string& buf, int depth) const override;
 
-	virtual const char* parse(const char* p, void* data);
+	const char* parse(const char* p, void* data) override;
 
-	virtual const XmlComment* toComment() const { return this; }
-	virtual XmlComment* toComment() { return this; }
+	const XmlComment* toComment() const override { return this; }
+	XmlComment* toComment() override { return this; }
 
-	virtual bool accept(void* visitor) const;
+	bool accept(void* visitor) const override;
 
 protected:
 	void copyTo(XmlComment* target) const;
-	virtual void streamIn(std::istream& in, std::string& tag);
+	void streamIn(std::istream& in, std::string& tag) override;
 
 private:
 

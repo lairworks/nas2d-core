@@ -73,6 +73,17 @@ Filesystem::~Filesystem()
 
 
 /**
+ * Determines the path to the folder where the executable is located
+ *
+ * The base path may or may not be the current working directory.
+ */
+std::string Filesystem::basePath() const
+{
+	return PHYSFS_getBaseDir();
+}
+
+
+/**
  * Adds a directory or supported archive to the Search Path.
  *
  * \param path	File path to add.

@@ -34,6 +34,7 @@ public:
 	~Filesystem();
 
 
+	std::string basePath() const;
 	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;

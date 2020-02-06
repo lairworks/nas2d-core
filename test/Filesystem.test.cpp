@@ -17,6 +17,16 @@ class FilesystemTest : public ::testing::Test {
 };
 
 
+TEST_F(FilesystemTest, basePath) {
+	// Result is a path, so should end with a directory separator
+	EXPECT_THAT(fs.basePath(), testing::EndsWith(fs.dirSeparator()));
+}
+
+TEST_F(FilesystemTest, prefPath) {
+	// Result is a path, so should end with a directory separator
+	EXPECT_THAT(fs.prefPath(), testing::EndsWith(fs.dirSeparator()));
+}
+
 TEST_F(FilesystemTest, dataPath) {
 	EXPECT_EQ("data/", fs.dataPath());
 }

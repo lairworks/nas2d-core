@@ -52,6 +52,8 @@ public:
 
 	std::string extension(const std::string& path) const;
 
+	std::string dirSeparator() const;
+
 	bool isDirectory(const std::string& path) const;
 	void makeDirectory(const std::string& path) const;
 

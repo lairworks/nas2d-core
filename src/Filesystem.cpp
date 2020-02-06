@@ -362,3 +362,15 @@ std::string Filesystem::extension(const std::string& path) const
 	}
 	return std::string();
 }
+
+/**
+ * Gets the dir separator for the current platform
+ *
+ * The dir separator separates the directories within a path. This is typically either "\\" for Windows, or "/" for Linux.
+ *
+ * \note The path separator may be more than one character
+ */
+std::string Filesystem::dirSeparator() const
+{
+	return PHYSFS_getDirSeparator();
+}

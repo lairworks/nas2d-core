@@ -17,6 +17,16 @@ class FilesystemTest : public ::testing::Test {
 };
 
 
+TEST_F(FilesystemTest, basePath) {
+	// Result is a directory, and should end with a directory separator
+	EXPECT_THAT(fs.basePath(), testing::EndsWith(fs.dirSeparator()));
+}
+
+TEST_F(FilesystemTest, prefPath) {
+	// Result is a directory, and should end with a directory separator
+	EXPECT_THAT(fs.prefPath(), testing::EndsWith(fs.dirSeparator()));
+}
+
 TEST_F(FilesystemTest, dataPath) {
 	EXPECT_EQ("data/", fs.dataPath());
 }
@@ -110,4 +120,11 @@ TEST_F(FilesystemTest, mountUnmount) {
 	EXPECT_FALSE(fs.exists(extraFile));
 
 	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
+}
+
+TEST_F(FilesystemTest, dirSeparator) {
+	// Varies by platform, so we can't know the exact value ("/", "\", ":")
+	// New platforms may choose a new unique value
+	// Some platforms may not even have a hierarchal filesystem ("")
+	EXPECT_NO_THROW(fs.dirSeparator());
 }

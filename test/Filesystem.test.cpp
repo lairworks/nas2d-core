@@ -9,8 +9,12 @@ TEST(Filesystem, ConstructDestruct) {
 
 class FilesystemTest : public ::testing::Test {
   protected:
+
+	static constexpr auto AppName = "NAS2DUnitTests";
+	static constexpr auto OrganizationName = "LairWorks";
+
 	FilesystemTest() :
-		fs("", "NAS2DUnitTests", "LairWorks", "data/")
+		fs("", AppName, OrganizationName, "data/")
 	{}
 
 	NAS2D::Filesystem fs;
@@ -25,6 +29,7 @@ TEST_F(FilesystemTest, basePath) {
 TEST_F(FilesystemTest, prefPath) {
 	// Result is a directory, and should end with a directory separator
 	EXPECT_THAT(fs.prefPath(), testing::EndsWith(fs.dirSeparator()));
+	EXPECT_THAT(fs.prefPath(), testing::HasSubstr(AppName));
 }
 
 TEST_F(FilesystemTest, dataPath) {

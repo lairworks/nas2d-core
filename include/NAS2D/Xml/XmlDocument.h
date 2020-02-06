@@ -19,7 +19,7 @@ public:
 
 	virtual ~XmlDocument() {}
 
-	virtual const char* parse(const char* p, void* data = nullptr);
+	const char* parse(const char* p, void* data = nullptr) override;
 
 	const XmlElement* rootElement() const;
 	XmlElement* rootElement();
@@ -32,18 +32,18 @@ public:
 
 	void clearError();
 
-	virtual const XmlDocument* toDocument() const { return this; }
-	virtual XmlDocument* toDocument() { return this; }
+	const XmlDocument* toDocument() const override { return this; }
+	XmlDocument* toDocument() override { return this; }
 
-	virtual bool accept(void* content) const;
-	virtual void write(std::string& buf, int depth = 0) const;
+	bool accept(void* content) const override;
+	void write(std::string& buf, int depth = 0) const override;
 
 public:
 	void error(XmlErrorCode err, const char* errorLocation, void* prevData);
 
 protected:
-	virtual XmlNode* clone() const;
-	virtual void streamIn(std::istream& in, std::string& tag);
+	XmlNode* clone() const override;
+	void streamIn(std::istream& in, std::string& tag) override;
 
 private:
 	void copyTo(XmlDocument* target) const;

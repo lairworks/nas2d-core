@@ -45,21 +45,21 @@ public:
 	const XmlAttribute* lastAttribute() const;
 	XmlAttribute* lastAttribute();
 
-	virtual XmlNode* clone() const;
+	XmlNode* clone() const override;
 
-	virtual void write(std::string& buf, int depth) const;
+	void write(std::string& buf, int depth) const override;
 
-	virtual const char* parse(const char* p, void* data);
+	const char* parse(const char* p, void* data) override;
 
-	virtual const XmlElement* toElement() const { return this; }
-	virtual XmlElement* toElement() { return this; }
+	const XmlElement* toElement() const override { return this; }
+	XmlElement* toElement() override { return this; }
 
-	virtual bool accept(void* visitor) const;
+	bool accept(void* visitor) const override;
 
 protected:
 	void copyTo(XmlElement* target) const;
 	void clearThis();	// like clear, but initializes 'this' object as well
-	virtual void streamIn(std::istream& in, std::string& tag);
+	void streamIn(std::istream& in, std::string& tag) override;
 	const char* readValue(const char* in, void* prevData);
 
 private:

@@ -32,26 +32,26 @@ public:
 	XmlUnknown(const XmlUnknown& copy);
 	XmlUnknown& operator=(const XmlUnknown& copy);
 
-	virtual XmlNode* clone() const;
+	XmlNode* clone() const override;
 
 	/**
 	 * Print the Unknown to a buffer.
 	 */
-	virtual void write(std::string& buf, int depth) const;
+	void write(std::string& buf, int depth) const override;
 
-	virtual const char* parse(const char* p, void* data);
+	const char* parse(const char* p, void* data) override;
 
-	virtual const XmlUnknown* toUnknown() const { return this; }
-	virtual XmlUnknown* toUnknown() { return this; }
+	const XmlUnknown* toUnknown() const override { return this; }
+	XmlUnknown* toUnknown() override { return this; }
 
 	/**
 	 * Walk the XML tree visiting this node and all of its children.
 	 */
-	virtual bool accept(void* visitor) const;
+	bool accept(void* visitor) const override;
 
 protected:
 	void copyTo(XmlUnknown* target) const;
-	virtual void streamIn(std::istream& in, std::string& tag);
+	void streamIn(std::istream& in, std::string& tag) override;
 };
 
 } // namespace Xml

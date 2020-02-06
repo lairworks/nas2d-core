@@ -37,15 +37,15 @@ class XmlMemoryBuffer : public XmlVisitor
 public:
 	XmlMemoryBuffer();
 
-	virtual bool visitEnter(const XmlDocument&) { return true; }
-	virtual bool visitExit(const XmlDocument&) { return true; }
+	bool visitEnter(const XmlDocument&) override { return true; }
+	bool visitExit(const XmlDocument&) override { return true; }
 
-	virtual bool visitEnter(const XmlElement& element, const XmlAttribute* firstAttribute);
-	virtual bool visitExit(const XmlElement& element);
+	bool visitEnter(const XmlElement& element, const XmlAttribute* firstAttribute) override;
+	bool visitExit(const XmlElement& element) override;
 
-	virtual bool visit(const XmlText& text);
-	virtual bool visit(const XmlComment& comment);
-	virtual bool visit(const XmlUnknown& unknown);
+	bool visit(const XmlText& text) override;
+	bool visit(const XmlComment& comment) override;
+	bool visit(const XmlUnknown& unknown) override;
 
 	size_t size();
 

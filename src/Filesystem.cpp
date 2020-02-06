@@ -107,9 +107,7 @@ std::string Filesystem::prefPath() const
  */
 void Filesystem::mount(const std::string& path) const
 {
-	std::string searchPath(mDataPath + "/" + path);
-
-	if (PHYSFS_mount(searchPath.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
+	if (PHYSFS_mount(path.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
 	{
 		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
@@ -123,9 +121,7 @@ void Filesystem::mount(const std::string& path) const
  */
 void Filesystem::unmount(const std::string& path) const
 {
-	std::string searchPath(mDataPath + "/" + path);
-
-	if (PHYSFS_unmount(searchPath.c_str()) == 0)
+	if (PHYSFS_unmount(path.c_str()) == 0)
 	{
 		throw std::runtime_error(std::string("Couldn't remove '") + path + "' from search path : " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}

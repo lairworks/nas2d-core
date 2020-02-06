@@ -98,7 +98,7 @@ TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
 }
 
 TEST_F(FilesystemTest, mountUnmount) {
-	const std::string extraMount = "extraData/";
+	const std::string extraMount = "data/extraData/";
 	const std::string extraFile = "extraFile.txt";
 
 	EXPECT_FALSE(fs.exists(extraFile));

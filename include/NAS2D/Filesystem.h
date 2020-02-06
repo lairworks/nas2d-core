@@ -34,6 +34,9 @@ public:
 	~Filesystem();
 
 
+	std::string basePath() const;
+	std::string prefPath() const;
+
 	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
@@ -53,6 +56,9 @@ public:
 	void makeDirectory(const std::string& path) const;
 
 private:
+	std::string mAppName;
+	std::string mOrganizationName;
+
 	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
 };
 

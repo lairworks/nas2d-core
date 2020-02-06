@@ -35,7 +35,7 @@ public:
 	XmlText(const XmlText& copy);
 	XmlText& operator=(const XmlText& base);
 
-	virtual void write(std::string& buf, int depth) const;
+	void write(std::string& buf, int depth) const override;
 
 	/**
 	 * Queries whether this represents text using a CDATA section.
@@ -47,20 +47,20 @@ public:
 	 */
 	void CDATA(bool _cdata) { cdata = _cdata; }
 
-	virtual const char* parse(const char* p, void* data);
+	const char* parse(const char* p, void* data) override;
 
-	virtual const XmlText* toText() const { return this; }
-	virtual XmlText* toText() { return this; }
+	const XmlText* toText() const override { return this; }
+	XmlText* toText() override { return this; }
 
-	virtual bool accept(void* visitor) const;
+	bool accept(void* visitor) const override;
 
 protected:
 	///  [internal use] Creates a new Element and returns it.
-	virtual XmlNode* clone() const;
+	XmlNode* clone() const override;
 	void copyTo(XmlText* target) const;
 
 	bool blank() const;	// returns true if all white space and new lines
-	virtual void streamIn(std::istream& in, std::string& tag);
+	void streamIn(std::istream& in, std::string& tag) override;
 
 private:
 	bool cdata;			// true if this should be input and output as a CDATA style text element

@@ -41,7 +41,7 @@ enum MountPosition
 };
 
 
-NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath) :
+NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName) :
 	mAppName(appName),
 	mOrganizationName(organizationName)
 {
@@ -55,12 +55,6 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 	if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
 	{
 		throw filesystem_backend_init_failure(std::string("Unable to set a sane configuration: ") + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-	}
-
-	mDataPath = dataPath;
-	if (PHYSFS_mount(mDataPath.c_str(), "/", MountPosition::MOUNT_PREPEND) == 0)
-	{
-		throw filesystem_backend_init_failure(std::string("Couldn't find data path: ") + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 
@@ -308,15 +302,6 @@ void Filesystem::write(const File& file, bool overwrite) const
 	}
 
 	closeFile(myFile);
-}
-
-
-/**
- * Gets the base data path.
- */
-std::string Filesystem::dataPath() const
-{
-	return mDataPath;
 }
 
 

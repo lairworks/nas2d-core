@@ -26,7 +26,7 @@ class Filesystem
 {
 public:
 	Filesystem() = delete;
-	Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName, const std::string& dataPath);
+	Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 	Filesystem(const Filesystem&) = delete;
 	Filesystem& operator=(const Filesystem&) = delete;
 	Filesystem(Filesystem&&) = delete;
@@ -37,7 +37,6 @@ public:
 	std::string basePath() const;
 	std::string prefPath() const;
 
-	std::string dataPath() const;
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
 	void mount(const std::string& path) const;
@@ -60,8 +59,6 @@ public:
 private:
 	std::string mAppName;
 	std::string mOrganizationName;
-
-	std::string			mDataPath;			/**< Data path string. This will typically be 'data/'. */
 };
 
 }

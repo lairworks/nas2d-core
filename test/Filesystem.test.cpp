@@ -4,7 +4,7 @@
 
 
 TEST(Filesystem, ConstructDestruct) {
-	EXPECT_NO_THROW(NAS2D::Filesystem fs("", "NAS2DUnitTests", "LairWorks", "./"));
+	EXPECT_NO_THROW(NAS2D::Filesystem fs("", "NAS2DUnitTests", "LairWorks"));
 }
 
 class FilesystemTest : public ::testing::Test {
@@ -14,8 +14,10 @@ class FilesystemTest : public ::testing::Test {
 	static constexpr auto OrganizationName = "LairWorks";
 
 	FilesystemTest() :
-		fs("", AppName, OrganizationName, "data/")
-	{}
+		fs("", AppName, OrganizationName)
+	{
+		fs.mount("data/");
+	}
 
 	NAS2D::Filesystem fs;
 };
@@ -30,10 +32,6 @@ TEST_F(FilesystemTest, prefPath) {
 	// Result is a directory, and should end with a directory separator
 	EXPECT_THAT(fs.prefPath(), testing::EndsWith(fs.dirSeparator()));
 	EXPECT_THAT(fs.prefPath(), testing::HasSubstr(AppName));
-}
-
-TEST_F(FilesystemTest, dataPath) {
-	EXPECT_EQ("data/", fs.dataPath());
 }
 
 TEST_F(FilesystemTest, extension) {

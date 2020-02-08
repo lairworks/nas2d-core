@@ -16,7 +16,9 @@ class FilesystemTest : public ::testing::Test {
 	FilesystemTest() :
 		fs("", AppName, OrganizationName)
 	{
+		fs.mount(fs.basePath());
 		fs.mount("data/");
+		fs.mountReadWrite(fs.prefPath());
 	}
 
 	NAS2D::Filesystem fs;

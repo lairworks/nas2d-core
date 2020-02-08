@@ -109,6 +109,24 @@ void Filesystem::mount(const std::string& path) const
 
 
 /**
+ * Mount a folder with write access (includes read access)
+ *
+ * \param path	File path to add.
+ */
+void Filesystem::mountWrite(const std::string& path) const
+{
+	// Mount for read access
+	mount(path);
+
+	// Mount for write access
+	if (PHYSFS_setWriteDir(path.c_str()) == 0)
+	{
+		throw std::runtime_error(std::string("Couldn't add write folder '") + path + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+	}
+}
+
+
+/**
  * Removes a directory or supported archive from the Search Path.
  *
  * \param path	File path to remove.

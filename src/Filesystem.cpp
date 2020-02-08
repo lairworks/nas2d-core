@@ -95,7 +95,7 @@ std::string Filesystem::prefPath() const
 
 
 /**
- * Adds a directory or supported archive to the Search Path.
+ * Mount a folder with read access
  *
  * \param path	File path to add.
  */
@@ -104,6 +104,24 @@ void Filesystem::mount(const std::string& path) const
 	if (PHYSFS_mount(path.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
 	{
 		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+	}
+}
+
+
+/**
+ * Mount a folder with read and write access
+ *
+ * \param path	File path to add.
+ */
+void Filesystem::mountReadWrite(const std::string& path) const
+{
+	// Mount for read access
+	mount(path);
+
+	// Mount for write access
+	if (PHYSFS_setWriteDir(path.c_str()) == 0)
+	{
+		throw std::runtime_error(std::string("Couldn't add write folder '") + path + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 

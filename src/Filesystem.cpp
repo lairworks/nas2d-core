@@ -95,7 +95,7 @@ std::string Filesystem::prefPath() const
 
 
 /**
- * Adds a directory or supported archive to the Search Path.
+ * Mount a folder with read access
  *
  * \param path	File path to add.
  */
@@ -109,11 +109,11 @@ void Filesystem::mount(const std::string& path) const
 
 
 /**
- * Mount a folder with write access (includes read access)
+ * Mount a folder with read and write access
  *
  * \param path	File path to add.
  */
-void Filesystem::mountWrite(const std::string& path) const
+void Filesystem::mountReadWrite(const std::string& path) const
 {
 	// Mount for read access
 	mount(path);

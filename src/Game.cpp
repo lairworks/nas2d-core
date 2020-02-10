@@ -46,7 +46,9 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 
 	std::cout << "Initializing subsystems..." << std::endl << std::endl;
 
-	Utility<Filesystem>::init<Filesystem>(argv_0, appName, organizationName).mount(dataPath);
+	auto& fs = Utility<Filesystem>::init<Filesystem>(argv_0, appName, organizationName);
+	fs.mount(dataPath);
+	fs.mountReadWrite(fs.prefPath());
 
 	Configuration& cf = Utility<Configuration>::get();
 	cf.load(configPath);

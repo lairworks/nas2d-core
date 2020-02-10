@@ -51,11 +51,6 @@ NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appN
 	{
 		throw filesystem_backend_init_failure(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
-
-	if (PHYSFS_setSaneConfig(organizationName.c_str(), appName.c_str(), nullptr, false, false) == 0)
-	{
-		throw filesystem_backend_init_failure(std::string("Unable to set a sane configuration: ") + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-	}
 }
 
 

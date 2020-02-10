@@ -56,6 +56,11 @@ struct Point {
 		};
 	}
 
+	template <typename NewBaseType>
+	Point<NewBaseType> to() const {
+		return static_cast<Point<NewBaseType>>(*this);
+	}
+
 	void x(BaseType x) {
 		mX = x;
 	}

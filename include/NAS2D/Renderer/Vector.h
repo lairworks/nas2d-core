@@ -74,6 +74,11 @@ struct Vector {
 		};
 	}
 
+	template <typename NewBaseType>
+	Vector<NewBaseType> to() const {
+		return static_cast<Vector<NewBaseType>>(*this);
+	}
+
 };
 
 }

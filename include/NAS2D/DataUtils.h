@@ -16,7 +16,8 @@ namespace NAS2D
 			const std::string& requiredChildElements,
 			const std::string& requiredAttributes,
 			const std::string& optionalChildElements = std::string{},
-			const std::string& optionalAttributes = std::string{});
+			const std::string& optionalAttributes = std::string{}
+		);
 
 	} // namespace Xml
 

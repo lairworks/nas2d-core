@@ -28,12 +28,17 @@ TEST(Vector, SubtractPointToVector) {
 	EXPECT_EQ((NAS2D::Vector<int>{1, 1}), (NAS2D::Point<int>{2, 3}) - (NAS2D::Point<int>{1, 2}));
 }
 
-TEST(Point, Conversion) {
+TEST(Point, OperatorType) {
 	// Allow explicit conversion
-	EXPECT_EQ((NAS2D::Point<int>{1, 1}), static_cast<NAS2D::Point<int>>(NAS2D::Point<float>{1.0, 1.0}));
-	EXPECT_EQ((NAS2D::Point<float>{1.0, 1.0}), static_cast<NAS2D::Point<float>>(NAS2D::Point<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Point<int>{1, 2}), static_cast<NAS2D::Point<int>>(NAS2D::Point<float>{1.0, 2.0}));
+	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), static_cast<NAS2D::Point<float>>(NAS2D::Point<int>{1, 2}));
 
 	// Allow implicit conversion (may be deprecated in the future)
-	EXPECT_EQ((NAS2D::Point<int>{1, 1}), (NAS2D::Point<float>{1.0, 1.0}));
-	EXPECT_EQ((NAS2D::Point<float>{1.0, 1.0}), (NAS2D::Point<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Point<int>{1, 2}), (NAS2D::Point<float>{1.0, 2.0}));
+	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), (NAS2D::Point<int>{1, 2}));
+}
+
+TEST(Point, to) {
+	EXPECT_EQ((NAS2D::Point<int>{1, 2}), (NAS2D::Point<float>{1.0, 2.0}.to<int>()));
+	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), (NAS2D::Point<int>{1, 2}.to<float>()));
 }

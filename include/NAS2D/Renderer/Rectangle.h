@@ -84,6 +84,11 @@ struct Rectangle
 		};
 	}
 
+	template <typename NewBaseType>
+	Rectangle<NewBaseType> to() const {
+		return static_cast<Rectangle<NewBaseType>>(*this);
+	}
+
 	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
 	// Area in interval notation: [x .. x + width), [y .. y + height)
 	bool contains(const Point<BaseType>& point) const {

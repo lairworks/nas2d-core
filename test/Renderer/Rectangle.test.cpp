@@ -30,6 +30,22 @@ TEST(Rectangle, endPoint) {
 	EXPECT_EQ((NAS2D::Point<int>{4, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.endPoint()));
 }
 
+TEST(Rectangle, operatorType) {
+	EXPECT_EQ((NAS2D::Rectangle<int>{0, 0, 1, 1}), static_cast<NAS2D::Rectangle<int>>(NAS2D::Rectangle<float>{0.0, 0.0, 1.0, 1.0}));
+	EXPECT_EQ((NAS2D::Rectangle<int>{1, 2, 3, 4}), static_cast<NAS2D::Rectangle<int>>(NAS2D::Rectangle<float>{1.0, 2.0, 3.0, 4.0}));
+
+	EXPECT_EQ((NAS2D::Rectangle<float>{0.0, 0.0, 1.0, 1.0}), static_cast<NAS2D::Rectangle<float>>(NAS2D::Rectangle<int>{0, 0, 1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle<float>{1.0, 2.0, 3.0, 4.0}), static_cast<NAS2D::Rectangle<float>>(NAS2D::Rectangle<int>{1, 2, 3, 4}));
+}
+
+TEST(Rectangle, to) {
+	EXPECT_EQ((NAS2D::Rectangle<int>{0, 0, 1, 1}), (NAS2D::Rectangle<float>{0.0, 0.0, 1.0, 1.0}.to<int>()));
+	EXPECT_EQ((NAS2D::Rectangle<int>{1, 2, 3, 4}), (NAS2D::Rectangle<float>{1.0, 2.0, 3.0, 4.0}.to<int>()));
+
+	EXPECT_EQ((NAS2D::Rectangle<float>{0.0, 0.0, 1.0, 1.0}), (NAS2D::Rectangle<int>{0, 0, 1, 1}.to<float>()));
+	EXPECT_EQ((NAS2D::Rectangle<float>{1.0, 2.0, 3.0, 4.0}), (NAS2D::Rectangle<int>{1, 2, 3, 4}.to<float>()));
+}
+
 TEST(Rectangle, contains) {
 	NAS2D::Rectangle rect = {1, 1, 2, 2};
 

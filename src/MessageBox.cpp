@@ -97,4 +97,38 @@ namespace NAS2D
 #endif
 	}
 
+
+	bool MessageBox_YesNo(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity)
+	{
+		auto type = GetMessageBoxIconFlagFromSeverityLevel(severity);
+#if defined(_WIN32)
+		auto buttonId = ::MessageBoxA(nullptr, messageText.data(), messageTitle.data(), MB_YESNO | type | MB_TOPMOST | MB_TASKMODAL);
+		return buttonId == IDYES;
+#else
+	const std::array<SDL_MessageBoxButtonData, 1> buttons = {
+		{SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 0, "Yes"}
+		,{SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 1, "No"}
+	};
+
+	const SDL_MessageBoxData messageboxdata =
+	{
+		type,
+		nullptr,
+		messageTitle.data(),
+		messageText.data(),
+		buttons.size(),
+		buttons.data(),
+		nullptr
+	};
+
+	int buttonId = -1;
+	auto errorCode = SDL_ShowMessageBox(&messageboxdata, &buttonId);
+	if (errorCode == -1)
+	{
+		return false;
+	}
+	return buttonId == 0;
+#endif
+	}
+
 } // namespace NAS2D

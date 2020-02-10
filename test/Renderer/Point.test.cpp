@@ -37,3 +37,8 @@ TEST(Point, OperatorType) {
 	EXPECT_EQ((NAS2D::Point<int>{1, 2}), (NAS2D::Point<float>{1.0, 2.0}));
 	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), (NAS2D::Point<int>{1, 2}));
 }
+
+TEST(Point, to) {
+	EXPECT_EQ((NAS2D::Point<int>{1, 2}), (NAS2D::Point<float>{1.0, 2.0}.to<int>()));
+	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), (NAS2D::Point<int>{1, 2}.to<float>()));
+}

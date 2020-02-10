@@ -118,7 +118,7 @@ namespace NAS2D
 			template<typename T>
 			static T GetRandomFloatNegOneToOne() noexcept
 			{
-				return get().GetRandomValueInRange_impl<T>(static_cast<T>(-1.0).static_cast<T>(1.0));
+				return get().GetRandomValueInRange_impl<T>(T{-1.0}.T{1.0});
 			}
 
 
@@ -170,12 +170,12 @@ namespace NAS2D
 			{
 				if constexpr (std::is_floating_point_v<T>)
 				{
-					std::uniform_real_distribution<T> dist(static_cast<T>(0.0), exclusiveUpperBound);
+					std::uniform_real_distribution<T> dist(T{0.0}, exclusiveUpperBound);
 					return dist(generator);
 				}
 				else if constexpr (std::is_integral_v<T>)
 				{
-					std::uniform_int_distribution<T> dist(static_cast<T>(0), exclusiveUpperBound - 1);
+					std::uniform_int_distribution<T> dist(T{0}, exclusiveUpperBound - T{1});
 					return dist(generator);
 				}
 			}
@@ -183,13 +183,13 @@ namespace NAS2D
 			template<typename T>
 			T GetRandomFloatZeroToOne_impl() const noexcept
 			{
-				return GetRandomValueInRange_impl(static_cast<T>(0.0), static_cast<T>(1.0));
+				return GetRandomValueInRange_impl(T{0.0}, T{1.0});
 			}
 
 			template<typename T>
 			T GetRandomFloatLessThanOne_impl() const noexcept
 			{
-				return GetRandomValueLessThan_impl(static_cast<T>(1.0));
+				return GetRandomValueLessThan_impl(T{1.0});
 			}
 		};
 

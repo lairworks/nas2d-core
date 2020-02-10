@@ -175,7 +175,7 @@ namespace NAS2D
 				}
 				else if constexpr (std::is_integral_v<T>)
 				{
-					std::uniform_int_distribution<T> dist(static_cast<T>(0), exclusiveUpperBound);
+					std::uniform_int_distribution<T> dist(static_cast<T>(0), exclusiveUpperBound - 1);
 					return dist(generator);
 				}
 			}

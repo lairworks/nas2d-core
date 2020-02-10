@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+#include <limits>
 #include <random>
 #include <type_traits>
 
@@ -152,7 +154,7 @@ namespace NAS2D
 			{
 				if constexpr (std::is_floating_point_v<T>)
 				{
-					const auto upper_bound = std::nextafter(inclusiveUpperBound, inclusiveUpperBound + static_cast<T>(1.0));
+					const auto upper_bound = std::nextafter(inclusiveUpperBound, std::numeric_limits<T>::max());
 					std::uniform_real_distribution<T> dist(inclusiveLowerBound, upper_bound);
 					return dist(generator);
 				}

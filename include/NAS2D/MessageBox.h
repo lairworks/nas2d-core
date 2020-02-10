@@ -16,5 +16,6 @@ namespace NAS2D
 	void MessageBox_Okay(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
 	bool MessageBox_OkayCancel(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
 	bool MessageBox_YesNo(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
+	int MessageBox_YesNoCancel(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
 
 } // namespace NAS2D

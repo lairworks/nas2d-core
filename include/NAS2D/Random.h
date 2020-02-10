@@ -62,7 +62,7 @@ namespace NAS2D
 			template<typename T>
 			static T GetRandomValueInRange(T inclusiveLowerBound, T inclusiveUpperBound) noexcept
 			{
-				return get().GetRandomValueInRange<T>(inclusiveLowerBound, inclusiveUpperBound);
+				return get().GetRandomValueInRange_impl<T>(inclusiveLowerBound, inclusiveUpperBound);
 			}
 
 			/**

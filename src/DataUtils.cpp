@@ -4,12 +4,9 @@
 #include "NAS2D/Xml/XmlElement.h"
 
 #include <algorithm>
+#include <iostream>
+#include <ostream>
 #include <sstream>
-
-#if defined(_WIN32)
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#endif
 
 void NAS2D::Xml::validateXMLElement(
 	const NAS2D::Xml::XmlElement& element,
@@ -21,29 +18,13 @@ void NAS2D::Xml::validateXMLElement(
 {
 	if (name.empty())
 	{
-		// TODO: Make this a function with [[noreturn]] attribute
-#if defined(_WIN32)
-		std::ostringstream err_ss;
-		err_ss << "Xml Validation failed. Element name is required.";
-		::MessageBoxA(nullptr, err_ss.str().c_str(), "Fatal Error", MB_ICONERROR | MB_OK);
-#else
-		// TODO: Add non-windows version.
-#endif
-		exit(0);
+		throw std::runtime_error("XML Validation failed. Element name is required.");
 	}
 
 	const std::string elemName = element.value();
 	if (elemName != name)
 	{
-		// TODO: Make this a function with [[noreturn]] attribute
-#if defined(_WIN32)
-		std::ostringstream err_ss;
-		err_ss << "Xml Validation failed. Element name " << elemName << " does not match valid name " << name;
-		::MessageBoxA(nullptr, err_ss.str().c_str(), "Fatal Error", MB_ICONERROR | MB_OK);
-#else
-		// TODO: Add non-windows version.
-#endif
-		exit(0);
+		throw std::runtime_error("XML Validation failed. Element name " + elemName + " does not match valid name " + name);
 	}
 
 	// Get list of required/optional attributes/children
@@ -124,13 +105,7 @@ void NAS2D::Xml::validateXMLElement(
 		{
 			err_ss << '\t' << child << '\n';
 		}
-		// TODO: Make this a function with [[noreturn]] attribute
-#if defined(_WIN32)
-		::MessageBoxA(nullptr, err_ss.str().c_str(), "Fatal Error", MB_ICONERROR | MB_OK);
-#else
-		// TODO: Add non-windows version.
-#endif
-		exit(0);
+		throw std::runtime_error(err_ss.str());
 	}
 
 	StringList missingRequiredAttributes{};
@@ -148,13 +123,7 @@ void NAS2D::Xml::validateXMLElement(
 		{
 			err_ss << '\t' << attrb << '\n';
 		}
-		// TODO: Make this a function with [[noreturn]] attribute
-#if defined(_WIN32)
-		::MessageBoxA(nullptr, err_ss.str().c_str(), "Fatal Error", MB_ICONERROR | MB_OK);
-#else
-		// TODO: Add non-windows version.
-#endif
-		exit(0);
+		throw std::runtime_error(err_ss.str());
 	}
 
 #if defined(_DEBUG)
@@ -173,14 +142,8 @@ void NAS2D::Xml::validateXMLElement(
 		{
 			err_ss << '\t' << child << '\n';
 		}
-		// Maybe should log instead? This would get annoying quickly.
-
-		// TODO: Make this a function with [[noreturn]] attribute
-#if defined(_WIN32)
-		::MessageBoxA(nullptr, err_ss.str().c_str(), "Warning", MB_ICONWARNING | MB_OK);
-#else
-		// TODO: Add non-windows version.
-#endif
+		//Not thread-safe!!
+		std::cout << err_ss.str();
 	}
 
 	StringList extraOptionalAttributeNames{};
@@ -197,14 +160,8 @@ void NAS2D::Xml::validateXMLElement(
 		{
 			err_ss << '\t' << attrb << '\n';
 		}
-		// Maybe should log instead? This would get annoying quickly.
-
-		// TODO: Make this a function with [[noreturn]] attribute
-#if defined(_WIN32)
-		::MessageBoxA(nullptr, err_ss.str().c_str(), "Warning", MB_ICONWARNING | MB_OK);
-#else
-		// TODO: Add non-windows version.
-#endif
+		//Not thread-safe!!
+		std::cout << err_ss.str();
 	}
 
 #endif

@@ -201,4 +201,39 @@ namespace NAS2D
 #endif
 	}
 
+	/*
+	* Returns 1 if Abort, 0 if Retry, -1 if Ignore and -1 otherwise.
+	*/
+	int MessageBox_AbortRetryIgnore(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity)
+	{
+		auto type = GetMessageBoxIconFlagFromSeverityLevel(severity);
+#if defined(_WIN32)
+		auto buttonId = ::MessageBoxA(nullptr, messageText.data(), messageTitle.data(), MB_ABORTRETRYIGNORE | type | MB_TOPMOST | MB_TASKMODAL);
+		auto answerCode = buttonId == IDABORT ? 1 : (buttonId == IDRETRY ? 0 : -1);
+		return answerCode;
+#else
+		const std::array<SDL_MessageBoxButtonData, 1> buttons = {
+		{SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Abort"}
+		,{0, 0, "Retry"}
+		,{SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, -1, "Ignore"}};
+
+		const SDL_MessageBoxData messageboxdata = {
+			type,
+			nullptr,
+			messageTitle.data(),
+			messageText.data(),
+			buttons.size(),
+			buttons.data(),
+			nullptr};
+
+		int buttonId = -1;
+		auto errorCode = SDL_ShowMessageBox(&messageboxdata, &buttonId);
+		if (errorCode == -1)
+		{
+			return -1;
+		}
+		return buttonId;
+#endif
+	}
+
 } // namespace NAS2D

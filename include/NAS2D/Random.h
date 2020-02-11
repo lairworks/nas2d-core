@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cmath>
 #include <limits>
 #include <random>
@@ -18,18 +19,16 @@ namespace NAS2D
 			Random& operator=(Random&&) = delete;
 
 			/**
-			* \fn static void seed(std::size_t seedValue)
+			* \fn static void seed(std::seed_seq& seedValue)
 			* 
-			* Seeds the random number generator with a specific value.
+			* Seeds the random number generator with a specific sequence.
 			* 
-			* \param seedValue: The value with which to seed the generator.
+			* \param seq: The sequence with which to seed the generator.
 			* \return Nothing
-			* \remarks
-			* If not called prior to any other function, then the RNG is seeded with a non-deterministic random value.
 			*/
-			static void seed(std::size_t seedValue) noexcept
+			static void seed(std::seed_seq& seq) noexcept
 			{
-				get().seed_impl(seedValue);
+				get().seed_impl(seq);
 			}
 
 			/**
@@ -39,7 +38,7 @@ namespace NAS2D
 			* 
 			* \return The seed value.
 			*/
-			static std::size_t seed() noexcept
+			static const std::array<uint32_t, Rng_t::state_size>& seed() noexcept
 			{
 				return get().seed_impl();
 			}
@@ -142,13 +141,15 @@ namespace NAS2D
 
 		protected:
 		private:
-			Random()
-			: seed_value(std::random_device{}())
-			, generator(seed_value)
-			{}
+			std::array<uint32_t, Rng_t::state_size> seed_value{};
+			Rng_t generator{};
 
-			std::size_t seed_value{};
-			Rng_t generator;
+			Random()
+			{
+				std::random_device rdev;
+				std::generate_n(std::begin(seed_value), Rng_t::state_size, std::ref(rdev));
+				generator.seed(seed_value);
+			}
 
 			static Random& get() noexcept
 			{
@@ -156,12 +157,12 @@ namespace NAS2D
 				return instance;
 			}
 
-			void seed_impl(std::size_t seedValue) noexcept
+			void seed_impl(std::seed_seq& seq) noexcept
 			{
-				generator.seed(seedValue);
+				generator.seed(seq);
 			}
 
-			std::size_t seed_impl() const noexcept
+			const std::array<uint32_t, Rng_t::state_size>& seed_impl() const noexcept
 			{
 				return seed_value;
 			}

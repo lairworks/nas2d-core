@@ -19,4 +19,6 @@ namespace NAS2D
 	bool MessageBox_YesNo(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
 	int MessageBox_YesNoCancel(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
 
+	bool MessageBox_RetryCancel(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
+
 } // namespace NAS2D

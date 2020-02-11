@@ -5,11 +5,8 @@
 #include <random>
 #include <type_traits>
 
-#if defined(_WIN64) || defined(__MINGW64__)
-using Rng_t = std::mt19937_64;
-#else
 using Rng_t = std::mt19937;
-#endif
+
 
 namespace NAS2D
 {

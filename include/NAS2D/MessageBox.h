@@ -22,4 +22,6 @@ namespace NAS2D
 	bool MessageBox_RetryCancel(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
 	int MessageBox_AbortRetryIgnore(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
 
+	int MessageBox_CancelTryContinue(std::string_view messageTitle, std::string_view messageText, MessageBoxSeverityLevel severity);
+
 } // namespace NAS2D

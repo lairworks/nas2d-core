@@ -78,13 +78,27 @@ namespace NAS2D
 			/**
 			* \fn static bool GetRandomBool()
 			* 
-			* Generates a random true or false value.
+			* Generates a random true or false value with a probability of `0.5`.
 			* 
 			* \return A boolean value.
 			*/
 			static bool GetRandomBool() noexcept
 			{
 				return get().GetRandomValueLessThan(2) == 0;
+			}
+
+			/**
+			* \fn static bool GetRandomBool()
+			* 
+			* Generates a random true or false value given a specific probability of being true.
+			* 
+			* \param percentChance: A value in the range [0.0, 1.0] that represents the probability of returning `true`.
+			* \return A boolean value.
+			*/
+			template<typename T>
+			static bool GetRandomBool(T percentChance) noexcept
+			{
+				return get().GetRandomFloatZeroToOne_impl() < percentChance;
 			}
 
 			/**

@@ -76,6 +76,18 @@ namespace NAS2D
 			}
 
 			/**
+			* \fn static bool GetRandomBool()
+			* 
+			* Generates a random true or false value.
+			* 
+			* \return A boolean value.
+			*/
+			static bool GetRandomBool() noexcept
+			{
+				return get().GetRandomValueLessThan(2) == 0;
+			}
+
+			/**
 			* \fn static T GetRandomFloatZeroToOne()
 			* 
 			* Generates a random floating-point value in the closed range [0.0, 1.0].

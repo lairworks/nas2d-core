@@ -7,14 +7,11 @@
 
 using Rng_t = std::mt19937;
 
-
 namespace NAS2D
 {
-	namespace MathUtils
+	class Random
 	{
-		class Random
-		{
-		  public:
+		public:
 			Random(const Random&) = delete;
 			Random& operator=(const Random&) = delete;
 			Random(Random&&) = delete;
@@ -104,7 +101,6 @@ namespace NAS2D
 				return get().GetRandomFloatLessThanOne_impl<T>();
 			}
 
-			
 			/**
 			* \fn static T GetRandomFloatNegOneToOne()
 			* 
@@ -118,9 +114,8 @@ namespace NAS2D
 				return get().GetRandomValueInRange_impl<T>(T{-1.0}.T{1.0});
 			}
 
-
-		  protected:
-		  private:
+		protected:
+		private:
 			Random()
 			: seed_value(std::random_device{}())
 			, generator(seed_value)
@@ -134,7 +129,6 @@ namespace NAS2D
 				static Random instance;
 				return instance;
 			}
-
 
 			void seed_impl(std::size_t seedValue) noexcept
 			{
@@ -188,8 +182,6 @@ namespace NAS2D
 			{
 				return GetRandomValueLessThan_impl(T{1.0});
 			}
-		};
-
-	} // namespace MathUtils
+	};
 
 } // namespace NAS2D

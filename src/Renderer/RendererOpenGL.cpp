@@ -267,8 +267,8 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	dstEndPointInt.x() > destination.width() ? clipRect.width(destination.width() - dstPointInt.x()) : clipRect.width(source.width());
 	dstEndPointInt.y() > destination.height() ? clipRect.height(destination.height() - dstPointInt.y()) : clipRect.height(source.height());
 
-	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
-	if (clipRect.width() < 1 || clipRect.height() < 1)
+	// Ignore call if the clipped rect is empty
+	if (clipRect.width() <= 0 || clipRect.height() <= 0)
 	{
 		return;
 	}

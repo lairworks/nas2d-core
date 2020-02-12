@@ -273,12 +273,6 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 		availableSize.y < sourceSize.y ? availableSize.y : sourceSize.y
 	};
 
-	// Ignore call if the clipped rect is empty
-	if (clipSize.x <= 0 || clipSize.y <= 0)
-	{
-		return;
-	}
-
 	glColor4ub(255, 255, 255, 255);
 
 	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

@@ -11,6 +11,7 @@
 
 #include "Resource.h"
 #include "../Renderer/Color.h"
+#include "../Renderer/Point.h"
 #include "../Renderer/Vector.h"
 
 #include <vector>
@@ -58,6 +59,7 @@ public:
 	int center_x() const;
 	int center_y() const;
 
+	Color pixelColor(Point<int> point) const;
 	Color pixelColor(int x, int y) const;
 
 private:

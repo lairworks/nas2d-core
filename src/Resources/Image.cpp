@@ -260,6 +260,17 @@ int Image::center_y() const
 /**
  * Gets the color of a pixel at a given coordinate.
  *
+ * \param	point	Coordinates of the pixel to check.
+ */
+Color Image::pixelColor(Point<int> point) const
+{
+	return pixelColor(point.x(), point.y());
+}
+
+
+/**
+ * Gets the color of a pixel at a given coordinate.
+ *
  * \param	x	X-Coordinate of the pixel to check.
  * \param	y	Y-Coordinate of the pixel to check.
  */

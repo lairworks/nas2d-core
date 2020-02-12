@@ -45,42 +45,6 @@ bool NAS2D::isPointInRect(const Point_2d& point, const Rectangle_2d& rect)
 }
 
 /**
- * \fn isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int bX2, int bY2)
- *
- * Determines if two rectangles, A and B, intersect.
- *
- * \param aX	X-Coordinate of origin point of rectangle A.
- * \param aY	Y-Coordinate of origin point of rectangle A.
- * \param aX2	X-Coordinate of end point of rectangle A.
- * \param aY2	Y-Coordinate of end point of rectangle A.
- * \param bX	X-Coordinate of origin point of rectangle B.
- * \param bY	Y-Coordinate of origin point of rectangle B.
- * \param bX2	X-Coordinate of end point of rectangle B.
- * \param bY2	Y-Coordinate of end point of rectangle B.
- *
- * \return Returns true if rectangles intersect.
- */
-bool NAS2D::isRectInRect(int aX, int aY, int aX2, int aY2, int bX, int bY, int bX2, int bY2)
-{
-	return (aX <= bX2 && aX2 >= bX && aY <= bY2 && aY2 >= bY);
-}
-
-/**
- * \fn isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
- *
- * Determines if two rectangles, A and B, intersect.
- *
- * \param a	Rectangle to test.
- * \param b	Rectangle to test against.
- *
- * \return Returns true if rectangles intersect.
- */
-bool NAS2D::isRectInRect(const Rectangle_2d& a, const Rectangle_2d& b)
-{
-	return (a.x() <= (b.x() + b.width()) && (a.x() + a.width()) >= b.x() && a.y() <= (b.y() + b.height()) && (a.y() + a.height()) >= b.y());
-}
-
-/**
  * \fn int divideUp(int a, int b)
  *
  * Basic integer division that rounds up to the nearest whole number.

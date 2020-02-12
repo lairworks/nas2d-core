@@ -253,24 +253,27 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float ras
 
 void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
-	glColor4ub(255, 255, 255, 255);
+	const auto dstPointInt = dstPoint.to<int>();
+	const auto sourceSize = source.size();
+
+	const auto origin = NAS2D::Point<int>{0, 0};
+
+	const auto sourceBoundsInDestination = NAS2D::Rectangle<int>::Create(dstPointInt, sourceSize);
+	const auto destinationBounds = NAS2D::Rectangle<int>::Create(origin, destination.size());
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if (!isRectInRect(static_cast<int>(dstPoint.x()), static_cast<int>(dstPoint.y()), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
+	if (!sourceBoundsInDestination.overlaps(destinationBounds))
 	{
 		return;
 	}
 
-	Rectangle_2d clipRect;
+	const auto availableSize = destinationBounds.endPoint() - dstPointInt;
+	const auto clipSize = NAS2D::Vector<int>{
+		availableSize.x < sourceSize.x ? availableSize.x : sourceSize.x,
+		availableSize.y < sourceSize.y ? availableSize.y : sourceSize.y
+	};
 
-	(static_cast<int>(dstPoint.x()) + source.width()) > destination.width() ? clipRect.width(source.width() - ((static_cast<int>(dstPoint.x()) + source.width()) - destination.width())) : clipRect.width(source.width());
-	(static_cast<int>(dstPoint.y()) + source.height()) > destination.height() ? clipRect.height(source.height() - ((static_cast<int>(dstPoint.y()) + source.height()) - destination.height())) : clipRect.height(source.height());
-
-	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
-	if (clipRect.width() < 1 || clipRect.height() < 1)
-	{
-		return;
-	}
+	glColor4ub(255, 255, 255, 255);
 
 	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
@@ -284,7 +287,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
-	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipRect.width()), static_cast<float>(-clipRect.height()));
+	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y));
 
 	drawVertexArray(IMAGE_ID_MAP[source.name()].texture_id);
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);

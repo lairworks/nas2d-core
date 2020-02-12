@@ -637,6 +637,14 @@ int Sprite::originY(int y) const
 // = spriteFrame member function definitions.
 // ==================================================================================
 
+Sprite::SpriteFrame::SpriteFrame(const std::string& sheetId, Point<int> startPoint, Vector<int> size, Vector<int> anchorOffset, int displayTimeMs) :
+	mSheetId(sheetId),
+	mFrameDelay(displayTimeMs),
+	mAnchorX(anchorOffset.x),
+	mAnchorY(anchorOffset.y),
+	mRect(NAS2D::Rectangle<int>::Create(startPoint, size))
+{}
+
 /**
  * Constructor
  *

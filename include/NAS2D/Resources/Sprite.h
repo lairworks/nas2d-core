@@ -117,6 +117,7 @@ private:
 	class SpriteFrame
 	{
 	public:
+		SpriteFrame(const std::string& sheetId, Point<int> startPoint, Vector<int> size, Vector<int> anchorOffset, int displayTimeMs);
 		SpriteFrame(const std::string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
 		SpriteFrame(const SpriteFrame &spriteframe) = default;
 		SpriteFrame& operator=(const SpriteFrame& rhs) = default;

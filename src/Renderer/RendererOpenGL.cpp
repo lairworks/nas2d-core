@@ -253,8 +253,6 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float ras
 
 void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
-	glColor4ub(255, 255, 255, 255);
-
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if (!isRectInRect(static_cast<int>(dstPoint.x()), static_cast<int>(dstPoint.y()), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
 	{
@@ -271,6 +269,8 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	{
 		return;
 	}
+
+	glColor4ub(255, 255, 255, 255);
 
 	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);

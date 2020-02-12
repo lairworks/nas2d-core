@@ -254,6 +254,7 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float ras
 void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
 {
 	const auto dstPointInt = dstPoint.to<int>();
+	const auto dstEndPointInt = dstPointInt + source.size();
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if (!isRectInRect(dstPointInt.x(), dstPointInt.y(), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
@@ -263,8 +264,8 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 
 	Rectangle_2d clipRect;
 
-	(dstPointInt.x() + source.width()) > destination.width() ? clipRect.width(source.width() - ((dstPointInt.x() + source.width()) - destination.width())) : clipRect.width(source.width());
-	(dstPointInt.y() + source.height()) > destination.height() ? clipRect.height(source.height() - ((dstPointInt.y() + source.height()) - destination.height())) : clipRect.height(source.height());
+	dstEndPointInt.x() > destination.width() ? clipRect.width(source.width() - (dstEndPointInt.x() - destination.width())) : clipRect.width(source.width());
+	dstEndPointInt.y() > destination.height() ? clipRect.height(source.height() - (dstEndPointInt.y() - destination.height())) : clipRect.height(source.height());
 
 	// Ignore this call if the clipping rect is smaller than 1 pixel in any dimension.
 	if (clipRect.width() < 1 || clipRect.height() < 1)

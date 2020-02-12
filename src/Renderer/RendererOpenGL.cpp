@@ -256,8 +256,13 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto dstEndPointInt = dstPointInt + source.size();
 
+	const auto origin = NAS2D::Point<int>{0, 0};
+
+	const auto sourceBoundsInDestination = NAS2D::Rectangle<int>::Create(dstPointInt, source.size());
+	const auto destinationBounds = NAS2D::Rectangle<int>::Create(origin, destination.size());
+
 	// Ignore the call if the detination point is outside the bounds of destination image.
-	if (!isRectInRect(dstPointInt.x(), dstPointInt.y(), source.width(), source.height(), 0, 0, destination.width(), destination.height()))
+	if (!sourceBoundsInDestination.overlaps(destinationBounds))
 	{
 		return;
 	}

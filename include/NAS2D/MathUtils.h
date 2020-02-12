@@ -22,13 +22,8 @@
 namespace NAS2D
 {
 
-	// Utility Functions
-	bool isPointInRect(int pointX, int pointY, int rectX, int rectY, int rectW, int rectH);
-	bool isPointInRect(const Point_2d& point, const Rectangle_2d& rect);
-
 	int divideUp(int to_divide, int divisor);
 
-	
 
 /**
  * \fn OutputType scaleLinear(const InputType& a, const OutputType& b)

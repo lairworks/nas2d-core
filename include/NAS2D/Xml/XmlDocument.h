@@ -55,7 +55,7 @@ private:
 
 	std::string			_errorDesc;
 
-	std::pair<int, int>	_errorLocation;
+	XmlBase::ParseLocation	_errorLocation;
 };
 
 } // namespace Xml

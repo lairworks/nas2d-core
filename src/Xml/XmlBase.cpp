@@ -48,7 +48,7 @@ void fillErrorTable()
  */
 int XmlBase::row() const
 {
-	return location.first + 1;
+	return location.row + 1;
 }
 
 
@@ -61,7 +61,7 @@ int XmlBase::row() const
  */
 int XmlBase::column() const
 {
-	return location.second + 1;
+	return location.column + 1;
 }
 
 

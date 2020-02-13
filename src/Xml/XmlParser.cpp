@@ -102,17 +102,17 @@ class XmlParsingData
 	friend class XmlDocument;
 public:
 	void stamp(const char* now);
-	const std::pair<int, int>& cursor() const { return _cursor; }
+	const XmlBase::ParseLocation& cursor() const { return _cursor; }
 
 private:
-	XmlParsingData(const char* start, int row, int col) : _stamp(start), _cursor(row, col)
+	XmlParsingData(const char* start, const XmlBase::ParseLocation& cursor) : _stamp(start), _cursor(cursor)
 	{
 		assert(start);
 	}
 
 private:
 	const char*			_stamp;
-	std::pair<int, int>	_cursor;
+	XmlBase::ParseLocation	_cursor;
 };
 
 
@@ -121,8 +121,8 @@ void XmlParsingData::stamp(const char* now)
 	assert(now);
 
 	// Get the current row, column.
-	int row = _cursor.first;
-	int col = _cursor.second;
+	auto row = _cursor.row;
+	auto col = _cursor.column;
 	const char* p = _stamp;
 	assert(p);
 
@@ -174,11 +174,10 @@ void XmlParsingData::stamp(const char* now)
 		}
 	}
 
-	_cursor.first = row;
-	_cursor.second = col;
+	_cursor = XmlBase::ParseLocation{row, col};
 
-	assert(_cursor.first >= -1);
-	assert(_cursor.second >= -1);
+	assert(_cursor.row >= -1);
+	assert(_cursor.column >= -1);
 
 	_stamp = p;
 	assert(_stamp);
@@ -604,20 +603,15 @@ const char* XmlDocument::parse(const char* p, void* prevData)
 		return nullptr;
 	}
 
+	location = ParseLocation{};
 	// Note that, for a document, this needs to come before the while space skip,
 	// so that parsing starts from the pointer we are given.
 	if (prevData)
 	{
-		location.first = static_cast<XmlParsingData*>(prevData)->_cursor.first;
-		location.second = static_cast<XmlParsingData*>(prevData)->_cursor.second;
-	}
-	else
-	{
-		location.first = 0;
-		location.second = 0;
+		location = static_cast<XmlParsingData*>(prevData)->_cursor;
 	}
 
-	XmlParsingData data(p, location.first, location.second);
+	XmlParsingData data(p, location);
 	location = data.cursor();
 
 	p = skipWhiteSpace(p);
@@ -672,8 +666,7 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 	_errorId = static_cast<std::underlying_type_t<XmlErrorCode>>(err);
 	_errorDesc = XML_ERROR_TABLE[_errorId];
 
-	_errorLocation.first = 0;
-	_errorLocation.second = 0;
+	_errorLocation = XmlBase::ParseLocation{};
 
 	if (pError && data)
 	{

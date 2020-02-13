@@ -227,6 +227,12 @@ Vector<int> Image::size() const
 }
 
 
+Vector<int> Image::center() const
+{
+	return _size / 2;
+}
+
+
 /**
  * Gets the width in pixels of the image.
  */
@@ -254,6 +260,17 @@ int Image::center_x() const
 int Image::center_y() const
 {
 	return _size.y / 2;
+}
+
+
+/**
+ * Gets the color of a pixel at a given coordinate.
+ *
+ * \param	point	Coordinates of the pixel to check.
+ */
+Color Image::pixelColor(Point<int> point) const
+{
+	return pixelColor(point.x(), point.y());
 }
 
 

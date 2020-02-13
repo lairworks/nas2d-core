@@ -124,6 +124,9 @@ private:
 
 		const std::string& sheetId() const { return mSheetId; }
 
+		Rectangle<int> bounds() const { return mRect; };
+		Vector<int> anchor() const { return mAnchor; };
+
 		int anchorX() const { return mAnchor.x; }
 		int anchorY() const { return mAnchor.y; }
 

@@ -189,7 +189,7 @@ float Sprite::rotation() const
  *
  * \return	StringList of actions.
  */
-StringList Sprite::actions()
+StringList Sprite::actions() const
 {
 	StringList list;
 

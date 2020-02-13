@@ -100,7 +100,7 @@ public:
 	 */
 	Callback& frameCallback() { return mFrameCallback; }
 
-	StringList actions();
+	StringList actions() const;
 
 	void incrementFrame();
 	void decrementFrame();

@@ -115,14 +115,14 @@ private:
 	class SpriteFrame
 	{
 	public:
-		SpriteFrame(const std::string& sheetId, Point<int> startPoint, Vector<int> size, Vector<int> anchorOffset, int displayTimeMs);
+		SpriteFrame(const std::string& sheetId, Rectangle<int> bounds, Vector<int> anchorOffset, int displayTimeMs);
 		SpriteFrame(const SpriteFrame &spriteframe) = default;
 		SpriteFrame& operator=(const SpriteFrame& rhs) = default;
 		~SpriteFrame() = default;
 
 		const std::string& sheetId() const { return mSheetId; }
 
-		Rectangle<int> bounds() const { return mRect; };
+		Rectangle<int> bounds() const { return mBounds; };
 		Vector<int> anchor() const { return mAnchor; };
 
 		int frameDelay() const { return mFrameDelay; }
@@ -131,7 +131,7 @@ private:
 		std::string mSheetId;
 		int mFrameDelay;
 		Vector<int> mAnchor;
-		Rectangle<int> mRect;
+		Rectangle<int> mBounds;
 	};
 
 private:

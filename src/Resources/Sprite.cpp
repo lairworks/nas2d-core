@@ -519,10 +519,9 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				continue;
 			}
 
-			const auto startPoint = NAS2D::Point<int>{x, y};
-			const auto size = NAS2D::Vector<int>{width, height};
+			const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{x, y}, NAS2D::Vector<int>{width, height});
 			const auto anchorOffset = NAS2D::Vector<int>{anchorx, anchory};
-			frameList.push_back(SpriteFrame(sheetId, startPoint, size, anchorOffset, delay));
+			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, delay});
 		}
 		else
 		{
@@ -576,11 +575,11 @@ void Sprite::addDefaultAction()
 	{
 		auto& imageSheet = mImageSheets["default"]; // Adds a default sheet. //-V607
 
-		const auto startPoint = NAS2D::Point{0, 0};
 		const auto size = imageSheet.size();
+		const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, size);
 		const auto anchorOffset = size / 2;
 
-		FrameList frameList{SpriteFrame("default", startPoint, size, anchorOffset, -1)};
+		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, -1}};
 		mActions["default"] = frameList;
 	}
 }
@@ -603,9 +602,9 @@ Point<int> Sprite::origin(Point<int> point) const
 // = spriteFrame member function definitions.
 // ==================================================================================
 
-Sprite::SpriteFrame::SpriteFrame(const std::string& sheetId, Point<int> startPoint, Vector<int> size, Vector<int> anchorOffset, int displayTimeMs) :
+Sprite::SpriteFrame::SpriteFrame(const std::string& sheetId, Rectangle<int> bounds, Vector<int> anchorOffset, int displayTimeMs) :
 	mSheetId(sheetId),
 	mFrameDelay(displayTimeMs),
 	mAnchor(anchorOffset),
-	mRect(NAS2D::Rectangle<int>::Create(startPoint, size))
+	mBounds(bounds)
 {}

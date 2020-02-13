@@ -518,8 +518,8 @@ void EventHandler::warpMouse(int x, int y)
 {
 	if (underlyingWindow)
 	{
-		mMouseMotionEvent.emit(x, y, 0, 0);
 		SDL_WarpMouseInWindow(underlyingWindow, x, y);
+		mMouseMotionEvent.emit(x, y, 0, 0);
 	}
 }
 

@@ -94,7 +94,14 @@ public:
 		XML_ERROR_STRING_COUNT
 	};
 
+	struct ParseLocation
+	{
+		int row{0};
+		int column{0};
+	};
+
 protected:
+
 	static const char* skipWhiteSpace(const char*);
 
 	inline static bool white_space(char c) { return (isspace(static_cast<unsigned char>(c)) || c == '\n' || c == '\r'); }
@@ -116,7 +123,7 @@ protected:
 
 	inline static int toLower(int v) { return tolower(v); }
 
-	std::pair<int, int> location;
+	ParseLocation location;
 
 private:
 	struct Entity

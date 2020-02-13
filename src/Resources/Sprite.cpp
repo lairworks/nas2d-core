@@ -574,8 +574,7 @@ void Sprite::addDefaultAction()
 		int width = imageSheet.width();
 		int height = imageSheet.height();
 
-		FrameList frameList;
-		frameList.push_back(SpriteFrame("default", 0, 0, width, height, width / 2, height / 2, -1));
+		FrameList frameList{SpriteFrame("default", 0, 0, width, height, width / 2, height / 2, -1)};
 		mActions["default"] = frameList;
 	}
 }

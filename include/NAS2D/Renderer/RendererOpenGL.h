@@ -87,6 +87,7 @@ private:
 	void _resize(int w, int h);
 	void setViewport(int w, int h);
 	void setOrthoProjection(int w, int h);
+	void setResolution(int w, int h);
 };
 
 } // namespace

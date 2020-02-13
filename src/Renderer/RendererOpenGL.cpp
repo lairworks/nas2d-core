@@ -573,6 +573,7 @@ void RendererOpenGL::size(int w, int h)
 	SDL_SetWindowSize(underlyingWindow, w, h);
 	setViewport(w, h);
 	setOrthoProjection(w, h);
+	setResolution(w, h);
 	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
@@ -637,7 +638,9 @@ void NAS2D::RendererOpenGL::setOrthoProjection(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 }
 
-	if (!fullscreen())
+void NAS2D::RendererOpenGL::setResolution(int w, int h)
+{
+	if(!fullscreen())
 	{
 		mResolution = {static_cast<float>(w), static_cast<float>(h)};
 	}

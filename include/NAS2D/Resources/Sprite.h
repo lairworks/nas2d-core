@@ -90,6 +90,9 @@ public:
 	 */
 	const Color& color() const { return mColor; }
 
+	Vector<int> size() const;
+	Point<int> origin(Point<int> point) const;
+
 	int width() const;
 	int height() const;
 	int originX(int x) const;

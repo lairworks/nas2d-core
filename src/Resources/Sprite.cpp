@@ -584,6 +584,18 @@ void Sprite::addDefaultAction()
 }
 
 
+Vector<int> Sprite::size() const
+{
+	return mActions.at(mCurrentAction)[mCurrentFrame].bounds().size();
+}
+
+
+Point<int> Sprite::origin(Point<int> point) const
+{
+	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchor();
+}
+
+
 /**
  * Gets the width of the Sprite.
  *

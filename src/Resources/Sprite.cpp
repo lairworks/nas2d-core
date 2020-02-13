@@ -571,10 +571,11 @@ void Sprite::addDefaultAction()
 	{
 		auto& imageSheet = mImageSheets["default"]; // Adds a default sheet. //-V607
 
-		int width = imageSheet.width();
-		int height = imageSheet.height();
+		const auto startPoint = NAS2D::Point{0, 0};
+		const auto size = imageSheet.size();
+		const auto anchorOffset = size / 2;
 
-		FrameList frameList{SpriteFrame("default", 0, 0, width, height, width / 2, height / 2, -1)};
+		FrameList frameList{SpriteFrame("default", startPoint, size, anchorOffset, -1)};
 		mActions["default"] = frameList;
 	}
 }

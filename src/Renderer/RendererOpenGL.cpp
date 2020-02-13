@@ -572,6 +572,7 @@ void RendererOpenGL::size(int w, int h)
 {
 	SDL_SetWindowSize(underlyingWindow, w, h);
 	setViewport(w, h);
+	setOrthoProjection(w, h);
 	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
@@ -628,10 +629,13 @@ void RendererOpenGL::setViewport(int w, int h)
 	glViewport(0, 0, w, h);
 }
 
+void NAS2D::RendererOpenGL::setOrthoProjection(int w, int h)
+{
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
+}
 
 	if (!fullscreen())
 	{
@@ -664,6 +668,7 @@ void RendererOpenGL::initGL()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 	setViewport(static_cast<int>(width()), static_cast<int>(height()));
+	setOrthoProjection(static_cast<int>(width()), static_cast<int>(height()));
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);

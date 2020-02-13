@@ -124,8 +124,8 @@ private:
 
 		const std::string& sheetId() const { return mSheetId; }
 
-		int anchorX() const { return mAnchorX; }
-		int anchorY() const { return mAnchorY; }
+		int anchorX() const { return mAnchor.x; }
+		int anchorY() const { return mAnchor.y; }
 
 		int width() const { return mRect.width(); }
 		int height() const { return mRect.height(); }
@@ -137,9 +137,8 @@ private:
 	private:
 		std::string mSheetId;
 		int mFrameDelay;
-		int mAnchorX;
-		int mAnchorY;
-		Rectangle_2d mRect;
+		Vector<int> mAnchor;
+		Rectangle<int> mRect;
 	};
 
 private:

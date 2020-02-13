@@ -76,16 +76,6 @@ public:
 	void color(const Color& color) { mColor = color; }
 
 	/**
-	 * Sets the color of the Sprite.
-	 *
-	 * \param	red		Red value to set between 0 - 255.
-	 * \param	green	Green value to set between 0 - 255.
-	 * \param	blue	Blue value to set between 0 - 255.
-	 * \param	alpha	Alpha value to set between 0 - 255.
-	 */
-	void color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) { color(Color(red, green, blue, alpha)); }
-
-	/**
 	 * Gets the color of the Sprite.
 	 */
 	const Color& color() const { return mColor; }

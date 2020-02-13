@@ -70,7 +70,7 @@ Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
-	_size = std::make_pair(width, height);
+	_size = Vector<int>{width, height};
 
 	// Update resource management.
 	IMAGE_ID_MAP[name()].texture_id = 0;
@@ -104,7 +104,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
-	_size = std::make_pair(width, height);
+	_size = Vector<int>{width, height};
 
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
@@ -179,7 +179,7 @@ void Image::load()
 {
 	if (checkTextureId(name()))
 	{
-		_size = std::make_pair(IMAGE_ID_MAP[name()].w, IMAGE_ID_MAP[name()].h);
+		_size = Vector<int>{IMAGE_ID_MAP[name()].w, IMAGE_ID_MAP[name()].h};
 		loaded(true);
 		return;
 	}
@@ -202,7 +202,7 @@ void Image::load()
 		return;
 	}
 
-	_size = std::make_pair(pixels->w, pixels->h);
+	_size = Vector<int>{pixels->w, pixels->h};
 
 	unsigned int texture_id = generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
 
@@ -223,7 +223,7 @@ void Image::load()
  */
 Vector<int> Image::size() const
 {
-	return {_size.first, _size.second};
+	return _size;
 }
 
 
@@ -232,7 +232,7 @@ Vector<int> Image::size() const
  */
 int Image::width() const
 {
-	return _size.first;
+	return _size.x;
 }
 
 
@@ -241,19 +241,19 @@ int Image::width() const
  */
 int Image::height() const
 {
-	return _size.second;
+	return _size.y;
 }
 
 
 int Image::center_x() const
 {
-	return _size.first / 2;
+	return _size.x / 2;
 }
 
 
 int Image::center_y() const
 {
-	return _size.second / 2;
+	return _size.y / 2;
 }
 
 

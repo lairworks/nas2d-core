@@ -608,8 +608,7 @@ const char* XmlDocument::parse(const char* p, void* prevData)
 	// so that parsing starts from the pointer we are given.
 	if (prevData)
 	{
-		location.row = static_cast<XmlParsingData*>(prevData)->_cursor.row;
-		location.column = static_cast<XmlParsingData*>(prevData)->_cursor.column;
+		location = static_cast<XmlParsingData*>(prevData)->_cursor;
 	}
 
 	XmlParsingData data(p, location);

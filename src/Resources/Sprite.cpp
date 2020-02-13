@@ -193,9 +193,9 @@ StringList Sprite::actions() const
 {
 	StringList list;
 
-	for (auto it = mActions.begin(); it != mActions.end(); ++it)
+	for (const auto& pair : mActions)
 	{
-		list.push_back(it->first);
+		list.push_back(pair.first);
 	}
 
 	return list;

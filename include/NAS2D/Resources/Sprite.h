@@ -90,10 +90,10 @@ public:
 	 */
 	const Color& color() const { return mColor; }
 
-	int width();
-	int height();
-	int originX(int x);
-	int originY(int y);
+	int width() const;
+	int height() const;
+	int originX(int x) const;
+	int originY(int y) const;
 
 	/**
 	 * Returns a reference to the frame listener signal slot.

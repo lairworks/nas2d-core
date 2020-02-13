@@ -587,9 +587,9 @@ void Sprite::addDefaultAction()
  *			most sprites this will be the same for all frames
  *			but can be surprising if frame sizes vary.
  */
-int Sprite::width()
+int Sprite::width() const
 {
-	return mActions[mCurrentAction][mCurrentFrame].width();
+	return mActions.at(mCurrentAction)[mCurrentFrame].width();
 }
 
 
@@ -600,9 +600,9 @@ int Sprite::width()
  *			most sprites this will be the same for all frames
  *			but can be surprising if frame sizes vary.
  */
-int Sprite::height()
+int Sprite::height() const
 {
-	return mActions[mCurrentAction][mCurrentFrame].height();
+	return mActions.at(mCurrentAction)[mCurrentFrame].height();
 }
 
 
@@ -613,9 +613,9 @@ int Sprite::height()
  *			most sprites this will be the same for all frames
  *			but can be surprising if frame sizes vary.
  */
-int Sprite::originX(int x)
+int Sprite::originX(int x) const
 {
-	return x - mActions[mCurrentAction][mCurrentFrame].anchorX();
+	return x - mActions.at(mCurrentAction)[mCurrentFrame].anchorX();
 }
 
 
@@ -626,9 +626,9 @@ int Sprite::originX(int x)
  *			most sprites this will be the same for all frames
  *			but can be surprising if frame sizes vary.
  */
-int Sprite::originY(int y)
+int Sprite::originY(int y) const
 {
-	return y - mActions[mCurrentAction][mCurrentFrame].anchorY();
+	return y - mActions.at(mCurrentAction)[mCurrentFrame].anchorY();
 }
 
 

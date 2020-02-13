@@ -265,7 +265,7 @@ int Image::center_y() const
  */
 Color Image::pixelColor(int x, int y) const
 {
-	if (x < 0 || x > width() || y < 0 || y > height())
+	if (x < 0 || x >= width() || y < 0 || y >= height())
 	{
 		return Color(0, 0, 0, 255);
 	}

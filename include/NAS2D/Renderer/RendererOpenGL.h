@@ -85,6 +85,7 @@ private:
 	void initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync);
 
 	void _resize(int w, int h);
+	void setViewport(int w, int h);
 };
 
 } // namespace

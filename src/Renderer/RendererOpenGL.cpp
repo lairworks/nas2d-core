@@ -571,7 +571,7 @@ float RendererOpenGL::height()
 void RendererOpenGL::size(int w, int h)
 {
 	SDL_SetWindowSize(underlyingWindow, w, h);
-	resizeViewport(w, h);
+	setViewport(w, h);
 	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
@@ -623,9 +623,11 @@ bool RendererOpenGL::resizeable()
 }
 
 
-void RendererOpenGL::resizeViewport(int w, int h)
+void RendererOpenGL::setViewport(int w, int h)
 {
 	glViewport(0, 0, w, h);
+}
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -1.0, 1.0);
@@ -661,7 +663,7 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	resizeViewport(static_cast<int>(width()), static_cast<int>(height()));
+	setViewport(static_cast<int>(width()), static_cast<int>(height()));
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);

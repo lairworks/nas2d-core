@@ -40,8 +40,18 @@ struct Point {
 		return *this;
 	}
 
+	Point& operator-=(const Vector<BaseType>& vector) {
+		mX -= vector.x;
+		mY -= vector.y;
+		return *this;
+	}
+
 	Point operator+(const Vector<BaseType>& vector) const {
 		return {mX + vector.x, mY + vector.y};
+	}
+
+	Point operator-(const Vector<BaseType>& vector) const {
+		return {mX - vector.x, mY - vector.y};
 	}
 
 	Vector<BaseType> operator-(const Point& point) const {

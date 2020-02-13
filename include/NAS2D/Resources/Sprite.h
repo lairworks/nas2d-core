@@ -125,14 +125,6 @@ private:
 		Rectangle<int> bounds() const { return mRect; };
 		Vector<int> anchor() const { return mAnchor; };
 
-		int anchorX() const { return mAnchor.x; }
-		int anchorY() const { return mAnchor.y; }
-
-		int width() const { return mRect.width(); }
-		int height() const { return mRect.height(); }
-		int x() const { return mRect.x(); }
-		int y() const { return mRect.y(); }
-
 		int frameDelay() const { return mFrameDelay; }
 
 	private:

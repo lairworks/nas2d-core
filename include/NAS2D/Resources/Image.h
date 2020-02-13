@@ -64,7 +64,7 @@ private:
 	void load() override;
 
 private:
-	std::pair<int, int> _size; /**< Width/Height information about the Image. */
+	Vector<int> _size; /**< Width/Height information about the Image. */
 };
 
 

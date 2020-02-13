@@ -569,10 +569,10 @@ void Sprite::addDefaultAction()
 {
 	if (mActions.find("default") == mActions.end())
 	{
-		mImageSheets["default"];	// Adds a default sheet. //-V607
+		auto& imageSheet = mImageSheets["default"]; // Adds a default sheet. //-V607
 
-		int width = mImageSheets["default"].width();
-		int height = mImageSheets["default"].height();
+		int width = imageSheet.width();
+		int height = imageSheet.height();
 
 		FrameList frameList;
 		frameList.push_back(SpriteFrame("default", 0, 0, width, height, width / 2, height / 2, -1));

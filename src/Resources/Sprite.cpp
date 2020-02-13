@@ -136,13 +136,13 @@ void Sprite::skip(int frames)
  */
 void Sprite::update(float x, float y)
 {
-	SpriteFrame frame = mActions[mCurrentAction][mCurrentFrame];
+	const SpriteFrame frame = mActions[mCurrentAction][mCurrentFrame];
 
-	if (!mPaused && (frame.frameDelay() != FRAME_PAUSE))
+	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
 	{
-		while (frame.frameDelay() > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay())
+		while (frame.frameDelay > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay)
 		{
-			mTimer.adjust_accumulator(frame.frameDelay());
+			mTimer.adjust_accumulator(frame.frameDelay);
 			mCurrentFrame++;
 		}
 
@@ -153,14 +153,14 @@ void Sprite::update(float x, float y)
 			mFrameCallback();		// Notifiy any frame listeners that the animation sequence has completed.
 		}
 	}
-	else if (frame.frameDelay() == FRAME_PAUSE)
+	else if (frame.frameDelay == FRAME_PAUSE)
 	{
 		mFrameCallback();
 	}
 
-	const auto drawPosition = Point{x, y} - frame.anchor();
-	const auto frameBounds = frame.bounds().to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], drawPosition.x(), drawPosition.y(), frameBounds.x(), frameBounds.y(), frameBounds.width(), frameBounds.height(), mRotationAngle, mColor);
+	const auto drawPosition = Point{x, y} - frame.anchor;
+	const auto frameBounds = frame.bounds.to<float>();
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId], drawPosition.x(), drawPosition.y(), frameBounds.x(), frameBounds.y(), frameBounds.width(), frameBounds.height(), mRotationAngle, mColor);
 }
 
 
@@ -587,24 +587,11 @@ void Sprite::addDefaultAction()
 
 Vector<int> Sprite::size() const
 {
-	return mActions.at(mCurrentAction)[mCurrentFrame].bounds().size();
+	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();
 }
 
 
 Point<int> Sprite::origin(Point<int> point) const
 {
-	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchor();
+	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchor;
 }
-
-
-
-// ==================================================================================
-// = spriteFrame member function definitions.
-// ==================================================================================
-
-Sprite::SpriteFrame::SpriteFrame(const std::string& sheetId, Rectangle<int> bounds, Vector<int> anchorOffset, int displayTimeMs) :
-	mSheetId(sheetId),
-	mFrameDelay(displayTimeMs),
-	mAnchor(anchorOffset),
-	mBounds(bounds)
-{}

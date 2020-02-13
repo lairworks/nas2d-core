@@ -158,7 +158,9 @@ void Sprite::update(float x, float y)
 		mFrameCallback();
 	}
 
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), static_cast<float>(frame.x()), static_cast<float>(frame.y()), static_cast<float>(frame.width()), static_cast<float>(frame.height()), mRotationAngle, mColor);
+	const auto drawPosition = Point{x, y} - frame.anchor();
+	const auto frameBounds = frame.bounds().to<float>();
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], drawPosition.x(), drawPosition.y(), frameBounds.x(), frameBounds.y(), frameBounds.width(), frameBounds.height(), mRotationAngle, mColor);
 }
 
 

@@ -598,58 +598,6 @@ Point<int> Sprite::origin(Point<int> point) const
 }
 
 
-/**
- * Gets the width of the Sprite.
- *
- * \note	This gets the width of the current frame. For most
- *			most sprites this will be the same for all frames
- *			but can be surprising if frame sizes vary.
- */
-int Sprite::width() const
-{
-	return mActions.at(mCurrentAction)[mCurrentFrame].width();
-}
-
-
-/**
- * Gets the height of the Sprite.
- *
- * \note	This gets the height of the current frame. For most
- *			most sprites this will be the same for all frames
- *			but can be surprising if frame sizes vary.
- */
-int Sprite::height() const
-{
-	return mActions.at(mCurrentAction)[mCurrentFrame].height();
-}
-
-
-/**
- * Gets the origin X-Coordinate of the Sprite.
- *
- * \note	This gets the origin of the current frame. For most
- *			most sprites this will be the same for all frames
- *			but can be surprising if frame sizes vary.
- */
-int Sprite::originX(int x) const
-{
-	return x - mActions.at(mCurrentAction)[mCurrentFrame].anchorX();
-}
-
-
-/**
- * Gets the origin Y-Coordinate of the Sprite.
- *
- * \note	This gets the origin of the current frame. For most
- *			most sprites this will be the same for all frames
- *			but can be surprising if frame sizes vary.
- */
-int Sprite::originY(int y) const
-{
-	return y - mActions.at(mCurrentAction)[mCurrentFrame].anchorY();
-}
-
-
 
 // ==================================================================================
 // = spriteFrame member function definitions.

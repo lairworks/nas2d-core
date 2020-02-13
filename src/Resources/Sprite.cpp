@@ -648,23 +648,3 @@ Sprite::SpriteFrame::SpriteFrame(const std::string& sheetId, Point<int> startPoi
 	mAnchorY(anchorOffset.y),
 	mRect(NAS2D::Rectangle<int>::Create(startPoint, size))
 {}
-
-/**
- * Constructor
- *
- * \param	sId	Sprite sheet ID.
- * \param	x	X-Coordinte of the area to copy from the source Image object.
- * \param	y	Y-Coordinte of the area to copy from the source Image object.
- * \param	w	Width of the area to copy from the source Image object.
- * \param	h	Height of the area to copy from the source Image object.
- * \param	aX	X-Axis of the Anchor Point for this spriteFrame.
- * \param	aY	Y-Axis of the Anchor Point for this spriteFrame.
- * \param	d	Length of time milliseconds to display this spriteFrame during animation playback.
- */
-Sprite::SpriteFrame::SpriteFrame(const std::string& sId, int x, int y, int w, int h, int aX, int aY, int d) :
-	mSheetId(sId),
-	mFrameDelay(d),
-	mAnchorX(aX),
-	mAnchorY(aY),
-	mRect(x, y, w, h)
-{}

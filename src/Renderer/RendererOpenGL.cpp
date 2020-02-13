@@ -94,7 +94,7 @@ RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
  */
 RendererOpenGL::~RendererOpenGL()
 {
-	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::_resize);
+	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::resizeViewport);
 
 	SDL_GL_DeleteContext(CONTEXT);
 	SDL_DestroyWindow(underlyingWindow);
@@ -571,7 +571,7 @@ float RendererOpenGL::height()
 void RendererOpenGL::size(int w, int h)
 {
 	SDL_SetWindowSize(underlyingWindow, w, h);
-	_resize(w, h);
+	resizeViewport(w, h);
 	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
@@ -623,7 +623,7 @@ bool RendererOpenGL::resizeable()
 }
 
 
-void RendererOpenGL::_resize(int w, int h)
+void RendererOpenGL::resizeViewport(int w, int h)
 {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
@@ -661,7 +661,7 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	_resize(static_cast<int>(width()), static_cast<int>(height()));
+	resizeViewport(static_cast<int>(width()), static_cast<int>(height()));
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
@@ -737,7 +737,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 	glewInit();
 	initGL();
 
-	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::_resize);
+	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::resizeViewport);
 
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)

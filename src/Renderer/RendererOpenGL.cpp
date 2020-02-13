@@ -94,7 +94,7 @@ RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
  */
 RendererOpenGL::~RendererOpenGL()
 {
-	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::resizeViewport);
+	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::resizeWindow);
 
 	SDL_GL_DeleteContext(CONTEXT);
 	SDL_DestroyWindow(underlyingWindow);
@@ -630,6 +630,13 @@ void RendererOpenGL::setViewport(int w, int h)
 	glViewport(0, 0, w, h);
 }
 
+void NAS2D::RendererOpenGL::resizeWindow(int w, int h)
+{
+	setViewport(w, h);
+	setOrthoProjection(w, h);
+	setResolution(w, h);
+}
+
 void NAS2D::RendererOpenGL::setOrthoProjection(int w, int h)
 {
 	glMatrixMode(GL_PROJECTION);
@@ -747,7 +754,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 	glewInit();
 	initGL();
 
-	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::resizeViewport);
+	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::resizeWindow);
 
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)

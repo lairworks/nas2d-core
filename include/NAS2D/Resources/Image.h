@@ -52,6 +52,7 @@ public:
 	~Image();
 
 	Vector<int> size() const;
+	Vector<int> center() const;
 
 	int width() const;
 	int height() const;

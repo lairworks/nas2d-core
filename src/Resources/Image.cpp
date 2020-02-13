@@ -227,6 +227,12 @@ Vector<int> Image::size() const
 }
 
 
+Vector<int> Image::center() const
+{
+	return _size / 2;
+}
+
+
 /**
  * Gets the width in pixels of the image.
  */

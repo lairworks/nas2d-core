@@ -517,7 +517,10 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				continue;
 			}
 
-			frameList.push_back(SpriteFrame(sheetId, x, y, width, height, anchorx, anchory, delay));
+			const auto startPoint = NAS2D::Point<int>{x, y};
+			const auto size = NAS2D::Vector<int>{width, height};
+			const auto anchorOffset = NAS2D::Vector<int>{anchorx, anchory};
+			frameList.push_back(SpriteFrame(sheetId, startPoint, size, anchorOffset, delay));
 		}
 		else
 		{

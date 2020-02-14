@@ -22,6 +22,9 @@ public:
 
 	std::vector<DisplayDesc> getDisplayModes() const override { return {}; }
 
+
+	DisplayDesc getWindowDisplayDesc() const override { return{}; };
+
 	void drawImage(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
 	void drawSubImage(Image&, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}

@@ -42,6 +42,9 @@ public:
 	
 	virtual std::vector<DisplayDesc> getDisplayModes() const = 0;
 
+
+	virtual DisplayDesc getWindowDisplayDesc() const = 0;
+
 	const std::string& driverName();
 
 	const std::string& title();

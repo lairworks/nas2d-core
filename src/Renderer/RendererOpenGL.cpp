@@ -764,6 +764,13 @@ std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 	return result;
 }
 
+NAS2D::DisplayDesc NAS2D::RendererOpenGL::getWindowDisplayDesc() const
+{
+	SDL_DisplayMode cur_mode{};
+	SDL_GetWindowDisplayMode(underlyingWindow, &cur_mode);
+	return {cur_mode.w, cur_mode.h, cur_mode.refresh_rate};
+}
+
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================

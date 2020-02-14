@@ -76,24 +76,12 @@ public:
 	void color(const Color& color) { mColor = color; }
 
 	/**
-	 * Sets the color of the Sprite.
-	 *
-	 * \param	red		Red value to set between 0 - 255.
-	 * \param	green	Green value to set between 0 - 255.
-	 * \param	blue	Blue value to set between 0 - 255.
-	 * \param	alpha	Alpha value to set between 0 - 255.
-	 */
-	void color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) { color(Color(red, green, blue, alpha)); }
-
-	/**
 	 * Gets the color of the Sprite.
 	 */
 	const Color& color() const { return mColor; }
 
-	int width() const;
-	int height() const;
-	int originX(int x) const;
-	int originY(int y) const;
+	Vector<int> size() const;
+	Point<int> origin(Point<int> point) const;
 
 	/**
 	 * Returns a reference to the frame listener signal slot.
@@ -111,35 +99,15 @@ protected:
 
 private:
 	/**
-	 * \class	spriteFrame
+	 * \struct	SpriteFrame
 	 * \brief	Contains
 	 */
-	class SpriteFrame
+	struct SpriteFrame
 	{
-	public:
-		SpriteFrame(const std::string& sheetId, int x, int y, int w, int h, int aX, int aY, int d);
-		SpriteFrame(const SpriteFrame &spriteframe) = default;
-		SpriteFrame& operator=(const SpriteFrame& rhs) = default;
-		~SpriteFrame() = default;
-
-		const std::string& sheetId() const { return mSheetId; }
-
-		int anchorX() const { return mAnchorX; }
-		int anchorY() const { return mAnchorY; }
-
-		int width() const { return mRect.width(); }
-		int height() const { return mRect.height(); }
-		int x() const { return mRect.x(); }
-		int y() const { return mRect.y(); }
-
-		int frameDelay() const { return mFrameDelay; }
-
-	private:
-		std::string mSheetId;
-		int mFrameDelay;
-		int mAnchorX;
-		int mAnchorY;
-		Rectangle_2d mRect;
+		std::string sheetId;
+		Rectangle<int> bounds;
+		Vector<int> anchorOffset;
+		int frameDelay;
 	};
 
 private:

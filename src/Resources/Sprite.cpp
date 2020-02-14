@@ -136,13 +136,13 @@ void Sprite::skip(int frames)
  */
 void Sprite::update(float x, float y)
 {
-	SpriteFrame frame = mActions[mCurrentAction][mCurrentFrame];
+	const auto& frame = mActions[mCurrentAction][mCurrentFrame];
 
-	if (!mPaused && (frame.frameDelay() != FRAME_PAUSE))
+	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
 	{
-		while (frame.frameDelay() > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay())
+		while (frame.frameDelay > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay)
 		{
-			mTimer.adjust_accumulator(frame.frameDelay());
+			mTimer.adjust_accumulator(frame.frameDelay);
 			mCurrentFrame++;
 		}
 
@@ -153,12 +153,14 @@ void Sprite::update(float x, float y)
 			mFrameCallback();		// Notifiy any frame listeners that the animation sequence has completed.
 		}
 	}
-	else if (frame.frameDelay() == FRAME_PAUSE)
+	else if (frame.frameDelay == FRAME_PAUSE)
 	{
 		mFrameCallback();
 	}
 
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId()], x - frame.anchorX(), y - frame.anchorY(), static_cast<float>(frame.x()), static_cast<float>(frame.y()), static_cast<float>(frame.width()), static_cast<float>(frame.height()), mRotationAngle, mColor);
+	const auto drawPosition = Point{x, y} - frame.anchorOffset;
+	const auto frameBounds = frame.bounds.to<float>();
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId], drawPosition.x(), drawPosition.y(), frameBounds.x(), frameBounds.y(), frameBounds.width(), frameBounds.height(), mRotationAngle, mColor);
 }
 
 
@@ -517,7 +519,9 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				continue;
 			}
 
-			frameList.push_back(SpriteFrame(sheetId, x, y, width, height, anchorx, anchory, delay));
+			const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{x, y}, NAS2D::Vector<int>{width, height});
+			const auto anchorOffset = NAS2D::Vector<int>{anchorx, anchory};
+			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, delay});
 		}
 		else
 		{
@@ -571,88 +575,23 @@ void Sprite::addDefaultAction()
 	{
 		auto& imageSheet = mImageSheets["default"]; // Adds a default sheet. //-V607
 
-		int width = imageSheet.width();
-		int height = imageSheet.height();
+		const auto size = imageSheet.size();
+		const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, size);
+		const auto anchorOffset = size / 2;
 
-		FrameList frameList{SpriteFrame("default", 0, 0, width, height, width / 2, height / 2, -1)};
+		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, -1}};
 		mActions["default"] = frameList;
 	}
 }
 
 
-/**
- * Gets the width of the Sprite.
- *
- * \note	This gets the width of the current frame. For most
- *			most sprites this will be the same for all frames
- *			but can be surprising if frame sizes vary.
- */
-int Sprite::width() const
+Vector<int> Sprite::size() const
 {
-	return mActions.at(mCurrentAction)[mCurrentFrame].width();
+	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();
 }
 
 
-/**
- * Gets the height of the Sprite.
- *
- * \note	This gets the height of the current frame. For most
- *			most sprites this will be the same for all frames
- *			but can be surprising if frame sizes vary.
- */
-int Sprite::height() const
+Point<int> Sprite::origin(Point<int> point) const
 {
-	return mActions.at(mCurrentAction)[mCurrentFrame].height();
+	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
 }
-
-
-/**
- * Gets the origin X-Coordinate of the Sprite.
- *
- * \note	This gets the origin of the current frame. For most
- *			most sprites this will be the same for all frames
- *			but can be surprising if frame sizes vary.
- */
-int Sprite::originX(int x) const
-{
-	return x - mActions.at(mCurrentAction)[mCurrentFrame].anchorX();
-}
-
-
-/**
- * Gets the origin Y-Coordinate of the Sprite.
- *
- * \note	This gets the origin of the current frame. For most
- *			most sprites this will be the same for all frames
- *			but can be surprising if frame sizes vary.
- */
-int Sprite::originY(int y) const
-{
-	return y - mActions.at(mCurrentAction)[mCurrentFrame].anchorY();
-}
-
-
-
-// ==================================================================================
-// = spriteFrame member function definitions.
-// ==================================================================================
-
-/**
- * Constructor
- *
- * \param	sId	Sprite sheet ID.
- * \param	x	X-Coordinte of the area to copy from the source Image object.
- * \param	y	Y-Coordinte of the area to copy from the source Image object.
- * \param	w	Width of the area to copy from the source Image object.
- * \param	h	Height of the area to copy from the source Image object.
- * \param	aX	X-Axis of the Anchor Point for this spriteFrame.
- * \param	aY	Y-Axis of the Anchor Point for this spriteFrame.
- * \param	d	Length of time milliseconds to display this spriteFrame during animation playback.
- */
-Sprite::SpriteFrame::SpriteFrame(const std::string& sId, int x, int y, int w, int h, int aX, int aY, int d) :
-	mSheetId(sId),
-	mFrameDelay(d),
-	mAnchorX(aX),
-	mAnchorY(aY),
-	mRect(x, y, w, h)
-{}

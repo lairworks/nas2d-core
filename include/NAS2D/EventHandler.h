@@ -282,7 +282,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	using WindowExposedEventCallback = NAS2D::Signals::Signal0<void>;
+	using WindowExposedEventCallback = NAS2D::Signals::Signal<>;
 
 	/**
 	 * \typedef	WindowMinimizedEventCallback
@@ -292,7 +292,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	using WindowMinimizedEventCallback = NAS2D::Signals::Signal0<void>;
+	using WindowMinimizedEventCallback = NAS2D::Signals::Signal<>;
 
 	/**
 	 * \typedef	WindowMaximizedEventCallback
@@ -302,7 +302,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	using WindowMaximizedEventCallback = NAS2D::Signals::Signal0<void>;
+	using WindowMaximizedEventCallback = NAS2D::Signals::Signal<>;
 
 	/**
 	 * \typedef	WindowRestoredEventCallback
@@ -312,7 +312,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	using WindowRestoredEventCallback = NAS2D::Signals::Signal0<void>;
+	using WindowRestoredEventCallback = NAS2D::Signals::Signal<>;
 
 	/**
 	 * \typedef	WindowMouseEnterEventCallback
@@ -322,7 +322,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	using WindowMouseEnterEventCallback = NAS2D::Signals::Signal0<void>;
+	using WindowMouseEnterEventCallback = NAS2D::Signals::Signal<>;
 
 	/**
 	 * \typedef	WindowMouseLeaveEventCallback
@@ -332,7 +332,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	using WindowMouseLeaveEventCallback = NAS2D::Signals::Signal0<void>;
+	using WindowMouseLeaveEventCallback = NAS2D::Signals::Signal<>;
 
 	/**
 	 * \typedef	WindowResizedEventCallback

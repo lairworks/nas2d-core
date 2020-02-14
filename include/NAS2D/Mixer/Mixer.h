@@ -147,7 +147,7 @@ public:
 	virtual void musicVolume(int level) = 0;
 
 	/**
-	 * Gets a reference to a NAS2D::Signals::Signal0<void>, a signal raised
+	 * Gets a reference to a NAS2D::Signals::Signal<>, a signal raised
 	 * when a Music track has finished playing.
 	 */
 	 [[deprecated("Deprecated: Please use addMusicCompleteHandler and removeMusicCompleteHandler")]]

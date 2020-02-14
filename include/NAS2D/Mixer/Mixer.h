@@ -151,13 +151,13 @@ public:
 	 * when a Music track has finished playing.
 	 */
 	 [[deprecated("Deprecated: Please use addMusicCompleteHandler and removeMusicCompleteHandler")]]
-	NAS2D::Signals::Signal0<>& musicComplete();
+	NAS2D::Signals::Signal<>& musicComplete();
 
-	void addMusicCompleteHandler(NAS2D::Signals::Signal0<>::DelegateType handler);
-	void removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::DelegateType handler);
+	void addMusicCompleteHandler(NAS2D::Signals::Signal<>::DelegateType handler);
+	void removeMusicCompleteHandler(NAS2D::Signals::Signal<>::DelegateType handler);
 
 protected:
-	NAS2D::Signals::Signal0<> mMusicComplete; /**< Callback used when music finished playing. */
+	NAS2D::Signals::Signal<> mMusicComplete; /**< Callback used when music finished playing. */
 };
 
 } // namespace

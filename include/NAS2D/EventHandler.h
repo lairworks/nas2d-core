@@ -258,7 +258,7 @@ public:
 	 *
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	using ActivateEventCallback = NAS2D::Signals::Signal1<bool>;
+	using ActivateEventCallback = NAS2D::Signals::Signal<bool>;
 
 	/**
 	 * \typedef	WindowHiddenEventCallback
@@ -272,7 +272,7 @@ public:
 	 *
 	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
 	 */
-	using WindowHiddenEventCallback = NAS2D::Signals::Signal1<bool>;
+	using WindowHiddenEventCallback = NAS2D::Signals::Signal<bool>;
 
 	/**
 	 * \typedef	WindowExposedEventCallback
@@ -345,7 +345,7 @@ public:
 	 * \arg \c width	Width of the resized window.
 	 * \arg \c height	Height of the resized window.
 	 */
-	using WindowResizedEventCallback = NAS2D::Signals::Signal2<int, int>;
+	using WindowResizedEventCallback = NAS2D::Signals::Signal<int, int>;
 
 	/**
 	 * \typedef	JoystickAxisMotionEventCallback
@@ -363,7 +363,7 @@ public:
 						use additional axis as buttons.
 	 * \arg \c pos		Current position of the axis.
 	 */
-	using JoystickAxisMotionEventCallback = NAS2D::Signals::Signal3<int, int, int>;
+	using JoystickAxisMotionEventCallback = NAS2D::Signals::Signal<int, int, int>;
 
 	/**
 	 * \typedef	JoystickBallMotionEventCallback
@@ -381,7 +381,7 @@ public:
 	 * \arg \c xChange	Change in relative position of the X position.
 	 * \arg \c yChange	Change in relative position of the Y position.
 	 */
-	using JoystickBallMotionEventCallback = NAS2D::Signals::Signal4<int, int, int, int>;
+	using JoystickBallMotionEventCallback = NAS2D::Signals::Signal<int, int, int, int>;
 
 	/**
 	 * \typedef	JoystickButtonEventCallback
@@ -398,7 +398,7 @@ public:
 	 * \arg \c deviceId	Joystick ID which this event was generated from.
 	 * \arg \c buttonId	Button ID which the event was generated from.
 	 */
-	using JoystickButtonEventCallback = NAS2D::Signals::Signal2<int, int>;
+	using JoystickButtonEventCallback = NAS2D::Signals::Signal<int, int>;
 
 	/**
 	 * \typedef	JoystickHatMotionEventCallback
@@ -415,7 +415,7 @@ public:
 	 * \arg \c hatId	Hat ID.
 	 * \arg \c pos		Current position of the hat.
 	 */
-	using JoystickHatMotionEventCallback = NAS2D::Signals::Signal3<int, int, int>;
+	using JoystickHatMotionEventCallback = NAS2D::Signals::Signal<int, int, int>;
 
 	/**
 	 * \typedef	KeyDownEventCallback
@@ -433,7 +433,7 @@ public:
 	 * \arg \c mod		Keyboard modifier.
 	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
 	 */
-	using KeyDownEventCallback = NAS2D::Signals::Signal3<KeyCode, KeyModifier, bool>;
+	using KeyDownEventCallback = NAS2D::Signals::Signal<KeyCode, KeyModifier, bool>;
 
 	/**
 	 * \typedef	KeyUpEventCallback
@@ -450,7 +450,7 @@ public:
 	 * \arg \c mod		Keyboard modifier.
 	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
 	 */
-	using KeyUpEventCallback = NAS2D::Signals::Signal2<KeyCode, KeyModifier>;
+	using KeyUpEventCallback = NAS2D::Signals::Signal<KeyCode, KeyModifier>;
 
 	/**
 	 * \typedef	MouseButtonEventCallback
@@ -467,7 +467,7 @@ public:
 	 * \arg	\c x:		X position of the mouse button event.
 	 * \arg	\c y:		Y position of the mouse button event.
 	 */
-	using MouseButtonEventCallback = NAS2D::Signals::Signal3<MouseButton, int, int>;
+	using MouseButtonEventCallback = NAS2D::Signals::Signal<MouseButton, int, int>;
 
 	/**
 	 * \typedef	MouseMotionEventCallback
@@ -485,7 +485,7 @@ public:
 	 * \arg	\c relX:	X position of the mouse relative to its last position.
 	 * \arg	\c relY;	Y position of the mouse relative to its last position.
 	 */
-	using MouseMotionEventCallback = NAS2D::Signals::Signal4<int, int, int, int>;
+	using MouseMotionEventCallback = NAS2D::Signals::Signal<int, int, int, int>;
 
 	/**
 	 * \typedef	MouseWheelEventCallback
@@ -506,7 +506,7 @@ public:
 	 * 			more than one (on Windows this value is typical 120,
 	 * 			not 1).
 	 */
-	using MouseWheelEventCallback = NAS2D::Signals::Signal2<int, int>;
+	using MouseWheelEventCallback = NAS2D::Signals::Signal<int, int>;
 
 	/**
 	* \typedef	TextInputEventCallback
@@ -516,7 +516,7 @@ public:
 	* void function(const std::string&);
 	* \endcode
 	*/
-	using TextInputEventCallback = NAS2D::Signals::Signal1<const std::string&>;
+	using TextInputEventCallback = NAS2D::Signals::Signal<const std::string&>;
 
 	/**
 	 * \typedef	QuitEventCallback
@@ -528,7 +528,7 @@ public:
 	 * void function(void);
 	 * \endcode
 	 */
-	using QuitEventCallback = NAS2D::Signals::Signal0<>;
+	using QuitEventCallback = NAS2D::Signals::Signal<>;
 
 public:
 	EventHandler();

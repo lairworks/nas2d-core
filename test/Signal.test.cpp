@@ -14,7 +14,7 @@ namespace {
 TEST(Signal, ConnectEmitDisconnect) {
 	MockHandler handler;
 	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
-	NAS2D::Signals::Signal0<> signal;
+	NAS2D::Signals::Signal<> signal;
 
 	EXPECT_TRUE(signal.empty());
 

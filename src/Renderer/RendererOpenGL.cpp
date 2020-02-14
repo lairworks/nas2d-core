@@ -764,6 +764,21 @@ std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 	return result;
 }
 
+NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const
+{
+	const auto display_index = SDL_GetWindowDisplayIndex(underlyingWindow);
+	SDL_DisplayMode preferred{};
+	preferred.w = preferredDisplayDesc.width;
+	preferred.h = preferredDisplayDesc.height;
+	preferred.refresh_rate = preferredDisplayDesc.refreshHz;
+
+	SDL_DisplayMode closest{};
+	if (SDL_GetClosestDisplayMode(display_index, &preferred, &closest))
+	{
+		return {closest.w, closest.h, closest.refresh_rate};
+	}
+	return {};
+}
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================

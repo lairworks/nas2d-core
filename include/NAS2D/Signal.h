@@ -72,24 +72,5 @@ private:
 };
 
 
-template<class Param0 = void>
-using Signal0 = Signal<>;
-
-template<class Param1>
-using Signal1 = Signal<Param1>;
-
-template<class Param1, class Param2>
-using Signal2 = Signal<Param1, Param2>;
-
-template<class Param1, class Param2, class Param3>
-using Signal3 = Signal<Param1, Param2, Param3>;
-
-template<class Param1, class Param2, class Param3, class Param4>
-using Signal4 = Signal<Param1, Param2, Param3, Param4>;
-
-template<class Param1, class Param2, class Param3, class Param4, class Param5>
-using Signal5 = Signal<Param1, Param2, Param3, Param4, Param5>;
-
-
 } // namespace
 } // namespace

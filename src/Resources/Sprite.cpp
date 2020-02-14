@@ -158,7 +158,7 @@ void Sprite::update(float x, float y)
 		mFrameCallback();
 	}
 
-	const auto drawPosition = Point{x, y} - frame.anchor;
+	const auto drawPosition = Point{x, y} - frame.anchorOffset;
 	const auto frameBounds = frame.bounds.to<float>();
 	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId], drawPosition.x(), drawPosition.y(), frameBounds.x(), frameBounds.y(), frameBounds.width(), frameBounds.height(), mRotationAngle, mColor);
 }
@@ -593,5 +593,5 @@ Vector<int> Sprite::size() const
 
 Point<int> Sprite::origin(Point<int> point) const
 {
-	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchor;
+	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
 }

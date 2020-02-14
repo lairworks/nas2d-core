@@ -106,7 +106,7 @@ private:
 	{
 		std::string sheetId;
 		Rectangle<int> bounds;
-		Vector<int> anchor;
+		Vector<int> anchorOffset;
 		int frameDelay;
 	};
 

@@ -30,19 +30,19 @@ void Mixer::resumeAllAudio()
 }
 
 
-Signals::Signal0<>& Mixer::musicComplete()
+Signals::Signal<>& Mixer::musicComplete()
 {
 	return mMusicComplete;
 }
 
 
-void Mixer::addMusicCompleteHandler(NAS2D::Signals::Signal0<>::DelegateType handler)
+void Mixer::addMusicCompleteHandler(NAS2D::Signals::Signal<>::DelegateType handler)
 {
 	return mMusicComplete.connect(handler);
 }
 
 
-void Mixer::removeMusicCompleteHandler(NAS2D::Signals::Signal0<>::DelegateType handler)
+void Mixer::removeMusicCompleteHandler(NAS2D::Signals::Signal<>::DelegateType handler)
 {
 	return mMusicComplete.disconnect(handler);
 }

@@ -101,7 +101,7 @@ public:
 	void fadeOut(float delayTime);
 	bool isFading() const;
 	bool isFaded() const;
-	NAS2D::Signals::Signal0<void>& fadeComplete() const;
+	NAS2D::Signals::Signal<>& fadeComplete() const;
 
 	virtual void showSystemPointer(bool) = 0;
 	virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;

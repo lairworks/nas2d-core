@@ -434,25 +434,6 @@ private:
 };
 
 
-template<class RetType = detail::DefaultVoid>
-using Delegate0 = DelegateX<RetType>;
-
-template<class Param1, class RetType = detail::DefaultVoid>
-using Delegate1 = DelegateX<RetType, Param1>;
-
-template<class Param1, class Param2, class RetType = detail::DefaultVoid>
-using Delegate2 = DelegateX<RetType, Param1, Param2>;
-
-template<class Param1, class Param2, class Param3, class RetType = detail::DefaultVoid>
-using Delegate3 = DelegateX<RetType, Param1, Param2, Param3>;
-
-template<class Param1, class Param2, class Param3, class Param4, class RetType=detail::DefaultVoid>
-using Delegate4 = DelegateX<RetType, Param1, Param2, Param3, Param4>;
-
-template<class Param1, class Param2, class Param3, class Param4, class Param5, class RetType=detail::DefaultVoid>
-using Delegate5 = DelegateX<RetType, Param1, Param2, Param3, Param4, Param5>;
-
-
 #ifdef FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
 
 template <typename Signature>

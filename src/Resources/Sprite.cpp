@@ -136,7 +136,7 @@ void Sprite::skip(int frames)
  */
 void Sprite::update(float x, float y)
 {
-	const SpriteFrame frame = mActions[mCurrentAction][mCurrentFrame];
+	const auto& frame = mActions[mCurrentAction][mCurrentFrame];
 
 	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
 	{

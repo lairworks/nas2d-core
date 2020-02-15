@@ -1,6 +1,6 @@
 #include "NAS2D/Renderer/DisplayDesc.h"
 
-#include <utility>
+#include <tuple>
 
 namespace NAS2D
 {
@@ -18,11 +18,9 @@ namespace NAS2D
 
 	bool operator<(const DisplayDesc& a, const DisplayDesc& b)
 	{
-		const auto adims = std::make_pair(a.width, a.height);
-		const auto ap = std::make_pair(adims, a.refreshHz);
-		const auto bdims = std::make_pair(b.width, b.height);
-		const auto bp = std::make_pair(bdims, b.refreshHz);
-		return ap < bp;
+		const auto a_tuple = std::make_tuple(a.width, a.height, a.refreshHz);
+		const auto b_tuple = std::make_tuple(b.width, b.height, b.refreshHz);
+		return a_tuple < b_tuple;
 	}
 
 	bool operator>(const DisplayDesc& a, const DisplayDesc& b)

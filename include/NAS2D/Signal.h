@@ -61,7 +61,7 @@ public:
 	void disconnect(Y * obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void clear() { delegateList.clear(); }
-	void emit(Params...params) const { for (DelegateIterator i = delegateList.begin(); i != delegateList.end(); ++i) (*i)(params...); }
+	void emit(Params...params) const { for (auto& delegate : delegateList) { delegate(params...); } }
 	void operator() (Params...params) const { emit(params...); }
 	bool empty() const { return delegateList.empty(); }
 

@@ -31,6 +31,7 @@ public:
 	virtual ~RendererOpenGL() override;
 
 	std::vector<DisplayDesc> getDisplayModes() const override;
+	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const override;
 
 
 	DisplayDesc getWindowDisplayDesc() const override;

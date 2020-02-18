@@ -21,6 +21,7 @@ public:
 	~RendererNull() override {}
 
 	std::vector<DisplayDesc> getDisplayModes() const override { return {}; }
+	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc&) const override { return{}; };
 
 
 	DisplayDesc getWindowDisplayDesc() const override { return{}; };

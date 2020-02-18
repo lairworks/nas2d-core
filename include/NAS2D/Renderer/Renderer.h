@@ -41,6 +41,7 @@ public:
 	virtual ~Renderer();
 	
 	virtual std::vector<DisplayDesc> getDisplayModes() const = 0;
+	virtual DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const = 0;
 
 
 	virtual DisplayDesc getWindowDisplayDesc() const = 0;

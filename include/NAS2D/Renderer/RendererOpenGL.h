@@ -91,7 +91,7 @@ private:
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync);
 
-	void _resize(int w, int h);
+	void onResize(int w, int h);
 
 };
 

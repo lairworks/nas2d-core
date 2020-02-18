@@ -60,33 +60,6 @@ namespace NAS2D
 	protected:
 	private:
 		std::unordered_map<std::string, std::string> mDictionary;
-
-
-		// Using Template specializations as function overloads breaks overload sets.
-		// Don't do it.
-		// See https://www.youtube.com/watch?v=NIDEjY5ywqU&t=39m35s
-
-		bool value_or_helper(const std::string& key, const bool& defaultValue) const;
-
-		char value_or_helper(const std::string& key, const char& defaultValue) const noexcept;
-		signed char value_or_helper(const std::string& key, const signed char& defaultValue) const;
-		unsigned char value_or_helper(const std::string& key, const unsigned char& defaultValue) const;
-
-		short value_or_helper(const std::string& key, const short& defaultValue) const;
-		unsigned short value_or_helper(const std::string& key, const unsigned short& defaultValue) const;
-
-		int value_or_helper(const std::string& key, const int& defaultValue) const;
-		unsigned int value_or_helper(const std::string& key, const unsigned int& defaultValue) const;
-
-		long value_or_helper(const std::string& key, const long& defaultValue) const;
-		unsigned long value_or_helper(const std::string& key, const unsigned long& defaultValue) const;
-
-		long long value_or_helper(const std::string& key, const long long& defaultValue) const;
-		unsigned long long value_or_helper(const std::string& key, const unsigned long long& defaultValue) const;
-
-		float value_or_helper(const std::string& key, const float& defaultValue) const;
-		double value_or_helper(const std::string& key, const double& defaultValue) const;
-		long double value_or_helper(const std::string& key, const long double& defaultValue) const;
 	};
 
 }

@@ -54,17 +54,7 @@ namespace NAS2D
 			{
 				return defaultValue;
 			}
-			if constexpr(std::is_fundamental_v<T>)
-			{
-				// is bool, arithmetic, void, or nullptr.
-				// nullptr is undefined behavior.
-				// void type is undefined behavior.
-				return value_or_helper(key, defaultValue);
-			}
-			else
-			{
-				return T(found->second);
-			}
+			return NAS2D::from_string<T>(found->second);
 		}
 
 	protected:

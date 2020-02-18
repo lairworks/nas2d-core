@@ -46,8 +46,8 @@ public:
 
 	int ptSize() const;
 
-	const int glyphCellWidth() const;
-	const int glyphCellHeight() const;
+	int glyphCellWidth() const;
+	int glyphCellHeight() const;
 
 private:
 	void load() override {}

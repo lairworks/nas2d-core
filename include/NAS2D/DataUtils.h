@@ -11,7 +11,7 @@ namespace NAS2D
 		/**
 		* /fn
 		* template<typename T = std::string>
-		* T value(const std::string& key)
+		* T get(const std::string& key)
 		* 
 		* Gets the value of a given key.
 		*
@@ -26,7 +26,7 @@ namespace NAS2D
 		* 
 		*/
 		template<typename T = std::string>
-		T value(const std::string& key) const
+		T get(const std::string& key) const
 		{
 			return NAS2D::from_string<T>(mDictionary.at(key));
 		}
@@ -34,7 +34,7 @@ namespace NAS2D
 		/**
 		* /fn
 		* template<typename T = std::string>
-		* T value_or(const std::string& key, const T& defaultValue)
+		* T get_or(const std::string& key, const T& defaultValue)
 		*
 		* Gets the value of a given key or returns `defaultValue` if it does not exist.
 		*
@@ -47,7 +47,7 @@ namespace NAS2D
 		* Throws any exceptions the constructor T(std::string) would throw if T is User-defined.
 		*/
 		template<typename T = std::string>
-		T value_or(const std::string& key, const T& defaultValue) const
+		T get_or(const std::string& key, const T& defaultValue) const
 		{
 			const auto found = mDictionary.find(key);
 			if (found == std::end(mDictionary))

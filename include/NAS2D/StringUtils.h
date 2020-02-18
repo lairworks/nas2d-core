@@ -17,6 +17,38 @@
 
 namespace NAS2D
 {
+	template<typename T>
+	T from_string(const std::string& value);
+
+	template<>
+	std::string from_string(const std::string& value);
+
+	template<>
+	int from_string(const std::string& value);
+
+	template<>
+	unsigned int from_string(const std::string& value);
+
+	template<>
+	long from_string(const std::string& value);
+	
+	template<>
+	unsigned long from_string(const std::string& value);
+
+	template<>
+	long long from_string(const std::string& value);
+
+	template<>
+	unsigned long long from_string(const std::string& value);
+	
+	template<>
+	float from_string(const std::string& value);
+	
+	template<>
+	double from_string(const std::string& value);
+	
+	template<>
+	long double from_string(const std::string& value);
 
 	std::string toLowercase(std::string str);
 	std::string toUppercase(std::string str);

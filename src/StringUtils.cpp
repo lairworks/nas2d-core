@@ -14,6 +14,67 @@
 #include <numeric>
 #include <sstream>
 
+
+template<>
+std::string NAS2D::from_string(const std::string& value)
+{
+	return value;
+}
+
+template<>
+int NAS2D::from_string(const std::string& value)
+{
+	return std::stoi(value);
+}
+
+template<>
+unsigned int NAS2D::from_string(const std::string& value)
+{
+	return static_cast<unsigned int>(std::stoul(value));
+}
+
+template<>
+long NAS2D::from_string(const std::string& value)
+{
+	return std::stol(value);
+}
+
+template<>
+unsigned long NAS2D::from_string(const std::string& value)
+{
+	return std::stoul(value);
+}
+
+template<>
+long long NAS2D::from_string(const std::string& value)
+{
+	return std::stoll(value);
+}
+
+template<>
+unsigned long long NAS2D::from_string(const std::string& value)
+{
+	return std::stoull(value);
+}
+
+template<>
+float NAS2D::from_string(const std::string& value)
+{
+	return std::stof(value);
+}
+
+template<>
+double NAS2D::from_string(const std::string& value)
+{
+	return std::stod(value);
+}
+
+template<>
+long double NAS2D::from_string(const std::string& value)
+{
+	return std::stold(value);
+}
+
 /**
  * \fn toLowercase(const std::string& str)
  *

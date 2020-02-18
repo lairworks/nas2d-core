@@ -105,7 +105,7 @@ template <int N>
 struct SimplifyMemFunc
 {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, GenericMemFuncType &bound_func)
+	inline static GenericClass* Convert(X* /*pthis*/, XFuncType /*function_to_bind*/, GenericMemFuncType& /*bound_func*/)
 	{
 		static_assert(N < 100, "Unsupported member function pointer on this compiler");
 		return 0;
@@ -116,14 +116,14 @@ template <>
 struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE>
 {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, GenericMemFuncType &bound_func)
+	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 	{
 		#if defined __DMC__
 		bound_func = horrible_cast<GenericMemFuncType>(function_to_bind);
 		#else
 		bound_func = reinterpret_cast<GenericMemFuncType>(function_to_bind);
 		#endif
-		return reinterpret_cast<GenericClass *>(pthis);
+		return reinterpret_cast<GenericClass*>(pthis);
 	}
 };
 
@@ -133,7 +133,7 @@ template<>
 struct SimplifyMemFunc< SINGLE_MEMFUNCPTR_SIZE + sizeof(int) >
 {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, GenericMemFuncType &bound_func)
+	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 	{
 		union
 		{
@@ -144,7 +144,7 @@ struct SimplifyMemFunc< SINGLE_MEMFUNCPTR_SIZE + sizeof(int) >
 		static_assert(sizeof(function_to_bind) == sizeof(u.s), "Can't use horrible cast");
 		u.func = function_to_bind;
 		bound_func = u.s.funcaddress;
-		return reinterpret_cast<GenericClass *>(reinterpret_cast<char *>(pthis) + u.s.delta);
+		return reinterpret_cast<GenericClass*>(reinterpret_cast<char*>(pthis) + u.s.delta);
 	}
 };
 
@@ -159,16 +159,16 @@ struct MicrosoftVirtualMFP
 
 struct GenericVirtualClass : virtual public GenericClass
 {
-	using ProbePtrType = GenericVirtualClass * (GenericVirtualClass::*)();
-	GenericVirtualClass * GetThis() { return this; }
+	using ProbePtrType = GenericVirtualClass* (GenericVirtualClass::*)();
+	GenericVirtualClass* GetThis() { return this; }
 };
 
 
 template <>
-struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2*sizeof(int) >
+struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2 * sizeof(int)>
 {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, GenericMemFuncType &bound_func)
+	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 	{
 		union { XFuncType func; GenericClass* (X::*ProbeFunc)(); MicrosoftVirtualMFP s; } u;
 		u.func = function_to_bind;
@@ -191,7 +191,7 @@ template <>
 struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3 * sizeof(int)>
 {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, GenericMemFuncType &bound_func)
+	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 	{
 		union
 		{
@@ -211,10 +211,10 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3 * sizeof(int)>
 		int virtual_delta = 0;
 		if (u.s.vtable_index)
 		{
-			const int * vtable = *reinterpret_cast<const int *const*>(reinterpret_cast<const char *>(pthis) + u.s.vtordisp );
-			virtual_delta = u.s.vtordisp + *reinterpret_cast<const int *>(reinterpret_cast<const char *>(vtable) + u.s.vtable_index);
+			const int* vtable = *reinterpret_cast<const int* const*>(reinterpret_cast<const char*>(pthis) + u.s.vtordisp );
+			virtual_delta = u.s.vtordisp + *reinterpret_cast<const int*>(reinterpret_cast<const char*>(vtable) + u.s.vtable_index);
 		}
-		return reinterpret_cast<GenericClass *>(reinterpret_cast<char *>(pthis) + u.s.delta + virtual_delta);
+		return reinterpret_cast<GenericClass*>(reinterpret_cast<char*>(pthis) + u.s.delta + virtual_delta);
 	};
 };
 #endif
@@ -226,7 +226,7 @@ class DelegateMemento
 {
 protected:
 	using GenericMemFuncType = void (detail::GenericClass::*)();
-	detail::GenericClass *m_pthis;
+	detail::GenericClass* m_pthis;
 	GenericMemFuncType m_pFunction;
 
 #if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
@@ -244,7 +244,7 @@ public:
 #endif
 public:
 #if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-	inline bool IsEqual(const DelegateMemento &x) const
+	inline bool IsEqual(const DelegateMemento& x) const
 	{
 		if (m_pFunction != x.m_pFunction) return false;
 		if (m_pStaticFunction != x.m_pStaticFunction) return false;
@@ -252,9 +252,9 @@ public:
 		else return true;
 	}
 #else
-	inline bool IsEqual(const DelegateMemento &x) const { return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction; }
+	inline bool IsEqual(const DelegateMemento& x) const { return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction; }
 #endif
-	inline bool IsLess(const DelegateMemento &right) const
+	inline bool IsLess(const DelegateMemento& right) const
 	{
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 		if (m_pStaticFunction != 0 || right.m_pStaticFunction != 0) return m_pStaticFunction < right.m_pStaticFunction;
@@ -268,17 +268,17 @@ public:
 	inline bool empty() const { return m_pthis == 0 && m_pFunction == 0; }
 
 public:
-	DelegateMemento & operator = (const DelegateMemento &right) { SetMementoFrom(right); return *this; }
-	inline bool operator <(const DelegateMemento &right) { return IsLess(right); }
-	inline bool operator >(const DelegateMemento &right) { return right.IsLess(*this); }
-	DelegateMemento(const DelegateMemento &right) : m_pthis(right.m_pthis), m_pFunction(right.m_pFunction)
+	DelegateMemento& operator = (const DelegateMemento& right) { SetMementoFrom(right); return *this; }
+	inline bool operator <(const DelegateMemento& right) { return IsLess(right); }
+	inline bool operator >(const DelegateMemento& right) { return right.IsLess(*this); }
+	DelegateMemento(const DelegateMemento& right) : m_pthis(right.m_pthis), m_pFunction(right.m_pFunction)
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 		, m_pStaticFunction(right.m_pStaticFunction)
 		#endif
 	{}
 
 protected:
-	void SetMementoFrom(const DelegateMemento &right)
+	void SetMementoFrom(const DelegateMemento& right)
 	{
 		m_pFunction = right.m_pFunction;
 		m_pthis = right.m_pthis;
@@ -296,7 +296,7 @@ class ClosurePtr : public DelegateMemento
 {
 public:
 	template <class X, class XMemFunc>
-	inline void bindmemfunc(X *pthis, XMemFunc function_to_bind)
+	inline void bindmemfunc(X* pthis, XMemFunc function_to_bind)
 	{
 		m_pthis = SimplifyMemFunc< sizeof(function_to_bind) > ::Convert(pthis, function_to_bind, m_pFunction);
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
@@ -305,7 +305,7 @@ public:
 	}
 
 	template <class X, class XMemFunc>
-	inline void bindconstmemfunc(const X *pthis, XMemFunc function_to_bind)
+	inline void bindconstmemfunc(const X* pthis, XMemFunc function_to_bind)
 	{
 		m_pthis = SimplifyMemFunc< sizeof(function_to_bind) > ::Convert(const_cast<X*>(pthis), function_to_bind, m_pFunction);
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
@@ -315,7 +315,7 @@ public:
 
 #ifdef FASTDELEGATE_GCC_BUG_8271	// At present, GCC doesn't recognize constness of MFPs in templates
 	template <class X, class XMemFunc>
-	inline void bindmemfunc(const X *pthis, XMemFunc function_to_bind)
+	inline void bindmemfunc(const X* pthis, XMemFunc function_to_bind)
 	{
 		bindconstmemfunc(pthis, function_to_bind);
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
@@ -324,21 +324,21 @@ public:
 	}
 #endif
 
-	inline GenericClass *GetClosureThis() const { return m_pthis; }
+	inline GenericClass* GetClosureThis() const { return m_pthis; }
 	inline GenericMemFunc GetClosureMemPtr() const { return reinterpret_cast<GenericMemFunc>(m_pFunction); }
 
 #if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 
 public:
 	template<class DerivedClass>
-	inline void CopyFrom(DerivedClass *pParent, const DelegateMemento &x)
+	inline void CopyFrom(DerivedClass* pParent, const DelegateMemento& x)
 	{
 		SetMementoFrom(x);
-		if (m_pStaticFunction != 0) m_pthis = reinterpret_cast<GenericClass *>(pParent);
+		if (m_pStaticFunction != 0) m_pthis = reinterpret_cast<GenericClass*>(pParent);
 	}
 
 	template <class DerivedClass, class ParentInvokerSig>
-	inline void bindstaticfunc(DerivedClass *pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
+	inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 	{
 		if (function_to_bind == 0) m_pFunction = 0;
 		else bindmemfunc(pParent, static_function_invoker);
@@ -348,15 +348,15 @@ public:
 #else
 
 	template<class DerivedClass>
-	inline void CopyFrom(DerivedClass*, const DelegateMemento &right) { SetMementoFrom(right); }
+	inline void CopyFrom(DerivedClass*, const DelegateMemento& right) { SetMementoFrom(right); }
 
 	template <class DerivedClass, class ParentInvokerSig>
-	inline void bindstaticfunc(DerivedClass *pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
+	inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 	{
 		if (function_to_bind == 0) m_pFunction = 0;
 		else bindmemfunc(pParent, static_function_invoker);
-		static_assert(sizeof(GenericClass *) != sizeof(function_to_bind), "Can't use evil method");
-		m_pthis = horrible_cast<GenericClass *>(function_to_bind);
+		static_assert(sizeof(GenericClass*) != sizeof(function_to_bind), "Can't use evil method");
+		m_pthis = horrible_cast<GenericClass*>(function_to_bind);
 	}
 
 	inline UnvoidStaticFuncPtr GetStaticFunction() const
@@ -391,22 +391,22 @@ public:
 	using type = DelegateX;
 
 	DelegateX() { clear(); }
-	DelegateX(const DelegateX &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	void operator = (const DelegateX &x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	bool operator ==(const DelegateX &x) const { return m_Closure.IsEqual(x.m_Closure); }
-	bool operator !=(const DelegateX &x) const { return !m_Closure.IsEqual(x.m_Closure); }
-	bool operator <(const DelegateX &x) const { return m_Closure.IsLess(x.m_Closure); }
-	bool operator >(const DelegateX &x) const { return x.m_Closure.IsLess(m_Closure); }
+	DelegateX(const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); }
+	void operator = (const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); }
+	bool operator ==(const DelegateX& x) const { return m_Closure.IsEqual(x.m_Closure); }
+	bool operator !=(const DelegateX& x) const { return !m_Closure.IsEqual(x.m_Closure); }
+	bool operator <(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
+	bool operator >(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
 
 	template < class X, class Y >
-	DelegateX(Y *pthis, DesiredRetType(X::* function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
+	DelegateX(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 	template < class X, class Y >
-	inline void Bind(Y *pthis, DesiredRetType(X::* function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
+	inline void Bind(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 
 	template < class X, class Y >
-	DelegateX(const Y *pthis, DesiredRetType(X::* function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
+	DelegateX(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 	template < class X, class Y >
-	inline void Bind(const Y *pthis, DesiredRetType(X::* function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X *>(pthis), function_to_bind); }
+	inline void Bind(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 
 	DelegateX(DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
 	void operator = (DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
@@ -422,12 +422,12 @@ public:
 
 	inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
 	inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }
-	inline bool operator ! () const { return !m_Closure; }
+	inline bool operator!() const { return !m_Closure; }
 	inline bool empty() const { return !m_Closure; }
 	void clear() { m_Closure.clear(); }
 
-	const DelegateMemento & GetMemento() { return m_Closure; }
-	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
+	const DelegateMemento& GetMemento() { return m_Closure; }
+	void SetMemento(const DelegateMemento& any) { m_Closure.CopyFrom(this, any); }
 
 private:
 	RetType InvokeStaticFunction(Params...params) const { return (*(m_Closure.GetStaticFunction()))(params...); }
@@ -449,13 +449,13 @@ public:
 	Delegate() : BaseType() {}
 
 	template <class X, class Y>
-	Delegate(Y * pthis, R(X::* function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}
+	Delegate(Y* pthis, R(X::*function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}
 
 	template <class X, class Y>
-	Delegate(const Y *pthis, R(X::* function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
+	Delegate(const Y* pthis, R(X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
 
 	Delegate(R(*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
-	void operator = (const BaseType &x) { *static_cast<BaseType*>(this) = x; }
+	void operator = (const BaseType& x) { *static_cast<BaseType*>(this) = x; }
 };
 
 #endif

@@ -28,22 +28,7 @@ namespace NAS2D
 		template<typename T = std::string>
 		T value(const std::string& key) const
 		{
-			const auto found = mDictionary.find(key);
-			if(found == std::end(mDictionary))
-			{
-				throw std::runtime_error(std::string{"Dictionary key with name \'"} + key + "\' does not exist");
-			}
-			if constexpr (std::is_fundamental_v<T>)
-			{
-				// is bool, arithmetic, void, or nullptr.
-				// nullptr is undefined behavior
-				// void type is undefined behavior.
-				return value_helper(key, T{});
-			}
-			else
-			{
-				return T(found->second);
-			}
+			return NAS2D::from_string<T>(mDictionary.at(key));
 		}
 
 		/**

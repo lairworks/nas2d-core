@@ -128,20 +128,7 @@ bool NAS2D::Dictionary::value_or_helper(const std::string& key, const bool& defa
 	{
 		return valueAsStr == "true";
 	}
-	const auto valueAsBool = [&valueAsStr]() -> bool {
-		try
-		{
-			return std::stoi(valueAsStr) != 0;
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsBool = std::stoi(valueAsStr) != 0;
 	return valueAsBool;
 }
 
@@ -161,20 +148,7 @@ signed char NAS2D::Dictionary::value_or_helper(const std::string& key, const sig
 	const auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsSChar = [&valueAsStr]() {
-		try
-		{
-			return static_cast<signed char>(std::stoi(valueAsStr));
-		}
-		catch(const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch(const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsSChar = static_cast<signed char>(std::stoi(valueAsStr));
 	return valueAsSChar;
 }
 
@@ -184,20 +158,7 @@ unsigned char NAS2D::Dictionary::value_or_helper(const std::string& key, const u
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsUChar = [&valueAsStr]() {
-		try
-		{
-			return static_cast<unsigned char>(std::stoul(valueAsStr));
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsUChar = static_cast<unsigned char>(std::stoul(valueAsStr));
 	return valueAsUChar;
 }
 
@@ -207,20 +168,7 @@ short NAS2D::Dictionary::value_or_helper(const std::string& key, const short& de
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsShort = [&valueAsStr]() {
-		try
-		{
-			return static_cast<short>(std::stoi(valueAsStr));
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsShort = static_cast<short>(std::stoi(valueAsStr));
 	return valueAsShort;
 }
 
@@ -230,20 +178,7 @@ unsigned short NAS2D::Dictionary::value_or_helper(const std::string& key, const 
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsUShort = [&valueAsStr]() {
-		try
-		{
-			return static_cast<unsigned short>(std::stoul(valueAsStr));
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsUShort = static_cast<unsigned short>(std::stoul(valueAsStr));
 	return valueAsUShort;
 }
 
@@ -254,20 +189,7 @@ int NAS2D::Dictionary::value_or_helper(const std::string& key, const int& defaul
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsInt = [&valueAsStr]() {
-		try
-		{
-			return std::stoi(valueAsStr);
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsInt = std::stoi(valueAsStr);
 	return valueAsInt;
 }
 
@@ -277,20 +199,7 @@ unsigned int NAS2D::Dictionary::value_or_helper(const std::string& key, const un
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsUInt = [&valueAsStr]() {
-		try
-		{
-			return static_cast<unsigned int>(std::stoul(valueAsStr));
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsUInt = static_cast<unsigned int>(std::stoul(valueAsStr));
 	return valueAsUInt;
 }
 
@@ -301,20 +210,7 @@ long NAS2D::Dictionary::value_or_helper(const std::string& key, const long& defa
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsLong = [&valueAsStr]() {
-		try
-		{
-			return std::stol(valueAsStr);
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsLong = std::stol(valueAsStr);
 	return valueAsLong;
 }
 
@@ -324,20 +220,7 @@ unsigned long NAS2D::Dictionary::value_or_helper(const std::string& key, const u
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsUL = [&valueAsStr]() {
-		try
-		{
-			return std::stoul(valueAsStr);
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsUL = std::stoul(valueAsStr);
 	return valueAsUL;
 }
 
@@ -347,20 +230,7 @@ long long NAS2D::Dictionary::value_or_helper(const std::string& key, const long 
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsLL = [&valueAsStr]() {
-		try
-		{
-			return std::stoll(valueAsStr);
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsLL = std::stoll(valueAsStr);
 	return valueAsLL;
 }
 
@@ -370,20 +240,7 @@ unsigned long long NAS2D::Dictionary::value_or_helper(const std::string& key, co
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsULongLong = [&valueAsStr]() {
-		try
-		{
-			return std::stoull(valueAsStr);
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsULongLong = std::stoull(valueAsStr);
 	return valueAsULongLong;
 }
 
@@ -394,20 +251,7 @@ float NAS2D::Dictionary::value_or_helper(const std::string& key, const float& de
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsFloat = [&valueAsStr]() {
-		try
-		{
-			return std::stof(valueAsStr);
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsFloat = std::stof(valueAsStr);
 	return valueAsFloat;
 }
 
@@ -417,20 +261,7 @@ double NAS2D::Dictionary::value_or_helper(const std::string& key, const double& 
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsDouble = [&valueAsStr]() {
-		try
-		{
-			return std::stod(valueAsStr);
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsDouble = std::stod(valueAsStr);
 	return valueAsDouble;
 }
 
@@ -440,20 +271,7 @@ long double NAS2D::Dictionary::value_or_helper(const std::string& key, const lon
 	auto valueAsStr = value_or<std::string>(key, std::string{});
 	if (valueAsStr.empty()) { return defaultValue; }
 
-	const auto valueAsLongDouble = [&valueAsStr]() {
-		try
-		{
-			return std::stold(valueAsStr);
-		}
-		catch (const std::invalid_argument&)
-		{
-			throw;
-		}
-		catch (const std::out_of_range&)
-		{
-			throw;
-		}
-	}(); // IILE
+	const auto valueAsLongDouble = std::stold(valueAsStr);
 	return valueAsLongDouble;
 }
 

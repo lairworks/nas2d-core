@@ -69,6 +69,8 @@ public:
 	void window_icon(const std::string&) override {}
 
 	void update() override {}
+
+	void setViewport(const Rectangle<int>&) override {}
 };
 
 } // namespace

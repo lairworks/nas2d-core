@@ -11,6 +11,9 @@
 
 #include "Renderer.h"
 
+#include "Point.h"
+#include "Vector.h"
+
 namespace NAS2D {
 
 /**
@@ -80,12 +83,15 @@ public:
 
 	void update() override;
 
+	void setViewport(const Rectangle<int>& viewport) override;
+
 private:
 
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync);
 
 	void _resize(int w, int h);
+
 };
 
 } // namespace

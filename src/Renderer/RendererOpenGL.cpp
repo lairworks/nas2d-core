@@ -637,6 +637,10 @@ void RendererOpenGL::_resize(int w, int h)
 	}
 }
 
+void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
+{
+	glViewport(viewport.startPoint().x(), viewport.startPoint().y(), viewport.width(), viewport.height());
+}
 
 void RendererOpenGL::window_icon(const std::string& path)
 {

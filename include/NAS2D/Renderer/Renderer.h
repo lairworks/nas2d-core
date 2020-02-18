@@ -136,6 +136,8 @@ public:
 
 	virtual void setViewport(const Rectangle<int>& viewport) = 0;
 	virtual void setOrthoProjection(const Rectangle<float>& orthoBounds) = 0;
+	void setResolution(const Point<float> newResolution);
+
 protected:
 	Renderer(const std::string& appTitle);
 

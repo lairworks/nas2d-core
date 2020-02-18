@@ -625,16 +625,12 @@ bool RendererOpenGL::resizeable()
 
 void RendererOpenGL::_resize(int w, int h)
 {
-	glViewport(0, 0, w, h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
+	const auto wAsf = static_cast<float>(w);
+	const auto hAsf = static_cast<float>(h);
+	setViewport(Rectangle{0, 0, w, h});
+	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, Vector<float>{wAsf, hAsf}));
+	setResolution(Point{wAsf, hAsf});
 
-	if (!fullscreen())
-	{
-		mResolution = {static_cast<float>(w), static_cast<float>(h)};
-	}
 }
 
 void RendererOpenGL::setViewport(const Rectangle<int>& viewport)

@@ -105,7 +105,7 @@ template <int N>
 struct SimplifyMemFunc
 {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, GenericMemFuncType &bound_func)
+	inline static GenericClass *Convert(X * /*pthis*/, XFuncType /*function_to_bind*/, GenericMemFuncType & /*bound_func*/)
 	{
 		static_assert(N < 100, "Unsupported member function pointer on this compiler");
 		return 0;

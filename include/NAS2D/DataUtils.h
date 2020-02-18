@@ -87,29 +87,6 @@ namespace NAS2D
 		float value_or_helper(const std::string& key, const float& defaultValue) const;
 		double value_or_helper(const std::string& key, const double& defaultValue) const;
 		long double value_or_helper(const std::string& key, const long double& defaultValue) const;
-
-		bool value_helper(const std::string& key, bool) const;
-		char value_helper(const std::string& key, char) const;
-		signed char value_helper(const std::string& key, signed char) const;
-		unsigned char value_helper(const std::string& key, unsigned char) const;
-
-		short value_helper(const std::string& key, short) const;
-		unsigned short value_helper(const std::string& key, unsigned short) const;
-
-		int value_helper(const std::string& key, int) const;
-		unsigned int value_helper(const std::string& key, unsigned int) const;
-
-		long value_helper(const std::string& key, long) const;
-		unsigned long value_helper(const std::string& key, unsigned long) const;
-
-		long long value_helper(const std::string& key, long long) const;
-		unsigned long long value_helper(const std::string& key, unsigned long long) const;
-
-		float value_helper(const std::string& key, float) const;
-		double value_helper(const std::string& key, double) const;
-		long double value_helper(const std::string& key, long double) const;
-
 	};
-
 
 }

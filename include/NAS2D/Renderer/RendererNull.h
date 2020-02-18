@@ -71,6 +71,7 @@ public:
 	void update() override {}
 
 	void setViewport(const Rectangle<int>&) override {}
+	void setOrthoProjection(const Rectangle<float>&) override {};
 };
 
 } // namespace

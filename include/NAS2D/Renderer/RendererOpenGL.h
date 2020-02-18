@@ -84,6 +84,7 @@ public:
 	void update() override;
 
 	void setViewport(const Rectangle<int>& viewport) override;
+	void setOrthoProjection(const Rectangle<float>& orthoBounds) override;
 
 private:
 

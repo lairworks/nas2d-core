@@ -642,6 +642,15 @@ void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
 	glViewport(viewport.startPoint().x(), viewport.startPoint().y(), viewport.width(), viewport.height());
 }
 
+
+void NAS2D::RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(orthoBounds.startPoint().x(), orthoBounds.endPoint().x(), orthoBounds.endPoint().y(), orthoBounds.startPoint().x(), -1.0, 1.0f);
+	glMatrixMode(GL_MODELVIEW);
+}
+
 void RendererOpenGL::window_icon(const std::string& path)
 {
 	if (!Utility<Filesystem>::get().exists(path)) { return; }
@@ -785,6 +794,7 @@ NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const Di
 	auto err_str = "No matching display mode for " + display_str;
 	throw std::runtime_error(err_str);
 }
+
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================

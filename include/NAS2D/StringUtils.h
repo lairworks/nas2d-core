@@ -24,6 +24,9 @@ namespace NAS2D
 	std::string from_string(const std::string& value);
 
 	template<>
+	bool from_string(const std::string& value);
+
+	template<>
 	int from_string(const std::string& value);
 
 	template<>

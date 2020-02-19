@@ -22,6 +22,13 @@ std::string NAS2D::from_string(const std::string& value)
 }
 
 template<>
+bool NAS2D::from_string(const std::string& value)
+{
+	auto v = toLowercase(value);
+	return v == "true";
+}
+
+template<>
 int NAS2D::from_string(const std::string& value)
 {
 	return std::stoi(value);

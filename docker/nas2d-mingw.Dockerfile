@@ -2,12 +2,23 @@
 
 FROM ubuntu:18.04
 
-# Install Mingw-w64
+# Install base development tools
+# Includes tools to build download, unpack, and build source packages
+# Includes tools needed for primary CircleCI containers
 RUN apt-get update && apt-get install -y --no-install-recommends \
     mingw-w64=5.0.3-1 \
     cmake=3.10.2-* \
     make=4.1-* \
     binutils=2.30-* \
+    git=1:2.17.1-* \
+    ssh=1:7.6p1-* \
+    curl=7.58.0-* \
+    tar=1.29b-* \
+    gzip=1.6-* \
+    bzip2=1.0.6-* \
+    gnupg=2.2.4-* \
+    software-properties-common=0.96.24.32.12 \
+    ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
 # Set custom variables for build script convenience
@@ -27,17 +38,6 @@ ENV  LD32=${ARCH32}-ld
 # Set 64-bit Mingw-w64 as default compiler
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
-
-# Install utilities to fetch and install tools and dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates=* \
-    curl=7.58.0-* \
-    tar=1.29b-* \
-    gzip=1.6-* \
-    bzip2=1.0.6-* \
-    gnupg=2.2.4-* \
-    software-properties-common=0.96.24.32.12 \
-  && rm -rf /var/lib/apt/lists/*
 
 # Install wine so resulting unit test binaries can be run
 RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \

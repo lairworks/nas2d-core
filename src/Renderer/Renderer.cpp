@@ -534,10 +534,10 @@ void Renderer::update()
 	}
 }
 
-void NAS2D::Renderer::setResolution(const Point<float> newResolution)
+void NAS2D::Renderer::setResolution(const Vector<float>& newResolution)
 {
 	if (!fullscreen())
 	{
-		mResolution = newResolution;
+        mResolution = {newResolution.x, newResolution.y};
 	}
 }

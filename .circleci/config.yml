@@ -57,9 +57,9 @@ commands:
           command: cp -r << parameters.buildPrefix >> << parameters.installPrefix >>
   build-and-test:
     steps:
-      - run: make --keep-going --jobs=4
-      - run: make --keep-going --jobs=4 test
-      - run: make --keep-going --jobs=4 check
+      - run: make --keep-going --jobs=5
+      - run: make --keep-going --jobs=5 test
+      - run: make --keep-going --jobs=5 check
 
 jobs:
   build-macos:

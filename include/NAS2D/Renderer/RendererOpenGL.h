@@ -11,9 +11,6 @@
 
 #include "Renderer.h"
 
-#include "Point.h"
-#include "Vector.h"
-
 namespace NAS2D {
 
 /**

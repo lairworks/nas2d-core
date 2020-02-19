@@ -18,7 +18,10 @@
 namespace NAS2D
 {
 	template<typename T>
-	T from_string(const std::string& value);
+	T from_string(const std::string& value)
+	{
+		return T(value);
+	}
 
 	template<>
 	std::string from_string(const std::string& value);

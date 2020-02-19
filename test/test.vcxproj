@@ -43,6 +43,7 @@
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="DataUtils.test.cpp" />
     <ClCompile Include="Renderer/Point.test.cpp" />
     <ClCompile Include="Renderer/Rectangle.test.cpp" />
     <ClCompile Include="Renderer/Vector.test.cpp" />

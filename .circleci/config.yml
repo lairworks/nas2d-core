@@ -57,9 +57,9 @@ commands:
           command: cp -r << parameters.buildPrefix >> << parameters.installPrefix >>
   build-and-test:
     steps:
-      - run: make --keep-going
-      - run: make --keep-going test
-      - run: make --keep-going check
+      - run: make --keep-going --jobs
+      - run: make --keep-going --jobs test
+      - run: make --keep-going --jobs check
 
 jobs:
   build-macos:
@@ -91,7 +91,7 @@ jobs:
       - build-and-test
   build-linux-mingw:
     docker:
-      - image: outpostuniverse/nas2d-mingw:1.2
+      - image: outpostuniverse/nas2d-mingw:1.3
     steps:
       - checkout
       - build-and-test

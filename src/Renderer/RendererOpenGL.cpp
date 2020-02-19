@@ -579,6 +579,7 @@ void RendererOpenGL::size(int w, int h)
 void RendererOpenGL::minimum_size(int w, int h)
 {
 	SDL_SetWindowMinimumSize(underlyingWindow, w, h);
+	_resize(w, h);
 }
 
 

@@ -154,7 +154,7 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
 /**
  * Gets the glyph cell width.
  */
-const int NAS2D::Font::glyphCellWidth() const
+int NAS2D::Font::glyphCellWidth() const
 {
 	return FONTMAP[name()].glyph_size.x();
 }
@@ -163,7 +163,7 @@ const int NAS2D::Font::glyphCellWidth() const
 /**
  * Gets the glyph cell height.
  */
-const int NAS2D::Font::glyphCellHeight() const
+int NAS2D::Font::glyphCellHeight() const
 {
 	return FONTMAP[name()].glyph_size.y();
 }

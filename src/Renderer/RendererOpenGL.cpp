@@ -625,11 +625,10 @@ bool RendererOpenGL::resizeable()
 
 void RendererOpenGL::onResize(int w, int h)
 {
-	const auto wAsf = static_cast<float>(w);
-	const auto hAsf = static_cast<float>(h);
+	const auto dimensions = Vector<int>{w, h}.to<float>();
 	setViewport(Rectangle{0, 0, w, h});
-	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, Vector<float>{wAsf, hAsf}));
-	setResolution(Point{wAsf, hAsf});
+	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, dimensions));
+	setResolution(dimensions);
 
 }
 

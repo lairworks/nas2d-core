@@ -1,13 +1,42 @@
 #pragma once
 
+#include <iomanip>
 #include <string>
+#include <sstream>
 #include <unordered_map>
+
+#include "NAS2D/StringUtils.h"
 
 namespace NAS2D
 {
 	class Dictionary
 	{
 	public:
+
+
+		/**
+		* /fn
+		* template<typename T = std::string>
+		* T set(const std::string& key)
+		*
+		* Sets the value of at a given key.
+		*
+		* /param key: The key string to search for.
+		*
+		* /remarks
+		* If the `key` does not exist, it is created with value of `value`.
+		* 
+		* User-defined types must support conversion to `std::string`.
+		* 
+		*/
+		template<typename T = std::string>
+		void set(const std::string& key, const T& value)
+		{
+			std::ostringstream ss;
+			ss << std::boolalpha << value;
+			mDictionary[key] = NAS2D::toLowercase(ss.str());
+		}
+
 		/**
 		* /fn
 		* template<typename T = std::string>
@@ -22,7 +51,7 @@ namespace NAS2D
 		* Throws std::runtime_error if the key is not found.
 		* Throws any exceptions that T(std::string) would throw if T is User-defined.
 		* 
-		* User-defined types must support construction by `std::string`.
+		* User-defined types must support construction from `std::string`.
 		* 
 		*/
 		template<typename T = std::string>

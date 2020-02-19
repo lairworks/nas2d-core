@@ -94,7 +94,7 @@ RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
  */
 RendererOpenGL::~RendererOpenGL()
 {
-	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::_resize);
+	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::onResize);
 
 	SDL_GL_DeleteContext(CONTEXT);
 	SDL_DestroyWindow(underlyingWindow);
@@ -571,7 +571,7 @@ float RendererOpenGL::height()
 void RendererOpenGL::size(int w, int h)
 {
 	SDL_SetWindowSize(underlyingWindow, w, h);
-	_resize(w, h);
+	onResize(w, h);
 	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
@@ -579,7 +579,7 @@ void RendererOpenGL::size(int w, int h)
 void RendererOpenGL::minimum_size(int w, int h)
 {
 	SDL_SetWindowMinimumSize(underlyingWindow, w, h);
-	_resize(w, h);
+	onResize(w, h);
 }
 
 
@@ -624,20 +624,28 @@ bool RendererOpenGL::resizeable()
 }
 
 
-void RendererOpenGL::_resize(int w, int h)
+void RendererOpenGL::onResize(int w, int h)
 {
-	glViewport(0, 0, w, h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
+	const auto dimensions = Vector<int>{w, h}.to<float>();
+	setViewport(Rectangle{0, 0, w, h});
+	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, dimensions));
+	setResolution(dimensions);
 
-	if (!fullscreen())
-	{
-		mResolution = {static_cast<float>(w), static_cast<float>(h)};
-	}
 }
 
+void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
+{
+	glViewport(viewport.startPoint().x(), viewport.startPoint().y(), viewport.width(), viewport.height());
+}
+
+
+void NAS2D::RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(orthoBounds.startPoint().x(), orthoBounds.endPoint().x(), orthoBounds.endPoint().y(), orthoBounds.startPoint().x(), -1.0, 1.0f);
+	glMatrixMode(GL_MODELVIEW);
+}
 
 void RendererOpenGL::window_icon(const std::string& path)
 {
@@ -662,7 +670,7 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	_resize(static_cast<int>(width()), static_cast<int>(height()));
+	onResize(static_cast<int>(width()), static_cast<int>(height()));
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
@@ -738,7 +746,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 	glewInit();
 	initGL();
 
-	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::_resize);
+	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::onResize);
 
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
@@ -782,6 +790,7 @@ NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const Di
 	auto err_str = "No matching display mode for " + display_str;
 	throw std::runtime_error(err_str);
 }
+
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================

@@ -533,3 +533,11 @@ void Renderer::update()
 		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), static_cast<uint8_t>(mCurrentFade));
 	}
 }
+
+void NAS2D::Renderer::setResolution(const Vector<float>& newResolution)
+{
+	if (!fullscreen())
+	{
+		mResolution = {newResolution.x, newResolution.y};
+	}
+}

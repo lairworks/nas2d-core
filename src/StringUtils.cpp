@@ -37,6 +37,11 @@ int NAS2D::from_string(const std::string& value)
 template<>
 unsigned int NAS2D::from_string(const std::string& value)
 {
+	const auto valueAsUL = std::stoul(value);
+	if (std::numeric_limits<unsigned int>::max() < valueAsUL)
+	{
+		throw std::out_of_range("from_string argument out of range");
+	}
 	return static_cast<unsigned int>(std::stoul(value));
 }
 

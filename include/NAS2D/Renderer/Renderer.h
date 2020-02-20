@@ -13,6 +13,7 @@
 #include "Color.h"
 #include "DisplayDesc.h"
 #include "Point.h"
+#include "Vector.h"
 #include "Rectangle.h"
 #include "../Signal.h"
 #include "../Resources/Image.h"
@@ -42,6 +43,7 @@ public:
 	
 	virtual std::vector<DisplayDesc> getDisplayModes() const = 0;
 	virtual DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const = 0;
+	virtual Vector<int> getWindowClientArea() const noexcept = 0;
 
 	const std::string& driverName();
 

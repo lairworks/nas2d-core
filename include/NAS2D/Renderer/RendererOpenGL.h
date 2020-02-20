@@ -32,6 +32,7 @@ public:
 
 	std::vector<DisplayDesc> getDisplayModes() const override;
 	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const override;
+	Vector<int> getWindowClientArea() const noexcept override;
 
 	void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 

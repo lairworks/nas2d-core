@@ -791,6 +791,14 @@ NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const Di
 	throw std::runtime_error(err_str);
 }
 
+NAS2D::Vector<int> NAS2D::RendererOpenGL::getWindowClientArea() const noexcept
+{
+	int w;
+	int h;
+	SDL_GetWindowSize(underlyingWindow, &w, &h);
+	return {w, h};
+}
+
 // ==================================================================================
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================

@@ -65,23 +65,16 @@ clean-all: | clean
 
 ## Unit Test project ##
 
-.PHONY: gtest gmock test check
+.PHONY: gtest test check
 
 # Either of these should be a complete combined package. Only build one.
-GTESTSRCDIR := /usr/src/gtest/
-GMOCKSRCDIR := /usr/src/gmock/
+GTESTSRCDIR := /usr/src/googletest/
 GTESTDIR := $(BUILDDIR)/gtest
-GMOCKDIR := $(BUILDDIR)/gmock
 
 gtest:
 	mkdir -p $(GTESTDIR)
 	cd $(GTESTDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GTESTSRCDIR)
 	make -C $(GTESTDIR)
-
-gmock:
-	mkdir -p $(GMOCKDIR)
-	cd $(GMOCKDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GMOCKSRCDIR)
-	make -C $(GMOCKDIR)
 
 TESTDIR := test
 TESTINTDIR := $(BUILDDIR)/testIntermediate

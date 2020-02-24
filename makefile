@@ -65,12 +65,11 @@ clean-all: | clean
 
 ## Unit Test project ##
 
-.PHONY: gtest test check
-
 # Either of these should be a complete combined package. Only build one.
 GTESTSRCDIR := /usr/src/googletest/
 GTESTDIR := $(BUILDDIR)/gtest
 
+.PHONY: gtest
 gtest:
 	mkdir -p $(GTESTDIR)
 	cd $(GTESTDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GTESTSRCDIR)
@@ -90,7 +89,10 @@ TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTINTDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 TESTPOSTCOMPILE = @mv -f $(TESTINTDIR)/$*.Td $(TESTINTDIR)/$*.d && touch $@
 
+.PHONY: test
 test: $(TESTOUTPUT)
+
+.PHONY: check
 check: | test
 	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
 

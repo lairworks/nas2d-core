@@ -65,23 +65,37 @@ clean-all: | clean
 
 ## Unit Test project ##
 
-.PHONY: gtest gmock test check
-
 # Either of these should be a complete combined package. Only build one.
-GTESTSRCDIR := /usr/src/gtest/
-GMOCKSRCDIR := /usr/src/gmock/
+GTESTSRCDIR := /usr/src/googletest/
 GTESTDIR := $(BUILDDIR)/gtest
-GMOCKDIR := $(BUILDDIR)/gmock
 
+.PHONY: gtest
 gtest:
 	mkdir -p $(GTESTDIR)
-	cd $(GTESTDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GTESTSRCDIR)
-	make -C $(GTESTDIR)
+	cd $(GTESTDIR) && \
+	  curl --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar -xz && \
+	  cmake -DCMAKE_CXX_FLAGS="-std=c++17" googletest-release-1.10.0/ && \
+	  make && \
+	  cmake -DCMAKE_CXX_FLAGS="-std=c++17" -DBUILD_SHARED_LIBS=ON googletest-release-1.10.0/ && \
+	  make
 
-gmock:
-	mkdir -p $(GMOCKDIR)
-	cd $(GMOCKDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GMOCKSRCDIR)
-	make -C $(GMOCKDIR)
+.PHONY: gtest-install
+gtest-install:
+	cd $(GTESTDIR) && \
+	  cp -r lib/ /usr/local/ && \
+	  cp -r \
+	    googletest-release-1.10.0/googletest/include/ \
+	    googletest-release-1.10.0/googlemock/include/ \
+	    /usr/local/ && \
+	  cp --parents -r \
+	    googletest-release-1.10.0/CMakeLists.txt \
+	    googletest-release-1.10.0/googletest/CMakeLists.txt \
+	    googletest-release-1.10.0/googletest/cmake/ \
+	    googletest-release-1.10.0/googletest/src/ \
+	    googletest-release-1.10.0/googlemock/CMakeLists.txt \
+	    googletest-release-1.10.0/googlemock/cmake/ \
+	    googletest-release-1.10.0/googlemock/src/ \
+	    /usr/local/src/
 
 TESTDIR := test
 TESTINTDIR := $(BUILDDIR)/testIntermediate
@@ -97,7 +111,10 @@ TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTINTDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 TESTPOSTCOMPILE = @mv -f $(TESTINTDIR)/$*.Td $(TESTINTDIR)/$*.d && touch $@
 
+.PHONY: test
 test: $(TESTOUTPUT)
+
+.PHONY: check
 check: | test
 	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
 

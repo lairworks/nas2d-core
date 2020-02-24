@@ -72,8 +72,12 @@ GTESTDIR := $(BUILDDIR)/gtest
 .PHONY: gtest
 gtest:
 	mkdir -p $(GTESTDIR)
-	cd $(GTESTDIR) && cmake -DCMAKE_CXX="$(CXX)" -DCMAKE_CXX_FLAGS="-std=c++17" $(GTESTSRCDIR)
-	make -C $(GTESTDIR)
+	cd $(GTESTDIR) && \
+	  curl --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar -xz && \
+	  cmake -DCMAKE_CXX_FLAGS="-std=c++17" googletest-release-1.10.0/ && \
+	  make && \
+	  cmake -DCMAKE_CXX_FLAGS="-std=c++17" -DBUILD_SHARED_LIBS=ON googletest-release-1.10.0/ && \
+	  make
 
 TESTDIR := test
 TESTINTDIR := $(BUILDDIR)/testIntermediate

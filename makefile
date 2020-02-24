@@ -133,6 +133,9 @@ $(TESTINTDIR)/%.d: ;
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 
 
+.PHONY: lint
+lint: cppcheck cppclean
+
 .PHONY: cppcheck
 cppcheck:
 	cppcheck --quiet "$(SRCDIR)"

@@ -137,6 +137,10 @@ include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 cppcheck:
 	cppcheck --quiet "$(SRCDIR)"
 
+.PHONY: cppclean
+cppclean:
+	cppclean --include-path "$(INCDIR)" "$(SRCDIR)"
+
 ### Linux development package dependencies ###
 # This section contains install rules to aid setup and compiling on Linux.
 # Only a few common Linux distributions are covered. Other distributions

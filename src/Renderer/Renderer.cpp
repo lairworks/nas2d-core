@@ -40,6 +40,11 @@ Renderer::~Renderer()
 }
 
 
+void Renderer::drawImage(Image& image, Point<float> position, float scale)
+{
+	drawImage(image, position.x(), position.y(), scale);
+}
+
 /**
  * Draws an Image to the screen.
  *
@@ -51,6 +56,18 @@ Renderer::~Renderer()
 void Renderer::drawImage(Image& image, float x, float y, float scale)
 {
 	drawImage(image, x, y, scale, 255, 255, 255, 255);
+}
+
+
+void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
+{
+	drawImage(image, position.x(), position.y(), scale, color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
+void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size)
+{
+	drawSubImage(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, 255, 255, 255, 255);
 }
 
 
@@ -68,6 +85,12 @@ void Renderer::drawImage(Image& image, float x, float y, float scale)
 void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
 {
 	drawSubImage(image, rasterX, rasterY, x, y, width, height, 255, 255, 255, 255);
+}
+
+
+void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, const Color& color)
+{
+	drawSubImageRotated(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, degrees, color);
 }
 
 
@@ -90,6 +113,12 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
 }
 
 
+void NAS2D::Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, const Color& color, float scale)
+{
+	drawImageRotated(image, position.x(), position.y(), degrees, color, scale);
+}
+
+
 /**
  * Draws a rotated and scaled image.
  *
@@ -103,6 +132,12 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
 void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color& color, float scale)
 {
 	drawImageRotated(image, x, y, degrees, color.red(), color.green(), color.blue(), color.alpha(), scale);
+}
+
+
+void NAS2D::Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
+{
+	drawImageStretched(image, position.x(), position.y(), size.x, size.y, color);
 }
 
 
@@ -122,6 +157,12 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
 }
 
 
+void NAS2D::Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
+{
+	drawImageRepeated(image, position.x(), position.y(), size.x, size.y);
+}
+
+
 /**
  * Draws part of an Image repeated over a rectangular area.
  */
@@ -130,6 +171,11 @@ void Renderer::drawSubImageRepeated(Image& image, const Rectangle_2df& source, c
 	drawSubImageRepeated(image, destination.x(), destination.y(), destination.width(), destination.height(), source.x(), source.y(), source.width(), source.height());
 }
 
+
+void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
+{
+	drawImageRect(position.x(), position.y(), size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
+}
 
 /**
  * Comment me!
@@ -150,6 +196,12 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 	drawImage(topRight, x + w - topRight.width(), y);
 	drawImage(bottomLeft, x, y + h - bottomLeft.height());
 	drawImage(bottomRight, x + w - bottomRight.width(), y + h - bottomRight.height());
+}
+
+
+void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageList& images)
+{
+	drawImageRect(position.x(), position.y(), size.x, size.y, images);
 }
 
 
@@ -269,6 +321,12 @@ NAS2D::Signals::Signal<>& Renderer::fadeComplete() const
 }
 
 
+void NAS2D::Renderer::drawPoint(Point<float> position, const Color& color)
+{
+	drawPoint(position.x(), position.y(), color);
+}
+
+
 /**
  * Draws a single Pixel to the primary surface.
  *
@@ -279,6 +337,12 @@ NAS2D::Signals::Signal<>& Renderer::fadeComplete() const
 void Renderer::drawPoint(float x, float y, const Color& color)
 {
 	drawPoint(x, y, color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
+void NAS2D::Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, const Color& color, int line_width)
+{
+	drawLine(startPosition.x(), startPosition.y(), endPosition.x(), endPosition.y(), color, line_width);
 }
 
 
@@ -358,6 +422,19 @@ void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, ui
 }
 
 
+
+void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
+{
+	drawCircle(position.x(), position.y(), radius, color.red(), color.green(), color.blue(), color.alpha(), num_segments, scale.x, scale.y);
+}
+
+
+void Renderer::drawGradient(Point<float> position, Vector<float> size, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+{
+	drawGradient(position.x(), position.y(), size.x, size.y, c1, c2, c3, c4);
+}
+
+
 /**
  * Draws a rectangular area with a color gradient.
  *
@@ -383,6 +460,19 @@ void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1,
 	drawGradient(x, y, w, h, c1.red(), c1.green(), c1.blue(), c1.alpha(), c2.red(), c2.green(), c2.blue(), c2.alpha(), c3.red(), c3.green(), c3.blue(), c3.alpha(), c4.red(), c4.green(), c4.blue(), c4.alpha());
 }
 
+
+void NAS2D::Renderer::drawText(Font& font, const std::string& text, Point<float> position, Color color)
+{
+	drawText(font, text, position.x(), position.y(), color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
+void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
+{
+	const auto shadowPosition = position + shadowOffset;
+	drawText(font, text, shadowPosition.x(), shadowPosition.y(), shadowColor.red(), shadowColor.green(), shadowColor.blue(), shadowColor.alpha());
+	drawText(font, text, position.x(), position.y(), textColor.red(), textColor.green(), textColor.blue(), textColor.alpha());
+}
 
 /**
  * Gets the current screen resolution as a Point_2df.

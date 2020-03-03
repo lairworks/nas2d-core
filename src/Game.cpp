@@ -41,10 +41,10 @@ using namespace NAS2D;
  */
 Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
 {
-	std::cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << std::endl;
-	std::cout << "NAS2D VERSION: " << NAS2D::versionString() << std::endl << std::endl;
-
-	std::cout << "Initializing subsystems..." << std::endl << std::endl;
+	std::cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << '\n';
+	std::cout << "NAS2D VERSION: " << NAS2D::versionString() << "\n\n";
+	std::cout << "Initializing subsystems...\n\n";
+	std::cout.flush();
 
 	auto& fs = Utility<Filesystem>::init<Filesystem>(argv_0, appName, organizationName);
 	fs.mount(dataPath);
@@ -69,7 +69,8 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 
 	std::cout << "Initializing Event Handler... ";
 	Utility<EventHandler>::get();
-	std::cout << "done." << std::endl << std::endl;
+	std::cout << "done.\n\n";
+	std::cout.flush();
 
 	try
 	{
@@ -82,8 +83,9 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	}
 
 
-	std::cout << std::endl << "Subsystems initialized." << std::endl << std::endl;
-	std::cout << "===================================" << std::endl << std::endl;
+	std::cout << "\nSubsystems initialized.\n\n";
+	std::cout << "===================================\n\n";
+	std::cout.flush();
 }
 
 
@@ -92,7 +94,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
  */
 Game::~Game()
 {
-	std::cout << std::endl << "===================================" << std::endl << std::endl;
+	std::cout << "\n===================================\n\n";
 	std::cout << "Shutting down..." << std::endl;
 
 	// Destroy all of our various components in reverse order.
@@ -102,7 +104,7 @@ Game::~Game()
 	Utility<Configuration>::clear();
 	Utility<Filesystem>::clear();
 
-	std::cout << std::endl << "Game object has been terminated." << std::endl;
+	std::cout << "\nGame object has been terminated." << std::endl;
 
 	// Shut down all SDL subsystems.
 	SDL_Quit();
@@ -131,7 +133,8 @@ void Game::mount(const std::string& path)
  */
 void Game::go(State *state)
 {
-	std::cout << "** GAME STATE START **" << std::endl << std::endl;
+	std::cout << "** GAME STATE START **\n\n";
+	std::cout.flush();
 
 	StateManager stateManager;
 

@@ -22,7 +22,7 @@ namespace NAS2D
 
 	bool operator>=(const DisplayDesc& a, const DisplayDesc& b)
 	{
-		return (a.width >= b.width) && (a.height >= b.height) && (a.refreshHz >= b.refreshHz);
+		return (b <= a);
 	}
 
 	bool operator<(const DisplayDesc& a, const DisplayDesc& b)
@@ -32,7 +32,7 @@ namespace NAS2D
 
 	bool operator>(const DisplayDesc& a, const DisplayDesc& b)
 	{
-		return (a >= b) && (a != b);
+		return (b < a);
 	}
 
 } // namespace NAS2D

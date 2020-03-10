@@ -58,10 +58,9 @@ commands:
   build-and-test:
     steps:
       - run: export CXXFLAGS_EXTRA="-Werror"
-      - run: export MAKEFLAGS="--keep-going --jobs"
-      - run: make
-      - run: make test
-      - run: make check
+      - run: make --keep-going --jobs
+      - run: make --keep-going --jobs test
+      - run: make --keep-going --jobs check
 
 jobs:
   build-macos:

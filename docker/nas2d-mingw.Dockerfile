@@ -147,7 +147,7 @@ RUN wineboot
 
 # Set default extra C pre-processor flags
 # This makes proper rebuilding easier in a debug session
-ENV CPPFLAGS.EXTRA=-D"GLEW_STATIC"
+ENV CPPFLAGS_EXTRA=-D"GLEW_STATIC"
 
 # Be explicit about the extra flags with the default command
-CMD ["make", "--keep-going", "check", "CPPFLAGS.EXTRA=-DGLEW_STATIC"]
+CMD ["make", "--keep-going", "check", "CPPFLAGS_EXTRA=-DGLEW_STATIC"]

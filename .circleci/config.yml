@@ -57,10 +57,9 @@ commands:
           command: cp -r << parameters.buildPrefix >> << parameters.installPrefix >>
   build-and-test:
     steps:
-      - run: export CXXFLAGS_EXTRA="-Werror"
-      - run: make --keep-going --jobs
-      - run: make --keep-going --jobs test
-      - run: make --keep-going --jobs check
+      - run: make --keep-going --jobs CXXFLAGS_EXTRA="-Werror"
+      - run: make --keep-going --jobs CXXFLAGS_EXTRA="-Werror" test
+      - run: make --keep-going --jobs CXXFLAGS_EXTRA="-Werror" check
 
 jobs:
   build-macos:

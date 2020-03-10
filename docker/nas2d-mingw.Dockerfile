@@ -35,10 +35,6 @@ ENV CXX32=${ARCH32}-g++
 ENV  CC32=${ARCH32}-gcc
 ENV  LD32=${ARCH32}-ld
 
-# Set 64-bit Mingw-w64 as default compiler
-ENV CXX=${CXX64}
-ENV  CC=${CC64}
-
 # Install wine so resulting unit test binaries can be run
 RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
   apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main' && \
@@ -129,11 +125,16 @@ ENV PATH64="${PATH}:${BIN64}"
 ENV PATH32="${PATH}:${BIN32}"
 ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/7.3-win32/
 ENV WINEPATH32=${BIN32};/usr/lib/gcc/${ARCH32}/7.3-win32/
+
 # Setup compiler and tooling default folders
 ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
 ENV LIBRARY_PATH="${LIB64}"
 ENV PATH="${PATH64}"
 ENV WINEPATH="${WINEPATH64}"
+
+# Set default compiler
+ENV CXX=${CXX64}
+ENV  CC=${CC64}
 
 RUN useradd -m -s /bin/bash user
 USER user

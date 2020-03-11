@@ -477,7 +477,7 @@ void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<
 /**
  * Gets the current screen resolution as a Point_2df.
  */
-const Point_2df& Renderer::size()
+Vector<float> Renderer::size()
 {
 	return mResolution;
 }

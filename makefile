@@ -138,6 +138,10 @@ test-graphics: $(OUTPUT)
 	@mkdir -p $(BUILDDIR)
 	$(CXX) -o $(BUILDDIR)/testGraphics test-graphics/*.cpp $(CPPFLAGS) $(CXXFLAGS) $(TESTLDFLAGS) -lnas2d $(LDLIBS)
 
+.PHONY: run-test-graphics
+run-test-graphics: | test-graphics
+	cd test-graphics/ && ../.build/testGraphics ; cd ..
+
 
 .PHONY: lint
 lint: cppcheck cppclean

@@ -133,6 +133,12 @@ $(TESTINTDIR)/%.d: ;
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 
 
+.PHONY: test-graphics
+test-graphics: $(OUTPUT)
+	@mkdir -p $(BUILDDIR)
+	$(CXX) -o $(BUILDDIR)/testGraphics test-graphics/*.cpp $(CPPFLAGS) $(CXXFLAGS) $(TESTLDFLAGS) -lnas2d $(LDLIBS)
+
+
 .PHONY: lint
 lint: cppcheck cppclean
 

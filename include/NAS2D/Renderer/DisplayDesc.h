@@ -17,4 +17,9 @@ namespace NAS2D
 	bool operator==(const DisplayDesc& a, const DisplayDesc& b);
 	bool operator!=(const DisplayDesc& a, const DisplayDesc& b);
 
+	bool operator<=(const DisplayDesc& a, const DisplayDesc& b);
+	bool operator>=(const DisplayDesc& a, const DisplayDesc& b);
+	bool operator<(const DisplayDesc& a, const DisplayDesc& b);
+	bool operator>(const DisplayDesc& a, const DisplayDesc& b);
+
 } // namespace NAS2D

@@ -71,7 +71,7 @@ unsigned nextPowerOf2(unsigned n)
 NAS2D::Font::Font(const std::string& filePath, int ptSize) :	Resource(filePath)
 {
 	loaded(::load(name(), ptSize));
-	name(name() + string_format("_%ipt", ptSize));
+	name(name() + "_" + std::to_string(ptSize) + "pt");
 }
 
 
@@ -232,7 +232,7 @@ int NAS2D::Font::ptSize() const
  */
 bool load(const std::string& path, unsigned int ptSize)
 {
-	std::string fontname = path + string_format("_%ipt", ptSize);
+	std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
 	if (fontAlreadyLoaded(fontname))
 	{
 		++FONTMAP[fontname].ref_count;
@@ -301,12 +301,12 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 
 	if (glyphMap->w / GLYPH_MATRIX_SIZE != glyphWidth)
 	{
-		throw font_invalid_glyph_map(string_format("image width is %i, expected %i.", glyphMap->w, glyphWidth * GLYPH_MATRIX_SIZE));
+		throw font_invalid_glyph_map("image width is " + std::to_string(glyphMap->w) + ", expected " + std::to_string(glyphWidth * GLYPH_MATRIX_SIZE) + ".");
 	}
 
 	if (glyphMap->h / GLYPH_MATRIX_SIZE != glyphHeight)
 	{
-		throw font_invalid_glyph_map(string_format("image height is %i, expected %i.", glyphMap->h, glyphHeight * GLYPH_MATRIX_SIZE));
+		throw font_invalid_glyph_map("image height is " + std::to_string(glyphMap->h) + ", expected " + std::to_string(glyphHeight * GLYPH_MATRIX_SIZE) + ".");
 	}
 
 	GlyphMetricsList& glm = FONTMAP[path].metrics;

@@ -102,7 +102,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
 
-	SDL_Surface* pixels = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
+	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
 	_size = Vector<int>{width, height};
 
@@ -113,7 +113,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	IMAGE_ID_MAP[name()].w = width;
 	IMAGE_ID_MAP[name()].h = height;
 	IMAGE_ID_MAP[name()].ref_count++;
-	IMAGE_ID_MAP[name()].pixels = pixels;
+	IMAGE_ID_MAP[name()].pixels = surface;
 }
 
 
@@ -195,16 +195,16 @@ void Image::load()
 		return;
 	}
 
-	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
-	if (!pixels)
+	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
+	if (!surface)
 	{
 		std::cout << "Image::load(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
-	_size = Vector<int>{pixels->w, pixels->h};
+	_size = Vector<int>{surface->w, surface->h};
 
-	unsigned int texture_id = generateTexture(pixels->pixels, pixels->format->BytesPerPixel, pixels->w, pixels->h);
+	unsigned int texture_id = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
 
 	// Add generated texture id to texture ID map.
 	IMAGE_ID_MAP[name()].texture_id = texture_id;
@@ -212,7 +212,7 @@ void Image::load()
 	IMAGE_ID_MAP[name()].h = height();
 	IMAGE_ID_MAP[name()].ref_count++;
 
-	IMAGE_ID_MAP[name()].pixels = pixels;
+	IMAGE_ID_MAP[name()].pixels = surface;
 
 	loaded(true);
 }
@@ -287,13 +287,13 @@ Color Image::pixelColor(int x, int y) const
 		return Color(0, 0, 0, 255);
 	}
 
-	SDL_Surface* pixels = static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels);
+	SDL_Surface* surface = static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels);
 
-	if (!pixels) { throw image_null_data(); }
+	if (!surface) { throw image_null_data(); }
 
-	SDL_LockSurface(pixels);
-	uint8_t bpp = pixels->format->BytesPerPixel;
-	uint8_t* p = (uint8_t*)pixels->pixels + static_cast<std::size_t>(y) * pixels->pitch + static_cast<std::size_t>(x) * bpp;
+	SDL_LockSurface(surface);
+	uint8_t bpp = surface->format->BytesPerPixel;
+	uint8_t* p = (uint8_t*)surface->pixels + static_cast<std::size_t>(y) * surface->pitch + static_cast<std::size_t>(x) * bpp;
 
 	unsigned int c = 0;
 
@@ -328,8 +328,8 @@ Color Image::pixelColor(int x, int y) const
 	}
 
 	uint8_t r, g, b, a;
-	SDL_GetRGBA(c, pixels->format, &r, &g, &b, &a);
-	SDL_UnlockSurface(pixels);
+	SDL_GetRGBA(c, surface->format, &r, &g, &b, &a);
+	SDL_UnlockSurface(surface);
 
 	return Color(r, g, b, a);
 }

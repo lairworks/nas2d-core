@@ -132,7 +132,7 @@ public:
 	virtual float height() = 0;
 
 	virtual void size(int w, int h) = 0;
-	const Point_2df& size();
+	Vector<float> size();
 
 	virtual void minimum_size(int w, int h) = 0;
 
@@ -160,7 +160,7 @@ protected:
 
 	void driverName(const std::string& name);
 
-	Point_2df mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
+	Vector<float> mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
 
 private:
 	enum class FadeType

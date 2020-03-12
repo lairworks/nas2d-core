@@ -553,7 +553,7 @@ float RendererOpenGL::width()
 		return DESKTOP_RESOLUTION.x();
 	}
 
-	return mResolution.x();
+	return mResolution.x;
 }
 
 
@@ -564,7 +564,7 @@ float RendererOpenGL::height()
 		return DESKTOP_RESOLUTION.y();
 	}
 
-	return mResolution.y();
+	return mResolution.y;
 }
 
 

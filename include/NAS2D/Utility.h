@@ -179,8 +179,8 @@ public:
 	}
 
 private:
-	Utility<T>() {};							// Explicitly declared private.
-	~Utility() {};								// Explicitly declared private.
+	Utility<T>() {}							// Explicitly declared private.
+	~Utility() {}								// Explicitly declared private.
 	Utility<T>(const Utility& s);				// Explicitly declared private.
 	Utility<T>& operator=(const Utility& s);	// Explicitly declared private.
 

@@ -36,7 +36,7 @@ XmlComment::XmlComment(const std::string& _value) : XmlNode(XmlNode::NodeType::X
 /**
  * Copy c'tor.
  */
-XmlComment::XmlComment(const XmlComment& copy)
+XmlComment::XmlComment(const XmlComment& copy) : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {
 	copy.copyTo(this);
 }

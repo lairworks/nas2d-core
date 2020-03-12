@@ -529,7 +529,7 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 		p += strlen(endTag);
 	}
 
-	return (p && *p) ? p : 0;
+	return (p && *p) ? p : nullptr;
 }
 
 
@@ -570,7 +570,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 			if (node)
 			{
 				node->streamIn(in, tag);
-				bool isElement = node->toElement() != 0;
+				bool isElement = node->toElement() != nullptr;
 				delete node;
 				node = nullptr;
 
@@ -681,7 +681,7 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
  */
 XmlNode* XmlNode::identify(const char* p)
 {
-	XmlNode* returnNode = 0;
+	XmlNode* returnNode = nullptr;
 
 	p = skipWhiteSpace(p);
 	if (!p || !*p || *p != '<')

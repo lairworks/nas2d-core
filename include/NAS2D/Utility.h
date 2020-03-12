@@ -55,6 +55,10 @@ template<typename T>
 class Utility
 {
 public:
+	Utility<T>() = delete;
+	~Utility() = delete;
+	Utility<T>(const Utility& s) = delete;
+	Utility<T>& operator=(const Utility& s) = delete;
 
 	/**
 	 * Gets a reference to a global instance of the specified type
@@ -179,11 +183,6 @@ public:
 	}
 
 private:
-	Utility<T>() {}							// Explicitly declared private.
-	~Utility() {}								// Explicitly declared private.
-	Utility<T>(const Utility& s);				// Explicitly declared private.
-	Utility<T>& operator=(const Utility& s);	// Explicitly declared private.
-
 	static T* mInstance;						/**< Internal instance of type \c T. */
 };
 

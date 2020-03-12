@@ -4,6 +4,12 @@
 namespace NAS2D
 {
 
+	DisplayDesc::operator std::string() const
+	{
+		return std::to_string(width) + 'x' + std::to_string(height) + 'x' + std::to_string(refreshHz);
+	}
+
+
 	bool operator==(const DisplayDesc& a, const DisplayDesc& b)
 	{
 		return a.width == b.width && a.height == b.height && a.refreshHz == b.refreshHz;

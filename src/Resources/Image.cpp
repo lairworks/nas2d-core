@@ -69,7 +69,7 @@ Image::Image() : Resource(DEFAULT_IMAGE_NAME)
  */
 Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
-	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
+	name(ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY));
 	_size = Vector<int>{width, height};
 
 	// Update resource management.
@@ -100,7 +100,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 		throw image_unsupported_bit_depth();
 	}
 
-	name(string_format("%s%i", ARBITRARY_IMAGE_NAME.c_str(), ++IMAGE_ARBITRARY));
+	name(ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY));
 
 	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 

@@ -287,7 +287,7 @@ Color Image::pixelColor(int x, int y) const
 		return Color(0, 0, 0, 255);
 	}
 
-	SDL_Surface* surface = static_cast<SDL_Surface*>(IMAGE_ID_MAP[name()].pixels);
+	SDL_Surface* surface = IMAGE_ID_MAP[name()].pixels;
 
 	if (!surface) { throw image_null_data(); }
 
@@ -373,7 +373,7 @@ void updateImageReferenceCount(const std::string& name)
 
 		if (it->second.pixels != nullptr)
 		{
-			SDL_FreeSurface(static_cast<SDL_Surface*>(it->second.pixels));
+			SDL_FreeSurface(it->second.pixels);
 			it->second.pixels = nullptr;
 		}
 

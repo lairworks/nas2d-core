@@ -387,7 +387,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 
 	SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
 
-	SDL_Color white = { 255, 255, 255 };
+	SDL_Color white = { 255, 255, 255, 255 };
 	for (int row = 0; row < 16; row++)
 	{
 		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)

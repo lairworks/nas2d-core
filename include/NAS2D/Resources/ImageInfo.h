@@ -19,7 +19,7 @@
  */
 struct ImageInfo
 {
-	SDL_Surface* pixels{nullptr};
+	SDL_Surface* surface{nullptr};
 	unsigned int texture_id{0u};
 	unsigned int fbo_id{0u};
 	int w{0};

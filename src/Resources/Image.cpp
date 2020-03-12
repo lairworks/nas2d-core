@@ -113,7 +113,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	IMAGE_ID_MAP[name()].w = width;
 	IMAGE_ID_MAP[name()].h = height;
 	IMAGE_ID_MAP[name()].ref_count++;
-	IMAGE_ID_MAP[name()].pixels = surface;
+	IMAGE_ID_MAP[name()].surface = surface;
 }
 
 
@@ -212,7 +212,7 @@ void Image::load()
 	IMAGE_ID_MAP[name()].h = height();
 	IMAGE_ID_MAP[name()].ref_count++;
 
-	IMAGE_ID_MAP[name()].pixels = surface;
+	IMAGE_ID_MAP[name()].surface = surface;
 
 	loaded(true);
 }
@@ -287,7 +287,7 @@ Color Image::pixelColor(int x, int y) const
 		return Color(0, 0, 0, 255);
 	}
 
-	SDL_Surface* surface = IMAGE_ID_MAP[name()].pixels;
+	SDL_Surface* surface = IMAGE_ID_MAP[name()].surface;
 
 	if (!surface) { throw image_null_data(); }
 
@@ -371,10 +371,10 @@ void updateImageReferenceCount(const std::string& name)
 			glDeleteFramebuffers(1, &it->second.fbo_id);
 		}
 
-		if (it->second.pixels != nullptr)
+		if (it->second.surface != nullptr)
 		{
-			SDL_FreeSurface(it->second.pixels);
-			it->second.pixels = nullptr;
+			SDL_FreeSurface(it->second.surface);
+			it->second.surface = nullptr;
 		}
 
 		IMAGE_ID_MAP.erase(it);

@@ -248,7 +248,7 @@ public:
 	{
 		if (m_pFunction != x.m_pFunction) return false;
 		if (m_pStaticFunction != x.m_pStaticFunction) return false;
-		if (m_pStaticFunction != nullptr) return m_pthis == x.m_pthis;
+		if (m_pStaticFunction) return m_pthis == x.m_pthis;
 		else return true;
 	}
 #else
@@ -257,15 +257,15 @@ public:
 	inline bool IsLess(const DelegateMemento& right) const
 	{
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-		if (m_pStaticFunction != nullptr || right.m_pStaticFunction != nullptr) return m_pStaticFunction < right.m_pStaticFunction;
+		if (m_pStaticFunction || right.m_pStaticFunction) return m_pStaticFunction < right.m_pStaticFunction;
 		#endif
 		if (m_pthis != right.m_pthis) return m_pthis < right.m_pthis;
 
 		return memcmp(&m_pFunction, &right.m_pFunction, sizeof(m_pFunction)) < 0;
 	}
 
-	inline bool operator ! () const { return m_pthis == nullptr && m_pFunction == nullptr; }
-	inline bool empty() const { return m_pthis == nullptr && m_pFunction == nullptr; }
+	inline bool operator ! () const { return !m_pthis && !m_pFunction; }
+	inline bool empty() const { return !m_pthis && !m_pFunction; }
 
 public:
 	DelegateMemento& operator = (const DelegateMemento& right) { SetMementoFrom(right); return *this; }
@@ -334,13 +334,13 @@ public:
 	inline void CopyFrom(DerivedClass* pParent, const DelegateMemento& x)
 	{
 		SetMementoFrom(x);
-		if (m_pStaticFunction != nullptr) m_pthis = reinterpret_cast<GenericClass*>(pParent);
+		if (m_pStaticFunction) m_pthis = reinterpret_cast<GenericClass*>(pParent);
 	}
 
 	template <class DerivedClass, class ParentInvokerSig>
 	inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 	{
-		if (function_to_bind == nullptr) m_pFunction = nullptr;
+		if (!function_to_bind) m_pFunction = nullptr;
 		else bindmemfunc(pParent, static_function_invoker);
 		m_pStaticFunction = reinterpret_cast<GenericFuncPtr>(function_to_bind);
 	}
@@ -353,7 +353,7 @@ public:
 	template <class DerivedClass, class ParentInvokerSig>
 	inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 	{
-		if (function_to_bind == nullptr) m_pFunction = nullptr;
+		if (!function_to_bind) m_pFunction = nullptr;
 		else bindmemfunc(pParent, static_function_invoker);
 		static_assert(sizeof(GenericClass*) != sizeof(function_to_bind), "Can't use evil method");
 		m_pthis = horrible_cast<GenericClass*>(function_to_bind);
@@ -368,7 +368,7 @@ public:
 
 	inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr)
 	{
-		if (funcptr == nullptr) return empty();
+		if (!funcptr) return empty();
 		else return funcptr == reinterpret_cast<StaticFuncPtr>(GetStaticFunction());
 	}
 };

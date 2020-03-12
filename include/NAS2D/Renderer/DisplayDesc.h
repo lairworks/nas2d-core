@@ -11,7 +11,7 @@ namespace NAS2D
 		int height{0};
 		int refreshHz{0};
 
-		operator std::string() const { return std::to_string(width) + 'x' + std::to_string(height) + 'x' + std::to_string(refreshHz); };
+		operator std::string() const { return std::to_string(width) + 'x' + std::to_string(height) + 'x' + std::to_string(refreshHz); }
 	};
 
 	bool operator==(const DisplayDesc& a, const DisplayDesc& b);

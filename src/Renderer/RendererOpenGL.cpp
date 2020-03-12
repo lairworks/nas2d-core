@@ -484,14 +484,14 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 		return;
 	}
 
-	SDL_Surface* pixels = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
-	if (!pixels)
+	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
+	if (!surface)
 	{
 		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
 		return;
 	}
 
-	SDL_Cursor* cur = SDL_CreateColorCursor(pixels, offx, offy);
+	SDL_Cursor* cur = SDL_CreateColorCursor(surface, offx, offy);
 	if (!cur)
 	{
 		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;

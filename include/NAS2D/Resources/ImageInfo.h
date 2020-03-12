@@ -10,13 +10,16 @@
 #pragma once
 
 
+#include <SDL2/SDL_image.h>
+
+
 /**
  * Struct containing basic information related to Images. Not part of the public
  * interface.
  */
 struct ImageInfo
 {
-	void* pixels{nullptr};
+	SDL_Surface* surface{nullptr};
 	unsigned int texture_id{0u};
 	unsigned int fbo_id{0u};
 	int w{0};

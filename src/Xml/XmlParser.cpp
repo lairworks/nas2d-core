@@ -543,7 +543,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 	// sub-tag can orient itself.
 	if (!streamTo(in, '<', tag))
 	{
-		error(XmlErrorCode::XML_ERROR_PARSING_EMPTY, 0, 0);
+		error(XmlErrorCode::XML_ERROR_PARSING_EMPTY, nullptr, nullptr);
 		return;
 	}
 
@@ -555,7 +555,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 			int c = in.get();
 			if (c <= 0)
 			{
-				error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0);
+				error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, nullptr, nullptr);
 				break;
 			}
 			tag += static_cast<char>(c);
@@ -580,14 +580,14 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 			}
 			else
 			{
-				error(XmlErrorCode::XML_ERROR, 0, 0);
+				error(XmlErrorCode::XML_ERROR, nullptr, nullptr);
 				return;
 			}
 		}
 	}
 
 	// We should have returned sooner.
-	error(XmlErrorCode::XML_ERROR, 0, 0);
+	error(XmlErrorCode::XML_ERROR, nullptr, nullptr);
 }
 
 
@@ -599,7 +599,7 @@ const char* XmlDocument::parse(const char* p, void* prevData)
 	// other tags, most of what happens here is skipping white space.
 	if (!p || !*p)
 	{
-		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, nullptr, nullptr);
 		return nullptr;
 	}
 
@@ -617,7 +617,7 @@ const char* XmlDocument::parse(const char* p, void* prevData)
 	p = skipWhiteSpace(p);
 	if (!p)
 	{
-		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, nullptr, nullptr);
 		return nullptr;
 	}
 
@@ -640,7 +640,7 @@ const char* XmlDocument::parse(const char* p, void* prevData)
 	// Was this empty?
 	if (!_firstChild)
 	{
-		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, 0, 0);
+		error(XmlErrorCode::XML_ERROR_DOCUMENT_EMPTY, nullptr, nullptr);
 		return nullptr;
 	}
 
@@ -763,7 +763,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, nullptr, nullptr); }
 			return;
 		}
 
@@ -832,7 +832,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				if (c <= 0)
 				{
 					XmlDocument* doc = document();
-					if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
+					if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, nullptr, nullptr); }
 					return;
 				}
 
@@ -878,7 +878,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				if (c <= 0)
 				{
 					XmlDocument* doc = document();
-					if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
+					if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, nullptr, nullptr); }
 					return;
 				}
 				assert(c == '>');
@@ -916,7 +916,7 @@ const char* XmlElement::parse(const char* p, void* data)
 
 	if (!p || !*p)
 	{
-		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, 0, 0); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, nullptr, nullptr); }
 		return nullptr;
 	}
 
@@ -1113,7 +1113,7 @@ const char* XmlElement::readValue(const char* p, void* data)
 
 	if (!p)
 	{
-		if (doc) doc->error(XmlErrorCode::XML_ERROR_READING_ELEMENT_VALUE, 0, 0);
+		if (doc) doc->error(XmlErrorCode::XML_ERROR_READING_ELEMENT_VALUE, nullptr, nullptr);
 	}
 	return p;
 }
@@ -1127,7 +1127,7 @@ void XmlUnknown::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, nullptr, nullptr); }
 			return;
 		}
 		tag += static_cast<char>(c);
@@ -1168,7 +1168,7 @@ const char* XmlUnknown::parse(const char* p, void* data)
 
 	if (!p)
 	{
-		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_UNKNOWN, 0, 0); }
+		if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_UNKNOWN, nullptr, nullptr); }
 	}
 
 	if (p && *p == '>')
@@ -1187,7 +1187,7 @@ void XmlComment::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, nullptr, nullptr); }
 			return;
 		}
 
@@ -1334,7 +1334,7 @@ void XmlText::streamIn(std::istream& in, std::string& tag)
 		if (c <= 0)
 		{
 			XmlDocument* doc = document();
-			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, 0, 0); }
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_EMBEDDED_NULL, nullptr, nullptr); }
 
 			return;
 		}

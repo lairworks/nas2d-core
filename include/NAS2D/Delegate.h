@@ -239,7 +239,7 @@ public:
 	DelegateMemento() : m_pthis(nullptr), m_pFunction(nullptr), m_pStaticFunction(nullptr) {};
 	void clear() { m_pthis = nullptr; m_pFunction = nullptr; m_pStaticFunction = nullptr; }
 #else
-	DelegateMemento() : m_pthis(nullptr), m_pFunction(nullptr) {};
+	DelegateMemento() : m_pthis(nullptr), m_pFunction(nullptr) {}
 	void clear() { m_pthis = nullptr; m_pFunction = nullptr; }
 #endif
 public:

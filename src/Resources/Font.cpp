@@ -56,12 +56,6 @@ void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, u
 void updateFontReferenceCount(const std::string& name);
 
 
-unsigned nextPowerOf2(unsigned n)
-{
-	return (unsigned)pow(2, ceil(log((float)n) / log(2.0f)));
-}
-
-
 /**
  * Instantiate a Font using a TrueType or OpenType font.
  *

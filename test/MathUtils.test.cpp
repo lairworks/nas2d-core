@@ -38,6 +38,45 @@ TEST(MathUtils, divideUp)
 	EXPECT_EQ(20, NAS2D::divideUp(256, 13));
 }
 
+TEST(MathUtils, roundUpPowerOf2)
+{
+	EXPECT_EQ(1, NAS2D::roundUpPowerOf2(1));
+	EXPECT_EQ(2, NAS2D::roundUpPowerOf2(2));
+	EXPECT_EQ(4, NAS2D::roundUpPowerOf2(3));
+	EXPECT_EQ(4, NAS2D::roundUpPowerOf2(4));
+	EXPECT_EQ(8, NAS2D::roundUpPowerOf2(5));
+	EXPECT_EQ(8, NAS2D::roundUpPowerOf2(8));
+	EXPECT_EQ(16, NAS2D::roundUpPowerOf2(9));
+	EXPECT_EQ(16, NAS2D::roundUpPowerOf2(16));
+	EXPECT_EQ(32, NAS2D::roundUpPowerOf2(17));
+	EXPECT_EQ(32, NAS2D::roundUpPowerOf2(32));
+	EXPECT_EQ(64, NAS2D::roundUpPowerOf2(33));
+	EXPECT_EQ(64, NAS2D::roundUpPowerOf2(64));
+	EXPECT_EQ(128, NAS2D::roundUpPowerOf2(65));
+	EXPECT_EQ(128, NAS2D::roundUpPowerOf2(128));
+	EXPECT_EQ(256, NAS2D::roundUpPowerOf2(129));
+	EXPECT_EQ(256, NAS2D::roundUpPowerOf2(256));
+	EXPECT_EQ(512, NAS2D::roundUpPowerOf2(257));
+	EXPECT_EQ(512, NAS2D::roundUpPowerOf2(512));
+	EXPECT_EQ(1024, NAS2D::roundUpPowerOf2(513));
+	EXPECT_EQ(1024, NAS2D::roundUpPowerOf2(1024));
+	EXPECT_EQ(2048, NAS2D::roundUpPowerOf2(1025));
+	EXPECT_EQ(2048, NAS2D::roundUpPowerOf2(2048));
+	EXPECT_EQ(4096, NAS2D::roundUpPowerOf2(2049));
+	EXPECT_EQ(4096, NAS2D::roundUpPowerOf2(4096));
+
+	EXPECT_EQ(32768, NAS2D::roundUpPowerOf2(32768));
+	EXPECT_EQ(65536, NAS2D::roundUpPowerOf2(32769));
+	EXPECT_EQ(65536, NAS2D::roundUpPowerOf2(65536));
+
+	EXPECT_EQ(8388608, NAS2D::roundUpPowerOf2(8388608));
+	EXPECT_EQ(16777216, NAS2D::roundUpPowerOf2(8388609));
+	EXPECT_EQ(16777216, NAS2D::roundUpPowerOf2(16777216));
+
+	// Largest value before 32-bit overflow of result
+	EXPECT_EQ(2147483648, NAS2D::roundUpPowerOf2(2147483648));
+}
+
 TEST(MathUtils, mapDomainToRange)
 {
 	// Fahrenheit to Celcius

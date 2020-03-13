@@ -292,12 +292,12 @@ Color Image::pixelColor(int x, int y) const
 	if (!surface) { throw image_null_data(); }
 
 	SDL_LockSurface(surface);
-	uint8_t bpp = surface->format->BytesPerPixel;
-	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + static_cast<std::size_t>(y) * surface->pitch + static_cast<std::size_t>(x) * bpp;
+	uint8_t bytesPerPixel = surface->format->BytesPerPixel;
+	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + static_cast<std::size_t>(y) * surface->pitch + static_cast<std::size_t>(x) * bytesPerPixel;
 
 	unsigned int c = 0;
 
-	switch (bpp)
+	switch (bytesPerPixel)
 	{
 	case 1:
 	{

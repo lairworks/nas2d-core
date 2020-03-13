@@ -24,6 +24,7 @@ namespace NAS2D
 
 	int divideUp(int to_divide, int divisor);
 
+	uint32_t roundUpPowerOf2(uint32_t number);
 
 /**
  * \fn OutputType scaleLinear(const InputType& a, const OutputType& b)

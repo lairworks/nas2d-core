@@ -293,21 +293,27 @@ Color Image::pixelColor(int x, int y) const
 
 	SDL_LockSurface(surface);
 	uint8_t bpp = surface->format->BytesPerPixel;
-	uint8_t* p = (uint8_t*)surface->pixels + static_cast<std::size_t>(y) * surface->pitch + static_cast<std::size_t>(x) * bpp;
+	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + static_cast<std::size_t>(y) * surface->pitch + static_cast<std::size_t>(x) * bpp;
 
 	unsigned int c = 0;
 
 	switch (bpp)
 	{
 	case 1:
+	{
+		auto p = reinterpret_cast<uint8_t*>(pixelPtr);
 		c = *p;
 		break;
-
+	}
 	case 2:
-		c = *(uint16_t*)p;
+	{
+		auto p = reinterpret_cast<uint16_t*>(pixelPtr);
+		c = *p;
 		break;
-
+	}
 	case 3:
+	{
+		auto p = reinterpret_cast<uint8_t*>(pixelPtr);
 		if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
 		{
 			c = p[0] << 16 | p[1] << 8 | p[2];
@@ -317,11 +323,13 @@ Color Image::pixelColor(int x, int y) const
 			c = p[0] | p[1] << 8 | p[2] << 16;
 		}
 		break;
-
+	}
 	case 4:
-		c = *(uint32_t*)p;
+	{
+		auto p = reinterpret_cast<uint32_t*>(pixelPtr);
+		c = *p;
 		break;
-
+	}
 	default:	// Should never be possible.
 		throw image_bad_data();
 		break;

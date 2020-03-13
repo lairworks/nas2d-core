@@ -22,7 +22,7 @@ Windows_OpenGL_LIBS := -lglew32 -lopengl32
 OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 CPPFLAGS := $(CPPFLAGS_EXTRA) -Iinclude/
-CXXFLAGS := $(CXXFLAGS_EXTRA) -std=c++17 -Wall -Wpedantic -Wzero-as-null-pointer-constant $(shell sdl2-config --cflags)
+CXXFLAGS := $(CXXFLAGS_EXTRA) -std=c++17 -Wall -Wpedantic -Wzero-as-null-pointer-constant -Wcast-align $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(shell sdl2-config --static-libs) $(OpenGL_LIBS)
 

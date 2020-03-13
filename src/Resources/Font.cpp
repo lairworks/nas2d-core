@@ -13,6 +13,7 @@
 #include "NAS2D/Exception.h"
 #include "NAS2D/Filesystem.h"
 #include "NAS2D/Utility.h"
+#include "NAS2D/MathUtils.h"
 
 #include <GL/glew.h>
 
@@ -379,7 +380,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 		glm.push_back(metrics);
 	}
 
-	Point_2d size(nextPowerOf2(largest_width), nextPowerOf2(largest_width));
+	Point_2d size(roundUpPowerOf2(largest_width), roundUpPowerOf2(largest_width));
 	int textureSize = size.x() * GLYPH_MATRIX_SIZE;
 
 	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;

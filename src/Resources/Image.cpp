@@ -295,20 +295,20 @@ Color Image::pixelColor(int x, int y) const
 	uint8_t bytesPerPixel = surface->format->BytesPerPixel;
 	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + static_cast<std::size_t>(y) * surface->pitch + static_cast<std::size_t>(x) * bytesPerPixel;
 
-	unsigned int c = 0;
+	unsigned int pixelBytes = 0;
 
 	switch (bytesPerPixel)
 	{
 	case 1:
 	{
 		auto p = reinterpret_cast<uint8_t*>(pixelPtr);
-		c = *p;
+		pixelBytes = *p;
 		break;
 	}
 	case 2:
 	{
 		auto p = reinterpret_cast<uint16_t*>(pixelPtr);
-		c = *p;
+		pixelBytes = *p;
 		break;
 	}
 	case 3:
@@ -316,18 +316,18 @@ Color Image::pixelColor(int x, int y) const
 		auto p = reinterpret_cast<uint8_t*>(pixelPtr);
 		if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
 		{
-			c = p[0] << 16 | p[1] << 8 | p[2];
+			pixelBytes = p[0] << 16 | p[1] << 8 | p[2];
 		}
 		else
 		{
-			c = p[0] | p[1] << 8 | p[2] << 16;
+			pixelBytes = p[0] | p[1] << 8 | p[2] << 16;
 		}
 		break;
 	}
 	case 4:
 	{
 		auto p = reinterpret_cast<uint32_t*>(pixelPtr);
-		c = *p;
+		pixelBytes = *p;
 		break;
 	}
 	default:	// Should never be possible.
@@ -336,7 +336,7 @@ Color Image::pixelColor(int x, int y) const
 	}
 
 	uint8_t r, g, b, a;
-	SDL_GetRGBA(c, surface->format, &r, &g, &b, &a);
+	SDL_GetRGBA(pixelBytes, surface->format, &r, &g, &b, &a);
 	SDL_UnlockSurface(surface);
 
 	return Color(r, g, b, a);

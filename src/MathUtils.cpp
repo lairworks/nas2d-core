@@ -11,6 +11,8 @@
 #include <stdexcept>
 
 
+namespace NAS2D {
+
 /**
  * \fn int divideUp(int a, int b)
  *
@@ -21,7 +23,7 @@
  *
  * \return	Returns the divided number rounded up to the nearest whole number.
  */
-int NAS2D::divideUp(int to_divide, int divisor)
+int divideUp(int to_divide, int divisor)
 {
 	if (divisor == 0) {
 		throw std::domain_error("Division by zero: divideUp(to_divide, 0)");
@@ -36,7 +38,7 @@ int NAS2D::divideUp(int to_divide, int divisor)
  * Values outside the domain may map to 0 (which is not a power of 2)
  * Note: 0 is outside the domain
  */
-uint32_t NAS2D::roundUpPowerOf2(uint32_t number)
+uint32_t roundUpPowerOf2(uint32_t number)
 {
 	--number;
 	number |= number >> 1;
@@ -46,3 +48,5 @@ uint32_t NAS2D::roundUpPowerOf2(uint32_t number)
 	number |= number >> 16;
 	return ++number;
 }
+
+} // namespace

@@ -15,28 +15,23 @@ using namespace NAS2D::Xml;
 
 bool XmlBase::condenseWhiteSpace = true;
 
-std::vector<std::string> XML_ERROR_TABLE;
-
-void fillErrorTable()
-{
-	if (!XML_ERROR_TABLE.empty()) { return; }
-
-	XML_ERROR_TABLE.push_back("No error");
-	XML_ERROR_TABLE.push_back("Unspecified Error");
-	XML_ERROR_TABLE.push_back("Error parsing Element.");
-	XML_ERROR_TABLE.push_back("Failed to read Element name.");
-	XML_ERROR_TABLE.push_back("Error reading Element value.");
-	XML_ERROR_TABLE.push_back("Error reading Attributes.");
-	XML_ERROR_TABLE.push_back("Error: Empty tag.");
-	XML_ERROR_TABLE.push_back("Error reading end tag.");
-	XML_ERROR_TABLE.push_back("Error parsing Unknown.");
-	XML_ERROR_TABLE.push_back("Error parsing Comment.");
-	XML_ERROR_TABLE.push_back("Error parsing Declaration.");
-	XML_ERROR_TABLE.push_back("Error: Document empty.");
-	XML_ERROR_TABLE.push_back("Error: Unexpected EOF found in input stream.");
-	XML_ERROR_TABLE.push_back("Error parsing CDATA.");
-	XML_ERROR_TABLE.push_back("Error adding XmlDocument to document: XmlDocument can only be at the root.");
-}
+const std::vector<std::string> XML_ERROR_TABLE = {
+	"No error",
+	"Unspecified Error",
+	"Error parsing Element.",
+	"Failed to read Element name.",
+	"Error reading Element value.",
+	"Error reading Attributes.",
+	"Error: Empty tag.",
+	"Error reading end tag.",
+	"Error parsing Unknown.",
+	"Error parsing Comment.",
+	"Error parsing Declaration.",
+	"Error: Document empty.",
+	"Error: Unexpected EOF found in input stream.",
+	"Error parsing CDATA.",
+	"Error adding XmlDocument to document: XmlDocument can only be at the root.",
+};
 
 
 /**

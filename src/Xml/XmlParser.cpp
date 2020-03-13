@@ -51,7 +51,6 @@
 #endif
 
 extern std::vector<std::string> XML_ERROR_TABLE;
-extern void fillErrorTable();
 
 namespace NAS2D {
 namespace Xml {
@@ -654,11 +653,6 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 	if (_error)
 	{
 		return;
-	}
-
-	if (XML_ERROR_TABLE.empty())
-	{
-		fillErrorTable();
 	}
 
 	assert(XmlErrorCode::XML_NO_ERROR < err && err < XmlErrorCode::XML_ERROR_STRING_COUNT);

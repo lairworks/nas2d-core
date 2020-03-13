@@ -31,7 +31,6 @@ extern std::map<std::string, MusicInfo>	MUSIC_REF_MAP;
 // INTEROP WITH SDL2_MIXER
 // ==================================================================================
 NAS2D::Signals::Signal<> MIXER_HOOK_CALLBACK_SIGNAL;
-void MIXER_HOOK() { MIXER_HOOK_CALLBACK_SIGNAL(); }
 // ==================================================================================
 
 
@@ -57,7 +56,7 @@ MixerSDL::MixerSDL()
 	soundVolume(c.audioSfxVolume());
 	musicVolume(c.audioMusicVolume());
 
-	Mix_HookMusicFinished(MIXER_HOOK);
+	Mix_HookMusicFinished([](){ MIXER_HOOK_CALLBACK_SIGNAL(); });
 	MIXER_HOOK_CALLBACK_SIGNAL.connect(this, &MixerSDL::music_finished_hook);
 
 	std::cout << "done." << std::endl;

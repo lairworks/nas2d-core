@@ -50,8 +50,24 @@
 #	endif
 #endif
 
-extern std::vector<std::string> XML_ERROR_TABLE;
-extern void fillErrorTable();
+const std::vector<std::string> XML_ERROR_TABLE = {
+	"No error",
+	"Unspecified Error",
+	"Error parsing Element.",
+	"Failed to read Element name.",
+	"Error reading Element value.",
+	"Error reading Attributes.",
+	"Error: Empty tag.",
+	"Error reading end tag.",
+	"Error parsing Unknown.",
+	"Error parsing Comment.",
+	"Error parsing Declaration.",
+	"Error: Document empty.",
+	"Error: Unexpected EOF found in input stream.",
+	"Error parsing CDATA.",
+	"Error adding XmlDocument to document: XmlDocument can only be at the root.",
+};
+
 
 namespace NAS2D {
 namespace Xml {
@@ -654,11 +670,6 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 	if (_error)
 	{
 		return;
-	}
-
-	if (XML_ERROR_TABLE.empty())
-	{
-		fillErrorTable();
 	}
 
 	assert(XmlErrorCode::XML_NO_ERROR < err && err < XmlErrorCode::XML_ERROR_STRING_COUNT);

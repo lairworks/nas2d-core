@@ -54,6 +54,17 @@ float NAS2D::angleFromPoints(float x, float y, float x2, float y2)
 /**
  * Gets a directional vector from an angle in degrees.
  */
+Vector<float> angleToDirection(float angle)
+{
+	// static_cast<float> used to suppress warning at possible loss of data. Intentionally
+	// surpressed as we don't need that level of precision.
+	return {static_cast<float>(std::sin(NAS2D::degToRad(angle))), static_cast<float>(-std::cos(NAS2D::degToRad(angle)))};
+}
+
+
+/**
+ * Gets a directional vector from an angle in degrees.
+ */
 Point_2df NAS2D::getDirectionVector(float angle)
 {
 	// static_cast<float> used to suppress warning at possible loss of data. Intentionally

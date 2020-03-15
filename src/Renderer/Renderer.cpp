@@ -362,6 +362,12 @@ void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color
 }
 
 
+void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
+{
+	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
 /**
  * Draws a hollow box on the primary surface.
  *

@@ -59,15 +59,6 @@ Vector<float> NAS2D::angleToDirection(float angle)
 
 
 /**
- * Gets a directional vector from an angle in degrees.
- */
-Point_2df NAS2D::getDirectionVector(float angle)
-{
-	return Point_2df(std::sin(NAS2D::degToRad(angle)), -std::cos(NAS2D::degToRad(angle)));
-}
-
-
-/**
  * Determines if a given line intersects a given circle.
  *
  * \param	p	First point of a line segment.

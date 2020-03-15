@@ -39,7 +39,7 @@ public:
 	static const Color NoAlpha;
 
 	Color() = default;
-	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
 public:
 	void operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a);

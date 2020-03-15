@@ -23,10 +23,12 @@ const string NAS2D::SPRITE_VERSION("0.99");
 const int FRAME_PAUSE = -1;
 
 
-// Adds a row/name tag to the end of messages.
-string endTag(int row, const std::string& name)
-{
-	return " (Row: " + std::to_string(row) + ", " + name + ")";
+namespace {
+	// Adds a row/name tag to the end of messages.
+	string endTag(int row, const std::string& name)
+	{
+		return " (Row: " + std::to_string(row) + ", " + name + ")";
+	}
 }
 
 

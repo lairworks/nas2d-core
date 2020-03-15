@@ -107,6 +107,7 @@ public:
 	void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector<float>{1.0f, 1.0f});
 	virtual void drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f) = 0;
 
+	void drawGradient(Rectangle<float> rect, const Color& c1, const Color& c2, const Color& c3, const Color& c4);
 	void drawGradient(Point<float> position, Vector<float> size, const Color& c1, const Color& c2, const Color& c3, const Color& c4);
 	void drawGradient(float x, float y, float w, float h, const Color& c1, const Color& c2, const Color& c3, const Color& c4);
 	virtual void drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4) = 0;

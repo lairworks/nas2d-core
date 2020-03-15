@@ -440,6 +440,12 @@ void Renderer::drawCircle(Point<float> position, float radius, Color color, int 
 }
 
 
+void Renderer::drawGradient(Rectangle<float> rect, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+{
+	drawGradient(rect.startPoint(), rect.size(), c1, c2, c3, c4);
+}
+
+
 void Renderer::drawGradient(Point<float> position, Vector<float> size, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
 {
 	drawGradient(position.x(), position.y(), size.x, size.y, c1, c2, c3, c4);

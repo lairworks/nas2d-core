@@ -157,6 +157,12 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
 }
 
 
+void Renderer::drawImageRepeated(Image& image, Rectangle<float> rect)
+{
+	drawImageRepeated(image, rect.startPoint(), rect.size());
+}
+
+
 void NAS2D::Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
 {
 	drawImageRepeated(image, position.x(), position.y(), size.x, size.y);

@@ -73,6 +73,7 @@ public:
 	void drawImageStretched(Image& image, float x, float y, float w, float h, Color color = Color::Normal);
 	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
+	void drawImageRepeated(Image& image, Rectangle<float> rect);
 	void drawImageRepeated(Image& image, Point<float> position, Vector<float> size);
 	virtual void drawImageRepeated(Image& image, float x, float y, float w, float h) = 0;
 	

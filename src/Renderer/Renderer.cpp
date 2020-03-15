@@ -157,6 +157,12 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
 }
 
 
+void Renderer::drawImageRepeated(Image& image, Rectangle<float> rect)
+{
+	drawImageRepeated(image, rect.startPoint(), rect.size());
+}
+
+
 void NAS2D::Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
 {
 	drawImageRepeated(image, position.x(), position.y(), size.x, size.y);
@@ -362,6 +368,12 @@ void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color
 }
 
 
+void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
+{
+	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
 /**
  * Draws a hollow box on the primary surface.
  *
@@ -389,6 +401,12 @@ void Renderer::drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b
 void Renderer::drawBox(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
+}
+
+
+void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
+{
+	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), color.red(), color.green(), color.blue(), color.alpha());
 }
 
 
@@ -422,10 +440,15 @@ void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, ui
 }
 
 
-
 void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
 {
 	drawCircle(position.x(), position.y(), radius, color.red(), color.green(), color.blue(), color.alpha(), num_segments, scale.x, scale.y);
+}
+
+
+void Renderer::drawGradient(Rectangle<float> rect, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+{
+	drawGradient(rect.startPoint(), rect.size(), c1, c2, c3, c4);
 }
 
 

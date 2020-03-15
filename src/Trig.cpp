@@ -45,9 +45,7 @@ float NAS2D::radToDeg(float rad)
  */
 float NAS2D::angleFromPoints(float x, float y, float x2, float y2)
 {
-	// static_cast<float> used to suppress warning at possible loss of data. Intentionally
-	// surpressed as we don't need that level of precision.
-	return 90.0f - radToDeg(static_cast<float>(std::atan2(y2 - y, x2 - x)));
+	return 90.0f - radToDeg(std::atan2(y2 - y, x2 - x));
 }
 
 

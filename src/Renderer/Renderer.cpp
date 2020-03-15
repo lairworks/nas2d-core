@@ -398,6 +398,12 @@ void Renderer::drawBox(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t 
 }
 
 
+void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
+{
+	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
 /**
  * Fills a given area with a solid color.
  *
@@ -426,7 +432,6 @@ void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, ui
 {
 	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
-
 
 
 void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)

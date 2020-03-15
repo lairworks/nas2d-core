@@ -23,7 +23,7 @@ extern const float RAD2DEG;
 float degToRad(float degree);
 float radToDeg(float rad);
 float angleFromPoints(float x, float y, float x2, float y2);
-Point_2df getDirectionVector(float angle);
+Vector<float> getDirectionVector(float angle);
 
 bool lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r);
 

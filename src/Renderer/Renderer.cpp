@@ -507,6 +507,15 @@ Vector<float> Renderer::size()
 
 
 /**
+ * Gets the center coordinates of the screen.
+ */
+Point<float> Renderer::center()
+{
+	return Point<float>{} + mResolution / 2;
+}
+
+
+/**
  * Gets the center X-Coordinate of the screen.
  */
 float Renderer::center_x()

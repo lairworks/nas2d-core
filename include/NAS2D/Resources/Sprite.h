@@ -51,6 +51,7 @@ public:
 
 	void skip(int frames);
 
+	void update(Point<float> position);
 	void update(float x, float y);
 
 	void rotation(float angle);

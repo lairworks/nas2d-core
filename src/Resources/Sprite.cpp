@@ -130,13 +130,7 @@ void Sprite::skip(int frames)
 }
 
 
-/**
- * Updates the Sprite and draws it to the screen at specified coordinaes.
- *
- * \param	x	X-Screen Coordinate to render the Sprite.
- * \param	y	X-Screen Coordinate to render the Sprite.
- */
-void Sprite::update(float x, float y)
+void Sprite::update(Point<float> position)
 {
 	const auto& frame = mActions[mCurrentAction][mCurrentFrame];
 
@@ -160,9 +154,21 @@ void Sprite::update(float x, float y)
 		mFrameCallback();
 	}
 
-	const auto drawPosition = Point{x, y} - frame.anchorOffset;
+	const auto drawPosition = position - frame.anchorOffset;
 	const auto frameBounds = frame.bounds.to<float>();
 	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId], drawPosition.x(), drawPosition.y(), frameBounds.x(), frameBounds.y(), frameBounds.width(), frameBounds.height(), mRotationAngle, mColor);
+}
+
+
+/**
+ * Updates the Sprite and draws it to the screen at specified coordinaes.
+ *
+ * \param	x	X-Screen Coordinate to render the Sprite.
+ * \param	y	X-Screen Coordinate to render the Sprite.
+ */
+void Sprite::update(float x, float y)
+{
+	update(Point{x, y});
 }
 
 

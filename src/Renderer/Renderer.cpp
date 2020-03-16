@@ -498,11 +498,20 @@ void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<
 }
 
 /**
- * Gets the current screen resolution as a Point_2df.
+ * Gets the current screen resolution as a Vector.
  */
 Vector<float> Renderer::size()
 {
 	return mResolution;
+}
+
+
+/**
+ * Gets the center coordinates of the screen.
+ */
+Point<float> Renderer::center()
+{
+	return Point<float>{} + mResolution / 2;
 }
 
 

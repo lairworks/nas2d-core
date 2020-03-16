@@ -135,11 +135,12 @@ public:
 	virtual float width() = 0;
 	virtual float height() = 0;
 
-	virtual void size(int w, int h) = 0;
 	Vector<float> size();
+	virtual void size(int w, int h) = 0;
 
 	virtual void minimum_size(int w, int h) = 0;
 
+	Point<float> center();
 	float center_x();
 	float center_y();
 

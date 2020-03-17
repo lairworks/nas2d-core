@@ -49,7 +49,7 @@ public:
 	void pause();
 	void resume();
 
-	void skip(int frames);
+	void skip(int frameCount);
 
 	void update(Point<float> position);
 	void update(float x, float y);

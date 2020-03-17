@@ -112,12 +112,10 @@ void Sprite::resume()
  */
 void Sprite::skip(int frames)
 {
-	if (mActions.find(mCurrentAction) == mActions.end())
+	if (mActions.find(mCurrentAction) != mActions.end())
 	{
-		return;
+		mCurrentFrame = frames % mActions[mCurrentAction].size();
 	}
-
-	mCurrentFrame = frames % mActions[mCurrentAction].size();
 }
 
 

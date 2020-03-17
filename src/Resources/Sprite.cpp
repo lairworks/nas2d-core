@@ -70,27 +70,18 @@ Sprite::Sprite(const std::string& filePath) :
  */
 void Sprite::play(const std::string& action)
 {
-	// Set the current frame list to the defined action. If action
-	// isn't found, set to default and reset frame counter.
-	ActionList::iterator actionIt = mActions.find(toLowercase(action));
-	if (actionIt == mActions.end())
+	const auto normalizedAction = toLowercase(action);
+	if (mActions.find(normalizedAction) == mActions.end())
 	{
 		cout << "Named action '" << action << "' is not defined in '" << name() << "'." << endl;
 		mCurrentAction = DEFAULT_ACTION;
-		mCurrentFrame = 0;
-	}
-	else if (mCurrentAction == toLowercase(action))
-	{
-		// Reset the frame counter.
-		mCurrentFrame = 0;
 	}
 	else
 	{
-		// Set the current action to the named action.
-		mCurrentFrame = 0;
-		mCurrentAction = toLowercase(action);
+		mCurrentAction = normalizedAction;
 	}
 
+	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();
 }

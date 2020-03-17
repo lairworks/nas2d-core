@@ -112,7 +112,7 @@ void Sprite::resume()
  */
 void Sprite::skip(int frames)
 {
-	if (mActions.find(toLowercase(mCurrentAction)) == mActions.end())
+	if (mActions.find(mCurrentAction) == mActions.end())
 	{
 		return;
 	}

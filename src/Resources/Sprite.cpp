@@ -79,11 +79,6 @@ void Sprite::play(const std::string& action)
 		mCurrentAction = DEFAULT_ACTION;
 		mCurrentFrame = 0;
 	}
-	else if (mCurrentAction == toLowercase(action))
-	{
-		// Reset the frame counter.
-		mCurrentFrame = 0;
-	}
 	else
 	{
 		// Set the current action to the named action.

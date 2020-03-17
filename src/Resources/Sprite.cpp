@@ -82,8 +82,8 @@ void Sprite::play(const std::string& action)
 	else
 	{
 		// Set the current action to the named action.
-		mCurrentFrame = 0;
 		mCurrentAction = toLowercase(action);
+		mCurrentFrame = 0;
 	}
 
 	mTimer.reset();

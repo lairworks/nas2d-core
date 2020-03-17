@@ -77,15 +77,14 @@ void Sprite::play(const std::string& action)
 	{
 		cout << "Named action '" << action << "' is not defined in '" << name() << "'." << endl;
 		mCurrentAction = DEFAULT_ACTION;
-		mCurrentFrame = 0;
 	}
 	else
 	{
 		// Set the current action to the named action.
 		mCurrentAction = normalizedAction;
-		mCurrentFrame = 0;
 	}
 
+	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();
 }

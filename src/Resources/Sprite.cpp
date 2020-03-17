@@ -72,7 +72,8 @@ void Sprite::play(const std::string& action)
 {
 	// Set the current frame list to the defined action. If action
 	// isn't found, set to default and reset frame counter.
-	ActionList::iterator actionIt = mActions.find(toLowercase(action));
+	const auto normalizedAction = toLowercase(action);
+	ActionList::iterator actionIt = mActions.find(normalizedAction);
 	if (actionIt == mActions.end())
 	{
 		cout << "Named action '" << action << "' is not defined in '" << name() << "'." << endl;
@@ -82,7 +83,7 @@ void Sprite::play(const std::string& action)
 	else
 	{
 		// Set the current action to the named action.
-		mCurrentAction = toLowercase(action);
+		mCurrentAction = normalizedAction;
 		mCurrentFrame = 0;
 	}
 

@@ -39,31 +39,33 @@ extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
 extern std::map<std::string, FontInfo> FONTMAP;
 
 
-/** Desktop resolution. To avoid unnecessary function calls. */
-Point_2df DESKTOP_RESOLUTION;
+namespace {
+	/** Desktop resolution. To avoid unnecessary function calls. */
+	Point_2df DESKTOP_RESOLUTION;
 
-/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
-GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
+	/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
+	GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
 
-/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
+	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
+	GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
 
-GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
+	GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 
-/** Color value array for four verts. Defaults to white or normal color. */
-GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+	/** Color value array for four verts. Defaults to white or normal color. */
+	GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-GLfloat		VERTEX_ARRAY[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
-GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
+	GLfloat		VERTEX_ARRAY[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
+	GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
-/** Mouse cursors */
-std::map<int, SDL_Cursor*> CURSORS;
+	/** Mouse cursors */
+	std::map<int, SDL_Cursor*> CURSORS;
 
-// UGLY ASS HACK!
-// This is required for mouse grabbing in the EventHandler class.
-SDL_Window*			underlyingWindow = nullptr;
+	// UGLY ASS HACK!
+	// This is required for mouse grabbing in the EventHandler class.
+	SDL_Window*			underlyingWindow = nullptr;
 
-SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
+	SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
+}
 
 
 // MODULE LEVEL FUNCTIONS

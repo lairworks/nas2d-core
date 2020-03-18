@@ -684,13 +684,13 @@ void RendererOpenGL::initGL()
 	// Spit out system graphics information.
 	std::cout << "\t- OpenGL System Info -" << std::endl;
 
-	driverName((char*)glGetString(GL_RENDERER));
+	driverName((const char*)glGetString(GL_RENDERER));
 
 	std::cout << "\tVendor: " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "\tRenderer: " << driverName() << std::endl;
 	std::cout << "\tDriver Version: " << glGetString(GL_VERSION) << std::endl;
 
-	std::string glsl_v = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+	std::string glsl_v = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 	if (glsl_v.empty())
 	{
 		throw renderer_no_glsl();

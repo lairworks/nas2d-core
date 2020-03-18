@@ -32,6 +32,13 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
+
+// UGLY ASS HACK!
+// This is required here in order to remove OpenGL implementation details from Image and Font.
+extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
+extern std::map<std::string, FontInfo> FONTMAP;
+
+
 /** Desktop resolution. To avoid unnecessary function calls. */
 Point_2df DESKTOP_RESOLUTION;
 
@@ -51,11 +58,6 @@ GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad dr
 
 /** Mouse cursors */
 std::map<int, SDL_Cursor*> CURSORS;
-
-// UGLY ASS HACK!
-// This is required here in order to remove OpenGL implementation details from Image and Font.
-extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
-extern std::map<std::string, FontInfo> FONTMAP;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.

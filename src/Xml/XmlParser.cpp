@@ -275,10 +275,10 @@ const char* XmlBase::readName(const char* p, std::string& name)
 	// After that, they can be letters, underscores, numbers, hyphens,
 	// or colons. (Colons are valid ony for namespaces, but tinyxml can't
 	// tell namespaces from names.)
-	if (p && *p && (isAlpha((unsigned char)*p) || *p == '_'))
+	if (p && *p && (isAlpha(static_cast<unsigned char>(*p)) || *p == '_'))
 	{
 		const char* start = p;
-		while (p && *p && (isAlphaNum((unsigned char)*p)
+		while (p && *p && (isAlphaNum(static_cast<unsigned char>(*p))
 			|| *p == '_'
 			|| *p == '-'
 			|| *p == '.'
@@ -368,7 +368,7 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 			}
 		}
 
-		*value = (char)ucs;
+		*value = static_cast<char>(ucs);
 		*length = 1;
 
 		return p + delta + 1;
@@ -565,7 +565,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 
 	while (in.good())
 	{
-		int tagIndex = (int)tag.length();
+		int tagIndex = static_cast<int>(tag.length());
 		while (in.good() && in.peek() != '>')
 		{
 			int c = in.get();
@@ -827,7 +827,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 
 			assert(in.peek() == '<');
 
-			int tagIndex = (int)tag.length();
+			int tagIndex = static_cast<int>(tag.length());
 
 			bool closingTag = false;
 			bool firstCharFound = false;

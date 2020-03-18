@@ -17,9 +17,13 @@
 
 using namespace NAS2D;
 
-NAS2D::Timer		fadeTimer;
 
-NAS2D::Signals::Signal<>	fadeCompleteSignal;
+namespace {
+	NAS2D::Timer		fadeTimer;
+
+	NAS2D::Signals::Signal<>	fadeCompleteSignal;
+}
+
 
 /**
  * Internal constructor used by derived types to set the name of the Renderer.

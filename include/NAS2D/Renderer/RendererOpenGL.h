@@ -63,17 +63,17 @@ public:
 
 	void clearScreen(uint8_t r, uint8_t g, uint8_t b) override;
 
-	float width() override;
-	float height() override;
+	float width() const override;
+	float height() const override;
 
 	void size(int w, int h) override;
 	void minimum_size(int w, int h) override;
 
 	void fullscreen(bool fs, bool maintain = false) override;
-	bool fullscreen() override;
+	bool fullscreen() const override;
 
 	void resizeable(bool resizable) override;
-	bool resizeable() override;
+	bool resizeable() const override;
 
 	void clipRect(float x, float y, float width, float height) final override;
 

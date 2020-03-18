@@ -546,7 +546,7 @@ void RendererOpenGL::update()
 }
 
 
-float RendererOpenGL::width()
+float RendererOpenGL::width() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
@@ -557,7 +557,7 @@ float RendererOpenGL::width()
 }
 
 
-float RendererOpenGL::height()
+float RendererOpenGL::height() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
@@ -600,7 +600,7 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 }
 
 
-bool RendererOpenGL::fullscreen()
+bool RendererOpenGL::fullscreen() const
 {
 	return	((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
 			((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -618,7 +618,7 @@ void RendererOpenGL::resizeable(bool resizable)
 }
 
 
-bool RendererOpenGL::resizeable()
+bool RendererOpenGL::resizeable() const
 {
 	return (SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
 }

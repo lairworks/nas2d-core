@@ -500,7 +500,7 @@ void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<
 /**
  * Gets the current screen resolution as a Vector.
  */
-Vector<float> Renderer::size()
+Vector<float> Renderer::size() const
 {
 	return mResolution;
 }
@@ -509,7 +509,7 @@ Vector<float> Renderer::size()
 /**
  * Gets the center coordinates of the screen.
  */
-Point<float> Renderer::center()
+Point<float> Renderer::center() const
 {
 	return Point<float>{} + mResolution / 2;
 }
@@ -518,7 +518,7 @@ Point<float> Renderer::center()
 /**
  * Gets the center X-Coordinate of the screen.
  */
-float Renderer::center_x()
+float Renderer::center_x() const
 {
 	return width() / 2;
 }
@@ -527,7 +527,7 @@ float Renderer::center_x()
 /**
  * Gets the center Y-Coordinate of the screen.
  */
-float Renderer::center_y()
+float Renderer::center_y() const
 {
 	return height() / 2;
 }
@@ -536,7 +536,7 @@ float Renderer::center_y()
 /**
  * Returns the name of the driver as named by the operating system.
  */
-const std::string& Renderer::driverName()
+const std::string& Renderer::driverName() const
 {
 	return mDriverName;
 }
@@ -557,7 +557,7 @@ void Renderer::driverName(const std::string& name)
 /**
  * Returns the title of the application window.
  */
-const std::string& Renderer::title()
+const std::string& Renderer::title() const
 {
 	return mTitle;
 }

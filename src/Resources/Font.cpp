@@ -317,10 +317,10 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		{
 			const std::size_t glyph = (row * GLYPH_MATRIX_SIZE) + col;
 
-			glm[glyph].uvX = (float)(col * glyphWidth) / (float)glyphMap->w;
-			glm[glyph].uvY = (float)(row * glyphHeight) / (float)glyphMap->h;
-			glm[glyph].uvW = glm[glyph].uvX + (float)(glyphWidth) / (float)glyphMap->w;
-			glm[glyph].uvH = glm[glyph].uvY + (float)(glyphHeight) / (float)glyphMap->h;
+			glm[glyph].uvX = static_cast<float>(col * glyphWidth) / static_cast<float>(glyphMap->w);
+			glm[glyph].uvY = static_cast<float>(row * glyphHeight) / static_cast<float>(glyphMap->h);
+			glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(glyphWidth) / static_cast<float>(glyphMap->w);
+			glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(glyphHeight) / static_cast<float>(glyphMap->h);
 			glm[glyph].advance = glyphSpace;
 		}
 	}
@@ -389,10 +389,10 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 		{
 			int glyph = (row * GLYPH_MATRIX_SIZE) + col;
 
-			glm[glyph].uvX = (float)(col * size.x()) / (float)textureSize;
-			glm[glyph].uvY = (float)(row * size.y()) / (float)textureSize;
-			glm[glyph].uvW = glm[glyph].uvX + (float)(size.x()) / (float)textureSize;
-			glm[glyph].uvH = glm[glyph].uvY + (float)(size.y()) / (float)textureSize;
+			glm[glyph].uvX = static_cast<float>(col * size.x()) / static_cast<float>(textureSize);
+			glm[glyph].uvY = static_cast<float>(row * size.y()) / static_cast<float>(textureSize);
+			glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(size.x()) / static_cast<float>(textureSize);
+			glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(size.y()) / static_cast<float>(textureSize);
 
 			// HACK HACK HACK!
 			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.

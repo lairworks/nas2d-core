@@ -315,7 +315,7 @@ void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, u
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(x, y, x2, y2, (float)line_width, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(x, y, x2, y2, static_cast<float>(line_width), r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -459,7 +459,7 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(text[i], 0, 255)];
 
-		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
+		fillVertexArray(x + offset, y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
 		drawVertexArray(FONTMAP[font.name()].texture_id, false);
@@ -684,13 +684,13 @@ void RendererOpenGL::initGL()
 	// Spit out system graphics information.
 	std::cout << "\t- OpenGL System Info -" << std::endl;
 
-	driverName((char*)glGetString(GL_RENDERER));
+	driverName(reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
 
 	std::cout << "\tVendor: " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "\tRenderer: " << driverName() << std::endl;
 	std::cout << "\tDriver Version: " << glGetString(GL_VERSION) << std::endl;
 
-	std::string glsl_v = (char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+	std::string glsl_v = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 	if (glsl_v.empty())
 	{
 		throw renderer_no_glsl();

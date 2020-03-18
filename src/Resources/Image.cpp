@@ -332,7 +332,6 @@ Color Image::pixelColor(int x, int y) const
 	}
 	default:	// Should never be possible.
 		throw image_bad_data();
-		break;
 	}
 
 	uint8_t r, g, b, a;
@@ -427,7 +426,6 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 
 	default:
 		throw image_unsupported_bit_depth();
-		break;
 	}
 
 	GLuint texture_id;

@@ -108,9 +108,9 @@ RUN curl --location https://github.com/nigels-com/glew/releases/download/glew-2.
   make -C glew-2.1.0/ SYSTEM=linux-mingw-w64 CC="${CC32}" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
   rm -rf glew-2.1.0/ glew.*
 RUN curl https://icculus.org/physfs/downloads/physfs-3.0.2.tar.bz2 | tar -xj && \
-  cmake -H"physfs-3.0.2/" -B"${ARCH64}" -DCMAKE_INSTALL_PREFIX="${INSTALL64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
+  cmake -H"physfs-3.0.2/" -B"${ARCH64}" -DCMAKE_INSTALL_PREFIX="${INSTALL64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
   make -C "${ARCH64}" install && \
-  cmake -H"physfs-3.0.2/" -B"${ARCH32}" -DCMAKE_INSTALL_PREFIX="${INSTALL32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
+  cmake -H"physfs-3.0.2/" -B"${ARCH32}" -DCMAKE_INSTALL_PREFIX="${INSTALL32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
   make -C "${ARCH32}" install && \
   rm -rf physfs-3.0.2/ "${ARCH64}" "${ARCH32}"
 

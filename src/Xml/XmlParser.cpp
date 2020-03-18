@@ -145,7 +145,7 @@ void XmlParsingData::stamp(const char* now)
 	while (p < now)
 	{
 		// Treat p as unsigned, so we have a happy compiler.
-		const unsigned char* pU = (const unsigned char*)p;
+		const unsigned char* pU = reinterpret_cast<const unsigned char*>(p);
 
 		// Code contributed by Fletcher Dunn: (modified by lee)
 		switch (*pU)

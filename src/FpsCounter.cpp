@@ -14,14 +14,17 @@
 
 using namespace NAS2D;
 
-const unsigned int FPS_COUNTS_SIZE = 25;
-unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };
 
-unsigned int	CURRENT_TICK		= 0;
-unsigned int	LAST_TICK			= 0;
-unsigned int	TICK_DELTA			= 0;
-unsigned int	INDEX				= 0;
-unsigned int	ACCUMULATOR			= 0;
+namespace {
+	const unsigned int FPS_COUNTS_SIZE = 25;
+	unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };
+
+	unsigned int	CURRENT_TICK		= 0;
+	unsigned int	LAST_TICK			= 0;
+	unsigned int	TICK_DELTA			= 0;
+	unsigned int	INDEX				= 0;
+	unsigned int	ACCUMULATOR			= 0;
+}
 
 
 /**

@@ -31,16 +31,18 @@ using namespace NAS2D::Exception;
 
 std::string buildName(TTF_Font*);
 
-const int	ASCII_TABLE_FIRST	= 0;
-const int	ASCII_TABLE_LAST	= 255;
-const int	ASCII_TABLE_COUNT	= ASCII_TABLE_LAST - ASCII_TABLE_FIRST + 1;
 
-const int	GLYPH_MATRIX_SIZE	= 16;
+namespace {
+	const int	ASCII_TABLE_FIRST	= 0;
+	const int	ASCII_TABLE_LAST	= 255;
+	const int	ASCII_TABLE_COUNT	= ASCII_TABLE_LAST - ASCII_TABLE_FIRST + 1;
 
-const int	BITS_32				= 32;
+	const int	GLYPH_MATRIX_SIZE	= 16;
 
+	const int	BITS_32				= 32;
 
-std::map<std::string, FontInfo>	FONTMAP;
+	std::map<std::string, FontInfo>	FONTMAP;
+}
 
 
 extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);

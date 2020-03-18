@@ -52,9 +52,9 @@ float NAS2D::angleFromPoints(float x, float y, float x2, float y2)
 /**
  * Gets a directional vector from an angle in degrees.
  */
-Point_2df NAS2D::getDirectionVector(float angle)
+Vector<float> NAS2D::getDirectionVector(float angle)
 {
-	return Point_2df(std::sin(NAS2D::degToRad(angle)), -std::cos(NAS2D::degToRad(angle)));
+	return {std::sin(NAS2D::degToRad(angle)), -std::cos(NAS2D::degToRad(angle))};
 }
 
 

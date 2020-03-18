@@ -315,7 +315,7 @@ void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, u
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(x, y, x2, y2, (float)line_width, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(x, y, x2, y2, static_cast<float>(line_width), r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -459,7 +459,7 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(text[i], 0, 255)];
 
-		fillVertexArray(x + offset, y, (float)font.glyphCellWidth(), (float)font.glyphCellHeight());
+		fillVertexArray(x + offset, y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
 		drawVertexArray(FONTMAP[font.name()].texture_id, false);

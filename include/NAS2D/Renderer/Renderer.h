@@ -45,9 +45,9 @@ public:
 	virtual DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const = 0;
 	virtual Vector<int> getWindowClientArea() const noexcept = 0;
 
-	const std::string& driverName();
+	const std::string& driverName() const;
 
-	const std::string& title();
+	const std::string& title() const;
 	void title(const std::string& title);
 
 	virtual void window_icon(const std::string& path) = 0;
@@ -132,27 +132,27 @@ public:
 	void clearScreen(const Color& color);
 	virtual void clearScreen(uint8_t r, uint8_t g, uint8_t b) = 0;
 
-	virtual float width() = 0;
-	virtual float height() = 0;
+	virtual float width() const = 0;
+	virtual float height() const = 0;
 
-	Vector<float> size();
+	Vector<float> size() const;
 	virtual void size(int w, int h) = 0;
 
 	virtual void minimum_size(int w, int h) = 0;
 
-	Point<float> center();
-	float center_x();
-	float center_y();
+	Point<float> center() const;
+	float center_x() const;
+	float center_y() const;
 
 	void clipRect(const Rectangle_2df& rect);
 	void clipRectClear();
 	virtual void clipRect(float x, float y, float width, float height) = 0;
 
 	virtual void fullscreen(bool fs, bool maintain = false) = 0;
-	virtual bool fullscreen() = 0;
+	virtual bool fullscreen() const = 0;
 
 	virtual void resizeable(bool _r) = 0;
-	virtual bool resizeable() = 0;
+	virtual bool resizeable() const = 0;
 
 	virtual void update();
 

@@ -105,7 +105,7 @@ RendererOpenGL::~RendererOpenGL()
 }
 
 
-void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	glColor4ub(r, g, b, a);
 
@@ -115,7 +115,7 @@ void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint
 }
 
 
-void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	glColor4ub(r, g, b, a);
 
@@ -131,7 +131,7 @@ void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, fl
 }
 
 
-void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	glPushMatrix();
 
@@ -159,7 +159,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rast
 }
 
 
-void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
+void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale) const
 {
 	glPushMatrix();
 
@@ -185,7 +185,7 @@ void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degr
 }
 
 
-void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -195,7 +195,7 @@ void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w,
 }
 
 
-void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, float h)
+void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, float h) const
 {
 	glColor4ub(255, 255, 255, 255);
 
@@ -230,7 +230,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
  * texture and reference it that way (bit of overhead to do a texture lookup and would
  * get unmanagable very quickly.
  */
-void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
+void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) const
 {
 	float widthReach = w / (subW - subX);
 	float heightReach = h / (subH - subY);
@@ -251,7 +251,7 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float ras
 }
 
 
-void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
+void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint) const
 {
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();
@@ -295,7 +295,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 }
 
 
-void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	glDisable(GL_TEXTURE_2D);
 
@@ -310,7 +310,7 @@ void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b
 }
 
 
-void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width = 1)
+void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width = 1) const
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -327,7 +327,7 @@ void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, u
  *
  * Modified to support X/Y scaling to draw an ellipse.
  */
-void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
+void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y) const
 {
 	glDisable(GL_TEXTURE_2D);
 	glColor4ub(r, g, b, a);
@@ -369,7 +369,7 @@ void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uin
 }
 
 
-void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
+void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4) const
 {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
@@ -415,7 +415,7 @@ void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1
 }
 
 
-void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -432,7 +432,7 @@ void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_
 }
 
 
-void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	glColor4ub(r, g, b, a);
 	glDisable(GL_TEXTURE_2D);
@@ -444,7 +444,7 @@ void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, 
 }
 
 
-void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	if (!font.loaded() || text.empty()) { return; }
 
@@ -546,7 +546,7 @@ void RendererOpenGL::update()
 }
 
 
-float RendererOpenGL::width()
+float RendererOpenGL::width() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
@@ -557,7 +557,7 @@ float RendererOpenGL::width()
 }
 
 
-float RendererOpenGL::height()
+float RendererOpenGL::height() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
@@ -600,7 +600,7 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 }
 
 
-bool RendererOpenGL::fullscreen()
+bool RendererOpenGL::fullscreen() const
 {
 	return	((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
 			((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
@@ -618,7 +618,7 @@ void RendererOpenGL::resizeable(bool resizable)
 }
 
 
-bool RendererOpenGL::resizeable()
+bool RendererOpenGL::resizeable() const
 {
 	return (SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
 }

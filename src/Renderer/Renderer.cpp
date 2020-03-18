@@ -40,7 +40,7 @@ Renderer::~Renderer()
 }
 
 
-void Renderer::drawImage(Image& image, Point<float> position, float scale)
+void Renderer::drawImage(Image& image, Point<float> position, float scale) const
 {
 	drawImage(image, position.x(), position.y(), scale);
 }
@@ -53,19 +53,19 @@ void Renderer::drawImage(Image& image, Point<float> position, float scale)
  * \param	y		Y-Coordinate of the Image to draw.
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImage(Image& image, float x, float y, float scale)
+void Renderer::drawImage(Image& image, float x, float y, float scale) const
 {
 	drawImage(image, x, y, scale, 255, 255, 255, 255);
 }
 
 
-void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
+void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale, Color color) const
 {
 	drawImage(image, position.x(), position.y(), scale, color.red(), color.green(), color.blue(), color.alpha());
 }
 
 
-void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size)
+void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size) const
 {
 	drawSubImage(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, 255, 255, 255, 255);
 }
@@ -82,13 +82,13 @@ void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<floa
  * \param	width		Width of the area to start getting pixel data from.
  * \param	height		Height of the area to start getting pixel data from.
  */
-void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
+void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height) const
 {
 	drawSubImage(image, rasterX, rasterY, x, y, width, height, 255, 255, 255, 255);
 }
 
 
-void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, const Color& color)
+void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, const Color& color) const
 {
 	drawSubImageRotated(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, degrees, color);
 }
@@ -107,13 +107,13 @@ void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Poi
  * \param	degrees		Angle of rotation in degrees.
  * \param	color		Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color& color)
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color& color) const
 {
 	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red(), color.green(), color.blue(), color.alpha());
 }
 
 
-void NAS2D::Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, const Color& color, float scale)
+void NAS2D::Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, const Color& color, float scale) const
 {
 	drawImageRotated(image, position.x(), position.y(), degrees, color, scale);
 }
@@ -129,13 +129,13 @@ void NAS2D::Renderer::drawImageRotated(Image& image, Point<float> position, floa
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color& color, float scale)
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color& color, float scale) const
 {
 	drawImageRotated(image, x, y, degrees, color.red(), color.green(), color.blue(), color.alpha(), scale);
 }
 
 
-void NAS2D::Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
+void NAS2D::Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color) const
 {
 	drawImageStretched(image, position.x(), position.y(), size.x, size.y, color);
 }
@@ -151,19 +151,19 @@ void NAS2D::Renderer::drawImageStretched(Image& image, Point<float> position, Ve
  * \param	h		Height to use for drawing the Image.
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color color)
+void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color color) const
 {
 	drawImageStretched(image, x, y, w, h, color.red(), color.green(), color.blue(), color.alpha());
 }
 
 
-void Renderer::drawImageRepeated(Image& image, Rectangle<float> rect)
+void Renderer::drawImageRepeated(Image& image, Rectangle<float> rect) const
 {
 	drawImageRepeated(image, rect.startPoint(), rect.size());
 }
 
 
-void NAS2D::Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
+void NAS2D::Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size) const
 {
 	drawImageRepeated(image, position.x(), position.y(), size.x, size.y);
 }
@@ -172,13 +172,13 @@ void NAS2D::Renderer::drawImageRepeated(Image& image, Point<float> position, Vec
 /**
  * Draws part of an Image repeated over a rectangular area.
  */
-void Renderer::drawSubImageRepeated(Image& image, const Rectangle_2df& source, const Rectangle_2df& destination)
+void Renderer::drawSubImageRepeated(Image& image, const Rectangle_2df& source, const Rectangle_2df& destination) const
 {
 	drawSubImageRepeated(image, destination.x(), destination.y(), destination.width(), destination.height(), source.x(), source.y(), source.width(), source.height());
 }
 
 
-void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
+void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight) const
 {
 	drawImageRect(position.x(), position.y(), size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
 }
@@ -186,7 +186,7 @@ void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, I
 /**
  * Comment me!
  */
-void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
+void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight) const
 {
 	// Draw the center area if it's defined.
 	drawImageRepeated(center, x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height());
@@ -205,7 +205,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 }
 
 
-void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageList& images)
+void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageList& images) const
 {
 	drawImageRect(position.x(), position.y(), size.x, size.y, images);
 }
@@ -235,7 +235,7 @@ void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, I
  * \param	h		Height of the image rect.
  * \param	images	A set of 9 images used to draw the image rect.
  */
-void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &images)
+void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &images) const
 {
 	// We need 9 images in order to render a rectangle, one for each corner, one for each edge and one for the background.
 	if (images.size() == 9)
@@ -327,7 +327,7 @@ NAS2D::Signals::Signal<>& Renderer::fadeComplete() const
 }
 
 
-void NAS2D::Renderer::drawPoint(Point<float> position, const Color& color)
+void NAS2D::Renderer::drawPoint(Point<float> position, const Color& color) const
 {
 	drawPoint(position.x(), position.y(), color);
 }
@@ -340,13 +340,13 @@ void NAS2D::Renderer::drawPoint(Point<float> position, const Color& color)
  * \param	y		Y-Coordinate of the pixel to draw.
  * \param	color	A references to a Color.
  */
-void Renderer::drawPoint(float x, float y, const Color& color)
+void Renderer::drawPoint(float x, float y, const Color& color) const
 {
 	drawPoint(x, y, color.red(), color.green(), color.blue(), color.alpha());
 }
 
 
-void NAS2D::Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, const Color& color, int line_width)
+void NAS2D::Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, const Color& color, int line_width) const
 {
 	drawLine(startPosition.x(), startPosition.y(), endPosition.x(), endPosition.y(), color, line_width);
 }
@@ -362,13 +362,13 @@ void NAS2D::Renderer::drawLine(Point<float> startPosition, Point<float> endPosit
  * \param	color		A reference to a Color.
  * \param	line_width	Width, in pixels, of the line to draw.
  */
-void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color, int line_width)
+void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color, int line_width) const
 {
 	drawLine(x, y, x2, y2, color.red(), color.green(), color.blue(), color.alpha(), line_width);
 }
 
 
-void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
+void Renderer::drawBox(const Rectangle<float>& rect, const Color& color) const
 {
 	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -383,7 +383,7 @@ void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Renderer::drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	drawBox(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.width()), static_cast<float>(rect.height()), r, g, b, a);
 }
@@ -398,13 +398,13 @@ void Renderer::drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBox(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Renderer::drawBox(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
 
 
-void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
+void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color) const
 {
 	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), color.red(), color.green(), color.blue(), color.alpha());
 }
@@ -419,7 +419,7 @@ void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBoxFilled(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Renderer::drawBoxFilled(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	drawBoxFilled(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.width()), static_cast<float>(rect.height()), r, g, b, a);
 }
@@ -434,25 +434,25 @@ void Renderer::drawBoxFilled(const Rectangle_2d& rect, uint8_t r, uint8_t g, uin
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a) const
 {
 	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
 
 
-void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
+void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale) const
 {
 	drawCircle(position.x(), position.y(), radius, color.red(), color.green(), color.blue(), color.alpha(), num_segments, scale.x, scale.y);
 }
 
 
-void Renderer::drawGradient(Rectangle<float> rect, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+void Renderer::drawGradient(Rectangle<float> rect, const Color& c1, const Color& c2, const Color& c3, const Color& c4) const
 {
 	drawGradient(rect.startPoint(), rect.size(), c1, c2, c3, c4);
 }
 
 
-void Renderer::drawGradient(Point<float> position, Vector<float> size, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+void Renderer::drawGradient(Point<float> position, Vector<float> size, const Color& c1, const Color& c2, const Color& c3, const Color& c4) const
 {
 	drawGradient(position.x(), position.y(), size.x, size.y, c1, c2, c3, c4);
 }
@@ -478,19 +478,19 @@ void Renderer::drawGradient(Point<float> position, Vector<float> size, const Col
  * \param	c3	A Color color value used for point 3.
  * \param	c4	A Color color value used for point 4.
  */
-void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1, const Color& c2, const Color& c3, const Color& c4) const
 {
 	drawGradient(x, y, w, h, c1.red(), c1.green(), c1.blue(), c1.alpha(), c2.red(), c2.green(), c2.blue(), c2.alpha(), c3.red(), c3.green(), c3.blue(), c3.alpha(), c4.red(), c4.green(), c4.blue(), c4.alpha());
 }
 
 
-void NAS2D::Renderer::drawText(Font& font, const std::string& text, Point<float> position, Color color)
+void NAS2D::Renderer::drawText(Font& font, const std::string& text, Point<float> position, Color color) const
 {
 	drawText(font, text, position.x(), position.y(), color.red(), color.green(), color.blue(), color.alpha());
 }
 
 
-void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
+void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor) const
 {
 	const auto shadowPosition = position + shadowOffset;
 	drawText(font, text, shadowPosition.x(), shadowPosition.y(), shadowColor.red(), shadowColor.green(), shadowColor.blue(), shadowColor.alpha());
@@ -500,7 +500,7 @@ void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<
 /**
  * Gets the current screen resolution as a Vector.
  */
-Vector<float> Renderer::size()
+Vector<float> Renderer::size() const
 {
 	return mResolution;
 }
@@ -509,7 +509,7 @@ Vector<float> Renderer::size()
 /**
  * Gets the center coordinates of the screen.
  */
-Point<float> Renderer::center()
+Point<float> Renderer::center() const
 {
 	return Point<float>{} + mResolution / 2;
 }
@@ -518,7 +518,7 @@ Point<float> Renderer::center()
 /**
  * Gets the center X-Coordinate of the screen.
  */
-float Renderer::center_x()
+float Renderer::center_x() const
 {
 	return width() / 2;
 }
@@ -527,7 +527,7 @@ float Renderer::center_x()
 /**
  * Gets the center Y-Coordinate of the screen.
  */
-float Renderer::center_y()
+float Renderer::center_y() const
 {
 	return height() / 2;
 }
@@ -536,7 +536,7 @@ float Renderer::center_y()
 /**
  * Returns the name of the driver as named by the operating system.
  */
-const std::string& Renderer::driverName()
+const std::string& Renderer::driverName() const
 {
 	return mDriverName;
 }
@@ -557,7 +557,7 @@ void Renderer::driverName(const std::string& name)
 /**
  * Returns the title of the application window.
  */
-const std::string& Renderer::title()
+const std::string& Renderer::title() const
 {
 	return mTitle;
 }
@@ -588,7 +588,7 @@ void Renderer::title(const std::string& title)
  * \param sb		Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextShadow(Font& font, const std::string& text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a )
+void Renderer::drawTextShadow(Font& font, const std::string& text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a ) const
 {
 	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
 	drawText(font, text, x, y, r, g, b, a);

@@ -24,28 +24,28 @@ public:
 	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc&) const override { return{}; }
 	Vector<int> getWindowClientArea() const noexcept override { return {}; }
 
-	void drawImage(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawImage(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
 
-	void drawSubImage(Image&, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
-	void drawSubImageRotated(Image&, float, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawSubImage(Image&, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
+	void drawSubImageRotated(Image&, float, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
 
-	void drawImageRotated(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, float) override {}
-	void drawImageStretched(Image&, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawImageRotated(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, float) const override {}
+	void drawImageStretched(Image&, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
 
-	void drawImageRepeated(Image&, float, float, float, float) override {}
-	void drawSubImageRepeated(Image&, float, float, float, float, float, float, float, float) override {}
+	void drawImageRepeated(Image&, float, float, float, float) const override {}
+	void drawSubImageRepeated(Image&, float, float, float, float, float, float, float, float) const override {}
 
-	void drawImageToImage(Image&, Image&, const Point_2df&) override {}
+	void drawImageToImage(Image&, Image&, const Point_2df&) const override {}
 
-	void drawPoint(float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
-	void drawLine(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int) override {}
-	void drawBox(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
-	void drawBoxFilled(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
-	void drawCircle(float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int, float, float) override {}
+	void drawPoint(float, float, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
+	void drawLine(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int) const override {}
+	void drawBox(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
+	void drawBoxFilled(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
+	void drawCircle(float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int, float, float) const override {}
 
-	void drawGradient(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawGradient(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
 
-	void drawText(NAS2D::Font&, const std::string&, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawText(NAS2D::Font&, const std::string&, float, float, uint8_t, uint8_t, uint8_t, uint8_t) const override {}
 
 	void showSystemPointer(bool) override {}
 	void addCursor(const std::string&, int, int, int) override {}
@@ -53,17 +53,17 @@ public:
 
 	void clearScreen(uint8_t, uint8_t, uint8_t) override {}
 
-	float width() override { return 0.0f; }
-	float height() override { return 0.0f; }
+	float width() const override { return 0.0f; }
+	float height() const override { return 0.0f; }
 
 	void size(int, int) override {}
 	void minimum_size(int, int) override {}
 
 	void fullscreen(bool, bool = false) override {}
-	bool fullscreen() override { return false; }
+	bool fullscreen() const override { return false; }
 
 	void resizeable(bool) override {}
-	bool resizeable() override { return false; }
+	bool resizeable() const override { return false; }
 
 	void clipRect(float, float, float, float) final override {}
 

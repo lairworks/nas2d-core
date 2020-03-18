@@ -33,7 +33,7 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 /** Desktop resolution. To avoid unnecessary function calls. */
-Point_2df DESKTOP_RESOLUTION;
+Point_2df desktopResolution;
 
 /** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
 GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
@@ -550,7 +550,7 @@ float RendererOpenGL::width() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
-		return DESKTOP_RESOLUTION.x();
+		return desktopResolution.x();
 	}
 
 	return mResolution.x;
@@ -561,7 +561,7 @@ float RendererOpenGL::height() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
-		return DESKTOP_RESOLUTION.y();
+		return desktopResolution.y();
 	}
 
 	return mResolution.y;
@@ -755,7 +755,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 		throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
 	}
 
-	DESKTOP_RESOLUTION = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
+	desktopResolution = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
 }
 
 std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const

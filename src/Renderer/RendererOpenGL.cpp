@@ -41,7 +41,7 @@ GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.
 GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 
 /** Color value array for four verts. Defaults to white or normal color. */
-GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+GLfloat colorVertexArray[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
 GLfloat		vertexArray[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
 GLfloat		textureCoordArray[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
@@ -371,40 +371,40 @@ void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 
-	COLOR_VERTEX_ARRAY[0] = r1 / 255.0f;
-	COLOR_VERTEX_ARRAY[1] = g1 / 255.0f;
-	COLOR_VERTEX_ARRAY[2] = b1 / 255.0f;
-	COLOR_VERTEX_ARRAY[3] = a1 / 255.0f;
+	colorVertexArray[0] = r1 / 255.0f;
+	colorVertexArray[1] = g1 / 255.0f;
+	colorVertexArray[2] = b1 / 255.0f;
+	colorVertexArray[3] = a1 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[4] = r2 / 255.0f;
-	COLOR_VERTEX_ARRAY[5] = g2 / 255.0f;
-	COLOR_VERTEX_ARRAY[6] = b2 / 255.0f;
-	COLOR_VERTEX_ARRAY[7] = a2 / 255.0f;
+	colorVertexArray[4] = r2 / 255.0f;
+	colorVertexArray[5] = g2 / 255.0f;
+	colorVertexArray[6] = b2 / 255.0f;
+	colorVertexArray[7] = a2 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[8] = r3 / 255.0f;
-	COLOR_VERTEX_ARRAY[9] = g3 / 255.0f;
-	COLOR_VERTEX_ARRAY[10] = b3 / 255.0f;
-	COLOR_VERTEX_ARRAY[11] = a3 / 255.0f;
+	colorVertexArray[8] = r3 / 255.0f;
+	colorVertexArray[9] = g3 / 255.0f;
+	colorVertexArray[10] = b3 / 255.0f;
+	colorVertexArray[11] = a3 / 255.0f;
 
 
-	COLOR_VERTEX_ARRAY[12] = r3 / 255.0f;
-	COLOR_VERTEX_ARRAY[13] = g3 / 255.0f;
-	COLOR_VERTEX_ARRAY[14] = b3 / 255.0f;
-	COLOR_VERTEX_ARRAY[15] = a3 / 255.0f;
+	colorVertexArray[12] = r3 / 255.0f;
+	colorVertexArray[13] = g3 / 255.0f;
+	colorVertexArray[14] = b3 / 255.0f;
+	colorVertexArray[15] = a3 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[16] = r4 / 255.0f;
-	COLOR_VERTEX_ARRAY[17] = g4 / 255.0f;
-	COLOR_VERTEX_ARRAY[18] = b4 / 255.0f;
-	COLOR_VERTEX_ARRAY[19] = a4 / 255.0f;
+	colorVertexArray[16] = r4 / 255.0f;
+	colorVertexArray[17] = g4 / 255.0f;
+	colorVertexArray[18] = b4 / 255.0f;
+	colorVertexArray[19] = a4 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[20] = r1 / 255.0f;
-	COLOR_VERTEX_ARRAY[21] = g1 / 255.0f;
-	COLOR_VERTEX_ARRAY[22] = b1 / 255.0f;
-	COLOR_VERTEX_ARRAY[23] = a1 / 255.0f;
+	colorVertexArray[20] = r1 / 255.0f;
+	colorVertexArray[21] = g1 / 255.0f;
+	colorVertexArray[22] = b1 / 255.0f;
+	colorVertexArray[23] = a1 / 255.0f;
 
 
 	fillVertexArray(x, y, w, h);
-	glColorPointer(4, GL_FLOAT, 0, COLOR_VERTEX_ARRAY);
+	glColorPointer(4, GL_FLOAT, 0, colorVertexArray);
 	drawVertexArray(0);
 
 	glEnable(GL_TEXTURE_2D);

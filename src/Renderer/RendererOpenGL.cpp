@@ -51,7 +51,7 @@ std::map<int, SDL_Cursor*> cursors;
 
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
-extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
+extern std::map<std::string, ImageInfo>	imageIdMap;
 extern std::map<std::string, FontInfo> FONTMAP;
 
 // UGLY ASS HACK!
@@ -108,7 +108,7 @@ void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint
 
 	fillVertexArray(x, y, static_cast<float>(image.width() * scale), static_cast<float>(image.height() * scale));
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
 
@@ -124,7 +124,7 @@ void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, fl
 						y / image.height() + height / image.height()
 					);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
+	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 }
 
 
@@ -150,7 +150,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rast
 						y / image.height() + height / image.height()
 					);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
+	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 
 	glPopMatrix();
 }
@@ -177,7 +177,7 @@ void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degr
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(imageIdMap[image.name()].texture_id);
 	glPopMatrix();
 }
 
@@ -188,7 +188,7 @@ void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w,
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(x, y, w, h);
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
 
@@ -196,7 +196,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 {
 	glColor4ub(255, 255, 255, 255);
 
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, imageIdMap[image.name()].texture_id);
 
 	// Change texture mode to repeat at edges.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -273,21 +273,21 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	glColor4ub(255, 255, 255, 255);
 
 	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
 
-	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
+	GLuint fbo = imageIdMap[destination.name()].fbo_id;
 	if (fbo == 0)
 	{
 		fbo = generate_fbo(destination);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y));
 
-	drawVertexArray(IMAGE_ID_MAP[source.name()].texture_id);
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
+	drawVertexArray(imageIdMap[source.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -809,7 +809,7 @@ GLuint generate_fbo(Image& image)
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	
-	if (IMAGE_ID_MAP[image.name()].texture_id == 0)
+	if (imageIdMap[image.name()].texture_id == 0)
 	{
 		unsigned int textureColorbuffer;
 		glGenTextures(1, &textureColorbuffer);
@@ -822,9 +822,9 @@ GLuint generate_fbo(Image& image)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[image.name()].texture_id, 0);
 
-	IMAGE_ID_MAP[image.name()].fbo_id = framebuffer;
+	imageIdMap[image.name()].fbo_id = framebuffer;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

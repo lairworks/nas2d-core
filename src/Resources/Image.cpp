@@ -30,7 +30,7 @@ const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
 
 using TextureIdMap = std::map<std::string, ImageInfo>;
 
-TextureIdMap	IMAGE_ID_MAP;			/*< Lookup table for OpenGL Texture ID's. */
+TextureIdMap	imageIdMap;			/*< Lookup table for OpenGL Texture ID's. */
 int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
 
 // ==================================================================================
@@ -73,10 +73,10 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	_size = Vector<int>{width, height};
 
 	// Update resource management.
-	IMAGE_ID_MAP[name()].texture_id = 0;
-	IMAGE_ID_MAP[name()].w = width;
-	IMAGE_ID_MAP[name()].h = height;
-	IMAGE_ID_MAP[name()].ref_count++;
+	imageIdMap[name()].texture_id = 0;
+	imageIdMap[name()].w = width;
+	imageIdMap[name()].h = height;
+	imageIdMap[name()].ref_count++;
 }
 
 
@@ -109,11 +109,11 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
-	IMAGE_ID_MAP[name()].texture_id = texture_id;
-	IMAGE_ID_MAP[name()].w = width;
-	IMAGE_ID_MAP[name()].h = height;
-	IMAGE_ID_MAP[name()].ref_count++;
-	IMAGE_ID_MAP[name()].surface = surface;
+	imageIdMap[name()].texture_id = texture_id;
+	imageIdMap[name()].w = width;
+	imageIdMap[name()].h = height;
+	imageIdMap[name()].ref_count++;
+	imageIdMap[name()].surface = surface;
 }
 
 
@@ -130,7 +130,7 @@ Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
 	}
 
 	loaded(src.loaded());
-	IMAGE_ID_MAP[name()].ref_count++;
+	imageIdMap[name()].ref_count++;
 }
 
 
@@ -157,8 +157,8 @@ Image& Image::operator=(const Image& rhs)
 	name(rhs.name());
 	_size = rhs._size;
 
-	auto it = IMAGE_ID_MAP.find(name());
-	if (it == IMAGE_ID_MAP.end())
+	auto it = imageIdMap.find(name());
+	if (it == imageIdMap.end())
 	{
 		throw image_bad_data();
 	}
@@ -179,7 +179,7 @@ void Image::load()
 {
 	if (checkTextureId(name()))
 	{
-		_size = Vector<int>{IMAGE_ID_MAP[name()].w, IMAGE_ID_MAP[name()].h};
+		_size = Vector<int>{imageIdMap[name()].w, imageIdMap[name()].h};
 		loaded(true);
 		return;
 	}
@@ -207,12 +207,12 @@ void Image::load()
 	unsigned int texture_id = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
 
 	// Add generated texture id to texture ID map.
-	IMAGE_ID_MAP[name()].texture_id = texture_id;
-	IMAGE_ID_MAP[name()].w = width();
-	IMAGE_ID_MAP[name()].h = height();
-	IMAGE_ID_MAP[name()].ref_count++;
+	imageIdMap[name()].texture_id = texture_id;
+	imageIdMap[name()].w = width();
+	imageIdMap[name()].h = height();
+	imageIdMap[name()].ref_count++;
 
-	IMAGE_ID_MAP[name()].surface = surface;
+	imageIdMap[name()].surface = surface;
 
 	loaded(true);
 }
@@ -287,7 +287,7 @@ Color Image::pixelColor(int x, int y) const
 		return Color(0, 0, 0, 255);
 	}
 
-	SDL_Surface* surface = IMAGE_ID_MAP[name()].surface;
+	SDL_Surface* surface = imageIdMap[name()].surface;
 
 	if (!surface) { throw image_null_data(); }
 
@@ -355,8 +355,8 @@ Color Image::pixelColor(int x, int y) const
 */
 void updateImageReferenceCount(const std::string& name)
 {
-	auto it = IMAGE_ID_MAP.find(name);
-	if (it == IMAGE_ID_MAP.end())
+	auto it = imageIdMap.find(name);
+	if (it == imageIdMap.end())
 	{
 		return;
 	}
@@ -384,7 +384,7 @@ void updateImageReferenceCount(const std::string& name)
 			it->second.surface = nullptr;
 		}
 
-		IMAGE_ID_MAP.erase(it);
+		imageIdMap.erase(it);
 	}
 }
 
@@ -397,11 +397,11 @@ void updateImageReferenceCount(const std::string& name)
 */
 bool checkTextureId(const std::string& name)
 {
-	auto it = IMAGE_ID_MAP.find(name);
+	auto it = imageIdMap.find(name);
 
-	if (it != IMAGE_ID_MAP.end())
+	if (it != imageIdMap.end())
 	{
-		++IMAGE_ID_MAP[name].ref_count;
+		++imageIdMap[name].ref_count;
 		return true;
 	}
 

@@ -58,7 +58,7 @@ extern std::map<std::string, FontInfo> FONTMAP;
 // This is required for mouse grabbing in the EventHandler class.
 SDL_Window*			underlyingWindow = nullptr;
 
-SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
+SDL_GLContext		oglContext;					/**< Primary OpenGL render context. */
 
 
 // MODULE LEVEL FUNCTIONS
@@ -93,7 +93,7 @@ RendererOpenGL::~RendererOpenGL()
 {
 	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::onResize);
 
-	SDL_GL_DeleteContext(CONTEXT);
+	SDL_GL_DeleteContext(oglContext);
 	SDL_DestroyWindow(underlyingWindow);
 	underlyingWindow = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
@@ -733,8 +733,8 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 
 	mResolution = {static_cast<float>(resX), static_cast<float>(resY)};
 
-	CONTEXT = SDL_GL_CreateContext(underlyingWindow);
-	if (!CONTEXT)
+	oglContext = SDL_GL_CreateContext(underlyingWindow);
+	if (!oglContext)
 	{
 		throw renderer_opengl_context_failure();
 	}

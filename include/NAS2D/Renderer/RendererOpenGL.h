@@ -91,6 +91,8 @@ private:
 
 	void onResize(int w, int h);
 
+
+	Point_2df desktopResolution;
 };
 
 } // namespace

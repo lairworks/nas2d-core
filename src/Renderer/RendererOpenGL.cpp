@@ -32,9 +32,6 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-/** Desktop resolution. To avoid unnecessary function calls. */
-Point_2df desktopResolution;
-
 /** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
 GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
 

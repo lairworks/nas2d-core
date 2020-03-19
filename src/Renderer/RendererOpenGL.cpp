@@ -33,7 +33,7 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 /** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
-GLfloat defaultVertexCoords[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
+GLfloat defaultVertexCoords[8] = { 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
 
 /** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 GLfloat defaultTextureCoords[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
@@ -43,19 +43,19 @@ GLfloat pointVertexArray[2] = { 0.0f, 0.0f };
 /** Color value array for four verts. Defaults to white or normal color. */
 GLfloat colorVertexArray[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-GLfloat		vertexArray[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
-GLfloat		textureCoordArray[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
+GLfloat vertexArray[12] = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
+GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
-extern std::map<std::string, ImageInfo>	imageIdMap;
+extern std::map<std::string, ImageInfo> imageIdMap;
 extern std::map<std::string, FontInfo> fontMap;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
-SDL_Window*			underlyingWindow = nullptr;
+SDL_Window* underlyingWindow = nullptr;
 
-SDL_GLContext		oglContext;					/**< Primary OpenGL render context. */
+SDL_GLContext oglContext; /**< Primary OpenGL render context. */
 
 
 // MODULE LEVEL FUNCTIONS
@@ -115,11 +115,12 @@ void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, fl
 
 	fillVertexArray(rasterX, rasterY, width, height);
 
-	fillTextureArray(	x / image.width(),
-						y / image.height(),
-						x / image.width() + width / image.width(),
-						y / image.height() + height / image.height()
-					);
+	fillTextureArray(
+		x / image.width(),
+		y / image.height(),
+		x / image.width() + width / image.width(),
+		y / image.height() + height / image.height()
+	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 }
@@ -141,11 +142,12 @@ void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rast
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
-	fillTextureArray(	x / image.width(),
-						y / image.height(),
-						x / image.width() + width / image.width(),
-						y / image.height() + height / image.height()
-					);
+	fillTextureArray(
+		x / image.width(),
+		y / image.height(),
+		x / image.width() + width / image.width(),
+		y / image.height() + height / image.height()
+	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 
@@ -596,8 +598,8 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 
 bool RendererOpenGL::fullscreen() const
 {
-	return	((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
-			((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
+		((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
@@ -711,7 +713,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); /// \todo	Add checks to determine an appropriate depth buffer.
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
 	if (vsync) { SDL_GL_SetSwapInterval(1); }
@@ -934,7 +936,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
 	float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
 	float cx = 0.0f, cy = 0.0f; //cap of a line
-	float ALW = 0.01f;			// Dafuq is this?
+	float ALW = 0.01f; // Dafuq is this?
 	float dx = x2 - x1;
 	float dy = y2 - y1;
 

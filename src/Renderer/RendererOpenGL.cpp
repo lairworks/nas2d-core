@@ -52,7 +52,7 @@ std::map<int, SDL_Cursor*> cursors;
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
 extern std::map<std::string, ImageInfo>	imageIdMap;
-extern std::map<std::string, FontInfo> FONTMAP;
+extern std::map<std::string, FontInfo> fontMap;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
@@ -449,7 +449,7 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 
 	int offset = 0;
 
-	GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
+	GlyphMetricsList& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }
 
 	for (size_t i = 0; i < text.size(); i++)
@@ -459,7 +459,7 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 		fillVertexArray(x + offset, y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
-		drawVertexArray(FONTMAP[font.name()].texture_id, false);
+		drawVertexArray(fontMap[font.name()].texture_id, false);
 		offset += gm.advance + gm.minX;
 	}
 }

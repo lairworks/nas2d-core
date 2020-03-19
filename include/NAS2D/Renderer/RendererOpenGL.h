@@ -11,6 +11,10 @@
 
 #include "Renderer.h"
 
+
+struct SDL_Cursor;
+
+
 namespace NAS2D {
 
 /**
@@ -91,6 +95,10 @@ private:
 
 	void onResize(int w, int h);
 
+
+	Point_2df desktopResolution;
+
+	std::map<int, SDL_Cursor*> cursors;
 };
 
 } // namespace

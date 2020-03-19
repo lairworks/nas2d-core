@@ -40,7 +40,7 @@ const int	GLYPH_MATRIX_SIZE	= 16;
 const int	BITS_32				= 32;
 
 
-std::map<std::string, FontInfo>	FONTMAP;
+std::map<std::string, FontInfo>	fontMap;
 
 
 extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
@@ -101,8 +101,8 @@ NAS2D::Font::Font() :	Resource("Default Font")
  */
 NAS2D::Font::Font(const Font& rhs) : Resource(rhs.name())
 {
-	auto it = FONTMAP.find(name());
-	if (it != FONTMAP.end())
+	auto it = fontMap.find(name());
+	if (it != fontMap.end())
 	{
 		++it->second.ref_count;
 		loaded(rhs.loaded());
@@ -136,8 +136,8 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
 
 	name(rhs.name());
 
-	auto it = FONTMAP.find(name());
-	if (it == FONTMAP.end()) { throw font_bad_data(); }
+	auto it = fontMap.find(name());
+	if (it == fontMap.end()) { throw font_bad_data(); }
 
 	++it->second.ref_count;
 	loaded(rhs.loaded());
@@ -151,7 +151,7 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
  */
 int NAS2D::Font::glyphCellWidth() const
 {
-	return FONTMAP[name()].glyph_size.x();
+	return fontMap[name()].glyph_size.x();
 }
 
 
@@ -160,7 +160,7 @@ int NAS2D::Font::glyphCellWidth() const
  */
 int NAS2D::Font::glyphCellHeight() const
 {
-	return FONTMAP[name()].glyph_size.y();
+	return fontMap[name()].glyph_size.y();
 }
 
 
@@ -174,7 +174,7 @@ int NAS2D::Font::width(const std::string& str) const
 	if (str.empty()) { return 0; }
 
 	int width = 0;
-	GlyphMetricsList& gml = FONTMAP[name()].metrics;
+	GlyphMetricsList& gml = fontMap[name()].metrics;
 	if (gml.empty()) { return 0; }
 
 	for (size_t i = 0; i < str.size(); i++)
@@ -192,7 +192,7 @@ int NAS2D::Font::width(const std::string& str) const
  */
 int NAS2D::Font::height() const
 {
-	return FONTMAP[name()].height;
+	return fontMap[name()].height;
 }
 
 
@@ -201,7 +201,7 @@ int NAS2D::Font::height() const
  */
 int NAS2D::Font::ascent() const
 {
-	return FONTMAP[name()].ascent;
+	return fontMap[name()].ascent;
 }
 
 
@@ -210,7 +210,7 @@ int NAS2D::Font::ascent() const
  */
 int NAS2D::Font::ptSize() const
 {
-	return FONTMAP[name()].pt_size;
+	return fontMap[name()].pt_size;
 }
 
 
@@ -230,7 +230,7 @@ bool load(const std::string& path, unsigned int ptSize)
 	std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
 	if (fontAlreadyLoaded(fontname))
 	{
-		++FONTMAP[fontname].ref_count;
+		++fontMap[fontname].ref_count;
 		return true;
 	}
 
@@ -256,9 +256,9 @@ bool load(const std::string& path, unsigned int ptSize)
 		return false;
 	}
 
-	FONTMAP[fontname].height = TTF_FontHeight(font);
-	FONTMAP[fontname].ascent = TTF_FontAscent(font);
-	FONTMAP[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize);
+	fontMap[fontname].height = TTF_FontHeight(font);
+	fontMap[fontname].ascent = TTF_FontAscent(font);
+	fontMap[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize);
 	TTF_CloseFont(font);
 
 	return true;
@@ -277,7 +277,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 {
 	if (fontAlreadyLoaded(path))
 	{
-		++FONTMAP[path].ref_count;
+		++fontMap[path].ref_count;
 		return true;
 	}
 
@@ -304,7 +304,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		throw font_invalid_glyph_map("image height is " + std::to_string(glyphMap->h) + ", expected " + std::to_string(glyphHeight * GLYPH_MATRIX_SIZE) + ".");
 	}
 
-	GlyphMetricsList& glm = FONTMAP[path].metrics;
+	GlyphMetricsList& glm = fontMap[path].metrics;
 	glm.resize(ASCII_TABLE_COUNT);
 	for (size_t i = 0; i < glm.size(); ++i)
 	{
@@ -328,11 +328,11 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
 
 	// Add generated texture id to texture ID map.
-	FONTMAP[path].texture_id = texture_id;
-	FONTMAP[path].pt_size = glyphHeight;
-	FONTMAP[path].height = glyphHeight;
-	FONTMAP[path].ref_count++;
-	FONTMAP[path].glyph_size = {glyphWidth, glyphHeight};
+	fontMap[path].texture_id = texture_id;
+	fontMap[path].pt_size = glyphHeight;
+	fontMap[path].height = glyphHeight;
+	fontMap[path].ref_count++;
+	fontMap[path].glyph_size = {glyphWidth, glyphHeight};
 	SDL_FreeSurface(glyphMap);
 
 	return true;
@@ -348,7 +348,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 {
 	int largest_width = 0;
 
-	GlyphMetricsList& glm = FONTMAP[name].metrics;
+	GlyphMetricsList& glm = fontMap[name].metrics;
 
 	// Go through each glyph and determine how much space we need in the texture.
 	for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
@@ -418,9 +418,9 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
 
 	// Add generated texture id to texture ID map.
-	FONTMAP[name].texture_id = texture_id;
-	FONTMAP[name].pt_size = font_size;
-	FONTMAP[name].ref_count++;
+	fontMap[name].texture_id = texture_id;
+	fontMap[name].pt_size = font_size;
+	fontMap[name].ref_count++;
 	SDL_FreeSurface(glyphMap);
 
 	return size;
@@ -435,8 +435,8 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
  */
 bool fontAlreadyLoaded(const std::string& name)
 {
-	auto it = FONTMAP.find(name);
-	if (it != FONTMAP.end())
+	auto it = fontMap.find(name);
+	if (it != fontMap.end())
 	{
 		return true;
 	}
@@ -469,8 +469,8 @@ void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, u
  */
 void updateFontReferenceCount(const std::string& name)
 {
-	auto it = FONTMAP.find(name);
-	if (it == FONTMAP.end())
+	auto it = fontMap.find(name);
+	if (it == fontMap.end())
 	{
 		std::cout << "Font '" << name << "' was not found in the resource management." << std::endl;
 		return;
@@ -482,10 +482,10 @@ void updateFontReferenceCount(const std::string& name)
 	if (it->second.ref_count < 1)
 	{
 		glDeleteTextures(1, &it->second.texture_id);
-		FONTMAP.erase(it);
+		fontMap.erase(it);
 	}
 
-	if (FONTMAP.empty())
+	if (fontMap.empty())
 	{
 		TTF_Quit();
 	}

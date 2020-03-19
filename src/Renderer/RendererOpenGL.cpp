@@ -32,42 +32,39 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-/** Desktop resolution. To avoid unnecessary function calls. */
-Point_2df DESKTOP_RESOLUTION;
-
-/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
-GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
-
-/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
-
-GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
-
-/** Color value array for four verts. Defaults to white or normal color. */
-GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
-
-GLfloat		VERTEX_ARRAY[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
-GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
-
-/** Mouse cursors */
-std::map<int, SDL_Cursor*> CURSORS;
-
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
-extern std::map<std::string, ImageInfo>	IMAGE_ID_MAP;
-extern std::map<std::string, FontInfo> FONTMAP;
+extern std::map<std::string, ImageInfo> imageIdMap;
+extern std::map<std::string, FontInfo> fontMap;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
-SDL_Window*			underlyingWindow = nullptr;
+SDL_Window* underlyingWindow = nullptr;
 
-SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
+
+namespace {
+	SDL_GLContext oglContext; /**< Primary OpenGL render context. */
+
+	/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
+	GLfloat defaultVertexCoords[8] = {0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 32.0f, 32.0f, 0.0f};
+
+	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
+	GLfloat defaultTextureCoords[12] = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+
+	GLfloat pointVertexArray[2] = {0.0f, 0.0f};
+
+	/** Color value array for four verts. Defaults to white or normal color. */
+	GLfloat colorVertexArray[24] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+
+	GLfloat vertexArray[12] = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
+	GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
+}
 
 
 // MODULE LEVEL FUNCTIONS
 void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
-void drawVertexArray(GLuint textureId, bool defaultTextureCoords = true);
+void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
 
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 GLuint generate_fbo(Image& image);
@@ -96,7 +93,7 @@ RendererOpenGL::~RendererOpenGL()
 {
 	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::onResize);
 
-	SDL_GL_DeleteContext(CONTEXT);
+	SDL_GL_DeleteContext(oglContext);
 	SDL_DestroyWindow(underlyingWindow);
 	underlyingWindow = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
@@ -111,7 +108,7 @@ void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint
 
 	fillVertexArray(x, y, static_cast<float>(image.width() * scale), static_cast<float>(image.height() * scale));
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
 
@@ -121,13 +118,14 @@ void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, fl
 
 	fillVertexArray(rasterX, rasterY, width, height);
 
-	fillTextureArray(	x / image.width(),
-						y / image.height(),
-						x / image.width() + width / image.width(),
-						y / image.height() + height / image.height()
-					);
+	fillTextureArray(
+		x / image.width(),
+		y / image.height(),
+		x / image.width() + width / image.width(),
+		y / image.height() + height / image.height()
+	);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
+	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 }
 
 
@@ -147,13 +145,14 @@ void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rast
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
-	fillTextureArray(	x / image.width(),
-						y / image.height(),
-						x / image.width() + width / image.width(),
-						y / image.height() + height / image.height()
-					);
+	fillTextureArray(
+		x / image.width(),
+		y / image.height(),
+		x / image.width() + width / image.width(),
+		y / image.height() + height / image.height()
+	);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id, false);
+	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 
 	glPopMatrix();
 }
@@ -180,7 +179,7 @@ void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degr
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(imageIdMap[image.name()].texture_id);
 	glPopMatrix();
 }
 
@@ -191,7 +190,7 @@ void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w,
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(x, y, w, h);
-	drawVertexArray(IMAGE_ID_MAP[image.name()].texture_id);
+	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
 
@@ -199,7 +198,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 {
 	glColor4ub(255, 255, 255, 255);
 
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, imageIdMap[image.name()].texture_id);
 
 	// Change texture mode to repeat at edges.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -208,9 +207,9 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 	fillVertexArray(x, y, w, h);
 	fillTextureArray(0.0f, 0.0f, w / image.width(), h / image.height());
 
-	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
-	glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -276,21 +275,21 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	glColor4ub(255, 255, 255, 255);
 
 	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
 
-	GLuint fbo = IMAGE_ID_MAP[destination.name()].fbo_id;
+	GLuint fbo = imageIdMap[destination.name()].fbo_id;
 	if (fbo == 0)
 	{
 		fbo = generate_fbo(destination);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
 	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y));
 
-	drawVertexArray(IMAGE_ID_MAP[source.name()].texture_id);
-	glBindTexture(GL_TEXTURE_2D, IMAGE_ID_MAP[destination.name()].texture_id);
+	drawVertexArray(imageIdMap[source.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -301,9 +300,9 @@ void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b
 
 	glColor4ub(r, g, b, a);
 
-	POINT_VERTEX_ARRAY[0] = x + 0.5f; POINT_VERTEX_ARRAY[1] = y + 0.5f;
+	pointVertexArray[0] = x + 0.5f; pointVertexArray[1] = y + 0.5f;
 
-	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, pointVertexArray);
 	glDrawArrays(GL_POINTS, 0, 1);
 
 	glEnable(GL_TEXTURE_2D);
@@ -374,40 +373,40 @@ void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 
-	COLOR_VERTEX_ARRAY[0] = r1 / 255.0f;
-	COLOR_VERTEX_ARRAY[1] = g1 / 255.0f;
-	COLOR_VERTEX_ARRAY[2] = b1 / 255.0f;
-	COLOR_VERTEX_ARRAY[3] = a1 / 255.0f;
+	colorVertexArray[0] = r1 / 255.0f;
+	colorVertexArray[1] = g1 / 255.0f;
+	colorVertexArray[2] = b1 / 255.0f;
+	colorVertexArray[3] = a1 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[4] = r2 / 255.0f;
-	COLOR_VERTEX_ARRAY[5] = g2 / 255.0f;
-	COLOR_VERTEX_ARRAY[6] = b2 / 255.0f;
-	COLOR_VERTEX_ARRAY[7] = a2 / 255.0f;
+	colorVertexArray[4] = r2 / 255.0f;
+	colorVertexArray[5] = g2 / 255.0f;
+	colorVertexArray[6] = b2 / 255.0f;
+	colorVertexArray[7] = a2 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[8] = r3 / 255.0f;
-	COLOR_VERTEX_ARRAY[9] = g3 / 255.0f;
-	COLOR_VERTEX_ARRAY[10] = b3 / 255.0f;
-	COLOR_VERTEX_ARRAY[11] = a3 / 255.0f;
+	colorVertexArray[8] = r3 / 255.0f;
+	colorVertexArray[9] = g3 / 255.0f;
+	colorVertexArray[10] = b3 / 255.0f;
+	colorVertexArray[11] = a3 / 255.0f;
 
 
-	COLOR_VERTEX_ARRAY[12] = r3 / 255.0f;
-	COLOR_VERTEX_ARRAY[13] = g3 / 255.0f;
-	COLOR_VERTEX_ARRAY[14] = b3 / 255.0f;
-	COLOR_VERTEX_ARRAY[15] = a3 / 255.0f;
+	colorVertexArray[12] = r3 / 255.0f;
+	colorVertexArray[13] = g3 / 255.0f;
+	colorVertexArray[14] = b3 / 255.0f;
+	colorVertexArray[15] = a3 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[16] = r4 / 255.0f;
-	COLOR_VERTEX_ARRAY[17] = g4 / 255.0f;
-	COLOR_VERTEX_ARRAY[18] = b4 / 255.0f;
-	COLOR_VERTEX_ARRAY[19] = a4 / 255.0f;
+	colorVertexArray[16] = r4 / 255.0f;
+	colorVertexArray[17] = g4 / 255.0f;
+	colorVertexArray[18] = b4 / 255.0f;
+	colorVertexArray[19] = a4 / 255.0f;
 
-	COLOR_VERTEX_ARRAY[20] = r1 / 255.0f;
-	COLOR_VERTEX_ARRAY[21] = g1 / 255.0f;
-	COLOR_VERTEX_ARRAY[22] = b1 / 255.0f;
-	COLOR_VERTEX_ARRAY[23] = a1 / 255.0f;
+	colorVertexArray[20] = r1 / 255.0f;
+	colorVertexArray[21] = g1 / 255.0f;
+	colorVertexArray[22] = b1 / 255.0f;
+	colorVertexArray[23] = a1 / 255.0f;
 
 
 	fillVertexArray(x, y, w, h);
-	glColorPointer(4, GL_FLOAT, 0, COLOR_VERTEX_ARRAY);
+	glColorPointer(4, GL_FLOAT, 0, colorVertexArray);
 	drawVertexArray(0);
 
 	glEnable(GL_TEXTURE_2D);
@@ -452,7 +451,7 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 
 	int offset = 0;
 
-	GlyphMetricsList& gml = FONTMAP[font.name()].metrics;
+	GlyphMetricsList& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }
 
 	for (size_t i = 0; i < text.size(); i++)
@@ -462,7 +461,7 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 		fillVertexArray(x + offset, y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
-		drawVertexArray(FONTMAP[font.name()].texture_id, false);
+		drawVertexArray(fontMap[font.name()].texture_id, false);
 		offset += gm.advance + gm.minX;
 	}
 }
@@ -498,14 +497,14 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 		return;
 	}
 
-	if (CURSORS.count(cursorId))
+	if (cursors.count(cursorId))
 	{
-		SDL_FreeCursor(CURSORS[cursorId]);
+		SDL_FreeCursor(cursors[cursorId]);
 	}
 
-	CURSORS[cursorId] = cur;
+	cursors[cursorId] = cur;
 
-	if (CURSORS.size() == 1)
+	if (cursors.size() == 1)
 	{
 		setCursor(cursorId);
 	}
@@ -514,7 +513,7 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 
 void RendererOpenGL::setCursor(int cursorId)
 {
-	SDL_SetCursor(CURSORS[cursorId]);
+	SDL_SetCursor(cursors[cursorId]);
 }
 
 
@@ -550,7 +549,7 @@ float RendererOpenGL::width() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
-		return DESKTOP_RESOLUTION.x();
+		return desktopResolution.x();
 	}
 
 	return mResolution.x;
@@ -561,7 +560,7 @@ float RendererOpenGL::height() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
-		return DESKTOP_RESOLUTION.y();
+		return desktopResolution.y();
 	}
 
 	return mResolution.y;
@@ -602,8 +601,8 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 
 bool RendererOpenGL::fullscreen() const
 {
-	return	((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
-			((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
+		((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
@@ -703,8 +702,8 @@ void RendererOpenGL::initGL()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glVertexPointer(2, GL_FLOAT, 0, DEFAULT_VERTEX_COORDS);
-	glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
+	glVertexPointer(2, GL_FLOAT, 0, defaultVertexCoords);
+	glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords);
 }
 
 
@@ -717,7 +716,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	/// \todo	Add checks to determine an appropriate depth buffer.
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); /// \todo	Add checks to determine an appropriate depth buffer.
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
 	if (vsync) { SDL_GL_SetSwapInterval(1); }
@@ -736,8 +735,8 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 
 	mResolution = {static_cast<float>(resX), static_cast<float>(resY)};
 
-	CONTEXT = SDL_GL_CreateContext(underlyingWindow);
-	if (!CONTEXT)
+	oglContext = SDL_GL_CreateContext(underlyingWindow);
+	if (!oglContext)
 	{
 		throw renderer_opengl_context_failure();
 	}
@@ -755,7 +754,7 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 		throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
 	}
 
-	DESKTOP_RESOLUTION = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
+	desktopResolution = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
 }
 
 std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
@@ -812,7 +811,7 @@ GLuint generate_fbo(Image& image)
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	
-	if (IMAGE_ID_MAP[image.name()].texture_id == 0)
+	if (imageIdMap[image.name()].texture_id == 0)
 	{
 		unsigned int textureColorbuffer;
 		glGenTextures(1, &textureColorbuffer);
@@ -825,9 +824,9 @@ GLuint generate_fbo(Image& image)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, IMAGE_ID_MAP[image.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[image.name()].texture_id, 0);
 
-	IMAGE_ID_MAP[image.name()].fbo_id = framebuffer;
+	imageIdMap[image.name()].fbo_id = framebuffer;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -838,14 +837,14 @@ GLuint generate_fbo(Image& image)
 /**
  * Draws a textured rectangle using a vertex and texture coordinate array
  */
-void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
+void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords)
 {
 	glBindTexture(GL_TEXTURE_2D, textureId);
-	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
 	// Choose from the default texture coordinates or from a custom set.
-	if (defaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS); }
-	else { glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY); }
+	if (useDefaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords); }
+	else { glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray); }
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
@@ -856,13 +855,13 @@ void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
  */
 void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-	VERTEX_ARRAY[0] = static_cast<GLfloat>(x), VERTEX_ARRAY[1] = static_cast<GLfloat>(y);
-	VERTEX_ARRAY[2] = static_cast<GLfloat>(x), VERTEX_ARRAY[3] = static_cast<GLfloat>(y + h);
-	VERTEX_ARRAY[4] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[5] = static_cast<GLfloat>(y + h);
+	vertexArray[0] = static_cast<GLfloat>(x), vertexArray[1] = static_cast<GLfloat>(y);
+	vertexArray[2] = static_cast<GLfloat>(x), vertexArray[3] = static_cast<GLfloat>(y + h);
+	vertexArray[4] = static_cast<GLfloat>(x + w), vertexArray[5] = static_cast<GLfloat>(y + h);
 
-	VERTEX_ARRAY[6] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[7] = static_cast<GLfloat>(y + h);
-	VERTEX_ARRAY[8] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[9] = static_cast<GLfloat>(y);
-	VERTEX_ARRAY[10] = static_cast<GLfloat>(x), VERTEX_ARRAY[11] = static_cast<GLfloat>(y);
+	vertexArray[6] = static_cast<GLfloat>(x + w), vertexArray[7] = static_cast<GLfloat>(y + h);
+	vertexArray[8] = static_cast<GLfloat>(x + w), vertexArray[9] = static_cast<GLfloat>(y);
+	vertexArray[10] = static_cast<GLfloat>(x), vertexArray[11] = static_cast<GLfloat>(y);
 }
 
 
@@ -871,13 +870,13 @@ void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
  */
 void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 {
-	TEXTURE_COORD_ARRAY[0] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[1] = static_cast<GLfloat>(y);
-	TEXTURE_COORD_ARRAY[2] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[3] = static_cast<GLfloat>(v);
-	TEXTURE_COORD_ARRAY[4] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[5] = static_cast<GLfloat>(v);
+	textureCoordArray[0] = static_cast<GLfloat>(x), textureCoordArray[1] = static_cast<GLfloat>(y);
+	textureCoordArray[2] = static_cast<GLfloat>(x), textureCoordArray[3] = static_cast<GLfloat>(v);
+	textureCoordArray[4] = static_cast<GLfloat>(u), textureCoordArray[5] = static_cast<GLfloat>(v);
 
-	TEXTURE_COORD_ARRAY[6] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[7] = static_cast<GLfloat>(v);
-	TEXTURE_COORD_ARRAY[8] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[9] = static_cast<GLfloat>(y);
-	TEXTURE_COORD_ARRAY[10] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[11] = static_cast<GLfloat>(y);
+	textureCoordArray[6] = static_cast<GLfloat>(u), textureCoordArray[7] = static_cast<GLfloat>(v);
+	textureCoordArray[8] = static_cast<GLfloat>(u), textureCoordArray[9] = static_cast<GLfloat>(y);
+	textureCoordArray[10] = static_cast<GLfloat>(x), textureCoordArray[11] = static_cast<GLfloat>(y);
 }
 
 /**
@@ -940,7 +939,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
 	float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
 	float cx = 0.0f, cy = 0.0f; //cap of a line
-	float ALW = 0.01f;			// Dafuq is this?
+	float ALW = 0.01f; // Dafuq is this?
 	float dx = x2 - x1;
 	float dy = y2 - y1;
 

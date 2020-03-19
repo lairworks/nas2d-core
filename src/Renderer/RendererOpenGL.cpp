@@ -33,7 +33,7 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 /** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
-GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
+GLfloat defaultVertexCoords[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
 
 /** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 GLfloat defaultTextureCoords[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
@@ -64,7 +64,7 @@ SDL_GLContext		CONTEXT;					/**< Primary OpenGL render context. */
 // MODULE LEVEL FUNCTIONS
 void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
-void drawVertexArray(GLuint textureId, bool defaultTextureCoords = true);
+void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
 
 void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
 GLuint generate_fbo(Image& image);
@@ -700,7 +700,7 @@ void RendererOpenGL::initGL()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glVertexPointer(2, GL_FLOAT, 0, DEFAULT_VERTEX_COORDS);
+	glVertexPointer(2, GL_FLOAT, 0, defaultVertexCoords);
 	glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords);
 }
 
@@ -835,13 +835,13 @@ GLuint generate_fbo(Image& image)
 /**
  * Draws a textured rectangle using a vertex and texture coordinate array
  */
-void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
+void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords)
 {
 	glBindTexture(GL_TEXTURE_2D, textureId);
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
 	// Choose from the default texture coordinates or from a custom set.
-	if (defaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords); }
+	if (useDefaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords); }
 	else { glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray); }
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);

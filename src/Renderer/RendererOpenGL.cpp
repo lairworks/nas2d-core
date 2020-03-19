@@ -36,7 +36,7 @@ using namespace NAS2D::Exception;
 GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
 
 /** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
+GLfloat defaultTextureCoords[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
 
 GLfloat pointVertexArray[2] = { 0.0f, 0.0f };
 
@@ -701,7 +701,7 @@ void RendererOpenGL::initGL()
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glVertexPointer(2, GL_FLOAT, 0, DEFAULT_VERTEX_COORDS);
-	glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS);
+	glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords);
 }
 
 
@@ -841,7 +841,7 @@ void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
 	// Choose from the default texture coordinates or from a custom set.
-	if (defaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS); }
+	if (defaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords); }
 	else { glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray); }
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);

@@ -56,7 +56,7 @@ namespace {
 	/** Color value array for four verts. Defaults to white or normal color. */
 	GLfloat colorVertexArray[24] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
-	GLfloat vertexArray[12] = {};		/**< Vertex array for quad drawing functions (all blitter functions). */
+	GLfloat vertexArray[12] = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
 	GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
 }
 

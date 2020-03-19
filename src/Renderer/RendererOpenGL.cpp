@@ -47,7 +47,7 @@ GLfloat		vertexArray[12]		= {};	/**< Vertex array for quad drawing functions (al
 GLfloat		textureCoordArray[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
 /** Mouse cursors */
-std::map<int, SDL_Cursor*> CURSORS;
+std::map<int, SDL_Cursor*> cursors;
 
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
@@ -495,14 +495,14 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 		return;
 	}
 
-	if (CURSORS.count(cursorId))
+	if (cursors.count(cursorId))
 	{
-		SDL_FreeCursor(CURSORS[cursorId]);
+		SDL_FreeCursor(cursors[cursorId]);
 	}
 
-	CURSORS[cursorId] = cur;
+	cursors[cursorId] = cur;
 
-	if (CURSORS.size() == 1)
+	if (cursors.size() == 1)
 	{
 		setCursor(cursorId);
 	}
@@ -511,7 +511,7 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 
 void RendererOpenGL::setCursor(int cursorId)
 {
-	SDL_SetCursor(CURSORS[cursorId]);
+	SDL_SetCursor(cursors[cursorId]);
 }
 
 

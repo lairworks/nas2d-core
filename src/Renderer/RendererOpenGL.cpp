@@ -46,9 +46,6 @@ GLfloat colorVertexArray[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
 GLfloat		vertexArray[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
 GLfloat		textureCoordArray[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
-/** Mouse cursors */
-std::map<int, SDL_Cursor*> cursors;
-
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
 extern std::map<std::string, ImageInfo>	imageIdMap;

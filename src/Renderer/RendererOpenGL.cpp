@@ -38,7 +38,7 @@ GLfloat DEFAULT_VERTEX_COORDS[8] =	{ 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  3
 /** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 GLfloat DEFAULT_TEXTURE_COORDS[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
 
-GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
+GLfloat pointVertexArray[2] = { 0.0f, 0.0f };
 
 /** Color value array for four verts. Defaults to white or normal color. */
 GLfloat colorVertexArray[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
@@ -298,9 +298,9 @@ void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b
 
 	glColor4ub(r, g, b, a);
 
-	POINT_VERTEX_ARRAY[0] = x + 0.5f; POINT_VERTEX_ARRAY[1] = y + 0.5f;
+	pointVertexArray[0] = x + 0.5f; pointVertexArray[1] = y + 0.5f;
 
-	glVertexPointer(2, GL_FLOAT, 0, POINT_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, pointVertexArray);
 	glDrawArrays(GL_POINTS, 0, 1);
 
 	glEnable(GL_TEXTURE_2D);

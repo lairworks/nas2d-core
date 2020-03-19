@@ -44,7 +44,7 @@ GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
 GLfloat		vertexArray[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
-GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
+GLfloat		textureCoordArray[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
 /** Mouse cursors */
 std::map<int, SDL_Cursor*> CURSORS;
@@ -207,7 +207,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
-	glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -842,7 +842,7 @@ void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
 
 	// Choose from the default texture coordinates or from a custom set.
 	if (defaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS); }
-	else { glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY); }
+	else { glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray); }
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
@@ -868,13 +868,13 @@ void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
  */
 void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 {
-	TEXTURE_COORD_ARRAY[0] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[1] = static_cast<GLfloat>(y);
-	TEXTURE_COORD_ARRAY[2] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[3] = static_cast<GLfloat>(v);
-	TEXTURE_COORD_ARRAY[4] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[5] = static_cast<GLfloat>(v);
+	textureCoordArray[0] = static_cast<GLfloat>(x), textureCoordArray[1] = static_cast<GLfloat>(y);
+	textureCoordArray[2] = static_cast<GLfloat>(x), textureCoordArray[3] = static_cast<GLfloat>(v);
+	textureCoordArray[4] = static_cast<GLfloat>(u), textureCoordArray[5] = static_cast<GLfloat>(v);
 
-	TEXTURE_COORD_ARRAY[6] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[7] = static_cast<GLfloat>(v);
-	TEXTURE_COORD_ARRAY[8] = static_cast<GLfloat>(u), TEXTURE_COORD_ARRAY[9] = static_cast<GLfloat>(y);
-	TEXTURE_COORD_ARRAY[10] = static_cast<GLfloat>(x), TEXTURE_COORD_ARRAY[11] = static_cast<GLfloat>(y);
+	textureCoordArray[6] = static_cast<GLfloat>(u), textureCoordArray[7] = static_cast<GLfloat>(v);
+	textureCoordArray[8] = static_cast<GLfloat>(u), textureCoordArray[9] = static_cast<GLfloat>(y);
+	textureCoordArray[10] = static_cast<GLfloat>(x), textureCoordArray[11] = static_cast<GLfloat>(y);
 }
 
 /**

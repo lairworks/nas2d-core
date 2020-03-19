@@ -41,21 +41,24 @@ extern std::map<std::string, FontInfo> fontMap;
 // This is required for mouse grabbing in the EventHandler class.
 SDL_Window* underlyingWindow = nullptr;
 
-SDL_GLContext oglContext; /**< Primary OpenGL render context. */
 
-/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
-GLfloat defaultVertexCoords[8] = { 0.0f, 0.0f,  0.0f, 32.0f,  32.0f, 32.0f,  32.0f, 0.0f };
+namespace {
+	SDL_GLContext oglContext; /**< Primary OpenGL render context. */
 
-/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-GLfloat defaultTextureCoords[12] = { 0.0f, 0.0f,  0.0f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f };
+	/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
+	GLfloat defaultVertexCoords[8] = {0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 32.0f, 32.0f, 0.0f};
 
-GLfloat pointVertexArray[2] = { 0.0f, 0.0f };
+	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
+	GLfloat defaultTextureCoords[12] = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
-/** Color value array for four verts. Defaults to white or normal color. */
-GLfloat colorVertexArray[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat pointVertexArray[2] = {0.0f, 0.0f};
 
-GLfloat vertexArray[12] = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
-GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
+	/** Color value array for four verts. Defaults to white or normal color. */
+	GLfloat colorVertexArray[24] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+
+	GLfloat vertexArray[12] = {};		/**< Vertex array for quad drawing functions (all blitter functions). */
+	GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
+}
 
 
 // MODULE LEVEL FUNCTIONS

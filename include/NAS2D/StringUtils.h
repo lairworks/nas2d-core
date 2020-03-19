@@ -18,6 +18,26 @@
 namespace NAS2D
 {
 
+	template<typename T>
+	T stringFrom(const std::string& value);
+
+	extern template std::string NAS2D::stringFrom(const std::string& value);
+	extern template bool NAS2D::stringFrom(const std::string& value);
+	extern template char NAS2D::stringFrom(const std::string& value);
+	extern template signed char NAS2D::stringFrom(const std::string& value);
+	extern template unsigned char NAS2D::stringFrom(const std::string& value);
+	extern template short NAS2D::stringFrom(const std::string& value);
+	extern template unsigned short NAS2D::stringFrom(const std::string& value);
+	extern template int NAS2D::stringFrom(const std::string& value);
+	extern template unsigned int NAS2D::stringFrom(const std::string& value);
+	extern template long NAS2D::stringFrom(const std::string& value);
+	extern template unsigned long NAS2D::stringFrom(const std::string& value);
+	extern template long long NAS2D::stringFrom(const std::string& value);
+	extern template unsigned long long NAS2D::stringFrom(const std::string& value);
+	extern template float NAS2D::stringFrom(const std::string& value);
+	extern template double NAS2D::stringFrom(const std::string& value);
+	extern template long double NAS2D::stringFrom(const std::string& value);
+
 	std::string toLowercase(std::string str);
 	std::string toUppercase(std::string str);
 	std::vector<std::string> split(std::string str, char delim = ',');
@@ -53,6 +73,23 @@ namespace NAS2D
  * but is also used by some of NAS2D's functions.
  */
 	using StringList = std::vector<std::string>;
+
+	namespace detail
+	{
+		template<typename T>
+		T rangeCheckHelper(const std::string& value)
+		{
+			const auto valueAsInteger = std::stoi(value);
+			if constexpr (std::numeric_limits<T>::max() < std::numeric_limits<int>::max())
+			{
+				if (std::numeric_limits<T>::max() < valueAsInteger)
+				{
+					throw std::out_of_range("from_string argument out of range");
+				}
+			}
+			return static_cast<T>(valueAsInteger);
+		}
+	}
 
 } // namespace NAS2D
 

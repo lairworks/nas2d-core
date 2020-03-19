@@ -43,7 +43,7 @@ GLfloat POINT_VERTEX_ARRAY[2] = { 0.0f, 0.0f };
 /** Color value array for four verts. Defaults to white or normal color. */
 GLfloat COLOR_VERTEX_ARRAY[24] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f };
 
-GLfloat		VERTEX_ARRAY[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
+GLfloat		vertexArray[12]		= {};	/**< Vertex array for quad drawing functions (all blitter functions). */
 GLfloat		TEXTURE_COORD_ARRAY[12]	= {};	/**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
 /** Mouse cursors */
@@ -205,7 +205,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 	fillVertexArray(x, y, w, h);
 	fillTextureArray(0.0f, 0.0f, w / image.width(), h / image.height());
 
-	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
 	glTexCoordPointer(2, GL_FLOAT, 0, TEXTURE_COORD_ARRAY);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
@@ -838,7 +838,7 @@ GLuint generate_fbo(Image& image)
 void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
 {
 	glBindTexture(GL_TEXTURE_2D, textureId);
-	glVertexPointer(2, GL_FLOAT, 0, VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
 	// Choose from the default texture coordinates or from a custom set.
 	if (defaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, DEFAULT_TEXTURE_COORDS); }
@@ -853,13 +853,13 @@ void drawVertexArray(GLuint textureId, bool defaultTextureCoords)
  */
 void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-	VERTEX_ARRAY[0] = static_cast<GLfloat>(x), VERTEX_ARRAY[1] = static_cast<GLfloat>(y);
-	VERTEX_ARRAY[2] = static_cast<GLfloat>(x), VERTEX_ARRAY[3] = static_cast<GLfloat>(y + h);
-	VERTEX_ARRAY[4] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[5] = static_cast<GLfloat>(y + h);
+	vertexArray[0] = static_cast<GLfloat>(x), vertexArray[1] = static_cast<GLfloat>(y);
+	vertexArray[2] = static_cast<GLfloat>(x), vertexArray[3] = static_cast<GLfloat>(y + h);
+	vertexArray[4] = static_cast<GLfloat>(x + w), vertexArray[5] = static_cast<GLfloat>(y + h);
 
-	VERTEX_ARRAY[6] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[7] = static_cast<GLfloat>(y + h);
-	VERTEX_ARRAY[8] = static_cast<GLfloat>(x + w), VERTEX_ARRAY[9] = static_cast<GLfloat>(y);
-	VERTEX_ARRAY[10] = static_cast<GLfloat>(x), VERTEX_ARRAY[11] = static_cast<GLfloat>(y);
+	vertexArray[6] = static_cast<GLfloat>(x + w), vertexArray[7] = static_cast<GLfloat>(y + h);
+	vertexArray[8] = static_cast<GLfloat>(x + w), vertexArray[9] = static_cast<GLfloat>(y);
+	vertexArray[10] = static_cast<GLfloat>(x), vertexArray[11] = static_cast<GLfloat>(y);
 }
 
 

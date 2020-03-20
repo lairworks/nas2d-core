@@ -3,92 +3,92 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-TEST(String, stringFrom)
+TEST(String, stringTo)
 {
 	const std::string bigNum(40, '9');
 
-	EXPECT_EQ(std::string{""}, NAS2D::stringFrom<std::string>(""));
-	EXPECT_EQ(std::string{"Hello World"}, NAS2D::stringFrom<std::string>("Hello World"));
+	EXPECT_EQ(std::string{""}, NAS2D::stringTo<std::string>(""));
+	EXPECT_EQ(std::string{"Hello World"}, NAS2D::stringTo<std::string>("Hello World"));
 
-	EXPECT_EQ(true, NAS2D::stringFrom<bool>("true"));
-	EXPECT_EQ(false, NAS2D::stringFrom<bool>("false"));
-	EXPECT_THROW(NAS2D::stringFrom<bool>("foobar"), std::invalid_argument);
+	EXPECT_EQ(true, NAS2D::stringTo<bool>("true"));
+	EXPECT_EQ(false, NAS2D::stringTo<bool>("false"));
+	EXPECT_THROW(NAS2D::stringTo<bool>("foobar"), std::invalid_argument);
 
-	EXPECT_EQ(char{0}, NAS2D::stringFrom<char>("0"));
-	EXPECT_EQ(unsigned char{129}, NAS2D::stringFrom<unsigned char>("129"));
-	EXPECT_EQ(signed char{-1}, NAS2D::stringFrom<signed char>("-1"));
+	EXPECT_EQ(char{0}, NAS2D::stringTo<char>("0"));
+	EXPECT_EQ(unsigned char{129}, NAS2D::stringTo<unsigned char>("129"));
+	EXPECT_EQ(signed char{-1}, NAS2D::stringTo<signed char>("-1"));
 
-	EXPECT_EQ(unsigned short{0}, NAS2D::stringFrom<unsigned short>("0"));
-	EXPECT_EQ(unsigned short{1}, NAS2D::stringFrom<unsigned short>("1"));
-	EXPECT_THROW(NAS2D::stringFrom<unsigned short>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<unsigned short>(bigNum), std::out_of_range);
+	EXPECT_EQ(unsigned short{0}, NAS2D::stringTo<unsigned short>("0"));
+	EXPECT_EQ(unsigned short{1}, NAS2D::stringTo<unsigned short>("1"));
+	EXPECT_THROW(NAS2D::stringTo<unsigned short>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<unsigned short>(bigNum), std::out_of_range);
 
-	EXPECT_EQ(unsigned int{0}, NAS2D::stringFrom<unsigned int>("0"));
-	EXPECT_EQ(unsigned int{1}, NAS2D::stringFrom<unsigned int>("1"));
-	EXPECT_THROW(NAS2D::stringFrom<unsigned int>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<unsigned int>(bigNum), std::out_of_range);
+	EXPECT_EQ(unsigned int{0}, NAS2D::stringTo<unsigned int>("0"));
+	EXPECT_EQ(unsigned int{1}, NAS2D::stringTo<unsigned int>("1"));
+	EXPECT_THROW(NAS2D::stringTo<unsigned int>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<unsigned int>(bigNum), std::out_of_range);
 
-	EXPECT_EQ(unsigned long{0}, NAS2D::stringFrom<unsigned long>("0"));
-	EXPECT_EQ(unsigned long{1}, NAS2D::stringFrom<unsigned long>("1"));
-	EXPECT_THROW(NAS2D::stringFrom<unsigned long>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<unsigned long>(bigNum), std::out_of_range);
+	EXPECT_EQ(unsigned long{0}, NAS2D::stringTo<unsigned long>("0"));
+	EXPECT_EQ(unsigned long{1}, NAS2D::stringTo<unsigned long>("1"));
+	EXPECT_THROW(NAS2D::stringTo<unsigned long>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<unsigned long>(bigNum), std::out_of_range);
 
-	EXPECT_EQ(unsigned long long{0}, NAS2D::stringFrom<unsigned long long>("0"));
-	EXPECT_EQ(unsigned long long{1}, NAS2D::stringFrom<unsigned long long>("1"));
-	EXPECT_THROW(NAS2D::stringFrom<unsigned long long>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<unsigned long long>(bigNum), std::out_of_range);
+	EXPECT_EQ(unsigned long long{0}, NAS2D::stringTo<unsigned long long>("0"));
+	EXPECT_EQ(unsigned long long{1}, NAS2D::stringTo<unsigned long long>("1"));
+	EXPECT_THROW(NAS2D::stringTo<unsigned long long>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<unsigned long long>(bigNum), std::out_of_range);
 	
-	EXPECT_EQ(short{-1}, NAS2D::stringFrom<short>("-1"));
-	EXPECT_EQ(short{0}, NAS2D::stringFrom<short>("0"));
-	EXPECT_EQ(short{1}, NAS2D::stringFrom<short>("1"));
-	EXPECT_THROW(NAS2D::stringFrom<short>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<short>(bigNum), std::out_of_range);
+	EXPECT_EQ(short{-1}, NAS2D::stringTo<short>("-1"));
+	EXPECT_EQ(short{0}, NAS2D::stringTo<short>("0"));
+	EXPECT_EQ(short{1}, NAS2D::stringTo<short>("1"));
+	EXPECT_THROW(NAS2D::stringTo<short>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<short>(bigNum), std::out_of_range);
 
-	EXPECT_EQ(int{-1}, NAS2D::stringFrom<int>("-1"));
-	EXPECT_EQ(int{0}, NAS2D::stringFrom<int>("0"));
-	EXPECT_EQ(int{1}, NAS2D::stringFrom<int>("1"));
-	EXPECT_THROW(NAS2D::stringFrom<int>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<int>(bigNum), std::out_of_range);
+	EXPECT_EQ(int{-1}, NAS2D::stringTo<int>("-1"));
+	EXPECT_EQ(int{0}, NAS2D::stringTo<int>("0"));
+	EXPECT_EQ(int{1}, NAS2D::stringTo<int>("1"));
+	EXPECT_THROW(NAS2D::stringTo<int>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<int>(bigNum), std::out_of_range);
 
-	EXPECT_THROW(NAS2D::stringFrom<long>("-" + bigNum), std::out_of_range);
-	EXPECT_EQ(long{-1}, NAS2D::stringFrom<long>("-1"));
-	EXPECT_EQ(long{0}, NAS2D::stringFrom<long>("0"));
-	EXPECT_EQ(long{1}, NAS2D::stringFrom<long>("1"));
-	EXPECT_THROW(NAS2D::stringFrom<long>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<long>(bigNum), std::out_of_range);
+	EXPECT_THROW(NAS2D::stringTo<long>("-" + bigNum), std::out_of_range);
+	EXPECT_EQ(long{-1}, NAS2D::stringTo<long>("-1"));
+	EXPECT_EQ(long{0}, NAS2D::stringTo<long>("0"));
+	EXPECT_EQ(long{1}, NAS2D::stringTo<long>("1"));
+	EXPECT_THROW(NAS2D::stringTo<long>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<long>(bigNum), std::out_of_range);
 
-	EXPECT_THROW(NAS2D::stringFrom<long long>("-" + bigNum), std::out_of_range);
-	EXPECT_EQ(long long{-1}, NAS2D::stringFrom<long long>("-1"));
-	EXPECT_EQ(long long{0}, NAS2D::stringFrom<long long>("0"));
-	EXPECT_EQ(long long{1}, NAS2D::stringFrom<long long>("1"));
-	EXPECT_THROW(NAS2D::stringFrom<long long>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<long long>(bigNum), std::out_of_range);
+	EXPECT_THROW(NAS2D::stringTo<long long>("-" + bigNum), std::out_of_range);
+	EXPECT_EQ(long long{-1}, NAS2D::stringTo<long long>("-1"));
+	EXPECT_EQ(long long{0}, NAS2D::stringTo<long long>("0"));
+	EXPECT_EQ(long long{1}, NAS2D::stringTo<long long>("1"));
+	EXPECT_THROW(NAS2D::stringTo<long long>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<long long>(bigNum), std::out_of_range);
 
-	EXPECT_THROW(NAS2D::stringFrom<float>("-" + bigNum), std::out_of_range);
-	EXPECT_EQ(float{-1.0}, NAS2D::stringFrom<float>("-1"));
-	EXPECT_EQ(float{-1.0}, NAS2D::stringFrom<float>("-1.0"));
-	EXPECT_EQ(float{0.0}, NAS2D::stringFrom<float>("0"));
-	EXPECT_EQ(float{0.0}, NAS2D::stringFrom<float>("0.0"));
-	EXPECT_EQ(float{1.0}, NAS2D::stringFrom<float>("1"));
-	EXPECT_EQ(float{1.0}, NAS2D::stringFrom<float>("1.0"));
-	EXPECT_THROW(NAS2D::stringFrom<float>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringFrom<float>(bigNum), std::out_of_range);
+	EXPECT_THROW(NAS2D::stringTo<float>("-" + bigNum), std::out_of_range);
+	EXPECT_EQ(float{-1.0}, NAS2D::stringTo<float>("-1"));
+	EXPECT_EQ(float{-1.0}, NAS2D::stringTo<float>("-1.0"));
+	EXPECT_EQ(float{0.0}, NAS2D::stringTo<float>("0"));
+	EXPECT_EQ(float{0.0}, NAS2D::stringTo<float>("0.0"));
+	EXPECT_EQ(float{1.0}, NAS2D::stringTo<float>("1"));
+	EXPECT_EQ(float{1.0}, NAS2D::stringTo<float>("1.0"));
+	EXPECT_THROW(NAS2D::stringTo<float>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<float>(bigNum), std::out_of_range);
 
-	EXPECT_EQ(double{-1.0}, NAS2D::stringFrom<double>("-1"));
-	EXPECT_EQ(double{-1.0}, NAS2D::stringFrom<double>("-1.0"));
-	EXPECT_EQ(double{0.0}, NAS2D::stringFrom<double>("0"));
-	EXPECT_EQ(double{0.0}, NAS2D::stringFrom<double>("0.0"));
-	EXPECT_EQ(double{1.0}, NAS2D::stringFrom<double>("1"));
-	EXPECT_EQ(double{1.0}, NAS2D::stringFrom<double>("1.0"));
-	EXPECT_THROW(NAS2D::stringFrom<double>(""), std::invalid_argument);
+	EXPECT_EQ(double{-1.0}, NAS2D::stringTo<double>("-1"));
+	EXPECT_EQ(double{-1.0}, NAS2D::stringTo<double>("-1.0"));
+	EXPECT_EQ(double{0.0}, NAS2D::stringTo<double>("0"));
+	EXPECT_EQ(double{0.0}, NAS2D::stringTo<double>("0.0"));
+	EXPECT_EQ(double{1.0}, NAS2D::stringTo<double>("1"));
+	EXPECT_EQ(double{1.0}, NAS2D::stringTo<double>("1.0"));
+	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);
 
-	EXPECT_EQ(long double{-1.0}, NAS2D::stringFrom<long double>("-1"));
-	EXPECT_EQ(long double{-1.0}, NAS2D::stringFrom<long double>("-1.0"));
-	EXPECT_EQ(long double{0.0}, NAS2D::stringFrom<long double>("0"));
-	EXPECT_EQ(long double{0.0}, NAS2D::stringFrom<long double>("0.0"));
-	EXPECT_EQ(long double{1.0}, NAS2D::stringFrom<long double>("1"));
-	EXPECT_EQ(long double{1.0}, NAS2D::stringFrom<long double>("1.0"));
-	EXPECT_THROW(NAS2D::stringFrom<long double>(""), std::invalid_argument);
+	EXPECT_EQ(long double{-1.0}, NAS2D::stringTo<long double>("-1"));
+	EXPECT_EQ(long double{-1.0}, NAS2D::stringTo<long double>("-1.0"));
+	EXPECT_EQ(long double{0.0}, NAS2D::stringTo<long double>("0"));
+	EXPECT_EQ(long double{0.0}, NAS2D::stringTo<long double>("0.0"));
+	EXPECT_EQ(long double{1.0}, NAS2D::stringTo<long double>("1"));
+	EXPECT_EQ(long double{1.0}, NAS2D::stringTo<long double>("1.0"));
+	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
 }
 
 TEST(String, split)

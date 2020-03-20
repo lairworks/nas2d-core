@@ -19,24 +19,24 @@ namespace NAS2D
 {
 
 	template<typename T>
-	T stringFrom(const std::string& value);
+	T stringTo(const std::string& value);
 
-	extern template std::string NAS2D::stringFrom(const std::string& value);
-	extern template bool NAS2D::stringFrom(const std::string& value);
-	extern template char NAS2D::stringFrom(const std::string& value);
-	extern template signed char NAS2D::stringFrom(const std::string& value);
-	extern template unsigned char NAS2D::stringFrom(const std::string& value);
-	extern template short NAS2D::stringFrom(const std::string& value);
-	extern template unsigned short NAS2D::stringFrom(const std::string& value);
-	extern template int NAS2D::stringFrom(const std::string& value);
-	extern template unsigned int NAS2D::stringFrom(const std::string& value);
-	extern template long NAS2D::stringFrom(const std::string& value);
-	extern template unsigned long NAS2D::stringFrom(const std::string& value);
-	extern template long long NAS2D::stringFrom(const std::string& value);
-	extern template unsigned long long NAS2D::stringFrom(const std::string& value);
-	extern template float NAS2D::stringFrom(const std::string& value);
-	extern template double NAS2D::stringFrom(const std::string& value);
-	extern template long double NAS2D::stringFrom(const std::string& value);
+	extern template std::string stringTo(const std::string& value);
+	extern template bool stringTo(const std::string& value);
+	extern template char stringTo(const std::string& value);
+	extern template signed char stringTo(const std::string& value);
+	extern template unsigned char stringTo(const std::string& value);
+	extern template short stringTo(const std::string& value);
+	extern template unsigned short stringTo(const std::string& value);
+	extern template int stringTo(const std::string& value);
+	extern template unsigned int stringTo(const std::string& value);
+	extern template long stringTo(const std::string& value);
+	extern template unsigned long stringTo(const std::string& value);
+	extern template long long stringTo(const std::string& value);
+	extern template unsigned long long stringTo(const std::string& value);
+	extern template float stringTo(const std::string& value);
+	extern template double stringTo(const std::string& value);
+	extern template long double stringTo(const std::string& value);
 
 	std::string toLowercase(std::string str);
 	std::string toUppercase(std::string str);

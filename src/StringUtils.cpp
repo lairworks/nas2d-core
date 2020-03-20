@@ -15,13 +15,13 @@
 #include <sstream>
 
 template<>
-std::string NAS2D::stringFrom(const std::string& value)
+std::string NAS2D::stringTo(const std::string& value)
 {
 	return value;
 }
 
 template<>
-bool NAS2D::stringFrom(const std::string& value)
+bool NAS2D::stringTo(const std::string& value)
 {
 	auto v = toLowercase(value);
 	if (v == "true") return true;
@@ -30,43 +30,43 @@ bool NAS2D::stringFrom(const std::string& value)
 }
 
 template<>
-char NAS2D::stringFrom(const std::string& value)
+char NAS2D::stringTo(const std::string& value)
 {
 	return detail::rangeCheckHelper<char>(value);
 }
 
 template<>
-unsigned char NAS2D::stringFrom(const std::string& value)
+unsigned char NAS2D::stringTo(const std::string& value)
 {
 	return detail::rangeCheckHelper<unsigned char>(value);
 }
 
 template<>
-signed char NAS2D::stringFrom(const std::string& value)
+signed char NAS2D::stringTo(const std::string& value)
 {
 	return detail::rangeCheckHelper<signed char>(value);
 }
 
 template<>
-short NAS2D::stringFrom(const std::string& value)
+short NAS2D::stringTo(const std::string& value)
 {
 	return detail::rangeCheckHelper<short>(value);
 }
 
 template<>
-unsigned short NAS2D::stringFrom(const std::string& value)
+unsigned short NAS2D::stringTo(const std::string& value)
 {
 	return detail::rangeCheckHelper<unsigned short>(value);
 }
 
 template<>
-int NAS2D::stringFrom(const std::string& value)
+int NAS2D::stringTo(const std::string& value)
 {
 	return std::stoi(value);
 }
 
 template<>
-unsigned int NAS2D::stringFrom(const std::string& value)
+unsigned int NAS2D::stringTo(const std::string& value)
 {
 	const auto valueAsInteger = std::stoul(value);
 	if constexpr (std::numeric_limits<unsigned int>::max() < std::numeric_limits<unsigned long>::max())
@@ -80,62 +80,62 @@ unsigned int NAS2D::stringFrom(const std::string& value)
 }
 
 template<>
-long NAS2D::stringFrom(const std::string& value)
+long NAS2D::stringTo(const std::string& value)
 {
 	return std::stol(value);
 }
 
 template<>
-unsigned long NAS2D::stringFrom(const std::string& value)
+unsigned long NAS2D::stringTo(const std::string& value)
 {
 	return std::stoul(value);
 }
 
 template<>
-long long NAS2D::stringFrom(const std::string& value)
+long long NAS2D::stringTo(const std::string& value)
 {
 	return std::stoll(value);
 }
 
 template<>
-unsigned long long NAS2D::stringFrom(const std::string& value)
+unsigned long long NAS2D::stringTo(const std::string& value)
 {
 	return std::stoull(value);
 }
 
 template<>
-float NAS2D::stringFrom(const std::string& value)
+float NAS2D::stringTo(const std::string& value)
 {
 	return std::stof(value);
 }
 
 template<>
-double NAS2D::stringFrom(const std::string& value)
+double NAS2D::stringTo(const std::string& value)
 {
 	return std::stod(value);
 }
 
 template<>
-long double NAS2D::stringFrom(const std::string& value)
+long double NAS2D::stringTo(const std::string& value)
 {
 	return std::stold(value);
 }
 
 
-template std::string NAS2D::stringFrom(const std::string& value);
-template char NAS2D::stringFrom(const std::string& value);
-template signed char NAS2D::stringFrom(const std::string& value);
-template unsigned char NAS2D::stringFrom(const std::string& value);
-template bool NAS2D::stringFrom(const std::string& value);
-template int NAS2D::stringFrom(const std::string& value);
-template unsigned int NAS2D::stringFrom(const std::string& value);
-template long NAS2D::stringFrom(const std::string& value);
-template unsigned long NAS2D::stringFrom(const std::string& value);
-template long long NAS2D::stringFrom(const std::string& value);
-template unsigned long long NAS2D::stringFrom(const std::string& value);
-template float NAS2D::stringFrom(const std::string& value);
-template double NAS2D::stringFrom(const std::string& value);
-template long double NAS2D::stringFrom(const std::string& value);
+template std::string NAS2D::stringTo(const std::string& value);
+template char NAS2D::stringTo(const std::string& value);
+template signed char NAS2D::stringTo(const std::string& value);
+template unsigned char NAS2D::stringTo(const std::string& value);
+template bool NAS2D::stringTo(const std::string& value);
+template int NAS2D::stringTo(const std::string& value);
+template unsigned int NAS2D::stringTo(const std::string& value);
+template long NAS2D::stringTo(const std::string& value);
+template unsigned long NAS2D::stringTo(const std::string& value);
+template long long NAS2D::stringTo(const std::string& value);
+template unsigned long long NAS2D::stringTo(const std::string& value);
+template float NAS2D::stringTo(const std::string& value);
+template double NAS2D::stringTo(const std::string& value);
+template long double NAS2D::stringTo(const std::string& value);
 
 
 /**

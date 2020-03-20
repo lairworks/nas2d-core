@@ -161,7 +161,7 @@ std::string NAS2D::stringFrom(char value)
 template<>
 std::string NAS2D::stringFrom(signed char value)
 {
-	return std::to_string(static_cast<unsigned int>(value));
+	return std::to_string(static_cast<int>(value));
 }
 
 template<>

@@ -80,18 +80,24 @@ jobs:
   build-linux-gcc8:
     docker:
       - image: outpostuniverse/nas2d-gcc8:1.0
+    environment:
+      - WARN_EXTRA: "-Wno-cast-function-type"
     steps:
       - checkout
       - build-and-test
   build-linux-clang:
     docker:
       - image: outpostuniverse/nas2d-clang:1.0
+    environment:
+      - WARN_EXTRA: "-Wmissing-prototypes"
     steps:
       - checkout
       - build-and-test
   build-linux-mingw:
     docker:
       - image: outpostuniverse/nas2d-mingw:1.4
+    environment:
+      - WARN_EXTRA: "-Wno-redundant-decls"
     steps:
       - checkout
       - build-and-test

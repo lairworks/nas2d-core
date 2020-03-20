@@ -22,7 +22,7 @@ Windows_OpenGL_LIBS := -lglew32 -lopengl32
 OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 CPPFLAGS := $(CPPFLAGS_EXTRA) -Iinclude/
-CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Winvalid-pch -Wmissing-format-attribute $(WARN_EXTRA)
+CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) -std=c++17 $(CXXFLAGS_WARN) $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(shell sdl2-config --static-libs) $(OpenGL_LIBS)

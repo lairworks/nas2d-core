@@ -96,6 +96,8 @@ jobs:
   build-linux-mingw:
     docker:
       - image: outpostuniverse/nas2d-mingw:1.4
+    environment:
+      - WARN_EXTRA: "-Wno-redundant-decls"
     steps:
       - checkout
       - build-and-test

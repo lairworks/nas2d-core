@@ -126,6 +126,8 @@ template std::string NAS2D::stringTo(const std::string& value);
 template char NAS2D::stringTo(const std::string& value);
 template signed char NAS2D::stringTo(const std::string& value);
 template unsigned char NAS2D::stringTo(const std::string& value);
+template short NAS2D::stringTo(const std::string& value);
+template unsigned short NAS2D::stringTo(const std::string& value);
 template bool NAS2D::stringTo(const std::string& value);
 template int NAS2D::stringTo(const std::string& value);
 template unsigned int NAS2D::stringTo(const std::string& value);

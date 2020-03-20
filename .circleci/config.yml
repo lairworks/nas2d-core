@@ -80,6 +80,8 @@ jobs:
   build-linux-gcc8:
     docker:
       - image: outpostuniverse/nas2d-gcc8:1.0
+    environment:
+      - WARN_EXTRA: "-Wno-cast-function-type"
     steps:
       - checkout
       - build-and-test

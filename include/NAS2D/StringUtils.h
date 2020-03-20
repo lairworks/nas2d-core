@@ -38,6 +38,29 @@ namespace NAS2D
 	extern template double stringTo(const std::string& value);
 	extern template long double stringTo(const std::string& value);
 
+
+	template<typename T>
+	std::string stringFrom(T value);
+
+	extern template std::string stringFrom(std::string value);
+	extern template std::string stringFrom(bool value);
+	extern template std::string stringFrom(char value);
+	extern template std::string stringFrom(signed char value);
+	extern template std::string stringFrom(unsigned char value);
+	extern template std::string stringFrom(short value);
+	extern template std::string stringFrom(unsigned short value);
+	extern template std::string stringFrom(int value);
+	extern template std::string stringFrom(unsigned int value);
+	extern template std::string stringFrom(long value);
+	extern template std::string stringFrom(unsigned long value);
+	extern template std::string stringFrom(long long value);
+	extern template std::string stringFrom(unsigned long long value);
+	extern template std::string stringFrom(float value);
+	extern template std::string stringFrom(double value);
+	extern template std::string stringFrom(long double value);
+
+
+
 	std::string toLowercase(std::string str);
 	std::string toUppercase(std::string str);
 	std::vector<std::string> split(std::string str, char delim = ',');

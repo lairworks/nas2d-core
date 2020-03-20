@@ -138,6 +138,121 @@ template double NAS2D::stringTo(const std::string& value);
 template long double NAS2D::stringTo(const std::string& value);
 
 
+template<>
+std::string NAS2D::stringFrom(std::string value)
+{
+	return value;
+}
+
+template<>
+std::string NAS2D::stringFrom(bool value)
+{
+	return value ? "true" : "false";
+}
+
+template<>
+std::string NAS2D::stringFrom(char value)
+{
+	return std::string{value};
+}
+
+template<>
+std::string NAS2D::stringFrom(signed char value)
+{
+	return std::to_string(static_cast<unsigned int>(value));
+}
+
+template<>
+std::string NAS2D::stringFrom(unsigned char value)
+{
+	return std::to_string(static_cast<unsigned int>(value));
+}
+
+template<>
+std::string NAS2D::stringFrom(short value)
+{
+	return std::to_string(static_cast<int>(value));
+}
+
+template<>
+std::string NAS2D::stringFrom(unsigned short value)
+{
+	return std::to_string(static_cast<unsigned int>(value));
+}
+
+template<>
+std::string NAS2D::stringFrom(int value)
+{
+	return std::to_string(value);
+}
+
+template<>
+std::string NAS2D::stringFrom(unsigned int value)
+{
+	return std::to_string(value);
+}
+
+template<>
+std::string NAS2D::stringFrom(long value)
+{
+	return std::to_string(value);
+}
+
+template<>
+std::string NAS2D::stringFrom(unsigned long value)
+{
+	return std::to_string(value);
+}
+
+template<>
+std::string NAS2D::stringFrom(long long value)
+{
+	return std::to_string(value);
+}
+
+template<>
+std::string NAS2D::stringFrom(unsigned long long value)
+{
+	return std::to_string(value);
+}
+
+template<>
+std::string NAS2D::stringFrom(float value)
+{
+	return std::to_string(value);
+}
+
+template<>
+std::string NAS2D::stringFrom(double value)
+{
+	return std::to_string(value);
+}
+
+template<>
+std::string NAS2D::stringFrom(long double value)
+{
+	return std::to_string(value);
+}
+
+
+template std::string NAS2D::stringFrom(const std::string& value);
+template std::string NAS2D::stringFrom(const bool& value);
+template std::string NAS2D::stringFrom(const char& value);
+template std::string NAS2D::stringFrom(const signed char& value);
+template std::string NAS2D::stringFrom(const unsigned char& value);
+template std::string NAS2D::stringFrom(const short& value);
+template std::string NAS2D::stringFrom(const unsigned short& value);
+template std::string NAS2D::stringFrom(const int& value);
+template std::string NAS2D::stringFrom(const unsigned int& value);
+template std::string NAS2D::stringFrom(const long& value);
+template std::string NAS2D::stringFrom(const unsigned long& value);
+template std::string NAS2D::stringFrom(const long long& value);
+template std::string NAS2D::stringFrom(const unsigned long long& value);
+template std::string NAS2D::stringFrom(const float& value);
+template std::string NAS2D::stringFrom(const double& value);
+template std::string NAS2D::stringFrom(const long double& value);
+
+
 /**
  * \fn toLowercase(const std::string& str)
  *

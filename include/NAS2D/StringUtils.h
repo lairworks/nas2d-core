@@ -110,7 +110,7 @@ namespace NAS2D
 			{
 				if (std::numeric_limits<T>::max() < valueAsInteger)
 				{
-					throw std::out_of_range("from_string argument out of range");
+					throw std::out_of_range("rangeCheckHelper argument out of range");
 				}
 			}
 			return static_cast<T>(valueAsInteger);

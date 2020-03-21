@@ -115,6 +115,7 @@ namespace NAS2D
 			}
 			return static_cast<T>(valueAsInteger);
 		}
+		extern template char rangeCheckHelper(const std::string& value);
 	}
 
 } // namespace NAS2D

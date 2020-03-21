@@ -16,7 +16,7 @@ TEST(String, stringTo)
 	EXPECT_EQ(false, NAS2D::stringTo<bool>("false"));
 	EXPECT_THROW(NAS2D::stringTo<bool>("foobar"), std::invalid_argument);
 
-	EXPECT_EQ(char{0}, NAS2D::stringTo<char>("0"));
+	EXPECT_EQ(char{'0'}, NAS2D::stringTo<char>("0"));
 	EXPECT_EQ(unsigned char{129}, NAS2D::stringTo<unsigned char>("129"));
 	EXPECT_EQ(signed char{-1}, NAS2D::stringTo<signed char>("-1"));
 

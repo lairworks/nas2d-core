@@ -15,6 +15,18 @@
 #include <sstream>
 
 template<>
+char NAS2D::detail::rangeCheckHelper(const std::string& value)
+{
+	if (value.empty())
+	{
+		throw std::invalid_argument("rangeCheckHelper string must be non-empty.");
+	}
+	return value[0];
+}
+
+template char NAS2D::detail::rangeCheckHelper(const std::string& value);
+
+template<>
 std::string NAS2D::stringTo(const std::string& value)
 {
 	return value;

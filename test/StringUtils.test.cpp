@@ -73,6 +73,7 @@ TEST(String, stringTo)
 	EXPECT_EQ(float{0.0}, NAS2D::stringTo<float>("0.0"));
 	EXPECT_EQ(float{1.0}, NAS2D::stringTo<float>("1"));
 	EXPECT_EQ(float{1.0}, NAS2D::stringTo<float>("1.0"));
+	EXPECT_EQ(float{1.1f}, NAS2D::stringTo<float>("1.1"));
 	EXPECT_THROW(NAS2D::stringTo<float>(""), std::invalid_argument);
 	EXPECT_THROW(NAS2D::stringTo<float>(bigNum), std::out_of_range);
 
@@ -82,6 +83,7 @@ TEST(String, stringTo)
 	EXPECT_EQ(double{0.0}, NAS2D::stringTo<double>("0.0"));
 	EXPECT_EQ(double{1.0}, NAS2D::stringTo<double>("1"));
 	EXPECT_EQ(double{1.0}, NAS2D::stringTo<double>("1.0"));
+	EXPECT_EQ(double{1.1}, NAS2D::stringTo<double>("1.1"));
 	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);
 
 	EXPECT_EQ(long double{-1.0}, NAS2D::stringTo<long double>("-1"));
@@ -90,6 +92,7 @@ TEST(String, stringTo)
 	EXPECT_EQ(long double{0.0}, NAS2D::stringTo<long double>("0.0"));
 	EXPECT_EQ(long double{1.0}, NAS2D::stringTo<long double>("1"));
 	EXPECT_EQ(long double{1.0}, NAS2D::stringTo<long double>("1.0"));
+	EXPECT_EQ(long double{1.1L}, NAS2D::stringTo<long double>("1.1"));
 	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
 }
 
@@ -142,25 +145,31 @@ TEST(String, stringFrom)
 	EXPECT_EQ("1"s, NAS2D::stringFrom<long long>(1));
 
 	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<float>(-1));
-	EXPECT_EQ("-1.100000"s, NAS2D::stringFrom<float>(-1.1));
+	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<float>(-1.0));
+	EXPECT_EQ("-1.100000"s, NAS2D::stringFrom<float>(-1.1f));
 	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<float>(0));
 	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<float>(0.0));
 	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<float>(1));
 	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<float>(1.0));
+	EXPECT_EQ("1.100000"s, NAS2D::stringFrom<float>(1.1f));
 
 	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<double>(-1));
 	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<double>(-1.0));
+	EXPECT_EQ("-1.100000"s, NAS2D::stringFrom<double>(-1.1));
 	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<double>(0));
 	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<double>(0.0));
 	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<double>(1));
 	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<double>(1.0));
+	EXPECT_EQ("1.100000"s, NAS2D::stringFrom<double>(1.1));
 
 	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<long double>(-1));
 	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<long double>(-1.0));
+	EXPECT_EQ("-1.100000"s, NAS2D::stringFrom<long double>(-1.1L));
 	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<long double>(0));
 	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<long double>(0.0));
 	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<long double>(1));
 	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<long double>(1.0));
+	EXPECT_EQ("1.100000"s, NAS2D::stringFrom<long double>(1.1L));
 }
 
 TEST(String, split)

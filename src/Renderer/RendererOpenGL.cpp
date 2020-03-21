@@ -642,7 +642,8 @@ void NAS2D::RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBoun
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(orthoBounds.startPoint().x(), orthoBounds.endPoint().x(), orthoBounds.endPoint().y(), orthoBounds.startPoint().x(), -1.0, 1.0f);
+	const auto bounds = orthoBounds.to<double>();
+	glOrtho(bounds.startPoint().x(), bounds.endPoint().x(), bounds.endPoint().y(), bounds.startPoint().y(), -1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 }
 

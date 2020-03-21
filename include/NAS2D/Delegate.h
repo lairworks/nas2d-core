@@ -392,7 +392,7 @@ public:
 
 	DelegateX() { clear(); }
 	DelegateX(const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); }
-	void operator = (const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); }
+	DelegateX& operator = (const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); return *this; }
 	bool operator ==(const DelegateX& x) const { return m_Closure.IsEqual(x.m_Closure); }
 	bool operator !=(const DelegateX& x) const { return !m_Closure.IsEqual(x.m_Closure); }
 	bool operator <(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
@@ -409,7 +409,7 @@ public:
 	inline void Bind(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 
 	DelegateX(DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
-	void operator = (DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
+	DelegateX& operator = (DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); return *this; }
 	inline void Bind(DesiredRetType(*function_to_bind)(Params...)) { m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind); }
 	RetType operator() (Params...params) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...); }
 
@@ -455,7 +455,7 @@ public:
 	Delegate(const Y* pthis, R(X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
 
 	Delegate(R(*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
-	void operator = (const BaseType& x) { *static_cast<BaseType*>(this) = x; }
+	Delegate& operator = (const BaseType& x) { *static_cast<BaseType*>(this) = x; return *this; }
 };
 
 #endif

@@ -21,43 +21,43 @@ namespace NAS2D
 	template<typename T>
 	T stringTo(const std::string& value);
 
-	extern template std::string stringTo(const std::string& value);
-	extern template bool stringTo(const std::string& value);
-	extern template char stringTo(const std::string& value);
-	extern template signed char stringTo(const std::string& value);
-	extern template unsigned char stringTo(const std::string& value);
-	extern template short stringTo(const std::string& value);
-	extern template unsigned short stringTo(const std::string& value);
-	extern template int stringTo(const std::string& value);
-	extern template unsigned int stringTo(const std::string& value);
-	extern template long stringTo(const std::string& value);
-	extern template unsigned long stringTo(const std::string& value);
-	extern template long long stringTo(const std::string& value);
-	extern template unsigned long long stringTo(const std::string& value);
-	extern template float stringTo(const std::string& value);
-	extern template double stringTo(const std::string& value);
-	extern template long double stringTo(const std::string& value);
+	// extern template std::string stringTo(const std::string& value);
+	// extern template bool stringTo(const std::string& value);
+	// extern template char stringTo(const std::string& value);
+	// extern template signed char stringTo(const std::string& value);
+	// extern template unsigned char stringTo(const std::string& value);
+	// extern template short stringTo(const std::string& value);
+	// extern template unsigned short stringTo(const std::string& value);
+	// extern template int stringTo(const std::string& value);
+	// extern template unsigned int stringTo(const std::string& value);
+	// extern template long stringTo(const std::string& value);
+	// extern template unsigned long stringTo(const std::string& value);
+	// extern template long long stringTo(const std::string& value);
+	// extern template unsigned long long stringTo(const std::string& value);
+	// extern template float stringTo(const std::string& value);
+	// extern template double stringTo(const std::string& value);
+	// extern template long double stringTo(const std::string& value);
 
 
 	template<typename T>
 	std::string stringFrom(T value);
 
-	extern template std::string stringFrom(std::string value);
-	extern template std::string stringFrom(bool value);
-	extern template std::string stringFrom(char value);
-	extern template std::string stringFrom(signed char value);
-	extern template std::string stringFrom(unsigned char value);
-	extern template std::string stringFrom(short value);
-	extern template std::string stringFrom(unsigned short value);
-	extern template std::string stringFrom(int value);
-	extern template std::string stringFrom(unsigned int value);
-	extern template std::string stringFrom(long value);
-	extern template std::string stringFrom(unsigned long value);
-	extern template std::string stringFrom(long long value);
-	extern template std::string stringFrom(unsigned long long value);
-	extern template std::string stringFrom(float value);
-	extern template std::string stringFrom(double value);
-	extern template std::string stringFrom(long double value);
+	// extern template std::string stringFrom(std::string value);
+	// extern template std::string stringFrom(bool value);
+	// extern template std::string stringFrom(char value);
+	// extern template std::string stringFrom(signed char value);
+	// extern template std::string stringFrom(unsigned char value);
+	// extern template std::string stringFrom(short value);
+	// extern template std::string stringFrom(unsigned short value);
+	// extern template std::string stringFrom(int value);
+	// extern template std::string stringFrom(unsigned int value);
+	// extern template std::string stringFrom(long value);
+	// extern template std::string stringFrom(unsigned long value);
+	// extern template std::string stringFrom(long long value);
+	// extern template std::string stringFrom(unsigned long long value);
+	// extern template std::string stringFrom(float value);
+	// extern template std::string stringFrom(double value);
+	// extern template std::string stringFrom(long double value);
 
 
 
@@ -112,7 +112,6 @@ namespace NAS2D
 			}
 			return static_cast<T>(valueAsInteger);
 		}
-		extern template char rangeCheckHelper(const std::string& value);
 	}
 
 } // namespace NAS2D

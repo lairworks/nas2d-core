@@ -97,22 +97,5 @@ namespace NAS2D
  */
 	using StringList = std::vector<std::string>;
 
-	namespace detail
-	{
-		template<typename T>
-		T rangeCheckHelper(const std::string& value)
-		{
-			const auto valueAsInteger = std::stoi(value);
-			if constexpr (std::numeric_limits<T>::max() < std::numeric_limits<int>::max())
-			{
-				if (std::numeric_limits<T>::max() < valueAsInteger)
-				{
-					throw std::out_of_range("rangeCheckHelper argument out of range");
-				}
-			}
-			return static_cast<T>(valueAsInteger);
-		}
-	}
-
 } // namespace NAS2D
 

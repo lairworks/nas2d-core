@@ -14,20 +14,38 @@
 #include <numeric>
 #include <sstream>
 
-namespace NAS2D
+namespace
 {
+	template<typename T>
+	T rangeCheckHelper(const std::string& value)
+	{
+		const auto valueAsInteger = std::stoi(value);
+		if constexpr (std::numeric_limits<T>::max() < std::numeric_limits<int>::max())
+		{
+			if (std::numeric_limits<T>::max() < valueAsInteger)
+			{
+				throw std::out_of_range("rangeCheckHelper argument out of range");
+			}
+		}
+		return static_cast<T>(valueAsInteger);
+	}
 
 	template<>
-	char detail::rangeCheckHelper(const std::string& value)
+	char rangeCheckHelper(const std::string& value)
 	{
-		if(value.size() != 1)
+		if (value.size() != 1)
 		{
 			throw std::invalid_argument("rangeCheckHelper string length must be exactly one (1).");
 		}
 		return value[0];
 	}
 
-	// template char detail::rangeCheckHelper(const std::string& value);
+}
+
+namespace NAS2D
+{
+
+	// template char rangeCheckHelper(const std::string& value);
 
 	template<>
 	std::string stringTo(const std::string& value)
@@ -47,31 +65,31 @@ namespace NAS2D
 	template<>
 	char stringTo(const std::string& value)
 	{
-		return detail::rangeCheckHelper<char>(value);
+		return rangeCheckHelper<char>(value);
 	}
 
 	template<>
 	unsigned char stringTo(const std::string& value)
 	{
-		return detail::rangeCheckHelper<unsigned char>(value);
+		return rangeCheckHelper<unsigned char>(value);
 	}
 
 	template<>
 	signed char stringTo(const std::string& value)
 	{
-		return detail::rangeCheckHelper<signed char>(value);
+		return rangeCheckHelper<signed char>(value);
 	}
 
 	template<>
 	short stringTo(const std::string& value)
 	{
-		return detail::rangeCheckHelper<short>(value);
+		return rangeCheckHelper<short>(value);
 	}
 
 	template<>
 	unsigned short stringTo(const std::string& value)
 	{
-		return detail::rangeCheckHelper<unsigned short>(value);
+		return rangeCheckHelper<unsigned short>(value);
 	}
 
 	template<>

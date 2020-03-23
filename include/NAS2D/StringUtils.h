@@ -21,22 +21,22 @@ namespace NAS2D
 	template<typename T>
 	T stringTo(const std::string& value);
 
-	// extern template std::string stringTo(const std::string& value);
-	// extern template bool stringTo(const std::string& value);
-	// extern template char stringTo(const std::string& value);
-	// extern template signed char stringTo(const std::string& value);
-	// extern template unsigned char stringTo(const std::string& value);
-	// extern template short stringTo(const std::string& value);
-	// extern template unsigned short stringTo(const std::string& value);
-	// extern template int stringTo(const std::string& value);
-	// extern template unsigned int stringTo(const std::string& value);
-	// extern template long stringTo(const std::string& value);
-	// extern template unsigned long stringTo(const std::string& value);
-	// extern template long long stringTo(const std::string& value);
-	// extern template unsigned long long stringTo(const std::string& value);
-	// extern template float stringTo(const std::string& value);
-	// extern template double stringTo(const std::string& value);
-	// extern template long double stringTo(const std::string& value);
+	template<> std::string stringTo<std::string>(const std::string& value);
+	template<> bool stringTo<bool>(const std::string& value);
+	template<> char stringTo<char>(const std::string& value);
+	template<> signed char stringTo<signed char>(const std::string& value);
+	template<> unsigned char stringTo<unsigned char>(const std::string& value);
+	template<> short stringTo<short>(const std::string& value);
+	template<> unsigned short stringTo<unsigned short>(const std::string& value);
+	template<> int stringTo<int>(const std::string& value);
+	template<> unsigned int stringTo<unsigned int>(const std::string& value);
+	template<> long stringTo<long>(const std::string& value);
+	template<> unsigned long stringTo<unsigned long>(const std::string& value);
+	template<> long long stringTo<long long>(const std::string& value);
+	template<> unsigned long long stringTo<unsigned long long>(const std::string& value);
+	template<> float stringTo<float>(const std::string& value);
+	template<> double stringTo<double>(const std::string& value);
+	template<> long double stringTo<long double>(const std::string& value);
 
 
 	template<typename T>
@@ -45,44 +45,13 @@ namespace NAS2D
 		return std::to_string(value);
 	}
 
-	template<>
-	std::string stringFrom(std::string value);
-
-	template<>
-	std::string stringFrom(bool value);
-
-	template<>
-	std::string stringFrom(char value);
-
-	template<>
-	std::string stringFrom(signed char value);
-
-	template<>
-	std::string stringFrom(unsigned char value);
-
-	template<>
-	std::string stringFrom(short value);
-
-	template<>
-	std::string stringFrom(unsigned short value);
-
-	// extern template std::string stringFrom(std::string value);
-	// extern template std::string stringFrom(bool value);
-	// extern template std::string stringFrom(char value);
-	// extern template std::string stringFrom(signed char value);
-	// extern template std::string stringFrom(unsigned char value);
-	// extern template std::string stringFrom(short value);
-	// extern template std::string stringFrom(unsigned short value);
-	// extern template std::string stringFrom(int value);
-	// extern template std::string stringFrom(unsigned int value);
-	// extern template std::string stringFrom(long value);
-	// extern template std::string stringFrom(unsigned long value);
-	// extern template std::string stringFrom(long long value);
-	// extern template std::string stringFrom(unsigned long long value);
-	// extern template std::string stringFrom(float value);
-	// extern template std::string stringFrom(double value);
-	// extern template std::string stringFrom(long double value);
-
+	template<> std::string stringFrom(std::string value);
+	template<> std::string stringFrom(bool value);
+	template<> std::string stringFrom(char value);
+	template<> std::string stringFrom(signed char value);
+	template<> std::string stringFrom(unsigned char value);
+	template<> std::string stringFrom(short value);
+	template<> std::string stringFrom(unsigned short value);
 
 
 	std::string toLowercase(std::string str);

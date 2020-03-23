@@ -96,16 +96,29 @@ TEST(String, stringTo)
 	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
 }
 
-TEST(String, stringFrom)
+TEST(String, stringFromStdString)
 {
 	using namespace std::literals::string_literals;
-	const std::string bigNum(40, '9');
+
+	EXPECT_EQ(""s, NAS2D::stringFrom<std::string>(""));
+	EXPECT_EQ("Hello World"s, NAS2D::stringFrom<std::string>("Hello World"));
+}
+
+
+TEST(String, stringFromBool)
+{
+	using namespace std::literals::string_literals;
 
 	EXPECT_EQ(std::string{""}, NAS2D::stringFrom<std::string>(""));
 	EXPECT_EQ(std::string{"Hello World"}, NAS2D::stringFrom<std::string>("Hello World"));
 
 	EXPECT_EQ("true"s, NAS2D::stringFrom<bool>(true));
 	EXPECT_EQ("false"s, NAS2D::stringFrom<bool>(false));
+}
+
+TEST(String, stringFromChar)
+{
+	using namespace std::literals::string_literals;
 
 	EXPECT_EQ("A"s, NAS2D::stringFrom<char>(65));
 	EXPECT_EQ("B"s, NAS2D::stringFrom<char>(66));
@@ -116,60 +129,83 @@ TEST(String, stringFrom)
 	EXPECT_EQ("129"s, NAS2D::stringFrom<unsigned char>(129));
 	EXPECT_EQ("-1"s, NAS2D::stringFrom<signed char>(-1));
 
-	EXPECT_EQ("0"s, NAS2D::stringFrom<unsigned short>(0));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<unsigned short>(1));
+}
 
-	EXPECT_EQ("0"s, NAS2D::stringFrom<unsigned int>(0));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<unsigned int>(1));
 
-	EXPECT_EQ("0"s, NAS2D::stringFrom<unsigned long>(0));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<unsigned long>(1));
+template<typename T>
+class StringFromSignedIntegerTest : public ::testing::Test
+{
+  public:
+	  StringFromSignedIntegerTest<T>()
+	{}
 
-	EXPECT_EQ("0"s, NAS2D::stringFrom<unsigned long long>(0));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<unsigned long long>(1));
+	T negOne{-1};
+	T zero{0};
+	T one{1};
+};
 
-	EXPECT_EQ("-1"s, NAS2D::stringFrom<short>(-1));
-	EXPECT_EQ("0"s, NAS2D::stringFrom<short>(0));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<short>(1));
+using StringFromSignedIntegerTestTypes = ::testing::Types<short, int, long, long long>;
+TYPED_TEST_SUITE(StringFromSignedIntegerTest, StringFromSignedIntegerTestTypes);
 
-	EXPECT_EQ("-1"s, NAS2D::stringFrom<int>(-1));
-	EXPECT_EQ("0"s, NAS2D::stringFrom<int>(0));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<int>(1));
+TYPED_TEST(StringFromSignedIntegerTest, StringFromSignedIntegerTestEdgeCases)
+{
+	using namespace std::literals::string_literals;
 
-	EXPECT_EQ("-1"s, NAS2D::stringFrom<long>(-1));
-	EXPECT_EQ("0"s, NAS2D::stringFrom<long>(0));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<long>(1));
+	EXPECT_EQ("-1"s, NAS2D::stringFrom<TypeParam>(this->negOne));
+	EXPECT_EQ("0"s, NAS2D::stringFrom<TypeParam>(this->zero));
+	EXPECT_EQ("1"s, NAS2D::stringFrom<TypeParam>(this->one));
+}
 
-	EXPECT_EQ("-1"s, NAS2D::stringFrom<long long>(-1));
-	EXPECT_EQ("0"s, NAS2D::stringFrom<long long>(0));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<long long>(1));
 
-	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<float>(-1));
-	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<float>(-1.0));
-	EXPECT_EQ("-1.100000"s, NAS2D::stringFrom<float>(-1.1f));
-	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<float>(0));
-	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<float>(0.0));
-	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<float>(1));
-	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<float>(1.0));
-	EXPECT_EQ("1.100000"s, NAS2D::stringFrom<float>(1.1f));
+template<typename T>
+class StringFromUnsignedIntegerTest : public ::testing::Test
+{
+  public:
+	StringFromUnsignedIntegerTest<T>()
+	{}
 
-	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<double>(-1));
-	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<double>(-1.0));
-	EXPECT_EQ("-1.100000"s, NAS2D::stringFrom<double>(-1.1));
-	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<double>(0));
-	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<double>(0.0));
-	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<double>(1));
-	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<double>(1.0));
-	EXPECT_EQ("1.100000"s, NAS2D::stringFrom<double>(1.1));
+	T zero{0};
+	T one{1};
+};
 
-	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<long double>(-1));
-	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<long double>(-1.0));
-	EXPECT_EQ("-1.100000"s, NAS2D::stringFrom<long double>(-1.1L));
-	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<long double>(0));
-	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<long double>(0.0));
-	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<long double>(1));
-	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<long double>(1.0));
-	EXPECT_EQ("1.100000"s, NAS2D::stringFrom<long double>(1.1L));
+using StringFromUnsignedIntegerTestTypes = ::testing::Types<unsigned short, unsigned int, unsigned long, unsigned long long>;
+TYPED_TEST_SUITE(StringFromUnsignedIntegerTest, StringFromUnsignedIntegerTestTypes);
+
+TYPED_TEST(StringFromUnsignedIntegerTest, StringFromUnsignedIntegerTestEdgeCases)
+{
+	using namespace std::literals::string_literals;
+
+	EXPECT_EQ("0"s, NAS2D::stringFrom<TypeParam>(this->zero));
+	EXPECT_EQ("1"s, NAS2D::stringFrom<TypeParam>(this->one));
+}
+
+template<typename T>
+class StringFromFloatingPointTest : public ::testing::Test
+{
+  public:
+	  StringFromFloatingPointTest<T>()
+	{}
+
+	T negOneAndHalf{-1.5};
+	T negOne{-1.0};
+	T zero{0.0};
+	T one{1.0};
+	T oneAndHalf{1.5};
+};
+
+
+using StringFromFloatingPointTestTypes = ::testing::Types<float, double, long double>;
+TYPED_TEST_SUITE(StringFromFloatingPointTest, StringFromFloatingPointTestTypes);
+
+TYPED_TEST(StringFromFloatingPointTest, StringFromFloatingPointTestEdgeCases)
+{
+	using namespace std::literals::string_literals;
+
+	EXPECT_EQ("-1.500000"s, NAS2D::stringFrom<TypeParam>(this->negOneAndHalf));
+	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<TypeParam>(this->negOne));
+	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<TypeParam>(this->zero));
+	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<TypeParam>(this->one));
+	EXPECT_EQ("1.500000"s, NAS2D::stringFrom<TypeParam>(this->oneAndHalf));
 }
 
 

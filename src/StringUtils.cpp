@@ -14,413 +14,416 @@
 #include <numeric>
 #include <sstream>
 
-template<>
-char NAS2D::detail::rangeCheckHelper(const std::string& value)
+namespace NAS2D
 {
-	if (value.size() != 1)
+
+	template<>
+	char detail::rangeCheckHelper(const std::string& value)
 	{
-		throw std::invalid_argument("rangeCheckHelper string length must be exactly one (1).");
-	}
-	return value[0];
-}
-
-// template char NAS2D::detail::rangeCheckHelper(const std::string& value);
-
-template<>
-std::string NAS2D::stringTo(const std::string& value)
-{
-	return value;
-}
-
-template<>
-bool NAS2D::stringTo(const std::string& value)
-{
-	auto v = toLowercase(value);
-	if (v == "true") return true;
-	if (v == "false") return false;
-	throw std::invalid_argument("Value is not 'true' or 'false' value: " + value);
-}
-
-template<>
-char NAS2D::stringTo(const std::string& value)
-{
-	return detail::rangeCheckHelper<char>(value);
-}
-
-template<>
-unsigned char NAS2D::stringTo(const std::string& value)
-{
-	return detail::rangeCheckHelper<unsigned char>(value);
-}
-
-template<>
-signed char NAS2D::stringTo(const std::string& value)
-{
-	return detail::rangeCheckHelper<signed char>(value);
-}
-
-template<>
-short NAS2D::stringTo(const std::string& value)
-{
-	return detail::rangeCheckHelper<short>(value);
-}
-
-template<>
-unsigned short NAS2D::stringTo(const std::string& value)
-{
-	return detail::rangeCheckHelper<unsigned short>(value);
-}
-
-template<>
-int NAS2D::stringTo(const std::string& value)
-{
-	return std::stoi(value);
-}
-
-template<>
-unsigned int NAS2D::stringTo(const std::string& value)
-{
-	const auto valueAsInteger = std::stoul(value);
-	if constexpr (std::numeric_limits<unsigned int>::max() < std::numeric_limits<unsigned long>::max())
-	{
-		if (std::numeric_limits<unsigned int>::max() < valueAsInteger)
+		if(value.size() != 1)
 		{
-			throw std::out_of_range("from_string argument out of range");
+			throw std::invalid_argument("rangeCheckHelper string length must be exactly one (1).");
 		}
+		return value[0];
 	}
-	return static_cast<unsigned int>(valueAsInteger);
-}
 
-template<>
-long NAS2D::stringTo(const std::string& value)
-{
-	return std::stol(value);
-}
+	// template char detail::rangeCheckHelper(const std::string& value);
 
-template<>
-unsigned long NAS2D::stringTo(const std::string& value)
-{
-	return std::stoul(value);
-}
-
-template<>
-long long NAS2D::stringTo(const std::string& value)
-{
-	return std::stoll(value);
-}
-
-template<>
-unsigned long long NAS2D::stringTo(const std::string& value)
-{
-	return std::stoull(value);
-}
-
-template<>
-float NAS2D::stringTo(const std::string& value)
-{
-	return std::stof(value);
-}
-
-template<>
-double NAS2D::stringTo(const std::string& value)
-{
-	return std::stod(value);
-}
-
-template<>
-long double NAS2D::stringTo(const std::string& value)
-{
-	return std::stold(value);
-}
-
-
-template<>
-std::string NAS2D::stringFrom(std::string value)
-{
-	return value;
-}
-
-template<>
-std::string NAS2D::stringFrom(bool value)
-{
-	return value ? "true" : "false";
-}
-
-template<>
-std::string NAS2D::stringFrom(char value)
-{
-	return std::string{value};
-}
-
-template<>
-std::string NAS2D::stringFrom(signed char value)
-{
-	return std::to_string(static_cast<int>(value));
-}
-
-template<>
-std::string NAS2D::stringFrom(unsigned char value)
-{
-	return std::to_string(static_cast<unsigned int>(value));
-}
-
-template<>
-std::string NAS2D::stringFrom(short value)
-{
-	return std::to_string(static_cast<int>(value));
-}
-
-template<>
-std::string NAS2D::stringFrom(unsigned short value)
-{
-	return std::to_string(static_cast<unsigned int>(value));
-}
-
-template<>
-std::string NAS2D::stringFrom(int value)
-{
-	return std::to_string(value);
-}
-
-template<>
-std::string NAS2D::stringFrom(unsigned int value)
-{
-	return std::to_string(value);
-}
-
-template<>
-std::string NAS2D::stringFrom(long value)
-{
-	return std::to_string(value);
-}
-
-template<>
-std::string NAS2D::stringFrom(unsigned long value)
-{
-	return std::to_string(value);
-}
-
-template<>
-std::string NAS2D::stringFrom(long long value)
-{
-	return std::to_string(value);
-}
-
-template<>
-std::string NAS2D::stringFrom(unsigned long long value)
-{
-	return std::to_string(value);
-}
-
-template<>
-std::string NAS2D::stringFrom(float value)
-{
-	return std::to_string(value);
-}
-
-template<>
-std::string NAS2D::stringFrom(double value)
-{
-	return std::to_string(value);
-}
-
-template<>
-std::string NAS2D::stringFrom(long double value)
-{
-	return std::to_string(value);
-}
-
-
-/**
- * \fn toLowercase(const std::string& str)
- *
- * Converts a string to lowercase.
- *
- * \param str	Source string.
- *
- * \return	Returns the converted string.
- */
-std::string NAS2D::toLowercase(std::string str)
-{
-	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::tolower(c)); });
-	return str;
-}
-
-/**
- * \fn toUppercase(const std::string& str)
- *
- * Converts a string to uppercase.
- *
- * \param str	Source string.
- *
- * \return	Returns the converted string.
- */
-std::string NAS2D::toUppercase(std::string str)
-{
-	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::toupper(c)); });
-	return str;
-}
-
-std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/)
-{
-	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
-	NAS2D::StringList result{};
-	result.reserve(potential_count);
-
-	std::istringstream ss(str);
-
-	std::string curString{};
-	while (std::getline(ss, curString, delim))
+	template<>
+	std::string stringTo(const std::string& value)
 	{
-		result.push_back(curString);
+		return value;
 	}
-	if (ss.eof() && str.back() == delim)
-	{
-		result.push_back(std::string{});
-	}
-	result.shrink_to_fit();
-	return result;
-}
-std::vector<std::string> NAS2D::splitSkipEmpty(std::string str, char delim /*= ','*/)
-{
-	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
-	NAS2D::StringList result{};
-	result.reserve(potential_count);
 
-	std::istringstream ss(str);
-
-	std::string curString{};
-	while (std::getline(ss, curString, delim))
+	template<>
+	bool stringTo(const std::string& value)
 	{
-		if (curString.empty()) { continue; }
-		result.push_back(curString);
+		auto v = toLowercase(value);
+		if(v == "true") return true;
+		if(v == "false") return false;
+		throw std::invalid_argument("Value is not 'true' or 'false' value: " + value);
 	}
-	result.shrink_to_fit();
-	return result;
-}
 
-std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, char delim)
-{
-	const auto delim_loc = str.find_first_of(delim);
-	if (delim_loc == std::string::npos)
+	template<>
+	char stringTo(const std::string& value)
 	{
-		return std::make_pair(str, std::string{});
+		return detail::rangeCheckHelper<char>(value);
 	}
-	else
-	{
-		return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
-	}
-}
 
-std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, char delim)
-{
-	const auto delim_loc = str.find_last_of(delim);
-	if (delim_loc == std::string::npos)
+	template<>
+	unsigned char stringTo(const std::string& value)
 	{
-		return std::make_pair(std::string{}, str);
+		return detail::rangeCheckHelper<unsigned char>(value);
 	}
-	else
+
+	template<>
+	signed char stringTo(const std::string& value)
 	{
-		return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+		return detail::rangeCheckHelper<signed char>(value);
 	}
-}
 
-std::string NAS2D::join(std::vector<std::string> strs)
-{
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
-	std::string result;
-	result.reserve(total_size);
-	for (const auto& s : strs)
+	template<>
+	short stringTo(const std::string& value)
 	{
-		result += s;
+		return detail::rangeCheckHelper<short>(value);
 	}
-	result.shrink_to_fit();
-	return result;
-}
 
-std::string NAS2D::join(std::vector<std::string> strs, char delim)
-{
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
-	std::string result;
-	result.reserve(total_size);
-
-	for (auto iter = std::begin(strs); iter != std::end(strs); ++iter)
+	template<>
+	unsigned short stringTo(const std::string& value)
 	{
-		result += (*iter);
-		if (iter + 1 != std::end(strs))
+		return detail::rangeCheckHelper<unsigned short>(value);
+	}
+
+	template<>
+	int stringTo(const std::string& value)
+	{
+		return std::stoi(value);
+	}
+
+	template<>
+	unsigned int stringTo(const std::string& value)
+	{
+		const auto valueAsInteger = std::stoul(value);
+		if constexpr(std::numeric_limits<unsigned int>::max() < std::numeric_limits<unsigned long>::max())
 		{
-			result.push_back(delim);
+			if(std::numeric_limits<unsigned int>::max() < valueAsInteger)
+			{
+				throw std::out_of_range("from_string argument out of range");
+			}
+		}
+		return static_cast<unsigned int>(valueAsInteger);
+	}
+
+	template<>
+	long stringTo(const std::string& value)
+	{
+		return std::stol(value);
+	}
+
+	template<>
+	unsigned long stringTo(const std::string& value)
+	{
+		return std::stoul(value);
+	}
+
+	template<>
+	long long stringTo(const std::string& value)
+	{
+		return std::stoll(value);
+	}
+
+	template<>
+	unsigned long long stringTo(const std::string& value)
+	{
+		return std::stoull(value);
+	}
+
+	template<>
+	float stringTo(const std::string& value)
+	{
+		return std::stof(value);
+	}
+
+	template<>
+	double stringTo(const std::string& value)
+	{
+		return std::stod(value);
+	}
+
+	template<>
+	long double stringTo(const std::string& value)
+	{
+		return std::stold(value);
+	}
+
+
+	template<>
+	std::string stringFrom(std::string value)
+	{
+		return value;
+	}
+
+	template<>
+	std::string stringFrom(bool value)
+	{
+		return value ? "true" : "false";
+	}
+
+	template<>
+	std::string stringFrom(char value)
+	{
+		return std::string{value};
+	}
+
+	template<>
+	std::string stringFrom(signed char value)
+	{
+		return std::to_string(static_cast<int>(value));
+	}
+
+	template<>
+	std::string stringFrom(unsigned char value)
+	{
+		return std::to_string(static_cast<unsigned int>(value));
+	}
+
+	template<>
+	std::string stringFrom(short value)
+	{
+		return std::to_string(static_cast<int>(value));
+	}
+
+	template<>
+	std::string stringFrom(unsigned short value)
+	{
+		return std::to_string(static_cast<unsigned int>(value));
+	}
+
+	template<>
+	std::string stringFrom(int value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(unsigned int value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(long value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(unsigned long value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(long long value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(unsigned long long value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(float value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(double value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(long double value)
+	{
+		return std::to_string(value);
+	}
+
+
+	/**
+	 * \fn toLowercase(const std::string& str)
+	 *
+	 * Converts a string to lowercase.
+	 *
+	 * \param str	Source string.
+	 *
+	 * \return	Returns the converted string.
+	 */
+	std::string toLowercase(std::string str)
+	{
+		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::tolower(c)); });
+		return str;
+	}
+
+	/**
+	 * \fn toUppercase(const std::string& str)
+	 *
+	 * Converts a string to uppercase.
+	 *
+	 * \param str	Source string.
+	 *
+	 * \return	Returns the converted string.
+	 */
+	std::string toUppercase(std::string str)
+	{
+		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::toupper(c)); });
+		return str;
+	}
+
+	std::vector<std::string> split(std::string str, char delim /*= ','*/)
+	{
+		const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
+		StringList result{};
+		result.reserve(potential_count);
+
+		std::istringstream ss(str);
+
+		std::string curString{};
+		while(std::getline(ss, curString, delim))
+		{
+			result.push_back(curString);
+		}
+		if(ss.eof() && str.back() == delim)
+		{
+			result.push_back(std::string{});
+		}
+		result.shrink_to_fit();
+		return result;
+	}
+	std::vector<std::string> splitSkipEmpty(std::string str, char delim /*= ','*/)
+	{
+		const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
+		StringList result{};
+		result.reserve(potential_count);
+
+		std::istringstream ss(str);
+
+		std::string curString{};
+		while(std::getline(ss, curString, delim))
+		{
+			if(curString.empty()) { continue; }
+			result.push_back(curString);
+		}
+		result.shrink_to_fit();
+		return result;
+	}
+
+	std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim)
+	{
+		const auto delim_loc = str.find_first_of(delim);
+		if(delim_loc == std::string::npos)
+		{
+			return std::make_pair(str, std::string{});
+		} else
+		{
+			return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
 		}
 	}
 
-	result.shrink_to_fit();
-	return result;
-}
-std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs)
-{
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
-	std::string result;
-	result.reserve(total_size);
-	for (const auto& s : strs)
+	std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim)
 	{
-		if (s.empty()) { continue; }
-		result += s;
-	}
-	result.shrink_to_fit();
-	return result;
-}
-
-std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs, char delim)
-{
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
-	std::string result;
-	result.reserve(total_size);
-
-	for (auto iter = std::begin(strs); iter != std::end(strs); ++iter)
-	{
-		if ((*iter).empty()) { continue; }
-		result += (*iter);
-		if (iter + 1 != std::end(strs))
+		const auto delim_loc = str.find_last_of(delim);
+		if(delim_loc == std::string::npos)
 		{
-			result.push_back(delim);
+			return std::make_pair(std::string{}, str);
+		} else
+		{
+			return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
 		}
 	}
 
-	result.shrink_to_fit();
-	return result;
-}
-
-std::string NAS2D::trimWhitespace(std::string string)
-{
-	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
-	if (first_non_space == std::string::npos)
+	std::string join(std::vector<std::string> strs)
 	{
-		return std::string{};
+		const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
+		auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+		std::string result;
+		result.reserve(total_size);
+		for(const auto& s : strs)
+		{
+			result += s;
+		}
+		result.shrink_to_fit();
+		return result;
 	}
-	const auto last_non_space = string.find_last_not_of(" \r\n\t\v\f");
-	return string.substr(first_non_space, last_non_space - first_non_space + 1);
-}
 
-bool NAS2D::startsWith(std::string_view string, std::string_view start) noexcept
-{
-	return string.compare(0, start.size(), start) == 0;
-}
+	std::string join(std::vector<std::string> strs, char delim)
+	{
+		const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} +b.size(); };
+		auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+		std::string result;
+		result.reserve(total_size);
 
-bool NAS2D::endsWith(std::string_view string, std::string_view end) noexcept
-{
-	return string.compare(string.size() - end.size(), end.size(), end) == 0;
-}
+		for(auto iter = std::begin(strs); iter != std::end(strs); ++iter)
+		{
+			result += (*iter);
+			if(iter + 1 != std::end(strs))
+			{
+				result.push_back(delim);
+			}
+		}
 
-bool NAS2D::startsWith(std::string_view string, char start) noexcept
-{
-	return !string.empty() && string.front() == start;
-}
+		result.shrink_to_fit();
+		return result;
+	}
+	std::string joinSkipEmpty(std::vector<std::string> strs)
+	{
+		const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
+		auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+		std::string result;
+		result.reserve(total_size);
+		for(const auto& s : strs)
+		{
+			if(s.empty()) { continue; }
+			result += s;
+		}
+		result.shrink_to_fit();
+		return result;
+	}
 
-bool NAS2D::endsWith(std::string_view string, char end) noexcept
-{
-	return !string.empty() && string.back() == end;
-}
+	std::string joinSkipEmpty(std::vector<std::string> strs, char delim)
+	{
+		const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} +b.size(); };
+		auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+		std::string result;
+		result.reserve(total_size);
+
+		for(auto iter = std::begin(strs); iter != std::end(strs); ++iter)
+		{
+			if((*iter).empty()) { continue; }
+			result += (*iter);
+			if(iter + 1 != std::end(strs))
+			{
+				result.push_back(delim);
+			}
+		}
+
+		result.shrink_to_fit();
+		return result;
+	}
+
+	std::string trimWhitespace(std::string string)
+	{
+		const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
+		if(first_non_space == std::string::npos)
+		{
+			return std::string{};
+		}
+		const auto last_non_space = string.find_last_not_of(" \r\n\t\v\f");
+		return string.substr(first_non_space, last_non_space - first_non_space + 1);
+	}
+
+	bool startsWith(std::string_view string, std::string_view start) noexcept
+	{
+		return string.compare(0, start.size(), start) == 0;
+	}
+
+	bool endsWith(std::string_view string, std::string_view end) noexcept
+	{
+		return string.compare(string.size() - end.size(), end.size(), end) == 0;
+	}
+
+	bool startsWith(std::string_view string, char start) noexcept
+	{
+		return !string.empty() && string.front() == start;
+	}
+
+	bool endsWith(std::string_view string, char end) noexcept
+	{
+		return !string.empty() && string.back() == end;
+	}
+
+} // namespace NAS2D

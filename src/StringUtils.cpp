@@ -29,17 +29,6 @@ namespace
 		}
 		return static_cast<T>(valueAsInteger);
 	}
-
-	template<>
-	char rangeCheckHelper(const std::string& value)
-	{
-		if (value.size() != 1)
-		{
-			throw std::invalid_argument("rangeCheckHelper string length must be exactly one (1).");
-		}
-		return value[0];
-	}
-
 }
 
 namespace NAS2D
@@ -65,7 +54,11 @@ namespace NAS2D
 	template<>
 	char stringTo(const std::string& value)
 	{
-		return rangeCheckHelper<char>(value);
+		if (value.size() != 1)
+		{
+			throw std::invalid_argument("Length of 'value' string is not exactly one (1): " + value + " is " + std::to_string(value.size()));
+		}
+		return value[0];
 	}
 
 	template<>

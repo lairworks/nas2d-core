@@ -134,15 +134,7 @@ TEST(String, stringFromChar)
 
 template<typename T>
 class StringFromSignedIntegerTest : public ::testing::Test
-{
-  public:
-	  StringFromSignedIntegerTest<T>()
-	{}
-
-	T negOne{-1};
-	T zero{0};
-	T one{1};
-};
+{};
 
 using StringFromSignedIntegerTestTypes = ::testing::Types<short, int, long, long long>;
 TYPED_TEST_SUITE(StringFromSignedIntegerTest, StringFromSignedIntegerTestTypes);
@@ -151,22 +143,15 @@ TYPED_TEST(StringFromSignedIntegerTest, StringFromSignedIntegerTestEdgeCases)
 {
 	using namespace std::literals::string_literals;
 
-	EXPECT_EQ("-1"s, NAS2D::stringFrom<TypeParam>(this->negOne));
-	EXPECT_EQ("0"s, NAS2D::stringFrom<TypeParam>(this->zero));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<TypeParam>(this->one));
+	EXPECT_EQ("-1"s, NAS2D::stringFrom(TypeParam{-1}));
+	EXPECT_EQ("0"s, NAS2D::stringFrom(TypeParam{0}));
+	EXPECT_EQ("1"s, NAS2D::stringFrom(TypeParam{1}));
 }
 
 
 template<typename T>
 class StringFromUnsignedIntegerTest : public ::testing::Test
-{
-  public:
-	StringFromUnsignedIntegerTest<T>()
-	{}
-
-	T zero{0};
-	T one{1};
-};
+{};
 
 using StringFromUnsignedIntegerTestTypes = ::testing::Types<unsigned short, unsigned int, unsigned long, unsigned long long>;
 TYPED_TEST_SUITE(StringFromUnsignedIntegerTest, StringFromUnsignedIntegerTestTypes);
@@ -175,23 +160,13 @@ TYPED_TEST(StringFromUnsignedIntegerTest, StringFromUnsignedIntegerTestEdgeCases
 {
 	using namespace std::literals::string_literals;
 
-	EXPECT_EQ("0"s, NAS2D::stringFrom<TypeParam>(this->zero));
-	EXPECT_EQ("1"s, NAS2D::stringFrom<TypeParam>(this->one));
+	EXPECT_EQ("0"s, NAS2D::stringFrom(TypeParam{0}));
+	EXPECT_EQ("1"s, NAS2D::stringFrom(TypeParam{1}));
 }
 
 template<typename T>
 class StringFromFloatingPointTest : public ::testing::Test
-{
-  public:
-	  StringFromFloatingPointTest<T>()
-	{}
-
-	T negOneAndHalf{-1.5};
-	T negOne{-1.0};
-	T zero{0.0};
-	T one{1.0};
-	T oneAndHalf{1.5};
-};
+{};
 
 
 using StringFromFloatingPointTestTypes = ::testing::Types<float, double, long double>;
@@ -201,11 +176,11 @@ TYPED_TEST(StringFromFloatingPointTest, StringFromFloatingPointTestEdgeCases)
 {
 	using namespace std::literals::string_literals;
 
-	EXPECT_EQ("-1.500000"s, NAS2D::stringFrom<TypeParam>(this->negOneAndHalf));
-	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom<TypeParam>(this->negOne));
-	EXPECT_EQ("0.000000"s, NAS2D::stringFrom<TypeParam>(this->zero));
-	EXPECT_EQ("1.000000"s, NAS2D::stringFrom<TypeParam>(this->one));
-	EXPECT_EQ("1.500000"s, NAS2D::stringFrom<TypeParam>(this->oneAndHalf));
+	EXPECT_EQ("-1.500000"s, NAS2D::stringFrom(TypeParam{-1.5}));
+	EXPECT_EQ("-1.000000"s, NAS2D::stringFrom(TypeParam{-1.0}));
+	EXPECT_EQ("0.000000"s, NAS2D::stringFrom(TypeParam{0.0}));
+	EXPECT_EQ("1.000000"s, NAS2D::stringFrom(TypeParam{1.0}));
+	EXPECT_EQ("1.500000"s, NAS2D::stringFrom(TypeParam{1.5}));
 }
 
 

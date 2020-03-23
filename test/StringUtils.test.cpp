@@ -199,8 +199,8 @@ TEST(String, stringToFromRoundtrip)
 	EXPECT_EQ("9"s, NAS2D::stringFrom<char>(NAS2D::stringTo<char>("9"s)));
 	EXPECT_EQ("a"s, NAS2D::stringFrom<char>(NAS2D::stringTo<char>("a"s)));
 	EXPECT_EQ("b"s, NAS2D::stringFrom<char>(NAS2D::stringTo<char>("b"s)));
-	EXPECT_EQ("t"s, NAS2D::stringFrom<char>(NAS2D::stringTo<char>("true"s)));
-	EXPECT_EQ("f"s, NAS2D::stringFrom<char>(NAS2D::stringTo<char>("false"s)));
+	EXPECT_THROW(NAS2D::stringFrom<char>(NAS2D::stringTo<char>("true"s)), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringFrom<char>(NAS2D::stringTo<char>("false"s)), std::invalid_argument);
 
 	EXPECT_EQ("129"s, NAS2D::stringFrom<unsigned char>(NAS2D::stringTo<unsigned char>("129"s)));
 	EXPECT_EQ("-1"s, NAS2D::stringFrom<signed char>(NAS2D::stringTo<signed char>("-1"s)));

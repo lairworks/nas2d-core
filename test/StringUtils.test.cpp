@@ -137,13 +137,13 @@ TEST(String, stringFromChar)
 #endif
 
 template<typename T>
-class StringFromSignedIntegerTest : public ::testing::Test
+class StringFromSITest : public ::testing::Test
 {};
 
-using StringFromSignedIntegerTestTypes = ::testing::Types<short, int, long, long long>;
-TYPED_TEST_SUITE(StringFromSignedIntegerTest, StringFromSignedIntegerTestTypes);
+using StringFromSITestTypes = ::testing::Types<short, int, long, long long>;
+TYPED_TEST_SUITE(StringFromSITest, StringFromSITestTypes);
 
-TYPED_TEST(StringFromSignedIntegerTest, StringFromSignedIntegerTestEdgeCases)
+TYPED_TEST(StringFromSITest, EdgeCases)
 {
 	using namespace std::literals::string_literals;
 
@@ -154,13 +154,13 @@ TYPED_TEST(StringFromSignedIntegerTest, StringFromSignedIntegerTestEdgeCases)
 
 
 template<typename T>
-class StringFromUnsignedIntegerTest : public ::testing::Test
+class StringFromUITest : public ::testing::Test
 {};
 
-using StringFromUnsignedIntegerTestTypes = ::testing::Types<unsigned short, unsigned int, unsigned long, unsigned long long>;
-TYPED_TEST_SUITE(StringFromUnsignedIntegerTest, StringFromUnsignedIntegerTestTypes);
+using StringFromUITestTypes = ::testing::Types<unsigned short, unsigned int, unsigned long, unsigned long long>;
+TYPED_TEST_SUITE(StringFromUITest, StringFromUITestTypes);
 
-TYPED_TEST(StringFromUnsignedIntegerTest, StringFromUnsignedIntegerTestEdgeCases)
+TYPED_TEST(StringFromUITest, EdgeCases)
 {
 	using namespace std::literals::string_literals;
 
@@ -169,14 +169,14 @@ TYPED_TEST(StringFromUnsignedIntegerTest, StringFromUnsignedIntegerTestEdgeCases
 }
 
 template<typename T>
-class StringFromFloatingPointTest : public ::testing::Test
+class StringFromFPTest : public ::testing::Test
 {};
 
 
-using StringFromFloatingPointTestTypes = ::testing::Types<float, double, long double>;
-TYPED_TEST_SUITE(StringFromFloatingPointTest, StringFromFloatingPointTestTypes);
+using StringFromFPTestTypes = ::testing::Types<float, double, long double>;
+TYPED_TEST_SUITE(StringFromFPTest, StringFromFPTestTypes);
 
-TYPED_TEST(StringFromFloatingPointTest, StringFromFloatingPointTestEdgeCases)
+TYPED_TEST(StringFromFPTest, EdgeCases)
 {
 	using namespace std::literals::string_literals;
 

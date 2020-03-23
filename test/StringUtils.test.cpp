@@ -131,6 +131,13 @@ TEST(String, stringFromChar)
 
 }
 
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#elif defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
 
 template<typename T>
 class StringFromSignedIntegerTest : public ::testing::Test
@@ -182,6 +189,12 @@ TYPED_TEST(StringFromFloatingPointTest, StringFromFloatingPointTestEdgeCases)
 	EXPECT_EQ("1.000000"s, NAS2D::stringFrom(TypeParam{1.0}));
 	EXPECT_EQ("1.500000"s, NAS2D::stringFrom(TypeParam{1.5}));
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#elif defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 
 TEST(String, stringToFromRoundtrip)

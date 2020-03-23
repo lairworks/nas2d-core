@@ -17,9 +17,9 @@
 template<>
 char NAS2D::detail::rangeCheckHelper(const std::string& value)
 {
-	if (value.empty())
+	if (value.size() != 1)
 	{
-		throw std::invalid_argument("rangeCheckHelper string must be non-empty.");
+		throw std::invalid_argument("rangeCheckHelper string length must be exactly one (1).");
 	}
 	return value[0];
 }

@@ -197,60 +197,6 @@ namespace NAS2D
 		return std::to_string(static_cast<unsigned int>(value));
 	}
 
-	template<>
-	std::string stringFrom(int value)
-	{
-		return std::to_string(value);
-	}
-
-	template<>
-	std::string stringFrom(unsigned int value)
-	{
-		return std::to_string(value);
-	}
-
-	template<>
-	std::string stringFrom(long value)
-	{
-		return std::to_string(value);
-	}
-
-	template<>
-	std::string stringFrom(unsigned long value)
-	{
-		return std::to_string(value);
-	}
-
-	template<>
-	std::string stringFrom(long long value)
-	{
-		return std::to_string(value);
-	}
-
-	template<>
-	std::string stringFrom(unsigned long long value)
-	{
-		return std::to_string(value);
-	}
-
-	template<>
-	std::string stringFrom(float value)
-	{
-		return std::to_string(value);
-	}
-
-	template<>
-	std::string stringFrom(double value)
-	{
-		return std::to_string(value);
-	}
-
-	template<>
-	std::string stringFrom(long double value)
-	{
-		return std::to_string(value);
-	}
-
 
 	/**
 	 * \fn toLowercase(const std::string& str)

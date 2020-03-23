@@ -40,7 +40,31 @@ namespace NAS2D
 
 
 	template<typename T>
-	std::string stringFrom(T value);
+	std::string stringFrom(T value)
+	{
+		return std::to_string(value);
+	}
+
+	template<>
+	std::string stringFrom(std::string value);
+
+	template<>
+	std::string stringFrom(bool value);
+
+	template<>
+	std::string stringFrom(char value);
+
+	template<>
+	std::string stringFrom(signed char value);
+
+	template<>
+	std::string stringFrom(unsigned char value);
+
+	template<>
+	std::string stringFrom(short value);
+
+	template<>
+	std::string stringFrom(unsigned short value);
 
 	// extern template std::string stringFrom(std::string value);
 	// extern template std::string stringFrom(bool value);

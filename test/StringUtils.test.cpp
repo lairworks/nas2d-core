@@ -120,8 +120,8 @@ TEST(String, stringFromChar)
 {
 	using namespace std::literals::string_literals;
 
-	EXPECT_EQ("A"s, NAS2D::stringFrom<char>(65));
-	EXPECT_EQ("B"s, NAS2D::stringFrom<char>(66));
+	EXPECT_EQ("A"s, NAS2D::stringFrom<char>('A'));
+	EXPECT_EQ("B"s, NAS2D::stringFrom<char>('B'));
 	EXPECT_EQ("0"s, NAS2D::stringFrom<char>('0'));
 	EXPECT_EQ("1"s, NAS2D::stringFrom<char>('1'));
 	EXPECT_EQ("a"s, NAS2D::stringFrom<char>('a'));
@@ -283,8 +283,6 @@ TEST(String, stringFromToRoundtrip)
 	EXPECT_EQ(true, NAS2D::stringTo<bool>(NAS2D::stringFrom<bool>(true)));
 	EXPECT_EQ(false, NAS2D::stringTo<bool>(NAS2D::stringFrom<bool>(false)));
 
-	EXPECT_EQ(65, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(65)));
-	EXPECT_EQ(66, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(66)));
 	EXPECT_EQ(0, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(0)));
 	EXPECT_EQ(1, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(1)));
 	EXPECT_EQ(2, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(2)));
@@ -296,8 +294,10 @@ TEST(String, stringFromToRoundtrip)
 	EXPECT_EQ(8, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(8)));
 	EXPECT_EQ(9, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(9)));
 	EXPECT_EQ(10, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(10)));
-	EXPECT_EQ(97, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(97)));
-	EXPECT_EQ(98, NAS2D::stringTo<char>(NAS2D::stringFrom<char>(98)));
+	EXPECT_EQ('A', NAS2D::stringTo<char>(NAS2D::stringFrom<char>('A')));
+	EXPECT_EQ('B', NAS2D::stringTo<char>(NAS2D::stringFrom<char>('B')));
+	EXPECT_EQ('a', NAS2D::stringTo<char>(NAS2D::stringFrom<char>('a')));
+	EXPECT_EQ('b', NAS2D::stringTo<char>(NAS2D::stringFrom<char>('b')));
 
 	EXPECT_EQ(129, NAS2D::stringTo<unsigned char>(NAS2D::stringFrom<unsigned char>(129)));
 	EXPECT_EQ(-1, NAS2D::stringTo<signed char>(NAS2D::stringFrom<signed char>(-1)));

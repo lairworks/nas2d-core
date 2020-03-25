@@ -51,6 +51,9 @@ float NAS2D::angleFromPoints(float x, float y, float x2, float y2)
 
 /**
  * Gets a directional vector from an angle in degrees.
+ *
+ * Assumes screen coordinates (origin is top left).
+ * Angle of 0 corresponds to up, and increases clockwise.
  */
 Vector<float> NAS2D::getDirectionVector(float angle)
 {

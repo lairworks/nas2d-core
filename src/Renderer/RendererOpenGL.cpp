@@ -58,6 +58,13 @@ namespace {
 
 	GLfloat vertexArray[12] = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
 	GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
+
+
+	std::string glString(GLenum name)
+	{
+		const auto apiResult = glGetString(name);
+		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
+	}
 }
 
 
@@ -684,19 +691,18 @@ void RendererOpenGL::initGL()
 	// Spit out system graphics information.
 	std::cout << "\t- OpenGL System Info -" << std::endl;
 
-	driverName(reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+	driverName(glString(GL_RENDERER));
 
-	std::cout << "\tVendor: " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
 	std::cout << "\tRenderer: " << driverName() << std::endl;
-	std::cout << "\tDriver Version: " << glGetString(GL_VERSION) << std::endl;
+	std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
+	auto glShadingLanguageVersion = glString(GL_SHADING_LANGUAGE_VERSION);
+	std::cout << "\tGLSL Version: " << glShadingLanguageVersion << std::endl;
 
-	std::string glsl_v = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
-	if (glsl_v.empty())
+	if (glShadingLanguageVersion.empty())
 	{
 		throw renderer_no_glsl();
 	}
-
-	std::cout << "\tGLSL Version: " << glsl_v << std::endl;
 
 	glEnable(GL_TEXTURE_2D);
 

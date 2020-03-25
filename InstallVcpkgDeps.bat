@@ -16,10 +16,4 @@ if not defined PLATFORM (
 )
 
 :Install
-vcpkg install physfs:%PLATFORM%-windows
-vcpkg install glew:%PLATFORM%-windows
-vcpkg install SDL2:%PLATFORM%-windows
-vcpkg install SDL2-mixer:%PLATFORM%-windows
-vcpkg install SDL2-image:%PLATFORM%-windows
-vcpkg install SDL2-ttf:%PLATFORM%-windows
-vcpkg install gtest:%PLATFORM%-windows
+vcpkg install --triplet %PLATFORM%-windows  physfs glew SDL2 SDL2-image SDL2-ttf SDL2-mixer gtest

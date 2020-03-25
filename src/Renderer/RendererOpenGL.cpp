@@ -697,7 +697,7 @@ void RendererOpenGL::initGL()
 	std::cout << "\tRenderer: " << driverName() << std::endl;
 	std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
 
-	std::string glsl_v = glString(GL_SHADING_LANGUAGE_VERSION);
+	auto glsl_v = glString(GL_SHADING_LANGUAGE_VERSION);
 	if (glsl_v.empty())
 	{
 		throw renderer_no_glsl();

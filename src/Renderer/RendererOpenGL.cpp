@@ -696,14 +696,13 @@ void RendererOpenGL::initGL()
 	std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
 	std::cout << "\tRenderer: " << driverName() << std::endl;
 	std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
-
 	auto glShadingLanguageVersion = glString(GL_SHADING_LANGUAGE_VERSION);
+	std::cout << "\tGLSL Version: " << glShadingLanguageVersion << std::endl;
+
 	if (glShadingLanguageVersion.empty())
 	{
 		throw renderer_no_glsl();
 	}
-
-	std::cout << "\tGLSL Version: " << glShadingLanguageVersion << std::endl;
 
 	glEnable(GL_TEXTURE_2D);
 

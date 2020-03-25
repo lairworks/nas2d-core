@@ -92,9 +92,13 @@ private:
 
 	void initGL();
 	void initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync);
+	std::string getGlString(unsigned int stringId) const;
+	std::string getGlRendererString() const;
+	std::string getGlVendorString() const;
+	std::string getGlVersionString() const;
+	std::string getGlShadingLanguageVersionString() const;
 
 	void onResize(int w, int h);
-
 
 	Point_2df desktopResolution;
 

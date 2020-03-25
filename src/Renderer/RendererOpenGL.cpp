@@ -684,13 +684,13 @@ void RendererOpenGL::initGL()
 	// Spit out system graphics information.
 	std::cout << "\t- OpenGL System Info -" << std::endl;
 
-	driverName(reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+	driverName(getGlRendererString());
 
-	std::cout << "\tVendor: " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "\tVendor: " << getGlVendorString() << std::endl;
 	std::cout << "\tRenderer: " << driverName() << std::endl;
-	std::cout << "\tDriver Version: " << glGetString(GL_VERSION) << std::endl;
+	std::cout << "\tDriver Version: " << getGlVersionString() << std::endl;
 
-	std::string glsl_v = reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+	std::string glsl_v = getGlShadingLanguageVersionString();
 	if (glsl_v.empty())
 	{
 		throw renderer_no_glsl();
@@ -756,6 +756,29 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 	}
 
 	desktopResolution = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
+}
+
+std::string NAS2D::RendererOpenGL::getGlString(unsigned int stringId) const
+{
+	auto* cstr = reinterpret_cast<const char*>(glGetString(stringId));
+	return {cstr ? cstr : ""};
+}
+
+std::string NAS2D::RendererOpenGL::getGlRendererString() const
+{
+	return getGlString(GL_RENDERER);
+}
+std::string NAS2D::RendererOpenGL::getGlVendorString() const
+{
+	return getGlString(GL_VENDOR);
+}
+std::string NAS2D::RendererOpenGL::getGlVersionString() const
+{
+	return getGlString(GL_VERSION);
+}
+std::string NAS2D::RendererOpenGL::getGlShadingLanguageVersionString() const
+{
+	return getGlString(GL_SHADING_LANGUAGE_VERSION);
 }
 
 std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const

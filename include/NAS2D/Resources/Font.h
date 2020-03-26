@@ -38,7 +38,7 @@ public:
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
 	Font(const Font& font);
 	Font& operator=(const Font& font);
-	~Font();
+	~Font() override;
 
 	int width(const std::string& str) const;
 	int height() const;

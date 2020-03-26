@@ -15,15 +15,6 @@
 using namespace NAS2D;
 
 
-namespace {
-	const unsigned int FpsCountsSize = 25;
-	unsigned int fpsCounts[FpsCountsSize] = { 0 };
-
-	unsigned int currentTick = 0;
-	unsigned int fpsCountIndex = 0;
-}
-
-
 /**
  * Gets an average count of Frames per Second.
  */

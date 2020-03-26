@@ -26,6 +26,13 @@ class FpsCounter
 {
 public:
 	unsigned int fps();
+
+private:
+	static constexpr unsigned int FpsCountsSize = 25;
+	unsigned int fpsCounts[FpsCountsSize] = { 0 };
+
+	unsigned int currentTick = 0;
+	unsigned int fpsCountIndex = 0;
 };
 
 } // namespace

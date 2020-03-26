@@ -97,18 +97,9 @@ private:
 };
 
 
-/**
- * \class	Point_2d
- * \brief	2D point.
- */
 using Point_2d = Point<int>;
 extern template struct Point<int>;
 
-
-/**
- * \class	Point_2df
- * \brief	Floating point 2D Point.
- */
 using Point_2df = Point<float>;
 extern template struct Point<float>;
 

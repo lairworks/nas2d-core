@@ -15,6 +15,7 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Rectangle.h"
+#include "../Timer.h"
 #include "../Signal.h"
 #include "../Resources/Image.h"
 #include "../Resources/Font.h"
@@ -123,7 +124,7 @@ public:
 	void fadeOut(float delayTime);
 	bool isFading() const;
 	bool isFaded() const;
-	NAS2D::Signals::Signal<>& fadeComplete() const;
+	NAS2D::Signals::Signal<>& fadeComplete();
 
 	virtual void showSystemPointer(bool) = 0;
 	virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;
@@ -183,6 +184,8 @@ private:
 	float mCurrentFade{0.0f}; /**< Current fade amount. */
 
 	FadeType mCurrentFadeType{FadeType::None};
+	Timer fadeTimer;
+	Signals::Signal<> fadeCompleteSignal;
 };
 
 } // namespace

@@ -10,16 +10,11 @@
 
 #include "NAS2D/Renderer/Renderer.h"
 
-#include "NAS2D/Timer.h"
-
 #include <iostream>
 #include <algorithm>
 
 using namespace NAS2D;
 
-NAS2D::Timer		fadeTimer;
-
-NAS2D::Signals::Signal<>	fadeCompleteSignal;
 
 /**
  * Internal constructor used by derived types to set the name of the Renderer.
@@ -321,7 +316,7 @@ bool Renderer::isFaded() const
 /**
  * Gets a refernece to the callback signal for fade transitions.
  */
-NAS2D::Signals::Signal<>& Renderer::fadeComplete() const
+NAS2D::Signals::Signal<>& Renderer::fadeComplete()
 {
 	return fadeCompleteSignal;
 }

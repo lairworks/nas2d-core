@@ -19,9 +19,8 @@ using namespace NAS2D;
 
 
 namespace {
-	NAS2D::Timer		fadeTimer;
-
-	NAS2D::Signals::Signal<>	fadeCompleteSignal;
+	NAS2D::Timer fadeTimer;
+	NAS2D::Signals::Signal<> fadeCompleteSignal;
 }
 
 

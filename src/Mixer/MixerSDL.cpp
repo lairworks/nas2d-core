@@ -27,11 +27,14 @@ using namespace NAS2D::Exception;
 extern std::map<std::string, MusicInfo>	MUSIC_REF_MAP;
 
 
-// ==================================================================================
-// INTEROP WITH SDL2_MIXER
-// ==================================================================================
-NAS2D::Signals::Signal<> MIXER_HOOK_CALLBACK_SIGNAL;
-// ==================================================================================
+namespace {
+	// ==================================================================================
+	// INTEROP WITH SDL2_MIXER
+	// ==================================================================================
+	// Global so it can be accessed without capturing `this`
+	NAS2D::Signals::Signal<> musicFinished;
+	// ==================================================================================
+}
 
 
 /*
@@ -56,8 +59,8 @@ MixerSDL::MixerSDL()
 	soundVolume(c.audioSfxVolume());
 	musicVolume(c.audioMusicVolume());
 
-	Mix_HookMusicFinished([](){ MIXER_HOOK_CALLBACK_SIGNAL(); });
-	MIXER_HOOK_CALLBACK_SIGNAL.connect(this, &MixerSDL::music_finished_hook);
+	musicFinished.connect(this, &MixerSDL::onMusicFinished);
+	Mix_HookMusicFinished([](){ musicFinished(); });
 
 	std::cout << "done." << std::endl;
 }
@@ -76,15 +79,15 @@ MixerSDL::~MixerSDL()
 
 	Mix_CloseAudio();
 
-	MIXER_HOOK_CALLBACK_SIGNAL.disconnect(this, &MixerSDL::music_finished_hook);
 	Mix_HookMusicFinished(nullptr);
+	musicFinished.disconnect(this, &MixerSDL::onMusicFinished);
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 
 	std::cout << "Mixer Terminated." << std::endl;
 }
 
-void MixerSDL::music_finished_hook()
+void MixerSDL::onMusicFinished()
 {
 	mMusicComplete.emit();
 }

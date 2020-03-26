@@ -57,7 +57,7 @@ public:
 	void unmute() override;
 
 private:
-	void music_finished_hook();
+	void onMusicFinished();
 };
 
 }

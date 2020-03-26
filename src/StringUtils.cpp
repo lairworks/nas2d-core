@@ -14,6 +14,9 @@
 #include <numeric>
 #include <sstream>
 
+
+namespace NAS2D {
+
 /**
  * Converts a string to lowercase.
  *
@@ -21,7 +24,7 @@
  *
  * \return	Returns the converted string.
  */
-std::string NAS2D::toLowercase(std::string str)
+std::string toLowercase(std::string str)
 {
 	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::tolower(c)); });
 	return str;
@@ -34,16 +37,16 @@ std::string NAS2D::toLowercase(std::string str)
  *
  * \return	Returns the converted string.
  */
-std::string NAS2D::toUppercase(std::string str)
+std::string toUppercase(std::string str)
 {
 	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::toupper(c)); });
 	return str;
 }
 
-std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/)
+std::vector<std::string> split(std::string str, char delim /*= ','*/)
 {
 	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
-	NAS2D::StringList result{};
+	StringList result{};
 	result.reserve(potential_count);
 
 	std::istringstream ss(str);
@@ -60,10 +63,10 @@ std::vector<std::string> NAS2D::split(std::string str, char delim /*= ','*/)
 	result.shrink_to_fit();
 	return result;
 }
-std::vector<std::string> NAS2D::splitSkipEmpty(std::string str, char delim /*= ','*/)
+std::vector<std::string> splitSkipEmpty(std::string str, char delim /*= ','*/)
 {
 	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
-	NAS2D::StringList result{};
+	StringList result{};
 	result.reserve(potential_count);
 
 	std::istringstream ss(str);
@@ -78,7 +81,7 @@ std::vector<std::string> NAS2D::splitSkipEmpty(std::string str, char delim /*= '
 	return result;
 }
 
-std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, char delim)
+std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim)
 {
 	const auto delim_loc = str.find_first_of(delim);
 	if (delim_loc == std::string::npos)
@@ -91,7 +94,7 @@ std::pair<std::string, std::string> NAS2D::splitOnFirst(const std::string& str, 
 	}
 }
 
-std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, char delim)
+std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim)
 {
 	const auto delim_loc = str.find_last_of(delim);
 	if (delim_loc == std::string::npos)
@@ -104,7 +107,7 @@ std::pair<std::string, std::string> NAS2D::splitOnLast(const std::string& str, c
 	}
 }
 
-std::string NAS2D::join(std::vector<std::string> strs)
+std::string join(std::vector<std::string> strs)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
@@ -118,7 +121,7 @@ std::string NAS2D::join(std::vector<std::string> strs)
 	return result;
 }
 
-std::string NAS2D::join(std::vector<std::string> strs, char delim)
+std::string join(std::vector<std::string> strs, char delim)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
@@ -137,7 +140,7 @@ std::string NAS2D::join(std::vector<std::string> strs, char delim)
 	result.shrink_to_fit();
 	return result;
 }
-std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs)
+std::string joinSkipEmpty(std::vector<std::string> strs)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
@@ -152,7 +155,7 @@ std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs)
 	return result;
 }
 
-std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs, char delim)
+std::string joinSkipEmpty(std::vector<std::string> strs, char delim)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
@@ -173,7 +176,7 @@ std::string NAS2D::joinSkipEmpty(std::vector<std::string> strs, char delim)
 	return result;
 }
 
-std::string NAS2D::trimWhitespace(std::string string)
+std::string trimWhitespace(std::string string)
 {
 	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
 	if (first_non_space == std::string::npos)
@@ -184,22 +187,24 @@ std::string NAS2D::trimWhitespace(std::string string)
 	return string.substr(first_non_space, last_non_space - first_non_space + 1);
 }
 
-bool NAS2D::startsWith(std::string_view string, std::string_view start) noexcept
+bool startsWith(std::string_view string, std::string_view start) noexcept
 {
 	return string.compare(0, start.size(), start) == 0;
 }
 
-bool NAS2D::endsWith(std::string_view string, std::string_view end) noexcept
+bool endsWith(std::string_view string, std::string_view end) noexcept
 {
 	return string.compare(string.size() - end.size(), end.size(), end) == 0;
 }
 
-bool NAS2D::startsWith(std::string_view string, char start) noexcept
+bool startsWith(std::string_view string, char start) noexcept
 {
 	return !string.empty() && string.front() == start;
 }
 
-bool NAS2D::endsWith(std::string_view string, char end) noexcept
+bool endsWith(std::string_view string, char end) noexcept
 {
 	return !string.empty() && string.back() == end;
 }
+
+} // namespace

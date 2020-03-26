@@ -21,7 +21,7 @@
 
 using namespace NAS2D;
 
-std::map<std::string, MusicInfo>	MUSIC_REF_MAP;		/*< Lookup table for music resource references. */
+std::map<std::string, MusicInfo> MUSIC_REF_MAP; /**< Lookup table for music resource references. */
 
 void updateMusicReferenceCount(const std::string& name);
 

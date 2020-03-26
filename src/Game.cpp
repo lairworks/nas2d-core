@@ -34,7 +34,7 @@ using namespace NAS2D;
  *
  * \param	title		The title that should be used for the game window.
  * \param appName		The name of the app (used to create an app data write path)
- * \param organiationName		The name of the organization (used to create an app data write path)
+ * \param organizationName		The name of the organization (used to create an app data write path)
  * \param	argv_0		argv[0] from main()'s argument list. Necessary for Linux compatibility.
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Intitial data path. Defaults to 'data'.

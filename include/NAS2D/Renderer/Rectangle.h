@@ -162,18 +162,9 @@ private:
 };
 
 
-/**
- * \class	Rectangle_2d
- * \brief	2D rectangle.
- */
 using Rectangle_2d = Rectangle<int>;
 extern template struct Rectangle<int>;
 
-
-/**
- * \class	Rectangle_2df
- * \brief	Floating point 2D Rectangle.
- */
 using Rectangle_2df = Rectangle<float>;
 extern template struct Rectangle<float>;
 

@@ -15,8 +15,6 @@
 #include <sstream>
 
 /**
- * \fn toLowercase(const std::string& str)
- *
  * Converts a string to lowercase.
  *
  * \param str	Source string.
@@ -30,8 +28,6 @@ std::string NAS2D::toLowercase(std::string str)
 }
 
 /**
- * \fn toUppercase(const std::string& str)
- *
  * Converts a string to uppercase.
  *
  * \param str	Source string.

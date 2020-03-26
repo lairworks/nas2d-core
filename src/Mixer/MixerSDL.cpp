@@ -59,8 +59,8 @@ MixerSDL::MixerSDL()
 	soundVolume(c.audioSfxVolume());
 	musicVolume(c.audioMusicVolume());
 
-	Mix_HookMusicFinished([](){ musicFinished(); });
 	musicFinished.connect(this, &MixerSDL::onMusicFinished);
+	Mix_HookMusicFinished([](){ musicFinished(); });
 
 	std::cout << "done." << std::endl;
 }
@@ -79,8 +79,8 @@ MixerSDL::~MixerSDL()
 
 	Mix_CloseAudio();
 
-	musicFinished.disconnect(this, &MixerSDL::onMusicFinished);
 	Mix_HookMusicFinished(nullptr);
+	musicFinished.disconnect(this, &MixerSDL::onMusicFinished);
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 

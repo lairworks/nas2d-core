@@ -11,6 +11,7 @@
 #include "NAS2D/Trig.h"
 
 #include <cmath>
+#include <algorithm>
 
 using namespace NAS2D;
 
@@ -76,8 +77,7 @@ bool NAS2D::lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Poi
 
 	float t = -(((p.x() - c.x()) * dx) + ((p.y() - c.y()) * dy)) / ((dx * dx) + (dy * dy));
 
-	if (t < 0.0f) { t = 0.0; }
-	else if (t > 1.0f) { t = 1.0; }
+	t = std::clamp(t, 0.0f, 1.0f);
 
 	dx = (p.x() + (t * (q.x() - p.x()))) - c.x();
 	dy = (p.y() + (t * (q.y() - p.y()))) - c.y();

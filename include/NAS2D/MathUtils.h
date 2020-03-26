@@ -27,8 +27,6 @@ namespace NAS2D
 	uint32_t roundUpPowerOf2(uint32_t number);
 
 /**
- * \fn OutputType scaleLinear(const InputType& a, const OutputType& b)
- *
  * Applies a linear conversion to map an input domain to an output range.
  *
  * \param	value: The value to be converted from the input domain to the output range.

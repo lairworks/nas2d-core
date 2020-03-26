@@ -29,11 +29,11 @@ namespace NAS2D
 /**
  * Applies a linear conversion to map an input domain to an output range.
  *
- * \param	value: The value to be converted from the input domain to the output range.
- * \param	domainPoint1: A known fixed point in the domain.
- * \param	domainPoint2: Another corresponding known fixed point in the domain.
- * \param	rangePoint1: A known fixed point in the range.
- * \param	rangePoint2: Another corresponding known fixed point in the range.
+ * \param	value	The value to be converted from the input domain to the output range.
+ * \param	domainPoint1	A known fixed point in the domain.
+ * \param	domainPoint2	Another corresponding known fixed point in the domain.
+ * \param	rangePoint1	A known fixed point in the range.
+ * \param	rangePoint2	Another corresponding known fixed point in the range.
  * \return	Returns value as mapped to the output range.
  * \remarks
  * `value` is not required to start within [domainPoint1,domainPoint2]. E.g. temperature conversions:

@@ -17,10 +17,6 @@ namespace NAS2D {
  *
  * FPS values are only approximates. As the FPS count gets higher, the returned value
  * becomes a more average count.
- *
- * \note	Because of the nature of FPS counters and their limited context, the
- *			FpsCounter has been designed with shared state. This means that multiple
- *			instances of FpsCounter will share values.
  */
 class FpsCounter
 {

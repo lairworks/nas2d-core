@@ -20,10 +20,7 @@ namespace {
 	unsigned int fpsCounts[FpsCountsSize] = { 0 };
 
 	unsigned int currentTick = 0;
-	unsigned int lastTick = 0;
-	unsigned int tickDelta = 0;
 	unsigned int fpsCountIndex = 0;
-	unsigned int accumulator = 0;
 }
 
 
@@ -32,10 +29,10 @@ namespace {
  */
 unsigned int FpsCounter::fps()
 {
-	lastTick = currentTick;
+	auto lastTick = currentTick;
 	currentTick = SDL_GetTicks();
 
-	tickDelta = currentTick - lastTick;
+	auto tickDelta = currentTick - lastTick;
 
 	if (tickDelta == 0) { tickDelta = 1; }
 
@@ -43,7 +40,7 @@ unsigned int FpsCounter::fps()
 
 	if (fpsCountIndex >= FpsCountsSize) { fpsCountIndex = 0; }
 
-	accumulator = 0;
+	unsigned int accumulator = 0;
 	for (auto i : fpsCounts)
 	{
 		accumulator += i;

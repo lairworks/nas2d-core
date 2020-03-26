@@ -13,7 +13,6 @@ namespace NAS2D
 		MixerNull(MixerNull&& other) = default;
 		MixerNull& operator=(const MixerNull& other) = default;
 		MixerNull& operator=(MixerNull&& other) = default;
-		virtual ~MixerNull() = default;
 
 		virtual void playSound(Sound& sound) override;
 

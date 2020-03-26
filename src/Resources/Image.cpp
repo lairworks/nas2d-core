@@ -30,8 +30,8 @@ const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
 
 using TextureIdMap = std::map<std::string, ImageInfo>;
 
-TextureIdMap	imageIdMap;			/*< Lookup table for OpenGL Texture ID's. */
-int				IMAGE_ARBITRARY = 0;	/*< Counter for arbitrary image ID's. */
+TextureIdMap	imageIdMap;			/**< Lookup table for OpenGL Texture ID's. */
+int				IMAGE_ARBITRARY = 0;	/**< Counter for arbitrary image ID's. */
 
 // ==================================================================================
 // = UNEXPOSED FUNCTION PROTOTYPES

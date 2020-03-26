@@ -290,7 +290,7 @@ XmlHandle XmlHandle::childElement(int index) const
  * return a handle to the second node 'element_a'.
  *
  * \param value Value of the node to look for.
- * \param index	Index position of the child.
+ * \param count	Index position of the child.
  *
  * \return	Returns a handle to a child node or nullptr
  *			if there are no children or 'count' is past

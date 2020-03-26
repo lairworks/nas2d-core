@@ -8,12 +8,6 @@ namespace NAS2D
 	class MixerNull : public Mixer
 	{
 	public:
-		MixerNull() = default;
-		MixerNull(const MixerNull& other) = default;
-		MixerNull(MixerNull&& other) = default;
-		MixerNull& operator=(const MixerNull& other) = default;
-		MixerNull& operator=(MixerNull&& other) = default;
-
 		virtual void playSound(Sound& sound) override;
 
 		virtual void stopSound() override;

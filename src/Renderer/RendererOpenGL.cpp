@@ -861,13 +861,13 @@ void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords)
  */
 void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-	vertexArray[0] = static_cast<GLfloat>(x), vertexArray[1] = static_cast<GLfloat>(y);
-	vertexArray[2] = static_cast<GLfloat>(x), vertexArray[3] = static_cast<GLfloat>(y + h);
-	vertexArray[4] = static_cast<GLfloat>(x + w), vertexArray[5] = static_cast<GLfloat>(y + h);
+	vertexArray[0] = static_cast<GLfloat>(x); vertexArray[1] = static_cast<GLfloat>(y);
+	vertexArray[2] = static_cast<GLfloat>(x); vertexArray[3] = static_cast<GLfloat>(y + h);
+	vertexArray[4] = static_cast<GLfloat>(x + w); vertexArray[5] = static_cast<GLfloat>(y + h);
 
-	vertexArray[6] = static_cast<GLfloat>(x + w), vertexArray[7] = static_cast<GLfloat>(y + h);
-	vertexArray[8] = static_cast<GLfloat>(x + w), vertexArray[9] = static_cast<GLfloat>(y);
-	vertexArray[10] = static_cast<GLfloat>(x), vertexArray[11] = static_cast<GLfloat>(y);
+	vertexArray[6] = static_cast<GLfloat>(x + w); vertexArray[7] = static_cast<GLfloat>(y + h);
+	vertexArray[8] = static_cast<GLfloat>(x + w); vertexArray[9] = static_cast<GLfloat>(y);
+	vertexArray[10] = static_cast<GLfloat>(x); vertexArray[11] = static_cast<GLfloat>(y);
 }
 
 
@@ -876,13 +876,13 @@ void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
  */
 void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
 {
-	textureCoordArray[0] = static_cast<GLfloat>(x), textureCoordArray[1] = static_cast<GLfloat>(y);
-	textureCoordArray[2] = static_cast<GLfloat>(x), textureCoordArray[3] = static_cast<GLfloat>(v);
-	textureCoordArray[4] = static_cast<GLfloat>(u), textureCoordArray[5] = static_cast<GLfloat>(v);
+	textureCoordArray[0] = static_cast<GLfloat>(x); textureCoordArray[1] = static_cast<GLfloat>(y);
+	textureCoordArray[2] = static_cast<GLfloat>(x); textureCoordArray[3] = static_cast<GLfloat>(v);
+	textureCoordArray[4] = static_cast<GLfloat>(u); textureCoordArray[5] = static_cast<GLfloat>(v);
 
-	textureCoordArray[6] = static_cast<GLfloat>(u), textureCoordArray[7] = static_cast<GLfloat>(v);
-	textureCoordArray[8] = static_cast<GLfloat>(u), textureCoordArray[9] = static_cast<GLfloat>(y);
-	textureCoordArray[10] = static_cast<GLfloat>(x), textureCoordArray[11] = static_cast<GLfloat>(y);
+	textureCoordArray[6] = static_cast<GLfloat>(u); textureCoordArray[7] = static_cast<GLfloat>(v);
+	textureCoordArray[8] = static_cast<GLfloat>(u); textureCoordArray[9] = static_cast<GLfloat>(y);
+	textureCoordArray[10] = static_cast<GLfloat>(x); textureCoordArray[11] = static_cast<GLfloat>(y);
 }
 
 /**

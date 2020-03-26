@@ -477,12 +477,11 @@ bool XmlBase::stringEqual(const char* p, const char* tag, bool ignoreCase)
  * Reads text. Returns a pointer past the given end tag. Wickedly complex options, but it
  * keeps the (sensitive) code in one place.
  *
- * \param in				Where to start
+ * \param p				Where to start
  * \param text				The string read
- * \param ignoreWhiteSpace	Wheather to keep the white space
+ * \param trimWhiteSpace	Wheather to keep the white space
  * \param endTag			What ends this text
- * \param ignoreCase		Whether to ignore case in the end tag
- * \param encoding			The current encoding.
+ * \param caseInsensitive		Whether to ignore case in the end tag
  */
 const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSpace, const char* endTag, bool caseInsensitive)
 {

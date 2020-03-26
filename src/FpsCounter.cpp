@@ -24,7 +24,6 @@ unsigned int FpsCounter::fps()
 	currentTick = SDL_GetTicks();
 
 	auto tickDelta = currentTick - lastTick;
-
 	if (tickDelta == 0) { tickDelta = 1; }
 
 	fpsCounts[++fpsCountIndex] = 1000 / tickDelta;

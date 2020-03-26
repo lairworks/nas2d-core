@@ -55,7 +55,7 @@ public:
 	XmlBase() {}
 	XmlBase(const XmlBase&) = delete;
 	void operator=(const XmlBase& base) = delete;
-	virtual ~XmlBase() {}
+	virtual ~XmlBase() = default;
 
 	/**
 	 * Writes the XML entity to a string buffer.

@@ -79,7 +79,7 @@ class State
 public:
 	State() {}
 
-	virtual ~State() {}
+	virtual ~State() = default;
 
 protected:
 	friend class StateManager;

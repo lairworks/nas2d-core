@@ -15,6 +15,7 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Rectangle.h"
+#include "../Timer.h"
 #include "../Signal.h"
 #include "../Resources/Image.h"
 #include "../Resources/Font.h"
@@ -183,6 +184,8 @@ private:
 	float mCurrentFade{0.0f}; /**< Current fade amount. */
 
 	FadeType mCurrentFadeType{FadeType::None};
+	Timer fadeTimer;
+	Signals::Signal<> fadeCompleteSignal;
 };
 
 } // namespace

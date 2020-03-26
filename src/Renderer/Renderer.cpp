@@ -10,18 +10,10 @@
 
 #include "NAS2D/Renderer/Renderer.h"
 
-#include "NAS2D/Timer.h"
-
 #include <iostream>
 #include <algorithm>
 
 using namespace NAS2D;
-
-
-namespace {
-	Timer fadeTimer;
-	Signals::Signal<> fadeCompleteSignal;
-}
 
 
 /**

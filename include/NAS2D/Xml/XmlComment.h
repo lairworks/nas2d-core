@@ -28,8 +28,6 @@ public:
 	XmlComment(const XmlComment& copy);
 	XmlComment& operator=(const XmlComment& base);
 
-	virtual ~XmlComment() {}
-
 	XmlNode* clone() const override;
 
 	void write(std::string& buf, int depth) const override;

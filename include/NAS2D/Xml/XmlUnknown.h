@@ -27,7 +27,7 @@ class XmlUnknown : public XmlNode
 {
 public:
 	XmlUnknown();
-	virtual ~XmlUnknown();
+	~XmlUnknown() override;
 
 	XmlUnknown(const XmlUnknown& copy);
 	XmlUnknown& operator=(const XmlUnknown& copy);

@@ -44,7 +44,7 @@ public:
 	XmlNode();
 	XmlNode(const XmlNode&) = delete;
 	void operator=(const XmlNode& base) = delete;
-	virtual ~XmlNode();
+	~XmlNode() override;
 
 	const std::string& value() const;
 	void value(const std::string& value);

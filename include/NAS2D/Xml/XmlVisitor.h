@@ -40,7 +40,7 @@ class XmlUnknown;
 class XmlVisitor
 {
 public:
-	virtual ~XmlVisitor() {}
+	virtual ~XmlVisitor() = default;
 
 	virtual bool visitEnter(const XmlDocument&) { return true; }
 	virtual bool visitExit(const XmlDocument&) { return true; }

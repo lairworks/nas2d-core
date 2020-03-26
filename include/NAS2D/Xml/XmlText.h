@@ -30,7 +30,6 @@ public:
 	 * If you want it be output as a CDATA text	element, call \c CDATA(true).
 	 */
 	explicit XmlText(const std::string& initValue);
-	virtual ~XmlText() {}
 
 	XmlText(const XmlText& copy);
 	XmlText& operator=(const XmlText& base);

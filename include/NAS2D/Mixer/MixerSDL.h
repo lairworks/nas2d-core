@@ -31,7 +31,7 @@ public:
 	MixerSDL& operator=(const MixerSDL&) = delete;
 	MixerSDL(MixerSDL&&) = default;
 	MixerSDL& operator=(MixerSDL&&) = default;
-	virtual ~MixerSDL();
+	~MixerSDL() override;
 
 	// Sound Functions
 	void playSound(Sound& sound) override;

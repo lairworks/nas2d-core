@@ -30,7 +30,7 @@ public:
 	Sound(Sound&& other) = default;
 	Sound& operator=(Sound&& other) = default;
 	explicit Sound(const std::string& filePath);
-	virtual ~Sound();
+	~Sound() override;
 
 protected:
 	friend class MixerSDL;

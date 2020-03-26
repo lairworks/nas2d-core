@@ -29,7 +29,7 @@ public:
 	Music(const Music& rhs);
 	Music& operator=(const Music& rhs);
 
-	virtual ~Music();
+	~Music() override;
 
 private:
 	void load() override;

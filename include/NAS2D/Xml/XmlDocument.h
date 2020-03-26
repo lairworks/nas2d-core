@@ -17,8 +17,6 @@ public:
 	XmlDocument(const XmlDocument& copy);
 	XmlDocument& operator=(const XmlDocument& copy);
 
-	virtual ~XmlDocument() {}
-
 	const char* parse(const char* p, void* data = nullptr) override;
 
 	const XmlElement* rootElement() const;

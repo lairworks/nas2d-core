@@ -49,7 +49,7 @@ public:
 	Image(const Image &rhs);
 	Image& operator=(const Image& rhs);
 
-	~Image();
+	~Image() override;
 
 	Vector<int> size() const;
 	Vector<int> center() const;

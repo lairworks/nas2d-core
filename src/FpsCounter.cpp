@@ -16,14 +16,14 @@ using namespace NAS2D;
 
 
 namespace {
-	const unsigned int FPS_COUNTS_SIZE = 25;
-	unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };
+	const unsigned int FpsCountsSize = 25;
+	unsigned int fpsCounts[FpsCountsSize] = { 0 };
 
-	unsigned int CURRENT_TICK = 0;
-	unsigned int LAST_TICK = 0;
-	unsigned int TICK_DELTA = 0;
-	unsigned int INDEX = 0;
-	unsigned int ACCUMULATOR = 0;
+	unsigned int currentTick = 0;
+	unsigned int lastTick = 0;
+	unsigned int tickDelta = 0;
+	unsigned int fpsCountIndex = 0;
+	unsigned int accumulator = 0;
 }
 
 
@@ -32,22 +32,22 @@ namespace {
  */
 unsigned int FpsCounter::fps()
 {
-	LAST_TICK = CURRENT_TICK;
-	CURRENT_TICK = SDL_GetTicks();
+	lastTick = currentTick;
+	currentTick = SDL_GetTicks();
 
-	TICK_DELTA = CURRENT_TICK - LAST_TICK;
+	tickDelta = currentTick - lastTick;
 
-	if (TICK_DELTA == 0) { TICK_DELTA = 1; }
+	if (tickDelta == 0) { tickDelta = 1; }
 
-	FPS_COUNTS[++INDEX] = 1000 / TICK_DELTA;
+	fpsCounts[++fpsCountIndex] = 1000 / tickDelta;
 
-	if (INDEX >= FPS_COUNTS_SIZE) { INDEX = 0; }
+	if (fpsCountIndex >= FpsCountsSize) { fpsCountIndex = 0; }
 
-	ACCUMULATOR = 0;
-	for (auto i : FPS_COUNTS)
+	accumulator = 0;
+	for (auto i : fpsCounts)
 	{
-		ACCUMULATOR += i;
+		accumulator += i;
 	}
 
-	return ACCUMULATOR / FPS_COUNTS_SIZE;
+	return accumulator / FpsCountsSize;
 }

@@ -324,7 +324,7 @@ bool Renderer::isFaded() const
 /**
  * Gets a refernece to the callback signal for fade transitions.
  */
-NAS2D::Signals::Signal<>& Renderer::fadeComplete() const
+NAS2D::Signals::Signal<>& Renderer::fadeComplete()
 {
 	return fadeCompleteSignal;
 }

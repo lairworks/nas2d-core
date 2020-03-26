@@ -14,8 +14,6 @@
 namespace NAS2D {
 
 /**
- * \fn int divideUp(int a, int b)
- *
  * Basic integer division that rounds up to the nearest whole number.
  *
  * \param	to_divide	Number to be divided.

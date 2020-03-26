@@ -482,7 +482,6 @@ void RendererOpenGL::showSystemPointer(bool _b)
 
 void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
 {
-	/// \fixme proper cleanup
 	File imageFile = Utility<Filesystem>::get().open(filePath);
 	if (imageFile.size() == 0)
 	{

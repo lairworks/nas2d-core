@@ -28,13 +28,6 @@ namespace {
 
 
 /**
- * FpsCounter c'tor
- */
-FpsCounter::FpsCounter()
-{}
-
-
-/**
  * Gets an average count of Frames per Second.
  */
 unsigned int FpsCounter::fps()

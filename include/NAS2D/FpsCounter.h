@@ -25,8 +25,6 @@ namespace NAS2D {
 class FpsCounter
 {
 public:
-	FpsCounter();
-
 	unsigned int fps();
 };
 

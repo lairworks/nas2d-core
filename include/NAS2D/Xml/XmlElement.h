@@ -28,7 +28,7 @@ class XmlElement : public XmlNode
 public:
 	explicit XmlElement(const std::string& _value);
 	XmlElement(const XmlElement& copy);
-	virtual ~XmlElement();
+	~XmlElement() override;
 
 	XmlElement& operator=(const XmlElement& base);
 

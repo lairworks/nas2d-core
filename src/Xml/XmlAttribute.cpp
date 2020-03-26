@@ -175,7 +175,7 @@ int XmlAttribute::intValue() const
  */
 double XmlAttribute::doubleValue() const
 {
-	return std::stof(_value);
+	return std::stod(_value);
 }
 
 

@@ -34,6 +34,6 @@ unsigned int FpsCounter::fps()
 
 	if (fpsCountIndex >= FpsCountsSize) { fpsCountIndex = 0; }
 
-	auto sum = std::accumulate(std::begin(fpsCounts), std::end(fpsCounts), 0);
+	const auto sum = std::accumulate(std::begin(fpsCounts), std::end(fpsCounts), 0);
 	return sum / FpsCountsSize;
 }

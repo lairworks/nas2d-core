@@ -12,6 +12,10 @@
 
 #include <SDL2/SDL.h>
 
+#include <numeric>
+#include <iterator>
+
+
 using namespace NAS2D;
 
 
@@ -30,11 +34,6 @@ unsigned int FpsCounter::fps()
 
 	if (fpsCountIndex >= FpsCountsSize) { fpsCountIndex = 0; }
 
-	unsigned int accumulator = 0;
-	for (auto i : fpsCounts)
-	{
-		accumulator += i;
-	}
-
-	return accumulator / FpsCountsSize;
+	auto sum = std::accumulate(std::begin(fpsCounts), std::end(fpsCounts), 0);
+	return sum / FpsCountsSize;
 }

@@ -89,7 +89,7 @@ jobs:
     docker:
       - image: outpostuniverse/nas2d-clang:1.0
     environment:
-      - WARN_EXTRA: "-Wmissing-prototypes"
+      - WARN_EXTRA: "-Wdocumentation -Wdocumentation-unknown-command -Wcomma -Winconsistent-missing-destructor-override -Wmissing-prototypes"
     steps:
       - checkout
       - build-and-test

@@ -24,7 +24,7 @@ using namespace NAS2D;
  */
 unsigned int FpsCounter::fps()
 {
-	auto lastTick = currentTick;
+	const auto lastTick = currentTick;
 	currentTick = SDL_GetTicks();
 
 	auto tickDelta = currentTick - lastTick;

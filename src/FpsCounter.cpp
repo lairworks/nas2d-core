@@ -12,23 +12,12 @@
 
 #include <SDL2/SDL.h>
 
+#include <numeric>
+#include <iterator>
+#include <algorithm>
+
+
 using namespace NAS2D;
-
-const unsigned int FPS_COUNTS_SIZE = 25;
-unsigned int FPS_COUNTS[FPS_COUNTS_SIZE] = { 0 };
-
-unsigned int	CURRENT_TICK		= 0;
-unsigned int	LAST_TICK			= 0;
-unsigned int	TICK_DELTA			= 0;
-unsigned int	INDEX				= 0;
-unsigned int	ACCUMULATOR			= 0;
-
-
-/**
- * FpsCounter c'tor
- */
-FpsCounter::FpsCounter()
-{}
 
 
 /**
@@ -36,22 +25,15 @@ FpsCounter::FpsCounter()
  */
 unsigned int FpsCounter::fps()
 {
-	LAST_TICK = CURRENT_TICK;
-	CURRENT_TICK = SDL_GetTicks();
+	const auto lastTick = currentTick;
+	currentTick = SDL_GetTicks();
 
-	TICK_DELTA = CURRENT_TICK - LAST_TICK;
+	const auto tickDelta = std::min(currentTick - lastTick, 1u);
 
-	if (TICK_DELTA == 0) { TICK_DELTA = 1; }
+	fpsCounts[++fpsCountIndex] = 1000 / tickDelta;
 
-	FPS_COUNTS[++INDEX] = 1000 / TICK_DELTA;
+	if (fpsCountIndex >= FpsCountsSize) { fpsCountIndex = 0; }
 
-	if (INDEX >= FPS_COUNTS_SIZE) { INDEX = 0; }
-
-	ACCUMULATOR = 0;
-	for (auto i : FPS_COUNTS)
-	{
-		ACCUMULATOR += i;
-	}
-
-	return ACCUMULATOR / FPS_COUNTS_SIZE;
+	const auto sum = std::accumulate(std::begin(fpsCounts), std::end(fpsCounts), 0);
+	return sum / FpsCountsSize;
 }

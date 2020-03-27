@@ -17,17 +17,18 @@ namespace NAS2D {
  *
  * FPS values are only approximates. As the FPS count gets higher, the returned value
  * becomes a more average count.
- *
- * \note	Because of the nature of FPS counters and their limited context, the
- *			FpsCounter has been designed with shared state. This means that multiple
- *			instances of FpsCounter will share values.
  */
 class FpsCounter
 {
 public:
-	FpsCounter();
-
 	unsigned int fps();
+
+private:
+	static constexpr unsigned int FpsCountsSize = 25;
+	unsigned int fpsCounts[FpsCountsSize] = { 0 };
+
+	unsigned int currentTick = 0;
+	unsigned int fpsCountIndex = 0;
 };
 
 } // namespace

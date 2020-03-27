@@ -30,8 +30,9 @@ unsigned int FpsCounter::fps()
 
 	const auto tickDelta = std::min(currentTick - lastTick, 1u);
 
-	fpsCounts[++fpsCountIndex] = 1000 / tickDelta;
+	fpsCounts[fpsCountIndex] = 1000 / tickDelta;
 
+	++fpsCountIndex;
 	if (fpsCountIndex >= FpsCountsSize) { fpsCountIndex = 0; }
 
 	const auto sum = std::accumulate(std::begin(fpsCounts), std::end(fpsCounts), 0);

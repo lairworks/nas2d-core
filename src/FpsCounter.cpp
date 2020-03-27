@@ -28,7 +28,7 @@ unsigned int FpsCounter::fps()
 	const auto lastTick = currentTick;
 	currentTick = SDL_GetTicks();
 
-	auto tickDelta = std::min(currentTick - lastTick, 1u);
+	const auto tickDelta = std::min(currentTick - lastTick, 1u);
 
 	fpsCounts[++fpsCountIndex] = 1000 / tickDelta;
 

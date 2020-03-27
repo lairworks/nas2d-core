@@ -14,6 +14,7 @@
 
 #include <numeric>
 #include <iterator>
+#include <algorithm>
 
 
 using namespace NAS2D;
@@ -27,8 +28,7 @@ unsigned int FpsCounter::fps()
 	const auto lastTick = currentTick;
 	currentTick = SDL_GetTicks();
 
-	auto tickDelta = currentTick - lastTick;
-	if (tickDelta == 0) { tickDelta = 1; }
+	auto tickDelta = std::min(currentTick - lastTick, 1u);
 
 	fpsCounts[++fpsCountIndex] = 1000 / tickDelta;
 

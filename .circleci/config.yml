@@ -65,6 +65,8 @@ jobs:
   build-macos:
     macos:
       xcode: "11.3.0"
+    environment:
+      - WARN_EXTRA: "-Wno-double-promotion"
     steps:
       - brew-install:
           packages: physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf libpng libjpeg libtiff webp libmodplug libvorbis libogg freetype glew cmake

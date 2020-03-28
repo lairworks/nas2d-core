@@ -60,9 +60,15 @@ void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale
 }
 
 
-void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size)
+void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, const Color& color)
 {
-	drawSubImage(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, 255, 255, 255, 255);
+	drawSubImage(image, raster, subImageRect.startPoint(), subImageRect.size(), color);
+}
+
+
+void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, const Color& color)
+{
+	drawSubImage(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, color);
 }
 
 
@@ -77,9 +83,15 @@ void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<floa
  * \param	width		Width of the area to start getting pixel data from.
  * \param	height		Height of the area to start getting pixel data from.
  */
-void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
+void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, const Color& color)
 {
-	drawSubImage(image, rasterX, rasterY, x, y, width, height, 255, 255, 255, 255);
+	drawSubImage(image, rasterX, rasterY, x, y, width, height, color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
+void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, const Color& color)
+{
+	drawSubImageRotated(image, raster, subImageRect.startPoint(), subImageRect.size(), degrees, color);
 }
 
 

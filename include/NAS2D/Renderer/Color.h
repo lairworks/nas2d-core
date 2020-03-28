@@ -40,9 +40,15 @@ public:
 
 	Color() = default;
 	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	explicit Color(uint32_t value);
 
 public:
 	void operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+	void setRgbaFromRawValue(uint32_t value);
+	void setRgbFromRawValue(uint32_t value);
+	uint32_t getRgbaAsRawValue() const;
+	uint32_t getRgbAsRawValue() const;
 
 	uint8_t red() const;
 	uint8_t green() const;

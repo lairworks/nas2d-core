@@ -48,6 +48,40 @@ const Color Color::NoAlpha(0, 0, 0, 0);
 Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : mR(r), mG(g), mB(b), mA(a)
 {}
 
+Color::Color(uint32_t value)
+{
+	setRgbaFromRawValue(value);
+}
+
+void Color::setRgbaFromRawValue(uint32_t value)
+{
+	mR = static_cast<uint8_t>((value & 0xFF000000u) >> 24);
+	mG = static_cast<uint8_t>((value & 0x00FF0000u) >> 16);
+	mB = static_cast<uint8_t>((value & 0x0000FF00u) >> 8);
+	mA = static_cast<uint8_t>((value & 0x000000FFu) >> 0);
+}
+
+void Color::setRgbFromRawValue(uint32_t value)
+{
+	mR = static_cast<uint8_t>((value & 0xFF000000u) >> 24);
+	mG = static_cast<uint8_t>((value & 0x00FF0000u) >> 16);
+	mB = static_cast<uint8_t>((value & 0x0000FF00u) >> 8);
+}
+
+uint32_t Color::getRgbaAsRawValue() const
+{
+	return static_cast<uint32_t>(((static_cast<uint32_t>(mR) << 24) & 0xFF000000u)
+								| ((static_cast<uint32_t>(mG) << 16) & 0x00FF0000u)
+								| ((static_cast<uint32_t>(mB) << 8) & 0x0000FF00u)
+								| ((static_cast<uint32_t>(mA) << 0) & 0x000000FFu));
+}
+uint32_t Color::getRgbAsRawValue() const
+{
+	return static_cast<uint32_t>(((static_cast<uint32_t>(mR) << 24) & 0xFF0000u)
+								| ((static_cast<uint32_t>(mG) << 16) & 0x00FF00u)
+								| ((static_cast<uint32_t>(mB) << 8) & 0x0000FFu));
+}
+
 
 /**
  * Sets a Color with a given RGBA value set.

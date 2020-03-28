@@ -87,6 +87,13 @@ struct VoidToDefaultVoid { using type = T; };
 template <>
 struct VoidToDefaultVoid<void> { using type = DefaultVoid; };
 
+
+template <class GenericMemFuncType, class XFuncType>
+GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
+{
+	return reinterpret_cast<GenericMemFuncType>(function_to_bind);
+}
+
 // GenericClass is a fake class, ONLY used to provide a type. It is vitally important
 // that it is never defined.
 #ifdef	FASTDLGT_MICROSOFT_MFP
@@ -121,7 +128,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE>
 		#if defined __DMC__
 		bound_func = horrible_cast<GenericMemFuncType>(function_to_bind);
 		#else
-		bound_func = reinterpret_cast<GenericMemFuncType>(function_to_bind);
+		bound_func = CastMemFuncPtr<GenericMemFuncType>(function_to_bind);
 		#endif
 		return reinterpret_cast<GenericClass*>(pthis);
 	}
@@ -172,7 +179,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2 * sizeof(int)>
 	{
 		union { XFuncType func; GenericClass* (X::*ProbeFunc)(); MicrosoftVirtualMFP s; } u;
 		u.func = function_to_bind;
-		bound_func = reinterpret_cast<GenericMemFuncType>(u.s.codeptr);
+		bound_func = CastMemFuncPtr<GenericMemFuncType>(u.s.codeptr);
 		union { GenericVirtualClass::ProbePtrType virtfunc; MicrosoftVirtualMFP s; } u2;
 
 		static_assert(sizeof(function_to_bind) == sizeof(u.s) && sizeof(function_to_bind) == sizeof(u.ProbeFunc) && sizeof(u2.virtfunc) == sizeof(u2.s), "Can't use horrible cast");
@@ -325,7 +332,7 @@ public:
 #endif
 
 	inline GenericClass* GetClosureThis() const { return m_pthis; }
-	inline GenericMemFunc GetClosureMemPtr() const { return reinterpret_cast<GenericMemFunc>(m_pFunction); }
+	inline GenericMemFunc GetClosureMemPtr() const { return CastMemFuncPtr<GenericMemFunc>(m_pFunction); }
 
 #if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 

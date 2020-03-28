@@ -91,7 +91,14 @@ struct VoidToDefaultVoid<void> { using type = DefaultVoid; };
 template <class GenericMemFuncType, class XFuncType>
 GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
 {
+	#if __GNUC__ >= 8
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wcast-function-type"
+	#endif
 	return reinterpret_cast<GenericMemFuncType>(function_to_bind);
+	#if __GNUC__ >= 8
+	#pragma GCC diagnostic pop
+	#endif
 }
 
 // GenericClass is a fake class, ONLY used to provide a type. It is vitally important

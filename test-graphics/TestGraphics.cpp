@@ -53,7 +53,7 @@ NAS2D::State* TestGraphics::update()
 	r.drawBox(10, 50, 40, 40, 255, 255, 255);
 	r.drawBoxFilled(70, 50, 40, 40, 200, 0, 0);
 
-	r.drawGradient(10, 100, 100, 100, NAS2D::Color::Blue, NAS2D::Color::Bright_green, NAS2D::Color::Red, NAS2D::Color::Magenta);
+	r.drawGradient(10, 100, 100, 100, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
 
 	r.drawCircle(150, 70, 20, 0, 200, 0, 255, 16);
 	r.drawCircle(150, 120, 20, 0, 200, 0, 255, 16, 0.5f);

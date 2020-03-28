@@ -14,9 +14,9 @@ using namespace NAS2D;
 
 const Color Color::Black(0, 0, 0);
 const Color Color::Blue(0, 0, 255);
-const Color Color::Bright_green(0, 255, 0);
+const Color Color::Green(0, 255, 0);
 const Color Color::Cyan(0, 255, 255);
-const Color Color::Green(0, 128, 0);
+const Color Color::DarkGreen(0, 128, 0);
 const Color Color::Grey(128, 128, 128);
 const Color Color::Magenta(255, 0, 255);
 const Color Color::Navy(35, 60, 85);

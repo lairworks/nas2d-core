@@ -23,9 +23,9 @@ class Color
 public:
 	static const Color Black;
 	static const Color Blue;
-	static const Color Bright_green;
-	static const Color Cyan;
 	static const Color Green;
+	static const Color Cyan;
+	static const Color DarkGreen;
 	static const Color Grey;
 	static const Color Magenta;
 	static const Color Navy;

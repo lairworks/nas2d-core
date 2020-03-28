@@ -12,21 +12,21 @@
 
 using namespace NAS2D;
 
-const Color Color::Black(0, 0, 0, 255);
-const Color Color::Blue(0, 0, 255, 255);
-const Color Color::Bright_green(0, 255, 0, 255);
-const Color Color::Cyan(0, 255, 255, 255);
-const Color Color::Green(0, 128, 0, 255);
-const Color Color::Grey(128, 128, 128, 255);
-const Color Color::Magenta(255, 0, 255, 255);
-const Color Color::Navy(35, 60, 85, 255);
-const Color Color::Orange(255, 128, 0, 255);
-const Color Color::Red(255, 0, 0, 255);
-const Color Color::Silver(192, 192, 192, 255);
-const Color Color::White(255, 255, 255, 255);
-const Color Color::Yellow(255, 255, 0, 255);
-const Color Color::Normal(255, 255, 255, 255);
-const Color Color::NormalZ(128, 128, 255, 255);
+const Color Color::Black(0, 0, 0);
+const Color Color::Blue(0, 0, 255);
+const Color Color::Bright_green(0, 255, 0);
+const Color Color::Cyan(0, 255, 255);
+const Color Color::Green(0, 128, 0);
+const Color Color::Grey(128, 128, 128);
+const Color Color::Magenta(255, 0, 255);
+const Color Color::Navy(35, 60, 85);
+const Color Color::Orange(255, 128, 0);
+const Color Color::Red(255, 0, 0);
+const Color Color::Silver(192, 192, 192);
+const Color Color::White(255, 255, 255);
+const Color Color::Yellow(255, 255, 0);
+const Color Color::Normal(255, 255, 255);
+const Color Color::NormalZ(128, 128, 255);
 const Color Color::NoAlpha(0, 0, 0, 0);
 
 

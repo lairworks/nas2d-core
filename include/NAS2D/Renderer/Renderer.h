@@ -58,10 +58,12 @@ public:
 	void drawImage(Image& image, Point<float> position, float scale, Color color);
 	virtual void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
+	void drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect);
 	void drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size);
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height);
 	virtual void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
+	void drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, const Color& color = Color::Normal);
 	void drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, const Color& color = Color::Normal);
 	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color& color = Color::Normal);
 	virtual void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;

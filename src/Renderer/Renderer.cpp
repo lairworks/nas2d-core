@@ -60,6 +60,12 @@ void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale
 }
 
 
+void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect)
+{
+	drawSubImage(image, raster, subImageRect.startPoint(), subImageRect.size());
+}
+
+
 void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size)
 {
 	drawSubImage(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, 255, 255, 255, 255);
@@ -80,6 +86,12 @@ void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<floa
 void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height)
 {
 	drawSubImage(image, rasterX, rasterY, x, y, width, height, 255, 255, 255, 255);
+}
+
+
+void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, const Color& color)
+{
+	drawSubImageRotated(image, raster, subImageRect.startPoint(), subImageRect.size(), degrees, color);
 }
 
 

@@ -3,6 +3,10 @@
 #include <type_traits>
 
 
+TEST(Vector, Aggregate) {
+	EXPECT_TRUE((std::is_aggregate_v<NAS2D::Vector<int>>));
+}
+
 TEST(Vector, DeductionGuidedConstruction) {
 	EXPECT_TRUE((std::is_same_v<NAS2D::Vector<int>, decltype(NAS2D::Vector{0, 0})>));
 	EXPECT_TRUE((std::is_same_v<NAS2D::Vector<double>, decltype(NAS2D::Vector{0.0, 0.0})>));

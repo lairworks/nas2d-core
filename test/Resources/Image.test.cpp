@@ -3,8 +3,8 @@
 
 
 TEST(Image, size) {
-	EXPECT_EQ((NAS2D::Vector<int>{1, 1}), NAS2D::Image(1, 1).size());
-	EXPECT_EQ((NAS2D::Vector<int>{4, 2}), NAS2D::Image(4, 2).size());
+	EXPECT_EQ((NAS2D::Vector{1, 1}), NAS2D::Image(1, 1).size());
+	EXPECT_EQ((NAS2D::Vector{4, 2}), NAS2D::Image(4, 2).size());
 }
 
 TEST(Image, center) {

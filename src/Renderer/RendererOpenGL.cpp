@@ -274,7 +274,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	}
 
 	const auto availableSize = destinationBounds.endPoint() - dstPointInt;
-	const auto clipSize = NAS2D::Vector<int>{
+	const auto clipSize = NAS2D::Vector{
 		availableSize.x < sourceSize.x ? availableSize.x : sourceSize.x,
 		availableSize.y < sourceSize.y ? availableSize.y : sourceSize.y
 	};
@@ -631,7 +631,7 @@ bool RendererOpenGL::resizeable() const
 
 void RendererOpenGL::onResize(int w, int h)
 {
-	const auto dimensions = Vector<int>{w, h}.to<float>();
+	const auto dimensions = Vector{w, h}.to<float>();
 	setViewport(Rectangle{0, 0, w, h});
 	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, dimensions));
 	setResolution(dimensions);

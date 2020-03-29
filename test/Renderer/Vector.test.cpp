@@ -1,6 +1,13 @@
 #include "NAS2D/Renderer/Vector.h"
 #include <gtest/gtest.h>
+#include <type_traits>
 
+
+TEST(Vector, DeductionGuidedConstruction) {
+	EXPECT_TRUE((std::is_same_v<NAS2D::Vector<int>, decltype(NAS2D::Vector{0, 0})>));
+	EXPECT_TRUE((std::is_same_v<NAS2D::Vector<double>, decltype(NAS2D::Vector{0.0, 0.0})>));
+	EXPECT_TRUE((std::is_same_v<NAS2D::Vector<float>, decltype(NAS2D::Vector{0.0f, 0.0f})>));
+}
 
 TEST(Vector, DefaultConstructible) {
 	EXPECT_EQ((NAS2D::Vector<int>{0, 0}), NAS2D::Vector<int>{});

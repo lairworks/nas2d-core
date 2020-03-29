@@ -48,11 +48,11 @@ TEST(Vector, SelfSubtract) {
 }
 
 TEST(Vector, Add) {
-	EXPECT_EQ((NAS2D::Vector{2, 3}), (NAS2D::Vector{1, 1}) + (NAS2D::Vector{1, 2}));
+	EXPECT_EQ((NAS2D::Vector{2, 3}), (NAS2D::Vector{1, 1} + NAS2D::Vector{1, 2}));
 }
 
 TEST(Vector, Subtract) {
-	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Vector{2, 3}) - (NAS2D::Vector{1, 2}));
+	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Vector{2, 3} - NAS2D::Vector{1, 2}));
 }
 
 TEST(Vector, SelfMultiplyScalar) {

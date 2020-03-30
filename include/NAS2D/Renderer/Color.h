@@ -26,7 +26,15 @@ public:
 	static const Color Green;
 	static const Color Cyan;
 	static const Color DarkGreen;
+	static const Color DarkGrey;
 	static const Color Grey;
+	static const Color LightGrey;
+	static const Color CoolGrey;
+	static const Color CoolLightGrey;
+	static const Color CoolDarkGrey;
+	static const Color WarmGrey;
+	static const Color WarmLightGrey;
+	static const Color WarmDarkGrey;
 	static const Color Magenta;
 	static const Color Navy;
 	static const Color Orange;

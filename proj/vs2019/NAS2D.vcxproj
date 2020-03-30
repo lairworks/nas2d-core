@@ -257,4 +257,7 @@
     <None Include="..\..\.clang-format" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <PropertyGroup Condition="'$(Language)'=='C++'">
+    <CAExcludePath>$(VcpkgRoot)include;$(CAExcludePath)</CAExcludePath>
+  </PropertyGroup>
 </Project>

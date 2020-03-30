@@ -516,8 +516,8 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				continue;
 			}
 
-			const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{x, y}, NAS2D::Vector<int>{width, height});
-			const auto anchorOffset = NAS2D::Vector<int>{anchorx, anchory};
+			const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{x, y}, NAS2D::Vector{width, height});
+			const auto anchorOffset = NAS2D::Vector{anchorx, anchory};
 			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, delay});
 		}
 		else

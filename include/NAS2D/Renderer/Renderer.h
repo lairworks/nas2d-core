@@ -108,7 +108,7 @@ public:
 	void drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 	virtual void drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 
-	void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector<float>{1.0f, 1.0f});
+	void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector{1.0f, 1.0f});
 	virtual void drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f) = 0;
 
 	void drawGradient(Rectangle<float> rect, const Color& c1, const Color& c2, const Color& c3, const Color& c4);

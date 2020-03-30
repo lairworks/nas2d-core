@@ -33,7 +33,7 @@ NAS2D::State* TestGraphics::update()
 {
 	NAS2D::Renderer& r = NAS2D::Utility<NAS2D::Renderer>::get();
 
-	r.clearScreen(NAS2D::Color::Grey);
+	r.clearScreen(NAS2D::Color::Gray);
 
 	r.drawImage(mDxImage, 256, 256.0f);
 	r.drawImage(mOglImage, 768, 256.0f);

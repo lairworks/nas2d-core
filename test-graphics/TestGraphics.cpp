@@ -40,13 +40,13 @@ NAS2D::State* TestGraphics::update()
 
 	{
 		const auto jitter = [&]() -> decltype(auto) {
-			std::uniform_int_distribution<int> dist(0, 64);
+			std::uniform_int_distribution<uint8_t> dist(0, 64);
 			return dist(generator);
 		};
-		for (int i = 0; i < 2000; ++i)
+		for (auto i = 0u; i < 2000u; ++i)
 		{
-			int grey = jitter() * 2;
-			r.drawPoint(10.0f + jitter(), 250.0f + jitter(), 100 + grey, 100 + grey, 100 + grey);
+			const uint8_t grey = jitter() * 2u;
+			r.drawPoint(10.0f + jitter(), 250.0f + jitter(), 100u + grey, 100u + grey, 100u + grey);
 		}
 	}
 
@@ -62,7 +62,7 @@ NAS2D::State* TestGraphics::update()
 	return this;
 }
 
-void TestGraphics::onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat)
+void TestGraphics::onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier /*mod*/, bool /*repeat*/)
 {
 	switch (key)
 	{
@@ -80,11 +80,11 @@ void TestGraphics::onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandl
 	}
 }
 
-void TestGraphics::onMouseMove(int x, int y, int relX, int relY)
+void TestGraphics::onMouseMove(int /*x*/, int /*y*/, int /*relX*/, int /*relY*/)
 {}
 
-void TestGraphics::onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y)
+void TestGraphics::onMouseDown(NAS2D::EventHandler::MouseButton /*button*/, int /*x*/, int /*y*/)
 {}
 
-void TestGraphics::onWindowResized(int w, int h)
+void TestGraphics::onWindowResized(int /*w*/, int /*h*/)
 {}

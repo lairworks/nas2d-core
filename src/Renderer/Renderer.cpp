@@ -35,11 +35,6 @@ Renderer::~Renderer()
 }
 
 
-void Renderer::drawImage(Image& image, Point<float> position, float scale)
-{
-	drawImage(image, position.x(), position.y(), scale);
-}
-
 /**
  * Draws an Image to the screen.
  *

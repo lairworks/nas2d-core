@@ -53,9 +53,8 @@ public:
 
 	virtual void window_icon(const std::string& path) = 0;
 
-	void drawImage(Image& image, Point<float> position, float scale = 1.0f);
 	void drawImage(Image& image, float x, float y, float scale = 1.0f);
-	void drawImage(Image& image, Point<float> position, float scale, Color color);
+	void drawImage(Image& image, Point<float> position, float scale = 1.0, Color color = Color::White);
 	virtual void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
 
 	void drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, const Color& color = Color::Normal);

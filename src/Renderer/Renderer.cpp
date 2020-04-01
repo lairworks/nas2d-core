@@ -207,6 +207,12 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 }
 
 
+void NAS2D::Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
+{
+	drawImageRect(rect.startPoint(), rect.size(), images);
+}
+
+
 void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageList& images)
 {
 	drawImageRect(position.x(), position.y(), size.x, size.y, images);

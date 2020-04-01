@@ -137,6 +137,12 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, c
 }
 
 
+void NAS2D::Renderer::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
+{
+	drawImageStretched(image, rect.startPoint(), rect.size(), color);
+}
+
+
 void NAS2D::Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
 {
 	drawImageStretched(image, position.x(), position.y(), size.x, size.y, color);

@@ -106,15 +106,15 @@ void Sprite::resume()
 
 
 /**
- * Skips animation playback frames.
+ * Sets the animation playback frame.
  *
- * \param	frameCount	Number of frames to skip.
+ * \param	frameIndex	New frame index
  */
-void Sprite::skip(int frameCount)
+void Sprite::setFrame(int frameIndex)
 {
 	if (mActions.find(mCurrentAction) != mActions.end())
 	{
-		mCurrentFrame = frameCount % mActions[mCurrentAction].size();
+		mCurrentFrame = frameIndex % mActions[mCurrentAction].size();
 	}
 }
 

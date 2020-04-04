@@ -34,17 +34,6 @@ namespace NAS2D
 	bool startsWith(std::string_view string, char start) noexcept;
 	bool endsWith(std::string_view string, char end) noexcept;
 
-	template<typename... Args>
-	std::string string_format(const std::string& format, Args... args)
-	{
-		std::string buffer;
-		std::size_t size = snprintf(buffer.data(), buffer.size(), format.c_str(), args...);
-		buffer.resize(size + 1); // Including null (avoid clipping/undefined behavior)
-		snprintf(buffer.data(), buffer.size(), format.c_str(), args...);
-		buffer.resize(size); // Strip null temrinator
-		return buffer;
-	}
-
 	/**
  * \typedef StringList
  * \brief	A list of std::string's.

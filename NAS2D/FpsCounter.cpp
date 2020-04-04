@@ -8,7 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/FpsCounter.h"
+#include "FpsCounter.h"
 
 #include <SDL2/SDL.h>
 

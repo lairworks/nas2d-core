@@ -9,10 +9,10 @@
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
-#include "NAS2D/Xml/XmlNode.h"
-#include "NAS2D/Xml/XmlDocument.h"
+#include "XmlNode.h"
+#include "XmlDocument.h"
 
-#include "NAS2D/Exception.h"
+#include "../Exception.h"
 
 using namespace NAS2D::Xml;
 

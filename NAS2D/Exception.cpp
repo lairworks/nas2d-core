@@ -7,7 +7,7 @@
 // =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-#include "NAS2D/Exception.h"
+#include "Exception.h"
 
 #include <string>
 

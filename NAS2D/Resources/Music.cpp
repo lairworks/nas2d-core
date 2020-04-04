@@ -7,11 +7,11 @@
 // =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-#include "NAS2D/Resources/Music.h"
-#include "NAS2D/Resources/MusicInfo.h"
+#include "Music.h"
+#include "MusicInfo.h"
 
-#include "NAS2D/Filesystem.h"
-#include "NAS2D/Utility.h"
+#include "../Filesystem.h"
+#include "../Utility.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>

@@ -8,7 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Trig.h"
+#include "Trig.h"
 
 #include <cmath>
 #include <algorithm>

@@ -8,11 +8,11 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Mixer/MixerSDL.h"
-#include "NAS2D/Configuration.h"
-#include "NAS2D/Exception.h"
-#include "NAS2D/Resources/MusicInfo.h"
-#include "NAS2D/Utility.h"
+#include "MixerSDL.h"
+#include "../Configuration.h"
+#include "../Exception.h"
+#include "../Resources/MusicInfo.h"
+#include "../Utility.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>

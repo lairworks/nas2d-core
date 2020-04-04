@@ -7,13 +7,13 @@
 // =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-#include "NAS2D/Resources/Font.h"
-#include "NAS2D/Resources/FontInfo.h"
+#include "Font.h"
+#include "FontInfo.h"
 
-#include "NAS2D/Exception.h"
-#include "NAS2D/Filesystem.h"
-#include "NAS2D/Utility.h"
-#include "NAS2D/MathUtils.h"
+#include "../Exception.h"
+#include "../Filesystem.h"
+#include "../Utility.h"
+#include "../MathUtils.h"
 
 #include <GL/glew.h>
 

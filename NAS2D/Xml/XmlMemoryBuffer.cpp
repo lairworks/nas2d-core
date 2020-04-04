@@ -9,15 +9,15 @@
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
-#include "NAS2D/Xml/XmlMemoryBuffer.h"
+#include "XmlMemoryBuffer.h"
 
-#include "NAS2D/Xml/XmlAttribute.h"
-#include "NAS2D/Xml/XmlAttributeSet.h"
-#include "NAS2D/Xml/XmlComment.h"
-#include "NAS2D/Xml/XmlDocument.h"
-#include "NAS2D/Xml/XmlElement.h"
-#include "NAS2D/Xml/XmlText.h"
-#include "NAS2D/Xml/XmlUnknown.h"
+#include "XmlAttribute.h"
+#include "XmlAttributeSet.h"
+#include "XmlComment.h"
+#include "XmlDocument.h"
+#include "XmlElement.h"
+#include "XmlText.h"
+#include "XmlUnknown.h"
 
 using namespace NAS2D::Xml;
 

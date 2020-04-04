@@ -1,4 +1,4 @@
-#include "NAS2D/Mixer/MixerNull.h"
+#include "MixerNull.h"
 
 namespace NAS2D
 {

@@ -8,18 +8,18 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Configuration.h"
-#include "NAS2D/EventHandler.h"
-#include "NAS2D/Exception.h"
-#include "NAS2D/Filesystem.h"
-#include "NAS2D/Game.h"
-#include "NAS2D/Utility.h"
-#include "NAS2D/Version.h"
+#include "Configuration.h"
+#include "EventHandler.h"
+#include "Exception.h"
+#include "Filesystem.h"
+#include "Game.h"
+#include "Utility.h"
+#include "Version.h"
 
-#include "NAS2D/Mixer/MixerNull.h"
-#include "NAS2D/Mixer/MixerSDL.h"
-#include "NAS2D/Renderer/RendererOpenGL.h"
-#include "NAS2D/Renderer/RendererNull.h"
+#include "Mixer/MixerNull.h"
+#include "Mixer/MixerSDL.h"
+#include "Renderer/RendererOpenGL.h"
+#include "Renderer/RendererNull.h"
 
 #include <SDL2/SDL.h>
 

@@ -9,7 +9,7 @@
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
-#include "NAS2D/Xml/XmlText.h"
+#include "XmlText.h"
 
 using namespace NAS2D::Xml;
 

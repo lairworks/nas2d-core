@@ -8,7 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Renderer/Renderer.h"
+#include "Renderer.h"
 
 #include <iostream>
 #include <algorithm>

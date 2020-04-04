@@ -1,4 +1,4 @@
-#include "NAS2D/Renderer/DisplayDesc.h"
+#include "DisplayDesc.h"
 
 
 namespace NAS2D

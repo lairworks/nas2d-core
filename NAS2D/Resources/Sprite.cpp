@@ -8,9 +8,9 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Resources/Sprite.h"
-#include "NAS2D/Version.h"
-#include "NAS2D/Xml/Xml.h"
+#include "Sprite.h"
+#include "../Version.h"
+#include "../Xml/Xml.h"
 
 #include <iostream>
 

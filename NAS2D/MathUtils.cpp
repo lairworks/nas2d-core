@@ -7,7 +7,7 @@
 // =
 // = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-#include "NAS2D/MathUtils.h"
+#include "MathUtils.h"
 #include <stdexcept>
 
 

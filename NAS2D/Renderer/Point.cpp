@@ -8,7 +8,7 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Renderer/Point.h"
+#include "Point.h"
 
 namespace NAS2D {
 

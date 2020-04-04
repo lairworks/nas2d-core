@@ -8,10 +8,10 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Configuration.h"
-#include "NAS2D/Filesystem.h"
-#include "NAS2D/Utility.h"
-#include "NAS2D/Xml/Xml.h"
+#include "Configuration.h"
+#include "Filesystem.h"
+#include "Utility.h"
+#include "Xml/Xml.h"
 
 #include <iostream>
 #include <algorithm>

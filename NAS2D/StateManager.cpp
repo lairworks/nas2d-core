@@ -8,8 +8,8 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/StateManager.h"
-#include "NAS2D/Mixer/Mixer.h"
+#include "StateManager.h"
+#include "Mixer/Mixer.h"
 
 #include <iostream>
 

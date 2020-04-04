@@ -8,17 +8,17 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
-#include "NAS2D/Trig.h"
-#include "NAS2D/Renderer/RendererOpenGL.h"
+#include "../Trig.h"
+#include "RendererOpenGL.h"
 
-#include "NAS2D/Configuration.h"
-#include "NAS2D/EventHandler.h"
-#include "NAS2D/Exception.h"
-#include "NAS2D/Filesystem.h"
-#include "NAS2D/MathUtils.h"
-#include "NAS2D/Resources/FontInfo.h"
-#include "NAS2D/Resources/ImageInfo.h"
-#include "NAS2D/Utility.h"
+#include "../Configuration.h"
+#include "../EventHandler.h"
+#include "../Exception.h"
+#include "../Filesystem.h"
+#include "../MathUtils.h"
+#include "../Resources/FontInfo.h"
+#include "../Resources/ImageInfo.h"
+#include "../Utility.h"
 
 #include <GL/glew.h>
 

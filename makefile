@@ -5,8 +5,8 @@
 #       That should be the current Makefile, assuming no includes
 TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 
-SRCDIR := src
-INCDIR := include
+SRCDIR := NAS2D
+INCDIR := ./
 BUILDDIR := .build
 BINDIR := lib
 INTDIR := $(BUILDDIR)/intermediate
@@ -21,7 +21,7 @@ Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
 Windows_OpenGL_LIBS := -lglew32 -lopengl32
 OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
-CPPFLAGS := $(CPPFLAGS_EXTRA) -Iinclude/
+CPPFLAGS := $(CPPFLAGS_EXTRA) -I$(INCDIR)
 CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) -std=c++17 $(CXXFLAGS_WARN) $(shell sdl2-config --cflags)
 LDFLAGS := $(LDFLAGS_EXTRA)

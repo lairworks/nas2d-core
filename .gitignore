@@ -3,7 +3,8 @@
 /lib/
 
 # Windows - Visual Studio
-Debug/
 Release/
+Debug/
+x64/
 .vs/
 *.user

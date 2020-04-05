@@ -11,7 +11,7 @@ install:
   - call InstallVcpkgDeps.bat
   - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:
-  project: proj/vs2019/NAS2D.sln
+  project: NAS2D.sln
 test_script:
   - cd %APPVEYOR_BUILD_FOLDER%\test
   - '%APPVEYOR_BUILD_FOLDER%\test\%PLATFORM%\%CONFIGURATION%\test.exe'

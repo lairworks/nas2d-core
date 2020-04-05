@@ -12,8 +12,6 @@
 #include "XmlNode.h"
 #include "XmlDocument.h"
 
-#include "../Exception.h"
-
 using namespace NAS2D::Xml;
 
 /**

@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3350562D-6204-42FC-898A-C85FD62E04E8}</ProjectGuid>
+    <RootNamespace>NAS2D</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/we4242 /we4254 /we4263 /we4265 /we4287 /we4289 /we4296 /we4311 /we4545 /we4546 /we4547 /we4549 /we4555 /we4619 /we4640 /we4826 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>..\InstallVcpkgDeps.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Installing vcpkg dependencies</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/we4242 /we4254 /we4263 /we4265 /we4287 /we4289 /we4296 /we4311 /we4545 /we4546 /we4547 /we4549 /we4555 /we4619 /we4640 /we4826 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>..\InstallVcpkgDeps.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Installing vcpkg dependencies</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/we4242 /we4254 /we4263 /we4265 /we4287 /we4289 /we4296 /we4311 /we4545 /we4546 /we4547 /we4549 /we4555 /we4619 /we4640 /we4826 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PreBuildEvent>
+      <Command>..\InstallVcpkgDeps.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Installing vcpkg dependencies</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS;TIXML_USE_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/we4242 /we4254 /we4263 /we4265 /we4287 /we4289 /we4296 /we4311 /we4545 /we4546 /we4547 /we4549 /we4555 /we4619 /we4640 /we4826 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PreBuildEvent>
+      <Command>..\InstallVcpkgDeps.bat</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Installing vcpkg dependencies</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="Filesystem.cpp" />
+    <ClCompile Include="FpsCounter.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="MathUtils.cpp" />
+    <ClCompile Include="Mixer\Mixer.cpp" />
+    <ClCompile Include="Mixer\MixerSDL.cpp" />
+    <ClCompile Include="Mixer\MixerNull.cpp" />
+    <ClCompile Include="Renderer\Color.cpp" />
+    <ClCompile Include="Renderer\DisplayDesc.cpp" />
+    <ClCompile Include="Renderer\Point.cpp" />
+    <ClCompile Include="Renderer\Rectangle.cpp" />
+    <ClCompile Include="Renderer\Renderer.cpp" />
+    <ClCompile Include="Renderer\RendererOpenGL.cpp" />
+    <ClCompile Include="Resources\Font.cpp" />
+    <ClCompile Include="Resources\Image.cpp" />
+    <ClCompile Include="Resources\Music.cpp" />
+    <ClCompile Include="Resources\Resource.cpp" />
+    <ClCompile Include="Resources\Sound.cpp" />
+    <ClCompile Include="Resources\Sprite.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Trig.cpp" />
+    <ClCompile Include="Version.cpp" />
+    <ClCompile Include="Xml\XmlNode.cpp" />
+    <ClCompile Include="Xml\XmlAttribute.cpp" />
+    <ClCompile Include="Xml\XmlAttributeSet.cpp" />
+    <ClCompile Include="Xml\XmlBase.cpp" />
+    <ClCompile Include="Xml\XmlComment.cpp" />
+    <ClCompile Include="Xml\XmlDocument.cpp" />
+    <ClCompile Include="Xml\XmlElement.cpp" />
+    <ClCompile Include="Xml\XmlHandle.cpp" />
+    <ClCompile Include="Xml\XmlMemoryBuffer.cpp" />
+    <ClCompile Include="Xml\XmlParser.cpp" />
+    <ClCompile Include="Xml\XmlText.cpp" />
+    <ClCompile Include="Xml\XmlUnknown.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="Documentation.h" />
+    <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="Exception.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="Filesystem.h" />
+    <ClInclude Include="FpsCounter.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="MathUtils.h" />
+    <ClInclude Include="Mixer\Mixer.h" />
+    <ClInclude Include="Mixer\MixerSDL.h" />
+    <ClInclude Include="Mixer\MixerNull.h" />
+    <ClInclude Include="NAS2D.h" />
+    <ClInclude Include="Renderer\DisplayDesc.h" />
+    <ClInclude Include="Renderer\RendererNull.h" />
+    <ClInclude Include="Renderer\Color.h" />
+    <ClInclude Include="Renderer\Point.h" />
+    <ClInclude Include="Renderer\Vector.h" />
+    <ClInclude Include="Renderer\Rectangle.h" />
+    <ClInclude Include="Renderer\Renderer.h" />
+    <ClInclude Include="Renderer\RendererOpenGL.h" />
+    <ClInclude Include="Resources\Font.h" />
+    <ClInclude Include="Resources\FontInfo.h" />
+    <ClInclude Include="Resources\Image.h" />
+    <ClInclude Include="Resources\ImageInfo.h" />
+    <ClInclude Include="Resources\Music.h" />
+    <ClInclude Include="Resources\MusicInfo.h" />
+    <ClInclude Include="Resources\Resource.h" />
+    <ClInclude Include="Resources\Sound.h" />
+    <ClInclude Include="Resources\Sprite.h" />
+    <ClInclude Include="Signal.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Trig.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="Version.h" />
+    <ClInclude Include="Xml\Xml.h" />
+    <ClInclude Include="Xml\XmlAttribute.h" />
+    <ClInclude Include="Xml\XmlAttributeSet.h" />
+    <ClInclude Include="Xml\XmlBase.h" />
+    <ClInclude Include="Xml\XmlComment.h" />
+    <ClInclude Include="Xml\XmlDocument.h" />
+    <ClInclude Include="Xml\XmlElement.h" />
+    <ClInclude Include="Xml\XmlHandle.h" />
+    <ClInclude Include="Xml\XmlMemoryBuffer.h" />
+    <ClInclude Include="Xml\XmlNode.h" />
+    <ClInclude Include="Xml\XmlText.h" />
+    <ClInclude Include="Xml\XmlUnknown.h" />
+    <ClInclude Include="Xml\XmlVisitor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.clang-format" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <PropertyGroup Condition="'$(Language)'=='C++'">
+    <CAExcludePath>$(VcpkgRoot)include;$(CAExcludePath)</CAExcludePath>
+  </PropertyGroup>
+</Project>

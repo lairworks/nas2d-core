@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Mixer">
+      <UniqueIdentifier>{38850f27-88ca-4a9f-8398-c4fc4063e7d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderer">
+      <UniqueIdentifier>{1b4aff9c-81d5-485b-bdc7-1b5850a90ff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{abe87a21-5242-47d5-a2e5-cd4d11c06440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mixer">
+      <UniqueIdentifier>{e726c591-8921-4e48-bcd1-b31f16365f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Renderer">
+      <UniqueIdentifier>{f835e375-3047-4a58-8cf1-a8c2ac3a580c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resources">
+      <UniqueIdentifier>{8fc63a46-a921-4817-8885-8e16d6d47335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Xml">
+      <UniqueIdentifier>{7d97d5b5-2a02-45fa-b77b-5421848a65aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Xml">
+      <UniqueIdentifier>{f77ff9a8-6639-4ae0-8705-c016859865d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Filesystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FpsCounter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StateManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Font.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Image.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Music.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Resource.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Sound.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Sprite.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Color.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Point.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Rectangle.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Renderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlParser.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlBase.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlMemoryBuffer.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlHandle.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlAttributeSet.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlUnknown.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlElement.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlText.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlComment.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlAttribute.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlDocument.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlNode.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Mixer\Mixer.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="Mixer\MixerNull.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\RendererOpenGL.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Mixer\MixerSDL.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MathUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Version.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\DisplayDesc.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Configuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Documentation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FpsCounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NAS2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Signal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mixer\Mixer.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Font.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Image.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Music.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Resource.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Sound.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\Sprite.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\RendererNull.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Color.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Point.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Vector.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Rectangle.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Renderer.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\ImageInfo.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\MusicInfo.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\FontInfo.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\Xml.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlVisitor.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlBase.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlNode.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlAttribute.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlAttributeSet.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlElement.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlComment.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlText.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlUnknown.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlDocument.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlHandle.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Xml\XmlMemoryBuffer.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="Mixer\MixerNull.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\RendererOpenGL.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Mixer\MixerSDL.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\DisplayDesc.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.clang-format" />
+  </ItemGroup>
+</Project>

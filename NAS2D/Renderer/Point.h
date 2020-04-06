@@ -104,4 +104,7 @@ using Point_2df = Point<float>;
 extern template struct Point<float>;
 
 
+template <typename BaseType>
+Point(BaseType, BaseType) -> Point<BaseType>;
+
 } // namespace

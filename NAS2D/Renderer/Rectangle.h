@@ -168,4 +168,8 @@ extern template struct Rectangle<int>;
 using Rectangle_2df = Rectangle<float>;
 extern template struct Rectangle<float>;
 
+
+template <typename BaseType>
+Rectangle(BaseType, BaseType, BaseType, BaseType) -> Rectangle<BaseType>;
+
 } // namespace

@@ -3,6 +3,7 @@
 /lib/
 
 # Windows - Visual Studio
+Temporary/
 Release/
 Debug/
 x64/

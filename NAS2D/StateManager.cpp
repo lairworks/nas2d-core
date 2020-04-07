@@ -50,11 +50,8 @@ StateManager::~StateManager()
  *
  * \note	Passing a nullptr to this function will terminate the
  * 			application.
- *
- * \warning	The pointer given to the StateManager becomes owned by
- *			the StateManager.
  */
-void StateManager::setState(State* state)
+void StateManager::setState(std::unique_ptr<State> state)
 {
 	if (!state)
 	{
@@ -66,7 +63,7 @@ void StateManager::setState(State* state)
 	delete mActiveState;
 
 	// Initialize the new one
-	mActiveState = state;
+	mActiveState = state.release();
 	mActiveState->initialize();
 
 	mActive = true;

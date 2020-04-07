@@ -13,6 +13,8 @@
 #include "State.h"
 #include "Utility.h"
 
+#include <memory>
+
 namespace NAS2D {
 
 /**
@@ -30,7 +32,7 @@ public:
 	StateManager();
 	~StateManager();
 
-	void setState(State* state);
+	void setState(std::unique_ptr<State> state);
 	bool update();
 
 	bool active() const;

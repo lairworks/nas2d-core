@@ -11,6 +11,7 @@
 #include "TestGraphics.h"
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 int main(int /*argc*/, char *argv[])
@@ -19,7 +20,7 @@ int main(int /*argc*/, char *argv[])
 	try
 	{
 		NAS2D::Game game("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks", argv[0]);
-		game.go(new TestGraphics());
+		game.go(std::make_unique<TestGraphics>());
 	}
 	catch(std::exception& e)
 	{

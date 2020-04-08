@@ -12,6 +12,7 @@
 
 #include "StateManager.h"
 
+#include <memory>
 #include <string>
 
 namespace NAS2D {
@@ -61,7 +62,7 @@ public:
 
 	void mount(const std::string& path);
 
-	void go(State *state);
+	void go(std::unique_ptr<State> state);
 };
 
 } // namespace

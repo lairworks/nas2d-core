@@ -86,7 +86,7 @@ bool StateManager::update()
 		}
 		else if (nextState != mActiveState)
 		{
-			setState(nextState);
+			setState(std::unique_ptr<State>(nextState));
 		}
 
 		Utility<EventHandler>::get().pump();

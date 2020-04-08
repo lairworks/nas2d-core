@@ -70,23 +70,6 @@ bool Color::operator!=(Color other) const
 
 
 /**
- * Sets a Color with a given RGBA value set.
- *
- * \param r	Red compontent. Valid values are 0 - 255.
- * \param g	Green compontent. Valid values are 0 - 255.
- * \param b	Blue compontent. Valid values are 0 - 255.
- * \param a	Alpha compontent. Valid values are 0 - 255.
- */
-void Color::operator()(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-	red(r);
-	green(g);
-	blue(b);
-	alpha(a);
-}
-
-
-/**
  * Gets the red component value of the color.
  */
 uint8_t Color::red() const

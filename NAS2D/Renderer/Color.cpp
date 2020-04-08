@@ -57,6 +57,18 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : mR(r), mG(g), mB(b), 
 {}
 
 
+bool Color::operator==(Color other) const
+{
+	return (mR == other.mR) && (mG == other.mG) && (mB == other.mB) && (mA == other.mA);
+}
+
+
+bool Color::operator!=(Color other) const
+{
+	return !(*this == other);
+}
+
+
 /**
  * Sets a Color with a given RGBA value set.
  *

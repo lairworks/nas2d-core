@@ -42,7 +42,7 @@ public:
 private:
 	void handleQuit();
 
-	State			*mActiveState;
+	std::unique_ptr<State> mActiveState{};
 	bool			mActive;
 	bool			mForceStopAudio = true;
 };

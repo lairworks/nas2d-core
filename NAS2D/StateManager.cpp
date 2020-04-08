@@ -35,11 +35,7 @@ StateManager::StateManager() :
  */
 StateManager::~StateManager()
 {
-	if (mActiveState)
-	{
-		Utility<EventHandler>::get().disconnectAll();
-		delete mActiveState;
-	}
+	Utility<EventHandler>::get().disconnectAll();
 }
 
 
@@ -60,10 +56,8 @@ void StateManager::setState(std::unique_ptr<State> state)
 
 	if (mForceStopAudio) { Utility<Mixer>::get().stopAllAudio(); }
 
-	delete mActiveState;
-
 	// Initialize the new one
-	mActiveState = state.release();
+	mActiveState = std::move(state);
 	mActiveState->initialize();
 
 	mActive = true;
@@ -84,7 +78,7 @@ bool StateManager::update()
 		{
 			mActive = false;
 		}
-		else if (nextState != mActiveState)
+		else if (nextState != mActiveState.get())
 		{
 			setState(std::unique_ptr<State>(nextState));
 		}

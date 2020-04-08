@@ -338,7 +338,7 @@ Color Image::pixelColor(int x, int y) const
 	SDL_GetRGBA(pixelBytes, surface->format, &r, &g, &b, &a);
 	SDL_UnlockSurface(surface);
 
-	return Color(r, g, b, a);
+	return Color{r, g, b, a};
 }
 
 

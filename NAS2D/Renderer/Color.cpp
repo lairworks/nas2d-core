@@ -12,30 +12,30 @@
 
 using namespace NAS2D;
 
-const Color Color::Black(0, 0, 0);
-const Color Color::Blue(0, 0, 255);
-const Color Color::Green(0, 255, 0);
-const Color Color::Cyan(0, 255, 255);
-const Color Color::DarkGreen(0, 128, 0);
-const Color Color::DarkGray(64, 64, 64);
-const Color Color::Gray(128, 128, 128);
-const Color Color::LightGray(192, 192, 192);
-const Color Color::CoolGray(128, 128, 143);
-const Color Color::CoolLightGray(192, 192, 207);
-const Color Color::CoolDarkGray(64, 64, 79);
-const Color Color::WarmGray(143, 143, 128);
-const Color Color::WarmLightGray(207, 207, 192);
-const Color Color::WarmDarkGray(79, 79, 64);
-const Color Color::Magenta(255, 0, 255);
-const Color Color::Navy(35, 60, 85);
-const Color Color::Orange(255, 128, 0);
-const Color Color::Red(255, 0, 0);
-const Color Color::Silver(192, 192, 192);
-const Color Color::White(255, 255, 255);
-const Color Color::Yellow(255, 255, 0);
-const Color Color::Normal(255, 255, 255);
-const Color Color::NormalZ(128, 128, 255);
-const Color Color::NoAlpha(0, 0, 0, 0);
+const Color Color::Black{0, 0, 0};
+const Color Color::Blue{0, 0, 255};
+const Color Color::Green{0, 255, 0};
+const Color Color::Cyan{0, 255, 255};
+const Color Color::DarkGreen{0, 128, 0};
+const Color Color::DarkGray{64, 64, 64};
+const Color Color::Gray{128, 128, 128};
+const Color Color::LightGray{192, 192, 192};
+const Color Color::CoolGray{128, 128, 143};
+const Color Color::CoolLightGray{192, 192, 207};
+const Color Color::CoolDarkGray{64, 64, 79};
+const Color Color::WarmGray{143, 143, 128};
+const Color Color::WarmLightGray{207, 207, 192};
+const Color Color::WarmDarkGray{79, 79, 64};
+const Color Color::Magenta{255, 0, 255};
+const Color Color::Navy{35, 60, 85};
+const Color Color::Orange{255, 128, 0};
+const Color Color::Red{255, 0, 0};
+const Color Color::Silver{192, 192, 192};
+const Color Color::White{255, 255, 255};
+const Color Color::Yellow{255, 255, 0};
+const Color Color::Normal{255, 255, 255};
+const Color Color::NormalZ{128, 128, 255};
+const Color Color::NoAlpha{0, 0, 0, 0};
 
 
 

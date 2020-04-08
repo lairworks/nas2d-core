@@ -45,6 +45,7 @@
     <IntDir>$(SolutionDir)Temporary\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="Renderer/Color.test.cpp" />
     <ClCompile Include="Renderer/Point.test.cpp" />
     <ClCompile Include="Renderer/Rectangle.test.cpp" />
     <ClCompile Include="Renderer/Vector.test.cpp" />

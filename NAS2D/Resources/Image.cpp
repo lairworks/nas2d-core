@@ -284,7 +284,7 @@ Color Image::pixelColor(int x, int y) const
 {
 	if (x < 0 || x >= width() || y < 0 || y >= height())
 	{
-		return Color(0, 0, 0, 255);
+		return Color::Black;
 	}
 
 	SDL_Surface* surface = imageIdMap[name()].surface;

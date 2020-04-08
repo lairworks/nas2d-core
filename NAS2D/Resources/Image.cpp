@@ -284,7 +284,7 @@ Color Image::pixelColor(int x, int y) const
 {
 	if (x < 0 || x >= width() || y < 0 || y >= height())
 	{
-		return Color(0, 0, 0, 255);
+		return Color::Black;
 	}
 
 	SDL_Surface* surface = imageIdMap[name()].surface;
@@ -338,7 +338,7 @@ Color Image::pixelColor(int x, int y) const
 	SDL_GetRGBA(pixelBytes, surface->format, &r, &g, &b, &a);
 	SDL_UnlockSurface(surface);
 
-	return Color(r, g, b, a);
+	return Color{r, g, b, a};
 }
 
 

@@ -43,8 +43,8 @@ private:
 	void handleQuit();
 
 	std::unique_ptr<State> mActiveState{};
-	bool			mActive;
-	bool			mForceStopAudio = true;
+	bool			mActive{true};
+	bool			mForceStopAudio{true};
 };
 
 } // namespace

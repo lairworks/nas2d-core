@@ -138,7 +138,7 @@ private:
 	std::string mSpriteName{"Default Constructed"}; /**< Name of this Sprite. */
 	std::string mCurrentAction{DEFAULT_ACTION}; /**< The current Action being performed. */
 
-	size_t mCurrentFrame{0}; /**< The current frame index in the current Action's frame list. */
+	std::size_t mCurrentFrame{0}; /**< The current frame index in the current Action's frame list. */
 
 	Callback mFrameCallback; /**< Callback to signal a listener whenever an animation sequence completes. */
 

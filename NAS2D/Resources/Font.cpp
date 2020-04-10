@@ -177,7 +177,7 @@ int NAS2D::Font::width(const std::string& str) const
 	GlyphMetricsList& gml = fontMap[name()].metrics;
 	if (gml.empty()) { return 0; }
 
-	for (size_t i = 0; i < str.size(); i++)
+	for (std::size_t i = 0; i < str.size(); i++)
 	{
 		auto glyph = std::clamp<std::size_t>(str[i], 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;
@@ -306,7 +306,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 
 	GlyphMetricsList& glm = fontMap[path].metrics;
 	glm.resize(ASCII_TABLE_COUNT);
-	for (size_t i = 0; i < glm.size(); ++i)
+	for (std::size_t i = 0; i < glm.size(); ++i)
 	{
 		glm[i].minX = glyphWidth;
 	}

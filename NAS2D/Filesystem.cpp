@@ -175,7 +175,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 	}
 	else
 	{
-		size_t filterLen = filter.size();
+		std::size_t filterLen = filter.size();
 		for (char **i = rc; *i != nullptr; i++)
 		{
 			std::string tmpStr = *i;
@@ -330,7 +330,7 @@ std::string Filesystem::workingPath(const std::string& filename) const
 	if (!filename.empty())
 	{
 		std::string tmpStr(filename);
-		size_t pos = tmpStr.rfind("/");
+		std::size_t pos = tmpStr.rfind("/");
 		tmpStr = tmpStr.substr(0, pos + 1);
 		return tmpStr;
 	}
@@ -352,7 +352,7 @@ std::string Filesystem::workingPath(const std::string& filename) const
 std::string Filesystem::extension(const std::string& path) const
 {
 	// This is a naive approach but works for most cases.
-	size_t pos = path.find_last_of(".");
+	std::size_t pos = path.find_last_of(".");
 
 	if (pos != std::string::npos)
 	{

@@ -126,7 +126,7 @@ bool XmlMemoryBuffer::visit(const XmlUnknown& unknown)
 }
 
 
-size_t XmlMemoryBuffer::size()
+std::size_t XmlMemoryBuffer::size()
 {
 	return _buffer.size();
 }

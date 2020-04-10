@@ -106,13 +106,13 @@ public:
 	/**
 	 * Gets the size, in bytes, of the File.
 	 */
-	size_t size() const { return mByteStream.size(); }
+	std::size_t size() const { return mByteStream.size(); }
 
 
 	/**
 	 * Gets the size, in bytes, of the File.
 	 */
-	size_t length() const { return size(); }
+	std::size_t length() const { return size(); }
 
 	/**
 	 * Resizes the File.
@@ -168,7 +168,7 @@ public:
 	 *
 	 * \param pos	Position of the iterator to get.
 	 */
-	iterator seek(size_t pos) { iterator it = mByteStream.begin() + pos; return it; }
+	iterator seek(std::size_t pos) { iterator it = mByteStream.begin() + pos; return it; }
 
 	/**
 	 * Gets a reverse iterator to the byte at a specified position.
@@ -177,7 +177,7 @@ public:
 	 *
 	 * \see seek
 	 */
-	reverse_iterator rseek(size_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
+	reverse_iterator rseek(std::size_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
 
 	/**
 	 * Gets a byte from the byte stream at a specified position.
@@ -187,7 +187,7 @@ public:
 	 * \warning	Out of range positions yield undefined behavior. Some compilers will
 	 *			throw an \c out_of_range exception.
 	 */
-	byte& operator[](size_t pos) { return mByteStream[pos]; }
+	byte& operator[](std::size_t pos) { return mByteStream[pos]; }
 
 	/**
 	 * Gets a const byte from the byte stream at a specified position.
@@ -197,7 +197,7 @@ public:
 	 * \warning	Out of range positions yield undefined behavior. Some compilers will
 	 *			throw an \c out_of_range exception.
 	 */
-	const_byte& operator[](size_t pos) const { return mByteStream[pos]; }
+	const_byte& operator[](std::size_t pos) const { return mByteStream[pos]; }
 
 	/**
 	 * Clears the File and leaves it completely empty.

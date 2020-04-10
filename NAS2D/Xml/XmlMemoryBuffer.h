@@ -47,7 +47,7 @@ public:
 	bool visit(const XmlComment& comment) override;
 	bool visit(const XmlUnknown& unknown) override;
 
-	size_t size();
+	std::size_t size();
 
 	const std::string& buffer();
 

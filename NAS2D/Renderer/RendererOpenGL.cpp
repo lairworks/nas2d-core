@@ -246,9 +246,9 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float ras
 	glScissor(static_cast<int>(rasterX), static_cast<int>(RendererOpenGL::height() - rasterY - h), static_cast<int>(w), static_cast<int>(h));
 
 
-	for (size_t row = 0; row <= heightReach; ++row)
+	for (std::size_t row = 0; row <= heightReach; ++row)
 	{
-		for (size_t col = 0; col <= widthReach; ++col)
+		for (std::size_t col = 0; col <= widthReach; ++col)
 		{
 			drawSubImage(image, rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY)), subX, subY, subW, subH, 255, 255, 255, 255);
 		}
@@ -462,7 +462,7 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 	GlyphMetricsList& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }
 
-	for (size_t i = 0; i < text.size(); i++)
+	for (std::size_t i = 0; i < text.size(); i++)
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(text[i], 0, 255)];
 

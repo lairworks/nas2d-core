@@ -857,7 +857,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				// Early out if we find the CDATA id.
 				if (c == '[' && tag.size() >= 9)
 				{
-					size_t len = tag.size();
+					std::size_t len = tag.size();
 					const char* start = tag.c_str() + len - 9;
 					if (strcmp(start, "<![CDATA[") == 0)
 					{
@@ -1354,7 +1354,7 @@ void XmlText::streamIn(std::istream& in, std::string& tag)
 
 		if (cdata && c == '>' && tag.size() >= 3)
 		{
-			size_t len = tag.size();
+			std::size_t len = tag.size();
 			if (tag[len - 2] == ']' && tag[len - 3] == ']')
 			{
 				// terminator of cdata.

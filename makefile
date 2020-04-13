@@ -10,6 +10,7 @@ BUILDDIR := .build
 BINDIR := lib
 INTDIR := $(BUILDDIR)/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
+PACKAGEDIR := $(BUILDDIR)/package
 
 # Determine OS (Linux, Darwin, ...)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
@@ -54,6 +55,23 @@ $(INTDIR)/%.d: ;
 .PRECIOUS: $(INTDIR)/%.d
 
 include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
+
+
+VERSION = $(shell git describe --tags --dirty)
+CONFIG = $(TARGET_OS).x64
+PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(CONFIG).tar.gz
+Darwin_TAR_RENAME_FLAG := -s '!^$(SRCDIR)/!include/\0!'
+Linux_TAR_RENAME_FLAG := --transform='s/^$(SRCDIR)/include\/\0/'
+TAR_RENAME_FLAG := $($(CURRENT_OS)_TAR_RENAME_FLAG)
+
+.PHONY: package
+package: $(PACKAGE_NAME)
+
+$(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
+	@mkdir -p "$(PACKAGEDIR)"
+	# Package an "include/" folder containing all header files, plus the library file
+	find $(SRCDIR) -name '*.h' | tar -czf $(PACKAGE_NAME) $(TAR_RENAME_FLAG) -T - $(OUTPUT)
+
 
 .PHONY: clean clean-all
 clean:

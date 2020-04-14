@@ -12,6 +12,19 @@ install:
   - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:
   project: NAS2D.sln
+artifacts:
+  - path: "Temporary/*.zip"
+    name: BuildArtifacts
 test_script:
   - cd %APPVEYOR_BUILD_FOLDER%\test
   - '%APPVEYOR_BUILD_FOLDER%\test\%PLATFORM%\%CONFIGURATION%\test.exe'
+deploy:
+  on:
+    branch: master
+    APPVEYOR_REPO_TAG: true
+    CONFIGURATION: Release
+  artifact: BuildArtifacts
+  description: ''
+  provider: GitHub
+  auth_token:
+    secure: TmV7XiO84JvSaLJnbrRrtoOugcFLSogA4I55yBZ1Y+QAmv28EOgO1M8lX+NSJWA/

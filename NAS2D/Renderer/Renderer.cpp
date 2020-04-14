@@ -35,6 +35,12 @@ Renderer::~Renderer()
 }
 
 
+void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
+{
+	drawImage(image, position.x(), position.y(), scale, color.red(), color.green(), color.blue(), color.alpha());
+}
+
+
 /**
  * Draws an Image to the screen.
  *
@@ -46,12 +52,6 @@ Renderer::~Renderer()
 void Renderer::drawImage(Image& image, float x, float y, float scale)
 {
 	drawImage(image, x, y, scale, 255, 255, 255, 255);
-}
-
-
-void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
-{
-	drawImage(image, position.x(), position.y(), scale, color.red(), color.green(), color.blue(), color.alpha());
 }
 
 

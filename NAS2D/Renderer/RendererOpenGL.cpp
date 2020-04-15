@@ -777,7 +777,7 @@ std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 	}
 
 	std::vector<NAS2D::DisplayDesc> result{};
-	result.reserve(num_resolutions);
+	result.reserve(static_cast<std::size_t>(num_resolutions));
 	for (int i = 0; i < num_resolutions; ++i)
 	{
 		SDL_DisplayMode cur_mode{};

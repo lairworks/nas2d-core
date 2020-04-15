@@ -20,7 +20,7 @@ using namespace NAS2D::Xml;
 
 const string NAS2D::SPRITE_VERSION("0.99");
 
-const int FRAME_PAUSE = -1;
+const auto FRAME_PAUSE = unsigned(-1);
 
 
 namespace {
@@ -125,7 +125,7 @@ void Sprite::update(Point<float> position)
 
 	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
 	{
-		while (frame.frameDelay > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay)
+		while (frame.frameDelay > 0 && mTimer.accumulator() >= frame.frameDelay)
 		{
 			mTimer.adjust_accumulator(frame.frameDelay);
 			mCurrentFrame++;
@@ -518,7 +518,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 
 			const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{x, y}, NAS2D::Vector{width, height});
 			const auto anchorOffset = NAS2D::Vector{anchorx, anchory};
-			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, delay});
+			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, static_cast<unsigned int>(delay)});
 		}
 		else
 		{

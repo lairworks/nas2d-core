@@ -151,7 +151,7 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
  */
 int NAS2D::Font::glyphCellWidth() const
 {
-	return fontMap[name()].glyph_size.x();
+	return fontMap[name()].glyph_size.x;
 }
 
 
@@ -160,7 +160,7 @@ int NAS2D::Font::glyphCellWidth() const
  */
 int NAS2D::Font::glyphCellHeight() const
 {
-	return fontMap[name()].glyph_size.y();
+	return fontMap[name()].glyph_size.y;
 }
 
 
@@ -258,7 +258,7 @@ bool load(const std::string& path, unsigned int ptSize)
 
 	fontMap[fontname].height = TTF_FontHeight(font);
 	fontMap[fontname].ascent = TTF_FontAscent(font);
-	fontMap[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize);
+	fontMap[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize) - Point{0, 0};
 	TTF_CloseFont(font);
 
 	return true;

@@ -42,7 +42,7 @@ struct FontInfo
 	int height{0};
 	int ascent{0};
 	int ref_count{0};
-	Point<int> glyph_size;
+	Vector<int> glyph_size;
 	GlyphMetricsList metrics;
 };
 

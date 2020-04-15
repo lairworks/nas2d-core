@@ -249,7 +249,7 @@ bool load(const std::string& path, unsigned int ptSize)
 		return false;
 	}
 
-	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, ptSize);
+	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, static_cast<int>(ptSize));
 	if (!font)
 	{
 		std::cout << "Font::load(): " << TTF_GetError() << std::endl;

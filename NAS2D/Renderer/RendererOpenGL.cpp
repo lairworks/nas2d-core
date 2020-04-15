@@ -90,7 +90,7 @@ RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
 	std::cout << "Starting OpenGL Renderer:" << std::endl;
 
 	Configuration& cf = Utility<Configuration>::get();
-	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.fullscreen(), cf.vsync());
+	initVideo({cf.graphicsWidth(), cf.graphicsHeight()}, cf.fullscreen(), cf.vsync());
 }
 
 
@@ -462,9 +462,9 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 	GlyphMetricsList& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }
 
-	for (std::size_t i = 0; i < text.size(); i++)
+	for (auto character : text)
 	{
-		GlyphMetrics& gm = gml[std::clamp<std::size_t>(text[i], 0, 255)];
+		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
 		fillVertexArray(x + offset, y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
@@ -717,7 +717,7 @@ void RendererOpenGL::initGL()
 }
 
 
-void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync)
+void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsync)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -736,14 +736,14 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 
 	if (fullscreen) { sdlFlags = sdlFlags | SDL_WINDOW_FULLSCREEN; }
 
-	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
+	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resolution.x, resolution.y, sdlFlags);
 
 	if (!underlyingWindow)
 	{
 		throw renderer_window_creation_failure();
 	}
 
-	mResolution = {static_cast<float>(resX), static_cast<float>(resY)};
+	mResolution = resolution.to<float>();
 
 	oglContext = SDL_GL_CreateContext(underlyingWindow);
 	if (!oglContext)
@@ -771,8 +771,13 @@ std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 {
 	const auto display_index = SDL_GetWindowDisplayIndex(underlyingWindow);
 	const auto num_resolutions = SDL_GetNumDisplayModes(display_index);
+	if (num_resolutions < 0)
+	{
+		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(display_index) + " : " + std::string{SDL_GetError()});
+	}
+
 	std::vector<NAS2D::DisplayDesc> result{};
-	result.reserve(num_resolutions);
+	result.reserve(static_cast<std::size_t>(num_resolutions));
 	for (int i = 0; i < num_resolutions; ++i)
 	{
 		SDL_DisplayMode cur_mode{};
@@ -826,8 +831,7 @@ GLuint generate_fbo(Image& image)
 		unsigned int textureColorbuffer;
 		glGenTextures(1, &textureColorbuffer);
 		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-		GLenum textureFormat = 0;
-		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
+		const auto textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? GL_BGRA : GL_RGBA;
 
 		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, image.width(), image.height(), 0, textureFormat, GL_UNSIGNED_BYTE, nullptr);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

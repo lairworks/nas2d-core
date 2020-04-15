@@ -509,13 +509,13 @@ public:
 	using MouseWheelEventCallback = NAS2D::Signals::Signal<int, int>;
 
 	/**
-	* \typedef	TextInputEventCallback
-	* \brief	Fires whenever text input events occur.
-	*
-	* \code
-	* void function(const std::string&);
-	* \endcode
-	*/
+	 * \typedef	TextInputEventCallback
+	 * \brief	Fires whenever text input events occur.
+	 *
+	 * \code
+	 * void function(const std::string&);
+	 * \endcode
+	 */
 	using TextInputEventCallback = NAS2D::Signals::Signal<const std::string&>;
 
 	/**

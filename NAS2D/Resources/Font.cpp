@@ -374,7 +374,7 @@ Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int
 		glm.push_back(metrics);
 	}
 
-	Point<int> size(roundUpPowerOf2(largest_width), roundUpPowerOf2(largest_width));
+	auto size = Point<int>(roundUpPowerOf2(largest_width), roundUpPowerOf2(largest_width));
 	int textureSize = size.x() * GLYPH_MATRIX_SIZE;
 
 	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;

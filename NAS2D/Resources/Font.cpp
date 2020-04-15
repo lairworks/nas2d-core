@@ -63,7 +63,7 @@ void updateFontReferenceCount(const std::string& name);
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-NAS2D::Font::Font(const std::string& filePath, int ptSize) :	Resource(filePath)
+NAS2D::Font::Font(const std::string& filePath, unsigned int ptSize) :	Resource(filePath)
 {
 	loaded(::load(name(), ptSize));
 	name(name() + "_" + std::to_string(ptSize) + "pt");

@@ -42,7 +42,7 @@ struct FontInfo
 	int height{0};
 	int ascent{0};
 	int ref_count{0};
-	NAS2D::Point<int> glyph_size;
+	Point<int> glyph_size;
 	GlyphMetricsList metrics;
 };
 

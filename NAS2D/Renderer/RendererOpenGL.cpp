@@ -90,7 +90,7 @@ RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
 	std::cout << "Starting OpenGL Renderer:" << std::endl;
 
 	Configuration& cf = Utility<Configuration>::get();
-	initVideo(cf.graphicsWidth(), cf.graphicsHeight(), cf.fullscreen(), cf.vsync());
+	initVideo(Vector{cf.graphicsWidth(), cf.graphicsHeight()}.to<unsigned int>(), cf.fullscreen(), cf.vsync());
 }
 
 
@@ -717,7 +717,7 @@ void RendererOpenGL::initGL()
 }
 
 
-void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullscreen, bool vsync)
+void RendererOpenGL::initVideo(Vector<unsigned int> resolution, bool fullscreen, bool vsync)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -736,14 +736,14 @@ void RendererOpenGL::initVideo(unsigned int resX, unsigned int resY, bool fullsc
 
 	if (fullscreen) { sdlFlags = sdlFlags | SDL_WINDOW_FULLSCREEN; }
 
-	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resX, resY, sdlFlags);
+	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resolution.x, resolution.y, sdlFlags);
 
 	if (!underlyingWindow)
 	{
 		throw renderer_window_creation_failure();
 	}
 
-	mResolution = {static_cast<float>(resX), static_cast<float>(resY)};
+	mResolution = resolution.to<float>();
 
 	oglContext = SDL_GL_CreateContext(underlyingWindow);
 	if (!oglContext)

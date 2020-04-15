@@ -20,7 +20,7 @@ using namespace NAS2D::Xml;
 
 const string NAS2D::SPRITE_VERSION("0.99");
 
-const int FRAME_PAUSE = -1;
+const auto FRAME_PAUSE = unsigned(-1);
 
 
 namespace {
@@ -110,7 +110,7 @@ void Sprite::resume()
  *
  * \param	frameIndex	New frame index
  */
-void Sprite::setFrame(int frameIndex)
+void Sprite::setFrame(std::size_t frameIndex)
 {
 	if (mActions.find(mCurrentAction) != mActions.end())
 	{
@@ -125,7 +125,7 @@ void Sprite::update(Point<float> position)
 
 	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
 	{
-		while (frame.frameDelay > 0 && static_cast<int>(mTimer.accumulator()) >= frame.frameDelay)
+		while (frame.frameDelay > 0 && mTimer.accumulator() >= frame.frameDelay)
 		{
 			mTimer.adjust_accumulator(frame.frameDelay);
 			mCurrentFrame++;
@@ -518,7 +518,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 
 			const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{x, y}, NAS2D::Vector{width, height});
 			const auto anchorOffset = NAS2D::Vector{anchorx, anchory};
-			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, delay});
+			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, static_cast<unsigned int>(delay)});
 		}
 		else
 		{
@@ -576,7 +576,7 @@ void Sprite::addDefaultAction()
 		const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, size);
 		const auto anchorOffset = size / 2;
 
-		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, -1}};
+		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, FRAME_PAUSE}};
 		mActions["default"] = frameList;
 	}
 }

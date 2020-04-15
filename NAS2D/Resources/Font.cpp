@@ -63,7 +63,7 @@ void updateFontReferenceCount(const std::string& name);
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-NAS2D::Font::Font(const std::string& filePath, int ptSize) :	Resource(filePath)
+NAS2D::Font::Font(const std::string& filePath, unsigned int ptSize) :	Resource(filePath)
 {
 	loaded(::load(name(), ptSize));
 	name(name() + "_" + std::to_string(ptSize) + "pt");
@@ -177,9 +177,9 @@ int NAS2D::Font::width(const std::string& str) const
 	GlyphMetricsList& gml = fontMap[name()].metrics;
 	if (gml.empty()) { return 0; }
 
-	for (std::size_t i = 0; i < str.size(); i++)
+	for (auto character : str)
 	{
-		auto glyph = std::clamp<std::size_t>(str[i], 0, 255);
+		auto glyph = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;
 	}
 
@@ -208,7 +208,7 @@ int NAS2D::Font::ascent() const
 /**
  * Returns the point size of the Font.
  */
-int NAS2D::Font::ptSize() const
+unsigned int NAS2D::Font::ptSize() const
 {
 	return fontMap[name()].pt_size;
 }
@@ -249,7 +249,7 @@ bool load(const std::string& path, unsigned int ptSize)
 		return false;
 	}
 
-	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, ptSize);
+	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, static_cast<int>(ptSize));
 	if (!font)
 	{
 		std::cout << "Font::load(): " << TTF_GetError() << std::endl;

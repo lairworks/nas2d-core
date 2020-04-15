@@ -49,7 +49,7 @@ public:
 	void pause();
 	void resume();
 
-	void setFrame(int frameIndex);
+	void setFrame(std::size_t frameIndex);
 
 	void update(Point<float> position);
 	void update(float x, float y);
@@ -108,7 +108,7 @@ private:
 		std::string sheetId;
 		Rectangle<int> bounds;
 		Vector<int> anchorOffset;
-		int frameDelay;
+		unsigned int frameDelay;
 	};
 
 private:

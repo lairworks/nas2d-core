@@ -123,7 +123,7 @@ public:
 	 *				will truncate the existing data. There is no way to
 	 *				recover the data once the File is resized.
 	 */
-	void resize(int size) { mByteStream.resize(size); }
+	void resize(std::size_t size) { mByteStream.resize(size); }
 
 
 	/**
@@ -136,7 +136,7 @@ public:
 	 *				will truncate the existing data. There is no way to
 	 *				recover the data once the File is resized.
 	 */
-	void resize(int size, byte b) { mByteStream.resize(size, b); }
+	void resize(std::size_t size, byte b) { mByteStream.resize(size, b); }
 
 	/**
 	 * Indicates that the File is empty.
@@ -168,7 +168,7 @@ public:
 	 *
 	 * \param pos	Position of the iterator to get.
 	 */
-	iterator seek(std::size_t pos) { iterator it = mByteStream.begin() + pos; return it; }
+	iterator seek(std::ptrdiff_t pos) { iterator it = mByteStream.begin() + pos; return it; }
 
 	/**
 	 * Gets a reverse iterator to the byte at a specified position.
@@ -177,7 +177,7 @@ public:
 	 *
 	 * \see seek
 	 */
-	reverse_iterator rseek(std::size_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
+	reverse_iterator rseek(std::ptrdiff_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
 
 	/**
 	 * Gets a byte from the byte stream at a specified position.

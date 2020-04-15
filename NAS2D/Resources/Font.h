@@ -34,7 +34,7 @@ class Font : public Resource
 {
 public:
 	Font();
-	explicit Font(const std::string& filePath, int ptSize = 12);
+	explicit Font(const std::string& filePath, unsigned int ptSize = 12);
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
 	Font(const Font& font);
 	Font& operator=(const Font& font);
@@ -44,7 +44,7 @@ public:
 	int height() const;
 	int ascent() const;
 
-	int ptSize() const;
+	unsigned int ptSize() const;
 
 	int glyphCellWidth() const;
 	int glyphCellHeight() const;

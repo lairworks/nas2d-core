@@ -89,7 +89,7 @@ public:
 	void drawImageRect(Point<float> position, Vector<float> size, ImageList& images);
 	void drawImageRect(float x, float y, float w, float h, ImageList& images);
 
-	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint) = 0;
+	virtual void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) = 0;
 
 	void drawPoint(Point<float> position, const Color& color = Color::White);
 	void drawPoint(float x, float y, const Color& color = Color::White);

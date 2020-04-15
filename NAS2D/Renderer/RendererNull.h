@@ -35,7 +35,7 @@ public:
 	void drawImageRepeated(Image&, float, float, float, float) override {}
 	void drawSubImageRepeated(Image&, float, float, float, float, float, float, float, float) override {}
 
-	void drawImageToImage(Image&, Image&, const Point_2df&) override {}
+	void drawImageToImage(Image&, Image&, const Point<float>&) override {}
 
 	void drawPoint(float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 	void drawLine(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int) override {}

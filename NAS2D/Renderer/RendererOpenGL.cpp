@@ -258,7 +258,7 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float ras
 }
 
 
-void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint)
+void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint)
 {
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();

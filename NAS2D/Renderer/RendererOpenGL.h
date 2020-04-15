@@ -49,7 +49,7 @@ public:
 	void drawImageRepeated(Image& image, float x, float y, float w, float h) override;
 	void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) override;
 
-	void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint) override;
+	void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) override;
 
 	void drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 	void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width) override;
@@ -96,7 +96,7 @@ private:
 	void onResize(int w, int h);
 
 
-	Point_2df desktopResolution;
+	Point<float> desktopResolution;
 
 	std::map<int, SDL_Cursor*> cursors;
 };

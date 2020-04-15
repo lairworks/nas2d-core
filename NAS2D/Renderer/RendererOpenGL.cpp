@@ -462,9 +462,9 @@ void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float 
 	GlyphMetricsList& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }
 
-	for (std::size_t i = 0; i < text.size(); i++)
+	for (auto character : text)
 	{
-		GlyphMetrics& gm = gml[std::clamp<std::size_t>(text[i], 0, 255)];
+		GlyphMetrics& gm = gml[std::clamp<std::size_t>(character, 0, 255)];
 
 		fillVertexArray(x + offset, y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);

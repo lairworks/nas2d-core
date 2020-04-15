@@ -110,7 +110,7 @@ void Sprite::resume()
  *
  * \param	frameIndex	New frame index
  */
-void Sprite::setFrame(int frameIndex)
+void Sprite::setFrame(std::size_t frameIndex)
 {
 	if (mActions.find(mCurrentAction) != mActions.end())
 	{

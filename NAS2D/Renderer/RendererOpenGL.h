@@ -91,7 +91,7 @@ public:
 private:
 
 	void initGL();
-	void initVideo(Vector<unsigned int> resolution, bool fullscreen, bool vsync);
+	void initVideo(Vector<int> resolution, bool fullscreen, bool vsync);
 
 	void onResize(int w, int h);
 

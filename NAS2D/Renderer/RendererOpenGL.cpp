@@ -90,7 +90,7 @@ RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
 	std::cout << "Starting OpenGL Renderer:" << std::endl;
 
 	Configuration& cf = Utility<Configuration>::get();
-	initVideo(Vector{cf.graphicsWidth(), cf.graphicsHeight()}.to<unsigned int>(), cf.fullscreen(), cf.vsync());
+	initVideo({cf.graphicsWidth(), cf.graphicsHeight()}, cf.fullscreen(), cf.vsync());
 }
 
 
@@ -717,7 +717,7 @@ void RendererOpenGL::initGL()
 }
 
 
-void RendererOpenGL::initVideo(Vector<unsigned int> resolution, bool fullscreen, bool vsync)
+void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsync)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{

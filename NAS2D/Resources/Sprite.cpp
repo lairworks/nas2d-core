@@ -576,7 +576,7 @@ void Sprite::addDefaultAction()
 		const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, size);
 		const auto anchorOffset = size / 2;
 
-		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, -1}};
+		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, FRAME_PAUSE}};
 		mActions["default"] = frameList;
 	}
 }

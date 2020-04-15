@@ -50,7 +50,7 @@ extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, 
 // ==================================================================================
 bool load(const std::string& path, unsigned int ptSize);
 bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
-Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
+Point<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
 bool fontAlreadyLoaded(const std::string& name);
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 void updateFontReferenceCount(const std::string& name);
@@ -344,7 +344,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
  *
  * Internal function used to generate a glyph texture map from an TTF_Font struct.
  */
-Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
+Point<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
 {
 	int largest_width = 0;
 
@@ -374,7 +374,7 @@ Point_2d generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fo
 		glm.push_back(metrics);
 	}
 
-	Point_2d size(roundUpPowerOf2(largest_width), roundUpPowerOf2(largest_width));
+	Point<int> size(roundUpPowerOf2(largest_width), roundUpPowerOf2(largest_width));
 	int textureSize = size.x() * GLYPH_MATRIX_SIZE;
 
 	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;

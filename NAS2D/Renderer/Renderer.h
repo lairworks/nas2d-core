@@ -80,7 +80,7 @@ public:
 	void drawImageRepeated(Image& image, Point<float> position, Vector<float> size);
 	virtual void drawImageRepeated(Image& image, float x, float y, float w, float h) = 0;
 	
-	void drawSubImageRepeated(Image& image, const Rectangle_2df& source, const Rectangle_2df& destination);
+	void drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination);
 	virtual void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) = 0;
 
 	void drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
@@ -89,7 +89,7 @@ public:
 	void drawImageRect(Point<float> position, Vector<float> size, ImageList& images);
 	void drawImageRect(float x, float y, float w, float h, ImageList& images);
 
-	virtual void drawImageToImage(Image& source, Image& destination, const Point_2df& dstPoint) = 0;
+	virtual void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) = 0;
 
 	void drawPoint(Point<float> position, const Color& color = Color::White);
 	void drawPoint(float x, float y, const Color& color = Color::White);
@@ -100,13 +100,13 @@ public:
 	virtual void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255, int line_width = 1) = 0;
 
 	void drawBox(const Rectangle<float>& rect, const Color& color = Color::White);
-	void drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-	void drawBox(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	void drawBox(const Rectangle<int>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	void drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 	virtual void drawBox(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 
 	void drawBoxFilled(const Rectangle<float>& rect, const Color& color = Color::White);
-	void drawBoxFilled(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-	void drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	void drawBoxFilled(const Rectangle<int>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	void drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 	virtual void drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
 
 	void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector{1.0f, 1.0f});
@@ -148,7 +148,7 @@ public:
 	float center_x() const;
 	float center_y() const;
 
-	void clipRect(const Rectangle_2df& rect);
+	void clipRect(const Rectangle<float>& rect);
 	void clipRectClear();
 	virtual void clipRect(float x, float y, float width, float height) = 0;
 

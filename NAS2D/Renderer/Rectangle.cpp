@@ -13,17 +13,9 @@
 namespace NAS2D {
 
 
-// ==================================================================================
-// = Rectangle_2d Implementation
-// ==================================================================================
-
 // Explicit template instantiation
 template struct Rectangle<int>;
 
-
-// ==================================================================================
-// = Rectangle_2df Implementation
-// ==================================================================================
 
 // Explicit template instantiation
 template struct Rectangle<float>;

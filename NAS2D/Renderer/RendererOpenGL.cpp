@@ -771,6 +771,11 @@ std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 {
 	const auto display_index = SDL_GetWindowDisplayIndex(underlyingWindow);
 	const auto num_resolutions = SDL_GetNumDisplayModes(display_index);
+	if (num_resolutions < 0)
+	{
+		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(display_index) + " : " + std::string{SDL_GetError()});
+	}
+
 	std::vector<NAS2D::DisplayDesc> result{};
 	result.reserve(num_resolutions);
 	for (int i = 0; i < num_resolutions; ++i)

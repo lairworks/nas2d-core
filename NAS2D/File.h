@@ -168,7 +168,7 @@ public:
 	 *
 	 * \param pos	Position of the iterator to get.
 	 */
-	iterator seek(std::size_t pos) { iterator it = mByteStream.begin() + pos; return it; }
+	iterator seek(std::ptrdiff_t pos) { iterator it = mByteStream.begin() + pos; return it; }
 
 	/**
 	 * Gets a reverse iterator to the byte at a specified position.
@@ -177,7 +177,7 @@ public:
 	 *
 	 * \see seek
 	 */
-	reverse_iterator rseek(std::size_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
+	reverse_iterator rseek(std::ptrdiff_t pos) { reverse_iterator it = mByteStream.rbegin() + pos; return it; }
 
 	/**
 	 * Gets a byte from the byte stream at a specified position.

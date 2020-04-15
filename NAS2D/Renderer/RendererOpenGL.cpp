@@ -780,9 +780,9 @@ std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 	result.reserve(static_cast<std::size_t>(numResolutions));
 	for (int i = 0; i < numResolutions; ++i)
 	{
-		SDL_DisplayMode cur_mode{};
-		SDL_GetDisplayMode(displayIndex, i, &cur_mode);
-		result.push_back({cur_mode.w, cur_mode.h, cur_mode.refresh_rate});
+		SDL_DisplayMode currentMode{};
+		SDL_GetDisplayMode(displayIndex, i, &currentMode);
+		result.push_back({currentMode.w, currentMode.h, currentMode.refresh_rate});
 	}
 	return result;
 }

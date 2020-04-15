@@ -123,7 +123,7 @@ public:
 	 *				will truncate the existing data. There is no way to
 	 *				recover the data once the File is resized.
 	 */
-	void resize(int size) { mByteStream.resize(size); }
+	void resize(std::size_t size) { mByteStream.resize(size); }
 
 
 	/**
@@ -136,7 +136,7 @@ public:
 	 *				will truncate the existing data. There is no way to
 	 *				recover the data once the File is resized.
 	 */
-	void resize(int size, byte b) { mByteStream.resize(size, b); }
+	void resize(std::size_t size, byte b) { mByteStream.resize(size, b); }
 
 	/**
 	 * Indicates that the File is empty.

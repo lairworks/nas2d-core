@@ -13,6 +13,9 @@
 
 #include <iostream>
 
+
+namespace NAS2D {
+
 struct GlyphMetrics
 {
 	float uvX{0.0f};
@@ -42,3 +45,5 @@ struct FontInfo
 	NAS2D::Point<int> glyph_size;
 	GlyphMetricsList metrics;
 };
+
+}

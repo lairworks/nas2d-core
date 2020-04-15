@@ -180,7 +180,7 @@ void NAS2D::Renderer::drawImageRepeated(Image& image, Point<float> position, Vec
 /**
  * Draws part of an Image repeated over a rectangular area.
  */
-void Renderer::drawSubImageRepeated(Image& image, const Rectangle_2df& source, const Rectangle_2df& destination)
+void Renderer::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
 {
 	drawSubImageRepeated(image, destination.x(), destination.y(), destination.width(), destination.height(), source.x(), source.y(), source.width(), source.height());
 }
@@ -406,13 +406,13 @@ void Renderer::drawBox(const Rectangle_2d& rect, uint8_t r, uint8_t g, uint8_t b
 /**
  * Draws a hollow box on the primary surface.
  *
- * \param	rect	A reference to a Rectangle_2df defining the box dimensions.
+ * \param	rect	A reference to a Rectangle<float> defining the box dimensions.
  * \param	r		Red Color Value. Must be between 0 - 255.
  * \param	g		Green Color Value. Must be between 0 - 255.
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBox(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Renderer::drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
@@ -427,7 +427,7 @@ void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
 /**
  * Fills a given area with a solid color.
  *
- * \param	rect	A reference to a Rectangle_2df defining the box dimensions.
+ * \param	rect	A reference to a Rectangle<float> defining the box dimensions.
  * \param	r		Red Color Value. Must be between 0 - 255.
  * \param	g		Green Color Value. Must be between 0 - 255.
  * \param	b		Blue Color Value. Must be between 0 - 255.
@@ -442,13 +442,13 @@ void Renderer::drawBoxFilled(const Rectangle_2d& rect, uint8_t r, uint8_t g, uin
 /**
  * Fills a given area with a solid color.
  *
- * \param	rect	A reference to a Rectangle_2df defining the box dimensions.
+ * \param	rect	A reference to a Rectangle<float> defining the box dimensions.
  * \param	r		Red Color Value. Must be between 0 - 255.
  * \param	g		Green Color Value. Must be between 0 - 255.
  * \param	b		Blue Color Value. Must be between 0 - 255.
  * \param	a		Alpha Value. Must be between 0 - 255.
  */
-void Renderer::drawBoxFilled(const Rectangle_2df& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Renderer::drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
 }
@@ -612,11 +612,11 @@ void Renderer::drawTextShadow(Font& font, const std::string& text, float x, floa
 /**
  * Sets a rectangular area of the screen outside of which nothing is drawn.
  *
- * \param	rect	Reference to a Rectangle_2df representing to area to clip against.
+ * \param	rect	Reference to a Rectangle<float> representing to area to clip against.
  *
  * \see clipRectClear()
  */
-void Renderer::clipRect(const Rectangle_2df& rect)
+void Renderer::clipRect(const Rectangle<float>& rect)
 {
 	clipRect(rect.x(), rect.y(), rect.width(), rect.height());
 }

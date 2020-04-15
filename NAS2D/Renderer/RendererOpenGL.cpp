@@ -795,10 +795,10 @@ NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const Di
 	preferredMode.h = preferredDisplayDesc.height;
 	preferredMode.refresh_rate = preferredDisplayDesc.refreshHz;
 
-	SDL_DisplayMode closest{};
-	if (SDL_GetClosestDisplayMode(displayIndex, &preferredMode, &closest))
+	SDL_DisplayMode closestMode{};
+	if (SDL_GetClosestDisplayMode(displayIndex, &preferredMode, &closestMode))
 	{
-		return {closest.w, closest.h, closest.refresh_rate};
+		return {closestMode.w, closestMode.h, closestMode.refresh_rate};
 	}
 	const auto display_str = std::to_string(preferredDisplayDesc.width) + 'x' + std::to_string(preferredDisplayDesc.height) + 'x' + std::to_string(preferredDisplayDesc.refreshHz);
 	auto err_str = "No matching display mode for " + display_str;

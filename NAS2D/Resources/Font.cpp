@@ -50,7 +50,7 @@ extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, 
 // ==================================================================================
 bool load(const std::string& path, unsigned int ptSize);
 bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
-Point<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
+Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
 bool fontAlreadyLoaded(const std::string& name);
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 void updateFontReferenceCount(const std::string& name);
@@ -151,7 +151,7 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
  */
 int NAS2D::Font::glyphCellWidth() const
 {
-	return fontMap[name()].glyph_size.x();
+	return fontMap[name()].glyph_size.x;
 }
 
 
@@ -160,7 +160,7 @@ int NAS2D::Font::glyphCellWidth() const
  */
 int NAS2D::Font::glyphCellHeight() const
 {
-	return fontMap[name()].glyph_size.y();
+	return fontMap[name()].glyph_size.y;
 }
 
 
@@ -344,7 +344,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
  *
  * Internal function used to generate a glyph texture map from an TTF_Font struct.
  */
-Point<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
+Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
 {
 	int largest_width = 0;
 
@@ -374,8 +374,8 @@ Point<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int 
 		glm.push_back(metrics);
 	}
 
-	Point<int> size(roundUpPowerOf2(largest_width), roundUpPowerOf2(largest_width));
-	int textureSize = size.x() * GLYPH_MATRIX_SIZE;
+	const auto size = Vector{roundUpPowerOf2(largest_width), roundUpPowerOf2(largest_width)}.to<int>();
+	int textureSize = size.x * GLYPH_MATRIX_SIZE;
 
 	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
 	setupMasks(rmask, gmask, bmask, amask);
@@ -389,10 +389,10 @@ Point<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int 
 		{
 			int glyph = (row * GLYPH_MATRIX_SIZE) + col;
 
-			glm[glyph].uvX = static_cast<float>(col * size.x()) / static_cast<float>(textureSize);
-			glm[glyph].uvY = static_cast<float>(row * size.y()) / static_cast<float>(textureSize);
-			glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(size.x()) / static_cast<float>(textureSize);
-			glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(size.y()) / static_cast<float>(textureSize);
+			glm[glyph].uvX = static_cast<float>(col * size.x) / static_cast<float>(textureSize);
+			glm[glyph].uvY = static_cast<float>(row * size.y) / static_cast<float>(textureSize);
+			glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(size.x) / static_cast<float>(textureSize);
+			glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(size.y) / static_cast<float>(textureSize);
 
 			// HACK HACK HACK!
 			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
@@ -408,7 +408,7 @@ Point<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int 
 			else
 			{
 				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
-				SDL_Rect rect = { col * size.x(), row * size.y(), 0, 0 };
+				SDL_Rect rect = { col * size.x, row * size.y, 0, 0 };
 				SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
 				SDL_FreeSurface(srf);
 			}

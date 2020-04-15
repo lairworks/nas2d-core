@@ -70,7 +70,7 @@ Vector<float> NAS2D::getDirectionVector(float angle)
  * \param	c	Center point of a circle.
  * \param	r	Radius of a circle.
  */
-bool NAS2D::lineIntersectsCircle(const Point_2d& p, const Point_2d& q, const Point_2d& c, float r)
+bool NAS2D::lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<int>& c, float r)
 {
 	float dx = static_cast<float>(q.x() - p.x());
 	float dy = static_cast<float>(q.y() - p.y());

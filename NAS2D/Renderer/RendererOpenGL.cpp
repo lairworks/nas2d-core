@@ -770,15 +770,15 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 {
 	const auto display_index = SDL_GetWindowDisplayIndex(underlyingWindow);
-	const auto num_resolutions = SDL_GetNumDisplayModes(display_index);
-	if (num_resolutions < 0)
+	const auto numResolutions = SDL_GetNumDisplayModes(display_index);
+	if (numResolutions < 0)
 	{
 		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(display_index) + " : " + std::string{SDL_GetError()});
 	}
 
 	std::vector<NAS2D::DisplayDesc> result{};
-	result.reserve(static_cast<std::size_t>(num_resolutions));
-	for (int i = 0; i < num_resolutions; ++i)
+	result.reserve(static_cast<std::size_t>(numResolutions));
+	for (int i = 0; i < numResolutions; ++i)
 	{
 		SDL_DisplayMode cur_mode{};
 		SDL_GetDisplayMode(display_index, i, &cur_mode);

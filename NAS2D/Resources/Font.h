@@ -44,7 +44,7 @@ public:
 	int height() const;
 	int ascent() const;
 
-	int ptSize() const;
+	unsigned int ptSize() const;
 
 	int glyphCellWidth() const;
 	int glyphCellHeight() const;

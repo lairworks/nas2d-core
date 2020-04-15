@@ -208,7 +208,7 @@ int NAS2D::Font::ascent() const
 /**
  * Returns the point size of the Font.
  */
-int NAS2D::Font::ptSize() const
+unsigned int NAS2D::Font::ptSize() const
 {
 	return fontMap[name()].pt_size;
 }

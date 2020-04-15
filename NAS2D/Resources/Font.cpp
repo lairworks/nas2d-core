@@ -177,9 +177,9 @@ int NAS2D::Font::width(const std::string& str) const
 	GlyphMetricsList& gml = fontMap[name()].metrics;
 	if (gml.empty()) { return 0; }
 
-	for (std::size_t i = 0; i < str.size(); i++)
+	for (auto character : str)
 	{
-		auto glyph = std::clamp<std::size_t>(str[i], 0, 255);
+		auto glyph = std::clamp<std::size_t>(character, 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;
 	}
 

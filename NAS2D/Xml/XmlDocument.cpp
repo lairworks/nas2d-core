@@ -180,7 +180,7 @@ const std::string& XmlDocument::errorDesc() const
  * Generally, you probably want the error string ( ErrorDesc() ). But if you
  * prefer the ErrorId, this function will fetch it.
  */
-int XmlDocument::errorId() const
+std::size_t XmlDocument::errorId() const
 {
 	return _errorId;
 }

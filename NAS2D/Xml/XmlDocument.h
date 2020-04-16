@@ -24,7 +24,7 @@ public:
 
 	bool error() const;
 	const std::string& errorDesc() const;
-	int errorId() const;
+	std::size_t errorId() const;
 	int errorRow() const;
 	int errorCol() const;
 

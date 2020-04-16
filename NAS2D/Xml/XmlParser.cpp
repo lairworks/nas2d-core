@@ -330,9 +330,9 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 
 			while (*q != 'x')
 			{
-				if (*q >= '0' && *q <= '9') { ucs += mult * (*q - '0'); }
-				else if (*q >= 'a' && *q <= 'f') { ucs += mult * (*q - 'a' + 10); }
-				else if (*q >= 'A' && *q <= 'F') { ucs += mult * (*q - 'A' + 10); }
+				if (*q >= '0' && *q <= '9') { ucs += mult * static_cast<unsigned>(*q - '0'); }
+				else if (*q >= 'a' && *q <= 'f') { ucs += mult * static_cast<unsigned>(*q - 'a' + 10); }
+				else if (*q >= 'A' && *q <= 'F') { ucs += mult * static_cast<unsigned>(*q - 'A' + 10); }
 				else { return nullptr; }
 
 				mult *= 16;
@@ -356,7 +356,7 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 			{
 				if (*q >= '0' && *q <= '9')
 				{
-					ucs += mult * (*q - '0');
+					ucs += mult * static_cast<unsigned>(*q - '0');
 				}
 				else
 				{

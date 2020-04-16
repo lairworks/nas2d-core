@@ -739,7 +739,7 @@ XmlNode* XmlNode::identify(const char* p)
 		#endif
 		returnNode = new XmlUnknown();
 	}
-	else if (isAlpha(*(p + 1)) || *(p + 1) == '_')
+	else if (isAlpha(static_cast<unsigned char>(*(p + 1))) || *(p + 1) == '_')
 	{
 		#ifdef DEBUG_PARSER
 		TIXML_LOG("XML parsing Element\n");

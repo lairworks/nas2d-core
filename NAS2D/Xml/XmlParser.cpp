@@ -289,7 +289,7 @@ const char* XmlBase::readName(const char* p, std::string& name)
 
 		if (p - start > 0)
 		{
-			name.assign(start, p - start);
+			name.assign(start, p);
 		}
 
 		return p;

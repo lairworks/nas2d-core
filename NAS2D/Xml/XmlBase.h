@@ -73,7 +73,7 @@ public:
 
 	virtual const char* parse(const char* p, void* data) = 0;
 
-	enum class XmlErrorCode
+	enum class XmlErrorCode : std::size_t
 	{
 		XML_NO_ERROR = 0,
 		XML_ERROR,
@@ -112,9 +112,9 @@ protected:
 
 	static const char* readName(const char* p, std::string& name);
 	static const char* readText(const char* in, std::string* text, bool ignoreWhiteSpace, const char* endTag, bool ignoreCase);
-	static const char* getEntity(const char* in, char* value, int* length);
+	static const char* getEntity(const char* in, char* value, std::size_t* length);
 
-	inline static const char* getChar(const char* p, char* _value, int* length);
+	inline static const char* getChar(const char* p, char* _value, std::size_t* length);
 
 	static bool stringEqual(const char* p, const char* endTag, bool ignoreCase);
 

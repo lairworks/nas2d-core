@@ -18,7 +18,7 @@ using namespace NAS2D::Xml;
  */
 XmlDocument::XmlDocument() :
 	XmlNode(XmlNode::NodeType::XML_DOCUMENT),
-	_errorId(0),
+	_errorId(XmlErrorCode::XML_NO_ERROR),
 	_error(false)
 {
 	clearError();
@@ -32,7 +32,7 @@ XmlDocument::XmlDocument() :
  */
 XmlDocument::XmlDocument(const std::string& documentName) :
 	XmlNode(XmlNode::NodeType::XML_DOCUMENT),
-	_errorId(0),
+	_errorId(XmlErrorCode::XML_NO_ERROR),
 	_error(false)
 {
 	_value = documentName;
@@ -129,7 +129,7 @@ bool XmlDocument::accept(void* visitor) const
 void XmlDocument::clearError()
 {
 	_error = false;
-	_errorId = 0;
+	_errorId = XmlErrorCode::XML_NO_ERROR;
 	_errorDesc = "";
 	_errorLocation = XmlBase::ParseLocation{};
 }
@@ -180,7 +180,7 @@ const std::string& XmlDocument::errorDesc() const
  * Generally, you probably want the error string ( ErrorDesc() ). But if you
  * prefer the ErrorId, this function will fetch it.
  */
-int XmlDocument::errorId() const
+XmlBase::XmlErrorCode XmlDocument::errorId() const
 {
 	return _errorId;
 }

@@ -289,7 +289,7 @@ const char* XmlBase::readName(const char* p, std::string& name)
 
 		if (p - start > 0)
 		{
-			name.assign(start, p - start);
+			name.assign(start, p);
 		}
 
 		return p;
@@ -302,7 +302,7 @@ const char* XmlBase::readName(const char* p, std::string& name)
 /**
  * If an entity has been found, transform it into a character.
  */
-const char* XmlBase::getEntity(const char* p, char* value, int* length)
+const char* XmlBase::getEntity(const char* p, char* value, std::size_t* length)
 {
 	// Presume an entity, and pull it out.
 	std::string ent;
@@ -330,9 +330,9 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 
 			while (*q != 'x')
 			{
-				if (*q >= '0' && *q <= '9') { ucs += mult * (*q - '0'); }
-				else if (*q >= 'a' && *q <= 'f') { ucs += mult * (*q - 'a' + 10); }
-				else if (*q >= 'A' && *q <= 'F') { ucs += mult * (*q - 'A' + 10); }
+				if (*q >= '0' && *q <= '9') { ucs += mult * static_cast<unsigned>(*q - '0'); }
+				else if (*q >= 'a' && *q <= 'f') { ucs += mult * static_cast<unsigned>(*q - 'a' + 10); }
+				else if (*q >= 'A' && *q <= 'F') { ucs += mult * static_cast<unsigned>(*q - 'A' + 10); }
 				else { return nullptr; }
 
 				mult *= 16;
@@ -356,7 +356,7 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 			{
 				if (*q >= '0' && *q <= '9')
 				{
-					ucs += mult * (*q - '0');
+					ucs += mult * static_cast<unsigned>(*q - '0');
 				}
 				else
 				{
@@ -396,7 +396,7 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 /**
  * Get a character, while interpreting entities. The length can be from 0 to 4 bytes.
  */
-const char* XmlBase::getChar(const char* p, char* _value, int* length)
+const char* XmlBase::getChar(const char* p, char* _value, std::size_t* length)
 {
 	assert(p);
 
@@ -412,7 +412,7 @@ const char* XmlBase::getChar(const char* p, char* _value, int* length)
 	{
 		//strncpy( _value, p, *length );	// lots of compilers don't like this function (unsafe),
 		// and the null terminator isn't needed
-		for (int i = 0; i < *length && p[i]; ++i)
+		for (std::size_t i = 0; i < *length && p[i]; ++i)
 		{
 			_value[i] = p[i];
 		}
@@ -491,7 +491,7 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 		// Keep all the white space.
 		while (p && *p && !stringEqual(p, endTag, caseInsensitive))
 		{
-			int len;
+			std::size_t len;
 			char cArr[4] = { 0, 0, 0, 0 };
 			p = getChar(p, cArr, &len);
 			text->append(cArr, len);
@@ -524,7 +524,7 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 					(*text) += ' ';
 					whitespace = false;
 				}
-				int len;
+				std::size_t len;
 				char cArr[4] = { 0, 0, 0, 0 };
 				p = getChar(p, cArr, &len);
 				if (len == 1)
@@ -673,8 +673,8 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 
 	assert(XmlErrorCode::XML_NO_ERROR < err && err < XmlErrorCode::XML_ERROR_STRING_COUNT);
 	_error = true;
-	_errorId = static_cast<std::underlying_type_t<XmlErrorCode>>(err);
-	_errorDesc = XML_ERROR_TABLE[_errorId];
+	_errorId = err;
+	_errorDesc = XML_ERROR_TABLE[static_cast<std::underlying_type_t<XmlErrorCode>>(_errorId)];
 
 	_errorLocation = XmlBase::ParseLocation{};
 
@@ -739,7 +739,7 @@ XmlNode* XmlNode::identify(const char* p)
 		#endif
 		returnNode = new XmlUnknown();
 	}
-	else if (isAlpha(*(p + 1)) || *(p + 1) == '_')
+	else if (isAlpha(static_cast<unsigned char>(*(p + 1))) || *(p + 1) == '_')
 	{
 		#ifdef DEBUG_PARSER
 		TIXML_LOG("XML parsing Element\n");

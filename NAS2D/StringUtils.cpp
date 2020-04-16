@@ -45,7 +45,7 @@ std::string toUppercase(std::string str)
 
 std::vector<std::string> split(std::string str, char delim /*= ','*/)
 {
-	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
+	const auto potential_count = static_cast<std::size_t>(1 + std::count(std::begin(str), std::end(str), delim));
 	StringList result{};
 	result.reserve(potential_count);
 
@@ -65,7 +65,7 @@ std::vector<std::string> split(std::string str, char delim /*= ','*/)
 }
 std::vector<std::string> splitSkipEmpty(std::string str, char delim /*= ','*/)
 {
-	const auto potential_count = 1 + std::count(std::begin(str), std::end(str), delim);
+	const auto potential_count = static_cast<std::size_t>(1 + std::count(std::begin(str), std::end(str), delim));
 	StringList result{};
 	result.reserve(potential_count);
 

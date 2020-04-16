@@ -31,12 +31,8 @@ using namespace NAS2D::Exception;
 
 std::string buildName(TTF_Font*);
 
-const int	ASCII_TABLE_FIRST	= 0;
-const int	ASCII_TABLE_LAST	= 255;
-const int	ASCII_TABLE_COUNT	= ASCII_TABLE_LAST - ASCII_TABLE_FIRST + 1;
-
+const int	ASCII_TABLE_COUNT	= 256;
 const int	GLYPH_MATRIX_SIZE	= 16;
-
 const int	BITS_32				= 32;
 
 

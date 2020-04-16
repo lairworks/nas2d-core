@@ -673,8 +673,8 @@ void XmlDocument::error(XmlErrorCode err, const char* pError, void* data)
 
 	assert(XmlErrorCode::XML_NO_ERROR < err && err < XmlErrorCode::XML_ERROR_STRING_COUNT);
 	_error = true;
-	_errorId = static_cast<std::underlying_type_t<XmlErrorCode>>(err);
-	_errorDesc = XML_ERROR_TABLE[_errorId];
+	_errorId = err;
+	_errorDesc = XML_ERROR_TABLE[static_cast<std::underlying_type_t<XmlErrorCode>>(_errorId)];
 
 	_errorLocation = XmlBase::ParseLocation{};
 

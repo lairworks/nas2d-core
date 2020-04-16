@@ -24,7 +24,7 @@ public:
 
 	bool error() const;
 	const std::string& errorDesc() const;
-	std::size_t errorId() const;
+	XmlErrorCode errorId() const;
 	int errorRow() const;
 	int errorCol() const;
 
@@ -47,7 +47,7 @@ private:
 	void copyTo(XmlDocument* target) const;
 
 private:
-	std::size_t					_errorId;
+	XmlErrorCode					_errorId;
 
 	bool				_error;
 

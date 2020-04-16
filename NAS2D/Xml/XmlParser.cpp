@@ -412,7 +412,7 @@ const char* XmlBase::getChar(const char* p, char* _value, std::size_t* length)
 	{
 		//strncpy( _value, p, *length );	// lots of compilers don't like this function (unsafe),
 		// and the null terminator isn't needed
-		for (int i = 0; i < *length && p[i]; ++i)
+		for (std::size_t i = 0; i < *length && p[i]; ++i)
 		{
 			_value[i] = p[i];
 		}

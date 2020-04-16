@@ -315,7 +315,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 	{
 		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
-			const std::size_t glyph = (row * GLYPH_MATRIX_SIZE) + col;
+			const std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
 
 			glm[glyph].uvX = static_cast<float>(col * glyphWidth) / static_cast<float>(glyphMap->w);
 			glm[glyph].uvY = static_cast<float>(row * glyphHeight) / static_cast<float>(glyphMap->h);

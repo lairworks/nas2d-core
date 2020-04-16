@@ -25,6 +25,10 @@
 #include <algorithm>
 #include <cstddef>
 
+
+extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
+
+
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
@@ -36,8 +40,6 @@ const int	BITS_32				= 32;
 
 std::map<std::string, FontInfo>	fontMap;
 
-
-extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 
 // ==================================================================================
 // = UNEXPOSED FUNCTION PROTOTYPES

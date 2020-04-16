@@ -36,9 +36,11 @@ int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 // ==================================================================================
 // = UNEXPOSED FUNCTION PROTOTYPES
 // ==================================================================================
+namespace {
 bool checkTextureId(const std::string& name);
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 void updateImageReferenceCount(const std::string& name);
+}
 
 
 /**
@@ -346,7 +348,7 @@ Color Image::pixelColor(int x, int y) const
 // = Unexposed module-level functions defined here that don't need to be part of the
 // = API interface.
 // ==================================================================================
-
+namespace {
 /**
 * Internal function used to clean up references to fonts when the Image
 * destructor or copy assignment operators are called.
@@ -442,4 +444,6 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
 
 	return texture_id;
+}
+
 }

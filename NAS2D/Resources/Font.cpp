@@ -374,7 +374,7 @@ Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int
 		glm.push_back(metrics);
 	}
 
-	const auto roundedLongestEdge = roundUpPowerOf2(largest_width);
+	const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(largest_width));
 	const auto size = Vector{roundedLongestEdge, roundedLongestEdge}.to<int>();
 	int textureSize = size.x * GLYPH_MATRIX_SIZE;
 

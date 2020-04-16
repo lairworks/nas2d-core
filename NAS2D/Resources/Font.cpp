@@ -329,7 +329,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 
 	// Add generated texture id to texture ID map.
 	fontMap[path].texture_id = texture_id;
-	fontMap[path].pt_size = glyphHeight;
+	fontMap[path].pt_size = static_cast<unsigned int>(glyphHeight);
 	fontMap[path].height = glyphHeight;
 	fontMap[path].ref_count++;
 	fontMap[path].glyph_size = {glyphWidth, glyphHeight};

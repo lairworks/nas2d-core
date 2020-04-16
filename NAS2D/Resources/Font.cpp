@@ -36,9 +36,6 @@ using namespace NAS2D::Exception;
 std::map<std::string, FontInfo>	fontMap;
 
 
-// ==================================================================================
-// = UNEXPOSED FUNCTION PROTOTYPES
-// ==================================================================================
 namespace {
 	const int ASCII_TABLE_COUNT = 256;
 	const int GLYPH_MATRIX_SIZE = 16;
@@ -210,11 +207,6 @@ unsigned int NAS2D::Font::ptSize() const
 	return fontMap[name()].pt_size;
 }
 
-
-// ==================================================================================
-// = Unexposed module-level functions defined here that don't need to be part of the
-// = API interface.
-// ==================================================================================
 
 namespace {
 	/**

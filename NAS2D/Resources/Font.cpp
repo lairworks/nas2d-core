@@ -40,9 +40,9 @@ std::map<std::string, FontInfo>	fontMap;
 // = UNEXPOSED FUNCTION PROTOTYPES
 // ==================================================================================
 namespace {
-const int	ASCII_TABLE_COUNT	= 256;
-const int	GLYPH_MATRIX_SIZE	= 16;
-const int	BITS_32				= 32;
+const int ASCII_TABLE_COUNT = 256;
+const int GLYPH_MATRIX_SIZE = 16;
+const int BITS_32 = 32;
 
 bool load(const std::string& path, unsigned int ptSize);
 bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);

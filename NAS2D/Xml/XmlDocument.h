@@ -47,7 +47,7 @@ private:
 	void copyTo(XmlDocument* target) const;
 
 private:
-	int					_errorId;
+	std::size_t					_errorId;
 
 	bool				_error;
 

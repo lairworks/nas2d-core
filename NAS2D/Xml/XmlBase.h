@@ -73,7 +73,7 @@ public:
 
 	virtual const char* parse(const char* p, void* data) = 0;
 
-	enum class XmlErrorCode
+	enum class XmlErrorCode : std::size_t
 	{
 		XML_NO_ERROR = 0,
 		XML_ERROR,

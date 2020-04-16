@@ -44,12 +44,14 @@ std::map<std::string, FontInfo>	fontMap;
 // ==================================================================================
 // = UNEXPOSED FUNCTION PROTOTYPES
 // ==================================================================================
+namespace {
 bool load(const std::string& path, unsigned int ptSize);
 bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
 bool fontAlreadyLoaded(const std::string& name);
 void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 void updateFontReferenceCount(const std::string& name);
+}
 
 
 /**
@@ -214,6 +216,8 @@ unsigned int NAS2D::Font::ptSize() const
 // = Unexposed module-level functions defined here that don't need to be part of the
 // = API interface.
 // ==================================================================================
+
+namespace {
 
 /**
  * Loads a TrueType or OpenType font from a file.
@@ -486,4 +490,6 @@ void updateFontReferenceCount(const std::string& name)
 	{
 		TTF_Quit();
 	}
+}
+
 }

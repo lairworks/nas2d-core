@@ -805,10 +805,9 @@ NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const Di
 
 NAS2D::Vector<int> NAS2D::RendererOpenGL::getWindowClientArea() const noexcept
 {
-	int width;
-	int height;
-	SDL_GetWindowSize(underlyingWindow, &width, &height);
-	return {width, height};
+	Vector<int> size;
+	SDL_GetWindowSize(underlyingWindow, &size.x, &size.y);
+	return size;
 }
 
 // ==================================================================================

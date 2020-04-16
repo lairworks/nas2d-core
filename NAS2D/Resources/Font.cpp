@@ -311,11 +311,11 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 		glm[i].minX = glyphWidth;
 	}
 
-	for (std::size_t row = 0; row < GLYPH_MATRIX_SIZE; row++)
+	for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
 	{
-		for (std::size_t col = 0; col < GLYPH_MATRIX_SIZE; col++)
+		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
-			const std::size_t glyph = (row * GLYPH_MATRIX_SIZE) + col;
+			const std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
 
 			glm[glyph].uvX = static_cast<float>(col * glyphWidth) / static_cast<float>(glyphMap->w);
 			glm[glyph].uvY = static_cast<float>(row * glyphHeight) / static_cast<float>(glyphMap->h);
@@ -329,7 +329,7 @@ bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int gl
 
 	// Add generated texture id to texture ID map.
 	fontMap[path].texture_id = texture_id;
-	fontMap[path].pt_size = glyphHeight;
+	fontMap[path].pt_size = static_cast<unsigned int>(glyphHeight);
 	fontMap[path].height = glyphHeight;
 	fontMap[path].ref_count++;
 	fontMap[path].glyph_size = {glyphWidth, glyphHeight};
@@ -374,7 +374,8 @@ Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int
 		glm.push_back(metrics);
 	}
 
-	const auto size = Vector{roundUpPowerOf2(largest_width), roundUpPowerOf2(largest_width)}.to<int>();
+	const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(largest_width));
+	const auto size = Vector{roundedLongestEdge, roundedLongestEdge}.to<int>();
 	int textureSize = size.x * GLYPH_MATRIX_SIZE;
 
 	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
@@ -387,7 +388,7 @@ Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int
 	{
 		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
-			int glyph = (row * GLYPH_MATRIX_SIZE) + col;
+			std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
 
 			glm[glyph].uvX = static_cast<float>(col * size.x) / static_cast<float>(textureSize);
 			glm[glyph].uvY = static_cast<float>(row * size.y) / static_cast<float>(textureSize);

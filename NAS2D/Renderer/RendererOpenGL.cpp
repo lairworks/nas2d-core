@@ -800,7 +800,7 @@ NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const Di
 	{
 		return {closestMode.w, closestMode.h, closestMode.refresh_rate};
 	}
-	const auto displayString = std::to_string(preferredDisplayDesc.width) + 'x' + std::to_string(preferredDisplayDesc.height) + 'x' + std::to_string(preferredDisplayDesc.refreshHz);
+	const auto displayString = std::string{preferredDisplayDesc};
 	auto errorString = "No matching display mode for " + displayString;
 	throw std::runtime_error(errorString);
 }

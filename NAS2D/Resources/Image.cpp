@@ -33,13 +33,13 @@ TextureIdMap imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 // = UNEXPOSED FUNCTION PROTOTYPES
 // ==================================================================================
 namespace {
-const std::string DEFAULT_IMAGE_NAME	= "Default Image";
-const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
-int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
+	const std::string DEFAULT_IMAGE_NAME	= "Default Image";
+	const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
+	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
-bool checkTextureId(const std::string& name);
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
-void updateImageReferenceCount(const std::string& name);
+	bool checkTextureId(const std::string& name);
+	unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
+	void updateImageReferenceCount(const std::string& name);
 }
 
 
@@ -349,101 +349,100 @@ Color Image::pixelColor(int x, int y) const
 // = API interface.
 // ==================================================================================
 namespace {
-/**
-* Internal function used to clean up references to fonts when the Image
-* destructor or copy assignment operators are called.
-*
-* \param	name	Name of the Image to check against.
-*/
-void updateImageReferenceCount(const std::string& name)
-{
-	auto it = imageIdMap.find(name);
-	if (it == imageIdMap.end())
+	/**
+	* Internal function used to clean up references to fonts when the Image
+	* destructor or copy assignment operators are called.
+	*
+	* \param	name	Name of the Image to check against.
+	*/
+	void updateImageReferenceCount(const std::string& name)
 	{
-		return;
-	}
-
-	--it->second.ref_count;
-
-	// if texture id reference count is 0, delete the texture.
-	if (it->second.ref_count < 1)
-	{
-		if (it->second.texture_id == 0)
+		auto it = imageIdMap.find(name);
+		if (it == imageIdMap.end())
 		{
 			return;
 		}
 
-		glDeleteTextures(1, &it->second.texture_id);
+		--it->second.ref_count;
 
-		if (it->second.fbo_id != 0)
+		// if texture id reference count is 0, delete the texture.
+		if (it->second.ref_count < 1)
 		{
-			glDeleteFramebuffers(1, &it->second.fbo_id);
+			if (it->second.texture_id == 0)
+			{
+				return;
+			}
+
+			glDeleteTextures(1, &it->second.texture_id);
+
+			if (it->second.fbo_id != 0)
+			{
+				glDeleteFramebuffers(1, &it->second.fbo_id);
+			}
+
+			if (it->second.surface != nullptr)
+			{
+				SDL_FreeSurface(it->second.surface);
+				it->second.surface = nullptr;
+			}
+
+			imageIdMap.erase(it);
+		}
+	}
+
+
+	/**
+	* Checks to see if a texture has already been generated
+	* and if it has, increases the reference count.
+	*
+	* \return	True if texture already exists. False otherwise.
+	*/
+	bool checkTextureId(const std::string& name)
+	{
+		auto it = imageIdMap.find(name);
+
+		if (it != imageIdMap.end())
+		{
+			++imageIdMap[name].ref_count;
+			return true;
 		}
 
-		if (it->second.surface != nullptr)
+		return false;
+	}
+
+
+	/**
+	 * Generates a new OpenGL texture from an SDL_Surface.
+	 */
+	unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
+	{
+		GLenum textureFormat = 0;
+		switch (bytesPerPixel)
 		{
-			SDL_FreeSurface(it->second.surface);
-			it->second.surface = nullptr;
+		case 4:
+			textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
+			break;
+		case 3:
+			textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGR : GL_RGB;
+			break;
+
+		default:
+			throw image_unsupported_bit_depth();
 		}
 
-		imageIdMap.erase(it);
+		GLuint texture_id;
+		glGenTextures(1, &texture_id);
+		glBindTexture(GL_TEXTURE_2D, texture_id);
+
+		// Set texture and pixel handling states.
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
+
+		return texture_id;
 	}
-}
-
-
-/**
-* Checks to see if a texture has already been generated
-* and if it has, increases the reference count.
-*
-* \return	True if texture already exists. False otherwise.
-*/
-bool checkTextureId(const std::string& name)
-{
-	auto it = imageIdMap.find(name);
-
-	if (it != imageIdMap.end())
-	{
-		++imageIdMap[name].ref_count;
-		return true;
-	}
-
-	return false;
-}
-
-
-/**
- * Generates a new OpenGL texture from an SDL_Surface.
- */
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
-{
-	GLenum textureFormat = 0;
-	switch (bytesPerPixel)
-	{
-	case 4:
-		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
-		break;
-	case 3:
-		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGR : GL_RGB;
-		break;
-
-	default:
-		throw image_unsupported_bit_depth();
-	}
-
-	GLuint texture_id;
-	glGenTextures(1, &texture_id);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
-
-	// Set texture and pixel handling states.
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
-
-	return texture_id;
-}
-
 }

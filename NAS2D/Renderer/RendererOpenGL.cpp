@@ -769,48 +769,48 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 
 std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 {
-	const auto display_index = SDL_GetWindowDisplayIndex(underlyingWindow);
-	const auto num_resolutions = SDL_GetNumDisplayModes(display_index);
-	if (num_resolutions < 0)
+	const auto displayIndex = SDL_GetWindowDisplayIndex(underlyingWindow);
+	const auto numResolutions = SDL_GetNumDisplayModes(displayIndex);
+	if (numResolutions < 0)
 	{
-		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(display_index) + " : " + std::string{SDL_GetError()});
+		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(displayIndex) + " : " + std::string{SDL_GetError()});
 	}
 
 	std::vector<NAS2D::DisplayDesc> result{};
-	result.reserve(static_cast<std::size_t>(num_resolutions));
-	for (int i = 0; i < num_resolutions; ++i)
+	result.reserve(static_cast<std::size_t>(numResolutions));
+	for (int i = 0; i < numResolutions; ++i)
 	{
-		SDL_DisplayMode cur_mode{};
-		SDL_GetDisplayMode(display_index, i, &cur_mode);
-		result.push_back({cur_mode.w, cur_mode.h, cur_mode.refresh_rate});
+		SDL_DisplayMode currentMode{};
+		SDL_GetDisplayMode(displayIndex, i, &currentMode);
+		result.push_back({currentMode.w, currentMode.h, currentMode.refresh_rate});
 	}
 	return result;
 }
 
 NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const
 {
-	const auto display_index = SDL_GetWindowDisplayIndex(underlyingWindow);
-	SDL_DisplayMode preferred{};
-	preferred.w = preferredDisplayDesc.width;
-	preferred.h = preferredDisplayDesc.height;
-	preferred.refresh_rate = preferredDisplayDesc.refreshHz;
+	const auto displayIndex = SDL_GetWindowDisplayIndex(underlyingWindow);
+	SDL_DisplayMode preferredMode{};
+	preferredMode.w = preferredDisplayDesc.width;
+	preferredMode.h = preferredDisplayDesc.height;
+	preferredMode.refresh_rate = preferredDisplayDesc.refreshHz;
 
-	SDL_DisplayMode closest{};
-	if (SDL_GetClosestDisplayMode(display_index, &preferred, &closest))
+	SDL_DisplayMode closestMode{};
+	if (SDL_GetClosestDisplayMode(displayIndex, &preferredMode, &closestMode))
 	{
-		return {closest.w, closest.h, closest.refresh_rate};
+		return {closestMode.w, closestMode.h, closestMode.refresh_rate};
 	}
-	const auto display_str = std::to_string(preferredDisplayDesc.width) + 'x' + std::to_string(preferredDisplayDesc.height) + 'x' + std::to_string(preferredDisplayDesc.refreshHz);
-	auto err_str = "No matching display mode for " + display_str;
-	throw std::runtime_error(err_str);
+	const auto displayString = std::to_string(preferredDisplayDesc.width) + 'x' + std::to_string(preferredDisplayDesc.height) + 'x' + std::to_string(preferredDisplayDesc.refreshHz);
+	auto errorString = "No matching display mode for " + displayString;
+	throw std::runtime_error(errorString);
 }
 
 NAS2D::Vector<int> NAS2D::RendererOpenGL::getWindowClientArea() const noexcept
 {
-	int w;
-	int h;
-	SDL_GetWindowSize(underlyingWindow, &w, &h);
-	return {w, h};
+	int width;
+	int height;
+	SDL_GetWindowSize(underlyingWindow, &width, &height);
+	return {width, height};
 }
 
 // ==================================================================================

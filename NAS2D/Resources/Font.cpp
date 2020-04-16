@@ -387,7 +387,7 @@ Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int
 	{
 		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 		{
-			std::size_t glyph = (row * GLYPH_MATRIX_SIZE) + col;
+			std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
 
 			glm[glyph].uvX = static_cast<float>(col * size.x) / static_cast<float>(textureSize);
 			glm[glyph].uvY = static_cast<float>(row * size.y) / static_cast<float>(textureSize);

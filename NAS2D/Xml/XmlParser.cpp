@@ -302,7 +302,7 @@ const char* XmlBase::readName(const char* p, std::string& name)
 /**
  * If an entity has been found, transform it into a character.
  */
-const char* XmlBase::getEntity(const char* p, char* value, int* length)
+const char* XmlBase::getEntity(const char* p, char* value, std::size_t* length)
 {
 	// Presume an entity, and pull it out.
 	std::string ent;
@@ -396,7 +396,7 @@ const char* XmlBase::getEntity(const char* p, char* value, int* length)
 /**
  * Get a character, while interpreting entities. The length can be from 0 to 4 bytes.
  */
-const char* XmlBase::getChar(const char* p, char* _value, int* length)
+const char* XmlBase::getChar(const char* p, char* _value, std::size_t* length)
 {
 	assert(p);
 
@@ -491,7 +491,7 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 		// Keep all the white space.
 		while (p && *p && !stringEqual(p, endTag, caseInsensitive))
 		{
-			int len;
+			std::size_t len;
 			char cArr[4] = { 0, 0, 0, 0 };
 			p = getChar(p, cArr, &len);
 			text->append(cArr, len);
@@ -524,7 +524,7 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 					(*text) += ' ';
 					whitespace = false;
 				}
-				int len;
+				std::size_t len;
 				char cArr[4] = { 0, 0, 0, 0 };
 				p = getChar(p, cArr, &len);
 				if (len == 1)

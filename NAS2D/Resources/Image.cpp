@@ -29,13 +29,15 @@ using TextureIdMap = std::map<std::string, ImageInfo>;
 TextureIdMap imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 
 
+unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
+
+
 namespace {
 	const std::string DEFAULT_IMAGE_NAME	= "Default Image";
 	const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
 	bool checkTextureId(const std::string& name);
-	unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 	void updateImageReferenceCount(const std::string& name);
 }
 
@@ -402,6 +404,7 @@ namespace {
 
 		return false;
 	}
+}
 
 
 	/**
@@ -438,4 +441,3 @@ namespace {
 
 		return texture_id;
 	}
-}

@@ -3,16 +3,15 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-TEST(MathUtils, divideUpByZero)
-{
+
+TEST(MathUtils, divideUpByZero) {
 	EXPECT_THROW(NAS2D::divideUp(0, 0), std::domain_error);
 	EXPECT_THROW(NAS2D::divideUp(1, 0), std::domain_error);
 	EXPECT_THROW(NAS2D::divideUp(2, 0), std::domain_error);
 	EXPECT_THROW(NAS2D::divideUp(256, 0), std::domain_error);
 }
 
-TEST(MathUtils, divideUp)
-{
+TEST(MathUtils, divideUp) {
 	EXPECT_EQ(0, NAS2D::divideUp(0, 1));
 	EXPECT_EQ(0, NAS2D::divideUp(0, 2));
 	EXPECT_EQ(0, NAS2D::divideUp(0, 3));
@@ -38,8 +37,7 @@ TEST(MathUtils, divideUp)
 	EXPECT_EQ(20, NAS2D::divideUp(256, 13));
 }
 
-TEST(MathUtils, roundUpPowerOf2)
-{
+TEST(MathUtils, roundUpPowerOf2) {
 	EXPECT_EQ(1u, NAS2D::roundUpPowerOf2(1));
 	EXPECT_EQ(2u, NAS2D::roundUpPowerOf2(2));
 	EXPECT_EQ(4u, NAS2D::roundUpPowerOf2(3));
@@ -77,8 +75,7 @@ TEST(MathUtils, roundUpPowerOf2)
 	EXPECT_EQ(2147483648u, NAS2D::roundUpPowerOf2(2147483648));
 }
 
-TEST(MathUtils, mapDomainToRange)
-{
+TEST(MathUtils, mapDomainToRange) {
 	// Fahrenheit to Celcius
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 212.0f, 32.0f, 100.0f, 0.0f), 0.0001f);

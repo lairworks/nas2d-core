@@ -3,8 +3,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-TEST(String, split)
-{
+
+TEST(String, split) {
 	EXPECT_EQ((NAS2D::StringList{"a", "b", "c"}), NAS2D::split("a,b,c"));
 	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::split("abc"));
 	EXPECT_EQ((NAS2D::StringList{"", "abc"}), NAS2D::split(",abc"));
@@ -20,8 +20,7 @@ TEST(String, split)
 	EXPECT_EQ((NAS2D::StringList{"abc", ""}), NAS2D::split("abc.", '.'));
 }
 
-TEST(String, splitSkipEmpty)
-{
+TEST(String, splitSkipEmpty) {
 	EXPECT_EQ((NAS2D::StringList{"a", "b", "c"}), NAS2D::splitSkipEmpty("a,b,c"));
 	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitSkipEmpty("abc"));
 	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::splitSkipEmpty(",abc"));

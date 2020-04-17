@@ -70,7 +70,7 @@ struct Vector {
 		return (x * x) + (y * y);
 	}
 
-	BaseType dotProduct(const Vector& other) {
+	BaseType dotProduct(const Vector& other) const {
 		return (x * other.x) + (y * other.y);
 	}
 

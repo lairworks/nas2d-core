@@ -4,6 +4,30 @@
 #include <gtest/gtest.h>
 
 
+TEST(MathUtils, lineIntersectsCircle) {
+	const auto circleCenter = NAS2D::Point{0, 0};
+
+	// Interior
+	EXPECT_TRUE((lineIntersectsCircle(NAS2D::Point{-1, 0}, NAS2D::Point{1, 0}, circleCenter, 1)));
+	EXPECT_TRUE((lineIntersectsCircle(NAS2D::Point{0, -1}, NAS2D::Point{0, 1}, circleCenter, 1)));
+	EXPECT_TRUE((lineIntersectsCircle(NAS2D::Point{-1, -1}, NAS2D::Point{1, 1}, circleCenter, 1)));
+	EXPECT_TRUE((lineIntersectsCircle(NAS2D::Point{-1, 1}, NAS2D::Point{1, -1}, circleCenter, 1)));
+	EXPECT_TRUE((lineIntersectsCircle(NAS2D::Point{-1, -1}, NAS2D::Point{1, 2}, circleCenter, 1)));
+	EXPECT_TRUE((lineIntersectsCircle(NAS2D::Point{-1, -1}, NAS2D::Point{2, 1}, circleCenter, 1)));
+
+	// Boundary
+	EXPECT_FALSE((lineIntersectsCircle(NAS2D::Point{-1, -1}, NAS2D::Point{1, -1}, circleCenter, 1)));
+	EXPECT_FALSE((lineIntersectsCircle(NAS2D::Point{-1, 1}, NAS2D::Point{1, 1}, circleCenter, 1)));
+	EXPECT_FALSE((lineIntersectsCircle(NAS2D::Point{-1, -1}, NAS2D::Point{-1, 1}, circleCenter, 1)));
+	EXPECT_FALSE((lineIntersectsCircle(NAS2D::Point{1, -1}, NAS2D::Point{1, 1}, circleCenter, 1)));
+
+	// Exterior
+	EXPECT_FALSE((lineIntersectsCircle(NAS2D::Point{-1, -2}, NAS2D::Point{1, -2}, circleCenter, 1)));
+	EXPECT_FALSE((lineIntersectsCircle(NAS2D::Point{-1, 2}, NAS2D::Point{1, 2}, circleCenter, 1)));
+	EXPECT_FALSE((lineIntersectsCircle(NAS2D::Point{-2, -1}, NAS2D::Point{-2, 1}, circleCenter, 1)));
+	EXPECT_FALSE((lineIntersectsCircle(NAS2D::Point{2, -1}, NAS2D::Point{2, 1}, circleCenter, 1)));
+}
+
 TEST(MathUtils, divideUpByZero) {
 	EXPECT_THROW(NAS2D::divideUp(0, 0), std::domain_error);
 	EXPECT_THROW(NAS2D::divideUp(1, 0), std::domain_error);

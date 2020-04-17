@@ -99,13 +99,16 @@ TEST(Vector, lengthSquared) {
 TEST(Vector, dotProduct) {
 	// Test a few simple vectors
 	for (int i = 0; i < 10; ++i) {
+		const auto vectorX = NAS2D::Vector{i, 0};
+		const auto vectorY = NAS2D::Vector{0, i};
 		// Pairwise disjoint coordinates
-		EXPECT_EQ(0, (NAS2D::Vector{i, 0}.dotProduct(NAS2D::Vector{0, i})));
+		EXPECT_EQ(0, vectorX.dotProduct(vectorY));
 		// Equal single coordinates
-		EXPECT_EQ(i*i, (NAS2D::Vector{i, 0}.dotProduct(NAS2D::Vector{i, 0})));
-		EXPECT_EQ(i*i, (NAS2D::Vector{0, i}.dotProduct(NAS2D::Vector{0, i})));
+		EXPECT_EQ(i*i, vectorX.dotProduct(vectorX));
+		EXPECT_EQ(i*i, vectorY.dotProduct(vectorY));
 		// Equal pair coordinates
-		EXPECT_EQ(2 * i*i, (NAS2D::Vector{i, i}.dotProduct(NAS2D::Vector{i, i})));
+		const auto vectorXY = NAS2D::Vector{i, i};
+		EXPECT_EQ(2 * i*i, vectorXY.dotProduct(vectorXY));
 	}
 
 	// Test a few mixed values

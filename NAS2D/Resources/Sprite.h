@@ -62,12 +62,12 @@ public:
 	 *
 	 * \param	alpha	Alpha value to set between 0 - 255.
 	 */
-	void alpha(uint8_t alpha) { mColor.alpha(alpha); }
+	void alpha(uint8_t alpha) { mColor.alpha = alpha; }
 
 	/**
 	 * Gets the alpha value for the Sprite.
 	 */
-	uint8_t alpha() const { return mColor.alpha(); }
+	uint8_t alpha() const { return mColor.alpha; }
 
 	/**
 	 * Sets the color of the Sprite.

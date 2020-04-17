@@ -29,9 +29,6 @@ using TextureIdMap = std::map<std::string, ImageInfo>;
 TextureIdMap imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 
 
-// ==================================================================================
-// = UNEXPOSED FUNCTION PROTOTYPES
-// ==================================================================================
 namespace {
 	const std::string DEFAULT_IMAGE_NAME	= "Default Image";
 	const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
@@ -344,10 +341,6 @@ Color Image::pixelColor(int x, int y) const
 }
 
 
-// ==================================================================================
-// = Unexposed module-level functions defined here that don't need to be part of the
-// = API interface.
-// ==================================================================================
 namespace {
 	/**
 	* Internal function used to clean up references to fonts when the Image

@@ -84,10 +84,13 @@ TEST(Vector, lengthSquared) {
 	for (int i = 0; i < 10; ++i) {
 		// Single coordinate is simple squaring
 		// Test symmetry in both coordinates
-		EXPECT_EQ(i*i, (NAS2D::Vector{i, 0}).lengthSquared());
-		EXPECT_EQ(i*i, (NAS2D::Vector{0, i}).lengthSquared());
+		const auto vectorX = NAS2D::Vector{i, 0};
+		const auto vectorY = NAS2D::Vector{0, i};
+		EXPECT_EQ(i*i, vectorX.lengthSquared());
+		EXPECT_EQ(i*i, vectorY.lengthSquared());
 		// Double equal coordinates doubles result
-		EXPECT_EQ(2 * i*i, (NAS2D::Vector{i, i}).lengthSquared());
+		const auto vectorXY = NAS2D::Vector{i, i};
+		EXPECT_EQ(2 * i*i, vectorXY.lengthSquared());
 	}
 
 	// Test a few mixed values

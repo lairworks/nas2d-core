@@ -79,6 +79,23 @@ TEST(Vector, DivideScalar) {
 	EXPECT_THROW((NAS2D::Vector{2, 4} /= 0), std::domain_error);
 }
 
+TEST(Vector, lengthSquared) {
+	// Test a few simple vectors
+	for (int i = 0; i < 10; ++i) {
+		// Single coordinate is simple squaring
+		// Test symmetry in both coordinates
+		EXPECT_EQ(i*i, (NAS2D::Vector{i, 0}).lengthSquared());
+		EXPECT_EQ(i*i, (NAS2D::Vector{0, i}).lengthSquared());
+		// Double equal coordinates doubles result
+		EXPECT_EQ(2 * i*i, (NAS2D::Vector{i, i}).lengthSquared());
+	}
+
+	// Test a few mixed values
+	EXPECT_EQ(5, (NAS2D::Vector{1, 2}).lengthSquared());
+	EXPECT_EQ(13, (NAS2D::Vector{2, 3}).lengthSquared());
+	EXPECT_EQ(25, (NAS2D::Vector{3, 4}).lengthSquared());
+}
+
 TEST(Vector, OperatorType) {
 	EXPECT_EQ((NAS2D::Vector<int>{1, 2}), static_cast<NAS2D::Vector<int>>(NAS2D::Vector<float>{1.0, 2.0}));
 	EXPECT_EQ((NAS2D::Vector<float>{1.0, 2.0}), static_cast<NAS2D::Vector<float>>(NAS2D::Vector<int>{1, 2}));

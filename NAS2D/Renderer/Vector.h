@@ -66,6 +66,10 @@ struct Vector {
 		return {x / scalar, y / scalar};
 	}
 
+	BaseType lengthSquared() const {
+		return (x * x) + (y * y);
+	}
+
 	template <typename NewBaseType>
 	operator Vector<NewBaseType>() const {
 		return {

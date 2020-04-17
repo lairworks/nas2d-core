@@ -96,6 +96,24 @@ TEST(Vector, lengthSquared) {
 	EXPECT_EQ(25, (NAS2D::Vector{3, 4}).lengthSquared());
 }
 
+TEST(Vector, dotProduct) {
+	// Test a few simple vectors
+	for (int i = 0; i < 10; ++i) {
+		// Pairwise disjoint coordinates
+		EXPECT_EQ(0, (NAS2D::Vector{i, 0}.dotProduct(NAS2D::Vector{0, i})));
+		// Equal single coordinates
+		EXPECT_EQ(i*i, (NAS2D::Vector{i, 0}.dotProduct(NAS2D::Vector{i, 0})));
+		EXPECT_EQ(i*i, (NAS2D::Vector{0, i}.dotProduct(NAS2D::Vector{0, i})));
+		// Equal pair coordinates
+		EXPECT_EQ(2 * i*i, (NAS2D::Vector{i, i}.dotProduct(NAS2D::Vector{i, i})));
+	}
+
+	// Test a few mixed values
+	EXPECT_EQ(3, (NAS2D::Vector{1, 2}).dotProduct(NAS2D::Vector{1, 1}));
+	EXPECT_EQ(8, (NAS2D::Vector{2, 3}).dotProduct(NAS2D::Vector{1, 2}));
+	EXPECT_EQ(18, (NAS2D::Vector{3, 4}).dotProduct(NAS2D::Vector{2, 3}));
+}
+
 TEST(Vector, OperatorType) {
 	EXPECT_EQ((NAS2D::Vector<int>{1, 2}), static_cast<NAS2D::Vector<int>>(NAS2D::Vector<float>{1.0, 2.0}));
 	EXPECT_EQ((NAS2D::Vector<float>{1.0, 2.0}), static_cast<NAS2D::Vector<float>>(NAS2D::Vector<int>{1, 2}));

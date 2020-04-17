@@ -70,6 +70,10 @@ struct Vector {
 		return (x * x) + (y * y);
 	}
 
+	BaseType dotProduct(const Vector& other) {
+		return (x * other.x) + (y * other.y);
+	}
+
 	template <typename NewBaseType>
 	operator Vector<NewBaseType>() const {
 		return {

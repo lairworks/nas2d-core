@@ -25,6 +25,4 @@ float radToDeg(float rad);
 float angleFromPoints(float x, float y, float x2, float y2);
 Vector<float> getDirectionVector(float angle);
 
-bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<int>& c, float r);
-
 }

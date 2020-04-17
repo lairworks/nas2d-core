@@ -21,6 +21,7 @@
 
 namespace NAS2D
 {
+	bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<int>& c, float r);
 
 	int divideUp(int to_divide, int divisor);
 

@@ -11,7 +11,6 @@
 #include "Trig.h"
 
 #include <cmath>
-#include <algorithm>
 
 namespace NAS2D {
 
@@ -59,36 +58,6 @@ float angleFromPoints(float x, float y, float x2, float y2)
 Vector<float> getDirectionVector(float angle)
 {
 	return {std::sin(degToRad(angle)), -std::cos(degToRad(angle))};
-}
-
-
-/**
- * Determines if a given line intersects a given circle.
- *
- * \param	p	First point of a line segment.
- * \param	q	Second point of a line segment.
- * \param	c	Center point of a circle.
- * \param	r	Radius of a circle.
- */
-bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<int>& c, float r)
-{
-	float dx = static_cast<float>(q.x() - p.x());
-	float dy = static_cast<float>(q.y() - p.y());
-
-	float t = -(((p.x() - c.x()) * dx) + ((p.y() - c.y()) * dy)) / ((dx * dx) + (dy * dy));
-
-	t = std::clamp(t, 0.0f, 1.0f);
-
-	dx = (p.x() + (t * (q.x() - p.x()))) - c.x();
-	dy = (p.y() + (t * (q.y() - p.y()))) - c.y();
-	float rt = (dx * dx) + (dy * dy);
-
-	if (rt < (r * r))
-	{
-		return true;
-	}
-
-	return false;
 }
 
 }

@@ -37,7 +37,7 @@ Renderer::~Renderer()
 
 void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
 {
-	drawImage(image, position.x(), position.y(), scale, color.red(), color.green(), color.blue(), color.alpha());
+	drawImage(image, position.x(), position.y(), scale, color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -80,7 +80,7 @@ void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<floa
  */
 void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, const Color& color)
 {
-	drawSubImage(image, rasterX, rasterY, x, y, width, height, color.red(), color.green(), color.blue(), color.alpha());
+	drawSubImage(image, rasterX, rasterY, x, y, width, height, color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -111,7 +111,7 @@ void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Poi
  */
 void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color& color)
 {
-	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red(), color.green(), color.blue(), color.alpha());
+	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -133,7 +133,7 @@ void NAS2D::Renderer::drawImageRotated(Image& image, Point<float> position, floa
  */
 void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color& color, float scale)
 {
-	drawImageRotated(image, x, y, degrees, color.red(), color.green(), color.blue(), color.alpha(), scale);
+	drawImageRotated(image, x, y, degrees, color.red, color.green, color.blue, color.alpha, scale);
 }
 
 
@@ -161,7 +161,7 @@ void NAS2D::Renderer::drawImageStretched(Image& image, Point<float> position, Ve
  */
 void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color color)
 {
-	drawImageStretched(image, x, y, w, h, color.red(), color.green(), color.blue(), color.alpha());
+	drawImageStretched(image, x, y, w, h, color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -356,7 +356,7 @@ void NAS2D::Renderer::drawPoint(Point<float> position, const Color& color)
  */
 void Renderer::drawPoint(float x, float y, const Color& color)
 {
-	drawPoint(x, y, color.red(), color.green(), color.blue(), color.alpha());
+	drawPoint(x, y, color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -378,13 +378,13 @@ void NAS2D::Renderer::drawLine(Point<float> startPosition, Point<float> endPosit
  */
 void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color, int line_width)
 {
-	drawLine(x, y, x2, y2, color.red(), color.green(), color.blue(), color.alpha(), line_width);
+	drawLine(x, y, x2, y2, color.red, color.green, color.blue, color.alpha, line_width);
 }
 
 
 void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
 {
-	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), color.red(), color.green(), color.blue(), color.alpha());
+	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -420,7 +420,7 @@ void Renderer::drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8
 
 void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
 {
-	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), color.red(), color.green(), color.blue(), color.alpha());
+	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -456,7 +456,7 @@ void Renderer::drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g,
 
 void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
 {
-	drawCircle(position.x(), position.y(), radius, color.red(), color.green(), color.blue(), color.alpha(), num_segments, scale.x, scale.y);
+	drawCircle(position.x(), position.y(), radius, color.red, color.green, color.blue, color.alpha, num_segments, scale.x, scale.y);
 }
 
 
@@ -494,21 +494,21 @@ void Renderer::drawGradient(Point<float> position, Vector<float> size, const Col
  */
 void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
 {
-	drawGradient(x, y, w, h, c1.red(), c1.green(), c1.blue(), c1.alpha(), c2.red(), c2.green(), c2.blue(), c2.alpha(), c3.red(), c3.green(), c3.blue(), c3.alpha(), c4.red(), c4.green(), c4.blue(), c4.alpha());
+	drawGradient(x, y, w, h, c1.red, c1.green, c1.blue, c1.alpha, c2.red, c2.green, c2.blue, c2.alpha, c3.red, c3.green, c3.blue, c3.alpha, c4.red, c4.green, c4.blue, c4.alpha);
 }
 
 
 void NAS2D::Renderer::drawText(Font& font, const std::string& text, Point<float> position, Color color)
 {
-	drawText(font, text, position.x(), position.y(), color.red(), color.green(), color.blue(), color.alpha());
+	drawText(font, text, position.x(), position.y(), color.red, color.green, color.blue, color.alpha);
 }
 
 
 void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
 {
 	const auto shadowPosition = position + shadowOffset;
-	drawText(font, text, shadowPosition.x(), shadowPosition.y(), shadowColor.red(), shadowColor.green(), shadowColor.blue(), shadowColor.alpha());
-	drawText(font, text, position.x(), position.y(), textColor.red(), textColor.green(), textColor.blue(), textColor.alpha());
+	drawText(font, text, shadowPosition.x(), shadowPosition.y(), shadowColor.red, shadowColor.green, shadowColor.blue, shadowColor.alpha);
+	drawText(font, text, position.x(), position.y(), textColor.red, textColor.green, textColor.blue, textColor.alpha);
 }
 
 /**
@@ -638,7 +638,7 @@ void Renderer::clipRectClear()
  */
 void Renderer::clearScreen(const Color& color)
 {
-	clearScreen(color.red(), color.green(), color.blue());
+	clearScreen(color.red, color.green, color.blue);
 }
 
 
@@ -666,7 +666,7 @@ void Renderer::update()
 
 	if (mCurrentFade > 0.0f)
 	{
-		drawBoxFilled(0, 0, width(), height(), mFadeColor.red(), mFadeColor.green(), mFadeColor.blue(), static_cast<uint8_t>(mCurrentFade));
+		drawBoxFilled(0, 0, width(), height(), mFadeColor.red, mFadeColor.green, mFadeColor.blue, static_cast<uint8_t>(mCurrentFade));
 	}
 }
 

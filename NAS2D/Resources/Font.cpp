@@ -25,35 +25,29 @@
 #include <algorithm>
 #include <cstddef>
 
+
+extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
+
+
 using namespace NAS2D;
 using namespace NAS2D::Exception;
-
-
-std::string buildName(TTF_Font*);
-
-const int	ASCII_TABLE_FIRST	= 0;
-const int	ASCII_TABLE_LAST	= 255;
-const int	ASCII_TABLE_COUNT	= ASCII_TABLE_LAST - ASCII_TABLE_FIRST + 1;
-
-const int	GLYPH_MATRIX_SIZE	= 16;
-
-const int	BITS_32				= 32;
 
 
 std::map<std::string, FontInfo>	fontMap;
 
 
-extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
+namespace {
+	const int ASCII_TABLE_COUNT = 256;
+	const int GLYPH_MATRIX_SIZE = 16;
+	const int BITS_32 = 32;
 
-// ==================================================================================
-// = UNEXPOSED FUNCTION PROTOTYPES
-// ==================================================================================
-bool load(const std::string& path, unsigned int ptSize);
-bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
-Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
-bool fontAlreadyLoaded(const std::string& name);
-void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
-void updateFontReferenceCount(const std::string& name);
+	bool load(const std::string& path, unsigned int ptSize);
+	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
+	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
+	bool fontAlreadyLoaded(const std::string& name);
+	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
+	void updateFontReferenceCount(const std::string& name);
+}
 
 
 /**
@@ -214,280 +208,277 @@ unsigned int NAS2D::Font::ptSize() const
 }
 
 
-// ==================================================================================
-// = Unexposed module-level functions defined here that don't need to be part of the
-// = API interface.
-// ==================================================================================
-
-/**
- * Loads a TrueType or OpenType font from a file.
- *
- * \param	path	Path to the TTF or OTF font file.
- * \param	ptSize	Point size to use when loading the font.
- */
-bool load(const std::string& path, unsigned int ptSize)
-{
-	std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
-	if (fontAlreadyLoaded(fontname))
+namespace {
+	/**
+	 * Loads a TrueType or OpenType font from a file.
+	 *
+	 * \param	path	Path to the TTF or OTF font file.
+	 * \param	ptSize	Point size to use when loading the font.
+	 */
+	bool load(const std::string& path, unsigned int ptSize)
 	{
-		++fontMap[fontname].ref_count;
-		return true;
-	}
+		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
+		if (fontAlreadyLoaded(fontname))
+		{
+			++fontMap[fontname].ref_count;
+			return true;
+		}
 
-	if (TTF_WasInit() == 0)
-	{
-		if (TTF_Init() != 0)
+		if (TTF_WasInit() == 0)
+		{
+			if (TTF_Init() != 0)
+			{
+				std::cout << "Font::load(): " << TTF_GetError() << std::endl;
+				return false;
+			}
+		}
+
+		File fontBuffer = Utility<Filesystem>::get().open(path);
+		if (fontBuffer.empty())
+		{
+			return false;
+		}
+
+		TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, static_cast<int>(ptSize));
+		if (!font)
 		{
 			std::cout << "Font::load(): " << TTF_GetError() << std::endl;
 			return false;
 		}
-	}
 
-	File fontBuffer = Utility<Filesystem>::get().open(path);
-	if (fontBuffer.empty())
-	{
-		return false;
-	}
+		fontMap[fontname].height = TTF_FontHeight(font);
+		fontMap[fontname].ascent = TTF_FontAscent(font);
+		fontMap[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize);
+		TTF_CloseFont(font);
 
-	TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, static_cast<int>(ptSize));
-	if (!font)
-	{
-		std::cout << "Font::load(): " << TTF_GetError() << std::endl;
-		return false;
-	}
-
-	fontMap[fontname].height = TTF_FontHeight(font);
-	fontMap[fontname].ascent = TTF_FontAscent(font);
-	fontMap[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize);
-	TTF_CloseFont(font);
-
-	return true;
-}
-
-
-/**
- * Internal function that loads a bitmap font from an file.
- *
- * \param	path		Path to the image file.
- * \param	glyphWidth	Width of glyphs in the bitmap font.
- * \param	glyphHeight	Height of the glyphs in the bitmap font.
- * \param	glyphSpace	Spacing to use when drawing glyphs.
- */
-bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
-{
-	if (fontAlreadyLoaded(path))
-	{
-		++fontMap[path].ref_count;
 		return true;
 	}
 
-	File fontBuffer = Utility<Filesystem>::get().open(path);
-	if (fontBuffer.empty())
-	{
-		return false;
-	}
 
-	SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
-	if (!glyphMap)
+	/**
+	 * Internal function that loads a bitmap font from an file.
+	 *
+	 * \param	path		Path to the image file.
+	 * \param	glyphWidth	Width of glyphs in the bitmap font.
+	 * \param	glyphHeight	Height of the glyphs in the bitmap font.
+	 * \param	glyphSpace	Spacing to use when drawing glyphs.
+	 */
+	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
 	{
-		std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
-		return false;
-	}
-
-	if (glyphMap->w / GLYPH_MATRIX_SIZE != glyphWidth)
-	{
-		throw font_invalid_glyph_map("image width is " + std::to_string(glyphMap->w) + ", expected " + std::to_string(glyphWidth * GLYPH_MATRIX_SIZE) + ".");
-	}
-
-	if (glyphMap->h / GLYPH_MATRIX_SIZE != glyphHeight)
-	{
-		throw font_invalid_glyph_map("image height is " + std::to_string(glyphMap->h) + ", expected " + std::to_string(glyphHeight * GLYPH_MATRIX_SIZE) + ".");
-	}
-
-	GlyphMetricsList& glm = fontMap[path].metrics;
-	glm.resize(ASCII_TABLE_COUNT);
-	for (std::size_t i = 0; i < glm.size(); ++i)
-	{
-		glm[i].minX = glyphWidth;
-	}
-
-	for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
-	{
-		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
+		if (fontAlreadyLoaded(path))
 		{
-			const std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
-
-			glm[glyph].uvX = static_cast<float>(col * glyphWidth) / static_cast<float>(glyphMap->w);
-			glm[glyph].uvY = static_cast<float>(row * glyphHeight) / static_cast<float>(glyphMap->h);
-			glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(glyphWidth) / static_cast<float>(glyphMap->w);
-			glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(glyphHeight) / static_cast<float>(glyphMap->h);
-			glm[glyph].advance = glyphSpace;
-		}
-	}
-
-	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
-
-	// Add generated texture id to texture ID map.
-	fontMap[path].texture_id = texture_id;
-	fontMap[path].pt_size = static_cast<unsigned int>(glyphHeight);
-	fontMap[path].height = glyphHeight;
-	fontMap[path].ref_count++;
-	fontMap[path].glyph_size = {glyphWidth, glyphHeight};
-	SDL_FreeSurface(glyphMap);
-
-	return true;
-}
-
-
-/**
- * Generates a glyph map of all ASCII standard characters from 0 - 255.
- *
- * Internal function used to generate a glyph texture map from an TTF_Font struct.
- */
-Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
-{
-	int largest_width = 0;
-
-	GlyphMetricsList& glm = fontMap[name].metrics;
-
-	// Go through each glyph and determine how much space we need in the texture.
-	for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
-	{
-		GlyphMetrics metrics;
-
-		TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
-		if (metrics.advance > largest_width)
-		{
-			largest_width = metrics.advance;
+			++fontMap[path].ref_count;
+			return true;
 		}
 
-		if (metrics.minX + metrics.maxX > largest_width)
+		File fontBuffer = Utility<Filesystem>::get().open(path);
+		if (fontBuffer.empty())
 		{
-			largest_width = metrics.minX + metrics.maxX;
+			return false;
 		}
 
-		if (metrics.minY + metrics.maxY > largest_width)
+		SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
+		if (!glyphMap)
 		{
-			largest_width = metrics.minY + metrics.maxY;
+			std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
+			return false;
 		}
 
-		glm.push_back(metrics);
-	}
-
-	const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(largest_width));
-	const auto size = Vector{roundedLongestEdge, roundedLongestEdge}.to<int>();
-	int textureSize = size.x * GLYPH_MATRIX_SIZE;
-
-	unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
-	setupMasks(rmask, gmask, bmask, amask);
-
-	SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
-
-	SDL_Color white = { 255, 255, 255, 255 };
-	for (int row = 0; row < 16; row++)
-	{
-		for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
+		if (glyphMap->w / GLYPH_MATRIX_SIZE != glyphWidth)
 		{
-			std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
+			throw font_invalid_glyph_map("image width is " + std::to_string(glyphMap->w) + ", expected " + std::to_string(glyphWidth * GLYPH_MATRIX_SIZE) + ".");
+		}
 
-			glm[glyph].uvX = static_cast<float>(col * size.x) / static_cast<float>(textureSize);
-			glm[glyph].uvY = static_cast<float>(row * size.y) / static_cast<float>(textureSize);
-			glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(size.x) / static_cast<float>(textureSize);
-			glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(size.y) / static_cast<float>(textureSize);
+		if (glyphMap->h / GLYPH_MATRIX_SIZE != glyphHeight)
+		{
+			throw font_invalid_glyph_map("image height is " + std::to_string(glyphMap->h) + ", expected " + std::to_string(glyphHeight * GLYPH_MATRIX_SIZE) + ".");
+		}
 
-			// HACK HACK HACK!
-			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
-			// This is here only to prevent the message until I find the time to put in something
-			// less bad.
-			if (glyph == 0) { continue; }
+		GlyphMetricsList& glm = fontMap[path].metrics;
+		glm.resize(ASCII_TABLE_COUNT);
+		for (std::size_t i = 0; i < glm.size(); ++i)
+		{
+			glm[i].minX = glyphWidth;
+		}
 
-			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
-			if (!srf)
+		for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
+		{
+			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 			{
-				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
-			}
-			else
-			{
-				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
-				SDL_Rect rect = { col * size.x, row * size.y, 0, 0 };
-				SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
-				SDL_FreeSurface(srf);
+				const std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
+
+				glm[glyph].uvX = static_cast<float>(col * glyphWidth) / static_cast<float>(glyphMap->w);
+				glm[glyph].uvY = static_cast<float>(row * glyphHeight) / static_cast<float>(glyphMap->h);
+				glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(glyphWidth) / static_cast<float>(glyphMap->w);
+				glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(glyphHeight) / static_cast<float>(glyphMap->h);
+				glm[glyph].advance = glyphSpace;
 			}
 		}
-	}
 
-	unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
+		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
 
-	// Add generated texture id to texture ID map.
-	fontMap[name].texture_id = texture_id;
-	fontMap[name].pt_size = font_size;
-	fontMap[name].ref_count++;
-	SDL_FreeSurface(glyphMap);
+		// Add generated texture id to texture ID map.
+		fontMap[path].texture_id = texture_id;
+		fontMap[path].pt_size = static_cast<unsigned int>(glyphHeight);
+		fontMap[path].height = glyphHeight;
+		fontMap[path].ref_count++;
+		fontMap[path].glyph_size = {glyphWidth, glyphHeight};
+		SDL_FreeSurface(glyphMap);
 
-	return size;
-}
-
-
-/**
- * Internal utility function used to test if a given Font has already
- * been loaded.
- *
- * \param	name	Name of the Font to check against.
- */
-bool fontAlreadyLoaded(const std::string& name)
-{
-	auto it = fontMap.find(name);
-	if (it != fontMap.end())
-	{
 		return true;
 	}
 
-	return false;
-}
 
-
-/**
- * Sets up image masks for generating OpenGL textures based on machine endianness.
- */
-void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
-{
-	if constexpr (SDL_BYTEORDER == SDL_LIL_ENDIAN)
+	/**
+	 * Generates a glyph map of all ASCII standard characters from 0 - 255.
+	 *
+	 * Internal function used to generate a glyph texture map from an TTF_Font struct.
+	 */
+	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
 	{
-		rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
+		int largest_width = 0;
+
+		GlyphMetricsList& glm = fontMap[name].metrics;
+
+		// Go through each glyph and determine how much space we need in the texture.
+		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
+		{
+			GlyphMetrics metrics;
+
+			TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
+			if (metrics.advance > largest_width)
+			{
+				largest_width = metrics.advance;
+			}
+
+			if (metrics.minX + metrics.maxX > largest_width)
+			{
+				largest_width = metrics.minX + metrics.maxX;
+			}
+
+			if (metrics.minY + metrics.maxY > largest_width)
+			{
+				largest_width = metrics.minY + metrics.maxY;
+			}
+
+			glm.push_back(metrics);
+		}
+
+		const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(largest_width));
+		const auto size = Vector{roundedLongestEdge, roundedLongestEdge}.to<int>();
+		int textureSize = size.x * GLYPH_MATRIX_SIZE;
+
+		unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
+		setupMasks(rmask, gmask, bmask, amask);
+
+		SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
+
+		SDL_Color white = { 255, 255, 255, 255 };
+		for (int row = 0; row < 16; row++)
+		{
+			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
+			{
+				std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
+
+				glm[glyph].uvX = static_cast<float>(col * size.x) / static_cast<float>(textureSize);
+				glm[glyph].uvY = static_cast<float>(row * size.y) / static_cast<float>(textureSize);
+				glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(size.x) / static_cast<float>(textureSize);
+				glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(size.y) / static_cast<float>(textureSize);
+
+				// HACK HACK HACK!
+				// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
+				// This is here only to prevent the message until I find the time to put in something
+				// less bad.
+				if (glyph == 0) { continue; }
+
+				SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
+				if (!srf)
+				{
+					std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
+				}
+				else
+				{
+					SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
+					SDL_Rect rect = { col * size.x, row * size.y, 0, 0 };
+					SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
+					SDL_FreeSurface(srf);
+				}
+			}
+		}
+
+		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
+
+		// Add generated texture id to texture ID map.
+		fontMap[name].texture_id = texture_id;
+		fontMap[name].pt_size = font_size;
+		fontMap[name].ref_count++;
+		SDL_FreeSurface(glyphMap);
+
+		return size;
 	}
-	else
-	{
-		rmask = 0xff000000; gmask = 0x00ff0000; bmask = 0x0000ff00; amask = 0x000000ff;
-	}
-}
 
 
-/**
- * Internal function used to clean up references to fonts when the Font
- * destructor or copy assignment operators are called.
- *
- * \param	name	Name of the Font to check against.
- */
-void updateFontReferenceCount(const std::string& name)
-{
-	auto it = fontMap.find(name);
-	if (it == fontMap.end())
+	/**
+	 * Internal utility function used to test if a given Font has already
+	 * been loaded.
+	 *
+	 * \param	name	Name of the Font to check against.
+	 */
+	bool fontAlreadyLoaded(const std::string& name)
 	{
-		std::cout << "Font '" << name << "' was not found in the resource management." << std::endl;
-		return;
+		auto it = fontMap.find(name);
+		if (it != fontMap.end())
+		{
+			return true;
+		}
+
+		return false;
 	}
 
-	--it->second.ref_count;
 
-	// if texture id reference count is 0, delete the texture.
-	if (it->second.ref_count < 1)
+	/**
+	 * Sets up image masks for generating OpenGL textures based on machine endianness.
+	 */
+	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
 	{
-		glDeleteTextures(1, &it->second.texture_id);
-		fontMap.erase(it);
+		if constexpr (SDL_BYTEORDER == SDL_LIL_ENDIAN)
+		{
+			rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
+		}
+		else
+		{
+			rmask = 0xff000000; gmask = 0x00ff0000; bmask = 0x0000ff00; amask = 0x000000ff;
+		}
 	}
 
-	if (fontMap.empty())
+
+	/**
+	 * Internal function used to clean up references to fonts when the Font
+	 * destructor or copy assignment operators are called.
+	 *
+	 * \param	name	Name of the Font to check against.
+	 */
+	void updateFontReferenceCount(const std::string& name)
 	{
-		TTF_Quit();
+		auto it = fontMap.find(name);
+		if (it == fontMap.end())
+		{
+			std::cout << "Font '" << name << "' was not found in the resource management." << std::endl;
+			return;
+		}
+
+		--it->second.ref_count;
+
+		// if texture id reference count is 0, delete the texture.
+		if (it->second.ref_count < 1)
+		{
+			glDeleteTextures(1, &it->second.texture_id);
+			fontMap.erase(it);
+		}
+
+		if (fontMap.empty())
+		{
+			TTF_Quit();
+		}
 	}
 }

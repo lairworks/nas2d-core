@@ -155,11 +155,12 @@ void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rast
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
+	const auto imageSize = image.size().to<float>();
 	fillTextureArray(
-		x / image.width(),
-		y / image.height(),
-		x / image.width() + width / image.width(),
-		y / image.height() + height / image.height()
+		x / imageSize.x,
+		y / imageSize.y,
+		(x + width) / imageSize.x,
+		(y + height) / imageSize.y
 	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);

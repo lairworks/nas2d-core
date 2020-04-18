@@ -28,7 +28,7 @@ bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<
 	const auto lineSize = q - p;
 	const auto lineSizeFloat = lineSize.to<float>();
 
-	float t = -centerToStart.dotProduct(lineSizeFloat) / lineSizeFloat.lengthSquared();
+	auto t = -centerToStart.dotProduct(lineSizeFloat) / lineSizeFloat.lengthSquared();
 
 	t = std::clamp<float>(t, 0, 1);
 

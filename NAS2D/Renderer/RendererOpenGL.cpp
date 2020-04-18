@@ -114,7 +114,8 @@ void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint
 {
 	glColor4ub(r, g, b, a);
 
-	fillVertexArray(x, y, static_cast<float>(image.width() * scale), static_cast<float>(image.height() * scale));
+	const auto imageSize = image.size().to<float>() * scale;
+	fillVertexArray(x, y, imageSize.x, imageSize.y);
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
@@ -126,11 +127,12 @@ void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, fl
 
 	fillVertexArray(rasterX, rasterY, width, height);
 
+	const auto imageSize = image.size().to<float>();
 	fillTextureArray(
-		x / image.width(),
-		y / image.height(),
-		x / image.width() + width / image.width(),
-		y / image.height() + height / image.height()
+		x / imageSize.x,
+		y / imageSize.y,
+		(x + width) / imageSize.x,
+		(y + height) / imageSize.y
 	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
@@ -153,11 +155,12 @@ void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rast
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
+	const auto imageSize = image.size().to<float>();
 	fillTextureArray(
-		x / image.width(),
-		y / image.height(),
-		x / image.width() + width / image.width(),
-		y / image.height() + height / image.height()
+		x / imageSize.x,
+		y / imageSize.y,
+		(x + width) / imageSize.x,
+		(y + height) / imageSize.y
 	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
@@ -171,21 +174,18 @@ void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degr
 	glPushMatrix();
 
 	// Find center point of the image.
-	int imgHalfW = (image.width() / 2);
-	int imgHalfH = (image.height() / 2);
-
-	float tX = imgHalfW * scale;
-	float tY = imgHalfH * scale;
+	const auto imageCenter = image.size().to<float>() / 2;
+	const auto scaledImageCenter = imageCenter * scale;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(x + imgHalfW, y + imgHalfH, 0.0f);
+	glTranslatef(x + imageCenter.x, y + imageCenter.y, 0.0f);
 
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	glColor4ub(r, g, b, a);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
+	fillVertexArray(-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 	glPopMatrix();
@@ -213,7 +213,8 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	fillVertexArray(x, y, w, h);
-	fillTextureArray(0.0f, 0.0f, w / image.width(), h / image.height());
+	const auto imageSize = image.size().to<float>();
+	fillTextureArray(0.0f, 0.0f, w / imageSize.x, h / imageSize.y);
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
@@ -830,7 +831,8 @@ GLuint generate_fbo(Image& image)
 		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
 		const auto textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? GL_BGRA : GL_RGBA;
 
-		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, image.width(), image.height(), 0, textureFormat, GL_UNSIGNED_BYTE, nullptr);
+		const auto imageSize = image.size();
+		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, imageSize.x, imageSize.y, 0, textureFormat, GL_UNSIGNED_BYTE, nullptr);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}

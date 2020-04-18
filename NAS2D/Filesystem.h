@@ -39,6 +39,7 @@ public:
 
 	std::string workingPath(const std::string& filename) const;
 	StringList searchPath() const;
+	int mountSoftFail(const std::string& path) const;
 	void mount(const std::string& path) const;
 	void mountReadWrite(const std::string& path) const;
 	void unmount(const std::string& path) const;

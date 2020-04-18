@@ -93,10 +93,23 @@ std::string Filesystem::prefPath() const
  * Mount a folder with read access
  *
  * \param path	File path to add.
+ *
+ * \return Nonzero on success, zero on error.
+ */
+int Filesystem::mountSoftFail(const std::string& path) const
+{
+	return PHYSFS_mount(path.c_str(), "/", MountPosition::MOUNT_APPEND);
+}
+
+
+/**
+ * Mount a folder with read access
+ *
+ * \param path	File path to add.
  */
 void Filesystem::mount(const std::string& path) const
 {
-	if (PHYSFS_mount(path.c_str(), "/", MountPosition::MOUNT_APPEND) == 0)
+	if (mountSoftFail(path) == 0)
 	{
 		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}

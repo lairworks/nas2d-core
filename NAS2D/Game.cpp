@@ -47,8 +47,8 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	std::cout.flush();
 
 	auto& fs = Utility<Filesystem>::init<Filesystem>(argv_0, appName, organizationName);
-	fs.mount(dataPath);
-	fs.mount(fs.basePath() + dataPath);
+	fs.mountSoftFail(dataPath);
+	fs.mountSoftFail(fs.basePath() + dataPath);
 	fs.mountReadWrite(fs.prefPath());
 
 	Configuration& cf = Utility<Configuration>::get();

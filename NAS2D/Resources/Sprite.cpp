@@ -145,7 +145,7 @@ void Sprite::update(Point<float> position)
 
 	const auto drawPosition = position - frame.anchorOffset;
 	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId], drawPosition.x(), drawPosition.y(), frameBounds.x(), frameBounds.y(), frameBounds.width(), frameBounds.height(), mRotationAngle, mColor);
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId], drawPosition, frameBounds, mRotationAngle, mColor);
 }
 
 

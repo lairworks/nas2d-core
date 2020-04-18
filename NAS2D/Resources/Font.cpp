@@ -44,6 +44,8 @@ namespace {
 	bool load(const std::string& path, unsigned int ptSize);
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
+	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList);
+	void fillInTextureCoordinates(GlyphMetricsList& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 	bool fontAlreadyLoaded(const std::string& name);
 	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 	void updateFontReferenceCount(const std::string& name);
@@ -301,18 +303,11 @@ namespace {
 			glm[i].minX = glyphWidth;
 		}
 
-		for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
-		{
-			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
-			{
-				const std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
+		fillInTextureCoordinates(glm, {glyphWidth, glyphHeight}, {glyphMap->w, glyphMap->h});
 
-				glm[glyph].uvX = static_cast<float>(col * glyphWidth) / static_cast<float>(glyphMap->w);
-				glm[glyph].uvY = static_cast<float>(row * glyphHeight) / static_cast<float>(glyphMap->h);
-				glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(glyphWidth) / static_cast<float>(glyphMap->w);
-				glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(glyphHeight) / static_cast<float>(glyphMap->h);
-				glm[glyph].advance = glyphSpace;
-			}
+		for (auto& metrics : glm)
+		{
+			metrics.advance = glyphSpace;
 		}
 
 		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
@@ -336,42 +331,28 @@ namespace {
 	 */
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
 	{
-		int largest_width = 0;
-
 		GlyphMetricsList& glm = fontMap[name].metrics;
 
-		// Go through each glyph and determine how much space we need in the texture.
+		// Build table of character sizes
 		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 		{
 			GlyphMetrics metrics;
-
 			TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
-			if (metrics.advance > largest_width)
-			{
-				largest_width = metrics.advance;
-			}
-
-			if (metrics.minX + metrics.maxX > largest_width)
-			{
-				largest_width = metrics.minX + metrics.maxX;
-			}
-
-			if (metrics.minY + metrics.maxY > largest_width)
-			{
-				largest_width = metrics.minY + metrics.maxY;
-			}
-
 			glm.push_back(metrics);
 		}
 
-		const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(largest_width));
-		const auto size = Vector{roundedLongestEdge, roundedLongestEdge}.to<int>();
-		int textureSize = size.x * GLYPH_MATRIX_SIZE;
+		const auto charBoundsSize = maxCharacterDimensions(glm);
+		const auto longestEdge = std::max(charBoundsSize.x, charBoundsSize.y);
+		const auto roundedLongestEdge = static_cast<int>(roundUpPowerOf2(static_cast<uint32_t>(longestEdge)));
+		const auto size = Vector{roundedLongestEdge, roundedLongestEdge};
+		const auto textureSize = size.x * GLYPH_MATRIX_SIZE;
 
 		unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
 		setupMasks(rmask, gmask, bmask, amask);
 
 		SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
+
+		fillInTextureCoordinates(glm, size, {textureSize, textureSize});
 
 		SDL_Color white = { 255, 255, 255, 255 };
 		for (int row = 0; row < 16; row++)
@@ -379,11 +360,6 @@ namespace {
 			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 			{
 				std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
-
-				glm[glyph].uvX = static_cast<float>(col * size.x) / static_cast<float>(textureSize);
-				glm[glyph].uvY = static_cast<float>(row * size.y) / static_cast<float>(textureSize);
-				glm[glyph].uvW = glm[glyph].uvX + static_cast<float>(size.x) / static_cast<float>(textureSize);
-				glm[glyph].uvH = glm[glyph].uvY + static_cast<float>(size.y) / static_cast<float>(textureSize);
 
 				// HACK HACK HACK!
 				// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
@@ -415,6 +391,36 @@ namespace {
 		SDL_FreeSurface(glyphMap);
 
 		return size;
+	}
+
+
+	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList)
+	{
+		Vector<int> size{0, 0};
+
+		for (const auto metrics : glyphMetricsList)
+		{
+			size.x = std::max({size.x, metrics.minX + metrics.maxX, metrics.advance});
+			size.y = std::max({size.y, metrics.minY + metrics.maxY});
+		}
+		return size;
+	}
+
+
+	void fillInTextureCoordinates(GlyphMetricsList& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
+	{
+		for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
+		{
+			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
+			{
+				const std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
+
+				glyphMetricsList[glyph].uvX = static_cast<float>(col * characterSize.x) / static_cast<float>(textureSize.x);
+				glyphMetricsList[glyph].uvY = static_cast<float>(row * characterSize.y) / static_cast<float>(textureSize.y);
+				glyphMetricsList[glyph].uvW = glyphMetricsList[glyph].uvX + static_cast<float>(characterSize.x) / static_cast<float>(textureSize.x);
+				glyphMetricsList[glyph].uvH = glyphMetricsList[glyph].uvY + static_cast<float>(characterSize.y) / static_cast<float>(textureSize.y);
+			}
+		}
 	}
 
 

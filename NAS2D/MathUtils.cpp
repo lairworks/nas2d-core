@@ -25,15 +25,16 @@ namespace NAS2D {
 bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<int>& c, float r)
 {
 	const auto centerToStart = p - c;
-	float dx = static_cast<float>(q.x() - p.x());
-	float dy = static_cast<float>(q.y() - p.y());
+	const auto lineSize = q - p;
+	float dx = static_cast<float>(lineSize.x);
+	float dy = static_cast<float>(lineSize.y);
 
 	float t = -(((centerToStart.x) * dx) + ((centerToStart.y) * dy)) / ((dx * dx) + (dy * dy));
 
 	t = std::clamp(t, 0.0f, 1.0f);
 
-	dx = centerToStart.x + (t * (q.x() - p.x()));
-	dy = centerToStart.y + (t * (q.y() - p.y()));
+	dx = centerToStart.x + (t * (lineSize.x));
+	dy = centerToStart.y + (t * (lineSize.y));
 	float rt = (dx * dx) + (dy * dy);
 
 	if (rt < (r * r))

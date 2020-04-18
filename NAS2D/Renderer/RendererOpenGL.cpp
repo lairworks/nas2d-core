@@ -114,7 +114,8 @@ void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint
 {
 	glColor4ub(r, g, b, a);
 
-	fillVertexArray(x, y, static_cast<float>(image.width() * scale), static_cast<float>(image.height() * scale));
+	const auto imageSize = image.size().to<float>() * scale;
+	fillVertexArray(x, y, imageSize.x, imageSize.y);
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }

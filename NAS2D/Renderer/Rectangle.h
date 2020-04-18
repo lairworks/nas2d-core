@@ -67,7 +67,15 @@ struct Rectangle
 	}
 
 	Point<BaseType> endPoint() const {
-		return Point<BaseType>{mX, mY} + Vector<BaseType>{mW, mH};
+		return Point{mX, mY} + Vector{mW, mH};
+	}
+
+	Point<BaseType> crossXPoint() const {
+		return {mX + mW, mY};
+	}
+
+	Point<BaseType> crossYPoint() const {
+		return {mX, mY + mH};
 	}
 
 	bool null() const {

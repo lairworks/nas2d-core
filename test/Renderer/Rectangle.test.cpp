@@ -30,6 +30,18 @@ TEST(Rectangle, endPoint) {
 	EXPECT_EQ((NAS2D::Point<int>{4, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.endPoint()));
 }
 
+TEST(Rectangle, crossXPoint) {
+	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.crossXPoint()));
+	EXPECT_EQ((NAS2D::Point<int>{1, 0}), (NAS2D::Rectangle{0, 0, 1, 1}.crossXPoint()));
+	EXPECT_EQ((NAS2D::Point<int>{4, 2}), (NAS2D::Rectangle{1, 2, 3, 4}.crossXPoint()));
+}
+
+TEST(Rectangle, crossYPoint) {
+	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.crossYPoint()));
+	EXPECT_EQ((NAS2D::Point<int>{0, 1}), (NAS2D::Rectangle{0, 0, 1, 1}.crossYPoint()));
+	EXPECT_EQ((NAS2D::Point<int>{1, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.crossYPoint()));
+}
+
 TEST(Rectangle, operatorType) {
 	EXPECT_EQ((NAS2D::Rectangle<int>{0, 0, 1, 1}), static_cast<NAS2D::Rectangle<int>>(NAS2D::Rectangle<float>{0.0, 0.0, 1.0, 1.0}));
 	EXPECT_EQ((NAS2D::Rectangle<int>{1, 2, 3, 4}), static_cast<NAS2D::Rectangle<int>>(NAS2D::Rectangle<float>{1.0, 2.0, 3.0, 4.0}));

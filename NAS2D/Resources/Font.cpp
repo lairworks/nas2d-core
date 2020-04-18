@@ -44,6 +44,7 @@ namespace {
 	bool load(const std::string& path, unsigned int ptSize);
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
+	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList);
 	bool fontAlreadyLoaded(const std::string& name);
 	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 	void updateFontReferenceCount(const std::string& name);
@@ -340,29 +341,16 @@ namespace {
 
 		GlyphMetricsList& glm = fontMap[name].metrics;
 
-		// Go through each glyph and determine how much space we need in the texture.
+		// Build table of character sizes
 		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 		{
 			GlyphMetrics metrics;
-
 			TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
-			if (metrics.advance > largest_width)
-			{
-				largest_width = metrics.advance;
-			}
-
-			if (metrics.minX + metrics.maxX > largest_width)
-			{
-				largest_width = metrics.minX + metrics.maxX;
-			}
-
-			if (metrics.minY + metrics.maxY > largest_width)
-			{
-				largest_width = metrics.minY + metrics.maxY;
-			}
-
 			glm.push_back(metrics);
 		}
+
+		const auto charBoundsSize = maxCharacterDimensions(glm);
+		largest_width = std::max(charBoundsSize.x, charBoundsSize.y);
 
 		const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(largest_width));
 		const auto size = Vector{roundedLongestEdge, roundedLongestEdge}.to<int>();
@@ -414,6 +402,19 @@ namespace {
 		fontMap[name].ref_count++;
 		SDL_FreeSurface(glyphMap);
 
+		return size;
+	}
+
+
+	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList)
+	{
+		Vector<int> size{0, 0};
+
+		for (const auto metrics : glyphMetricsList)
+		{
+			size.x = std::max({size.x, metrics.minX + metrics.maxX, metrics.advance});
+			size.y = std::max({size.y, metrics.minY + metrics.maxY});
+		}
 		return size;
 	}
 

@@ -33,9 +33,7 @@ bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<
 	t = std::clamp(t, 0.0f, 1.0f);
 
 	const auto minDistance = lineSizeFloat * t + centerToStart;
-	float rt = minDistance.lengthSquared();
-
-	return rt < (r * r);
+	return minDistance.lengthSquared() < (r * r);
 }
 
 

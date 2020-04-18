@@ -131,8 +131,8 @@ void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, fl
 	fillTextureArray(
 		x / imageSize.x,
 		y / imageSize.y,
-		x / imageSize.x + width / imageSize.x,
-		y / imageSize.y + height / imageSize.y
+		(x + width) / imageSize.x,
+		(y + height) / imageSize.y
 	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);

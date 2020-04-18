@@ -213,7 +213,8 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	fillVertexArray(x, y, w, h);
-	fillTextureArray(0.0f, 0.0f, w / image.width(), h / image.height());
+	const auto imageSize = image.size().to<float>();
+	fillTextureArray(0.0f, 0.0f, w / imageSize.x, h / imageSize.y);
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 

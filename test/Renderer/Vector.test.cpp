@@ -120,6 +120,30 @@ TEST(Vector, dotProduct) {
 	EXPECT_EQ(18, (NAS2D::Vector{3, 4}).dotProduct(NAS2D::Vector{2, 3}));
 }
 
+TEST(Vector, reflectX) {
+	EXPECT_EQ((NAS2D::Vector{-1, 1}), (NAS2D::Vector{1, 1}).reflectX());
+	EXPECT_EQ((NAS2D::Vector{-1, 2}), (NAS2D::Vector{1, 2}).reflectX());
+	EXPECT_EQ((NAS2D::Vector{-2, 1}), (NAS2D::Vector{2, 1}).reflectX());
+	EXPECT_EQ((NAS2D::Vector{-2, 2}), (NAS2D::Vector{2, 2}).reflectX());
+
+	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Vector{-1, 1}).reflectX());
+	EXPECT_EQ((NAS2D::Vector{1, 2}), (NAS2D::Vector{-1, 2}).reflectX());
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{-2, 1}).reflectX());
+	EXPECT_EQ((NAS2D::Vector{2, 2}), (NAS2D::Vector{-2, 2}).reflectX());
+}
+
+TEST(Vector, reflectY) {
+	EXPECT_EQ((NAS2D::Vector{1, -1}), (NAS2D::Vector{1, 1}).reflectY());
+	EXPECT_EQ((NAS2D::Vector{1, -2}), (NAS2D::Vector{1, 2}).reflectY());
+	EXPECT_EQ((NAS2D::Vector{2, -1}), (NAS2D::Vector{2, 1}).reflectY());
+	EXPECT_EQ((NAS2D::Vector{2, -2}), (NAS2D::Vector{2, 2}).reflectY());
+
+	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Vector{1, -1}).reflectY());
+	EXPECT_EQ((NAS2D::Vector{1, 2}), (NAS2D::Vector{1, -2}).reflectY());
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{2, -1}).reflectY());
+	EXPECT_EQ((NAS2D::Vector{2, 2}), (NAS2D::Vector{2, -2}).reflectY());
+}
+
 TEST(Vector, OperatorType) {
 	EXPECT_EQ((NAS2D::Vector<int>{1, 2}), static_cast<NAS2D::Vector<int>>(NAS2D::Vector<float>{1.0, 2.0}));
 	EXPECT_EQ((NAS2D::Vector<float>{1.0, 2.0}), static_cast<NAS2D::Vector<float>>(NAS2D::Vector<int>{1, 2}));

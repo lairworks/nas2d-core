@@ -391,21 +391,6 @@ void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
 /**
  * Draws a hollow box on the primary surface.
  *
- * \param	rect	A reference to a Rectangle<int> defining the box dimensions.
- * \param	r		Red Color Value. Must be between 0 - 255.
- * \param	g		Green Color Value. Must be between 0 - 255.
- * \param	b		Blue Color Value. Must be between 0 - 255.
- * \param	a		Alpha Value. Must be between 0 - 255.
- */
-void Renderer::drawBox(const Rectangle<int>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-	drawBox(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.width()), static_cast<float>(rect.height()), r, g, b, a);
-}
-
-
-/**
- * Draws a hollow box on the primary surface.
- *
  * \param	rect	A reference to a Rectangle<float> defining the box dimensions.
  * \param	r		Red Color Value. Must be between 0 - 255.
  * \param	g		Green Color Value. Must be between 0 - 255.
@@ -421,21 +406,6 @@ void Renderer::drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8
 void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
 {
 	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), color.red, color.green, color.blue, color.alpha);
-}
-
-
-/**
- * Fills a given area with a solid color.
- *
- * \param	rect	A reference to a Rectangle<float> defining the box dimensions.
- * \param	r		Red Color Value. Must be between 0 - 255.
- * \param	g		Green Color Value. Must be between 0 - 255.
- * \param	b		Blue Color Value. Must be between 0 - 255.
- * \param	a		Alpha Value. Must be between 0 - 255.
- */
-void Renderer::drawBoxFilled(const Rectangle<int>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-	drawBoxFilled(static_cast<float>(rect.x()), static_cast<float>(rect.y()), static_cast<float>(rect.width()), static_cast<float>(rect.height()), r, g, b, a);
 }
 
 

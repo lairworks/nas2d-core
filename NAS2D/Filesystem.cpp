@@ -192,7 +192,7 @@ StringList Filesystem::directoryList(const std::string& dir, const std::string& 
 		for (char **i = rc; *i != nullptr; i++)
 		{
 			std::string tmpStr = *i;
-			if (tmpStr.rfind(filter, strlen(*i) - filterLen) != std::string::npos)
+			if (tmpStr.rfind(filter, tmpStr.length() - filterLen) != std::string::npos)
 			{
 				fileList.push_back(*i);
 			}

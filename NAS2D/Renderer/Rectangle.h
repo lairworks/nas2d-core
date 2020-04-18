@@ -67,7 +67,7 @@ struct Rectangle
 	}
 
 	Point<BaseType> endPoint() const {
-		return Point<BaseType>{mX, mY} + Vector<BaseType>{mW, mH};
+		return Point{mX, mY} + Vector{mW, mH};
 	}
 
 	bool null() const {

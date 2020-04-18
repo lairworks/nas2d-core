@@ -337,8 +337,6 @@ namespace {
 	 */
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
 	{
-		int largest_width = 0;
-
 		GlyphMetricsList& glm = fontMap[name].metrics;
 
 		// Build table of character sizes
@@ -350,7 +348,7 @@ namespace {
 		}
 
 		const auto charBoundsSize = maxCharacterDimensions(glm);
-		largest_width = std::max(charBoundsSize.x, charBoundsSize.y);
+		const auto largest_width = std::max(charBoundsSize.x, charBoundsSize.y);
 
 		const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(largest_width));
 		const auto size = Vector{roundedLongestEdge, roundedLongestEdge}.to<int>();

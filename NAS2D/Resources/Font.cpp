@@ -348,9 +348,9 @@ namespace {
 		}
 
 		const auto charBoundsSize = maxCharacterDimensions(glm);
-		const auto largest_width = std::max(charBoundsSize.x, charBoundsSize.y);
+		const auto longestEdge = std::max(charBoundsSize.x, charBoundsSize.y);
 
-		const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(largest_width));
+		const auto roundedLongestEdge = roundUpPowerOf2(static_cast<uint32_t>(longestEdge));
 		const auto size = Vector{roundedLongestEdge, roundedLongestEdge}.to<int>();
 		int textureSize = size.x * GLYPH_MATRIX_SIZE;
 

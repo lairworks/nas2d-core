@@ -32,8 +32,8 @@ bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<
 
 	t = std::clamp(t, 0.0f, 1.0f);
 
-	dx = (p.x() + (t * (q.x() - p.x()))) - c.x();
-	dy = (p.y() + (t * (q.y() - p.y()))) - c.y();
+	dx = p.x() + (t * (q.x() - p.x())) - c.x();
+	dy = p.y() + (t * (q.y() - p.y())) - c.y();
 	float rt = (dx * dx) + (dy * dy);
 
 	if (rt < (r * r))

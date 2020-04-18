@@ -26,15 +26,14 @@ bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<
 {
 	const auto centerToStart = p - c;
 	const auto lineSize = q - p;
-	float dx = static_cast<float>(lineSize.x);
-	float dy = static_cast<float>(lineSize.y);
+	const auto lineSizeFloat = lineSize.to<float>();
 
-	float t = -((centerToStart.x * dx) + (centerToStart.y * dy)) / ((dx * dx) + (dy * dy));
+	float t = -((centerToStart.x * lineSizeFloat.x) + (centerToStart.y * lineSizeFloat.y)) / (lineSizeFloat.lengthSquared());
 
 	t = std::clamp(t, 0.0f, 1.0f);
 
-	dx = centerToStart.x + (t * lineSize.x);
-	dy = centerToStart.y + (t * lineSize.y);
+	float dx = centerToStart.x + (t * lineSize.x);
+	float dy = centerToStart.y + (t * lineSize.y);
 	float rt = (dx * dx) + (dy * dy);
 
 	if (rt < (r * r))

@@ -35,12 +35,7 @@ bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<
 	const auto minDistance = lineSizeFloat * t + centerToStart;
 	float rt = minDistance.lengthSquared();
 
-	if (rt < (r * r))
-	{
-		return true;
-	}
-
-	return false;
+	return rt < (r * r);
 }
 
 

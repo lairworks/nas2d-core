@@ -305,13 +305,9 @@ namespace {
 
 		fillInTextureCoordinates(glm, {glyphWidth, glyphHeight}, {glyphMap->w, glyphMap->h});
 
-		for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
+		for (std::size_t glyph = 0; glyph < ASCII_TABLE_COUNT; ++glyph)
 		{
-			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
-			{
-				const std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
-				glm[glyph].advance = glyphSpace;
-			}
+			glm[glyph].advance = glyphSpace;
 		}
 
 		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);

@@ -83,8 +83,8 @@ public:
 	void drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination);
 	virtual void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) = 0;
 
-	void drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
-	void drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
+	void drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
+	void drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
 	void drawImageRect(Rectangle<float> rect, ImageList& images);
 	void drawImageRect(Point<float> position, Vector<float> size, ImageList& images);
 	void drawImageRect(float x, float y, float w, float h, ImageList& images);
@@ -125,7 +125,7 @@ public:
 	void fadeOut(float delayTime);
 	bool isFading() const;
 	bool isFaded() const;
-	NAS2D::Signals::Signal<>& fadeComplete();
+	Signals::Signal<>& fadeComplete();
 
 	virtual void showSystemPointer(bool) = 0;
 	virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;

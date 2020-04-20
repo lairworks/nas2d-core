@@ -746,12 +746,14 @@ void EventHandler::disconnectAll()
 }
 
 
-/**
- * Posts a quit event to the event system.
- */
-void NAS2D::postQuitEvent()
-{
-	SDL_Event event;
-	event.type = SDL_QUIT;
-	SDL_PushEvent(&event);
+namespace NAS2D {
+	/**
+	 * Posts a quit event to the event system.
+	 */
+	void postQuitEvent()
+	{
+		SDL_Event event;
+		event.type = SDL_QUIT;
+		SDL_PushEvent(&event);
+	}
 }

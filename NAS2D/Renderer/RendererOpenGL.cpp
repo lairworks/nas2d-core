@@ -264,10 +264,10 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();
 
-	const auto origin = NAS2D::Point<int>{0, 0};
+	const auto origin = Point<int>{0, 0};
 
-	const auto sourceBoundsInDestination = NAS2D::Rectangle<int>::Create(dstPointInt, sourceSize);
-	const auto destinationBounds = NAS2D::Rectangle<int>::Create(origin, destination.size());
+	const auto sourceBoundsInDestination = Rectangle<int>::Create(dstPointInt, sourceSize);
+	const auto destinationBounds = Rectangle<int>::Create(origin, destination.size());
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if (!sourceBoundsInDestination.overlaps(destinationBounds))
@@ -276,7 +276,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	}
 
 	const auto availableSize = destinationBounds.endPoint() - dstPointInt;
-	const auto clipSize = NAS2D::Vector{
+	const auto clipSize = Vector{
 		availableSize.x < sourceSize.x ? availableSize.x : sourceSize.x,
 		availableSize.y < sourceSize.y ? availableSize.y : sourceSize.y
 	};
@@ -452,7 +452,7 @@ void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, 
 }
 
 
-void RendererOpenGL::drawText(NAS2D::Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawText(Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	if (!font.loaded() || text.empty()) { return; }
 
@@ -649,7 +649,7 @@ void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
 }
 
 
-void NAS2D::RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
+void RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
 {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -768,7 +768,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	desktopResolution = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
 }
 
-std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
+std::vector<DisplayDesc> RendererOpenGL::getDisplayModes() const
 {
 	const auto displayIndex = SDL_GetWindowDisplayIndex(underlyingWindow);
 	const auto numResolutions = SDL_GetNumDisplayModes(displayIndex);
@@ -777,7 +777,7 @@ std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(displayIndex) + " : " + std::string{SDL_GetError()});
 	}
 
-	std::vector<NAS2D::DisplayDesc> result{};
+	std::vector<DisplayDesc> result{};
 	result.reserve(static_cast<std::size_t>(numResolutions));
 	for (int i = 0; i < numResolutions; ++i)
 	{
@@ -788,7 +788,7 @@ std::vector<NAS2D::DisplayDesc> NAS2D::RendererOpenGL::getDisplayModes() const
 	return result;
 }
 
-NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const
+DisplayDesc RendererOpenGL::getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const
 {
 	const auto displayIndex = SDL_GetWindowDisplayIndex(underlyingWindow);
 	SDL_DisplayMode preferredMode{};
@@ -804,7 +804,7 @@ NAS2D::DisplayDesc NAS2D::RendererOpenGL::getClosestMatchingDisplayMode(const Di
 	throw std::runtime_error("No matching display mode for " + std::string{preferredDisplayDesc});
 }
 
-NAS2D::Vector<int> NAS2D::RendererOpenGL::getWindowClientArea() const noexcept
+Vector<int> RendererOpenGL::getWindowClientArea() const noexcept
 {
 	Vector<int> size;
 	SDL_GetWindowSize(underlyingWindow, &size.x, &size.y);

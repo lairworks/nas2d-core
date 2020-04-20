@@ -45,7 +45,7 @@ public:
 
 	void drawGradient(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
-	void drawText(NAS2D::Font&, const std::string&, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawText(Font&, const std::string&, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 
 	void showSystemPointer(bool) override {}
 	void addCursor(const std::string&, int, int, int) override {}

@@ -32,7 +32,7 @@ namespace {
 	// INTEROP WITH SDL2_MIXER
 	// ==================================================================================
 	// Global so it can be accessed without capturing `this`
-	NAS2D::Signals::Signal<> musicFinished;
+	Signals::Signal<> musicFinished;
 	// ==================================================================================
 }
 

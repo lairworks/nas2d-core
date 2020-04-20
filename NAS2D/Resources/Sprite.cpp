@@ -18,12 +18,15 @@ using namespace std;
 using namespace NAS2D;
 using namespace NAS2D::Xml;
 
-const string NAS2D::SPRITE_VERSION("0.99");
 
-const auto FRAME_PAUSE = unsigned(-1);
+namespace NAS2D {
+	const string SPRITE_VERSION("0.99");
+}
 
 
 namespace {
+	const auto FRAME_PAUSE = unsigned(-1);
+
 	// Adds a row/name tag to the end of messages.
 	string endTag(int row, const std::string& name)
 	{
@@ -516,8 +519,8 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				continue;
 			}
 
-			const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{x, y}, NAS2D::Vector{width, height});
-			const auto anchorOffset = NAS2D::Vector{anchorx, anchory};
+			const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
+			const auto anchorOffset = Vector{anchorx, anchory};
 			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, static_cast<unsigned int>(delay)});
 		}
 		else
@@ -573,7 +576,7 @@ void Sprite::addDefaultAction()
 		auto& imageSheet = mImageSheets["default"]; // Adds a default sheet. //-V607
 
 		const auto size = imageSheet.size();
-		const auto bounds = NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, size);
+		const auto bounds = Rectangle<int>::Create(Point{0, 0}, size);
 		const auto anchorOffset = size / 2;
 
 		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, FRAME_PAUSE}};

@@ -452,7 +452,7 @@ void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, 
 }
 
 
-void RendererOpenGL::drawText(const Font& font, const std::string& text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawText(const Font& font, std::string_view text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	if (!font.loaded() || text.empty()) { return; }
 

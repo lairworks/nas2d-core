@@ -468,13 +468,13 @@ void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1,
 }
 
 
-void Renderer::drawText(Font& font, const std::string& text, Point<float> position, Color color)
+void Renderer::drawText(const Font& font, const std::string& text, Point<float> position, Color color)
 {
 	drawText(font, text, position.x(), position.y(), color.red, color.green, color.blue, color.alpha);
 }
 
 
-void Renderer::drawTextShadow(Font& font, const std::string& text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
+void Renderer::drawTextShadow(const Font& font, const std::string& text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
 {
 	const auto shadowPosition = position + shadowOffset;
 	drawText(font, text, shadowPosition.x(), shadowPosition.y(), shadowColor.red, shadowColor.green, shadowColor.blue, shadowColor.alpha);
@@ -572,7 +572,7 @@ void Renderer::title(const std::string& title)
  * \param sb		Blue color value between 0 - 255.
  * \param a			Alpha color value between 0 - 255.
  */
-void Renderer::drawTextShadow(Font& font, const std::string& text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a )
+void Renderer::drawTextShadow(const Font& font, const std::string& text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a )
 {
 	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
 	drawText(font, text, x, y, r, g, b, a);

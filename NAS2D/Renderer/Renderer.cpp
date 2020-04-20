@@ -35,7 +35,7 @@ Renderer::~Renderer()
 }
 
 
-void NAS2D::Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
+void Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
 {
 	drawImage(image, position.x(), position.y(), scale, color.red, color.green, color.blue, color.alpha);
 }
@@ -55,13 +55,13 @@ void Renderer::drawImage(Image& image, float x, float y, float scale)
 }
 
 
-void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, const Color& color)
+void Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, const Color& color)
 {
 	drawSubImage(image, raster, subImageRect.startPoint(), subImageRect.size(), color);
 }
 
 
-void NAS2D::Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, const Color& color)
+void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, const Color& color)
 {
 	drawSubImage(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, color);
 }
@@ -84,13 +84,13 @@ void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x,
 }
 
 
-void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, const Color& color)
+void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, const Color& color)
 {
 	drawSubImageRotated(image, raster, subImageRect.startPoint(), subImageRect.size(), degrees, color);
 }
 
 
-void NAS2D::Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, const Color& color)
+void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, const Color& color)
 {
 	drawSubImageRotated(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, degrees, color);
 }
@@ -115,7 +115,7 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
 }
 
 
-void NAS2D::Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, const Color& color, float scale)
+void Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, const Color& color, float scale)
 {
 	drawImageRotated(image, position.x(), position.y(), degrees, color, scale);
 }
@@ -137,13 +137,13 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, c
 }
 
 
-void NAS2D::Renderer::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
+void Renderer::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
 {
 	drawImageStretched(image, rect.startPoint(), rect.size(), color);
 }
 
 
-void NAS2D::Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
+void Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
 {
 	drawImageStretched(image, position.x(), position.y(), size.x, size.y, color);
 }
@@ -171,7 +171,7 @@ void Renderer::drawImageRepeated(Image& image, Rectangle<float> rect)
 }
 
 
-void NAS2D::Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
+void Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
 {
 	drawImageRepeated(image, position.x(), position.y(), size.x, size.y);
 }
@@ -186,7 +186,7 @@ void Renderer::drawSubImageRepeated(Image& image, const Rectangle<float>& source
 }
 
 
-void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, NAS2D::Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
+void Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
 	drawImageRect(position.x(), position.y(), size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
 }
@@ -213,13 +213,13 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 }
 
 
-void NAS2D::Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
+void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
 {
 	drawImageRect(rect.startPoint(), rect.size(), images);
 }
 
 
-void NAS2D::Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageList& images)
+void Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageList& images)
 {
 	drawImageRect(position.x(), position.y(), size.x, size.y, images);
 }
@@ -335,13 +335,13 @@ bool Renderer::isFaded() const
 /**
  * Gets a refernece to the callback signal for fade transitions.
  */
-NAS2D::Signals::Signal<>& Renderer::fadeComplete()
+Signals::Signal<>& Renderer::fadeComplete()
 {
 	return fadeCompleteSignal;
 }
 
 
-void NAS2D::Renderer::drawPoint(Point<float> position, const Color& color)
+void Renderer::drawPoint(Point<float> position, const Color& color)
 {
 	drawPoint(position.x(), position.y(), color);
 }
@@ -360,7 +360,7 @@ void Renderer::drawPoint(float x, float y, const Color& color)
 }
 
 
-void NAS2D::Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, const Color& color, int line_width)
+void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, const Color& color, int line_width)
 {
 	drawLine(startPosition.x(), startPosition.y(), endPosition.x(), endPosition.y(), color, line_width);
 }
@@ -468,13 +468,13 @@ void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1,
 }
 
 
-void NAS2D::Renderer::drawText(Font& font, const std::string& text, Point<float> position, Color color)
+void Renderer::drawText(Font& font, const std::string& text, Point<float> position, Color color)
 {
 	drawText(font, text, position.x(), position.y(), color.red, color.green, color.blue, color.alpha);
 }
 
 
-void NAS2D::Renderer::drawTextShadow(Font& font, const std::string& text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
+void Renderer::drawTextShadow(Font& font, const std::string& text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
 {
 	const auto shadowPosition = position + shadowOffset;
 	drawText(font, text, shadowPosition.x(), shadowPosition.y(), shadowColor.red, shadowColor.green, shadowColor.blue, shadowColor.alpha);
@@ -640,7 +640,7 @@ void Renderer::update()
 	}
 }
 
-void NAS2D::Renderer::setResolution(const Vector<float>& newResolution)
+void Renderer::setResolution(const Vector<float>& newResolution)
 {
 	if (!fullscreen())
 	{

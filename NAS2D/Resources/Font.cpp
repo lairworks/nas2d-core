@@ -59,7 +59,7 @@ namespace {
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-NAS2D::Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
+Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
 {
 	loaded(::load(name(), ptSize));
 	name(name() + "_" + std::to_string(ptSize) + "pt");
@@ -75,7 +75,7 @@ NAS2D::Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(f
  * \param	glyphSpace	Space between glyphs when rendering a bitmap font. This value can be negative.
  *
  */
-NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) : Resource(filePath)
+Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) : Resource(filePath)
 {
 	loaded(loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace));
 }
@@ -86,7 +86,7 @@ NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, 
  *
  * Fonts instantiated with this constructor are not valid for use.
  */
-NAS2D::Font::Font() : Resource("Default Font")
+Font::Font() : Resource("Default Font")
 {}
 
 
@@ -95,7 +95,7 @@ NAS2D::Font::Font() : Resource("Default Font")
  *
  * \param	rhs	Font to copy.
  */
-NAS2D::Font::Font(const Font& rhs) : Resource(rhs.name())
+Font::Font(const Font& rhs) : Resource(rhs.name())
 {
 	auto it = fontMap.find(name());
 	if (it != fontMap.end())
@@ -113,7 +113,7 @@ NAS2D::Font::Font(const Font& rhs) : Resource(rhs.name())
 /**
 * D'tor
 */
-NAS2D::Font::~Font()
+Font::~Font()
 {
 	updateFontReferenceCount(name());
 }
@@ -124,7 +124,7 @@ NAS2D::Font::~Font()
  *
  * \param rhs Font to copy.
  */
-NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
+Font& Font::operator=(const Font& rhs)
 {
 	if (this == &rhs) { return *this; }
 
@@ -145,7 +145,7 @@ NAS2D::Font& NAS2D::Font::operator=(const Font& rhs)
 /**
  * Gets the glyph cell width.
  */
-int NAS2D::Font::glyphCellWidth() const
+int Font::glyphCellWidth() const
 {
 	return fontMap[name()].glyph_size.x;
 }
@@ -154,7 +154,7 @@ int NAS2D::Font::glyphCellWidth() const
 /**
  * Gets the glyph cell height.
  */
-int NAS2D::Font::glyphCellHeight() const
+int Font::glyphCellHeight() const
 {
 	return fontMap[name()].glyph_size.y;
 }
@@ -165,7 +165,7 @@ int NAS2D::Font::glyphCellHeight() const
  *
  * \param	str		Reference to a std::string to get the width of.
  */
-int NAS2D::Font::width(const std::string& str) const
+int Font::width(const std::string& str) const
 {
 	if (str.empty()) { return 0; }
 
@@ -186,7 +186,7 @@ int NAS2D::Font::width(const std::string& str) const
 /**
  * Gets the height in pixels of the Font.
  */
-int NAS2D::Font::height() const
+int Font::height() const
 {
 	return fontMap[name()].height;
 }
@@ -195,7 +195,7 @@ int NAS2D::Font::height() const
 /**
  * The maximum pixel ascent of all glyphs in the Font.
  */
-int NAS2D::Font::ascent() const
+int Font::ascent() const
 {
 	return fontMap[name()].ascent;
 }
@@ -204,7 +204,7 @@ int NAS2D::Font::ascent() const
 /**
  * Returns the point size of the Font.
  */
-unsigned int NAS2D::Font::ptSize() const
+unsigned int Font::ptSize() const
 {
 	return fontMap[name()].pt_size;
 }

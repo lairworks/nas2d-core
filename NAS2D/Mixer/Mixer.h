@@ -147,17 +147,17 @@ public:
 	virtual void musicVolume(int level) = 0;
 
 	/**
-	 * Gets a reference to a NAS2D::Signals::Signal<>, a signal raised
+	 * Gets a reference to a Signals::Signal<>, a signal raised
 	 * when a Music track has finished playing.
 	 */
 	 [[deprecated("Deprecated: Please use addMusicCompleteHandler and removeMusicCompleteHandler")]]
-	NAS2D::Signals::Signal<>& musicComplete();
+	Signals::Signal<>& musicComplete();
 
-	void addMusicCompleteHandler(NAS2D::Signals::Signal<>::DelegateType handler);
-	void removeMusicCompleteHandler(NAS2D::Signals::Signal<>::DelegateType handler);
+	void addMusicCompleteHandler(Signals::Signal<>::DelegateType handler);
+	void removeMusicCompleteHandler(Signals::Signal<>::DelegateType handler);
 
 protected:
-	NAS2D::Signals::Signal<> mMusicComplete; /**< Callback used when music finished playing. */
+	Signals::Signal<> mMusicComplete; /**< Callback used when music finished playing. */
 };
 
 } // namespace

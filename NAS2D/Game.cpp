@@ -42,7 +42,7 @@ using namespace NAS2D;
 Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& argv_0, const std::string& configPath, const std::string& dataPath)
 {
 	std::cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << '\n';
-	std::cout << "NAS2D VERSION: " << NAS2D::versionString() << "\n\n";
+	std::cout << "NAS2D VERSION: " << versionString() << "\n\n";
 	std::cout << "Initializing subsystems...\n\n";
 	std::cout.flush();
 

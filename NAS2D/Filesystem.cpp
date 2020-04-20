@@ -41,7 +41,7 @@ enum MountPosition
 };
 
 
-NAS2D::Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName) :
+Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName) :
 	mAppName(appName),
 	mOrganizationName(organizationName)
 {

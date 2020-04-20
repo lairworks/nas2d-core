@@ -40,9 +40,9 @@ public:
 private:
 	void handleQuit();
 
-	State			*mActiveState;
-	bool			mActive;
-	bool			mForceStopAudio = true;
+	State *mActiveState;
+	bool mActive;
+	bool mForceStopAudio = true;
 };
 
 } // namespace

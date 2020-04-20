@@ -19,11 +19,12 @@ extern SDL_Window* underlyingWindow;
 using namespace std;
 using namespace NAS2D;
 
-const int MAX_MESSAGE_PROCESSING = 100;	/**
-										 * Maximum number of events to process each frame.
-										 *
-										 * \todo	Make this configurable?
-										 */
+/**
+ * Maximum number of events to process each frame.
+ *
+ * \todo	Make this configurable?
+ */
+const int MAX_MESSAGE_PROCESSING = 100;
 
 namespace NAS2D {
 	EventHandler::KeyModifier& operator|=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept

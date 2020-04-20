@@ -92,7 +92,7 @@ int XmlBase::isAlpha(unsigned char anyByte)
 	}
 	else
 	{
-		return 1;	// What else to do? The unicode set is huge...get the english ones right.
+		return 1; // What else to do? The unicode set is huge...get the english ones right.
 	}
 }
 
@@ -105,7 +105,7 @@ int XmlBase::isAlphaNum(unsigned char anyByte)
 	}
 	else
 	{
-		return 1;	// What else to do? The unicode set is huge...get the english ones right.
+		return 1; // What else to do? The unicode set is huge...get the english ones right.
 	}
 }
 
@@ -127,8 +127,8 @@ private:
 	}
 
 private:
-	const char*			_stamp;
-	XmlBase::ParseLocation	_cursor;
+	const char* _stamp;
+	XmlBase::ParseLocation _cursor;
 };
 
 
@@ -244,7 +244,7 @@ bool XmlBase::streamTo(std::istream& in, int character, std::string& tag)
 			return true;
 		}
 
-		if (c <= 0)		// Silent failure: can't get document at this scope
+		if (c <= 0) // Silent failure: can't get document at this scope
 		{
 			return false;
 		}
@@ -387,7 +387,7 @@ const char* XmlBase::getEntity(const char* p, char* value, std::size_t* length)
 	}
 
 	// So it wasn't an entity, its unrecognized, or something like that.
-	*value = *p;	// Don't put back the last one, since we return it!
+	*value = *p; // Don't put back the last one, since we return it!
 
 	return p + 1;
 }
@@ -410,7 +410,7 @@ const char* XmlBase::getChar(const char* p, char* _value, std::size_t* length)
 	}
 	else if (*length)
 	{
-		//strncpy( _value, p, *length );	// lots of compilers don't like this function (unsafe),
+		//strncpy( _value, p, *length ); // lots of compilers don't like this function (unsafe),
 		// and the null terminator isn't needed
 		for (std::size_t i = 0; i < *length && p[i]; ++i)
 		{
@@ -463,7 +463,7 @@ bool XmlBase::stringEqual(const char* p, const char* tag, bool ignoreCase)
 			++tag;
 		}
 
-		if (*tag == 0)		// Have we found the end of the tag, and everything equal?
+		if (*tag == 0) // Have we found the end of the tag, and everything equal?
 		{
 			return true;
 		}
@@ -486,7 +486,7 @@ bool XmlBase::stringEqual(const char* p, const char* tag, bool ignoreCase)
 const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSpace, const char* endTag, bool caseInsensitive)
 {
 	*text = ""; // certain tags always keep whitespace
-	if (!trimWhiteSpace	|| !condenseWhiteSpace)	// if true, whitespace is always kept
+	if (!trimWhiteSpace || !condenseWhiteSpace) // if true, whitespace is always kept
 	{
 		// Keep all the white space.
 		while (p && *p && !stringEqual(p, endTag, caseInsensitive))
@@ -529,7 +529,7 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 				p = getChar(p, cArr, &len);
 				if (len == 1)
 				{
-					(*text) += cArr[0];	// more efficient
+					(*text) += cArr[0]; // more efficient
 				}
 				else
 				{
@@ -1298,13 +1298,13 @@ const char* XmlAttribute::parse(const char* p, void* data)
 	if (*p == SINGLE_QUOTE)
 	{
 		++p;
-		end = "\'";		// single quote in string
+		end = "\'"; // single quote in string
 		p = readText(p, &_value, false, end, false);
 	}
 	else if (*p == DOUBLE_QUOTE)
 	{
 		++p;
-		end = "\"";		// double quote in string
+		end = "\""; // double quote in string
 		p = readText(p, &_value, false, end, false);
 	}
 	else
@@ -1350,7 +1350,7 @@ void XmlText::streamIn(std::istream& in, std::string& tag)
 		}
 
 		tag += static_cast<char>(c);
-		in.get();	// "commits" the peek made above
+		in.get(); // "commits" the peek made above
 
 		if (cdata && c == '>' && tag.size() >= 3)
 		{

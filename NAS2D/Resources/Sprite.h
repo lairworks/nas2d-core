@@ -37,7 +37,7 @@ extern const std::string SPRITE_VERSION;
 class Sprite
 {
 public:
-	using Callback = NAS2D::Signals::Signal<>;	/**< Signal used when action animations complete. */
+	using Callback = NAS2D::Signals::Signal<>; /**< Signal used when action animations complete. */
 
 	Sprite();
 	explicit Sprite(const std::string& filePath);

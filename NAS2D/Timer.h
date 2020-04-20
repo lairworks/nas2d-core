@@ -67,9 +67,8 @@ public:
 	void reset();
 
 private:
-
-	unsigned int	mCurrentTick = 0;
-	unsigned int	mAccumulator = 0;
+	unsigned int mCurrentTick = 0;
+	unsigned int mAccumulator = 0;
 };
 
 } // namespace

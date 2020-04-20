@@ -177,8 +177,8 @@ private:
 		Out = 1
 	};
 
-	std::string mDriverName{"NULL Renderer"};	/**< OS Driver name */
-	std::string mTitle{"Default Application"};	/**< Title to use for the application. */
+	std::string mDriverName{"NULL Renderer"}; /**< OS Driver name */
+	std::string mTitle{"Default Application"}; /**< Title to use for the application. */
 
 	Color mFadeColor{0,0,0,255}; /**< Fade Color. */
 	float mFadeStep{0.0f}; /**< Amount of fading to do per milisecond. */

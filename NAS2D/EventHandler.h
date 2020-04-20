@@ -534,37 +534,37 @@ public:
 	EventHandler();
 	~EventHandler();
 
-	ActivateEventCallback&				activate();
+	ActivateEventCallback& activate();
 
-	WindowHiddenEventCallback&			windowHidden();
-	WindowExposedEventCallback&			windowExposed();
+	WindowHiddenEventCallback& windowHidden();
+	WindowExposedEventCallback& windowExposed();
 
-	WindowMinimizedEventCallback&		windowMinimized();
-	WindowMaximizedEventCallback&		windowMaximized();
-	WindowRestoredEventCallback	&		windowRestored();
-	WindowResizedEventCallback&			windowResized();
+	WindowMinimizedEventCallback& windowMinimized();
+	WindowMaximizedEventCallback& windowMaximized();
+	WindowRestoredEventCallback& windowRestored();
+	WindowResizedEventCallback& windowResized();
 
-	WindowMouseEnterEventCallback&		windowMouseEnter();
-	WindowMouseLeaveEventCallback&		windowMouseLeave();
+	WindowMouseEnterEventCallback& windowMouseEnter();
+	WindowMouseLeaveEventCallback& windowMouseLeave();
 
-	JoystickAxisMotionEventCallback&	joystickAxisMotion();
-	JoystickBallMotionEventCallback&	joystickBallMotion();
-	JoystickButtonEventCallback&		joystickButtonUp();
-	JoystickButtonEventCallback&		joystickButtonDown();
-	JoystickHatMotionEventCallback&		joystickHatMotion();
+	JoystickAxisMotionEventCallback& joystickAxisMotion();
+	JoystickBallMotionEventCallback& joystickBallMotion();
+	JoystickButtonEventCallback& joystickButtonUp();
+	JoystickButtonEventCallback& joystickButtonDown();
+	JoystickHatMotionEventCallback& joystickHatMotion();
 
-	KeyUpEventCallback&					keyUp();
-	KeyDownEventCallback&				keyDown();
+	KeyUpEventCallback& keyUp();
+	KeyDownEventCallback& keyDown();
 
-	TextInputEventCallback&				textInput();
+	TextInputEventCallback& textInput();
 
-	MouseButtonEventCallback&			mouseButtonUp();
-	MouseButtonEventCallback&			mouseButtonDown();
-	MouseButtonEventCallback&			mouseDoubleClick();
-	MouseMotionEventCallback&			mouseMotion();
-	MouseWheelEventCallback&			mouseWheel();
+	MouseButtonEventCallback& mouseButtonUp();
+	MouseButtonEventCallback& mouseButtonDown();
+	MouseButtonEventCallback& mouseDoubleClick();
+	MouseMotionEventCallback& mouseMotion();
+	MouseWheelEventCallback& mouseWheel();
 
-	QuitEventCallback&					quit();
+	QuitEventCallback& quit();
 
 	void grabMouse();
 	void releaseMouse();
@@ -588,35 +588,35 @@ public:
 	void disconnectAll();
 
 private:
-	ActivateEventCallback				mActivateEvent;
+	ActivateEventCallback mActivateEvent;
 
-	WindowHiddenEventCallback			mWindowHiddenEventCallback;
-	WindowExposedEventCallback			mWindowExposedEventCallback;
-	WindowMinimizedEventCallback		mWindowMinimizedEventCallback;
-	WindowMaximizedEventCallback		mWindowMaximizedEventCallback;
-	WindowRestoredEventCallback			mWindowRestoredEventCallback;
-	WindowResizedEventCallback			mWindowResizedEventCallback;
-	WindowMouseEnterEventCallback		mWindowMouseEnterEventCallback;
-	WindowMouseLeaveEventCallback		mWindowMouseLeaveEventCallback;
+	WindowHiddenEventCallback mWindowHiddenEventCallback;
+	WindowExposedEventCallback mWindowExposedEventCallback;
+	WindowMinimizedEventCallback mWindowMinimizedEventCallback;
+	WindowMaximizedEventCallback mWindowMaximizedEventCallback;
+	WindowRestoredEventCallback mWindowRestoredEventCallback;
+	WindowResizedEventCallback mWindowResizedEventCallback;
+	WindowMouseEnterEventCallback mWindowMouseEnterEventCallback;
+	WindowMouseLeaveEventCallback mWindowMouseLeaveEventCallback;
 
-	JoystickAxisMotionEventCallback		mJoystickAxisMotionEvent;
-	JoystickBallMotionEventCallback		mJoystickBallMotionEvent;
-	JoystickButtonEventCallback			mJoystickButtonUpEvent;
-	JoystickButtonEventCallback			mJoystickButtonDownEvent;
-	JoystickHatMotionEventCallback		mJoystickHatMotionEvent;
+	JoystickAxisMotionEventCallback mJoystickAxisMotionEvent;
+	JoystickBallMotionEventCallback mJoystickBallMotionEvent;
+	JoystickButtonEventCallback mJoystickButtonUpEvent;
+	JoystickButtonEventCallback mJoystickButtonDownEvent;
+	JoystickHatMotionEventCallback mJoystickHatMotionEvent;
 
-	KeyUpEventCallback					mKeyUpEvent;
-	KeyDownEventCallback				mKeyDownEvent;
+	KeyUpEventCallback mKeyUpEvent;
+	KeyDownEventCallback mKeyDownEvent;
 
-	TextInputEventCallback				mTextInput;
+	TextInputEventCallback mTextInput;
 
-	MouseButtonEventCallback			mMouseButtonUpEvent;
-	MouseButtonEventCallback			mMouseButtonDownEvent;
-	MouseButtonEventCallback			mMouseDoubleClick;
-	MouseMotionEventCallback			mMouseMotionEvent;
-	MouseWheelEventCallback				mMouseWheelEvent;
+	MouseButtonEventCallback mMouseButtonUpEvent;
+	MouseButtonEventCallback mMouseButtonDownEvent;
+	MouseButtonEventCallback mMouseDoubleClick;
+	MouseMotionEventCallback mMouseMotionEvent;
+	MouseWheelEventCallback mMouseWheelEvent;
 
-	QuitEventCallback					mQuitEvent;
+	QuitEventCallback mQuitEvent;
 };
 
 void postQuitEvent();

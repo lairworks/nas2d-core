@@ -103,7 +103,7 @@ GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
 
 // GenericClass is a fake class, ONLY used to provide a type. It is vitally important
 // that it is never defined.
-#ifdef	FASTDLGT_MICROSOFT_MFP
+#ifdef FASTDLGT_MICROSOFT_MFP
 
 #ifdef FASTDLGT_HASINHERITANCE_KEYWORDS
 	class __single_inheritance GenericClass;
@@ -327,7 +327,7 @@ public:
 		#endif
 	}
 
-#ifdef FASTDELEGATE_GCC_BUG_8271	// At present, GCC doesn't recognize constness of MFPs in templates
+#ifdef FASTDELEGATE_GCC_BUG_8271 // At present, GCC doesn't recognize constness of MFPs in templates
 	template <class X, class XMemFunc>
 	inline void bindmemfunc(const X* pthis, XMemFunc function_to_bind)
 	{

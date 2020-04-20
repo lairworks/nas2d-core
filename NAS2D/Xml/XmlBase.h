@@ -105,9 +105,9 @@ protected:
 	static const char* skipWhiteSpace(const char*);
 
 	inline static bool white_space(char c) { return (isspace(static_cast<unsigned char>(c)) || c == '\n' || c == '\r'); }
-	inline static bool white_space(int c) { if (c < 256) return white_space(static_cast<char>(c));	return false; }
+	inline static bool white_space(int c) { if (c < 256) return white_space(static_cast<char>(c)); return false; }
 
-	static bool	streamWhiteSpace(std::istream& in, std::string& tag);
+	static bool streamWhiteSpace(std::istream& in, std::string& tag);
 	static bool streamTo(std::istream& in, int character, std::string& tag);
 
 	static const char* readName(const char* p, std::string& name);

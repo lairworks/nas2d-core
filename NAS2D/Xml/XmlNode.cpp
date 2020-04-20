@@ -284,7 +284,7 @@ XmlNode* XmlNode::replaceChild(XmlNode* replaceThis, const XmlNode& withThis)
 
 	if (withThis.toDocument())
 	{
-		// A document can never be a child.	Thanks to Noam.
+		// A document can never be a child. Thanks to Noam.
 		XmlDocument* doc = document();
 		if (doc) { doc->error(XmlErrorCode::XML_ERROR_DOCUMENT_TOP_ONLY, nullptr, nullptr); }
 		return nullptr;

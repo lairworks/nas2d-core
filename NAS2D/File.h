@@ -214,8 +214,8 @@ public:
 	std::string filename() const { return mFileName; }
 
 private:
-	ByteStream	mByteStream;	/**< Internal stream of bytes. */
-	std::string	mFileName;		/**< Internal filename including directory path. */
+	ByteStream mByteStream; /**< Internal stream of bytes. */
+	std::string mFileName; /**< Internal filename including directory path. */
 };
 
 } // namespace

@@ -58,7 +58,7 @@ public:
 	XmlNode* parent();
 	const XmlNode* parent() const;
 
-	const XmlNode* firstChild()	const;
+	const XmlNode* firstChild() const;
 	XmlNode* firstChild();
 	const XmlNode* firstChild(const std::string& value) const;
 	XmlNode* firstChild(const std::string& value);
@@ -151,16 +151,16 @@ protected:
 	void copyTo(XmlNode* target) const;
 	XmlNode* identify(const char* start);
 
-	XmlNode*		_parent;		/**< Parent of the XmlNode. */
-	NodeType		_type;			/**< Type of the XmlNode. */
+	XmlNode* _parent; /**< Parent of the XmlNode. */
+	NodeType _type; /**< Type of the XmlNode. */
 
-	XmlNode*		_firstChild;	/**< First child of the XmlNode. */
-	XmlNode*		_lastChild;		/**< Last child of the XmlNode. */
+	XmlNode* _firstChild; /**< First child of the XmlNode. */
+	XmlNode* _lastChild; /**< Last child of the XmlNode. */
 
-	std::string		_value;			/**< Value of the XmlNode. */
+	std::string _value; /**< Value of the XmlNode. */
 
-	XmlNode*		_prev;			/**< Previous XmlNode. */
-	XmlNode*		_next;			/**< Next XmlNode. */
+	XmlNode* _prev; /**< Previous XmlNode. */
+	XmlNode* _next; /**< Next XmlNode. */
 
 private:
 	friend class XmlDocument;

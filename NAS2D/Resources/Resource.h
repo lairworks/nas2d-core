@@ -48,9 +48,9 @@ private:
 	 */
 	virtual void load() = 0;
 
-	std::string mResourceName{"Default Resource"};		/**< File path and internal identifier. */
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 
-	bool mIsLoaded{false};					/**< Flag indicating whether or not this Resource has loaded properly. */
+	bool mIsLoaded{false}; /**< Flag indicating whether or not this Resource has loaded properly. */
 };
 
 } // namespace

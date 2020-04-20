@@ -59,8 +59,8 @@ public:
 	XmlAttribute* previous();
 
 	bool operator==(const XmlAttribute& rhs) const { return rhs._name == _name; }
-	bool operator<(const XmlAttribute& rhs)	 const { return _name < rhs._name; }
-	bool operator>(const XmlAttribute& rhs)  const { return _name > rhs._name; }
+	bool operator<(const XmlAttribute& rhs) const { return _name < rhs._name; }
+	bool operator>(const XmlAttribute& rhs) const { return _name > rhs._name; }
 
 	bool operator==(const std::string& rhs) const { return rhs == _name; }
 
@@ -80,11 +80,11 @@ protected:
 private:
 	friend class XmlAttributeSet;
 
-	XmlDocument*	_document;	/**< Comment Me. */
-	std::string		_name;		/**< Comment Me. */
-	std::string		_value;		/**< Comment Me. */
-	XmlAttribute*	_prev;		/**< Comment Me. */
-	XmlAttribute*	_next;		/**< Comment Me. */
+	XmlDocument* _document; /**< Comment Me. */
+	std::string _name; /**< Comment Me. */
+	std::string _value; /**< Comment Me. */
+	XmlAttribute* _prev; /**< Comment Me. */
+	XmlAttribute* _next; /**< Comment Me. */
 };
 
 } // namespace Xml

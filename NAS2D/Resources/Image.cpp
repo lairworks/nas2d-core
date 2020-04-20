@@ -33,8 +33,8 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 
 
 namespace {
-	const std::string DEFAULT_IMAGE_NAME	= "Default Image";
-	const std::string ARBITRARY_IMAGE_NAME	= "arbitrary_image_";
+	const std::string DEFAULT_IMAGE_NAME = "Default Image";
+	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
 	bool checkTextureId(const std::string& name);
@@ -331,7 +331,7 @@ Color Image::pixelColor(int x, int y) const
 		pixelBytes = *p;
 		break;
 	}
-	default:	// Should never be possible.
+	default: // Should never be possible.
 		throw image_bad_data();
 	}
 

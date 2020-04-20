@@ -18,7 +18,11 @@ using namespace std;
 using namespace NAS2D;
 using namespace NAS2D::Xml;
 
-const string NAS2D::SPRITE_VERSION("0.99");
+
+namespace NAS2D {
+	const string SPRITE_VERSION("0.99");
+}
+
 
 const auto FRAME_PAUSE = unsigned(-1);
 

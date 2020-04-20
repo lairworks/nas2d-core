@@ -288,7 +288,7 @@ void Renderer::fadeIn(float delay)
 	mCurrentFadeType = FadeType::In;
 	mFadeStep = 255.0f / delay;
 
-	fadeTimer.delta();	// clear timer
+	fadeTimer.delta(); // clear timer
 }
 
 

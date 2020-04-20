@@ -58,7 +58,7 @@ public:
 
 protected:
 	void copyTo(XmlElement* target) const;
-	void clearThis();	// like clear, but initializes 'this' object as well
+	void clearThis(); // like clear, but initializes 'this' object as well
 	void streamIn(std::istream& in, std::string& tag) override;
 	const char* readValue(const char* in, void* prevData);
 

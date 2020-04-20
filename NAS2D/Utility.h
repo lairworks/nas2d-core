@@ -183,7 +183,7 @@ public:
 	}
 
 private:
-	static T* mInstance;						/**< Internal instance of type \c T. */
+	static T* mInstance; /**< Internal instance of type \c T. */
 };
 
 template<typename T> T* Utility<T>::mInstance = nullptr;

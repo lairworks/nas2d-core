@@ -38,7 +38,7 @@ public:
 	void add(XmlAttribute* attribute);
 	void remove(XmlAttribute* attribute);
 
-	const XmlAttribute* first()	const { return (sentinel._next == &sentinel) ? nullptr : sentinel._next; }
+	const XmlAttribute* first() const { return (sentinel._next == &sentinel) ? nullptr : sentinel._next; }
 	XmlAttribute* first() { return (sentinel._next == &sentinel) ? nullptr : sentinel._next; }
 	const XmlAttribute* last() const { return (sentinel._prev == &sentinel) ? nullptr : sentinel._prev; }
 	XmlAttribute* last() { return (sentinel._prev == &sentinel) ? nullptr : sentinel._prev; }
@@ -47,7 +47,7 @@ public:
 	XmlAttribute* findOrCreate(const std::string& _name);
 
 private:
-	XmlAttribute sentinel;	/**< Comment me. */
+	XmlAttribute sentinel; /**< Comment me. */
 };
 
 } // namespace Xml

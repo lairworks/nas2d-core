@@ -62,7 +62,7 @@ void XmlAttributeSet::remove(XmlAttribute* attribute)
 			return;
 		}
 	}
-	//assert(0);		// we tried to remove a non-linked attribute.
+	//assert(0); // we tried to remove a non-linked attribute.
 }
 
 

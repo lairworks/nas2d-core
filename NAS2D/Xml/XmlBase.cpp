@@ -45,7 +45,7 @@ int XmlBase::column() const
 /**
  * The world does not agree on whether white space should be kept or not. In order
  * to make everyone happy, these global, static functions are provided to set whether
- * or not TinyXml will condense all white space	into a single space or not. The
+ * or not TinyXml will condense all white space into a single space or not. The
  * default is to condense. Note changing this value is not thread safe.
  */
 void XmlBase::whitespaceCondensed(bool condense)

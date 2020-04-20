@@ -27,7 +27,7 @@ class XmlText : public XmlNode
 public:
 	/**
 	 * Constructor for text element. By default, it is treated as normal, encoded text.
-	 * If you want it be output as a CDATA text	element, call \c CDATA(true).
+	 * If you want it be output as a CDATA text element, call \c CDATA(true).
 	 */
 	explicit XmlText(const std::string& initValue);
 
@@ -58,11 +58,11 @@ protected:
 	XmlNode* clone() const override;
 	void copyTo(XmlText* target) const;
 
-	bool blank() const;	// returns true if all white space and new lines
+	bool blank() const; // returns true if all white space and new lines
 	void streamIn(std::istream& in, std::string& tag) override;
 
 private:
-	bool cdata;			// true if this should be input and output as a CDATA style text element
+	bool cdata; // true if this should be input and output as a CDATA style text element
 };
 
 } // namespace Xml

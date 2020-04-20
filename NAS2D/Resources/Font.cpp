@@ -33,7 +33,7 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-std::map<std::string, FontInfo>	fontMap;
+std::map<std::string, FontInfo> fontMap;
 
 
 namespace {
@@ -59,7 +59,7 @@ namespace {
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-NAS2D::Font::Font(const std::string& filePath, unsigned int ptSize) :	Resource(filePath)
+NAS2D::Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
 {
 	loaded(::load(name(), ptSize));
 	name(name() + "_" + std::to_string(ptSize) + "pt");
@@ -75,7 +75,7 @@ NAS2D::Font::Font(const std::string& filePath, unsigned int ptSize) :	Resource(f
  * \param	glyphSpace	Space between glyphs when rendering a bitmap font. This value can be negative.
  *
  */
-NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :	Resource(filePath)
+NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) : Resource(filePath)
 {
 	loaded(loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace));
 }
@@ -86,7 +86,7 @@ NAS2D::Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, 
  *
  * Fonts instantiated with this constructor are not valid for use.
  */
-NAS2D::Font::Font() :	Resource("Default Font")
+NAS2D::Font::Font() : Resource("Default Font")
 {}
 
 

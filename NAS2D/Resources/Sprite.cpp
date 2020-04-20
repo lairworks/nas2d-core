@@ -24,10 +24,9 @@ namespace NAS2D {
 }
 
 
-const auto FRAME_PAUSE = unsigned(-1);
-
-
 namespace {
+	const auto FRAME_PAUSE = unsigned(-1);
+
 	// Adds a row/name tag to the end of messages.
 	string endTag(int row, const std::string& name)
 	{

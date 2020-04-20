@@ -35,6 +35,33 @@ Renderer::~Renderer()
 }
 
 
+/**
+ * Returns the title of the application window.
+ */
+const std::string& Renderer::title() const
+{
+	return mTitle;
+}
+
+
+/**
+ * Returns the name of the driver as named by the operating system.
+ */
+const std::string& Renderer::driverName() const
+{
+	return mDriverName;
+}
+
+
+/**
+ * Sets the title of the application window.
+ */
+void Renderer::title(const std::string& title)
+{
+	mTitle = title;
+}
+
+
 void Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
 {
 	drawImage(image, position.x(), position.y(), scale, color.red, color.green, color.blue, color.alpha);
@@ -186,33 +213,6 @@ void Renderer::drawSubImageRepeated(Image& image, const Rectangle<float>& source
 }
 
 
-void Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
-{
-	drawImageRect(position.x(), position.y(), size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
-}
-
-/**
- * Comment me!
- */
-void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
-{
-	// Draw the center area if it's defined.
-	drawImageRepeated(center, x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height());
-
-	// Draw the sides
-	drawImageRepeated(top, x + static_cast<float>(topLeft.width()), y, w - static_cast<float>(topLeft.width()) - static_cast<float>(topRight.width()), static_cast<float>(top.height()));
-	drawImageRepeated(bottom, x + static_cast<float>(bottomLeft.width()), y + h - static_cast<float>(bottom.height()), w - static_cast<float>(bottomLeft.width()) - bottomRight.width(), static_cast<float>(bottom.height()));
-	drawImageRepeated(left, x, y + static_cast<float>(topLeft.height()), static_cast<float>(left.width()), h - static_cast<float>(topLeft.height()) - static_cast<float>(bottomLeft.height()));
-	drawImageRepeated(right, x + w - static_cast<float>(right.width()), y + static_cast<float>(topRight.height()), static_cast<float>(right.width()), h - static_cast<float>(topRight.height()) - static_cast<float>(bottomRight.height()));
-
-	// Draw the corners
-	drawImage(topLeft, x, y);
-	drawImage(topRight, x + w - topRight.width(), y);
-	drawImage(bottomLeft, x, y + h - bottomLeft.height());
-	drawImage(bottomRight, x + w - bottomRight.width(), y + h - bottomRight.height());
-}
-
-
 void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
 {
 	drawImageRect(rect.startPoint(), rect.size(), images);
@@ -259,85 +259,30 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
 }
 
 
-/**
- * Sets the color of the fade.
- *
- * \param	color	A reference to aColor_4ub.
- */
-void Renderer::fadeColor(const Color& color)
+void Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
-	mFadeColor = color;
+	drawImageRect(position.x(), position.y(), size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
 }
 
-
 /**
- * Non-blocking screen fade.
- *
- * \param	delay	Time in miliseconds the fade should last. A value of 0
- *					will instantly fade the screen in.
+ * Comment me!
  */
-void Renderer::fadeIn(float delay)
+void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
-	if (delay == 0)
-	{
-		mCurrentFade = 0.0f;
-		mCurrentFadeType = FadeType::None;
-		return;
-	}
+	// Draw the center area if it's defined.
+	drawImageRepeated(center, x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height());
 
-	mCurrentFadeType = FadeType::In;
-	mFadeStep = 255.0f / delay;
+	// Draw the sides
+	drawImageRepeated(top, x + static_cast<float>(topLeft.width()), y, w - static_cast<float>(topLeft.width()) - static_cast<float>(topRight.width()), static_cast<float>(top.height()));
+	drawImageRepeated(bottom, x + static_cast<float>(bottomLeft.width()), y + h - static_cast<float>(bottom.height()), w - static_cast<float>(bottomLeft.width()) - bottomRight.width(), static_cast<float>(bottom.height()));
+	drawImageRepeated(left, x, y + static_cast<float>(topLeft.height()), static_cast<float>(left.width()), h - static_cast<float>(topLeft.height()) - static_cast<float>(bottomLeft.height()));
+	drawImageRepeated(right, x + w - static_cast<float>(right.width()), y + static_cast<float>(topRight.height()), static_cast<float>(right.width()), h - static_cast<float>(topRight.height()) - static_cast<float>(bottomRight.height()));
 
-	fadeTimer.delta(); // clear timer
-}
-
-
-/**
- * Non-blocking screen fade.
- *
- * \param	delay	Time in miliseconds the fade should last. A value of 0
- *					will instantly fade the screen in.
- */
-void Renderer::fadeOut(float delay)
-{
-	if (delay == 0)
-	{
-		mCurrentFade = 255.0f;
-		mCurrentFadeType = FadeType::None;
-		return;
-	}
-
-	mCurrentFadeType = FadeType::Out;
-	mFadeStep = 255.0f / delay;
-
-	fadeTimer.delta(); // clear timer
-}
-
-
-/**
- * Gets whether or not a fade is in progress.
- */
-bool Renderer::isFading() const
-{
-	return (mCurrentFadeType != FadeType::None);
-}
-
-
-/**
- * Gets whether the screen is faded or not.
- */
-bool Renderer::isFaded() const
-{
-	return (mCurrentFade == 255.0f);
-}
-
-
-/**
- * Gets a refernece to the callback signal for fade transitions.
- */
-Signals::Signal<>& Renderer::fadeComplete()
-{
-	return fadeCompleteSignal;
+	// Draw the corners
+	drawImage(topLeft, x, y);
+	drawImage(topRight, x + w - topRight.width(), y);
+	drawImage(bottomLeft, x, y + h - bottomLeft.height());
+	drawImage(bottomRight, x + w - bottomRight.width(), y + h - bottomRight.height());
 }
 
 
@@ -481,6 +426,123 @@ void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<flo
 	drawText(font, text, position.x(), position.y(), textColor.red, textColor.green, textColor.blue, textColor.alpha);
 }
 
+
+/**
+ * Renders a text string with a drop shadow.
+ *
+ * \param font		A reference to a Font Resource.
+ * \param text		The text to draw.
+ * \param x			X-Coordinate to render text string.
+ * \param y			Y-Coordinate to render text string.
+ * \param distance	Distance in pixels the drop shadow should be rendered.
+ * \param r			Red color value between 0 - 255.
+ * \param g			Green color value between 0 - 255.
+ * \param b			Blue color value between 0 - 255.
+ * \param sr		Red color value between 0 - 255.
+ * \param sg		Green color value between 0 - 255.
+ * \param sb		Blue color value between 0 - 255.
+ * \param a			Alpha color value between 0 - 255.
+ */
+void Renderer::drawTextShadow(const Font& font, std::string_view text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a )
+{
+	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
+	drawText(font, text, x, y, r, g, b, a);
+}
+
+
+/**
+ * Sets the color of the fade.
+ *
+ * \param	color	A reference to aColor_4ub.
+ */
+void Renderer::fadeColor(const Color& color)
+{
+	mFadeColor = color;
+}
+
+
+/**
+ * Non-blocking screen fade.
+ *
+ * \param	delay	Time in miliseconds the fade should last. A value of 0
+ *					will instantly fade the screen in.
+ */
+void Renderer::fadeIn(float delay)
+{
+	if (delay == 0)
+	{
+		mCurrentFade = 0.0f;
+		mCurrentFadeType = FadeType::None;
+		return;
+	}
+
+	mCurrentFadeType = FadeType::In;
+	mFadeStep = 255.0f / delay;
+
+	fadeTimer.delta(); // clear timer
+}
+
+
+/**
+ * Non-blocking screen fade.
+ *
+ * \param	delay	Time in miliseconds the fade should last. A value of 0
+ *					will instantly fade the screen in.
+ */
+void Renderer::fadeOut(float delay)
+{
+	if (delay == 0)
+	{
+		mCurrentFade = 255.0f;
+		mCurrentFadeType = FadeType::None;
+		return;
+	}
+
+	mCurrentFadeType = FadeType::Out;
+	mFadeStep = 255.0f / delay;
+
+	fadeTimer.delta(); // clear timer
+}
+
+
+/**
+ * Gets whether or not a fade is in progress.
+ */
+bool Renderer::isFading() const
+{
+	return (mCurrentFadeType != FadeType::None);
+}
+
+
+/**
+ * Gets whether the screen is faded or not.
+ */
+bool Renderer::isFaded() const
+{
+	return (mCurrentFade == 255.0f);
+}
+
+
+/**
+ * Gets a refernece to the callback signal for fade transitions.
+ */
+Signals::Signal<>& Renderer::fadeComplete()
+{
+	return fadeCompleteSignal;
+}
+
+
+/**
+ * Clears the screen with a given Color.
+ *
+ * \param color	A reference to a Color.
+ */
+void Renderer::clearScreen(const Color& color)
+{
+	clearScreen(color.red, color.green, color.blue);
+}
+
+
 /**
  * Gets the current screen resolution as a Vector.
  */
@@ -518,68 +580,6 @@ float Renderer::center_y() const
 
 
 /**
- * Returns the name of the driver as named by the operating system.
- */
-const std::string& Renderer::driverName() const
-{
-	return mDriverName;
-}
-
-
-/**
- * Sets the driver name.
- *
- * \note	Internal function used only by derived
- *			renderer types.
- */
-void Renderer::driverName(const std::string& name)
-{
-	mDriverName = name;
-}
-
-
-/**
- * Returns the title of the application window.
- */
-const std::string& Renderer::title() const
-{
-	return mTitle;
-}
-
-
-/**
- * Sets the title of the application window.
- */
-void Renderer::title(const std::string& title)
-{
-	mTitle = title;
-}
-
-
-/**
- * Renders a text string with a drop shadow.
- *
- * \param font		A reference to a Font Resource.
- * \param text		The text to draw.
- * \param x			X-Coordinate to render text string.
- * \param y			Y-Coordinate to render text string.
- * \param distance	Distance in pixels the drop shadow should be rendered.
- * \param r			Red color value between 0 - 255.
- * \param g			Green color value between 0 - 255.
- * \param b			Blue color value between 0 - 255.
- * \param sr		Red color value between 0 - 255.
- * \param sg		Green color value between 0 - 255.
- * \param sb		Blue color value between 0 - 255.
- * \param a			Alpha color value between 0 - 255.
- */
-void Renderer::drawTextShadow(const Font& font, std::string_view text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a )
-{
-	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
-	drawText(font, text, x, y, r, g, b, a);
-}
-
-
-/**
  * Sets a rectangular area of the screen outside of which nothing is drawn.
  *
  * \param	rect	Reference to a Rectangle<float> representing to area to clip against.
@@ -598,17 +598,6 @@ void Renderer::clipRect(const Rectangle<float>& rect)
 void Renderer::clipRectClear()
 {
 	clipRect(0, 0, 0, 0);
-}
-
-
-/**
- * Clears the screen with a given Color.
- *
- * \param color	A reference to a Color.
- */
-void Renderer::clearScreen(const Color& color)
-{
-	clearScreen(color.red, color.green, color.blue);
 }
 
 
@@ -640,10 +629,23 @@ void Renderer::update()
 	}
 }
 
+
 void Renderer::setResolution(const Vector<float>& newResolution)
 {
 	if (!fullscreen())
 	{
 		mResolution = {newResolution.x, newResolution.y};
 	}
+}
+
+
+/**
+ * Sets the driver name.
+ *
+ * \note	Internal function used only by derived
+ *			renderer types.
+ */
+void Renderer::driverName(const std::string& name)
+{
+	mDriverName = name;
 }

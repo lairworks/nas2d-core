@@ -17,6 +17,17 @@
 
 namespace NAS2D
 {
+	template<typename T>
+	std::string stringFrom(T value)
+	{
+		if constexpr (std::is_same_v<T, std::string> || std::is_same_v<T, const char*>) {
+			return value;
+		} else if constexpr (std::is_same_v<T, bool>) {
+			return value ? "true" : "false";
+		} else {
+			return std::to_string(value);
+		}
+	}
 
 	std::string toLowercase(std::string str);
 	std::string toUppercase(std::string str);

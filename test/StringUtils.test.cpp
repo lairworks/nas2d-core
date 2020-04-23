@@ -87,6 +87,20 @@ TEST(String, stringTo) {
 	EXPECT_EQ(0.0l, NAS2D::stringTo<long double>("0.0"));
 }
 
+TEST(String, stringDataString) {
+	EXPECT_EQ("Some string value", NAS2D::stringFrom<std::string>(NAS2D::stringTo<std::string>("Some string value")));
+
+	EXPECT_EQ("false", NAS2D::stringFrom<bool>(NAS2D::stringTo<bool>("false")));
+	EXPECT_EQ("true", NAS2D::stringFrom<bool>(NAS2D::stringTo<bool>("true")));
+
+	EXPECT_EQ("-1", NAS2D::stringFrom<int>(NAS2D::stringTo<int>("-1")));
+	EXPECT_EQ("0", NAS2D::stringFrom<int>(NAS2D::stringTo<int>("0")));
+
+	EXPECT_THAT(NAS2D::stringFrom<float>(NAS2D::stringTo<float>("-1.0")), testing::StartsWith("-1.0"));
+	EXPECT_THAT(NAS2D::stringFrom<float>(NAS2D::stringTo<float>("1.0")), testing::StartsWith("1.0"));
+}
+
+
 TEST(String, split) {
 	EXPECT_EQ((NAS2D::StringList{"a", "b", "c"}), NAS2D::split("a,b,c"));
 	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::split("abc"));

@@ -18,4 +18,6 @@ TEST(Dictionary, setGet) {
 	EXPECT_EQ("Another string value", dictionary.get("Key2"));
 	EXPECT_EQ(true, dictionary.get<bool>("Key3"));
 	EXPECT_EQ(1, dictionary.get<int>("Key4"));
+
+	EXPECT_THROW(dictionary.get("KeyDoesNotExist"), std::out_of_range);
 }

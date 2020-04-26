@@ -86,7 +86,6 @@ namespace NAS2D
 	std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim);
 	std::string join(std::vector<std::string> strs);
 	std::string join(std::vector<std::string> strs, char delim);
-	std::string joinSkipEmpty(std::vector<std::string> strs, char delim);
 	std::string trimWhitespace(std::string string);
 	bool startsWith(std::string_view string, std::string_view start) noexcept;
 	bool endsWith(std::string_view string, std::string_view end) noexcept;

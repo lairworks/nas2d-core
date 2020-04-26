@@ -141,27 +141,6 @@ std::string join(std::vector<std::string> strs, char delim)
 	return result;
 }
 
-std::string joinSkipEmpty(std::vector<std::string> strs, char delim)
-{
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
-	std::string result;
-	result.reserve(total_size);
-
-	for (auto iter = std::begin(strs); iter != std::end(strs); ++iter)
-	{
-		if ((*iter).empty()) { continue; }
-		result += (*iter);
-		if (iter + 1 != std::end(strs))
-		{
-			result.push_back(delim);
-		}
-	}
-
-	result.shrink_to_fit();
-	return result;
-}
-
 std::string trimWhitespace(std::string string)
 {
 	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");

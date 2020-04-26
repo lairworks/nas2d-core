@@ -124,7 +124,7 @@ std::string join(const std::vector<std::string>& strs, char delim)
 	return result;
 }
 
-std::string trimWhitespace(const std::string& string)
+std::string trimWhitespace(std::string_view string)
 {
 	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
 	if (first_non_space == std::string::npos)
@@ -132,7 +132,7 @@ std::string trimWhitespace(const std::string& string)
 		return std::string{};
 	}
 	const auto last_non_space = string.find_last_not_of(" \r\n\t\v\f");
-	return string.substr(first_non_space, last_non_space - first_non_space + 1);
+	return std::string{string.substr(first_non_space, last_non_space - first_non_space + 1)};
 }
 
 bool startsWith(std::string_view string, std::string_view start) noexcept

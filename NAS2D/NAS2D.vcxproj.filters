@@ -161,6 +161,9 @@
     <ClInclude Include="Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ContainerUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Delegate.h">
       <Filter>Header Files</Filter>
     </ClInclude>

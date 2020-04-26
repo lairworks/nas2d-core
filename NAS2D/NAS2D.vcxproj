@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="ContainerUtils.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="Documentation.h" />
     <ClInclude Include="EventHandler.h" />

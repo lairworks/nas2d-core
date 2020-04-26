@@ -140,20 +140,6 @@ std::string join(std::vector<std::string> strs, char delim)
 	result.shrink_to_fit();
 	return result;
 }
-std::string joinSkipEmpty(std::vector<std::string> strs)
-{
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
-	std::string result;
-	result.reserve(total_size);
-	for (const auto& s : strs)
-	{
-		if (s.empty()) { continue; }
-		result += s;
-	}
-	result.shrink_to_fit();
-	return result;
-}
 
 std::string joinSkipEmpty(std::vector<std::string> strs, char delim)
 {

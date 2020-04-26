@@ -63,23 +63,6 @@ std::vector<std::string> split(std::string str, char delim /*= ','*/)
 	result.shrink_to_fit();
 	return result;
 }
-std::vector<std::string> splitSkipEmpty(std::string str, char delim /*= ','*/)
-{
-	const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(str), std::end(str), delim));
-	StringList result{};
-	result.reserve(potentialCount);
-
-	std::istringstream ss(str);
-
-	std::string curString{};
-	while (std::getline(ss, curString, delim))
-	{
-		if (curString.empty()) { continue; }
-		result.push_back(curString);
-	}
-	result.shrink_to_fit();
-	return result;
-}
 
 std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim)
 {

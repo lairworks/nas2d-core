@@ -219,7 +219,6 @@
     <ClCompile Include="Xml\XmlUnknown.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Common.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="Documentation.h" />

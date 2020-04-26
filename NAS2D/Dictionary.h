@@ -20,6 +20,17 @@ namespace NAS2D {
 			mDictionary[key] = stringFrom<T>(value);
 		}
 
+		std::vector<std::string> keys() const
+		{
+			std::vector<std::string> result;
+			result.reserve(mDictionary.size());
+			for (const auto& pair : mDictionary)
+			{
+				result.push_back(pair.first);
+			}
+			return result;
+		}
+
 	private:
 		std::map<std::string, std::string> mDictionary;
 	};

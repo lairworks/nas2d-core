@@ -43,7 +43,7 @@ std::string toUppercase(std::string str)
 	return str;
 }
 
-std::vector<std::string> split(std::string str, char delim /*= ','*/)
+std::vector<std::string> split(const std::string& str, char delim /*= ','*/)
 {
 	const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(str), std::end(str), delim));
 	StringList result{};
@@ -90,7 +90,7 @@ std::pair<std::string, std::string> splitOnLast(const std::string& str, char del
 	}
 }
 
-std::string join(std::vector<std::string> strs)
+std::string join(const std::vector<std::string>& strs)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
@@ -104,7 +104,7 @@ std::string join(std::vector<std::string> strs)
 	return result;
 }
 
-std::string join(std::vector<std::string> strs, char delim)
+std::string join(const std::vector<std::string>& strs, char delim)
 {
 	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
 	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
@@ -124,7 +124,7 @@ std::string join(std::vector<std::string> strs, char delim)
 	return result;
 }
 
-std::string trimWhitespace(std::string string)
+std::string trimWhitespace(const std::string& string)
 {
 	const auto first_non_space = string.find_first_not_of(" \r\n\t\v\f");
 	if (first_non_space == std::string::npos)

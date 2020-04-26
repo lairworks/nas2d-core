@@ -81,7 +81,6 @@ namespace NAS2D
 	std::string toLowercase(std::string str);
 	std::string toUppercase(std::string str);
 	std::vector<std::string> split(std::string str, char delim = ',');
-	std::vector<std::string> splitSkipEmpty(std::string str, char delim = ',');
 	std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim);
 	std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim);
 	std::string join(std::vector<std::string> strs);

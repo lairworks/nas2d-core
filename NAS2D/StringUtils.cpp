@@ -111,12 +111,13 @@ std::string join(const std::vector<std::string>& strs, char delim)
 	std::string result;
 	result.reserve(total_size);
 
-	for (auto iter = std::begin(strs); iter != std::end(strs); ++iter)
+	if (!strs.empty())
 	{
-		result += (*iter);
-		if (iter + 1 != std::end(strs))
+		result += strs.front();
+		for (auto iter = std::begin(strs) + 1; iter != std::end(strs); ++iter)
 		{
 			result.push_back(delim);
+			result += (*iter);
 		}
 	}
 

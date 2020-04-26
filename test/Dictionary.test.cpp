@@ -21,3 +21,15 @@ TEST(Dictionary, setGet) {
 
 	EXPECT_THROW(dictionary.get("KeyDoesNotExist"), std::out_of_range);
 }
+
+TEST(Dictionary, keys) {
+	NAS2D::Dictionary dictionary;
+
+	// Set some test values
+	dictionary.set("Key1", "Some string value");
+	dictionary.set("Key2", std::string{"Another string value"});
+	dictionary.set("Key3", true);
+	dictionary.set("Key4", 1);
+
+	EXPECT_EQ((std::vector<std::string>{"Key1", "Key2", "Key3", "Key4"}), dictionary.keys());
+}

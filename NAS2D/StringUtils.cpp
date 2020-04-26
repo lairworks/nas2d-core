@@ -122,7 +122,6 @@ std::string join(const std::vector<std::string>& strs, char delim)
 		}
 	}
 
-	result.shrink_to_fit();
 	return result;
 }
 

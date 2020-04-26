@@ -106,13 +106,14 @@ std::string join(const std::vector<std::string>& strs)
 
 std::string join(const std::vector<std::string>& strs, char delim)
 {
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
 	std::string result;
-	result.reserve(total_size);
 
 	if (!strs.empty())
 	{
+		const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + std::size_t{1u} + b.size(); };
+		auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+		result.reserve(total_size);
+
 		result += strs.front();
 		for (auto iter = std::begin(strs) + 1; iter != std::end(strs); ++iter)
 		{

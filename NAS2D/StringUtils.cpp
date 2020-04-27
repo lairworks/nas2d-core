@@ -104,7 +104,7 @@ std::string join(const std::vector<std::string>& strs)
 	return result;
 }
 
-std::string join(const std::vector<std::string>& strs, char delim)
+std::string join(const std::vector<std::string>& strs, std::string_view delimiter)
 {
 	std::string result;
 
@@ -116,13 +116,13 @@ std::string join(const std::vector<std::string>& strs, char delim)
 			std::size_t{},
 			[](std::size_t a, const std::string& b) noexcept { return a + b.size(); }
 		);
-		const auto delimiterSize = strs.size() - 1;
+		const auto delimiterSize = (strs.size() - 1) * delimiter.size();
 		result.reserve(totalStringSize + delimiterSize);
 
 		result += strs.front();
 		for (auto iter = std::begin(strs) + 1; iter != std::end(strs); ++iter)
 		{
-			result.push_back(delim);
+			result += delimiter;
 			result += (*iter);
 		}
 	}

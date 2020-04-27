@@ -146,4 +146,6 @@ TEST(String, join) {
 	EXPECT_EQ("a,b,c", NAS2D::join(NAS2D::StringList{"a", "b", "c"}, ","));
 
 	EXPECT_EQ("a,,c", NAS2D::join(NAS2D::StringList{"a", "", "c"}, ","));
+
+	EXPECT_EQ("a, b, c", NAS2D::join(NAS2D::StringList{"a", "b", "c"}, ", "));
 }

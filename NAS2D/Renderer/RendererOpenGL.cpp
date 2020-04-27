@@ -705,7 +705,7 @@ void RendererOpenGL::initGL()
 
 	if (glShadingLanguageVersion.empty())
 	{
-		throw renderer_no_glsl();
+		//throw renderer_no_glsl();
 	}
 
 	glEnable(GL_TEXTURE_2D);

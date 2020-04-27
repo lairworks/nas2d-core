@@ -90,34 +90,25 @@ std::pair<std::string, std::string> splitOnLast(const std::string& str, char del
 	}
 }
 
-std::string join(const std::vector<std::string>& strs)
-{
-	const auto acc_op = [](const std::size_t& a, const std::string& b) noexcept->std::size_t { return a + b.size(); };
-	auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
-	std::string result;
-	result.reserve(total_size);
-	for (const auto& s : strs)
-	{
-		result += s;
-	}
-	result.shrink_to_fit();
-	return result;
-}
-
-std::string join(const std::vector<std::string>& strs, char delim)
+std::string join(const std::vector<std::string>& strs, std::string_view delimiter)
 {
 	std::string result;
 
 	if (!strs.empty())
 	{
-		const auto acc_op = [](std::size_t a, const std::string& b) noexcept { return a + b.size(); };
-		auto total_size = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op) + strs.size() - 1;
-		result.reserve(total_size);
+		const auto totalStringSize = std::accumulate(
+			std::begin(strs),
+			std::end(strs),
+			std::size_t{},
+			[](std::size_t a, const std::string& b) noexcept { return a + b.size(); }
+		);
+		const auto delimiterSize = (strs.size() - 1) * delimiter.size();
+		result.reserve(totalStringSize + delimiterSize);
 
 		result += strs.front();
 		for (auto iter = std::begin(strs) + 1; iter != std::end(strs); ++iter)
 		{
-			result.push_back(delim);
+			result += delimiter;
 			result += (*iter);
 		}
 	}

@@ -140,10 +140,12 @@ TEST(String, join) {
 
 	EXPECT_EQ("ac", NAS2D::join(NAS2D::StringList{"a", "", "c"}));
 
-	EXPECT_EQ("", NAS2D::join(NAS2D::StringList{}, ','));
-	EXPECT_EQ("a", NAS2D::join(NAS2D::StringList{"a"}, ','));
-	EXPECT_EQ("a,b", NAS2D::join(NAS2D::StringList{"a", "b"}, ','));
-	EXPECT_EQ("a,b,c", NAS2D::join(NAS2D::StringList{"a", "b", "c"}, ','));
+	EXPECT_EQ("", NAS2D::join(NAS2D::StringList{}, ","));
+	EXPECT_EQ("a", NAS2D::join(NAS2D::StringList{"a"}, ","));
+	EXPECT_EQ("a,b", NAS2D::join(NAS2D::StringList{"a", "b"}, ","));
+	EXPECT_EQ("a,b,c", NAS2D::join(NAS2D::StringList{"a", "b", "c"}, ","));
 
-	EXPECT_EQ("a,,c", NAS2D::join(NAS2D::StringList{"a", "", "c"}, ','));
+	EXPECT_EQ("a,,c", NAS2D::join(NAS2D::StringList{"a", "", "c"}, ","));
+
+	EXPECT_EQ("a, b, c", NAS2D::join(NAS2D::StringList{"a", "b", "c"}, ", "));
 }

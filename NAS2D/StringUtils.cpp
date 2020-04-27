@@ -113,7 +113,7 @@ std::string join(const std::vector<std::string>& strs, char delim)
 		const auto totalStringSize = std::accumulate(
 			std::begin(strs),
 			std::end(strs),
-			std::size_t{0u},
+			std::size_t{},
 			[](std::size_t a, const std::string& b) noexcept { return a + b.size(); }
 		);
 		const auto delimiterSize = strs.size() - 1;

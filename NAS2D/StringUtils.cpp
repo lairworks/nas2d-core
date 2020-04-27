@@ -110,8 +110,12 @@ std::string join(const std::vector<std::string>& strs, char delim)
 
 	if (!strs.empty())
 	{
-		const auto acc_op = [](std::size_t a, const std::string& b) noexcept { return a + b.size(); };
-		const auto totalStringSize = std::accumulate(std::begin(strs), std::end(strs), std::size_t{0u}, acc_op);
+		const auto totalStringSize = std::accumulate(
+			std::begin(strs),
+			std::end(strs),
+			std::size_t{0u},
+			[](std::size_t a, const std::string& b) noexcept { return a + b.size(); }
+		);
 		const auto delimiterSize = strs.size() - 1;
 		result.reserve(totalStringSize + delimiterSize);
 

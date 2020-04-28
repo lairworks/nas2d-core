@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "Sprite.h"
+#include "../ContainerUtils.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
 
@@ -193,14 +194,7 @@ float Sprite::rotation() const
  */
 StringList Sprite::actions() const
 {
-	StringList list;
-
-	for (const auto& pair : mActions)
-	{
-		list.push_back(pair.first);
-	}
-
-	return list;
+	return getKeys(mActions);
 }
 
 

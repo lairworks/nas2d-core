@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "Configuration.h"
+#include "ContainerUtils.h"
 #include "Filesystem.h"
 #include "Utility.h"
 #include "Xml/Xml.h"
@@ -54,6 +55,28 @@ const std::string GRAPHICS_CFG_SCREEN_HEIGHT = "screenheight";
 const std::string GRAPHICS_CFG_SCREEN_DEPTH = "bitdepth";
 const std::string GRAPHICS_CFG_FULLSCREEN = "fullscreen";
 const std::string GRAPHICS_CFG_VSYNC = "vsync";
+
+
+namespace {
+	void ReportProblemNames(
+		const std::vector<std::string>& names,
+		const std::vector<std::string>& required,
+		const std::vector<std::string>& optional = {}
+	) {
+		using namespace ContainerOperators;
+
+		const auto expected = required + optional;
+
+		const auto missing = names - required;
+		const auto unexpected = names - expected;
+
+		if (!missing.empty() || !unexpected.empty())
+		{
+			throw std::runtime_error("Missing required names: {" + join(missing, ", ") +"}, unexpected names: {" + join(unexpected, ", ") + "}");
+		}
+	}
+}
+
 
 /**
  * D'tor

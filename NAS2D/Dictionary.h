@@ -1,6 +1,7 @@
 #pragma once
 
 #include "StringUtils.h"
+#include "ContainerUtils.h"
 #include <map>
 
 
@@ -22,13 +23,7 @@ namespace NAS2D {
 
 		std::vector<std::string> keys() const
 		{
-			std::vector<std::string> result;
-			result.reserve(mDictionary.size());
-			for (const auto& pair : mDictionary)
-			{
-				result.push_back(pair.first);
-			}
-			return result;
+			return getKeys(mDictionary);
 		}
 
 	private:

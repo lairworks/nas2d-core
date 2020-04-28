@@ -43,4 +43,17 @@ namespace NAS2D {
 			return container1 -= container2;
 		}
 	}
+
+
+	template <typename T>
+	std::vector<typename T::key_type> getKeys(const T& map)
+	{
+		std::vector<typename T::key_type> result;
+		result.reserve(map.size());
+		for (const auto& pair : map)
+		{
+			result.push_back(pair.first);
+		}
+		return result;
+	}
 }

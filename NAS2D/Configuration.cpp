@@ -89,6 +89,35 @@ namespace {
 
 		return dictionary;
 	}
+
+
+	Dictionary ParseOptionsToDictionary(const XmlElement& element)
+	{
+		Dictionary dictionary;
+
+		for (const auto* setting = element.firstChildElement(); setting; setting = setting->nextSiblingElement())
+		{
+			if (setting->value() != "option")
+			{
+				throw std::runtime_error("Unexpected tag found in configuration on row: " + std::to_string(setting->row()) + "  <" + setting->value() + ">");
+			}
+
+			const auto optionDictionary = ParseXmlElementAttributesToDictionary(*setting);
+			ReportProblemNames(optionDictionary.keys(), {"name", "value"});
+
+			const auto name = optionDictionary.get("name");
+			const auto value = optionDictionary.get("value");
+
+			if (name.empty() || value.empty())
+			{
+				throw std::runtime_error("Invalid name/value pair in <option> tag in configuration file on row: " + std::to_string(setting->row()));
+			}
+
+			dictionary.set(name, value);
+		}
+
+		return dictionary;
+	}
 }
 
 

@@ -5,6 +5,8 @@
 
 #include <vector>
 #include <list>
+#include <map>
+#include <unordered_map>
 
 
 TEST(Container, VectorSelfAdd) {
@@ -62,5 +64,35 @@ TEST(Container, VectorSubtract) {
 	{
 		using namespace NAS2D::ContainerOperators;
 		EXPECT_EQ((std::vector{1, 4}), a - b);
+	}
+}
+
+TEST(Container, getKeys) {
+	EXPECT_EQ((std::vector<std::string>{}), NAS2D::getKeys(std::map<std::string, int>{}));
+	EXPECT_EQ((std::vector<std::string>{"Key1"}), NAS2D::getKeys(std::map<std::string, int>{{"Key1", 1}}));
+	EXPECT_EQ((std::vector<std::string>{"Key1", "Key2"}), NAS2D::getKeys(std::map<std::string, int>{{"Key1", 1}, {"Key2", 2}}));
+
+	EXPECT_EQ((std::vector<int>{}), NAS2D::getKeys(std::map<int, int>{}));
+	EXPECT_EQ((std::vector<int>{1}), NAS2D::getKeys(std::map<int, int>{{1, 10}}));
+	EXPECT_EQ((std::vector<int>{1, 2}), NAS2D::getKeys(std::map<int, int>{{1, 10}, {2, 20}}));
+
+	EXPECT_EQ((std::vector<int>{}), NAS2D::getKeys(std::multimap<int, int>{}));
+	EXPECT_EQ((std::vector<int>{1}), NAS2D::getKeys(std::multimap<int, int>{{1, 10}}));
+	EXPECT_EQ((std::vector<int>{1, 2}), NAS2D::getKeys(std::multimap<int, int>{{1, 10}, {2, 20}}));
+
+	EXPECT_EQ((std::vector<int>{}), NAS2D::getKeys(std::unordered_map<int, int>{}));
+	EXPECT_EQ((std::vector<int>{1}), NAS2D::getKeys(std::unordered_map<int, int>{{1, 10}}));
+	{
+		auto result = NAS2D::getKeys(std::unordered_map<int, int>{{1, 10}, {2, 20}});
+		std::sort(std::begin(result), std::end(result));
+		EXPECT_EQ((std::vector<int>{1, 2}), result);
+	}
+
+	EXPECT_EQ((std::vector<int>{}), NAS2D::getKeys(std::unordered_multimap<int, int>{}));
+	EXPECT_EQ((std::vector<int>{1}), NAS2D::getKeys(std::unordered_multimap<int, int>{{1, 10}}));
+	{
+		auto result = NAS2D::getKeys(std::unordered_multimap<int, int>{{1, 10}, {2, 20}});
+		std::sort(std::begin(result), std::end(result));
+		EXPECT_EQ((std::vector<int>{1, 2}), result);
 	}
 }

@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "Configuration.h"
+#include "Dictionary.h"
 #include "ContainerUtils.h"
 #include "Filesystem.h"
 #include "Utility.h"
@@ -74,6 +75,19 @@ namespace {
 		{
 			throw std::runtime_error("Missing required names: {" + join(missing, ", ") +"}, unexpected names: {" + join(unexpected, ", ") + "}");
 		}
+	}
+
+
+	Dictionary ParseXmlElementAttributesToDictionary(const XmlElement& element)
+	{
+		Dictionary dictionary;
+
+		for (const auto* attribute = element.firstAttribute(); attribute; attribute = attribute->next())
+		{
+			dictionary.set(attribute->name(), attribute->value());
+		}
+
+		return dictionary;
 	}
 }
 

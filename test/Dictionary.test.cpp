@@ -33,3 +33,36 @@ TEST(Dictionary, keys) {
 
 	EXPECT_EQ((std::vector<std::string>{"Key1", "Key2", "Key3", "Key4"}), dictionary.keys());
 }
+
+TEST(Dictionary, OperatorAdd) {
+	// Simple combination
+	{
+		NAS2D::Dictionary dictionary1;
+		NAS2D::Dictionary dictionary2;
+
+		dictionary1.set("Key1", 1);
+		dictionary2.set("Key2", 2);
+
+		const auto dictionaryCombined = dictionary1 + dictionary2;
+
+		EXPECT_EQ(1, dictionaryCombined.get<int>("Key1"));
+		EXPECT_EQ(2, dictionaryCombined.get<int>("Key2"));
+	}
+
+	// Right hand side overwrites left hand side
+	{
+		NAS2D::Dictionary dictionary1;
+		NAS2D::Dictionary dictionary2;
+
+		dictionary1.set("Key1", 1);
+		dictionary1.set("Key2", 2);
+		dictionary2.set("Key2", 10);
+		dictionary2.set("Key3", 20);
+
+		const auto dictionaryCombined = dictionary1 + dictionary2;
+
+		EXPECT_EQ(1, dictionaryCombined.get<int>("Key1"));
+		EXPECT_EQ(10, dictionaryCombined.get<int>("Key2"));
+		EXPECT_EQ(20, dictionaryCombined.get<int>("Key3"));
+	}
+}

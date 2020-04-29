@@ -118,6 +118,21 @@ namespace {
 
 		return dictionary;
 	}
+
+
+	std::map<std::string, Dictionary> ParseXmlSections(const XmlElement& element)
+	{
+		std::map<std::string, Dictionary> sections;
+
+		for (auto childElement = element.firstChildElement(); childElement; childElement = childElement->nextSiblingElement())
+		{
+			if (childElement->type() == XmlNode::NodeType::XML_COMMENT) { continue; } // Ignore comments
+
+			sections[childElement->value()] = ParseXmlElementAttributesToDictionary(*childElement) + ParseOptionsToDictionary(*childElement);
+		}
+
+		return sections;
+	}
 }
 
 

@@ -300,7 +300,7 @@ bool Configuration::readConfig(const std::string& filePath)
 			 section != nullptr;
 			 section = section->nextSiblingElement())
 		{
-			if (section->value() == "graphics") { parseGraphics(section); }
+			if (section->value() == "graphics") { parseGraphics(ParseXmlElementAttributesToDictionary(*section)); }
 			else if (section->value() == "audio") { parseAudio(section); }
 			else if (section->value() == "options") { parseOptions(section); }
 			else if (section->type() == XmlNode::NodeType::XML_COMMENT) {} // Ignore comments
@@ -320,20 +320,15 @@ bool Configuration::readConfig(const std::string& filePath)
  *
  * \todo	Check for sane configurations, particularly screen resolution.
  */
-void Configuration::parseGraphics(XmlElement* element)
+void Configuration::parseGraphics(const Dictionary& dictionary)
 {
-	const XmlAttribute* attribute = element->firstAttribute();
-	while (attribute)
-	{
-		if (attribute->name() == GRAPHICS_CFG_SCREEN_WIDTH) { attribute->queryIntValue(mScreenWidth); }
-		else if (attribute->name() == GRAPHICS_CFG_SCREEN_HEIGHT) { attribute->queryIntValue(mScreenHeight); }
-		else if (attribute->name() == GRAPHICS_CFG_SCREEN_DEPTH) { attribute->queryIntValue(mScreenBpp); }
-		else if (attribute->name() == GRAPHICS_CFG_FULLSCREEN) { fullscreen(toLowercase(attribute->value()) == "true"); }
-		else if (attribute->name() == GRAPHICS_CFG_VSYNC) { vsync(toLowercase(attribute->value()) == "true"); }
-		else { std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl; }
+	ReportProblemNames(dictionary.keys(), {GRAPHICS_CFG_SCREEN_WIDTH, GRAPHICS_CFG_SCREEN_HEIGHT, GRAPHICS_CFG_SCREEN_DEPTH, GRAPHICS_CFG_FULLSCREEN, GRAPHICS_CFG_VSYNC});
 
-		attribute = attribute->next();
-	}
+	mScreenWidth = dictionary.get<int>(GRAPHICS_CFG_SCREEN_WIDTH);
+	mScreenHeight = dictionary.get<int>(GRAPHICS_CFG_SCREEN_HEIGHT);
+	mScreenBpp = dictionary.get<int>(GRAPHICS_CFG_SCREEN_DEPTH);
+	fullscreen(dictionary.get<bool>(GRAPHICS_CFG_FULLSCREEN));
+	vsync(dictionary.get<bool>(GRAPHICS_CFG_VSYNC));
 }
 
 

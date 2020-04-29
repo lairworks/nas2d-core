@@ -12,8 +12,10 @@
 #include <string>
 #include <map>
 
+
 namespace NAS2D {
 
+class Dictionary;
 
 namespace Xml {
 	class XmlElement;
@@ -89,7 +91,7 @@ private:
 
 	bool readConfig(const std::string& filePath);
 
-	void parseGraphics(Xml::XmlElement* node);
+	void parseGraphics(const Dictionary& dictionary);
 	void parseAudio(Xml::XmlElement* node);
 	void parseOptions(Xml::XmlElement* node);
 

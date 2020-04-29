@@ -9,6 +9,9 @@ namespace NAS2D {
 	class Dictionary
 	{
 	public:
+		Dictionary& operator+=(const Dictionary& other);
+
+
 		template <typename T = std::string>
 		T get(const std::string& key) const
 		{
@@ -29,4 +32,7 @@ namespace NAS2D {
 	private:
 		std::map<std::string, std::string> mDictionary;
 	};
+
+
+	Dictionary operator+(Dictionary lhs, const Dictionary& rhs);
 }

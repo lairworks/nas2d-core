@@ -9,6 +9,8 @@
 // ==================================================================================
 
 #include "Configuration.h"
+#include "Dictionary.h"
+#include "ContainerUtils.h"
 #include "Filesystem.h"
 #include "Utility.h"
 #include "Xml/Xml.h"
@@ -54,6 +56,105 @@ const std::string GRAPHICS_CFG_SCREEN_HEIGHT = "screenheight";
 const std::string GRAPHICS_CFG_SCREEN_DEPTH = "bitdepth";
 const std::string GRAPHICS_CFG_FULLSCREEN = "fullscreen";
 const std::string GRAPHICS_CFG_VSYNC = "vsync";
+
+
+namespace {
+	void ReportProblemNames(
+		const std::vector<std::string>& names,
+		const std::vector<std::string>& required,
+		const std::vector<std::string>& optional = {}
+	) {
+		using namespace ContainerOperators;
+
+		const auto expected = required + optional;
+
+		const auto missing = names - required;
+		const auto unexpected = names - expected;
+
+		if (!missing.empty() || !unexpected.empty())
+		{
+			throw std::runtime_error("Missing required names: {" + join(missing, ", ") +"}, unexpected names: {" + join(unexpected, ", ") + "}");
+		}
+	}
+
+
+	Dictionary ParseXmlElementAttributesToDictionary(const XmlElement& element)
+	{
+		Dictionary dictionary;
+
+		for (const auto* attribute = element.firstAttribute(); attribute; attribute = attribute->next())
+		{
+			dictionary.set(attribute->name(), attribute->value());
+		}
+
+		return dictionary;
+	}
+
+
+	Dictionary ParseOptionsToDictionary(const XmlElement& element)
+	{
+		Dictionary dictionary;
+
+		for (const auto* setting = element.firstChildElement(); setting; setting = setting->nextSiblingElement())
+		{
+			if (setting->value() != "option")
+			{
+				throw std::runtime_error("Unexpected tag found in configuration on row: " + std::to_string(setting->row()) + "  <" + setting->value() + ">");
+			}
+
+			const auto optionDictionary = ParseXmlElementAttributesToDictionary(*setting);
+			ReportProblemNames(optionDictionary.keys(), {"name", "value"});
+
+			const auto name = optionDictionary.get("name");
+			const auto value = optionDictionary.get("value");
+
+			if (name.empty() || value.empty())
+			{
+				throw std::runtime_error("Invalid name/value pair in <option> tag in configuration file on row: " + std::to_string(setting->row()));
+			}
+
+			dictionary.set(name, value);
+		}
+
+		return dictionary;
+	}
+
+
+	std::map<std::string, Dictionary> ParseXmlSections(const XmlElement& element)
+	{
+		std::map<std::string, Dictionary> sections;
+
+		for (auto childElement = element.firstChildElement(); childElement; childElement = childElement->nextSiblingElement())
+		{
+			if (childElement->type() == XmlNode::NodeType::XML_COMMENT) { continue; } // Ignore comments
+
+			sections[childElement->value()] = ParseXmlElementAttributesToDictionary(*childElement) + ParseOptionsToDictionary(*childElement);
+		}
+
+		return sections;
+	}
+
+
+	std::map<std::string, Dictionary> ParseXmlSections(const std::string& xmlString, const std::string& sectionName)
+	{
+		XmlDocument xmlDocument;
+		xmlDocument.parse(xmlString.c_str());
+
+		if (xmlDocument.error())
+		{
+			throw std::runtime_error("Error parsing XML file on (Row " + std::to_string(xmlDocument.errorRow()) + ", Column " + std::to_string(xmlDocument.errorCol()) + "): " + xmlDocument.errorDesc());
+		}
+
+		XmlElement* root = xmlDocument.firstChildElement(sectionName);
+		if (!root)
+		{
+			throw std::runtime_error("XML file does not contain tag: " + sectionName);
+		}
+
+		return ParseXmlSections(*root);
+	}
+}
+
 
 /**
  * D'tor
@@ -177,182 +278,69 @@ bool Configuration::readConfig(const std::string& filePath)
 {
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
-	XmlDocument config;
-	config.parse(xmlFile.raw_bytes());
-	if (config.error())
-	{
-		std::cout << "Error parsing configuration file '" << filePath << "' on Row " << config.errorRow() << ", Column " << config.errorCol() << ": " << config.errorDesc() << std::endl;
-		return false;
-	}
-	else
-	{
-		XmlElement* root = config.firstChildElement("configuration");
-		if (!root)
-		{
-			std::cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << std::endl;
-			return false;
-		}
+	// Start parsing through the Config.xml file.
+	const auto sections = ParseXmlSections(xmlFile.raw_bytes(), "configuration");
+	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
 
-
-		// Start parsing through the Config.xml file.
-		for (auto section = root->firstChildElement();
-			 section != nullptr;
-			 section = section->nextSiblingElement())
-		{
-			if (section->value() == "graphics") { parseGraphics(section); }
-			else if (section->value() == "audio") { parseAudio(section); }
-			else if (section->value() == "options") { parseOptions(section); }
-			else if (section->type() == XmlNode::NodeType::XML_COMMENT) {} // Ignore comments
-			else
-			{
-				std::cout << "Unexpected tag '<" << section->value() << ">' found in '" << filePath << "' on row " << section->row() << "." << std::endl;
-			}
-		}
-	}
+	parseGraphics(sections.at("graphics"));
+	parseAudio(sections.at("audio"));
+	parseOptions(sections.at("options"));
 
 	return true;
 }
 
 
-/**
- * Parse the <graphics> tab.
- *
- * \todo	Check for sane configurations, particularly screen resolution.
- */
-void Configuration::parseGraphics(XmlElement* element)
+void Configuration::parseGraphics(const Dictionary& dictionary)
 {
-	const XmlAttribute* attribute = element->firstAttribute();
-	while (attribute)
-	{
-		if (attribute->name() == GRAPHICS_CFG_SCREEN_WIDTH) { attribute->queryIntValue(mScreenWidth); }
-		else if (attribute->name() == GRAPHICS_CFG_SCREEN_HEIGHT) { attribute->queryIntValue(mScreenHeight); }
-		else if (attribute->name() == GRAPHICS_CFG_SCREEN_DEPTH) { attribute->queryIntValue(mScreenBpp); }
-		else if (attribute->name() == GRAPHICS_CFG_FULLSCREEN) { fullscreen(toLowercase(attribute->value()) == "true"); }
-		else if (attribute->name() == GRAPHICS_CFG_VSYNC) { vsync(toLowercase(attribute->value()) == "true"); }
-		else { std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl; }
+	ReportProblemNames(dictionary.keys(), {GRAPHICS_CFG_SCREEN_WIDTH, GRAPHICS_CFG_SCREEN_HEIGHT, GRAPHICS_CFG_SCREEN_DEPTH, GRAPHICS_CFG_FULLSCREEN, GRAPHICS_CFG_VSYNC});
 
-		attribute = attribute->next();
+	mScreenWidth = dictionary.get<int>(GRAPHICS_CFG_SCREEN_WIDTH);
+	mScreenHeight = dictionary.get<int>(GRAPHICS_CFG_SCREEN_HEIGHT);
+	mScreenBpp = dictionary.get<int>(GRAPHICS_CFG_SCREEN_DEPTH);
+	fullscreen(dictionary.get<bool>(GRAPHICS_CFG_FULLSCREEN));
+	vsync(dictionary.get<bool>(GRAPHICS_CFG_VSYNC));
+}
+
+
+void Configuration::parseAudio(const Dictionary& dictionary)
+{
+	ReportProblemNames(dictionary.keys(), {AUDIO_CFG_MIXRATE, AUDIO_CFG_CHANNELS, AUDIO_CFG_SFX_VOLUME, AUDIO_CFG_MUS_VOLUME, AUDIO_CFG_BUFFER_SIZE, AUDIO_CFG_MIXER});
+
+	mMixRate = dictionary.get<int>(AUDIO_CFG_MIXRATE);
+	mStereoChannels = dictionary.get<int>(AUDIO_CFG_CHANNELS);
+	mSfxVolume = dictionary.get<int>(AUDIO_CFG_SFX_VOLUME);
+	mMusicVolume = dictionary.get<int>(AUDIO_CFG_MUS_VOLUME);
+	mBufferLength = dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE);
+	mMixerName = dictionary.get(AUDIO_CFG_MIXER);
+
+	if (mMixRate != AUDIO_LOW_QUALITY && mMixRate != AUDIO_MEDIUM_QUALITY && mMixRate != AUDIO_HIGH_QUALITY)
+	{
+		audioMixRate(AUDIO_MEDIUM_QUALITY);
+	}
+	if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
+	{
+		audioStereoChannels(AUDIO_STEREO);
+	}
+	if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
+	{
+		audioSfxVolume(mSfxVolume);
+	}
+	if (mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
+	{
+		audioMusicVolume(mMusicVolume);
+	}
+	if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
+	{
+		audioBufferSize(mBufferLength);
 	}
 }
 
 
-/**
- * Parses audio information from an XML node.
- *
- * \note	If any values are invalid or non-existant, this
- *			function will set default values.
- */
-void Configuration::parseAudio(XmlElement* element)
+void Configuration::parseOptions(const Dictionary& dictionary)
 {
-	const XmlAttribute* attribute = element->firstAttribute();
-	while (attribute)
+	for (const auto& key : dictionary.keys())
 	{
-		if (attribute->name() == AUDIO_CFG_MIXRATE)
-		{
-			attribute->queryIntValue(mMixRate);
-			if (mMixRate != AUDIO_LOW_QUALITY && mMixRate != AUDIO_MEDIUM_QUALITY && mMixRate != AUDIO_HIGH_QUALITY)
-			{
-				std::cout << "Invalid audio mixrate setting '" << mMixRate << "'. Expected 11025, 22050 or 44100. Setting to default of 22050." << std::endl;
-				audioMixRate(AUDIO_MEDIUM_QUALITY);
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_CHANNELS)
-		{
-			attribute->queryIntValue(mStereoChannels);
-
-			if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
-			{
-				std::cout << "Invalid audio channels setting '" << mStereoChannels << "'. Expected 1 or 2. Setting to default of 2." << std::endl;
-				audioStereoChannels(AUDIO_STEREO);
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_SFX_VOLUME)
-		{
-			attribute->queryIntValue(mSfxVolume);
-
-			if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
-			{
-				audioSfxVolume(mSfxVolume);
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_MUS_VOLUME)
-		{
-			attribute->queryIntValue(mMusicVolume);
-
-			if (mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
-			{
-				audioMusicVolume(mMusicVolume);
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_BUFFER_SIZE)
-		{
-			attribute->queryIntValue(mBufferLength);
-			if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
-			{
-				audioBufferSize(std::clamp(mBufferLength, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE));
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_MIXER)
-		{
-			mMixerName = attribute->value();
-		}
-		else
-		{
-			std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
-		}
-
-		attribute = attribute->next();
-	}
-}
-
-
-/**
- * Parses program options from an XML node.
- *
- * \note	Use of void pointer in declaration to avoid implementation details in header.
- */
-void Configuration::parseOptions(XmlElement* element)
-{
-	for (auto setting = element->firstChildElement();
-		 setting != nullptr;
-		 setting = setting->nextSiblingElement())
-	{
-		if (setting->value() == "option")
-		{
-			const XmlAttribute* attribute = setting->firstAttribute();
-
-			std::string name, value;
-			while (attribute)
-			{
-				if (attribute->name() == "name")
-				{
-					name = attribute->value();
-				}
-				else if (attribute->name() == "value")
-				{
-					value = attribute->value();
-				}
-				else
-				{
-					std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
-				}
-
-				attribute = attribute->next();
-			}
-
-			if (name.empty() || value.empty())
-			{
-				std::cout << "Invalid name/value pair in <option> tag in configuration file on row " << setting->row() << ". This option will be ignored." << std::endl;
-			}
-			else
-			{
-				mOptions[name] = value;
-			}
-		}
-		else
-		{
-			std::cout << "Unexpected tag '<" << setting->value() << ">' found in configuration on row " << setting->row() << "." << std::endl;
-		}
+		mOptions[key] = dictionary.get(key);
 	}
 }
 
@@ -600,7 +588,7 @@ void Configuration::audioMusicVolume(int volume)
  */
 void Configuration::audioBufferSize(int size)
 {
-	mBufferLength = size;
+	mBufferLength = std::clamp(size, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE);
 	mOptionChanged = true;
 }
 

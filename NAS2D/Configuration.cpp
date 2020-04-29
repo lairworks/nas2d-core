@@ -333,7 +333,7 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 	}
 	if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
 	{
-		audioBufferSize(std::clamp(mBufferLength, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE));
+		audioBufferSize(mBufferLength);
 	}
 }
 
@@ -590,7 +590,7 @@ void Configuration::audioMusicVolume(int volume)
  */
 void Configuration::audioBufferSize(int size)
 {
-	mBufferLength = size;
+	mBufferLength = std::clamp(size, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE);
 	mOptionChanged = true;
 }
 

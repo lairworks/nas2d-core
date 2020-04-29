@@ -278,31 +278,13 @@ bool Configuration::readConfig(const std::string& filePath)
 {
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
-	XmlDocument config;
-	config.parse(xmlFile.raw_bytes());
-	if (config.error())
-	{
-		std::cout << "Error parsing configuration file '" << filePath << "' on Row " << config.errorRow() << ", Column " << config.errorCol() << ": " << config.errorDesc() << std::endl;
-		return false;
-	}
-	else
-	{
-		XmlElement* root = config.firstChildElement("configuration");
-		if (!root)
-		{
-			std::cout << "'" << filePath << "' doesn't contain a '<configuration>' tag." << std::endl;
-			return false;
-		}
+	// Start parsing through the Config.xml file.
+	const auto sections = ParseXmlSections(xmlFile.raw_bytes(), "configuration");
+	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
 
-
-		// Start parsing through the Config.xml file.
-		const auto sections = ParseXmlSections(*root);
-		ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
-
-		parseGraphics(sections.at("graphics"));
-		parseAudio(sections.at("audio"));
-		parseOptions(sections.at("options"));
-	}
+	parseGraphics(sections.at("graphics"));
+	parseAudio(sections.at("audio"));
+	parseOptions(sections.at("options"));
 
 	return true;
 }

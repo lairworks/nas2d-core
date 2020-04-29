@@ -17,10 +17,6 @@ namespace NAS2D {
 
 class Dictionary;
 
-namespace Xml {
-	class XmlElement;
-}
-
 
 /**
  * \class Configuration
@@ -93,7 +89,7 @@ private:
 
 	void parseGraphics(const Dictionary& dictionary);
 	void parseAudio(const Dictionary& dictionary);
-	void parseOptions(Xml::XmlElement* node);
+	void parseOptions(const Dictionary& dictionary);
 
 	Options mOptions{};
 

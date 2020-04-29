@@ -302,7 +302,7 @@ bool Configuration::readConfig(const std::string& filePath)
 		{
 			if (section->value() == "graphics") { parseGraphics(ParseXmlElementAttributesToDictionary(*section)); }
 			else if (section->value() == "audio") { parseAudio(ParseXmlElementAttributesToDictionary(*section)); }
-			else if (section->value() == "options") { parseOptions(section); }
+			else if (section->value() == "options") { parseOptions(ParseXmlElementAttributesToDictionary(*section)); }
 			else if (section->type() == XmlNode::NodeType::XML_COMMENT) {} // Ignore comments
 			else
 			{
@@ -379,48 +379,11 @@ void Configuration::parseAudio(const Dictionary& dictionary)
  *
  * \note	Use of void pointer in declaration to avoid implementation details in header.
  */
-void Configuration::parseOptions(XmlElement* element)
+void Configuration::parseOptions(const Dictionary& dictionary)
 {
-	for (auto setting = element->firstChildElement();
-		 setting != nullptr;
-		 setting = setting->nextSiblingElement())
+	for (const auto& key : dictionary.keys())
 	{
-		if (setting->value() == "option")
-		{
-			const XmlAttribute* attribute = setting->firstAttribute();
-
-			std::string name, value;
-			while (attribute)
-			{
-				if (attribute->name() == "name")
-				{
-					name = attribute->value();
-				}
-				else if (attribute->name() == "value")
-				{
-					value = attribute->value();
-				}
-				else
-				{
-					std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
-				}
-
-				attribute = attribute->next();
-			}
-
-			if (name.empty() || value.empty())
-			{
-				std::cout << "Invalid name/value pair in <option> tag in configuration file on row " << setting->row() << ". This option will be ignored." << std::endl;
-			}
-			else
-			{
-				mOptions[name] = value;
-			}
-		}
-		else
-		{
-			std::cout << "Unexpected tag '<" << setting->value() << ">' found in configuration on row " << setting->row() << "." << std::endl;
-		}
+		mOptions[key] = dictionary.get(key);
 	}
 }
 

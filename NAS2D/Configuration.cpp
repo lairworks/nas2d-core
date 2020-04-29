@@ -301,7 +301,7 @@ bool Configuration::readConfig(const std::string& filePath)
 			 section = section->nextSiblingElement())
 		{
 			if (section->value() == "graphics") { parseGraphics(ParseXmlElementAttributesToDictionary(*section)); }
-			else if (section->value() == "audio") { parseAudio(section); }
+			else if (section->value() == "audio") { parseAudio(ParseXmlElementAttributesToDictionary(*section)); }
 			else if (section->value() == "options") { parseOptions(section); }
 			else if (section->type() == XmlNode::NodeType::XML_COMMENT) {} // Ignore comments
 			else
@@ -338,66 +338,38 @@ void Configuration::parseGraphics(const Dictionary& dictionary)
  * \note	If any values are invalid or non-existant, this
  *			function will set default values.
  */
-void Configuration::parseAudio(XmlElement* element)
+void Configuration::parseAudio(const Dictionary& dictionary)
 {
-	const XmlAttribute* attribute = element->firstAttribute();
-	while (attribute)
+	ReportProblemNames(dictionary.keys(), {AUDIO_CFG_MIXRATE, AUDIO_CFG_CHANNELS, AUDIO_CFG_SFX_VOLUME, AUDIO_CFG_MUS_VOLUME, AUDIO_CFG_BUFFER_SIZE, AUDIO_CFG_MIXER});
+
+	mMixRate = dictionary.get<int>(AUDIO_CFG_MIXRATE);
+	mStereoChannels = dictionary.get<int>(AUDIO_CFG_CHANNELS);
+	mSfxVolume = dictionary.get<int>(AUDIO_CFG_SFX_VOLUME);
+	mMusicVolume = dictionary.get<int>(AUDIO_CFG_MUS_VOLUME);
+	mBufferLength = dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE);
+	mMixerName = dictionary.get(AUDIO_CFG_MIXER);
+
+	if (mMixRate != AUDIO_LOW_QUALITY && mMixRate != AUDIO_MEDIUM_QUALITY && mMixRate != AUDIO_HIGH_QUALITY)
 	{
-		if (attribute->name() == AUDIO_CFG_MIXRATE)
-		{
-			attribute->queryIntValue(mMixRate);
-			if (mMixRate != AUDIO_LOW_QUALITY && mMixRate != AUDIO_MEDIUM_QUALITY && mMixRate != AUDIO_HIGH_QUALITY)
-			{
-				std::cout << "Invalid audio mixrate setting '" << mMixRate << "'. Expected 11025, 22050 or 44100. Setting to default of 22050." << std::endl;
-				audioMixRate(AUDIO_MEDIUM_QUALITY);
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_CHANNELS)
-		{
-			attribute->queryIntValue(mStereoChannels);
-
-			if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
-			{
-				std::cout << "Invalid audio channels setting '" << mStereoChannels << "'. Expected 1 or 2. Setting to default of 2." << std::endl;
-				audioStereoChannels(AUDIO_STEREO);
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_SFX_VOLUME)
-		{
-			attribute->queryIntValue(mSfxVolume);
-
-			if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
-			{
-				audioSfxVolume(mSfxVolume);
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_MUS_VOLUME)
-		{
-			attribute->queryIntValue(mMusicVolume);
-
-			if (mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
-			{
-				audioMusicVolume(mMusicVolume);
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_BUFFER_SIZE)
-		{
-			attribute->queryIntValue(mBufferLength);
-			if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
-			{
-				audioBufferSize(std::clamp(mBufferLength, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE));
-			}
-		}
-		else if (attribute->name() == AUDIO_CFG_MIXER)
-		{
-			mMixerName = attribute->value();
-		}
-		else
-		{
-			std::cout << "Unexpected attribute '" << attribute->name() << "' found in '" << element->value() << "'." << std::endl;
-		}
-
-		attribute = attribute->next();
+		std::cout << "Invalid audio mixrate setting '" << mMixRate << "'. Expected 11025, 22050 or 44100. Setting to default of 22050." << std::endl;
+		audioMixRate(AUDIO_MEDIUM_QUALITY);
+	}
+	if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
+	{
+		std::cout << "Invalid audio channels setting '" << mStereoChannels << "'. Expected 1 or 2. Setting to default of 2." << std::endl;
+		audioStereoChannels(AUDIO_STEREO);
+	}
+	if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
+	{
+		audioSfxVolume(mSfxVolume);
+	}
+	if (mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
+	{
+		audioMusicVolume(mMusicVolume);
+	}
+	if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
+	{
+		audioBufferSize(std::clamp(mBufferLength, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE));
 	}
 }
 

@@ -92,7 +92,7 @@ private:
 	bool readConfig(const std::string& filePath);
 
 	void parseGraphics(const Dictionary& dictionary);
-	void parseAudio(Xml::XmlElement* node);
+	void parseAudio(const Dictionary& dictionary);
 	void parseOptions(Xml::XmlElement* node);
 
 	Options mOptions{};

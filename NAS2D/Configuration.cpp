@@ -290,11 +290,6 @@ bool Configuration::readConfig(const std::string& filePath)
 }
 
 
-/**
- * Parse the <graphics> tab.
- *
- * \todo	Check for sane configurations, particularly screen resolution.
- */
 void Configuration::parseGraphics(const Dictionary& dictionary)
 {
 	ReportProblemNames(dictionary.keys(), {GRAPHICS_CFG_SCREEN_WIDTH, GRAPHICS_CFG_SCREEN_HEIGHT, GRAPHICS_CFG_SCREEN_DEPTH, GRAPHICS_CFG_FULLSCREEN, GRAPHICS_CFG_VSYNC});
@@ -307,12 +302,6 @@ void Configuration::parseGraphics(const Dictionary& dictionary)
 }
 
 
-/**
- * Parses audio information from an XML node.
- *
- * \note	If any values are invalid or non-existant, this
- *			function will set default values.
- */
 void Configuration::parseAudio(const Dictionary& dictionary)
 {
 	ReportProblemNames(dictionary.keys(), {AUDIO_CFG_MIXRATE, AUDIO_CFG_CHANNELS, AUDIO_CFG_SFX_VOLUME, AUDIO_CFG_MUS_VOLUME, AUDIO_CFG_BUFFER_SIZE, AUDIO_CFG_MIXER});
@@ -349,11 +338,6 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 }
 
 
-/**
- * Parses program options from an XML node.
- *
- * \note	Use of void pointer in declaration to avoid implementation details in header.
- */
 void Configuration::parseOptions(const Dictionary& dictionary)
 {
 	for (const auto& key : dictionary.keys())

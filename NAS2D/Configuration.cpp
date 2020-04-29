@@ -296,19 +296,12 @@ bool Configuration::readConfig(const std::string& filePath)
 
 
 		// Start parsing through the Config.xml file.
-		for (auto section = root->firstChildElement();
-			 section != nullptr;
-			 section = section->nextSiblingElement())
-		{
-			if (section->value() == "graphics") { parseGraphics(ParseXmlElementAttributesToDictionary(*section)); }
-			else if (section->value() == "audio") { parseAudio(ParseXmlElementAttributesToDictionary(*section)); }
-			else if (section->value() == "options") { parseOptions(ParseXmlElementAttributesToDictionary(*section)); }
-			else if (section->type() == XmlNode::NodeType::XML_COMMENT) {} // Ignore comments
-			else
-			{
-				std::cout << "Unexpected tag '<" << section->value() << ">' found in '" << filePath << "' on row " << section->row() << "." << std::endl;
-			}
-		}
+		const auto sections = ParseXmlSections(*root);
+		ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
+
+		parseGraphics(sections.at("graphics"));
+		parseAudio(sections.at("audio"));
+		parseOptions(sections.at("options"));
 	}
 
 	return true;

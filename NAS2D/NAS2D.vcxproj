@@ -179,6 +179,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Exception.cpp" />
     <ClCompile Include="Filesystem.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="ContainerUtils.h" />
     <ClInclude Include="Delegate.h" />
+    <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Documentation.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Exception.h" />

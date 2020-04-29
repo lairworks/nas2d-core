@@ -315,12 +315,10 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 
 	if (mMixRate != AUDIO_LOW_QUALITY && mMixRate != AUDIO_MEDIUM_QUALITY && mMixRate != AUDIO_HIGH_QUALITY)
 	{
-		std::cout << "Invalid audio mixrate setting '" << mMixRate << "'. Expected 11025, 22050 or 44100. Setting to default of 22050." << std::endl;
 		audioMixRate(AUDIO_MEDIUM_QUALITY);
 	}
 	if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
 	{
-		std::cout << "Invalid audio channels setting '" << mStereoChannels << "'. Expected 1 or 2. Setting to default of 2." << std::endl;
 		audioStereoChannels(AUDIO_STEREO);
 	}
 	if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)

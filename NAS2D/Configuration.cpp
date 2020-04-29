@@ -133,6 +133,26 @@ namespace {
 
 		return sections;
 	}
+
+
+	std::map<std::string, Dictionary> ParseXmlSections(const std::string& xmlString, const std::string& sectionName)
+	{
+		XmlDocument xmlDocument;
+		xmlDocument.parse(xmlString.c_str());
+
+		if (xmlDocument.error())
+		{
+			throw std::runtime_error("Error parsing XML file on (Row " + std::to_string(xmlDocument.errorRow()) + ", Column " + std::to_string(xmlDocument.errorCol()) + "): " + xmlDocument.errorDesc());
+		}
+
+		XmlElement* root = xmlDocument.firstChildElement(sectionName);
+		if (!root)
+		{
+			throw std::runtime_error("XML file does not contain tag: " + sectionName);
+		}
+
+		return ParseXmlSections(*root);
+	}
 }
 
 

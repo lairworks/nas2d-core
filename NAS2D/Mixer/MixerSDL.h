@@ -26,7 +26,17 @@ namespace NAS2D {
 class MixerSDL : public Mixer
 {
 public:
+	struct Options
+	{
+		int mixRate;
+		int numChannels;
+		int sfxVolume;
+		int musicVolume;
+		int bufferSize;
+	};
+
 	MixerSDL();
+	MixerSDL(const Options& options);
 	MixerSDL(const MixerSDL&) = delete;
 	MixerSDL& operator=(const MixerSDL&) = delete;
 	MixerSDL(MixerSDL&&) = default;

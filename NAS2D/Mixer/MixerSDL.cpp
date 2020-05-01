@@ -34,13 +34,31 @@ namespace {
 	// Global so it can be accessed without capturing `this`
 	Signals::Signal<> musicFinished;
 	// ==================================================================================
+
+
+	MixerSDL::Options ReadConfigurationOptions()
+	{
+		const auto& configuration = Utility<Configuration>::get();
+		return {
+			configuration.audioMixRate(),
+			configuration.audioStereoChannels(),
+			configuration.audioSfxVolume(),
+			configuration.audioMusicVolume(),
+			configuration.audioBufferSize()
+		};
+	}
 }
 
 
 /*
  * C'tor.
  */
-MixerSDL::MixerSDL()
+MixerSDL::MixerSDL() : MixerSDL(ReadConfigurationOptions())
+{
+}
+
+
+MixerSDL::MixerSDL(const Options& options)
 {
 	std::cout << "Initializing Mixer... ";
 
@@ -49,15 +67,13 @@ MixerSDL::MixerSDL()
 		throw mixer_backend_init_failure(SDL_GetError());
 	}
 
-	Configuration& c = Utility<Configuration>::get();
-
-	if (Mix_OpenAudio(c.audioMixRate(), MIX_DEFAULT_FORMAT, c.audioStereoChannels(), c.audioBufferSize()))
+	if (Mix_OpenAudio(options.mixRate, MIX_DEFAULT_FORMAT, options.numChannels, options.bufferSize))
 	{
 		throw mixer_backend_init_failure(Mix_GetError());
 	}
 
-	soundVolume(c.audioSfxVolume());
-	musicVolume(c.audioMusicVolume());
+	soundVolume(options.sfxVolume);
+	musicVolume(options.musicVolume);
 
 	musicFinished.connect(this, &MixerSDL::onMusicFinished);
 	Mix_HookMusicFinished([](){ musicFinished(); });

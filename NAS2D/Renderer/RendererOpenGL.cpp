@@ -66,6 +66,17 @@ namespace {
 		const auto apiResult = glGetString(name);
 		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
 	}
+
+
+	RendererOpenGL::Options ReadConfigurationOptions()
+	{
+		const auto& configuration = Utility<Configuration>::get();
+		return {
+			{configuration.graphicsWidth(), configuration.graphicsHeight()},
+			configuration.fullscreen(),
+			configuration.vsync()
+		};
+	}
 }
 
 
@@ -85,12 +96,16 @@ GLuint generate_fbo(Image& image);
  *
  * \param title	Title of the application window.
  */
-RendererOpenGL::RendererOpenGL(const std::string& title) : Renderer(title)
+RendererOpenGL::RendererOpenGL(const std::string& title) : RendererOpenGL(title, ReadConfigurationOptions())
+{
+}
+
+
+RendererOpenGL::RendererOpenGL(const std::string& title, const Options& options) : Renderer(title)
 {
 	std::cout << "Starting OpenGL Renderer:" << std::endl;
 
-	Configuration& cf = Utility<Configuration>::get();
-	initVideo({cf.graphicsWidth(), cf.graphicsHeight()}, cf.fullscreen(), cf.vsync());
+	initVideo(options.resolution, options.fullscreen, options.vsync);
 }
 
 

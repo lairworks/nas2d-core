@@ -38,7 +38,7 @@ namespace {
 
 	MixerSDL::Options ReadConfigurationOptions()
 	{
-		Configuration& configuration = Utility<Configuration>::get();
+		const auto& configuration = Utility<Configuration>::get();
 		return {
 			configuration.audioMixRate(),
 			configuration.audioStereoChannels(),

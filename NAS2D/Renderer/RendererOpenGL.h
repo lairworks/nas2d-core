@@ -26,8 +26,16 @@ namespace NAS2D {
 class RendererOpenGL: public Renderer
 {
 public:
+	struct Options
+	{
+		Vector<int> resolution;
+		bool fullscreen;
+		bool vsync;
+	};
+
 	RendererOpenGL() = delete;
 	explicit RendererOpenGL(const std::string& title);
+	RendererOpenGL(const std::string& title, const Options& options);
 	RendererOpenGL(const RendererOpenGL& other) = delete;
 	RendererOpenGL(RendererOpenGL&& other) = delete;
 	RendererOpenGL& operator=(const RendererOpenGL& rhs) = delete;

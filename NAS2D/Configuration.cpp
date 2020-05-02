@@ -373,60 +373,6 @@ void Configuration::parseOptions(const Dictionary& dictionary)
 
 
 /**
- * Gets the Audio Rate that should be used by the Mixer.
- */
-int Configuration::audioMixRate() const
-{
-	return mMixRate;
-}
-
-
-/**
- * Gets Stereo or Mono
- */
-int Configuration::audioStereoChannels() const
-{
-	return mStereoChannels;
-}
-
-
-/**
- * Gets the Volume Level for Sound Effects.
- */
-int Configuration::audioSfxVolume() const
-{
-	return mSfxVolume;
-}
-
-
-/**
- * Gets the Volume Level for Music.
- */
-int Configuration::audioMusicVolume() const
-{
-	return mMusicVolume;
-}
-
-
-/**
- * Gets the audio Buffer Length.
- */
-int Configuration::audioBufferSize() const
-{
-	return mBufferLength;
-}
-
-
-/**
- * Gets name of the audio mixer.
- */
-const std::string& Configuration::mixer() const
-{
-	return mMixerName;
-}
-
-
-/**
  * Sets the screen width.
  *
  * \todo	Needs proper value and error checking.

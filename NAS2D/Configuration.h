@@ -52,12 +52,12 @@ public:
 
 
 	// Audio Options
-	int audioMixRate() const;
-	int audioStereoChannels() const;
-	int audioSfxVolume() const;
-	int audioMusicVolume() const;
-	int audioBufferSize() const;
-	const std::string& mixer() const;
+	int audioMixRate() const { return mMixRate; }
+	int audioStereoChannels() const { return mStereoChannels; }
+	int audioSfxVolume() const { return mSfxVolume; }
+	int audioMusicVolume() const { return mMusicVolume; }
+	int audioBufferSize() const { return mBufferLength; }
+	const std::string& mixer() const { return mMixerName; }
 
 	void audioMixRate(int mixrate);
 	void audioStereoChannels(int channels);

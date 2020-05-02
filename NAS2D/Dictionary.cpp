@@ -1,4 +1,5 @@
 #include "Dictionary.h"
+#include "ContainerUtils.h"
 
 
 namespace NAS2D {
@@ -9,6 +10,11 @@ namespace NAS2D {
 			mDictionary[key] = value;
 		}
 		return *this;
+	}
+
+	std::vector<std::string> Dictionary::keys() const
+	{
+		return getKeys(mDictionary);
 	}
 
 

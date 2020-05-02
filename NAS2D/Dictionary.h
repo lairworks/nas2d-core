@@ -1,7 +1,6 @@
 #pragma once
 
 #include "StringUtils.h"
-#include "ContainerUtils.h"
 #include <map>
 
 
@@ -24,10 +23,7 @@ namespace NAS2D {
 			mDictionary[key] = stringFrom<T>(value);
 		}
 
-		std::vector<std::string> keys() const
-		{
-			return getKeys(mDictionary);
-		}
+		std::vector<std::string> keys() const;
 
 	private:
 		std::map<std::string, std::string> mDictionary;

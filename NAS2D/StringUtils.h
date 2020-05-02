@@ -14,6 +14,8 @@
 #include <string_view>
 #include <utility>
 #include <vector>
+#include <stdexcept>
+
 
 namespace NAS2D
 {

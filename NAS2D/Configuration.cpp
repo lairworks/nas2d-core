@@ -153,6 +153,19 @@ namespace {
 
 		return ParseXmlSections(*root);
 	}
+
+
+	XmlElement* DictionaryToXmlElementAttributes(const std::string& tagName, const Dictionary& dictionary)
+	{
+		XmlElement* element = new XmlElement(tagName.c_str());
+
+		for (const auto& key : dictionary.keys())
+		{
+			element->attribute(key, dictionary.get(key));
+		}
+
+		return element;
+	}
 }
 
 

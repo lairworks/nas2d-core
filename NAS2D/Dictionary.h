@@ -23,6 +23,8 @@ namespace NAS2D {
 			mDictionary[key] = stringFrom<T>(value);
 		}
 
+		void erase(const std::string& key);
+
 		std::vector<std::string> keys() const;
 
 	private:

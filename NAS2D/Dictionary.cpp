@@ -12,6 +12,16 @@ namespace NAS2D {
 		return *this;
 	}
 
+	void Dictionary::erase(const std::string& key)
+	{
+		const auto iterator = mDictionary.find(key);
+
+		if (iterator != mDictionary.end())
+		{
+			mDictionary.erase(iterator);
+		}
+	}
+
 	std::vector<std::string> Dictionary::keys() const
 	{
 		return getKeys(mDictionary);

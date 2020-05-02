@@ -181,6 +181,19 @@ namespace {
 
 		return element;
 	}
+
+
+	XmlElement* SectionsToXmlElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
+	{
+		XmlElement* element = new XmlElement(tagName);
+
+		for (const auto& [key, dictionary] : sections)
+		{
+			element->linkEndChild(DictionaryToXmlElementAttributes(key, dictionary));
+		}
+
+		return element;
+	}
 }
 
 

@@ -22,6 +22,11 @@ namespace NAS2D {
 		}
 	}
 
+	bool Dictionary::has(const std::string& key) const
+	{
+		return mDictionary.find(key) != mDictionary.end();
+	}
+
 	std::vector<std::string> Dictionary::keys() const
 	{
 		return getKeys(mDictionary);

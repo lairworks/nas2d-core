@@ -24,6 +24,7 @@ namespace NAS2D {
 		}
 
 		void erase(const std::string& key);
+		bool has(const std::string& key) const;
 
 		std::vector<std::string> keys() const;
 

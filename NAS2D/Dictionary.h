@@ -8,6 +8,9 @@ namespace NAS2D {
 	class Dictionary
 	{
 	public:
+		bool operator==(const Dictionary& other) const;
+		bool operator!=(const Dictionary& other) const;
+
 		Dictionary& operator+=(const Dictionary& other);
 
 

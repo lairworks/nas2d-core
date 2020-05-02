@@ -3,6 +3,16 @@
 
 
 namespace NAS2D {
+	bool Dictionary::operator==(const Dictionary& other) const
+	{
+		return mDictionary == other.mDictionary;
+	}
+
+	bool Dictionary::operator!=(const Dictionary& other) const
+	{
+		return !(*this == other);
+	}
+
 	Dictionary& Dictionary::operator+=(const Dictionary& other)
 	{
 		for (const auto& [key, value] : other.mDictionary)

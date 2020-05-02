@@ -38,11 +38,11 @@ public:
 	void load(const std::string& filePath);
 
 	// Video Options
-	int graphicsWidth() const;
-	int graphicsHeight() const;
-	int graphicsColorDepth() const;
-	bool fullscreen() const;
-	bool vsync() const;
+	int graphicsWidth() const { return mScreenWidth; }
+	int graphicsHeight() const { return mScreenHeight; }
+	int graphicsColorDepth() const { return mScreenBpp; }
+	bool fullscreen() const { return mFullScreen; }
+	bool vsync() const { return mVSync; }
 
 	void graphicsWidth(int width);
 	void graphicsHeight(int height);

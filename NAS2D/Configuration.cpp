@@ -373,51 +373,6 @@ void Configuration::parseOptions(const Dictionary& dictionary)
 
 
 /**
- * Gets screen Width.
- */
-int Configuration::graphicsWidth() const
-{
-	return mScreenWidth;
-}
-
-
-/**
- * Gets screen Height.
- */
-int Configuration::graphicsHeight() const
-{
-	return mScreenHeight;
-}
-
-
-/**
- * Gets Color Depth.
- */
-int Configuration::graphicsColorDepth() const
-{
-	return mScreenBpp;
-}
-
-
-/**
- * Gets true if fullscreen mode is requested.
- */
-bool Configuration::fullscreen() const
-{
-	return mFullScreen;
-}
-
-
-/**
- * Gets true if vsync mode is requested.
- */
-bool Configuration::vsync() const
-{
-	return mVSync;
-}
-
-
-/**
  * Gets the Audio Rate that should be used by the Mixer.
  */
 int Configuration::audioMixRate() const

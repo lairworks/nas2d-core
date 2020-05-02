@@ -97,13 +97,6 @@ private:
 };
 
 
-using Point_2d = Point<int>;
-extern template struct Point<int>;
-
-using Point_2df = Point<float>;
-extern template struct Point<float>;
-
-
 template <typename BaseType>
 Point(BaseType, BaseType) -> Point<BaseType>;
 

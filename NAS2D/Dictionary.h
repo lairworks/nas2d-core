@@ -1,7 +1,6 @@
 #pragma once
 
 #include "StringUtils.h"
-#include "ContainerUtils.h"
 #include <map>
 
 
@@ -9,6 +8,9 @@ namespace NAS2D {
 	class Dictionary
 	{
 	public:
+		bool operator==(const Dictionary& other) const;
+		bool operator!=(const Dictionary& other) const;
+
 		Dictionary& operator+=(const Dictionary& other);
 
 
@@ -24,10 +26,10 @@ namespace NAS2D {
 			mDictionary[key] = stringFrom<T>(value);
 		}
 
-		std::vector<std::string> keys() const
-		{
-			return getKeys(mDictionary);
-		}
+		void erase(const std::string& key);
+		bool has(const std::string& key) const;
+
+		std::vector<std::string> keys() const;
 
 	private:
 		std::map<std::string, std::string> mDictionary;

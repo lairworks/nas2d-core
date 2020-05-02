@@ -22,6 +22,19 @@ TEST(Dictionary, setGet) {
 	EXPECT_THROW(dictionary.get("KeyDoesNotExist"), std::out_of_range);
 }
 
+TEST(Dictionary, hasErase) {
+	NAS2D::Dictionary dictionary;
+
+	EXPECT_FALSE(dictionary.has("Key1"));
+	dictionary.set("Key1", "Some string value");
+	EXPECT_TRUE(dictionary.has("Key1"));
+	dictionary.erase("Key1");
+	EXPECT_FALSE(dictionary.has("Key1"));
+
+	EXPECT_NO_THROW(dictionary.erase("Key1"));
+	EXPECT_FALSE(dictionary.has("Key1"));
+}
+
 TEST(Dictionary, keys) {
 	NAS2D::Dictionary dictionary;
 

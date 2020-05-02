@@ -153,6 +153,47 @@ namespace {
 
 		return ParseXmlSections(*root);
 	}
+
+
+	XmlElement* DictionaryToXmlElementAttributes(const std::string& tagName, const Dictionary& dictionary)
+	{
+		XmlElement* element = new XmlElement(tagName.c_str());
+
+		for (const auto& key : dictionary.keys())
+		{
+			element->attribute(key, dictionary.get(key));
+		}
+
+		return element;
+	}
+
+
+	XmlElement* DictionaryToXmlElementOptions(const std::string& tagName, const Dictionary& dictionary)
+	{
+		XmlElement* element = new XmlElement(tagName.c_str());
+
+		for (const auto& key : dictionary.keys())
+		{
+			XmlElement* option = new XmlElement("option");
+			option->attribute("name", key);
+			option->attribute("value", dictionary.get(key));
+		}
+
+		return element;
+	}
+
+
+	XmlElement* SectionsToXmlElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
+	{
+		XmlElement* element = new XmlElement(tagName);
+
+		for (const auto& [key, dictionary] : sections)
+		{
+			element->linkEndChild(DictionaryToXmlElementAttributes(key, dictionary));
+		}
+
+		return element;
+	}
 }
 
 
@@ -209,37 +250,26 @@ void Configuration::save()
 	XmlComment* comment = new XmlComment("Automatically generated Configuration file.");
 	doc.linkEndChild(comment);
 
-	XmlElement* root = new XmlElement("configuration");
+	Dictionary graphics;
+	graphics.set("screenwidth", mScreenWidth);
+	graphics.set("screenheight", mScreenHeight);
+	graphics.set("bitdepth", mScreenBpp);
+	graphics.set("fullscreen", mFullScreen);
+	graphics.set("vsync", mVSync);
+
+	Dictionary audio;
+	audio.set("mixrate", mMixRate);
+	audio.set("channels", mStereoChannels);
+	audio.set("sfxvolume", mSfxVolume);
+	audio.set("musicvolume", mMusicVolume);
+	audio.set("bufferlength", mBufferLength);
+	audio.set("mixer", mMixerName);
+
+	auto* root = SectionsToXmlElement("configuration", std::map<std::string, Dictionary>{{"graphics", graphics}, {"audio", audio}});
 	doc.linkEndChild(root);
 
-	XmlElement* graphics = new XmlElement("graphics");
-	graphics->attribute("screenwidth", mScreenWidth);
-	graphics->attribute("screenheight", mScreenHeight);
-	graphics->attribute("bitdepth", mScreenBpp);
-	graphics->attribute("fullscreen", mFullScreen ? "true" : "false");
-	graphics->attribute("vsync", mVSync ? "true" : "false");
-	root->linkEndChild(graphics);
-
-	XmlElement* audio = new XmlElement("audio");
-	audio->attribute("mixrate", mMixRate);
-	audio->attribute("channels", mStereoChannels);
-	audio->attribute("sfxvolume", mSfxVolume);
-	audio->attribute("musicvolume", mMusicVolume);
-	audio->attribute("bufferlength", mBufferLength);
-	audio->attribute("mixer", mMixerName);
-	root->linkEndChild(audio);
-
 	// Options
-	XmlElement* options = new XmlElement("options");
-	root->linkEndChild(options);
-
-	for (const auto& key : mOptions.keys())
-	{
-		XmlElement* option = new XmlElement("option");
-		option->attribute("name", key);
-		option->attribute("value", mOptions.get(key));
-		options->linkEndChild(option);
-	}
+	root->linkEndChild(DictionaryToXmlElementOptions("options", mOptions));
 
 	// Write out the XML file.
 	XmlMemoryBuffer buff;

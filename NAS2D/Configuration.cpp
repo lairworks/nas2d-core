@@ -253,22 +253,22 @@ void Configuration::save()
 	XmlElement* root = new XmlElement("configuration");
 	doc.linkEndChild(root);
 
-	XmlElement* graphics = new XmlElement("graphics");
-	graphics->attribute("screenwidth", mScreenWidth);
-	graphics->attribute("screenheight", mScreenHeight);
-	graphics->attribute("bitdepth", mScreenBpp);
-	graphics->attribute("fullscreen", mFullScreen ? "true" : "false");
-	graphics->attribute("vsync", mVSync ? "true" : "false");
-	root->linkEndChild(graphics);
+	Dictionary graphics;
+	graphics.set("screenwidth", mScreenWidth);
+	graphics.set("screenheight", mScreenHeight);
+	graphics.set("bitdepth", mScreenBpp);
+	graphics.set("fullscreen", mFullScreen);
+	graphics.set("vsync", mVSync);
+	root->linkEndChild(DictionaryToXmlElementAttributes("graphics", graphics));
 
-	XmlElement* audio = new XmlElement("audio");
-	audio->attribute("mixrate", mMixRate);
-	audio->attribute("channels", mStereoChannels);
-	audio->attribute("sfxvolume", mSfxVolume);
-	audio->attribute("musicvolume", mMusicVolume);
-	audio->attribute("bufferlength", mBufferLength);
-	audio->attribute("mixer", mMixerName);
-	root->linkEndChild(audio);
+	Dictionary audio;
+	audio.set("mixrate", mMixRate);
+	audio.set("channels", mStereoChannels);
+	audio.set("sfxvolume", mSfxVolume);
+	audio.set("musicvolume", mMusicVolume);
+	audio.set("bufferlength", mBufferLength);
+	audio.set("mixer", mMixerName);
+	root->linkEndChild(DictionaryToXmlElementAttributes("audio", audio));
 
 	// Options
 	XmlElement* options = new XmlElement("options");

@@ -271,16 +271,7 @@ void Configuration::save()
 	root->linkEndChild(DictionaryToXmlElementAttributes("audio", audio));
 
 	// Options
-	XmlElement* options = new XmlElement("options");
-	root->linkEndChild(options);
-
-	for (const auto& key : mOptions.keys())
-	{
-		XmlElement* option = new XmlElement("option");
-		option->attribute("name", key);
-		option->attribute("value", mOptions.get(key));
-		options->linkEndChild(option);
-	}
+	root->linkEndChild(DictionaryToXmlElementOptions("options", mOptions));
 
 	// Write out the XML file.
 	XmlMemoryBuffer buff;

@@ -9,13 +9,12 @@
 // ==================================================================================
 #pragma once
 
+#include "Dictionary.h"
 #include <string>
 #include <map>
 
 
 namespace NAS2D {
-
-class Dictionary;
 
 
 /**
@@ -70,7 +69,7 @@ public:
 	void mixer(const std::string& mixer);
 
 	void option(const std::string& option, const std::string& value, bool overwrite = true);
-	const std::string& option(const std::string& key);
+	std::string option(const std::string& key);
 	void deleteOption(const std::string& option);
 
 	void setDefaultValues();
@@ -83,15 +82,13 @@ public:
 
 protected:
 private:
-	using Options = std::map<std::string, std::string>;
-
 	bool readConfig(const std::string& filePath);
 
 	void parseGraphics(const Dictionary& dictionary);
 	void parseAudio(const Dictionary& dictionary);
 	void parseOptions(const Dictionary& dictionary);
 
-	Options mOptions{};
+	Dictionary mOptions{};
 
 	int mScreenWidth{800};
 	int mScreenHeight{600};

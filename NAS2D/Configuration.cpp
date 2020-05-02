@@ -233,11 +233,11 @@ void Configuration::save()
 	XmlElement* options = new XmlElement("options");
 	root->linkEndChild(options);
 
-	for (auto op : mOptions)
+	for (const auto& key : mOptions.keys())
 	{
 		XmlElement* option = new XmlElement("option");
-		option->attribute("name", op.first);
-		option->attribute("value", op.second);
+		option->attribute("name", key);
+		option->attribute("value", mOptions.get(key));
 		options->linkEndChild(option);
 	}
 
@@ -338,10 +338,7 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 
 void Configuration::parseOptions(const Dictionary& dictionary)
 {
-	for (const auto& key : dictionary.keys())
-	{
-		mOptions[key] = dictionary.get(key);
-	}
+	mOptions = dictionary;
 }
 
 
@@ -605,12 +602,12 @@ void Configuration::audioBufferSize(int size)
  */
 void Configuration::option(const std::string& option, const std::string& value, bool overwrite)
 {
-	if (!overwrite && mOptions.find(option) != mOptions.end())
+	if (!overwrite && mOptions.has(option))
 	{
 		return;
 	}
 
-	mOptions[option] = value;
+	mOptions.set(option, value);
 	mOptionChanged = true;
 }
 
@@ -625,14 +622,14 @@ void Configuration::option(const std::string& option, const std::string& value, 
  * \note	Option values are stored and read as strings. How the program
  *			interprets the data contained in value is up to the programmer.
  */
-const std::string& Configuration::option(const std::string& key)
+std::string Configuration::option(const std::string& key)
 {
-	if (mOptions.find(key) != mOptions.end())
+	if (mOptions.has(key))
 	{
 		mOptionChanged = true;
 	}
 
-	return mOptions[key];
+	return mOptions.get(key);
 }
 
 
@@ -646,11 +643,9 @@ const std::string& Configuration::option(const std::string& key)
  */
 void Configuration::deleteOption(const std::string& option)
 {
-	Options::iterator it = mOptions.find(option);
-
-	if (it != mOptions.end())
+	if (mOptions.has(option))
 	{
-		mOptions.erase(it);
+		mOptions.erase(option);
 		mOptionChanged = true;
 	}
 }

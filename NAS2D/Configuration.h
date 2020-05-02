@@ -41,16 +41,14 @@ public:
 	int graphicsWidth() const;
 	int graphicsHeight() const;
 	int graphicsColorDepth() const;
-
 	bool fullscreen() const;
-	void fullscreen(bool fullscreen);
-
 	bool vsync() const;
-	void vsync(bool vsync);
 
 	void graphicsWidth(int width);
 	void graphicsHeight(int height);
 	void graphicsColorDepth(int bpp);
+	void fullscreen(bool fullscreen);
+	void vsync(bool vsync);
 
 
 	// Audio Options

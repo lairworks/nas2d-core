@@ -250,16 +250,12 @@ void Configuration::save()
 	XmlComment* comment = new XmlComment("Automatically generated Configuration file.");
 	doc.linkEndChild(comment);
 
-	XmlElement* root = new XmlElement("configuration");
-	doc.linkEndChild(root);
-
 	Dictionary graphics;
 	graphics.set("screenwidth", mScreenWidth);
 	graphics.set("screenheight", mScreenHeight);
 	graphics.set("bitdepth", mScreenBpp);
 	graphics.set("fullscreen", mFullScreen);
 	graphics.set("vsync", mVSync);
-	root->linkEndChild(DictionaryToXmlElementAttributes("graphics", graphics));
 
 	Dictionary audio;
 	audio.set("mixrate", mMixRate);
@@ -268,7 +264,9 @@ void Configuration::save()
 	audio.set("musicvolume", mMusicVolume);
 	audio.set("bufferlength", mBufferLength);
 	audio.set("mixer", mMixerName);
-	root->linkEndChild(DictionaryToXmlElementAttributes("audio", audio));
+
+	auto* root = SectionsToXmlElement("configuration", std::map<std::string, Dictionary>{{"graphics", graphics}, {"audio", audio}});
+	doc.linkEndChild(root);
 
 	// Options
 	root->linkEndChild(DictionaryToXmlElementOptions("options", mOptions));

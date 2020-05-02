@@ -166,6 +166,21 @@ namespace {
 
 		return element;
 	}
+
+
+	XmlElement* DictionaryToXmlElementOptions(const std::string& tagName, const Dictionary& dictionary)
+	{
+		XmlElement* element = new XmlElement(tagName.c_str());
+
+		for (const auto& key : dictionary.keys())
+		{
+			XmlElement* option = new XmlElement("option");
+			option->attribute("name", key);
+			option->attribute("value", dictionary.get(key));
+		}
+
+		return element;
+	}
 }
 
 

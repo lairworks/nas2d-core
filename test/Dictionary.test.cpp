@@ -4,6 +4,40 @@
 #include <gtest/gtest.h>
 
 
+TEST(Dictionary, OperatorEquality) {
+	NAS2D::Dictionary dictionary1;
+	NAS2D::Dictionary dictionary2;
+	NAS2D::Dictionary dictionary3;
+	NAS2D::Dictionary dictionary4;
+
+	dictionary1.set("Key1", "Value1");
+	dictionary2.set("Key1", "Value1");
+	dictionary3.set("Key1", "Value10");
+	dictionary4.set("Key10", "Value1");
+
+	EXPECT_EQ(dictionary1, dictionary1);
+	EXPECT_EQ(dictionary1, dictionary2);
+	EXPECT_EQ(dictionary2, dictionary1);
+	EXPECT_EQ(dictionary2, dictionary2);
+
+	EXPECT_NE(dictionary1, dictionary3);
+	EXPECT_NE(dictionary1, dictionary4);
+	EXPECT_NE(dictionary3, dictionary4);
+
+	dictionary3.set("Key1", "Value1");
+	EXPECT_EQ(dictionary1, dictionary3);
+	EXPECT_EQ(dictionary2, dictionary3);
+
+	dictionary4.set("Key1", "Value1");
+	EXPECT_NE(dictionary1, dictionary4);
+	EXPECT_NE(dictionary2, dictionary4);
+	EXPECT_NE(dictionary3, dictionary4);
+	dictionary4.erase("Key10");
+	EXPECT_EQ(dictionary1, dictionary4);
+	EXPECT_EQ(dictionary2, dictionary4);
+	EXPECT_EQ(dictionary3, dictionary4);
+}
+
 TEST(Dictionary, setGet) {
 	NAS2D::Dictionary dictionary;
 

@@ -555,9 +555,10 @@ void Configuration::option(const std::string& option, const std::string& value, 
  */
 std::string Configuration::option(const std::string& key)
 {
-	if (mOptions.has(key))
+	if (!mOptions.has(key))
 	{
 		mOptionChanged = true;
+		mOptions.set(key, std::string{});
 	}
 
 	return mOptions.get(key);

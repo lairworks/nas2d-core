@@ -320,7 +320,8 @@ bool Configuration::readConfig(const std::string& filePath)
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
 	// Start parsing through the Config.xml file.
-	const auto sections = ParseXmlSections(xmlFile.raw_bytes(), "configuration");
+	const auto loadedSections = ParseXmlSections(xmlFile.raw_bytes(), "configuration");
+	const auto sections = merge(mDefaults, loadedSections);
 	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
 
 	parseGraphics(sections.at("graphics"));

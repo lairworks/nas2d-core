@@ -26,8 +26,8 @@ namespace NAS2D {
 class Configuration
 {
 public:
-
 	Configuration() = default;
+	Configuration(std::map<std::string, Dictionary> defaults) : mDefaults{std::move(defaults)} {}
 	Configuration(const Configuration&) = delete;
 	Configuration& operator=(const Configuration&) = delete;
 	Configuration(Configuration&&) = delete;
@@ -86,6 +86,7 @@ private:
 	void parseAudio(const Dictionary& dictionary);
 	void parseOptions(const Dictionary& dictionary);
 
+	const std::map<std::string, Dictionary> mDefaults{};
 	Dictionary mOptions{};
 
 	int mScreenWidth{800};

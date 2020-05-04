@@ -14,15 +14,10 @@ TEST(Dictionary, ConstructorInitialEntries) {
 }
 
 TEST(Dictionary, OperatorEquality) {
-	NAS2D::Dictionary dictionary1;
-	NAS2D::Dictionary dictionary2;
-	NAS2D::Dictionary dictionary3;
-	NAS2D::Dictionary dictionary4;
-
-	dictionary1.set("Key1", "Value1");
-	dictionary2.set("Key1", "Value1");
-	dictionary3.set("Key1", "Value10");
-	dictionary4.set("Key10", "Value1");
+	NAS2D::Dictionary dictionary1{{"Key1", "Value1"}};
+	NAS2D::Dictionary dictionary2{{"Key1", "Value1"}};
+	NAS2D::Dictionary dictionary3{{"Key1", "Value10"}};
+	NAS2D::Dictionary dictionary4{{"Key10", "Value1"}};
 
 	EXPECT_EQ(dictionary1, dictionary1);
 	EXPECT_EQ(dictionary1, dictionary2);

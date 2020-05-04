@@ -8,6 +8,9 @@ namespace NAS2D {
 	class Dictionary
 	{
 	public:
+		Dictionary() = default;
+		Dictionary(std::initializer_list<std::pair<const std::string, std::string>> initialEntries) : mDictionary{initialEntries} {}
+
 		bool operator==(const Dictionary& other) const;
 		bool operator!=(const Dictionary& other) const;
 

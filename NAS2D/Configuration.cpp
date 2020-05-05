@@ -59,6 +59,17 @@ const std::string GRAPHICS_CFG_VSYNC = "vsync";
 
 
 namespace {
+	std::map<std::string, Dictionary> merge(const std::map<std::string, Dictionary>& defaults, const std::map<std::string, Dictionary>& priorityValues)
+	{
+		std::map<std::string, Dictionary> results = defaults;
+		for (const auto& [key, dictionary] : priorityValues)
+		{
+			results[key] += dictionary;
+		}
+		return results;
+	}
+
+
 	void ReportProblemNames(
 		const std::vector<std::string>& names,
 		const std::vector<std::string>& required,
@@ -309,7 +320,8 @@ bool Configuration::readConfig(const std::string& filePath)
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
 	// Start parsing through the Config.xml file.
-	const auto sections = ParseXmlSections(xmlFile.raw_bytes(), "configuration");
+	const auto loadedSections = ParseXmlSections(xmlFile.raw_bytes(), "configuration");
+	const auto sections = merge(mDefaults, loadedSections);
 	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
 
 	parseGraphics(sections.at("graphics"));

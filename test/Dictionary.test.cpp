@@ -4,16 +4,20 @@
 #include <gtest/gtest.h>
 
 
-TEST(Dictionary, OperatorEquality) {
-	NAS2D::Dictionary dictionary1;
-	NAS2D::Dictionary dictionary2;
-	NAS2D::Dictionary dictionary3;
-	NAS2D::Dictionary dictionary4;
+TEST(Dictionary, ConstructorInitialEntries) {
+	NAS2D::Dictionary dictionary{{"Key1", "Value1"}, {"Key2", "Value2"}};
 
-	dictionary1.set("Key1", "Value1");
-	dictionary2.set("Key1", "Value1");
-	dictionary3.set("Key1", "Value10");
-	dictionary4.set("Key10", "Value1");
+	EXPECT_EQ("Value1", dictionary.get("Key1"));
+	EXPECT_EQ("Value2", dictionary.get("Key2"));
+
+	EXPECT_THROW(dictionary.get("Key3"), std::out_of_range);
+}
+
+TEST(Dictionary, OperatorEquality) {
+	NAS2D::Dictionary dictionary1{{"Key1", "Value1"}};
+	NAS2D::Dictionary dictionary2{{"Key1", "Value1"}};
+	NAS2D::Dictionary dictionary3{{"Key1", "Value10"}};
+	NAS2D::Dictionary dictionary4{{"Key10", "Value1"}};
 
 	EXPECT_EQ(dictionary1, dictionary1);
 	EXPECT_EQ(dictionary1, dictionary2);

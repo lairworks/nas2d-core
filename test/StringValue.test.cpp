@@ -3,6 +3,21 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <vector>
+#include <map>
+
+
+TEST(StringValue, ContainerInitialization) {
+	std::vector<NAS2D::StringValue> vect{"", "1", "11"};
+	EXPECT_EQ("", vect[0].to<std::string>());
+	EXPECT_EQ(1, vect[1].to<int>());
+	EXPECT_EQ(11, vect[2].to<int>());
+
+	std::map<std::string, NAS2D::StringValue> someMap{{"abc", "def"}, {"1", 11}};
+	EXPECT_EQ("def", someMap.at("abc").to<std::string>());
+	EXPECT_EQ(11, someMap.at("1").to<int>());
+}
+
 
 TEST(StringValue, Constructor) {
 	EXPECT_EQ("", NAS2D::StringValue{}.value);

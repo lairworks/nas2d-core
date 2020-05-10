@@ -21,6 +21,24 @@ TEST(StringValue, Constructor) {
 	EXPECT_THAT(NAS2D::StringValue{0.0}.value, testing::StartsWith("0.0"));
 }
 
+TEST(StringValue, OperatorComparison) {
+	// Identical constructor types
+	EXPECT_EQ(NAS2D::StringValue{}, NAS2D::StringValue{});
+	EXPECT_EQ(NAS2D::StringValue{"Value"}, NAS2D::StringValue{"Value"});
+	EXPECT_EQ(NAS2D::StringValue{false}, NAS2D::StringValue{false});
+	EXPECT_EQ(NAS2D::StringValue{true}, NAS2D::StringValue{true});
+	EXPECT_EQ(NAS2D::StringValue{-1}, NAS2D::StringValue{-1});
+	EXPECT_EQ(NAS2D::StringValue{0}, NAS2D::StringValue{0});
+	EXPECT_EQ(NAS2D::StringValue{1}, NAS2D::StringValue{1});
+
+	// Mixed constructor types
+	EXPECT_EQ(NAS2D::StringValue{"false"}, NAS2D::StringValue{false});
+	EXPECT_EQ(NAS2D::StringValue{"true"}, NAS2D::StringValue{true});
+	EXPECT_EQ(NAS2D::StringValue{"-1"}, NAS2D::StringValue{-1});
+	EXPECT_EQ(NAS2D::StringValue{"0"}, NAS2D::StringValue{0});
+	EXPECT_EQ(NAS2D::StringValue{"1"}, NAS2D::StringValue{1});
+}
+
 TEST(StringValue, OperatorConversion) {
 	// Explicit conversion
 	EXPECT_EQ(false, static_cast<bool>(NAS2D::StringValue{false}));

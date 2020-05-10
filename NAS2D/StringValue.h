@@ -11,7 +11,7 @@ namespace NAS2D {
 
 		StringValue() = default;
 		template <typename T>
-		explicit StringValue(T newValue) : value{stringFrom<T>(newValue)} {}
+		StringValue(T newValue) : value{stringFrom<T>(newValue)} {}
 
 		bool operator==(const StringValue& other) const { return value == other.value; }
 		bool operator!=(const StringValue& other) const { return !(*this == other); }

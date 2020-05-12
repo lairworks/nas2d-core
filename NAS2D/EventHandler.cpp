@@ -709,7 +709,7 @@ bool EventHandler::query_shift() const
  */
 bool EventHandler::query_numlock() const
 {
-    using underlying = std::underlying_type_t<KeyModifier>;
+	using underlying = std::underlying_type_t<KeyModifier>;
 	return KeyModifier::KEY_MOD_NONE != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::KEY_MOD_NUM));
 }
 

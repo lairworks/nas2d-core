@@ -6,7 +6,7 @@ FROM ubuntu:18.04
 # Includes tools to build download, unpack, and build source packages
 # Includes tools needed for primary CircleCI containers
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    g++-8=8.3.0-* \
+    g++-8=8.4.0-* \
     dpkg-dev=1.19.0.* \
     make=4.1-* \
     cmake=3.10.2-* \

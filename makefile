@@ -219,7 +219,7 @@ ImageName := nas2d
 ImageVersion := 1.4
 
 ImageName_gcc8 := nas2d-gcc8
-ImageVersion_gcc8 := 1.0
+ImageVersion_gcc8 := 1.1
 
 ImageName_clang := nas2d-clang
 ImageVersion_clang := 1.0

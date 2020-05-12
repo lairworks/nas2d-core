@@ -257,6 +257,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="StringValue.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Trig.h" />
     <ClInclude Include="Utility.h" />

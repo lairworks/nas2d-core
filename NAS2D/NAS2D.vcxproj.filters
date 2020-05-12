@@ -308,6 +308,9 @@
     <ClInclude Include="StringUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StringValue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="MathUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>

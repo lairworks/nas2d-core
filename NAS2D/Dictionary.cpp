@@ -1,8 +1,14 @@
 #include "Dictionary.h"
 #include "ContainerUtils.h"
 
+#include <utility>
+
 
 namespace NAS2D {
+	Dictionary::Dictionary(std::map<std::string, StringValue> initialEntries) : mDictionary{std::move(initialEntries)}
+	{}
+
+
 	bool Dictionary::operator==(const Dictionary& other) const
 	{
 		return mDictionary == other.mDictionary;

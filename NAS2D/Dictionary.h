@@ -1,6 +1,6 @@
 #pragma once
 
-#include "StringUtils.h"
+#include "StringValue.h"
 #include <map>
 
 
@@ -9,7 +9,7 @@ namespace NAS2D {
 	{
 	public:
 		Dictionary() = default;
-		Dictionary(std::initializer_list<std::pair<const std::string, std::string>> initialEntries) : mDictionary{initialEntries} {}
+		Dictionary(std::map<std::string, StringValue> initialEntries);
 
 		bool operator==(const Dictionary& other) const;
 		bool operator!=(const Dictionary& other) const;
@@ -20,13 +20,13 @@ namespace NAS2D {
 		template <typename T = std::string>
 		T get(const std::string& key) const
 		{
-			return stringTo<T>(mDictionary.at(key));
+			return mDictionary.at(key).to<T>();
 		}
 
 		template <typename T = std::string>
 		void set(const std::string& key, T value)
 		{
-			mDictionary[key] = stringFrom<T>(value);
+			mDictionary[key].from(value);
 		}
 
 		void erase(const std::string& key);
@@ -35,7 +35,7 @@ namespace NAS2D {
 		std::vector<std::string> keys() const;
 
 	private:
-		std::map<std::string, std::string> mDictionary;
+		std::map<std::string, StringValue> mDictionary;
 	};
 
 

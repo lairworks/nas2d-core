@@ -241,7 +241,9 @@ void Configuration::load(const std::string& filePath)
 	else
 	{
 		try {
-			readConfig(filePath); // Read in the Config File.
+			// Read in the Config File.
+			File xmlFile = Utility<Filesystem>::get().open(filePath);
+			readConfig(xmlFile.raw_bytes());
 			std::cout << "done." << std::endl;
 		}
 		catch (const std::runtime_error& e) {
@@ -315,14 +317,12 @@ void Configuration::setDefaultValues()
 /**
  * Reads a given XML configuration file.
  *
- * \param filePath	Name of an XML Configuration file to be read.
+ * \param fileData	Name of an XML Configuration file to be read.
  */
-void Configuration::readConfig(const std::string& filePath)
+void Configuration::readConfig(const std::string& fileData)
 {
-	File xmlFile = Utility<Filesystem>::get().open(filePath);
-
 	// Start parsing through the Config.xml file.
-	const auto loadedSections = ParseXmlSections(xmlFile.raw_bytes(), "configuration");
+	const auto loadedSections = ParseXmlSections(fileData, "configuration");
 	const auto sections = merge(mDefaults, loadedSections);
 	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
 

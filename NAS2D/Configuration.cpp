@@ -236,8 +236,8 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	const auto loadedSections = ParseXmlSections(fileData, "configuration");
-	const auto sections = merge(mDefaults, loadedSections);
+	mLoadedSettings = ParseXmlSections(fileData, "configuration");
+	const auto sections = merge(mDefaults, mLoadedSettings);
 	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
 
 	parseGraphics(sections.at("graphics"));

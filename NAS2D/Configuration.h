@@ -81,6 +81,7 @@ private:
 	void parseOptions(const Dictionary& dictionary);
 
 	const std::map<std::string, Dictionary> mDefaults{};
+	std::map<std::string, Dictionary> mLoadedSettings{};
 	Dictionary mOptions{};
 
 	int mScreenWidth{800};

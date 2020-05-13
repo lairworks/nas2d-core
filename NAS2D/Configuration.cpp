@@ -258,7 +258,6 @@ void Configuration::load(const std::string& filePath)
 	if (!Utility<Filesystem>::get().exists(filePath))
 	{
 		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
-		mOptionChanged = true;
 	}
 	else
 	{
@@ -269,7 +268,6 @@ void Configuration::load(const std::string& filePath)
 			std::cout << "done." << std::endl;
 		}
 		catch (const std::runtime_error& e) {
-			mOptionChanged = true;
 			std::cout << "unable to process '" << filePath << "'. Using default options. Error: " << e.what() << std::endl;
 		}
 	}
@@ -346,7 +344,6 @@ void Configuration::setDefaultValues()
 	mSfxVolume = AUDIO_SFX_VOLUME;
 	mMusicVolume = AUDIO_MUSIC_VOLUME;
 	mBufferLength = AUDIO_BUFFER_SIZE;
-	mOptionChanged = true;
 }
 
 
@@ -410,7 +407,6 @@ void Configuration::parseOptions(const Dictionary& dictionary)
 void Configuration::graphicsWidth(int width)
 {
 	mScreenWidth = width;
-	mOptionChanged = true;
 }
 
 
@@ -422,7 +418,6 @@ void Configuration::graphicsWidth(int width)
 void Configuration::graphicsHeight(int height)
 {
 	mScreenHeight = height;
-	mOptionChanged = true;
 }
 
 
@@ -434,7 +429,6 @@ void Configuration::graphicsHeight(int height)
 void Configuration::graphicsColorDepth(int bpp)
 {
 	mScreenBpp = bpp;
-	mOptionChanged = true;
 }
 
 
@@ -446,7 +440,6 @@ void Configuration::graphicsColorDepth(int bpp)
 void Configuration::fullscreen(bool fullscreen)
 {
 	mFullScreen = fullscreen;
-	mOptionChanged = true;
 }
 
 
@@ -463,7 +456,6 @@ void Configuration::fullscreen(bool fullscreen)
 void Configuration::vsync(bool vsync)
 {
 	mVSync = vsync;
-	mOptionChanged = true;
 }
 
 
@@ -482,7 +474,6 @@ void Configuration::audioMixRate(int mixrate)
 	}
 
 	mMixRate = mixrate;
-	mOptionChanged = true;
 }
 
 
@@ -496,7 +487,6 @@ void Configuration::audioMixRate(int mixrate)
 void Configuration::mixer(const std::string& mixer)
 {
 	mMixerName = mixer;
-	mOptionChanged = true;
 }
 
 
@@ -508,7 +498,6 @@ void Configuration::mixer(const std::string& mixer)
 void Configuration::audioStereoChannels(int channels)
 {
 	mStereoChannels = std::clamp(channels, AUDIO_MONO, AUDIO_STEREO);
-	mOptionChanged = true;
 }
 
 
@@ -520,7 +509,6 @@ void Configuration::audioStereoChannels(int channels)
 void Configuration::audioSfxVolume(int volume)
 {
 	mSfxVolume = std::clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
-	mOptionChanged = true;
 }
 
 
@@ -533,7 +521,6 @@ void Configuration::audioSfxVolume(int volume)
 void Configuration::audioMusicVolume(int volume)
 {
 	mMusicVolume = std::clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
-	mOptionChanged = true;
 }
 
 
@@ -547,7 +534,6 @@ void Configuration::audioMusicVolume(int volume)
 void Configuration::audioBufferSize(int size)
 {
 	mBufferLength = std::clamp(size, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE);
-	mOptionChanged = true;
 }
 
 
@@ -569,7 +555,6 @@ void Configuration::option(const std::string& option, const std::string& value, 
 	}
 
 	mOptions.set(option, value);
-	mOptionChanged = true;
 }
 
 
@@ -587,7 +572,6 @@ std::string Configuration::option(const std::string& key)
 {
 	if (!mOptions.has(key))
 	{
-		mOptionChanged = true;
 		mOptions.set(key, std::string{});
 	}
 
@@ -608,6 +592,5 @@ void Configuration::deleteOption(const std::string& option)
 	if (mOptions.has(option))
 	{
 		mOptions.erase(option);
-		mOptionChanged = true;
 	}
 }

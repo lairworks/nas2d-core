@@ -74,12 +74,6 @@ public:
 
 	void setDefaultValues();
 
-	/**
-	 * Indicates that an option has changed since the
-	 * Configuration file was loaded.
-	 */
-	bool optionChanged() const { return mOptionChanged; }
-
 protected:
 private:
 	void parseGraphics(const Dictionary& dictionary);
@@ -102,8 +96,6 @@ private:
 	int mMusicVolume{100};
 	int mBufferLength{1024};
 	std::string mMixerName{"SDL"};
-
-	bool mOptionChanged{false};
 };
 
 } // namespace

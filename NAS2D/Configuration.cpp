@@ -223,6 +223,24 @@ Configuration::~Configuration()
 
 
 /**
+ * Reads a given XML configuration file.
+ *
+ * \param fileData	Name of an XML Configuration file to be read.
+ */
+void Configuration::loadData(const std::string& fileData)
+{
+	// Start parsing through the Config.xml file.
+	const auto loadedSections = ParseXmlSections(fileData, "configuration");
+	const auto sections = merge(mDefaults, loadedSections);
+	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
+
+	parseGraphics(sections.at("graphics"));
+	parseAudio(sections.at("audio"));
+	parseOptions(sections.at("options"));
+}
+
+
+/**
  * Loads a configuration file.
  *
  * \param	filePath	A string indicating the file to load and process for configuration.
@@ -311,24 +329,6 @@ void Configuration::setDefaultValues()
 	mMusicVolume = AUDIO_MUSIC_VOLUME;
 	mBufferLength = AUDIO_BUFFER_SIZE;
 	mOptionChanged = true;
-}
-
-
-/**
- * Reads a given XML configuration file.
- *
- * \param fileData	Name of an XML Configuration file to be read.
- */
-void Configuration::loadData(const std::string& fileData)
-{
-	// Start parsing through the Config.xml file.
-	const auto loadedSections = ParseXmlSections(fileData, "configuration");
-	const auto sections = merge(mDefaults, loadedSections);
-	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
-
-	parseGraphics(sections.at("graphics"));
-	parseAudio(sections.at("audio"));
-	parseOptions(sections.at("options"));
 }
 
 

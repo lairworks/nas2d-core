@@ -34,8 +34,9 @@ public:
 	Configuration& operator=(Configuration&&) = delete;
 	~Configuration();
 
-	void save();
+	void loadData(const std::string& fileData);
 	void load(const std::string& filePath);
+	void save();
 
 	// Video Options
 	int graphicsWidth() const { return mScreenWidth; }
@@ -80,8 +81,6 @@ public:
 
 protected:
 private:
-	void loadData(const std::string& fileData);
-
 	void parseGraphics(const Dictionary& dictionary);
 	void parseAudio(const Dictionary& dictionary);
 	void parseOptions(const Dictionary& dictionary);

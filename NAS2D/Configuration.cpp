@@ -211,7 +211,8 @@ namespace {
 
 
 Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
-	mDefaults{std::move(defaults)}
+	mDefaults{std::move(defaults)},
+	mSettings{mDefaults}
 {
 	if (mDefaults.find("graphics") != mDefaults.end())
 	{
@@ -237,12 +238,12 @@ void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
 	mLoadedSettings = ParseXmlSections(fileData, "configuration");
-	const auto sections = merge(mDefaults, mLoadedSettings);
-	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
+	mSettings = merge(mDefaults, mLoadedSettings);
+	ReportProblemNames(getKeys(mSettings), {"graphics", "audio", "options"});
 
-	parseGraphics(sections.at("graphics"));
-	parseAudio(sections.at("audio"));
-	parseOptions(sections.at("options"));
+	parseGraphics(mSettings.at("graphics"));
+	parseAudio(mSettings.at("audio"));
+	parseOptions(mSettings.at("options"));
 }
 
 

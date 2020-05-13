@@ -317,7 +317,7 @@ void Configuration::setDefaultValues()
  *
  * \param filePath	Name of an XML Configuration file to be read.
  */
-bool Configuration::readConfig(const std::string& filePath)
+void Configuration::readConfig(const std::string& filePath)
 {
 	File xmlFile = Utility<Filesystem>::get().open(filePath);
 
@@ -329,8 +329,6 @@ bool Configuration::readConfig(const std::string& filePath)
 	parseGraphics(sections.at("graphics"));
 	parseAudio(sections.at("audio"));
 	parseOptions(sections.at("options"));
-
-	return true;
 }
 
 

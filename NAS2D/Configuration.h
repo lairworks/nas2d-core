@@ -80,7 +80,7 @@ public:
 
 protected:
 private:
-	bool readConfig(const std::string& filePath);
+	void readConfig(const std::string& filePath);
 
 	void parseGraphics(const Dictionary& dictionary);
 	void parseAudio(const Dictionary& dictionary);

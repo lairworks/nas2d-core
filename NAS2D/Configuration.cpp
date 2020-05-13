@@ -312,10 +312,8 @@ std::string Configuration::saveData() const
 	audio.set("mixer", mMixerName);
 
 	auto* root = SectionsToXmlElement("configuration", std::map<std::string, Dictionary>{{"graphics", graphics}, {"audio", audio}});
-	doc.linkEndChild(root);
-
-	// Options
 	root->linkEndChild(DictionaryToXmlElementOptions("options", mOptions));
+	doc.linkEndChild(root);
 
 	// Write out the XML file.
 	XmlMemoryBuffer buff;

@@ -211,7 +211,20 @@ namespace {
 
 Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 	mDefaults{std::move(defaults)}
-{}
+{
+	if (mDefaults.find("graphics") != mDefaults.end())
+	{
+		parseGraphics(mDefaults.at("graphics"));
+	}
+	if (mDefaults.find("audio") != mDefaults.end())
+	{
+		parseAudio(mDefaults.at("audio"));
+	}
+	if (mDefaults.find("options") != mDefaults.end())
+	{
+		parseOptions(mDefaults.at("options"));
+	}
+}
 
 
 /**

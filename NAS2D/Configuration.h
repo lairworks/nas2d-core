@@ -27,7 +27,7 @@ class Configuration
 {
 public:
 	Configuration() = default;
-	Configuration(std::map<std::string, Dictionary> defaults) : mDefaults{std::move(defaults)} {}
+	Configuration(std::map<std::string, Dictionary> defaults);
 	Configuration(const Configuration&) = delete;
 	Configuration& operator=(const Configuration&) = delete;
 	Configuration(Configuration&&) = delete;

@@ -215,10 +215,35 @@ Configuration::~Configuration()
 {
 	if(mOptionChanged)
 	{
-		save();
+		try
+		{
+			save();
+		}
+		catch (const std::runtime_error& e)
+		{
+			std::cout << "Error saving configuration data: " << e.what() << std::endl;
+		}
 	}
 
 	std::cout << "Configuration Terminated." << std::endl;
+}
+
+
+/**
+ * Reads a given XML configuration file.
+ *
+ * \param fileData	Name of an XML Configuration file to be read.
+ */
+void Configuration::loadData(const std::string& fileData)
+{
+	// Start parsing through the Config.xml file.
+	const auto loadedSections = ParseXmlSections(fileData, "configuration");
+	const auto sections = merge(mDefaults, loadedSections);
+	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
+
+	parseGraphics(sections.at("graphics"));
+	parseAudio(sections.at("audio"));
+	parseOptions(sections.at("options"));
 }
 
 
@@ -238,23 +263,27 @@ void Configuration::load(const std::string& filePath)
 		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
 		mOptionChanged = true;
 	}
-	else if (!readConfig(filePath)) // Read in the Config File.
-	{
-		mOptionChanged = true;
-		std::cout << "unable to process '" << filePath << "'. Using default options." << std::endl;
-	}
 	else
 	{
-		std::cout << "done." << std::endl;
+		try {
+			// Read in the Config File.
+			File xmlFile = Utility<Filesystem>::get().open(filePath);
+			loadData(xmlFile.raw_bytes());
+			std::cout << "done." << std::endl;
+		}
+		catch (const std::runtime_error& e) {
+			mOptionChanged = true;
+			std::cout << "unable to process '" << filePath << "'. Using default options. Error: " << e.what() << std::endl;
+		}
 	}
 
 }
 
 
 /**
- * Saves the Configuration to an XML file.
+ * Saves the Configuration to an XML string
  */
-void Configuration::save()
+std::string Configuration::saveData() const
 {
 	XmlDocument doc;
 
@@ -286,7 +315,25 @@ void Configuration::save()
 	XmlMemoryBuffer buff;
 	doc.accept(&buff);
 
-	Utility<Filesystem>::get().write(File(buff.buffer(), mConfigPath));
+	return buff.buffer();
+}
+
+
+/**
+ * Saves the Configuration to an XML file.
+ */
+void Configuration::save(const std::string& filePath) const
+{
+	Utility<Filesystem>::get().write(File(saveData(), filePath));
+}
+
+
+/**
+ * Saves the Configuration to the XML file used during load.
+ */
+void Configuration::save() const
+{
+	save(mConfigPath);
 }
 
 
@@ -307,28 +354,6 @@ void Configuration::setDefaultValues()
 	mMusicVolume = AUDIO_MUSIC_VOLUME;
 	mBufferLength = AUDIO_BUFFER_SIZE;
 	mOptionChanged = true;
-}
-
-
-/**
- * Reads a given XML configuration file.
- *
- * \param filePath	Name of an XML Configuration file to be read.
- */
-bool Configuration::readConfig(const std::string& filePath)
-{
-	File xmlFile = Utility<Filesystem>::get().open(filePath);
-
-	// Start parsing through the Config.xml file.
-	const auto loadedSections = ParseXmlSections(xmlFile.raw_bytes(), "configuration");
-	const auto sections = merge(mDefaults, loadedSections);
-	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
-
-	parseGraphics(sections.at("graphics"));
-	parseAudio(sections.at("audio"));
-	parseOptions(sections.at("options"));
-
-	return true;
 }
 
 

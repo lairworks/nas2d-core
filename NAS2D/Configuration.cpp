@@ -324,7 +324,14 @@ std::string Configuration::saveData() const
  */
 void Configuration::save(const std::string& filePath) const
 {
-	Utility<Filesystem>::get().write(File(saveData(), filePath));
+	try
+	{
+		Utility<Filesystem>::get().write(File(saveData(), filePath));
+	}
+	catch (const std::runtime_error& e)
+	{
+		throw std::runtime_error("Error saving configuration file: '" + filePath + "'  Error: " + e.what());
+	}
 }
 
 

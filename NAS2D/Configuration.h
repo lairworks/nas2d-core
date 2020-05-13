@@ -38,7 +38,6 @@ public:
 	void load(const std::string& filePath);
 	std::string saveData() const;
 	void save(const std::string& filePath) const;
-	void save() const;
 
 	// Video Options
 	int graphicsWidth() const { return mScreenWidth; }
@@ -103,8 +102,6 @@ private:
 	int mMusicVolume{100};
 	int mBufferLength{1024};
 	std::string mMixerName{"SDL"};
-
-	std::string mConfigPath{};
 
 	bool mOptionChanged{false};
 };

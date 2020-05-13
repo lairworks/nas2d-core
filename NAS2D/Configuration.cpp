@@ -213,18 +213,6 @@ namespace {
  */
 Configuration::~Configuration()
 {
-	if(mOptionChanged)
-	{
-		try
-		{
-			save();
-		}
-		catch (const std::runtime_error& e)
-		{
-			std::cout << "Error saving configuration data: " << e.what() << std::endl;
-		}
-	}
-
 	std::cout << "Configuration Terminated." << std::endl;
 }
 
@@ -255,8 +243,6 @@ void Configuration::loadData(const std::string& fileData)
 void Configuration::load(const std::string& filePath)
 {
 	std::cout << "Initializing Configuration... ";
-
-	mConfigPath = filePath;
 
 	if (!Utility<Filesystem>::get().exists(filePath))
 	{
@@ -324,16 +310,14 @@ std::string Configuration::saveData() const
  */
 void Configuration::save(const std::string& filePath) const
 {
-	Utility<Filesystem>::get().write(File(saveData(), filePath));
-}
-
-
-/**
- * Saves the Configuration to the XML file used during load.
- */
-void Configuration::save() const
-{
-	save(mConfigPath);
+	try
+	{
+		Utility<Filesystem>::get().write(File(saveData(), filePath));
+	}
+	catch (const std::runtime_error& e)
+	{
+		throw std::runtime_error("Error saving configuration file: '" + filePath + "'  Error: " + e.what());
+	}
 }
 
 

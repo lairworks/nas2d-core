@@ -238,14 +238,16 @@ void Configuration::load(const std::string& filePath)
 		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
 		mOptionChanged = true;
 	}
-	else if (!readConfig(filePath)) // Read in the Config File.
-	{
-		mOptionChanged = true;
-		std::cout << "unable to process '" << filePath << "'. Using default options." << std::endl;
-	}
 	else
 	{
-		std::cout << "done." << std::endl;
+		try {
+			readConfig(filePath); // Read in the Config File.
+			std::cout << "done." << std::endl;
+		}
+		catch (const std::runtime_error& e) {
+			mOptionChanged = true;
+			std::cout << "unable to process '" << filePath << "'. Using default options. Error: " << e.what() << std::endl;
+		}
 	}
 
 }

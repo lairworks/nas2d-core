@@ -324,15 +324,6 @@ void Configuration::save(const std::string& filePath) const
 
 
 /**
- * Saves the Configuration to the XML file used during load.
- */
-void Configuration::save() const
-{
-	save(mConfigPath);
-}
-
-
-/**
  * Sets default values for all important values.
  */
 void Configuration::setDefaultValues()

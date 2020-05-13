@@ -38,7 +38,6 @@ public:
 	void load(const std::string& filePath);
 	std::string saveData() const;
 	void save(const std::string& filePath) const;
-	void save() const;
 
 	// Video Options
 	int graphicsWidth() const { return mScreenWidth; }

@@ -229,14 +229,6 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 
 
 /**
- * D'tor
- */
-Configuration::~Configuration()
-{
-}
-
-
-/**
  * Reads a given XML configuration file.
  *
  * \param fileData	Name of an XML Configuration file to be read.

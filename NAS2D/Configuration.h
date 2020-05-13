@@ -36,6 +36,7 @@ public:
 
 	void loadData(const std::string& fileData);
 	void load(const std::string& filePath);
+	std::string saveData() const;
 	void save() const;
 
 	// Video Options

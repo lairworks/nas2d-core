@@ -274,9 +274,9 @@ void Configuration::load(const std::string& filePath)
 
 
 /**
- * Saves the Configuration to an XML file.
+ * Saves the Configuration to an XML string
  */
-void Configuration::save() const
+std::string Configuration::saveData() const
 {
 	XmlDocument doc;
 
@@ -308,7 +308,16 @@ void Configuration::save() const
 	XmlMemoryBuffer buff;
 	doc.accept(&buff);
 
-	Utility<Filesystem>::get().write(File(buff.buffer(), mConfigPath));
+	return buff.buffer();
+}
+
+
+/**
+ * Saves the Configuration to an XML file.
+ */
+void Configuration::save() const
+{
+	Utility<Filesystem>::get().write(File(saveData(), mConfigPath));
 }
 
 

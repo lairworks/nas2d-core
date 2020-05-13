@@ -215,7 +215,14 @@ Configuration::~Configuration()
 {
 	if(mOptionChanged)
 	{
-		save();
+		try
+		{
+			save();
+		}
+		catch (const std::runtime_error& e)
+		{
+			std::cout << "Error saving configuration data: " << e.what() << std::endl;
+		}
 	}
 
 	std::cout << "Configuration Terminated." << std::endl;

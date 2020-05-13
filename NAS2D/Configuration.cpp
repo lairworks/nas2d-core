@@ -315,9 +315,18 @@ std::string Configuration::saveData() const
 /**
  * Saves the Configuration to an XML file.
  */
+void Configuration::save(const std::string& filePath) const
+{
+	Utility<Filesystem>::get().write(File(saveData(), filePath));
+}
+
+
+/**
+ * Saves the Configuration to the XML file used during load.
+ */
 void Configuration::save() const
 {
-	Utility<Filesystem>::get().write(File(saveData(), mConfigPath));
+	save(mConfigPath);
 }
 
 

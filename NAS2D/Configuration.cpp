@@ -189,6 +189,7 @@ namespace {
 			XmlElement* option = new XmlElement("option");
 			option->attribute("name", key);
 			option->attribute("value", dictionary.get(key));
+			element->linkEndChild(option);
 		}
 
 		return element;

@@ -243,7 +243,7 @@ void Configuration::load(const std::string& filePath)
 		try {
 			// Read in the Config File.
 			File xmlFile = Utility<Filesystem>::get().open(filePath);
-			readConfig(xmlFile.raw_bytes());
+			loadData(xmlFile.raw_bytes());
 			std::cout << "done." << std::endl;
 		}
 		catch (const std::runtime_error& e) {
@@ -319,7 +319,7 @@ void Configuration::setDefaultValues()
  *
  * \param fileData	Name of an XML Configuration file to be read.
  */
-void Configuration::readConfig(const std::string& fileData)
+void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
 	const auto loadedSections = ParseXmlSections(fileData, "configuration");

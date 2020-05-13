@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <utility>
 
 using namespace NAS2D;
 using namespace NAS2D::Xml;
@@ -206,6 +207,11 @@ namespace {
 		return element;
 	}
 }
+
+
+Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
+	mDefaults{std::move(defaults)}
+{}
 
 
 /**

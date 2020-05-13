@@ -13,6 +13,9 @@
 #include "State.h"
 #include "Utility.h"
 
+#include <memory>
+
+
 namespace NAS2D {
 
 /**
@@ -40,7 +43,7 @@ public:
 private:
 	void handleQuit();
 
-	State *mActiveState;
+	std::unique_ptr<State> mActiveState;
 	bool mActive;
 	bool mForceStopAudio = true;
 };

@@ -244,8 +244,6 @@ void Configuration::load(const std::string& filePath)
 {
 	std::cout << "Initializing Configuration... ";
 
-	mConfigPath = filePath;
-
 	if (!Utility<Filesystem>::get().exists(filePath))
 	{
 		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;

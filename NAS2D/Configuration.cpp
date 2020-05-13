@@ -233,7 +233,6 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
  */
 Configuration::~Configuration()
 {
-	std::cout << "Configuration Terminated." << std::endl;
 }
 
 

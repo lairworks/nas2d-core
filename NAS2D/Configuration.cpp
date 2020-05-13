@@ -189,6 +189,7 @@ namespace {
 			XmlElement* option = new XmlElement("option");
 			option->attribute("name", key);
 			option->attribute("value", dictionary.get(key));
+			element->linkEndChild(option);
 		}
 
 		return element;
@@ -224,15 +225,6 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 	{
 		parseOptions(mDefaults.at("options"));
 	}
-}
-
-
-/**
- * D'tor
- */
-Configuration::~Configuration()
-{
-	std::cout << "Configuration Terminated." << std::endl;
 }
 
 
@@ -311,10 +303,8 @@ std::string Configuration::saveData() const
 	audio.set("mixer", mMixerName);
 
 	auto* root = SectionsToXmlElement("configuration", std::map<std::string, Dictionary>{{"graphics", graphics}, {"audio", audio}});
-	doc.linkEndChild(root);
-
-	// Options
 	root->linkEndChild(DictionaryToXmlElementOptions("options", mOptions));
+	doc.linkEndChild(root);
 
 	// Write out the XML file.
 	XmlMemoryBuffer buff;

@@ -32,7 +32,7 @@ public:
 	Configuration& operator=(const Configuration&) = delete;
 	Configuration(Configuration&&) = delete;
 	Configuration& operator=(Configuration&&) = delete;
-	~Configuration();
+	~Configuration() = default;
 
 	void loadData(const std::string& fileData);
 	void load(const std::string& filePath);

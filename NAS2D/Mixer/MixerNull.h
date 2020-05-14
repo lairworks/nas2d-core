@@ -8,28 +8,28 @@ namespace NAS2D
 	class MixerNull : public Mixer
 	{
 	public:
-		virtual void playSound(Sound& sound) override;
-		virtual void stopSound() override;
-		virtual void pauseSound() override;
-		virtual void resumeSound() override;
+		void playSound(Sound& sound) override;
+		void stopSound() override;
+		void pauseSound() override;
+		void resumeSound() override;
 
-		virtual void stopMusic() override;
-		virtual void pauseMusic() override;
-		virtual void resumeMusic() override;
+		void stopMusic() override;
+		void pauseMusic() override;
+		void resumeMusic() override;
 
-		virtual void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) override;
-		virtual void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) override;
+		void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) override;
+		void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) override;
 
-		virtual bool musicPlaying() const override;
+		bool musicPlaying() const override;
 
-		virtual void mute() override;
-		virtual void unmute() override;
+		void mute() override;
+		void unmute() override;
 
-		virtual void soundVolume(int level) override;
-		virtual void musicVolume(int level) override;
+		void soundVolume(int level) override;
+		void musicVolume(int level) override;
 
-		virtual int soundVolume() const override;
-		virtual int musicVolume() const override;
+		int soundVolume() const override;
+		int musicVolume() const override;
 
 	protected:
 	private:

@@ -516,6 +516,42 @@ void Configuration::vsync(bool vsync)
 }
 
 
+int Configuration::audioMixRate() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_MIXRATE);
+}
+
+
+int Configuration::audioStereoChannels() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_CHANNELS);
+}
+
+
+int Configuration::audioSfxVolume() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_SFX_VOLUME);
+}
+
+
+int Configuration::audioMusicVolume() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_MUS_VOLUME);
+}
+
+
+int Configuration::audioBufferSize() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_BUFFER_SIZE);
+}
+
+
+std::string Configuration::mixer() const
+{
+	return mSettings.at("audio").get(AUDIO_CFG_MIXER);
+}
+
+
 /**
  * Sets the audio mixrate.
  *

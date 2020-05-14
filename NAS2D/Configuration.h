@@ -26,6 +26,10 @@ namespace NAS2D {
 class Configuration
 {
 public:
+	static const Dictionary defaultAudio;
+	static const Dictionary defaultGraphics;
+
+
 	Configuration() = default;
 	Configuration(std::map<std::string, Dictionary> defaults);
 	Configuration(const Configuration&) = delete;

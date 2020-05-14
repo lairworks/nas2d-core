@@ -59,7 +59,7 @@ const std::string GRAPHICS_CFG_FULLSCREEN = "fullscreen";
 const std::string GRAPHICS_CFG_VSYNC = "vsync";
 
 
-const Dictionary defaultAudio{{
+const Dictionary Configuration::defaultAudio{{
 	{AUDIO_CFG_MIXER, AUDIO_MIXER},
 	{AUDIO_CFG_MUS_VOLUME, AUDIO_MUSIC_VOLUME},
 	{AUDIO_CFG_SFX_VOLUME, AUDIO_SFX_VOLUME},
@@ -68,7 +68,7 @@ const Dictionary defaultAudio{{
 	{AUDIO_CFG_BUFFER_SIZE, AUDIO_BUFFER_SIZE}
 }};
 
-const Dictionary defaultGraphics{{
+const Dictionary Configuration::defaultGraphics{{
 	{GRAPHICS_CFG_SCREEN_WIDTH, GRAPHICS_WIDTH},
 	{GRAPHICS_CFG_SCREEN_HEIGHT, GRAPHICS_HEIGHT},
 	{GRAPHICS_CFG_SCREEN_DEPTH, GRAPHICS_BITDEPTH},

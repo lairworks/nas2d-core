@@ -480,6 +480,7 @@ void Configuration::audioMixRate(int mixrate)
 	}
 
 	mMixRate = mixrate;
+	mSettings["audio"].set(AUDIO_CFG_MIXRATE, mixrate);
 }
 
 
@@ -493,6 +494,7 @@ void Configuration::audioMixRate(int mixrate)
 void Configuration::mixer(const std::string& mixer)
 {
 	mMixerName = mixer;
+	mSettings["audio"].set(AUDIO_CFG_MIXER, mixer);
 }
 
 
@@ -503,7 +505,9 @@ void Configuration::mixer(const std::string& mixer)
  */
 void Configuration::audioStereoChannels(int channels)
 {
-	mStereoChannels = std::clamp(channels, AUDIO_MONO, AUDIO_STEREO);
+	channels = std::clamp(channels, AUDIO_MONO, AUDIO_STEREO);
+	mStereoChannels = channels;
+	mSettings["audio"].set(AUDIO_CFG_CHANNELS, channels);
 }
 
 
@@ -514,7 +518,9 @@ void Configuration::audioStereoChannels(int channels)
  */
 void Configuration::audioSfxVolume(int volume)
 {
-	mSfxVolume = std::clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
+	volume = std::clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
+	mSfxVolume = volume;
+	mSettings["audio"].set(AUDIO_CFG_SFX_VOLUME, volume);
 }
 
 
@@ -526,7 +532,9 @@ void Configuration::audioSfxVolume(int volume)
  */
 void Configuration::audioMusicVolume(int volume)
 {
-	mMusicVolume = std::clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
+	volume = std::clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
+	mMusicVolume = volume;
+	mSettings["audio"].set(AUDIO_CFG_MUS_VOLUME, volume);
 }
 
 
@@ -539,7 +547,9 @@ void Configuration::audioMusicVolume(int volume)
  */
 void Configuration::audioBufferSize(int size)
 {
-	mBufferLength = std::clamp(size, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE);
+	size = std::clamp(size, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE);
+	mBufferLength = size;
+	mSettings["audio"].set(AUDIO_CFG_BUFFER_SIZE, size);
 }
 
 

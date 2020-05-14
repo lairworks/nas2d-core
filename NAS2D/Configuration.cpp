@@ -408,6 +408,7 @@ void Configuration::parseOptions(const Dictionary& dictionary)
 void Configuration::graphicsWidth(int width)
 {
 	mScreenWidth = width;
+	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_WIDTH, width);
 }
 
 
@@ -419,6 +420,7 @@ void Configuration::graphicsWidth(int width)
 void Configuration::graphicsHeight(int height)
 {
 	mScreenHeight = height;
+	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_HEIGHT, height);
 }
 
 
@@ -430,6 +432,7 @@ void Configuration::graphicsHeight(int height)
 void Configuration::graphicsColorDepth(int bpp)
 {
 	mScreenBpp = bpp;
+	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_DEPTH, bpp);
 }
 
 
@@ -441,6 +444,7 @@ void Configuration::graphicsColorDepth(int bpp)
 void Configuration::fullscreen(bool fullscreen)
 {
 	mFullScreen = fullscreen;
+	mSettings["graphics"].set(GRAPHICS_CFG_FULLSCREEN, fullscreen);
 }
 
 
@@ -457,6 +461,7 @@ void Configuration::fullscreen(bool fullscreen)
 void Configuration::vsync(bool vsync)
 {
 	mVSync = vsync;
+	mSettings["graphics"].set(GRAPHICS_CFG_VSYNC, vsync);
 }
 
 

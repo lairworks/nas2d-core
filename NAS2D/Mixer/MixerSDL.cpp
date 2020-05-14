@@ -88,8 +88,8 @@ MixerSDL::MixerSDL(const Options& options)
 MixerSDL::~MixerSDL()
 {
 	// Save current volume levels in the Configuration.
-	Utility<Configuration>::get().audioSfxVolume(Mix_Volume(-1, -1));
-	Utility<Configuration>::get().audioMusicVolume(Mix_VolumeMusic(-1));
+	Utility<Configuration>::get().audioSfxVolume(soundVolume());
+	Utility<Configuration>::get().audioMusicVolume(musicVolume());
 
 	stopAllAudio();
 
@@ -188,6 +188,18 @@ void MixerSDL::soundVolume(int volume)
 void MixerSDL::musicVolume(int volume)
 {
 	Mix_VolumeMusic(std::clamp(volume, 0, SDL_MIX_MAXVOLUME));
+}
+
+
+int MixerSDL::soundVolume() const
+{
+	return Mix_Volume(-1, -1);
+}
+
+
+int MixerSDL::musicVolume() const
+{
+	return Mix_VolumeMusic(-1);
 }
 
 

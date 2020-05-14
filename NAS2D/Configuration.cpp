@@ -308,7 +308,7 @@ std::string Configuration::saveData() const
 	const auto& audio = mSettings.at("audio");
 
 	auto* root = SectionsToXmlElement("configuration", std::map<std::string, Dictionary>{{"graphics", graphics}, {"audio", audio}});
-	root->linkEndChild(DictionaryToXmlElementOptions("options", mOptions));
+	root->linkEndChild(DictionaryToXmlElementOptions("options", mSettings.at("options")));
 	doc.linkEndChild(root);
 
 	// Write out the XML file.
@@ -365,7 +365,7 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 
 void Configuration::parseOptions(const Dictionary& dictionary)
 {
-	mOptions = dictionary;
+	mSettings.at("options") = dictionary;
 }
 
 
@@ -589,12 +589,12 @@ void Configuration::audioBufferSize(int size)
  */
 void Configuration::option(const std::string& option, const std::string& value, bool overwrite)
 {
-	if (!overwrite && mOptions.has(option))
+	if (!overwrite && mSettings.at("options").has(option))
 	{
 		return;
 	}
 
-	mOptions.set(option, value);
+	mSettings.at("options").set(option, value);
 }
 
 
@@ -610,12 +610,12 @@ void Configuration::option(const std::string& option, const std::string& value, 
  */
 std::string Configuration::option(const std::string& key)
 {
-	if (!mOptions.has(key))
+	if (!mSettings.at("options").has(key))
 	{
-		mOptions.set(key, std::string{});
+		mSettings.at("options").set(key, std::string{});
 	}
 
-	return mOptions.get(key);
+	return mSettings.at("options").get(key);
 }
 
 
@@ -629,8 +629,8 @@ std::string Configuration::option(const std::string& key)
  */
 void Configuration::deleteOption(const std::string& option)
 {
-	if (mOptions.has(option))
+	if (mSettings.at("options").has(option))
 	{
-		mOptions.erase(option);
+		mSettings.at("options").erase(option);
 	}
 }

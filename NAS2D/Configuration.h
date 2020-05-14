@@ -87,7 +87,6 @@ private:
 	const std::map<std::string, Dictionary> mDefaults{};
 	std::map<std::string, Dictionary> mLoadedSettings{};
 	std::map<std::string, Dictionary> mSettings{};
-	Dictionary mOptions{};
 };
 
 } // namespace

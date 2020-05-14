@@ -363,6 +363,9 @@ void Configuration::setDefaultValues()
 	mSfxVolume = AUDIO_SFX_VOLUME;
 	mMusicVolume = AUDIO_MUSIC_VOLUME;
 	mBufferLength = AUDIO_BUFFER_SIZE;
+
+	mSettings["graphics"] += defaultGraphics;
+	mSettings["audio"] += defaultAudio;
 }
 
 

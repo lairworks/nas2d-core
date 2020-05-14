@@ -240,10 +240,6 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 	{
 		parseAudio(mDefaults.at("audio"));
 	}
-	if (mDefaults.find("options") != mDefaults.end())
-	{
-		parseOptions(mDefaults.at("options"));
-	}
 }
 
 
@@ -261,7 +257,6 @@ void Configuration::loadData(const std::string& fileData)
 
 	parseGraphics(mSettings.at("graphics"));
 	parseAudio(mSettings.at("audio"));
-	parseOptions(mSettings.at("options"));
 }
 
 
@@ -360,12 +355,6 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 	audioSfxVolume(dictionary.get<int>(AUDIO_CFG_SFX_VOLUME));
 	audioMusicVolume(dictionary.get<int>(AUDIO_CFG_MUS_VOLUME));
 	audioBufferSize(dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE));
-}
-
-
-void Configuration::parseOptions(const Dictionary& dictionary)
-{
-	mSettings.at("options") = dictionary;
 }
 
 

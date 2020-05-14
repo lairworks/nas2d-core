@@ -82,7 +82,6 @@ protected:
 private:
 	void parseGraphics(const Dictionary& dictionary);
 	void parseAudio(const Dictionary& dictionary);
-	void parseOptions(const Dictionary& dictionary);
 
 	const std::map<std::string, Dictionary> mDefaults{};
 	std::map<std::string, Dictionary> mLoadedSettings{};

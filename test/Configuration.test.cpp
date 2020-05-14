@@ -10,13 +10,7 @@ TEST(Configuration, loadData) {
 			{
 				{
 					"graphics",
-					{{
-						{"screenwidth", 1000},
-						{"screenheight", 700},
-						{"bitdepth", 32},
-						{"fullscreen", false},
-						{"vsync", true}
-					}}
+					NAS2D::Configuration::defaultGraphics
 				},
 				{
 					"options",

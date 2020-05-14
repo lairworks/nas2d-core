@@ -421,6 +421,36 @@ void Configuration::parseOptions(const Dictionary& dictionary)
 }
 
 
+int Configuration::graphicsWidth() const
+{
+	return mSettings.at("graphics").get<int>(GRAPHICS_CFG_SCREEN_WIDTH);
+}
+
+
+int Configuration::graphicsHeight() const
+{
+	return mSettings.at("graphics").get<int>(GRAPHICS_CFG_SCREEN_HEIGHT);
+}
+
+
+int Configuration::graphicsColorDepth() const
+{
+	return mSettings.at("graphics").get<int>(GRAPHICS_CFG_SCREEN_DEPTH);
+}
+
+
+bool Configuration::fullscreen() const
+{
+	return mSettings.at("graphics").get<bool>(GRAPHICS_CFG_FULLSCREEN);
+}
+
+
+bool Configuration::vsync() const
+{
+	return mSettings.at("graphics").get<bool>(GRAPHICS_CFG_VSYNC);
+}
+
+
 /**
  * Sets the screen width.
  *

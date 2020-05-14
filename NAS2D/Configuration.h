@@ -44,11 +44,11 @@ public:
 	void save(const std::string& filePath) const;
 
 	// Video Options
-	int graphicsWidth() const { return mScreenWidth; }
-	int graphicsHeight() const { return mScreenHeight; }
-	int graphicsColorDepth() const { return mScreenBpp; }
-	bool fullscreen() const { return mFullScreen; }
-	bool vsync() const { return mVSync; }
+	int graphicsWidth() const;
+	int graphicsHeight() const;
+	int graphicsColorDepth() const;
+	bool fullscreen() const;
+	bool vsync() const;
 
 	void graphicsWidth(int width);
 	void graphicsHeight(int height);

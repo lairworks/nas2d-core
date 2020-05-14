@@ -59,6 +59,24 @@ const std::string GRAPHICS_CFG_FULLSCREEN = "fullscreen";
 const std::string GRAPHICS_CFG_VSYNC = "vsync";
 
 
+const Dictionary defaultAudio{{
+	{AUDIO_CFG_MIXER, AUDIO_MIXER},
+	{AUDIO_CFG_MUS_VOLUME, AUDIO_MUSIC_VOLUME},
+	{AUDIO_CFG_SFX_VOLUME, AUDIO_SFX_VOLUME},
+	{AUDIO_CFG_CHANNELS, AUDIO_STEREO},
+	{AUDIO_CFG_MIXRATE, AUDIO_MEDIUM_QUALITY},
+	{AUDIO_CFG_BUFFER_SIZE, AUDIO_BUFFER_SIZE}
+}};
+
+const Dictionary defaultGraphics{{
+	{GRAPHICS_CFG_SCREEN_WIDTH, GRAPHICS_WIDTH},
+	{GRAPHICS_CFG_SCREEN_HEIGHT, GRAPHICS_HEIGHT},
+	{GRAPHICS_CFG_SCREEN_DEPTH, GRAPHICS_BITDEPTH},
+	{GRAPHICS_CFG_FULLSCREEN, GRAPHICS_FULLSCREEN},
+	{GRAPHICS_CFG_VSYNC, GRAPHICS_VSYNC}
+}};
+
+
 namespace {
 	std::map<std::string, Dictionary> merge(const std::map<std::string, Dictionary>& defaults, const std::map<std::string, Dictionary>& priorityValues)
 	{

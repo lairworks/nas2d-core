@@ -340,12 +340,6 @@ void Configuration::save(const std::string& filePath) const
  */
 void Configuration::setDefaultValues()
 {
-	mMixRate = AUDIO_MEDIUM_QUALITY;
-	mStereoChannels = AUDIO_STEREO;
-	mSfxVolume = AUDIO_SFX_VOLUME;
-	mMusicVolume = AUDIO_MUSIC_VOLUME;
-	mBufferLength = AUDIO_BUFFER_SIZE;
-
 	mSettings["graphics"] += defaultGraphics;
 	mSettings["audio"] += defaultAudio;
 }
@@ -361,32 +355,31 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 {
 	ReportProblemNames(dictionary.keys(), {AUDIO_CFG_MIXRATE, AUDIO_CFG_CHANNELS, AUDIO_CFG_SFX_VOLUME, AUDIO_CFG_MUS_VOLUME, AUDIO_CFG_BUFFER_SIZE, AUDIO_CFG_MIXER});
 
-	mMixRate = dictionary.get<int>(AUDIO_CFG_MIXRATE);
-	mStereoChannels = dictionary.get<int>(AUDIO_CFG_CHANNELS);
-	mSfxVolume = dictionary.get<int>(AUDIO_CFG_SFX_VOLUME);
-	mMusicVolume = dictionary.get<int>(AUDIO_CFG_MUS_VOLUME);
-	mBufferLength = dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE);
-	mMixerName = dictionary.get(AUDIO_CFG_MIXER);
+	const auto mixRate = dictionary.get<int>(AUDIO_CFG_MIXRATE);
+	const auto stereoChannels = dictionary.get<int>(AUDIO_CFG_CHANNELS);
+	const auto sfxVolume = dictionary.get<int>(AUDIO_CFG_SFX_VOLUME);
+	const auto musicVolume = dictionary.get<int>(AUDIO_CFG_MUS_VOLUME);
+	const auto bufferLength = dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE);
 
-	if (mMixRate != AUDIO_LOW_QUALITY && mMixRate != AUDIO_MEDIUM_QUALITY && mMixRate != AUDIO_HIGH_QUALITY)
+	if (mixRate != AUDIO_LOW_QUALITY && mixRate != AUDIO_MEDIUM_QUALITY && mixRate != AUDIO_HIGH_QUALITY)
 	{
 		audioMixRate(AUDIO_MEDIUM_QUALITY);
 	}
-	if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
+	if (stereoChannels != AUDIO_MONO && stereoChannels != AUDIO_STEREO)
 	{
 		audioStereoChannels(AUDIO_STEREO);
 	}
-	if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
+	if (sfxVolume < AUDIO_SFX_MIN_VOLUME || sfxVolume > AUDIO_SFX_MAX_VOLUME)
 	{
-		audioSfxVolume(mSfxVolume);
+		audioSfxVolume(sfxVolume);
 	}
-	if (mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
+	if (musicVolume < AUDIO_MUSIC_MIN_VOLUME || musicVolume > AUDIO_MUSIC_MAX_VOLUME)
 	{
-		audioMusicVolume(mMusicVolume);
+		audioMusicVolume(musicVolume);
 	}
-	if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
+	if (bufferLength < AUDIO_BUFFER_MIN_SIZE || bufferLength > AUDIO_BUFFER_MAX_SIZE)
 	{
-		audioBufferSize(mBufferLength);
+		audioBufferSize(bufferLength);
 	}
 }
 
@@ -537,7 +530,6 @@ void Configuration::audioMixRate(int mixrate)
 		mixrate = AUDIO_MEDIUM_QUALITY;
 	}
 
-	mMixRate = mixrate;
 	mSettings["audio"].set(AUDIO_CFG_MIXRATE, mixrate);
 }
 
@@ -551,7 +543,6 @@ void Configuration::audioMixRate(int mixrate)
  */
 void Configuration::mixer(const std::string& mixer)
 {
-	mMixerName = mixer;
 	mSettings["audio"].set(AUDIO_CFG_MIXER, mixer);
 }
 
@@ -564,7 +555,6 @@ void Configuration::mixer(const std::string& mixer)
 void Configuration::audioStereoChannels(int channels)
 {
 	channels = std::clamp(channels, AUDIO_MONO, AUDIO_STEREO);
-	mStereoChannels = channels;
 	mSettings["audio"].set(AUDIO_CFG_CHANNELS, channels);
 }
 
@@ -577,7 +567,6 @@ void Configuration::audioStereoChannels(int channels)
 void Configuration::audioSfxVolume(int volume)
 {
 	volume = std::clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
-	mSfxVolume = volume;
 	mSettings["audio"].set(AUDIO_CFG_SFX_VOLUME, volume);
 }
 
@@ -591,7 +580,6 @@ void Configuration::audioSfxVolume(int volume)
 void Configuration::audioMusicVolume(int volume)
 {
 	volume = std::clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
-	mMusicVolume = volume;
 	mSettings["audio"].set(AUDIO_CFG_MUS_VOLUME, volume);
 }
 
@@ -606,7 +594,6 @@ void Configuration::audioMusicVolume(int volume)
 void Configuration::audioBufferSize(int size)
 {
 	size = std::clamp(size, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE);
-	mBufferLength = size;
 	mSettings["audio"].set(AUDIO_CFG_BUFFER_SIZE, size);
 }
 

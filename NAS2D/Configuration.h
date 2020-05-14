@@ -88,13 +88,6 @@ private:
 	std::map<std::string, Dictionary> mLoadedSettings{};
 	std::map<std::string, Dictionary> mSettings{};
 	Dictionary mOptions{};
-
-	int mMixRate{22050};
-	int mStereoChannels{2};
-	int mSfxVolume{128};
-	int mMusicVolume{100};
-	int mBufferLength{1024};
-	std::string mMixerName{"SDL"};
 };
 
 } // namespace

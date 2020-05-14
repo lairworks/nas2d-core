@@ -355,32 +355,11 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 {
 	ReportProblemNames(dictionary.keys(), {AUDIO_CFG_MIXRATE, AUDIO_CFG_CHANNELS, AUDIO_CFG_SFX_VOLUME, AUDIO_CFG_MUS_VOLUME, AUDIO_CFG_BUFFER_SIZE, AUDIO_CFG_MIXER});
 
-	const auto mixRate = dictionary.get<int>(AUDIO_CFG_MIXRATE);
-	const auto stereoChannels = dictionary.get<int>(AUDIO_CFG_CHANNELS);
-	const auto sfxVolume = dictionary.get<int>(AUDIO_CFG_SFX_VOLUME);
-	const auto musicVolume = dictionary.get<int>(AUDIO_CFG_MUS_VOLUME);
-	const auto bufferLength = dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE);
-
-	if (mixRate != AUDIO_LOW_QUALITY && mixRate != AUDIO_MEDIUM_QUALITY && mixRate != AUDIO_HIGH_QUALITY)
-	{
-		audioMixRate(AUDIO_MEDIUM_QUALITY);
-	}
-	if (stereoChannels != AUDIO_MONO && stereoChannels != AUDIO_STEREO)
-	{
-		audioStereoChannels(AUDIO_STEREO);
-	}
-	if (sfxVolume < AUDIO_SFX_MIN_VOLUME || sfxVolume > AUDIO_SFX_MAX_VOLUME)
-	{
-		audioSfxVolume(sfxVolume);
-	}
-	if (musicVolume < AUDIO_MUSIC_MIN_VOLUME || musicVolume > AUDIO_MUSIC_MAX_VOLUME)
-	{
-		audioMusicVolume(musicVolume);
-	}
-	if (bufferLength < AUDIO_BUFFER_MIN_SIZE || bufferLength > AUDIO_BUFFER_MAX_SIZE)
-	{
-		audioBufferSize(bufferLength);
-	}
+	audioMixRate(dictionary.get<int>(AUDIO_CFG_MIXRATE));
+	audioStereoChannels(dictionary.get<int>(AUDIO_CFG_CHANNELS));
+	audioSfxVolume(dictionary.get<int>(AUDIO_CFG_SFX_VOLUME));
+	audioMusicVolume(dictionary.get<int>(AUDIO_CFG_MUS_VOLUME));
+	audioBufferSize(dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE));
 }
 
 

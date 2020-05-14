@@ -59,6 +59,24 @@ const std::string GRAPHICS_CFG_FULLSCREEN = "fullscreen";
 const std::string GRAPHICS_CFG_VSYNC = "vsync";
 
 
+const Dictionary Configuration::defaultAudio{{
+	{AUDIO_CFG_MIXER, AUDIO_MIXER},
+	{AUDIO_CFG_MUS_VOLUME, AUDIO_MUSIC_VOLUME},
+	{AUDIO_CFG_SFX_VOLUME, AUDIO_SFX_VOLUME},
+	{AUDIO_CFG_CHANNELS, AUDIO_STEREO},
+	{AUDIO_CFG_MIXRATE, AUDIO_MEDIUM_QUALITY},
+	{AUDIO_CFG_BUFFER_SIZE, AUDIO_BUFFER_SIZE}
+}};
+
+const Dictionary Configuration::defaultGraphics{{
+	{GRAPHICS_CFG_SCREEN_WIDTH, GRAPHICS_WIDTH},
+	{GRAPHICS_CFG_SCREEN_HEIGHT, GRAPHICS_HEIGHT},
+	{GRAPHICS_CFG_SCREEN_DEPTH, GRAPHICS_BITDEPTH},
+	{GRAPHICS_CFG_FULLSCREEN, GRAPHICS_FULLSCREEN},
+	{GRAPHICS_CFG_VSYNC, GRAPHICS_VSYNC}
+}};
+
+
 namespace {
 	std::map<std::string, Dictionary> merge(const std::map<std::string, Dictionary>& defaults, const std::map<std::string, Dictionary>& priorityValues)
 	{
@@ -211,7 +229,8 @@ namespace {
 
 
 Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
-	mDefaults{std::move(defaults)}
+	mDefaults{std::move(defaults)},
+	mSettings{mDefaults}
 {
 	if (mDefaults.find("graphics") != mDefaults.end())
 	{
@@ -220,10 +239,6 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 	if (mDefaults.find("audio") != mDefaults.end())
 	{
 		parseAudio(mDefaults.at("audio"));
-	}
-	if (mDefaults.find("options") != mDefaults.end())
-	{
-		parseOptions(mDefaults.at("options"));
 	}
 }
 
@@ -236,13 +251,12 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	const auto loadedSections = ParseXmlSections(fileData, "configuration");
-	const auto sections = merge(mDefaults, loadedSections);
-	ReportProblemNames(getKeys(sections), {"graphics", "audio", "options"});
+	mLoadedSettings = ParseXmlSections(fileData, "configuration");
+	mSettings = merge(mDefaults, mLoadedSettings);
+	ReportProblemNames(getKeys(mSettings), {"graphics", "audio", "options"});
 
-	parseGraphics(sections.at("graphics"));
-	parseAudio(sections.at("audio"));
-	parseOptions(sections.at("options"));
+	parseGraphics(mSettings.at("graphics"));
+	parseAudio(mSettings.at("audio"));
 }
 
 
@@ -285,23 +299,11 @@ std::string Configuration::saveData() const
 	XmlComment* comment = new XmlComment("Automatically generated Configuration file.");
 	doc.linkEndChild(comment);
 
-	Dictionary graphics;
-	graphics.set("screenwidth", mScreenWidth);
-	graphics.set("screenheight", mScreenHeight);
-	graphics.set("bitdepth", mScreenBpp);
-	graphics.set("fullscreen", mFullScreen);
-	graphics.set("vsync", mVSync);
-
-	Dictionary audio;
-	audio.set("mixrate", mMixRate);
-	audio.set("channels", mStereoChannels);
-	audio.set("sfxvolume", mSfxVolume);
-	audio.set("musicvolume", mMusicVolume);
-	audio.set("bufferlength", mBufferLength);
-	audio.set("mixer", mMixerName);
+	const auto& graphics = mSettings.at("graphics");
+	const auto& audio = mSettings.at("audio");
 
 	auto* root = SectionsToXmlElement("configuration", std::map<std::string, Dictionary>{{"graphics", graphics}, {"audio", audio}});
-	root->linkEndChild(DictionaryToXmlElementOptions("options", mOptions));
+	root->linkEndChild(DictionaryToXmlElementOptions("options", mSettings.at("options")));
 	doc.linkEndChild(root);
 
 	// Write out the XML file.
@@ -333,29 +335,14 @@ void Configuration::save(const std::string& filePath) const
  */
 void Configuration::setDefaultValues()
 {
-	mScreenWidth = GRAPHICS_WIDTH;
-	mScreenHeight = GRAPHICS_HEIGHT;
-	mScreenBpp = GRAPHICS_BITDEPTH;
-	mFullScreen = GRAPHICS_FULLSCREEN;
-	mVSync = GRAPHICS_VSYNC;
-
-	mMixRate = AUDIO_MEDIUM_QUALITY;
-	mStereoChannels = AUDIO_STEREO;
-	mSfxVolume = AUDIO_SFX_VOLUME;
-	mMusicVolume = AUDIO_MUSIC_VOLUME;
-	mBufferLength = AUDIO_BUFFER_SIZE;
+	mSettings["graphics"] += defaultGraphics;
+	mSettings["audio"] += defaultAudio;
 }
 
 
 void Configuration::parseGraphics(const Dictionary& dictionary)
 {
 	ReportProblemNames(dictionary.keys(), {GRAPHICS_CFG_SCREEN_WIDTH, GRAPHICS_CFG_SCREEN_HEIGHT, GRAPHICS_CFG_SCREEN_DEPTH, GRAPHICS_CFG_FULLSCREEN, GRAPHICS_CFG_VSYNC});
-
-	mScreenWidth = dictionary.get<int>(GRAPHICS_CFG_SCREEN_WIDTH);
-	mScreenHeight = dictionary.get<int>(GRAPHICS_CFG_SCREEN_HEIGHT);
-	mScreenBpp = dictionary.get<int>(GRAPHICS_CFG_SCREEN_DEPTH);
-	fullscreen(dictionary.get<bool>(GRAPHICS_CFG_FULLSCREEN));
-	vsync(dictionary.get<bool>(GRAPHICS_CFG_VSYNC));
 }
 
 
@@ -363,39 +350,41 @@ void Configuration::parseAudio(const Dictionary& dictionary)
 {
 	ReportProblemNames(dictionary.keys(), {AUDIO_CFG_MIXRATE, AUDIO_CFG_CHANNELS, AUDIO_CFG_SFX_VOLUME, AUDIO_CFG_MUS_VOLUME, AUDIO_CFG_BUFFER_SIZE, AUDIO_CFG_MIXER});
 
-	mMixRate = dictionary.get<int>(AUDIO_CFG_MIXRATE);
-	mStereoChannels = dictionary.get<int>(AUDIO_CFG_CHANNELS);
-	mSfxVolume = dictionary.get<int>(AUDIO_CFG_SFX_VOLUME);
-	mMusicVolume = dictionary.get<int>(AUDIO_CFG_MUS_VOLUME);
-	mBufferLength = dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE);
-	mMixerName = dictionary.get(AUDIO_CFG_MIXER);
-
-	if (mMixRate != AUDIO_LOW_QUALITY && mMixRate != AUDIO_MEDIUM_QUALITY && mMixRate != AUDIO_HIGH_QUALITY)
-	{
-		audioMixRate(AUDIO_MEDIUM_QUALITY);
-	}
-	if (mStereoChannels != AUDIO_MONO && mStereoChannels != AUDIO_STEREO)
-	{
-		audioStereoChannels(AUDIO_STEREO);
-	}
-	if (mSfxVolume < AUDIO_SFX_MIN_VOLUME || mSfxVolume > AUDIO_SFX_MAX_VOLUME)
-	{
-		audioSfxVolume(mSfxVolume);
-	}
-	if (mMusicVolume < AUDIO_MUSIC_MIN_VOLUME || mMusicVolume > AUDIO_MUSIC_MAX_VOLUME)
-	{
-		audioMusicVolume(mMusicVolume);
-	}
-	if (mBufferLength < AUDIO_BUFFER_MIN_SIZE || mBufferLength > AUDIO_BUFFER_MAX_SIZE)
-	{
-		audioBufferSize(mBufferLength);
-	}
+	audioMixRate(dictionary.get<int>(AUDIO_CFG_MIXRATE));
+	audioStereoChannels(dictionary.get<int>(AUDIO_CFG_CHANNELS));
+	audioSfxVolume(dictionary.get<int>(AUDIO_CFG_SFX_VOLUME));
+	audioMusicVolume(dictionary.get<int>(AUDIO_CFG_MUS_VOLUME));
+	audioBufferSize(dictionary.get<int>(AUDIO_CFG_BUFFER_SIZE));
 }
 
 
-void Configuration::parseOptions(const Dictionary& dictionary)
+int Configuration::graphicsWidth() const
 {
-	mOptions = dictionary;
+	return mSettings.at("graphics").get<int>(GRAPHICS_CFG_SCREEN_WIDTH);
+}
+
+
+int Configuration::graphicsHeight() const
+{
+	return mSettings.at("graphics").get<int>(GRAPHICS_CFG_SCREEN_HEIGHT);
+}
+
+
+int Configuration::graphicsColorDepth() const
+{
+	return mSettings.at("graphics").get<int>(GRAPHICS_CFG_SCREEN_DEPTH);
+}
+
+
+bool Configuration::fullscreen() const
+{
+	return mSettings.at("graphics").get<bool>(GRAPHICS_CFG_FULLSCREEN);
+}
+
+
+bool Configuration::vsync() const
+{
+	return mSettings.at("graphics").get<bool>(GRAPHICS_CFG_VSYNC);
 }
 
 
@@ -406,7 +395,7 @@ void Configuration::parseOptions(const Dictionary& dictionary)
  */
 void Configuration::graphicsWidth(int width)
 {
-	mScreenWidth = width;
+	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_WIDTH, width);
 }
 
 
@@ -417,7 +406,7 @@ void Configuration::graphicsWidth(int width)
  */
 void Configuration::graphicsHeight(int height)
 {
-	mScreenHeight = height;
+	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_HEIGHT, height);
 }
 
 
@@ -428,7 +417,7 @@ void Configuration::graphicsHeight(int height)
  */
 void Configuration::graphicsColorDepth(int bpp)
 {
-	mScreenBpp = bpp;
+	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_DEPTH, bpp);
 }
 
 
@@ -439,7 +428,7 @@ void Configuration::graphicsColorDepth(int bpp)
  */
 void Configuration::fullscreen(bool fullscreen)
 {
-	mFullScreen = fullscreen;
+	mSettings["graphics"].set(GRAPHICS_CFG_FULLSCREEN, fullscreen);
 }
 
 
@@ -455,7 +444,43 @@ void Configuration::fullscreen(bool fullscreen)
  */
 void Configuration::vsync(bool vsync)
 {
-	mVSync = vsync;
+	mSettings["graphics"].set(GRAPHICS_CFG_VSYNC, vsync);
+}
+
+
+int Configuration::audioMixRate() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_MIXRATE);
+}
+
+
+int Configuration::audioStereoChannels() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_CHANNELS);
+}
+
+
+int Configuration::audioSfxVolume() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_SFX_VOLUME);
+}
+
+
+int Configuration::audioMusicVolume() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_MUS_VOLUME);
+}
+
+
+int Configuration::audioBufferSize() const
+{
+	return mSettings.at("audio").get<int>(AUDIO_CFG_BUFFER_SIZE);
+}
+
+
+std::string Configuration::mixer() const
+{
+	return mSettings.at("audio").get(AUDIO_CFG_MIXER);
 }
 
 
@@ -473,7 +498,7 @@ void Configuration::audioMixRate(int mixrate)
 		mixrate = AUDIO_MEDIUM_QUALITY;
 	}
 
-	mMixRate = mixrate;
+	mSettings["audio"].set(AUDIO_CFG_MIXRATE, mixrate);
 }
 
 
@@ -486,7 +511,7 @@ void Configuration::audioMixRate(int mixrate)
  */
 void Configuration::mixer(const std::string& mixer)
 {
-	mMixerName = mixer;
+	mSettings["audio"].set(AUDIO_CFG_MIXER, mixer);
 }
 
 
@@ -497,7 +522,8 @@ void Configuration::mixer(const std::string& mixer)
  */
 void Configuration::audioStereoChannels(int channels)
 {
-	mStereoChannels = std::clamp(channels, AUDIO_MONO, AUDIO_STEREO);
+	channels = std::clamp(channels, AUDIO_MONO, AUDIO_STEREO);
+	mSettings["audio"].set(AUDIO_CFG_CHANNELS, channels);
 }
 
 
@@ -508,7 +534,8 @@ void Configuration::audioStereoChannels(int channels)
  */
 void Configuration::audioSfxVolume(int volume)
 {
-	mSfxVolume = std::clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
+	volume = std::clamp(volume, AUDIO_SFX_MIN_VOLUME, AUDIO_SFX_MAX_VOLUME);
+	mSettings["audio"].set(AUDIO_CFG_SFX_VOLUME, volume);
 }
 
 
@@ -520,7 +547,8 @@ void Configuration::audioSfxVolume(int volume)
  */
 void Configuration::audioMusicVolume(int volume)
 {
-	mMusicVolume = std::clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
+	volume = std::clamp(volume, AUDIO_MUSIC_MIN_VOLUME, AUDIO_MUSIC_MAX_VOLUME);
+	mSettings["audio"].set(AUDIO_CFG_MUS_VOLUME, volume);
 }
 
 
@@ -533,7 +561,8 @@ void Configuration::audioMusicVolume(int volume)
  */
 void Configuration::audioBufferSize(int size)
 {
-	mBufferLength = std::clamp(size, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE);
+	size = std::clamp(size, AUDIO_BUFFER_MIN_SIZE, AUDIO_BUFFER_MAX_SIZE);
+	mSettings["audio"].set(AUDIO_CFG_BUFFER_SIZE, size);
 }
 
 
@@ -549,12 +578,12 @@ void Configuration::audioBufferSize(int size)
  */
 void Configuration::option(const std::string& option, const std::string& value, bool overwrite)
 {
-	if (!overwrite && mOptions.has(option))
+	if (!overwrite && mSettings.at("options").has(option))
 	{
 		return;
 	}
 
-	mOptions.set(option, value);
+	mSettings.at("options").set(option, value);
 }
 
 
@@ -570,12 +599,12 @@ void Configuration::option(const std::string& option, const std::string& value, 
  */
 std::string Configuration::option(const std::string& key)
 {
-	if (!mOptions.has(key))
+	if (!mSettings.at("options").has(key))
 	{
-		mOptions.set(key, std::string{});
+		mSettings.at("options").set(key, std::string{});
 	}
 
-	return mOptions.get(key);
+	return mSettings.at("options").get(key);
 }
 
 
@@ -589,8 +618,8 @@ std::string Configuration::option(const std::string& key)
  */
 void Configuration::deleteOption(const std::string& option)
 {
-	if (mOptions.has(option))
+	if (mSettings.at("options").has(option))
 	{
-		mOptions.erase(option);
+		mSettings.at("options").erase(option);
 	}
 }

@@ -26,6 +26,10 @@ namespace NAS2D {
 class Configuration
 {
 public:
+	static const Dictionary defaultAudio;
+	static const Dictionary defaultGraphics;
+
+
 	Configuration() = default;
 	Configuration(std::map<std::string, Dictionary> defaults);
 	Configuration(const Configuration&) = delete;
@@ -40,11 +44,11 @@ public:
 	void save(const std::string& filePath) const;
 
 	// Video Options
-	int graphicsWidth() const { return mScreenWidth; }
-	int graphicsHeight() const { return mScreenHeight; }
-	int graphicsColorDepth() const { return mScreenBpp; }
-	bool fullscreen() const { return mFullScreen; }
-	bool vsync() const { return mVSync; }
+	int graphicsWidth() const;
+	int graphicsHeight() const;
+	int graphicsColorDepth() const;
+	bool fullscreen() const;
+	bool vsync() const;
 
 	void graphicsWidth(int width);
 	void graphicsHeight(int height);
@@ -54,12 +58,12 @@ public:
 
 
 	// Audio Options
-	int audioMixRate() const { return mMixRate; }
-	int audioStereoChannels() const { return mStereoChannels; }
-	int audioSfxVolume() const { return mSfxVolume; }
-	int audioMusicVolume() const { return mMusicVolume; }
-	int audioBufferSize() const { return mBufferLength; }
-	const std::string& mixer() const { return mMixerName; }
+	int audioMixRate() const;
+	int audioStereoChannels() const;
+	int audioSfxVolume() const;
+	int audioMusicVolume() const;
+	int audioBufferSize() const;
+	std::string mixer() const;
 
 	void audioMixRate(int mixrate);
 	void audioStereoChannels(int channels);
@@ -78,24 +82,10 @@ protected:
 private:
 	void parseGraphics(const Dictionary& dictionary);
 	void parseAudio(const Dictionary& dictionary);
-	void parseOptions(const Dictionary& dictionary);
 
 	const std::map<std::string, Dictionary> mDefaults{};
-	Dictionary mOptions{};
-
-	int mScreenWidth{800};
-	int mScreenHeight{600};
-	int mScreenBpp{32};
-
-	bool mFullScreen{false};
-	bool mVSync{false};
-
-	int mMixRate{22050};
-	int mStereoChannels{2};
-	int mSfxVolume{128};
-	int mMusicVolume{100};
-	int mBufferLength{1024};
-	std::string mMixerName{"SDL"};
+	std::map<std::string, Dictionary> mLoadedSettings{};
+	std::map<std::string, Dictionary> mSettings{};
 };
 
 } // namespace

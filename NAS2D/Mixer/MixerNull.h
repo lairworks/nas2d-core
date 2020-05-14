@@ -28,6 +28,9 @@ namespace NAS2D
 		virtual void soundVolume(int level) override;
 		virtual void musicVolume(int level) override;
 
+		virtual int soundVolume() const override;
+		virtual int musicVolume() const override;
+
 	protected:
 	private:
 	};

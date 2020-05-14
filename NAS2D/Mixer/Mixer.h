@@ -147,6 +147,20 @@ public:
 	virtual void musicVolume(int level) = 0;
 
 	/**
+	 * Gets the sound volume.
+	 *
+	 * \return	Volume level. Valid values are 0 - 128.
+	 */
+	virtual int soundVolume() const = 0;
+
+	/**
+	 * Gets the music volume.
+	 *
+	 * \return	Volume level. Valid values are 0 - 128.
+	 */
+	virtual int musicVolume() const = 0;
+
+	/**
 	 * Gets a reference to a Signals::Signal<>, a signal raised
 	 * when a Music track has finished playing.
 	 */

@@ -63,6 +63,9 @@ public:
 	void soundVolume(int level) override;
 	void musicVolume(int level) override;
 
+	int soundVolume() const override;
+	int musicVolume() const override;
+
 	void mute() override;
 	void unmute() override;
 

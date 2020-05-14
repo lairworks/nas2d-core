@@ -340,12 +340,6 @@ void Configuration::save(const std::string& filePath) const
  */
 void Configuration::setDefaultValues()
 {
-	mScreenWidth = GRAPHICS_WIDTH;
-	mScreenHeight = GRAPHICS_HEIGHT;
-	mScreenBpp = GRAPHICS_BITDEPTH;
-	mFullScreen = GRAPHICS_FULLSCREEN;
-	mVSync = GRAPHICS_VSYNC;
-
 	mMixRate = AUDIO_MEDIUM_QUALITY;
 	mStereoChannels = AUDIO_STEREO;
 	mSfxVolume = AUDIO_SFX_VOLUME;
@@ -360,12 +354,6 @@ void Configuration::setDefaultValues()
 void Configuration::parseGraphics(const Dictionary& dictionary)
 {
 	ReportProblemNames(dictionary.keys(), {GRAPHICS_CFG_SCREEN_WIDTH, GRAPHICS_CFG_SCREEN_HEIGHT, GRAPHICS_CFG_SCREEN_DEPTH, GRAPHICS_CFG_FULLSCREEN, GRAPHICS_CFG_VSYNC});
-
-	mScreenWidth = dictionary.get<int>(GRAPHICS_CFG_SCREEN_WIDTH);
-	mScreenHeight = dictionary.get<int>(GRAPHICS_CFG_SCREEN_HEIGHT);
-	mScreenBpp = dictionary.get<int>(GRAPHICS_CFG_SCREEN_DEPTH);
-	fullscreen(dictionary.get<bool>(GRAPHICS_CFG_FULLSCREEN));
-	vsync(dictionary.get<bool>(GRAPHICS_CFG_VSYNC));
 }
 
 
@@ -446,7 +434,6 @@ bool Configuration::vsync() const
  */
 void Configuration::graphicsWidth(int width)
 {
-	mScreenWidth = width;
 	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_WIDTH, width);
 }
 
@@ -458,7 +445,6 @@ void Configuration::graphicsWidth(int width)
  */
 void Configuration::graphicsHeight(int height)
 {
-	mScreenHeight = height;
 	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_HEIGHT, height);
 }
 
@@ -470,7 +456,6 @@ void Configuration::graphicsHeight(int height)
  */
 void Configuration::graphicsColorDepth(int bpp)
 {
-	mScreenBpp = bpp;
 	mSettings["graphics"].set(GRAPHICS_CFG_SCREEN_DEPTH, bpp);
 }
 
@@ -482,7 +467,6 @@ void Configuration::graphicsColorDepth(int bpp)
  */
 void Configuration::fullscreen(bool fullscreen)
 {
-	mFullScreen = fullscreen;
 	mSettings["graphics"].set(GRAPHICS_CFG_FULLSCREEN, fullscreen);
 }
 
@@ -499,7 +483,6 @@ void Configuration::fullscreen(bool fullscreen)
  */
 void Configuration::vsync(bool vsync)
 {
-	mVSync = vsync;
 	mSettings["graphics"].set(GRAPHICS_CFG_VSYNC, vsync);
 }
 

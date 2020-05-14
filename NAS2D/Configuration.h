@@ -89,13 +89,6 @@ private:
 	std::map<std::string, Dictionary> mSettings{};
 	Dictionary mOptions{};
 
-	int mScreenWidth{800};
-	int mScreenHeight{600};
-	int mScreenBpp{32};
-
-	bool mFullScreen{false};
-	bool mVSync{false};
-
 	int mMixRate{22050};
 	int mStereoChannels{2};
 	int mSfxVolume{128};

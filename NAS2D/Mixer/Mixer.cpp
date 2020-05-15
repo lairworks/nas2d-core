@@ -30,12 +30,6 @@ void Mixer::resumeAllAudio()
 }
 
 
-Signals::Signal<>& Mixer::musicComplete()
-{
-	return mMusicComplete;
-}
-
-
 void Mixer::addMusicCompleteHandler(Signals::Signal<>::DelegateType handler)
 {
 	return mMusicComplete.connect(handler);

@@ -160,13 +160,6 @@ public:
 	 */
 	virtual int musicVolume() const = 0;
 
-	/**
-	 * Gets a reference to a Signals::Signal<>, a signal raised
-	 * when a Music track has finished playing.
-	 */
-	 [[deprecated("Deprecated: Please use addMusicCompleteHandler and removeMusicCompleteHandler")]]
-	Signals::Signal<>& musicComplete();
-
 	void addMusicCompleteHandler(Signals::Signal<>::DelegateType handler);
 	void removeMusicCompleteHandler(Signals::Signal<>::DelegateType handler);
 

@@ -3,6 +3,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <array>
 #include <vector>
 #include <list>
 #include <map>
@@ -65,6 +66,26 @@ TEST(Container, VectorSubtract) {
 		using namespace NAS2D::ContainerOperators;
 		EXPECT_EQ((std::vector{1, 4}), a - b);
 	}
+}
+
+TEST(Container, has) {
+	EXPECT_FALSE(NAS2D::has(std::array<int, 0>{}, 1));
+	EXPECT_FALSE(NAS2D::has(std::array{2}, 1));
+	EXPECT_FALSE(NAS2D::has(std::array{2, 3}, 1));
+	EXPECT_FALSE(NAS2D::has(std::array{-1, 0, 2, 3}, 1));
+
+	EXPECT_TRUE(NAS2D::has(std::array{1}, 1));
+	EXPECT_TRUE(NAS2D::has(std::array{0, 1}, 1));
+	EXPECT_TRUE(NAS2D::has(std::array{0, 1, 2}, 1));
+
+	EXPECT_FALSE(NAS2D::has(std::vector<int>{}, 1));
+	EXPECT_FALSE(NAS2D::has(std::vector{2}, 1));
+	EXPECT_FALSE(NAS2D::has(std::vector{2, 3}, 1));
+	EXPECT_FALSE(NAS2D::has(std::vector{-1, 0, 2, 3}, 1));
+
+	EXPECT_TRUE(NAS2D::has(std::vector{1}, 1));
+	EXPECT_TRUE(NAS2D::has(std::vector{0, 1}, 1));
+	EXPECT_TRUE(NAS2D::has(std::vector{0, 1, 2}, 1));
 }
 
 TEST(Container, getKeys) {

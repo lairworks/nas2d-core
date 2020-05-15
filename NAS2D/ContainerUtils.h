@@ -45,6 +45,12 @@ namespace NAS2D {
 	}
 
 
+	template <typename Container>
+	bool has(const Container& container, const typename Container::value_type& value)
+	{
+		return std::find(std::begin(container), std::end(container), value) != std::end(container);
+	}
+
 	template <typename KeyValueContainer>
 	std::vector<typename KeyValueContainer::key_type> getKeys(const KeyValueContainer& map)
 	{

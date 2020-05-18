@@ -22,9 +22,6 @@ namespace NAS2D
 
 		bool musicPlaying() const override;
 
-		void mute() override;
-		void unmute() override;
-
 		void soundVolume(int level) override;
 		void musicVolume(int level) override;
 

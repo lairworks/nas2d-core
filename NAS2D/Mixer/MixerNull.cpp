@@ -35,12 +35,6 @@ namespace NAS2D
 		return false;
 	}
 
-	void MixerNull::mute()
-	{}
-
-	void MixerNull::unmute()
-	{}
-
 	void MixerNull::soundVolume(int /*level*/)
 	{}
 

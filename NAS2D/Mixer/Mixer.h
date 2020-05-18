@@ -108,16 +108,6 @@ public:
 	virtual bool musicPlaying() const = 0;
 
 	/**
-	 * Mutes all audio.
-	 */
-	virtual void mute() = 0;
-
-	/**
-	 * Unmutes all audio.
-	 */
-	virtual void unmute() = 0;
-
-	/**
 	 * Stops all music and sound.
 	 */
 	void stopAllAudio();

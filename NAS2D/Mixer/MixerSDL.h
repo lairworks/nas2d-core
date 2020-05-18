@@ -66,9 +66,6 @@ public:
 	int soundVolume() const override;
 	int musicVolume() const override;
 
-	void mute() override;
-	void unmute() override;
-
 private:
 	void onMusicFinished();
 };

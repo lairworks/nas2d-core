@@ -197,17 +197,3 @@ int MixerSDL::musicVolume() const
 {
 	return Mix_VolumeMusic(-1);
 }
-
-
-void MixerSDL::mute()
-{
-	musicVolume(0);
-	soundVolume(0);
-}
-
-
-void MixerSDL::unmute()
-{
-	musicVolume(Mix_VolumeMusic(-1));
-	soundVolume(Mix_Volume(-1, -1));
-}

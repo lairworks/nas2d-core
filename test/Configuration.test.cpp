@@ -4,6 +4,35 @@
 #include <gtest/gtest.h>
 
 
+TEST(Configuration, OperatorSubscript) {
+	{
+		const NAS2D::Configuration config{
+			std::map<std::string, NAS2D::Dictionary>{
+				{{"graphics", NAS2D::Configuration::defaultGraphics}}
+			}
+		};
+		auto& value = config["graphics"];
+
+		EXPECT_TRUE((std::is_same_v<const NAS2D::Dictionary&, decltype(value)>));
+		EXPECT_EQ(value, NAS2D::Configuration::defaultGraphics);
+	}
+
+	{
+		NAS2D::Configuration config{
+			std::map<std::string, NAS2D::Dictionary>{
+				{{"graphics", NAS2D::Configuration::defaultGraphics}}
+			}
+		};
+		auto& value = config["graphics"];
+
+		EXPECT_TRUE((std::is_same_v<NAS2D::Dictionary&, decltype(value)>));
+		EXPECT_EQ(value, NAS2D::Configuration::defaultGraphics);
+
+		EXPECT_NO_THROW(config["graphics"]["customAttribute"] = "custom value");
+		EXPECT_NE(value, NAS2D::Configuration::defaultGraphics);
+	}
+}
+
 TEST(Configuration, loadData) {
 	NAS2D::Configuration config{
 		std::map<std::string, NAS2D::Dictionary>{

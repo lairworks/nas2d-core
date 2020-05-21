@@ -42,6 +42,27 @@ TEST(Dictionary, OperatorEquality) {
 	EXPECT_EQ(dictionary3, dictionary4);
 }
 
+TEST(Dictionary, OperatorSubscript) {
+	{
+		const NAS2D::Dictionary dictionary{{{"Key1", "Value1"}}};;
+		auto& value = dictionary["Key1"];
+
+		EXPECT_TRUE((std::is_same_v<const NAS2D::StringValue&, decltype(value)>));
+		EXPECT_EQ("Value1", value.to<std::string>());
+	}
+
+	{
+		NAS2D::Dictionary dictionary{{{"Key1", "Value1"}}};
+		auto& value = dictionary["Key1"];
+
+		EXPECT_TRUE((std::is_same_v<NAS2D::StringValue&, decltype(value)>));
+		EXPECT_EQ("Value1", value.to<std::string>());
+
+		EXPECT_NO_THROW(dictionary["Key1"] = "Value2");
+		EXPECT_EQ("Value2", value.to<std::string>());
+	}
+}
+
 TEST(Dictionary, setGet) {
 	NAS2D::Dictionary dictionary;
 

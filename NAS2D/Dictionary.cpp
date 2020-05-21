@@ -19,6 +19,16 @@ namespace NAS2D {
 		return !(*this == other);
 	}
 
+	const StringValue& Dictionary::operator[](const std::string& key) const
+	{
+		return mDictionary.at(key);
+	}
+
+	StringValue& Dictionary::operator[](const std::string& key)
+	{
+		return mDictionary[key];
+	}
+
 	Dictionary& Dictionary::operator+=(const Dictionary& other)
 	{
 		for (const auto& [key, value] : other.mDictionary)

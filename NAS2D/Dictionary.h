@@ -14,6 +14,9 @@ namespace NAS2D {
 		bool operator==(const Dictionary& other) const;
 		bool operator!=(const Dictionary& other) const;
 
+		const StringValue& operator[](const std::string& key) const;
+		StringValue& operator[](const std::string& key);
+
 		Dictionary& operator+=(const Dictionary& other);
 
 

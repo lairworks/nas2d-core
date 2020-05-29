@@ -186,7 +186,9 @@ DISTRIBUTION = $(subst Linux,$(LINUX_DISTRIBUTION),$(CURRENT_OS))
 
 .PHONY: install-dependencies
 install-dependencies:
-	@echo "\nDetected distribution: $(DISTRIBUTION)\n"
+	@echo
+	@echo "Detected distribution: $(DISTRIBUTION)"
+	@echo
 	$(MAKE) "install-dependencies-$(DISTRIBUTION)"
 
 ## Ubuntu ##

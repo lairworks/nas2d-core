@@ -198,12 +198,12 @@ install-dependencies-ubuntu:
 .PHONY: install-dependencies-centos
 install-dependencies-centos: | install-repos-centos
 	# Install development packages (-y answers "yes" to prompts)
-	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
+	yum --assumeyes install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
 .PHONY: install-repos-centos
 install-repos-centos:
 	# Default CentOS repositories only contain SDL1
 	# For SDL2 use EPEL repo (EPEL = Extra Packages for Enterprise Linux)
-	yum install epel-release
+	yum --assumeyes install epel-release
 
 ## Arch Linux ##
 .PHONY: install-dependencies-arch

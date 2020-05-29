@@ -180,7 +180,7 @@ cppclean:
 
 RELEASE_FILES = $(wildcard /etc/*-release)
 RELEASE_FILE_TAGS = $(patsubst /etc/%-release,%,$(RELEASE_FILES))
-RELEASE_SETTING_NAME = $(shell '$(SHELL)' -c '. $(RELEASE_FILES) && echo $${ID}')
+RELEASE_SETTING_NAME = $(shell '$(SHELL)' -c '. /etc/os-release && echo $${ID}')
 LINUX_DISTRIBUTION = $(or $(RELEASE_SETTING_NAME),$(RELEASE_FILE_TAGS),Unknown)
 DISTRIBUTION = $(subst Linux,$(LINUX_DISTRIBUTION),$(CURRENT_OS))
 

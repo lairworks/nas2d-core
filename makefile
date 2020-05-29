@@ -179,7 +179,7 @@ cppclean:
 # should be similar.
 
 RELEASE_FILES = $(wildcard /etc/*-release)
-RELEASE_FILE_TAGS = $(patsubst /etc/%-release,%,$(RELEASE_FILES))
+RELEASE_FILE_TAGS = $(filter-out os lsb,$(patsubst /etc/%-release,%,$(RELEASE_FILES)))
 RELEASE_SETTING_NAME = $(shell '$(SHELL)' -c '. /etc/os-release && echo $${ID}')
 LINUX_DISTRIBUTION = $(or $(RELEASE_SETTING_NAME),$(RELEASE_FILE_TAGS),Unknown)
 DISTRIBUTION = $(subst Linux,$(LINUX_DISTRIBUTION),$(CURRENT_OS))

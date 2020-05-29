@@ -189,32 +189,26 @@ install-dependencies:
 	@echo "\nDetected distribution: $(DISTRIBUTION)\n"
 	$(MAKE) "install-dependencies-$(DISTRIBUTION)"
 
-## Arch Linux ##
-
-.PHONY: install-dependencies-arch
-install-dependencies-arch:
-	pacman -S sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
-
-
 ## Ubuntu ##
-
 .PHONY: install-dependencies-ubuntu
 install-dependencies-ubuntu:
 	apt install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libphysfs-dev
 
-
 ## CentOS ##
-
+.PHONY: install-dependencies-centos
+install-dependencies-centos:
+	# Install development packages (-y answers "yes" to prompts)
+	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
 .PHONY: install-repos-centos
 install-repos-centos:
 	# Default CentOS repositories only contain SDL1
 	# For SDL2 use EPEL repo (EPEL = Extra Packages for Enterprise Linux)
 	yum install epel-release
 
-.PHONY: install-dependencies-centos
-install-dependencies-centos:
-	# Install development packages (-y answers "yes" to prompts)
-	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
+## Arch Linux ##
+.PHONY: install-dependencies-arch
+install-dependencies-arch:
+	pacman -S sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
 
 
 #### Docker related build rules ####

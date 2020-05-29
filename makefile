@@ -196,7 +196,7 @@ install-dependencies-ubuntu:
 
 ## CentOS ##
 .PHONY: install-dependencies-centos
-install-dependencies-centos:
+install-dependencies-centos: | install-repos-centos
 	# Install development packages (-y answers "yes" to prompts)
 	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
 .PHONY: install-repos-centos

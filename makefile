@@ -178,6 +178,16 @@ cppclean:
 # Only a few common Linux distributions are covered. Other distributions
 # should be similar.
 
+RELEASE_FILES = $(wildcard /etc/*-release)
+RELEASE_FILE_TAGS = $(patsubst /etc/%-release,%,$(RELEASE_FILES))
+RELEASE_SETTING_NAME = $(shell '$(SHELL)' -c '. $(RELEASE_FILES) && echo $${ID}')
+LINUX_DISTRIBUTION = $(or $(RELEASE_SETTING_NAME),$(RELEASE_FILE_TAGS),Unknown)
+DISTRIBUTION = $(subst Linux,$(LINUX_DISTRIBUTION),$(CURRENT_OS))
+
+.PHONY: install-dependencies
+install-dependencies:
+	@echo "\nDetected distribution: $(DISTRIBUTION)\n"
+	$(MAKE) "install-deps-$(DISTRIBUTION)"
 
 ## Arch Linux ##
 

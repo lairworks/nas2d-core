@@ -178,33 +178,39 @@ cppclean:
 # Only a few common Linux distributions are covered. Other distributions
 # should be similar.
 
+RELEASE_FILES = $(wildcard /etc/*-release)
+RELEASE_FILE_TAGS = $(filter-out os lsb,$(patsubst /etc/%-release,%,$(RELEASE_FILES)))
+RELEASE_SETTING_NAME = $(shell '$(SHELL)' -c '. /etc/os-release && echo $${ID}')
+LINUX_DISTRIBUTION = $(or $(RELEASE_SETTING_NAME),$(RELEASE_FILE_TAGS),Unknown)
+DISTRIBUTION = $(subst Linux,$(LINUX_DISTRIBUTION),$(CURRENT_OS))
 
-## Arch Linux ##
-
-.PHONY: install-deps-arch
-install-deps-arch:
-	pacman -S sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
-
+.PHONY: install-dependencies
+install-dependencies:
+	@echo
+	@echo "Detected distribution: $(DISTRIBUTION)"
+	@echo
+	$(MAKE) "install-dependencies-$(DISTRIBUTION)"
 
 ## Ubuntu ##
-
-.PHONY: install-deps-ubuntu
-install-deps-ubuntu:
-	apt install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libphysfs-dev
-
+.PHONY: install-dependencies-ubuntu
+install-dependencies-ubuntu:
+	apt --yes install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libphysfs-dev
 
 ## CentOS ##
-
-.PHONY: install-repos-centos
-install-repos-centos:
+.PHONY: install-dependencies-centos
+install-dependencies-centos: | install-dependencies-repository-centos
+	# Install development packages (-y answers "yes" to prompts)
+	yum --assumeyes install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
+.PHONY: install-dependencies-repository-centos
+install-dependencies-repository-centos:
 	# Default CentOS repositories only contain SDL1
 	# For SDL2 use EPEL repo (EPEL = Extra Packages for Enterprise Linux)
-	yum install epel-release
+	yum --assumeyes install epel-release
 
-.PHONY: install-deps-centos
-install-deps-centos:
-	# Install development packages (-y answers "yes" to prompts)
-	yum -y install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
+## Arch Linux ##
+.PHONY: install-dependencies-arch
+install-dependencies-arch:
+	pacman --sync --refresh sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
 
 
 #### Docker related build rules ####

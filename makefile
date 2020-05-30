@@ -194,7 +194,7 @@ install-dependencies:
 ## Ubuntu ##
 .PHONY: install-dependencies-ubuntu
 install-dependencies-ubuntu:
-	apt install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libphysfs-dev
+	apt --yes install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libphysfs-dev
 
 ## CentOS ##
 .PHONY: install-dependencies-centos

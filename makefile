@@ -210,7 +210,7 @@ install-dependencies-repository-centos:
 ## Arch Linux ##
 .PHONY: install-dependencies-arch
 install-dependencies-arch:
-	pacman -S sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
+	pacman --sync sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
 
 
 #### Docker related build rules ####

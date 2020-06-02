@@ -212,6 +212,11 @@ install-dependencies-repository-centos:
 install-dependencies-arch:
 	pacman --sync --refresh sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
 
+## MacOS ##
+.PHONY: install-dependencies-darwin
+install-dependencies-darwin:
+	brew install physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf libpng libjpeg libtiff webp libmodplug libvorbis libogg freetype glew
+
 
 #### Docker related build rules ####
 

@@ -660,7 +660,7 @@ void RendererOpenGL::onResize(int w, int h)
 
 void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
 {
-	glViewport(viewport.startPoint().x(), viewport.startPoint().y(), viewport.width(), viewport.height());
+	glViewport(viewport.x(), viewport.y(), viewport.width(), viewport.height());
 }
 
 

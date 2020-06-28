@@ -359,7 +359,7 @@ namespace {
 		{
 			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 			{
-				std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
+				std::size_t glyph = static_cast<std::size_t>(row) * GLYPH_MATRIX_SIZE + col;
 
 				// HACK HACK HACK!
 				// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
@@ -413,7 +413,7 @@ namespace {
 		{
 			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
 			{
-				const std::size_t glyph = static_cast<std::size_t>((row * GLYPH_MATRIX_SIZE) + col);
+				const std::size_t glyph = static_cast<std::size_t>(row) * GLYPH_MATRIX_SIZE + col;
 
 				glyphMetricsList[glyph].uvX = static_cast<float>(col * characterSize.x) / static_cast<float>(textureSize.x);
 				glyphMetricsList[glyph].uvY = static_cast<float>(row * characterSize.y) / static_cast<float>(textureSize.y);

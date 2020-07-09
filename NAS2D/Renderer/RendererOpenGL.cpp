@@ -310,7 +310,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
-	fillVertexArray(dstPoint.x(), static_cast<float>(destination.height()) - dstPoint.y(), static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y));
+	fillVertexArray(dstPoint.x, static_cast<float>(destination.height()) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y));
 
 	drawVertexArray(imageIdMap[source.name()].texture_id);
 	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
@@ -572,7 +572,7 @@ float RendererOpenGL::width() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
-		return desktopResolution.x();
+		return desktopResolution.x;
 	}
 
 	return mResolution.x;
@@ -583,7 +583,7 @@ float RendererOpenGL::height() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
-		return desktopResolution.y();
+		return desktopResolution.y;
 	}
 
 	return mResolution.y;
@@ -669,7 +669,7 @@ void RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	const auto bounds = orthoBounds.to<double>();
-	glOrtho(bounds.startPoint().x(), bounds.endPoint().x(), bounds.endPoint().y(), bounds.startPoint().y(), -1.0, 1.0);
+	glOrtho(bounds.startPoint().x, bounds.endPoint().x, bounds.endPoint().y, bounds.startPoint().y, -1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 }
 

@@ -271,7 +271,7 @@ int Image::center_y() const
  */
 Color Image::pixelColor(Point<int> point) const
 {
-	return pixelColor(point.x(), point.y());
+	return pixelColor(point.x, point.y);
 }
 
 

@@ -34,8 +34,8 @@ struct Rectangle
 	// Factory method
 	static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size) {
 		return {
-			startPoint.x(),
-			startPoint.y(),
+			startPoint.x,
+			startPoint.y,
 			size.x,
 			size.y
 		};
@@ -44,10 +44,10 @@ struct Rectangle
 	// Factory method
 	static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint) {
 		return {
-			startPoint.x(),
-			startPoint.y(),
-			endPoint.x() - startPoint.x(),
-			endPoint.y() - startPoint.y()
+			startPoint.x,
+			startPoint.y,
+			endPoint.x - startPoint.x,
+			endPoint.y - startPoint.y
 		};
 	}
 
@@ -88,8 +88,8 @@ struct Rectangle
 	}
 
 	void startPoint(NAS2D::Point<BaseType> newStartPoint) {
-		mX = newStartPoint.x();
-		mY = newStartPoint.y();
+		mX = newStartPoint.x;
+		mY = newStartPoint.y;
 	}
 
 	template <typename NewBaseType>
@@ -110,8 +110,8 @@ struct Rectangle
 	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
 	// Area in interval notation: [x .. x + width), [y .. y + height)
 	bool contains(const Point<BaseType>& point) const {
-		auto px = point.x();
-		auto py = point.y();
+		auto px = point.x;
+		auto py = point.y;
 		return ((mX <= px) && (px < mX + mW)) && ((mY <= py) && (py < mY + mH));
 	}
 

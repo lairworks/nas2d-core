@@ -64,7 +64,7 @@ void Renderer::title(const std::string& title)
 
 void Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
 {
-	drawImage(image, position.x(), position.y(), scale, color.red, color.green, color.blue, color.alpha);
+	drawImage(image, position.x, position.y, scale, color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -90,7 +90,7 @@ void Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> 
 
 void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, const Color& color)
 {
-	drawSubImage(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, color);
+	drawSubImage(image, raster.x, raster.y, position.x, position.y, size.x, size.y, color);
 }
 
 
@@ -119,7 +119,7 @@ void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<
 
 void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, const Color& color)
 {
-	drawSubImageRotated(image, raster.x(), raster.y(), position.x(), position.y(), size.x, size.y, degrees, color);
+	drawSubImageRotated(image, raster.x, raster.y, position.x, position.y, size.x, size.y, degrees, color);
 }
 
 
@@ -144,7 +144,7 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
 
 void Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, const Color& color, float scale)
 {
-	drawImageRotated(image, position.x(), position.y(), degrees, color, scale);
+	drawImageRotated(image, position.x, position.y, degrees, color, scale);
 }
 
 
@@ -172,7 +172,7 @@ void Renderer::drawImageStretched(Image& image, Rectangle<float> rect, Color col
 
 void Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
 {
-	drawImageStretched(image, position.x(), position.y(), size.x, size.y, color);
+	drawImageStretched(image, position.x, position.y, size.x, size.y, color);
 }
 
 
@@ -200,7 +200,7 @@ void Renderer::drawImageRepeated(Image& image, Rectangle<float> rect)
 
 void Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
 {
-	drawImageRepeated(image, position.x(), position.y(), size.x, size.y);
+	drawImageRepeated(image, position.x, position.y, size.x, size.y);
 }
 
 
@@ -221,7 +221,7 @@ void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
 
 void Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageList& images)
 {
-	drawImageRect(position.x(), position.y(), size.x, size.y, images);
+	drawImageRect(position.x, position.y, size.x, size.y, images);
 }
 
 
@@ -261,7 +261,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
 
 void Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
-	drawImageRect(position.x(), position.y(), size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
+	drawImageRect(position.x, position.y, size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
 }
 
 /**
@@ -288,7 +288,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 
 void Renderer::drawPoint(Point<float> position, const Color& color)
 {
-	drawPoint(position.x(), position.y(), color);
+	drawPoint(position.x, position.y, color);
 }
 
 
@@ -307,7 +307,7 @@ void Renderer::drawPoint(float x, float y, const Color& color)
 
 void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, const Color& color, int line_width)
 {
-	drawLine(startPosition.x(), startPosition.y(), endPosition.x(), endPosition.y(), color, line_width);
+	drawLine(startPosition.x, startPosition.y, endPosition.x, endPosition.y, color, line_width);
 }
 
 
@@ -371,7 +371,7 @@ void Renderer::drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g,
 
 void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
 {
-	drawCircle(position.x(), position.y(), radius, color.red, color.green, color.blue, color.alpha, num_segments, scale.x, scale.y);
+	drawCircle(position.x, position.y, radius, color.red, color.green, color.blue, color.alpha, num_segments, scale.x, scale.y);
 }
 
 
@@ -383,7 +383,7 @@ void Renderer::drawGradient(Rectangle<float> rect, const Color& c1, const Color&
 
 void Renderer::drawGradient(Point<float> position, Vector<float> size, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
 {
-	drawGradient(position.x(), position.y(), size.x, size.y, c1, c2, c3, c4);
+	drawGradient(position.x, position.y, size.x, size.y, c1, c2, c3, c4);
 }
 
 
@@ -415,15 +415,15 @@ void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1,
 
 void Renderer::drawText(const Font& font, std::string_view text, Point<float> position, Color color)
 {
-	drawText(font, text, position.x(), position.y(), color.red, color.green, color.blue, color.alpha);
+	drawText(font, text, position.x, position.y, color.red, color.green, color.blue, color.alpha);
 }
 
 
 void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
 {
 	const auto shadowPosition = position + shadowOffset;
-	drawText(font, text, shadowPosition.x(), shadowPosition.y(), shadowColor.red, shadowColor.green, shadowColor.blue, shadowColor.alpha);
-	drawText(font, text, position.x(), position.y(), textColor.red, textColor.green, textColor.blue, textColor.alpha);
+	drawText(font, text, shadowPosition.x, shadowPosition.y, shadowColor.red, shadowColor.green, shadowColor.blue, shadowColor.alpha);
+	drawText(font, text, position.x, position.y, textColor.red, textColor.green, textColor.blue, textColor.alpha);
 }
 
 

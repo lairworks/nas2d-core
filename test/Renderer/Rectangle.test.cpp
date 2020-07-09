@@ -42,6 +42,18 @@ TEST(Rectangle, crossYPoint) {
 	EXPECT_EQ((NAS2D::Point<int>{1, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.crossYPoint()));
 }
 
+TEST(Rectangle, sizeSet) {
+	NAS2D::Rectangle rect{1, 2, 3, 4};
+	EXPECT_NO_THROW(rect.size({5, 6}));
+	EXPECT_EQ((NAS2D::Rectangle{1, 2, 5, 6}), rect);
+}
+
+TEST(Rectangle, startPointSet) {
+	NAS2D::Rectangle rect{1, 2, 3, 4};
+	EXPECT_NO_THROW(rect.startPoint({5, 6}));
+	EXPECT_EQ((NAS2D::Rectangle{5, 6, 3, 4}), rect);
+}
+
 TEST(Rectangle, operatorType) {
 	EXPECT_EQ((NAS2D::Rectangle<int>{0, 0, 1, 1}), static_cast<NAS2D::Rectangle<int>>(NAS2D::Rectangle<float>{0.0, 0.0, 1.0, 1.0}));
 	EXPECT_EQ((NAS2D::Rectangle<int>{1, 2, 3, 4}), static_cast<NAS2D::Rectangle<int>>(NAS2D::Rectangle<float>{1.0, 2.0, 3.0, 4.0}));

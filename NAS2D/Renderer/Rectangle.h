@@ -82,6 +82,16 @@ struct Rectangle
 		return (mW == 0) || (mH == 0);
 	}
 
+	void size(NAS2D::Vector<BaseType> newSize) {
+		mW = newSize.x;
+		mH = newSize.y;
+	}
+
+	void startPoint(NAS2D::Point<BaseType> newStartPoint) {
+		mX = newStartPoint.x();
+		mY = newStartPoint.y();
+	}
+
 	template <typename NewBaseType>
 	operator Rectangle<NewBaseType>() const {
 		return {

@@ -20,16 +20,10 @@ namespace NAS2D {
 template <typename BaseType>
 struct Rectangle
 {
-	Rectangle() = default;
-	Rectangle(const Rectangle& other) = default;
-	Rectangle& operator=(const Rectangle& other) = default;
-
-	Rectangle(BaseType x, BaseType y, BaseType width, BaseType height) :
-		mX(x),
-		mY(y),
-		mW(width),
-		mH(height)
-	{}
+	BaseType x = 0;
+	BaseType y = 0;
+	BaseType width = 0;
+	BaseType height = 0;
 
 	// Factory method
 	static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size) {
@@ -52,53 +46,53 @@ struct Rectangle
 	}
 
 	bool operator==(const Rectangle& rect) const {
-		return (mX == rect.mX) && (mY == rect.mY) && (mW == rect.mW) && (mH == rect.mH);
+		return (x == rect.x) && (y == rect.y) && (width == rect.width) && (height == rect.height);
 	}
 	bool operator!=(const Rectangle& rect) const {
 		return !(*this == rect);
 	}
 
 	Vector<BaseType> size() const {
-		return {mW, mH};
+		return {width, height};
 	}
 
 	Point<BaseType> startPoint() const {
-		return {mX, mY};
+		return {x, y};
 	}
 
 	Point<BaseType> endPoint() const {
-		return Point{mX, mY} + Vector{mW, mH};
+		return Point{x, y} + Vector{width, height};
 	}
 
 	Point<BaseType> crossXPoint() const {
-		return {mX + mW, mY};
+		return {x + width, y};
 	}
 
 	Point<BaseType> crossYPoint() const {
-		return {mX, mY + mH};
+		return {x, y + height};
 	}
 
 	bool null() const {
-		return (mW == 0) || (mH == 0);
+		return (width == 0) || (height == 0);
 	}
 
 	void size(NAS2D::Vector<BaseType> newSize) {
-		mW = newSize.x;
-		mH = newSize.y;
+		width = newSize.x;
+		height = newSize.y;
 	}
 
 	void startPoint(NAS2D::Point<BaseType> newStartPoint) {
-		mX = newStartPoint.x;
-		mY = newStartPoint.y;
+		x = newStartPoint.x;
+		y = newStartPoint.y;
 	}
 
 	template <typename NewBaseType>
 	operator Rectangle<NewBaseType>() const {
 		return {
-			static_cast<NewBaseType>(mX),
-			static_cast<NewBaseType>(mY),
-			static_cast<NewBaseType>(mW),
-			static_cast<NewBaseType>(mH)
+			static_cast<NewBaseType>(x),
+			static_cast<NewBaseType>(y),
+			static_cast<NewBaseType>(width),
+			static_cast<NewBaseType>(height)
 		};
 	}
 
@@ -107,76 +101,30 @@ struct Rectangle
 		return static_cast<Rectangle<NewBaseType>>(*this);
 	}
 
-	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
-	// Area in interval notation: [x .. x + width), [y .. y + height)
+	// Start point inclusive (x, y), endpoint exclusive (x + , y + height)
+	// Area in interval notation: [x .. x + ), [y .. y + height)
 	bool contains(const Point<BaseType>& point) const {
 		auto px = point.x;
 		auto py = point.y;
-		return ((mX <= px) && (px < mX + mW)) && ((mY <= py) && (py < mY + mH));
+		return ((x <= px) && (px < x + width)) && ((y <= py) && (py < y + height));
 	}
 
-	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
-	// Area in interval notation: [x .. x + width), [y .. y + height)
+	// Start point inclusive (x, y), endpoint exclusive (x + , y + height)
+	// Area in interval notation: [x .. x + ), [y .. y + height)
 	bool overlaps(const Rectangle& rect) const {
-		return ((mX < rect.mX + rect.mW) && (rect.mX < mX + mW)) && ((mY < rect.mY + rect.mH) && (rect.mY < mY + mH));
-	}
-
-	void x(BaseType x) {
-		mX = x;
-	}
-	BaseType x() const {
-		return mX;
-	}
-	BaseType& x() {
-		return mX;
-	}
-
-	void y(BaseType y) {
-		mY = y;
-	}
-	BaseType y() const {
-		return mY;
-	}
-	BaseType& y() {
-		return mY;
-	}
-
-	void width(BaseType w) {
-		mW = w;
-	}
-	BaseType width() const {
-		return mW;
-	}
-	BaseType& width() {
-		return mW;
-	}
-
-	void height(BaseType h) {
-		mH = h;
-	}
-	BaseType height() const {
-		return mH;
-	}
-	BaseType& height() {
-		return mH;
+		return ((x < rect.x + rect.width) && (rect.x < x + width)) && ((y < rect.y + rect.height) && (rect.y < y + height));
 	}
 
 	BaseType center_x() const {
-		return mX + (mW / 2);
+		return x + (width / 2);
 	}
 	BaseType center_y() const {
-		return mY + (mH / 2);
+		return y + (height / 2);
 	}
 
 	Point<BaseType> center() const {
-		return {mX + (mW / 2), mY + (mH / 2)};
+		return {x + (width / 2), y + (height / 2)};
 	}
-
-private:
-	BaseType mX = 0;
-	BaseType mY = 0;
-	BaseType mW = 0;
-	BaseType mH = 0;
 };
 
 

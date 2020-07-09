@@ -3,13 +3,13 @@
 
 
 TEST(Rectangle, CreatePointVector) {
-	EXPECT_EQ((NAS2D::Rectangle{0, 0, 1, 1}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{0, 0}, NAS2D::Vector{1, 1}));
-	EXPECT_EQ((NAS2D::Rectangle{1, 1, 2, 3}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{1, 1}, NAS2D::Vector{2, 3}));
+	EXPECT_EQ((NAS2D::Rectangle{0, 0, 1, 1}), NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, NAS2D::Vector{1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 2, 3}), NAS2D::Rectangle<int>::Create(NAS2D::Point{1, 1}, NAS2D::Vector{2, 3}));
 }
 
 TEST(Rectangle, CreatePointPoint) {
-	EXPECT_EQ((NAS2D::Rectangle{0, 0, 1, 1}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{0, 0}, NAS2D::Point<int>{1, 1}));
-	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 2}), NAS2D::Rectangle<int>::Create(NAS2D::Point<int>{1, 1}, NAS2D::Point<int>{2, 3}));
+	EXPECT_EQ((NAS2D::Rectangle{0, 0, 1, 1}), NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, NAS2D::Point{1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 2}), NAS2D::Rectangle<int>::Create(NAS2D::Point{1, 1}, NAS2D::Point{2, 3}));
 }
 
 TEST(Rectangle, size) {
@@ -19,27 +19,27 @@ TEST(Rectangle, size) {
 }
 
 TEST(Rectangle, startPoint) {
-	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.startPoint()));
-	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 1, 1}.startPoint()));
-	EXPECT_EQ((NAS2D::Point<int>{1, 2}), (NAS2D::Rectangle{1, 2, 3, 4}.startPoint()));
+	EXPECT_EQ((NAS2D::Point{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.startPoint()));
+	EXPECT_EQ((NAS2D::Point{0, 0}), (NAS2D::Rectangle{0, 0, 1, 1}.startPoint()));
+	EXPECT_EQ((NAS2D::Point{1, 2}), (NAS2D::Rectangle{1, 2, 3, 4}.startPoint()));
 }
 
 TEST(Rectangle, endPoint) {
-	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.endPoint()));
-	EXPECT_EQ((NAS2D::Point<int>{1, 1}), (NAS2D::Rectangle{0, 0, 1, 1}.endPoint()));
-	EXPECT_EQ((NAS2D::Point<int>{4, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.endPoint()));
+	EXPECT_EQ((NAS2D::Point{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.endPoint()));
+	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Rectangle{0, 0, 1, 1}.endPoint()));
+	EXPECT_EQ((NAS2D::Point{4, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.endPoint()));
 }
 
 TEST(Rectangle, crossXPoint) {
-	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.crossXPoint()));
-	EXPECT_EQ((NAS2D::Point<int>{1, 0}), (NAS2D::Rectangle{0, 0, 1, 1}.crossXPoint()));
-	EXPECT_EQ((NAS2D::Point<int>{4, 2}), (NAS2D::Rectangle{1, 2, 3, 4}.crossXPoint()));
+	EXPECT_EQ((NAS2D::Point{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.crossXPoint()));
+	EXPECT_EQ((NAS2D::Point{1, 0}), (NAS2D::Rectangle{0, 0, 1, 1}.crossXPoint()));
+	EXPECT_EQ((NAS2D::Point{4, 2}), (NAS2D::Rectangle{1, 2, 3, 4}.crossXPoint()));
 }
 
 TEST(Rectangle, crossYPoint) {
-	EXPECT_EQ((NAS2D::Point<int>{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.crossYPoint()));
-	EXPECT_EQ((NAS2D::Point<int>{0, 1}), (NAS2D::Rectangle{0, 0, 1, 1}.crossYPoint()));
-	EXPECT_EQ((NAS2D::Point<int>{1, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.crossYPoint()));
+	EXPECT_EQ((NAS2D::Point{0, 0}), (NAS2D::Rectangle{0, 0, 0, 0}.crossYPoint()));
+	EXPECT_EQ((NAS2D::Point{0, 1}), (NAS2D::Rectangle{0, 0, 1, 1}.crossYPoint()));
+	EXPECT_EQ((NAS2D::Point{1, 6}), (NAS2D::Rectangle{1, 2, 3, 4}.crossYPoint()));
 }
 
 TEST(Rectangle, sizeSet) {

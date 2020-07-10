@@ -50,6 +50,18 @@ float angleFromPoints(float x, float y, float x2, float y2)
 
 
 /**
+ * Gets the angle of a direction vector
+ *
+ * An angle of 0 corresponds to "up" in screen coordinates {0, -1},
+ * and increases moving clockwise.
+ */
+float getAngle(Vector<float> direction)
+{
+	return 90.0f - radToDeg(std::atan2(direction.y, direction.x));
+}
+
+
+/**
  * Gets a directional vector from an angle in degrees.
  *
  * Assumes screen coordinates (origin is top left).

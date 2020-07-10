@@ -18,51 +18,45 @@ namespace NAS2D {
 
 template <typename BaseType>
 struct Point {
-	Point() = default;
-	Point(const Point& point) = default;
-	Point& operator=(const Point& other) = default;
-
-	Point(BaseType x, BaseType y) :
-		mX(x),
-		mY(y)
-	{}
+	BaseType x = 0;
+	BaseType y = 0;
 
 	bool operator==(const Point& point) const {
-		return (mX == point.mX) && (mY == point.mY);
+		return (x == point.x) && (y == point.y);
 	}
 	bool operator!=(const Point& point) const {
 		return !(*this == point);
 	}
 
 	Point& operator+=(const Vector<BaseType>& vector) {
-		mX += vector.x;
-		mY += vector.y;
+		x += vector.x;
+		y += vector.y;
 		return *this;
 	}
 
 	Point& operator-=(const Vector<BaseType>& vector) {
-		mX -= vector.x;
-		mY -= vector.y;
+		x -= vector.x;
+		y -= vector.y;
 		return *this;
 	}
 
 	Point operator+(const Vector<BaseType>& vector) const {
-		return {mX + vector.x, mY + vector.y};
+		return {x + vector.x, y + vector.y};
 	}
 
 	Point operator-(const Vector<BaseType>& vector) const {
-		return {mX - vector.x, mY - vector.y};
+		return {x - vector.x, y - vector.y};
 	}
 
 	Vector<BaseType> operator-(const Point& point) const {
-		return {mX - point.mX, mY - point.mY};
+		return {x - point.x, y - point.y};
 	}
 
 	template <typename NewBaseType>
 	operator Point<NewBaseType>() const {
 		return {
-			static_cast<NewBaseType>(mX),
-			static_cast<NewBaseType>(mY)
+			static_cast<NewBaseType>(x),
+			static_cast<NewBaseType>(y)
 		};
 	}
 
@@ -70,30 +64,6 @@ struct Point {
 	Point<NewBaseType> to() const {
 		return static_cast<Point<NewBaseType>>(*this);
 	}
-
-	void x(BaseType x) {
-		mX = x;
-	}
-	BaseType x() const {
-		return mX;
-	}
-	BaseType& x() {
-		return mX;
-	}
-
-	void y(BaseType y) {
-		mY = y;
-	}
-	BaseType y() const {
-		return mY;
-	}
-	BaseType& y() {
-		return mY;
-	}
-
-private:
-	BaseType mX = 0;
-	BaseType mY = 0;
 };
 
 

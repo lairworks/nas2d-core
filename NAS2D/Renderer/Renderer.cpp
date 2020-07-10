@@ -209,7 +209,7 @@ void Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<flo
  */
 void Renderer::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
 {
-	drawSubImageRepeated(image, destination.x(), destination.y(), destination.width(), destination.height(), source.x(), source.y(), source.width(), source.height());
+	drawSubImageRepeated(image, destination.x, destination.y, destination.width, destination.height, source.x, source.y, source.width, source.height);
 }
 
 
@@ -329,7 +329,7 @@ void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color
 
 void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
 {
-	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), color.red, color.green, color.blue, color.alpha);
+	drawBox(rect.x, rect.y, rect.width, rect.height, color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -344,13 +344,13 @@ void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
  */
 void Renderer::drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawBox(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
+	drawBox(rect.x, rect.y, rect.width, rect.height, r, g, b, a);
 }
 
 
 void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
 {
-	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), color.red, color.green, color.blue, color.alpha);
+	drawBoxFilled(rect.x, rect.y, rect.width, rect.height, color.red, color.green, color.blue, color.alpha);
 }
 
 
@@ -365,7 +365,7 @@ void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
  */
 void Renderer::drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawBoxFilled(rect.x(), rect.y(), rect.width(), rect.height(), r, g, b, a);
+	drawBoxFilled(rect.x, rect.y, rect.width, rect.height, r, g, b, a);
 }
 
 
@@ -588,7 +588,7 @@ float Renderer::center_y() const
  */
 void Renderer::clipRect(const Rectangle<float>& rect)
 {
-	clipRect(rect.x(), rect.y(), rect.width(), rect.height());
+	clipRect(rect.x, rect.y, rect.width, rect.height);
 }
 
 

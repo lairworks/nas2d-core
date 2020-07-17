@@ -22,7 +22,6 @@ extern const float RAD2DEG;
 
 float degToRad(float degree);
 float radToDeg(float rad);
-float angleFromPoints(float x, float y, float x2, float y2);
 float getAngle(Vector<float> direction);
 Vector<float> getDirectionVector(float angle);
 

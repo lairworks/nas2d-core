@@ -22,3 +22,11 @@ TEST(Trig, getAngle) {
 
 	EXPECT_EQ(45.0f, (getAngle(NAS2D::Vector{1.0, 1.0})));
 }
+
+TEST(Trig, getDirectionVector) {
+	EXPECT_EQ((NAS2D::Vector{1, 0}), NAS2D::getDirectionVector(0.0f));
+	EXPECT_EQ((NAS2D::Vector{0, 1}), NAS2D::getDirectionVector(90.0f));
+	EXPECT_EQ((NAS2D::Vector{-1, 0}), NAS2D::getDirectionVector(180.0f));
+	EXPECT_EQ((NAS2D::Vector{0, -1}), NAS2D::getDirectionVector(270.0f));
+	EXPECT_EQ((NAS2D::Vector{0, -1}), NAS2D::getDirectionVector(-90.0f));
+}

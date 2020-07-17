@@ -13,14 +13,14 @@ TEST(Trig, degToRadToDeg) {
 }
 
 TEST(Trig, getAngle) {
-	EXPECT_EQ(0.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{0, 0})));
+	EXPECT_FLOAT_EQ(0.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{0, 0})));
 
-	EXPECT_EQ(0.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{1, 0})));
-	EXPECT_EQ(90.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{0, 1})));
-	EXPECT_EQ(180.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{-1, 0})));
-	EXPECT_EQ(-90.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{0, -1})));
+	EXPECT_FLOAT_EQ(0.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{1, 0})));
+	EXPECT_FLOAT_EQ(90.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{0, 1})));
+	EXPECT_FLOAT_EQ(180.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{-1, 0})));
+	EXPECT_FLOAT_EQ(-90.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{0, -1})));
 
-	EXPECT_EQ(45.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{1.0, 1.0})));
+	EXPECT_FLOAT_EQ(45.0f, NAS2D::radToDeg(NAS2D::getAngle(NAS2D::Vector{1.0, 1.0})));
 }
 
 TEST(Trig, getDirectionVector) {

@@ -41,11 +41,11 @@ float radToDeg(float rad)
 
 
 /**
- * Gets the angle of a line in degrees given two points.
+ * Gets the angle of a line in radians given two points.
  */
 float angleFromPoints(float x, float y, float x2, float y2)
 {
-	return radToDeg(std::atan2(y2 - y, x2 - x));
+	return std::atan2(y2 - y, x2 - x);
 }
 
 
@@ -54,16 +54,16 @@ float angleFromPoints(float x, float y, float x2, float y2)
  */
 float getAngle(Vector<float> direction)
 {
-	return radToDeg(std::atan2(direction.y, direction.x));
+	return std::atan2(direction.y, direction.x);
 }
 
 
 /**
- * Gets a directional vector from an angle in degrees.
+ * Gets a directional vector from an angle in radians.
  */
-Vector<float> getDirectionVector(float angle)
+Vector<float> getDirectionVector(float radian)
 {
-	return {std::cos(degToRad(angle)), std::sin(degToRad(angle))};
+	return {std::cos(radian), std::sin(radian)};
 }
 
 }

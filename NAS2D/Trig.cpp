@@ -36,7 +36,7 @@ float degToRad(float degree)
  */
 float radToDeg(float rad)
 {
-	return rad * -RAD2DEG;
+	return rad * RAD2DEG;
 }
 
 
@@ -45,7 +45,7 @@ float radToDeg(float rad)
  */
 float angleFromPoints(float x, float y, float x2, float y2)
 {
-	return 90.0f - radToDeg(std::atan2(y2 - y, x2 - x));
+	return 90.0f + radToDeg(std::atan2(y2 - y, x2 - x));
 }
 
 
@@ -57,7 +57,7 @@ float angleFromPoints(float x, float y, float x2, float y2)
  */
 float getAngle(Vector<float> direction)
 {
-	return 90.0f - radToDeg(std::atan2(direction.y, direction.x));
+	return 90.0f + radToDeg(std::atan2(direction.y, direction.x));
 }
 
 

@@ -72,10 +72,10 @@ public:
 	void drawImageRotated(Image& image, float x, float y, float degrees, Color color = Color::Normal, float scale = 1.0f);
 	void drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale = 1.0f);
 
-	void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal);
+	virtual void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal) = 0;
 	void drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color = Color::Normal);
 	void drawImageStretched(Image& image, float x, float y, float w, float h, Color color = Color::Normal);
-	virtual void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) = 0;
+	void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 	void drawImageRepeated(Image& image, Rectangle<float> rect);
 	void drawImageRepeated(Image& image, Point<float> position, Vector<float> size);

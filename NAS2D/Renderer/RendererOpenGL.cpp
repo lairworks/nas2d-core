@@ -207,12 +207,12 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 }
 
 
-void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	fillVertexArray(x, y, w, h);
+	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 

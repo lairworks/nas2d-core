@@ -30,7 +30,7 @@ public:
 	void drawSubImageRotated(Image&, Point<float>, Rectangle<float>, float, Color = Color::Normal) override {}
 
 	void drawImageRotated(Image&, Point<float>, float, Color = Color::Normal, float = 1.0f) override {}
-	void drawImageStretched(Image&, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawImageStretched(Image&, Rectangle<float>, Color = Color::Normal) override {}
 
 	void drawImageRepeated(Image&, float, float, float, float) override {}
 	void drawSubImageRepeated(Image&, float, float, float, float, float, float, float, float) override {}

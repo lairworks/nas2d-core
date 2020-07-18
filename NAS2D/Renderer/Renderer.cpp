@@ -164,12 +164,6 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, u
 }
 
 
-void Renderer::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
-{
-	drawImageStretched(image, rect.startPoint(), rect.size(), color);
-}
-
-
 void Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
 {
 	drawImageStretched(image, position.x, position.y, size.x, size.y, color);
@@ -188,7 +182,13 @@ void Renderer::drawImageStretched(Image& image, Point<float> position, Vector<fl
  */
 void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color color)
 {
-	drawImageStretched(image, x, y, w, h, color.red, color.green, color.blue, color.alpha);
+	drawImageStretched(image, {x, y, w, h}, color);
+}
+
+
+void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	drawImageStretched(image, {x, y, w, h}, {r, g, b, a});
 }
 
 

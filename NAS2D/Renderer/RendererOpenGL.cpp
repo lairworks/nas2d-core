@@ -253,20 +253,20 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
  * texture and reference it that way (bit of overhead to do a texture lookup and would
  * get unmanagable very quickly.
  */
-void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
+void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
 {
-	float widthReach = w / (subW - subX);
-	float heightReach = h / (subH - subY);
+	float widthReach = source.width / (destination.width - destination.x);
+	float heightReach = source.height / (destination.height - destination.y);
 
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(static_cast<int>(rasterX), static_cast<int>(RendererOpenGL::height() - rasterY - h), static_cast<int>(w), static_cast<int>(h));
+	glScissor(static_cast<int>(source.x), static_cast<int>(RendererOpenGL::height() - source.y - source.height), static_cast<int>(source.width), static_cast<int>(source.height));
 
 
 	for (std::size_t row = 0; row <= heightReach; ++row)
 	{
 		for (std::size_t col = 0; col <= widthReach; ++col)
 		{
-			drawSubImage(image, {rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY))}, {subX, subY, subW, subH});
+			drawSubImage(image, {source.x + (col * (destination.width - destination.x)), source.y + (row * (destination.height - destination.y))}, destination);
 		}
 	}
 

@@ -207,9 +207,9 @@ void Renderer::drawImageRepeated(Image& image, float x, float y, float w, float 
 /**
  * Draws part of an Image repeated over a rectangular area.
  */
-void Renderer::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
+void Renderer::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
 {
-	drawSubImageRepeated(image, destination.x, destination.y, destination.width, destination.height, source.x, source.y, source.width, source.height);
+	drawSubImageRepeated(image, {rasterX, rasterY, w, h}, {subX, subY, subW, subH});
 }
 
 

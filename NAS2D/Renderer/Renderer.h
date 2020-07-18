@@ -81,8 +81,8 @@ public:
 	void drawImageRepeated(Image& image, Point<float> position, Vector<float> size);
 	void drawImageRepeated(Image& image, float x, float y, float w, float h);
 	
-	void drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination);
-	virtual void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) = 0;
+	virtual void drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination) = 0;
+	void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH);
 
 	void drawImageRect(Rectangle<float> rect, ImageList& images);
 	void drawImageRect(Point<float> position, Vector<float> size, ImageList& images);

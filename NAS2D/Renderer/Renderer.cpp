@@ -82,13 +82,13 @@ void Renderer::drawImage(Image& image, float x, float y, float scale)
 }
 
 
-void Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, const Color& color)
+void Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
 {
 	drawSubImage(image, raster, subImageRect.startPoint(), subImageRect.size(), color);
 }
 
 
-void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, const Color& color)
+void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, Color color)
 {
 	drawSubImage(image, raster.x, raster.y, position.x, position.y, size.x, size.y, color);
 }
@@ -105,19 +105,19 @@ void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> posi
  * \param	width		Width of the area to start getting pixel data from.
  * \param	height		Height of the area to start getting pixel data from.
  */
-void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, const Color& color)
+void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, Color color)
 {
 	drawSubImage(image, rasterX, rasterY, x, y, width, height, color.red, color.green, color.blue, color.alpha);
 }
 
 
-void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, const Color& color)
+void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color)
 {
 	drawSubImageRotated(image, raster, subImageRect.startPoint(), subImageRect.size(), degrees, color);
 }
 
 
-void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, const Color& color)
+void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, Color color)
 {
 	drawSubImageRotated(image, raster.x, raster.y, position.x, position.y, size.x, size.y, degrees, color);
 }
@@ -136,13 +136,13 @@ void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<floa
  * \param	degrees		Angle of rotation in degrees.
  * \param	color		Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  */
-void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, const Color& color)
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, Color color)
 {
 	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red, color.green, color.blue, color.alpha);
 }
 
 
-void Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, const Color& color, float scale)
+void Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, Color color, float scale)
 {
 	drawImageRotated(image, position.x, position.y, degrees, color, scale);
 }
@@ -158,7 +158,7 @@ void Renderer::drawImageRotated(Image& image, Point<float> position, float degre
  * \param	color	Color to tint the Image with. Default is COLOR_NORMAL (full bright, no color tinting).
  * \param	scale	Scale to draw the Image at. Default is 1.0 (no scaling).
  */
-void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, const Color& color, float scale)
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, Color color, float scale)
 {
 	drawImageRotated(image, x, y, degrees, color.red, color.green, color.blue, color.alpha, scale);
 }
@@ -286,7 +286,7 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 }
 
 
-void Renderer::drawPoint(Point<float> position, const Color& color)
+void Renderer::drawPoint(Point<float> position, Color color)
 {
 	drawPoint(position.x, position.y, color);
 }
@@ -297,15 +297,15 @@ void Renderer::drawPoint(Point<float> position, const Color& color)
  *
  * \param	x		X-Coordinate of the pixel to draw.
  * \param	y		Y-Coordinate of the pixel to draw.
- * \param	color	A references to a Color.
+ * \param	color	A Color.
  */
-void Renderer::drawPoint(float x, float y, const Color& color)
+void Renderer::drawPoint(float x, float y, Color color)
 {
 	drawPoint(x, y, color.red, color.green, color.blue, color.alpha);
 }
 
 
-void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, const Color& color, int line_width)
+void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, Color color, int line_width)
 {
 	drawLine(startPosition.x, startPosition.y, endPosition.x, endPosition.y, color, line_width);
 }
@@ -318,16 +318,16 @@ void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, co
  * \param	y			Y-Coordinate of the start of the line.
  * \param	x2			X-Coordinate of the end of the line.
  * \param	y2			Y-Coordinate of the end of the line.
- * \param	color		A reference to a Color.
+ * \param	color		A Color.
  * \param	line_width	Width, in pixels, of the line to draw.
  */
-void Renderer::drawLine(float x, float y, float x2, float y2, const Color& color, int line_width)
+void Renderer::drawLine(float x, float y, float x2, float y2, Color color, int line_width)
 {
 	drawLine(x, y, x2, y2, color.red, color.green, color.blue, color.alpha, line_width);
 }
 
 
-void Renderer::drawBox(const Rectangle<float>& rect, const Color& color)
+void Renderer::drawBox(const Rectangle<float>& rect, Color color)
 {
 	drawBox(rect.x, rect.y, rect.width, rect.height, color.red, color.green, color.blue, color.alpha);
 }
@@ -348,7 +348,7 @@ void Renderer::drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8
 }
 
 
-void Renderer::drawBoxFilled(const Rectangle<float>& rect, const Color& color)
+void Renderer::drawBoxFilled(const Rectangle<float>& rect, Color color)
 {
 	drawBoxFilled(rect.x, rect.y, rect.width, rect.height, color.red, color.green, color.blue, color.alpha);
 }
@@ -375,13 +375,13 @@ void Renderer::drawCircle(Point<float> position, float radius, Color color, int 
 }
 
 
-void Renderer::drawGradient(Rectangle<float> rect, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+void Renderer::drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4)
 {
 	drawGradient(rect.startPoint(), rect.size(), c1, c2, c3, c4);
 }
 
 
-void Renderer::drawGradient(Point<float> position, Vector<float> size, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+void Renderer::drawGradient(Point<float> position, Vector<float> size, Color c1, Color c2, Color c3, Color c4)
 {
 	drawGradient(position.x, position.y, size.x, size.y, c1, c2, c3, c4);
 }
@@ -407,7 +407,7 @@ void Renderer::drawGradient(Point<float> position, Vector<float> size, const Col
  * \param	c3	A Color color value used for point 3.
  * \param	c4	A Color color value used for point 4.
  */
-void Renderer::drawGradient(float x, float y, float w, float h, const Color& c1, const Color& c2, const Color& c3, const Color& c4)
+void Renderer::drawGradient(float x, float y, float w, float h, Color c1, Color c2, Color c3, Color c4)
 {
 	drawGradient(x, y, w, h, c1.red, c1.green, c1.blue, c1.alpha, c2.red, c2.green, c2.blue, c2.alpha, c3.red, c3.green, c3.blue, c3.alpha, c4.red, c4.green, c4.blue, c4.alpha);
 }
@@ -453,9 +453,9 @@ void Renderer::drawTextShadow(const Font& font, std::string_view text, float x, 
 /**
  * Sets the color of the fade.
  *
- * \param	color	A reference to aColor_4ub.
+ * \param	color	A Color.
  */
-void Renderer::fadeColor(const Color& color)
+void Renderer::fadeColor(Color color)
 {
 	mFadeColor = color;
 }
@@ -535,9 +535,9 @@ Signals::Signal<>& Renderer::fadeComplete()
 /**
  * Clears the screen with a given Color.
  *
- * \param color	A reference to a Color.
+ * \param color	A Color.
  */
-void Renderer::clearScreen(const Color& color)
+void Renderer::clearScreen(Color color)
 {
 	clearScreen(color.red, color.green, color.blue);
 }

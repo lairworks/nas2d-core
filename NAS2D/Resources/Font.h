@@ -40,7 +40,7 @@ public:
 	Font& operator=(const Font& font);
 	~Font() override;
 
-	int width(const std::string& str) const;
+	int width(const std::string& string) const;
 	int height() const;
 	int ascent() const;
 

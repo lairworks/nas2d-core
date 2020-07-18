@@ -163,17 +163,17 @@ int Font::glyphCellHeight() const
 /**
  * Gets the width in pixels of a string rendered using the Font.
  *
- * \param	str		Reference to a std::string to get the width of.
+ * \param	string		Reference to a std::string to get the width of.
  */
-int Font::width(const std::string& str) const
+int Font::width(const std::string& string) const
 {
-	if (str.empty()) { return 0; }
+	if (string.empty()) { return 0; }
 
 	int width = 0;
 	GlyphMetricsList& gml = fontMap[name()].metrics;
 	if (gml.empty()) { return 0; }
 
-	for (auto character : str)
+	for (auto character : string)
 	{
 		auto glyph = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;

@@ -136,18 +136,18 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 }
 
 
-void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	fillVertexArray(rasterX, rasterY, width, height);
+	fillVertexArray(raster.x, raster.y, subImageRect.width, subImageRect.height);
 
 	const auto imageSize = image.size().to<float>();
 	fillTextureArray(
-		x / imageSize.x,
-		y / imageSize.y,
-		(x + width) / imageSize.x,
-		(y + height) / imageSize.y
+		subImageRect.x / imageSize.x,
+		subImageRect.y / imageSize.y,
+		(subImageRect.x + subImageRect.width) / imageSize.x,
+		(subImageRect.y + subImageRect.height) / imageSize.y
 	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
@@ -266,7 +266,7 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float ras
 	{
 		for (std::size_t col = 0; col <= widthReach; ++col)
 		{
-			drawSubImage(image, rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY)), subX, subY, subW, subH, 255, 255, 255, 255);
+			drawSubImage(image, {rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY))}, {subX, subY, subW, subH}, {255, 255, 255, 255});
 		}
 	}
 

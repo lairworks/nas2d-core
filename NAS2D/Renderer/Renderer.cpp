@@ -82,15 +82,9 @@ void Renderer::drawImage(Image& image, float x, float y, float scale, uint8_t r,
 }
 
 
-void Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
-{
-	drawSubImage(image, raster, subImageRect.startPoint(), subImageRect.size(), color);
-}
-
-
 void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, Color color)
 {
-	drawSubImage(image, raster.x, raster.y, position.x, position.y, size.x, size.y, color);
+	drawSubImage(image, raster, {position.x, position.y, size.x, size.y}, color);
 }
 
 
@@ -107,7 +101,13 @@ void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> posi
  */
 void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, Color color)
 {
-	drawSubImage(image, rasterX, rasterY, x, y, width, height, color.red, color.green, color.blue, color.alpha);
+	drawSubImage(image, {rasterX, rasterY}, {x, y, width, height}, color);
+}
+
+
+void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	drawSubImage(image, {rasterX, rasterY}, {x, y, width, height}, {r, g, b, a});
 }
 
 

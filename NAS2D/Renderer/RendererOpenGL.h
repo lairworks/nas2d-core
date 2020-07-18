@@ -48,7 +48,7 @@ public:
 
 	void drawImage(Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 
-	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+	void drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) override;
 	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 
 	void drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale) override;

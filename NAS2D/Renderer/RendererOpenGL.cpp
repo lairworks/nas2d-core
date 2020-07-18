@@ -266,7 +266,7 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float ras
 	{
 		for (std::size_t col = 0; col <= widthReach; ++col)
 		{
-			drawSubImage(image, {rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY))}, {subX, subY, subW, subH}, {255, 255, 255, 255});
+			drawSubImage(image, {rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY))}, {subX, subY, subW, subH});
 		}
 	}
 

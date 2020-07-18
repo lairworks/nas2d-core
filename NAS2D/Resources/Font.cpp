@@ -160,6 +160,12 @@ int Font::glyphCellHeight() const
 }
 
 
+Vector<int> Font::size(std::string_view string) const
+{
+	return {width(string), height()};
+}
+
+
 /**
  * Gets the width in pixels of a string rendered using the Font.
  *

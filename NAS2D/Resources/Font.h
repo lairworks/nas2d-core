@@ -10,9 +10,12 @@
 #pragma once
 
 #include "Resource.h"
+#include "../Renderer/Vector.h"
 
 #include <map>
 #include <vector>
+#include <string_view>
+
 
 namespace NAS2D {
 
@@ -40,7 +43,8 @@ public:
 	Font& operator=(const Font& font);
 	~Font() override;
 
-	int width(const std::string& str) const;
+	Vector<int> size(std::string_view string) const;
+	int width(std::string_view string) const;
 	int height() const;
 	int ascent() const;
 

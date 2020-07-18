@@ -184,7 +184,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 }
 
 
-void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
+void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float degrees, Color color, float scale)
 {
 	glPushMatrix();
 
@@ -193,11 +193,11 @@ void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degr
 	const auto scaledImageCenter = imageCenter * scale;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(x + imageCenter.x, y + imageCenter.y, 0.0f);
+	glTranslatef(position.x + imageCenter.x, position.y + imageCenter.y, 0.0f);
 
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2);

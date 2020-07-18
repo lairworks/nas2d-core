@@ -142,12 +142,6 @@ void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, f
 }
 
 
-void Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, Color color, float scale)
-{
-	drawImageRotated(image, position.x, position.y, degrees, color, scale);
-}
-
-
 /**
  * Draws a rotated and scaled image.
  *
@@ -160,7 +154,13 @@ void Renderer::drawImageRotated(Image& image, Point<float> position, float degre
  */
 void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, Color color, float scale)
 {
-	drawImageRotated(image, x, y, degrees, color.red, color.green, color.blue, color.alpha, scale);
+	drawImageRotated(image, {x, y}, degrees, color, scale);
+}
+
+
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
+{
+	drawImageRotated(image, {x, y}, degrees, {r, g, b, a}, scale);
 }
 
 

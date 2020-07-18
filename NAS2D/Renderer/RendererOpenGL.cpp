@@ -217,7 +217,7 @@ void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Col
 }
 
 
-void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, float h)
+void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 {
 	glColor4ub(255, 255, 255, 255);
 
@@ -227,9 +227,9 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	fillVertexArray(x, y, w, h);
+	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
 	const auto imageSize = image.size().to<float>();
-	fillTextureArray(0.0f, 0.0f, w / imageSize.x, h / imageSize.y);
+	fillTextureArray(0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y);
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 

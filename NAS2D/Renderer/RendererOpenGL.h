@@ -54,7 +54,7 @@ public:
 	void drawImageRotated(Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) override;
 	void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal) override;
 
-	void drawImageRepeated(Image& image, float x, float y, float w, float h) override;
+	void drawImageRepeated(Image& image, Rectangle<float> rect) override;
 	void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) override;
 
 	void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) override;

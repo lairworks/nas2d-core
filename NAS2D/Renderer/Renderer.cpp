@@ -192,15 +192,15 @@ void Renderer::drawImageStretched(Image& image, float x, float y, float w, float
 }
 
 
-void Renderer::drawImageRepeated(Image& image, Rectangle<float> rect)
+void Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
 {
-	drawImageRepeated(image, rect.startPoint(), rect.size());
+	drawImageRepeated(image, {position.x, position.y, size.x, size.y});
 }
 
 
-void Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
+void Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
 {
-	drawImageRepeated(image, position.x, position.y, size.x, size.y);
+	drawImageRepeated(image, {x, y, w, h});
 }
 
 

@@ -154,28 +154,28 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 }
 
 
-void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color)
 {
 	glPushMatrix();
 
 	// Find center point of the image.
-	float tX = width / 2.0f;
-	float tY = height / 2.0f;
+	float tX = subImageRect.width / 2.0f;
+	float tY = subImageRect.height / 2.0f;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(rasterX + tX, rasterY + tY, 0.0f);
+	glTranslatef(raster.x + tX, raster.y + tY, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
 	const auto imageSize = image.size().to<float>();
 	fillTextureArray(
-		x / imageSize.x,
-		y / imageSize.y,
-		(x + width) / imageSize.x,
-		(y + height) / imageSize.y
+		subImageRect.x / imageSize.x,
+		subImageRect.y / imageSize.y,
+		(subImageRect.x + subImageRect.width) / imageSize.x,
+		(subImageRect.y + subImageRect.height) / imageSize.y
 	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);

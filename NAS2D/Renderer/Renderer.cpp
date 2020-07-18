@@ -111,15 +111,9 @@ void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x,
 }
 
 
-void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color)
-{
-	drawSubImageRotated(image, raster, subImageRect.startPoint(), subImageRect.size(), degrees, color);
-}
-
-
 void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, Color color)
 {
-	drawSubImageRotated(image, raster.x, raster.y, position.x, position.y, size.x, size.y, degrees, color);
+	drawSubImageRotated(image, raster, {position.x, position.y, size.x, size.y}, degrees, color);
 }
 
 
@@ -138,7 +132,13 @@ void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<floa
  */
 void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, Color color)
 {
-	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red, color.green, color.blue, color.alpha);
+	drawSubImageRotated(image, {rasterX, rasterY}, {x, y, width, height}, degrees, color);
+}
+
+
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	drawSubImageRotated(image, {rasterX, rasterY}, {x, y, width, height}, degrees, {r, g, b, a});
 }
 
 

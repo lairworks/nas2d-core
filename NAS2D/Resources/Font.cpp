@@ -163,9 +163,9 @@ int Font::glyphCellHeight() const
 /**
  * Gets the width in pixels of a string rendered using the Font.
  *
- * \param	string		Reference to a std::string to get the width of.
+ * \param	string		String to get the width of.
  */
-int Font::width(const std::string& string) const
+int Font::width(std::string_view string) const
 {
 	if (string.empty()) { return 0; }
 

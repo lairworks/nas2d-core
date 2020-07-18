@@ -125,12 +125,12 @@ RendererOpenGL::~RendererOpenGL()
 }
 
 
-void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale, Color color)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	const auto imageSize = image.size().to<float>() * scale;
-	fillVertexArray(x, y, imageSize.x, imageSize.y);
+	fillVertexArray(position.x, position.y, imageSize.x, imageSize.y);
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }

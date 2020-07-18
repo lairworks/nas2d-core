@@ -62,12 +62,6 @@ void Renderer::title(const std::string& title)
 }
 
 
-void Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
-{
-	drawImage(image, position.x, position.y, scale, color.red, color.green, color.blue, color.alpha);
-}
-
-
 /**
  * Draws an Image to the screen.
  *
@@ -78,7 +72,13 @@ void Renderer::drawImage(Image& image, Point<float> position, float scale, Color
  */
 void Renderer::drawImage(Image& image, float x, float y, float scale)
 {
-	drawImage(image, x, y, scale, 255, 255, 255, 255);
+	drawImage(image, {x, y}, scale);
+}
+
+
+void Renderer::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	drawImage(image, {x, y}, scale, {r, g, b, a});
 }
 
 

@@ -46,7 +46,7 @@ public:
 	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const override;
 	Vector<int> getWindowClientArea() const noexcept override;
 
-	void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+	void drawImage(Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 
 	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;

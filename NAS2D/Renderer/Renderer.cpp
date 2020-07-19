@@ -62,12 +62,6 @@ void Renderer::title(const std::string& title)
 }
 
 
-void Renderer::drawImage(Image& image, Point<float> position, float scale, Color color)
-{
-	drawImage(image, position.x, position.y, scale, color.red, color.green, color.blue, color.alpha);
-}
-
-
 /**
  * Draws an Image to the screen.
  *
@@ -78,19 +72,19 @@ void Renderer::drawImage(Image& image, Point<float> position, float scale, Color
  */
 void Renderer::drawImage(Image& image, float x, float y, float scale)
 {
-	drawImage(image, x, y, scale, 255, 255, 255, 255);
+	drawImage(image, {x, y}, scale);
 }
 
 
-void Renderer::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
+void Renderer::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawSubImage(image, raster, subImageRect.startPoint(), subImageRect.size(), color);
+	drawImage(image, {x, y}, scale, {r, g, b, a});
 }
 
 
 void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, Color color)
 {
-	drawSubImage(image, raster.x, raster.y, position.x, position.y, size.x, size.y, color);
+	drawSubImage(image, raster, {position.x, position.y, size.x, size.y}, color);
 }
 
 
@@ -107,19 +101,19 @@ void Renderer::drawSubImage(Image& image, Point<float> raster, Point<float> posi
  */
 void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, Color color)
 {
-	drawSubImage(image, rasterX, rasterY, x, y, width, height, color.red, color.green, color.blue, color.alpha);
+	drawSubImage(image, {rasterX, rasterY}, {x, y, width, height}, color);
 }
 
 
-void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color)
+void Renderer::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawSubImageRotated(image, raster, subImageRect.startPoint(), subImageRect.size(), degrees, color);
+	drawSubImage(image, {rasterX, rasterY}, {x, y, width, height}, {r, g, b, a});
 }
 
 
 void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, Color color)
 {
-	drawSubImageRotated(image, raster.x, raster.y, position.x, position.y, size.x, size.y, degrees, color);
+	drawSubImageRotated(image, raster, {position.x, position.y, size.x, size.y}, degrees, color);
 }
 
 
@@ -138,13 +132,13 @@ void Renderer::drawSubImageRotated(Image& image, Point<float> raster, Point<floa
  */
 void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, Color color)
 {
-	drawSubImageRotated(image, rasterX, rasterY, x, y, width, height, degrees, color.red, color.green, color.blue, color.alpha);
+	drawSubImageRotated(image, {rasterX, rasterY}, {x, y, width, height}, degrees, color);
 }
 
 
-void Renderer::drawImageRotated(Image& image, Point<float> position, float degrees, Color color, float scale)
+void Renderer::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawImageRotated(image, position.x, position.y, degrees, color, scale);
+	drawSubImageRotated(image, {rasterX, rasterY}, {x, y, width, height}, degrees, {r, g, b, a});
 }
 
 
@@ -160,13 +154,13 @@ void Renderer::drawImageRotated(Image& image, Point<float> position, float degre
  */
 void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, Color color, float scale)
 {
-	drawImageRotated(image, x, y, degrees, color.red, color.green, color.blue, color.alpha, scale);
+	drawImageRotated(image, {x, y}, degrees, color, scale);
 }
 
 
-void Renderer::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
+void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
 {
-	drawImageStretched(image, rect.startPoint(), rect.size(), color);
+	drawImageRotated(image, {x, y}, degrees, {r, g, b, a}, scale);
 }
 
 
@@ -188,28 +182,34 @@ void Renderer::drawImageStretched(Image& image, Point<float> position, Vector<fl
  */
 void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, Color color)
 {
-	drawImageStretched(image, x, y, w, h, color.red, color.green, color.blue, color.alpha);
+	drawImageStretched(image, {x, y, w, h}, color);
 }
 
 
-void Renderer::drawImageRepeated(Image& image, Rectangle<float> rect)
+void Renderer::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawImageRepeated(image, rect.startPoint(), rect.size());
+	drawImageStretched(image, {x, y, w, h}, {r, g, b, a});
 }
 
 
 void Renderer::drawImageRepeated(Image& image, Point<float> position, Vector<float> size)
 {
-	drawImageRepeated(image, position.x, position.y, size.x, size.y);
+	drawImageRepeated(image, {position.x, position.y, size.x, size.y});
+}
+
+
+void Renderer::drawImageRepeated(Image& image, float x, float y, float w, float h)
+{
+	drawImageRepeated(image, {x, y, w, h});
 }
 
 
 /**
  * Draws part of an Image repeated over a rectangular area.
  */
-void Renderer::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
+void Renderer::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
 {
-	drawSubImageRepeated(image, destination.x, destination.y, destination.width, destination.height, source.x, source.y, source.width, source.height);
+	drawSubImageRepeated(image, {rasterX, rasterY, w, h}, {subX, subY, subW, subH});
 }
 
 
@@ -286,12 +286,6 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 }
 
 
-void Renderer::drawPoint(Point<float> position, Color color)
-{
-	drawPoint(position.x, position.y, color);
-}
-
-
 /**
  * Draws a single Pixel to the primary surface.
  *
@@ -301,13 +295,13 @@ void Renderer::drawPoint(Point<float> position, Color color)
  */
 void Renderer::drawPoint(float x, float y, Color color)
 {
-	drawPoint(x, y, color.red, color.green, color.blue, color.alpha);
+	drawPoint({x, y}, color);
 }
 
 
-void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, Color color, int line_width)
+void Renderer::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawLine(startPosition.x, startPosition.y, endPosition.x, endPosition.y, color, line_width);
+	drawPoint({x, y}, {r, g, b, a});
 }
 
 
@@ -323,13 +317,13 @@ void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, Co
  */
 void Renderer::drawLine(float x, float y, float x2, float y2, Color color, int line_width)
 {
-	drawLine(x, y, x2, y2, color.red, color.green, color.blue, color.alpha, line_width);
+	drawLine({x, y}, {x2, y2}, color, line_width);
 }
 
 
-void Renderer::drawBox(const Rectangle<float>& rect, Color color)
+void Renderer::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width)
 {
-	drawBox(rect.x, rect.y, rect.width, rect.height, color.red, color.green, color.blue, color.alpha);
+	drawLine({x, y}, {x2, y2}, {r, g, b, a}, line_width);
 }
 
 
@@ -344,13 +338,13 @@ void Renderer::drawBox(const Rectangle<float>& rect, Color color)
  */
 void Renderer::drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawBox(rect.x, rect.y, rect.width, rect.height, r, g, b, a);
+	drawBox(rect, {r, g, b, a});
 }
 
 
-void Renderer::drawBoxFilled(const Rectangle<float>& rect, Color color)
+void Renderer::drawBox(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawBoxFilled(rect.x, rect.y, rect.width, rect.height, color.red, color.green, color.blue, color.alpha);
+	drawBox({x, y, w, h}, {r, g, b, a});
 }
 
 
@@ -365,25 +359,25 @@ void Renderer::drawBoxFilled(const Rectangle<float>& rect, Color color)
  */
 void Renderer::drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawBoxFilled(rect.x, rect.y, rect.width, rect.height, r, g, b, a);
+	drawBoxFilled(rect, {r, g, b, a});
 }
 
 
-void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
+void Renderer::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawCircle(position.x, position.y, radius, color.red, color.green, color.blue, color.alpha, num_segments, scale.x, scale.y);
+	drawBoxFilled({x, y, width, height}, {r, g, b, a});
 }
 
 
-void Renderer::drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4)
+void Renderer::drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
 {
-	drawGradient(rect.startPoint(), rect.size(), c1, c2, c3, c4);
+	drawCircle({x, y}, radius, {r, g, b, a}, num_segments, {scale_x, scale_y});
 }
 
 
 void Renderer::drawGradient(Point<float> position, Vector<float> size, Color c1, Color c2, Color c3, Color c4)
 {
-	drawGradient(position.x, position.y, size.x, size.y, c1, c2, c3, c4);
+	drawGradient({position.x, position.y, size.x, size.y}, c1, c2, c3, c4);
 }
 
 
@@ -409,13 +403,19 @@ void Renderer::drawGradient(Point<float> position, Vector<float> size, Color c1,
  */
 void Renderer::drawGradient(float x, float y, float w, float h, Color c1, Color c2, Color c3, Color c4)
 {
-	drawGradient(x, y, w, h, c1.red, c1.green, c1.blue, c1.alpha, c2.red, c2.green, c2.blue, c2.alpha, c3.red, c3.green, c3.blue, c3.alpha, c4.red, c4.green, c4.blue, c4.alpha);
+	drawGradient({x, y, w, h}, c1, c2, c3, c4);
 }
 
 
-void Renderer::drawText(const Font& font, std::string_view text, Point<float> position, Color color)
+void Renderer::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
 {
-	drawText(font, text, position.x, position.y, color.red, color.green, color.blue, color.alpha);
+	drawGradient({x, y, w, h}, {r1, g1, b1, a1}, {r2, g2, b2, a2}, {r3, g3, b3, a3}, {r4, g4, b4, a4});
+}
+
+
+void Renderer::drawText(const Font& font, std::string_view text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	drawText(font, text, {x, y}, {r, g, b, a});
 }
 
 

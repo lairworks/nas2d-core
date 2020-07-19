@@ -24,28 +24,28 @@ public:
 	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc&) const override { return{}; }
 	Vector<int> getWindowClientArea() const noexcept override { return {}; }
 
-	void drawImage(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawImage(Image&, Point<float>, float = 1.0, Color = Color::Normal) override {}
 
-	void drawSubImage(Image&, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
-	void drawSubImageRotated(Image&, float, float, float, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawSubImage(Image&, Point<float>, Rectangle<float>, Color = Color::Normal) override {}
+	void drawSubImageRotated(Image&, Point<float>, Rectangle<float>, float, Color = Color::Normal) override {}
 
-	void drawImageRotated(Image&, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, float) override {}
-	void drawImageStretched(Image&, float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawImageRotated(Image&, Point<float>, float, Color = Color::Normal, float = 1.0f) override {}
+	void drawImageStretched(Image&, Rectangle<float>, Color = Color::Normal) override {}
 
-	void drawImageRepeated(Image&, float, float, float, float) override {}
-	void drawSubImageRepeated(Image&, float, float, float, float, float, float, float, float) override {}
+	void drawImageRepeated(Image&, Rectangle<float>) override {}
+	void drawSubImageRepeated(Image&, const Rectangle<float>&, const Rectangle<float>&) override {}
 
 	void drawImageToImage(Image&, Image&, const Point<float>&) override {}
 
-	void drawPoint(float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
-	void drawLine(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int) override {}
-	void drawBox(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
-	void drawBoxFilled(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
-	void drawCircle(float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int, float, float) override {}
+	void drawPoint(Point<float>, Color = Color::White) override {}
+	void drawLine(Point<float>, Point<float>, Color = Color::White, int = 1) override {}
+	void drawBox(const Rectangle<float>&, Color = Color::White) override {}
+	void drawBoxFilled(const Rectangle<float>&, Color = Color::White) override {}
+	void drawCircle(Point<float>, float, Color, int = 10, Vector<float> = Vector{1.0f, 1.0f}) override {}
 
-	void drawGradient(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawGradient(Rectangle<float>, Color, Color, Color, Color) override {}
 
-	void drawText(const Font&, std::string_view, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawText(const Font&, std::string_view, Point<float>, Color = Color::White) override {}
 
 	void showSystemPointer(bool) override {}
 	void addCursor(const std::string&, int, int, int) override {}

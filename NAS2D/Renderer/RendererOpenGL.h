@@ -46,28 +46,28 @@ public:
 	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const override;
 	Vector<int> getWindowClientArea() const noexcept override;
 
-	void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+	void drawImage(Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 
-	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
-	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+	void drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) override;
+	void drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color = Color::Normal) override;
 
-	void drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale) override;
-	void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+	void drawImageRotated(Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) override;
+	void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal) override;
 
-	void drawImageRepeated(Image& image, float x, float y, float w, float h) override;
-	void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH) override;
+	void drawImageRepeated(Image& image, Rectangle<float> rect) override;
+	void drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination) override;
 
 	void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) override;
 
-	void drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
-	void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width) override;
-	void drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
-	void drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
-	void drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y) override;
+	void drawPoint(Point<float> position, Color color = Color::White) override;
+	void drawLine(Point<float> startPosition, Point<float> endPosition, Color color = Color::White, int line_width = 1) override;
+	void drawBox(const Rectangle<float>& rect, Color color = Color::White) override;
+	void drawBoxFilled(const Rectangle<float>& rect, Color color = Color::White) override;
+	void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector{1.0f, 1.0f}) override;
 
-	void drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4) override;
+	void drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4) override;
 
-	void drawText(const Font& font, std::string_view text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+	void drawText(const Font& font, std::string_view text, Point<float> position, Color color = Color::White) override;
 
 	void showSystemPointer(bool) override;
 	void addCursor(const std::string& filePath, int cursorId, int offx, int offy) override;

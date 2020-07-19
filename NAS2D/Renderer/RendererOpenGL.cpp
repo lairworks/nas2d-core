@@ -85,7 +85,7 @@ void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
 void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
 
-void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
+void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 GLuint generate_fbo(Image& image);
 
 
@@ -125,57 +125,57 @@ RendererOpenGL::~RendererOpenGL()
 }
 
 
-void RendererOpenGL::drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale, Color color)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	const auto imageSize = image.size().to<float>() * scale;
-	fillVertexArray(x, y, imageSize.x, imageSize.y);
+	fillVertexArray(position.x, position.y, imageSize.x, imageSize.y);
 	fillTextureArray(0.0, 0.0, 1.0, 1.0);
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
 
-void RendererOpenGL::drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	fillVertexArray(rasterX, rasterY, width, height);
+	fillVertexArray(raster.x, raster.y, subImageRect.width, subImageRect.height);
 
 	const auto imageSize = image.size().to<float>();
 	fillTextureArray(
-		x / imageSize.x,
-		y / imageSize.y,
-		(x + width) / imageSize.x,
-		(y + height) / imageSize.y
+		subImageRect.x / imageSize.x,
+		subImageRect.y / imageSize.y,
+		(subImageRect.x + subImageRect.width) / imageSize.x,
+		(subImageRect.y + subImageRect.height) / imageSize.y
 	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 }
 
 
-void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color)
 {
 	glPushMatrix();
 
 	// Find center point of the image.
-	float tX = width / 2.0f;
-	float tY = height / 2.0f;
+	float tX = subImageRect.width / 2.0f;
+	float tY = subImageRect.height / 2.0f;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(rasterX + tX, rasterY + tY, 0.0f);
+	glTranslatef(raster.x + tX, raster.y + tY, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
 
 	const auto imageSize = image.size().to<float>();
 	fillTextureArray(
-		x / imageSize.x,
-		y / imageSize.y,
-		(x + width) / imageSize.x,
-		(y + height) / imageSize.y
+		subImageRect.x / imageSize.x,
+		subImageRect.y / imageSize.y,
+		(subImageRect.x + subImageRect.width) / imageSize.x,
+		(subImageRect.y + subImageRect.height) / imageSize.y
 	);
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
@@ -184,7 +184,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, float rasterX, float rast
 }
 
 
-void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale)
+void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float degrees, Color color, float scale)
 {
 	glPushMatrix();
 
@@ -193,11 +193,11 @@ void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degr
 	const auto scaledImageCenter = imageCenter * scale;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(x + imageCenter.x, y + imageCenter.y, 0.0f);
+	glTranslatef(position.x + imageCenter.x, position.y + imageCenter.y, 0.0f);
 
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	fillVertexArray(-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2);
@@ -207,17 +207,17 @@ void RendererOpenGL::drawImageRotated(Image& image, float x, float y, float degr
 }
 
 
-void RendererOpenGL::drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	fillVertexArray(x, y, w, h);
+	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
 
-void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, float h)
+void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 {
 	glColor4ub(255, 255, 255, 255);
 
@@ -227,9 +227,9 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	fillVertexArray(x, y, w, h);
+	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
 	const auto imageSize = image.size().to<float>();
-	fillTextureArray(0.0f, 0.0f, w / imageSize.x, h / imageSize.y);
+	fillTextureArray(0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y);
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
@@ -253,20 +253,20 @@ void RendererOpenGL::drawImageRepeated(Image& image, float x, float y, float w, 
  * texture and reference it that way (bit of overhead to do a texture lookup and would
  * get unmanagable very quickly.
  */
-void RendererOpenGL::drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH)
+void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
 {
-	float widthReach = w / (subW - subX);
-	float heightReach = h / (subH - subY);
+	float widthReach = source.width / (destination.width - destination.x);
+	float heightReach = source.height / (destination.height - destination.y);
 
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(static_cast<int>(rasterX), static_cast<int>(RendererOpenGL::height() - rasterY - h), static_cast<int>(w), static_cast<int>(h));
+	glScissor(static_cast<int>(source.x), static_cast<int>(RendererOpenGL::height() - source.y - source.height), static_cast<int>(source.width), static_cast<int>(source.height));
 
 
 	for (std::size_t row = 0; row <= heightReach; ++row)
 	{
 		for (std::size_t col = 0; col <= widthReach; ++col)
 		{
-			drawSubImage(image, rasterX + (col * (subW - subX)), rasterY + (row * (subH - subY)), subX, subY, subW, subH, 255, 255, 255, 255);
+			drawSubImage(image, {source.x + (col * (destination.width - destination.x)), source.y + (row * (destination.height - destination.y))}, destination);
 		}
 	}
 
@@ -318,13 +318,14 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 }
 
 
-void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawPoint(Point<float> position, Color color)
 {
 	glDisable(GL_TEXTURE_2D);
 
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	pointVertexArray[0] = x + 0.5f; pointVertexArray[1] = y + 0.5f;
+	pointVertexArray[0] = position.x + 0.5f;
+	pointVertexArray[1] = position.y + 0.5f;
 
 	glVertexPointer(2, GL_FLOAT, 0, pointVertexArray);
 	glDrawArrays(GL_POINTS, 0, 1);
@@ -333,12 +334,12 @@ void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b
 }
 
 
-void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width = 1)
+void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPosition, Color color, int line_width)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(x, y, x2, y2, static_cast<float>(line_width), r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(startPosition, endPosition, static_cast<float>(line_width), color);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -350,10 +351,10 @@ void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, u
  *
  * Modified to support X/Y scaling to draw an ellipse.
  */
-void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
+void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
 {
 	glDisable(GL_TEXTURE_2D);
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	float theta = PI_2 / static_cast<float>(num_segments);
 	float c = cosf(theta);
@@ -368,8 +369,8 @@ void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uin
 	// so we need to be sure that we step two index places for each loop.
 	for (int i = 0; i < num_segments * 2; i += 2)
 	{
-		verts[i] = x * scale_x + cx;
-		verts[i + 1] = y * scale_y + cy;
+		verts[i] = x * scale.x + position.x;
+		verts[i + 1] = y * scale.y + position.y;
 
 		// Apply the rotation matrix
 		float t = x;
@@ -392,44 +393,44 @@ void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uin
 }
 
 
-void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
+void RendererOpenGL::drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4)
 {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 
-	colorVertexArray[0] = r1 / 255.0f;
-	colorVertexArray[1] = g1 / 255.0f;
-	colorVertexArray[2] = b1 / 255.0f;
-	colorVertexArray[3] = a1 / 255.0f;
+	colorVertexArray[0] = c1.red / 255.0f;
+	colorVertexArray[1] = c1.green / 255.0f;
+	colorVertexArray[2] = c1.blue / 255.0f;
+	colorVertexArray[3] = c1.alpha / 255.0f;
 
-	colorVertexArray[4] = r2 / 255.0f;
-	colorVertexArray[5] = g2 / 255.0f;
-	colorVertexArray[6] = b2 / 255.0f;
-	colorVertexArray[7] = a2 / 255.0f;
+	colorVertexArray[4] = c2.red / 255.0f;
+	colorVertexArray[5] = c2.green / 255.0f;
+	colorVertexArray[6] = c2.blue / 255.0f;
+	colorVertexArray[7] = c2.alpha / 255.0f;
 
-	colorVertexArray[8] = r3 / 255.0f;
-	colorVertexArray[9] = g3 / 255.0f;
-	colorVertexArray[10] = b3 / 255.0f;
-	colorVertexArray[11] = a3 / 255.0f;
-
-
-	colorVertexArray[12] = r3 / 255.0f;
-	colorVertexArray[13] = g3 / 255.0f;
-	colorVertexArray[14] = b3 / 255.0f;
-	colorVertexArray[15] = a3 / 255.0f;
-
-	colorVertexArray[16] = r4 / 255.0f;
-	colorVertexArray[17] = g4 / 255.0f;
-	colorVertexArray[18] = b4 / 255.0f;
-	colorVertexArray[19] = a4 / 255.0f;
-
-	colorVertexArray[20] = r1 / 255.0f;
-	colorVertexArray[21] = g1 / 255.0f;
-	colorVertexArray[22] = b1 / 255.0f;
-	colorVertexArray[23] = a1 / 255.0f;
+	colorVertexArray[8] = c3.red / 255.0f;
+	colorVertexArray[9] = c3.green / 255.0f;
+	colorVertexArray[10] = c3.blue / 255.0f;
+	colorVertexArray[11] = c3.alpha / 255.0f;
 
 
-	fillVertexArray(x, y, w, h);
+	colorVertexArray[12] = c3.red / 255.0f;
+	colorVertexArray[13] = c3.green / 255.0f;
+	colorVertexArray[14] = c3.blue / 255.0f;
+	colorVertexArray[15] = c3.alpha / 255.0f;
+
+	colorVertexArray[16] = c4.red / 255.0f;
+	colorVertexArray[17] = c4.green / 255.0f;
+	colorVertexArray[18] = c4.blue / 255.0f;
+	colorVertexArray[19] = c4.alpha / 255.0f;
+
+	colorVertexArray[20] = c1.red / 255.0f;
+	colorVertexArray[21] = c1.green / 255.0f;
+	colorVertexArray[22] = c1.blue / 255.0f;
+	colorVertexArray[23] = c1.alpha / 255.0f;
+
+
+	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
 	glColorPointer(4, GL_FLOAT, 0, colorVertexArray);
 	drawVertexArray(0);
 
@@ -438,15 +439,15 @@ void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1
 }
 
 
-void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(x, y, x + width, y, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x, y, x, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x, y + height + 0.5f, x + width, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x + width, y, x + width, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(rect.startPoint(), rect.crossXPoint(), 1.0f, color);
+	line(rect.startPoint(), rect.crossYPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
+	line(rect.crossYPoint() + Vector{0.0f, 0.5f}, rect.endPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
+	line(rect.crossXPoint(), rect.endPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -455,23 +456,23 @@ void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_
 }
 
 
-void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glDisable(GL_TEXTURE_2D);
 
-	fillVertexArray(x, y, width, height);
+	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
 	drawVertexArray(0);
 
 	glEnable(GL_TEXTURE_2D);
 }
 
 
-void RendererOpenGL::drawText(const Font& font, std::string_view text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<float> position, Color color)
 {
 	if (!font.loaded() || text.empty()) { return; }
 
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	int offset = 0;
 
@@ -482,7 +483,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, float x, 
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
-		fillVertexArray(x + offset, y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
+		fillVertexArray(position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
 		drawVertexArray(fontMap[font.name()].texture_id, false);
@@ -916,67 +917,72 @@ void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
  *
  * This is drop-in code that may be replaced in the future.
  */
-void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca)
+void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 {
+	float Cr = color.red / 255.0f;
+	float Cg = color.green / 255.0f;
+	float Cb = color.blue / 255.0f;
+	float Ca = color.alpha / 255.0f;
+
 	// What are these values for?
 	float t = 0.0f;
 	float R = 0.0f;
-	float f = w - static_cast<int>(w);
+	float f = lineWidth - static_cast<int>(lineWidth);
 
 	// HOLY CRAP magic numbers!
 	//determine parameters t, R
-	if (w >= 0.0f && w < 1.0f)
+	if (lineWidth >= 0.0f && lineWidth < 1.0f)
 	{
 		t = 0.05f;
 		R = 0.48f + 0.32f * f;
 	}
-	else if (w >= 1.0f && w < 2.0f)
+	else if (lineWidth >= 1.0f && lineWidth < 2.0f)
 	{
 		t = 0.05f + f * 0.33f;
 		R = 0.768f + 0.312f * f;
 	}
-	else if (w >= 2.0f && w < 3.0f)
+	else if (lineWidth >= 2.0f && lineWidth < 3.0f)
 	{
 		t = 0.38f + f * 0.58f;
 		R = 1.08f;
 	}
-	else if (w >= 3.0f && w < 4.0f)
+	else if (lineWidth >= 3.0f && lineWidth < 4.0f)
 	{
 		t = 0.96f + f * 0.48f;
 		R = 1.08f;
 	}
-	else if (w >= 4.0f && w < 5.0f)
+	else if (lineWidth >= 4.0f && lineWidth < 5.0f)
 	{
 		t = 1.44f + f * 0.46f;
 		R = 1.08f;
 	}
-	else if (w >= 5.0f && w < 6.0f)
+	else if (lineWidth >= 5.0f && lineWidth < 6.0f)
 	{
 		t = 1.9f + f * 0.6f;
 		R = 1.08f;
 	}
-	else if (w >= 6.0f)
+	else if (lineWidth >= 6.0f)
 	{
-		float ff = w - 6.0f;
+		float ff = lineWidth - 6.0f;
 		t = 2.5f + ff * 0.50f;
 		R = 1.08f;
 	}
-	//printf( "w=%f, f=%f, C=%.4f\n", w, f, C);
+	//printf( "lineWidth=%f, f=%f, C=%.4f\n", lineWidth, f, C);
 
 	//determine angle of the line to horizontal
 	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
 	float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
 	float cx = 0.0f, cy = 0.0f; //cap of a line
 	float ALW = 0.01f; // Dafuq is this?
-	float dx = x2 - x1;
-	float dy = y2 - y1;
+	float dx = p2.x - p1.x;
+	float dy = p2.y - p1.y;
 
 	if (std::abs(dx) < ALW)
 	{
 		//vertical
 		tx = t; ty = 0.0f;
 		Rx = R; Ry = 0.0f;
-		if (w > 0.0f && w <= 1.0f)
+		if (lineWidth > 0.0f && lineWidth <= 1.0f)
 		{
 			tx = 0.5f;
 			Rx = 0.0f;
@@ -987,7 +993,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		//horizontal
 		tx = 0.0f; ty = t;
 		Rx = 0.0f; Ry = R;
-		if (w > 0.0f && w <= 1.0f)
+		if (lineWidth > 0.0f && lineWidth <= 1.0f)
 		{
 			ty = 0.5f;
 			Ry = 0.0f;
@@ -995,8 +1001,8 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	}
 	else
 	{
-		dx = y1 - y2;
-		dy = x2 - x1;
+		dx = p1.y - p2.y;
+		dy = p2.x - p1.x;
 
 		float L = sqrt(dx * dx + dy * dy);
 
@@ -1013,23 +1019,23 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		Ry = R * dy;
 	}
 
-	x1 += cx * 0.5f;
-	y1 += cy * 0.5f;
+	p1.x += cx * 0.5f;
+	p1.y += cy * 0.5f;
 
-	x2 -= cx * 0.5f;
-	y2 -= cy * 0.5f;
+	p2.x -= cx * 0.5f;
+	p2.y -= cy * 0.5f;
 
 	//draw the line by triangle strip
 	float line_vertex[] =
 	{
-		x1 - tx - Rx - cx, y1 - ty - Ry - cy, //fading edge1
-		x2 - tx - Rx + cx, y2 - ty - Ry + cy,
-		x1 - tx - cx, y1 - ty - cy,        //core
-		x2 - tx + cx, y2 - ty + cy,
-		x1 + tx - cx, y1 + ty - cy,
-		x2 + tx + cx, y2 + ty + cy,
-		x1 + tx + Rx - cx, y1 + ty + Ry - cy, //fading edge2
-		x2 + tx + Rx + cx, y2 + ty + Ry + cy
+		p1.x - tx - Rx - cx, p1.y - ty - Ry - cy, //fading edge1
+		p2.x - tx - Rx + cx, p2.y - ty - Ry + cy,
+		p1.x - tx - cx, p1.y - ty - cy,        //core
+		p2.x - tx + cx, p2.y - ty + cy,
+		p1.x + tx - cx, p1.y + ty - cy,
+		p2.x + tx + cx, p2.y + ty + cy,
+		p1.x + tx + Rx - cx, p1.y + ty + Ry - cy, //fading edge2
+		p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
 	};
 
 	float line_color[] =
@@ -1049,20 +1055,20 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
 
 	// Line End Caps
-	if (w > 3.0f) // <<< Arbitrary number.
+	if (lineWidth > 3.0f) // <<< Arbitrary number.
 	{
 		float line_vertex2[] =
 		{
-			x1 - tx - cx, y1 - ty - cy,
-			x1 + tx + Rx, y1 + ty + Ry,
-			x1 + tx - cx, y1 + ty - cy,
-			x1 + tx + Rx - cx, y1 + ty + Ry - cy,
-			x2 - tx - Rx + cx, y2 - ty - Ry + cy, //cap2
-			x2 - tx - Rx, y2 - ty - Ry,
-			x2 - tx + cx, y2 - ty + cy,
-			x2 + tx + Rx, y2 + ty + Ry,
-			x2 + tx + cx, y2 + ty + cy,
-			x2 + tx + Rx + cx, y2 + ty + Ry + cy
+			p1.x - tx - cx, p1.y - ty - cy,
+			p1.x + tx + Rx, p1.y + ty + Ry,
+			p1.x + tx - cx, p1.y + ty - cy,
+			p1.x + tx + Rx - cx, p1.y + ty + Ry - cy,
+			p2.x - tx - Rx + cx, p2.y - ty - Ry + cy, //cap2
+			p2.x - tx - Rx, p2.y - ty - Ry,
+			p2.x - tx + cx, p2.y - ty + cy,
+			p2.x + tx + Rx, p2.y + ty + Ry,
+			p2.x + tx + cx, p2.y + ty + cy,
+			p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
 		};
 
 		float line_color2[] =

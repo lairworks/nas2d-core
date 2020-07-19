@@ -286,12 +286,6 @@ void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft,
 }
 
 
-void Renderer::drawPoint(Point<float> position, Color color)
-{
-	drawPoint(position.x, position.y, color);
-}
-
-
 /**
  * Draws a single Pixel to the primary surface.
  *
@@ -301,7 +295,13 @@ void Renderer::drawPoint(Point<float> position, Color color)
  */
 void Renderer::drawPoint(float x, float y, Color color)
 {
-	drawPoint(x, y, color.red, color.green, color.blue, color.alpha);
+	drawPoint({x, y}, color);
+}
+
+
+void Renderer::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	drawPoint({x, y}, {r, g, b, a});
 }
 
 

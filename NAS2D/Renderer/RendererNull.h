@@ -37,7 +37,7 @@ public:
 
 	void drawImageToImage(Image&, Image&, const Point<float>&) override {}
 
-	void drawPoint(float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawPoint(Point<float>, Color = Color::White) override {}
 	void drawLine(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int) override {}
 	void drawBox(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 	void drawBoxFilled(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}

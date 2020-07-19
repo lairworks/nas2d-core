@@ -318,13 +318,14 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 }
 
 
-void RendererOpenGL::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawPoint(Point<float> position, Color color)
 {
 	glDisable(GL_TEXTURE_2D);
 
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	pointVertexArray[0] = x + 0.5f; pointVertexArray[1] = y + 0.5f;
+	pointVertexArray[0] = position.x + 0.5f;
+	pointVertexArray[1] = position.y + 0.5f;
 
 	glVertexPointer(2, GL_FLOAT, 0, pointVertexArray);
 	glDrawArrays(GL_POINTS, 0, 1);

@@ -267,7 +267,7 @@ void Renderer::drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, 
 	const auto p3 = rect.crossYPoint() + bottomLeft.size().reflectY();
 	const auto p4 = rect.endPoint() - bottomRight.size();
 
-	// Draw the center area if it's defined.
+	// Draw the center area
 	drawImageRepeated(center, Rectangle<float>::Create(p1, p4));
 
 	// Draw the sides

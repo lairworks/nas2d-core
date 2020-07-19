@@ -334,12 +334,12 @@ void RendererOpenGL::drawPoint(Point<float> position, Color color)
 }
 
 
-void RendererOpenGL::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width = 1)
+void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPosition, Color color, int line_width)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(x, y, x2, y2, static_cast<float>(line_width), r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line(startPosition.x, startPosition.y, endPosition.x, endPosition.y, static_cast<float>(line_width), color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha / 255.0f);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);

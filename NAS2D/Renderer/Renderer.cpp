@@ -305,12 +305,6 @@ void Renderer::drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint
 }
 
 
-void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, Color color, int line_width)
-{
-	drawLine(startPosition.x, startPosition.y, endPosition.x, endPosition.y, color, line_width);
-}
-
-
 /**
  * Draws a line from (x, y) - (x2, y2) on the primary surface.
  *
@@ -323,7 +317,13 @@ void Renderer::drawLine(Point<float> startPosition, Point<float> endPosition, Co
  */
 void Renderer::drawLine(float x, float y, float x2, float y2, Color color, int line_width)
 {
-	drawLine(x, y, x2, y2, color.red, color.green, color.blue, color.alpha, line_width);
+	drawLine({x, y}, {x2, y2}, color, line_width);
+}
+
+
+void Renderer::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width)
+{
+	drawLine({x, y}, {x2, y2}, {r, g, b, a}, line_width);
 }
 
 

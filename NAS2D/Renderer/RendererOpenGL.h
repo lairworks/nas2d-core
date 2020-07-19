@@ -60,7 +60,7 @@ public:
 	void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) override;
 
 	void drawPoint(Point<float> position, Color color = Color::White) override;
-	void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int line_width) override;
+	void drawLine(Point<float> startPosition, Point<float> endPosition, Color color = Color::White, int line_width = 1) override;
 	void drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 	void drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
 	void drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y) override;

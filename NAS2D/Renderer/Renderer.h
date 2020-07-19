@@ -100,9 +100,9 @@ public:
 	void drawLine(float x, float y, float x2, float y2, Color color = Color::White, int line_width = 1);
 	void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255, int line_width = 1);
 
-	void drawBox(const Rectangle<float>& rect, Color color = Color::White);
+	virtual void drawBox(const Rectangle<float>& rect, Color color = Color::White) = 0;
 	void drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-	virtual void drawBox(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
+	void drawBox(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
 	void drawBoxFilled(const Rectangle<float>& rect, Color color = Color::White);
 	void drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);

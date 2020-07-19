@@ -327,12 +327,6 @@ void Renderer::drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t
 }
 
 
-void Renderer::drawBox(const Rectangle<float>& rect, Color color)
-{
-	drawBox(rect.x, rect.y, rect.width, rect.height, color.red, color.green, color.blue, color.alpha);
-}
-
-
 /**
  * Draws a hollow box on the primary surface.
  *
@@ -344,7 +338,13 @@ void Renderer::drawBox(const Rectangle<float>& rect, Color color)
  */
 void Renderer::drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawBox(rect.x, rect.y, rect.width, rect.height, r, g, b, a);
+	drawBox(rect, {r, g, b, a});
+}
+
+
+void Renderer::drawBox(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+	drawBox({x, y, w, h}, {r, g, b, a});
 }
 
 

@@ -439,15 +439,15 @@ void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1
 }
 
 
-void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line({x, y}, {x + width, y}, 1.0f, {r, g, b, a});
-	line({x, y}, {x, y + height + 0.5f}, 1.0f, {r, g, b, a});
-	line({x, y + height + 0.5f}, {x + width, y + height + 0.5f}, 1.0f, {r, g, b, a});
-	line({x + width, y}, {x + width, y + height + 0.5f}, 1.0f, {r, g, b, a});
+	line(rect.startPoint(), rect.crossXPoint(), 1.0f, color);
+	line(rect.startPoint(), rect.crossYPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
+	line(rect.crossYPoint() + Vector{0.0f, 0.5f}, rect.endPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
+	line(rect.crossXPoint(), rect.endPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);

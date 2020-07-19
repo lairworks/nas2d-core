@@ -434,8 +434,8 @@ void Renderer::drawText(const Font& font, std::string_view text, float x, float 
 void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
 {
 	const auto shadowPosition = position + shadowOffset;
-	drawText(font, text, shadowPosition.x, shadowPosition.y, shadowColor.red, shadowColor.green, shadowColor.blue, shadowColor.alpha);
-	drawText(font, text, position.x, position.y, textColor.red, textColor.green, textColor.blue, textColor.alpha);
+	drawText(font, text, shadowPosition, shadowColor);
+	drawText(font, text, position, textColor);
 }
 
 

@@ -29,6 +29,8 @@ struct Color
 	bool operator==(Color other) const;
 	bool operator!=(Color other) const;
 
+	Color alphaFade(uint8_t newAlpha) const;
+
 
 	static const Color Black;
 	static const Color Blue;

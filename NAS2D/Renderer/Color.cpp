@@ -54,3 +54,8 @@ bool Color::operator!=(Color other) const
 {
 	return !(*this == other);
 }
+
+Color Color::alphaFade(uint8_t newAlpha) const
+{
+	return {red, green, blue, newAlpha};
+}

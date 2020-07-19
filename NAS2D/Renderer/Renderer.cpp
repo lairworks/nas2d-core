@@ -457,8 +457,7 @@ void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<flo
  */
 void Renderer::drawTextShadow(const Font& font, std::string_view text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a )
 {
-	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
-	drawText(font, text, x, y, r, g, b, a);
+	drawTextShadow(font, text, {x, y}, Vector{distance, distance}, {r, g, b, a}, {sr, sg, sb, a});
 }
 
 

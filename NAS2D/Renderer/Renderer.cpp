@@ -215,13 +215,18 @@ void Renderer::drawSubImageRepeated(Image& image, float rasterX, float rasterY, 
 
 void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
 {
-	drawImageRect(rect.startPoint(), rect.size(), images);
+	if (images.size() != 9)
+	{
+		throw std::runtime_error("Must pass 9 images to drawImageRect, but images.size() == " + std::to_string(images.size()));
+	}
+
+	drawImageRect(rect.x, rect.y, rect.width, rect.height, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
 }
 
 
 void Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageList& images)
 {
-	drawImageRect(position.x, position.y, size.x, size.y, images);
+	drawImageRect({position.x, position.y, size.x, size.y}, images);
 }
 
 
@@ -251,11 +256,7 @@ void Renderer::drawImageRect(Point<float> position, Vector<float> size, ImageLis
  */
 void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &images)
 {
-	// We need 9 images in order to render a rectangle, one for each corner, one for each edge and one for the background.
-	if (images.size() == 9)
-	{
-		drawImageRect(x, y, w, h, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
-	}
+	drawImageRect({x, y, w, h}, images);
 }
 
 

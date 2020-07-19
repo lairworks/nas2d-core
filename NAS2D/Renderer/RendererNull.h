@@ -65,7 +65,7 @@ public:
 	void resizeable(bool) override {}
 	bool resizeable() const override { return false; }
 
-	void clipRect(float, float, float, float) final override {}
+	void clipRect(const Rectangle<float>&) override {}
 
 	void window_icon(const std::string&) override {}
 

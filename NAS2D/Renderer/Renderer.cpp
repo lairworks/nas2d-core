@@ -593,13 +593,11 @@ float Renderer::center_y() const
 /**
  * Sets a rectangular area of the screen outside of which nothing is drawn.
  *
- * \param	rect	Reference to a Rectangle<float> representing to area to clip against.
- *
  * \see clipRectClear()
  */
-void Renderer::clipRect(const Rectangle<float>& rect)
+void Renderer::clipRect(float x, float y, float width, float height)
 {
-	clipRect(rect.x, rect.y, rect.width, rect.height);
+	clipRect({x, y, width, height});
 }
 
 
@@ -608,7 +606,7 @@ void Renderer::clipRect(const Rectangle<float>& rect)
  */
 void Renderer::clipRectClear()
 {
-	clipRect(0, 0, 0, 0);
+	clipRect({0, 0, 0, 0});
 }
 
 

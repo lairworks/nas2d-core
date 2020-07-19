@@ -541,15 +541,16 @@ void RendererOpenGL::setCursor(int cursorId)
 }
 
 
-void RendererOpenGL::clipRect(float x, float y, float width, float height)
+void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 {
-	if (width == 0 || height == 0)
+	if (rect.null())
 	{
 		glDisable(GL_SCISSOR_TEST);
 		return;
 	}
 
-	glScissor(static_cast<int>(x), static_cast<int>(RendererOpenGL::height() - y - height), static_cast<int>(width), static_cast<int>(height));
+	const auto intRect = rect.to<int>();
+	glScissor(intRect.x, static_cast<int>(RendererOpenGL::height()) - intRect.y - intRect.height, intRect.width, intRect.height);
 
 	glEnable(GL_SCISSOR_TEST);
 }

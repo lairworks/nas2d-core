@@ -148,8 +148,8 @@ public:
 	float center_x() const;
 	float center_y() const;
 
-	void clipRect(const Rectangle<float>& rect);
-	virtual void clipRect(float x, float y, float width, float height) = 0;
+	virtual void clipRect(const Rectangle<float>& rect) = 0;
+	void clipRect(float x, float y, float width, float height);
 	void clipRectClear();
 
 	virtual void fullscreen(bool fs, bool maintain = false) = 0;

@@ -351,10 +351,10 @@ void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPositi
  *
  * Modified to support X/Y scaling to draw an ellipse.
  */
-void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
+void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
 {
 	glDisable(GL_TEXTURE_2D);
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	float theta = PI_2 / static_cast<float>(num_segments);
 	float c = cosf(theta);
@@ -369,8 +369,8 @@ void RendererOpenGL::drawCircle(float cx, float cy, float radius, uint8_t r, uin
 	// so we need to be sure that we step two index places for each loop.
 	for (int i = 0; i < num_segments * 2; i += 2)
 	{
-		verts[i] = x * scale_x + cx;
-		verts[i + 1] = y * scale_y + cy;
+		verts[i] = x * scale.x + position.x;
+		verts[i + 1] = y * scale.y + position.y;
 
 		// Apply the rotation matrix
 		float t = x;

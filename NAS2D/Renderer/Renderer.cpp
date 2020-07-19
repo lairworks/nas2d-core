@@ -369,9 +369,9 @@ void Renderer::drawBoxFilled(float x, float y, float width, float height, uint8_
 }
 
 
-void Renderer::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
+void Renderer::drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments, float scale_x, float scale_y)
 {
-	drawCircle(position.x, position.y, radius, color.red, color.green, color.blue, color.alpha, num_segments, scale.x, scale.y);
+	drawCircle({x, y}, radius, {r, g, b, a}, num_segments, {scale_x, scale_y});
 }
 
 

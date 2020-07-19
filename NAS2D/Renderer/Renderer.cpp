@@ -166,7 +166,7 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, u
 
 void Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
 {
-	drawImageStretched(image, position.x, position.y, size.x, size.y, color);
+	drawImageStretched(image, {position.x, position.y, size.x, size.y}, color);
 }
 
 

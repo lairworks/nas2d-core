@@ -636,7 +636,7 @@ void Renderer::update()
 
 	if (mCurrentFade > 0.0f)
 	{
-		drawBoxFilled(0, 0, width(), height(), mFadeColor.red, mFadeColor.green, mFadeColor.blue, static_cast<uint8_t>(mCurrentFade));
+		drawBoxFilled({0, 0, width(), height()}, mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
 	}
 }
 

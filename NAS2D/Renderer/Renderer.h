@@ -87,6 +87,7 @@ public:
 	void drawImageRect(Rectangle<float> rect, ImageList& images);
 	void drawImageRect(Point<float> position, Vector<float> size, ImageList& images);
 	void drawImageRect(float x, float y, float w, float h, ImageList& images);
+	void drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
 	void drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
 	void drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
 

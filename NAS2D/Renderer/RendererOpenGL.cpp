@@ -456,12 +456,12 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 }
 
 
-void RendererOpenGL::drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 {
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glDisable(GL_TEXTURE_2D);
 
-	fillVertexArray(x, y, width, height);
+	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
 	drawVertexArray(0);
 
 	glEnable(GL_TEXTURE_2D);

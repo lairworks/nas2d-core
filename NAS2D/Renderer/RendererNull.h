@@ -40,7 +40,7 @@ public:
 	void drawPoint(Point<float>, Color = Color::White) override {}
 	void drawLine(Point<float>, Point<float>, Color = Color::White, int = 1) override {}
 	void drawBox(const Rectangle<float>&, Color = Color::White) override {}
-	void drawBoxFilled(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawBoxFilled(const Rectangle<float>&, Color = Color::White) override {}
 	void drawCircle(float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, int, float, float) override {}
 
 	void drawGradient(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t) override {}

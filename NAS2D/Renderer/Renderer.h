@@ -104,9 +104,9 @@ public:
 	void drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 	void drawBox(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
-	void drawBoxFilled(const Rectangle<float>& rect, Color color = Color::White);
+	virtual void drawBoxFilled(const Rectangle<float>& rect, Color color = Color::White) = 0;
 	void drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-	virtual void drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) = 0;
+	void drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
 	void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector{1.0f, 1.0f});
 	virtual void drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f) = 0;

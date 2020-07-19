@@ -260,6 +260,30 @@ void Renderer::drawImageRect(float x, float y, float w, float h, ImageList &imag
 }
 
 
+void Renderer::drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
+{
+	const auto p1 = rect.startPoint() + topLeft.size();
+	const auto p2 = rect.crossXPoint() + topRight.size().reflectX();
+	const auto p3 = rect.crossYPoint() + bottomLeft.size().reflectY();
+	const auto p4 = rect.endPoint() - bottomRight.size();
+
+	// Draw the center area if it's defined.
+	drawImageRepeated(center, Rectangle<float>::Create(p1, p4));
+
+	// Draw the sides
+	drawImageRepeated(top, Rectangle<float>::Create({p1.x, rect.y}, p2));
+	drawImageRepeated(bottom, Rectangle<float>::Create(p3, Point{p4.x, rect.endPoint().y}));
+	drawImageRepeated(left, Rectangle<float>::Create({rect.x, p1.y}, p3));
+	drawImageRepeated(right, Rectangle<float>::Create(p2, Point{rect.endPoint().x, p4.y}));
+
+	// Draw the corners
+	drawImage(topLeft, rect.startPoint());
+	drawImage(topRight, {p2.x, rect.y});
+	drawImage(bottomLeft, {rect.x, p3.y});
+	drawImage(bottomRight, p4);
+}
+
+
 void Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
 	drawImageRect(position.x, position.y, size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
@@ -270,20 +294,7 @@ void Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& t
  */
 void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
-	// Draw the center area if it's defined.
-	drawImageRepeated(center, {x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height()});
-
-	// Draw the sides
-	drawImageRepeated(top, {x + static_cast<float>(topLeft.width()), y, w - static_cast<float>(topLeft.width()) - static_cast<float>(topRight.width()), static_cast<float>(top.height())});
-	drawImageRepeated(bottom, {x + static_cast<float>(bottomLeft.width()), y + h - static_cast<float>(bottom.height()), w - static_cast<float>(bottomLeft.width()) - bottomRight.width(), static_cast<float>(bottom.height())});
-	drawImageRepeated(left, {x, y + static_cast<float>(topLeft.height()), static_cast<float>(left.width()), h - static_cast<float>(topLeft.height()) - static_cast<float>(bottomLeft.height())});
-	drawImageRepeated(right, {x + w - static_cast<float>(right.width()), y + static_cast<float>(topRight.height()), static_cast<float>(right.width()), h - static_cast<float>(topRight.height()) - static_cast<float>(bottomRight.height())});
-
-	// Draw the corners
-	drawImage(topLeft, {x, y});
-	drawImage(topRight, {x + w - topRight.width(), y});
-	drawImage(bottomLeft, {x, y + h - bottomLeft.height()});
-	drawImage(bottomRight, {x + w - bottomRight.width(), y + h - bottomRight.height()});
+	drawImageRect({x, y, w, h}, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
 }
 
 

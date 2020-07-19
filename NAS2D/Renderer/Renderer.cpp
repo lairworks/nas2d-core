@@ -413,9 +413,9 @@ void Renderer::drawGradient(float x, float y, float w, float h, uint8_t r1, uint
 }
 
 
-void Renderer::drawText(const Font& font, std::string_view text, Point<float> position, Color color)
+void Renderer::drawText(const Font& font, std::string_view text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	drawText(font, text, position.x, position.y, color.red, color.green, color.blue, color.alpha);
+	drawText(font, text, {x, y}, {r, g, b, a});
 }
 
 

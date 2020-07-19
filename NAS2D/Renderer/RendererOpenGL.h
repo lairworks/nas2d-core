@@ -67,7 +67,7 @@ public:
 
 	void drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4) override;
 
-	void drawText(const Font& font, std::string_view text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+	void drawText(const Font& font, std::string_view text, Point<float> position, Color color = Color::White) override;
 
 	void showSystemPointer(bool) override;
 	void addCursor(const std::string& filePath, int cursorId, int offx, int offy) override;

@@ -468,11 +468,11 @@ void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 }
 
 
-void RendererOpenGL::drawText(const Font& font, std::string_view text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<float> position, Color color)
 {
 	if (!font.loaded() || text.empty()) { return; }
 
-	glColor4ub(r, g, b, a);
+	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	int offset = 0;
 
@@ -483,7 +483,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, float x, 
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
-		fillVertexArray(x + offset, y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
+		fillVertexArray(position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
 		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
 
 		drawVertexArray(fontMap[font.name()].texture_id, false);

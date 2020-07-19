@@ -270,19 +270,19 @@ void Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& t
 void Renderer::drawImageRect(float x, float y, float w, float h, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
 	// Draw the center area if it's defined.
-	drawImageRepeated(center, x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height());
+	drawImageRepeated(center, {x + topLeft.width(), y + topLeft.height(), w - topRight.width() - topLeft.width(), h - topLeft.height() - bottomLeft.height()});
 
 	// Draw the sides
-	drawImageRepeated(top, x + static_cast<float>(topLeft.width()), y, w - static_cast<float>(topLeft.width()) - static_cast<float>(topRight.width()), static_cast<float>(top.height()));
-	drawImageRepeated(bottom, x + static_cast<float>(bottomLeft.width()), y + h - static_cast<float>(bottom.height()), w - static_cast<float>(bottomLeft.width()) - bottomRight.width(), static_cast<float>(bottom.height()));
-	drawImageRepeated(left, x, y + static_cast<float>(topLeft.height()), static_cast<float>(left.width()), h - static_cast<float>(topLeft.height()) - static_cast<float>(bottomLeft.height()));
-	drawImageRepeated(right, x + w - static_cast<float>(right.width()), y + static_cast<float>(topRight.height()), static_cast<float>(right.width()), h - static_cast<float>(topRight.height()) - static_cast<float>(bottomRight.height()));
+	drawImageRepeated(top, {x + static_cast<float>(topLeft.width()), y, w - static_cast<float>(topLeft.width()) - static_cast<float>(topRight.width()), static_cast<float>(top.height())});
+	drawImageRepeated(bottom, {x + static_cast<float>(bottomLeft.width()), y + h - static_cast<float>(bottom.height()), w - static_cast<float>(bottomLeft.width()) - bottomRight.width(), static_cast<float>(bottom.height())});
+	drawImageRepeated(left, {x, y + static_cast<float>(topLeft.height()), static_cast<float>(left.width()), h - static_cast<float>(topLeft.height()) - static_cast<float>(bottomLeft.height())});
+	drawImageRepeated(right, {x + w - static_cast<float>(right.width()), y + static_cast<float>(topRight.height()), static_cast<float>(right.width()), h - static_cast<float>(topRight.height()) - static_cast<float>(bottomRight.height())});
 
 	// Draw the corners
-	drawImage(topLeft, x, y);
-	drawImage(topRight, x + w - topRight.width(), y);
-	drawImage(bottomLeft, x, y + h - bottomLeft.height());
-	drawImage(bottomRight, x + w - bottomRight.width(), y + h - bottomRight.height());
+	drawImage(topLeft, {x, y});
+	drawImage(topRight, {x + w - topRight.width(), y});
+	drawImage(bottomLeft, {x, y + h - bottomLeft.height()});
+	drawImage(bottomRight, {x + w - bottomRight.width(), y + h - bottomRight.height()});
 }
 
 

@@ -85,7 +85,7 @@ void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
 void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
 void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
 
-void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca);
+void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 GLuint generate_fbo(Image& image);
 
 
@@ -339,7 +339,7 @@ void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPositi
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(startPosition.x, startPosition.y, endPosition.x, endPosition.y, static_cast<float>(line_width), color.red / 255.0f, color.green / 255.0f, color.blue / 255.0f, color.alpha / 255.0f);
+	line(startPosition, endPosition, static_cast<float>(line_width), color);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -444,10 +444,10 @@ void RendererOpenGL::drawBox(float x, float y, float width, float height, uint8_
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(x, y, x + width, y, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x, y, x, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x, y + height + 0.5f, x + width, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-	line(x + width, y, x + width, y + height + 0.5f, 1.0f, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+	line({x, y}, {x + width, y}, 1.0f, {r, g, b, a});
+	line({x, y}, {x, y + height + 0.5f}, 1.0f, {r, g, b, a});
+	line({x, y + height + 0.5f}, {x + width, y + height + 0.5f}, 1.0f, {r, g, b, a});
+	line({x + width, y}, {x + width, y + height + 0.5f}, 1.0f, {r, g, b, a});
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
@@ -917,67 +917,72 @@ void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
  *
  * This is drop-in code that may be replaced in the future.
  */
-void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, float Cb, float Ca)
+void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 {
+	float Cr = color.red / 255.0f;
+	float Cg = color.green / 255.0f;
+	float Cb = color.blue / 255.0f;
+	float Ca = color.alpha / 255.0f;
+
 	// What are these values for?
 	float t = 0.0f;
 	float R = 0.0f;
-	float f = w - static_cast<int>(w);
+	float f = lineWidth - static_cast<int>(lineWidth);
 
 	// HOLY CRAP magic numbers!
 	//determine parameters t, R
-	if (w >= 0.0f && w < 1.0f)
+	if (lineWidth >= 0.0f && lineWidth < 1.0f)
 	{
 		t = 0.05f;
 		R = 0.48f + 0.32f * f;
 	}
-	else if (w >= 1.0f && w < 2.0f)
+	else if (lineWidth >= 1.0f && lineWidth < 2.0f)
 	{
 		t = 0.05f + f * 0.33f;
 		R = 0.768f + 0.312f * f;
 	}
-	else if (w >= 2.0f && w < 3.0f)
+	else if (lineWidth >= 2.0f && lineWidth < 3.0f)
 	{
 		t = 0.38f + f * 0.58f;
 		R = 1.08f;
 	}
-	else if (w >= 3.0f && w < 4.0f)
+	else if (lineWidth >= 3.0f && lineWidth < 4.0f)
 	{
 		t = 0.96f + f * 0.48f;
 		R = 1.08f;
 	}
-	else if (w >= 4.0f && w < 5.0f)
+	else if (lineWidth >= 4.0f && lineWidth < 5.0f)
 	{
 		t = 1.44f + f * 0.46f;
 		R = 1.08f;
 	}
-	else if (w >= 5.0f && w < 6.0f)
+	else if (lineWidth >= 5.0f && lineWidth < 6.0f)
 	{
 		t = 1.9f + f * 0.6f;
 		R = 1.08f;
 	}
-	else if (w >= 6.0f)
+	else if (lineWidth >= 6.0f)
 	{
-		float ff = w - 6.0f;
+		float ff = lineWidth - 6.0f;
 		t = 2.5f + ff * 0.50f;
 		R = 1.08f;
 	}
-	//printf( "w=%f, f=%f, C=%.4f\n", w, f, C);
+	//printf( "lineWidth=%f, f=%f, C=%.4f\n", lineWidth, f, C);
 
 	//determine angle of the line to horizontal
 	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
 	float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
 	float cx = 0.0f, cy = 0.0f; //cap of a line
 	float ALW = 0.01f; // Dafuq is this?
-	float dx = x2 - x1;
-	float dy = y2 - y1;
+	float dx = p2.x - p1.x;
+	float dy = p2.y - p1.y;
 
 	if (std::abs(dx) < ALW)
 	{
 		//vertical
 		tx = t; ty = 0.0f;
 		Rx = R; Ry = 0.0f;
-		if (w > 0.0f && w <= 1.0f)
+		if (lineWidth > 0.0f && lineWidth <= 1.0f)
 		{
 			tx = 0.5f;
 			Rx = 0.0f;
@@ -988,7 +993,7 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		//horizontal
 		tx = 0.0f; ty = t;
 		Rx = 0.0f; Ry = R;
-		if (w > 0.0f && w <= 1.0f)
+		if (lineWidth > 0.0f && lineWidth <= 1.0f)
 		{
 			ty = 0.5f;
 			Ry = 0.0f;
@@ -996,8 +1001,8 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	}
 	else
 	{
-		dx = y1 - y2;
-		dy = x2 - x1;
+		dx = p1.y - p2.y;
+		dy = p2.x - p1.x;
 
 		float L = sqrt(dx * dx + dy * dy);
 
@@ -1014,23 +1019,23 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 		Ry = R * dy;
 	}
 
-	x1 += cx * 0.5f;
-	y1 += cy * 0.5f;
+	p1.x += cx * 0.5f;
+	p1.y += cy * 0.5f;
 
-	x2 -= cx * 0.5f;
-	y2 -= cy * 0.5f;
+	p2.x -= cx * 0.5f;
+	p2.y -= cy * 0.5f;
 
 	//draw the line by triangle strip
 	float line_vertex[] =
 	{
-		x1 - tx - Rx - cx, y1 - ty - Ry - cy, //fading edge1
-		x2 - tx - Rx + cx, y2 - ty - Ry + cy,
-		x1 - tx - cx, y1 - ty - cy,        //core
-		x2 - tx + cx, y2 - ty + cy,
-		x1 + tx - cx, y1 + ty - cy,
-		x2 + tx + cx, y2 + ty + cy,
-		x1 + tx + Rx - cx, y1 + ty + Ry - cy, //fading edge2
-		x2 + tx + Rx + cx, y2 + ty + Ry + cy
+		p1.x - tx - Rx - cx, p1.y - ty - Ry - cy, //fading edge1
+		p2.x - tx - Rx + cx, p2.y - ty - Ry + cy,
+		p1.x - tx - cx, p1.y - ty - cy,        //core
+		p2.x - tx + cx, p2.y - ty + cy,
+		p1.x + tx - cx, p1.y + ty - cy,
+		p2.x + tx + cx, p2.y + ty + cy,
+		p1.x + tx + Rx - cx, p1.y + ty + Ry - cy, //fading edge2
+		p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
 	};
 
 	float line_color[] =
@@ -1050,20 +1055,20 @@ void line(float x1, float y1, float x2, float y2, float w, float Cr, float Cg, f
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
 
 	// Line End Caps
-	if (w > 3.0f) // <<< Arbitrary number.
+	if (lineWidth > 3.0f) // <<< Arbitrary number.
 	{
 		float line_vertex2[] =
 		{
-			x1 - tx - cx, y1 - ty - cy,
-			x1 + tx + Rx, y1 + ty + Ry,
-			x1 + tx - cx, y1 + ty - cy,
-			x1 + tx + Rx - cx, y1 + ty + Ry - cy,
-			x2 - tx - Rx + cx, y2 - ty - Ry + cy, //cap2
-			x2 - tx - Rx, y2 - ty - Ry,
-			x2 - tx + cx, y2 - ty + cy,
-			x2 + tx + Rx, y2 + ty + Ry,
-			x2 + tx + cx, y2 + ty + cy,
-			x2 + tx + Rx + cx, y2 + ty + Ry + cy
+			p1.x - tx - cx, p1.y - ty - cy,
+			p1.x + tx + Rx, p1.y + ty + Ry,
+			p1.x + tx - cx, p1.y + ty - cy,
+			p1.x + tx + Rx - cx, p1.y + ty + Ry - cy,
+			p2.x - tx - Rx + cx, p2.y - ty - Ry + cy, //cap2
+			p2.x - tx - Rx, p2.y - ty - Ry,
+			p2.x - tx + cx, p2.y - ty + cy,
+			p2.x + tx + Rx, p2.y + ty + Ry,
+			p2.x + tx + cx, p2.y + ty + cy,
+			p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
 		};
 
 		float line_color2[] =

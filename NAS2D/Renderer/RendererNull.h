@@ -43,7 +43,7 @@ public:
 	void drawBoxFilled(const Rectangle<float>&, Color = Color::White) override {}
 	void drawCircle(Point<float>, float, Color, int = 10, Vector<float> = Vector{1.0f, 1.0f}) override {}
 
-	void drawGradient(float, float, float, float, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t) override {}
+	void drawGradient(Rectangle<float>, Color, Color, Color, Color) override {}
 
 	void drawText(const Font&, std::string_view, float, float, uint8_t, uint8_t, uint8_t, uint8_t) override {}
 

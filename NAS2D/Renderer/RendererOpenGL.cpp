@@ -393,44 +393,44 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 }
 
 
-void RendererOpenGL::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
+void RendererOpenGL::drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4)
 {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 
-	colorVertexArray[0] = r1 / 255.0f;
-	colorVertexArray[1] = g1 / 255.0f;
-	colorVertexArray[2] = b1 / 255.0f;
-	colorVertexArray[3] = a1 / 255.0f;
+	colorVertexArray[0] = c1.red / 255.0f;
+	colorVertexArray[1] = c1.green / 255.0f;
+	colorVertexArray[2] = c1.blue / 255.0f;
+	colorVertexArray[3] = c1.alpha / 255.0f;
 
-	colorVertexArray[4] = r2 / 255.0f;
-	colorVertexArray[5] = g2 / 255.0f;
-	colorVertexArray[6] = b2 / 255.0f;
-	colorVertexArray[7] = a2 / 255.0f;
+	colorVertexArray[4] = c2.red / 255.0f;
+	colorVertexArray[5] = c2.green / 255.0f;
+	colorVertexArray[6] = c2.blue / 255.0f;
+	colorVertexArray[7] = c2.alpha / 255.0f;
 
-	colorVertexArray[8] = r3 / 255.0f;
-	colorVertexArray[9] = g3 / 255.0f;
-	colorVertexArray[10] = b3 / 255.0f;
-	colorVertexArray[11] = a3 / 255.0f;
-
-
-	colorVertexArray[12] = r3 / 255.0f;
-	colorVertexArray[13] = g3 / 255.0f;
-	colorVertexArray[14] = b3 / 255.0f;
-	colorVertexArray[15] = a3 / 255.0f;
-
-	colorVertexArray[16] = r4 / 255.0f;
-	colorVertexArray[17] = g4 / 255.0f;
-	colorVertexArray[18] = b4 / 255.0f;
-	colorVertexArray[19] = a4 / 255.0f;
-
-	colorVertexArray[20] = r1 / 255.0f;
-	colorVertexArray[21] = g1 / 255.0f;
-	colorVertexArray[22] = b1 / 255.0f;
-	colorVertexArray[23] = a1 / 255.0f;
+	colorVertexArray[8] = c3.red / 255.0f;
+	colorVertexArray[9] = c3.green / 255.0f;
+	colorVertexArray[10] = c3.blue / 255.0f;
+	colorVertexArray[11] = c3.alpha / 255.0f;
 
 
-	fillVertexArray(x, y, w, h);
+	colorVertexArray[12] = c3.red / 255.0f;
+	colorVertexArray[13] = c3.green / 255.0f;
+	colorVertexArray[14] = c3.blue / 255.0f;
+	colorVertexArray[15] = c3.alpha / 255.0f;
+
+	colorVertexArray[16] = c4.red / 255.0f;
+	colorVertexArray[17] = c4.green / 255.0f;
+	colorVertexArray[18] = c4.blue / 255.0f;
+	colorVertexArray[19] = c4.alpha / 255.0f;
+
+	colorVertexArray[20] = c1.red / 255.0f;
+	colorVertexArray[21] = c1.green / 255.0f;
+	colorVertexArray[22] = c1.blue / 255.0f;
+	colorVertexArray[23] = c1.alpha / 255.0f;
+
+
+	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
 	glColorPointer(4, GL_FLOAT, 0, colorVertexArray);
 	drawVertexArray(0);
 

@@ -375,15 +375,9 @@ void Renderer::drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, 
 }
 
 
-void Renderer::drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4)
-{
-	drawGradient(rect.startPoint(), rect.size(), c1, c2, c3, c4);
-}
-
-
 void Renderer::drawGradient(Point<float> position, Vector<float> size, Color c1, Color c2, Color c3, Color c4)
 {
-	drawGradient(position.x, position.y, size.x, size.y, c1, c2, c3, c4);
+	drawGradient({position.x, position.y, size.x, size.y}, c1, c2, c3, c4);
 }
 
 
@@ -409,7 +403,13 @@ void Renderer::drawGradient(Point<float> position, Vector<float> size, Color c1,
  */
 void Renderer::drawGradient(float x, float y, float w, float h, Color c1, Color c2, Color c3, Color c4)
 {
-	drawGradient(x, y, w, h, c1.red, c1.green, c1.blue, c1.alpha, c2.red, c2.green, c2.blue, c2.alpha, c3.red, c3.green, c3.blue, c3.alpha, c4.red, c4.green, c4.blue, c4.alpha);
+	drawGradient({x, y, w, h}, c1, c2, c3, c4);
+}
+
+
+void Renderer::drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4)
+{
+	drawGradient({x, y, w, h}, {r1, g1, b1, a1}, {r2, g2, b2, a2}, {r3, g3, b3, a3}, {r4, g4, b4, a4});
 }
 
 

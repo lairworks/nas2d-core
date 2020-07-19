@@ -556,9 +556,9 @@ void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 }
 
 
-void RendererOpenGL::clearScreen(uint8_t r, uint8_t g, uint8_t b)
+void RendererOpenGL::clearScreen(Color color)
 {
-	glClearColor(static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f, static_cast<float>(b) / 255.0f, 0.0f);
+	glClearColor(static_cast<float>(color.red) / 255.0f, static_cast<float>(color.green) / 255.0f, static_cast<float>(color.blue) / 255.0f, static_cast<float>(color.alpha) / 255.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 

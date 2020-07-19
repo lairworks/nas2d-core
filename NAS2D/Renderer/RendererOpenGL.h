@@ -73,7 +73,7 @@ public:
 	void addCursor(const std::string& filePath, int cursorId, int offx, int offy) override;
 	void setCursor(int cursorId) override;
 
-	void clearScreen(uint8_t r, uint8_t g, uint8_t b) override;
+	void clearScreen(Color color = Color::Black) override;
 
 	float width() const override;
 	float height() const override;

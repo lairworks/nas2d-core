@@ -545,12 +545,10 @@ Signals::Signal<>& Renderer::fadeComplete()
 
 /**
  * Clears the screen with a given Color.
- *
- * \param color	A Color.
  */
-void Renderer::clearScreen(Color color)
+void Renderer::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 {
-	clearScreen(color.red, color.green, color.blue);
+	clearScreen({r, g, b});
 }
 
 

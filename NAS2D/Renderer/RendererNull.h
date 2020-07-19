@@ -51,7 +51,7 @@ public:
 	void addCursor(const std::string&, int, int, int) override {}
 	void setCursor(int) override {}
 
-	void clearScreen(uint8_t, uint8_t, uint8_t) override {}
+	void clearScreen(Color = Color::Black) override {}
 
 	float width() const override { return 0.0f; }
 	float height() const override { return 0.0f; }

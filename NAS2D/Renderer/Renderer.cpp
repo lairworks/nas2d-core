@@ -220,7 +220,7 @@ void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
 		throw std::runtime_error("Must pass 9 images to drawImageRect, but images.size() == " + std::to_string(images.size()));
 	}
 
-	drawImageRect(rect.x, rect.y, rect.width, rect.height, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
+	drawImageRect({rect.x, rect.y, rect.width, rect.height}, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
 }
 
 
@@ -286,7 +286,7 @@ void Renderer::drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, 
 
 void Renderer::drawImageRect(Point<float> position, Vector<float> size, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
-	drawImageRect(position.x, position.y, size.x, size.y, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
+	drawImageRect({position.x, position.y, size.x, size.y}, topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight);
 }
 
 /**

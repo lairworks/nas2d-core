@@ -552,13 +552,13 @@ void Renderer::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 }
 
 
-float Renderer::width() const
+int Renderer::width() const
 {
 	return size().x;
 }
 
 
-float Renderer::height() const
+int Renderer::height() const
 {
 	return size().y;
 }
@@ -635,7 +635,7 @@ void Renderer::update()
 
 	if (mCurrentFade > 0.0f)
 	{
-		drawBoxFilled({0, 0, width(), height()}, mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
+		drawBoxFilled(Rectangle<int>::Create({0, 0}, size()), mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
 	}
 }
 

@@ -136,10 +136,10 @@ public:
 	virtual void clearScreen(Color color = Color::Black) = 0;
 	void clearScreen(uint8_t r, uint8_t g, uint8_t b);
 
-	float width() const;
-	float height() const;
+	int width() const;
+	int height() const;
 
-	virtual Vector<float> size() const = 0;
+	virtual Vector<int> size() const = 0;
 	virtual void size(int w, int h) = 0;
 
 	virtual void minimum_size(int w, int h) = 0;

@@ -75,7 +75,7 @@ public:
 
 	void clearScreen(Color color = Color::Black) override;
 
-	Vector<float> size() const override;
+	Vector<int> size() const override;
 	void size(int w, int h) override;
 	void minimum_size(int w, int h) override;
 

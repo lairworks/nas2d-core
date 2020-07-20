@@ -570,7 +570,7 @@ void RendererOpenGL::update()
 }
 
 
-Vector<float> RendererOpenGL::size() const
+Vector<int> RendererOpenGL::size() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{

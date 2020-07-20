@@ -209,8 +209,8 @@ void Image::load()
 
 	// Add generated texture id to texture ID map.
 	imageIdMap[name()].texture_id = texture_id;
-	imageIdMap[name()].w = width();
-	imageIdMap[name()].h = height();
+	imageIdMap[name()].w = _size.x;
+	imageIdMap[name()].h = _size.y;
 	imageIdMap[name()].ref_count++;
 
 	imageIdMap[name()].surface = surface;
@@ -231,24 +231,6 @@ Vector<int> Image::size() const
 Vector<int> Image::center() const
 {
 	return _size / 2;
-}
-
-
-/**
- * Gets the width in pixels of the image.
- */
-int Image::width() const
-{
-	return _size.x;
-}
-
-
-/**
- * Gets the height in pixels of the image.
- */
-int Image::height() const
-{
-	return _size.y;
 }
 
 
@@ -283,7 +265,7 @@ Color Image::pixelColor(Point<int> point) const
  */
 Color Image::pixelColor(int x, int y) const
 {
-	if (x < 0 || x >= width() || y < 0 || y >= height())
+	if (x < 0 || x >= _size.x || y < 0 || y >= _size.y)
 	{
 		return Color::Black;
 	}

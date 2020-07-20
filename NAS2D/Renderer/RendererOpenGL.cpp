@@ -570,25 +570,14 @@ void RendererOpenGL::update()
 }
 
 
-float RendererOpenGL::width() const
+Vector<float> RendererOpenGL::size() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
-		return desktopResolution.x;
+		return desktopResolution;
 	}
 
-	return mResolution.x;
-}
-
-
-float RendererOpenGL::height() const
-{
-	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
-	{
-		return desktopResolution.y;
-	}
-
-	return mResolution.y;
+	return mResolution;
 }
 
 

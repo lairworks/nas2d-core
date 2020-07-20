@@ -552,12 +552,15 @@ void Renderer::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 }
 
 
-/**
- * Gets the current screen resolution as a Vector.
- */
-Vector<float> Renderer::size() const
+float Renderer::width() const
 {
-	return mResolution;
+	return size().x;
+}
+
+
+float Renderer::height() const
+{
+	return size().y;
 }
 
 

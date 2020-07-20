@@ -644,7 +644,7 @@ void Renderer::setResolution(const Vector<float>& newResolution)
 {
 	if (!fullscreen())
 	{
-		mResolution = {newResolution.x, newResolution.y};
+		mResolution = newResolution;
 	}
 }
 

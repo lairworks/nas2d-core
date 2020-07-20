@@ -782,7 +782,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 		throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
 	}
 
-	desktopResolution = {static_cast<float>(dm.w), static_cast<float>(dm.h)};
+	desktopResolution = Vector{dm.w, dm.h};
 }
 
 std::vector<DisplayDesc> RendererOpenGL::getDisplayModes() const

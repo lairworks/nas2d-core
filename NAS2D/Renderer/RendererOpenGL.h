@@ -104,7 +104,7 @@ private:
 	void onResize(int w, int h);
 
 
-	Point<float> desktopResolution;
+	Vector<float> desktopResolution;
 
 	std::map<int, SDL_Cursor*> cursors;
 };

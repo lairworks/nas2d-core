@@ -474,14 +474,14 @@ void Sprite::processFrames(const std::string& action, void* _node)
 			}
 
 			// X-Coordinate
-			if ( x < 0 || x > mImageSheets.find(sheetId)->second.width())
+			if ( x < 0 || x > mImageSheets.find(sheetId)->second.size().x)
 			{
 				cout << "Value 'x' is out of bounds." << endTag(currentRow, name()) << endl;
 				continue;
 			}
 
 			// Y-Coordinate
-			if (y < 0 || y > mImageSheets.find(sheetId)->second.height())
+			if (y < 0 || y > mImageSheets.find(sheetId)->second.size().y)
 			{
 				cout << "Value 'y' is out of bounds." << endTag(currentRow, name()) << endl;
 				continue;
@@ -494,7 +494,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				cout << "'width' value must be greater than 0." << endTag(currentRow, name()) << endl;
 				continue;
 			}
-			else if (x + width > mImageSheets.find(sheetId)->second.width())
+			else if (x + width > mImageSheets.find(sheetId)->second.size().x)
 			{
 				cout << "'x' + 'width' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
 				continue;
@@ -507,7 +507,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				cout << "'height' value must be greater than 0." << endTag(currentRow, name()) << endl;
 				continue;
 			}
-			else if (y + height > mImageSheets.find(sheetId)->second.height())
+			else if (y + height > mImageSheets.find(sheetId)->second.size().y)
 			{
 				cout << "'y' + 'height' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
 				continue;

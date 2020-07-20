@@ -146,9 +146,9 @@ public:
 	virtual void minimumSize(Vector<int> newSize) = 0;
 	void minimum_size(int width, int height);
 
-	Point<float> center() const;
-	float center_x() const;
-	float center_y() const;
+	Point<int> center() const;
+	int center_x() const;
+	int center_y() const;
 
 	virtual void clipRect(const Rectangle<float>& rect) = 0;
 	void clipRect(float x, float y, float width, float height);

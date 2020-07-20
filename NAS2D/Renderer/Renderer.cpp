@@ -579,16 +579,16 @@ void Renderer::minimum_size(int width, int height)
 /**
  * Gets the center coordinates of the screen.
  */
-Point<float> Renderer::center() const
+Point<int> Renderer::center() const
 {
-	return Point<float>{} + mResolution / 2;
+	return Point{0, 0} + mResolution / 2;
 }
 
 
 /**
  * Gets the center X-Coordinate of the screen.
  */
-float Renderer::center_x() const
+int Renderer::center_x() const
 {
 	return width() / 2;
 }
@@ -597,7 +597,7 @@ float Renderer::center_x() const
 /**
  * Gets the center Y-Coordinate of the screen.
  */
-float Renderer::center_y() const
+int Renderer::center_y() const
 {
 	return height() / 2;
 }

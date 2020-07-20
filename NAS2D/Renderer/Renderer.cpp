@@ -552,18 +552,6 @@ void Renderer::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 }
 
 
-int Renderer::width() const
-{
-	return size().x;
-}
-
-
-int Renderer::height() const
-{
-	return size().y;
-}
-
-
 void Renderer::size(int width, int height)
 {
 	size({width, height});
@@ -590,7 +578,7 @@ Point<int> Renderer::center() const
  */
 int Renderer::center_x() const
 {
-	return width() / 2;
+	return size().x / 2;
 }
 
 
@@ -599,7 +587,7 @@ int Renderer::center_x() const
  */
 int Renderer::center_y() const
 {
-	return height() / 2;
+	return size().y / 2;
 }
 
 

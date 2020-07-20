@@ -75,11 +75,9 @@ public:
 
 	void clearScreen(Color color = Color::Black) override;
 
-	float width() const override;
-	float height() const override;
-
-	void size(int w, int h) override;
-	void minimum_size(int w, int h) override;
+	Vector<int> size() const override;
+	void size(Vector<int> newSize) override;
+	void minimumSize(Vector<int> newSize) override;
 
 	void fullscreen(bool fs, bool maintain = false) override;
 	bool fullscreen() const override;
@@ -104,7 +102,7 @@ private:
 	void onResize(int w, int h);
 
 
-	Point<float> desktopResolution;
+	Vector<int> desktopResolution;
 
 	std::map<int, SDL_Cursor*> cursors;
 };

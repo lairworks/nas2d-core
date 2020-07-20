@@ -552,28 +552,43 @@ void Renderer::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 }
 
 
-/**
- * Gets the current screen resolution as a Vector.
- */
-Vector<float> Renderer::size() const
+int Renderer::width() const
 {
-	return mResolution;
+	return size().x;
+}
+
+
+int Renderer::height() const
+{
+	return size().y;
+}
+
+
+void Renderer::size(int width, int height)
+{
+	size({width, height});
+}
+
+
+void Renderer::minimum_size(int width, int height)
+{
+	minimumSize({width, height});
 }
 
 
 /**
  * Gets the center coordinates of the screen.
  */
-Point<float> Renderer::center() const
+Point<int> Renderer::center() const
 {
-	return Point<float>{} + mResolution / 2;
+	return Point{0, 0} + mResolution / 2;
 }
 
 
 /**
  * Gets the center X-Coordinate of the screen.
  */
-float Renderer::center_x() const
+int Renderer::center_x() const
 {
 	return width() / 2;
 }
@@ -582,7 +597,7 @@ float Renderer::center_x() const
 /**
  * Gets the center Y-Coordinate of the screen.
  */
-float Renderer::center_y() const
+int Renderer::center_y() const
 {
 	return height() / 2;
 }
@@ -632,7 +647,7 @@ void Renderer::update()
 
 	if (mCurrentFade > 0.0f)
 	{
-		drawBoxFilled({0, 0, width(), height()}, mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
+		drawBoxFilled(Rectangle<int>::Create({0, 0}, size()), mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
 	}
 }
 
@@ -641,7 +656,7 @@ void Renderer::setResolution(const Vector<float>& newResolution)
 {
 	if (!fullscreen())
 	{
-		mResolution = {newResolution.x, newResolution.y};
+		mResolution = newResolution;
 	}
 }
 

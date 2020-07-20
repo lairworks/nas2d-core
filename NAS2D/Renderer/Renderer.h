@@ -136,17 +136,19 @@ public:
 	virtual void clearScreen(Color color = Color::Black) = 0;
 	void clearScreen(uint8_t r, uint8_t g, uint8_t b);
 
-	virtual float width() const = 0;
-	virtual float height() const = 0;
+	int width() const;
+	int height() const;
 
-	Vector<float> size() const;
-	virtual void size(int w, int h) = 0;
+	virtual Vector<int> size() const = 0;
+	virtual void size(Vector<int> newSize) = 0;
+	void size(int width, int height);
 
-	virtual void minimum_size(int w, int h) = 0;
+	virtual void minimumSize(Vector<int> newSize) = 0;
+	void minimum_size(int width, int height);
 
-	Point<float> center() const;
-	float center_x() const;
-	float center_y() const;
+	Point<int> center() const;
+	int center_x() const;
+	int center_y() const;
 
 	virtual void clipRect(const Rectangle<float>& rect) = 0;
 	void clipRect(float x, float y, float width, float height);
@@ -169,7 +171,7 @@ protected:
 
 	void driverName(const std::string& name);
 
-	Vector<float> mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
+	Vector<int> mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
 
 private:
 	enum class FadeType

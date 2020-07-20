@@ -64,7 +64,7 @@ private:
 	void load() override;
 
 private:
-	Vector<int> _size; /**< Width/Height information about the Image. */
+	Vector<int> mSize; /**< Width/Height information about the Image. */
 };
 
 

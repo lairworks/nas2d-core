@@ -71,7 +71,7 @@ Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 {
 	name(ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY));
-	_size = Vector{width, height};
+	mSize = Vector{width, height};
 
 	// Update resource management.
 	imageIdMap[name()].texture_id = 0;
@@ -105,7 +105,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
-	_size = Vector{width, height};
+	mSize = Vector{width, height};
 
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
@@ -123,7 +123,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
  *
  * \param	src		Image to copy.
  */
-Image::Image(const Image &src) : Resource(src.name()), _size(src._size)
+Image::Image(const Image &src) : Resource(src.name()), mSize(src.mSize)
 {
 	if (!src.loaded())
 	{
@@ -156,7 +156,7 @@ Image& Image::operator=(const Image& rhs)
 	updateImageReferenceCount(name());
 
 	name(rhs.name());
-	_size = rhs._size;
+	mSize = rhs.mSize;
 
 	auto it = imageIdMap.find(name());
 	if (it == imageIdMap.end())
@@ -180,7 +180,7 @@ void Image::load()
 {
 	if (checkTextureId(name()))
 	{
-		_size = Vector{imageIdMap[name()].w, imageIdMap[name()].h};
+		mSize = Vector{imageIdMap[name()].w, imageIdMap[name()].h};
 		loaded(true);
 		return;
 	}
@@ -203,14 +203,14 @@ void Image::load()
 		return;
 	}
 
-	_size = Vector{surface->w, surface->h};
+	mSize = Vector{surface->w, surface->h};
 
 	unsigned int texture_id = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
 
 	// Add generated texture id to texture ID map.
 	imageIdMap[name()].texture_id = texture_id;
-	imageIdMap[name()].w = _size.x;
-	imageIdMap[name()].h = _size.y;
+	imageIdMap[name()].w = mSize.x;
+	imageIdMap[name()].h = mSize.y;
 	imageIdMap[name()].ref_count++;
 
 	imageIdMap[name()].surface = surface;
@@ -224,25 +224,25 @@ void Image::load()
  */
 Vector<int> Image::size() const
 {
-	return _size;
+	return mSize;
 }
 
 
 Vector<int> Image::center() const
 {
-	return _size / 2;
+	return mSize / 2;
 }
 
 
 int Image::center_x() const
 {
-	return _size.x / 2;
+	return mSize.x / 2;
 }
 
 
 int Image::center_y() const
 {
-	return _size.y / 2;
+	return mSize.y / 2;
 }
 
 
@@ -265,7 +265,7 @@ Color Image::pixelColor(Point<int> point) const
  */
 Color Image::pixelColor(int x, int y) const
 {
-	if (x < 0 || x >= _size.x || y < 0 || y >= _size.y)
+	if (x < 0 || x >= mSize.x || y < 0 || y >= mSize.y)
 	{
 		return Color::Black;
 	}

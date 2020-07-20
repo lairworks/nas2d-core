@@ -581,10 +581,10 @@ Vector<int> RendererOpenGL::size() const
 }
 
 
-void RendererOpenGL::size(int w, int h)
+void RendererOpenGL::size(Vector<int> newSize)
 {
-	SDL_SetWindowSize(underlyingWindow, w, h);
-	onResize(w, h);
+	SDL_SetWindowSize(underlyingWindow, newSize.x, newSize.y);
+	onResize(newSize.x, newSize.y);
 	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 

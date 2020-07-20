@@ -140,7 +140,8 @@ public:
 	int height() const;
 
 	virtual Vector<int> size() const = 0;
-	virtual void size(int w, int h) = 0;
+	virtual void size(Vector<int> newSize) = 0;
+	void size(int width, int height);
 
 	virtual void minimum_size(int w, int h) = 0;
 

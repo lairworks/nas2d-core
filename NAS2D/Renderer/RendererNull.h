@@ -54,7 +54,7 @@ public:
 	void clearScreen(Color = Color::Black) override {}
 
 	Vector<int> size() const override { return {}; }
-	void size(int, int) override {}
+	void size(Vector<int>) override {}
 	void minimum_size(int, int) override {}
 
 	void fullscreen(bool, bool = false) override {}

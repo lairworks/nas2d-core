@@ -564,6 +564,12 @@ int Renderer::height() const
 }
 
 
+void Renderer::size(int width, int height)
+{
+	size({width, height});
+}
+
+
 /**
  * Gets the center coordinates of the screen.
  */

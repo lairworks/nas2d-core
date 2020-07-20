@@ -589,10 +589,10 @@ void RendererOpenGL::size(Vector<int> newSize)
 }
 
 
-void RendererOpenGL::minimum_size(int w, int h)
+void RendererOpenGL::minimumSize(Vector<int> newSize)
 {
-	SDL_SetWindowMinimumSize(underlyingWindow, w, h);
-	onResize(w, h);
+	SDL_SetWindowMinimumSize(underlyingWindow, newSize.x, newSize.y);
+	onResize(newSize.x, newSize.y);
 }
 
 

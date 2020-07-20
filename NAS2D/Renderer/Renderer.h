@@ -143,7 +143,8 @@ public:
 	virtual void size(Vector<int> newSize) = 0;
 	void size(int width, int height);
 
-	virtual void minimum_size(int w, int h) = 0;
+	virtual void minimumSize(Vector<int> newSize) = 0;
+	void minimum_size(int width, int height);
 
 	Point<float> center() const;
 	float center_x() const;

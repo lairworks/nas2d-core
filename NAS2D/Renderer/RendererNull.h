@@ -55,7 +55,7 @@ public:
 
 	Vector<int> size() const override { return {}; }
 	void size(Vector<int>) override {}
-	void minimum_size(int, int) override {}
+	void minimumSize(Vector<int>) override {}
 
 	void fullscreen(bool, bool = false) override {}
 	bool fullscreen() const override { return false; }

@@ -77,7 +77,7 @@ public:
 
 	Vector<int> size() const override;
 	void size(Vector<int> newSize) override;
-	void minimum_size(int w, int h) override;
+	void minimumSize(Vector<int> newSize) override;
 
 	void fullscreen(bool fs, bool maintain = false) override;
 	bool fullscreen() const override;

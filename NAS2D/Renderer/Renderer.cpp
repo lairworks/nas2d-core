@@ -570,6 +570,12 @@ void Renderer::size(int width, int height)
 }
 
 
+void Renderer::minimum_size(int width, int height)
+{
+	minimumSize({width, height});
+}
+
+
 /**
  * Gets the center coordinates of the screen.
  */

@@ -259,7 +259,7 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& 
 	float heightReach = source.height / (destination.height - destination.y);
 
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(static_cast<int>(source.x), static_cast<int>(RendererOpenGL::height() - source.y - source.height), static_cast<int>(source.width), static_cast<int>(source.height));
+	glScissor(static_cast<int>(source.x), static_cast<int>(size().y - source.y - source.height), static_cast<int>(source.width), static_cast<int>(source.height));
 
 
 	for (std::size_t row = 0; row <= heightReach; ++row)
@@ -310,7 +310,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
-	fillVertexArray(dstPoint.x, static_cast<float>(destination.height()) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y));
+	fillVertexArray(dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y));
 
 	drawVertexArray(imageIdMap[source.name()].texture_id);
 	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
@@ -550,7 +550,7 @@ void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 	}
 
 	const auto intRect = rect.to<int>();
-	glScissor(intRect.x, static_cast<int>(RendererOpenGL::height()) - intRect.y - intRect.height, intRect.width, intRect.height);
+	glScissor(intRect.x, static_cast<int>(size().y) - intRect.y - intRect.height, intRect.width, intRect.height);
 
 	glEnable(GL_SCISSOR_TEST);
 }
@@ -607,7 +607,7 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 	else
 	{
 		SDL_SetWindowFullscreen(underlyingWindow, 0);
-		SDL_SetWindowSize(underlyingWindow, static_cast<int>(width()), static_cast<int>(height()));
+		SDL_SetWindowSize(underlyingWindow, static_cast<int>(size().x), static_cast<int>(size().y));
 		SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }
@@ -687,7 +687,7 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	onResize(static_cast<int>(width()), static_cast<int>(height()));
+	onResize(static_cast<int>(size().x), static_cast<int>(size().y));
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);

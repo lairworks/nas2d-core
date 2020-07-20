@@ -54,9 +54,6 @@ public:
 	Vector<int> size() const;
 	Vector<int> center() const;
 
-	int width() const;
-	int height() const;
-
 	int center_x() const;
 	int center_y() const;
 
@@ -67,7 +64,7 @@ private:
 	void load() override;
 
 private:
-	Vector<int> _size; /**< Width/Height information about the Image. */
+	Vector<int> mSize; /**< Width/Height information about the Image. */
 };
 
 

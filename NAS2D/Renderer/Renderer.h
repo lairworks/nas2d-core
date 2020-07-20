@@ -133,8 +133,8 @@ public:
 	virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;
 	virtual void setCursor(int cursorId) = 0;
 
-	void clearScreen(Color color);
-	virtual void clearScreen(uint8_t r, uint8_t g, uint8_t b) = 0;
+	virtual void clearScreen(Color color = Color::Black) = 0;
+	void clearScreen(uint8_t r, uint8_t g, uint8_t b);
 
 	virtual float width() const = 0;
 	virtual float height() const = 0;
@@ -148,9 +148,9 @@ public:
 	float center_x() const;
 	float center_y() const;
 
-	void clipRect(const Rectangle<float>& rect);
+	virtual void clipRect(const Rectangle<float>& rect) = 0;
+	void clipRect(float x, float y, float width, float height);
 	void clipRectClear();
-	virtual void clipRect(float x, float y, float width, float height) = 0;
 
 	virtual void fullscreen(bool fs, bool maintain = false) = 0;
 	virtual bool fullscreen() const = 0;

@@ -541,23 +541,24 @@ void RendererOpenGL::setCursor(int cursorId)
 }
 
 
-void RendererOpenGL::clipRect(float x, float y, float width, float height)
+void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 {
-	if (width == 0 || height == 0)
+	if (rect.null())
 	{
 		glDisable(GL_SCISSOR_TEST);
 		return;
 	}
 
-	glScissor(static_cast<int>(x), static_cast<int>(RendererOpenGL::height() - y - height), static_cast<int>(width), static_cast<int>(height));
+	const auto intRect = rect.to<int>();
+	glScissor(intRect.x, static_cast<int>(RendererOpenGL::height()) - intRect.y - intRect.height, intRect.width, intRect.height);
 
 	glEnable(GL_SCISSOR_TEST);
 }
 
 
-void RendererOpenGL::clearScreen(uint8_t r, uint8_t g, uint8_t b)
+void RendererOpenGL::clearScreen(Color color)
 {
-	glClearColor(static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f, static_cast<float>(b) / 255.0f, 0.0f);
+	glClearColor(static_cast<float>(color.red) / 255.0f, static_cast<float>(color.green) / 255.0f, static_cast<float>(color.blue) / 255.0f, static_cast<float>(color.alpha) / 255.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 

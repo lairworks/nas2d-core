@@ -166,7 +166,7 @@ void Renderer::drawImageRotated(Image& image, float x, float y, float degrees, u
 
 void Renderer::drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color)
 {
-	drawImageStretched(image, position.x, position.y, size.x, size.y, color);
+	drawImageStretched(image, {position.x, position.y, size.x, size.y}, color);
 }
 
 
@@ -267,7 +267,7 @@ void Renderer::drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, 
 	const auto p3 = rect.crossYPoint() + bottomLeft.size().reflectY();
 	const auto p4 = rect.endPoint() - bottomRight.size();
 
-	// Draw the center area if it's defined.
+	// Draw the center area
 	drawImageRepeated(center, Rectangle<float>::Create(p1, p4));
 
 	// Draw the sides
@@ -434,8 +434,8 @@ void Renderer::drawText(const Font& font, std::string_view text, float x, float 
 void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
 {
 	const auto shadowPosition = position + shadowOffset;
-	drawText(font, text, shadowPosition.x, shadowPosition.y, shadowColor.red, shadowColor.green, shadowColor.blue, shadowColor.alpha);
-	drawText(font, text, position.x, position.y, textColor.red, textColor.green, textColor.blue, textColor.alpha);
+	drawText(font, text, shadowPosition, shadowColor);
+	drawText(font, text, position, textColor);
 }
 
 
@@ -457,8 +457,7 @@ void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<flo
  */
 void Renderer::drawTextShadow(const Font& font, std::string_view text, float x, float y, int distance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a )
 {
-	drawText(font, text, x + distance, y + distance, sr, sg, sb, a);
-	drawText(font, text, x, y, r, g, b, a);
+	drawTextShadow(font, text, {x, y}, Vector{distance, distance}, {r, g, b, a}, {sr, sg, sb, a});
 }
 
 
@@ -546,12 +545,10 @@ Signals::Signal<>& Renderer::fadeComplete()
 
 /**
  * Clears the screen with a given Color.
- *
- * \param color	A Color.
  */
-void Renderer::clearScreen(Color color)
+void Renderer::clearScreen(uint8_t r, uint8_t g, uint8_t b)
 {
-	clearScreen(color.red, color.green, color.blue);
+	clearScreen({r, g, b});
 }
 
 
@@ -594,13 +591,11 @@ float Renderer::center_y() const
 /**
  * Sets a rectangular area of the screen outside of which nothing is drawn.
  *
- * \param	rect	Reference to a Rectangle<float> representing to area to clip against.
- *
  * \see clipRectClear()
  */
-void Renderer::clipRect(const Rectangle<float>& rect)
+void Renderer::clipRect(float x, float y, float width, float height)
 {
-	clipRect(rect.x, rect.y, rect.width, rect.height);
+	clipRect({x, y, width, height});
 }
 
 
@@ -609,7 +604,7 @@ void Renderer::clipRect(const Rectangle<float>& rect)
  */
 void Renderer::clipRectClear()
 {
-	clipRect(0, 0, 0, 0);
+	clipRect({0, 0, 0, 0});
 }
 
 
@@ -637,7 +632,7 @@ void Renderer::update()
 
 	if (mCurrentFade > 0.0f)
 	{
-		drawBoxFilled(0, 0, width(), height(), mFadeColor.red, mFadeColor.green, mFadeColor.blue, static_cast<uint8_t>(mCurrentFade));
+		drawBoxFilled({0, 0, width(), height()}, mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
 	}
 }
 

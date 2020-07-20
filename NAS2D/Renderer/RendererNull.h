@@ -51,7 +51,7 @@ public:
 	void addCursor(const std::string&, int, int, int) override {}
 	void setCursor(int) override {}
 
-	void clearScreen(uint8_t, uint8_t, uint8_t) override {}
+	void clearScreen(Color = Color::Black) override {}
 
 	float width() const override { return 0.0f; }
 	float height() const override { return 0.0f; }
@@ -65,7 +65,7 @@ public:
 	void resizeable(bool) override {}
 	bool resizeable() const override { return false; }
 
-	void clipRect(float, float, float, float) final override {}
+	void clipRect(const Rectangle<float>&) override {}
 
 	void window_icon(const std::string&) override {}
 

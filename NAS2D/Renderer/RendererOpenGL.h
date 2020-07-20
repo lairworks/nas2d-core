@@ -73,7 +73,7 @@ public:
 	void addCursor(const std::string& filePath, int cursorId, int offx, int offy) override;
 	void setCursor(int cursorId) override;
 
-	void clearScreen(uint8_t r, uint8_t g, uint8_t b) override;
+	void clearScreen(Color color = Color::Black) override;
 
 	float width() const override;
 	float height() const override;
@@ -87,7 +87,7 @@ public:
 	void resizeable(bool resizable) override;
 	bool resizeable() const override;
 
-	void clipRect(float x, float y, float width, float height) final override;
+	void clipRect(const Rectangle<float>& rect) override;
 
 	void window_icon(const std::string& path) override;
 

@@ -55,34 +55,12 @@ public:
 	virtual void window_icon(const std::string& path) = 0;
 
 	virtual void drawImage(Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
-	void drawImage(Image& image, float x, float y, float scale = 1.0f);
-	void drawImage(Image& image, float x, float y, float scale, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-
 	virtual void drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) = 0;
-	void drawSubImage(Image& image, Point<float> raster, Point<float> position, Vector<float> size, Color color = Color::Normal);
-	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, Color color = Color::Normal);
-	void drawSubImage(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-
 	virtual void drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color = Color::Normal) = 0;
-	void drawSubImageRotated(Image& image, Point<float> raster, Point<float> position, Vector<float> size, float degrees, Color color = Color::Normal);
-	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, Color color = Color::Normal);
-	void drawSubImageRotated(Image& image, float rasterX, float rasterY, float x, float y, float width, float height, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-
 	virtual void drawImageRotated(Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) = 0;
-	void drawImageRotated(Image& image, float x, float y, float degrees, Color color = Color::Normal, float scale = 1.0f);
-	void drawImageRotated(Image& image, float x, float y, float degrees, uint8_t r, uint8_t g, uint8_t b, uint8_t a, float scale = 1.0f);
-
 	virtual void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal) = 0;
-	void drawImageStretched(Image& image, Point<float> position, Vector<float> size, Color color = Color::Normal);
-	void drawImageStretched(Image& image, float x, float y, float w, float h, Color color = Color::Normal);
-	void drawImageStretched(Image& image, float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-
 	virtual void drawImageRepeated(Image& image, Rectangle<float> rect) = 0;
-	void drawImageRepeated(Image& image, Point<float> position, Vector<float> size);
-	void drawImageRepeated(Image& image, float x, float y, float w, float h);
-	
 	virtual void drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination) = 0;
-	void drawSubImageRepeated(Image& image, float rasterX, float rasterY, float w, float h, float subX, float subY, float subW, float subH);
 
 	void drawImageRect(Rectangle<float> rect, ImageList& images);
 	void drawImageRect(Point<float> position, Vector<float> size, ImageList& images);
@@ -94,33 +72,26 @@ public:
 	virtual void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) = 0;
 
 	virtual void drawPoint(Point<float> position, Color color = Color::White) = 0;
-	void drawPoint(float x, float y, Color color = Color::White);
-	void drawPoint(float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-
 	virtual void drawLine(Point<float> startPosition, Point<float> endPosition, Color color = Color::White, int line_width = 1) = 0;
-	void drawLine(float x, float y, float x2, float y2, Color color = Color::White, int line_width = 1);
-	void drawLine(float x, float y, float x2, float y2, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255, int line_width = 1);
-
 	virtual void drawBox(const Rectangle<float>& rect, Color color = Color::White) = 0;
-	void drawBox(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-	void drawBox(float x, float y, float w, float h, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-
 	virtual void drawBoxFilled(const Rectangle<float>& rect, Color color = Color::White) = 0;
-	void drawBoxFilled(const Rectangle<float>& rect, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-	void drawBoxFilled(float x, float y, float width, float height, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
-
 	virtual void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector{1.0f, 1.0f}) = 0;
-	void drawCircle(float x, float y, float radius, uint8_t r, uint8_t g, uint8_t b, uint8_t a, int num_segments = 10, float scale_x = 1.0f, float scale_y = 1.0f);
 
+	/**
+	 * Draws a rectangular area with a color gradient.
+	 *
+	 * Each point of the rectangular area can be given a different color value to
+	 * produce a variety of effects. The vertex orders are as follows:
+	 *
+	 * 1-----4
+	 * |     |
+	 * |     |
+	 * 2-----3
+	 */
 	virtual void drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4) = 0;
-	void drawGradient(Point<float> position, Vector<float> size, Color c1, Color c2, Color c3, Color c4);
-	void drawGradient(float x, float y, float w, float h, Color c1, Color c2, Color c3, Color c4);
-	void drawGradient(float x, float y, float w, float h, uint8_t r1, uint8_t g1, uint8_t b1, uint8_t a1, uint8_t r2, uint8_t g2, uint8_t b2, uint8_t a2, uint8_t r3, uint8_t g3, uint8_t b3, uint8_t a3, uint8_t r4, uint8_t g4, uint8_t b4, uint8_t a4);
 
 	virtual void drawText(const Font& font, std::string_view text, Point<float> position, Color color = Color::White) = 0;
-	void drawText(const Font& font, std::string_view text, float x, float y, uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 	void drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor);
-	void drawTextShadow(const Font& font, std::string_view text, float x, float y, int sDistance, uint8_t r, uint8_t g, uint8_t b, uint8_t sr, uint8_t sg, uint8_t sb, uint8_t a = 255);
 
 	void fadeColor(Color color);
 	void fadeIn(float delayTime);
@@ -134,21 +105,22 @@ public:
 	virtual void setCursor(int cursorId) = 0;
 
 	virtual void clearScreen(Color color = Color::Black) = 0;
-	void clearScreen(uint8_t r, uint8_t g, uint8_t b);
 
 	virtual Vector<int> size() const = 0;
 	virtual void size(Vector<int> newSize) = 0;
-	void size(int width, int height);
 
 	virtual void minimumSize(Vector<int> newSize) = 0;
-	void minimum_size(int width, int height);
 
 	Point<int> center() const;
 	int center_x() const;
 	int center_y() const;
 
+	/**
+	 * Sets a rectangular area of the screen outside of which nothing is drawn.
+	 *
+	 * \see clipRectClear()
+	 */
 	virtual void clipRect(const Rectangle<float>& rect) = 0;
-	void clipRect(float x, float y, float width, float height);
 	void clipRectClear();
 
 	virtual void fullscreen(bool fs, bool maintain = false) = 0;

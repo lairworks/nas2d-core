@@ -26,7 +26,7 @@ void TestGraphics::initialize()
 	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().connect(this, &TestGraphics::onKeyDown);
 
 	NAS2D::Utility<NAS2D::Renderer>::get().showSystemPointer(true);
-	NAS2D::Utility<NAS2D::Renderer>::get().minimum_size(1600, 900);
+	NAS2D::Utility<NAS2D::Renderer>::get().minimumSize({1600, 900});
 }
 
 NAS2D::State* TestGraphics::update()
@@ -35,8 +35,8 @@ NAS2D::State* TestGraphics::update()
 
 	r.clearScreen(NAS2D::Color::Gray);
 
-	r.drawImage(mDxImage, 256, 256.0f);
-	r.drawImage(mOglImage, 768, 256.0f);
+	r.drawImage(mDxImage, {256, 256});
+	r.drawImage(mOglImage, {768, 256});
 
 	{
 		const auto jitter = [&]() -> decltype(auto) {
@@ -45,19 +45,19 @@ NAS2D::State* TestGraphics::update()
 		};
 		for (auto i = 0u; i < 2000u; ++i)
 		{
-			const uint8_t grey = jitter() * 2u;
-			r.drawPoint(10.0f + jitter(), 250.0f + jitter(), 100u + grey, 100u + grey, 100u + grey);
+			const uint8_t grey = jitter() * 2u + 100u;
+			r.drawPoint(NAS2D::Point{10 + jitter(), 250 + jitter()}, NAS2D::Color{grey, grey, grey});
 		}
 	}
 
-	r.drawBox(10, 50, 40, 40, 255, 255, 255);
-	r.drawBoxFilled(70, 50, 40, 40, 200, 0, 0);
+	r.drawBox({10, 50, 40, 40});
+	r.drawBoxFilled({70, 50, 40, 40}, NAS2D::Color{200, 0, 0});
 
-	r.drawGradient(10, 100, 100, 100, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
+	r.drawGradient({10, 100, 100, 100}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
 
-	r.drawCircle(150, 70, 20, 0, 200, 0, 255, 16);
-	r.drawCircle(150, 120, 20, 0, 200, 0, 255, 16, 0.5f);
-	r.drawCircle(150, 170, 20, 0, 200, 0, 255, 16, 1.0f, 0.5f);
+	r.drawCircle({150, 70}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
+	r.drawCircle({150, 120}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
+	r.drawCircle({150, 170}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
 
 	return this;
 }

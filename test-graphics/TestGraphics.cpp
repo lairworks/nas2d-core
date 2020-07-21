@@ -45,8 +45,8 @@ NAS2D::State* TestGraphics::update()
 		};
 		for (auto i = 0u; i < 2000u; ++i)
 		{
-			const uint8_t grey = jitter() * 2u;
-			r.drawPoint(10.0f + jitter(), 250.0f + jitter(), 100u + grey, 100u + grey, 100u + grey);
+			const uint8_t grey = jitter() * 2u + 100u;
+			r.drawPoint(10.0f + jitter(), 250.0f + jitter(), grey, grey, grey);
 		}
 	}
 

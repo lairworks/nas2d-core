@@ -112,8 +112,6 @@ public:
 	virtual void minimumSize(Vector<int> newSize) = 0;
 
 	Point<int> center() const;
-	int center_x() const;
-	int center_y() const;
 
 	/**
 	 * Sets a rectangular area of the screen outside of which nothing is drawn.

@@ -218,24 +218,6 @@ Point<int> Renderer::center() const
 
 
 /**
- * Gets the center X-Coordinate of the screen.
- */
-int Renderer::center_x() const
-{
-	return size().x / 2;
-}
-
-
-/**
- * Gets the center Y-Coordinate of the screen.
- */
-int Renderer::center_y() const
-{
-	return size().y / 2;
-}
-
-
-/**
  * Clears the clipping rectangle.
  */
 void Renderer::clipRectClear()

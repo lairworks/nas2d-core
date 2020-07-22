@@ -242,6 +242,9 @@
     <ClInclude Include="Renderer\Vector.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\VectorSizeRange.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="Renderer\Rectangle.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>

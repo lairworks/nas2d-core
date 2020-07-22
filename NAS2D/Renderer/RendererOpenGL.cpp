@@ -146,8 +146,8 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 	fillTextureArray({
 		subImageRect.x / imageSize.x,
 		subImageRect.y / imageSize.y,
-		(subImageRect.x + subImageRect.width) / imageSize.x,
-		(subImageRect.y + subImageRect.height) / imageSize.y
+		subImageRect.width / imageSize.x,
+		subImageRect.height / imageSize.y
 	});
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
@@ -174,8 +174,8 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 	fillTextureArray({
 		subImageRect.x / imageSize.x,
 		subImageRect.y / imageSize.y,
-		(subImageRect.x + subImageRect.width) / imageSize.x,
-		(subImageRect.y + subImageRect.height) / imageSize.y
+		subImageRect.width / imageSize.x,
+		subImageRect.height / imageSize.y
 	});
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
@@ -484,7 +484,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
 		fillVertexArray({position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight())});
-		fillTextureArray({gm.uvX, gm.uvY, gm.uvW, gm.uvH});
+		fillTextureArray(Rectangle<GLfloat>::Create(Point{gm.uvX, gm.uvY}, Point{gm.uvW, gm.uvH}));
 
 		drawVertexArray(fontMap[font.name()].texture_id, false);
 		offset += gm.advance + gm.minX;
@@ -893,7 +893,7 @@ void fillVertexArray(Rectangle<GLfloat> rect)
 void fillTextureArray(Rectangle<GLfloat> textureRect)
 {
 	const auto p1 = textureRect.startPoint();
-	const auto p2 = textureRect.size();
+	const auto p2 = textureRect.endPoint();
 
 	textureCoordArray[0] = p1.x; textureCoordArray[1] = p1.y;
 	textureCoordArray[2] = p1.x; textureCoordArray[3] = p2.y;

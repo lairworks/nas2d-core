@@ -61,6 +61,13 @@ namespace {
 	GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
 
+	void fillVertexArray(Rectangle<GLfloat> rect);
+	void fillTextureArray(Rectangle<GLfloat> textureRect);
+	void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
+
+	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
+	GLuint generate_fbo(Image& image);
+
 	std::string glString(GLenum name)
 	{
 		const auto apiResult = glGetString(name);
@@ -78,15 +85,6 @@ namespace {
 		};
 	}
 }
-
-
-// MODULE LEVEL FUNCTIONS
-void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
-void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
-void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
-
-void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
-GLuint generate_fbo(Image& image);
 
 
 /**
@@ -130,8 +128,8 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	const auto imageSize = image.size().to<float>() * scale;
-	fillVertexArray(position.x, position.y, imageSize.x, imageSize.y);
-	fillTextureArray(0.0, 0.0, 1.0, 1.0);
+	fillVertexArray({position.x, position.y, imageSize.x, imageSize.y});
+	fillTextureArray({0.0, 0.0, 1.0, 1.0});
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
@@ -140,15 +138,15 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 {
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	fillVertexArray(raster.x, raster.y, subImageRect.width, subImageRect.height);
+	fillVertexArray({raster.x, raster.y, subImageRect.width, subImageRect.height});
 
 	const auto imageSize = image.size().to<float>();
-	fillTextureArray(
+	fillTextureArray({
 		subImageRect.x / imageSize.x,
 		subImageRect.y / imageSize.y,
-		(subImageRect.x + subImageRect.width) / imageSize.x,
-		(subImageRect.y + subImageRect.height) / imageSize.y
-	);
+		subImageRect.width / imageSize.x,
+		subImageRect.height / imageSize.y
+	});
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 }
@@ -168,15 +166,15 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	fillVertexArray(-tX, -tY, tX * 2, tY * 2);
+	fillVertexArray({-tX, -tY, tX * 2, tY * 2});
 
 	const auto imageSize = image.size().to<float>();
-	fillTextureArray(
+	fillTextureArray({
 		subImageRect.x / imageSize.x,
 		subImageRect.y / imageSize.y,
-		(subImageRect.x + subImageRect.width) / imageSize.x,
-		(subImageRect.y + subImageRect.height) / imageSize.y
-	);
+		subImageRect.width / imageSize.x,
+		subImageRect.height / imageSize.y
+	});
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 
@@ -200,7 +198,7 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	fillVertexArray(-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2);
+	fillVertexArray({-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2});
 
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 	glPopMatrix();
@@ -212,7 +210,7 @@ void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Col
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
+	fillVertexArray(rect);
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
@@ -227,9 +225,9 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
+	fillVertexArray(rect);
 	const auto imageSize = image.size().to<float>();
-	fillTextureArray(0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y);
+	fillTextureArray({0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y});
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
@@ -310,7 +308,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
-	fillVertexArray(dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y));
+	fillVertexArray({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y)});
 
 	drawVertexArray(imageIdMap[source.name()].texture_id);
 	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
@@ -430,7 +428,7 @@ void RendererOpenGL::drawGradient(Rectangle<float> rect, Color c1, Color c2, Col
 	colorVertexArray[23] = c1.alpha / 255.0f;
 
 
-	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
+	fillVertexArray(rect);
 	glColorPointer(4, GL_FLOAT, 0, colorVertexArray);
 	drawVertexArray(0);
 
@@ -461,7 +459,7 @@ void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glDisable(GL_TEXTURE_2D);
 
-	fillVertexArray(rect.x, rect.y, rect.width, rect.height);
+	fillVertexArray(rect);
 	drawVertexArray(0);
 
 	glEnable(GL_TEXTURE_2D);
@@ -483,8 +481,8 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
-		fillVertexArray(position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight()));
-		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
+		fillVertexArray({position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight())});
+		fillTextureArray({gm.uvX, gm.uvY, gm.uvW, gm.uvH});
 
 		drawVertexArray(fontMap[font.name()].texture_id, false);
 		offset += gm.advance + gm.minX;
@@ -821,6 +819,7 @@ Vector<int> RendererOpenGL::getWindowClientArea() const noexcept
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================
 
+namespace {
 /**
  * Generates an OpenGL Frame Buffer Object.
  */
@@ -872,30 +871,36 @@ void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords)
 /**
  * Fills a vertex array with quad vertex information.
  */
-void fillVertexArray(GLfloat x, GLfloat y, GLfloat w, GLfloat h)
+void fillVertexArray(Rectangle<GLfloat> rect)
 {
-	vertexArray[0] = static_cast<GLfloat>(x); vertexArray[1] = static_cast<GLfloat>(y);
-	vertexArray[2] = static_cast<GLfloat>(x); vertexArray[3] = static_cast<GLfloat>(y + h);
-	vertexArray[4] = static_cast<GLfloat>(x + w); vertexArray[5] = static_cast<GLfloat>(y + h);
+	const auto p1 = rect.startPoint();
+	const auto p2 = rect.endPoint();
 
-	vertexArray[6] = static_cast<GLfloat>(x + w); vertexArray[7] = static_cast<GLfloat>(y + h);
-	vertexArray[8] = static_cast<GLfloat>(x + w); vertexArray[9] = static_cast<GLfloat>(y);
-	vertexArray[10] = static_cast<GLfloat>(x); vertexArray[11] = static_cast<GLfloat>(y);
+	vertexArray[0] = p1.x; vertexArray[1] = p1.y;
+	vertexArray[2] = p1.x; vertexArray[3] = p2.y;
+	vertexArray[4] = p2.x; vertexArray[5] = p2.y;
+
+	vertexArray[6] = p2.x; vertexArray[7] = p2.y;
+	vertexArray[8] = p2.x; vertexArray[9] = p1.y;
+	vertexArray[10] = p1.x; vertexArray[11] = p1.y;
 }
 
 
 /**
  * Fills a texture coordinate array with quad vertex information.
  */
-void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
+void fillTextureArray(Rectangle<GLfloat> textureRect)
 {
-	textureCoordArray[0] = static_cast<GLfloat>(x); textureCoordArray[1] = static_cast<GLfloat>(y);
-	textureCoordArray[2] = static_cast<GLfloat>(x); textureCoordArray[3] = static_cast<GLfloat>(v);
-	textureCoordArray[4] = static_cast<GLfloat>(u); textureCoordArray[5] = static_cast<GLfloat>(v);
+	const auto p1 = textureRect.startPoint();
+	const auto p2 = textureRect.endPoint();
 
-	textureCoordArray[6] = static_cast<GLfloat>(u); textureCoordArray[7] = static_cast<GLfloat>(v);
-	textureCoordArray[8] = static_cast<GLfloat>(u); textureCoordArray[9] = static_cast<GLfloat>(y);
-	textureCoordArray[10] = static_cast<GLfloat>(x); textureCoordArray[11] = static_cast<GLfloat>(y);
+	textureCoordArray[0] = p1.x; textureCoordArray[1] = p1.y;
+	textureCoordArray[2] = p1.x; textureCoordArray[3] = p2.y;
+	textureCoordArray[4] = p2.x; textureCoordArray[5] = p2.y;
+
+	textureCoordArray[6] = p2.x; textureCoordArray[7] = p2.y;
+	textureCoordArray[8] = p2.x; textureCoordArray[9] = p1.y;
+	textureCoordArray[10] = p1.x; textureCoordArray[11] = p1.y;
 }
 
 /**
@@ -1081,4 +1086,6 @@ void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 		glColorPointer(4, GL_FLOAT, 0, line_color2);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	}
+}
+
 }

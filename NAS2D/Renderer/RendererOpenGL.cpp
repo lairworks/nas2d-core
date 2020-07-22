@@ -61,6 +61,13 @@ namespace {
 	GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
 
+	void fillVertexArray(Rectangle<GLfloat> rect);
+	void fillTextureArray(Rectangle<GLfloat> textureRect);
+	void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
+
+	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
+	GLuint generate_fbo(Image& image);
+
 	std::string glString(GLenum name)
 	{
 		const auto apiResult = glGetString(name);
@@ -78,15 +85,6 @@ namespace {
 		};
 	}
 }
-
-
-// MODULE LEVEL FUNCTIONS
-void fillVertexArray(Rectangle<GLfloat> rect);
-void fillTextureArray(Rectangle<GLfloat> textureRect);
-void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
-
-void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
-GLuint generate_fbo(Image& image);
 
 
 /**
@@ -821,6 +819,7 @@ Vector<int> RendererOpenGL::getWindowClientArea() const noexcept
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================
 
+namespace {
 /**
  * Generates an OpenGL Frame Buffer Object.
  */
@@ -1087,4 +1086,6 @@ void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 		glColorPointer(4, GL_FLOAT, 0, line_color2);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	}
+}
+
 }

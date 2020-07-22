@@ -82,7 +82,7 @@ namespace {
 
 // MODULE LEVEL FUNCTIONS
 void fillVertexArray(Rectangle<GLfloat> rect);
-void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v);
+void fillTextureArray(Rectangle<GLfloat> textureRect);
 void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
 
 void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
@@ -131,7 +131,7 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 
 	const auto imageSize = image.size().to<float>() * scale;
 	fillVertexArray({position.x, position.y, imageSize.x, imageSize.y});
-	fillTextureArray(0.0, 0.0, 1.0, 1.0);
+	fillTextureArray({0.0, 0.0, 1.0, 1.0});
 	drawVertexArray(imageIdMap[image.name()].texture_id);
 }
 
@@ -143,12 +143,12 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 	fillVertexArray({raster.x, raster.y, subImageRect.width, subImageRect.height});
 
 	const auto imageSize = image.size().to<float>();
-	fillTextureArray(
+	fillTextureArray({
 		subImageRect.x / imageSize.x,
 		subImageRect.y / imageSize.y,
 		(subImageRect.x + subImageRect.width) / imageSize.x,
 		(subImageRect.y + subImageRect.height) / imageSize.y
-	);
+	});
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 }
@@ -171,12 +171,12 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 	fillVertexArray({-tX, -tY, tX * 2, tY * 2});
 
 	const auto imageSize = image.size().to<float>();
-	fillTextureArray(
+	fillTextureArray({
 		subImageRect.x / imageSize.x,
 		subImageRect.y / imageSize.y,
 		(subImageRect.x + subImageRect.width) / imageSize.x,
 		(subImageRect.y + subImageRect.height) / imageSize.y
-	);
+	});
 
 	drawVertexArray(imageIdMap[image.name()].texture_id, false);
 
@@ -229,7 +229,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 
 	fillVertexArray(rect);
 	const auto imageSize = image.size().to<float>();
-	fillTextureArray(0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y);
+	fillTextureArray({0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y});
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
 
@@ -484,7 +484,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
 		fillVertexArray({position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight())});
-		fillTextureArray(gm.uvX, gm.uvY, gm.uvW, gm.uvH);
+		fillTextureArray({gm.uvX, gm.uvY, gm.uvW, gm.uvH});
 
 		drawVertexArray(fontMap[font.name()].texture_id, false);
 		offset += gm.advance + gm.minX;
@@ -890,15 +890,18 @@ void fillVertexArray(Rectangle<GLfloat> rect)
 /**
  * Fills a texture coordinate array with quad vertex information.
  */
-void fillTextureArray(GLfloat x, GLfloat y, GLfloat u, GLfloat v)
+void fillTextureArray(Rectangle<GLfloat> textureRect)
 {
-	textureCoordArray[0] = static_cast<GLfloat>(x); textureCoordArray[1] = static_cast<GLfloat>(y);
-	textureCoordArray[2] = static_cast<GLfloat>(x); textureCoordArray[3] = static_cast<GLfloat>(v);
-	textureCoordArray[4] = static_cast<GLfloat>(u); textureCoordArray[5] = static_cast<GLfloat>(v);
+	const auto p1 = textureRect.startPoint();
+	const auto p2 = textureRect.size();
 
-	textureCoordArray[6] = static_cast<GLfloat>(u); textureCoordArray[7] = static_cast<GLfloat>(v);
-	textureCoordArray[8] = static_cast<GLfloat>(u); textureCoordArray[9] = static_cast<GLfloat>(y);
-	textureCoordArray[10] = static_cast<GLfloat>(x); textureCoordArray[11] = static_cast<GLfloat>(y);
+	textureCoordArray[0] = p1.x; textureCoordArray[1] = p1.y;
+	textureCoordArray[2] = p1.x; textureCoordArray[3] = p2.y;
+	textureCoordArray[4] = p2.x; textureCoordArray[5] = p2.y;
+
+	textureCoordArray[6] = p2.x; textureCoordArray[7] = p2.y;
+	textureCoordArray[8] = p2.x; textureCoordArray[9] = p1.y;
+	textureCoordArray[10] = p1.x; textureCoordArray[11] = p1.y;
 }
 
 /**

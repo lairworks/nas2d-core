@@ -423,8 +423,8 @@ namespace {
 
 				glyphMetricsList[glyph].uvX = static_cast<float>(col * characterSize.x) / static_cast<float>(textureSize.x);
 				glyphMetricsList[glyph].uvY = static_cast<float>(row * characterSize.y) / static_cast<float>(textureSize.y);
-				glyphMetricsList[glyph].uvW = glyphMetricsList[glyph].uvX + static_cast<float>(characterSize.x) / static_cast<float>(textureSize.x);
-				glyphMetricsList[glyph].uvH = glyphMetricsList[glyph].uvY + static_cast<float>(characterSize.y) / static_cast<float>(textureSize.y);
+				glyphMetricsList[glyph].uvW = static_cast<float>(characterSize.x) / static_cast<float>(textureSize.x);
+				glyphMetricsList[glyph].uvH = static_cast<float>(characterSize.y) / static_cast<float>(textureSize.y);
 			}
 		}
 	}

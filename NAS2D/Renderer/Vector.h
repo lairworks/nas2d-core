@@ -66,6 +66,17 @@ struct Vector {
 		return {x / scalar, y / scalar};
 	}
 
+	Vector skewBy(const Vector& other) const {
+		return {x * other.x, y * other.y};
+	}
+
+	Vector skewInverseBy(const Vector& other) const {
+		if (other.x == 0 || other.y == 0) {
+			throw std::domain_error("Cannot skewInverseBy a vector with a zero component");
+		}
+		return {x / other.x, y / other.y};
+	}
+
 	BaseType lengthSquared() const {
 		return (x * x) + (y * y);
 	}

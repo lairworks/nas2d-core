@@ -79,6 +79,38 @@ TEST(Vector, DivideScalar) {
 	EXPECT_THROW((NAS2D::Vector{2, 4} /= 0), std::domain_error);
 }
 
+TEST(Vector, skewBy) {
+	EXPECT_EQ((NAS2D::Vector{1, 0}), (NAS2D::Vector{1, 1}.skewBy(NAS2D::Vector{1, 0})));
+	EXPECT_EQ((NAS2D::Vector{2, 3}), (NAS2D::Vector{1, 1}.skewBy(NAS2D::Vector{2, 3})));
+	EXPECT_EQ((NAS2D::Vector{4, 6}), (NAS2D::Vector{1, 1}.skewBy(NAS2D::Vector{4, 6})));
+
+	EXPECT_EQ((NAS2D::Vector{2, 0}), (NAS2D::Vector{2, 1}.skewBy(NAS2D::Vector{1, 0})));
+	EXPECT_EQ((NAS2D::Vector{4, 3}), (NAS2D::Vector{2, 1}.skewBy(NAS2D::Vector{2, 3})));
+	EXPECT_EQ((NAS2D::Vector{8, 6}), (NAS2D::Vector{2, 1}.skewBy(NAS2D::Vector{4, 6})));
+
+	EXPECT_EQ((NAS2D::Vector{1, 0}), (NAS2D::Vector{1, 2}.skewBy(NAS2D::Vector{1, 0})));
+	EXPECT_EQ((NAS2D::Vector{2, 6}), (NAS2D::Vector{1, 2}.skewBy(NAS2D::Vector{2, 3})));
+	EXPECT_EQ((NAS2D::Vector{4, 12}), (NAS2D::Vector{1, 2}.skewBy(NAS2D::Vector{4, 6})));
+}
+
+TEST(Vector, skewInverseBy) {
+	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{0, 0})), std::domain_error);
+	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{0, 1})), std::domain_error);
+	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{1, 0})), std::domain_error);
+
+	EXPECT_EQ((NAS2D::Vector{8, 4}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{1, 2})));
+	EXPECT_EQ((NAS2D::Vector{4, 2}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{2, 4})));
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{3, 5})));
+
+	EXPECT_EQ((NAS2D::Vector{9, 2}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{1, 3})));
+	EXPECT_EQ((NAS2D::Vector{3, 3}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{3, 2})));
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{4, 5})));
+
+	EXPECT_EQ((NAS2D::Vector{4, 2}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{2, 3})));
+	EXPECT_EQ((NAS2D::Vector{2, 3}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{4, 2})));
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{3, 5})));
+}
+
 TEST(Vector, lengthSquared) {
 	// Test a few simple vectors
 	for (int i = 0; i < 10; ++i) {

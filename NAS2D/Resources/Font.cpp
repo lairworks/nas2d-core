@@ -378,14 +378,12 @@ namespace {
 			{
 				throw std::runtime_error("Font::generateGlyphMap(): " + std::string(TTF_GetError()));
 			}
-			else
-			{
-				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
-				const auto pixelPosition = glyphPosition.skewBy(size);
-				SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
-				SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
-				SDL_FreeSurface(srf);
-			}
+
+			SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
+			const auto pixelPosition = glyphPosition.skewBy(size);
+			SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
+			SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
+			SDL_FreeSurface(srf);
 		}
 
 		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);

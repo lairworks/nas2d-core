@@ -287,21 +287,21 @@ namespace {
 			return false;
 		}
 
-		SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
-		if (!glyphMap)
+		SDL_Surface* fontSurface = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
+		if (!fontSurface)
 		{
 			std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
 			return false;
 		}
 
-		if (glyphMap->w / GLYPH_MATRIX_SIZE != glyphWidth)
+		if (fontSurface->w / GLYPH_MATRIX_SIZE != glyphWidth)
 		{
-			throw font_invalid_glyph_map("image width is " + std::to_string(glyphMap->w) + ", expected " + std::to_string(glyphWidth * GLYPH_MATRIX_SIZE) + ".");
+			throw font_invalid_glyph_map("image width is " + std::to_string(fontSurface->w) + ", expected " + std::to_string(glyphWidth * GLYPH_MATRIX_SIZE) + ".");
 		}
 
-		if (glyphMap->h / GLYPH_MATRIX_SIZE != glyphHeight)
+		if (fontSurface->h / GLYPH_MATRIX_SIZE != glyphHeight)
 		{
-			throw font_invalid_glyph_map("image height is " + std::to_string(glyphMap->h) + ", expected " + std::to_string(glyphHeight * GLYPH_MATRIX_SIZE) + ".");
+			throw font_invalid_glyph_map("image height is " + std::to_string(fontSurface->h) + ", expected " + std::to_string(glyphHeight * GLYPH_MATRIX_SIZE) + ".");
 		}
 
 		GlyphMetricsList& glm = fontMap[path].metrics;
@@ -311,14 +311,14 @@ namespace {
 			glm[i].minX = glyphWidth;
 		}
 
-		fillInTextureCoordinates(glm, {glyphWidth, glyphHeight}, {glyphMap->w, glyphMap->h});
+		fillInTextureCoordinates(glm, {glyphWidth, glyphHeight}, {fontSurface->w, fontSurface->h});
 
 		for (auto& metrics : glm)
 		{
 			metrics.advance = glyphSpace;
 		}
 
-		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
+		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
 		fontMap[path].texture_id = texture_id;
@@ -326,7 +326,7 @@ namespace {
 		fontMap[path].height = glyphHeight;
 		fontMap[path].ref_count++;
 		fontMap[path].glyph_size = {glyphWidth, glyphHeight};
-		SDL_FreeSurface(glyphMap);
+		SDL_FreeSurface(fontSurface);
 
 		return true;
 	}
@@ -358,7 +358,7 @@ namespace {
 		unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
 		setupMasks(rmask, gmask, bmask, amask);
 
-		SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
+		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
 
 		fillInTextureCoordinates(glm, size, {textureSize, textureSize});
 
@@ -382,17 +382,17 @@ namespace {
 			SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
 			const auto pixelPosition = glyphPosition.skewBy(size);
 			SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
-			SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
+			SDL_BlitSurface(srf, nullptr, fontSurface, &rect);
 			SDL_FreeSurface(srf);
 		}
 
-		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
+		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
 		fontMap[name].texture_id = texture_id;
 		fontMap[name].pt_size = font_size;
 		fontMap[name].ref_count++;
-		SDL_FreeSurface(glyphMap);
+		SDL_FreeSurface(fontSurface);
 
 		return size;
 	}

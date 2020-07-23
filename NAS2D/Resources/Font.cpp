@@ -306,9 +306,9 @@ namespace {
 
 		GlyphMetricsList& glm = fontMap[path].metrics;
 		glm.resize(ASCII_TABLE_COUNT);
-		for (std::size_t i = 0; i < glm.size(); ++i)
+		for (auto& metrics : glm)
 		{
-			glm[i].minX = glyphSize.x;
+			metrics.minX = glyphSize.x;
 		}
 
 		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);

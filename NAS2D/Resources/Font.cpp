@@ -294,14 +294,14 @@ namespace {
 			return false;
 		}
 
-		if (fontSurface->w != glyphWidth * GLYPH_MATRIX_SIZE)
+		const auto fontSurfaceSize = Vector{fontSurface->w, fontSurface->h};
+		const auto glyphLayoutSize = Vector{GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE};
+		const auto glyphSize = Vector{glyphWidth, glyphHeight};
+		const auto expectedSize = glyphLayoutSize.skewBy(glyphSize);
+		if (fontSurfaceSize != expectedSize)
 		{
-			throw font_invalid_glyph_map("image width is " + std::to_string(fontSurface->w) + ", expected " + std::to_string(glyphWidth * GLYPH_MATRIX_SIZE) + ".");
-		}
-
-		if (fontSurface->h != glyphHeight * GLYPH_MATRIX_SIZE)
-		{
-			throw font_invalid_glyph_map("image height is " + std::to_string(fontSurface->h) + ", expected " + std::to_string(glyphHeight * GLYPH_MATRIX_SIZE) + ".");
+			const auto vectorToString = [](auto vector) { return "{" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + "}"; };
+			throw font_invalid_glyph_map("Unexpected font image size. Expected: " + vectorToString(expectedSize) + " Actual: " + vectorToString(fontSurfaceSize));
 		}
 
 		GlyphMetricsList& glm = fontMap[path].metrics;

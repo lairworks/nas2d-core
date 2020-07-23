@@ -52,6 +52,17 @@ struct Point {
 		return {x - point.x, y - point.y};
 	}
 
+	Point skewBy(const Vector<BaseType>& other) const {
+		return {x * other.x, y * other.y};
+	}
+
+	Point skewInverseBy(const Vector<BaseType>& other) const {
+		if (other.x == 0 || other.y == 0) {
+			throw std::domain_error("Cannot skewInverseBy a vector with a zero component");
+		}
+		return {x / other.x, y / other.y};
+	}
+
 	template <typename NewBaseType>
 	operator Point<NewBaseType>() const {
 		return {

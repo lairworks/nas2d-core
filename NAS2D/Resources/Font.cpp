@@ -308,10 +308,10 @@ namespace {
 		glm.resize(ASCII_TABLE_COUNT);
 		for (std::size_t i = 0; i < glm.size(); ++i)
 		{
-			glm[i].minX = glyphWidth;
+			glm[i].minX = glyphSize.x;
 		}
 
-		fillInTextureCoordinates(glm, {glyphWidth, glyphHeight}, {fontSurface->w, fontSurface->h});
+		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
 
 		for (auto& metrics : glm)
 		{
@@ -322,10 +322,10 @@ namespace {
 
 		// Add generated texture id to texture ID map.
 		fontMap[path].texture_id = texture_id;
-		fontMap[path].pt_size = static_cast<unsigned int>(glyphHeight);
-		fontMap[path].height = glyphHeight;
+		fontMap[path].pt_size = static_cast<unsigned int>(glyphSize.y);
+		fontMap[path].height = glyphSize.y;
 		fontMap[path].ref_count++;
-		fontMap[path].glyph_size = {glyphWidth, glyphHeight};
+		fontMap[path].glyph_size = glyphSize;
 		SDL_FreeSurface(fontSurface);
 
 		return true;

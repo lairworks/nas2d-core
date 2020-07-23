@@ -25,6 +25,7 @@
 #include <cmath>
 #include <algorithm>
 #include <cstddef>
+#include <stdexcept>
 
 
 extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
@@ -286,46 +287,42 @@ namespace {
 			return false;
 		}
 
-		SDL_Surface* glyphMap = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
-		if (!glyphMap)
+		SDL_Surface* fontSurface = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
+		if (!fontSurface)
 		{
 			std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
 			return false;
 		}
 
-		if (glyphMap->w / GLYPH_MATRIX_SIZE != glyphWidth)
+		const auto fontSurfaceSize = Vector{fontSurface->w, fontSurface->h};
+		const auto glyphLayoutSize = Vector{GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE};
+		const auto glyphSize = Vector{glyphWidth, glyphHeight};
+		const auto expectedSize = glyphLayoutSize.skewBy(glyphSize);
+		if (fontSurfaceSize != expectedSize)
 		{
-			throw font_invalid_glyph_map("image width is " + std::to_string(glyphMap->w) + ", expected " + std::to_string(glyphWidth * GLYPH_MATRIX_SIZE) + ".");
+			const auto vectorToString = [](auto vector) { return "{" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + "}"; };
+			throw font_invalid_glyph_map("Unexpected font image size. Expected: " + vectorToString(expectedSize) + " Actual: " + vectorToString(fontSurfaceSize));
 		}
 
-		if (glyphMap->h / GLYPH_MATRIX_SIZE != glyphHeight)
-		{
-			throw font_invalid_glyph_map("image height is " + std::to_string(glyphMap->h) + ", expected " + std::to_string(glyphHeight * GLYPH_MATRIX_SIZE) + ".");
-		}
-
-		GlyphMetricsList& glm = fontMap[path].metrics;
+		auto& fontInfo = fontMap[path];
+		auto& glm = fontInfo.metrics;
 		glm.resize(ASCII_TABLE_COUNT);
-		for (std::size_t i = 0; i < glm.size(); ++i)
-		{
-			glm[i].minX = glyphWidth;
-		}
-
-		fillInTextureCoordinates(glm, {glyphWidth, glyphHeight}, {glyphMap->w, glyphMap->h});
-
 		for (auto& metrics : glm)
 		{
+			metrics.minX = glyphSize.x;
 			metrics.advance = glyphSpace;
 		}
+		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
 
-		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
+		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
-		fontMap[path].texture_id = texture_id;
-		fontMap[path].pt_size = static_cast<unsigned int>(glyphHeight);
-		fontMap[path].height = glyphHeight;
-		fontMap[path].ref_count++;
-		fontMap[path].glyph_size = {glyphWidth, glyphHeight};
-		SDL_FreeSurface(glyphMap);
+		fontInfo.texture_id = texture_id;
+		fontInfo.pt_size = static_cast<unsigned int>(glyphSize.y);
+		fontInfo.height = glyphSize.y;
+		fontInfo.ref_count++;
+		fontInfo.glyph_size = glyphSize;
+		SDL_FreeSurface(fontSurface);
 
 		return true;
 	}
@@ -357,45 +354,39 @@ namespace {
 		unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
 		setupMasks(rmask, gmask, bmask, amask);
 
-		SDL_Surface* glyphMap = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
+		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
 
 		fillInTextureCoordinates(glm, size, {textureSize, textureSize});
 
 		SDL_Color white = { 255, 255, 255, 255 };
-		for (int row = 0; row < 16; row++)
+		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
 		{
-			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
+			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
+
+			// Avoid glyph 0, which has size 0 for some fonts
+			// SDL_TTF will produce errors for a glyph of size 0
+			if (glyph == 0) { continue; }
+
+			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
+			if (!characterSurface)
 			{
-				std::size_t glyph = static_cast<std::size_t>(row) * GLYPH_MATRIX_SIZE + col;
-
-				// HACK HACK HACK!
-				// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
-				// This is here only to prevent the message until I find the time to put in something
-				// less bad.
-				if (glyph == 0) { continue; }
-
-				SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
-				if (!srf)
-				{
-					std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
-				}
-				else
-				{
-					SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
-					SDL_Rect rect = { col * size.x, row * size.y, 0, 0 };
-					SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
-					SDL_FreeSurface(srf);
-				}
+				throw std::runtime_error("Font::generateGlyphMap(): " + std::string(TTF_GetError()));
 			}
+
+			SDL_SetSurfaceBlendMode(characterSurface, SDL_BLENDMODE_NONE);
+			const auto pixelPosition = glyphPosition.skewBy(size);
+			SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
+			SDL_BlitSurface(characterSurface, nullptr, fontSurface, &rect);
+			SDL_FreeSurface(characterSurface);
 		}
 
-		unsigned int texture_id = generateTexture(glyphMap->pixels, glyphMap->format->BytesPerPixel, glyphMap->w, glyphMap->h);
+		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
 		fontMap[name].texture_id = texture_id;
 		fontMap[name].pt_size = font_size;
 		fontMap[name].ref_count++;
-		SDL_FreeSurface(glyphMap);
+		SDL_FreeSurface(fontSurface);
 
 		return size;
 	}
@@ -476,12 +467,11 @@ namespace {
 			return;
 		}
 
-		--it->second.ref_count;
-
-		// if texture id reference count is 0, delete the texture.
-		if (it->second.ref_count < 1)
+		auto& fontInfo = it->second;
+		--fontInfo.ref_count;
+		if (fontInfo.ref_count <= 0)
 		{
-			glDeleteTextures(1, &it->second.texture_id);
+			glDeleteTextures(1, &fontInfo.texture_id);
 			fontMap.erase(it);
 		}
 

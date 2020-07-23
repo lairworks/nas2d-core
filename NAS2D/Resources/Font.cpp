@@ -25,6 +25,7 @@
 #include <cmath>
 #include <algorithm>
 #include <cstddef>
+#include <stdexcept>
 
 
 extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
@@ -375,7 +376,7 @@ namespace {
 			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
 			if (!srf)
 			{
-				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
+				throw std::runtime_error("Font::generateGlyphMap(): " + std::string(TTF_GetError()));
 			}
 			else
 			{

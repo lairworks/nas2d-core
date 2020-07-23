@@ -467,12 +467,13 @@ namespace {
 			return;
 		}
 
-		--it->second.ref_count;
+		auto& fontInfo = it->second;
+		--fontInfo.ref_count;
 
 		// if texture id reference count is 0, delete the texture.
-		if (it->second.ref_count < 1)
+		if (fontInfo.ref_count < 1)
 		{
-			glDeleteTextures(1, &it->second.texture_id);
+			glDeleteTextures(1, &fontInfo.texture_id);
 			fontMap.erase(it);
 		}
 

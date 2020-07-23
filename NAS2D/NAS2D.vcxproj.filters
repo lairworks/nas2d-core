@@ -239,6 +239,9 @@
     <ClInclude Include="Renderer\Point.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\PointInRectangleRange.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="Renderer\Vector.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>

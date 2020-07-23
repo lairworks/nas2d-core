@@ -47,6 +47,7 @@
   <ItemGroup>
     <ClCompile Include="Renderer/Color.test.cpp" />
     <ClCompile Include="Renderer/Point.test.cpp" />
+    <ClCompile Include="Renderer/PointInRectangleRange.test.cpp" />
     <ClCompile Include="Renderer/Rectangle.test.cpp" />
     <ClCompile Include="Renderer/Vector.test.cpp" />
     <ClCompile Include="Renderer/VectorSizeRange.test.cpp" />

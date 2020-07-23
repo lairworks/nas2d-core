@@ -482,7 +482,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
 		fillVertexArray({position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight())});
-		fillTextureArray({gm.uvX, gm.uvY, gm.uvW, gm.uvH});
+		fillTextureArray(gm.uvRect);
 
 		drawVertexArray(fontMap[font.name()].texture_id, false);
 		offset += gm.advance + gm.minX;

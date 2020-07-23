@@ -14,6 +14,7 @@
 #include "../Filesystem.h"
 #include "../Utility.h"
 #include "../MathUtils.h"
+#include "../Renderer/PointInRectangleRange.h"
 
 #include <GL/glew.h>
 
@@ -415,17 +416,13 @@ namespace {
 
 	void fillInTextureCoordinates(GlyphMetricsList& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
 	{
-		for (int row = 0; row < GLYPH_MATRIX_SIZE; row++)
+		const auto floatTextureSize = textureSize.to<float>();
+		const auto uvSize = characterSize.to<float>().skewInverseBy(floatTextureSize);
+		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
 		{
-			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
-			{
-				const std::size_t glyph = static_cast<std::size_t>(row) * GLYPH_MATRIX_SIZE + col;
-
-				glyphMetricsList[glyph].uvX = static_cast<float>(col * characterSize.x) / static_cast<float>(textureSize.x);
-				glyphMetricsList[glyph].uvY = static_cast<float>(row * characterSize.y) / static_cast<float>(textureSize.y);
-				glyphMetricsList[glyph].uvW = static_cast<float>(characterSize.x) / static_cast<float>(textureSize.x);
-				glyphMetricsList[glyph].uvH = static_cast<float>(characterSize.y) / static_cast<float>(textureSize.y);
-			}
+			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
+			const auto uvStart = glyphPosition.skewBy(characterSize).to<float>().skewInverseBy(floatTextureSize);
+			glyphMetricsList[glyph].uvRect = Rectangle<float>::Create(uvStart, uvSize);
 		}
 	}
 

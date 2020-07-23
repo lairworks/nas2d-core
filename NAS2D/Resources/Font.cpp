@@ -309,14 +309,9 @@ namespace {
 		for (auto& metrics : glm)
 		{
 			metrics.minX = glyphSize.x;
-		}
-
-		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
-
-		for (auto& metrics : glm)
-		{
 			metrics.advance = glyphSpace;
 		}
+		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
 
 		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 

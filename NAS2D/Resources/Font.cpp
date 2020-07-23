@@ -362,30 +362,28 @@ namespace {
 		fillInTextureCoordinates(glm, size, {textureSize, textureSize});
 
 		SDL_Color white = { 255, 255, 255, 255 };
-		for (int row = 0; row < 16; row++)
+		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
 		{
-			for (int col = 0; col < GLYPH_MATRIX_SIZE; col++)
+			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
+
+			// HACK HACK HACK!
+			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
+			// This is here only to prevent the message until I find the time to put in something
+			// less bad.
+			if (glyph == 0) { continue; }
+
+			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
+			if (!srf)
 			{
-				std::size_t glyph = static_cast<std::size_t>(row) * GLYPH_MATRIX_SIZE + col;
-
-				// HACK HACK HACK!
-				// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
-				// This is here only to prevent the message until I find the time to put in something
-				// less bad.
-				if (glyph == 0) { continue; }
-
-				SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
-				if (!srf)
-				{
-					std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
-				}
-				else
-				{
-					SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
-					SDL_Rect rect = { col * size.x, row * size.y, 0, 0 };
-					SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
-					SDL_FreeSurface(srf);
-				}
+				std::cout << "Font::generateGlyphMap(): " << TTF_GetError() << std::endl;
+			}
+			else
+			{
+				SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
+				const auto pixelPosition = glyphPosition.skewBy(size);
+				SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
+				SDL_BlitSurface(srf, nullptr, glyphMap, &rect);
+				SDL_FreeSurface(srf);
 			}
 		}
 

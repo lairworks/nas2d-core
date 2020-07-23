@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Renderer/Vector.h"
+#include "../Renderer/Rectangle.h"
 
 #include <iostream>
 
@@ -18,10 +19,7 @@ namespace NAS2D {
 
 struct GlyphMetrics
 {
-	float uvX{0.0f};
-	float uvY{0.0f};
-	float uvW{0.0f};
-	float uvH{0.0f};
+	Rectangle<float> uvRect{};
 	int minX{0};
 	int minY{0};
 	int maxX{0};

@@ -47,10 +47,10 @@ namespace {
 	SDL_GLContext oglContext; /**< Primary OpenGL render context. */
 
 	/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
-	GLfloat defaultVertexCoords[8] = {0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 32.0f, 32.0f, 0.0f};
+	const GLfloat defaultVertexCoords[8] = {0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 32.0f, 32.0f, 0.0f};
 
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-	GLfloat defaultTextureCoords[12] = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+	const GLfloat defaultTextureCoords[12] = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
 	GLfloat pointVertexArray[2] = {0.0f, 0.0f};
 

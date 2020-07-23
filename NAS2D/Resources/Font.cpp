@@ -367,10 +367,8 @@ namespace {
 		{
 			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
 
-			// HACK HACK HACK!
-			// Apparently glyph zero has no size with some fonts and so SDL_TTF complains about it.
-			// This is here only to prevent the message until I find the time to put in something
-			// less bad.
+			// Avoid glyph 0, which has size 0 for some fonts
+			// SDL_TTF will produce errors for a glyph of size 0
 			if (glyph == 0) { continue; }
 
 			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);

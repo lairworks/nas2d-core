@@ -373,17 +373,17 @@ namespace {
 			// less bad.
 			if (glyph == 0) { continue; }
 
-			SDL_Surface* srf = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
-			if (!srf)
+			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
+			if (!characterSurface)
 			{
 				throw std::runtime_error("Font::generateGlyphMap(): " + std::string(TTF_GetError()));
 			}
 
-			SDL_SetSurfaceBlendMode(srf, SDL_BLENDMODE_NONE);
+			SDL_SetSurfaceBlendMode(characterSurface, SDL_BLENDMODE_NONE);
 			const auto pixelPosition = glyphPosition.skewBy(size);
 			SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
-			SDL_BlitSurface(srf, nullptr, fontSurface, &rect);
-			SDL_FreeSurface(srf);
+			SDL_BlitSurface(characterSurface, nullptr, fontSurface, &rect);
+			SDL_FreeSurface(characterSurface);
 		}
 
 		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);

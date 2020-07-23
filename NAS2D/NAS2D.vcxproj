@@ -240,7 +240,9 @@
     <ClInclude Include="Renderer\RendererNull.h" />
     <ClInclude Include="Renderer\Color.h" />
     <ClInclude Include="Renderer\Point.h" />
+    <ClInclude Include="Renderer\PointInRectangleRange.h" />
     <ClInclude Include="Renderer\Vector.h" />
+    <ClInclude Include="Renderer\VectorSizeRange.h" />
     <ClInclude Include="Renderer\Rectangle.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\RendererOpenGL.h" />

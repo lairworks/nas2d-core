@@ -46,9 +46,6 @@ SDL_Window* underlyingWindow = nullptr;
 namespace {
 	SDL_GLContext oglContext; /**< Primary OpenGL render context. */
 
-	/** Vertex coordinate pairs. Default vertex coordinates used for initializing OpenGL and for debugging. */
-	const GLfloat defaultVertexCoords[8] = {0.0f, 0.0f, 0.0f, 32.0f, 32.0f, 32.0f, 32.0f, 0.0f};
-
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 	const GLfloat defaultTextureCoords[12] = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
@@ -717,7 +714,6 @@ void RendererOpenGL::initGL()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glVertexPointer(2, GL_FLOAT, 0, defaultVertexCoords);
 	glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords);
 }
 

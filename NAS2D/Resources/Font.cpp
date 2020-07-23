@@ -304,7 +304,8 @@ namespace {
 			throw font_invalid_glyph_map("Unexpected font image size. Expected: " + vectorToString(expectedSize) + " Actual: " + vectorToString(fontSurfaceSize));
 		}
 
-		GlyphMetricsList& glm = fontMap[path].metrics;
+		auto& fontInfo = fontMap[path];
+		auto& glm = fontInfo.metrics;
 		glm.resize(ASCII_TABLE_COUNT);
 		for (auto& metrics : glm)
 		{
@@ -316,11 +317,11 @@ namespace {
 		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
-		fontMap[path].texture_id = texture_id;
-		fontMap[path].pt_size = static_cast<unsigned int>(glyphSize.y);
-		fontMap[path].height = glyphSize.y;
-		fontMap[path].ref_count++;
-		fontMap[path].glyph_size = glyphSize;
+		fontInfo.texture_id = texture_id;
+		fontInfo.pt_size = static_cast<unsigned int>(glyphSize.y);
+		fontInfo.height = glyphSize.y;
+		fontInfo.ref_count++;
+		fontInfo.glyph_size = glyphSize;
 		SDL_FreeSurface(fontSurface);
 
 		return true;

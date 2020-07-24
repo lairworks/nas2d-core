@@ -21,10 +21,10 @@ struct Point {
 	BaseType x = 0;
 	BaseType y = 0;
 
-	bool operator==(const Point& point) const {
+	constexpr bool operator==(const Point& point) const {
 		return (x == point.x) && (y == point.y);
 	}
-	bool operator!=(const Point& point) const {
+	constexpr bool operator!=(const Point& point) const {
 		return !(*this == point);
 	}
 
@@ -40,23 +40,23 @@ struct Point {
 		return *this;
 	}
 
-	Point operator+(const Vector<BaseType>& vector) const {
+	constexpr Point operator+(const Vector<BaseType>& vector) const {
 		return {x + vector.x, y + vector.y};
 	}
 
-	Point operator-(const Vector<BaseType>& vector) const {
+	constexpr Point operator-(const Vector<BaseType>& vector) const {
 		return {x - vector.x, y - vector.y};
 	}
 
-	Vector<BaseType> operator-(const Point& point) const {
+	constexpr Vector<BaseType> operator-(const Point& point) const {
 		return {x - point.x, y - point.y};
 	}
 
-	Point skewBy(const Vector<BaseType>& other) const {
+	constexpr Point skewBy(const Vector<BaseType>& other) const {
 		return {x * other.x, y * other.y};
 	}
 
-	Point skewInverseBy(const Vector<BaseType>& other) const {
+	constexpr Point skewInverseBy(const Vector<BaseType>& other) const {
 		if (other.x == 0 || other.y == 0) {
 			throw std::domain_error("Cannot skewInverseBy a vector with a zero component");
 		}
@@ -64,7 +64,7 @@ struct Point {
 	}
 
 	template <typename NewBaseType>
-	operator Point<NewBaseType>() const {
+	constexpr operator Point<NewBaseType>() const {
 		return {
 			static_cast<NewBaseType>(x),
 			static_cast<NewBaseType>(y)
@@ -72,7 +72,7 @@ struct Point {
 	}
 
 	template <typename NewBaseType>
-	Point<NewBaseType> to() const {
+	constexpr Point<NewBaseType> to() const {
 		return static_cast<Point<NewBaseType>>(*this);
 	}
 };

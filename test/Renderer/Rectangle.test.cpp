@@ -54,6 +54,23 @@ TEST(Rectangle, startPointSet) {
 	EXPECT_EQ((NAS2D::Rectangle{5, 6, 3, 4}), rect);
 }
 
+TEST(Rectangle, skewBy) {
+	EXPECT_EQ((NAS2D::Rectangle{1, 0, 1, 0}), (NAS2D::Rectangle{1, 1, 1, 1}.skewBy(NAS2D::Vector{1, 0})));
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 1}), (NAS2D::Rectangle{1, 1, 1, 1}.skewBy(NAS2D::Vector{1, 1})));
+	EXPECT_EQ((NAS2D::Rectangle{2, 3, 2, 3}), (NAS2D::Rectangle{1, 1, 1, 1}.skewBy(NAS2D::Vector{2, 3})));
+	EXPECT_EQ((NAS2D::Rectangle{4, 6, 4, 6}), (NAS2D::Rectangle{1, 1, 1, 1}.skewBy(NAS2D::Vector{4, 6})));
+}
+
+TEST(Rectangle, skewInverseBy) {
+	EXPECT_THROW((NAS2D::Rectangle{1, 1, 1, 1}.skewInverseBy(NAS2D::Vector{0, 0})), std::domain_error);
+	EXPECT_THROW((NAS2D::Rectangle{1, 1, 1, 1}.skewInverseBy(NAS2D::Vector{0, 1})), std::domain_error);
+	EXPECT_THROW((NAS2D::Rectangle{1, 1, 1, 1}.skewInverseBy(NAS2D::Vector{1, 0})), std::domain_error);
+
+	EXPECT_EQ((NAS2D::Rectangle{2, 6, 4, 9}), (NAS2D::Rectangle{2, 6, 4, 9}.skewInverseBy(NAS2D::Vector{1, 1})));
+	EXPECT_EQ((NAS2D::Rectangle{1, 2, 2, 3}), (NAS2D::Rectangle{2, 6, 4, 9}.skewInverseBy(NAS2D::Vector{2, 3})));
+	EXPECT_EQ((NAS2D::Rectangle{0, 1, 1, 2}), (NAS2D::Rectangle{2, 6, 4, 9}.skewInverseBy(NAS2D::Vector{3, 4})));
+}
+
 TEST(Rectangle, operatorType) {
 	EXPECT_EQ((NAS2D::Rectangle<int>{0, 0, 1, 1}), static_cast<NAS2D::Rectangle<int>>(NAS2D::Rectangle<float>{0.0, 0.0, 1.0, 1.0}));
 	EXPECT_EQ((NAS2D::Rectangle<int>{1, 2, 3, 4}), static_cast<NAS2D::Rectangle<int>>(NAS2D::Rectangle<float>{1.0, 2.0, 3.0, 4.0}));

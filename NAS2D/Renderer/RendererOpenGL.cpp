@@ -152,16 +152,16 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 	glPushMatrix();
 
 	// Find center point of the image.
-	float tX = subImageRect.width / 2.0f;
-	float tY = subImageRect.height / 2.0f;
+	const auto translate = subImageRect.size().to<float>() / 2;
+	const auto center = raster + translate;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(raster.x + tX, raster.y + tY, 0.0f);
+	glTranslatef(center.x, center.y, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	setColor(color);
 
-	const auto vertexArray = rectToQuad({-tX, -tY, tX * 2, tY * 2});
+	const auto vertexArray = rectToQuad({-translate.x, -translate.y, translate.x * 2, translate.y * 2});
 
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad({

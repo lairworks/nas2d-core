@@ -266,10 +266,8 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();
 
-	const auto origin = Point<int>{0, 0};
-
 	const auto sourceBoundsInDestination = Rectangle<int>::Create(dstPointInt, sourceSize);
-	const auto destinationBounds = Rectangle<int>::Create(origin, destination.size());
+	const auto destinationBounds = Rectangle<int>::Create(Point{0, 0}, destination.size());
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if (!sourceBoundsInDestination.overlaps(destinationBounds))

@@ -24,12 +24,11 @@ namespace NAS2D {
  */
 bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<int>& c, float r)
 {
-	const auto centerToStart = p - c;
-	const auto lineSize = q - p;
-	const auto lineSizeFloat = lineSize.to<float>();
+	const auto centerToStart = (p - c).to<float>();
+	const auto lineSize = (q - p).to<float>();
 
-	const auto t = std::clamp<float>(-centerToStart.dotProduct(lineSizeFloat) / lineSizeFloat.lengthSquared(), 0, 1);
-	const auto minDistance = lineSizeFloat * t + centerToStart;
+	const auto t = std::clamp<float>(-centerToStart.dotProduct(lineSize) / lineSize.lengthSquared(), 0, 1);
+	const auto minDistance = lineSize * t + centerToStart;
 
 	return minDistance.lengthSquared() < (r * r);
 }

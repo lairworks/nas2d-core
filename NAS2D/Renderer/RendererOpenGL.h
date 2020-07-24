@@ -12,6 +12,7 @@
 #include "Renderer.h"
 
 
+using SDL_GLContext = void*;
 struct SDL_Cursor;
 
 
@@ -102,8 +103,8 @@ private:
 	void onResize(int w, int h);
 
 
+	SDL_GLContext sdlOglContext; /**< Primary OpenGL render context. */
 	Vector<int> desktopResolution;
-
 	std::map<int, SDL_Cursor*> cursors;
 };
 

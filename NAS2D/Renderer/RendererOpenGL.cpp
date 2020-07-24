@@ -47,16 +47,14 @@ SDL_Window* underlyingWindow = nullptr;
 
 
 namespace {
-	SDL_GLContext oglContext; /**< Primary OpenGL render context. */
-
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-	const std::array<GLfloat, 12> defaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+	constexpr std::array<GLfloat, 12> DefaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
 
 	GLuint generate_fbo(Image& image);
 
 	std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect);
-	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = defaultTextureCoords);
+	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = DefaultTextureCoords);
 
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 
@@ -111,7 +109,7 @@ RendererOpenGL::~RendererOpenGL()
 {
 	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::onResize);
 
-	SDL_GL_DeleteContext(oglContext);
+	SDL_GL_DeleteContext(sdlOglContext);
 	SDL_DestroyWindow(underlyingWindow);
 	underlyingWindow = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
@@ -720,8 +718,8 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 
 	mResolution = resolution.to<float>();
 
-	oglContext = SDL_GL_CreateContext(underlyingWindow);
-	if (!oglContext)
+	sdlOglContext = SDL_GL_CreateContext(underlyingWindow);
+	if (!sdlOglContext)
 	{
 		throw renderer_opengl_context_failure();
 	}

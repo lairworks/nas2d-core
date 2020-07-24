@@ -285,7 +285,6 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 
 	glColor4ub(255, 255, 255, 255);
 
-	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
 
 	GLuint fbo = imageIdMap[destination.name()].fbo_id;

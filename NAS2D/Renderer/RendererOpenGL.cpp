@@ -47,15 +47,32 @@ SDL_Window* underlyingWindow = nullptr;
 
 
 namespace {
+	/**
+	 * Fills a vertex array with quad vertex information.
+	 */
+	constexpr std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect)
+	{
+		const auto p1 = rect.startPoint();
+		const auto p2 = rect.endPoint();
+
+		return {
+			p1.x, p1.y,
+			p1.x, p2.y,
+			p2.x, p2.y,
+
+			p2.x, p2.y,
+			p2.x, p1.y,
+			p1.x, p1.y
+		};
+	}
+
+
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 	constexpr std::array<GLfloat, 12> DefaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
 
 	GLuint generate_fbo(Image& image);
-
-	std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect);
 	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = DefaultTextureCoords);
-
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 
 	void setColor(Color color)
@@ -829,26 +846,6 @@ void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies
 	glVertexPointer(2, GL_FLOAT, 0, verticies.data());
 	glTexCoordPointer(2, GL_FLOAT, 0, textureCoords.data());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
-}
-
-
-/**
- * Fills a vertex array with quad vertex information.
- */
-std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect)
-{
-	const auto p1 = rect.startPoint();
-	const auto p2 = rect.endPoint();
-
-	return {
-		p1.x, p1.y,
-		p1.x, p2.y,
-		p2.x, p2.y,
-
-		p2.x, p2.y,
-		p2.x, p1.y,
-		p1.x, p1.y
-	};
 }
 
 

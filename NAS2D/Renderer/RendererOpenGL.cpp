@@ -462,11 +462,10 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	int offset = 0;
-
 	GlyphMetricsList& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }
 
+	int offset = 0;
 	for (auto character : text)
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];

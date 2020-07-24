@@ -348,8 +348,8 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	setColor(color);
 
 	float theta = PI_2 / static_cast<float>(num_segments);
-	float c = cosf(theta);
-	float s = sinf(theta);
+	float c = std::cos(theta);
+	float s = std::sin(theta);
 
 	float x = radius;
 	float y = 0;

@@ -60,7 +60,7 @@ namespace {
 
 	void fillVertexArray(Rectangle<GLfloat> rect);
 	void fillTextureArray(Rectangle<GLfloat> textureRect);
-	void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords = true);
+	void drawVertexArray(GLuint textureId, const GLfloat textureCoords[] = defaultTextureCoords);
 
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 	GLuint generate_fbo(Image& image);
@@ -145,7 +145,7 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 		subImageRect.height / imageSize.y
 	});
 
-	drawVertexArray(imageIdMap[image.name()].texture_id, false);
+	drawVertexArray(imageIdMap[image.name()].texture_id, textureCoordArray);
 }
 
 
@@ -173,7 +173,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 		subImageRect.height / imageSize.y
 	});
 
-	drawVertexArray(imageIdMap[image.name()].texture_id, false);
+	drawVertexArray(imageIdMap[image.name()].texture_id, textureCoordArray);
 
 	glPopMatrix();
 }
@@ -481,7 +481,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 		fillVertexArray({position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight())});
 		fillTextureArray(gm.uvRect);
 
-		drawVertexArray(fontMap[font.name()].texture_id, false);
+		drawVertexArray(fontMap[font.name()].texture_id, textureCoordArray);
 		offset += gm.advance + gm.minX;
 	}
 }
@@ -849,15 +849,11 @@ GLuint generate_fbo(Image& image)
 /**
  * Draws a textured rectangle using a vertex and texture coordinate array
  */
-void drawVertexArray(GLuint textureId, bool useDefaultTextureCoords)
+void drawVertexArray(GLuint textureId, const GLfloat textureCoords[])
 {
 	glBindTexture(GL_TEXTURE_2D, textureId);
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
-
-	// Choose from the default texture coordinates or from a custom set.
-	if (useDefaultTextureCoords) { glTexCoordPointer(2, GL_FLOAT, 0, defaultTextureCoords); }
-	else { glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray); }
-
+	glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
 

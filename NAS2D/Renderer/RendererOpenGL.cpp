@@ -123,7 +123,6 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 
 	const auto imageSize = image.size().to<float>() * scale;
 	vertexArray = fillVertexArray({position.x, position.y, imageSize.x, imageSize.y});
-	textureCoordArray = fillTextureArray({0.0, 0.0, 1.0, 1.0});
 	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
 }
 

@@ -135,14 +135,8 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 	setColor(color);
 
 	const auto vertexArray = rectToQuad({raster.x, raster.y, subImageRect.width, subImageRect.height});
-
 	const auto imageSize = image.size().to<float>();
-	const auto textureCoordArray = rectToQuad({
-		subImageRect.x / imageSize.x,
-		subImageRect.y / imageSize.y,
-		subImageRect.width / imageSize.x,
-		subImageRect.height / imageSize.y
-	});
+	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
 	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray, textureCoordArray);
 }
@@ -163,14 +157,8 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 	setColor(color);
 
 	const auto vertexArray = rectToQuad({-translate.x, -translate.y, translate.x * 2, translate.y * 2});
-
 	const auto imageSize = image.size().to<float>();
-	const auto textureCoordArray = rectToQuad({
-		subImageRect.x / imageSize.x,
-		subImageRect.y / imageSize.y,
-		subImageRect.width / imageSize.x,
-		subImageRect.height / imageSize.y
-	});
+	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
 	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray, textureCoordArray);
 

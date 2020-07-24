@@ -24,16 +24,16 @@ TEST(Trig, getAngle) {
 }
 
 TEST(Trig, getDirectionVector) {
-	EXPECT_EQ((NAS2D::Vector{1, 0}), NAS2D::getDirectionVector(NAS2D::degToRad(0.0f)));
-	EXPECT_EQ((NAS2D::Vector{0, 1}), NAS2D::getDirectionVector(NAS2D::degToRad(90.0f)));
-	EXPECT_EQ((NAS2D::Vector{-1, 0}), NAS2D::getDirectionVector(NAS2D::degToRad(180.0f)));
-	EXPECT_EQ((NAS2D::Vector{0, -1}), NAS2D::getDirectionVector(NAS2D::degToRad(270.0f)));
-	EXPECT_EQ((NAS2D::Vector{0, -1}), NAS2D::getDirectionVector(NAS2D::degToRad(-90.0f)));
+	EXPECT_EQ((NAS2D::Vector{1, 0}), NAS2D::getDirectionVector(NAS2D::degToRad(0.0f)).to<int>());
+	EXPECT_EQ((NAS2D::Vector{0, 1}), NAS2D::getDirectionVector(NAS2D::degToRad(90.0f)).to<int>());
+	EXPECT_EQ((NAS2D::Vector{-1, 0}), NAS2D::getDirectionVector(NAS2D::degToRad(180.0f)).to<int>());
+	EXPECT_EQ((NAS2D::Vector{0, -1}), NAS2D::getDirectionVector(NAS2D::degToRad(270.0f)).to<int>());
+	EXPECT_EQ((NAS2D::Vector{0, -1}), NAS2D::getDirectionVector(NAS2D::degToRad(-90.0f)).to<int>());
 }
 
 TEST(Trig, vectorToAngleToVector) {
-	EXPECT_EQ((NAS2D::Vector{1, 0}), NAS2D::getDirectionVector(getAngle(NAS2D::Vector<float>{1, 0})));
-	EXPECT_EQ((NAS2D::Vector{0, 1}), NAS2D::getDirectionVector(getAngle(NAS2D::Vector<float>{0, 1})));
-	EXPECT_EQ((NAS2D::Vector{-1, 0}), NAS2D::getDirectionVector(getAngle(NAS2D::Vector<float>{-1, 0})));
-	EXPECT_EQ((NAS2D::Vector{0, -1}), NAS2D::getDirectionVector(getAngle(NAS2D::Vector<float>{0, -1})));
+	EXPECT_EQ((NAS2D::Vector{1, 0}), NAS2D::getDirectionVector(getAngle(NAS2D::Vector<float>{1, 0})).to<int>());
+	EXPECT_EQ((NAS2D::Vector{0, 1}), NAS2D::getDirectionVector(getAngle(NAS2D::Vector<float>{0, 1})).to<int>());
+	EXPECT_EQ((NAS2D::Vector{-1, 0}), NAS2D::getDirectionVector(getAngle(NAS2D::Vector<float>{-1, 0})).to<int>());
+	EXPECT_EQ((NAS2D::Vector{0, -1}), NAS2D::getDirectionVector(getAngle(NAS2D::Vector<float>{0, -1})).to<int>());
 }

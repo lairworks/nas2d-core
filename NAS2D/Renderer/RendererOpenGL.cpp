@@ -351,8 +351,7 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	auto cosTheta = std::cos(theta);
 	auto sinTheta = std::sin(theta);
 
-	float x = radius;
-	float y = 0;
+	auto offset = Vector<float>{radius, 0};
 
 	GLfloat* verts = new GLfloat[static_cast<std::size_t>(num_segments) * std::size_t{2}]; // Two coords per vertex
 
@@ -360,13 +359,12 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	// so we need to be sure that we step two index places for each loop.
 	for (int i = 0; i < num_segments * 2; i += 2)
 	{
-		verts[i] = x * scale.x + position.x;
-		verts[i + 1] = y * scale.y + position.y;
+		const auto point = position + offset.skewBy(scale);
+		verts[i] = point.x;
+		verts[i + 1] = point.y;
 
 		// Apply the rotation matrix
-		float t = x;
-		x = cosTheta * x - sinTheta * y;
-		y = sinTheta * t + cosTheta * y;
+		offset = {cosTheta * offset.x - sinTheta * offset.y, sinTheta * offset.x + cosTheta * offset.y};
 	}
 
 	glVertexPointer(2, GL_FLOAT, 0, verts);

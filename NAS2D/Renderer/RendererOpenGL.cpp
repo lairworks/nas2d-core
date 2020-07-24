@@ -348,8 +348,8 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	setColor(color);
 
 	auto theta = PI_2 / static_cast<float>(num_segments);
-	auto c = std::cos(theta);
-	auto s = std::sin(theta);
+	auto cosTheta = std::cos(theta);
+	auto sinTheta = std::sin(theta);
 
 	float x = radius;
 	float y = 0;
@@ -365,8 +365,8 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 
 		// Apply the rotation matrix
 		float t = x;
-		x = c * x - s * y;
-		y = s * t + c * y;
+		x = cosTheta * x - sinTheta * y;
+		y = sinTheta * t + cosTheta * y;
 	}
 
 	glVertexPointer(2, GL_FLOAT, 0, verts);

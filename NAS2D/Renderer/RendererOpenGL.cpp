@@ -248,20 +248,18 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
  * texture and reference it that way (bit of overhead to do a texture lookup and would
  * get unmanagable very quickly.
  */
-void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
+void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& destination, const Rectangle<float>& source)
 {
-	float widthReach = source.width / (destination.width - destination.x);
-	float heightReach = source.height / (destination.height - destination.y);
-
 	glEnable(GL_SCISSOR_TEST);
-	const auto intSource = source.to<int>();
-	glScissor(intSource.x, size().y - intSource.y - intSource.height, intSource.width, intSource.height);
+	const auto clipRect = destination.to<int>();
+	glScissor(clipRect.x, size().y - (clipRect.y + clipRect.height), clipRect.width, clipRect.height);
 
-	for (std::size_t row = 0; row <= heightReach; ++row)
+	const auto tileCountSize = destination.size().skewInverseBy(source.size());
+	for (std::size_t row = 0; row <= tileCountSize.y; ++row)
 	{
-		for (std::size_t col = 0; col <= widthReach; ++col)
+		for (std::size_t col = 0; col <= tileCountSize.x; ++col)
 		{
-			drawSubImage(image, {source.x + (col * (destination.width - destination.x)), source.y + (row * (destination.height - destination.y))}, destination);
+			drawSubImage(image, {destination.x + (col * source.width), destination.y + (row * source.height)}, source);
 		}
 	}
 

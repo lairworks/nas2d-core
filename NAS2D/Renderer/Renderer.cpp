@@ -250,7 +250,7 @@ void Renderer::update()
 
 	if (mCurrentFade > 0.0f)
 	{
-		drawBoxFilled(Rectangle<int>::Create({0, 0}, size()), mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
+		drawBoxFilled(Rectangle<float>::Create({0, 0}, size().to<float>()), mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
 	}
 }
 

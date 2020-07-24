@@ -182,18 +182,19 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 	glPushMatrix();
 
 	// Find center point of the image.
-	const auto imageCenter = image.size().to<float>() / 2;
-	const auto scaledImageCenter = imageCenter * scale;
+	const auto halfSize = image.size().to<float>() / 2;
+	const auto scaledHalfSize = halfSize * scale;
+	const auto center = position + halfSize;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(position.x + imageCenter.x, position.y + imageCenter.y, 0.0f);
+	glTranslatef(center.x, center.y, 0.0f);
 
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
 	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	const auto vertexArray = rectToQuad({-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2});
+	const auto vertexArray = rectToQuad({-scaledHalfSize.x, -scaledHalfSize.y, scaledHalfSize.x * 2, scaledHalfSize.y * 2});
 
 	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
 	glPopMatrix();

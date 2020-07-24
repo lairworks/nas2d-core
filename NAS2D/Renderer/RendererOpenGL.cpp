@@ -48,13 +48,13 @@ SDL_Window* underlyingWindow = nullptr;
 
 namespace {
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-	const std::array<GLfloat, 12> defaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+	constexpr std::array<GLfloat, 12> DefaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
 
 	GLuint generate_fbo(Image& image);
 
 	std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect);
-	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = defaultTextureCoords);
+	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = DefaultTextureCoords);
 
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 

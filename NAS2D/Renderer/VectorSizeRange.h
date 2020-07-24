@@ -37,11 +37,11 @@ public:
 			return *this;
 		}
 
-		bool operator==(const Iterator& other) {
+		bool operator==(const Iterator& other) const {
 			return mCurrent == other.mCurrent;
 		}
 
-		bool operator!=(const Iterator& other) {
+		bool operator!=(const Iterator& other) const {
 			return !(*this == other);
 		}
 

@@ -255,7 +255,7 @@ void Renderer::update()
 }
 
 
-void Renderer::setResolution(const Vector<float>& newResolution)
+void Renderer::setResolution(const Vector<int>& newResolution)
 {
 	if (!fullscreen())
 	{

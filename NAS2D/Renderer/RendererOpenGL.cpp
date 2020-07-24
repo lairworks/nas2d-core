@@ -733,7 +733,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 		throw renderer_window_creation_failure();
 	}
 
-	mResolution = resolution.to<float>();
+	mResolution = resolution;
 
 	sdlOglContext = SDL_GL_CreateContext(underlyingWindow);
 	if (!sdlOglContext)

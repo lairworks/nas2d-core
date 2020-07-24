@@ -212,7 +212,7 @@ void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Col
 
 void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 {
-	glColor4ub(255, 255, 255, 255);
+	setColor(Color::White);
 
 	glBindTexture(GL_TEXTURE_2D, imageIdMap[image.name()].texture_id);
 
@@ -287,7 +287,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 		std::min(sourceSize.y, availableSize.y)
 	}.to<float>();
 
-	glColor4ub(255, 255, 255, 255);
+	setColor(Color::White);
 
 	const auto& destinationImageInfo = imageIdMap[destination.name()];
 	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.texture_id);
@@ -444,7 +444,7 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
+	setColor(Color::White); // Reset color back to normal.
 }
 
 

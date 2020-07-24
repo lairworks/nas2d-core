@@ -96,10 +96,10 @@ void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
 
 void Renderer::drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
 {
-	const auto p1 = rect.startPoint() + topLeft.size();
-	const auto p2 = rect.crossXPoint() + topRight.size().reflectX();
-	const auto p3 = rect.crossYPoint() + bottomLeft.size().reflectY();
-	const auto p4 = rect.endPoint() - bottomRight.size();
+	const auto p1 = rect.startPoint() + topLeft.size().to<float>();
+	const auto p2 = rect.crossXPoint() + topRight.size().reflectX().to<float>();
+	const auto p3 = rect.crossYPoint() + bottomLeft.size().reflectY().to<float>();
+	const auto p4 = rect.endPoint() - bottomRight.size().to<float>();
 
 	// Draw the center area
 	drawImageRepeated(center, Rectangle<float>::Create(p1, p4));

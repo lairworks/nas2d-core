@@ -45,34 +45,34 @@ struct Rectangle
 		};
 	}
 
-	bool operator==(const Rectangle& rect) const {
+	constexpr bool operator==(const Rectangle& rect) const {
 		return (x == rect.x) && (y == rect.y) && (width == rect.width) && (height == rect.height);
 	}
-	bool operator!=(const Rectangle& rect) const {
+	constexpr bool operator!=(const Rectangle& rect) const {
 		return !(*this == rect);
 	}
 
-	Vector<BaseType> size() const {
+	constexpr Vector<BaseType> size() const {
 		return {width, height};
 	}
 
-	Point<BaseType> startPoint() const {
+	constexpr Point<BaseType> startPoint() const {
 		return {x, y};
 	}
 
-	Point<BaseType> endPoint() const {
+	constexpr Point<BaseType> endPoint() const {
 		return Point{x, y} + Vector{width, height};
 	}
 
-	Point<BaseType> crossXPoint() const {
+	constexpr Point<BaseType> crossXPoint() const {
 		return {x + width, y};
 	}
 
-	Point<BaseType> crossYPoint() const {
+	constexpr Point<BaseType> crossYPoint() const {
 		return {x, y + height};
 	}
 
-	bool null() const {
+	constexpr bool null() const {
 		return (width == 0) || (height == 0);
 	}
 
@@ -86,16 +86,16 @@ struct Rectangle
 		y = newStartPoint.y;
 	}
 
-	Rectangle skewBy(const Vector<BaseType>& scaleFactor) const {
+	constexpr Rectangle skewBy(const Vector<BaseType>& scaleFactor) const {
 		return Create(startPoint().skewBy(scaleFactor), size().skewBy(scaleFactor));
 	}
 
-	Rectangle skewInverseBy(const Vector<BaseType>& scaleFactor) const {
+	constexpr Rectangle skewInverseBy(const Vector<BaseType>& scaleFactor) const {
 		return Create(startPoint().skewInverseBy(scaleFactor), size().skewInverseBy(scaleFactor));
 	}
 
 	template <typename NewBaseType>
-	operator Rectangle<NewBaseType>() const {
+	constexpr operator Rectangle<NewBaseType>() const {
 		return {
 			static_cast<NewBaseType>(x),
 			static_cast<NewBaseType>(y),
@@ -105,13 +105,13 @@ struct Rectangle
 	}
 
 	template <typename NewBaseType>
-	Rectangle<NewBaseType> to() const {
+	constexpr Rectangle<NewBaseType> to() const {
 		return static_cast<Rectangle<NewBaseType>>(*this);
 	}
 
 	// Start point inclusive (x, y), endpoint exclusive (x + , y + height)
 	// Area in interval notation: [x .. x + ), [y .. y + height)
-	bool contains(const Point<BaseType>& point) const {
+	constexpr bool contains(const Point<BaseType>& point) const {
 		auto px = point.x;
 		auto py = point.y;
 		return ((x <= px) && (px < x + width)) && ((y <= py) && (py < y + height));
@@ -119,18 +119,18 @@ struct Rectangle
 
 	// Start point inclusive (x, y), endpoint exclusive (x + , y + height)
 	// Area in interval notation: [x .. x + ), [y .. y + height)
-	bool overlaps(const Rectangle& rect) const {
+	constexpr bool overlaps(const Rectangle& rect) const {
 		return ((x < rect.x + rect.width) && (rect.x < x + width)) && ((y < rect.y + rect.height) && (rect.y < y + height));
 	}
 
-	BaseType center_x() const {
+	constexpr BaseType center_x() const {
 		return x + (width / 2);
 	}
-	BaseType center_y() const {
+	constexpr BaseType center_y() const {
 		return y + (height / 2);
 	}
 
-	Point<BaseType> center() const {
+	constexpr Point<BaseType> center() const {
 		return {x + (width / 2), y + (height / 2)};
 	}
 };

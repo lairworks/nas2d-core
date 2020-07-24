@@ -86,6 +86,14 @@ struct Rectangle
 		y = newStartPoint.y;
 	}
 
+	Rectangle skewBy(const Vector<BaseType>& scaleFactor) const {
+		return Create(startPoint().skewBy(scaleFactor), size().skewBy(scaleFactor));
+	}
+
+	Rectangle skewInverseBy(const Vector<BaseType>& scaleFactor) const {
+		return Create(startPoint().skewInverseBy(scaleFactor), size().skewInverseBy(scaleFactor));
+	}
+
 	template <typename NewBaseType>
 	operator Rectangle<NewBaseType>() const {
 		return {

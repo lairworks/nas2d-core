@@ -429,10 +429,13 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
+	const auto adjustedCrossYPoint = rect.crossYPoint() + Vector{0.0f, 0.5f};
+	const auto adjustedEndPoint = rect.endPoint() + Vector{0.0f, 0.5f};
+
 	line(rect.startPoint(), rect.crossXPoint(), 1.0f, color);
-	line(rect.startPoint(), rect.crossYPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
-	line(rect.crossYPoint() + Vector{0.0f, 0.5f}, rect.endPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
-	line(rect.crossXPoint(), rect.endPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
+	line(rect.startPoint(), adjustedCrossYPoint, 1.0f, color);
+	line(adjustedCrossYPoint, adjustedEndPoint, 1.0f, color);
+	line(rect.crossXPoint(), adjustedEndPoint, 1.0f, color);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);

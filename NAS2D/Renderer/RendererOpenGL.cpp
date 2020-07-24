@@ -250,8 +250,8 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
  */
 void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
 {
-	float widthReach = source.width / (destination.width - destination.x);
-	float heightReach = source.height / (destination.height - destination.y);
+	float widthReach = source.width / destination.width;
+	float heightReach = source.height / destination.height;
 
 	glEnable(GL_SCISSOR_TEST);
 	const auto intSource = source.to<int>();
@@ -261,7 +261,7 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& 
 	{
 		for (std::size_t col = 0; col <= widthReach; ++col)
 		{
-			drawSubImage(image, {source.x + (col * (destination.width - destination.x)), source.y + (row * (destination.height - destination.y))}, destination);
+			drawSubImage(image, {source.x + (col * destination.width), source.y + (row * destination.height)}, destination);
 		}
 	}
 

@@ -212,7 +212,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 
 	const auto vertexArray = rectToQuad(rect);
 	const auto imageSize = image.size().to<float>();
-	const auto textureCoordArray = rectToQuad({0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y});
+	const auto textureCoordArray = rectToQuad(Rectangle<float>::Create({0.0f, 0.0f}, rect.size().skewInverseBy(imageSize)));
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray.data());
 

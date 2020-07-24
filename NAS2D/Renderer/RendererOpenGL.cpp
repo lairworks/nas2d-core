@@ -51,13 +51,10 @@ namespace {
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 	const std::array<GLfloat, 12> defaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
-	std::array<GLfloat, 12> vertexArray = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
-	std::array<GLfloat, 12> textureCoordArray = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
-
 
 	std::array<GLfloat, 12> fillVertexArray(Rectangle<GLfloat> rect);
 	std::array<GLfloat, 12> fillTextureArray(Rectangle<GLfloat> textureRect);
-	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies = vertexArray, const std::array<GLfloat, 12>& textureCoords = defaultTextureCoords);
+	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = defaultTextureCoords);
 
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 	GLuint generate_fbo(Image& image);
@@ -122,7 +119,7 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
 	const auto imageSize = image.size().to<float>() * scale;
-	vertexArray = fillVertexArray({position.x, position.y, imageSize.x, imageSize.y});
+	const auto vertexArray = fillVertexArray({position.x, position.y, imageSize.x, imageSize.y});
 	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
 }
 
@@ -131,10 +128,10 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 {
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	vertexArray = fillVertexArray({raster.x, raster.y, subImageRect.width, subImageRect.height});
+	const auto vertexArray = fillVertexArray({raster.x, raster.y, subImageRect.width, subImageRect.height});
 
 	const auto imageSize = image.size().to<float>();
-	textureCoordArray = fillTextureArray({
+	const auto textureCoordArray = fillTextureArray({
 		subImageRect.x / imageSize.x,
 		subImageRect.y / imageSize.y,
 		subImageRect.width / imageSize.x,
@@ -159,10 +156,10 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 
-	vertexArray = fillVertexArray({-tX, -tY, tX * 2, tY * 2});
+	const auto vertexArray = fillVertexArray({-tX, -tY, tX * 2, tY * 2});
 
 	const auto imageSize = image.size().to<float>();
-	textureCoordArray = fillTextureArray({
+	const auto textureCoordArray = fillTextureArray({
 		subImageRect.x / imageSize.x,
 		subImageRect.y / imageSize.y,
 		subImageRect.width / imageSize.x,
@@ -191,7 +188,7 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	vertexArray = fillVertexArray({-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2});
+	const auto vertexArray = fillVertexArray({-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2});
 
 	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
 	glPopMatrix();
@@ -203,7 +200,7 @@ void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Col
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	vertexArray = fillVertexArray(rect);
+	const auto vertexArray = fillVertexArray(rect);
 	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
 }
 
@@ -218,9 +215,9 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	vertexArray = fillVertexArray(rect);
+	const auto vertexArray = fillVertexArray(rect);
 	const auto imageSize = image.size().to<float>();
-	textureCoordArray = fillTextureArray({0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y});
+	const auto textureCoordArray = fillTextureArray({0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y});
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray.data());
 
@@ -301,7 +298,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
-	vertexArray = fillVertexArray({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y)});
+	const auto vertexArray = fillVertexArray({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y)});
 
 	drawTexturedQuad(imageIdMap[source.name()].texture_id, vertexArray);
 	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
@@ -422,7 +419,7 @@ void RendererOpenGL::drawGradient(Rectangle<float> rect, Color c1, Color c2, Col
 	colorVertexArray[23] = c1.alpha / 255.0f;
 
 
-	vertexArray = fillVertexArray(rect);
+	const auto vertexArray = fillVertexArray(rect);
 	glColorPointer(4, GL_FLOAT, 0, colorVertexArray);
 	drawTexturedQuad(0, vertexArray);
 
@@ -453,7 +450,7 @@ void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 	glColor4ub(color.red, color.green, color.blue, color.alpha);
 	glDisable(GL_TEXTURE_2D);
 
-	vertexArray = fillVertexArray(rect);
+	const auto vertexArray = fillVertexArray(rect);
 	drawTexturedQuad(0, vertexArray);
 
 	glEnable(GL_TEXTURE_2D);
@@ -475,8 +472,8 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
-		vertexArray = fillVertexArray({position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight())});
-		textureCoordArray = fillTextureArray(gm.uvRect);
+		const auto vertexArray = fillVertexArray({position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight())});
+		const auto textureCoordArray = fillTextureArray(gm.uvRect);
 
 		drawTexturedQuad(fontMap[font.name()].texture_id, vertexArray, textureCoordArray);
 		offset += gm.advance + gm.minX;

@@ -68,7 +68,7 @@ namespace {
 
 
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-	constexpr std::array<GLfloat, 12> DefaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+	constexpr std::array<GLfloat, 12> DefaultTextureCoords = rectToQuad({0, 0, 1, 1});
 
 
 	GLuint generate_fbo(Image& image);

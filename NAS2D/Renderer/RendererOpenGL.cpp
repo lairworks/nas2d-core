@@ -443,8 +443,6 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
-
-	setColor(Color::White); // Reset color back to normal.
 }
 
 

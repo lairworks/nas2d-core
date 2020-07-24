@@ -285,21 +285,22 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 
 	glColor4ub(255, 255, 255, 255);
 
-	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
+	const auto& destinationImageInfo = imageIdMap[destination.name()];
+	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.texture_id);
 
-	GLuint fbo = imageIdMap[destination.name()].fbo_id;
+	GLuint fbo = destinationImageInfo.fbo_id;
 	if (fbo == 0)
 	{
 		fbo = generate_fbo(destination);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destinationImageInfo.texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
 	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y)});
 
 	drawTexturedQuad(imageIdMap[source.name()].texture_id, vertexArray);
-	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.texture_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

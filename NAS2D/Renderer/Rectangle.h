@@ -123,13 +123,6 @@ struct Rectangle
 		return ((x < rect.x + rect.width) && (rect.x < x + width)) && ((y < rect.y + rect.height) && (rect.y < y + height));
 	}
 
-	constexpr BaseType center_x() const {
-		return x + (width / 2);
-	}
-	constexpr BaseType center_y() const {
-		return y + (height / 2);
-	}
-
 	constexpr Point<BaseType> center() const {
 		return {x + (width / 2), y + (height / 2)};
 	}

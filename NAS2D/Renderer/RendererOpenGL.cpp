@@ -537,7 +537,7 @@ void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 	}
 
 	const auto intRect = rect.to<int>();
-	glScissor(intRect.x, static_cast<int>(size().y) - intRect.y - intRect.height, intRect.width, intRect.height);
+	glScissor(intRect.x, size().y - intRect.y - intRect.height, intRect.width, intRect.height);
 
 	glEnable(GL_SCISSOR_TEST);
 }
@@ -594,7 +594,7 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 	else
 	{
 		SDL_SetWindowFullscreen(underlyingWindow, 0);
-		SDL_SetWindowSize(underlyingWindow, static_cast<int>(size().x), static_cast<int>(size().y));
+		SDL_SetWindowSize(underlyingWindow, size().x, size().y);
 		SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }
@@ -674,7 +674,7 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	onResize(static_cast<int>(size().x), static_cast<int>(size().y));
+	onResize(size().x, size().y);
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);

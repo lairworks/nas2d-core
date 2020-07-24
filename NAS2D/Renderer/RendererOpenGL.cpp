@@ -30,6 +30,7 @@
 #include <algorithm>
 #include <cmath>
 #include <array>
+#include <vector>
 
 
 using namespace NAS2D;
@@ -353,7 +354,8 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 
 	auto offset = Vector<float>{radius, 0};
 
-	GLfloat* verts = new GLfloat[static_cast<std::size_t>(num_segments) * std::size_t{2}]; // Two coords per vertex
+	std::vector<GLfloat> verts;
+	verts.resize(static_cast<std::size_t>(num_segments) * std::size_t{2}); // Two coords per vertex
 
 	// During each iteration of the for loop, two indecies are accessed
 	// so we need to be sure that we step two index places for each loop.
@@ -367,16 +369,8 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 		offset = {cosTheta * offset.x - sinTheta * offset.y, sinTheta * offset.x + cosTheta * offset.y};
 	}
 
-	glVertexPointer(2, GL_FLOAT, 0, verts);
+	glVertexPointer(2, GL_FLOAT, 0, verts.data());
 	glDrawArrays(GL_LINE_LOOP, 0, num_segments);
-
-	/**
-	 * \todo	I really hate the alloc's/dealloc's that are done in this function.
-	 * 			We should consider a basic array lookup table approach which will
-	 * 			eliminate the alloc/dealloc overhead (at the cost of increased code
-	 * 			size).
-	 */
-	delete[] verts;
 
 	glEnable(GL_TEXTURE_2D);
 }

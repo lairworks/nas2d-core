@@ -49,9 +49,6 @@ namespace {
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 	const GLfloat defaultTextureCoords[12] = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
-	/** Color value array for four verts. Defaults to white or normal color. */
-	GLfloat colorVertexArray[24] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-
 	GLfloat vertexArray[12] = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
 	GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
@@ -389,6 +386,8 @@ void RendererOpenGL::drawGradient(Rectangle<float> rect, Color c1, Color c2, Col
 {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
+
+	GLfloat colorVertexArray[24];
 
 	colorVertexArray[0] = c1.red / 255.0f;
 	colorVertexArray[1] = c1.green / 255.0f;

@@ -13,6 +13,8 @@
 #include <SDL2/SDL_image.h>
 
 
+namespace NAS2D {
+
 /**
  * Struct containing basic information related to Images. Not part of the public
  * interface.
@@ -26,3 +28,5 @@ struct ImageInfo
 	int h{0};
 	int ref_count{0};
 };
+
+} // namespace

@@ -60,7 +60,7 @@ public:
 	virtual void drawImageRotated(Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) = 0;
 	virtual void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal) = 0;
 	virtual void drawImageRepeated(Image& image, Rectangle<float> rect) = 0;
-	virtual void drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination) = 0;
+	virtual void drawSubImageRepeated(Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) = 0;
 
 	void drawImageRect(Rectangle<float> rect, ImageList& images);
 	void drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);

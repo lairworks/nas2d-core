@@ -248,20 +248,20 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
  * texture and reference it that way (bit of overhead to do a texture lookup and would
  * get unmanagable very quickly.
  */
-void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination)
+void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& destination, const Rectangle<float>& source)
 {
-	float widthReach = source.width / destination.width;
-	float heightReach = source.height / destination.height;
+	float widthReach = destination.width / source.width;
+	float heightReach = destination.height / source.height;
 
 	glEnable(GL_SCISSOR_TEST);
-	const auto intSource = source.to<int>();
+	const auto intSource = destination.to<int>();
 	glScissor(intSource.x, size().y - intSource.y - intSource.height, intSource.width, intSource.height);
 
 	for (std::size_t row = 0; row <= heightReach; ++row)
 	{
 		for (std::size_t col = 0; col <= widthReach; ++col)
 		{
-			drawSubImage(image, {source.x + (col * destination.width), source.y + (row * destination.height)}, destination);
+			drawSubImage(image, {destination.x + (col * source.width), destination.y + (row * source.height)}, source);
 		}
 	}
 

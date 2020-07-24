@@ -55,7 +55,7 @@ public:
 	void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal) override;
 
 	void drawImageRepeated(Image& image, Rectangle<float> rect) override;
-	void drawSubImageRepeated(Image& image, const Rectangle<float>& source, const Rectangle<float>& destination) override;
+	void drawSubImageRepeated(Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) override;
 
 	void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) override;
 

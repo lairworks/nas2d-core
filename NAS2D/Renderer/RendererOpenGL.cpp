@@ -59,6 +59,11 @@ namespace {
 
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 
+	void setColor(Color color)
+	{
+		glColor4ub(color.red, color.green, color.blue, color.alpha);
+	}
+
 	std::string glString(GLenum name)
 	{
 		const auto apiResult = glGetString(name);
@@ -116,7 +121,7 @@ RendererOpenGL::~RendererOpenGL()
 
 void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale, Color color)
 {
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	const auto imageSize = image.size().to<float>() * scale;
 	const auto vertexArray = rectToQuad({position.x, position.y, imageSize.x, imageSize.y});
@@ -126,7 +131,7 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 
 void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
 {
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	const auto vertexArray = rectToQuad({raster.x, raster.y, subImageRect.width, subImageRect.height});
 
@@ -154,7 +159,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 	glTranslatef(raster.x + tX, raster.y + tY, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	const auto vertexArray = rectToQuad({-tX, -tY, tX * 2, tY * 2});
 
@@ -185,7 +190,7 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	const auto vertexArray = rectToQuad({-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2});
@@ -197,7 +202,7 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 
 void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
 {
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	const auto vertexArray = rectToQuad(rect);
@@ -308,7 +313,7 @@ void RendererOpenGL::drawPoint(Point<float> position, Color color)
 {
 	glDisable(GL_TEXTURE_2D);
 
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	GLfloat pointVertexArray[2] = {position.x + 0.5f, position.y + 0.5f};
 
@@ -339,7 +344,7 @@ void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPositi
 void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
 {
 	glDisable(GL_TEXTURE_2D);
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	float theta = PI_2 / static_cast<float>(num_segments);
 	float c = cosf(theta);
@@ -445,7 +450,7 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 
 void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 {
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 	glDisable(GL_TEXTURE_2D);
 
 	const auto vertexArray = rectToQuad(rect);
@@ -459,7 +464,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 {
 	if (!font.loaded() || text.empty()) { return; }
 
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	GlyphMetricsList& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }

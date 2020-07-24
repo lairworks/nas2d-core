@@ -26,7 +26,7 @@ struct Rectangle
 	BaseType height = 0;
 
 	// Factory method
-	static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size) {
+	constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size) {
 		return {
 			startPoint.x,
 			startPoint.y,
@@ -36,7 +36,7 @@ struct Rectangle
 	}
 
 	// Factory method
-	static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint) {
+	constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint) {
 		return {
 			startPoint.x,
 			startPoint.y,

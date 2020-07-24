@@ -29,6 +29,8 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <array>
+
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -47,15 +49,15 @@ namespace {
 	SDL_GLContext oglContext; /**< Primary OpenGL render context. */
 
 	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
-	const GLfloat defaultTextureCoords[12] = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
+	const std::array<GLfloat, 12> defaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
-	GLfloat vertexArray[12] = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
-	GLfloat textureCoordArray[12] = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
+	std::array<GLfloat, 12> vertexArray = {}; /**< Vertex array for quad drawing functions (all blitter functions). */
+	std::array<GLfloat, 12> textureCoordArray = {}; /**< Texture coordinate array for quad drawing functions (all blitter functions). */
 
 
 	void fillVertexArray(Rectangle<GLfloat> rect);
 	void fillTextureArray(Rectangle<GLfloat> textureRect);
-	void drawTexturedQuad(GLuint textureId, const GLfloat textureCoords[] = defaultTextureCoords);
+	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& textureCoords = defaultTextureCoords);
 
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 	GLuint generate_fbo(Image& image);
@@ -221,9 +223,9 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 	const auto imageSize = image.size().to<float>();
 	fillTextureArray({0.0f, 0.0f, rect.width / imageSize.x, rect.height / imageSize.y});
 
-	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
+	glVertexPointer(2, GL_FLOAT, 0, vertexArray.data());
 
-	glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray);
+	glTexCoordPointer(2, GL_FLOAT, 0, textureCoordArray.data());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -845,11 +847,11 @@ GLuint generate_fbo(Image& image)
 /**
  * Draws a textured rectangle using a vertex and texture coordinate array
  */
-void drawTexturedQuad(GLuint textureId, const GLfloat textureCoords[])
+void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& textureCoords)
 {
 	glBindTexture(GL_TEXTURE_2D, textureId);
-	glVertexPointer(2, GL_FLOAT, 0, vertexArray);
-	glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
+	glVertexPointer(2, GL_FLOAT, 0, vertexArray.data());
+	glTexCoordPointer(2, GL_FLOAT, 0, textureCoords.data());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
 

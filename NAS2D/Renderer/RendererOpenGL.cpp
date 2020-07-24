@@ -246,8 +246,8 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& 
 	float heightReach = source.height / (destination.height - destination.y);
 
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(static_cast<int>(source.x), static_cast<int>(size().y - source.y - source.height), static_cast<int>(source.width), static_cast<int>(source.height));
-
+	const auto intSource = source.to<int>();
+	glScissor(intSource.x, size().y - intSource.y - intSource.height, intSource.width, intSource.height);
 
 	for (std::size_t row = 0; row <= heightReach; ++row)
 	{

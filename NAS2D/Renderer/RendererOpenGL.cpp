@@ -30,6 +30,7 @@
 #include <algorithm>
 #include <cmath>
 #include <array>
+#include <vector>
 
 
 using namespace NAS2D;
@@ -52,11 +53,17 @@ namespace {
 	const std::array<GLfloat, 12> defaultTextureCoords = {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f};
 
 
+	GLuint generate_fbo(Image& image);
+
 	std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect);
 	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = defaultTextureCoords);
 
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
-	GLuint generate_fbo(Image& image);
+
+	void setColor(Color color)
+	{
+		glColor4ub(color.red, color.green, color.blue, color.alpha);
+	}
 
 	std::string glString(GLenum name)
 	{
@@ -115,7 +122,7 @@ RendererOpenGL::~RendererOpenGL()
 
 void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale, Color color)
 {
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	const auto imageSize = image.size().to<float>() * scale;
 	const auto vertexArray = rectToQuad({position.x, position.y, imageSize.x, imageSize.y});
@@ -125,7 +132,7 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 
 void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
 {
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	const auto vertexArray = rectToQuad({raster.x, raster.y, subImageRect.width, subImageRect.height});
 
@@ -146,16 +153,16 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 	glPushMatrix();
 
 	// Find center point of the image.
-	float tX = subImageRect.width / 2.0f;
-	float tY = subImageRect.height / 2.0f;
+	const auto translate = subImageRect.size().to<float>() / 2;
+	const auto center = raster + translate;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(raster.x + tX, raster.y + tY, 0.0f);
+	glTranslatef(center.x, center.y, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
-	const auto vertexArray = rectToQuad({-tX, -tY, tX * 2, tY * 2});
+	const auto vertexArray = rectToQuad({-translate.x, -translate.y, translate.x * 2, translate.y * 2});
 
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad({
@@ -176,18 +183,19 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 	glPushMatrix();
 
 	// Find center point of the image.
-	const auto imageCenter = image.size().to<float>() / 2;
-	const auto scaledImageCenter = imageCenter * scale;
+	const auto halfSize = image.size().to<float>() / 2;
+	const auto scaledHalfSize = halfSize * scale;
+	const auto center = position + halfSize;
 
 	// Adjust the translation so that images appear where expected.
-	glTranslatef(position.x + imageCenter.x, position.y + imageCenter.y, 0.0f);
+	glTranslatef(center.x, center.y, 0.0f);
 
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	const auto vertexArray = rectToQuad({-scaledImageCenter.x, -scaledImageCenter.y, scaledImageCenter.x * 2, scaledImageCenter.y * 2});
+	const auto vertexArray = rectToQuad({-scaledHalfSize.x, -scaledHalfSize.y, scaledHalfSize.x * 2, scaledHalfSize.y * 2});
 
 	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
 	glPopMatrix();
@@ -196,7 +204,7 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 
 void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
 {
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	const auto vertexArray = rectToQuad(rect);
@@ -206,7 +214,7 @@ void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Col
 
 void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 {
-	glColor4ub(255, 255, 255, 255);
+	setColor(Color::White);
 
 	glBindTexture(GL_TEXTURE_2D, imageIdMap[image.name()].texture_id);
 
@@ -246,8 +254,8 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& 
 	float heightReach = source.height / (destination.height - destination.y);
 
 	glEnable(GL_SCISSOR_TEST);
-	glScissor(static_cast<int>(source.x), static_cast<int>(size().y - source.y - source.height), static_cast<int>(source.width), static_cast<int>(source.height));
-
+	const auto intSource = source.to<int>();
+	glScissor(intSource.x, size().y - intSource.y - intSource.height, intSource.width, intSource.height);
 
 	for (std::size_t row = 0; row <= heightReach; ++row)
 	{
@@ -266,10 +274,8 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();
 
-	const auto origin = Point<int>{0, 0};
-
 	const auto sourceBoundsInDestination = Rectangle<int>::Create(dstPointInt, sourceSize);
-	const auto destinationBounds = Rectangle<int>::Create(origin, destination.size());
+	const auto destinationBounds = Rectangle<int>::Create(Point{0, 0}, destination.size());
 
 	// Ignore the call if the detination point is outside the bounds of destination image.
 	if (!sourceBoundsInDestination.overlaps(destinationBounds))
@@ -279,28 +285,28 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 
 	const auto availableSize = destinationBounds.endPoint() - dstPointInt;
 	const auto clipSize = Vector{
-		availableSize.x < sourceSize.x ? availableSize.x : sourceSize.x,
-		availableSize.y < sourceSize.y ? availableSize.y : sourceSize.y
-	};
+		std::min(sourceSize.x, availableSize.x),
+		std::min(sourceSize.y, availableSize.y)
+	}.to<float>();
 
-	glColor4ub(255, 255, 255, 255);
+	setColor(Color::White);
 
-	//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
+	const auto& destinationImageInfo = imageIdMap[destination.name()];
+	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.texture_id);
 
-	GLuint fbo = imageIdMap[destination.name()].fbo_id;
+	GLuint fbo = destinationImageInfo.fbo_id;
 	if (fbo == 0)
 	{
 		fbo = generate_fbo(destination);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destinationImageInfo.texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
-	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y)});
+	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, clipSize.x, -clipSize.y});
 
 	drawTexturedQuad(imageIdMap[source.name()].texture_id, vertexArray);
-	glBindTexture(GL_TEXTURE_2D, imageIdMap[destination.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.texture_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -309,7 +315,7 @@ void RendererOpenGL::drawPoint(Point<float> position, Color color)
 {
 	glDisable(GL_TEXTURE_2D);
 
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
 	GLfloat pointVertexArray[2] = {position.x + 0.5f, position.y + 0.5f};
 
@@ -340,40 +346,31 @@ void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPositi
 void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
 {
 	glDisable(GL_TEXTURE_2D);
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 
-	float theta = PI_2 / static_cast<float>(num_segments);
-	float c = cosf(theta);
-	float s = sinf(theta);
+	auto theta = PI_2 / static_cast<float>(num_segments);
+	auto cosTheta = std::cos(theta);
+	auto sinTheta = std::sin(theta);
 
-	float x = radius;
-	float y = 0;
+	auto offset = Vector<float>{radius, 0};
 
-	GLfloat* verts = new GLfloat[static_cast<std::size_t>(num_segments) * std::size_t{2}]; // Two coords per vertex
+	std::vector<GLfloat> verts;
+	verts.resize(static_cast<std::size_t>(num_segments) * std::size_t{2}); // Two coords per vertex
 
 	// During each iteration of the for loop, two indecies are accessed
 	// so we need to be sure that we step two index places for each loop.
 	for (int i = 0; i < num_segments * 2; i += 2)
 	{
-		verts[i] = x * scale.x + position.x;
-		verts[i + 1] = y * scale.y + position.y;
+		const auto point = position + offset.skewBy(scale);
+		verts[i] = point.x;
+		verts[i + 1] = point.y;
 
 		// Apply the rotation matrix
-		float t = x;
-		x = c * x - s * y;
-		y = s * t + c * y;
+		offset = {cosTheta * offset.x - sinTheta * offset.y, sinTheta * offset.x + cosTheta * offset.y};
 	}
 
-	glVertexPointer(2, GL_FLOAT, 0, verts);
+	glVertexPointer(2, GL_FLOAT, 0, verts.data());
 	glDrawArrays(GL_LINE_LOOP, 0, num_segments);
-
-	/**
-	 * \todo	I really hate the alloc's/dealloc's that are done in this function.
-	 * 			We should consider a basic array lookup table approach which will
-	 * 			eliminate the alloc/dealloc overhead (at the cost of increased code
-	 * 			size).
-	 */
-	delete[] verts;
 
 	glEnable(GL_TEXTURE_2D);
 }
@@ -432,21 +429,22 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
+	const auto adjustedCrossYPoint = rect.crossYPoint() + Vector{0.0f, 0.5f};
+	const auto adjustedEndPoint = rect.endPoint() + Vector{0.0f, 0.5f};
+
 	line(rect.startPoint(), rect.crossXPoint(), 1.0f, color);
-	line(rect.startPoint(), rect.crossYPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
-	line(rect.crossYPoint() + Vector{0.0f, 0.5f}, rect.endPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
-	line(rect.crossXPoint(), rect.endPoint() + Vector{0.0f, 0.5f}, 1.0f, color);
+	line(rect.startPoint(), adjustedCrossYPoint, 1.0f, color);
+	line(adjustedCrossYPoint, adjustedEndPoint, 1.0f, color);
+	line(rect.crossXPoint(), adjustedEndPoint, 1.0f, color);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
-
-	glColor4ub(255, 255, 255, 255); // Reset color back to normal.
 }
 
 
 void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 {
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
+	setColor(color);
 	glDisable(GL_TEXTURE_2D);
 
 	const auto vertexArray = rectToQuad(rect);
@@ -460,13 +458,12 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 {
 	if (!font.loaded() || text.empty()) { return; }
 
-	glColor4ub(color.red, color.green, color.blue, color.alpha);
-
-	int offset = 0;
+	setColor(color);
 
 	GlyphMetricsList& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }
 
+	int offset = 0;
 	for (auto character : text)
 	{
 		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
@@ -538,7 +535,7 @@ void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 	}
 
 	const auto intRect = rect.to<int>();
-	glScissor(intRect.x, static_cast<int>(size().y) - intRect.y - intRect.height, intRect.width, intRect.height);
+	glScissor(intRect.x, size().y - intRect.y - intRect.height, intRect.width, intRect.height);
 
 	glEnable(GL_SCISSOR_TEST);
 }
@@ -595,7 +592,7 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 	else
 	{
 		SDL_SetWindowFullscreen(underlyingWindow, 0);
-		SDL_SetWindowSize(underlyingWindow, static_cast<int>(size().x), static_cast<int>(size().y));
+		SDL_SetWindowSize(underlyingWindow, size().x, size().y);
 		SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }
@@ -675,7 +672,7 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	onResize(static_cast<int>(size().x), static_cast<int>(size().y));
+	onResize(size().x, size().y);
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);

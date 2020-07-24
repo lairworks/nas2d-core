@@ -279,8 +279,8 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 
 	const auto availableSize = destinationBounds.endPoint() - dstPointInt;
 	const auto clipSize = Vector{
-		availableSize.x < sourceSize.x ? availableSize.x : sourceSize.x,
-		availableSize.y < sourceSize.y ? availableSize.y : sourceSize.y
+		std::min(sourceSize.x, availableSize.x),
+		std::min(sourceSize.y, availableSize.y)
 	};
 
 	glColor4ub(255, 255, 255, 255);

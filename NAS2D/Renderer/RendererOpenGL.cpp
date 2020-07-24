@@ -250,16 +250,14 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
  */
 void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& destination, const Rectangle<float>& source)
 {
-	float widthReach = destination.width / source.width;
-	float heightReach = destination.height / source.height;
-
 	glEnable(GL_SCISSOR_TEST);
 	const auto clipRect = destination.to<int>();
 	glScissor(clipRect.x, size().y - (clipRect.y + clipRect.height), clipRect.width, clipRect.height);
 
-	for (std::size_t row = 0; row <= heightReach; ++row)
+	const auto tileCountSize = destination.size().skewInverseBy(source.size());
+	for (std::size_t row = 0; row <= tileCountSize.y; ++row)
 	{
-		for (std::size_t col = 0; col <= widthReach; ++col)
+		for (std::size_t col = 0; col <= tileCountSize.x; ++col)
 		{
 			drawSubImage(image, {destination.x + (col * source.width), destination.y + (row * source.height)}, source);
 		}

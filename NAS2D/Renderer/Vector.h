@@ -11,10 +11,10 @@ struct Vector {
 	BaseType x = 0;
 	BaseType y = 0;
 
-	bool operator==(const Vector& vector) const {
+	constexpr bool operator==(const Vector& vector) const {
 		return (x == vector.x) && (y == vector.y);
 	}
-	bool operator!=(const Vector& vector) const {
+	constexpr bool operator!=(const Vector& vector) const {
 		return !(*this == vector);
 	}
 
@@ -29,13 +29,13 @@ struct Vector {
 		return *this;
 	}
 
-	Vector operator+(const Vector& vector) const {
+	constexpr Vector operator+(const Vector& vector) const {
 		return {
 			x + vector.x,
 			y + vector.y
 		};
 	}
-	Vector operator-(const Vector& vector) const {
+	constexpr Vector operator-(const Vector& vector) const {
 		return {
 			x - vector.x,
 			y - vector.y
@@ -56,47 +56,47 @@ struct Vector {
 		return *this;
 	}
 
-	Vector operator*(BaseType scalar) const {
+	constexpr Vector operator*(BaseType scalar) const {
 		return {x * scalar, y * scalar};
 	}
-	Vector operator/(BaseType scalar) const {
+	constexpr Vector operator/(BaseType scalar) const {
 		if (scalar == 0) {
 			throw std::domain_error("Cannot divide vector by 0");
 		}
 		return {x / scalar, y / scalar};
 	}
 
-	Vector skewBy(const Vector& other) const {
+	constexpr Vector skewBy(const Vector& other) const {
 		return {x * other.x, y * other.y};
 	}
 
-	Vector skewInverseBy(const Vector& other) const {
+	constexpr Vector skewInverseBy(const Vector& other) const {
 		if (other.x == 0 || other.y == 0) {
 			throw std::domain_error("Cannot skewInverseBy a vector with a zero component");
 		}
 		return {x / other.x, y / other.y};
 	}
 
-	BaseType lengthSquared() const {
+	constexpr BaseType lengthSquared() const {
 		return (x * x) + (y * y);
 	}
 
-	BaseType dotProduct(const Vector& other) const {
+	constexpr BaseType dotProduct(const Vector& other) const {
 		return (x * other.x) + (y * other.y);
 	}
 
 	// Reflect the x-coordinate (flip across Y-axis)
-	Vector reflectX() const {
+	constexpr Vector reflectX() const {
 		return {-x, y};
 	}
 
 	// Reflect the y-coordinate (flip across X-axis)
-	Vector reflectY() const {
+	constexpr Vector reflectY() const {
 		return {x, -y};
 	}
 
 	template <typename NewBaseType>
-	operator Vector<NewBaseType>() const {
+	constexpr operator Vector<NewBaseType>() const {
 		return {
 			static_cast<NewBaseType>(x),
 			static_cast<NewBaseType>(y)
@@ -104,7 +104,7 @@ struct Vector {
 	}
 
 	template <typename NewBaseType>
-	Vector<NewBaseType> to() const {
+	constexpr Vector<NewBaseType> to() const {
 		return static_cast<Vector<NewBaseType>>(*this);
 	}
 };

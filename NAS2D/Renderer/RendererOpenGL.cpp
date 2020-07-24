@@ -279,7 +279,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	const auto clipSize = Vector{
 		std::min(sourceSize.x, availableSize.x),
 		std::min(sourceSize.y, availableSize.y)
-	};
+	}.to<float>();
 
 	glColor4ub(255, 255, 255, 255);
 
@@ -295,7 +295,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destinationImageInfo.texture_id, 0);
 	// Flip the Y axis to keep images drawing correctly.
-	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, static_cast<float>(clipSize.x), static_cast<float>(-clipSize.y)});
+	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, clipSize.x, -clipSize.y});
 
 	drawTexturedQuad(imageIdMap[source.name()].texture_id, vertexArray);
 	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.texture_id);

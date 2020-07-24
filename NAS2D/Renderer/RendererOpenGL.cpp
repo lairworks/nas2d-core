@@ -360,7 +360,7 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 
 	// During each iteration of the for loop, two indecies are accessed
 	// so we need to be sure that we step two index places for each loop.
-	for (int i = 0; i < num_segments * 2; i += 2)
+	for (std::size_t i = 0; i < verts.size(); i += 2)
 	{
 		const auto point = position + offset.skewBy(scale);
 		verts[i] = point.x;

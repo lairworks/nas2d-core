@@ -100,10 +100,7 @@ void Sprite::resume()
  */
 void Sprite::setFrame(std::size_t frameIndex)
 {
-	if (mActions.find(mCurrentAction) != mActions.end())
-	{
-		mCurrentFrame = frameIndex % mActions[mCurrentAction].size();
-	}
+	mCurrentFrame = frameIndex % mActions[mCurrentAction].size();
 }
 
 

@@ -510,18 +510,15 @@ bool Sprite::validateSheetId(const std::string& sheetId, int row)
 {
 	if (sheetId.empty())
 	{
-		cout << "Frame definition has a zero-length 'sheetid' value. Frame is being ignored." << endTag(row, name()) << endl;
-		return false;
+		throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(row, name()));
 	}
 	else if (mImageSheets.find(sheetId) == mImageSheets.end())
 	{
-		cout << "Frame definition references an undefined imagesheet '" << sheetId << "'." << endTag(row, name()) << endl;
-		return false;
+		throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(row, name()));
 	}
 	else if (!mImageSheets.find(sheetId)->second.loaded())
 	{
-		cout << "Frame definition references an imagesheet that failed to load." << endTag(row, name()) << endl;
-		return false;
+		throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(row, name()));
 	}
 
 	return true;

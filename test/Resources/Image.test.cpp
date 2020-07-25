@@ -8,9 +8,9 @@ TEST(Image, size) {
 }
 
 TEST(Image, center) {
-	EXPECT_EQ(0, NAS2D::Image(1, 1).center_x());
-	EXPECT_EQ(0, NAS2D::Image(1, 1).center_y());
+	EXPECT_EQ(0, NAS2D::Image(1, 1).center().x);
+	EXPECT_EQ(0, NAS2D::Image(1, 1).center().y);
 
-	EXPECT_EQ(2, NAS2D::Image(4, 2).center_x());
-	EXPECT_EQ(1, NAS2D::Image(4, 2).center_y());
+	EXPECT_EQ(2, NAS2D::Image(4, 2).center().x);
+	EXPECT_EQ(1, NAS2D::Image(4, 2).center().y);
 }

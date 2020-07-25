@@ -65,14 +65,10 @@ void Sprite::play(const std::string& action)
 	const auto normalizedAction = toLowercase(action);
 	if (mActions.find(normalizedAction) == mActions.end())
 	{
-		cout << "Named action '" << action << "' is not defined in '" << name() << "'." << endl;
-		mCurrentAction = DEFAULT_ACTION;
-	}
-	else
-	{
-		mCurrentAction = normalizedAction;
+		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + name());
 	}
 
+	mCurrentAction = normalizedAction;
 	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();

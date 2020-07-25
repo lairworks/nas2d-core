@@ -39,7 +39,6 @@ class Sprite
 public:
 	using Callback = Signals::Signal<>; /**< Signal used when action animations complete. */
 
-	Sprite();
 	explicit Sprite(const std::string& filePath);
 	Sprite(const Sprite& sprite) = default;
 	Sprite& operator=(const Sprite& rhs) = default;
@@ -70,24 +69,19 @@ public:
 	uint8_t alpha() const { return mColor.alpha; }
 
 	/**
-	 * Sets the color of the Sprite.
-	 *
-	 * \param	color	Reference to a Color object.
+	 * Sets the color tint of the Sprite.
 	 */
 	void color(const Color& color) { mColor = color; }
 
 	/**
-	 * Gets the color of the Sprite.
+	 * Gets the color tint of the Sprite.
 	 */
 	const Color& color() const { return mColor; }
 
 	Vector<int> size() const;
 	Point<int> origin(Point<int> point) const;
 
-	/**
-	 * Returns a reference to the frame listener signal slot.
-	 */
-	Callback& frameCallback() { return mFrameCallback; }
+	Callback& frameCallback() { return mAnimationCompleteCallback; }
 
 	StringList actions() const;
 
@@ -95,14 +89,9 @@ public:
 	void decrementFrame();
 
 protected:
-	/// Gets the name of the Sprite. \note Internal use only.
 	const std::string& name() const { return mSpriteName; }
 
 private:
-	/**
-	 * \struct	SpriteFrame
-	 * \brief	Contains
-	 */
 	struct SpriteFrame
 	{
 		std::string sheetId;
@@ -111,42 +100,30 @@ private:
 		unsigned int frameDelay;
 	};
 
-private:
+
 	using FrameList = std::vector<SpriteFrame>;
-	using ActionList = std::map<std::string, FrameList>;
-	using SheetList = std::map<std::string, Image>;
 
 	void processXml(const std::string& filePath);
-	void processImageSheets(void* root);
-	void addImageSheet(const std::string& id, const std::string& src, void* node);
+	void processImageSheets(const void* root);
+	void addImageSheet(const std::string& id, const std::string& src, const void* node);
 
-	void processActions(void* root);
-	void processFrames(const std::string& action, void* node);
+	void processActions(const void* root);
+	void processFrames(const std::string& action, const void* node);
 
-	bool validateSheetId(const std::string& sheetId, int row);
 
-	void addDefaultAction();
+	std::map<std::string, Image> mImageSheets;
+	std::map<std::string, FrameList> mActions;
 
-private:
-	static inline const std::string DEFAULT_ACTION{"default"};
+	std::string mSpriteName;
+	std::string mCurrentAction{"default"};
 
-	Timer mTimer; /**< Internal time keeper. */
+	bool mPaused{false};
+	Timer mTimer;
+	std::size_t mCurrentFrame{0};
+	Callback mAnimationCompleteCallback;
 
-	SheetList mImageSheets; /**< Imagesheets */
-	ActionList mActions; /**< A list of Actions and their associated Frames. */
-
-	std::string mSpriteName{"Default Constructed"}; /**< Name of this Sprite. */
-	std::string mCurrentAction{DEFAULT_ACTION}; /**< The current Action being performed. */
-
-	std::size_t mCurrentFrame{0}; /**< The current frame index in the current Action's frame list. */
-
-	Callback mFrameCallback; /**< Callback to signal a listener whenever an animation sequence completes. */
-
-	Color mColor{Color::Normal}; /**< Color value to use for drawing the sprite. */
-
+	Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
 	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
-
-	bool mPaused{false}; /**< Indicate whether or not the animation for this Sprite is paused. */
 };
 
 } // namespace

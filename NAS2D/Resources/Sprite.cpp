@@ -14,6 +14,8 @@
 #include "../Xml/Xml.h"
 
 #include <iostream>
+#include <stdexcept>
+
 
 using namespace std;
 using namespace NAS2D;
@@ -33,20 +35,6 @@ namespace {
 	{
 		return " (Row: " + std::to_string(row) + ", " + name + ")";
 	}
-}
-
-
-/**
- * Default c'tor.
- *
- * Provided to allow sprites to be used in STL containers.
- *
- * \warning	Generally speaking, Sprites should not be instantiated
- *			with the default c'tor.
- */
-Sprite::Sprite()
-{
-	addDefaultAction();
 }
 
 
@@ -77,14 +65,10 @@ void Sprite::play(const std::string& action)
 	const auto normalizedAction = toLowercase(action);
 	if (mActions.find(normalizedAction) == mActions.end())
 	{
-		cout << "Named action '" << action << "' is not defined in '" << name() << "'." << endl;
-		mCurrentAction = DEFAULT_ACTION;
-	}
-	else
-	{
-		mCurrentAction = normalizedAction;
+		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + name());
 	}
 
+	mCurrentAction = normalizedAction;
 	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();
@@ -116,10 +100,7 @@ void Sprite::resume()
  */
 void Sprite::setFrame(std::size_t frameIndex)
 {
-	if (mActions.find(mCurrentAction) != mActions.end())
-	{
-		mCurrentFrame = frameIndex % mActions[mCurrentAction].size();
-	}
+	mCurrentFrame = frameIndex % mActions[mCurrentAction].size();
 }
 
 
@@ -135,16 +116,15 @@ void Sprite::update(Point<float> position)
 			mCurrentFrame++;
 		}
 
-		// Check that our frame count is within bounds.
 		if (mCurrentFrame >= mActions[mCurrentAction].size())
 		{
 			mCurrentFrame = 0;
-			mFrameCallback(); // Notifiy any frame listeners that the animation sequence has completed.
+			mAnimationCompleteCallback();
 		}
 	}
 	else if (frame.frameDelay == FRAME_PAUSE)
 	{
-		mFrameCallback();
+		mAnimationCompleteCallback();
 	}
 
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
@@ -232,60 +212,31 @@ void Sprite::decrementFrame()
  */
 void Sprite::processXml(const std::string& filePath)
 {
-	Filesystem& fs = Utility<Filesystem>::get();
+	XmlDocument xmlDoc;
+	xmlDoc.parse(Utility<Filesystem>::get().open(filePath).raw_bytes());
 
-	if (!fs.exists(filePath))
+	if (xmlDoc.error())
 	{
-		cout << "Sprite file '" << filePath << "' doesn't exist." << endl;
-		addDefaultAction();
-		return;
-	}
-
-	File xmlFile = fs.open(filePath);
-
-	// Load the file
-	if (xmlFile.empty())
-	{
-		cout << "Sprite file '" << filePath << "' is empty." << endl;
-		addDefaultAction();
-		return;
-	}
-
-	XmlDocument docXml;
-	XmlElement *xmlRootElement = nullptr;
-
-	// Load the XML document and handle any errors if occuring
-	docXml.parse(xmlFile.raw_bytes());
-	if (docXml.error())
-	{
-		cout << "Malformed XML. Row: " << docXml.errorRow() << " Column: " << docXml.errorCol() << ": " << docXml.errorDesc() << " (" << name() << ")" << endl;
-		addDefaultAction();
-		return;
+		throw std::runtime_error("Sprite file has malformed XML: (" + name() + ") Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 	}
 	else
 	{
 		// Find the Sprite node.
-		xmlRootElement = docXml.firstChildElement("sprite");
+		const XmlElement* xmlRootElement = xmlDoc.firstChildElement("sprite");
 		if (!xmlRootElement)
 		{
-			cout << "Specified file '" << filePath << "' doesn't contain a <sprite> tag." << endl;
-			addDefaultAction();
-			return;
+			throw std::runtime_error("Sprite file does not contain required <sprite> tag: " + filePath);
 		}
 
 		// Get the Sprite version.
 		const XmlAttribute* version = xmlRootElement->firstAttribute();
 		if (!version || version->value().empty())
 		{
-			cout << "Root element in sprite file '" << filePath << "' doesn't define a version." << endl;
-			addDefaultAction();
-			return;
+			throw std::runtime_error("Sprite file's root element does not specify a version: " + filePath);
 		}
 		else if (version->value() != SPRITE_VERSION)
 		{
-			cout << "Sprite version mismatch (" << versionString() << ") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
-			addDefaultAction();
-			return;
+			throw std::runtime_error("Sprite version mismatch. Expected: " + SPRITE_VERSION + " Actualy: " + versionString());
 		}
 
 		// Note:
@@ -306,12 +257,12 @@ void Sprite::processXml(const std::string& filePath)
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
  */
-void Sprite::processImageSheets(void* root)
+void Sprite::processImageSheets(const void* root)
 {
-	XmlElement* e = static_cast<XmlElement*>(root);
+	const XmlElement* e = static_cast<const XmlElement*>(root);
 
 	string id, src;
-	for (XmlNode* node = e->iterateChildren(nullptr);
+	for (const XmlNode* node = e->iterateChildren(nullptr);
 		node != nullptr;
 		node = e->iterateChildren(node))
 	{
@@ -328,14 +279,12 @@ void Sprite::processImageSheets(void* root)
 
 			if (id.empty())
 			{
-				cout << "Zero-length 'id' value in Imagesheet definition." << endTag(node->row(), name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row(), name()));
 			}
 
 			if (src.empty())
 			{
-				cout << "Zero-length 'src' value in Imagesheet definition." << endTag(node->row(), name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row(), name()));
 			}
 
 			addImageSheet(id, src, node);
@@ -354,7 +303,7 @@ void Sprite::processImageSheets(void* root)
  * \param	src		Image sheet file path.
  * \param	node	XML Node (for error information).
  */
-void Sprite::addImageSheet(const std::string& id, const std::string& src, void* node)
+void Sprite::addImageSheet(const std::string& id, const std::string& src, const void* node)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
@@ -365,8 +314,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 		imagePath += src;
 		if (!fs.exists(imagePath))
 		{
-			cout << "Couldn't find '" << imagePath << "' defined in sprite file '" << name() << "'." << endl;
-			mImageSheets[toLowercase(id)]; // Add a default image
+			throw std::runtime_error("Sprite image path not found: Sprite: '" + name() + "' Image: '" + imagePath + "'");
 		}
 		else
 		{
@@ -375,7 +323,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 	}
 	else
 	{
-		cout << "Image-sheet redefinition '" << id << "'." << endTag(static_cast<XmlNode*>(node)->row(), name()) << ". Imagesheet ignored." << endl;
+		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<const XmlNode*>(node)->row(), name()));
 	}
 }
 
@@ -387,11 +335,11 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-void Sprite::processActions(void* root)
+void Sprite::processActions(const void* root)
 {
-	XmlElement* element = static_cast<XmlElement*>(root);
+	const XmlElement* element = static_cast<const XmlElement*>(root);
 
-	for (XmlNode* node = element->iterateChildren(nullptr);
+	for (const XmlNode* node = element->iterateChildren(nullptr);
 		node != nullptr;
 		node = element->iterateChildren(node))
 	{
@@ -412,8 +360,7 @@ void Sprite::processActions(void* root)
 
 			if (action_name.empty())
 			{
-				cout << "Zero-length 'name' value in Action definition." << endTag(node->row(), name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row(), name()));
 			}
 
 			if (mActions.find(toLowercase(action_name)) == mActions.end())
@@ -422,7 +369,7 @@ void Sprite::processActions(void* root)
 			}
 			else
 			{
-				cout << "Redefinition of action '" << action_name << "'. First definition will be used." << endTag(node->row(), name()) << endl;
+				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row(), name()));
 			}
 		}
 	}
@@ -432,13 +379,13 @@ void Sprite::processActions(void* root)
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-void Sprite::processFrames(const std::string& action, void* _node)
+void Sprite::processFrames(const std::string& action, const void* _node)
 {
-	XmlNode* node = static_cast<XmlNode*>(_node);
+	const XmlNode* node = static_cast<const XmlNode*>(_node);
 
 	FrameList frameList;
 
-	for (XmlNode* frame = node->iterateChildren(nullptr);
+	for (const XmlNode* frame = node->iterateChildren(nullptr);
 		frame != nullptr;
 		frame = node->iterateChildren(frame))
 	{
@@ -463,54 +410,48 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
 				else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
 				else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
-				else { std::cout << "Unexpected attribute '" << attribute->name() << "' found on row " << currentRow << std::endl; }
+				else {
+					throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow, name()));
+				}
 
 				attribute = attribute->next();
 			}
 
-			if (!validateSheetId(sheetId, currentRow))
+			if (sheetId.empty())
 			{
-				continue;
+				throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow, name()));
+			}
+			else if (mImageSheets.find(sheetId) == mImageSheets.end())
+			{
+				throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow, name()));
+			}
+			else if (!mImageSheets.find(sheetId)->second.loaded())
+			{
+				throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow, name()));
 			}
 
 			// X-Coordinate
-			if ( x < 0 || x > mImageSheets.find(sheetId)->second.size().x)
+			if (x < 0 || x > mImageSheets.find(sheetId)->second.size().x)
 			{
-				cout << "Value 'x' is out of bounds." << endTag(currentRow, name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Y-Coordinate
 			if (y < 0 || y > mImageSheets.find(sheetId)->second.size().y)
 			{
-				cout << "Value 'y' is out of bounds." << endTag(currentRow, name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Width
-			if (width < 1)
+			if (width <= 0 || width > mImageSheets.find(sheetId)->second.size().x - x)
 			{
-				width = 1;
-				cout << "'width' value must be greater than 0." << endTag(currentRow, name()) << endl;
-				continue;
-			}
-			else if (x + width > mImageSheets.find(sheetId)->second.size().x)
-			{
-				cout << "'x' + 'width' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Height
-			if (height < 1)
+			if (height <= 0 || height > mImageSheets.find(sheetId)->second.size().y - y)
 			{
-				height = 1;
-				cout << "'height' value must be greater than 0." << endTag(currentRow, name()) << endl;
-				continue;
-			}
-			else if (y + height > mImageSheets.find(sheetId)->second.size().y)
-			{
-				cout << "'y' + 'height' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
@@ -519,7 +460,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 		}
 		else
 		{
-			cout << "Unexpected tag '<" << frame->value() << ">'." << endTag(currentRow, name()) << endl;
+			throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow, name()));
 		}
 	}
 
@@ -530,51 +471,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 	}
 	else
 	{
-		cout << "Action '" << action << "' contains no valid frames. (" << name() << ")" << endl;
-	}
-}
-
-
-bool Sprite::validateSheetId(const std::string& sheetId, int row)
-{
-	if (sheetId.empty())
-	{
-		cout << "Frame definition has a zero-length 'sheetid' value. Frame is being ignored." << endTag(row, name()) << endl;
-		return false;
-	}
-	else if (mImageSheets.find(sheetId) == mImageSheets.end())
-	{
-		cout << "Frame definition references an undefined imagesheet '" << sheetId << "'." << endTag(row, name()) << endl;
-		return false;
-	}
-	else if (!mImageSheets.find(sheetId)->second.loaded())
-	{
-		cout << "Frame definition references an imagesheet that failed to load." << endTag(row, name()) << endl;
-		return false;
-	}
-
-	return true;
-}
-
-
-/**
- * Adds a 'default' action to the action list.
- *
- * \note	This function will not override a 'default' action if one has
- *			has already been specified.
- */
-void Sprite::addDefaultAction()
-{
-	if (mActions.find("default") == mActions.end())
-	{
-		auto& imageSheet = mImageSheets["default"]; // Adds a default sheet. //-V607
-
-		const auto size = imageSheet.size();
-		const auto bounds = Rectangle<int>::Create(Point{0, 0}, size);
-		const auto anchorOffset = size / 2;
-
-		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, FRAME_PAUSE}};
-		mActions["default"] = frameList;
+		throw std::runtime_error("Sprite Action contains no valid frames: " + action + " (" + name() + ")");
 	}
 }
 

@@ -101,7 +101,7 @@ private:
 		unsigned int frameDelay;
 	};
 
-private:
+
 	using FrameList = std::vector<SpriteFrame>;
 
 	void processXml(const std::string& filePath);
@@ -115,7 +115,7 @@ private:
 
 	void addDefaultAction();
 
-private:
+
 	static inline const std::string DEFAULT_ACTION{"default"};
 
 	std::map<std::string, Image> mImageSheets;

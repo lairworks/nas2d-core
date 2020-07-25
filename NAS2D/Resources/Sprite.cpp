@@ -14,6 +14,8 @@
 #include "../Xml/Xml.h"
 
 #include <iostream>
+#include <stdexcept>
+
 
 using namespace std;
 using namespace NAS2D;
@@ -235,9 +237,7 @@ void Sprite::processXml(const std::string& filePath)
 
 	if (!fs.exists(filePath))
 	{
-		cout << "Sprite file '" << filePath << "' doesn't exist." << endl;
-		addDefaultAction();
-		return;
+		throw std::runtime_error("Sprite file does not exist: " + filePath);
 	}
 
 	File xmlFile = fs.open(filePath);
@@ -245,9 +245,7 @@ void Sprite::processXml(const std::string& filePath)
 	// Load the file
 	if (xmlFile.empty())
 	{
-		cout << "Sprite file '" << filePath << "' is empty." << endl;
-		addDefaultAction();
-		return;
+		throw std::runtime_error("Sprite file is empty: " + filePath);
 	}
 
 	XmlDocument docXml;
@@ -257,9 +255,7 @@ void Sprite::processXml(const std::string& filePath)
 	docXml.parse(xmlFile.raw_bytes());
 	if (docXml.error())
 	{
-		cout << "Malformed XML. Row: " << docXml.errorRow() << " Column: " << docXml.errorCol() << ": " << docXml.errorDesc() << " (" << name() << ")" << endl;
-		addDefaultAction();
-		return;
+		throw std::runtime_error("Sprite file has malformed XML: (" + name() + ") Row: " + std::to_string(docXml.errorRow()) + " Column: " + std::to_string(docXml.errorCol()) + " : " + docXml.errorDesc());
 	}
 	else
 	{
@@ -267,24 +263,18 @@ void Sprite::processXml(const std::string& filePath)
 		xmlRootElement = docXml.firstChildElement("sprite");
 		if (!xmlRootElement)
 		{
-			cout << "Specified file '" << filePath << "' doesn't contain a <sprite> tag." << endl;
-			addDefaultAction();
-			return;
+			throw std::runtime_error("Sprite file does not contain required <sprite> tag: " + filePath);
 		}
 
 		// Get the Sprite version.
 		const XmlAttribute* version = xmlRootElement->firstAttribute();
 		if (!version || version->value().empty())
 		{
-			cout << "Root element in sprite file '" << filePath << "' doesn't define a version." << endl;
-			addDefaultAction();
-			return;
+			throw std::runtime_error("Sprite file's root element does not specify a version: " + filePath);
 		}
 		else if (version->value() != SPRITE_VERSION)
 		{
-			cout << "Sprite version mismatch (" << versionString() << ") in '" << filePath << "'. Expected (" << SPRITE_VERSION << ")." << endl;
-			addDefaultAction();
-			return;
+			throw std::runtime_error("Sprite version mismatch. Expected: " + SPRITE_VERSION + " Actualy: " + versionString());
 		}
 
 		// Note:

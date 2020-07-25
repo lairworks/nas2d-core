@@ -295,7 +295,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	const auto& destinationImageInfo = imageIdMap[destination.name()];
 	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.textureId);
 
-	GLuint fbo = destinationImageInfo.fbo_id;
+	GLuint fbo = destinationImageInfo.frameBufferObjectId;
 	if (fbo == 0)
 	{
 		fbo = generate_fbo(destination);
@@ -829,7 +829,7 @@ GLuint generate_fbo(Image& image)
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[image.name()].textureId, 0);
 
-	imageIdMap[image.name()].fbo_id = framebuffer;
+	imageIdMap[image.name()].frameBufferObjectId = framebuffer;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

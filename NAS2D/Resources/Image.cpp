@@ -331,9 +331,9 @@ namespace {
 			}
 			glDeleteTextures(1, &imageInfo.textureId);
 
-			if (imageInfo.fbo_id != 0)
+			if (imageInfo.frameBufferObjectId != 0)
 			{
-				glDeleteFramebuffers(1, &imageInfo.fbo_id);
+				glDeleteFramebuffers(1, &imageInfo.frameBufferObjectId);
 			}
 
 			if (imageInfo.surface != nullptr)

@@ -24,10 +24,10 @@ namespace NAS2D {
 struct ImageInfo
 {
 	SDL_Surface* surface{nullptr};
-	unsigned int texture_id{0u};
-	unsigned int fbo_id{0u};
+	unsigned int textureId{0u};
+	unsigned int frameBufferObjectId{0u};
 	Vector<int> size{0, 0};
-	int ref_count{0};
+	int refCount{0};
 };
 
 } // namespace

@@ -25,8 +25,7 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-using TextureIdMap = std::map<std::string, ImageInfo>;
-TextureIdMap imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
+std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 
 
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
@@ -74,9 +73,10 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	mSize = Vector{width, height};
 
 	// Update resource management.
-	imageIdMap[name()].texture_id = 0;
-	imageIdMap[name()].size = {width, height};
-	imageIdMap[name()].ref_count++;
+	auto& imageInfo = imageIdMap[name()];
+	imageInfo.textureId = 0;
+	imageInfo.size = {width, height};
+	imageInfo.refCount++;
 }
 
 
@@ -106,13 +106,14 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	mSize = Vector{width, height};
 
-	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
+	unsigned int textureId = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
-	imageIdMap[name()].texture_id = texture_id;
-	imageIdMap[name()].size = {width, height};
-	imageIdMap[name()].ref_count++;
-	imageIdMap[name()].surface = surface;
+	auto& imageInfo = imageIdMap[name()];
+	imageInfo.textureId = textureId;
+	imageInfo.size = {width, height};
+	imageInfo.refCount++;
+	imageInfo.surface = surface;
 }
 
 
@@ -129,7 +130,7 @@ Image::Image(const Image &src) : Resource(src.name()), mSize(src.mSize)
 	}
 
 	loaded(src.loaded());
-	imageIdMap[name()].ref_count++;
+	imageIdMap[name()].refCount++;
 }
 
 
@@ -163,7 +164,7 @@ Image& Image::operator=(const Image& rhs)
 	}
 
 	loaded(rhs.loaded());
-	++it->second.ref_count;
+	++it->second.refCount;
 
 	return *this;
 }
@@ -203,14 +204,14 @@ void Image::load()
 
 	mSize = Vector{surface->w, surface->h};
 
-	unsigned int texture_id = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
+	unsigned int textureId = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
 
 	// Add generated texture id to texture ID map.
-	imageIdMap[name()].texture_id = texture_id;
-	imageIdMap[name()].size = mSize;
-	imageIdMap[name()].ref_count++;
-
-	imageIdMap[name()].surface = surface;
+	auto& imageInfo = imageIdMap[name()];
+	imageInfo.surface = surface;
+	imageInfo.textureId = textureId;
+	imageInfo.size = mSize;
+	imageInfo.refCount++;
 
 	loaded(true);
 }
@@ -319,27 +320,26 @@ namespace {
 			return;
 		}
 
-		--it->second.ref_count;
+		auto& imageInfo = it->second;
+		--imageInfo.refCount;
 
-		// if texture id reference count is 0, delete the texture.
-		if (it->second.ref_count < 1)
+		if (imageInfo.refCount <= 0)
 		{
-			if (it->second.texture_id == 0)
+			if (imageInfo.textureId == 0)
 			{
 				return;
 			}
+			glDeleteTextures(1, &imageInfo.textureId);
 
-			glDeleteTextures(1, &it->second.texture_id);
-
-			if (it->second.fbo_id != 0)
+			if (imageInfo.frameBufferObjectId != 0)
 			{
-				glDeleteFramebuffers(1, &it->second.fbo_id);
+				glDeleteFramebuffers(1, &imageInfo.frameBufferObjectId);
 			}
 
-			if (it->second.surface != nullptr)
+			if (imageInfo.surface != nullptr)
 			{
-				SDL_FreeSurface(it->second.surface);
-				it->second.surface = nullptr;
+				SDL_FreeSurface(imageInfo.surface);
+				imageInfo.surface = nullptr;
 			}
 
 			imageIdMap.erase(it);
@@ -359,7 +359,7 @@ namespace {
 
 		if (it != imageIdMap.end())
 		{
-			++imageIdMap[name].ref_count;
+			++imageIdMap[name].refCount;
 			return true;
 		}
 
@@ -387,9 +387,9 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 		throw image_unsupported_bit_depth();
 	}
 
-	GLuint texture_id;
-	glGenTextures(1, &texture_id);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
+	GLuint textureId;
+	glGenTextures(1, &textureId);
+	glBindTexture(GL_TEXTURE_2D, textureId);
 
 	// Set texture and pixel handling states.
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -400,5 +400,5 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 
 	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
 
-	return texture_id;
+	return textureId;
 }

@@ -44,7 +44,7 @@ Music::Music(const Music& rhs) : Resource(rhs.name())
 	auto it = MUSIC_REF_MAP.find(name());
 	if (it != MUSIC_REF_MAP.end())
 	{
-		it->second.ref_count++;
+		it->second.refCount++;
 	}
 
 	loaded(rhs.loaded());
@@ -65,7 +65,7 @@ Music& Music::operator=(const Music& rhs)
 	auto it = MUSIC_REF_MAP.find(name());
 	if (it != MUSIC_REF_MAP.end())
 	{
-		it->second.ref_count++;
+		it->second.refCount++;
 		loaded(rhs.loaded());
 	}
 	else
@@ -95,7 +95,7 @@ void Music::load()
 {
 	if (MUSIC_REF_MAP.find(name()) != MUSIC_REF_MAP.end())
 	{
-		MUSIC_REF_MAP.find(name())->second.ref_count++;
+		MUSIC_REF_MAP.find(name())->second.refCount++;
 		loaded(true);
 		return;
 	}
@@ -117,7 +117,7 @@ void Music::load()
 	auto& record = MUSIC_REF_MAP[name()];
 	record.buffer = file;
 	record.music = music;
-	record.ref_count++;
+	record.refCount++;
 
 	loaded(true);
 }
@@ -142,10 +142,10 @@ void updateMusicReferenceCount(const std::string& name)
 		return;
 	}
 
-	--it->second.ref_count;
+	--it->second.refCount;
 
 	// No more references to this resource.
-	if (it->second.ref_count < 1)
+	if (it->second.refCount < 1)
 	{
 		if (it->second.music)
 		{

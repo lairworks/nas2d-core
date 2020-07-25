@@ -17,5 +17,5 @@ struct MusicInfo
 {
 	void* buffer{nullptr};
 	void* music{nullptr};
-	int ref_count{0};
+	int refCount{0};
 };

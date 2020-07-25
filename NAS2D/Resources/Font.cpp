@@ -45,7 +45,7 @@ namespace {
 
 	bool load(const std::string& path, unsigned int ptSize);
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
-	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size);
+	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize);
 	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList);
 	void fillInTextureCoordinates(GlyphMetricsList& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 	bool fontAlreadyLoaded(const std::string& name);
@@ -102,7 +102,7 @@ Font::Font(const Font& rhs) : Resource(rhs.name())
 	auto it = fontMap.find(name());
 	if (it != fontMap.end())
 	{
-		++it->second.ref_count;
+		++it->second.refCount;
 		loaded(rhs.loaded());
 	}
 	else
@@ -137,7 +137,7 @@ Font& Font::operator=(const Font& rhs)
 	auto it = fontMap.find(name());
 	if (it == fontMap.end()) { throw font_bad_data(); }
 
-	++it->second.ref_count;
+	++it->second.refCount;
 	loaded(rhs.loaded());
 
 	return *this;
@@ -149,7 +149,7 @@ Font& Font::operator=(const Font& rhs)
  */
 int Font::glyphCellWidth() const
 {
-	return fontMap[name()].glyph_size.x;
+	return fontMap[name()].glyphSize.x;
 }
 
 
@@ -158,7 +158,7 @@ int Font::glyphCellWidth() const
  */
 int Font::glyphCellHeight() const
 {
-	return fontMap[name()].glyph_size.y;
+	return fontMap[name()].glyphSize.y;
 }
 
 
@@ -214,7 +214,7 @@ int Font::ascent() const
  */
 unsigned int Font::ptSize() const
 {
-	return fontMap[name()].pt_size;
+	return fontMap[name()].pointSize;
 }
 
 
@@ -230,7 +230,7 @@ namespace {
 		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
 		if (fontAlreadyLoaded(fontname))
 		{
-			++fontMap[fontname].ref_count;
+			++fontMap[fontname].refCount;
 			return true;
 		}
 
@@ -258,7 +258,7 @@ namespace {
 
 		fontMap[fontname].height = TTF_FontHeight(font);
 		fontMap[fontname].ascent = TTF_FontAscent(font);
-		fontMap[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize);
+		fontMap[fontname].glyphSize = generateGlyphMap(font, fontname, ptSize);
 		TTF_CloseFont(font);
 
 		return true;
@@ -277,7 +277,7 @@ namespace {
 	{
 		if (fontAlreadyLoaded(path))
 		{
-			++fontMap[path].ref_count;
+			++fontMap[path].refCount;
 			return true;
 		}
 
@@ -314,14 +314,14 @@ namespace {
 		}
 		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
 
-		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
+		unsigned int textureId = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
-		fontInfo.texture_id = texture_id;
-		fontInfo.pt_size = static_cast<unsigned int>(glyphSize.y);
+		fontInfo.textureId = textureId;
+		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
-		fontInfo.ref_count++;
-		fontInfo.glyph_size = glyphSize;
+		fontInfo.refCount++;
+		fontInfo.glyphSize = glyphSize;
 		SDL_FreeSurface(fontSurface);
 
 		return true;
@@ -333,7 +333,7 @@ namespace {
 	 *
 	 * Internal function used to generate a glyph texture map from an TTF_Font struct.
 	 */
-	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int font_size)
+	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize)
 	{
 		GlyphMetricsList& glm = fontMap[name].metrics;
 
@@ -380,12 +380,12 @@ namespace {
 			SDL_FreeSurface(characterSurface);
 		}
 
-		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
+		unsigned int textureId = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
-		fontMap[name].texture_id = texture_id;
-		fontMap[name].pt_size = font_size;
-		fontMap[name].ref_count++;
+		fontMap[name].textureId = textureId;
+		fontMap[name].pointSize = fontSize;
+		fontMap[name].refCount++;
 		SDL_FreeSurface(fontSurface);
 
 		return size;
@@ -468,10 +468,10 @@ namespace {
 		}
 
 		auto& fontInfo = it->second;
-		--fontInfo.ref_count;
-		if (fontInfo.ref_count <= 0)
+		--fontInfo.refCount;
+		if (fontInfo.refCount <= 0)
 		{
-			glDeleteTextures(1, &fontInfo.texture_id);
+			glDeleteTextures(1, &fontInfo.textureId);
 			fontMap.erase(it);
 		}
 

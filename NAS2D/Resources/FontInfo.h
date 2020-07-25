@@ -35,12 +35,12 @@ using GlyphMetricsList = std::vector<GlyphMetrics>;
  */
 struct FontInfo
 {
-	unsigned int texture_id{0u};
-	unsigned int pt_size{0u};
+	unsigned int textureId{0u};
+	unsigned int pointSize{0u};
 	int height{0};
 	int ascent{0};
-	int ref_count{0};
-	Vector<int> glyph_size;
+	int refCount{0};
+	Vector<int> glyphSize;
 	GlyphMetricsList metrics;
 };
 

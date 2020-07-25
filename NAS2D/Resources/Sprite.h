@@ -39,7 +39,6 @@ class Sprite
 public:
 	using Callback = Signals::Signal<>; /**< Signal used when action animations complete. */
 
-	Sprite();
 	explicit Sprite(const std::string& filePath);
 	Sprite(const Sprite& sprite) = default;
 	Sprite& operator=(const Sprite& rhs) = default;
@@ -111,15 +110,13 @@ private:
 	void processActions(const void* root);
 	void processFrames(const std::string& action, const void* node);
 
-	void addDefaultAction();
-
 
 	static inline const std::string DEFAULT_ACTION{"default"};
 
 	std::map<std::string, Image> mImageSheets;
 	std::map<std::string, FrameList> mActions;
 
-	std::string mSpriteName{"Default Constructed"};
+	std::string mSpriteName;
 	std::string mCurrentAction{DEFAULT_ACTION};
 
 	bool mPaused{false};

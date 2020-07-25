@@ -39,20 +39,6 @@ namespace {
 
 
 /**
- * Default c'tor.
- *
- * Provided to allow sprites to be used in STL containers.
- *
- * \warning	Generally speaking, Sprites should not be instantiated
- *			with the default c'tor.
- */
-Sprite::Sprite()
-{
-	addDefaultAction();
-}
-
-
-/**
  * C'tor.
  *
  * \param filePath	File path of the Sprite definition file.
@@ -493,28 +479,6 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 	else
 	{
 		throw std::runtime_error("Sprite Action contains no valid frames: " + action + " (" + name() + ")");
-	}
-}
-
-
-/**
- * Adds a 'default' action to the action list.
- *
- * \note	This function will not override a 'default' action if one has
- *			has already been specified.
- */
-void Sprite::addDefaultAction()
-{
-	if (mActions.find("default") == mActions.end())
-	{
-		auto& imageSheet = mImageSheets["default"]; // Adds a default sheet. //-V607
-
-		const auto size = imageSheet.size();
-		const auto bounds = Rectangle<int>::Create(Point{0, 0}, size);
-		const auto anchorOffset = size / 2;
-
-		FrameList frameList{SpriteFrame{"default", bounds, anchorOffset, FRAME_PAUSE}};
-		mActions["default"] = frameList;
 	}
 }
 

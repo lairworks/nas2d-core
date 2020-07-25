@@ -352,8 +352,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 		imagePath += src;
 		if (!fs.exists(imagePath))
 		{
-			cout << "Couldn't find '" << imagePath << "' defined in sprite file '" << name() << "'." << endl;
-			mImageSheets[toLowercase(id)]; // Add a default image
+			throw std::runtime_error("Sprite image path not found: Sprite: '" + name() + "' Image: '" + imagePath + "'");
 		}
 		else
 		{
@@ -362,7 +361,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 	}
 	else
 	{
-		cout << "Image-sheet redefinition '" << id << "'." << endTag(static_cast<XmlNode*>(node)->row(), name()) << ". Imagesheet ignored." << endl;
+		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<XmlNode*>(node)->row(), name()));
 	}
 }
 

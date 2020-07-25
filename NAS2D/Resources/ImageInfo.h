@@ -10,8 +10,12 @@
 #pragma once
 
 
+#include "../Renderer/Vector.h"
+
 #include <SDL2/SDL_image.h>
 
+
+namespace NAS2D {
 
 /**
  * Struct containing basic information related to Images. Not part of the public
@@ -22,7 +26,8 @@ struct ImageInfo
 	SDL_Surface* surface{nullptr};
 	unsigned int texture_id{0u};
 	unsigned int fbo_id{0u};
-	int w{0};
-	int h{0};
+	Vector<int> size{0, 0};
 	int ref_count{0};
 };
+
+} // namespace

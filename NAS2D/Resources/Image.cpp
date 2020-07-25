@@ -75,8 +75,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 
 	// Update resource management.
 	imageIdMap[name()].texture_id = 0;
-	imageIdMap[name()].w = width;
-	imageIdMap[name()].h = height;
+	imageIdMap[name()].size = {width, height};
 	imageIdMap[name()].ref_count++;
 }
 
@@ -111,8 +110,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	// Update resource management.
 	imageIdMap[name()].texture_id = texture_id;
-	imageIdMap[name()].w = width;
-	imageIdMap[name()].h = height;
+	imageIdMap[name()].size = {width, height};
 	imageIdMap[name()].ref_count++;
 	imageIdMap[name()].surface = surface;
 }
@@ -180,7 +178,7 @@ void Image::load()
 {
 	if (checkTextureId(name()))
 	{
-		mSize = Vector{imageIdMap[name()].w, imageIdMap[name()].h};
+		mSize = imageIdMap[name()].size;
 		loaded(true);
 		return;
 	}
@@ -209,8 +207,7 @@ void Image::load()
 
 	// Add generated texture id to texture ID map.
 	imageIdMap[name()].texture_id = texture_id;
-	imageIdMap[name()].w = mSize.x;
-	imageIdMap[name()].h = mSize.y;
+	imageIdMap[name()].size = mSize;
 	imageIdMap[name()].ref_count++;
 
 	imageIdMap[name()].surface = surface;

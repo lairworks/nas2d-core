@@ -105,11 +105,11 @@ private:
 	using FrameList = std::vector<SpriteFrame>;
 
 	void processXml(const std::string& filePath);
-	void processImageSheets(void* root);
-	void addImageSheet(const std::string& id, const std::string& src, void* node);
+	void processImageSheets(const void* root);
+	void addImageSheet(const std::string& id, const std::string& src, const void* node);
 
-	void processActions(void* root);
-	void processFrames(const std::string& action, void* node);
+	void processActions(const void* root);
+	void processFrames(const std::string& action, const void* node);
 
 	void addDefaultAction();
 

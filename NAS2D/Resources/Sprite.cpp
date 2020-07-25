@@ -248,7 +248,7 @@ void Sprite::processXml(const std::string& filePath)
 	else
 	{
 		// Find the Sprite node.
-		XmlElement* xmlRootElement = docXml.firstChildElement("sprite");
+		const XmlElement* xmlRootElement = docXml.firstChildElement("sprite");
 		if (!xmlRootElement)
 		{
 			throw std::runtime_error("Sprite file does not contain required <sprite> tag: " + filePath);
@@ -283,12 +283,12 @@ void Sprite::processXml(const std::string& filePath)
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
  */
-void Sprite::processImageSheets(void* root)
+void Sprite::processImageSheets(const void* root)
 {
-	XmlElement* e = static_cast<XmlElement*>(root);
+	const XmlElement* e = static_cast<const XmlElement*>(root);
 
 	string id, src;
-	for (XmlNode* node = e->iterateChildren(nullptr);
+	for (const XmlNode* node = e->iterateChildren(nullptr);
 		node != nullptr;
 		node = e->iterateChildren(node))
 	{
@@ -329,7 +329,7 @@ void Sprite::processImageSheets(void* root)
  * \param	src		Image sheet file path.
  * \param	node	XML Node (for error information).
  */
-void Sprite::addImageSheet(const std::string& id, const std::string& src, void* node)
+void Sprite::addImageSheet(const std::string& id, const std::string& src, const void* node)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
@@ -349,7 +349,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
 	}
 	else
 	{
-		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<XmlNode*>(node)->row(), name()));
+		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<const XmlNode*>(node)->row(), name()));
 	}
 }
 
@@ -361,11 +361,11 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, void* 
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-void Sprite::processActions(void* root)
+void Sprite::processActions(const void* root)
 {
-	XmlElement* element = static_cast<XmlElement*>(root);
+	const XmlElement* element = static_cast<const XmlElement*>(root);
 
-	for (XmlNode* node = element->iterateChildren(nullptr);
+	for (const XmlNode* node = element->iterateChildren(nullptr);
 		node != nullptr;
 		node = element->iterateChildren(node))
 	{
@@ -405,13 +405,13 @@ void Sprite::processActions(void* root)
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-void Sprite::processFrames(const std::string& action, void* _node)
+void Sprite::processFrames(const std::string& action, const void* _node)
 {
-	XmlNode* node = static_cast<XmlNode*>(_node);
+	const XmlNode* node = static_cast<const XmlNode*>(_node);
 
 	FrameList frameList;
 
-	for (XmlNode* frame = node->iterateChildren(nullptr);
+	for (const XmlNode* frame = node->iterateChildren(nullptr);
 		frame != nullptr;
 		frame = node->iterateChildren(frame))
 	{

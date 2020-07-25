@@ -455,9 +455,17 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				attribute = attribute->next();
 			}
 
-			if (!validateSheetId(sheetId, currentRow))
+			if (sheetId.empty())
 			{
-				continue;
+				throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow, name()));
+			}
+			else if (mImageSheets.find(sheetId) == mImageSheets.end())
+			{
+				throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow, name()));
+			}
+			else if (!mImageSheets.find(sheetId)->second.loaded())
+			{
+				throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow, name()));
 			}
 
 			// X-Coordinate
@@ -503,25 +511,6 @@ void Sprite::processFrames(const std::string& action, void* _node)
 	{
 		throw std::runtime_error("Sprite Action contains no valid frames: " + action + " (" + name() + ")");
 	}
-}
-
-
-bool Sprite::validateSheetId(const std::string& sheetId, int row)
-{
-	if (sheetId.empty())
-	{
-		throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(row, name()));
-	}
-	else if (mImageSheets.find(sheetId) == mImageSheets.end())
-	{
-		throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(row, name()));
-	}
-	else if (!mImageSheets.find(sheetId)->second.loaded())
-	{
-		throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(row, name()));
-	}
-
-	return true;
 }
 
 

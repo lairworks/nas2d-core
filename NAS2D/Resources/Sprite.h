@@ -111,8 +111,6 @@ private:
 	void processActions(void* root);
 	void processFrames(const std::string& action, void* node);
 
-	bool validateSheetId(const std::string& sheetId, int row);
-
 	void addDefaultAction();
 
 

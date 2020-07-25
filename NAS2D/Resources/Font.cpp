@@ -144,6 +144,12 @@ Font& Font::operator=(const Font& rhs)
 }
 
 
+Vector<int> Font::glyphCellSize() const
+{
+	return fontMap[name()].glyphSize;
+}
+
+
 /**
  * Gets the glyph cell width.
  */

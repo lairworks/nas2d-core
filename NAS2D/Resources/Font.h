@@ -50,6 +50,7 @@ public:
 
 	unsigned int ptSize() const;
 
+	Vector<int> glyphCellSize() const;
 	int glyphCellWidth() const;
 	int glyphCellHeight() const;
 

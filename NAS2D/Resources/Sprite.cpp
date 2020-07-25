@@ -238,7 +238,6 @@ void Sprite::processXml(const std::string& filePath)
 	File xmlFile = fs.open(filePath);
 
 	XmlDocument docXml;
-	XmlElement *xmlRootElement = nullptr;
 
 	// Load the XML document and handle any errors if occuring
 	docXml.parse(xmlFile.raw_bytes());
@@ -249,7 +248,7 @@ void Sprite::processXml(const std::string& filePath)
 	else
 	{
 		// Find the Sprite node.
-		xmlRootElement = docXml.firstChildElement("sprite");
+		XmlElement* xmlRootElement = docXml.firstChildElement("sprite");
 		if (!xmlRootElement)
 		{
 			throw std::runtime_error("Sprite file does not contain required <sprite> tag: " + filePath);

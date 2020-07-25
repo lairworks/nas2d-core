@@ -150,24 +150,6 @@ Vector<int> Font::glyphCellSize() const
 }
 
 
-/**
- * Gets the glyph cell width.
- */
-int Font::glyphCellWidth() const
-{
-	return fontMap[name()].glyphSize.x;
-}
-
-
-/**
- * Gets the glyph cell height.
- */
-int Font::glyphCellHeight() const
-{
-	return fontMap[name()].glyphSize.y;
-}
-
-
 Vector<int> Font::size(std::string_view string) const
 {
 	return {width(string), height()};

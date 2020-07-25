@@ -317,14 +317,12 @@ void Sprite::processImageSheets(void* root)
 
 			if (id.empty())
 			{
-				cout << "Zero-length 'id' value in Imagesheet definition." << endTag(node->row(), name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row(), name()));
 			}
 
 			if (src.empty())
 			{
-				cout << "Zero-length 'src' value in Imagesheet definition." << endTag(node->row(), name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row(), name()));
 			}
 
 			addImageSheet(id, src, node);

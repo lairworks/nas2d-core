@@ -321,27 +321,28 @@ namespace {
 			return;
 		}
 
-		--it->second.ref_count;
+		auto& imageInfo = it->second;
+		--imageInfo.ref_count;
 
 		// if texture id reference count is 0, delete the texture.
-		if (it->second.ref_count < 1)
+		if (imageInfo.ref_count < 1)
 		{
-			if (it->second.texture_id == 0)
+			if (imageInfo.texture_id == 0)
 			{
 				return;
 			}
 
-			glDeleteTextures(1, &it->second.texture_id);
+			glDeleteTextures(1, &imageInfo.texture_id);
 
-			if (it->second.fbo_id != 0)
+			if (imageInfo.fbo_id != 0)
 			{
-				glDeleteFramebuffers(1, &it->second.fbo_id);
+				glDeleteFramebuffers(1, &imageInfo.fbo_id);
 			}
 
-			if (it->second.surface != nullptr)
+			if (imageInfo.surface != nullptr)
 			{
-				SDL_FreeSurface(it->second.surface);
-				it->second.surface = nullptr;
+				SDL_FreeSurface(imageInfo.surface);
+				imageInfo.surface = nullptr;
 			}
 
 			imageIdMap.erase(it);

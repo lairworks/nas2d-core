@@ -70,23 +70,18 @@ public:
 	uint8_t alpha() const { return mColor.alpha; }
 
 	/**
-	 * Sets the color of the Sprite.
-	 *
-	 * \param	color	Reference to a Color object.
+	 * Sets the color tint of the Sprite.
 	 */
 	void color(const Color& color) { mColor = color; }
 
 	/**
-	 * Gets the color of the Sprite.
+	 * Gets the color tint of the Sprite.
 	 */
 	const Color& color() const { return mColor; }
 
 	Vector<int> size() const;
 	Point<int> origin(Point<int> point) const;
 
-	/**
-	 * Returns a reference to the frame listener signal slot.
-	 */
 	Callback& frameCallback() { return mAnimationCompleteCallback; }
 
 	StringList actions() const;
@@ -95,14 +90,9 @@ public:
 	void decrementFrame();
 
 protected:
-	/// Gets the name of the Sprite. \note Internal use only.
 	const std::string& name() const { return mSpriteName; }
 
 private:
-	/**
-	 * \struct	SpriteFrame
-	 * \brief	Contains
-	 */
 	struct SpriteFrame
 	{
 		std::string sheetId;
@@ -128,18 +118,18 @@ private:
 private:
 	static inline const std::string DEFAULT_ACTION{"default"};
 
-	std::map<std::string, Image> mImageSheets; /**< Imagesheets */
-	std::map<std::string, FrameList> mActions; /**< A list of Actions and their associated Frames. */
+	std::map<std::string, Image> mImageSheets;
+	std::map<std::string, FrameList> mActions;
 
-	std::string mSpriteName{"Default Constructed"}; /**< Name of this Sprite. */
-	std::string mCurrentAction{DEFAULT_ACTION}; /**< The current Action being performed. */
+	std::string mSpriteName{"Default Constructed"};
+	std::string mCurrentAction{DEFAULT_ACTION};
 
-	bool mPaused{false}; /**< Indicate whether or not the animation for this Sprite is paused. */
-	Timer mTimer; /**< Internal time keeper. */
-	std::size_t mCurrentFrame{0}; /**< The current frame index in the current Action's frame list. */
-	Callback mAnimationCompleteCallback; /**< Callback to signal a listener whenever an animation sequence completes. */
+	bool mPaused{false};
+	Timer mTimer;
+	std::size_t mCurrentFrame{0};
+	Callback mAnimationCompleteCallback;
 
-	Color mColor{Color::Normal}; /**< Color value to use for drawing the sprite. */
+	Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
 	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
 };
 

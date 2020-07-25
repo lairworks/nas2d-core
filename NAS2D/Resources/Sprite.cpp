@@ -135,11 +135,10 @@ void Sprite::update(Point<float> position)
 			mCurrentFrame++;
 		}
 
-		// Check that our frame count is within bounds.
 		if (mCurrentFrame >= mActions[mCurrentAction].size())
 		{
 			mCurrentFrame = 0;
-			mAnimationCompleteCallback(); // Notifiy any frame listeners that the animation sequence has completed.
+			mAnimationCompleteCallback();
 		}
 	}
 	else if (frame.frameDelay == FRAME_PAUSE)

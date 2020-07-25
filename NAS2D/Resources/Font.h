@@ -50,8 +50,7 @@ public:
 
 	unsigned int ptSize() const;
 
-	int glyphCellWidth() const;
-	int glyphCellHeight() const;
+	Vector<int> glyphCellSize() const;
 
 private:
 	void load() override {}

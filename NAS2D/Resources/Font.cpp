@@ -84,15 +84,6 @@ Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int gly
 
 
 /**
- * Default c'tor.
- *
- * Fonts instantiated with this constructor are not valid for use.
- */
-Font::Font() : Resource("Default Font")
-{}
-
-
-/**
  * Copy c'tor.
  *
  * \param	rhs	Font to copy.

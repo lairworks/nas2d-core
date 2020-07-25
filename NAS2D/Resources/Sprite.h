@@ -113,8 +113,6 @@ private:
 
 private:
 	using FrameList = std::vector<SpriteFrame>;
-	using ActionList = std::map<std::string, FrameList>;
-	using SheetList = std::map<std::string, Image>;
 
 	void processXml(const std::string& filePath);
 	void processImageSheets(void* root);
@@ -132,8 +130,8 @@ private:
 
 	Timer mTimer; /**< Internal time keeper. */
 
-	SheetList mImageSheets; /**< Imagesheets */
-	ActionList mActions; /**< A list of Actions and their associated Frames. */
+	std::map<std::string, Image> mImageSheets; /**< Imagesheets */
+	std::map<std::string, FrameList> mActions; /**< A list of Actions and their associated Frames. */
 
 	std::string mSpriteName{"Default Constructed"}; /**< Name of this Sprite. */
 	std::string mCurrentAction{DEFAULT_ACTION}; /**< The current Action being performed. */

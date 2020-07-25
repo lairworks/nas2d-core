@@ -111,13 +111,11 @@ private:
 	void processFrames(const std::string& action, const void* node);
 
 
-	static inline const std::string DEFAULT_ACTION{"default"};
-
 	std::map<std::string, Image> mImageSheets;
 	std::map<std::string, FrameList> mActions;
 
 	std::string mSpriteName;
-	std::string mCurrentAction{DEFAULT_ACTION};
+	std::string mCurrentAction{"default"};
 
 	bool mPaused{false};
 	Timer mTimer;

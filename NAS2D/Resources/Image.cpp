@@ -73,9 +73,10 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	mSize = Vector{width, height};
 
 	// Update resource management.
-	imageIdMap[name()].texture_id = 0;
-	imageIdMap[name()].size = {width, height};
-	imageIdMap[name()].ref_count++;
+	auto& imageInfo = imageIdMap[name()];
+	imageInfo.texture_id = 0;
+	imageInfo.size = {width, height};
+	imageInfo.ref_count++;
 }
 
 
@@ -108,10 +109,11 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
-	imageIdMap[name()].texture_id = texture_id;
-	imageIdMap[name()].size = {width, height};
-	imageIdMap[name()].ref_count++;
-	imageIdMap[name()].surface = surface;
+	auto& imageInfo = imageIdMap[name()];
+	imageInfo.texture_id = texture_id;
+	imageInfo.size = {width, height};
+	imageInfo.ref_count++;
+	imageInfo.surface = surface;
 }
 
 
@@ -205,11 +207,12 @@ void Image::load()
 	unsigned int texture_id = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
 
 	// Add generated texture id to texture ID map.
-	imageIdMap[name()].texture_id = texture_id;
-	imageIdMap[name()].size = mSize;
-	imageIdMap[name()].ref_count++;
+	auto& imageInfo = imageIdMap[name()];
+	imageInfo.texture_id = texture_id;
+	imageInfo.size = mSize;
+	imageInfo.ref_count++;
 
-	imageIdMap[name()].surface = surface;
+	imageInfo.surface = surface;
 
 	loaded(true);
 }

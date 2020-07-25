@@ -214,7 +214,7 @@ int Font::ascent() const
  */
 unsigned int Font::ptSize() const
 {
-	return fontMap[name()].pt_size;
+	return fontMap[name()].pointSize;
 }
 
 
@@ -318,7 +318,7 @@ namespace {
 
 		// Add generated texture id to texture ID map.
 		fontInfo.textureId = textureId;
-		fontInfo.pt_size = static_cast<unsigned int>(glyphSize.y);
+		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
 		fontInfo.refCount++;
 		fontInfo.glyphSize = glyphSize;
@@ -384,7 +384,7 @@ namespace {
 
 		// Add generated texture id to texture ID map.
 		fontMap[name].textureId = textureId;
-		fontMap[name].pt_size = font_size;
+		fontMap[name].pointSize = font_size;
 		fontMap[name].refCount++;
 		SDL_FreeSurface(fontSurface);
 

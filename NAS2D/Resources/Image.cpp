@@ -25,8 +25,7 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-using TextureIdMap = std::map<std::string, ImageInfo>;
-TextureIdMap imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
+std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 
 
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);

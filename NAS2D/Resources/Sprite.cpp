@@ -235,18 +235,7 @@ void Sprite::processXml(const std::string& filePath)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
-	if (!fs.exists(filePath))
-	{
-		throw std::runtime_error("Sprite file does not exist: " + filePath);
-	}
-
 	File xmlFile = fs.open(filePath);
-
-	// Load the file
-	if (xmlFile.empty())
-	{
-		throw std::runtime_error("Sprite file is empty: " + filePath);
-	}
 
 	XmlDocument docXml;
 	XmlElement *xmlRootElement = nullptr;

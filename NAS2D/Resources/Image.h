@@ -52,7 +52,6 @@ public:
 	~Image() override;
 
 	Vector<int> size() const;
-	Vector<int> center() const;
 
 	Color pixelColor(Point<int> point) const;
 	Color pixelColor(int x, int y) const;

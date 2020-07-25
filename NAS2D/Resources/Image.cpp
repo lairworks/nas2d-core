@@ -225,12 +225,6 @@ Vector<int> Image::size() const
 }
 
 
-Vector<int> Image::center() const
-{
-	return mSize / 2;
-}
-
-
 /**
  * Gets the color of a pixel at a given coordinate.
  *

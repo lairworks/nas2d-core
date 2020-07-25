@@ -149,7 +149,7 @@ Font& Font::operator=(const Font& rhs)
  */
 int Font::glyphCellWidth() const
 {
-	return fontMap[name()].glyph_size.x;
+	return fontMap[name()].glyphSize.x;
 }
 
 
@@ -158,7 +158,7 @@ int Font::glyphCellWidth() const
  */
 int Font::glyphCellHeight() const
 {
-	return fontMap[name()].glyph_size.y;
+	return fontMap[name()].glyphSize.y;
 }
 
 
@@ -258,7 +258,7 @@ namespace {
 
 		fontMap[fontname].height = TTF_FontHeight(font);
 		fontMap[fontname].ascent = TTF_FontAscent(font);
-		fontMap[fontname].glyph_size = generateGlyphMap(font, fontname, ptSize);
+		fontMap[fontname].glyphSize = generateGlyphMap(font, fontname, ptSize);
 		TTF_CloseFont(font);
 
 		return true;
@@ -321,7 +321,7 @@ namespace {
 		fontInfo.pt_size = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
 		fontInfo.refCount++;
-		fontInfo.glyph_size = glyphSize;
+		fontInfo.glyphSize = glyphSize;
 		SDL_FreeSurface(fontSurface);
 
 		return true;

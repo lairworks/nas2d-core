@@ -231,18 +231,6 @@ Vector<int> Image::center() const
 }
 
 
-int Image::center_x() const
-{
-	return mSize.x / 2;
-}
-
-
-int Image::center_y() const
-{
-	return mSize.y / 2;
-}
-
-
 /**
  * Gets the color of a pixel at a given coordinate.
  *

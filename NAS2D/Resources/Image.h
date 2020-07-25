@@ -54,9 +54,6 @@ public:
 	Vector<int> size() const;
 	Vector<int> center() const;
 
-	int center_x() const;
-	int center_y() const;
-
 	Color pixelColor(Point<int> point) const;
 	Color pixelColor(int x, int y) const;
 

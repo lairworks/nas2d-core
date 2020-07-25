@@ -398,8 +398,7 @@ void Sprite::processActions(void* root)
 
 			if (action_name.empty())
 			{
-				cout << "Zero-length 'name' value in Action definition." << endTag(node->row(), name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row(), name()));
 			}
 
 			if (mActions.find(toLowercase(action_name)) == mActions.end())
@@ -408,7 +407,7 @@ void Sprite::processActions(void* root)
 			}
 			else
 			{
-				cout << "Redefinition of action '" << action_name << "'. First definition will be used." << endTag(node->row(), name()) << endl;
+				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row(), name()));
 			}
 		}
 	}

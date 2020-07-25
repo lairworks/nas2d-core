@@ -87,7 +87,7 @@ public:
 	/**
 	 * Returns a reference to the frame listener signal slot.
 	 */
-	Callback& frameCallback() { return mFrameCallback; }
+	Callback& frameCallback() { return mAnimationCompleteCallback; }
 
 	StringList actions() const;
 
@@ -137,7 +137,7 @@ private:
 	bool mPaused{false}; /**< Indicate whether or not the animation for this Sprite is paused. */
 	Timer mTimer; /**< Internal time keeper. */
 	std::size_t mCurrentFrame{0}; /**< The current frame index in the current Action's frame list. */
-	Callback mFrameCallback; /**< Callback to signal a listener whenever an animation sequence completes. */
+	Callback mAnimationCompleteCallback; /**< Callback to signal a listener whenever an animation sequence completes. */
 
 	Color mColor{Color::Normal}; /**< Color value to use for drawing the sprite. */
 	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */

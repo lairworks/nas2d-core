@@ -139,12 +139,12 @@ void Sprite::update(Point<float> position)
 		if (mCurrentFrame >= mActions[mCurrentAction].size())
 		{
 			mCurrentFrame = 0;
-			mFrameCallback(); // Notifiy any frame listeners that the animation sequence has completed.
+			mAnimationCompleteCallback(); // Notifiy any frame listeners that the animation sequence has completed.
 		}
 	}
 	else if (frame.frameDelay == FRAME_PAUSE)
 	{
-		mFrameCallback();
+		mAnimationCompleteCallback();
 	}
 
 	const auto drawPosition = position - frame.anchorOffset.to<float>();

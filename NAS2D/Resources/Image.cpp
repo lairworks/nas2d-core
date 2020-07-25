@@ -208,11 +208,10 @@ void Image::load()
 
 	// Add generated texture id to texture ID map.
 	auto& imageInfo = imageIdMap[name()];
+	imageInfo.surface = surface;
 	imageInfo.texture_id = texture_id;
 	imageInfo.size = mSize;
 	imageInfo.ref_count++;
-
-	imageInfo.surface = surface;
 
 	loaded(true);
 }
@@ -330,7 +329,6 @@ namespace {
 			{
 				return;
 			}
-
 			glDeleteTextures(1, &imageInfo.texture_id);
 
 			if (imageInfo.fbo_id != 0)

@@ -76,7 +76,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	auto& imageInfo = imageIdMap[name()];
 	imageInfo.textureId = 0;
 	imageInfo.size = {width, height};
-	imageInfo.ref_count++;
+	imageInfo.refCount++;
 }
 
 
@@ -112,7 +112,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	auto& imageInfo = imageIdMap[name()];
 	imageInfo.textureId = textureId;
 	imageInfo.size = {width, height};
-	imageInfo.ref_count++;
+	imageInfo.refCount++;
 	imageInfo.surface = surface;
 }
 
@@ -130,7 +130,7 @@ Image::Image(const Image &src) : Resource(src.name()), mSize(src.mSize)
 	}
 
 	loaded(src.loaded());
-	imageIdMap[name()].ref_count++;
+	imageIdMap[name()].refCount++;
 }
 
 
@@ -164,7 +164,7 @@ Image& Image::operator=(const Image& rhs)
 	}
 
 	loaded(rhs.loaded());
-	++it->second.ref_count;
+	++it->second.refCount;
 
 	return *this;
 }
@@ -211,7 +211,7 @@ void Image::load()
 	imageInfo.surface = surface;
 	imageInfo.textureId = textureId;
 	imageInfo.size = mSize;
-	imageInfo.ref_count++;
+	imageInfo.refCount++;
 
 	loaded(true);
 }
@@ -321,9 +321,9 @@ namespace {
 		}
 
 		auto& imageInfo = it->second;
-		--imageInfo.ref_count;
+		--imageInfo.refCount;
 
-		if (imageInfo.ref_count <= 0)
+		if (imageInfo.refCount <= 0)
 		{
 			if (imageInfo.textureId == 0)
 			{
@@ -359,7 +359,7 @@ namespace {
 
 		if (it != imageIdMap.end())
 		{
-			++imageIdMap[name].ref_count;
+			++imageIdMap[name].refCount;
 			return true;
 		}
 

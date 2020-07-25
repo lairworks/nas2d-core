@@ -102,7 +102,7 @@ Font::Font(const Font& rhs) : Resource(rhs.name())
 	auto it = fontMap.find(name());
 	if (it != fontMap.end())
 	{
-		++it->second.ref_count;
+		++it->second.refCount;
 		loaded(rhs.loaded());
 	}
 	else
@@ -137,7 +137,7 @@ Font& Font::operator=(const Font& rhs)
 	auto it = fontMap.find(name());
 	if (it == fontMap.end()) { throw font_bad_data(); }
 
-	++it->second.ref_count;
+	++it->second.refCount;
 	loaded(rhs.loaded());
 
 	return *this;
@@ -230,7 +230,7 @@ namespace {
 		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
 		if (fontAlreadyLoaded(fontname))
 		{
-			++fontMap[fontname].ref_count;
+			++fontMap[fontname].refCount;
 			return true;
 		}
 
@@ -277,7 +277,7 @@ namespace {
 	{
 		if (fontAlreadyLoaded(path))
 		{
-			++fontMap[path].ref_count;
+			++fontMap[path].refCount;
 			return true;
 		}
 
@@ -320,7 +320,7 @@ namespace {
 		fontInfo.textureId = textureId;
 		fontInfo.pt_size = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
-		fontInfo.ref_count++;
+		fontInfo.refCount++;
 		fontInfo.glyph_size = glyphSize;
 		SDL_FreeSurface(fontSurface);
 
@@ -385,7 +385,7 @@ namespace {
 		// Add generated texture id to texture ID map.
 		fontMap[name].textureId = textureId;
 		fontMap[name].pt_size = font_size;
-		fontMap[name].ref_count++;
+		fontMap[name].refCount++;
 		SDL_FreeSurface(fontSurface);
 
 		return size;
@@ -468,8 +468,8 @@ namespace {
 		}
 
 		auto& fontInfo = it->second;
-		--fontInfo.ref_count;
-		if (fontInfo.ref_count <= 0)
+		--fontInfo.refCount;
+		if (fontInfo.refCount <= 0)
 		{
 			glDeleteTextures(1, &fontInfo.textureId);
 			fontMap.erase(it);

@@ -39,7 +39,7 @@ struct FontInfo
 	unsigned int pt_size{0u};
 	int height{0};
 	int ascent{0};
-	int ref_count{0};
+	int refCount{0};
 	Vector<int> glyph_size;
 	GlyphMetricsList metrics;
 };

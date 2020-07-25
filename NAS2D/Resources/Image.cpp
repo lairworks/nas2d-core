@@ -324,8 +324,7 @@ namespace {
 		auto& imageInfo = it->second;
 		--imageInfo.ref_count;
 
-		// if texture id reference count is 0, delete the texture.
-		if (imageInfo.ref_count < 1)
+		if (imageInfo.ref_count <= 0)
 		{
 			if (imageInfo.texture_id == 0)
 			{

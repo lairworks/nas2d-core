@@ -237,18 +237,18 @@ void Sprite::processXml(const std::string& filePath)
 
 	File xmlFile = fs.open(filePath);
 
-	XmlDocument docXml;
+	XmlDocument xmlDoc;
 
 	// Load the XML document and handle any errors if occuring
-	docXml.parse(xmlFile.raw_bytes());
-	if (docXml.error())
+	xmlDoc.parse(xmlFile.raw_bytes());
+	if (xmlDoc.error())
 	{
-		throw std::runtime_error("Sprite file has malformed XML: (" + name() + ") Row: " + std::to_string(docXml.errorRow()) + " Column: " + std::to_string(docXml.errorCol()) + " : " + docXml.errorDesc());
+		throw std::runtime_error("Sprite file has malformed XML: (" + name() + ") Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 	}
 	else
 	{
 		// Find the Sprite node.
-		const XmlElement* xmlRootElement = docXml.firstChildElement("sprite");
+		const XmlElement* xmlRootElement = xmlDoc.firstChildElement("sprite");
 		if (!xmlRootElement)
 		{
 			throw std::runtime_error("Sprite file does not contain required <sprite> tag: " + filePath);

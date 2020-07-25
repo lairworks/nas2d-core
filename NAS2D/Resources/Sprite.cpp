@@ -448,7 +448,9 @@ void Sprite::processFrames(const std::string& action, void* _node)
 				else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
 				else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
 				else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
-				else { std::cout << "Unexpected attribute '" << attribute->name() << "' found on row " << currentRow << std::endl; }
+				else {
+					throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow, name()));
+				}
 
 				attribute = attribute->next();
 			}
@@ -459,43 +461,27 @@ void Sprite::processFrames(const std::string& action, void* _node)
 			}
 
 			// X-Coordinate
-			if ( x < 0 || x > mImageSheets.find(sheetId)->second.size().x)
+			if (x < 0 || x > mImageSheets.find(sheetId)->second.size().x)
 			{
-				cout << "Value 'x' is out of bounds." << endTag(currentRow, name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Y-Coordinate
 			if (y < 0 || y > mImageSheets.find(sheetId)->second.size().y)
 			{
-				cout << "Value 'y' is out of bounds." << endTag(currentRow, name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Width
-			if (width < 1)
+			if (width <= 0 || width > mImageSheets.find(sheetId)->second.size().x - x)
 			{
-				width = 1;
-				cout << "'width' value must be greater than 0." << endTag(currentRow, name()) << endl;
-				continue;
-			}
-			else if (x + width > mImageSheets.find(sheetId)->second.size().x)
-			{
-				cout << "'x' + 'width' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Height
-			if (height < 1)
+			if (height <= 0 || height > mImageSheets.find(sheetId)->second.size().y - y)
 			{
-				height = 1;
-				cout << "'height' value must be greater than 0." << endTag(currentRow, name()) << endl;
-				continue;
-			}
-			else if (y + height > mImageSheets.find(sheetId)->second.size().y)
-			{
-				cout << "'y' + 'height' value exceeds dimensions of specified imagesheet." << endTag(currentRow, name()) << endl;
-				continue;
+				throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
@@ -504,7 +490,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 		}
 		else
 		{
-			cout << "Unexpected tag '<" << frame->value() << ">'." << endTag(currentRow, name()) << endl;
+			throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow, name()));
 		}
 	}
 
@@ -515,7 +501,7 @@ void Sprite::processFrames(const std::string& action, void* _node)
 	}
 	else
 	{
-		cout << "Action '" << action << "' contains no valid frames. (" << name() << ")" << endl;
+		throw std::runtime_error("Sprite Action contains no valid frames: " + action + " (" + name() + ")");
 	}
 }
 

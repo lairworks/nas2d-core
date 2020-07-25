@@ -23,8 +23,6 @@ namespace NAS2D {
 class Sound: public Resource
 {
 public:
-
-	Sound() = default;
 	Sound(const Sound& other) = default;
 	Sound& operator=(const Sound& rhs) = default;
 	Sound(Sound&& other) = default;

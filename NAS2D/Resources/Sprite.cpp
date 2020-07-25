@@ -233,14 +233,9 @@ void Sprite::decrementFrame()
  */
 void Sprite::processXml(const std::string& filePath)
 {
-	Filesystem& fs = Utility<Filesystem>::get();
-
-	File xmlFile = fs.open(filePath);
-
 	XmlDocument xmlDoc;
+	xmlDoc.parse(Utility<Filesystem>::get().open(filePath).raw_bytes());
 
-	// Load the XML document and handle any errors if occuring
-	xmlDoc.parse(xmlFile.raw_bytes());
 	if (xmlDoc.error())
 	{
 		throw std::runtime_error("Sprite file has malformed XML: (" + name() + ") Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());

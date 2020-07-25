@@ -35,7 +35,7 @@ using GlyphMetricsList = std::vector<GlyphMetrics>;
  */
 struct FontInfo
 {
-	unsigned int texture_id{0u};
+	unsigned int textureId{0u};
 	unsigned int pt_size{0u};
 	int height{0};
 	int ascent{0};

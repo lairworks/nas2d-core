@@ -74,7 +74,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 
 	// Update resource management.
 	auto& imageInfo = imageIdMap[name()];
-	imageInfo.texture_id = 0;
+	imageInfo.textureId = 0;
 	imageInfo.size = {width, height};
 	imageInfo.ref_count++;
 }
@@ -106,11 +106,11 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	mSize = Vector{width, height};
 
-	unsigned int texture_id = generateTexture(buffer, bytesPerPixel, width, height);
+	unsigned int textureId = generateTexture(buffer, bytesPerPixel, width, height);
 
 	// Update resource management.
 	auto& imageInfo = imageIdMap[name()];
-	imageInfo.texture_id = texture_id;
+	imageInfo.textureId = textureId;
 	imageInfo.size = {width, height};
 	imageInfo.ref_count++;
 	imageInfo.surface = surface;
@@ -204,12 +204,12 @@ void Image::load()
 
 	mSize = Vector{surface->w, surface->h};
 
-	unsigned int texture_id = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
+	unsigned int textureId = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
 
 	// Add generated texture id to texture ID map.
 	auto& imageInfo = imageIdMap[name()];
 	imageInfo.surface = surface;
-	imageInfo.texture_id = texture_id;
+	imageInfo.textureId = textureId;
 	imageInfo.size = mSize;
 	imageInfo.ref_count++;
 
@@ -325,11 +325,11 @@ namespace {
 
 		if (imageInfo.ref_count <= 0)
 		{
-			if (imageInfo.texture_id == 0)
+			if (imageInfo.textureId == 0)
 			{
 				return;
 			}
-			glDeleteTextures(1, &imageInfo.texture_id);
+			glDeleteTextures(1, &imageInfo.textureId);
 
 			if (imageInfo.fbo_id != 0)
 			{
@@ -387,9 +387,9 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 		throw image_unsupported_bit_depth();
 	}
 
-	GLuint texture_id;
-	glGenTextures(1, &texture_id);
-	glBindTexture(GL_TEXTURE_2D, texture_id);
+	GLuint textureId;
+	glGenTextures(1, &textureId);
+	glBindTexture(GL_TEXTURE_2D, textureId);
 
 	// Set texture and pixel handling states.
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -400,5 +400,5 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 
 	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
 
-	return texture_id;
+	return textureId;
 }

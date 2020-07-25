@@ -314,10 +314,10 @@ namespace {
 		}
 		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
 
-		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
+		unsigned int textureId = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
-		fontInfo.texture_id = texture_id;
+		fontInfo.textureId = textureId;
 		fontInfo.pt_size = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
 		fontInfo.ref_count++;
@@ -380,10 +380,10 @@ namespace {
 			SDL_FreeSurface(characterSurface);
 		}
 
-		unsigned int texture_id = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
+		unsigned int textureId = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
 
 		// Add generated texture id to texture ID map.
-		fontMap[name].texture_id = texture_id;
+		fontMap[name].textureId = textureId;
 		fontMap[name].pt_size = font_size;
 		fontMap[name].ref_count++;
 		SDL_FreeSurface(fontSurface);
@@ -471,7 +471,7 @@ namespace {
 		--fontInfo.ref_count;
 		if (fontInfo.ref_count <= 0)
 		{
-			glDeleteTextures(1, &fontInfo.texture_id);
+			glDeleteTextures(1, &fontInfo.textureId);
 			fontMap.erase(it);
 		}
 

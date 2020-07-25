@@ -141,7 +141,7 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 
 	const auto imageSize = image.size().to<float>() * scale;
 	const auto vertexArray = rectToQuad({position.x, position.y, imageSize.x, imageSize.y});
-	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
+	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray);
 }
 
 
@@ -153,7 +153,7 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
-	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray, textureCoordArray);
+	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray, textureCoordArray);
 }
 
 
@@ -175,7 +175,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
-	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray, textureCoordArray);
+	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray, textureCoordArray);
 
 	glPopMatrix();
 }
@@ -200,7 +200,7 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 
 	const auto vertexArray = rectToQuad({-scaledHalfSize.x, -scaledHalfSize.y, scaledHalfSize.x * 2, scaledHalfSize.y * 2});
 
-	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
+	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray);
 	glPopMatrix();
 }
 
@@ -211,7 +211,7 @@ void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Col
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	const auto vertexArray = rectToQuad(rect);
-	drawTexturedQuad(imageIdMap[image.name()].texture_id, vertexArray);
+	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray);
 }
 
 
@@ -219,7 +219,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
 {
 	setColor(Color::White);
 
-	glBindTexture(GL_TEXTURE_2D, imageIdMap[image.name()].texture_id);
+	glBindTexture(GL_TEXTURE_2D, imageIdMap[image.name()].textureId);
 
 	// Change texture mode to repeat at edges.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -293,7 +293,7 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	setColor(Color::White);
 
 	const auto& destinationImageInfo = imageIdMap[destination.name()];
-	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.texture_id);
+	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.textureId);
 
 	GLuint fbo = destinationImageInfo.fbo_id;
 	if (fbo == 0)
@@ -302,12 +302,12 @@ void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const P
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destinationImageInfo.texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destinationImageInfo.textureId, 0);
 	// Flip the Y axis to keep images drawing correctly.
 	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, clipSize.x, -clipSize.y});
 
-	drawTexturedQuad(imageIdMap[source.name()].texture_id, vertexArray);
-	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.texture_id);
+	drawTexturedQuad(imageIdMap[source.name()].textureId, vertexArray);
+	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.textureId);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -472,7 +472,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 		const auto vertexArray = rectToQuad({position.x + offset, position.y, static_cast<float>(font.glyphCellWidth()), static_cast<float>(font.glyphCellHeight())});
 		const auto textureCoordArray = rectToQuad(gm.uvRect);
 
-		drawTexturedQuad(fontMap[font.name()].texture_id, vertexArray, textureCoordArray);
+		drawTexturedQuad(fontMap[font.name()].textureId, vertexArray, textureCoordArray);
 		offset += gm.advance + gm.minX;
 	}
 }
@@ -814,7 +814,7 @@ GLuint generate_fbo(Image& image)
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	
-	if (imageIdMap[image.name()].texture_id == 0)
+	if (imageIdMap[image.name()].textureId == 0)
 	{
 		unsigned int textureColorbuffer;
 		glGenTextures(1, &textureColorbuffer);
@@ -827,7 +827,7 @@ GLuint generate_fbo(Image& image)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[image.name()].texture_id, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[image.name()].textureId, 0);
 
 	imageIdMap[image.name()].fbo_id = framebuffer;
 

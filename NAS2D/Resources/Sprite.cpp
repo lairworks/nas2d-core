@@ -155,6 +155,18 @@ float Sprite::rotation() const
 }
 
 
+Vector<int> Sprite::size() const
+{
+	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();
+}
+
+
+Point<int> Sprite::origin(Point<int> point) const
+{
+	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
+}
+
+
 /**
  * Gets a list of Actions available for the Sprite.
  *
@@ -446,16 +458,4 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 	}
 
 	mActions[toLowercase(action)] = frameList;
-}
-
-
-Vector<int> Sprite::size() const
-{
-	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();
-}
-
-
-Point<int> Sprite::origin(Point<int> point) const
-{
-	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
 }

@@ -173,6 +173,44 @@ float Sprite::rotation() const
 }
 
 
+/**
+ * Sets the alpha value for the Sprite.
+ *
+ * \param	alpha	Alpha value to set between 0 - 255.
+ */
+void Sprite::alpha(uint8_t alpha)
+{
+	mColor.alpha = alpha;
+}
+
+
+/**
+ * Gets the alpha value for the Sprite.
+ */
+uint8_t Sprite::alpha() const
+{
+	return mColor.alpha;
+}
+
+
+/**
+ * Sets the color tint of the Sprite.
+ */
+void Sprite::color(const Color& color)
+{
+	mColor = color;
+}
+
+
+/**
+ * Gets the color tint of the Sprite.
+ */
+const Color& Sprite::color() const
+{
+	return mColor;
+}
+
+
 Vector<int> Sprite::size() const
 {
 	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();

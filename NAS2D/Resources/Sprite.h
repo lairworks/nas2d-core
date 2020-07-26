@@ -57,27 +57,10 @@ public:
 	void rotation(float angle);
 	float rotation() const;
 
-	/**
-	 * Sets the alpha value for the Sprite.
-	 *
-	 * \param	alpha	Alpha value to set between 0 - 255.
-	 */
-	void alpha(uint8_t alpha) { mColor.alpha = alpha; }
-
-	/**
-	 * Gets the alpha value for the Sprite.
-	 */
-	uint8_t alpha() const { return mColor.alpha; }
-
-	/**
-	 * Sets the color tint of the Sprite.
-	 */
-	void color(const Color& color) { mColor = color; }
-
-	/**
-	 * Gets the color tint of the Sprite.
-	 */
-	const Color& color() const { return mColor; }
+	void alpha(uint8_t alpha);
+	uint8_t alpha() const;
+	void color(const Color& color);
+	const Color& color() const;
 
 	Vector<int> size() const;
 	Point<int> origin(Point<int> point) const;

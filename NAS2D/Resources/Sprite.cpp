@@ -236,7 +236,7 @@ void Sprite::processXml(const std::string& filePath)
 		}
 		else if (version->value() != SPRITE_VERSION)
 		{
-			throw std::runtime_error("Sprite version mismatch. Expected: " + SPRITE_VERSION + " Actualy: " + versionString());
+			throw std::runtime_error("Sprite version mismatch. Expected: " + SPRITE_VERSION + " Actual: " + versionString());
 		}
 
 		// Note:

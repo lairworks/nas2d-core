@@ -353,15 +353,12 @@ void Sprite::processActions(const void* root)
 			{
 				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row(), name()));
 			}
-
-			if (mActions.find(toLowercase(action_name)) == mActions.end())
-			{
-				processFrames(action_name, node);
-			}
-			else
+			if (mActions.find(toLowercase(action_name)) != mActions.end())
 			{
 				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row(), name()));
 			}
+
+			processFrames(action_name, node);
 		}
 	}
 }

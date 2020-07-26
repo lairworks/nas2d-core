@@ -235,6 +235,18 @@ const Color& Sprite::color() const
 }
 
 
+Sprite::Callback& Sprite::frameCallback()
+{
+	return mAnimationCompleteCallback;
+}
+
+
+const std::string& Sprite::name() const
+{
+	return mSpriteName;
+}
+
+
 /**
  * Parses a Sprite XML Definition File.
  *

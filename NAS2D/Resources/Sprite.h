@@ -67,10 +67,10 @@ public:
 	void color(const Color& color);
 	const Color& color() const;
 
-	Callback& frameCallback() { return mAnimationCompleteCallback; }
+	Callback& frameCallback();
 
 protected:
-	const std::string& name() const { return mSpriteName; }
+	const std::string& name() const;
 
 private:
 	struct SpriteFrame

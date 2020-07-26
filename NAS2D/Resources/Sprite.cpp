@@ -414,11 +414,11 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 			{
 				throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow, name()));
 			}
-			else if (mImageSheets.find(sheetId) == mImageSheets.end())
+			if (mImageSheets.find(sheetId) == mImageSheets.end())
 			{
 				throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow, name()));
 			}
-			else if (!mImageSheets.find(sheetId)->second.loaded())
+			if (!mImageSheets.find(sheetId)->second.loaded())
 			{
 				throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow, name()));
 			}

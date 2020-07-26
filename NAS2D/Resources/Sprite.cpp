@@ -129,7 +129,7 @@ void Sprite::update(Point<float> position)
 
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId], drawPosition, frameBounds, mRotationAngle, mColor);
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets.at(frame.sheetId), drawPosition, frameBounds, mRotationAngle, mColor);
 }
 
 
@@ -318,7 +318,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, const 
 		}
 		else
 		{
-			mImageSheets[id] = Image(imagePath);
+			mImageSheets.try_emplace(id, imagePath);
 		}
 	}
 	else

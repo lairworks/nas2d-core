@@ -339,26 +339,10 @@ void Sprite::processImageSheets(const void* root)
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
 
-			addImageSheet(id, src);
+			const string imagePath = Utility<Filesystem>::get().workingPath(mSpriteName) + src;
+			mImageSheets.try_emplace(id, imagePath);
 		}
 	}
-}
-
-
-/**
- * Adds an image sheet to the Sprite.
- *
- * \note	Imagesheet ID's are not case sensitive. "Case", "caSe",
- *			"CASE", etc. will all be viewed as identical.
- *
- * \param	id		String ID for the image sheet.
- * \param	src		Image sheet file path.
- */
-void Sprite::addImageSheet(const std::string& id, const std::string& src)
-{
-	Filesystem& fs = Utility<Filesystem>::get();
-	const string imagePath = fs.workingPath(mSpriteName) + src;
-	mImageSheets.try_emplace(id, imagePath);
 }
 
 

@@ -86,8 +86,6 @@ private:
 
 	void processXml(const std::string& filePath);
 	void processImageSheets(const void* root);
-	void addImageSheet(const std::string& id, const std::string& src);
-
 	void processActions(const void* root);
 	void processFrames(const std::string& action, const void* node);
 

@@ -379,90 +379,85 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 	{
 		int currentRow = frame->row();
 
-		if (frame->value() == "frame" && frame->toElement())
-		{
-			string sheetId;
-			int delay = 0;
-			int x = 0, y = 0;
-			int width = 0, height = 0;
-			int anchorx = 0, anchory = 0;
-
-			const XmlAttribute* attribute = frame->toElement()->firstAttribute();
-			while (attribute)
-			{
-				if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }
-				else if (toLowercase(attribute->name()) == "delay") { attribute->queryIntValue(delay); }
-				else if (toLowercase(attribute->name()) == "x") { attribute->queryIntValue(x); }
-				else if (toLowercase(attribute->name()) == "y") { attribute->queryIntValue(y); }
-				else if (toLowercase(attribute->name()) == "width") { attribute->queryIntValue(width); }
-				else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
-				else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
-				else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
-				else {
-					throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow, name()));
-				}
-
-				attribute = attribute->next();
-			}
-
-			if (sheetId.empty())
-			{
-				throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow, name()));
-			}
-			const auto iterator = mImageSheets.find(sheetId);
-			if (iterator == mImageSheets.end())
-			{
-				throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow, name()));
-			}
-			const auto& image = iterator->second;
-			if (!image.loaded())
-			{
-				throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow, name()));
-			}
-
-			// X-Coordinate
-			if (x < 0 || x > image.size().x)
-			{
-				throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow, name()));
-			}
-
-			// Y-Coordinate
-			if (y < 0 || y > image.size().y)
-			{
-				throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow, name()));
-			}
-
-			// Width
-			if (width <= 0 || width > image.size().x - x)
-			{
-				throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow, name()));
-			}
-
-			// Height
-			if (height <= 0 || height > image.size().y - y)
-			{
-				throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow, name()));
-			}
-
-			const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
-			const auto anchorOffset = Vector{anchorx, anchory};
-			frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, static_cast<unsigned int>(delay)});
-		}
-		else
+		if (frame->value() != "frame" || !frame->toElement())
 		{
 			throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow, name()));
 		}
+
+		string sheetId;
+		int delay = 0;
+		int x = 0, y = 0;
+		int width = 0, height = 0;
+		int anchorx = 0, anchory = 0;
+
+		const XmlAttribute* attribute = frame->toElement()->firstAttribute();
+		while (attribute)
+		{
+			if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }
+			else if (toLowercase(attribute->name()) == "delay") { attribute->queryIntValue(delay); }
+			else if (toLowercase(attribute->name()) == "x") { attribute->queryIntValue(x); }
+			else if (toLowercase(attribute->name()) == "y") { attribute->queryIntValue(y); }
+			else if (toLowercase(attribute->name()) == "width") { attribute->queryIntValue(width); }
+			else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
+			else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
+			else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
+			else {
+				throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow, name()));
+			}
+
+			attribute = attribute->next();
+		}
+
+		if (sheetId.empty())
+		{
+			throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow, name()));
+		}
+		const auto iterator = mImageSheets.find(sheetId);
+		if (iterator == mImageSheets.end())
+		{
+			throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow, name()));
+		}
+		const auto& image = iterator->second;
+		if (!image.loaded())
+		{
+			throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow, name()));
+		}
+
+		// X-Coordinate
+		if (x < 0 || x > image.size().x)
+		{
+			throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow, name()));
+		}
+
+		// Y-Coordinate
+		if (y < 0 || y > image.size().y)
+		{
+			throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow, name()));
+		}
+
+		// Width
+		if (width <= 0 || width > image.size().x - x)
+		{
+			throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow, name()));
+		}
+
+		// Height
+		if (height <= 0 || height > image.size().y - y)
+		{
+			throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow, name()));
+		}
+
+		const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
+		const auto anchorOffset = Vector{anchorx, anchory};
+		frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, static_cast<unsigned int>(delay)});
 	}
 
-	// Add the frame list to the action container.
-	if (frameList.size() > 0)
-	{
-		mActions[toLowercase(action)] = frameList;
-	}
-	else
+	if (frameList.size() <= 0)
 	{
 		throw std::runtime_error("Sprite Action contains no valid frames: " + action + " (" + name() + ")");
 	}
+
+	mActions[toLowercase(action)] = frameList;
 }
 
 

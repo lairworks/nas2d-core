@@ -357,12 +357,7 @@ void Sprite::processImageSheets(const void* root)
 void Sprite::addImageSheet(const std::string& id, const std::string& src)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
-
 	const string imagePath = fs.workingPath(mSpriteName) + src;
-	if (!fs.exists(imagePath))
-	{
-		throw std::runtime_error("Sprite image path not found: Image: '" + imagePath + "'");
-	}
 	mImageSheets.try_emplace(id, imagePath);
 }
 

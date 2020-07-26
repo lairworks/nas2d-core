@@ -334,7 +334,12 @@ void Sprite::processImageSheets(const void* root)
 				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
-			addImageSheet(id, src, node);
+			if (mImageSheets.find(toLowercase(id)) != mImageSheets.end())
+			{
+				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
+			}
+
+			addImageSheet(id, src);
 		}
 	}
 }
@@ -348,16 +353,10 @@ void Sprite::processImageSheets(const void* root)
  *
  * \param	id		String ID for the image sheet.
  * \param	src		Image sheet file path.
- * \param	node	XML Node (for error information).
  */
-void Sprite::addImageSheet(const std::string& id, const std::string& src, const void* node)
+void Sprite::addImageSheet(const std::string& id, const std::string& src)
 {
 	Filesystem& fs = Utility<Filesystem>::get();
-
-	if (mImageSheets.find(toLowercase(id)) != mImageSheets.end())
-	{
-		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<const XmlNode*>(node)->row()));
-	}
 
 	const string imagePath = fs.workingPath(mSpriteName) + src;
 	if (!fs.exists(imagePath))

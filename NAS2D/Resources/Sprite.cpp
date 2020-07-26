@@ -49,6 +49,30 @@ Sprite::Sprite(const std::string& filePath) :
 	processXml(filePath);
 }
 
+
+Vector<int> Sprite::size() const
+{
+	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();
+}
+
+
+Point<int> Sprite::origin(Point<int> point) const
+{
+	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
+}
+
+
+/**
+ * Gets a list of Actions available for the Sprite.
+ *
+ * \return	StringList of actions.
+ */
+StringList Sprite::actions() const
+{
+	return getKeys(mActions);
+}
+
+
 /**
  * Plays an action animation.
  *
@@ -208,29 +232,6 @@ void Sprite::color(const Color& color)
 const Color& Sprite::color() const
 {
 	return mColor;
-}
-
-
-Vector<int> Sprite::size() const
-{
-	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();
-}
-
-
-Point<int> Sprite::origin(Point<int> point) const
-{
-	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
-}
-
-
-/**
- * Gets a list of Actions available for the Sprite.
- *
- * \return	StringList of actions.
- */
-StringList Sprite::actions() const
-{
-	return getKeys(mActions);
 }
 
 

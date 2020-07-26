@@ -44,6 +44,11 @@ public:
 	Sprite& operator=(const Sprite& rhs) = default;
 	~Sprite() = default;
 
+	Vector<int> size() const;
+	Point<int> origin(Point<int> point) const;
+
+	StringList actions() const;
+
 	void play(const std::string& action);
 	void pause();
 	void resume();
@@ -62,12 +67,7 @@ public:
 	void color(const Color& color);
 	const Color& color() const;
 
-	Vector<int> size() const;
-	Point<int> origin(Point<int> point) const;
-
 	Callback& frameCallback() { return mAnimationCompleteCallback; }
-
-	StringList actions() const;
 
 protected:
 	const std::string& name() const { return mSpriteName; }

@@ -219,33 +219,31 @@ void Sprite::processXml(const std::string& filePath)
 	{
 		throw std::runtime_error("Sprite file has malformed XML: (" + name() + ") Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 	}
-	else
+
+	// Find the Sprite node.
+	const XmlElement* xmlRootElement = xmlDoc.firstChildElement("sprite");
+	if (!xmlRootElement)
 	{
-		// Find the Sprite node.
-		const XmlElement* xmlRootElement = xmlDoc.firstChildElement("sprite");
-		if (!xmlRootElement)
-		{
-			throw std::runtime_error("Sprite file does not contain required <sprite> tag: " + filePath);
-		}
-
-		// Get the Sprite version.
-		const XmlAttribute* version = xmlRootElement->firstAttribute();
-		if (!version || version->value().empty())
-		{
-			throw std::runtime_error("Sprite file's root element does not specify a version: " + filePath);
-		}
-		else if (version->value() != SPRITE_VERSION)
-		{
-			throw std::runtime_error("Sprite version mismatch. Expected: " + SPRITE_VERSION + " Actual: " + versionString());
-		}
-
-		// Note:
-		// Here instead of going through each element and calling a processing function to handle
-		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
-		// image sheets anywhere in the sprite file.
-		processImageSheets(xmlRootElement);
-		processActions(xmlRootElement);
+		throw std::runtime_error("Sprite file does not contain required <sprite> tag: " + filePath);
 	}
+
+	// Get the Sprite version.
+	const XmlAttribute* version = xmlRootElement->firstAttribute();
+	if (!version || version->value().empty())
+	{
+		throw std::runtime_error("Sprite file's root element does not specify a version: " + filePath);
+	}
+	if (version->value() != SPRITE_VERSION)
+	{
+		throw std::runtime_error("Sprite version mismatch. Expected: " + SPRITE_VERSION + " Actual: " + versionString());
+	}
+
+	// Note:
+	// Here instead of going through each element and calling a processing function to handle
+	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
+	// image sheets anywhere in the sprite file.
+	processImageSheets(xmlRootElement);
+	processActions(xmlRootElement);
 }
 
 

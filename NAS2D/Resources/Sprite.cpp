@@ -30,10 +30,10 @@ namespace NAS2D {
 namespace {
 	const auto FRAME_PAUSE = unsigned(-1);
 
-	// Adds a row/name tag to the end of messages.
-	string endTag(int row, const std::string& name)
+	// Adds a row tag to the end of messages.
+	string endTag(int row)
 	{
-		return " (Row: " + std::to_string(row) + ", " + name + ")";
+		return " (Row: " + std::to_string(row) + ")";
 	}
 }
 
@@ -266,21 +266,21 @@ void Sprite::processXml(const std::string& filePath)
 
 	if (xmlDoc.error())
 	{
-		throw std::runtime_error("Sprite file has malformed XML: (" + name() + ") Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
+		throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 	}
 
 	// Find the Sprite node.
 	const XmlElement* xmlRootElement = xmlDoc.firstChildElement("sprite");
 	if (!xmlRootElement)
 	{
-		throw std::runtime_error("Sprite file does not contain required <sprite> tag: " + filePath);
+		throw std::runtime_error("Sprite file does not contain required <sprite> tag");
 	}
 
 	// Get the Sprite version.
 	const XmlAttribute* version = xmlRootElement->firstAttribute();
 	if (!version || version->value().empty())
 	{
-		throw std::runtime_error("Sprite file's root element does not specify a version: " + filePath);
+		throw std::runtime_error("Sprite file's root element does not specify a version");
 	}
 	if (version->value() != SPRITE_VERSION)
 	{
@@ -326,12 +326,12 @@ void Sprite::processImageSheets(const void* root)
 
 			if (id.empty())
 			{
-				throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row(), name()));
+				throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row()));
 			}
 
 			if (src.empty())
 			{
-				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row(), name()));
+				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
 			addImageSheet(id, src, node);
@@ -356,13 +356,13 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, const 
 
 	if (mImageSheets.find(toLowercase(id)) != mImageSheets.end())
 	{
-		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<const XmlNode*>(node)->row(), name()));
+		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<const XmlNode*>(node)->row()));
 	}
 
 	const string imagePath = fs.workingPath(mSpriteName) + src;
 	if (!fs.exists(imagePath))
 	{
-		throw std::runtime_error("Sprite image path not found: Sprite: '" + name() + "' Image: '" + imagePath + "'");
+		throw std::runtime_error("Sprite image path not found: Image: '" + imagePath + "'");
 	}
 	mImageSheets.try_emplace(id, imagePath);
 }
@@ -400,11 +400,11 @@ void Sprite::processActions(const void* root)
 
 			if (action_name.empty())
 			{
-				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row(), name()));
+				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row()));
 			}
 			if (mActions.find(toLowercase(action_name)) != mActions.end())
 			{
-				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row(), name()));
+				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row()));
 			}
 
 			processFrames(action_name, node);
@@ -430,7 +430,7 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 
 		if (frame->value() != "frame" || !frame->toElement())
 		{
-			throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow, name()));
+			throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow));
 		}
 
 		string sheetId;
@@ -451,7 +451,7 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 			else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
 			else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
 			else {
-				throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow, name()));
+				throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow));
 			}
 
 			attribute = attribute->next();
@@ -459,41 +459,41 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 
 		if (sheetId.empty())
 		{
-			throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow, name()));
+			throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
 		}
 		const auto iterator = mImageSheets.find(sheetId);
 		if (iterator == mImageSheets.end())
 		{
-			throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow, name()));
+			throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
 		}
 		const auto& image = iterator->second;
 		if (!image.loaded())
 		{
-			throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow, name()));
+			throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow));
 		}
 
 		// X-Coordinate
 		if (x < 0 || x > image.size().x)
 		{
-			throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow, name()));
+			throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow));
 		}
 
 		// Y-Coordinate
 		if (y < 0 || y > image.size().y)
 		{
-			throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow, name()));
+			throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow));
 		}
 
 		// Width
 		if (width <= 0 || width > image.size().x - x)
 		{
-			throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow, name()));
+			throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow));
 		}
 
 		// Height
 		if (height <= 0 || height > image.size().y - y)
 		{
-			throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow, name()));
+			throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow));
 		}
 
 		const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
@@ -503,7 +503,7 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 
 	if (frameList.size() <= 0)
 	{
-		throw std::runtime_error("Sprite Action contains no valid frames: " + action + " (" + name() + ")");
+		throw std::runtime_error("Sprite Action contains no valid frames: " + action);
 	}
 
 	mActions[toLowercase(action)] = frameList;

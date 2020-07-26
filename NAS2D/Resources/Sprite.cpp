@@ -310,8 +310,7 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, const 
 	// Search for an image sheet with 'id'. If not found, add it.
 	if (mImageSheets.find(toLowercase(id)) == mImageSheets.end())
 	{
-		string imagePath = fs.workingPath(mSpriteName);
-		imagePath += src;
+		const string imagePath = fs.workingPath(mSpriteName) + src;
 		if (!fs.exists(imagePath))
 		{
 			throw std::runtime_error("Sprite image path not found: Sprite: '" + name() + "' Image: '" + imagePath + "'");

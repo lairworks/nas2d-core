@@ -109,16 +109,16 @@ struct Rectangle
 		return static_cast<Rectangle<NewBaseType>>(*this);
 	}
 
-	// Start point inclusive (x, y), endpoint exclusive (x + , y + height)
-	// Area in interval notation: [x .. x + ), [y .. y + height)
+	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
+	// Area in interval notation: [x .. x + width), [y .. y + height)
 	constexpr bool contains(const Point<BaseType>& point) const {
 		auto px = point.x;
 		auto py = point.y;
 		return ((x <= px) && (px < x + width)) && ((y <= py) && (py < y + height));
 	}
 
-	// Start point inclusive (x, y), endpoint exclusive (x + , y + height)
-	// Area in interval notation: [x .. x + ), [y .. y + height)
+	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
+	// Area in interval notation: [x .. x + width), [y .. y + height)
 	constexpr bool overlaps(const Rectangle& rect) const {
 		return ((x < rect.x + rect.width) && (rect.x < x + width)) && ((y < rect.y + rect.height) && (rect.y < y + height));
 	}

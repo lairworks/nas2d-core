@@ -134,18 +134,6 @@ void Sprite::update(Point<float> position)
 
 
 /**
- * Updates the Sprite and draws it to the screen at specified coordinaes.
- *
- * \param	x	X-Screen Coordinate to render the Sprite.
- * \param	y	X-Screen Coordinate to render the Sprite.
- */
-void Sprite::update(float x, float y)
-{
-	update(Point{x, y});
-}
-
-
-/**
  * Sets the rotation angle of the Sprite.
  *
  * \param	angle	Angle of rotation in degrees.

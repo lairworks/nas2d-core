@@ -109,11 +109,7 @@ void Sprite::setFrame(std::size_t frameIndex)
  */
 void Sprite::incrementFrame()
 {
-	++mCurrentFrame;
-	if (mCurrentFrame >= mActions[mCurrentAction].size())
-	{
-		mCurrentFrame = 0;
-	}
+	setFrame(mCurrentFrame + 1);
 }
 
 
@@ -122,12 +118,7 @@ void Sprite::incrementFrame()
  */
 void Sprite::decrementFrame()
 {
-	if (mCurrentFrame == 0)
-	{
-		mCurrentFrame = mActions[mCurrentAction].size();
-	}
-
-	--mCurrentFrame;
+	setFrame(mCurrentFrame - 1);
 }
 
 

@@ -307,23 +307,17 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, const 
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
-	// Search for an image sheet with 'id'. If not found, add it.
-	if (mImageSheets.find(toLowercase(id)) == mImageSheets.end())
-	{
-		const string imagePath = fs.workingPath(mSpriteName) + src;
-		if (!fs.exists(imagePath))
-		{
-			throw std::runtime_error("Sprite image path not found: Sprite: '" + name() + "' Image: '" + imagePath + "'");
-		}
-		else
-		{
-			mImageSheets.try_emplace(id, imagePath);
-		}
-	}
-	else
+	if (mImageSheets.find(toLowercase(id)) != mImageSheets.end())
 	{
 		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<const XmlNode*>(node)->row(), name()));
 	}
+
+	const string imagePath = fs.workingPath(mSpriteName) + src;
+	if (!fs.exists(imagePath))
+	{
+		throw std::runtime_error("Sprite image path not found: Sprite: '" + name() + "' Image: '" + imagePath + "'");
+	}
+	mImageSheets.try_emplace(id, imagePath);
 }
 
 

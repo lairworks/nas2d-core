@@ -46,7 +46,14 @@ namespace {
 Sprite::Sprite(const std::string& filePath) :
 	mSpriteName(filePath)
 {
-	processXml(filePath);
+	try
+	{
+		processXml(filePath);
+	}
+	catch(const std::runtime_error& error)
+	{
+		throw std::runtime_error("Error parsing Sprite file: " + filePath + "\nError: " + error.what());
+	}
 }
 
 

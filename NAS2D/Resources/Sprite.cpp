@@ -129,7 +129,7 @@ void Sprite::update(Point<float> position)
 
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets[frame.sheetId], drawPosition, frameBounds, mRotationAngle, mColor);
+	Utility<Renderer>::get().drawSubImageRotated(mImageSheets.at(frame.sheetId), drawPosition, frameBounds, mRotationAngle, mColor);
 }
 
 
@@ -307,24 +307,17 @@ void Sprite::addImageSheet(const std::string& id, const std::string& src, const 
 {
 	Filesystem& fs = Utility<Filesystem>::get();
 
-	// Search for an image sheet with 'id'. If not found, add it.
-	if (mImageSheets.find(toLowercase(id)) == mImageSheets.end())
-	{
-		string imagePath = fs.workingPath(mSpriteName);
-		imagePath += src;
-		if (!fs.exists(imagePath))
-		{
-			throw std::runtime_error("Sprite image path not found: Sprite: '" + name() + "' Image: '" + imagePath + "'");
-		}
-		else
-		{
-			mImageSheets[id] = Image(imagePath);
-		}
-	}
-	else
+	if (mImageSheets.find(toLowercase(id)) != mImageSheets.end())
 	{
 		throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(static_cast<const XmlNode*>(node)->row(), name()));
 	}
+
+	const string imagePath = fs.workingPath(mSpriteName) + src;
+	if (!fs.exists(imagePath))
+	{
+		throw std::runtime_error("Sprite image path not found: Sprite: '" + name() + "' Image: '" + imagePath + "'");
+	}
+	mImageSheets.try_emplace(id, imagePath);
 }
 
 
@@ -421,35 +414,37 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 			{
 				throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow, name()));
 			}
-			else if (mImageSheets.find(sheetId) == mImageSheets.end())
+			const auto iterator = mImageSheets.find(sheetId);
+			if (iterator == mImageSheets.end())
 			{
 				throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow, name()));
 			}
-			else if (!mImageSheets.find(sheetId)->second.loaded())
+			const auto& image = iterator->second;
+			if (!image.loaded())
 			{
 				throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow, name()));
 			}
 
 			// X-Coordinate
-			if (x < 0 || x > mImageSheets.find(sheetId)->second.size().x)
+			if (x < 0 || x > image.size().x)
 			{
 				throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Y-Coordinate
-			if (y < 0 || y > mImageSheets.find(sheetId)->second.size().y)
+			if (y < 0 || y > image.size().y)
 			{
 				throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Width
-			if (width <= 0 || width > mImageSheets.find(sheetId)->second.size().x - x)
+			if (width <= 0 || width > image.size().x - x)
 			{
 				throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow, name()));
 			}
 
 			// Height
-			if (height <= 0 || height > mImageSheets.find(sheetId)->second.size().y - y)
+			if (height <= 0 || height > image.size().y - y)
 			{
 				throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow, name()));
 			}

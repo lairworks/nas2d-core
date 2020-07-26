@@ -104,6 +104,33 @@ void Sprite::setFrame(std::size_t frameIndex)
 }
 
 
+/**
+ * Increments the frame counter.
+ */
+void Sprite::incrementFrame()
+{
+	++mCurrentFrame;
+	if (mCurrentFrame >= mActions[mCurrentAction].size())
+	{
+		mCurrentFrame = 0;
+	}
+}
+
+
+/**
+ * Decrements the frame counter.
+ */
+void Sprite::decrementFrame()
+{
+	if (mCurrentFrame == 0)
+	{
+		mCurrentFrame = mActions[mCurrentAction].size();
+	}
+
+	--mCurrentFrame;
+}
+
+
 void Sprite::update(Point<float> position)
 {
 	const auto& frame = mActions[mCurrentAction][mCurrentFrame];
@@ -175,33 +202,6 @@ Point<int> Sprite::origin(Point<int> point) const
 StringList Sprite::actions() const
 {
 	return getKeys(mActions);
-}
-
-
-/**
- * Increments the frame counter.
- */
-void Sprite::incrementFrame()
-{
-	++mCurrentFrame;
-	if (mCurrentFrame >= mActions[mCurrentAction].size())
-	{
-		mCurrentFrame = 0;
-	}
-}
-
-
-/**
- * Decrements the frame counter.
- */
-void Sprite::decrementFrame()
-{
-	if (mCurrentFrame == 0)
-	{
-		mCurrentFrame = mActions[mCurrentAction].size();
-	}
-
-	--mCurrentFrame;
 }
 
 

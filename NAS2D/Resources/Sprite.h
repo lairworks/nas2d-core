@@ -49,6 +49,8 @@ public:
 	void resume();
 
 	void setFrame(std::size_t frameIndex);
+	void incrementFrame();
+	void decrementFrame();
 
 	void update(Point<float> position);
 
@@ -83,9 +85,6 @@ public:
 	Callback& frameCallback() { return mAnimationCompleteCallback; }
 
 	StringList actions() const;
-
-	void incrementFrame();
-	void decrementFrame();
 
 protected:
 	const std::string& name() const { return mSpriteName; }

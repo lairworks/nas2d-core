@@ -89,7 +89,7 @@ protected:
 
 private:
 	SpriteAnimations processXml(const std::string& filePath);
-	std::map<std::string, Image> processImageSheets(const void* root);
+	std::map<std::string, Image> processImageSheets(const std::string& basePath, const void* root);
 	std::map<std::string, std::vector<SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const void* root);
 	std::vector<SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* node);
 

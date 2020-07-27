@@ -262,8 +262,11 @@ const std::string& Sprite::name() const
  */
 Sprite::SpriteAnimations Sprite::processXml(const std::string& filePath)
 {
+	auto& filesystem = Utility<Filesystem>::get();
+	const auto basePath = filesystem.workingPath(filePath);
+
 	XmlDocument xmlDoc;
-	xmlDoc.parse(Utility<Filesystem>::get().open(filePath).raw_bytes());
+	xmlDoc.parse(filesystem.open(filePath).raw_bytes());
 
 	if (xmlDoc.error())
 	{
@@ -293,7 +296,7 @@ Sprite::SpriteAnimations Sprite::processXml(const std::string& filePath)
 	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 	// image sheets anywhere in the sprite file.
 	Sprite::SpriteAnimations spriteAnimations;
-	spriteAnimations.imageSheets = processImageSheets(xmlRootElement);
+	spriteAnimations.imageSheets = processImageSheets(basePath, xmlRootElement);
 	spriteAnimations.actions = processActions(spriteAnimations.imageSheets, xmlRootElement);
 	return spriteAnimations;
 }
@@ -307,7 +310,7 @@ Sprite::SpriteAnimations Sprite::processXml(const std::string& filePath)
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
  */
-std::map<std::string, Image> Sprite::processImageSheets(const void* root)
+std::map<std::string, Image> Sprite::processImageSheets(const std::string& basePath, const void* root)
 {
 	const XmlElement* e = static_cast<const XmlElement*>(root);
 
@@ -344,7 +347,7 @@ std::map<std::string, Image> Sprite::processImageSheets(const void* root)
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
 
-			const string imagePath = Utility<Filesystem>::get().workingPath(mSpriteName) + src;
+			const string imagePath = basePath + src;
 			imageSheets.try_emplace(id, imagePath);
 		}
 	}

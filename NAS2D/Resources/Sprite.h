@@ -75,7 +75,7 @@ protected:
 private:
 	struct SpriteFrame
 	{
-		std::string sheetId;
+		Image& image;
 		Rectangle<int> bounds;
 		Vector<int> anchorOffset;
 		unsigned int frameDelay;

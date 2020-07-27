@@ -179,7 +179,7 @@ void Sprite::update(Point<float> position)
 
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(mImageSheets.at(frame.sheetId), drawPosition, frameBounds, mRotationAngle, mColor);
+	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, mRotationAngle, mColor);
 }
 
 
@@ -477,7 +477,7 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 
 		const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 		const auto anchorOffset = Vector{anchorx, anchory};
-		frameList.push_back(SpriteFrame{sheetId, bounds, anchorOffset, static_cast<unsigned int>(delay)});
+		frameList.push_back(SpriteFrame{mImageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
 	}
 
 	if (frameList.size() <= 0)

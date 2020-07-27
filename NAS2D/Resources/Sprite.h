@@ -75,7 +75,7 @@ protected:
 private:
 	struct SpriteFrame
 	{
-		Image& image;
+		const Image& image;
 		Rectangle<int> bounds;
 		Vector<int> anchorOffset;
 		unsigned int frameDelay;

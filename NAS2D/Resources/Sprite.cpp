@@ -36,6 +36,11 @@ namespace {
 	{
 		return " (Row: " + std::to_string(row) + ")";
 	}
+
+	Sprite::SpriteAnimations processXml(const std::string& filePath);
+	std::map<std::string, Image> processImageSheets(const std::string& basePath, const void* root);
+	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const void* root);
+	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* node);
 }
 
 
@@ -49,7 +54,7 @@ Sprite::Sprite(const std::string& filePath) :
 {
 	try
 	{
-		processXml(filePath);
+		mSpriteAnimations = processXml(filePath);
 	}
 	catch(const std::runtime_error& error)
 	{
@@ -60,13 +65,13 @@ Sprite::Sprite(const std::string& filePath) :
 
 Vector<int> Sprite::size() const
 {
-	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();
+	return mSpriteAnimations.actions.at(mCurrentAction)[mCurrentFrame].bounds.size();
 }
 
 
 Point<int> Sprite::origin(Point<int> point) const
 {
-	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
+	return point - mSpriteAnimations.actions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
 }
 
 
@@ -77,7 +82,7 @@ Point<int> Sprite::origin(Point<int> point) const
  */
 StringList Sprite::actions() const
 {
-	return getKeys(mActions);
+	return getKeys(mSpriteAnimations.actions);
 }
 
 
@@ -95,7 +100,7 @@ StringList Sprite::actions() const
 void Sprite::play(const std::string& action)
 {
 	const auto normalizedAction = toLowercase(action);
-	if (mActions.find(normalizedAction) == mActions.end())
+	if (mSpriteAnimations.actions.find(normalizedAction) == mSpriteAnimations.actions.end())
 	{
 		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + name());
 	}
@@ -132,7 +137,7 @@ void Sprite::resume()
  */
 void Sprite::setFrame(std::size_t frameIndex)
 {
-	mCurrentFrame = frameIndex % mActions[mCurrentAction].size();
+	mCurrentFrame = frameIndex % mSpriteAnimations.actions[mCurrentAction].size();
 }
 
 
@@ -156,7 +161,7 @@ void Sprite::decrementFrame()
 
 void Sprite::update(Point<float> position)
 {
-	const auto& frame = mActions[mCurrentAction][mCurrentFrame];
+	const auto& frame = mSpriteAnimations.actions[mCurrentAction][mCurrentFrame];
 
 	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
 	{
@@ -166,7 +171,7 @@ void Sprite::update(Point<float> position)
 			mCurrentFrame++;
 		}
 
-		if (mCurrentFrame >= mActions[mCurrentAction].size())
+		if (mCurrentFrame >= mSpriteAnimations.actions[mCurrentAction].size())
 		{
 			mCurrentFrame = 0;
 			mAnimationCompleteCallback();
@@ -255,15 +260,20 @@ const std::string& Sprite::name() const
 }
 
 
+namespace {
+
 /**
  * Parses a Sprite XML Definition File.
  *
  * \param filePath	File path of the sprite XML definition file.
  */
-void Sprite::processXml(const std::string& filePath)
+Sprite::SpriteAnimations processXml(const std::string& filePath)
 {
+	auto& filesystem = Utility<Filesystem>::get();
+	const auto basePath = filesystem.workingPath(filePath);
+
 	XmlDocument xmlDoc;
-	xmlDoc.parse(Utility<Filesystem>::get().open(filePath).raw_bytes());
+	xmlDoc.parse(filesystem.open(filePath).raw_bytes());
 
 	if (xmlDoc.error())
 	{
@@ -292,8 +302,10 @@ void Sprite::processXml(const std::string& filePath)
 	// Here instead of going through each element and calling a processing function to handle
 	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 	// image sheets anywhere in the sprite file.
-	processImageSheets(xmlRootElement);
-	processActions(xmlRootElement);
+	Sprite::SpriteAnimations spriteAnimations;
+	spriteAnimations.imageSheets = processImageSheets(basePath, xmlRootElement);
+	spriteAnimations.actions = processActions(spriteAnimations.imageSheets, xmlRootElement);
+	return spriteAnimations;
 }
 
 
@@ -305,9 +317,11 @@ void Sprite::processXml(const std::string& filePath)
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
  */
-void Sprite::processImageSheets(const void* root)
+std::map<std::string, Image> processImageSheets(const std::string& basePath, const void* root)
 {
 	const XmlElement* e = static_cast<const XmlElement*>(root);
+
+	std::map<std::string, Image> imageSheets;
 
 	string id, src;
 	for (const XmlNode* node = e->iterateChildren(nullptr);
@@ -335,15 +349,17 @@ void Sprite::processImageSheets(const void* root)
 				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
-			if (mImageSheets.find(toLowercase(id)) != mImageSheets.end())
+			if (imageSheets.find(toLowercase(id)) != imageSheets.end())
 			{
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
 
-			const string imagePath = Utility<Filesystem>::get().workingPath(mSpriteName) + src;
-			mImageSheets.try_emplace(id, imagePath);
+			const string imagePath = basePath + src;
+			imageSheets.try_emplace(id, imagePath);
 		}
 	}
+
+	return imageSheets;
 }
 
 
@@ -354,9 +370,11 @@ void Sprite::processImageSheets(const void* root)
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-void Sprite::processActions(const void* root)
+std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const void* root)
 {
 	const XmlElement* element = static_cast<const XmlElement*>(root);
+
+	std::map<std::string, std::vector<Sprite::SpriteFrame>> actions;
 
 	for (const XmlNode* node = element->iterateChildren(nullptr);
 		node != nullptr;
@@ -381,25 +399,27 @@ void Sprite::processActions(const void* root)
 			{
 				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row()));
 			}
-			if (mActions.find(toLowercase(action_name)) != mActions.end())
+			if (actions.find(toLowercase(action_name)) != actions.end())
 			{
 				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row()));
 			}
 
-			processFrames(action_name, node);
+			actions[toLowercase(action_name)] = processFrames(imageSheets, action_name, node);
 		}
 	}
+
+	return actions;
 }
 
 
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-void Sprite::processFrames(const std::string& action, const void* _node)
+std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* _node)
 {
 	const XmlNode* node = static_cast<const XmlNode*>(_node);
 
-	FrameList frameList;
+	std::vector<Sprite::SpriteFrame> frameList;
 
 	for (const XmlNode* frame = node->iterateChildren(nullptr);
 		frame != nullptr;
@@ -440,8 +460,8 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 		{
 			throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
 		}
-		const auto iterator = mImageSheets.find(sheetId);
-		if (iterator == mImageSheets.end())
+		const auto iterator = imageSheets.find(sheetId);
+		if (iterator == imageSheets.end())
 		{
 			throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
 		}
@@ -477,7 +497,7 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 
 		const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 		const auto anchorOffset = Vector{anchorx, anchory};
-		frameList.push_back(SpriteFrame{mImageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
+		frameList.push_back(Sprite::SpriteFrame{imageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
 	}
 
 	if (frameList.size() <= 0)
@@ -485,5 +505,7 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 		throw std::runtime_error("Sprite Action contains no valid frames: " + action);
 	}
 
-	mActions[toLowercase(action)] = std::move(frameList);
+	return frameList;
 }
+
+} // namespace

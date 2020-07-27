@@ -292,7 +292,7 @@ void Sprite::processXml(const std::string& filePath)
 	// Here instead of going through each element and calling a processing function to handle
 	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 	// image sheets anywhere in the sprite file.
-	processImageSheets(xmlRootElement);
+	mImageSheets = processImageSheets(xmlRootElement);
 	processActions(xmlRootElement);
 }
 
@@ -305,9 +305,11 @@ void Sprite::processXml(const std::string& filePath)
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
  */
-void Sprite::processImageSheets(const void* root)
+std::map<std::string, Image> Sprite::processImageSheets(const void* root)
 {
 	const XmlElement* e = static_cast<const XmlElement*>(root);
+
+	std::map<std::string, Image> imageSheets;
 
 	string id, src;
 	for (const XmlNode* node = e->iterateChildren(nullptr);
@@ -335,15 +337,17 @@ void Sprite::processImageSheets(const void* root)
 				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
-			if (mImageSheets.find(toLowercase(id)) != mImageSheets.end())
+			if (imageSheets.find(toLowercase(id)) != imageSheets.end())
 			{
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
 
 			const string imagePath = Utility<Filesystem>::get().workingPath(mSpriteName) + src;
-			mImageSheets.try_emplace(id, imagePath);
+			imageSheets.try_emplace(id, imagePath);
 		}
 	}
+
+	return imageSheets;
 }
 
 

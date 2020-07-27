@@ -84,9 +84,6 @@ public:
 
 	Callback& frameCallback();
 
-protected:
-	const std::string& name() const;
-
 private:
 	SpriteAnimations mSpriteAnimations;
 

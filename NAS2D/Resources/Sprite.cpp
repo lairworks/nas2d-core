@@ -102,7 +102,7 @@ void Sprite::play(const std::string& action)
 	const auto normalizedAction = toLowercase(action);
 	if (mSpriteAnimations.actions.find(normalizedAction) == mSpriteAnimations.actions.end())
 	{
-		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + name());
+		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + mSpriteName);
 	}
 
 	mCurrentAction = normalizedAction;
@@ -251,12 +251,6 @@ const Color& Sprite::color() const
 Sprite::Callback& Sprite::frameCallback()
 {
 	return mAnimationCompleteCallback;
-}
-
-
-const std::string& Sprite::name() const
-{
-	return mSpriteName;
 }
 
 

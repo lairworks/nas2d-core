@@ -49,7 +49,7 @@ Sprite::Sprite(const std::string& filePath) :
 {
 	try
 	{
-		processXml(filePath);
+		mSpriteAnimations = processXml(filePath);
 	}
 	catch(const std::runtime_error& error)
 	{
@@ -260,7 +260,7 @@ const std::string& Sprite::name() const
  *
  * \param filePath	File path of the sprite XML definition file.
  */
-void Sprite::processXml(const std::string& filePath)
+Sprite::SpriteAnimations Sprite::processXml(const std::string& filePath)
 {
 	XmlDocument xmlDoc;
 	xmlDoc.parse(Utility<Filesystem>::get().open(filePath).raw_bytes());
@@ -292,8 +292,10 @@ void Sprite::processXml(const std::string& filePath)
 	// Here instead of going through each element and calling a processing function to handle
 	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 	// image sheets anywhere in the sprite file.
-	mSpriteAnimations.imageSheets = processImageSheets(xmlRootElement);
-	mSpriteAnimations.actions = processActions(mSpriteAnimations.imageSheets, xmlRootElement);
+	SpriteAnimations spriteAnimations;
+	spriteAnimations.imageSheets = processImageSheets(xmlRootElement);
+	spriteAnimations.actions = processActions(spriteAnimations.imageSheets, xmlRootElement);
+	return spriteAnimations;
 }
 
 

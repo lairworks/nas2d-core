@@ -90,7 +90,7 @@ private:
 
 	using FrameList = std::vector<SpriteFrame>;
 
-	void processXml(const std::string& filePath);
+	SpriteAnimations processXml(const std::string& filePath);
 	std::map<std::string, Image> processImageSheets(const void* root);
 	std::map<std::string, FrameList> processActions(const std::map<std::string, Image>& imageSheets, const void* root);
 	FrameList processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* node);

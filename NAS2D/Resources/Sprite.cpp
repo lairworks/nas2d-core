@@ -292,7 +292,7 @@ Sprite::SpriteAnimations Sprite::processXml(const std::string& filePath)
 	// Here instead of going through each element and calling a processing function to handle
 	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 	// image sheets anywhere in the sprite file.
-	SpriteAnimations spriteAnimations;
+	Sprite::SpriteAnimations spriteAnimations;
 	spriteAnimations.imageSheets = processImageSheets(xmlRootElement);
 	spriteAnimations.actions = processActions(spriteAnimations.imageSheets, xmlRootElement);
 	return spriteAnimations;
@@ -364,7 +364,7 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> Sprite::processActions(c
 {
 	const XmlElement* element = static_cast<const XmlElement*>(root);
 
-	std::map<std::string, std::vector<SpriteFrame>> actions;
+	std::map<std::string, std::vector<Sprite::SpriteFrame>> actions;
 
 	for (const XmlNode* node = element->iterateChildren(nullptr);
 		node != nullptr;
@@ -409,7 +409,7 @@ std::vector<Sprite::SpriteFrame> Sprite::processFrames(const std::map<std::strin
 {
 	const XmlNode* node = static_cast<const XmlNode*>(_node);
 
-	std::vector<SpriteFrame> frameList;
+	std::vector<Sprite::SpriteFrame> frameList;
 
 	for (const XmlNode* frame = node->iterateChildren(nullptr);
 		frame != nullptr;
@@ -487,7 +487,7 @@ std::vector<Sprite::SpriteFrame> Sprite::processFrames(const std::map<std::strin
 
 		const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 		const auto anchorOffset = Vector{anchorx, anchory};
-		frameList.push_back(SpriteFrame{imageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
+		frameList.push_back(Sprite::SpriteFrame{imageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
 	}
 
 	if (frameList.size() <= 0)

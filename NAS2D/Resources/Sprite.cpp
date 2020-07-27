@@ -293,7 +293,7 @@ void Sprite::processXml(const std::string& filePath)
 	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 	// image sheets anywhere in the sprite file.
 	mImageSheets = processImageSheets(xmlRootElement);
-	processActions(xmlRootElement);
+	processActions(mImageSheets, xmlRootElement);
 }
 
 
@@ -358,7 +358,7 @@ std::map<std::string, Image> Sprite::processImageSheets(const void* root)
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-void Sprite::processActions(const void* root)
+void Sprite::processActions(const std::map<std::string, Image>& imageSheets, const void* root)
 {
 	const XmlElement* element = static_cast<const XmlElement*>(root);
 
@@ -390,7 +390,7 @@ void Sprite::processActions(const void* root)
 				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row()));
 			}
 
-			mActions[toLowercase(action_name)] = processFrames(action_name, node);
+			mActions[toLowercase(action_name)] = processFrames(imageSheets, action_name, node);
 		}
 	}
 }
@@ -399,7 +399,7 @@ void Sprite::processActions(const void* root)
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-Sprite::FrameList Sprite::processFrames(const std::string& action, const void* _node)
+Sprite::FrameList Sprite::processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* _node)
 {
 	const XmlNode* node = static_cast<const XmlNode*>(_node);
 
@@ -444,8 +444,8 @@ Sprite::FrameList Sprite::processFrames(const std::string& action, const void* _
 		{
 			throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
 		}
-		const auto iterator = mImageSheets.find(sheetId);
-		if (iterator == mImageSheets.end())
+		const auto iterator = imageSheets.find(sheetId);
+		if (iterator == imageSheets.end())
 		{
 			throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
 		}
@@ -481,7 +481,7 @@ Sprite::FrameList Sprite::processFrames(const std::string& action, const void* _
 
 		const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 		const auto anchorOffset = Vector{anchorx, anchory};
-		frameList.push_back(SpriteFrame{mImageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
+		frameList.push_back(SpriteFrame{imageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
 	}
 
 	if (frameList.size() <= 0)

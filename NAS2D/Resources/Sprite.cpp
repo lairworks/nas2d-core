@@ -99,13 +99,12 @@ StringList Sprite::actions() const
  */
 void Sprite::play(const std::string& action)
 {
-	const auto normalizedAction = toLowercase(action);
-	if (mSpriteAnimations.actions.find(normalizedAction) == mSpriteAnimations.actions.end())
+	if (mSpriteAnimations.actions.find(action) == mSpriteAnimations.actions.end())
 	{
 		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + mSpriteName);
 	}
 
-	mCurrentAction = normalizedAction;
+	mCurrentAction = action;
 	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();
@@ -341,7 +340,7 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
 				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
-			if (imageSheets.find(toLowercase(id)) != imageSheets.end())
+			if (imageSheets.find(id) != imageSheets.end())
 			{
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
@@ -389,12 +388,12 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std
 			{
 				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row()));
 			}
-			if (actions.find(toLowercase(action_name)) != actions.end())
+			if (actions.find(action_name) != actions.end())
 			{
 				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row()));
 			}
 
-			actions[toLowercase(action_name)] = processFrames(imageSheets, action_name, node);
+			actions[action_name] = processFrames(imageSheets, action_name, node);
 		}
 	}
 

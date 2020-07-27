@@ -39,6 +39,21 @@ class Sprite
 public:
 	using Callback = Signals::Signal<>; /**< Signal used when action animations complete. */
 
+	struct SpriteFrame
+	{
+		const Image& image;
+		Rectangle<int> bounds;
+		Vector<int> anchorOffset;
+		unsigned int frameDelay;
+	};
+
+	struct SpriteAnimations
+	{
+		std::map<std::string, Image> imageSheets;
+		std::map<std::string, std::vector<SpriteFrame>> actions;
+	};
+
+
 	explicit Sprite(const std::string& filePath);
 	Sprite(const Sprite& sprite) = default;
 	Sprite& operator=(const Sprite& rhs) = default;
@@ -73,21 +88,6 @@ protected:
 	const std::string& name() const;
 
 private:
-	struct SpriteFrame
-	{
-		const Image& image;
-		Rectangle<int> bounds;
-		Vector<int> anchorOffset;
-		unsigned int frameDelay;
-	};
-
-	struct SpriteAnimations
-	{
-		std::map<std::string, Image> imageSheets;
-		std::map<std::string, std::vector<SpriteFrame>> actions;
-	};
-
-
 	SpriteAnimations processXml(const std::string& filePath);
 	std::map<std::string, Image> processImageSheets(const void* root);
 	std::map<std::string, std::vector<SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const void* root);

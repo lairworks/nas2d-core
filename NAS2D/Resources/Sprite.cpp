@@ -13,6 +13,7 @@
 #include "../Version.h"
 #include "../Xml/Xml.h"
 
+#include <utility>
 #include <iostream>
 #include <stdexcept>
 
@@ -484,5 +485,5 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 		throw std::runtime_error("Sprite Action contains no valid frames: " + action);
 	}
 
-	mActions[toLowercase(action)] = frameList;
+	mActions[toLowercase(action)] = std::move(frameList);
 }

@@ -60,13 +60,13 @@ Sprite::Sprite(const std::string& filePath) :
 
 Vector<int> Sprite::size() const
 {
-	return mActions.at(mCurrentAction)[mCurrentFrame].bounds.size();
+	return mSpriteAnimations.actions.at(mCurrentAction)[mCurrentFrame].bounds.size();
 }
 
 
 Point<int> Sprite::origin(Point<int> point) const
 {
-	return point - mActions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
+	return point - mSpriteAnimations.actions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
 }
 
 
@@ -77,7 +77,7 @@ Point<int> Sprite::origin(Point<int> point) const
  */
 StringList Sprite::actions() const
 {
-	return getKeys(mActions);
+	return getKeys(mSpriteAnimations.actions);
 }
 
 
@@ -95,7 +95,7 @@ StringList Sprite::actions() const
 void Sprite::play(const std::string& action)
 {
 	const auto normalizedAction = toLowercase(action);
-	if (mActions.find(normalizedAction) == mActions.end())
+	if (mSpriteAnimations.actions.find(normalizedAction) == mSpriteAnimations.actions.end())
 	{
 		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + name());
 	}
@@ -132,7 +132,7 @@ void Sprite::resume()
  */
 void Sprite::setFrame(std::size_t frameIndex)
 {
-	mCurrentFrame = frameIndex % mActions[mCurrentAction].size();
+	mCurrentFrame = frameIndex % mSpriteAnimations.actions[mCurrentAction].size();
 }
 
 
@@ -156,7 +156,7 @@ void Sprite::decrementFrame()
 
 void Sprite::update(Point<float> position)
 {
-	const auto& frame = mActions[mCurrentAction][mCurrentFrame];
+	const auto& frame = mSpriteAnimations.actions[mCurrentAction][mCurrentFrame];
 
 	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
 	{
@@ -166,7 +166,7 @@ void Sprite::update(Point<float> position)
 			mCurrentFrame++;
 		}
 
-		if (mCurrentFrame >= mActions[mCurrentAction].size())
+		if (mCurrentFrame >= mSpriteAnimations.actions[mCurrentAction].size())
 		{
 			mCurrentFrame = 0;
 			mAnimationCompleteCallback();
@@ -292,8 +292,8 @@ void Sprite::processXml(const std::string& filePath)
 	// Here instead of going through each element and calling a processing function to handle
 	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 	// image sheets anywhere in the sprite file.
-	mImageSheets = processImageSheets(xmlRootElement);
-	mActions = processActions(mImageSheets, xmlRootElement);
+	mSpriteAnimations.imageSheets = processImageSheets(xmlRootElement);
+	mSpriteAnimations.actions = processActions(mSpriteAnimations.imageSheets, xmlRootElement);
 }
 
 

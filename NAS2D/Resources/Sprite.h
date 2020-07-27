@@ -81,6 +81,12 @@ private:
 		unsigned int frameDelay;
 	};
 
+	struct SpriteAnimations
+	{
+		std::map<std::string, Image> imageSheets;
+		std::map<std::string, std::vector<SpriteFrame>> actions;
+	};
+
 
 	using FrameList = std::vector<SpriteFrame>;
 
@@ -90,8 +96,7 @@ private:
 	FrameList processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* node);
 
 
-	std::map<std::string, Image> mImageSheets;
-	std::map<std::string, FrameList> mActions;
+	SpriteAnimations mSpriteAnimations;
 
 	std::string mSpriteName;
 	std::string mCurrentAction{"default"};

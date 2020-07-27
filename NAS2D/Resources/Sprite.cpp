@@ -293,7 +293,7 @@ void Sprite::processXml(const std::string& filePath)
 	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 	// image sheets anywhere in the sprite file.
 	mImageSheets = processImageSheets(xmlRootElement);
-	processActions(mImageSheets, xmlRootElement);
+	mActions = processActions(mImageSheets, xmlRootElement);
 }
 
 
@@ -358,9 +358,11 @@ std::map<std::string, Image> Sprite::processImageSheets(const void* root)
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-void Sprite::processActions(const std::map<std::string, Image>& imageSheets, const void* root)
+std::map<std::string, Sprite::FrameList> Sprite::processActions(const std::map<std::string, Image>& imageSheets, const void* root)
 {
 	const XmlElement* element = static_cast<const XmlElement*>(root);
+
+	std::map<std::string, FrameList> actions;
 
 	for (const XmlNode* node = element->iterateChildren(nullptr);
 		node != nullptr;
@@ -385,14 +387,16 @@ void Sprite::processActions(const std::map<std::string, Image>& imageSheets, con
 			{
 				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row()));
 			}
-			if (mActions.find(toLowercase(action_name)) != mActions.end())
+			if (actions.find(toLowercase(action_name)) != actions.end())
 			{
 				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row()));
 			}
 
-			mActions[toLowercase(action_name)] = processFrames(imageSheets, action_name, node);
+			actions[toLowercase(action_name)] = processFrames(imageSheets, action_name, node);
 		}
 	}
+
+	return actions;
 }
 
 

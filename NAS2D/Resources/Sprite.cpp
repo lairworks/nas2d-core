@@ -321,13 +321,13 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
 {
 	std::map<std::string, Image> imageSheets;
 
-	string id, src;
 	for (const XmlNode* node = element->iterateChildren(nullptr);
 		node != nullptr;
 		node = element->iterateChildren(node))
 	{
 		if (node->value() == "imagesheet" && node->toElement())
 		{
+			string id, src;
 			const XmlAttribute* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{

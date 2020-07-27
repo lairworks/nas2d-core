@@ -47,18 +47,18 @@ public:
 	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const override;
 	Vector<int> getWindowClientArea() const noexcept override;
 
-	void drawImage(Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
+	void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 
-	void drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) override;
-	void drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color = Color::Normal) override;
+	void drawSubImage(const Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) override;
+	void drawSubImageRotated(const Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color = Color::Normal) override;
 
-	void drawImageRotated(Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) override;
-	void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal) override;
+	void drawImageRotated(const Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) override;
+	void drawImageStretched(const Image& image, Rectangle<float> rect, Color color = Color::Normal) override;
 
-	void drawImageRepeated(Image& image, Rectangle<float> rect) override;
-	void drawSubImageRepeated(Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) override;
+	void drawImageRepeated(const Image& image, Rectangle<float> rect) override;
+	void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) override;
 
-	void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) override;
+	void drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint) override;
 
 	void drawPoint(Point<float> position, Color color = Color::White) override;
 	void drawLine(Point<float> startPosition, Point<float> endPosition, Color color = Color::White, int line_width = 1) override;

@@ -54,18 +54,18 @@ public:
 
 	virtual void window_icon(const std::string& path) = 0;
 
-	virtual void drawImage(Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
-	virtual void drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) = 0;
-	virtual void drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color = Color::Normal) = 0;
-	virtual void drawImageRotated(Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) = 0;
-	virtual void drawImageStretched(Image& image, Rectangle<float> rect, Color color = Color::Normal) = 0;
-	virtual void drawImageRepeated(Image& image, Rectangle<float> rect) = 0;
-	virtual void drawSubImageRepeated(Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) = 0;
+	virtual void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
+	virtual void drawSubImage(const Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) = 0;
+	virtual void drawSubImageRotated(const Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color = Color::Normal) = 0;
+	virtual void drawImageRotated(const Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) = 0;
+	virtual void drawImageStretched(const Image& image, Rectangle<float> rect, Color color = Color::Normal) = 0;
+	virtual void drawImageRepeated(const Image& image, Rectangle<float> rect) = 0;
+	virtual void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) = 0;
 
 	void drawImageRect(Rectangle<float> rect, ImageList& images);
-	void drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight);
+	void drawImageRect(Rectangle<float> rect, const Image& topLeft, const Image& top, const Image& topRight, const Image& left, const Image& center, const Image& right, const Image& bottomLeft, const Image& bottom, const Image& bottomRight);
 
-	virtual void drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint) = 0;
+	virtual void drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint) = 0;
 
 	virtual void drawPoint(Point<float> position, Color color = Color::White) = 0;
 	virtual void drawLine(Point<float> startPosition, Point<float> endPosition, Color color = Color::White, int line_width = 1) = 0;

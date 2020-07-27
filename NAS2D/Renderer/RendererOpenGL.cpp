@@ -71,7 +71,7 @@ namespace {
 	constexpr std::array<GLfloat, 12> DefaultTextureCoords = rectToQuad({0, 0, 1, 1});
 
 
-	GLuint generate_fbo(Image& image);
+	GLuint generate_fbo(const Image& image);
 	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = DefaultTextureCoords);
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 
@@ -135,7 +135,7 @@ RendererOpenGL::~RendererOpenGL()
 }
 
 
-void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale, Color color)
+void RendererOpenGL::drawImage(const Image& image, Point<float> position, float scale, Color color)
 {
 	setColor(color);
 
@@ -145,7 +145,7 @@ void RendererOpenGL::drawImage(Image& image, Point<float> position, float scale,
 }
 
 
-void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
+void RendererOpenGL::drawSubImage(const Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
 {
 	setColor(color);
 
@@ -157,7 +157,7 @@ void RendererOpenGL::drawSubImage(Image& image, Point<float> raster, Rectangle<f
 }
 
 
-void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color)
+void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color)
 {
 	glPushMatrix();
 
@@ -181,7 +181,7 @@ void RendererOpenGL::drawSubImageRotated(Image& image, Point<float> raster, Rect
 }
 
 
-void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float degrees, Color color, float scale)
+void RendererOpenGL::drawImageRotated(const Image& image, Point<float> position, float degrees, Color color, float scale)
 {
 	glPushMatrix();
 
@@ -205,7 +205,7 @@ void RendererOpenGL::drawImageRotated(Image& image, Point<float> position, float
 }
 
 
-void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Color color)
+void RendererOpenGL::drawImageStretched(const Image& image, Rectangle<float> rect, Color color)
 {
 	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -215,7 +215,7 @@ void RendererOpenGL::drawImageStretched(Image& image, Rectangle<float> rect, Col
 }
 
 
-void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
+void RendererOpenGL::drawImageRepeated(const Image& image, Rectangle<float> rect)
 {
 	setColor(Color::White);
 
@@ -251,7 +251,7 @@ void RendererOpenGL::drawImageRepeated(Image& image, Rectangle<float> rect)
  * texture and reference it that way (bit of overhead to do a texture lookup and would
  * get unmanagable very quickly.
  */
-void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& destination, const Rectangle<float>& source)
+void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source)
 {
 	glEnable(GL_SCISSOR_TEST);
 	const auto clipRect = destination.to<int>();
@@ -270,7 +270,7 @@ void RendererOpenGL::drawSubImageRepeated(Image& image, const Rectangle<float>& 
 }
 
 
-void RendererOpenGL::drawImageToImage(Image& source, Image& destination, const Point<float>& dstPoint)
+void RendererOpenGL::drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint)
 {
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();
@@ -809,7 +809,7 @@ namespace {
 /**
  * Generates an OpenGL Frame Buffer Object.
  */
-GLuint generate_fbo(Image& image)
+GLuint generate_fbo(const Image& image)
 {
 	unsigned int framebuffer;
 	glGenFramebuffers(1, &framebuffer);

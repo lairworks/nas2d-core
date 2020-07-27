@@ -24,18 +24,18 @@ public:
 	DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc&) const override { return{}; }
 	Vector<int> getWindowClientArea() const noexcept override { return {}; }
 
-	void drawImage(Image&, Point<float>, float = 1.0, Color = Color::Normal) override {}
+	void drawImage(const Image&, Point<float>, float = 1.0, Color = Color::Normal) override {}
 
-	void drawSubImage(Image&, Point<float>, Rectangle<float>, Color = Color::Normal) override {}
-	void drawSubImageRotated(Image&, Point<float>, Rectangle<float>, float, Color = Color::Normal) override {}
+	void drawSubImage(const Image&, Point<float>, Rectangle<float>, Color = Color::Normal) override {}
+	void drawSubImageRotated(const Image&, Point<float>, Rectangle<float>, float, Color = Color::Normal) override {}
 
-	void drawImageRotated(Image&, Point<float>, float, Color = Color::Normal, float = 1.0f) override {}
-	void drawImageStretched(Image&, Rectangle<float>, Color = Color::Normal) override {}
+	void drawImageRotated(const Image&, Point<float>, float, Color = Color::Normal, float = 1.0f) override {}
+	void drawImageStretched(const Image&, Rectangle<float>, Color = Color::Normal) override {}
 
-	void drawImageRepeated(Image&, Rectangle<float>) override {}
-	void drawSubImageRepeated(Image&, const Rectangle<float>&, const Rectangle<float>&) override {}
+	void drawImageRepeated(const Image&, Rectangle<float>) override {}
+	void drawSubImageRepeated(const Image&, const Rectangle<float>&, const Rectangle<float>&) override {}
 
-	void drawImageToImage(Image&, Image&, const Point<float>&) override {}
+	void drawImageToImage(const Image&, const Image&, const Point<float>&) override {}
 
 	void drawPoint(Point<float>, Color = Color::White) override {}
 	void drawLine(Point<float>, Point<float>, Color = Color::White, int = 1) override {}

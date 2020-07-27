@@ -341,7 +341,7 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
 				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
-			if (imageSheets.find(toLowercase(id)) != imageSheets.end())
+			if (imageSheets.find(id) != imageSheets.end())
 			{
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}

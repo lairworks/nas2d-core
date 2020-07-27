@@ -390,7 +390,7 @@ void Sprite::processActions(const void* root)
 				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row()));
 			}
 
-			processFrames(action_name, node);
+			mActions[toLowercase(action_name)] = processFrames(action_name, node);
 		}
 	}
 }
@@ -399,7 +399,7 @@ void Sprite::processActions(const void* root)
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-void Sprite::processFrames(const std::string& action, const void* _node)
+Sprite::FrameList Sprite::processFrames(const std::string& action, const void* _node)
 {
 	const XmlNode* node = static_cast<const XmlNode*>(_node);
 
@@ -489,5 +489,5 @@ void Sprite::processFrames(const std::string& action, const void* _node)
 		throw std::runtime_error("Sprite Action contains no valid frames: " + action);
 	}
 
-	mActions[toLowercase(action)] = std::move(frameList);
+	return frameList;
 }

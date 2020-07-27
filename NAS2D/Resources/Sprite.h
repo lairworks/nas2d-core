@@ -87,7 +87,7 @@ private:
 	void processXml(const std::string& filePath);
 	std::map<std::string, Image> processImageSheets(const void* root);
 	void processActions(const void* root);
-	void processFrames(const std::string& action, const void* node);
+	FrameList processFrames(const std::string& action, const void* node);
 
 
 	std::map<std::string, Image> mImageSheets;

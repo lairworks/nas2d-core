@@ -94,7 +94,7 @@ void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
 }
 
 
-void Renderer::drawImageRect(Rectangle<float> rect, Image& topLeft, Image& top, Image& topRight, Image& left, Image& center, Image& right, Image& bottomLeft, Image& bottom, Image& bottomRight)
+void Renderer::drawImageRect(Rectangle<float> rect, const Image& topLeft, const Image& top, const Image& topRight, const Image& left, const Image& center, const Image& right, const Image& bottomLeft, const Image& bottom, const Image& bottomRight)
 {
 	const auto p1 = rect.startPoint() + topLeft.size().to<float>();
 	const auto p2 = rect.crossXPoint() + topRight.size().reflectX().to<float>();

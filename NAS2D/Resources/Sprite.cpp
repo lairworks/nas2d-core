@@ -36,6 +36,11 @@ namespace {
 	{
 		return " (Row: " + std::to_string(row) + ")";
 	}
+
+	Sprite::SpriteAnimations processXml(const std::string& filePath);
+	std::map<std::string, Image> processImageSheets(const std::string& basePath, const void* root);
+	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const void* root);
+	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* node);
 }
 
 
@@ -255,12 +260,14 @@ const std::string& Sprite::name() const
 }
 
 
+namespace {
+
 /**
  * Parses a Sprite XML Definition File.
  *
  * \param filePath	File path of the sprite XML definition file.
  */
-Sprite::SpriteAnimations Sprite::processXml(const std::string& filePath)
+Sprite::SpriteAnimations processXml(const std::string& filePath)
 {
 	auto& filesystem = Utility<Filesystem>::get();
 	const auto basePath = filesystem.workingPath(filePath);
@@ -310,7 +317,7 @@ Sprite::SpriteAnimations Sprite::processXml(const std::string& filePath)
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
  */
-std::map<std::string, Image> Sprite::processImageSheets(const std::string& basePath, const void* root)
+std::map<std::string, Image> processImageSheets(const std::string& basePath, const void* root)
 {
 	const XmlElement* e = static_cast<const XmlElement*>(root);
 
@@ -363,7 +370,7 @@ std::map<std::string, Image> Sprite::processImageSheets(const std::string& baseP
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-std::map<std::string, std::vector<Sprite::SpriteFrame>> Sprite::processActions(const std::map<std::string, Image>& imageSheets, const void* root)
+std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const void* root)
 {
 	const XmlElement* element = static_cast<const XmlElement*>(root);
 
@@ -408,7 +415,7 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> Sprite::processActions(c
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-std::vector<Sprite::SpriteFrame> Sprite::processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* _node)
+std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* _node)
 {
 	const XmlNode* node = static_cast<const XmlNode*>(_node);
 
@@ -500,3 +507,5 @@ std::vector<Sprite::SpriteFrame> Sprite::processFrames(const std::map<std::strin
 
 	return frameList;
 }
+
+} // namespace

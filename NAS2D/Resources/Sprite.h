@@ -44,57 +44,38 @@ public:
 	Sprite& operator=(const Sprite& rhs) = default;
 	~Sprite() = default;
 
+	Vector<int> size() const;
+	Point<int> origin(Point<int> point) const;
+
+	StringList actions() const;
+
 	void play(const std::string& action);
 	void pause();
 	void resume();
 
 	void setFrame(std::size_t frameIndex);
+	void incrementFrame();
+	void decrementFrame();
 
 	void update(Point<float> position);
-	void update(float x, float y);
 
 	void rotation(float angle);
 	float rotation() const;
 
-	/**
-	 * Sets the alpha value for the Sprite.
-	 *
-	 * \param	alpha	Alpha value to set between 0 - 255.
-	 */
-	void alpha(uint8_t alpha) { mColor.alpha = alpha; }
+	void alpha(uint8_t alpha);
+	uint8_t alpha() const;
+	void color(const Color& color);
+	const Color& color() const;
 
-	/**
-	 * Gets the alpha value for the Sprite.
-	 */
-	uint8_t alpha() const { return mColor.alpha; }
-
-	/**
-	 * Sets the color tint of the Sprite.
-	 */
-	void color(const Color& color) { mColor = color; }
-
-	/**
-	 * Gets the color tint of the Sprite.
-	 */
-	const Color& color() const { return mColor; }
-
-	Vector<int> size() const;
-	Point<int> origin(Point<int> point) const;
-
-	Callback& frameCallback() { return mAnimationCompleteCallback; }
-
-	StringList actions() const;
-
-	void incrementFrame();
-	void decrementFrame();
+	Callback& frameCallback();
 
 protected:
-	const std::string& name() const { return mSpriteName; }
+	const std::string& name() const;
 
 private:
 	struct SpriteFrame
 	{
-		std::string sheetId;
+		const Image& image;
 		Rectangle<int> bounds;
 		Vector<int> anchorOffset;
 		unsigned int frameDelay;
@@ -105,8 +86,6 @@ private:
 
 	void processXml(const std::string& filePath);
 	void processImageSheets(const void* root);
-	void addImageSheet(const std::string& id, const std::string& src, const void* node);
-
 	void processActions(const void* root);
 	void processFrames(const std::string& action, const void* node);
 

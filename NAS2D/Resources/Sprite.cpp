@@ -360,11 +360,11 @@ std::map<std::string, Image> Sprite::processImageSheets(const void* root)
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-std::map<std::string, Sprite::FrameList> Sprite::processActions(const std::map<std::string, Image>& imageSheets, const void* root)
+std::map<std::string, std::vector<Sprite::SpriteFrame>> Sprite::processActions(const std::map<std::string, Image>& imageSheets, const void* root)
 {
 	const XmlElement* element = static_cast<const XmlElement*>(root);
 
-	std::map<std::string, FrameList> actions;
+	std::map<std::string, std::vector<SpriteFrame>> actions;
 
 	for (const XmlNode* node = element->iterateChildren(nullptr);
 		node != nullptr;
@@ -405,11 +405,11 @@ std::map<std::string, Sprite::FrameList> Sprite::processActions(const std::map<s
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-Sprite::FrameList Sprite::processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* _node)
+std::vector<Sprite::SpriteFrame> Sprite::processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const void* _node)
 {
 	const XmlNode* node = static_cast<const XmlNode*>(_node);
 
-	FrameList frameList;
+	std::vector<SpriteFrame> frameList;
 
 	for (const XmlNode* frame = node->iterateChildren(nullptr);
 		frame != nullptr;

@@ -54,7 +54,6 @@ public:
 	};
 
 
-	explicit Sprite(const std::string& filePath);
 	Sprite(const std::string& filePath, const std::string& initialAction);
 	Sprite(const Sprite& sprite) = default;
 	Sprite& operator=(const Sprite& rhs) = default;

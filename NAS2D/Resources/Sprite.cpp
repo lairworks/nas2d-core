@@ -63,6 +63,13 @@ Sprite::Sprite(const std::string& filePath) :
 }
 
 
+Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
+	Sprite{filePath}
+{
+	mCurrentAction = &mSpriteAnimations.actions.at(initialAction);
+}
+
+
 Vector<int> Sprite::size() const
 {
 	return (*mCurrentAction)[mCurrentFrame].bounds.size();

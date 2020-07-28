@@ -65,13 +65,13 @@ Sprite::Sprite(const std::string& filePath) :
 
 Vector<int> Sprite::size() const
 {
-	return mSpriteAnimations.actions.at(mCurrentAction)[mCurrentFrame].bounds.size();
+	return (*mCurrentAction)[mCurrentFrame].bounds.size();
 }
 
 
 Point<int> Sprite::origin(Point<int> point) const
 {
-	return point - mSpriteAnimations.actions.at(mCurrentAction)[mCurrentFrame].anchorOffset;
+	return point - (*mCurrentAction)[mCurrentFrame].anchorOffset;
 }
 
 
@@ -104,7 +104,7 @@ void Sprite::play(const std::string& action)
 		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + mSpriteName);
 	}
 
-	mCurrentAction = action;
+	mCurrentAction = &mSpriteAnimations.actions.at(action);
 	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();
@@ -136,7 +136,7 @@ void Sprite::resume()
  */
 void Sprite::setFrame(std::size_t frameIndex)
 {
-	mCurrentFrame = frameIndex % mSpriteAnimations.actions[mCurrentAction].size();
+	mCurrentFrame = frameIndex % mCurrentAction->size();
 }
 
 
@@ -160,7 +160,7 @@ void Sprite::decrementFrame()
 
 void Sprite::update(Point<float> position)
 {
-	const auto& frame = mSpriteAnimations.actions[mCurrentAction][mCurrentFrame];
+	const auto& frame = (*mCurrentAction)[mCurrentFrame];
 
 	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
 	{
@@ -170,7 +170,7 @@ void Sprite::update(Point<float> position)
 			mCurrentFrame++;
 		}
 
-		if (mCurrentFrame >= mSpriteAnimations.actions[mCurrentAction].size())
+		if (mCurrentFrame >= mCurrentAction->size())
 		{
 			mCurrentFrame = 0;
 			mAnimationCompleteCallback();

@@ -88,7 +88,7 @@ private:
 	SpriteAnimations mSpriteAnimations;
 
 	std::string mSpriteName;
-	std::string mCurrentAction{"default"};
+	std::vector<SpriteFrame>* mCurrentAction{nullptr};
 
 	bool mPaused{false};
 	Timer mTimer;

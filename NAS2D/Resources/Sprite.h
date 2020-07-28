@@ -55,6 +55,7 @@ public:
 
 
 	explicit Sprite(const std::string& filePath);
+	Sprite(const std::string& filePath, const std::string& initialAction);
 	Sprite(const Sprite& sprite) = default;
 	Sprite& operator=(const Sprite& rhs) = default;
 	~Sprite() = default;
@@ -85,14 +86,15 @@ public:
 	Callback& frameCallback();
 
 private:
+	std::string mSpriteName;
+
 	SpriteAnimations mSpriteAnimations;
 
-	std::string mSpriteName;
-	std::string mCurrentAction{"default"};
+	std::vector<SpriteFrame>* mCurrentAction{nullptr};
+	std::size_t mCurrentFrame{0};
 
 	bool mPaused{false};
 	Timer mTimer;
-	std::size_t mCurrentFrame{0};
 	Callback mAnimationCompleteCallback;
 
 	Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */

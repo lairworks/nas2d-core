@@ -85,14 +85,15 @@ public:
 	Callback& frameCallback();
 
 private:
+	std::string mSpriteName;
+
 	SpriteAnimations mSpriteAnimations;
 
-	std::string mSpriteName;
 	std::vector<SpriteFrame>* mCurrentAction{nullptr};
+	std::size_t mCurrentFrame{0};
 
 	bool mPaused{false};
 	Timer mTimer;
-	std::size_t mCurrentFrame{0};
 	Callback mAnimationCompleteCallback;
 
 	Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */

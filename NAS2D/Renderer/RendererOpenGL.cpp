@@ -533,7 +533,7 @@ void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 	}
 
 	const auto intRect = rect.to<int>();
-	glScissor(intRect.x, size().y - intRect.y - intRect.height, intRect.width, intRect.height);
+	glScissor(intRect.x, size().y - (intRect.y + intRect.height), intRect.width, intRect.height);
 
 	glEnable(GL_SCISSOR_TEST);
 }

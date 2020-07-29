@@ -12,6 +12,7 @@
 
 #include <cmath>
 
+
 namespace NAS2D {
 
 /**

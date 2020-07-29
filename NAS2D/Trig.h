@@ -12,6 +12,7 @@
 
 #include "Renderer/Point.h"
 
+
 namespace NAS2D {
 
 constexpr float PI = 3.14159265f;

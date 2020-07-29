@@ -19,7 +19,6 @@
 
 
 using namespace NAS2D;
-using namespace NAS2D::Xml;
 
 
 namespace {
@@ -32,9 +31,9 @@ namespace {
 	}
 
 	Sprite::SpriteAnimations processXml(const std::string& filePath);
-	std::map<std::string, Image> processImageSheets(const std::string& basePath, const XmlElement* element);
-	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const XmlElement* element);
-	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const XmlNode* node);
+	std::map<std::string, Image> processImageSheets(const std::string& basePath, const Xml::XmlElement* element);
+	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element);
+	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node);
 }
 
 
@@ -260,7 +259,7 @@ Sprite::SpriteAnimations processXml(const std::string& filePath)
 	auto& filesystem = Utility<Filesystem>::get();
 	const auto basePath = filesystem.workingPath(filePath);
 
-	XmlDocument xmlDoc;
+	Xml::XmlDocument xmlDoc;
 	xmlDoc.parse(filesystem.open(filePath).raw_bytes());
 
 	if (xmlDoc.error())
@@ -305,7 +304,7 @@ Sprite::SpriteAnimations processXml(const std::string& filePath)
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
  */
-std::map<std::string, Image> processImageSheets(const std::string& basePath, const XmlElement* element)
+std::map<std::string, Image> processImageSheets(const std::string& basePath, const Xml::XmlElement* element)
 {
 	std::map<std::string, Image> imageSheets;
 
@@ -356,7 +355,7 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const XmlElement* element)
+std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element)
 {
 	std::map<std::string, std::vector<Sprite::SpriteFrame>> actions;
 
@@ -399,7 +398,7 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const XmlNode* node)
+std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node)
 {
 	std::vector<Sprite::SpriteFrame> frameList;
 

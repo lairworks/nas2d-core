@@ -28,6 +28,7 @@ using namespace NAS2D::Exception;
 std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 
 
+unsigned int generateTexture(SDL_Surface* surface);
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 
 
@@ -371,6 +372,12 @@ namespace {
 /**
  * Generates a new OpenGL texture from an SDL_Surface.
  */
+unsigned int generateTexture(SDL_Surface* surface)
+{
+	return generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
+}
+
+
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
 {
 	GLenum textureFormat = 0;

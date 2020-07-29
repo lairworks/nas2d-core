@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 
+
 namespace NAS2D {
 
 constexpr std::string_view SPRITE_VERSION{"0.99"};

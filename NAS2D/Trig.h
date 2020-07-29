@@ -17,7 +17,7 @@ namespace NAS2D {
 constexpr float PI = 3.14159265f;
 constexpr float PI_2 = PI * 2;
 
-constexpr float DEG2RAD = PI / 180.0f;
+constexpr float DEG2RAD = PI / 180;
 constexpr float RAD2DEG = 180 / PI;
 
 

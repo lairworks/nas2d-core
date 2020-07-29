@@ -269,14 +269,14 @@ Sprite::SpriteAnimations processXml(const std::string& filePath)
 	}
 
 	// Find the Sprite node.
-	const XmlElement* xmlRootElement = xmlDoc.firstChildElement("sprite");
+	const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
 	if (!xmlRootElement)
 	{
 		throw std::runtime_error("Sprite file does not contain required <sprite> tag");
 	}
 
 	// Get the Sprite version.
-	const XmlAttribute* version = xmlRootElement->firstAttribute();
+	const auto* version = xmlRootElement->firstAttribute();
 	if (!version || version->value().empty())
 	{
 		throw std::runtime_error("Sprite file's root element does not specify a version");
@@ -309,14 +309,14 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
 {
 	std::map<std::string, Image> imageSheets;
 
-	for (const XmlNode* node = element->iterateChildren(nullptr);
+	for (const auto* node = element->iterateChildren(nullptr);
 		node != nullptr;
 		node = element->iterateChildren(node))
 	{
 		if (node->value() == "imagesheet" && node->toElement())
 		{
 			std::string id, src;
-			const XmlAttribute* attribute = node->toElement()->firstAttribute();
+			const auto* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{
 				if (toLowercase(attribute->name()) == "id") { id = attribute->value(); }
@@ -360,7 +360,7 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std
 {
 	std::map<std::string, std::vector<Sprite::SpriteFrame>> actions;
 
-	for (const XmlNode* node = element->iterateChildren(nullptr);
+	for (const auto* node = element->iterateChildren(nullptr);
 		node != nullptr;
 		node = element->iterateChildren(node))
 	{
@@ -368,7 +368,7 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std
 		{
 
 			std::string actionName;
-			const XmlAttribute* attribute = node->toElement()->firstAttribute();
+			const auto* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{
 				if (toLowercase(attribute->name()) == "name")
@@ -403,7 +403,7 @@ std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image
 {
 	std::vector<Sprite::SpriteFrame> frameList;
 
-	for (const XmlNode* frame = node->iterateChildren(nullptr);
+	for (const auto* frame = node->iterateChildren(nullptr);
 		frame != nullptr;
 		frame = node->iterateChildren(frame))
 	{
@@ -420,7 +420,7 @@ std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image
 		int width = 0, height = 0;
 		int anchorx = 0, anchory = 0;
 
-		const XmlAttribute* attribute = frame->toElement()->firstAttribute();
+		const auto* attribute = frame->toElement()->firstAttribute();
 		while (attribute)
 		{
 			if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }

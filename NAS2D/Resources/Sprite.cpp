@@ -18,7 +18,6 @@
 #include <stdexcept>
 
 
-using namespace std;
 using namespace NAS2D;
 using namespace NAS2D::Xml;
 
@@ -27,7 +26,7 @@ namespace {
 	const auto FRAME_PAUSE = unsigned(-1);
 
 	// Adds a row tag to the end of messages.
-	string endTag(int row)
+	std::string endTag(int row)
 	{
 		return " (Row: " + std::to_string(row) + ")";
 	}
@@ -316,7 +315,7 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
 	{
 		if (node->value() == "imagesheet" && node->toElement())
 		{
-			string id, src;
+			std::string id, src;
 			const XmlAttribute* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{
@@ -341,7 +340,7 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
 
-			const string imagePath = basePath + src;
+			const auto imagePath = basePath + src;
 			imageSheets.try_emplace(id, imagePath);
 		}
 	}
@@ -368,7 +367,7 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std
 		if (toLowercase(node->value()) == "action" && node->toElement())
 		{
 
-			string action_name;
+			std::string action_name;
 			const XmlAttribute* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{
@@ -415,7 +414,7 @@ std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image
 			throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow));
 		}
 
-		string sheetId;
+		std::string sheetId;
 		int delay = 0;
 		int x = 0, y = 0;
 		int width = 0, height = 0;

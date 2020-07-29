@@ -262,7 +262,7 @@ void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<fl
 		drawSubImage(image, destination.startPoint() + tileOffset.to<float>().skewBy(source.size()), source);
 	}
 
-	glDisable(GL_SCISSOR_TEST);
+	clipRectClear();
 }
 
 

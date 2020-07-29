@@ -367,28 +367,28 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std
 		if (toLowercase(node->value()) == "action" && node->toElement())
 		{
 
-			std::string action_name;
+			std::string actionName;
 			const XmlAttribute* attribute = node->toElement()->firstAttribute();
 			while (attribute)
 			{
 				if (toLowercase(attribute->name()) == "name")
 				{
-					action_name = attribute->value();
+					actionName = attribute->value();
 				}
 
 				attribute = attribute->next();
 			}
 
-			if (action_name.empty())
+			if (actionName.empty())
 			{
 				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row()));
 			}
-			if (actions.find(action_name) != actions.end())
+			if (actions.find(actionName) != actions.end())
 			{
-				throw std::runtime_error("Sprite Action redefinition: '" + action_name + "' " + endTag(node->row()));
+				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(node->row()));
 			}
 
-			actions[action_name] = processFrames(imageSheets, action_name, node);
+			actions[actionName] = processFrames(imageSheets, actionName, node);
 		}
 	}
 

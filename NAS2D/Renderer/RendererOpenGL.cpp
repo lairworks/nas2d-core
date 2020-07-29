@@ -255,10 +255,10 @@ void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<fl
 {
 	clipRect(destination);
 
-	const auto tileCountSize = destination.size().skewInverseBy(source.size());
-	for (std::size_t row = 0; row <= tileCountSize.y; ++row)
+	const auto tileCountSize = destination.size().skewInverseBy(source.size()).to<int>() + Vector{1, 1};
+	for (int row = 0; row < tileCountSize.y; ++row)
 	{
-		for (std::size_t col = 0; col <= tileCountSize.x; ++col)
+		for (int col = 0; col < tileCountSize.x; ++col)
 		{
 			drawSubImage(image, destination.startPoint() + Vector{col, row}.to<float>().skewBy(source.size()), source);
 		}

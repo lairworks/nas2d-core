@@ -12,15 +12,8 @@
 
 #include <cmath>
 
+
 namespace NAS2D {
-
-// Common Trig Defines
-const float PI = 3.14159265f;
-const float PI_2 = PI * 2;
-
-const float DEG2RAD = PI / 180.0f;
-const float RAD2DEG = 180 / PI;
-
 
 /**
  * Gets an angle in radians from degrees.

@@ -12,12 +12,14 @@
 
 #include "Renderer/Point.h"
 
+
 namespace NAS2D {
 
-extern const float PI;
-extern const float PI_2;
-extern const float DEG2RAD;
-extern const float RAD2DEG;
+constexpr float PI = 3.14159265f;
+constexpr float PI_2 = PI * 2;
+
+constexpr float DEG2RAD = PI / 180;
+constexpr float RAD2DEG = 180 / PI;
 
 
 float degToRad(float degree);

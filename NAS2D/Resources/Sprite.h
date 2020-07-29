@@ -20,12 +20,15 @@
 #include "../Renderer/Renderer.h"
 
 #include <map>
+#include <string_view>
 #include <string>
 #include <vector>
 
+
 namespace NAS2D {
 
-extern const std::string SPRITE_VERSION;
+constexpr std::string_view SPRITE_VERSION{"0.99"};
+
 
 /**
  * \class Sprite

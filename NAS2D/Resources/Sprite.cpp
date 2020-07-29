@@ -24,7 +24,7 @@ using namespace NAS2D::Xml;
 
 
 namespace NAS2D {
-	const string SPRITE_VERSION("0.99");
+	const string_view SPRITE_VERSION("0.99");
 }
 
 
@@ -289,7 +289,7 @@ Sprite::SpriteAnimations processXml(const std::string& filePath)
 	}
 	if (version->value() != SPRITE_VERSION)
 	{
-		throw std::runtime_error("Sprite version mismatch. Expected: " + SPRITE_VERSION + " Actual: " + versionString());
+		throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SPRITE_VERSION} + " Actual: " + versionString());
 	}
 
 	// Note:

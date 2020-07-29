@@ -115,7 +115,7 @@ public:
 	 * \see clipRectClear()
 	 */
 	virtual void clipRect(const Rectangle<float>& rect) = 0;
-	void clipRectClear();
+	virtual void clipRectClear() = 0;
 
 	virtual void fullscreen(bool fs, bool maintain = false) = 0;
 	virtual bool fullscreen() const = 0;

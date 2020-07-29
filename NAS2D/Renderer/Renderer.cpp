@@ -90,7 +90,7 @@ void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
 		throw std::runtime_error("Must pass 9 images to drawImageRect, but images.size() == " + std::to_string(images.size()));
 	}
 
-	drawImageRect({rect.x, rect.y, rect.width, rect.height}, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
+	drawImageRect(rect, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
 }
 
 
@@ -214,15 +214,6 @@ Signals::Signal<>& Renderer::fadeComplete()
 Point<int> Renderer::center() const
 {
 	return Point{0, 0} + mResolution / 2;
-}
-
-
-/**
- * Clears the clipping rectangle.
- */
-void Renderer::clipRectClear()
-{
-	clipRect({0, 0, 0, 0});
 }
 
 

@@ -10,6 +10,7 @@
 
 #include "RendererOpenGL.h"
 
+#include "VectorSizeRange.h"
 #include "../Trig.h"
 #include "../Configuration.h"
 #include "../EventHandler.h"
@@ -253,20 +254,15 @@ void RendererOpenGL::drawImageRepeated(const Image& image, Rectangle<float> rect
  */
 void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source)
 {
-	glEnable(GL_SCISSOR_TEST);
-	const auto clipRect = destination.to<int>();
-	glScissor(clipRect.x, size().y - (clipRect.y + clipRect.height), clipRect.width, clipRect.height);
+	clipRect(destination);
 
-	const auto tileCountSize = destination.size().skewInverseBy(source.size());
-	for (std::size_t row = 0; row <= tileCountSize.y; ++row)
+	const auto tileCountSize = destination.size().skewInverseBy(source.size()).to<int>() + Vector{1, 1};
+	for (const auto tileOffset : VectorSizeRange(tileCountSize))
 	{
-		for (std::size_t col = 0; col <= tileCountSize.x; ++col)
-		{
-			drawSubImage(image, {destination.x + (col * source.width), destination.y + (row * source.height)}, source);
-		}
+		drawSubImage(image, destination.startPoint() + tileOffset.to<float>().skewBy(source.size()), source);
 	}
 
-	glDisable(GL_SCISSOR_TEST);
+	clipRectClear();
 }
 
 
@@ -530,16 +526,16 @@ void RendererOpenGL::setCursor(int cursorId)
 
 void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 {
-	if (rect.null())
-	{
-		glDisable(GL_SCISSOR_TEST);
-		return;
-	}
-
 	const auto intRect = rect.to<int>();
-	glScissor(intRect.x, size().y - intRect.y - intRect.height, intRect.width, intRect.height);
+	glScissor(intRect.x, size().y - (intRect.y + intRect.height), intRect.width, intRect.height);
 
 	glEnable(GL_SCISSOR_TEST);
+}
+
+
+void RendererOpenGL::clipRectClear()
+{
+	glDisable(GL_SCISSOR_TEST);
 }
 
 

@@ -374,7 +374,16 @@ namespace {
  */
 unsigned int generateTexture(SDL_Surface* surface)
 {
-	return generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
+	const auto bytesPerPixel = surface->format->BytesPerPixel;
+	if (bytesPerPixel == 3 || bytesPerPixel == 4)
+	{
+		return generateTexture(surface->pixels, bytesPerPixel, surface->w, surface->h);
+	}
+
+	auto* newSurface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
+	const auto textureId = generateTexture(newSurface->pixels, newSurface->format->BytesPerPixel, newSurface->w, newSurface->h);
+	SDL_FreeSurface(newSurface);
+	return textureId;
 }
 
 

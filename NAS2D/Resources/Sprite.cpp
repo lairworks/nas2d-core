@@ -49,24 +49,18 @@ namespace {
  *
  * \param filePath	File path of the Sprite definition file.
  */
-Sprite::Sprite(const std::string& filePath) :
+Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
 	mSpriteName(filePath)
 {
 	try
 	{
 		mSpriteAnimations = processXml(filePath);
+		mCurrentAction = &mSpriteAnimations.actions.at(initialAction);
 	}
 	catch(const std::runtime_error& error)
 	{
 		throw std::runtime_error("Error parsing Sprite file: " + filePath + "\nError: " + error.what());
 	}
-}
-
-
-Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
-	Sprite{filePath}
-{
-	mCurrentAction = &mSpriteAnimations.actions.at(initialAction);
 }
 
 

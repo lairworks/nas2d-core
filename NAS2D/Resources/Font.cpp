@@ -28,7 +28,7 @@
 #include <stdexcept>
 
 
-extern unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
+extern unsigned int generateTexture(SDL_Surface* surface);
 
 
 using namespace NAS2D;
@@ -302,7 +302,7 @@ namespace {
 		}
 		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
 
-		unsigned int textureId = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
+		unsigned int textureId = generateTexture(fontSurface);
 
 		// Add generated texture id to texture ID map.
 		fontInfo.textureId = textureId;
@@ -368,7 +368,7 @@ namespace {
 			SDL_FreeSurface(characterSurface);
 		}
 
-		unsigned int textureId = generateTexture(fontSurface->pixels, fontSurface->format->BytesPerPixel, fontSurface->w, fontSurface->h);
+		unsigned int textureId = generateTexture(fontSurface);
 
 		// Add generated texture id to texture ID map.
 		fontMap[name].textureId = textureId;

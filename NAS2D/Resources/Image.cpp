@@ -107,7 +107,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	mSize = Vector{width, height};
 
-	unsigned int textureId = generateTexture(buffer, bytesPerPixel, width, height);
+	unsigned int textureId = generateTexture(surface);
 
 	// Update resource management.
 	auto& imageInfo = imageIdMap[name()];
@@ -205,7 +205,7 @@ void Image::load()
 
 	mSize = Vector{surface->w, surface->h};
 
-	unsigned int textureId = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
+	unsigned int textureId = generateTexture(surface);
 
 	// Add generated texture id to texture ID map.
 	auto& imageInfo = imageIdMap[name()];

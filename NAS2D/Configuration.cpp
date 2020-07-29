@@ -20,7 +20,6 @@
 #include <utility>
 
 using namespace NAS2D;
-using namespace NAS2D::Xml;
 
 // Set some basic constants.
 const int AUDIO_LOW_QUALITY = 11025;
@@ -108,7 +107,7 @@ namespace {
 	}
 
 
-	Dictionary ParseXmlElementAttributesToDictionary(const XmlElement& element)
+	Dictionary ParseXmlElementAttributesToDictionary(const Xml::XmlElement& element)
 	{
 		Dictionary dictionary;
 
@@ -121,7 +120,7 @@ namespace {
 	}
 
 
-	Dictionary ParseOptionsToDictionary(const XmlElement& element)
+	Dictionary ParseOptionsToDictionary(const Xml::XmlElement& element)
 	{
 		Dictionary dictionary;
 
@@ -150,13 +149,13 @@ namespace {
 	}
 
 
-	std::map<std::string, Dictionary> ParseXmlSections(const XmlElement& element)
+	std::map<std::string, Dictionary> ParseXmlSections(const Xml::XmlElement& element)
 	{
 		std::map<std::string, Dictionary> sections;
 
 		for (auto childElement = element.firstChildElement(); childElement; childElement = childElement->nextSiblingElement())
 		{
-			if (childElement->type() == XmlNode::NodeType::XML_COMMENT) { continue; } // Ignore comments
+			if (childElement->type() == Xml::XmlNode::NodeType::XML_COMMENT) { continue; } // Ignore comments
 
 			sections[childElement->value()] = ParseXmlElementAttributesToDictionary(*childElement) + ParseOptionsToDictionary(*childElement);
 		}
@@ -167,7 +166,7 @@ namespace {
 
 	std::map<std::string, Dictionary> ParseXmlSections(const std::string& xmlString, const std::string& sectionName)
 	{
-		XmlDocument xmlDocument;
+		Xml::XmlDocument xmlDocument;
 		xmlDocument.parse(xmlString.c_str());
 
 		if (xmlDocument.error())
@@ -175,7 +174,7 @@ namespace {
 			throw std::runtime_error("Error parsing XML file on (Row " + std::to_string(xmlDocument.errorRow()) + ", Column " + std::to_string(xmlDocument.errorCol()) + "): " + xmlDocument.errorDesc());
 		}
 
-		XmlElement* root = xmlDocument.firstChildElement(sectionName);
+		auto* root = xmlDocument.firstChildElement(sectionName);
 		if (!root)
 		{
 			throw std::runtime_error("XML file does not contain tag: " + sectionName);
@@ -185,9 +184,9 @@ namespace {
 	}
 
 
-	XmlElement* DictionaryToXmlElementAttributes(const std::string& tagName, const Dictionary& dictionary)
+	Xml::XmlElement* DictionaryToXmlElementAttributes(const std::string& tagName, const Dictionary& dictionary)
 	{
-		XmlElement* element = new XmlElement(tagName.c_str());
+		auto* element = new Xml::XmlElement(tagName.c_str());
 
 		for (const auto& key : dictionary.keys())
 		{
@@ -198,13 +197,13 @@ namespace {
 	}
 
 
-	XmlElement* DictionaryToXmlElementOptions(const std::string& tagName, const Dictionary& dictionary)
+	Xml::XmlElement* DictionaryToXmlElementOptions(const std::string& tagName, const Dictionary& dictionary)
 	{
-		XmlElement* element = new XmlElement(tagName.c_str());
+		auto* element = new Xml::XmlElement(tagName.c_str());
 
 		for (const auto& key : dictionary.keys())
 		{
-			XmlElement* option = new XmlElement("option");
+			auto* option = new Xml::XmlElement("option");
 			option->attribute("name", key);
 			option->attribute("value", dictionary.get(key));
 			element->linkEndChild(option);
@@ -214,9 +213,9 @@ namespace {
 	}
 
 
-	XmlElement* SectionsToXmlElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
+	Xml::XmlElement* SectionsToXmlElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
 	{
-		XmlElement* element = new XmlElement(tagName);
+		auto* element = new Xml::XmlElement(tagName);
 
 		for (const auto& [key, dictionary] : sections)
 		{
@@ -294,9 +293,9 @@ void Configuration::load(const std::string& filePath)
  */
 std::string Configuration::saveData() const
 {
-	XmlDocument doc;
+	Xml::XmlDocument doc;
 
-	XmlComment* comment = new XmlComment("Automatically generated Configuration file.");
+	auto* comment = new Xml::XmlComment("Automatically generated Configuration file.");
 	doc.linkEndChild(comment);
 
 	const auto& graphics = mSettings.at("graphics");
@@ -307,7 +306,7 @@ std::string Configuration::saveData() const
 	doc.linkEndChild(root);
 
 	// Write out the XML file.
-	XmlMemoryBuffer buff;
+	Xml::XmlMemoryBuffer buff;
 	doc.accept(&buff);
 
 	return buff.buffer();

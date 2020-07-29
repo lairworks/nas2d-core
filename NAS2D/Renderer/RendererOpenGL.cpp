@@ -10,6 +10,7 @@
 
 #include "RendererOpenGL.h"
 
+#include "VectorSizeRange.h"
 #include "../Trig.h"
 #include "../Configuration.h"
 #include "../EventHandler.h"
@@ -256,12 +257,9 @@ void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<fl
 	clipRect(destination);
 
 	const auto tileCountSize = destination.size().skewInverseBy(source.size()).to<int>() + Vector{1, 1};
-	for (int row = 0; row < tileCountSize.y; ++row)
+	for (const auto tileOffset : VectorSizeRange(tileCountSize))
 	{
-		for (int col = 0; col < tileCountSize.x; ++col)
-		{
-			drawSubImage(image, destination.startPoint() + Vector{col, row}.to<float>().skewBy(source.size()), source);
-		}
+		drawSubImage(image, destination.startPoint() + tileOffset.to<float>().skewBy(source.size()), source);
 	}
 
 	glDisable(GL_SCISSOR_TEST);

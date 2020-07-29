@@ -260,7 +260,7 @@ void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<fl
 	{
 		for (std::size_t col = 0; col <= tileCountSize.x; ++col)
 		{
-			drawSubImage(image, {destination.x + (col * source.width), destination.y + (row * source.height)}, source);
+			drawSubImage(image, destination.startPoint() + Vector{col, row}.to<float>().skewBy(source.size()), source);
 		}
 	}
 

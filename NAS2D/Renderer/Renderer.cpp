@@ -218,15 +218,6 @@ Point<int> Renderer::center() const
 
 
 /**
- * Clears the clipping rectangle.
- */
-void Renderer::clipRectClear()
-{
-	clipRect({0, 0, 0, 0});
-}
-
-
-/**
  * Updates the screen.
  *
  * \note	All derived Renderer objects must call Renderer::update()

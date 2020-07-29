@@ -56,8 +56,10 @@ public:
 
 	explicit Sprite(const std::string& filePath);
 	Sprite(const std::string& filePath, const std::string& initialAction);
-	Sprite(const Sprite& sprite) = default;
-	Sprite& operator=(const Sprite& rhs) = default;
+	Sprite(const Sprite& sprite) = delete;
+	Sprite(Sprite&& sprite) = default;
+	Sprite& operator=(const Sprite& rhs) = delete;
+	Sprite& operator=(Sprite&& rhs) = default;
 	~Sprite() = default;
 
 	Vector<int> size() const;

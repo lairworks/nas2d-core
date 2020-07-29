@@ -28,6 +28,7 @@ using namespace NAS2D::Exception;
 std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 
 
+unsigned int generateTexture(SDL_Surface* surface);
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 
 
@@ -106,7 +107,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	mSize = Vector{width, height};
 
-	unsigned int textureId = generateTexture(buffer, bytesPerPixel, width, height);
+	unsigned int textureId = generateTexture(surface);
 
 	// Update resource management.
 	auto& imageInfo = imageIdMap[name()];
@@ -204,7 +205,7 @@ void Image::load()
 
 	mSize = Vector{surface->w, surface->h};
 
-	unsigned int textureId = generateTexture(surface->pixels, surface->format->BytesPerPixel, surface->w, surface->h);
+	unsigned int textureId = generateTexture(surface);
 
 	// Add generated texture id to texture ID map.
 	auto& imageInfo = imageIdMap[name()];
@@ -371,6 +372,21 @@ namespace {
 /**
  * Generates a new OpenGL texture from an SDL_Surface.
  */
+unsigned int generateTexture(SDL_Surface* surface)
+{
+	const auto bytesPerPixel = surface->format->BytesPerPixel;
+	if (bytesPerPixel == 3 || bytesPerPixel == 4)
+	{
+		return generateTexture(surface->pixels, bytesPerPixel, surface->w, surface->h);
+	}
+
+	auto* newSurface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
+	const auto textureId = generateTexture(newSurface->pixels, newSurface->format->BytesPerPixel, newSurface->w, newSurface->h);
+	SDL_FreeSurface(newSurface);
+	return textureId;
+}
+
+
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
 {
 	GLenum textureFormat = 0;

@@ -23,11 +23,6 @@ using namespace NAS2D;
 using namespace NAS2D::Xml;
 
 
-namespace NAS2D {
-	const string_view SPRITE_VERSION("0.99");
-}
-
-
 namespace {
 	const auto FRAME_PAUSE = unsigned(-1);
 

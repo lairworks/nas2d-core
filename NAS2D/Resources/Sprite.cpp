@@ -38,7 +38,7 @@ namespace {
 	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element);
 	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node);
 
-	const Sprite::SpriteAnimations& cachedLoad(const std::string& filePath)
+	const std::map<std::string, std::vector<Sprite::SpriteFrame>>& cachedLoad(const std::string& filePath)
 	{
 		auto iter = animationCache.find(filePath);
 		if (iter == animationCache.end())
@@ -46,7 +46,7 @@ namespace {
 			const auto result = animationCache.try_emplace(filePath, processXml(filePath));
 			iter = result.first;
 		}
-		return iter->second;
+		return iter->second.actions;
 	}
 }
 
@@ -58,8 +58,8 @@ namespace {
  */
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
 	mSpriteName{filePath},
-	mSpriteAnimations{cachedLoad(filePath)},
-	mCurrentAction{&mSpriteAnimations.actions.at(initialAction)}
+	mActions{&cachedLoad(filePath)},
+	mCurrentAction{&mActions->at(initialAction)}
 {
 }
 
@@ -83,7 +83,7 @@ Point<int> Sprite::origin(Point<int> point) const
  */
 StringList Sprite::actions() const
 {
-	return getKeys(mSpriteAnimations.actions);
+	return getKeys(*mActions);
 }
 
 
@@ -100,12 +100,12 @@ StringList Sprite::actions() const
  */
 void Sprite::play(const std::string& action)
 {
-	if (mSpriteAnimations.actions.find(action) == mSpriteAnimations.actions.end())
+	if (mActions->find(action) == mActions->end())
 	{
 		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + mSpriteName);
 	}
 
-	mCurrentAction = &mSpriteAnimations.actions.at(action);
+	mCurrentAction = &mActions->at(action);
 	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();
@@ -298,10 +298,9 @@ Sprite::SpriteAnimations processXml(const std::string& filePath)
 		// Here instead of going through each element and calling a processing function to handle
 		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 		// image sheets anywhere in the sprite file.
-		Sprite::SpriteAnimations spriteAnimations;
-		spriteAnimations.imageSheets = processImageSheets(basePath, xmlRootElement);
-		spriteAnimations.actions = processActions(spriteAnimations.imageSheets, xmlRootElement);
-		return spriteAnimations;
+		auto imageSheets = processImageSheets(basePath, xmlRootElement);
+		auto actions = processActions(imageSheets, xmlRootElement);
+		return {std::move(imageSheets), std::move(actions)};
 	}
 	catch(const std::runtime_error& error)
 	{

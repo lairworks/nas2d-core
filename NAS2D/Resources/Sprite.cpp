@@ -45,15 +45,8 @@ namespace {
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
 	mSpriteName(filePath)
 {
-	try
-	{
-		mSpriteAnimations = processXml(filePath);
-		mCurrentAction = &mSpriteAnimations.actions.at(initialAction);
-	}
-	catch(const std::runtime_error& error)
-	{
-		throw std::runtime_error("Error parsing Sprite file: " + filePath + "\nError: " + error.what());
-	}
+	mSpriteAnimations = processXml(filePath);
+	mCurrentAction = &mSpriteAnimations.actions.at(initialAction);
 }
 
 
@@ -256,43 +249,50 @@ namespace {
  */
 Sprite::SpriteAnimations processXml(const std::string& filePath)
 {
-	auto& filesystem = Utility<Filesystem>::get();
-	const auto basePath = filesystem.workingPath(filePath);
-
-	Xml::XmlDocument xmlDoc;
-	xmlDoc.parse(filesystem.open(filePath).raw_bytes());
-
-	if (xmlDoc.error())
+	try
 	{
-		throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
-	}
+		auto& filesystem = Utility<Filesystem>::get();
+		const auto basePath = filesystem.workingPath(filePath);
 
-	// Find the Sprite node.
-	const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
-	if (!xmlRootElement)
-	{
-		throw std::runtime_error("Sprite file does not contain required <sprite> tag");
-	}
+		Xml::XmlDocument xmlDoc;
+		xmlDoc.parse(filesystem.open(filePath).raw_bytes());
 
-	// Get the Sprite version.
-	const auto* version = xmlRootElement->firstAttribute();
-	if (!version || version->value().empty())
-	{
-		throw std::runtime_error("Sprite file's root element does not specify a version");
-	}
-	if (version->value() != SPRITE_VERSION)
-	{
-		throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SPRITE_VERSION} + " Actual: " + versionString());
-	}
+		if (xmlDoc.error())
+		{
+			throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
+		}
 
-	// Note:
-	// Here instead of going through each element and calling a processing function to handle
-	// it, we just iterate through all nodes to find sprite sheets. This allows us to define
-	// image sheets anywhere in the sprite file.
-	Sprite::SpriteAnimations spriteAnimations;
-	spriteAnimations.imageSheets = processImageSheets(basePath, xmlRootElement);
-	spriteAnimations.actions = processActions(spriteAnimations.imageSheets, xmlRootElement);
-	return spriteAnimations;
+		// Find the Sprite node.
+		const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
+		if (!xmlRootElement)
+		{
+			throw std::runtime_error("Sprite file does not contain required <sprite> tag");
+		}
+
+		// Get the Sprite version.
+		const auto* version = xmlRootElement->firstAttribute();
+		if (!version || version->value().empty())
+		{
+			throw std::runtime_error("Sprite file's root element does not specify a version");
+		}
+		if (version->value() != SPRITE_VERSION)
+		{
+			throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SPRITE_VERSION} + " Actual: " + versionString());
+		}
+
+		// Note:
+		// Here instead of going through each element and calling a processing function to handle
+		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
+		// image sheets anywhere in the sprite file.
+		Sprite::SpriteAnimations spriteAnimations;
+		spriteAnimations.imageSheets = processImageSheets(basePath, xmlRootElement);
+		spriteAnimations.actions = processActions(spriteAnimations.imageSheets, xmlRootElement);
+		return spriteAnimations;
+	}
+	catch(const std::runtime_error& error)
+	{
+		throw std::runtime_error("Error parsing Sprite file: " + filePath + "\nError: " + error.what());
+	}
 }
 
 

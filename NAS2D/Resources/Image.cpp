@@ -103,7 +103,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 
 	name(ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY));
 
-	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 4, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
+	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
 	mSize = Vector{width, height};
 

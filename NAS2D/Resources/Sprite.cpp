@@ -24,6 +24,9 @@ using namespace NAS2D;
 namespace {
 	const auto FRAME_PAUSE = unsigned(-1);
 
+	std::map<std::string, Sprite::SpriteAnimations> animationCache;
+
+
 	// Adds a row tag to the end of messages.
 	std::string endTag(int row)
 	{
@@ -34,6 +37,17 @@ namespace {
 	std::map<std::string, Image> processImageSheets(const std::string& basePath, const Xml::XmlElement* element);
 	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element);
 	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node);
+
+	const Sprite::SpriteAnimations& cachedLoad(const std::string& filePath)
+	{
+		auto iter = animationCache.find(filePath);
+		if (iter == animationCache.end())
+		{
+			const auto [newIter, bInserted] = animationCache.try_emplace(filePath, processXml(filePath));
+			iter = newIter;
+		}
+		return iter->second;
+	}
 }
 
 
@@ -44,7 +58,7 @@ namespace {
  */
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
 	mSpriteName{filePath},
-	mSpriteAnimations{processXml(filePath)},
+	mSpriteAnimations{cachedLoad(filePath)},
 	mCurrentAction{&mSpriteAnimations.actions.at(initialAction)}
 {
 }

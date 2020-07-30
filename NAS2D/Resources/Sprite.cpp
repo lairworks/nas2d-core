@@ -298,10 +298,9 @@ Sprite::SpriteAnimations processXml(const std::string& filePath)
 		// Here instead of going through each element and calling a processing function to handle
 		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 		// image sheets anywhere in the sprite file.
-		Sprite::SpriteAnimations spriteAnimations;
-		spriteAnimations.imageSheets = processImageSheets(basePath, xmlRootElement);
-		spriteAnimations.actions = processActions(spriteAnimations.imageSheets, xmlRootElement);
-		return spriteAnimations;
+		auto imageSheets = processImageSheets(basePath, xmlRootElement);
+		auto actions = processActions(imageSheets, xmlRootElement);
+		return {std::move(imageSheets), std::move(actions)};
 	}
 	catch(const std::runtime_error& error)
 	{

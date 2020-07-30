@@ -94,7 +94,7 @@ private:
 
 	SpriteAnimations mSpriteAnimations;
 
-	std::vector<SpriteFrame>* mCurrentAction{nullptr};
+	const std::vector<SpriteFrame>* mCurrentAction{nullptr};
 	std::size_t mCurrentFrame{0};
 
 	bool mPaused{false};

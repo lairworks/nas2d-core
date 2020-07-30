@@ -92,8 +92,7 @@ public:
 private:
 	std::string mSpriteName;
 
-	SpriteAnimations mSpriteAnimations;
-
+	const std::map<std::string, std::vector<SpriteFrame>>* mActions;
 	const std::vector<SpriteFrame>* mCurrentAction{nullptr};
 	std::size_t mCurrentFrame{0};
 

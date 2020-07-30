@@ -43,8 +43,8 @@ namespace {
 		auto iter = animationCache.find(filePath);
 		if (iter == animationCache.end())
 		{
-			const auto [newIter, bInserted] = animationCache.try_emplace(filePath, processXml(filePath));
-			iter = newIter;
+			const auto result = animationCache.try_emplace(filePath, processXml(filePath));
+			iter = result.first;
 		}
 		return iter->second;
 	}

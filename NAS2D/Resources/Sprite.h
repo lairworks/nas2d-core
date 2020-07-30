@@ -54,6 +54,12 @@ public:
 	{
 		std::map<std::string, Image> imageSheets;
 		std::map<std::string, std::vector<SpriteFrame>> actions;
+
+		SpriteAnimations() = default;
+		SpriteAnimations(const SpriteAnimations& other) = delete;
+		SpriteAnimations(SpriteAnimations&& other) = default;
+		SpriteAnimations& operator=(const SpriteAnimations& other) = delete;
+		SpriteAnimations& operator=(SpriteAnimations&& other) = default;
 	};
 
 

@@ -43,10 +43,10 @@ namespace {
  * \param filePath	File path of the Sprite definition file.
  */
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
-	mSpriteName(filePath)
+	mSpriteName{filePath},
+	mSpriteAnimations{processXml(filePath)},
+	mCurrentAction{&mSpriteAnimations.actions.at(initialAction)}
 {
-	mSpriteAnimations = processXml(filePath);
-	mCurrentAction = &mSpriteAnimations.actions.at(initialAction);
 }
 
 

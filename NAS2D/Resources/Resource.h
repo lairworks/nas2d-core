@@ -25,7 +25,7 @@ class Resource
 {
 public:
 	explicit Resource(const std::string& filePath);
-	virtual ~Resource();
+	virtual ~Resource() = default;
 
 	const std::string& name() const;
 

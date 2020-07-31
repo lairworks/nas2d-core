@@ -24,13 +24,6 @@ Resource::Resource(const std::string& filePath) :
 
 
 /**
- * D'tor
- */
-Resource::~Resource()
-{}
-
-
-/**
  * Gets the name of the Resource as a file name with directory path.
  */
 const std::string& Resource::name() const

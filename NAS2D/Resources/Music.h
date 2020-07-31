@@ -28,7 +28,7 @@ public:
 	Music(const Music& rhs);
 	Music& operator=(const Music& rhs);
 
-	~Music() override;
+	~Music();
 
 private:
 	void load();

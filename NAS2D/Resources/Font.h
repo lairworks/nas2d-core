@@ -40,7 +40,7 @@ public:
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
 	Font(const Font& font);
 	Font& operator=(const Font& font);
-	~Font() override;
+	~Font();
 
 	Vector<int> size(std::string_view string) const;
 	int width(std::string_view string) const;

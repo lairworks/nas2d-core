@@ -48,7 +48,7 @@ public:
 	Image(const Image &rhs);
 	Image& operator=(const Image& rhs);
 
-	~Image() override;
+	~Image();
 
 	Vector<int> size() const;
 

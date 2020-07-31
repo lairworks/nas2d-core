@@ -28,7 +28,7 @@ public:
 	Sound(Sound&& other) = default;
 	Sound& operator=(Sound&& other) = default;
 	explicit Sound(const std::string& filePath);
-	~Sound() override;
+	~Sound();
 
 protected:
 	friend class MixerSDL;

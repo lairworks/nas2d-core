@@ -66,8 +66,6 @@ void Sound::load()
 	{
 		throw std::runtime_error("Sound file could not be loaded: " + mResourceName + " : " + std::string{Mix_GetError()});
 	}
-
-	mIsLoaded = true;
 }
 
 

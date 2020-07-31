@@ -31,7 +31,6 @@ public:
 
 protected:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
-	bool mIsLoaded{false}; /**< Flag indicating whether or not this Resource has loaded properly. */
 };
 
 } // namespace

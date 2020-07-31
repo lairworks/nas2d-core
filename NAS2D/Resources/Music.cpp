@@ -48,8 +48,6 @@ Music::Music(const Music& rhs) : Resource(rhs.mResourceName)
 	{
 		it->second.refCount++;
 	}
-
-	mIsLoaded = rhs.mIsLoaded;
 }
 
 
@@ -69,7 +67,6 @@ Music& Music::operator=(const Music& rhs)
 	}
 
 	mResourceName = rhs.mResourceName;
-	mIsLoaded = rhs.mIsLoaded;
 
 	return *this;
 }
@@ -94,7 +91,6 @@ void Music::load()
 	if (MUSIC_REF_MAP.find(mResourceName) != MUSIC_REF_MAP.end())
 	{
 		MUSIC_REF_MAP.find(mResourceName)->second.refCount++;
-		mIsLoaded = true;
 		return;
 	}
 
@@ -115,8 +111,6 @@ void Music::load()
 	record.buffer = file;
 	record.music = music;
 	record.refCount++;
-
-	mIsLoaded = true;
 }
 
 

@@ -63,7 +63,7 @@ namespace {
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
 {
-	mIsLoaded = ::load(filePath, ptSize);
+	::load(filePath, ptSize);
 	mResourceName = filePath + "_" + std::to_string(ptSize) + "pt";
 }
 
@@ -79,7 +79,7 @@ Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath
  */
 Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) : Resource(filePath)
 {
-	mIsLoaded = loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
+	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
 
 
@@ -95,8 +95,6 @@ Font::Font(const Font& rhs) : Resource(rhs.mResourceName)
 	{
 		++it->second.refCount;
 	}
-
-	mIsLoaded = rhs.mIsLoaded;
 }
 
 
@@ -126,7 +124,6 @@ Font& Font::operator=(const Font& rhs)
 	if (it == fontMap.end()) { throw font_bad_data(); }
 
 	++it->second.refCount;
-	mIsLoaded = rhs.mIsLoaded;
 
 	return *this;
 }

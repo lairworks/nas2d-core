@@ -9,7 +9,8 @@
 // ==================================================================================
 #pragma once
 
-#include "Resource.h"
+#include <string>
+
 
 namespace NAS2D {
 

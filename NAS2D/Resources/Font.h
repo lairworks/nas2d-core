@@ -9,10 +9,10 @@
 // ==================================================================================
 #pragma once
 
-#include "Resource.h"
 #include "../Renderer/Vector.h"
 
 #include <map>
+#include <string>
 #include <vector>
 #include <string_view>
 

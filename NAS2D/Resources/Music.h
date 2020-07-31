@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include "Resource.h"
-
+#include <string>
 #include <map>
+
 
 namespace NAS2D {
 

@@ -9,11 +9,11 @@
 // ==================================================================================
 #pragma once
 
-#include "Resource.h"
 #include "../Renderer/Color.h"
 #include "../Renderer/Point.h"
 #include "../Renderer/Vector.h"
 
+#include <string>
 #include <vector>
 #include <utility>
 

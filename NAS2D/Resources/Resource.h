@@ -36,17 +36,6 @@ protected:
 	void name(const std::string& name);
 
 private:
-	/**
-	 * Performs the necessary operations to load a Resource.
-	 *
-	 * \note	This is a pure virtual function and so must be
-	 *			overridden by all derived classes.
-	 *
-	 * \note	It is the responsibility of the derived class to
-	 *			call this function.
-	 */
-	virtual void load() = 0;
-
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 
 	bool mIsLoaded{false}; /**< Flag indicating whether or not this Resource has loaded properly. */

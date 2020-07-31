@@ -50,9 +50,6 @@ public:
 	unsigned int ptSize() const;
 
 	Vector<int> glyphCellSize() const;
-
-private:
-	void load() override {}
 };
 
 } // namespace

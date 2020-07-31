@@ -57,7 +57,7 @@ public:
 	Color pixelColor(int x, int y) const;
 
 private:
-	void load() override;
+	void load();
 
 private:
 	Vector<int> mSize; /**< Width/Height information about the Image. */

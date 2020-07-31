@@ -20,6 +20,8 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <stdexcept>
+
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -188,15 +190,13 @@ void Image::load()
 	File imageFile = Utility<Filesystem>::get().open(mResourceName);
 	if (imageFile.size() == 0)
 	{
-		std::cout << "Image::load(): '" << mResourceName << "' is empty." << std::endl;
-		return;
+		throw std::runtime_error("Image::load(): File is empty: " + mResourceName);
 	}
 
 	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
 	if (!surface)
 	{
-		std::cout << "Image::load(): " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Image::load(): " + std::string{SDL_GetError()});
 	}
 
 	mSize = Vector{surface->w, surface->h};

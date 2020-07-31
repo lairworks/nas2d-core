@@ -37,7 +37,6 @@ namespace NAS2D {
 class Image
 {
 public:
-	Image();
 	explicit Image(const std::string& filePath);
 	Image(void* buffer, int bytesPerPixel, int width, int height);
 

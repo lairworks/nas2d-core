@@ -94,12 +94,9 @@ Font::Font(const Font& rhs) : Resource(rhs.mResourceName)
 	if (it != fontMap.end())
 	{
 		++it->second.refCount;
-		mIsLoaded = rhs.mIsLoaded;
 	}
-	else
-	{
-		mIsLoaded = false;
-	}
+
+	mIsLoaded = rhs.mIsLoaded;
 }
 
 

@@ -453,7 +453,7 @@ void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 
 void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<float> position, Color color)
 {
-	if (!font.loaded() || text.empty()) { return; }
+	if (text.empty()) { return; }
 
 	setColor(color);
 

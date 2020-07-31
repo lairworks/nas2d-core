@@ -459,30 +459,23 @@ std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image
 		{
 			throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
 		}
-		const auto& image = iterator->second;
-		if (!image.loaded())
-		{
-			throw std::runtime_error("Sprite Frame definition references imagesheet that failed to load: '" + sheetId + "' " + endTag(currentRow));
-		}
 
+		const auto& image = iterator->second;
 		// X-Coordinate
 		if (x < 0 || x > image.size().x)
 		{
 			throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow));
 		}
-
 		// Y-Coordinate
 		if (y < 0 || y > image.size().y)
 		{
 			throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow));
 		}
-
 		// Width
 		if (width <= 0 || width > image.size().x - x)
 		{
 			throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow));
 		}
-
 		// Height
 		if (height <= 0 || height > image.size().y - y)
 		{

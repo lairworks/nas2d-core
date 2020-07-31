@@ -63,8 +63,8 @@ namespace {
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
 {
-	loaded(::load(name(), ptSize));
-	name(name() + "_" + std::to_string(ptSize) + "pt");
+	mIsLoaded = ::load(filePath, ptSize);
+	mResourceName = filePath + "_" + std::to_string(ptSize) + "pt";
 }
 
 
@@ -79,7 +79,7 @@ Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath
  */
 Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) : Resource(filePath)
 {
-	loaded(loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace));
+	mIsLoaded = loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
 
 
@@ -88,18 +88,15 @@ Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int gly
  *
  * \param	rhs	Font to copy.
  */
-Font::Font(const Font& rhs) : Resource(rhs.name())
+Font::Font(const Font& rhs) : Resource(rhs.mResourceName)
 {
-	auto it = fontMap.find(name());
+	auto it = fontMap.find(mResourceName);
 	if (it != fontMap.end())
 	{
 		++it->second.refCount;
-		loaded(rhs.loaded());
 	}
-	else
-	{
-		loaded(false);
-	}
+
+	mIsLoaded = rhs.mIsLoaded;
 }
 
 
@@ -108,7 +105,7 @@ Font::Font(const Font& rhs) : Resource(rhs.name())
 */
 Font::~Font()
 {
-	updateFontReferenceCount(name());
+	updateFontReferenceCount(mResourceName);
 }
 
 
@@ -121,15 +118,15 @@ Font& Font::operator=(const Font& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	updateFontReferenceCount(name());
+	updateFontReferenceCount(mResourceName);
 
-	name(rhs.name());
+	mResourceName = rhs.mResourceName;
 
-	auto it = fontMap.find(name());
+	auto it = fontMap.find(mResourceName);
 	if (it == fontMap.end()) { throw font_bad_data(); }
 
 	++it->second.refCount;
-	loaded(rhs.loaded());
+	mIsLoaded = rhs.mIsLoaded;
 
 	return *this;
 }
@@ -137,7 +134,7 @@ Font& Font::operator=(const Font& rhs)
 
 Vector<int> Font::glyphCellSize() const
 {
-	return fontMap[name()].glyphSize;
+	return fontMap[mResourceName].glyphSize;
 }
 
 
@@ -157,7 +154,7 @@ int Font::width(std::string_view string) const
 	if (string.empty()) { return 0; }
 
 	int width = 0;
-	GlyphMetricsList& gml = fontMap[name()].metrics;
+	GlyphMetricsList& gml = fontMap[mResourceName].metrics;
 	if (gml.empty()) { return 0; }
 
 	for (auto character : string)
@@ -175,7 +172,7 @@ int Font::width(std::string_view string) const
  */
 int Font::height() const
 {
-	return fontMap[name()].height;
+	return fontMap[mResourceName].height;
 }
 
 
@@ -184,7 +181,7 @@ int Font::height() const
  */
 int Font::ascent() const
 {
-	return fontMap[name()].ascent;
+	return fontMap[mResourceName].ascent;
 }
 
 
@@ -193,7 +190,7 @@ int Font::ascent() const
  */
 unsigned int Font::ptSize() const
 {
-	return fontMap[name()].pointSize;
+	return fontMap[mResourceName].pointSize;
 }
 
 
@@ -217,22 +214,20 @@ namespace {
 		{
 			if (TTF_Init() != 0)
 			{
-				std::cout << "Font::load(): " << TTF_GetError() << std::endl;
-				return false;
+				throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 			}
 		}
 
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
 		{
-			return false;
+			throw std::runtime_error("Font file is empty: " + path);
 		}
 
 		TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, static_cast<int>(ptSize));
 		if (!font)
 		{
-			std::cout << "Font::load(): " << TTF_GetError() << std::endl;
-			return false;
+			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 		}
 
 		fontMap[fontname].height = TTF_FontHeight(font);
@@ -263,14 +258,13 @@ namespace {
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
 		{
-			return false;
+			throw std::runtime_error("Font file is empty: " + path);
 		}
 
 		SDL_Surface* fontSurface = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
 		if (!fontSurface)
 		{
-			std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
-			return false;
+			throw std::runtime_error("Font loadBitmap function failed: " + std::string{SDL_GetError()});
 		}
 
 		const auto fontSurfaceSize = Vector{fontSurface->w, fontSurface->h};

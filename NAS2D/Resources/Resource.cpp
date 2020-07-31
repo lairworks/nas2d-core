@@ -40,32 +40,9 @@ const std::string& Resource::name() const
 
 
 /**
- * Sets the name of the resource.
- */
-void Resource::name(const std::string& name)
-{
-	mResourceName = name;
-}
-
-
-/**
  * Returns true if this Resource loaded properly.
  */
 bool Resource::loaded() const
 {
 	return mIsLoaded;
-}
-
-
-/**
- * Sets whether or not the Resource is loaded.
- *
- * \note	This is an internal function only and is provided for use
- *			by derived Resource types.
- *
- * \param	loaded	Boolean value.
- */
-void Resource::loaded(bool loaded)
-{
-	mIsLoaded = loaded;
 }

@@ -18,6 +18,8 @@
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
+
 
 using namespace NAS2D;
 
@@ -39,15 +41,15 @@ Music::Music(const std::string& filePath) : Resource(filePath)
 /**
  * Copy c'tor.
  */
-Music::Music(const Music& rhs) : Resource(rhs.name())
+Music::Music(const Music& rhs) : Resource(rhs.mResourceName)
 {
-	auto it = MUSIC_REF_MAP.find(name());
+	auto it = MUSIC_REF_MAP.find(mResourceName);
 	if (it != MUSIC_REF_MAP.end())
 	{
 		it->second.refCount++;
 	}
 
-	loaded(rhs.loaded());
+	mIsLoaded = rhs.mIsLoaded;
 }
 
 
@@ -58,20 +60,16 @@ Music& Music::operator=(const Music& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	updateMusicReferenceCount(name());
+	updateMusicReferenceCount(mResourceName);
 
-	name(rhs.name());
-
-	auto it = MUSIC_REF_MAP.find(name());
+	auto it = MUSIC_REF_MAP.find(mResourceName);
 	if (it != MUSIC_REF_MAP.end())
 	{
 		it->second.refCount++;
-		loaded(rhs.loaded());
 	}
-	else
-	{
-		loaded(false);
-	}
+
+	mResourceName = rhs.mResourceName;
+	mIsLoaded = rhs.mIsLoaded;
 
 	return *this;
 }
@@ -82,7 +80,7 @@ Music& Music::operator=(const Music& rhs)
  */
 Music::~Music()
 {
-	updateMusicReferenceCount(name());
+	updateMusicReferenceCount(mResourceName);
 }
 
 
@@ -93,33 +91,32 @@ Music::~Music()
  */
 void Music::load()
 {
-	if (MUSIC_REF_MAP.find(name()) != MUSIC_REF_MAP.end())
+	if (MUSIC_REF_MAP.find(mResourceName) != MUSIC_REF_MAP.end())
 	{
-		MUSIC_REF_MAP.find(name())->second.refCount++;
-		loaded(true);
+		MUSIC_REF_MAP.find(mResourceName)->second.refCount++;
+		mIsLoaded = true;
 		return;
 	}
 
-	File* file = new File(Utility<Filesystem>::get().open(name()));
+	File* file = new File(Utility<Filesystem>::get().open(mResourceName));
 	if (file->empty())
 	{
 		delete file;
-		return;
+		throw std::runtime_error("Music file is empty: " + mResourceName);
 	}
 
 	Mix_Music* music = Mix_LoadMUS_RW(SDL_RWFromConstMem(file->raw_bytes(), static_cast<int>(file->size())), 0);
 	if (!music)
 	{
-		std::cout << "Music::load(): " << Mix_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Music::load() error: " + std::string{Mix_GetError()});
 	}
 
-	auto& record = MUSIC_REF_MAP[name()];
+	auto& record = MUSIC_REF_MAP[mResourceName];
 	record.buffer = file;
 	record.music = music;
 	record.refCount++;
 
-	loaded(true);
+	mIsLoaded = true;
 }
 
 

@@ -36,7 +36,7 @@ protected:
 	void* sound() const;
 
 private:
-	void load() override;
+	void load();
 
 	void* _chunk{nullptr};
 };

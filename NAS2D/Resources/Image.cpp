@@ -20,6 +20,8 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <stdexcept>
+
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -58,26 +60,7 @@ Image::Image(const std::string& filePath) : Resource(filePath)
  */
 Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 {
-	loaded(true);
-}
-
-
-/**
- * Create a blank Image of X, Y dimensions.
- *
- * \param	width	Width of the Image.
- * \param	height	Height of the Image.
- */
-Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
-{
-	name(ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY));
-	mSize = Vector{width, height};
-
-	// Update resource management.
-	auto& imageInfo = imageIdMap[name()];
-	imageInfo.textureId = 0;
-	imageInfo.size = {width, height};
-	imageInfo.refCount++;
+	mIsLoaded = true;
 }
 
 
@@ -101,7 +84,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 		throw image_unsupported_bit_depth();
 	}
 
-	name(ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY));
+	mResourceName = ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY);
 
 	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
@@ -110,11 +93,13 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	unsigned int textureId = generateTexture(surface);
 
 	// Update resource management.
-	auto& imageInfo = imageIdMap[name()];
+	auto& imageInfo = imageIdMap[mResourceName];
 	imageInfo.textureId = textureId;
 	imageInfo.size = {width, height};
 	imageInfo.refCount++;
 	imageInfo.surface = surface;
+
+	mIsLoaded = true;
 }
 
 
@@ -123,15 +108,15 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
  *
  * \param	src		Image to copy.
  */
-Image::Image(const Image &src) : Resource(src.name()), mSize(src.mSize)
+Image::Image(const Image &src) : Resource(src.mResourceName), mSize(src.mSize)
 {
-	if (!src.loaded())
+	if (!src.mIsLoaded)
 	{
 		throw image_bad_copy();
 	}
 
-	loaded(src.loaded());
-	imageIdMap[name()].refCount++;
+	mIsLoaded = src.mIsLoaded;
+	imageIdMap[mResourceName].refCount++;
 }
 
 
@@ -140,7 +125,7 @@ Image::Image(const Image &src) : Resource(src.name()), mSize(src.mSize)
  */
 Image::~Image()
 {
-	updateImageReferenceCount(name());
+	updateImageReferenceCount(mResourceName);
 }
 
 
@@ -153,18 +138,18 @@ Image& Image::operator=(const Image& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	updateImageReferenceCount(name());
+	updateImageReferenceCount(mResourceName);
 
-	name(rhs.name());
+	mResourceName = rhs.mResourceName;
 	mSize = rhs.mSize;
 
-	auto it = imageIdMap.find(name());
+	auto it = imageIdMap.find(mResourceName);
 	if (it == imageIdMap.end())
 	{
 		throw image_bad_data();
 	}
 
-	loaded(rhs.loaded());
+	mIsLoaded = rhs.mIsLoaded;
 	++it->second.refCount;
 
 	return *this;
@@ -178,29 +163,23 @@ Image& Image::operator=(const Image& rhs)
  */
 void Image::load()
 {
-	if (checkTextureId(name()))
+	if (checkTextureId(mResourceName))
 	{
-		mSize = imageIdMap[name()].size;
-		loaded(true);
+		mSize = imageIdMap[mResourceName].size;
+		mIsLoaded = true;
 		return;
 	}
 
-	#ifdef _DEBUG
-	//std::cout << "Loading image '" << name() << "'" << std::endl;
-	#endif
-
-	File imageFile = Utility<Filesystem>::get().open(name());
+	File imageFile = Utility<Filesystem>::get().open(mResourceName);
 	if (imageFile.size() == 0)
 	{
-		std::cout << "Image::load(): '" << name() << "' is empty." << std::endl;
-		return;
+		throw std::runtime_error("Image::load(): File is empty: " + mResourceName);
 	}
 
 	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
 	if (!surface)
 	{
-		std::cout << "Image::load(): " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Image::load(): " + std::string{SDL_GetError()});
 	}
 
 	mSize = Vector{surface->w, surface->h};
@@ -208,13 +187,13 @@ void Image::load()
 	unsigned int textureId = generateTexture(surface);
 
 	// Add generated texture id to texture ID map.
-	auto& imageInfo = imageIdMap[name()];
+	auto& imageInfo = imageIdMap[mResourceName];
 	imageInfo.surface = surface;
 	imageInfo.textureId = textureId;
 	imageInfo.size = mSize;
 	imageInfo.refCount++;
 
-	loaded(true);
+	mIsLoaded = true;
 }
 
 
@@ -251,7 +230,7 @@ Color Image::pixelColor(int x, int y) const
 		return Color::Black;
 	}
 
-	SDL_Surface* surface = imageIdMap[name()].surface;
+	SDL_Surface* surface = imageIdMap[mResourceName].surface;
 
 	if (!surface) { throw image_null_data(); }
 

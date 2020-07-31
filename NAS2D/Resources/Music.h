@@ -31,7 +31,7 @@ public:
 	~Music() override;
 
 private:
-	void load() override;
+	void load();
 };
 
 } // namespace

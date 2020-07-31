@@ -24,7 +24,6 @@ namespace NAS2D {
 class Resource
 {
 public:
-	Resource() = default;
 	explicit Resource(const std::string& filePath);
 	virtual ~Resource();
 

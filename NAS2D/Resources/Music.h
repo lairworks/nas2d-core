@@ -23,7 +23,6 @@ namespace NAS2D {
 class Music : public Resource
 {
 public:
-	Music() = default;
 	explicit Music(const std::string& filePath);
 
 	Music(const Music& rhs);

@@ -51,7 +51,7 @@ Sound::~Sound()
  */
 void Sound::load()
 {
-	File soundFile = Utility<Filesystem>::get().open(name());
+	File soundFile = Utility<Filesystem>::get().open(mResourceName);
 	if (soundFile.empty())
 	{
 		return;

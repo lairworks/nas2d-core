@@ -39,9 +39,9 @@ Music::Music(const std::string& filePath) : Resource(filePath)
 /**
  * Copy c'tor.
  */
-Music::Music(const Music& rhs) : Resource(rhs.name())
+Music::Music(const Music& rhs) : Resource(rhs.mResourceName)
 {
-	auto it = MUSIC_REF_MAP.find(name());
+	auto it = MUSIC_REF_MAP.find(mResourceName);
 	if (it != MUSIC_REF_MAP.end())
 	{
 		it->second.refCount++;
@@ -58,11 +58,11 @@ Music& Music::operator=(const Music& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	updateMusicReferenceCount(name());
+	updateMusicReferenceCount(mResourceName);
 
-	name(rhs.name());
+	name(rhs.mResourceName);
 
-	auto it = MUSIC_REF_MAP.find(name());
+	auto it = MUSIC_REF_MAP.find(mResourceName);
 	if (it != MUSIC_REF_MAP.end())
 	{
 		it->second.refCount++;
@@ -82,7 +82,7 @@ Music& Music::operator=(const Music& rhs)
  */
 Music::~Music()
 {
-	updateMusicReferenceCount(name());
+	updateMusicReferenceCount(mResourceName);
 }
 
 
@@ -93,14 +93,14 @@ Music::~Music()
  */
 void Music::load()
 {
-	if (MUSIC_REF_MAP.find(name()) != MUSIC_REF_MAP.end())
+	if (MUSIC_REF_MAP.find(mResourceName) != MUSIC_REF_MAP.end())
 	{
-		MUSIC_REF_MAP.find(name())->second.refCount++;
+		MUSIC_REF_MAP.find(mResourceName)->second.refCount++;
 		loaded(true);
 		return;
 	}
 
-	File* file = new File(Utility<Filesystem>::get().open(name()));
+	File* file = new File(Utility<Filesystem>::get().open(mResourceName));
 	if (file->empty())
 	{
 		delete file;
@@ -114,7 +114,7 @@ void Music::load()
 		return;
 	}
 
-	auto& record = MUSIC_REF_MAP[name()];
+	auto& record = MUSIC_REF_MAP[mResourceName];
 	record.buffer = file;
 	record.music = music;
 	record.refCount++;

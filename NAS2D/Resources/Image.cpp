@@ -74,7 +74,7 @@ Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
 	mSize = Vector{width, height};
 
 	// Update resource management.
-	auto& imageInfo = imageIdMap[name()];
+	auto& imageInfo = imageIdMap[mResourceName];
 	imageInfo.textureId = 0;
 	imageInfo.size = {width, height};
 	imageInfo.refCount++;
@@ -110,7 +110,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	unsigned int textureId = generateTexture(surface);
 
 	// Update resource management.
-	auto& imageInfo = imageIdMap[name()];
+	auto& imageInfo = imageIdMap[mResourceName];
 	imageInfo.textureId = textureId;
 	imageInfo.size = {width, height};
 	imageInfo.refCount++;
@@ -123,7 +123,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
  *
  * \param	src		Image to copy.
  */
-Image::Image(const Image &src) : Resource(src.name()), mSize(src.mSize)
+Image::Image(const Image &src) : Resource(src.mResourceName), mSize(src.mSize)
 {
 	if (!src.loaded())
 	{
@@ -131,7 +131,7 @@ Image::Image(const Image &src) : Resource(src.name()), mSize(src.mSize)
 	}
 
 	loaded(src.loaded());
-	imageIdMap[name()].refCount++;
+	imageIdMap[mResourceName].refCount++;
 }
 
 
@@ -140,7 +140,7 @@ Image::Image(const Image &src) : Resource(src.name()), mSize(src.mSize)
  */
 Image::~Image()
 {
-	updateImageReferenceCount(name());
+	updateImageReferenceCount(mResourceName);
 }
 
 
@@ -153,12 +153,12 @@ Image& Image::operator=(const Image& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	updateImageReferenceCount(name());
+	updateImageReferenceCount(mResourceName);
 
-	name(rhs.name());
+	name(rhs.mResourceName);
 	mSize = rhs.mSize;
 
-	auto it = imageIdMap.find(name());
+	auto it = imageIdMap.find(mResourceName);
 	if (it == imageIdMap.end())
 	{
 		throw image_bad_data();
@@ -178,21 +178,21 @@ Image& Image::operator=(const Image& rhs)
  */
 void Image::load()
 {
-	if (checkTextureId(name()))
+	if (checkTextureId(mResourceName))
 	{
-		mSize = imageIdMap[name()].size;
+		mSize = imageIdMap[mResourceName].size;
 		loaded(true);
 		return;
 	}
 
 	#ifdef _DEBUG
-	//std::cout << "Loading image '" << name() << "'" << std::endl;
+	//std::cout << "Loading image '" << mResourceName << "'" << std::endl;
 	#endif
 
-	File imageFile = Utility<Filesystem>::get().open(name());
+	File imageFile = Utility<Filesystem>::get().open(mResourceName);
 	if (imageFile.size() == 0)
 	{
-		std::cout << "Image::load(): '" << name() << "' is empty." << std::endl;
+		std::cout << "Image::load(): '" << mResourceName << "' is empty." << std::endl;
 		return;
 	}
 
@@ -208,7 +208,7 @@ void Image::load()
 	unsigned int textureId = generateTexture(surface);
 
 	// Add generated texture id to texture ID map.
-	auto& imageInfo = imageIdMap[name()];
+	auto& imageInfo = imageIdMap[mResourceName];
 	imageInfo.surface = surface;
 	imageInfo.textureId = textureId;
 	imageInfo.size = mSize;
@@ -251,7 +251,7 @@ Color Image::pixelColor(int x, int y) const
 		return Color::Black;
 	}
 
-	SDL_Surface* surface = imageIdMap[name()].surface;
+	SDL_Surface* surface = imageIdMap[mResourceName].surface;
 
 	if (!surface) { throw image_null_data(); }
 

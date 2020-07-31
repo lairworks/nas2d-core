@@ -63,8 +63,8 @@ namespace {
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
 {
-	loaded(::load(name(), ptSize));
-	name(name() + "_" + std::to_string(ptSize) + "pt");
+	loaded(::load(filePath, ptSize));
+	name(filePath + "_" + std::to_string(ptSize) + "pt");
 }
 
 
@@ -88,9 +88,9 @@ Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int gly
  *
  * \param	rhs	Font to copy.
  */
-Font::Font(const Font& rhs) : Resource(rhs.name())
+Font::Font(const Font& rhs) : Resource(rhs.mResourceName)
 {
-	auto it = fontMap.find(name());
+	auto it = fontMap.find(mResourceName);
 	if (it != fontMap.end())
 	{
 		++it->second.refCount;
@@ -108,7 +108,7 @@ Font::Font(const Font& rhs) : Resource(rhs.name())
 */
 Font::~Font()
 {
-	updateFontReferenceCount(name());
+	updateFontReferenceCount(mResourceName);
 }
 
 
@@ -121,11 +121,11 @@ Font& Font::operator=(const Font& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	updateFontReferenceCount(name());
+	updateFontReferenceCount(mResourceName);
 
-	name(rhs.name());
+	name(rhs.mResourceName);
 
-	auto it = fontMap.find(name());
+	auto it = fontMap.find(mResourceName);
 	if (it == fontMap.end()) { throw font_bad_data(); }
 
 	++it->second.refCount;
@@ -137,7 +137,7 @@ Font& Font::operator=(const Font& rhs)
 
 Vector<int> Font::glyphCellSize() const
 {
-	return fontMap[name()].glyphSize;
+	return fontMap[mResourceName].glyphSize;
 }
 
 
@@ -157,7 +157,7 @@ int Font::width(std::string_view string) const
 	if (string.empty()) { return 0; }
 
 	int width = 0;
-	GlyphMetricsList& gml = fontMap[name()].metrics;
+	GlyphMetricsList& gml = fontMap[mResourceName].metrics;
 	if (gml.empty()) { return 0; }
 
 	for (auto character : string)
@@ -175,7 +175,7 @@ int Font::width(std::string_view string) const
  */
 int Font::height() const
 {
-	return fontMap[name()].height;
+	return fontMap[mResourceName].height;
 }
 
 
@@ -184,7 +184,7 @@ int Font::height() const
  */
 int Font::ascent() const
 {
-	return fontMap[name()].ascent;
+	return fontMap[mResourceName].ascent;
 }
 
 
@@ -193,7 +193,7 @@ int Font::ascent() const
  */
 unsigned int Font::ptSize() const
 {
-	return fontMap[name()].pointSize;
+	return fontMap[mResourceName].pointSize;
 }
 
 

@@ -35,9 +35,8 @@ protected:
 	void loaded(bool loaded);
 	void name(const std::string& name);
 
-private:
-	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	bool mIsLoaded{false}; /**< Flag indicating whether or not this Resource has loaded properly. */
 };
 

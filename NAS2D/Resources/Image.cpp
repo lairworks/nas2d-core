@@ -58,7 +58,7 @@ Image::Image(const std::string& filePath) : Resource(filePath)
  */
 Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 {
-	loaded(true);
+	mIsLoaded = true;
 }
 
 
@@ -181,7 +181,7 @@ void Image::load()
 	if (checkTextureId(mResourceName))
 	{
 		mSize = imageIdMap[mResourceName].size;
-		loaded(true);
+		mIsLoaded = true;
 		return;
 	}
 
@@ -214,7 +214,7 @@ void Image::load()
 	imageInfo.size = mSize;
 	imageInfo.refCount++;
 
-	loaded(true);
+	mIsLoaded = true;
 }
 
 

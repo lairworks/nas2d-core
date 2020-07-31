@@ -70,7 +70,7 @@ Music& Music::operator=(const Music& rhs)
 	}
 	else
 	{
-		loaded(false);
+		mIsLoaded = false;
 	}
 
 	return *this;
@@ -96,7 +96,7 @@ void Music::load()
 	if (MUSIC_REF_MAP.find(mResourceName) != MUSIC_REF_MAP.end())
 	{
 		MUSIC_REF_MAP.find(mResourceName)->second.refCount++;
-		loaded(true);
+		mIsLoaded = true;
 		return;
 	}
 
@@ -119,7 +119,7 @@ void Music::load()
 	record.music = music;
 	record.refCount++;
 
-	loaded(true);
+	mIsLoaded = true;
 }
 
 

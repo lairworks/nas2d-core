@@ -63,7 +63,7 @@ void Sound::load()
 		return;
 	}
 
-	loaded(true);
+	mIsLoaded = true;
 }
 
 

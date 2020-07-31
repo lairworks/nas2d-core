@@ -98,7 +98,7 @@ Font::Font(const Font& rhs) : Resource(rhs.mResourceName)
 	}
 	else
 	{
-		loaded(false);
+		mIsLoaded = false;
 	}
 }
 

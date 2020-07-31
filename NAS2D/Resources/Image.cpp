@@ -98,6 +98,8 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	imageInfo.size = {width, height};
 	imageInfo.refCount++;
 	imageInfo.surface = surface;
+
+	mIsLoaded = true;
 }
 
 

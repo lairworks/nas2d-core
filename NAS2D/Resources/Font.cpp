@@ -217,22 +217,20 @@ namespace {
 		{
 			if (TTF_Init() != 0)
 			{
-				std::cout << "Font::load(): " << TTF_GetError() << std::endl;
-				return false;
+				throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 			}
 		}
 
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
 		{
-			return false;
+			throw std::runtime_error("Font file is empty: " + path);
 		}
 
 		TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, static_cast<int>(ptSize));
 		if (!font)
 		{
-			std::cout << "Font::load(): " << TTF_GetError() << std::endl;
-			return false;
+			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 		}
 
 		fontMap[fontname].height = TTF_FontHeight(font);

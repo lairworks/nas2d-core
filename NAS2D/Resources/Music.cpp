@@ -62,18 +62,14 @@ Music& Music::operator=(const Music& rhs)
 
 	updateMusicReferenceCount(mResourceName);
 
-	mResourceName = rhs.mResourceName;
-
 	auto it = MUSIC_REF_MAP.find(mResourceName);
 	if (it != MUSIC_REF_MAP.end())
 	{
 		it->second.refCount++;
-		mIsLoaded = rhs.mIsLoaded;
 	}
-	else
-	{
-		mIsLoaded = false;
-	}
+
+	mResourceName = rhs.mResourceName;
+	mIsLoaded = rhs.mIsLoaded;
 
 	return *this;
 }

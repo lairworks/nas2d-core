@@ -63,7 +63,7 @@ namespace {
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
 {
-	loaded(::load(filePath, ptSize));
+	mIsLoaded = ::load(filePath, ptSize);
 	mResourceName = filePath + "_" + std::to_string(ptSize) + "pt";
 }
 
@@ -79,7 +79,7 @@ Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath
  */
 Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) : Resource(filePath)
 {
-	loaded(loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace));
+	mIsLoaded = loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
 
 

@@ -44,7 +44,6 @@ public:
 	Image();
 	explicit Image(const std::string& filePath);
 	Image(void* buffer, int bytesPerPixel, int width, int height);
-	Image(int width, int height);
 
 	Image(const Image &rhs);
 	Image& operator=(const Image& rhs);

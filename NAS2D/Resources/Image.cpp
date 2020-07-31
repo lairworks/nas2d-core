@@ -65,25 +65,6 @@ Image::Image() : Resource(DEFAULT_IMAGE_NAME)
 
 
 /**
- * Create a blank Image of X, Y dimensions.
- *
- * \param	width	Width of the Image.
- * \param	height	Height of the Image.
- */
-Image::Image(int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
-{
-	mResourceName = ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY);
-	mSize = Vector{width, height};
-
-	// Update resource management.
-	auto& imageInfo = imageIdMap[mResourceName];
-	imageInfo.textureId = 0;
-	imageInfo.size = {width, height};
-	imageInfo.refCount++;
-}
-
-
-/**
  * Create an Image from a raw data buffer.
  *
  * \param	buffer			Pointer to a data buffer.

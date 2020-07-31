@@ -16,6 +16,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
+#include <string>
+#include <stdexcept>
+
+
 using namespace NAS2D;
 
 /**
@@ -54,13 +58,13 @@ void Sound::load()
 	File soundFile = Utility<Filesystem>::get().open(mResourceName);
 	if (soundFile.empty())
 	{
-		return;
+		throw std::runtime_error("Sound file is empty: " + mResourceName);
 	}
 
 	_chunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
 	if (!_chunk)
 	{
-		return;
+		throw std::runtime_error("Sound file could not be loaded: " + mResourceName + " : " + std::string{Mix_GetError()});
 	}
 
 	mIsLoaded = true;

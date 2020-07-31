@@ -18,6 +18,8 @@
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
+
 
 using namespace NAS2D;
 
@@ -104,14 +106,13 @@ void Music::load()
 	if (file->empty())
 	{
 		delete file;
-		return;
+		throw std::runtime_error("Music file is empty: " + mResourceName);
 	}
 
 	Mix_Music* music = Mix_LoadMUS_RW(SDL_RWFromConstMem(file->raw_bytes(), static_cast<int>(file->size())), 0);
 	if (!music)
 	{
-		std::cout << "Music::load(): " << Mix_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Music::load() error: " + std::string{Mix_GetError()});
 	}
 
 	auto& record = MUSIC_REF_MAP[mResourceName];

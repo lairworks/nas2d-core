@@ -263,14 +263,13 @@ namespace {
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
 		{
-			return false;
+			throw std::runtime_error("Font file is empty: " + path);
 		}
 
 		SDL_Surface* fontSurface = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
 		if (!fontSurface)
 		{
-			std::cout << "Font::loadBitmap(): " << SDL_GetError() << std::endl;
-			return false;
+			throw std::runtime_error("Font loadBitmap function failed: " + std::string{SDL_GetError()});
 		}
 
 		const auto fontSurfaceSize = Vector{fontSurface->w, fontSurface->h};

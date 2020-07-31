@@ -30,6 +30,8 @@ public:
 	explicit Sound(const std::string& filePath);
 	~Sound();
 
+	const std::string& name() const { return mResourceName; }
+
 protected:
 	friend class MixerSDL;
 
@@ -38,6 +40,7 @@ protected:
 private:
 	void load();
 
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	void* _chunk{nullptr};
 };
 

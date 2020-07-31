@@ -50,6 +50,8 @@ public:
 
 	~Image();
 
+	const std::string& name() const { return mResourceName; }
+
 	Vector<int> size() const;
 
 	Color pixelColor(Point<int> point) const;
@@ -59,6 +61,7 @@ private:
 	void load();
 
 private:
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	Vector<int> mSize; /**< Width/Height information about the Image. */
 };
 

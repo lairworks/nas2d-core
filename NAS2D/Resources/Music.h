@@ -30,8 +30,12 @@ public:
 
 	~Music();
 
+	const std::string& name() const { return mResourceName; }
+
 private:
 	void load();
+
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 };
 
 } // namespace

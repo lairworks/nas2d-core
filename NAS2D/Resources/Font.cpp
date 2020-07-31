@@ -61,10 +61,11 @@ namespace {
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  *
  */
-Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
+Font::Font(const std::string& filePath, unsigned int ptSize) :
+	Resource(filePath),
+	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"}
 {
 	::load(filePath, ptSize);
-	mResourceName = filePath + "_" + std::to_string(ptSize) + "pt";
 }
 
 
@@ -77,7 +78,9 @@ Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath
  * \param	glyphSpace	Space between glyphs when rendering a bitmap font. This value can be negative.
  *
  */
-Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) : Resource(filePath)
+Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :
+	Resource(filePath),
+	mResourceName{filePath}
 {
 	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
@@ -88,7 +91,9 @@ Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int gly
  *
  * \param	rhs	Font to copy.
  */
-Font::Font(const Font& rhs) : Resource(rhs.mResourceName)
+Font::Font(const Font& rhs) :
+	Resource(rhs.mResourceName),
+	mResourceName{rhs.mResourceName}
 {
 	auto it = fontMap.find(mResourceName);
 	if (it != fontMap.end())

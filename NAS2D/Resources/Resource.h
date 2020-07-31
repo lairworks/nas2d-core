@@ -25,11 +25,6 @@ class Resource
 {
 public:
 	explicit Resource(const std::string& filePath);
-
-	const std::string& name() const;
-
-protected:
-	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 };
 
 } // namespace

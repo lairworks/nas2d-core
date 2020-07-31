@@ -42,6 +42,8 @@ public:
 	Font& operator=(const Font& font);
 	~Font();
 
+	const std::string& name() const { return mResourceName; }
+
 	Vector<int> size(std::string_view string) const;
 	int width(std::string_view string) const;
 	int height() const;
@@ -50,6 +52,9 @@ public:
 	unsigned int ptSize() const;
 
 	Vector<int> glyphCellSize() const;
+
+private:
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 };
 
 } // namespace

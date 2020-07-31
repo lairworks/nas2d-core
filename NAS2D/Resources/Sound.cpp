@@ -28,7 +28,8 @@ using namespace NAS2D;
  * \param	filePath	File path of the sound file to load.
  */
 Sound::Sound(const std::string& filePath) :
-	Resource(filePath)
+	Resource(filePath),
+	mResourceName{filePath}
 {
 	load();
 }

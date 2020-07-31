@@ -64,7 +64,7 @@ namespace {
 Font::Font(const std::string& filePath, unsigned int ptSize) : Resource(filePath)
 {
 	loaded(::load(filePath, ptSize));
-	name(filePath + "_" + std::to_string(ptSize) + "pt");
+	mResourceName = filePath + "_" + std::to_string(ptSize) + "pt";
 }
 
 
@@ -123,7 +123,7 @@ Font& Font::operator=(const Font& rhs)
 
 	updateFontReferenceCount(mResourceName);
 
-	name(rhs.mResourceName);
+	mResourceName = rhs.mResourceName;
 
 	auto it = fontMap.find(mResourceName);
 	if (it == fontMap.end()) { throw font_bad_data(); }

@@ -60,7 +60,7 @@ Music& Music::operator=(const Music& rhs)
 
 	updateMusicReferenceCount(mResourceName);
 
-	name(rhs.mResourceName);
+	mResourceName = rhs.mResourceName;
 
 	auto it = MUSIC_REF_MAP.find(mResourceName);
 	if (it != MUSIC_REF_MAP.end())

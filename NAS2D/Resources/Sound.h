@@ -20,7 +20,7 @@ namespace NAS2D {
  *  Represents a Sound.
  */
 
-class Sound: public Resource
+class Sound
 {
 public:
 	Sound(const Sound& other) = default;

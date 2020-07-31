@@ -62,7 +62,6 @@ namespace {
  *
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) :
-	Resource(filePath),
 	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"}
 {
 	::load(filePath, ptSize);
@@ -79,7 +78,6 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
  *
  */
 Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :
-	Resource(filePath),
 	mResourceName{filePath}
 {
 	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
@@ -92,7 +90,6 @@ Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int gly
  * \param	rhs	Font to copy.
  */
 Font::Font(const Font& rhs) :
-	Resource(rhs.mResourceName),
 	mResourceName{rhs.mResourceName}
 {
 	auto it = fontMap.find(mResourceName);

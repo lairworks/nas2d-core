@@ -50,7 +50,6 @@ namespace {
  * \param filePath Path to an image file.
  */
 Image::Image(const std::string& filePath) :
-	Resource(filePath),
 	mResourceName{filePath}
 {
 	load();
@@ -61,7 +60,6 @@ Image::Image(const std::string& filePath) :
  * Default C'tor.
  */
 Image::Image() :
-	Resource(DEFAULT_IMAGE_NAME),
 	mResourceName{DEFAULT_IMAGE_NAME}
 {
 }
@@ -76,7 +74,6 @@ Image::Image() :
  * \param	height			Height of the Image.
  */
 Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
-	Resource(ARBITRARY_IMAGE_NAME),
 	mResourceName{ARBITRARY_IMAGE_NAME}
 {
 	if (buffer == nullptr)
@@ -112,7 +109,6 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
  * \param	src		Image to copy.
  */
 Image::Image(const Image &src) :
-	Resource{src.mResourceName},
 	mResourceName{src.mResourceName},
 	mSize{src.mSize}
 {

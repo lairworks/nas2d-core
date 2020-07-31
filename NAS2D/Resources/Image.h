@@ -38,7 +38,7 @@ namespace NAS2D {
  *			and without an alpha channel).
  *
  */
-class Image : public Resource
+class Image
 {
 public:
 	Image();

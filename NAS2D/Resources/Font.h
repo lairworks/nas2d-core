@@ -33,7 +33,7 @@ namespace NAS2D {
  * glyph cell equating to ASCII value '0'. Glyph values increase from left to
  * right up to ASCII value 255.
  */
-class Font : public Resource
+class Font
 {
 public:
 	explicit Font(const std::string& filePath, unsigned int ptSize = 12);

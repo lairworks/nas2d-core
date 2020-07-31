@@ -94,7 +94,7 @@ Font::Font(const Font& rhs) : Resource(rhs.mResourceName)
 	if (it != fontMap.end())
 	{
 		++it->second.refCount;
-		loaded(rhs.loaded());
+		mIsLoaded = rhs.mIsLoaded;
 	}
 	else
 	{
@@ -129,7 +129,7 @@ Font& Font::operator=(const Font& rhs)
 	if (it == fontMap.end()) { throw font_bad_data(); }
 
 	++it->second.refCount;
-	loaded(rhs.loaded());
+	mIsLoaded = rhs.mIsLoaded;
 
 	return *this;
 }

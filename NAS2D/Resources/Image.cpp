@@ -125,12 +125,12 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
  */
 Image::Image(const Image &src) : Resource(src.mResourceName), mSize(src.mSize)
 {
-	if (!src.loaded())
+	if (!src.mIsLoaded)
 	{
 		throw image_bad_copy();
 	}
 
-	loaded(src.loaded());
+	mIsLoaded = src.mIsLoaded;
 	imageIdMap[mResourceName].refCount++;
 }
 
@@ -164,7 +164,7 @@ Image& Image::operator=(const Image& rhs)
 		throw image_bad_data();
 	}
 
-	loaded(rhs.loaded());
+	mIsLoaded = rhs.mIsLoaded;
 	++it->second.refCount;
 
 	return *this;

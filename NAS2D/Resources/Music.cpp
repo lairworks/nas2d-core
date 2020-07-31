@@ -47,7 +47,7 @@ Music::Music(const Music& rhs) : Resource(rhs.mResourceName)
 		it->second.refCount++;
 	}
 
-	loaded(rhs.loaded());
+	mIsLoaded = rhs.mIsLoaded;
 }
 
 
@@ -66,7 +66,7 @@ Music& Music::operator=(const Music& rhs)
 	if (it != MUSIC_REF_MAP.end())
 	{
 		it->second.refCount++;
-		loaded(rhs.loaded());
+		mIsLoaded = rhs.mIsLoaded;
 	}
 	else
 	{

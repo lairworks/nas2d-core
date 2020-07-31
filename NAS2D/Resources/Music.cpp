@@ -32,7 +32,8 @@ void updateMusicReferenceCount(const std::string& name);
  *
  * \param filePath	Path of the music file to load.
  */
-Music::Music(const std::string& filePath) : Resource(filePath)
+Music::Music(const std::string& filePath) :
+	mResourceName{filePath}
 {
 	load();
 }
@@ -41,15 +42,14 @@ Music::Music(const std::string& filePath) : Resource(filePath)
 /**
  * Copy c'tor.
  */
-Music::Music(const Music& rhs) : Resource(rhs.mResourceName)
+Music::Music(const Music& rhs) :
+	mResourceName{rhs.mResourceName}
 {
 	auto it = MUSIC_REF_MAP.find(mResourceName);
 	if (it != MUSIC_REF_MAP.end())
 	{
 		it->second.refCount++;
 	}
-
-	mIsLoaded = rhs.mIsLoaded;
 }
 
 
@@ -69,7 +69,6 @@ Music& Music::operator=(const Music& rhs)
 	}
 
 	mResourceName = rhs.mResourceName;
-	mIsLoaded = rhs.mIsLoaded;
 
 	return *this;
 }
@@ -94,7 +93,6 @@ void Music::load()
 	if (MUSIC_REF_MAP.find(mResourceName) != MUSIC_REF_MAP.end())
 	{
 		MUSIC_REF_MAP.find(mResourceName)->second.refCount++;
-		mIsLoaded = true;
 		return;
 	}
 
@@ -115,8 +113,6 @@ void Music::load()
 	record.buffer = file;
 	record.music = music;
 	record.refCount++;
-
-	mIsLoaded = true;
 }
 
 

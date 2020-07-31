@@ -107,11 +107,6 @@ void MixerSDL::onMusicFinished()
 
 void MixerSDL::playSound(Sound& sound)
 {
-	if (!sound.loaded())
-	{
-		return;
-	}
-
 	Mix_PlayChannel(-1, static_cast<Mix_Chunk*>(sound.sound()), 0);
 }
 
@@ -154,11 +149,6 @@ void MixerSDL::resumeMusic()
 
 void MixerSDL::fadeInMusic(Music& music, int loops, int time)
 {
-	if (!music.loaded())
-	{
-		return;
-	}
-
 	Mix_FadeInMusic(static_cast<Mix_Music*>(MUSIC_REF_MAP[music.name()].music), loops, time);
 }
 

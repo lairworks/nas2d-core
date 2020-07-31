@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include "Resource.h"
-
+#include <string>
 #include <map>
+
 
 namespace NAS2D {
 
@@ -20,7 +20,7 @@ namespace NAS2D {
  *  \class Music
  *  \brief Music Resource.
  */
-class Music : public Resource
+class Music
 {
 public:
 	explicit Music(const std::string& filePath);
@@ -28,10 +28,14 @@ public:
 	Music(const Music& rhs);
 	Music& operator=(const Music& rhs);
 
-	~Music() override;
+	~Music();
+
+	const std::string& name() const { return mResourceName; }
 
 private:
 	void load();
+
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 };
 
 } // namespace

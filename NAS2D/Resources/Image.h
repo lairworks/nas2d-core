@@ -9,11 +9,11 @@
 // ==================================================================================
 #pragma once
 
-#include "Resource.h"
 #include "../Renderer/Color.h"
 #include "../Renderer/Point.h"
 #include "../Renderer/Vector.h"
 
+#include <string>
 #include <vector>
 #include <utility>
 
@@ -38,7 +38,7 @@ namespace NAS2D {
  *			and without an alpha channel).
  *
  */
-class Image : public Resource
+class Image
 {
 public:
 	Image();
@@ -48,7 +48,9 @@ public:
 	Image(const Image &rhs);
 	Image& operator=(const Image& rhs);
 
-	~Image() override;
+	~Image();
+
+	const std::string& name() const { return mResourceName; }
 
 	Vector<int> size() const;
 
@@ -59,6 +61,7 @@ private:
 	void load();
 
 private:
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	Vector<int> mSize; /**< Width/Height information about the Image. */
 };
 

@@ -9,7 +9,8 @@
 // ==================================================================================
 #pragma once
 
-#include "Resource.h"
+#include <string>
+
 
 namespace NAS2D {
 
@@ -20,7 +21,7 @@ namespace NAS2D {
  *  Represents a Sound.
  */
 
-class Sound: public Resource
+class Sound
 {
 public:
 	Sound(const Sound& other) = default;
@@ -28,7 +29,9 @@ public:
 	Sound(Sound&& other) = default;
 	Sound& operator=(Sound&& other) = default;
 	explicit Sound(const std::string& filePath);
-	~Sound() override;
+	~Sound();
+
+	const std::string& name() const { return mResourceName; }
 
 protected:
 	friend class MixerSDL;
@@ -38,6 +41,7 @@ protected:
 private:
 	void load();
 
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	void* _chunk{nullptr};
 };
 

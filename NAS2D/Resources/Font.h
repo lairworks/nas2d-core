@@ -9,10 +9,10 @@
 // ==================================================================================
 #pragma once
 
-#include "Resource.h"
 #include "../Renderer/Vector.h"
 
 #include <map>
+#include <string>
 #include <vector>
 #include <string_view>
 
@@ -33,14 +33,16 @@ namespace NAS2D {
  * glyph cell equating to ASCII value '0'. Glyph values increase from left to
  * right up to ASCII value 255.
  */
-class Font : public Resource
+class Font
 {
 public:
 	explicit Font(const std::string& filePath, unsigned int ptSize = 12);
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
 	Font(const Font& font);
 	Font& operator=(const Font& font);
-	~Font() override;
+	~Font();
+
+	const std::string& name() const { return mResourceName; }
 
 	Vector<int> size(std::string_view string) const;
 	int width(std::string_view string) const;
@@ -50,6 +52,9 @@ public:
 	unsigned int ptSize() const;
 
 	Vector<int> glyphCellSize() const;
+
+private:
+	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 };
 
 } // namespace

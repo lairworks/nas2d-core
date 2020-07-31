@@ -49,7 +49,8 @@ namespace {
  *
  * \param filePath Path to an image file.
  */
-Image::Image(const std::string& filePath) : Resource(filePath)
+Image::Image(const std::string& filePath) :
+	mResourceName{filePath}
 {
 	load();
 }
@@ -58,9 +59,9 @@ Image::Image(const std::string& filePath) : Resource(filePath)
 /**
  * Default C'tor.
  */
-Image::Image() : Resource(DEFAULT_IMAGE_NAME)
+Image::Image() :
+	mResourceName{DEFAULT_IMAGE_NAME}
 {
-	mIsLoaded = true;
 }
 
 
@@ -72,7 +73,8 @@ Image::Image() : Resource(DEFAULT_IMAGE_NAME)
  * \param	width			Width of the Image.
  * \param	height			Height of the Image.
  */
-Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(ARBITRARY_IMAGE_NAME)
+Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
+	mResourceName{ARBITRARY_IMAGE_NAME}
 {
 	if (buffer == nullptr)
 	{
@@ -98,8 +100,6 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
 	imageInfo.size = {width, height};
 	imageInfo.refCount++;
 	imageInfo.surface = surface;
-
-	mIsLoaded = true;
 }
 
 
@@ -108,14 +108,10 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) : Resource(
  *
  * \param	src		Image to copy.
  */
-Image::Image(const Image &src) : Resource(src.mResourceName), mSize(src.mSize)
+Image::Image(const Image &src) :
+	mResourceName{src.mResourceName},
+	mSize{src.mSize}
 {
-	if (!src.mIsLoaded)
-	{
-		throw image_bad_copy();
-	}
-
-	mIsLoaded = src.mIsLoaded;
 	imageIdMap[mResourceName].refCount++;
 }
 
@@ -149,7 +145,6 @@ Image& Image::operator=(const Image& rhs)
 		throw image_bad_data();
 	}
 
-	mIsLoaded = rhs.mIsLoaded;
 	++it->second.refCount;
 
 	return *this;
@@ -166,7 +161,6 @@ void Image::load()
 	if (checkTextureId(mResourceName))
 	{
 		mSize = imageIdMap[mResourceName].size;
-		mIsLoaded = true;
 		return;
 	}
 
@@ -192,8 +186,6 @@ void Image::load()
 	imageInfo.textureId = textureId;
 	imageInfo.size = mSize;
 	imageInfo.refCount++;
-
-	mIsLoaded = true;
 }
 
 

@@ -28,7 +28,7 @@ using namespace NAS2D;
  * \param	filePath	File path of the sound file to load.
  */
 Sound::Sound(const std::string& filePath) :
-	Resource(filePath)
+	mResourceName{filePath}
 {
 	load();
 }
@@ -66,8 +66,6 @@ void Sound::load()
 	{
 		throw std::runtime_error("Sound file could not be loaded: " + mResourceName + " : " + std::string{Mix_GetError()});
 	}
-
-	mIsLoaded = true;
 }
 
 

@@ -72,9 +72,6 @@
     <ClCompile Include="Resources\Music.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\Resource.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Resources\Sound.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
@@ -219,9 +216,6 @@
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Music.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources\Resource.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Sound.h">

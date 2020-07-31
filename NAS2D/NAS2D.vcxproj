@@ -198,7 +198,6 @@
     <ClCompile Include="Resources\Font.cpp" />
     <ClCompile Include="Resources\Image.cpp" />
     <ClCompile Include="Resources\Music.cpp" />
-    <ClCompile Include="Resources\Resource.cpp" />
     <ClCompile Include="Resources\Sound.cpp" />
     <ClCompile Include="Resources\Sprite.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -252,7 +251,6 @@
     <ClInclude Include="Resources\ImageInfo.h" />
     <ClInclude Include="Resources\Music.h" />
     <ClInclude Include="Resources\MusicInfo.h" />
-    <ClInclude Include="Resources\Resource.h" />
     <ClInclude Include="Resources\Sound.h" />
     <ClInclude Include="Resources\Sprite.h" />
     <ClInclude Include="Signal.h" />

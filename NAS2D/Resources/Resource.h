@@ -29,8 +29,6 @@ public:
 
 	const std::string& name() const;
 
-	bool loaded() const;
-
 protected:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	bool mIsLoaded{false}; /**< Flag indicating whether or not this Resource has loaded properly. */

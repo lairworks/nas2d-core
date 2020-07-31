@@ -37,12 +37,3 @@ const std::string& Resource::name() const
 {
 	return mResourceName;
 }
-
-
-/**
- * Returns true if this Resource loaded properly.
- */
-bool Resource::loaded() const
-{
-	return mIsLoaded;
-}

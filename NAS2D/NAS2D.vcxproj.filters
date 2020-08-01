@@ -209,6 +209,9 @@
     <ClInclude Include="Mixer\Mixer.h">
       <Filter>Header Files\Mixer</Filter>
     </ClInclude>
+    <ClInclude Include="Resources\ResourceCache.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
     <ClInclude Include="Resources\Font.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>

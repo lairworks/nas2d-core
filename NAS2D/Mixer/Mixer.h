@@ -44,7 +44,7 @@ public:
 	 *
 	 * \param	sound	A reference to a Sound Resource.
 	 */
-	virtual void playSound(Sound& sound) = 0;
+	virtual void playSound(const Sound& sound) = 0;
 
 	/**
 	 * Stops playing all sounds on all channels.
@@ -93,7 +93,7 @@ public:
 	 * \param	loops	Number of times the Music should be repeated. -1 for continuous loop.
 	 * \param	time	Time, in miliseconds, for the fade to last. Default is 500.
 	 */
-	virtual void fadeInMusic(Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) = 0;
+	virtual void fadeInMusic(const Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) = 0;
 
 	/**
 	 * Fades out the currently playing Music track.

@@ -67,7 +67,7 @@ public:
 	 * \param music	Reference to a Music Resource.
 	 * \param loops	Number of times to repeat the music.
 	 */
-	void playMusic(Music& music, int loops = Mixer::CONTINUOUS);
+	void playMusic(const Music& music, int loops = Mixer::CONTINUOUS);
 
 	/**
 	 * Stops all playing music.

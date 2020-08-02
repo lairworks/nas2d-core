@@ -44,7 +44,7 @@ public:
 	~MixerSDL() override;
 
 	// Sound Functions
-	void playSound(Sound& sound) override;
+	void playSound(const Sound& sound) override;
 	void stopSound() override;
 	void pauseSound() override;
 	void resumeSound() override;
@@ -54,7 +54,7 @@ public:
 	void pauseMusic() override;
 	void resumeMusic() override;
 
-	void fadeInMusic(Music& music, int loops, int time) override;
+	void fadeInMusic(const Music& music, int loops, int time) override;
 	void fadeOutMusic(int time) override;
 
 	bool musicPlaying() const override;

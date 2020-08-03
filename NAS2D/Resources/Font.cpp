@@ -315,11 +315,11 @@ namespace {
 		const auto longestEdge = std::max(charBoundsSize.x, charBoundsSize.y);
 		const auto roundedLongestEdge = static_cast<int>(roundUpPowerOf2(static_cast<uint32_t>(longestEdge)));
 		const auto roundedCharSize = Vector{roundedLongestEdge, roundedLongestEdge};
-		const auto textureSize = roundedCharSize.x * GLYPH_MATRIX_SIZE;
+		const auto roundedMatrixSize = roundedCharSize * GLYPH_MATRIX_SIZE;
 
-		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
+		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, roundedMatrixSize.x, roundedMatrixSize.y, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
-		fillInTextureCoordinates(glm, roundedCharSize, {textureSize, textureSize});
+		fillInTextureCoordinates(glm, roundedCharSize, roundedMatrixSize);
 
 		SDL_Color white = { 255, 255, 255, 255 };
 		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))

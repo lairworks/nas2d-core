@@ -34,9 +34,6 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-std::map<std::string, Font::FontInfo> fontMap;
-
-
 namespace {
 	struct ColorMasks
 	{
@@ -54,11 +51,14 @@ namespace {
 	const int GLYPH_MATRIX_SIZE = 16;
 	const int BITS_32 = 32;
 
-	bool load(const std::string& path, unsigned int ptSize);
-	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
-	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize);
+	Font::FontInfo load(const std::string& path, unsigned int ptSize);
+	Font::FontInfo loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
+	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList);
+	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
-	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
+	Vector<int> roundedCharacterDimensions(Vector<int> maxSize);
+	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList);
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList);
 }
 
 
@@ -72,7 +72,7 @@ namespace {
 Font::Font(const std::string& filePath, unsigned int ptSize) :
 	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"}
 {
-	::load(filePath, ptSize);
+	mFontInfo = ::load(filePath, ptSize);
 }
 
 
@@ -88,7 +88,7 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
 Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :
 	mResourceName{filePath}
 {
-	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
+	mFontInfo = loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
 
 
@@ -108,7 +108,7 @@ Font::Font(const Font& rhs) :
 */
 Font::~Font()
 {
-	glDeleteTextures(1, &fontMap[mResourceName].textureId);
+	glDeleteTextures(1, &mFontInfo.textureId);
 }
 
 
@@ -121,7 +121,7 @@ Font& Font::operator=(const Font& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	glDeleteTextures(1, &fontMap[mResourceName].textureId);
+	glDeleteTextures(1, &mFontInfo.textureId);
 
 	mResourceName = rhs.mResourceName;
 
@@ -131,7 +131,7 @@ Font& Font::operator=(const Font& rhs)
 
 Vector<int> Font::glyphCellSize() const
 {
-	return fontMap[mResourceName].glyphSize;
+	return mFontInfo.glyphSize;
 }
 
 
@@ -151,7 +151,7 @@ int Font::width(std::string_view string) const
 	if (string.empty()) { return 0; }
 
 	int width = 0;
-	auto& gml = fontMap[mResourceName].metrics;
+	auto& gml = mFontInfo.metrics;
 	if (gml.empty()) { return 0; }
 
 	for (auto character : string)
@@ -169,7 +169,7 @@ int Font::width(std::string_view string) const
  */
 int Font::height() const
 {
-	return fontMap[mResourceName].height;
+	return mFontInfo.height;
 }
 
 
@@ -178,7 +178,7 @@ int Font::height() const
  */
 int Font::ascent() const
 {
-	return fontMap[mResourceName].ascent;
+	return mFontInfo.ascent;
 }
 
 
@@ -187,19 +187,19 @@ int Font::ascent() const
  */
 unsigned int Font::ptSize() const
 {
-	return fontMap[mResourceName].pointSize;
+	return mFontInfo.pointSize;
 }
 
 
 const std::vector<Font::GlyphMetrics>& Font::metrics() const
 {
-	return fontMap[mResourceName].metrics;
+	return mFontInfo.metrics;
 }
 
 
 unsigned int Font::textureId() const
 {
-	return fontMap[mResourceName].textureId;
+	return mFontInfo.textureId;
 }
 
 
@@ -210,7 +210,7 @@ namespace {
 	 * \param	path	Path to the TTF or OTF font file.
 	 * \param	ptSize	Point size to use when loading the font.
 	 */
-	bool load(const std::string& path, unsigned int ptSize)
+	Font::FontInfo load(const std::string& path, unsigned int ptSize)
 	{
 		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
 
@@ -234,12 +234,21 @@ namespace {
 			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 		}
 
-		fontMap[fontname].height = TTF_FontHeight(font);
-		fontMap[fontname].ascent = TTF_FontAscent(font);
-		fontMap[fontname].glyphSize = generateGlyphMap(font, fontname, ptSize);
+		Font::FontInfo fontInfo;
+		auto& glm = fontInfo.metrics;
+		fillInCharacterDimensions(font, glm);
+		const auto charBoundsSize = maxCharacterDimensions(glm);
+		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
+		SDL_Surface* fontSurface = generateFontSurface(font, roundedCharSize);
+
+		fontInfo.pointSize = ptSize;
+		fontInfo.height = TTF_FontHeight(font);
+		fontInfo.ascent = TTF_FontAscent(font);
+		fontInfo.glyphSize = roundedCharSize;
+		fontInfo.textureId = generateFontTexture(fontSurface, glm);
 		TTF_CloseFont(font);
 
-		return true;
+		return fontInfo;
 	}
 
 
@@ -251,7 +260,7 @@ namespace {
 	 * \param	glyphHeight	Height of the glyphs in the bitmap font.
 	 * \param	glyphSpace	Spacing to use when drawing glyphs.
 	 */
-	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
+	Font::FontInfo loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
 	{
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
@@ -266,16 +275,16 @@ namespace {
 		}
 
 		const auto fontSurfaceSize = Vector{fontSurface->w, fontSurface->h};
-		const auto glyphLayoutSize = Vector{GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE};
 		const auto glyphSize = Vector{glyphWidth, glyphHeight};
-		const auto expectedSize = glyphLayoutSize.skewBy(glyphSize);
+		const auto expectedSize = glyphSize * GLYPH_MATRIX_SIZE;
 		if (fontSurfaceSize != expectedSize)
 		{
+			SDL_FreeSurface(fontSurface);
 			const auto vectorToString = [](auto vector) { return "{" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + "}"; };
 			throw font_invalid_glyph_map("Unexpected font image size. Expected: " + vectorToString(expectedSize) + " Actual: " + vectorToString(fontSurfaceSize));
 		}
 
-		auto& fontInfo = fontMap[path];
+		Font::FontInfo fontInfo;
 		auto& glm = fontInfo.metrics;
 		glm.resize(ASCII_TABLE_COUNT);
 		for (auto& metrics : glm)
@@ -283,18 +292,13 @@ namespace {
 			metrics.minX = glyphSize.x;
 			metrics.advance = glyphSpace;
 		}
-		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
 
-		unsigned int textureId = generateTexture(fontSurface);
-
-		// Add generated texture id to texture ID map.
-		fontInfo.textureId = textureId;
 		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
 		fontInfo.glyphSize = glyphSize;
-		SDL_FreeSurface(fontSurface);
+		fontInfo.textureId = generateFontTexture(fontSurface, glm);
 
-		return true;
+		return fontInfo;
 	}
 
 
@@ -303,27 +307,21 @@ namespace {
 	 *
 	 * Internal function used to generate a glyph texture map from an TTF_Font struct.
 	 */
-	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize)
+	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
-		auto& glm = fontMap[name].metrics;
+		fillInTextureCoordinates(glyphMetricsList);
 
-		// Build table of character sizes
-		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
-		{
-			Font::GlyphMetrics metrics;
-			TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
-			glm.push_back(metrics);
-		}
+		auto textureId = generateTexture(fontSurface);
+		SDL_FreeSurface(fontSurface);
 
-		const auto charBoundsSize = maxCharacterDimensions(glm);
-		const auto longestEdge = std::max(charBoundsSize.x, charBoundsSize.y);
-		const auto roundedLongestEdge = static_cast<int>(roundUpPowerOf2(static_cast<uint32_t>(longestEdge)));
-		const auto size = Vector{roundedLongestEdge, roundedLongestEdge};
-		const auto textureSize = size.x * GLYPH_MATRIX_SIZE;
+		return textureId;
+	}
 
-		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
-		fillInTextureCoordinates(glm, size, {textureSize, textureSize});
+	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize)
+	{
+		const auto matrixSize = characterSize * GLYPH_MATRIX_SIZE;
+		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, matrixSize.x, matrixSize.y, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
 		SDL_Color white = { 255, 255, 255, 255 };
 		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
@@ -334,27 +332,21 @@ namespace {
 			// SDL_TTF will produce errors for a glyph of size 0
 			if (glyph == 0) { continue; }
 
-			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
+			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(font, static_cast<uint16_t>(glyph), white);
 			if (!characterSurface)
 			{
-				throw std::runtime_error("Font::generateGlyphMap(): " + std::string(TTF_GetError()));
+				SDL_FreeSurface(fontSurface);
+				throw std::runtime_error("Font failed to generate surface for character : " + std::to_string(glyph) + " : " + std::string(TTF_GetError()));
 			}
 
 			SDL_SetSurfaceBlendMode(characterSurface, SDL_BLENDMODE_NONE);
-			const auto pixelPosition = glyphPosition.skewBy(size);
+			const auto pixelPosition = glyphPosition.skewBy(characterSize);
 			SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
 			SDL_BlitSurface(characterSurface, nullptr, fontSurface, &rect);
 			SDL_FreeSurface(characterSurface);
 		}
 
-		unsigned int textureId = generateTexture(fontSurface);
-
-		// Add generated texture id to texture ID map.
-		fontMap[name].textureId = textureId;
-		fontMap[name].pointSize = fontSize;
-		SDL_FreeSurface(fontSurface);
-
-		return size;
+		return fontSurface;
 	}
 
 
@@ -371,14 +363,32 @@ namespace {
 	}
 
 
-	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
+	Vector<int> roundedCharacterDimensions(Vector<int> maxSize)
 	{
-		const auto floatTextureSize = textureSize.to<float>();
-		const auto uvSize = characterSize.to<float>().skewInverseBy(floatTextureSize);
+		const auto maxSizeUint32 = maxSize.to<uint32_t>();
+		const auto roundedUpSize = Vector{roundUpPowerOf2(maxSizeUint32.x), roundUpPowerOf2(maxSizeUint32.y)};
+		return roundedUpSize.to<int>();
+	}
+
+
+	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList)
+	{
+		// Build table of character sizes
+		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
+		{
+			auto& metrics = glyphMetricsList.emplace_back();
+			TTF_GlyphMetrics(font, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
+		}
+	}
+
+
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList)
+	{
+		const auto uvSize = Vector<float>{1, 1} / 16.0f;
 		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
 		{
 			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
-			const auto uvStart = glyphPosition.skewBy(characterSize).to<float>().skewInverseBy(floatTextureSize);
+			const auto uvStart = glyphPosition.to<float>().skewBy(uvSize);
 			glyphMetricsList[glyph].uvRect = Rectangle<float>::Create(uvStart, uvSize);
 		}
 	}

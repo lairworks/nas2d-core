@@ -46,8 +46,8 @@ namespace {
 	bool load(const std::string& path, unsigned int ptSize);
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize);
-	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList);
-	void fillInTextureCoordinates(GlyphMetricsList& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
+	Vector<int> maxCharacterDimensions(const std::vector<GlyphMetrics>& glyphMetricsList);
+	void fillInTextureCoordinates(std::vector<GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 	bool fontAlreadyLoaded(const std::string& name);
 	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 	void updateFontReferenceCount(const std::string& name);
@@ -364,7 +364,7 @@ namespace {
 	}
 
 
-	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList)
+	Vector<int> maxCharacterDimensions(const std::vector<GlyphMetrics>& glyphMetricsList)
 	{
 		Vector<int> size{0, 0};
 
@@ -377,7 +377,7 @@ namespace {
 	}
 
 
-	void fillInTextureCoordinates(GlyphMetricsList& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
+	void fillInTextureCoordinates(std::vector<GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
 	{
 		const auto floatTextureSize = textureSize.to<float>();
 		const auto uvSize = characterSize.to<float>().skewInverseBy(floatTextureSize);

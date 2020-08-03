@@ -27,8 +27,6 @@ struct GlyphMetrics
 	int advance{0};
 };
 
-using GlyphMetricsList = std::vector<GlyphMetrics>;
-
 /**
  * Struct containing basic information related to Fonts. Not part of the public
  * interface.
@@ -41,7 +39,7 @@ struct FontInfo
 	int ascent{0};
 	int refCount{0};
 	Vector<int> glyphSize;
-	GlyphMetricsList metrics;
+	std::vector<GlyphMetrics> metrics;
 };
 
 }

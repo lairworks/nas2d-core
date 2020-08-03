@@ -61,7 +61,7 @@ namespace {
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	Vector<int> roundedCharacterDimensions(Vector<int> maxSize);
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList);
-	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize);
 }
 
 
@@ -287,7 +287,7 @@ namespace {
 			metrics.minX = glyphSize.x;
 			metrics.advance = glyphSpace;
 		}
-		fillInTextureCoordinates(glm, glyphSize, fontSurfaceSize);
+		fillInTextureCoordinates(glm, glyphSize);
 
 		unsigned int textureId = generateTexture(fontSurface);
 
@@ -315,9 +315,8 @@ namespace {
 
 		const auto charBoundsSize = maxCharacterDimensions(glm);
 		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
-		const auto roundedMatrixSize = roundedCharSize * GLYPH_MATRIX_SIZE;
 
-		fillInTextureCoordinates(glm, roundedCharSize, roundedMatrixSize);
+		fillInTextureCoordinates(glm, roundedCharSize);
 
 		SDL_Surface* fontSurface = generateFontSurface(font, roundedCharSize);
 		unsigned int textureId = generateTexture(fontSurface);
@@ -394,8 +393,9 @@ namespace {
 	}
 
 
-	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize)
 	{
+		const auto textureSize = characterSize * GLYPH_MATRIX_SIZE;
 		const auto floatTextureSize = textureSize.to<float>();
 		const auto uvSize = characterSize.to<float>().skewInverseBy(floatTextureSize);
 		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))

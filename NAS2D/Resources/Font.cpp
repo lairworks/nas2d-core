@@ -47,7 +47,6 @@ namespace {
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
-	bool fontAlreadyLoaded(const std::string& name);
 	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 	void updateFontReferenceCount(const std::string& name);
 }
@@ -214,11 +213,6 @@ namespace {
 	bool load(const std::string& path, unsigned int ptSize)
 	{
 		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
-		if (fontAlreadyLoaded(fontname))
-		{
-			++fontMap[fontname].refCount;
-			return true;
-		}
 
 		if (TTF_WasInit() == 0)
 		{
@@ -259,12 +253,6 @@ namespace {
 	 */
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
 	{
-		if (fontAlreadyLoaded(path))
-		{
-			++fontMap[path].refCount;
-			return true;
-		}
-
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
 		{
@@ -398,24 +386,6 @@ namespace {
 			const auto uvStart = glyphPosition.skewBy(characterSize).to<float>().skewInverseBy(floatTextureSize);
 			glyphMetricsList[glyph].uvRect = Rectangle<float>::Create(uvStart, uvSize);
 		}
-	}
-
-
-	/**
-	 * Internal utility function used to test if a given Font has already
-	 * been loaded.
-	 *
-	 * \param	name	Name of the Font to check against.
-	 */
-	bool fontAlreadyLoaded(const std::string& name)
-	{
-		auto it = fontMap.find(name);
-		if (it != fontMap.end())
-		{
-			return true;
-		}
-
-		return false;
 	}
 
 

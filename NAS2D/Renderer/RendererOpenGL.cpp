@@ -469,7 +469,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 		const auto vertexArray = rectToQuad({position.x + offset, position.y, glyphCellSize.x, glyphCellSize.y});
 		const auto textureCoordArray = rectToQuad(gm.uvRect);
 
-		drawTexturedQuad(fontMap[font.name()].textureId, vertexArray, textureCoordArray);
+		drawTexturedQuad(font.textureId(), vertexArray, textureCoordArray);
 		offset += gm.advance + gm.minX;
 	}
 }

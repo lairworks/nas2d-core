@@ -8,7 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "Font.h"
-#include "FontInfo.h"
 
 #include "../Exception.h"
 #include "../Filesystem.h"

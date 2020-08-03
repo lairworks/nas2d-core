@@ -295,16 +295,11 @@ namespace {
 			metrics.minX = glyphSize.x;
 			metrics.advance = glyphSpace;
 		}
-		fillInTextureCoordinates(glm);
 
-		auto textureId = generateTexture(fontSurface);
-
-		// Add generated texture id to texture ID map.
-		fontInfo.textureId = textureId;
 		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
 		fontInfo.glyphSize = glyphSize;
-		SDL_FreeSurface(fontSurface);
+		fontInfo.textureId = generateFontTexture(fontSurface, glm);
 
 		return true;
 	}

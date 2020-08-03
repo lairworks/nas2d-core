@@ -38,6 +38,18 @@ std::map<std::string, Font::FontInfo> fontMap;
 
 
 namespace {
+	struct ColorMasks
+	{
+		unsigned int red;
+		unsigned int green;
+		unsigned int blue;
+		unsigned int alpha;
+	};
+
+	constexpr ColorMasks MasksLittleEndian{0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000};
+	constexpr ColorMasks MasksBigEndian{0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff};
+	constexpr ColorMasks MasksDefault = (SDL_BYTEORDER == SDL_LIL_ENDIAN) ? MasksLittleEndian : MasksBigEndian;
+
 	const int ASCII_TABLE_COUNT = 256;
 	const int GLYPH_MATRIX_SIZE = 16;
 	const int BITS_32 = 32;
@@ -47,7 +59,6 @@ namespace {
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
-	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 }
 
 
@@ -310,10 +321,7 @@ namespace {
 		const auto size = Vector{roundedLongestEdge, roundedLongestEdge};
 		const auto textureSize = size.x * GLYPH_MATRIX_SIZE;
 
-		unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
-		setupMasks(rmask, gmask, bmask, amask);
-
-		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
+		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
 		fillInTextureCoordinates(glm, size, {textureSize, textureSize});
 
@@ -372,22 +380,6 @@ namespace {
 			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
 			const auto uvStart = glyphPosition.skewBy(characterSize).to<float>().skewInverseBy(floatTextureSize);
 			glyphMetricsList[glyph].uvRect = Rectangle<float>::Create(uvStart, uvSize);
-		}
-	}
-
-
-	/**
-	 * Sets up image masks for generating OpenGL textures based on machine endianness.
-	 */
-	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
-	{
-		if constexpr (SDL_BYTEORDER == SDL_LIL_ENDIAN)
-		{
-			rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
-		}
-		else
-		{
-			rmask = 0xff000000; gmask = 0x00ff0000; bmask = 0x0000ff00; amask = 0x000000ff;
 		}
 	}
 }

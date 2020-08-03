@@ -48,7 +48,6 @@ namespace {
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
-	void updateFontReferenceCount(const std::string& name);
 }
 
 
@@ -90,11 +89,6 @@ Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int gly
 Font::Font(const Font& rhs) :
 	mResourceName{rhs.mResourceName}
 {
-	auto it = fontMap.find(mResourceName);
-	if (it != fontMap.end())
-	{
-		++it->second.refCount;
-	}
 }
 
 
@@ -103,7 +97,7 @@ Font::Font(const Font& rhs) :
 */
 Font::~Font()
 {
-	updateFontReferenceCount(mResourceName);
+	glDeleteTextures(1, &fontMap[mResourceName].textureId);
 }
 
 
@@ -116,14 +110,9 @@ Font& Font::operator=(const Font& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	updateFontReferenceCount(mResourceName);
+	glDeleteTextures(1, &fontMap[mResourceName].textureId);
 
 	mResourceName = rhs.mResourceName;
-
-	auto it = fontMap.find(mResourceName);
-	if (it == fontMap.end()) { throw font_bad_data(); }
-
-	++it->second.refCount;
 
 	return *this;
 }
@@ -291,7 +280,6 @@ namespace {
 		fontInfo.textureId = textureId;
 		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
-		fontInfo.refCount++;
 		fontInfo.glyphSize = glyphSize;
 		SDL_FreeSurface(fontSurface);
 
@@ -356,7 +344,6 @@ namespace {
 		// Add generated texture id to texture ID map.
 		fontMap[name].textureId = textureId;
 		fontMap[name].pointSize = fontSize;
-		fontMap[name].refCount++;
 		SDL_FreeSurface(fontSurface);
 
 		return size;
@@ -401,36 +388,6 @@ namespace {
 		else
 		{
 			rmask = 0xff000000; gmask = 0x00ff0000; bmask = 0x0000ff00; amask = 0x000000ff;
-		}
-	}
-
-
-	/**
-	 * Internal function used to clean up references to fonts when the Font
-	 * destructor or copy assignment operators are called.
-	 *
-	 * \param	name	Name of the Font to check against.
-	 */
-	void updateFontReferenceCount(const std::string& name)
-	{
-		auto it = fontMap.find(name);
-		if (it == fontMap.end())
-		{
-			std::cout << "Font '" << name << "' was not found in the resource management." << std::endl;
-			return;
-		}
-
-		auto& fontInfo = it->second;
-		--fontInfo.refCount;
-		if (fontInfo.refCount <= 0)
-		{
-			glDeleteTextures(1, &fontInfo.textureId);
-			fontMap.erase(it);
-		}
-
-		if (fontMap.empty())
-		{
-			TTF_Quit();
 		}
 	}
 }

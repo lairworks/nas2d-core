@@ -58,7 +58,6 @@ public:
 		unsigned int pointSize{0u};
 		int height{0};
 		int ascent{0};
-		int refCount{0};
 		Vector<int> glyphSize;
 		std::vector<GlyphMetrics> metrics;
 	};

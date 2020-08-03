@@ -54,8 +54,8 @@ namespace {
 	const int GLYPH_MATRIX_SIZE = 16;
 	const int BITS_32 = 32;
 
-	bool load(const std::string& path, unsigned int ptSize);
-	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
+	Font::FontInfo load(const std::string& path, unsigned int ptSize);
+	Font::FontInfo loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
@@ -213,7 +213,7 @@ namespace {
 	 * \param	path	Path to the TTF or OTF font file.
 	 * \param	ptSize	Point size to use when loading the font.
 	 */
-	bool load(const std::string& path, unsigned int ptSize)
+	Font::FontInfo load(const std::string& path, unsigned int ptSize)
 	{
 		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
 
@@ -251,7 +251,7 @@ namespace {
 		fontInfo.textureId = generateFontTexture(fontSurface, glm);
 		TTF_CloseFont(font);
 
-		return true;
+		return fontInfo;
 	}
 
 
@@ -263,7 +263,7 @@ namespace {
 	 * \param	glyphHeight	Height of the glyphs in the bitmap font.
 	 * \param	glyphSpace	Spacing to use when drawing glyphs.
 	 */
-	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
+	Font::FontInfo loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
 	{
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
@@ -301,7 +301,7 @@ namespace {
 		fontInfo.glyphSize = glyphSize;
 		fontInfo.textureId = generateFontTexture(fontSurface, glm);
 
-		return true;
+		return fontInfo;
 	}
 
 

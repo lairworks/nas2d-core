@@ -237,10 +237,16 @@ namespace {
 			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 		}
 
+		auto& glm = fontMap[fontname].metrics;
+		fillInCharacterDimensions(font, glm);
+		const auto charBoundsSize = maxCharacterDimensions(glm);
+		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
+
 		fontMap[fontname].pointSize = ptSize;
 		fontMap[fontname].height = TTF_FontHeight(font);
 		fontMap[fontname].ascent = TTF_FontAscent(font);
-		fontMap[fontname].glyphSize = generateGlyphMap(font, fontname);
+		fontMap[fontname].glyphSize = roundedCharSize;
+		generateGlyphMap(font, fontname);
 		TTF_CloseFont(font);
 
 		return true;
@@ -310,22 +316,16 @@ namespace {
 	Vector<int> generateGlyphMap(TTF_Font* font, const std::string& name)
 	{
 		auto& glm = fontMap[name].metrics;
-
-		fillInCharacterDimensions(font, glm);
-
-		const auto charBoundsSize = maxCharacterDimensions(glm);
-		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
-
 		fillInTextureCoordinates(glm);
 
-		SDL_Surface* fontSurface = generateFontSurface(font, roundedCharSize);
+		SDL_Surface* fontSurface = generateFontSurface(font, fontMap[name].glyphSize);
 		auto textureId = generateTexture(fontSurface);
 
 		// Add generated texture id to texture ID map.
 		fontMap[name].textureId = textureId;
 		SDL_FreeSurface(fontSurface);
 
-		return roundedCharSize;
+		return fontMap[name].glyphSize;
 	}
 
 

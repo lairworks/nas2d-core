@@ -34,9 +34,6 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-std::map<std::string, Font::FontInfo> fontMap;
-
-
 namespace {
 	struct ColorMasks
 	{
@@ -237,7 +234,7 @@ namespace {
 			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 		}
 
-		auto& fontInfo = fontMap[fontname];
+		Font::FontInfo fontInfo;
 		auto& glm = fontInfo.metrics;
 		fillInCharacterDimensions(font, glm);
 		const auto charBoundsSize = maxCharacterDimensions(glm);
@@ -287,7 +284,7 @@ namespace {
 			throw font_invalid_glyph_map("Unexpected font image size. Expected: " + vectorToString(expectedSize) + " Actual: " + vectorToString(fontSurfaceSize));
 		}
 
-		auto& fontInfo = fontMap[path];
+		Font::FontInfo fontInfo;
 		auto& glm = fontInfo.metrics;
 		glm.resize(ASCII_TABLE_COUNT);
 		for (auto& metrics : glm)

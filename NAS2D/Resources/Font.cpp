@@ -58,6 +58,7 @@ namespace {
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
+	Vector<int> roundedCharacterDimensions(Vector<int> maxSize);
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 }
@@ -312,9 +313,7 @@ namespace {
 		fillInCharacterDimensions(ft, glm);
 
 		const auto charBoundsSize = maxCharacterDimensions(glm);
-		const auto longestEdge = std::max(charBoundsSize.x, charBoundsSize.y);
-		const auto roundedLongestEdge = static_cast<int>(roundUpPowerOf2(static_cast<uint32_t>(longestEdge)));
-		const auto roundedCharSize = Vector{roundedLongestEdge, roundedLongestEdge};
+		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
 		const auto roundedMatrixSize = roundedCharSize * GLYPH_MATRIX_SIZE;
 
 		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, roundedMatrixSize.x, roundedMatrixSize.y, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
@@ -363,6 +362,14 @@ namespace {
 			size.y = std::max({size.y, metrics.minY + metrics.maxY});
 		}
 		return size;
+	}
+
+
+	Vector<int> roundedCharacterDimensions(Vector<int> maxSize)
+	{
+		const auto maxSizeUint32 = maxSize.to<uint32_t>();
+		const auto roundedUpSize = Vector{roundUpPowerOf2(maxSizeUint32.x), roundUpPowerOf2(maxSizeUint32.y)};
+		return roundedUpSize.to<int>();
 	}
 
 

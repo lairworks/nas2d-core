@@ -75,7 +75,7 @@ namespace {
 Font::Font(const std::string& filePath, unsigned int ptSize) :
 	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"}
 {
-	::load(filePath, ptSize);
+	mFontInfo = ::load(filePath, ptSize);
 }
 
 
@@ -91,7 +91,7 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
 Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :
 	mResourceName{filePath}
 {
-	loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
+	mFontInfo = loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
 }
 
 
@@ -111,7 +111,7 @@ Font::Font(const Font& rhs) :
 */
 Font::~Font()
 {
-	glDeleteTextures(1, &fontMap[mResourceName].textureId);
+	glDeleteTextures(1, &mFontInfo.textureId);
 }
 
 
@@ -124,7 +124,7 @@ Font& Font::operator=(const Font& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	glDeleteTextures(1, &fontMap[mResourceName].textureId);
+	glDeleteTextures(1, &mFontInfo.textureId);
 
 	mResourceName = rhs.mResourceName;
 
@@ -134,7 +134,7 @@ Font& Font::operator=(const Font& rhs)
 
 Vector<int> Font::glyphCellSize() const
 {
-	return fontMap[mResourceName].glyphSize;
+	return mFontInfo.glyphSize;
 }
 
 
@@ -154,7 +154,7 @@ int Font::width(std::string_view string) const
 	if (string.empty()) { return 0; }
 
 	int width = 0;
-	auto& gml = fontMap[mResourceName].metrics;
+	auto& gml = mFontInfo.metrics;
 	if (gml.empty()) { return 0; }
 
 	for (auto character : string)
@@ -172,7 +172,7 @@ int Font::width(std::string_view string) const
  */
 int Font::height() const
 {
-	return fontMap[mResourceName].height;
+	return mFontInfo.height;
 }
 
 
@@ -181,7 +181,7 @@ int Font::height() const
  */
 int Font::ascent() const
 {
-	return fontMap[mResourceName].ascent;
+	return mFontInfo.ascent;
 }
 
 
@@ -190,19 +190,19 @@ int Font::ascent() const
  */
 unsigned int Font::ptSize() const
 {
-	return fontMap[mResourceName].pointSize;
+	return mFontInfo.pointSize;
 }
 
 
 const std::vector<Font::GlyphMetrics>& Font::metrics() const
 {
-	return fontMap[mResourceName].metrics;
+	return mFontInfo.metrics;
 }
 
 
 unsigned int Font::textureId() const
 {
-	return fontMap[mResourceName].textureId;
+	return mFontInfo.textureId;
 }
 
 

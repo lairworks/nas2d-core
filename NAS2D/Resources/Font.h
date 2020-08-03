@@ -86,6 +86,7 @@ public:
 
 private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
+	FontInfo mFontInfo;
 };
 
 } // namespace

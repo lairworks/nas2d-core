@@ -9,6 +9,7 @@
 // ==================================================================================
 #pragma once
 
+#include "FontInfo.h"
 #include "../Renderer/Vector.h"
 
 #include <map>
@@ -44,14 +45,13 @@ public:
 
 	const std::string& name() const { return mResourceName; }
 
+	Vector<int> glyphCellSize() const;
 	Vector<int> size(std::string_view string) const;
 	int width(std::string_view string) const;
 	int height() const;
 	int ascent() const;
-
 	unsigned int ptSize() const;
-
-	Vector<int> glyphCellSize() const;
+	const std::vector<GlyphMetrics>& metrics() const;
 
 private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */

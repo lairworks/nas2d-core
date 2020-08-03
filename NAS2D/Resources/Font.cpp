@@ -193,6 +193,12 @@ unsigned int Font::ptSize() const
 }
 
 
+const std::vector<GlyphMetrics>& Font::metrics() const
+{
+	return fontMap[mResourceName].metrics;
+}
+
+
 namespace {
 	/**
 	 * Loads a TrueType or OpenType font from a file.

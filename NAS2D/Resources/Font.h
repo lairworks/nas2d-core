@@ -11,6 +11,7 @@
 
 #include "FontInfo.h"
 #include "../Renderer/Vector.h"
+#include "../Renderer/Rectangle.h"
 
 #include <map>
 #include <string>
@@ -37,6 +38,33 @@ namespace NAS2D {
 class Font
 {
 public:
+
+	struct GlyphMetrics
+	{
+		Rectangle<float> uvRect{};
+		int minX{0};
+		int minY{0};
+		int maxX{0};
+		int maxY{0};
+		int advance{0};
+	};
+
+	/**
+	 * Struct containing basic information related to Fonts. Not part of the public
+	 * interface.
+	 */
+	struct FontInfo
+	{
+		unsigned int textureId{0u};
+		unsigned int pointSize{0u};
+		int height{0};
+		int ascent{0};
+		int refCount{0};
+		Vector<int> glyphSize;
+		std::vector<GlyphMetrics> metrics;
+	};
+
+
 	explicit Font(const std::string& filePath, unsigned int ptSize = 12);
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
 	Font(const Font& font);

@@ -17,30 +17,4 @@
 
 
 namespace NAS2D {
-
-struct GlyphMetrics
-{
-	Rectangle<float> uvRect{};
-	int minX{0};
-	int minY{0};
-	int maxX{0};
-	int maxY{0};
-	int advance{0};
-};
-
-/**
- * Struct containing basic information related to Fonts. Not part of the public
- * interface.
- */
-struct FontInfo
-{
-	unsigned int textureId{0u};
-	unsigned int pointSize{0u};
-	int height{0};
-	int ascent{0};
-	int refCount{0};
-	Vector<int> glyphSize;
-	std::vector<GlyphMetrics> metrics;
-};
-
 }

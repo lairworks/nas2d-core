@@ -35,7 +35,7 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-std::map<std::string, FontInfo> fontMap;
+std::map<std::string, Font::FontInfo> fontMap;
 
 
 namespace {
@@ -46,8 +46,8 @@ namespace {
 	bool load(const std::string& path, unsigned int ptSize);
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize);
-	Vector<int> maxCharacterDimensions(const std::vector<GlyphMetrics>& glyphMetricsList);
-	void fillInTextureCoordinates(std::vector<GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
+	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 	bool fontAlreadyLoaded(const std::string& name);
 	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
 	void updateFontReferenceCount(const std::string& name);
@@ -193,7 +193,7 @@ unsigned int Font::ptSize() const
 }
 
 
-const std::vector<GlyphMetrics>& Font::metrics() const
+const std::vector<Font::GlyphMetrics>& Font::metrics() const
 {
 	return fontMap[mResourceName].metrics;
 }
@@ -324,7 +324,7 @@ namespace {
 		// Build table of character sizes
 		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 		{
-			GlyphMetrics metrics;
+			Font::GlyphMetrics metrics;
 			TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
 			glm.push_back(metrics);
 		}
@@ -376,7 +376,7 @@ namespace {
 	}
 
 
-	Vector<int> maxCharacterDimensions(const std::vector<GlyphMetrics>& glyphMetricsList)
+	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		Vector<int> size{0, 0};
 
@@ -389,7 +389,7 @@ namespace {
 	}
 
 
-	void fillInTextureCoordinates(std::vector<GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
 	{
 		const auto floatTextureSize = textureSize.to<float>();
 		const auto uvSize = characterSize.to<float>().skewInverseBy(floatTextureSize);

@@ -58,6 +58,7 @@ namespace {
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
+	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 }
 
@@ -308,13 +309,7 @@ namespace {
 	{
 		auto& glm = fontMap[name].metrics;
 
-		// Build table of character sizes
-		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
-		{
-			Font::GlyphMetrics metrics;
-			TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
-			glm.push_back(metrics);
-		}
+		fillInCharacterDimensions(ft, glm);
 
 		const auto charBoundsSize = maxCharacterDimensions(glm);
 		const auto longestEdge = std::max(charBoundsSize.x, charBoundsSize.y);
@@ -368,6 +363,17 @@ namespace {
 			size.y = std::max({size.y, metrics.minY + metrics.maxY});
 		}
 		return size;
+	}
+
+
+	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList)
+	{
+		// Build table of character sizes
+		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
+		{
+			auto& metrics = glyphMetricsList.emplace_back();
+			TTF_GlyphMetrics(font, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
+		}
 	}
 
 

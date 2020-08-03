@@ -344,7 +344,7 @@ namespace {
 			if (!characterSurface)
 			{
 				SDL_FreeSurface(fontSurface);
-				throw std::runtime_error("Font::generateGlyphMap(): " + std::string(TTF_GetError()));
+				throw std::runtime_error("Font failed to generate surface for character : " + std::to_string(glyph) + " : " + std::string(TTF_GetError()));
 			}
 
 			SDL_SetSurfaceBlendMode(characterSurface, SDL_BLENDMODE_NONE);

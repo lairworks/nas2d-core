@@ -57,6 +57,7 @@ namespace {
 	bool load(const std::string& path, unsigned int ptSize);
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name);
+	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	Vector<int> roundedCharacterDimensions(Vector<int> maxSize);
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList);
@@ -316,9 +317,23 @@ namespace {
 		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
 		const auto roundedMatrixSize = roundedCharSize * GLYPH_MATRIX_SIZE;
 
-		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, roundedMatrixSize.x, roundedMatrixSize.y, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
-
 		fillInTextureCoordinates(glm, roundedCharSize, roundedMatrixSize);
+
+		SDL_Surface* fontSurface = generateFontSurface(ft, roundedCharSize);
+		unsigned int textureId = generateTexture(fontSurface);
+
+		// Add generated texture id to texture ID map.
+		fontMap[name].textureId = textureId;
+		SDL_FreeSurface(fontSurface);
+
+		return roundedCharSize;
+	}
+
+
+	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize)
+	{
+		const auto matrixSize = characterSize * GLYPH_MATRIX_SIZE;
+		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, matrixSize.x, matrixSize.y, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
 		SDL_Color white = { 255, 255, 255, 255 };
 		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
@@ -329,26 +344,20 @@ namespace {
 			// SDL_TTF will produce errors for a glyph of size 0
 			if (glyph == 0) { continue; }
 
-			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(ft, static_cast<uint16_t>(glyph), white);
+			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(font, static_cast<uint16_t>(glyph), white);
 			if (!characterSurface)
 			{
 				throw std::runtime_error("Font::generateGlyphMap(): " + std::string(TTF_GetError()));
 			}
 
 			SDL_SetSurfaceBlendMode(characterSurface, SDL_BLENDMODE_NONE);
-			const auto pixelPosition = glyphPosition.skewBy(roundedCharSize);
+			const auto pixelPosition = glyphPosition.skewBy(characterSize);
 			SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
 			SDL_BlitSurface(characterSurface, nullptr, fontSurface, &rect);
 			SDL_FreeSurface(characterSurface);
 		}
 
-		unsigned int textureId = generateTexture(fontSurface);
-
-		// Add generated texture id to texture ID map.
-		fontMap[name].textureId = textureId;
-		SDL_FreeSurface(fontSurface);
-
-		return roundedCharSize;
+		return fontSurface;
 	}
 
 

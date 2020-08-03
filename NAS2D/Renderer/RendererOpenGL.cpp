@@ -457,13 +457,13 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 
 	setColor(color);
 
-	auto& gml = fontMap[font.name()].metrics;
+	const auto& gml = fontMap[font.name()].metrics;
 	if (gml.empty()) { return; }
 
 	int offset = 0;
 	for (auto character : text)
 	{
-		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
+		const GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
 		const auto glyphCellSize = font.glyphCellSize().to<float>();
 		const auto vertexArray = rectToQuad({position.x + offset, position.y, glyphCellSize.x, glyphCellSize.y});

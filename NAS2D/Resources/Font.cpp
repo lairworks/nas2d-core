@@ -275,6 +275,7 @@ namespace {
 		const auto expectedSize = glyphLayoutSize.skewBy(glyphSize);
 		if (fontSurfaceSize != expectedSize)
 		{
+			SDL_FreeSurface(fontSurface);
 			const auto vectorToString = [](auto vector) { return "{" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + "}"; };
 			throw font_invalid_glyph_map("Unexpected font image size. Expected: " + vectorToString(expectedSize) + " Actual: " + vectorToString(fontSurfaceSize));
 		}
@@ -347,6 +348,7 @@ namespace {
 			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(font, static_cast<uint16_t>(glyph), white);
 			if (!characterSurface)
 			{
+				SDL_FreeSurface(fontSurface);
 				throw std::runtime_error("Font::generateGlyphMap(): " + std::string(TTF_GetError()));
 			}
 

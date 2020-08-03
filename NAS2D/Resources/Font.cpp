@@ -237,16 +237,17 @@ namespace {
 			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 		}
 
-		auto& glm = fontMap[fontname].metrics;
+		auto& fontInfo = fontMap[fontname];
+		auto& glm = fontInfo.metrics;
 		fillInCharacterDimensions(font, glm);
 		const auto charBoundsSize = maxCharacterDimensions(glm);
 		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
 
-		fontMap[fontname].pointSize = ptSize;
-		fontMap[fontname].height = TTF_FontHeight(font);
-		fontMap[fontname].ascent = TTF_FontAscent(font);
-		fontMap[fontname].glyphSize = roundedCharSize;
-		fontMap[fontname].textureId = generateGlyphMap(font, fontname);
+		fontInfo.pointSize = ptSize;
+		fontInfo.height = TTF_FontHeight(font);
+		fontInfo.ascent = TTF_FontAscent(font);
+		fontInfo.glyphSize = roundedCharSize;
+		fontInfo.textureId = generateGlyphMap(font, fontname);
 		TTF_CloseFont(font);
 
 		return true;

@@ -289,7 +289,7 @@ namespace {
 		}
 		fillInTextureCoordinates(glm);
 
-		unsigned int textureId = generateTexture(fontSurface);
+		auto textureId = generateTexture(fontSurface);
 
 		// Add generated texture id to texture ID map.
 		fontInfo.textureId = textureId;
@@ -319,7 +319,7 @@ namespace {
 		fillInTextureCoordinates(glm);
 
 		SDL_Surface* fontSurface = generateFontSurface(font, roundedCharSize);
-		unsigned int textureId = generateTexture(fontSurface);
+		auto textureId = generateTexture(fontSurface);
 
 		// Add generated texture id to texture ID map.
 		fontMap[name].textureId = textureId;

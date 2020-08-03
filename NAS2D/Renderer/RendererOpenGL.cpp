@@ -19,7 +19,6 @@
 #include "../MathUtils.h"
 #include "../Utility.h"
 
-#include "../Resources/FontInfo.h"
 #include "../Resources/ImageInfo.h"
 
 #include <GL/glew.h>
@@ -40,7 +39,6 @@ using namespace NAS2D::Exception;
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
 extern std::map<std::string, ImageInfo> imageIdMap;
-extern std::map<std::string, FontInfo> fontMap;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
@@ -457,19 +455,19 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 
 	setColor(color);
 
-	GlyphMetricsList& gml = fontMap[font.name()].metrics;
+	const auto& gml = font.metrics();
 	if (gml.empty()) { return; }
 
 	int offset = 0;
 	for (auto character : text)
 	{
-		GlyphMetrics& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
+		const auto& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
 		const auto glyphCellSize = font.glyphCellSize().to<float>();
 		const auto vertexArray = rectToQuad({position.x + offset, position.y, glyphCellSize.x, glyphCellSize.y});
 		const auto textureCoordArray = rectToQuad(gm.uvRect);
 
-		drawTexturedQuad(fontMap[font.name()].textureId, vertexArray, textureCoordArray);
+		drawTexturedQuad(font.textureId(), vertexArray, textureCoordArray);
 		offset += gm.advance + gm.minX;
 	}
 }

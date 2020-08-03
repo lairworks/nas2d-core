@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Renderer/Vector.h"
+#include "../Renderer/Rectangle.h"
 
 #include <map>
 #include <string>
@@ -36,6 +37,32 @@ namespace NAS2D {
 class Font
 {
 public:
+
+	struct GlyphMetrics
+	{
+		Rectangle<float> uvRect{};
+		int minX{0};
+		int minY{0};
+		int maxX{0};
+		int maxY{0};
+		int advance{0};
+	};
+
+	/**
+	 * Struct containing basic information related to Fonts. Not part of the public
+	 * interface.
+	 */
+	struct FontInfo
+	{
+		unsigned int textureId{0u};
+		unsigned int pointSize{0u};
+		int height{0};
+		int ascent{0};
+		Vector<int> glyphSize;
+		std::vector<GlyphMetrics> metrics;
+	};
+
+
 	explicit Font(const std::string& filePath, unsigned int ptSize = 12);
 	Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace);
 	Font(const Font& font);
@@ -44,14 +71,18 @@ public:
 
 	const std::string& name() const { return mResourceName; }
 
+	Vector<int> glyphCellSize() const;
 	Vector<int> size(std::string_view string) const;
 	int width(std::string_view string) const;
 	int height() const;
 	int ascent() const;
-
 	unsigned int ptSize() const;
+	const std::vector<GlyphMetrics>& metrics() const;
 
-	Vector<int> glyphCellSize() const;
+	// Temporary method, that will be removed in a future refactor
+	// Intended only to be used by RendererOpenGL
+	// As it is so specific, it should not be part of the Font class, nor FontInfo
+	unsigned int textureId() const;
 
 private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */

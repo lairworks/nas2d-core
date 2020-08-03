@@ -8,7 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "Font.h"
-#include "FontInfo.h"
 
 #include "../Exception.h"
 #include "../Filesystem.h"
@@ -35,10 +34,22 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-std::map<std::string, FontInfo> fontMap;
+std::map<std::string, Font::FontInfo> fontMap;
 
 
 namespace {
+	struct ColorMasks
+	{
+		unsigned int red;
+		unsigned int green;
+		unsigned int blue;
+		unsigned int alpha;
+	};
+
+	constexpr ColorMasks MasksLittleEndian{0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000};
+	constexpr ColorMasks MasksBigEndian{0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff};
+	constexpr ColorMasks MasksDefault = (SDL_BYTEORDER == SDL_LIL_ENDIAN) ? MasksLittleEndian : MasksBigEndian;
+
 	const int ASCII_TABLE_COUNT = 256;
 	const int GLYPH_MATRIX_SIZE = 16;
 	const int BITS_32 = 32;
@@ -46,11 +57,8 @@ namespace {
 	bool load(const std::string& path, unsigned int ptSize);
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize);
-	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList);
-	void fillInTextureCoordinates(GlyphMetricsList& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
-	bool fontAlreadyLoaded(const std::string& name);
-	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask);
-	void updateFontReferenceCount(const std::string& name);
+	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 }
 
 
@@ -92,11 +100,6 @@ Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int gly
 Font::Font(const Font& rhs) :
 	mResourceName{rhs.mResourceName}
 {
-	auto it = fontMap.find(mResourceName);
-	if (it != fontMap.end())
-	{
-		++it->second.refCount;
-	}
 }
 
 
@@ -105,7 +108,7 @@ Font::Font(const Font& rhs) :
 */
 Font::~Font()
 {
-	updateFontReferenceCount(mResourceName);
+	glDeleteTextures(1, &fontMap[mResourceName].textureId);
 }
 
 
@@ -118,14 +121,9 @@ Font& Font::operator=(const Font& rhs)
 {
 	if (this == &rhs) { return *this; }
 
-	updateFontReferenceCount(mResourceName);
+	glDeleteTextures(1, &fontMap[mResourceName].textureId);
 
 	mResourceName = rhs.mResourceName;
-
-	auto it = fontMap.find(mResourceName);
-	if (it == fontMap.end()) { throw font_bad_data(); }
-
-	++it->second.refCount;
 
 	return *this;
 }
@@ -153,7 +151,7 @@ int Font::width(std::string_view string) const
 	if (string.empty()) { return 0; }
 
 	int width = 0;
-	GlyphMetricsList& gml = fontMap[mResourceName].metrics;
+	auto& gml = fontMap[mResourceName].metrics;
 	if (gml.empty()) { return 0; }
 
 	for (auto character : string)
@@ -193,6 +191,18 @@ unsigned int Font::ptSize() const
 }
 
 
+const std::vector<Font::GlyphMetrics>& Font::metrics() const
+{
+	return fontMap[mResourceName].metrics;
+}
+
+
+unsigned int Font::textureId() const
+{
+	return fontMap[mResourceName].textureId;
+}
+
+
 namespace {
 	/**
 	 * Loads a TrueType or OpenType font from a file.
@@ -203,11 +213,6 @@ namespace {
 	bool load(const std::string& path, unsigned int ptSize)
 	{
 		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
-		if (fontAlreadyLoaded(fontname))
-		{
-			++fontMap[fontname].refCount;
-			return true;
-		}
 
 		if (TTF_WasInit() == 0)
 		{
@@ -248,12 +253,6 @@ namespace {
 	 */
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
 	{
-		if (fontAlreadyLoaded(path))
-		{
-			++fontMap[path].refCount;
-			return true;
-		}
-
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
 		{
@@ -292,7 +291,6 @@ namespace {
 		fontInfo.textureId = textureId;
 		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
-		fontInfo.refCount++;
 		fontInfo.glyphSize = glyphSize;
 		SDL_FreeSurface(fontSurface);
 
@@ -307,12 +305,12 @@ namespace {
 	 */
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize)
 	{
-		GlyphMetricsList& glm = fontMap[name].metrics;
+		auto& glm = fontMap[name].metrics;
 
 		// Build table of character sizes
 		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 		{
-			GlyphMetrics metrics;
+			Font::GlyphMetrics metrics;
 			TTF_GlyphMetrics(ft, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
 			glm.push_back(metrics);
 		}
@@ -323,10 +321,7 @@ namespace {
 		const auto size = Vector{roundedLongestEdge, roundedLongestEdge};
 		const auto textureSize = size.x * GLYPH_MATRIX_SIZE;
 
-		unsigned int rmask = 0, gmask = 0, bmask = 0, amask = 0;
-		setupMasks(rmask, gmask, bmask, amask);
-
-		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, rmask, gmask, bmask, amask);
+		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
 		fillInTextureCoordinates(glm, size, {textureSize, textureSize});
 
@@ -357,14 +352,13 @@ namespace {
 		// Add generated texture id to texture ID map.
 		fontMap[name].textureId = textureId;
 		fontMap[name].pointSize = fontSize;
-		fontMap[name].refCount++;
 		SDL_FreeSurface(fontSurface);
 
 		return size;
 	}
 
 
-	Vector<int> maxCharacterDimensions(const GlyphMetricsList& glyphMetricsList)
+	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		Vector<int> size{0, 0};
 
@@ -377,7 +371,7 @@ namespace {
 	}
 
 
-	void fillInTextureCoordinates(GlyphMetricsList& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize)
 	{
 		const auto floatTextureSize = textureSize.to<float>();
 		const auto uvSize = characterSize.to<float>().skewInverseBy(floatTextureSize);
@@ -386,70 +380,6 @@ namespace {
 			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
 			const auto uvStart = glyphPosition.skewBy(characterSize).to<float>().skewInverseBy(floatTextureSize);
 			glyphMetricsList[glyph].uvRect = Rectangle<float>::Create(uvStart, uvSize);
-		}
-	}
-
-
-	/**
-	 * Internal utility function used to test if a given Font has already
-	 * been loaded.
-	 *
-	 * \param	name	Name of the Font to check against.
-	 */
-	bool fontAlreadyLoaded(const std::string& name)
-	{
-		auto it = fontMap.find(name);
-		if (it != fontMap.end())
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * Sets up image masks for generating OpenGL textures based on machine endianness.
-	 */
-	void setupMasks(unsigned int& rmask, unsigned int& gmask, unsigned int& bmask, unsigned int& amask)
-	{
-		if constexpr (SDL_BYTEORDER == SDL_LIL_ENDIAN)
-		{
-			rmask = 0x000000ff; gmask = 0x0000ff00; bmask = 0x00ff0000; amask = 0xff000000;
-		}
-		else
-		{
-			rmask = 0xff000000; gmask = 0x00ff0000; bmask = 0x0000ff00; amask = 0x000000ff;
-		}
-	}
-
-
-	/**
-	 * Internal function used to clean up references to fonts when the Font
-	 * destructor or copy assignment operators are called.
-	 *
-	 * \param	name	Name of the Font to check against.
-	 */
-	void updateFontReferenceCount(const std::string& name)
-	{
-		auto it = fontMap.find(name);
-		if (it == fontMap.end())
-		{
-			std::cout << "Font '" << name << "' was not found in the resource management." << std::endl;
-			return;
-		}
-
-		auto& fontInfo = it->second;
-		--fontInfo.refCount;
-		if (fontInfo.refCount <= 0)
-		{
-			glDeleteTextures(1, &fontInfo.textureId);
-			fontMap.erase(it);
-		}
-
-		if (fontMap.empty())
-		{
-			TTF_Quit();
 		}
 	}
 }

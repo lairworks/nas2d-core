@@ -270,9 +270,8 @@ namespace {
 		}
 
 		const auto fontSurfaceSize = Vector{fontSurface->w, fontSurface->h};
-		const auto glyphLayoutSize = Vector{GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE};
 		const auto glyphSize = Vector{glyphWidth, glyphHeight};
-		const auto expectedSize = glyphLayoutSize.skewBy(glyphSize);
+		const auto expectedSize = glyphSize * GLYPH_MATRIX_SIZE;
 		if (fontSurfaceSize != expectedSize)
 		{
 			SDL_FreeSurface(fontSurface);

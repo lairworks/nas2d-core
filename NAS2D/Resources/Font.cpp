@@ -314,12 +314,12 @@ namespace {
 		const auto charBoundsSize = maxCharacterDimensions(glm);
 		const auto longestEdge = std::max(charBoundsSize.x, charBoundsSize.y);
 		const auto roundedLongestEdge = static_cast<int>(roundUpPowerOf2(static_cast<uint32_t>(longestEdge)));
-		const auto size = Vector{roundedLongestEdge, roundedLongestEdge};
-		const auto textureSize = size.x * GLYPH_MATRIX_SIZE;
+		const auto roundedCharSize = Vector{roundedLongestEdge, roundedLongestEdge};
+		const auto textureSize = roundedCharSize.x * GLYPH_MATRIX_SIZE;
 
 		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, textureSize, textureSize, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
-		fillInTextureCoordinates(glm, size, {textureSize, textureSize});
+		fillInTextureCoordinates(glm, roundedCharSize, {textureSize, textureSize});
 
 		SDL_Color white = { 255, 255, 255, 255 };
 		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
@@ -337,7 +337,7 @@ namespace {
 			}
 
 			SDL_SetSurfaceBlendMode(characterSurface, SDL_BLENDMODE_NONE);
-			const auto pixelPosition = glyphPosition.skewBy(size);
+			const auto pixelPosition = glyphPosition.skewBy(roundedCharSize);
 			SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
 			SDL_BlitSurface(characterSurface, nullptr, fontSurface, &rect);
 			SDL_FreeSurface(characterSurface);
@@ -349,7 +349,7 @@ namespace {
 		fontMap[name].textureId = textureId;
 		SDL_FreeSurface(fontSurface);
 
-		return size;
+		return roundedCharSize;
 	}
 
 

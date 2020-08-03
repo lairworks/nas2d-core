@@ -53,6 +53,11 @@ public:
 	unsigned int ptSize() const;
 	const std::vector<GlyphMetrics>& metrics() const;
 
+	// Temporary method, that will be removed in a future refactor
+	// Intended only to be used by RendererOpenGL
+	// As it is so specific, it should not be part of the Font class, nor FontInfo
+	unsigned int textureId() const;
+
 private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 };

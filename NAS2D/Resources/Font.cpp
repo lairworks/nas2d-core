@@ -199,6 +199,12 @@ const std::vector<GlyphMetrics>& Font::metrics() const
 }
 
 
+unsigned int Font::textureId() const
+{
+	return fontMap[mResourceName].textureId;
+}
+
+
 namespace {
 	/**
 	 * Loads a TrueType or OpenType font from a file.

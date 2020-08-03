@@ -61,7 +61,7 @@ namespace {
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	Vector<int> roundedCharacterDimensions(Vector<int> maxSize);
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList);
-	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize);
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList);
 }
 
 
@@ -287,7 +287,7 @@ namespace {
 			metrics.minX = glyphSize.x;
 			metrics.advance = glyphSpace;
 		}
-		fillInTextureCoordinates(glm, glyphSize);
+		fillInTextureCoordinates(glm);
 
 		unsigned int textureId = generateTexture(fontSurface);
 
@@ -316,7 +316,7 @@ namespace {
 		const auto charBoundsSize = maxCharacterDimensions(glm);
 		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
 
-		fillInTextureCoordinates(glm, roundedCharSize);
+		fillInTextureCoordinates(glm);
 
 		SDL_Surface* fontSurface = generateFontSurface(font, roundedCharSize);
 		unsigned int textureId = generateTexture(fontSurface);
@@ -393,15 +393,13 @@ namespace {
 	}
 
 
-	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize)
+	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
-		const auto textureSize = characterSize * GLYPH_MATRIX_SIZE;
-		const auto floatTextureSize = textureSize.to<float>();
-		const auto uvSize = characterSize.to<float>().skewInverseBy(floatTextureSize);
+		const auto uvSize = Vector<float>{1, 1} / 16.0f;
 		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
 		{
 			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
-			const auto uvStart = glyphPosition.skewBy(characterSize).to<float>().skewInverseBy(floatTextureSize);
+			const auto uvStart = glyphPosition.to<float>().skewBy(uvSize);
 			glyphMetricsList[glyph].uvRect = Rectangle<float>::Create(uvStart, uvSize);
 		}
 	}

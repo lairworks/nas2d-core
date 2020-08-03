@@ -56,7 +56,7 @@ namespace {
 
 	bool load(const std::string& path, unsigned int ptSize);
 	bool loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
-	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize);
+	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList, Vector<int> characterSize, Vector<int> textureSize);
 }
@@ -234,9 +234,10 @@ namespace {
 			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
 		}
 
+		fontMap[fontname].pointSize = ptSize;
 		fontMap[fontname].height = TTF_FontHeight(font);
 		fontMap[fontname].ascent = TTF_FontAscent(font);
-		fontMap[fontname].glyphSize = generateGlyphMap(font, fontname, ptSize);
+		fontMap[fontname].glyphSize = generateGlyphMap(font, fontname);
 		TTF_CloseFont(font);
 
 		return true;
@@ -303,7 +304,7 @@ namespace {
 	 *
 	 * Internal function used to generate a glyph texture map from an TTF_Font struct.
 	 */
-	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize)
+	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name)
 	{
 		auto& glm = fontMap[name].metrics;
 
@@ -351,7 +352,6 @@ namespace {
 
 		// Add generated texture id to texture ID map.
 		fontMap[name].textureId = textureId;
-		fontMap[name].pointSize = fontSize;
 		SDL_FreeSurface(fontSurface);
 
 		return size;

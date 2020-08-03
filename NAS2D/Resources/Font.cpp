@@ -153,7 +153,7 @@ int Font::width(std::string_view string) const
 	if (string.empty()) { return 0; }
 
 	int width = 0;
-	GlyphMetricsList& gml = fontMap[mResourceName].metrics;
+	auto& gml = fontMap[mResourceName].metrics;
 	if (gml.empty()) { return 0; }
 
 	for (auto character : string)
@@ -307,7 +307,7 @@ namespace {
 	 */
 	Vector<int> generateGlyphMap(TTF_Font* ft, const std::string& name, unsigned int fontSize)
 	{
-		GlyphMetricsList& glm = fontMap[name].metrics;
+		auto& glm = fontMap[name].metrics;
 
 		// Build table of character sizes
 		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)

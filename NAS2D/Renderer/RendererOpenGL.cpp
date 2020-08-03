@@ -19,7 +19,6 @@
 #include "../MathUtils.h"
 #include "../Utility.h"
 
-#include "../Resources/FontInfo.h"
 #include "../Resources/ImageInfo.h"
 
 #include <GL/glew.h>
@@ -40,7 +39,6 @@ using namespace NAS2D::Exception;
 // UGLY ASS HACK!
 // This is required here in order to remove OpenGL implementation details from Image and Font.
 extern std::map<std::string, ImageInfo> imageIdMap;
-extern std::map<std::string, FontInfo> fontMap;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.

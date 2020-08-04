@@ -285,12 +285,16 @@ namespace {
 		glm.resize(ASCII_TABLE_COUNT);
 		for (auto& metrics : glm)
 		{
-			metrics.minX = glyphSize.x;
+			metrics.minX = 0;
+			metrics.minY = 0;
+			metrics.maxX = glyphSize.x;
+			metrics.maxY = glyphSize.y;
 			metrics.advance = glyphSpace;
 		}
 
 		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
+		fontInfo.ascent = glyphSize.y;
 		fontInfo.glyphSize = glyphSize;
 		fontInfo.textureId = generateFontTexture(fontSurface, glm);
 

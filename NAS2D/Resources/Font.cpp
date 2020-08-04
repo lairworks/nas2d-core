@@ -52,7 +52,7 @@ namespace {
 	const int BITS_32 = 32;
 
 	Font::FontInfo load(const std::string& path, unsigned int ptSize);
-	Font::FontInfo loadBitmap(const std::string& path, int glyphSpace);
+	Font::FontInfo loadBitmap(const std::string& path);
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
@@ -80,13 +80,12 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
  * Instantiate a Font as a bitmap font.
  *
  * \param	filePath	Path to a font file.
- * \param	glyphSpace	Space between glyphs when rendering a bitmap font. This value can be negative.
  *
  */
-Font::Font(const std::string& filePath, int glyphSpace) :
+Font::Font(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	mFontInfo = loadBitmap(filePath, glyphSpace);
+	mFontInfo = loadBitmap(filePath);
 }
 
 
@@ -254,9 +253,8 @@ namespace {
 	 * Internal function that loads a bitmap font from an file.
 	 *
 	 * \param	path		Path to the image file.
-	 * \param	glyphSpace	Spacing to use when drawing glyphs.
 	 */
-	Font::FontInfo loadBitmap(const std::string& path, int glyphSpace)
+	Font::FontInfo loadBitmap(const std::string& path)
 	{
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
@@ -289,7 +287,7 @@ namespace {
 			metrics.minY = 0;
 			metrics.maxX = glyphSize.x;
 			metrics.maxY = glyphSize.y;
-			metrics.advance = glyphSpace;
+			metrics.advance = glyphSize.x;
 		}
 
 		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);

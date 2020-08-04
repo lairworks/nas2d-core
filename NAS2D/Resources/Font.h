@@ -64,7 +64,7 @@ public:
 
 
 	Font(const std::string& filePath, unsigned int ptSize);
-	Font(const std::string& filePath, int glyphSpace);
+	explicit Font(const std::string& filePath);
 	Font(const Font& font);
 	Font& operator=(const Font& font);
 	~Font();

@@ -52,7 +52,7 @@ namespace {
 	const int BITS_32 = 32;
 
 	Font::FontInfo load(const std::string& path, unsigned int ptSize);
-	Font::FontInfo loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace);
+	Font::FontInfo loadBitmap(const std::string& path);
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize);
 	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
@@ -80,15 +80,12 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
  * Instantiate a Font as a bitmap font.
  *
  * \param	filePath	Path to a font file.
- * \param	glyphWidth	Width of glyphs in the bitmap Font.
- * \param	glyphHeight	Height of glyphs in the bitmap Font.
- * \param	glyphSpace	Space between glyphs when rendering a bitmap font. This value can be negative.
  *
  */
-Font::Font(const std::string& filePath, int glyphWidth, int glyphHeight, int glyphSpace) :
+Font::Font(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	mFontInfo = loadBitmap(filePath, glyphWidth, glyphHeight, glyphSpace);
+	mFontInfo = loadBitmap(filePath);
 }
 
 
@@ -256,11 +253,8 @@ namespace {
 	 * Internal function that loads a bitmap font from an file.
 	 *
 	 * \param	path		Path to the image file.
-	 * \param	glyphWidth	Width of glyphs in the bitmap font.
-	 * \param	glyphHeight	Height of the glyphs in the bitmap font.
-	 * \param	glyphSpace	Spacing to use when drawing glyphs.
 	 */
-	Font::FontInfo loadBitmap(const std::string& path, int glyphWidth, int glyphHeight, int glyphSpace)
+	Font::FontInfo loadBitmap(const std::string& path)
 	{
 		File fontBuffer = Utility<Filesystem>::get().open(path);
 		if (fontBuffer.empty())
@@ -274,14 +268,14 @@ namespace {
 			throw std::runtime_error("Font loadBitmap function failed: " + std::string{SDL_GetError()});
 		}
 
+		// Assume image is square array of equal sized character cells
 		const auto fontSurfaceSize = Vector{fontSurface->w, fontSurface->h};
-		const auto glyphSize = Vector{glyphWidth, glyphHeight};
-		const auto expectedSize = glyphSize * GLYPH_MATRIX_SIZE;
-		if (fontSurfaceSize != expectedSize)
+		const auto glyphSize = fontSurfaceSize / GLYPH_MATRIX_SIZE;
+		if (fontSurfaceSize != glyphSize * GLYPH_MATRIX_SIZE)
 		{
 			SDL_FreeSurface(fontSurface);
 			const auto vectorToString = [](auto vector) { return "{" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + "}"; };
-			throw font_invalid_glyph_map("Unexpected font image size. Expected: " + vectorToString(expectedSize) + " Actual: " + vectorToString(fontSurfaceSize));
+			throw font_invalid_glyph_map("Unexpected font image size. Image dimensions " + vectorToString(fontSurfaceSize) + " must both be evenly divisble by " + std::to_string(GLYPH_MATRIX_SIZE));
 		}
 
 		Font::FontInfo fontInfo;
@@ -289,12 +283,16 @@ namespace {
 		glm.resize(ASCII_TABLE_COUNT);
 		for (auto& metrics : glm)
 		{
-			metrics.minX = glyphSize.x;
-			metrics.advance = glyphSpace;
+			metrics.minX = 0;
+			metrics.minY = 0;
+			metrics.maxX = glyphSize.x;
+			metrics.maxY = glyphSize.y;
+			metrics.advance = glyphSize.x;
 		}
 
 		fontInfo.pointSize = static_cast<unsigned int>(glyphSize.y);
 		fontInfo.height = glyphSize.y;
+		fontInfo.ascent = glyphSize.y;
 		fontInfo.glyphSize = glyphSize;
 		fontInfo.textureId = generateFontTexture(fontSurface, glm);
 

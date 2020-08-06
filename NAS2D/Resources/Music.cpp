@@ -83,6 +83,12 @@ Music::~Music()
 }
 
 
+void* Music::music() const
+{
+	return MUSIC_REF_MAP[mResourceName].music;
+}
+
+
 /**
  * Loads a specified music file.
  *

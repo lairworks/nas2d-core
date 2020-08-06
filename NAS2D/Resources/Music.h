@@ -32,6 +32,10 @@ public:
 
 	const std::string& name() const { return mResourceName; }
 
+	// Temporary method that may be removed in the future
+	// Intended only to be used by MixerSDL
+	void* music() const;
+
 private:
 	void load();
 

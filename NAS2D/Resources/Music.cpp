@@ -8,7 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "Music.h"
-#include "MusicInfo.h"
 
 #include "../Filesystem.h"
 #include "../Utility.h"
@@ -23,9 +22,20 @@
 
 using namespace NAS2D;
 
-std::map<std::string, MusicInfo> MUSIC_REF_MAP; /**< Lookup table for music resource references. */
 
-void updateMusicReferenceCount(const std::string& name);
+namespace {
+	struct MusicInfo
+	{
+		void* buffer{nullptr};
+		void* music{nullptr};
+		int refCount{0};
+	};
+
+	std::map<std::string, MusicInfo> MUSIC_REF_MAP; /**< Lookup table for music resource references. */
+
+	void updateMusicReferenceCount(const std::string& name);
+}
+
 
 /**
  * C'tor.
@@ -83,6 +93,12 @@ Music::~Music()
 }
 
 
+void* Music::music() const
+{
+	return MUSIC_REF_MAP[mResourceName].music;
+}
+
+
 /**
  * Loads a specified music file.
  *
@@ -116,40 +132,37 @@ void Music::load()
 }
 
 
-// ==================================================================================
-// = Unexposed module-level functions defined here that don't need to be part of the
-// = API interface.
-// ==================================================================================
-
-/**
-* Internal function used to clean up references to fonts when the Music
-* destructor or copy assignment operators are called.
-*
-* \param	name	Name of the Music to check against.
-*/
-void updateMusicReferenceCount(const std::string& name)
-{
-	auto it = MUSIC_REF_MAP.find(name);
-	if (it == MUSIC_REF_MAP.end())
+namespace {
+	/**
+	* Internal function used to clean up references to fonts when the Music
+	* destructor or copy assignment operators are called.
+	*
+	* \param	name	Name of the Music to check against.
+	*/
+	void updateMusicReferenceCount(const std::string& name)
 	{
-		return;
-	}
-
-	--it->second.refCount;
-
-	// No more references to this resource.
-	if (it->second.refCount < 1)
-	{
-		if (it->second.music)
+		auto it = MUSIC_REF_MAP.find(name);
+		if (it == MUSIC_REF_MAP.end())
 		{
-			Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
+			return;
 		}
 
-		if (it->second.buffer)
-		{
-			delete static_cast<File*>(it->second.buffer);
-		}
+		--it->second.refCount;
 
-		MUSIC_REF_MAP.erase(it);
+		// No more references to this resource.
+		if (it->second.refCount < 1)
+		{
+			if (it->second.music)
+			{
+				Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
+			}
+
+			if (it->second.buffer)
+			{
+				delete static_cast<File*>(it->second.buffer);
+			}
+
+			MUSIC_REF_MAP.erase(it);
+		}
 	}
 }

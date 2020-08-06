@@ -16,18 +16,4 @@
 
 
 namespace NAS2D {
-
-/**
- * Struct containing basic information related to Images. Not part of the public
- * interface.
- */
-struct ImageInfo
-{
-	SDL_Surface* surface{nullptr};
-	unsigned int textureId{0u};
-	unsigned int frameBufferObjectId{0u};
-	Vector<int> size{0, 0};
-	int refCount{0};
-};
-
 } // namespace

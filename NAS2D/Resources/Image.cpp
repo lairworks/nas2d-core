@@ -32,6 +32,15 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 
 
 namespace {
+	struct ImageInfo
+	{
+		SDL_Surface* surface{nullptr};
+		unsigned int textureId{0u};
+		unsigned int frameBufferObjectId{0u};
+		Vector<int> size{0, 0};
+		int refCount{0};
+	};
+
 	std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 
 	const std::string DEFAULT_IMAGE_NAME = "Default Image";

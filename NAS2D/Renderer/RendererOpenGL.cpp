@@ -36,9 +36,6 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-// UGLY ASS HACK!
-// This is required here in order to remove OpenGL implementation details from Image and Font.
-extern std::map<std::string, ImageInfo> imageIdMap;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
@@ -70,7 +67,6 @@ namespace {
 	constexpr std::array<GLfloat, 12> DefaultTextureCoords = rectToQuad({0, 0, 1, 1});
 
 
-	GLuint generate_fbo(const Image& image);
 	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = DefaultTextureCoords);
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 
@@ -140,7 +136,7 @@ void RendererOpenGL::drawImage(const Image& image, Point<float> position, float 
 
 	const auto imageSize = image.size().to<float>() * scale;
 	const auto vertexArray = rectToQuad({position.x, position.y, imageSize.x, imageSize.y});
-	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray);
+	drawTexturedQuad(image.textureId(), vertexArray);
 }
 
 
@@ -152,7 +148,7 @@ void RendererOpenGL::drawSubImage(const Image& image, Point<float> raster, Recta
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
-	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray, textureCoordArray);
+	drawTexturedQuad(image.textureId(), vertexArray, textureCoordArray);
 }
 
 
@@ -174,7 +170,7 @@ void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
-	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray, textureCoordArray);
+	drawTexturedQuad(image.textureId(), vertexArray, textureCoordArray);
 
 	glPopMatrix();
 }
@@ -199,7 +195,7 @@ void RendererOpenGL::drawImageRotated(const Image& image, Point<float> position,
 
 	const auto vertexArray = rectToQuad({-scaledHalfSize.x, -scaledHalfSize.y, scaledHalfSize.x * 2, scaledHalfSize.y * 2});
 
-	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray);
+	drawTexturedQuad(image.textureId(), vertexArray);
 	glPopMatrix();
 }
 
@@ -210,7 +206,7 @@ void RendererOpenGL::drawImageStretched(const Image& image, Rectangle<float> rec
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	const auto vertexArray = rectToQuad(rect);
-	drawTexturedQuad(imageIdMap[image.name()].textureId, vertexArray);
+	drawTexturedQuad(image.textureId(), vertexArray);
 }
 
 
@@ -218,7 +214,7 @@ void RendererOpenGL::drawImageRepeated(const Image& image, Rectangle<float> rect
 {
 	setColor(Color::White);
 
-	glBindTexture(GL_TEXTURE_2D, imageIdMap[image.name()].textureId);
+	glBindTexture(GL_TEXTURE_2D, image.textureId());
 
 	// Change texture mode to repeat at edges.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -286,22 +282,16 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 
 	setColor(Color::White);
 
-	const auto& destinationImageInfo = imageIdMap[destination.name()];
-	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.textureId);
+	glBindTexture(GL_TEXTURE_2D, destination.textureId());
 
-	GLuint fbo = destinationImageInfo.frameBufferObjectId;
-	if (fbo == 0)
-	{
-		fbo = generate_fbo(destination);
-	}
-
+	GLuint fbo = destination.frameBufferObjectId();
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destinationImageInfo.textureId, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destination.textureId(), 0);
 	// Flip the Y axis to keep images drawing correctly.
 	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, clipSize.x, -clipSize.y});
 
-	drawTexturedQuad(imageIdMap[source.name()].textureId, vertexArray);
-	glBindTexture(GL_TEXTURE_2D, destinationImageInfo.textureId);
+	drawTexturedQuad(source.textureId(), vertexArray);
+	glBindTexture(GL_TEXTURE_2D, destination.textureId());
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -801,38 +791,6 @@ Vector<int> RendererOpenGL::getWindowClientArea() const noexcept
 // ==================================================================================
 
 namespace {
-/**
- * Generates an OpenGL Frame Buffer Object.
- */
-GLuint generate_fbo(const Image& image)
-{
-	unsigned int framebuffer;
-	glGenFramebuffers(1, &framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	
-	if (imageIdMap[image.name()].textureId == 0)
-	{
-		unsigned int textureColorbuffer;
-		glGenTextures(1, &textureColorbuffer);
-		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-		const auto textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? GL_BGRA : GL_RGBA;
-
-		const auto imageSize = image.size();
-		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, imageSize.x, imageSize.y, 0, textureFormat, GL_UNSIGNED_BYTE, nullptr);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, imageIdMap[image.name()].textureId, 0);
-
-	imageIdMap[image.name()].frameBufferObjectId = framebuffer;
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	return framebuffer;
-}
-
-
 /**
  * Draws a textured rectangle using a vertex and texture coordinate array
  */

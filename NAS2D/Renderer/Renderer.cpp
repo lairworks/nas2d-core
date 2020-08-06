@@ -62,6 +62,12 @@ void Renderer::title(const std::string& title)
 }
 
 
+void Renderer::drawImageRect(Rectangle<float> rect, const RectangleSkin& images)
+{
+	images.draw(*this, rect);
+}
+
+
 /**
  * Draws a rectangle using a set of images.
  *

@@ -41,6 +41,8 @@ namespace {
 
 	bool checkTextureId(const std::string& name);
 	void updateImageReferenceCount(const std::string& name);
+
+	GLuint generateFbo(const Image& image);
 }
 
 
@@ -285,7 +287,12 @@ unsigned int Image::textureId() const
 
 unsigned int Image::frameBufferObjectId() const
 {
-	return imageIdMap[mResourceName].frameBufferObjectId;
+	auto& imageInfo = imageIdMap[mResourceName];
+	if (imageInfo.frameBufferObjectId == 0)
+	{
+		imageInfo.frameBufferObjectId = generateFbo(*this);
+	}
+	return imageInfo.frameBufferObjectId;
 }
 
 
@@ -348,6 +355,35 @@ namespace {
 		}
 
 		return false;
+	}
+
+
+	/**
+	 * Generates an OpenGL Frame Buffer Object.
+	 */
+	GLuint generateFbo(const Image& image)
+	{
+		unsigned int framebuffer;
+		glGenFramebuffers(1, &framebuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+		if (image.textureId() == 0)
+		{
+			unsigned int textureColorbuffer;
+			glGenTextures(1, &textureColorbuffer);
+			glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+			const auto textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? GL_BGRA : GL_RGBA;
+
+			const auto imageSize = image.size();
+			glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, imageSize.x, imageSize.y, 0, textureFormat, GL_UNSIGNED_BYTE, nullptr);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		}
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, image.textureId(), 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		return framebuffer;
 	}
 }
 

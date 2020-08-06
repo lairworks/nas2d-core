@@ -70,7 +70,6 @@ namespace {
 	constexpr std::array<GLfloat, 12> DefaultTextureCoords = rectToQuad({0, 0, 1, 1});
 
 
-	GLuint generate_fbo(const Image& image);
 	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = DefaultTextureCoords);
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color);
 
@@ -289,11 +288,6 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 	glBindTexture(GL_TEXTURE_2D, destination.textureId());
 
 	GLuint fbo = destination.frameBufferObjectId();
-	if (fbo == 0)
-	{
-		fbo = generate_fbo(destination);
-	}
-
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destination.textureId(), 0);
 	// Flip the Y axis to keep images drawing correctly.
@@ -800,38 +794,6 @@ Vector<int> RendererOpenGL::getWindowClientArea() const noexcept
 // ==================================================================================
 
 namespace {
-/**
- * Generates an OpenGL Frame Buffer Object.
- */
-GLuint generate_fbo(const Image& image)
-{
-	unsigned int framebuffer;
-	glGenFramebuffers(1, &framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	
-	if (image.textureId() == 0)
-	{
-		unsigned int textureColorbuffer;
-		glGenTextures(1, &textureColorbuffer);
-		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-		const auto textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? GL_BGRA : GL_RGBA;
-
-		const auto imageSize = image.size();
-		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, imageSize.x, imageSize.y, 0, textureFormat, GL_UNSIGNED_BYTE, nullptr);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, image.textureId(), 0);
-
-	imageIdMap[image.name()].frameBufferObjectId = framebuffer;
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	return framebuffer;
-}
-
-
 /**
  * Draws a textured rectangle using a vertex and texture coordinate array
  */

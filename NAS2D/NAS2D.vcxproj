@@ -248,7 +248,6 @@
     <ClInclude Include="Resources\ResourceCache.h" />
     <ClInclude Include="Resources\Font.h" />
     <ClInclude Include="Resources\Image.h" />
-    <ClInclude Include="Resources\ImageInfo.h" />
     <ClInclude Include="Resources\Music.h" />
     <ClInclude Include="Resources\Sound.h" />
     <ClInclude Include="Resources\Sprite.h" />

@@ -8,7 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "Image.h"
-#include "ImageInfo.h"
 
 #include "../Exception.h"
 #include "../Filesystem.h"
@@ -27,14 +26,22 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
-
-
 unsigned int generateTexture(SDL_Surface* surface);
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 
 
 namespace {
+	struct ImageInfo
+	{
+		SDL_Surface* surface{nullptr};
+		unsigned int textureId{0u};
+		unsigned int frameBufferObjectId{0u};
+		Vector<int> size{0, 0};
+		int refCount{0};
+	};
+
+	std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
+
 	const std::string DEFAULT_IMAGE_NAME = "Default Image";
 	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */

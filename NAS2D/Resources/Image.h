@@ -33,10 +33,6 @@ namespace NAS2D {
  * - TGA
  * - TIFF
  * - WEBP
- *
- * \note	Image currently only supports 24-bit and 32-bit images (true-color with
- *			and without an alpha channel).
- *
  */
 class Image
 {
@@ -70,13 +66,6 @@ private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	Vector<int> mSize; /**< Width/Height information about the Image. */
 };
-
-
-/**
- * \typedef	ImagePtrList
- * \brief	A list of pointers to Image objects.
- */
-using ImagePtrList = std::vector<Image*>;
 
 
 /**

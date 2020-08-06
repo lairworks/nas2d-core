@@ -9,10 +9,7 @@
 // ==================================================================================
 #pragma once
 
-/**
- * Struct containing basic information related to Images. Not part of the public
- * interface.
- */
+
 struct MusicInfo
 {
 	void* buffer{nullptr};

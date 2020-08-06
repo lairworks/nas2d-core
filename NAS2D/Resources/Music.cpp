@@ -25,6 +25,13 @@ using namespace NAS2D;
 
 
 namespace {
+	struct MusicInfo
+	{
+		void* buffer{nullptr};
+		void* music{nullptr};
+		int refCount{0};
+	};
+
 	std::map<std::string, MusicInfo> MUSIC_REF_MAP; /**< Lookup table for music resource references. */
 
 	void updateMusicReferenceCount(const std::string& name);

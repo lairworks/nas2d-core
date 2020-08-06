@@ -8,11 +8,3 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #pragma once
-
-
-struct MusicInfo
-{
-	void* buffer{nullptr};
-	void* music{nullptr};
-	int refCount{0};
-};

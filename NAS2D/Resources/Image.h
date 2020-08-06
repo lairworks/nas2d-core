@@ -33,10 +33,6 @@ namespace NAS2D {
  * - TGA
  * - TIFF
  * - WEBP
- *
- * \note	Image currently only supports 24-bit and 32-bit images (true-color with
- *			and without an alpha channel).
- *
  */
 class Image
 {

@@ -36,9 +36,6 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-// UGLY ASS HACK!
-// This is required here in order to remove OpenGL implementation details from Image and Font.
-extern std::map<std::string, ImageInfo> imageIdMap;
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.

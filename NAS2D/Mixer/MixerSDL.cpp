@@ -11,7 +11,6 @@
 #include "MixerSDL.h"
 #include "../Configuration.h"
 #include "../Exception.h"
-#include "../Resources/MusicInfo.h"
 #include "../Utility.h"
 
 #include <SDL2/SDL.h>
@@ -23,8 +22,6 @@
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
-
-extern std::map<std::string, MusicInfo> MUSIC_REF_MAP;
 
 
 namespace {

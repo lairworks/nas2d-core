@@ -8,7 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "Image.h"
-#include "ImageInfo.h"
 
 #include "../Exception.h"
 #include "../Filesystem.h"

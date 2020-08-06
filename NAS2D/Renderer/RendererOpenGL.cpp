@@ -19,8 +19,6 @@
 #include "../MathUtils.h"
 #include "../Utility.h"
 
-#include "../Resources/ImageInfo.h"
-
 #include <GL/glew.h>
 
 #include <SDL2/SDL.h>

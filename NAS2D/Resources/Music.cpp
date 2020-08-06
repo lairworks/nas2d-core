@@ -8,7 +8,6 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 #include "Music.h"
-#include "MusicInfo.h"
 
 #include "../Filesystem.h"
 #include "../Utility.h"

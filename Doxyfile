@@ -124,7 +124,6 @@ EXCLUDE                = ./src/Xml\XmlAttributeSet.cpp \
                          ./include/NAS2D/Xml\XmlVisitor.h \
 						 ./include/NAS2D/Delegate.h \
 						 ./include/NAS2D/Resources/ImageInfo.h \
-						 ./include/NAS2D/Resources/MusicInfo.h \
 						 ./include/NAS2D/Renderer/ShaderManager.h \
 						 ./include/NAS2D/Renderer/OGL_Renderer.h \
 						 ./src/Renderer/OGL_Renderer.cpp \

@@ -254,9 +254,6 @@
     <ClInclude Include="Resources\ImageInfo.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\MusicInfo.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Xml\Xml.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>

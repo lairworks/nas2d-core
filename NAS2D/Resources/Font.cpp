@@ -55,7 +55,7 @@ namespace {
 	Font::FontInfo loadBitmap(const std::string& path);
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize);
-	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList);
+	Vector<int> maxCharacterDimensions(TTF_Font* font);
 	Vector<int> roundedCharacterDimensions(Vector<int> maxSize);
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList);
@@ -234,7 +234,7 @@ namespace {
 		Font::FontInfo fontInfo;
 		auto& glm = fontInfo.metrics;
 		fillInCharacterDimensions(font, glm);
-		const auto charBoundsSize = maxCharacterDimensions(glm);
+		const auto charBoundsSize = maxCharacterDimensions(font);
 		const auto roundedCharSize = roundedCharacterDimensions(charBoundsSize);
 		SDL_Surface* fontSurface = generateFontSurface(font, roundedCharSize);
 
@@ -348,14 +348,16 @@ namespace {
 	}
 
 
-	Vector<int> maxCharacterDimensions(const std::vector<Font::GlyphMetrics>& glyphMetricsList)
+	Vector<int> maxCharacterDimensions(TTF_Font* font)
 	{
 		Vector<int> size{0, 0};
 
-		for (const auto metrics : glyphMetricsList)
+		for (int i = 0; i < 256; ++i)
 		{
-			size.x = std::max({size.x, metrics.minX + metrics.maxX, metrics.advance});
-			size.y = std::max({size.y, metrics.minY + metrics.maxY});
+			Vector<int> sizeChar;
+			char text[2] = {static_cast<char>(i), 0};
+			TTF_SizeText(font, text, &sizeChar.x, &sizeChar.y);
+			size = {std::max({size.x, sizeChar.x}), std::max({size.y, sizeChar.y})};
 		}
 		return size;
 	}

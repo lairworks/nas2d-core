@@ -73,13 +73,6 @@ private:
 
 
 /**
- * \typedef	ImagePtrList
- * \brief	A list of pointers to Image objects.
- */
-using ImagePtrList = std::vector<Image*>;
-
-
-/**
  * \typedef	ImageList
  * \brief	A list of Image objects.
  */

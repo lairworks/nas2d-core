@@ -464,7 +464,8 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 		const auto& gm = gml[std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255)];
 
 		const auto glyphCellSize = font.glyphCellSize().to<float>();
-		const auto vertexArray = rectToQuad({position.x + offset + gm.minX, position.y, glyphCellSize.x, glyphCellSize.y});
+		const auto adjustX = (gm.minX < 0) ? gm.minX : 0;
+		const auto vertexArray = rectToQuad({position.x + offset + adjustX, position.y, glyphCellSize.x, glyphCellSize.y});
 		const auto textureCoordArray = rectToQuad(gm.uvRect);
 
 		drawTexturedQuad(font.textureId(), vertexArray, textureCoordArray);

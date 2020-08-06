@@ -277,6 +277,12 @@ Color Image::pixelColor(int x, int y) const
 }
 
 
+unsigned int Image::textureId() const
+{
+	return imageIdMap[mResourceName].textureId;
+}
+
+
 namespace {
 	/**
 	* Internal function used to clean up references to fonts when the Image

@@ -57,6 +57,11 @@ public:
 	Color pixelColor(Point<int> point) const;
 	Color pixelColor(int x, int y) const;
 
+	// Temporary method, that will be removed in a future refactor
+	// Intended only to be used by RendererOpenGL
+	// As it is so specific, it should not be part of the Image class, nor ImageInfo
+	unsigned int textureId() const;
+
 private:
 	void load();
 

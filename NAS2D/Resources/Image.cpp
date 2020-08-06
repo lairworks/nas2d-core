@@ -283,6 +283,12 @@ unsigned int Image::textureId() const
 }
 
 
+unsigned int Image::frameBufferObjectId() const
+{
+	return imageIdMap[mResourceName].frameBufferObjectId;
+}
+
+
 namespace {
 	/**
 	* Internal function used to clean up references to fonts when the Image

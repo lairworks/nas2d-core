@@ -10,6 +10,7 @@ class ResourceCache
 public:
 	using Key = std::tuple<Params...>;
 
+
 	const Resource& load(Params... params)
 	{
 		// Cache lookup key is a tuple of all Resource constructor parameters
@@ -28,10 +29,12 @@ public:
 		return iter->second;
 	}
 
+
 	void clear()
 	{
 		cache.clear();
 	}
+
 
 private:
 	std::map<Key, Resource> cache;

@@ -28,6 +28,11 @@ public:
 		return iter->second;
 	}
 
+	void clear()
+	{
+		cache.clear();
+	}
+
 private:
 	std::map<Key, Resource> cache;
 };

@@ -100,7 +100,7 @@ Image::Image(const std::string& filePath) :
  * \param	height			Height of the Image.
  */
 Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
-	mResourceName{ARBITRARY_IMAGE_NAME}
+	mResourceName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)}
 {
 	if (buffer == nullptr)
 	{
@@ -112,7 +112,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
 		throw image_unsupported_bit_depth();
 	}
 
-	mResourceName = ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY);
+	++IMAGE_ARBITRARY;
 
 	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 

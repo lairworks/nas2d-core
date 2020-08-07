@@ -131,10 +131,9 @@ Image::Image(const std::string& filePath) :
  *
  * \param	buffer			Pointer to a data buffer.
  * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
- * \param	width			Width of the Image.
- * \param	height			Height of the Image.
+ * \param	size			Size of the Image in pixels.
  */
-Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
+Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 	mResourceName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)}
 {
 	if (buffer == nullptr)
@@ -149,16 +148,16 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
 
 	++IMAGE_ARBITRARY;
 
-	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
+	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
-	mSize = Vector{width, height};
+	mSize = size;
 
 	unsigned int textureId = generateTexture(surface);
 
 	// Update resource management.
 	auto& imageInfo = imageIdMap[mResourceName];
 	imageInfo.textureId = textureId;
-	imageInfo.size = {width, height};
+	imageInfo.size = size;
 	imageInfo.refCount++;
 	imageInfo.surface = surface;
 }

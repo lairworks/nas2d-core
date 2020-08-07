@@ -166,13 +166,13 @@ void Image::load()
 	File imageFile = Utility<Filesystem>::get().open(mResourceName);
 	if (imageFile.size() == 0)
 	{
-		throw std::runtime_error("Image::load(): File is empty: " + mResourceName);
+		throw std::runtime_error("Image file is empty: " + mResourceName);
 	}
 
 	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
 	if (!surface)
 	{
-		throw std::runtime_error("Image::load(): " + std::string{SDL_GetError()});
+		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
 	}
 
 	mSize = Vector{surface->w, surface->h};

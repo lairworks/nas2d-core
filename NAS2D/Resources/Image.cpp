@@ -208,7 +208,7 @@ Color Image::pixelColor(int x, int y) const
 {
 	if (!Rectangle<int>::Create({0, 0}, mSize).contains({x, y}))
 	{
-		return Color::Black;
+		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(x) + ", " + std::to_string(y) + "}");
 	}
 
 	SDL_Surface* surface = imageIdMap[mResourceName].surface;

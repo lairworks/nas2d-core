@@ -10,10 +10,11 @@ class ResourceCache
 public:
 	using Key = std::tuple<Params...>;
 
+
 	const Resource& load(Params... params)
 	{
 		// Cache lookup key is a tuple of all Resource constructor parameters
-		const auto key = std::tuple{params...};
+		const auto key = Key{params...};
 
 		// Try to find resource from the cache
 		auto iter = cache.find(key);
@@ -26,6 +27,24 @@ public:
 
 		// Return reference to found or created cached object
 		return iter->second;
+	}
+
+
+	void unload(Params... params)
+	{
+		cache.erase(Key{params...});
+	}
+
+
+	void clear()
+	{
+		cache.clear();
+	}
+
+
+	auto size() const
+	{
+		return cache.size();
 	}
 
 private:

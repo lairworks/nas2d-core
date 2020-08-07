@@ -38,4 +38,12 @@ TEST(ResourceCache, load) {
 	EXPECT_NE(&value1, &value3);
 	EXPECT_NE(&value1, &value4);
 	EXPECT_NE(&value3, &value4);
+
+	EXPECT_EQ(3u, cache.size());
+	EXPECT_NO_THROW(cache.unload("not found", 0));
+	EXPECT_EQ(3u, cache.size());
+	EXPECT_NO_THROW(cache.unload("abc", 123));
+	EXPECT_EQ(2u, cache.size());
+	EXPECT_NO_THROW(cache.clear());
+	EXPECT_EQ(0u, cache.size());
 }

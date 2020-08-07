@@ -205,7 +205,8 @@ Color Image::pixelColor(Point<int> point) const
 
 	SDL_LockSurface(surface);
 	uint8_t bytesPerPixel = surface->format->BytesPerPixel;
-	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + static_cast<std::size_t>(point.y) * static_cast<std::size_t>(surface->pitch) + static_cast<std::size_t>(point.x) * bytesPerPixel;
+	const auto unsignedPoint = point.to<std::size_t>();
+	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + unsignedPoint.y * static_cast<std::size_t>(surface->pitch) + unsignedPoint.x * bytesPerPixel;
 
 	unsigned int pixelBytes = 0;
 

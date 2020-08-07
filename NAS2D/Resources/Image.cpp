@@ -9,6 +9,7 @@
 // ==================================================================================
 #include "Image.h"
 
+#include "../Renderer/Rectangle.h"
 #include "../Exception.h"
 #include "../Filesystem.h"
 #include "../Utility.h"
@@ -45,10 +46,43 @@ namespace {
 	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
-	bool checkTextureId(const std::string& name);
 	void updateImageReferenceCount(const std::string& name);
-
 	GLuint generateFbo(const Image& image);
+
+	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel)
+	{
+		switch (bytesPerPixel)
+		{
+			case 1:
+			{
+				return *reinterpret_cast<const uint8_t*>(pixelAddress);
+			}
+			case 2:
+			{
+				return *reinterpret_cast<const uint16_t*>(pixelAddress);
+			}
+			case 3:
+			{
+				auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
+				if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+				{
+					return p[0] << 16 | p[1] << 8 | p[2];
+				}
+				else
+				{
+					return p[0] | p[1] << 8 | p[2] << 16;
+				}
+			}
+			case 4:
+			{
+				return *reinterpret_cast<const uint32_t*>(pixelAddress);
+			}
+			default: // Should never be possible.
+			{
+				throw image_bad_data();
+			}
+		}
+	}
 }
 
 
@@ -60,7 +94,29 @@ namespace {
 Image::Image(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	load();
+	if (imageIdMap.find(mResourceName) != imageIdMap.end())
+	{
+		++imageIdMap[mResourceName].refCount;
+		return;
+	}
+
+	File imageFile = Utility<Filesystem>::get().open(mResourceName);
+	if (imageFile.size() == 0)
+	{
+		throw std::runtime_error("Image file is empty: " + mResourceName);
+	}
+
+	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
+	if (!surface)
+	{
+		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
+	}
+
+	auto& imageInfo = imageIdMap[mResourceName];
+	imageInfo.surface = surface;
+	imageInfo.textureId = generateTexture(surface);
+	imageInfo.size = Vector{surface->w, surface->h};
+	imageInfo.refCount++;
 }
 
 
@@ -69,11 +125,10 @@ Image::Image(const std::string& filePath) :
  *
  * \param	buffer			Pointer to a data buffer.
  * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
- * \param	width			Width of the Image.
- * \param	height			Height of the Image.
+ * \param	size			Size of the Image in pixels.
  */
-Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
-	mResourceName{ARBITRARY_IMAGE_NAME}
+Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
+	mResourceName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)}
 {
 	if (buffer == nullptr)
 	{
@@ -85,20 +140,15 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
 		throw image_unsupported_bit_depth();
 	}
 
-	mResourceName = ARBITRARY_IMAGE_NAME + std::to_string(++IMAGE_ARBITRARY);
+	++IMAGE_ARBITRARY;
 
-	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, width, height, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
+	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
-	mSize = Vector{width, height};
-
-	unsigned int textureId = generateTexture(surface);
-
-	// Update resource management.
 	auto& imageInfo = imageIdMap[mResourceName];
-	imageInfo.textureId = textureId;
-	imageInfo.size = {width, height};
-	imageInfo.refCount++;
 	imageInfo.surface = surface;
+	imageInfo.textureId = generateTexture(surface);
+	imageInfo.size = size;
+	imageInfo.refCount++;
 }
 
 
@@ -108,8 +158,7 @@ Image::Image(void* buffer, int bytesPerPixel, int width, int height) :
  * \param	src		Image to copy.
  */
 Image::Image(const Image &src) :
-	mResourceName{src.mResourceName},
-	mSize{src.mSize}
+	mResourceName{src.mResourceName}
 {
 	imageIdMap[mResourceName].refCount++;
 }
@@ -136,7 +185,6 @@ Image& Image::operator=(const Image& rhs)
 	updateImageReferenceCount(mResourceName);
 
 	mResourceName = rhs.mResourceName;
-	mSize = rhs.mSize;
 
 	auto it = imageIdMap.find(mResourceName);
 	if (it == imageIdMap.end())
@@ -151,49 +199,11 @@ Image& Image::operator=(const Image& rhs)
 
 
 /**
- * Loads an image file from disk.
- *
- * \note	If loading fails, Image will be set to a valid internal state.
- */
-void Image::load()
-{
-	if (checkTextureId(mResourceName))
-	{
-		mSize = imageIdMap[mResourceName].size;
-		return;
-	}
-
-	File imageFile = Utility<Filesystem>::get().open(mResourceName);
-	if (imageFile.size() == 0)
-	{
-		throw std::runtime_error("Image::load(): File is empty: " + mResourceName);
-	}
-
-	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
-	if (!surface)
-	{
-		throw std::runtime_error("Image::load(): " + std::string{SDL_GetError()});
-	}
-
-	mSize = Vector{surface->w, surface->h};
-
-	unsigned int textureId = generateTexture(surface);
-
-	// Add generated texture id to texture ID map.
-	auto& imageInfo = imageIdMap[mResourceName];
-	imageInfo.surface = surface;
-	imageInfo.textureId = textureId;
-	imageInfo.size = mSize;
-	imageInfo.refCount++;
-}
-
-
-/**
  * Gets the dimensions in pixels of the image.
  */
 Vector<int> Image::size() const
 {
-	return mSize;
+	return imageIdMap[mResourceName].size;
 }
 
 
@@ -204,75 +214,28 @@ Vector<int> Image::size() const
  */
 Color Image::pixelColor(Point<int> point) const
 {
-	return pixelColor(point.x, point.y);
-}
-
-
-/**
- * Gets the color of a pixel at a given coordinate.
- *
- * \param	x	X-Coordinate of the pixel to check.
- * \param	y	Y-Coordinate of the pixel to check.
- */
-Color Image::pixelColor(int x, int y) const
-{
-	if (x < 0 || x >= mSize.x || y < 0 || y >= mSize.y)
+	const auto& imageInfo = imageIdMap[mResourceName];
+	if (!Rectangle<int>::Create({0, 0}, imageInfo.size).contains(point))
 	{
-		return Color::Black;
+		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(point.x) + ", " + std::to_string(point.y) + "}");
 	}
 
-	SDL_Surface* surface = imageIdMap[mResourceName].surface;
-
+	SDL_Surface* surface = imageInfo.surface;
 	if (!surface) { throw image_null_data(); }
 
-	SDL_LockSurface(surface);
 	uint8_t bytesPerPixel = surface->format->BytesPerPixel;
-	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + static_cast<std::size_t>(y) * static_cast<std::size_t>(surface->pitch) + static_cast<std::size_t>(x) * bytesPerPixel;
+	const auto unsignedPoint = point.to<std::size_t>();
+	const auto pixelOffset = unsignedPoint.y * static_cast<std::size_t>(surface->pitch) + unsignedPoint.x * bytesPerPixel;
 
-	unsigned int pixelBytes = 0;
-
-	switch (bytesPerPixel)
-	{
-	case 1:
-	{
-		auto p = reinterpret_cast<uint8_t*>(pixelPtr);
-		pixelBytes = *p;
-		break;
-	}
-	case 2:
-	{
-		auto p = reinterpret_cast<uint16_t*>(pixelPtr);
-		pixelBytes = *p;
-		break;
-	}
-	case 3:
-	{
-		auto p = reinterpret_cast<uint8_t*>(pixelPtr);
-		if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-		{
-			pixelBytes = p[0] << 16 | p[1] << 8 | p[2];
-		}
-		else
-		{
-			pixelBytes = p[0] | p[1] << 8 | p[2] << 16;
-		}
-		break;
-	}
-	case 4:
-	{
-		auto p = reinterpret_cast<uint32_t*>(pixelPtr);
-		pixelBytes = *p;
-		break;
-	}
-	default: // Should never be possible.
-		throw image_bad_data();
-	}
-
-	uint8_t r, g, b, a;
-	SDL_GetRGBA(pixelBytes, surface->format, &r, &g, &b, &a);
+	SDL_LockSurface(surface);
+	const auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + pixelOffset;
+	const auto pixelBytes = readPixelValue(pixelPtr, bytesPerPixel);
 	SDL_UnlockSurface(surface);
 
-	return Color{r, g, b, a};
+	Color color;
+	SDL_GetRGBA(pixelBytes, surface->format, &color.red, &color.green, &color.blue, &color.alpha);
+
+	return color;
 }
 
 
@@ -331,26 +294,6 @@ namespace {
 
 			imageIdMap.erase(it);
 		}
-	}
-
-
-	/**
-	* Checks to see if a texture has already been generated
-	* and if it has, increases the reference count.
-	*
-	* \return	True if texture already exists. False otherwise.
-	*/
-	bool checkTextureId(const std::string& name)
-	{
-		auto it = imageIdMap.find(name);
-
-		if (it != imageIdMap.end())
-		{
-			++imageIdMap[name].refCount;
-			return true;
-		}
-
-		return false;
 	}
 
 

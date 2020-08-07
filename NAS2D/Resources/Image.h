@@ -38,7 +38,7 @@ class Image
 {
 public:
 	explicit Image(const std::string& filePath);
-	Image(void* buffer, int bytesPerPixel, int width, int height);
+	Image(void* buffer, int bytesPerPixel, Vector<int> size);
 
 	Image(const Image &rhs);
 	Image& operator=(const Image& rhs);
@@ -50,7 +50,6 @@ public:
 	Vector<int> size() const;
 
 	Color pixelColor(Point<int> point) const;
-	Color pixelColor(int x, int y) const;
 
 	// Temporary methods, that will be removed in a future refactor
 	// Intended only to be used by RendererOpenGL
@@ -59,11 +58,7 @@ public:
 	unsigned int frameBufferObjectId() const;
 
 private:
-	void load();
-
-private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
-	Vector<int> mSize; /**< Width/Height information about the Image. */
 };
 
 

@@ -237,17 +237,17 @@ Color Image::pixelColor(Point<int> point) const
 
 	if (!surface) { throw image_null_data(); }
 
-	SDL_LockSurface(surface);
 	uint8_t bytesPerPixel = surface->format->BytesPerPixel;
 	const auto unsignedPoint = point.to<std::size_t>();
 	const auto pixelOffset = unsignedPoint.y * static_cast<std::size_t>(surface->pitch) + unsignedPoint.x * bytesPerPixel;
-	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + pixelOffset;
 
+	SDL_LockSurface(surface);
+	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + pixelOffset;
 	unsigned int pixelBytes = readPixelValue(pixelPtr, bytesPerPixel);
+	SDL_UnlockSurface(surface);
 
 	Color color;
 	SDL_GetRGBA(pixelBytes, surface->format, &color.red, &color.green, &color.blue, &color.alpha);
-	SDL_UnlockSurface(surface);
 
 	return color;
 }

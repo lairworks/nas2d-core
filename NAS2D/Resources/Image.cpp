@@ -59,7 +59,35 @@ namespace {
 Image::Image(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	load();
+	if (imageIdMap.find(mResourceName) != imageIdMap.end())
+	{
+		++imageIdMap[mResourceName].refCount;
+		mSize = imageIdMap[mResourceName].size;
+		return;
+	}
+
+	File imageFile = Utility<Filesystem>::get().open(mResourceName);
+	if (imageFile.size() == 0)
+	{
+		throw std::runtime_error("Image file is empty: " + mResourceName);
+	}
+
+	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
+	if (!surface)
+	{
+		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
+	}
+
+	mSize = Vector{surface->w, surface->h};
+
+	unsigned int textureId = generateTexture(surface);
+
+	// Add generated texture id to texture ID map.
+	auto& imageInfo = imageIdMap[mResourceName];
+	imageInfo.surface = surface;
+	imageInfo.textureId = textureId;
+	imageInfo.size = mSize;
+	imageInfo.refCount++;
 }
 
 
@@ -146,45 +174,6 @@ Image& Image::operator=(const Image& rhs)
 	++it->second.refCount;
 
 	return *this;
-}
-
-
-/**
- * Loads an image file from disk.
- *
- * \note	If loading fails, Image will be set to a valid internal state.
- */
-void Image::load()
-{
-	if (imageIdMap.find(mResourceName) != imageIdMap.end())
-	{
-		++imageIdMap[mResourceName].refCount;
-		mSize = imageIdMap[mResourceName].size;
-		return;
-	}
-
-	File imageFile = Utility<Filesystem>::get().open(mResourceName);
-	if (imageFile.size() == 0)
-	{
-		throw std::runtime_error("Image file is empty: " + mResourceName);
-	}
-
-	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
-	if (!surface)
-	{
-		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
-	}
-
-	mSize = Vector{surface->w, surface->h};
-
-	unsigned int textureId = generateTexture(surface);
-
-	// Add generated texture id to texture ID map.
-	auto& imageInfo = imageIdMap[mResourceName];
-	imageInfo.surface = surface;
-	imageInfo.textureId = textureId;
-	imageInfo.size = mSize;
-	imageInfo.refCount++;
 }
 
 

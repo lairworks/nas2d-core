@@ -59,9 +59,6 @@ public:
 	unsigned int frameBufferObjectId() const;
 
 private:
-	void load();
-
-private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	Vector<int> mSize; /**< Width/Height information about the Image. */
 };

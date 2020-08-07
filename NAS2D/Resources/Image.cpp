@@ -252,18 +252,6 @@ Color Image::pixelColor(Point<int> point) const
 }
 
 
-/**
- * Gets the color of a pixel at a given coordinate.
- *
- * \param	x	X-Coordinate of the pixel to check.
- * \param	y	Y-Coordinate of the pixel to check.
- */
-Color Image::pixelColor(int x, int y) const
-{
-	return pixelColor({x, y});
-}
-
-
 unsigned int Image::textureId() const
 {
 	return imageIdMap[mResourceName].textureId;

@@ -50,7 +50,6 @@ public:
 	Vector<int> size() const;
 
 	Color pixelColor(Point<int> point) const;
-	Color pixelColor(int x, int y) const;
 
 	// Temporary methods, that will be removed in a future refactor
 	// Intended only to be used by RendererOpenGL

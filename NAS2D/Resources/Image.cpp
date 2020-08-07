@@ -323,11 +323,10 @@ namespace {
 
 		if (imageInfo.refCount <= 0)
 		{
-			if (imageInfo.textureId == 0)
+			if (imageInfo.textureId != 0)
 			{
-				return;
+				glDeleteTextures(1, &imageInfo.textureId);
 			}
-			glDeleteTextures(1, &imageInfo.textureId);
 
 			if (imageInfo.frameBufferObjectId != 0)
 			{

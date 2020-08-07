@@ -47,8 +47,42 @@ namespace {
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
 	void updateImageReferenceCount(const std::string& name);
-
 	GLuint generateFbo(const Image& image);
+
+	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel)
+	{
+		switch (bytesPerPixel)
+		{
+			case 1:
+			{
+				return *reinterpret_cast<const uint8_t*>(pixelAddress);
+			}
+			case 2:
+			{
+				return *reinterpret_cast<const uint16_t*>(pixelAddress);
+			}
+			case 3:
+			{
+				auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
+				if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+				{
+					return p[0] << 16 | p[1] << 8 | p[2];
+				}
+				else
+				{
+					return p[0] | p[1] << 8 | p[2] << 16;
+				}
+			}
+			case 4:
+			{
+				return *reinterpret_cast<const uint32_t*>(pixelAddress);
+			}
+			default: // Should never be possible.
+			{
+				throw image_bad_data();
+			}
+		}
+	}
 }
 
 
@@ -209,46 +243,7 @@ Color Image::pixelColor(Point<int> point) const
 	const auto pixelOffset = unsignedPoint.y * static_cast<std::size_t>(surface->pitch) + unsignedPoint.x * bytesPerPixel;
 	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + pixelOffset;
 
-	unsigned int pixelBytes = 0;
-
-	switch (bytesPerPixel)
-	{
-		case 1:
-		{
-			auto p = reinterpret_cast<const uint8_t*>(pixelPtr);
-			pixelBytes = *p;
-			break;
-		}
-		case 2:
-		{
-			auto p = reinterpret_cast<const uint16_t*>(pixelPtr);
-			pixelBytes = *p;
-			break;
-		}
-		case 3:
-		{
-			auto p = reinterpret_cast<const uint8_t*>(pixelPtr);
-			if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-			{
-				pixelBytes = p[0] << 16 | p[1] << 8 | p[2];
-			}
-			else
-			{
-				pixelBytes = p[0] | p[1] << 8 | p[2] << 16;
-			}
-			break;
-		}
-		case 4:
-		{
-			auto p = reinterpret_cast<const uint32_t*>(pixelPtr);
-			pixelBytes = *p;
-			break;
-		}
-		default: // Should never be possible.
-		{
-			throw image_bad_data();
-		}
-	}
+	unsigned int pixelBytes = readPixelValue(pixelPtr, bytesPerPixel);
 
 	Color color;
 	SDL_GetRGBA(pixelBytes, surface->format, &color.red, &color.green, &color.blue, &color.alpha);

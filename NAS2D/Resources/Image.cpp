@@ -215,19 +215,19 @@ Color Image::pixelColor(Point<int> point) const
 	{
 		case 1:
 		{
-			auto p = reinterpret_cast<uint8_t*>(pixelPtr);
+			auto p = reinterpret_cast<const uint8_t*>(pixelPtr);
 			pixelBytes = *p;
 			break;
 		}
 		case 2:
 		{
-			auto p = reinterpret_cast<uint16_t*>(pixelPtr);
+			auto p = reinterpret_cast<const uint16_t*>(pixelPtr);
 			pixelBytes = *p;
 			break;
 		}
 		case 3:
 		{
-			auto p = reinterpret_cast<uint8_t*>(pixelPtr);
+			auto p = reinterpret_cast<const uint8_t*>(pixelPtr);
 			if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
 			{
 				pixelBytes = p[0] << 16 | p[1] << 8 | p[2];
@@ -240,7 +240,7 @@ Color Image::pixelColor(Point<int> point) const
 		}
 		case 4:
 		{
-			auto p = reinterpret_cast<uint32_t*>(pixelPtr);
+			auto p = reinterpret_cast<const uint32_t*>(pixelPtr);
 			pixelBytes = *p;
 			break;
 		}

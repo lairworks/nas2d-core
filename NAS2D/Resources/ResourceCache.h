@@ -30,6 +30,12 @@ public:
 	}
 
 
+	void unload(Params... params)
+	{
+		cache.erase(Key{params...});
+	}
+
+
 	void clear()
 	{
 		cache.clear();

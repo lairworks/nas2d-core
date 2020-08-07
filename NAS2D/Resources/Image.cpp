@@ -112,12 +112,9 @@ Image::Image(const std::string& filePath) :
 		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
 	}
 
-	unsigned int textureId = generateTexture(surface);
-
-	// Add generated texture id to texture ID map.
 	auto& imageInfo = imageIdMap[mResourceName];
 	imageInfo.surface = surface;
-	imageInfo.textureId = textureId;
+	imageInfo.textureId = generateTexture(surface);
 	imageInfo.size = Vector{surface->w, surface->h};
 	imageInfo.refCount++;
 }
@@ -147,14 +144,11 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 
 	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
-	unsigned int textureId = generateTexture(surface);
-
-	// Update resource management.
 	auto& imageInfo = imageIdMap[mResourceName];
-	imageInfo.textureId = textureId;
+	imageInfo.surface = surface;
+	imageInfo.textureId = generateTexture(surface);
 	imageInfo.size = size;
 	imageInfo.refCount++;
-	imageInfo.surface = surface;
 }
 
 

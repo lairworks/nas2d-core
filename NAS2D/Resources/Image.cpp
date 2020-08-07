@@ -9,6 +9,7 @@
 // ==================================================================================
 #include "Image.h"
 
+#include "../Renderer/Rectangle.h"
 #include "../Exception.h"
 #include "../Filesystem.h"
 #include "../Utility.h"
@@ -205,7 +206,7 @@ Color Image::pixelColor(Point<int> point) const
  */
 Color Image::pixelColor(int x, int y) const
 {
-	if (x < 0 || x >= mSize.x || y < 0 || y >= mSize.y)
+	if (!Rectangle<int>::Create({0, 0}, mSize).contains({x, y}))
 	{
 		return Color::Black;
 	}

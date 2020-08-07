@@ -194,21 +194,9 @@ Vector<int> Image::size() const
  */
 Color Image::pixelColor(Point<int> point) const
 {
-	return pixelColor(point.x, point.y);
-}
-
-
-/**
- * Gets the color of a pixel at a given coordinate.
- *
- * \param	x	X-Coordinate of the pixel to check.
- * \param	y	Y-Coordinate of the pixel to check.
- */
-Color Image::pixelColor(int x, int y) const
-{
-	if (!Rectangle<int>::Create({0, 0}, mSize).contains({x, y}))
+	if (!Rectangle<int>::Create({0, 0}, mSize).contains(point))
 	{
-		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(x) + ", " + std::to_string(y) + "}");
+		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(point.x) + ", " + std::to_string(point.y) + "}");
 	}
 
 	SDL_Surface* surface = imageIdMap[mResourceName].surface;
@@ -217,7 +205,7 @@ Color Image::pixelColor(int x, int y) const
 
 	SDL_LockSurface(surface);
 	uint8_t bytesPerPixel = surface->format->BytesPerPixel;
-	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + static_cast<std::size_t>(y) * static_cast<std::size_t>(surface->pitch) + static_cast<std::size_t>(x) * bytesPerPixel;
+	auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + static_cast<std::size_t>(point.y) * static_cast<std::size_t>(surface->pitch) + static_cast<std::size_t>(point.x) * bytesPerPixel;
 
 	unsigned int pixelBytes = 0;
 
@@ -263,6 +251,18 @@ Color Image::pixelColor(int x, int y) const
 	SDL_UnlockSurface(surface);
 
 	return Color{r, g, b, a};
+}
+
+
+/**
+ * Gets the color of a pixel at a given coordinate.
+ *
+ * \param	x	X-Coordinate of the pixel to check.
+ * \param	y	Y-Coordinate of the pixel to check.
+ */
+Color Image::pixelColor(int x, int y) const
+{
+	return pixelColor({x, y});
 }
 
 

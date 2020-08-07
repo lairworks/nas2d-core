@@ -97,7 +97,6 @@ Image::Image(const std::string& filePath) :
 	if (imageIdMap.find(mResourceName) != imageIdMap.end())
 	{
 		++imageIdMap[mResourceName].refCount;
-		mSize = imageIdMap[mResourceName].size;
 		return;
 	}
 
@@ -113,15 +112,13 @@ Image::Image(const std::string& filePath) :
 		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
 	}
 
-	mSize = Vector{surface->w, surface->h};
-
 	unsigned int textureId = generateTexture(surface);
 
 	// Add generated texture id to texture ID map.
 	auto& imageInfo = imageIdMap[mResourceName];
 	imageInfo.surface = surface;
 	imageInfo.textureId = textureId;
-	imageInfo.size = mSize;
+	imageInfo.size = Vector{surface->w, surface->h};
 	imageInfo.refCount++;
 }
 
@@ -150,8 +147,6 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 
 	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 
-	mSize = size;
-
 	unsigned int textureId = generateTexture(surface);
 
 	// Update resource management.
@@ -169,8 +164,7 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
  * \param	src		Image to copy.
  */
 Image::Image(const Image &src) :
-	mResourceName{src.mResourceName},
-	mSize{src.mSize}
+	mResourceName{src.mResourceName}
 {
 	imageIdMap[mResourceName].refCount++;
 }
@@ -197,7 +191,6 @@ Image& Image::operator=(const Image& rhs)
 	updateImageReferenceCount(mResourceName);
 
 	mResourceName = rhs.mResourceName;
-	mSize = rhs.mSize;
 
 	auto it = imageIdMap.find(mResourceName);
 	if (it == imageIdMap.end())

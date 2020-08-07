@@ -42,6 +42,11 @@ public:
 	}
 
 
+	auto size() const
+	{
+		return cache.size();
+	}
+
 private:
 	std::map<Key, Resource> cache;
 };

@@ -245,7 +245,9 @@ Color Image::pixelColor(Point<int> point) const
 		break;
 	}
 	default: // Should never be possible.
+	{
 		throw image_bad_data();
+	}
 	}
 
 	Color color;

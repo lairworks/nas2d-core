@@ -42,7 +42,6 @@ namespace {
 
 	std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
 
-	const std::string DEFAULT_IMAGE_NAME = "Default Image";
 	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
@@ -62,15 +61,6 @@ Image::Image(const std::string& filePath) :
 	mResourceName{filePath}
 {
 	load();
-}
-
-
-/**
- * Default C'tor.
- */
-Image::Image() :
-	mResourceName{DEFAULT_IMAGE_NAME}
-{
 }
 
 

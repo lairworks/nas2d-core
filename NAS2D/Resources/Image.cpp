@@ -213,41 +213,41 @@ Color Image::pixelColor(Point<int> point) const
 
 	switch (bytesPerPixel)
 	{
-	case 1:
-	{
-		auto p = reinterpret_cast<uint8_t*>(pixelPtr);
-		pixelBytes = *p;
-		break;
-	}
-	case 2:
-	{
-		auto p = reinterpret_cast<uint16_t*>(pixelPtr);
-		pixelBytes = *p;
-		break;
-	}
-	case 3:
-	{
-		auto p = reinterpret_cast<uint8_t*>(pixelPtr);
-		if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+		case 1:
 		{
-			pixelBytes = p[0] << 16 | p[1] << 8 | p[2];
+			auto p = reinterpret_cast<uint8_t*>(pixelPtr);
+			pixelBytes = *p;
+			break;
 		}
-		else
+		case 2:
 		{
-			pixelBytes = p[0] | p[1] << 8 | p[2] << 16;
+			auto p = reinterpret_cast<uint16_t*>(pixelPtr);
+			pixelBytes = *p;
+			break;
 		}
-		break;
-	}
-	case 4:
-	{
-		auto p = reinterpret_cast<uint32_t*>(pixelPtr);
-		pixelBytes = *p;
-		break;
-	}
-	default: // Should never be possible.
-	{
-		throw image_bad_data();
-	}
+		case 3:
+		{
+			auto p = reinterpret_cast<uint8_t*>(pixelPtr);
+			if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+			{
+				pixelBytes = p[0] << 16 | p[1] << 8 | p[2];
+			}
+			else
+			{
+				pixelBytes = p[0] | p[1] << 8 | p[2] << 16;
+			}
+			break;
+		}
+		case 4:
+		{
+			auto p = reinterpret_cast<uint32_t*>(pixelPtr);
+			pixelBytes = *p;
+			break;
+		}
+		default: // Should never be possible.
+		{
+			throw image_bad_data();
+		}
 	}
 
 	Color color;

@@ -45,7 +45,6 @@ namespace {
 	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
-	bool checkTextureId(const std::string& name);
 	void updateImageReferenceCount(const std::string& name);
 
 	GLuint generateFbo(const Image& image);
@@ -157,7 +156,7 @@ Image& Image::operator=(const Image& rhs)
  */
 void Image::load()
 {
-	if (checkTextureId(mResourceName))
+	if (imageIdMap.find(mResourceName) != imageIdMap.end())
 	{
 		++imageIdMap[mResourceName].refCount;
 		mSize = imageIdMap[mResourceName].size;
@@ -332,18 +331,6 @@ namespace {
 
 			imageIdMap.erase(it);
 		}
-	}
-
-
-	/**
-	* Checks to see if a texture has already been generated
-	* and if it has, increases the reference count.
-	*
-	* \return	True if texture already exists. False otherwise.
-	*/
-	bool checkTextureId(const std::string& name)
-	{
-		return imageIdMap.find(name) != imageIdMap.end();
 	}
 
 

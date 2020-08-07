@@ -216,7 +216,7 @@ Image& Image::operator=(const Image& rhs)
  */
 Vector<int> Image::size() const
 {
-	return mSize;
+	return imageIdMap[mResourceName].size;
 }
 
 
@@ -227,12 +227,13 @@ Vector<int> Image::size() const
  */
 Color Image::pixelColor(Point<int> point) const
 {
-	if (!Rectangle<int>::Create({0, 0}, mSize).contains(point))
+	const auto& imageInfo = imageIdMap[mResourceName];
+	if (!Rectangle<int>::Create({0, 0}, imageInfo.size).contains(point))
 	{
 		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(point.x) + ", " + std::to_string(point.y) + "}");
 	}
 
-	SDL_Surface* surface = imageIdMap[mResourceName].surface;
+	SDL_Surface* surface = imageInfo.surface;
 	if (!surface) { throw image_null_data(); }
 
 	uint8_t bytesPerPixel = surface->format->BytesPerPixel;

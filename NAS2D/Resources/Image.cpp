@@ -159,6 +159,7 @@ void Image::load()
 {
 	if (checkTextureId(mResourceName))
 	{
+		++imageIdMap[mResourceName].refCount;
 		mSize = imageIdMap[mResourceName].size;
 		return;
 	}
@@ -346,7 +347,6 @@ namespace {
 
 		if (it != imageIdMap.end())
 		{
-			++imageIdMap[name].refCount;
 			return true;
 		}
 

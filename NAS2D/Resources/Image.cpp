@@ -234,7 +234,6 @@ Color Image::pixelColor(Point<int> point) const
 	}
 
 	SDL_Surface* surface = imageIdMap[mResourceName].surface;
-
 	if (!surface) { throw image_null_data(); }
 
 	uint8_t bytesPerPixel = surface->format->BytesPerPixel;

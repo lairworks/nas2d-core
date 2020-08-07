@@ -343,12 +343,7 @@ namespace {
 	*/
 	bool checkTextureId(const std::string& name)
 	{
-		if (imageIdMap.find(name) != imageIdMap.end())
-		{
-			return true;
-		}
-
-		return false;
+		return imageIdMap.find(name) != imageIdMap.end();
 	}
 
 

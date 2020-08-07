@@ -247,11 +247,11 @@ Color Image::pixelColor(Point<int> point) const
 		throw image_bad_data();
 	}
 
-	uint8_t r, g, b, a;
-	SDL_GetRGBA(pixelBytes, surface->format, &r, &g, &b, &a);
+	Color color;
+	SDL_GetRGBA(pixelBytes, surface->format, &color.red, &color.green, &color.blue, &color.alpha);
 	SDL_UnlockSurface(surface);
 
-	return Color{r, g, b, a};
+	return color;
 }
 
 

@@ -62,68 +62,6 @@ void Renderer::title(const std::string& title)
 }
 
 
-void Renderer::drawImageRect(Rectangle<float> rect, const RectangleSkin& images)
-{
-	images.draw(*this, rect);
-}
-
-
-/**
- * Draws a rectangle using a set of images.
- *
- * This function expects an ImageList with 9 images in it: four corners,
- * four edges and a center image to fill the rest in with.
- *
- * Images in the ImageList are used in the following order:
- *
- * \code
- * +---+---+---+
- * | 0 | 1 | 2 |
- * +---+---+---+
- * | 3 | 4 | 5 |
- * +---+---+---+
- * | 6 | 7 | 8 |
- * +---+---+---+
- * \endcode
- *
- * \param	rect	Area to draw the image rect at.
- * \param	images	A set of 9 images used to draw the image rect.
- */
-void Renderer::drawImageRect(Rectangle<float> rect, ImageList& images)
-{
-	if (images.size() != 9)
-	{
-		throw std::runtime_error("Must pass 9 images to drawImageRect, but images.size() == " + std::to_string(images.size()));
-	}
-
-	drawImageRect(rect, images[0], images[1], images[2], images[3], images[4], images[5], images[6], images[7], images[8]);
-}
-
-
-void Renderer::drawImageRect(Rectangle<float> rect, const Image& topLeft, const Image& top, const Image& topRight, const Image& left, const Image& center, const Image& right, const Image& bottomLeft, const Image& bottom, const Image& bottomRight)
-{
-	const auto p1 = rect.startPoint() + topLeft.size().to<float>();
-	const auto p2 = rect.crossXPoint() + topRight.size().reflectX().to<float>();
-	const auto p3 = rect.crossYPoint() + bottomLeft.size().reflectY().to<float>();
-	const auto p4 = rect.endPoint() - bottomRight.size().to<float>();
-
-	// Draw the center area
-	drawImageRepeated(center, Rectangle<float>::Create(p1, p4));
-
-	// Draw the sides
-	drawImageRepeated(top, Rectangle<float>::Create({p1.x, rect.y}, p2));
-	drawImageRepeated(bottom, Rectangle<float>::Create(p3, Point{p4.x, rect.endPoint().y}));
-	drawImageRepeated(left, Rectangle<float>::Create({rect.x, p1.y}, p3));
-	drawImageRepeated(right, Rectangle<float>::Create(p2, Point{rect.endPoint().x, p4.y}));
-
-	// Draw the corners
-	drawImage(topLeft, rect.startPoint());
-	drawImage(topRight, {p2.x, rect.y});
-	drawImage(bottomLeft, {rect.x, p3.y});
-	drawImage(bottomRight, p4);
-}
-
-
 void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
 {
 	const auto shadowPosition = position + shadowOffset;

@@ -63,10 +63,6 @@ public:
 	virtual void drawImageRepeated(const Image& image, Rectangle<float> rect) = 0;
 	virtual void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) = 0;
 
-	void drawImageRect(Rectangle<float> rect, const RectangleSkin& images);
-	void drawImageRect(Rectangle<float> rect, ImageList& images);
-	void drawImageRect(Rectangle<float> rect, const Image& topLeft, const Image& top, const Image& topRight, const Image& left, const Image& center, const Image& right, const Image& bottomLeft, const Image& bottom, const Image& bottomRight);
-
 	virtual void drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint) = 0;
 
 	virtual void drawPoint(Point<float> position, Color color = Color::White) = 0;

@@ -193,6 +193,7 @@
     <ClCompile Include="Renderer\DisplayDesc.cpp" />
     <ClCompile Include="Renderer\Point.cpp" />
     <ClCompile Include="Renderer\Rectangle.cpp" />
+    <ClCompile Include="Renderer\RectangleSkin.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\RendererOpenGL.cpp" />
     <ClCompile Include="Resources\Font.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="Renderer\Vector.h" />
     <ClInclude Include="Renderer\VectorSizeRange.h" />
     <ClInclude Include="Renderer\Rectangle.h" />
+    <ClInclude Include="Renderer\RectangleSkin.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\RendererOpenGL.h" />
     <ClInclude Include="Resources\ResourceCache.h" />

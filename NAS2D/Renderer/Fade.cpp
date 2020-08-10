@@ -76,7 +76,7 @@ void Fade::draw(Renderer& renderer) const
 
 void Fade::setDuration(unsigned int durationInMilliseconds)
 {
-	if (durationInMilliseconds <= 0)
+	if (durationInMilliseconds == 0)
 	{
 		throw std::runtime_error("Fade duration must be positive");
 	}

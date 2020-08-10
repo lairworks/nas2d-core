@@ -191,6 +191,7 @@
     <ClCompile Include="Mixer\MixerNull.cpp" />
     <ClCompile Include="Renderer\Color.cpp" />
     <ClCompile Include="Renderer\DisplayDesc.cpp" />
+    <ClCompile Include="Renderer\Fade.cpp" />
     <ClCompile Include="Renderer\Point.cpp" />
     <ClCompile Include="Renderer\Rectangle.cpp" />
     <ClCompile Include="Renderer\RectangleSkin.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="Renderer\DisplayDesc.h" />
     <ClInclude Include="Renderer\RendererNull.h" />
     <ClInclude Include="Renderer\Color.h" />
+    <ClInclude Include="Renderer\Fade.h" />
     <ClInclude Include="Renderer\Point.h" />
     <ClInclude Include="Renderer\PointInRectangleRange.h" />
     <ClInclude Include="Renderer\Vector.h" />

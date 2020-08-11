@@ -10,8 +10,13 @@
 
 #pragma once
 
+#include "../File.h"
+
 #include <string>
 #include <map>
+
+
+typedef struct _Mix_Music Mix_Music;
 
 
 namespace NAS2D {
@@ -38,6 +43,8 @@ public:
 
 private:
 	std::string mResourceName; /**< File path and internal identifier. */
+	const File mBuffer;
+	Mix_Music* mMusic{nullptr};
 };
 
 } // namespace

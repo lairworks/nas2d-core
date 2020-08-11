@@ -30,7 +30,17 @@ using namespace NAS2D;
 Sound::Sound(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	load();
+	File soundFile = Utility<Filesystem>::get().open(mResourceName);
+	if (soundFile.empty())
+	{
+		throw std::runtime_error("Sound file is empty: " + mResourceName);
+	}
+
+	_chunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
+	if (!_chunk)
+	{
+		throw std::runtime_error("Sound file could not be loaded: " + mResourceName + " : " + std::string{Mix_GetError()});
+	}
 }
 
 
@@ -43,28 +53,6 @@ Sound::~Sound()
 	{
 		Mix_FreeChunk(static_cast<Mix_Chunk*>(_chunk));
 		_chunk = nullptr;
-	}
-}
-
-
-/**
- * Attempts to load a specified sound file.
- *
- * \note	This function is called internally during
- *			instantiation.
- */
-void Sound::load()
-{
-	File soundFile = Utility<Filesystem>::get().open(mResourceName);
-	if (soundFile.empty())
-	{
-		throw std::runtime_error("Sound file is empty: " + mResourceName);
-	}
-
-	_chunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
-	if (!_chunk)
-	{
-		throw std::runtime_error("Sound file could not be loaded: " + mResourceName + " : " + std::string{Mix_GetError()});
 	}
 }
 

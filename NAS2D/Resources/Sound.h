@@ -39,8 +39,6 @@ protected:
 	void* sound() const;
 
 private:
-	void load();
-
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 	void* _chunk{nullptr};
 };

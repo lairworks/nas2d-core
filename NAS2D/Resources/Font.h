@@ -65,8 +65,8 @@ public:
 
 	Font(const std::string& filePath, unsigned int ptSize);
 	explicit Font(const std::string& filePath);
-	Font(const Font& font);
-	Font& operator=(const Font& font);
+	Font(const Font& font) = delete;
+	Font& operator=(const Font& font) = delete;
 	~Font();
 
 	const std::string& name() const { return mResourceName; }
@@ -85,7 +85,7 @@ public:
 	unsigned int textureId() const;
 
 private:
-	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
+	std::string mResourceName; /**< File path */
 	FontInfo mFontInfo;
 };
 

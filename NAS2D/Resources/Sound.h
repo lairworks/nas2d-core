@@ -12,6 +12,9 @@
 #include <string>
 
 
+struct Mix_Chunk;
+
+
 namespace NAS2D {
 
 /**
@@ -20,29 +23,27 @@ namespace NAS2D {
  *
  *  Represents a Sound.
  */
-
 class Sound
 {
 public:
-	Sound(const Sound& other) = default;
-	Sound& operator=(const Sound& rhs) = default;
-	Sound(Sound&& other) = default;
-	Sound& operator=(Sound&& other) = default;
 	explicit Sound(const std::string& filePath);
+
+	Sound(const Sound& other) = delete;
+	Sound(Sound&& other) = delete;
+	Sound& operator=(const Sound& rhs) = delete;
+	Sound& operator=(Sound&& other) = delete;
+
 	~Sound();
 
 	const std::string& name() const { return mResourceName; }
 
 protected:
 	friend class MixerSDL;
-
-	void* sound() const;
+	Mix_Chunk* sound() const;
 
 private:
-	void load();
-
-	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
-	void* _chunk{nullptr};
+	std::string mResourceName; /**< File path */
+	Mix_Chunk* mMixChunk{nullptr};
 };
 
 } // namespace

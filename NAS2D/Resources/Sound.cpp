@@ -23,8 +23,6 @@
 using namespace NAS2D;
 
 /**
- * C'tor.
- *
  * \param	filePath	File path of the sound file to load.
  */
 Sound::Sound(const std::string& filePath) :
@@ -44,9 +42,6 @@ Sound::Sound(const std::string& filePath) :
 }
 
 
-/**
- * D'tor.
- */
 Sound::~Sound()
 {
 	Mix_FreeChunk(mMixChunk);

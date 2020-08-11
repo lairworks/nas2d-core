@@ -32,23 +32,130 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 
 
 namespace {
-	struct ImageInfo
-	{
-		SDL_Surface* surface{nullptr};
-		unsigned int textureId{0u};
-		unsigned int frameBufferObjectId{0u};
-		Vector<int> size{0, 0};
-		int refCount{0};
-	};
-
-	std::map<std::string, ImageInfo> imageIdMap; /**< Lookup table for OpenGL Texture ID's. */
-
 	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
-	void updateImageReferenceCount(const std::string& name);
 	GLuint generateFbo(const Image& image);
+	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel);
+}
 
+
+/**
+ * Loads an Image from disk.
+ *
+ * \param filePath Path to an image file.
+ */
+Image::Image(const std::string& filePath) :
+	mResourceName{filePath}
+{
+	File imageFile = Utility<Filesystem>::get().open(mResourceName);
+	if (imageFile.size() == 0)
+	{
+		throw std::runtime_error("Image file is empty: " + mResourceName);
+	}
+
+	mSurface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
+	if (!mSurface)
+	{
+		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
+	}
+	mTextureId = generateTexture(mSurface);
+	mSize = Vector{mSurface->w, mSurface->h};
+}
+
+
+/**
+ * Create an Image from a raw data buffer.
+ *
+ * \param	buffer			Pointer to a data buffer.
+ * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
+ * \param	size			Size of the Image in pixels.
+ */
+Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
+	mResourceName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)},
+	mSize{size}
+{
+	if (buffer == nullptr)
+	{
+		throw image_null_data();
+	}
+
+	if (bytesPerPixel != 3 && bytesPerPixel != 4)
+	{
+		throw image_unsupported_bit_depth();
+	}
+
+	++IMAGE_ARBITRARY;
+
+	mSurface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
+	mTextureId = generateTexture(mSurface);
+}
+
+
+Image::~Image()
+{
+	glDeleteTextures(1, &mTextureId);
+	glDeleteFramebuffers(1, &mFrameBufferObjectId);
+	SDL_FreeSurface(mSurface);
+}
+
+
+/**
+ * Gets the dimensions in pixels of the image.
+ */
+Vector<int> Image::size() const
+{
+	return mSize;
+}
+
+
+/**
+ * Gets the color of a pixel at a given coordinate.
+ *
+ * \param	point	Coordinates of the pixel to check.
+ */
+Color Image::pixelColor(Point<int> point) const
+{
+	if (!Rectangle<int>::Create({0, 0}, mSize).contains(point))
+	{
+		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(point.x) + ", " + std::to_string(point.y) + "}");
+	}
+
+	if (!mSurface) { throw image_null_data(); }
+
+	uint8_t bytesPerPixel = mSurface->format->BytesPerPixel;
+	const auto unsignedPoint = point.to<std::size_t>();
+	const auto pixelOffset = unsignedPoint.y * static_cast<std::size_t>(mSurface->pitch) + unsignedPoint.x * bytesPerPixel;
+
+	SDL_LockSurface(mSurface);
+	const auto pixelPtr = reinterpret_cast<std::uintptr_t>(mSurface->pixels) + pixelOffset;
+	const auto pixelBytes = readPixelValue(pixelPtr, bytesPerPixel);
+	SDL_UnlockSurface(mSurface);
+
+	Color color;
+	SDL_GetRGBA(pixelBytes, mSurface->format, &color.red, &color.green, &color.blue, &color.alpha);
+
+	return color;
+}
+
+
+unsigned int Image::textureId() const
+{
+	return mTextureId;
+}
+
+
+unsigned int Image::frameBufferObjectId() const
+{
+	if (mFrameBufferObjectId == 0)
+	{
+		mFrameBufferObjectId = generateFbo(*this);
+	}
+	return mFrameBufferObjectId;
+}
+
+
+namespace {
 	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel)
 	{
 		switch (bytesPerPixel)
@@ -81,206 +188,6 @@ namespace {
 			{
 				throw image_bad_data();
 			}
-		}
-	}
-}
-
-
-/**
- * Loads an Image from disk.
- *
- * \param filePath Path to an image file.
- */
-Image::Image(const std::string& filePath) :
-	mResourceName{filePath}
-{
-	if (imageIdMap.find(mResourceName) != imageIdMap.end())
-	{
-		++imageIdMap[mResourceName].refCount;
-		return;
-	}
-
-	File imageFile = Utility<Filesystem>::get().open(mResourceName);
-	if (imageFile.size() == 0)
-	{
-		throw std::runtime_error("Image file is empty: " + mResourceName);
-	}
-
-	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
-	if (!surface)
-	{
-		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
-	}
-
-	auto& imageInfo = imageIdMap[mResourceName];
-	imageInfo.surface = surface;
-	imageInfo.textureId = generateTexture(surface);
-	imageInfo.size = Vector{surface->w, surface->h};
-	imageInfo.refCount++;
-}
-
-
-/**
- * Create an Image from a raw data buffer.
- *
- * \param	buffer			Pointer to a data buffer.
- * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
- * \param	size			Size of the Image in pixels.
- */
-Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
-	mResourceName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)}
-{
-	if (buffer == nullptr)
-	{
-		throw image_null_data();
-	}
-
-	if (bytesPerPixel != 3 && bytesPerPixel != 4)
-	{
-		throw image_unsupported_bit_depth();
-	}
-
-	++IMAGE_ARBITRARY;
-
-	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
-
-	auto& imageInfo = imageIdMap[mResourceName];
-	imageInfo.surface = surface;
-	imageInfo.textureId = generateTexture(surface);
-	imageInfo.size = size;
-	imageInfo.refCount++;
-}
-
-
-/**
- * Copy C'tor.
- *
- * \param	src		Image to copy.
- */
-Image::Image(const Image &src) :
-	mResourceName{src.mResourceName}
-{
-	imageIdMap[mResourceName].refCount++;
-}
-
-
-/**
- * D'tor
- */
-Image::~Image()
-{
-	updateImageReferenceCount(mResourceName);
-}
-
-
-/**
- * Copy assignment operator.
- *
- * \param	rhs		Image to copy.
- */
-Image& Image::operator=(const Image& rhs)
-{
-	if (this == &rhs) { return *this; }
-
-	updateImageReferenceCount(mResourceName);
-
-	mResourceName = rhs.mResourceName;
-
-	auto it = imageIdMap.find(mResourceName);
-	if (it == imageIdMap.end())
-	{
-		throw image_bad_data();
-	}
-
-	++it->second.refCount;
-
-	return *this;
-}
-
-
-/**
- * Gets the dimensions in pixels of the image.
- */
-Vector<int> Image::size() const
-{
-	return imageIdMap[mResourceName].size;
-}
-
-
-/**
- * Gets the color of a pixel at a given coordinate.
- *
- * \param	point	Coordinates of the pixel to check.
- */
-Color Image::pixelColor(Point<int> point) const
-{
-	const auto& imageInfo = imageIdMap[mResourceName];
-	if (!Rectangle<int>::Create({0, 0}, imageInfo.size).contains(point))
-	{
-		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(point.x) + ", " + std::to_string(point.y) + "}");
-	}
-
-	SDL_Surface* surface = imageInfo.surface;
-	if (!surface) { throw image_null_data(); }
-
-	uint8_t bytesPerPixel = surface->format->BytesPerPixel;
-	const auto unsignedPoint = point.to<std::size_t>();
-	const auto pixelOffset = unsignedPoint.y * static_cast<std::size_t>(surface->pitch) + unsignedPoint.x * bytesPerPixel;
-
-	SDL_LockSurface(surface);
-	const auto pixelPtr = reinterpret_cast<std::uintptr_t>(surface->pixels) + pixelOffset;
-	const auto pixelBytes = readPixelValue(pixelPtr, bytesPerPixel);
-	SDL_UnlockSurface(surface);
-
-	Color color;
-	SDL_GetRGBA(pixelBytes, surface->format, &color.red, &color.green, &color.blue, &color.alpha);
-
-	return color;
-}
-
-
-unsigned int Image::textureId() const
-{
-	return imageIdMap[mResourceName].textureId;
-}
-
-
-unsigned int Image::frameBufferObjectId() const
-{
-	auto& imageInfo = imageIdMap[mResourceName];
-	if (imageInfo.frameBufferObjectId == 0)
-	{
-		imageInfo.frameBufferObjectId = generateFbo(*this);
-	}
-	return imageInfo.frameBufferObjectId;
-}
-
-
-namespace {
-	/**
-	* Internal function used to clean up references to fonts when the Image
-	* destructor or copy assignment operators are called.
-	*
-	* \param	name	Name of the Image to check against.
-	*/
-	void updateImageReferenceCount(const std::string& name)
-	{
-		auto it = imageIdMap.find(name);
-		if (it == imageIdMap.end())
-		{
-			return;
-		}
-
-		auto& imageInfo = it->second;
-		--imageInfo.refCount;
-
-		if (imageInfo.refCount <= 0)
-		{
-			glDeleteTextures(1, &imageInfo.textureId);
-			glDeleteFramebuffers(1, &imageInfo.frameBufferObjectId);
-			SDL_FreeSurface(imageInfo.surface);
-
-			imageIdMap.erase(it);
 		}
 	}
 

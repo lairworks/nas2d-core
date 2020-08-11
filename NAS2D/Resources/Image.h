@@ -18,8 +18,10 @@
 #include <utility>
 
 
-namespace NAS2D {
+struct SDL_Surface;
 
+
+namespace NAS2D {
 
 /**
  * \class Image
@@ -40,8 +42,8 @@ public:
 	explicit Image(const std::string& filePath);
 	Image(void* buffer, int bytesPerPixel, Vector<int> size);
 
-	Image(const Image &rhs);
-	Image& operator=(const Image& rhs);
+	Image(const Image &rhs) = delete;
+	Image& operator=(const Image& rhs) = delete;
 
 	~Image();
 
@@ -58,14 +60,11 @@ public:
 	unsigned int frameBufferObjectId() const;
 
 private:
-	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
+	std::string mResourceName; /**< File path or internal identifier. */
+	SDL_Surface* mSurface{nullptr};
+	unsigned int mTextureId{0u};
+	mutable unsigned int mFrameBufferObjectId{0u};
+	Vector<int> mSize{0, 0};
 };
-
-
-/**
- * \typedef	ImageList
- * \brief	A list of Image objects.
- */
-using ImageList = std::vector<Image>;
 
 } // namespace

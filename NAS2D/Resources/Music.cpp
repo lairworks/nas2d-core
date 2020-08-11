@@ -27,7 +27,7 @@ namespace {
 	struct MusicInfo
 	{
 		const File* buffer{nullptr};
-		void* music{nullptr};
+		Mix_Music* music{nullptr};
 		int refCount{0};
 	};
 
@@ -154,7 +154,7 @@ namespace {
 		{
 			if (it->second.music)
 			{
-				Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
+				Mix_FreeMusic(it->second.music);
 			}
 
 			if (it->second.buffer)

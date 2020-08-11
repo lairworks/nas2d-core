@@ -23,146 +23,30 @@
 using namespace NAS2D;
 
 
-namespace {
-	struct MusicInfo
-	{
-		void* buffer{nullptr};
-		void* music{nullptr};
-		int refCount{0};
-	};
-
-	std::map<std::string, MusicInfo> MUSIC_REF_MAP; /**< Lookup table for music resource references. */
-
-	void updateMusicReferenceCount(const std::string& name);
-}
-
-
-/**
- * C'tor.
- *
- * \param filePath	Path of the music file to load.
- */
 Music::Music(const std::string& filePath) :
-	mResourceName{filePath}
+	mResourceName{filePath},
+	mBuffer{Utility<Filesystem>::get().open(mResourceName)}
 {
-	load();
-}
-
-
-/**
- * Copy c'tor.
- */
-Music::Music(const Music& rhs) :
-	mResourceName{rhs.mResourceName}
-{
-	auto it = MUSIC_REF_MAP.find(mResourceName);
-	if (it != MUSIC_REF_MAP.end())
+	if (mBuffer.empty())
 	{
-		it->second.refCount++;
+		throw std::runtime_error("Music file is empty: " + mResourceName);
+	}
+
+	mMusic = Mix_LoadMUS_RW(SDL_RWFromConstMem(mBuffer.raw_bytes(), static_cast<int>(mBuffer.size())), 0);
+	if (!mMusic)
+	{
+		throw std::runtime_error("Music::load() error: " + std::string{Mix_GetError()});
 	}
 }
 
 
-/**
- * Copy operator.
- */
-Music& Music::operator=(const Music& rhs)
-{
-	if (this == &rhs) { return *this; }
-
-	updateMusicReferenceCount(mResourceName);
-
-	auto it = MUSIC_REF_MAP.find(mResourceName);
-	if (it != MUSIC_REF_MAP.end())
-	{
-		it->second.refCount++;
-	}
-
-	mResourceName = rhs.mResourceName;
-
-	return *this;
-}
-
-
-/**
- * D'tor.
- */
 Music::~Music()
 {
-	updateMusicReferenceCount(mResourceName);
+	Mix_FreeMusic(mMusic);
 }
 
 
 void* Music::music() const
 {
-	return MUSIC_REF_MAP[mResourceName].music;
-}
-
-
-/**
- * Loads a specified music file.
- *
- * \note	This function is called internally during instantiation.
- */
-void Music::load()
-{
-	if (MUSIC_REF_MAP.find(mResourceName) != MUSIC_REF_MAP.end())
-	{
-		MUSIC_REF_MAP.find(mResourceName)->second.refCount++;
-		return;
-	}
-
-	File* file = new File(Utility<Filesystem>::get().open(mResourceName));
-	if (file->empty())
-	{
-		delete file;
-		throw std::runtime_error("Music file is empty: " + mResourceName);
-	}
-
-	Mix_Music* music = Mix_LoadMUS_RW(SDL_RWFromConstMem(file->raw_bytes(), static_cast<int>(file->size())), 0);
-	if (!music)
-	{
-		throw std::runtime_error("Music::load() error: " + std::string{Mix_GetError()});
-	}
-
-	auto& record = MUSIC_REF_MAP[mResourceName];
-	record.buffer = file;
-	record.music = music;
-	record.refCount++;
-}
-
-
-namespace {
-	/**
-	* Internal function used to clean up references to fonts when the Music
-	* destructor or copy assignment operators are called.
-	*
-	* \param	name	Name of the Music to check against.
-	*/
-	void updateMusicReferenceCount(const std::string& name)
-	{
-		auto it = MUSIC_REF_MAP.find(name);
-		if (it == MUSIC_REF_MAP.end())
-		{
-			return;
-		}
-
-		--it->second.refCount;
-
-		// No more references to this resource.
-		if (it->second.refCount < 1)
-		{
-			if (it->second.music)
-			{
-				Mix_FreeMusic(static_cast<Mix_Music*>(it->second.music));
-			}
-
-			if (it->second.buffer)
-			{
-				delete static_cast<File*>(it->second.buffer);
-			}
-
-			MUSIC_REF_MAP.erase(it);
-		}
-	}
+	return mMusic;
 }

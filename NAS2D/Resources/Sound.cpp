@@ -56,7 +56,7 @@ Sound::~Sound()
 /**
  * Gets a pointer to sound buffer.
  */
-void* Sound::sound() const
+Mix_Chunk* Sound::sound() const
 {
 	return _chunk;
 }

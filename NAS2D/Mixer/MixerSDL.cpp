@@ -104,7 +104,7 @@ void MixerSDL::onMusicFinished()
 
 void MixerSDL::playSound(const Sound& sound)
 {
-	Mix_PlayChannel(-1, static_cast<Mix_Chunk*>(sound.sound()), 0);
+	Mix_PlayChannel(-1, sound.sound(), 0);
 }
 
 

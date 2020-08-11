@@ -39,7 +39,7 @@ public:
 protected:
 	friend class MixerSDL;
 
-	void* sound() const;
+	Mix_Chunk* sound() const;
 
 private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */

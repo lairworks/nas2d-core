@@ -36,8 +36,8 @@ Sound::Sound(const std::string& filePath) :
 		throw std::runtime_error("Sound file is empty: " + mResourceName);
 	}
 
-	_chunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
-	if (!_chunk)
+	mMixChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
+	if (!mMixChunk)
 	{
 		throw std::runtime_error("Sound file could not be loaded: " + mResourceName + " : " + std::string{Mix_GetError()});
 	}
@@ -49,7 +49,7 @@ Sound::Sound(const std::string& filePath) :
  */
 Sound::~Sound()
 {
-	Mix_FreeChunk(_chunk);
+	Mix_FreeChunk(mMixChunk);
 }
 
 
@@ -58,5 +58,5 @@ Sound::~Sound()
  */
 Mix_Chunk* Sound::sound() const
 {
-	return _chunk;
+	return mMixChunk;
 }

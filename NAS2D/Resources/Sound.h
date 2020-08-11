@@ -43,7 +43,7 @@ protected:
 
 private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
-	Mix_Chunk* _chunk{nullptr};
+	Mix_Chunk* mMixChunk{nullptr};
 };
 
 } // namespace

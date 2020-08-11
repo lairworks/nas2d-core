@@ -85,7 +85,7 @@ public:
 	unsigned int textureId() const;
 
 private:
-	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
+	std::string mResourceName; /**< File path */
 	FontInfo mFontInfo;
 };
 

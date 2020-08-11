@@ -145,11 +145,7 @@ namespace {
 			{
 				Mix_FreeMusic(it->second.music);
 			}
-
-			if (it->second.buffer)
-			{
-				delete it->second.buffer;
-			}
+			delete it->second.buffer;
 
 			MUSIC_REF_MAP.erase(it);
 		}

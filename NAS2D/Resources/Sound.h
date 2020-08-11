@@ -23,7 +23,6 @@ namespace NAS2D {
  *
  *  Represents a Sound.
  */
-
 class Sound
 {
 public:
@@ -40,7 +39,6 @@ public:
 
 protected:
 	friend class MixerSDL;
-
 	Mix_Chunk* sound() const;
 
 private:

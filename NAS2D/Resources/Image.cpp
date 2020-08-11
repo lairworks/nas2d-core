@@ -36,41 +36,7 @@ namespace {
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
 	GLuint generateFbo(const Image& image);
-
-	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel)
-	{
-		switch (bytesPerPixel)
-		{
-			case 1:
-			{
-				return *reinterpret_cast<const uint8_t*>(pixelAddress);
-			}
-			case 2:
-			{
-				return *reinterpret_cast<const uint16_t*>(pixelAddress);
-			}
-			case 3:
-			{
-				auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
-				if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-				{
-					return p[0] << 16 | p[1] << 8 | p[2];
-				}
-				else
-				{
-					return p[0] | p[1] << 8 | p[2] << 16;
-				}
-			}
-			case 4:
-			{
-				return *reinterpret_cast<const uint32_t*>(pixelAddress);
-			}
-			default: // Should never be possible.
-			{
-				throw image_bad_data();
-			}
-		}
-	}
+	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel);
 }
 
 
@@ -190,6 +156,42 @@ unsigned int Image::frameBufferObjectId() const
 
 
 namespace {
+	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel)
+	{
+		switch (bytesPerPixel)
+		{
+			case 1:
+			{
+				return *reinterpret_cast<const uint8_t*>(pixelAddress);
+			}
+			case 2:
+			{
+				return *reinterpret_cast<const uint16_t*>(pixelAddress);
+			}
+			case 3:
+			{
+				auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
+				if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+				{
+					return p[0] << 16 | p[1] << 8 | p[2];
+				}
+				else
+				{
+					return p[0] | p[1] << 8 | p[2] << 16;
+				}
+			}
+			case 4:
+			{
+				return *reinterpret_cast<const uint32_t*>(pixelAddress);
+			}
+			default: // Should never be possible.
+			{
+				throw image_bad_data();
+			}
+		}
+	}
+
+
 	/**
 	 * Generates an OpenGL Frame Buffer Object.
 	 */

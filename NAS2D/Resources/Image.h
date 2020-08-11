@@ -23,7 +23,6 @@ struct SDL_Surface;
 
 namespace NAS2D {
 
-
 /**
  * \class Image
  * \brief Image Class
@@ -67,12 +66,5 @@ private:
 	mutable unsigned int mFrameBufferObjectId{0u};
 	Vector<int> mSize{0, 0};
 };
-
-
-/**
- * \typedef	ImageList
- * \brief	A list of Image objects.
- */
-using ImageList = std::vector<Image>;
 
 } // namespace

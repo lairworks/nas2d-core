@@ -26,7 +26,7 @@ using namespace NAS2D;
 namespace {
 	struct MusicInfo
 	{
-		void* buffer{nullptr};
+		const File* buffer{nullptr};
 		void* music{nullptr};
 		int refCount{0};
 	};
@@ -159,7 +159,7 @@ namespace {
 
 			if (it->second.buffer)
 			{
-				delete static_cast<File*>(it->second.buffer);
+				delete it->second.buffer;
 			}
 
 			MUSIC_REF_MAP.erase(it);

@@ -90,39 +90,11 @@ Font::Font(const std::string& filePath) :
 
 
 /**
- * Copy c'tor.
- *
- * \param	rhs	Font to copy.
- */
-Font::Font(const Font& rhs) :
-	mResourceName{rhs.mResourceName}
-{
-}
-
-
-/**
 * D'tor
 */
 Font::~Font()
 {
 	glDeleteTextures(1, &mFontInfo.textureId);
-}
-
-
-/**
- * Copy assignment operator.
- *
- * \param rhs Font to copy.
- */
-Font& Font::operator=(const Font& rhs)
-{
-	if (this == &rhs) { return *this; }
-
-	glDeleteTextures(1, &mFontInfo.textureId);
-
-	mResourceName = rhs.mResourceName;
-
-	return *this;
 }
 
 

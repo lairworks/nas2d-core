@@ -37,7 +37,7 @@ public:
 	void* music() const;
 
 private:
-	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
+	std::string mResourceName; /**< File path and internal identifier. */
 };
 
 } // namespace

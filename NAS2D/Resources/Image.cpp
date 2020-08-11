@@ -153,48 +153,11 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 
 
 /**
- * Copy C'tor.
- *
- * \param	src		Image to copy.
- */
-Image::Image(const Image &src) :
-	mResourceName{src.mResourceName}
-{
-	imageIdMap[mResourceName].refCount++;
-}
-
-
-/**
  * D'tor
  */
 Image::~Image()
 {
 	updateImageReferenceCount(mResourceName);
-}
-
-
-/**
- * Copy assignment operator.
- *
- * \param	rhs		Image to copy.
- */
-Image& Image::operator=(const Image& rhs)
-{
-	if (this == &rhs) { return *this; }
-
-	updateImageReferenceCount(mResourceName);
-
-	mResourceName = rhs.mResourceName;
-
-	auto it = imageIdMap.find(mResourceName);
-	if (it == imageIdMap.end())
-	{
-		throw image_bad_data();
-	}
-
-	++it->second.refCount;
-
-	return *this;
 }
 
 

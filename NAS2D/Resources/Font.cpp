@@ -89,9 +89,6 @@ Font::Font(const std::string& filePath) :
 }
 
 
-/**
-* D'tor
-*/
 Font::~Font()
 {
 	glDeleteTextures(1, &mFontInfo.textureId);

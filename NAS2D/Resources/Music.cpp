@@ -46,7 +46,7 @@ Music::~Music()
 }
 
 
-void* Music::music() const
+Mix_Music* Music::music() const
 {
 	return mMusic;
 }

@@ -146,7 +146,7 @@ void MixerSDL::resumeMusic()
 
 void MixerSDL::fadeInMusic(const Music& music, int loops, int time)
 {
-	Mix_FadeInMusic(static_cast<Mix_Music*>(music.music()), loops, time);
+	Mix_FadeInMusic(music.music(), loops, time);
 }
 
 

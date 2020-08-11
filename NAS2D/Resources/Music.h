@@ -39,7 +39,7 @@ public:
 
 protected:
 	friend class MixerSDL;
-	void* music() const;
+	Mix_Music* music() const;
 
 private:
 	std::string mResourceName; /**< File path */

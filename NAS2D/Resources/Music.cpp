@@ -72,41 +72,6 @@ Music::Music(const std::string& filePath) :
 
 
 /**
- * Copy c'tor.
- */
-Music::Music(const Music& rhs) :
-	mResourceName{rhs.mResourceName}
-{
-	auto it = MUSIC_REF_MAP.find(mResourceName);
-	if (it != MUSIC_REF_MAP.end())
-	{
-		it->second.refCount++;
-	}
-}
-
-
-/**
- * Copy operator.
- */
-Music& Music::operator=(const Music& rhs)
-{
-	if (this == &rhs) { return *this; }
-
-	updateMusicReferenceCount(mResourceName);
-
-	auto it = MUSIC_REF_MAP.find(mResourceName);
-	if (it != MUSIC_REF_MAP.end())
-	{
-		it->second.refCount++;
-	}
-
-	mResourceName = rhs.mResourceName;
-
-	return *this;
-}
-
-
-/**
  * D'tor.
  */
 Music::~Music()

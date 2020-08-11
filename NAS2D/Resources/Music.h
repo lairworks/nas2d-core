@@ -25,8 +25,8 @@ class Music
 public:
 	explicit Music(const std::string& filePath);
 
-	Music(const Music& rhs);
-	Music& operator=(const Music& rhs);
+	Music(const Music& rhs) = delete;
+	Music& operator=(const Music& rhs) = delete;
 
 	~Music();
 

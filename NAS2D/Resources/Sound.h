@@ -12,6 +12,9 @@
 #include <string>
 
 
+struct Mix_Chunk;
+
+
 namespace NAS2D {
 
 /**
@@ -40,7 +43,7 @@ protected:
 
 private:
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
-	void* _chunk{nullptr};
+	Mix_Chunk* _chunk{nullptr};
 };
 
 } // namespace

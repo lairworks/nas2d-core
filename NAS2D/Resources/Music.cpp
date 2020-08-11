@@ -23,11 +23,6 @@
 using namespace NAS2D;
 
 
-/**
- * C'tor.
- *
- * \param filePath	Path of the music file to load.
- */
 Music::Music(const std::string& filePath) :
 	mResourceName{filePath},
 	mBuffer{Utility<Filesystem>::get().open(mResourceName)}
@@ -45,9 +40,6 @@ Music::Music(const std::string& filePath) :
 }
 
 
-/**
- * D'tor.
- */
 Music::~Music()
 {
 	Mix_FreeMusic(mMusic);

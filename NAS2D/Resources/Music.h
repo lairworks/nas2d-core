@@ -42,7 +42,7 @@ public:
 	void* music() const;
 
 private:
-	std::string mResourceName; /**< File path and internal identifier. */
+	std::string mResourceName; /**< File path */
 	const File mBuffer;
 	Mix_Music* mMusic{nullptr};
 };

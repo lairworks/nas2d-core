@@ -28,10 +28,12 @@ class Sound
 {
 public:
 	explicit Sound(const std::string& filePath);
-	Sound(const Sound& other) = default;
-	Sound& operator=(const Sound& rhs) = default;
-	Sound(Sound&& other) = default;
-	Sound& operator=(Sound&& other) = default;
+
+	Sound(const Sound& other) = delete;
+	Sound(Sound&& other) = delete;
+	Sound& operator=(const Sound& rhs) = delete;
+	Sound& operator=(Sound&& other) = delete;
+
 	~Sound();
 
 	const std::string& name() const { return mResourceName; }

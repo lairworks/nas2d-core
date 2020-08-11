@@ -32,8 +32,6 @@ namespace {
 	};
 
 	std::map<std::string, MusicInfo> MUSIC_REF_MAP; /**< Lookup table for music resource references. */
-
-	void updateMusicReferenceCount(const std::string& name);
 }
 
 
@@ -76,43 +74,29 @@ Music::Music(const std::string& filePath) :
  */
 Music::~Music()
 {
-	updateMusicReferenceCount(mResourceName);
+	auto it = MUSIC_REF_MAP.find(mResourceName);
+	if (it == MUSIC_REF_MAP.end())
+	{
+		return;
+	}
+
+	--it->second.refCount;
+
+	// No more references to this resource.
+	if (it->second.refCount < 1)
+	{
+		if (it->second.music)
+		{
+			Mix_FreeMusic(it->second.music);
+		}
+		delete it->second.buffer;
+
+		MUSIC_REF_MAP.erase(it);
+	}
 }
 
 
 void* Music::music() const
 {
 	return MUSIC_REF_MAP[mResourceName].music;
-}
-
-
-namespace {
-	/**
-	* Internal function used to clean up references to fonts when the Music
-	* destructor or copy assignment operators are called.
-	*
-	* \param	name	Name of the Music to check against.
-	*/
-	void updateMusicReferenceCount(const std::string& name)
-	{
-		auto it = MUSIC_REF_MAP.find(name);
-		if (it == MUSIC_REF_MAP.end())
-		{
-			return;
-		}
-
-		--it->second.refCount;
-
-		// No more references to this resource.
-		if (it->second.refCount < 1)
-		{
-			if (it->second.music)
-			{
-				Mix_FreeMusic(it->second.music);
-			}
-			delete it->second.buffer;
-
-			MUSIC_REF_MAP.erase(it);
-		}
-	}
 }

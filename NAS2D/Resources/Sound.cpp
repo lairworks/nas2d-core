@@ -49,11 +49,7 @@ Sound::Sound(const std::string& filePath) :
  */
 Sound::~Sound()
 {
-	if (_chunk)
-	{
-		Mix_FreeChunk(static_cast<Mix_Chunk*>(_chunk));
-		_chunk = nullptr;
-	}
+	Mix_FreeChunk(static_cast<Mix_Chunk*>(_chunk));
 }
 
 

@@ -46,7 +46,6 @@ namespace {
 	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
-	void updateImageReferenceCount(const std::string& name);
 	GLuint generateFbo(const Image& image);
 
 	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel)
@@ -157,7 +156,23 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
  */
 Image::~Image()
 {
-	updateImageReferenceCount(mResourceName);
+	auto it = imageIdMap.find(mResourceName);
+	if (it == imageIdMap.end())
+	{
+		return;
+	}
+
+	auto& imageInfo = it->second;
+	--imageInfo.refCount;
+
+	if (imageInfo.refCount <= 0)
+	{
+		glDeleteTextures(1, &imageInfo.textureId);
+		glDeleteFramebuffers(1, &imageInfo.frameBufferObjectId);
+		SDL_FreeSurface(imageInfo.surface);
+
+		imageIdMap.erase(it);
+	}
 }
 
 
@@ -220,34 +235,6 @@ unsigned int Image::frameBufferObjectId() const
 
 
 namespace {
-	/**
-	* Internal function used to clean up references to fonts when the Image
-	* destructor or copy assignment operators are called.
-	*
-	* \param	name	Name of the Image to check against.
-	*/
-	void updateImageReferenceCount(const std::string& name)
-	{
-		auto it = imageIdMap.find(name);
-		if (it == imageIdMap.end())
-		{
-			return;
-		}
-
-		auto& imageInfo = it->second;
-		--imageInfo.refCount;
-
-		if (imageInfo.refCount <= 0)
-		{
-			glDeleteTextures(1, &imageInfo.textureId);
-			glDeleteFramebuffers(1, &imageInfo.frameBufferObjectId);
-			SDL_FreeSurface(imageInfo.surface);
-
-			imageIdMap.erase(it);
-		}
-	}
-
-
 	/**
 	 * Generates an OpenGL Frame Buffer Object.
 	 */

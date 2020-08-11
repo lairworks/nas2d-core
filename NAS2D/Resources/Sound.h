@@ -27,11 +27,11 @@ namespace NAS2D {
 class Sound
 {
 public:
+	explicit Sound(const std::string& filePath);
 	Sound(const Sound& other) = default;
 	Sound& operator=(const Sound& rhs) = default;
 	Sound(Sound&& other) = default;
 	Sound& operator=(Sound&& other) = default;
-	explicit Sound(const std::string& filePath);
 	~Sound();
 
 	const std::string& name() const { return mResourceName; }

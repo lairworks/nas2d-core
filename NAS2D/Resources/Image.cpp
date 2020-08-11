@@ -35,7 +35,7 @@ namespace {
 	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
-	GLuint generateFbo(const Image& image);
+	unsigned int generateFbo(const Image& image);
 	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel);
 }
 
@@ -195,7 +195,7 @@ namespace {
 	/**
 	 * Generates an OpenGL Frame Buffer Object.
 	 */
-	GLuint generateFbo(const Image& image)
+	unsigned int generateFbo(const Image& image)
 	{
 		unsigned int framebuffer;
 		glGenFramebuffers(1, &framebuffer);

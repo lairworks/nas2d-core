@@ -37,8 +37,6 @@ public:
 	void* music() const;
 
 private:
-	void load();
-
 	std::string mResourceName{"Default Resource"}; /**< File path and internal identifier. */
 };
 

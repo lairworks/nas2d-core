@@ -45,7 +45,29 @@ namespace {
 Music::Music(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	load();
+	if (MUSIC_REF_MAP.find(mResourceName) != MUSIC_REF_MAP.end())
+	{
+		MUSIC_REF_MAP.find(mResourceName)->second.refCount++;
+		return;
+	}
+
+	File* file = new File(Utility<Filesystem>::get().open(mResourceName));
+	if (file->empty())
+	{
+		delete file;
+		throw std::runtime_error("Music file is empty: " + mResourceName);
+	}
+
+	Mix_Music* music = Mix_LoadMUS_RW(SDL_RWFromConstMem(file->raw_bytes(), static_cast<int>(file->size())), 0);
+	if (!music)
+	{
+		throw std::runtime_error("Music::load() error: " + std::string{Mix_GetError()});
+	}
+
+	auto& record = MUSIC_REF_MAP[mResourceName];
+	record.buffer = file;
+	record.music = music;
+	record.refCount++;
 }
 
 
@@ -96,39 +118,6 @@ Music::~Music()
 void* Music::music() const
 {
 	return MUSIC_REF_MAP[mResourceName].music;
-}
-
-
-/**
- * Loads a specified music file.
- *
- * \note	This function is called internally during instantiation.
- */
-void Music::load()
-{
-	if (MUSIC_REF_MAP.find(mResourceName) != MUSIC_REF_MAP.end())
-	{
-		MUSIC_REF_MAP.find(mResourceName)->second.refCount++;
-		return;
-	}
-
-	File* file = new File(Utility<Filesystem>::get().open(mResourceName));
-	if (file->empty())
-	{
-		delete file;
-		throw std::runtime_error("Music file is empty: " + mResourceName);
-	}
-
-	Mix_Music* music = Mix_LoadMUS_RW(SDL_RWFromConstMem(file->raw_bytes(), static_cast<int>(file->size())), 0);
-	if (!music)
-	{
-		throw std::runtime_error("Music::load() error: " + std::string{Mix_GetError()});
-	}
-
-	auto& record = MUSIC_REF_MAP[mResourceName];
-	record.buffer = file;
-	record.music = music;
-	record.refCount++;
 }
 
 

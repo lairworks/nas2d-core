@@ -279,7 +279,6 @@ namespace {
 			glDeleteTextures(1, &imageInfo.textureId);
 			glDeleteFramebuffers(1, &imageInfo.frameBufferObjectId);
 			SDL_FreeSurface(imageInfo.surface);
-			imageInfo.surface = nullptr;
 
 			imageIdMap.erase(it);
 		}

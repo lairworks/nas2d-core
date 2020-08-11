@@ -126,9 +126,6 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 }
 
 
-/**
- * D'tor
- */
 Image::~Image()
 {
 	glDeleteTextures(1, &mTextureId);

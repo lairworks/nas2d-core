@@ -18,7 +18,6 @@
 #include <SDL2/SDL_mixer.h>
 
 #include <array>
-#include <functional>
 #include <algorithm>
 
 using namespace NAS2D;

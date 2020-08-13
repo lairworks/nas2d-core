@@ -66,10 +66,13 @@ TEST(Configuration, loadData) {
 		}
 	};
 
-	// Defaults (before data load)
-	EXPECT_EQ("Some string value", config.option("Key1"));
-	EXPECT_EQ("true", config.option("Key2"));
-	EXPECT_EQ("-1", config.option("Key3"));
+	{
+		// Defaults (before data load)
+		const auto& options = config["options"];
+		EXPECT_EQ("Some string value", options.get("Key1"));
+		EXPECT_EQ("true", options.get("Key2"));
+		EXPECT_EQ("-1", options.get("Key3"));
+	}
 
 	config.loadData(
 		R"(
@@ -82,11 +85,14 @@ TEST(Configuration, loadData) {
 		)"
 	);
 
-	// Defaults (after data load)
-	EXPECT_EQ("Some string value", config.option("Key1"));
-	EXPECT_EQ("true", config.option("Key2"));
-	// Default overwritten by data load
-	EXPECT_EQ("1", config.option("Key3"));
+	{
+		// Defaults (after data load)
+		const auto& options = config["options"];
+		EXPECT_EQ("Some string value", options.get("Key1"));
+		EXPECT_EQ("true", options.get("Key2"));
+		// Default overwritten by data load
+		EXPECT_EQ("1", options.get("Key3"));
+	}
 
 	// Fresh loaded values
 	const auto& audio = config["audio"];

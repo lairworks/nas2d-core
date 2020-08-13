@@ -20,6 +20,7 @@
 #include <array>
 #include <algorithm>
 
+
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 

@@ -78,11 +78,12 @@ TEST(Configuration, loadData) {
 	EXPECT_EQ("1", config.option("Key3"));
 
 	// Fresh loaded values
-	EXPECT_EQ("SDL", config.mixer());
-	EXPECT_EQ(100, config.audioMusicVolume());
-	EXPECT_EQ(128, config.audioSfxVolume());
-	EXPECT_EQ(22050, config.audioMixRate());
-	EXPECT_EQ(1024, config.audioBufferSize());
+	const auto& audio = config["audio"];
+	EXPECT_EQ("SDL", audio.get("mixer"));
+	EXPECT_EQ(100, audio.get<int>("musicvolume"));
+	EXPECT_EQ(128, audio.get<int>("sfxvolume"));
+	EXPECT_EQ(22050, audio.get<int>("mixrate"));
+	EXPECT_EQ(1024, audio.get<int>("bufferlength"));
 
 	// Nonexistent keys return empty string
 	EXPECT_EQ("", config.option("NonExistentKey"));

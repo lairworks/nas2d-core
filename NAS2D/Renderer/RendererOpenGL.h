@@ -34,6 +34,8 @@ public:
 		bool vsync;
 	};
 
+	static Options ReadConfigurationOptions();
+
 	RendererOpenGL() = delete;
 	explicit RendererOpenGL(const std::string& title);
 	RendererOpenGL(const std::string& title, const Options& options);

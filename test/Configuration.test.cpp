@@ -102,6 +102,6 @@ TEST(Configuration, loadData) {
 	EXPECT_EQ(22050, audio.get<int>("mixrate"));
 	EXPECT_EQ(1024, audio.get<int>("bufferlength"));
 
-	// Nonexistent keys return empty string
-	EXPECT_EQ("", config.option("NonExistentKey"));
+	// Nonexistent keys throw
+	EXPECT_THROW(config["options"].get("NonExistentKey"), std::out_of_range);
 }

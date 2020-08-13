@@ -4,32 +4,43 @@
 #include <gtest/gtest.h>
 
 
+namespace {
+	const NAS2D::Dictionary DefaultGraphics{{
+		{"screenwidth", 800},
+		{"screenheight", 600},
+		{"bitdepth", 32},
+		{"fullscreen", false},
+		{"vsync", false}
+	}};
+}
+
+
 TEST(Configuration, OperatorSubscript) {
 	{
 		const NAS2D::Configuration config{
 			std::map<std::string, NAS2D::Dictionary>{
-				{{"graphics", NAS2D::Configuration::defaultGraphics}}
+				{{"graphics", DefaultGraphics}}
 			}
 		};
 		auto& value = config["graphics"];
 
 		EXPECT_TRUE((std::is_same_v<const NAS2D::Dictionary&, decltype(value)>));
-		EXPECT_EQ(value, NAS2D::Configuration::defaultGraphics);
+		EXPECT_EQ(value, DefaultGraphics);
 	}
 
 	{
 		NAS2D::Configuration config{
 			std::map<std::string, NAS2D::Dictionary>{
-				{{"graphics", NAS2D::Configuration::defaultGraphics}}
+				{{"graphics", DefaultGraphics}}
 			}
 		};
 		auto& value = config["graphics"];
 
 		EXPECT_TRUE((std::is_same_v<NAS2D::Dictionary&, decltype(value)>));
-		EXPECT_EQ(value, NAS2D::Configuration::defaultGraphics);
+		EXPECT_EQ(value, DefaultGraphics);
 
 		EXPECT_NO_THROW(config["graphics"]["customAttribute"] = "custom value");
-		EXPECT_NE(value, NAS2D::Configuration::defaultGraphics);
+		EXPECT_NE(value, DefaultGraphics);
 	}
 }
 
@@ -39,7 +50,7 @@ TEST(Configuration, loadData) {
 			{
 				{
 					"graphics",
-					NAS2D::Configuration::defaultGraphics
+					DefaultGraphics
 				},
 				{
 					"options",
@@ -55,10 +66,13 @@ TEST(Configuration, loadData) {
 		}
 	};
 
-	// Defaults (before data load)
-	EXPECT_EQ("Some string value", config.option("Key1"));
-	EXPECT_EQ("true", config.option("Key2"));
-	EXPECT_EQ("-1", config.option("Key3"));
+	{
+		// Defaults (before data load)
+		const auto& options = config["options"];
+		EXPECT_EQ("Some string value", options.get("Key1"));
+		EXPECT_EQ("true", options.get("Key2"));
+		EXPECT_EQ("-1", options.get("Key3"));
+	}
 
 	config.loadData(
 		R"(
@@ -71,19 +85,23 @@ TEST(Configuration, loadData) {
 		)"
 	);
 
-	// Defaults (after data load)
-	EXPECT_EQ("Some string value", config.option("Key1"));
-	EXPECT_EQ("true", config.option("Key2"));
-	// Default overwritten by data load
-	EXPECT_EQ("1", config.option("Key3"));
+	{
+		// Defaults (after data load)
+		const auto& options = config["options"];
+		EXPECT_EQ("Some string value", options.get("Key1"));
+		EXPECT_EQ("true", options.get("Key2"));
+		// Default overwritten by data load
+		EXPECT_EQ("1", options.get("Key3"));
+	}
 
 	// Fresh loaded values
-	EXPECT_EQ("SDL", config.mixer());
-	EXPECT_EQ(100, config.audioMusicVolume());
-	EXPECT_EQ(128, config.audioSfxVolume());
-	EXPECT_EQ(22050, config.audioMixRate());
-	EXPECT_EQ(1024, config.audioBufferSize());
+	const auto& audio = config["audio"];
+	EXPECT_EQ("SDL", audio.get("mixer"));
+	EXPECT_EQ(100, audio.get<int>("musicvolume"));
+	EXPECT_EQ(128, audio.get<int>("sfxvolume"));
+	EXPECT_EQ(22050, audio.get<int>("mixrate"));
+	EXPECT_EQ(1024, audio.get<int>("bufferlength"));
 
-	// Nonexistent keys return empty string
-	EXPECT_EQ("", config.option("NonExistentKey"));
+	// Nonexistent keys throw
+	EXPECT_THROW(config["options"].get("NonExistentKey"), std::out_of_range);
 }

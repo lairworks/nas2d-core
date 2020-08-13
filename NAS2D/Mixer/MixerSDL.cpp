@@ -18,9 +18,8 @@
 #include <SDL2/SDL_mixer.h>
 
 #include <array>
-#include <iostream>
-#include <functional>
 #include <algorithm>
+
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -52,7 +51,7 @@ namespace {
 }
 
 
-MixerSDL::Options MixerSDL::InvalidToDefault(const MixerSDL::Options& options)
+MixerSDL::Options MixerSDL::InvalidToDefault(const Options& options)
 {
 	return {
 		has(AllowedMixRate, options.mixRate) ? options.mixRate : AudioQualityMedium,
@@ -76,7 +75,7 @@ MixerSDL::Options MixerSDL::ReadConfigurationOptions()
 	};
 }
 
-void MixerSDL::WriteConfigurationOptions(const MixerSDL::Options& options)
+void MixerSDL::WriteConfigurationOptions(const Options& options)
 {
 	auto& configuration = Utility<Configuration>::get();
 	auto& audio = configuration["audio"];
@@ -98,8 +97,6 @@ MixerSDL::MixerSDL() : MixerSDL(InvalidToDefault(ReadConfigurationOptions()))
 
 MixerSDL::MixerSDL(const Options& options)
 {
-	std::cout << "Initializing Mixer... ";
-
 	if (SDL_Init(SDL_INIT_AUDIO) < 0)
 	{
 		throw mixer_backend_init_failure(SDL_GetError());
@@ -115,8 +112,6 @@ MixerSDL::MixerSDL(const Options& options)
 
 	musicFinished.connect(this, &MixerSDL::onMusicFinished);
 	Mix_HookMusicFinished([](){ musicFinished(); });
-
-	std::cout << "done." << std::endl;
 }
 
 
@@ -133,8 +128,6 @@ MixerSDL::~MixerSDL()
 	musicFinished.disconnect(this, &MixerSDL::onMusicFinished);
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-
-	std::cout << "Mixer Terminated." << std::endl;
 }
 
 void MixerSDL::onMusicFinished()

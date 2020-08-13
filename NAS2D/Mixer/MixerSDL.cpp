@@ -76,6 +76,17 @@ MixerSDL::Options MixerSDL::ReadConfigurationOptions()
 	};
 }
 
+void MixerSDL::WriteConfigurationOptions(const MixerSDL::Options& options)
+{
+	auto& configuration = Utility<Configuration>::get();
+	auto& audio = configuration["audio"];
+	audio.set("mixrate", options.mixRate);
+	audio.set("channels", options.numChannels);
+	audio.set("sfxvolume", options.sfxVolume);
+	audio.set("musicvolume", options.musicVolume);
+	audio.set("bufferlength", options.bufferSize);
+}
+
 
 /*
  * C'tor.

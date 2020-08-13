@@ -42,10 +42,6 @@ public:
 	std::string saveData() const;
 	void save(const std::string& filePath) const;
 
-	void option(const std::string& option, const std::string& value, bool overwrite = true);
-	std::string option(const std::string& key);
-	void deleteOption(const std::string& option);
-
 protected:
 private:
 	const std::map<std::string, Dictionary> mDefaults{};

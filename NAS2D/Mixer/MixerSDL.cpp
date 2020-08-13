@@ -12,10 +12,12 @@
 #include "../Configuration.h"
 #include "../Exception.h"
 #include "../Utility.h"
+#include "../ContainerUtils.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
+#include <array>
 #include <iostream>
 #include <functional>
 #include <algorithm>
@@ -32,6 +34,32 @@ namespace {
 	Signals::Signal<> musicFinished;
 	// ==================================================================================
 
+
+	constexpr int AudioVolumeMin = 0;
+	constexpr int AudioVolumeMax = 128;
+
+	constexpr int AudioNumChannelsMin = 1;
+	constexpr int AudioNumChannelsMax = 2;
+
+	constexpr int AudioQualityLow = 11025;
+	constexpr int AudioQualityMedium = 22050;
+	constexpr int AudioQualityHigh = 44100;
+
+	constexpr auto AllowedMixRate = std::array{AudioQualityLow, AudioQualityMedium, AudioQualityHigh};
+
+	constexpr int AudioBufferSizeMin = 256;
+	constexpr int AudioBufferSizeMax = 4096;
+
+	MixerSDL::Options InvalidToDefault(const MixerSDL::Options& options)
+	{
+		return {
+			has(AllowedMixRate, options.mixRate) ? options.mixRate : AudioQualityMedium,
+			std::clamp(options.numChannels, AudioNumChannelsMin, AudioNumChannelsMax),
+			std::clamp(options.sfxVolume, AudioVolumeMin, AudioVolumeMax),
+			std::clamp(options.musicVolume, AudioVolumeMin, AudioVolumeMax),
+			std::clamp(options.bufferSize, AudioBufferSizeMin, AudioBufferSizeMax)
+		};
+	}
 
 	MixerSDL::Options ReadConfigurationOptions()
 	{
@@ -50,7 +78,7 @@ namespace {
 /*
  * C'tor.
  */
-MixerSDL::MixerSDL() : MixerSDL(ReadConfigurationOptions())
+MixerSDL::MixerSDL() : MixerSDL(InvalidToDefault(ReadConfigurationOptions()))
 {
 }
 

@@ -64,12 +64,13 @@ namespace {
 	MixerSDL::Options ReadConfigurationOptions()
 	{
 		const auto& configuration = Utility<Configuration>::get();
+		const auto& audio = configuration["audio"];
 		return {
-			configuration.audioMixRate(),
-			configuration.audioStereoChannels(),
-			configuration.audioSfxVolume(),
-			configuration.audioMusicVolume(),
-			configuration.audioBufferSize()
+			audio.get<int>("mixrate"),
+			audio.get<int>("channels"),
+			audio.get<int>("sfxvolume"),
+			audio.get<int>("musicvolume"),
+			audio.get<int>("bufferlength")
 		};
 	}
 }

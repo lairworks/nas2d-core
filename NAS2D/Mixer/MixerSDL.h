@@ -35,6 +35,10 @@ public:
 		int bufferSize;
 	};
 
+	static MixerSDL::Options InvalidToDefault(const MixerSDL::Options& options);
+	static MixerSDL::Options ReadConfigurationOptions();
+	static void WriteConfigurationOptions(const MixerSDL::Options& options);
+
 	MixerSDL();
 	MixerSDL(const Options& options);
 	MixerSDL(const MixerSDL&) = delete;

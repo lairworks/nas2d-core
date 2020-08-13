@@ -12,10 +12,12 @@
 #include "../Configuration.h"
 #include "../Exception.h"
 #include "../Utility.h"
+#include "../ContainerUtils.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
+#include <array>
 #include <iostream>
 #include <functional>
 #include <algorithm>
@@ -33,24 +35,63 @@ namespace {
 	// ==================================================================================
 
 
-	MixerSDL::Options ReadConfigurationOptions()
-	{
-		const auto& configuration = Utility<Configuration>::get();
-		return {
-			configuration.audioMixRate(),
-			configuration.audioStereoChannels(),
-			configuration.audioSfxVolume(),
-			configuration.audioMusicVolume(),
-			configuration.audioBufferSize()
-		};
-	}
+	constexpr int AudioVolumeMin = 0;
+	constexpr int AudioVolumeMax = 128;
+
+	constexpr int AudioNumChannelsMin = 1;
+	constexpr int AudioNumChannelsMax = 2;
+
+	constexpr int AudioQualityLow = 11025;
+	constexpr int AudioQualityMedium = 22050;
+	constexpr int AudioQualityHigh = 44100;
+
+	constexpr auto AllowedMixRate = std::array{AudioQualityLow, AudioQualityMedium, AudioQualityHigh};
+
+	constexpr int AudioBufferSizeMin = 256;
+	constexpr int AudioBufferSizeMax = 4096;
+}
+
+
+MixerSDL::Options MixerSDL::InvalidToDefault(const MixerSDL::Options& options)
+{
+	return {
+		has(AllowedMixRate, options.mixRate) ? options.mixRate : AudioQualityMedium,
+		std::clamp(options.numChannels, AudioNumChannelsMin, AudioNumChannelsMax),
+		std::clamp(options.sfxVolume, AudioVolumeMin, AudioVolumeMax),
+		std::clamp(options.musicVolume, AudioVolumeMin, AudioVolumeMax),
+		std::clamp(options.bufferSize, AudioBufferSizeMin, AudioBufferSizeMax)
+	};
+}
+
+MixerSDL::Options MixerSDL::ReadConfigurationOptions()
+{
+	const auto& configuration = Utility<Configuration>::get();
+	const auto& audio = configuration["audio"];
+	return {
+		audio.get<int>("mixrate"),
+		audio.get<int>("channels"),
+		audio.get<int>("sfxvolume"),
+		audio.get<int>("musicvolume"),
+		audio.get<int>("bufferlength")
+	};
+}
+
+void MixerSDL::WriteConfigurationOptions(const MixerSDL::Options& options)
+{
+	auto& configuration = Utility<Configuration>::get();
+	auto& audio = configuration["audio"];
+	audio.set("mixrate", options.mixRate);
+	audio.set("channels", options.numChannels);
+	audio.set("sfxvolume", options.sfxVolume);
+	audio.set("musicvolume", options.musicVolume);
+	audio.set("bufferlength", options.bufferSize);
 }
 
 
 /*
  * C'tor.
  */
-MixerSDL::MixerSDL() : MixerSDL(ReadConfigurationOptions())
+MixerSDL::MixerSDL() : MixerSDL(InvalidToDefault(ReadConfigurationOptions()))
 {
 }
 

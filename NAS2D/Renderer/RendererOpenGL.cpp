@@ -78,17 +78,28 @@ namespace {
 		const auto apiResult = glGetString(name);
 		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
 	}
+}
 
 
-	RendererOpenGL::Options ReadConfigurationOptions()
-	{
-		const auto& configuration = Utility<Configuration>::get();
-		return {
-			{configuration.graphicsWidth(), configuration.graphicsHeight()},
-			configuration.fullscreen(),
-			configuration.vsync()
-		};
-	}
+RendererOpenGL::Options RendererOpenGL::ReadConfigurationOptions()
+{
+	const auto& configuration = Utility<Configuration>::get();
+	const auto& graphics = configuration["graphics"];
+	return {
+		{graphics.get<int>("screenwidth"), graphics.get<int>("screenheight")},
+		graphics.get<bool>("fullscreen"),
+		graphics.get<bool>("vsync")
+	};
+}
+
+void RendererOpenGL::WriteConfigurationOptions(const Options& options)
+{
+	auto& configuration = Utility<Configuration>::get();
+	auto& graphics = configuration["graphics"];
+	graphics.set("screenwidth", options.resolution.x);
+	graphics.set("screenheight", options.resolution.y);
+	graphics.set("fullscreen", options.fullscreen);
+	graphics.set("vsync", options.vsync);
 }
 
 

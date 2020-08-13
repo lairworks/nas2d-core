@@ -49,30 +49,31 @@ namespace {
 
 	constexpr int AudioBufferSizeMin = 256;
 	constexpr int AudioBufferSizeMax = 4096;
+}
 
-	MixerSDL::Options InvalidToDefault(const MixerSDL::Options& options)
-	{
-		return {
-			has(AllowedMixRate, options.mixRate) ? options.mixRate : AudioQualityMedium,
-			std::clamp(options.numChannels, AudioNumChannelsMin, AudioNumChannelsMax),
-			std::clamp(options.sfxVolume, AudioVolumeMin, AudioVolumeMax),
-			std::clamp(options.musicVolume, AudioVolumeMin, AudioVolumeMax),
-			std::clamp(options.bufferSize, AudioBufferSizeMin, AudioBufferSizeMax)
-		};
-	}
 
-	MixerSDL::Options ReadConfigurationOptions()
-	{
-		const auto& configuration = Utility<Configuration>::get();
-		const auto& audio = configuration["audio"];
-		return {
-			audio.get<int>("mixrate"),
-			audio.get<int>("channels"),
-			audio.get<int>("sfxvolume"),
-			audio.get<int>("musicvolume"),
-			audio.get<int>("bufferlength")
-		};
-	}
+MixerSDL::Options MixerSDL::InvalidToDefault(const MixerSDL::Options& options)
+{
+	return {
+		has(AllowedMixRate, options.mixRate) ? options.mixRate : AudioQualityMedium,
+		std::clamp(options.numChannels, AudioNumChannelsMin, AudioNumChannelsMax),
+		std::clamp(options.sfxVolume, AudioVolumeMin, AudioVolumeMax),
+		std::clamp(options.musicVolume, AudioVolumeMin, AudioVolumeMax),
+		std::clamp(options.bufferSize, AudioBufferSizeMin, AudioBufferSizeMax)
+	};
+}
+
+MixerSDL::Options MixerSDL::ReadConfigurationOptions()
+{
+	const auto& configuration = Utility<Configuration>::get();
+	const auto& audio = configuration["audio"];
+	return {
+		audio.get<int>("mixrate"),
+		audio.get<int>("channels"),
+		audio.get<int>("sfxvolume"),
+		audio.get<int>("musicvolume"),
+		audio.get<int>("bufferlength")
+	};
 }
 
 

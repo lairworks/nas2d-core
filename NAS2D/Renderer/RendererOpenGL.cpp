@@ -83,10 +83,11 @@ namespace {
 	RendererOpenGL::Options ReadConfigurationOptions()
 	{
 		const auto& configuration = Utility<Configuration>::get();
+		const auto& graphics = configuration["graphics"];
 		return {
-			{configuration.graphicsWidth(), configuration.graphicsHeight()},
-			configuration.fullscreen(),
-			configuration.vsync()
+			{graphics.get<int>("screenwidth"), graphics.get<int>("screenheight")},
+			graphics.get<bool>("fullscreen"),
+			graphics.get<bool>("vsync")
 		};
 	}
 }

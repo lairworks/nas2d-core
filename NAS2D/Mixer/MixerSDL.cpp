@@ -18,7 +18,6 @@
 #include <SDL2/SDL_mixer.h>
 
 #include <array>
-#include <iostream>
 #include <functional>
 #include <algorithm>
 
@@ -98,8 +97,6 @@ MixerSDL::MixerSDL() : MixerSDL(InvalidToDefault(ReadConfigurationOptions()))
 
 MixerSDL::MixerSDL(const Options& options)
 {
-	std::cout << "Initializing Mixer... ";
-
 	if (SDL_Init(SDL_INIT_AUDIO) < 0)
 	{
 		throw mixer_backend_init_failure(SDL_GetError());
@@ -115,8 +112,6 @@ MixerSDL::MixerSDL(const Options& options)
 
 	musicFinished.connect(this, &MixerSDL::onMusicFinished);
 	Mix_HookMusicFinished([](){ musicFinished(); });
-
-	std::cout << "done." << std::endl;
 }
 
 
@@ -133,8 +128,6 @@ MixerSDL::~MixerSDL()
 	musicFinished.disconnect(this, &MixerSDL::onMusicFinished);
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-
-	std::cout << "Mixer Terminated." << std::endl;
 }
 
 void MixerSDL::onMusicFinished()

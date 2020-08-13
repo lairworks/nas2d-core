@@ -35,6 +35,7 @@ public:
 	};
 
 	static Options ReadConfigurationOptions();
+	static void WriteConfigurationOptions(const Options& options);
 
 	RendererOpenGL() = delete;
 	explicit RendererOpenGL(const std::string& title);

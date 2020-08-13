@@ -92,6 +92,16 @@ RendererOpenGL::Options RendererOpenGL::ReadConfigurationOptions()
 	};
 }
 
+void RendererOpenGL::WriteConfigurationOptions(const Options& options)
+{
+	auto& configuration = Utility<Configuration>::get();
+	auto& graphics = configuration["graphics"];
+	graphics.set("screenwidth", options.resolution.x);
+	graphics.set("screenheight", options.resolution.y);
+	graphics.set("fullscreen", options.fullscreen);
+	graphics.set("vsync", options.vsync);
+}
+
 
 /**
  * C'tor

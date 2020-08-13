@@ -4,32 +4,43 @@
 #include <gtest/gtest.h>
 
 
+namespace {
+	const NAS2D::Dictionary DefaultGraphics{{
+		{"screenwidth", 800},
+		{"screenheight", 600},
+		{"bitdepth", 32},
+		{"fullscreen", false},
+		{"vsync", false}
+	}};
+}
+
+
 TEST(Configuration, OperatorSubscript) {
 	{
 		const NAS2D::Configuration config{
 			std::map<std::string, NAS2D::Dictionary>{
-				{{"graphics", NAS2D::Configuration::defaultGraphics}}
+				{{"graphics", DefaultGraphics}}
 			}
 		};
 		auto& value = config["graphics"];
 
 		EXPECT_TRUE((std::is_same_v<const NAS2D::Dictionary&, decltype(value)>));
-		EXPECT_EQ(value, NAS2D::Configuration::defaultGraphics);
+		EXPECT_EQ(value, DefaultGraphics);
 	}
 
 	{
 		NAS2D::Configuration config{
 			std::map<std::string, NAS2D::Dictionary>{
-				{{"graphics", NAS2D::Configuration::defaultGraphics}}
+				{{"graphics", DefaultGraphics}}
 			}
 		};
 		auto& value = config["graphics"];
 
 		EXPECT_TRUE((std::is_same_v<NAS2D::Dictionary&, decltype(value)>));
-		EXPECT_EQ(value, NAS2D::Configuration::defaultGraphics);
+		EXPECT_EQ(value, DefaultGraphics);
 
 		EXPECT_NO_THROW(config["graphics"]["customAttribute"] = "custom value");
-		EXPECT_NE(value, NAS2D::Configuration::defaultGraphics);
+		EXPECT_NE(value, DefaultGraphics);
 	}
 }
 
@@ -39,7 +50,7 @@ TEST(Configuration, loadData) {
 			{
 				{
 					"graphics",
-					NAS2D::Configuration::defaultGraphics
+					DefaultGraphics
 				},
 				{
 					"options",

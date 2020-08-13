@@ -52,7 +52,7 @@ namespace {
 }
 
 
-MixerSDL::Options MixerSDL::InvalidToDefault(const MixerSDL::Options& options)
+MixerSDL::Options MixerSDL::InvalidToDefault(const Options& options)
 {
 	return {
 		has(AllowedMixRate, options.mixRate) ? options.mixRate : AudioQualityMedium,
@@ -76,7 +76,7 @@ MixerSDL::Options MixerSDL::ReadConfigurationOptions()
 	};
 }
 
-void MixerSDL::WriteConfigurationOptions(const MixerSDL::Options& options)
+void MixerSDL::WriteConfigurationOptions(const Options& options)
 {
 	auto& configuration = Utility<Configuration>::get();
 	auto& audio = configuration["audio"];

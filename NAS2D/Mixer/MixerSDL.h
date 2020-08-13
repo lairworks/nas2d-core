@@ -35,9 +35,9 @@ public:
 		int bufferSize;
 	};
 
-	static MixerSDL::Options InvalidToDefault(const MixerSDL::Options& options);
-	static MixerSDL::Options ReadConfigurationOptions();
-	static void WriteConfigurationOptions(const MixerSDL::Options& options);
+	static Options InvalidToDefault(const Options& options);
+	static Options ReadConfigurationOptions();
+	static void WriteConfigurationOptions(const Options& options);
 
 	MixerSDL();
 	MixerSDL(const Options& options);

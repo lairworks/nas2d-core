@@ -62,4 +62,30 @@ namespace NAS2D {
 		}
 		return result;
 	}
+
+
+	template <typename T>
+	struct MissingAndUnexpected {
+		std::vector<T> missing;
+		std::vector<T> unexpected;
+
+		bool operator==(const MissingAndUnexpected& other) const {
+			return missing == other.missing && unexpected == other.unexpected;
+		}
+		bool operator!=(const MissingAndUnexpected& other) const {
+			return !(*this == other);
+		}
+	};
+
+	template <typename T>
+	MissingAndUnexpected<T> findMissingAndUnexpected(
+		const std::vector<T>& names,
+		const std::vector<T>& required,
+		const std::vector<T>& optional = {}
+	) {
+		using namespace ContainerOperators;
+
+		const auto expected = required + optional;
+		return {required - names, names - expected};
+	}
 }

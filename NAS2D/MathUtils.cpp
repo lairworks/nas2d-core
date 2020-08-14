@@ -22,7 +22,7 @@ namespace NAS2D {
  * \param	c	Center point of a circle.
  * \param	r	Radius of a circle.
  */
-bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<int>& c, float r)
+bool lineIntersectsCircle(Point<int> p, Point<int> q, Point<int> c, float r)
 {
 	const auto centerToStart = (p - c).to<float>();
 	const auto lineSize = (q - p).to<float>();

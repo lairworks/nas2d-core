@@ -11,6 +11,8 @@
 
 #include "Renderer.h"
 
+#include <map>
+
 
 using SDL_GLContext = void*;
 struct SDL_Cursor;

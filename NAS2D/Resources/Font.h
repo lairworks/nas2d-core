@@ -12,7 +12,6 @@
 #include "../Renderer/Vector.h"
 #include "../Renderer/Rectangle.h"
 
-#include <map>
 #include <string>
 #include <vector>
 #include <string_view>

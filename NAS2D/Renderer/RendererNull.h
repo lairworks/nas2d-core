@@ -35,7 +35,7 @@ public:
 	void drawImageRepeated(const Image&, Rectangle<float>) override {}
 	void drawSubImageRepeated(const Image&, const Rectangle<float>&, const Rectangle<float>&) override {}
 
-	void drawImageToImage(const Image&, const Image&, const Point<float>&) override {}
+	void drawImageToImage(const Image&, const Image&, Point<float>) override {}
 
 	void drawPoint(Point<float>, Color = Color::White) override {}
 	void drawLine(Point<float>, Point<float>, Color = Color::White, int = 1) override {}

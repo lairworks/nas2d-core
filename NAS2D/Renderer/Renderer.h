@@ -63,7 +63,7 @@ public:
 	virtual void drawImageRepeated(const Image& image, Rectangle<float> rect) = 0;
 	virtual void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) = 0;
 
-	virtual void drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint) = 0;
+	virtual void drawImageToImage(const Image& source, const Image& destination, Point<float> dstPoint) = 0;
 
 	virtual void drawPoint(Point<float> position, Color color = Color::White) = 0;
 	virtual void drawLine(Point<float> startPosition, Point<float> endPosition, Color color = Color::White, int line_width = 1) = 0;

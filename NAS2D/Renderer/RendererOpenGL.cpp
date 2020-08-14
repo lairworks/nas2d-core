@@ -269,7 +269,7 @@ void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<fl
 }
 
 
-void RendererOpenGL::drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint)
+void RendererOpenGL::drawImageToImage(const Image& source, const Image& destination, Point<float> dstPoint)
 {
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();

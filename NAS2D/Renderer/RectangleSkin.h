@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Rectangle.h"
-#include "../Resources/Image.h"
 
 
 namespace NAS2D {
+	class Image;
 	class Renderer;
 
 

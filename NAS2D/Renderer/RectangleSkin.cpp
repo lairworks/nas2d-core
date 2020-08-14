@@ -1,6 +1,7 @@
 
 #include "RectangleSkin.h"
 #include "Renderer.h"
+#include "../Resources/Image.h"
 
 
 using namespace NAS2D;

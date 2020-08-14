@@ -9,6 +9,10 @@
 // ==================================================================================
 
 #include "MixerSDL.h"
+
+#include "../Resources/Sound.h"
+#include "../Resources/Music.h"
+
 #include "../Configuration.h"
 #include "../Exception.h"
 #include "../Utility.h"

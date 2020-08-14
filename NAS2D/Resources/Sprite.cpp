@@ -9,9 +9,12 @@
 // ==================================================================================
 
 #include "Sprite.h"
+#include "../Utility.h"
+#include "../Filesystem.h"
 #include "../ContainerUtils.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
+#include "../Renderer/Renderer.h"
 
 #include <utility>
 #include <iostream>

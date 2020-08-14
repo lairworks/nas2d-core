@@ -13,11 +13,8 @@
 #include "Image.h"
 #include "../Signal.h"
 #include "../Timer.h"
-#include "../Utility.h"
-#include "../Filesystem.h"
 #include "../Renderer/Color.h"
 #include "../Renderer/Rectangle.h"
-#include "../Renderer/Renderer.h"
 
 #include <map>
 #include <string_view>

@@ -1,6 +1,6 @@
 // ==================================================================================
 // = NAS2D Test App 2
-// = Copyright © 2008 - 2019 LairWorks Entertainment
+// = Copyright Â© 2008 - 2019 LairWorks Entertainment
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.

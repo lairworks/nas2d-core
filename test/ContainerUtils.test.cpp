@@ -3,6 +3,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <string>
 #include <array>
 #include <vector>
 #include <list>
@@ -116,4 +117,15 @@ TEST(Container, getKeys) {
 		std::sort(std::begin(result), std::end(result));
 		EXPECT_EQ((std::vector<int>{1, 2}), result);
 	}
+}
+
+TEST(Container, findMissingAndUnexpected) {
+	using ResultType = NAS2D::MissingAndUnexpected<std::string>;
+
+	EXPECT_EQ((ResultType{{}, {}}), NAS2D::findMissingAndUnexpected<std::string>({}, {}, {}));
+	EXPECT_EQ((ResultType{{}, {}}), NAS2D::findMissingAndUnexpected<std::string>({}, {}, {"a"}));
+	EXPECT_EQ((ResultType{{}, {}}), NAS2D::findMissingAndUnexpected<std::string>({"a"}, {}, {"a"}));
+	EXPECT_EQ((ResultType{{}, {}}), NAS2D::findMissingAndUnexpected<std::string>({"a"}, {"a"}, {}));
+	EXPECT_EQ((ResultType{{}, {"a"}}), NAS2D::findMissingAndUnexpected<std::string>({"a"}, {}, {}));
+	EXPECT_EQ((ResultType{{"a"}, {}}), NAS2D::findMissingAndUnexpected<std::string>({}, {"a"}, {}));
 }

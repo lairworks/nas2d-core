@@ -3,8 +3,10 @@
 #include <functional>
 #include <random>
 
+
 static std::mt19937 generator;
 static std::uniform_int_distribution<int> jitter_distribution(0, 64);
+
 
 TestGraphics::TestGraphics() :
 	mDxImage("Test_DirectX.png"),

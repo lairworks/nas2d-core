@@ -15,9 +15,9 @@
 #include <iostream>
 #include <string>
 
+
 int main(int /*argc*/, char *argv[])
 {
-
 	try
 	{
 		NAS2D::Game game("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks", argv[0]);

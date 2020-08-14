@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Renderer/Point.h"
+#include "Renderer/Vector.h"
 
 
 namespace NAS2D {

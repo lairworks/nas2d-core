@@ -10,11 +10,13 @@
 
 #pragma once
 
-#include "StateManager.h"
-
 #include <string>
 
+
 namespace NAS2D {
+
+class State;
+
 
 /**
  * \class Game
@@ -61,7 +63,7 @@ public:
 
 	void mount(const std::string& path);
 
-	void go(State *state);
+	void go(State* state);
 };
 
 } // namespace

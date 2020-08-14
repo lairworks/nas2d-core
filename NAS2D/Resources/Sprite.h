@@ -13,11 +13,8 @@
 #include "Image.h"
 #include "../Signal.h"
 #include "../Timer.h"
-#include "../Utility.h"
-#include "../Filesystem.h"
 #include "../Renderer/Color.h"
 #include "../Renderer/Rectangle.h"
-#include "../Renderer/Renderer.h"
 
 #include <map>
 #include <string_view>
@@ -73,7 +70,7 @@ public:
 	Vector<int> size() const;
 	Point<int> origin(Point<int> point) const;
 
-	StringList actions() const;
+	std::vector<std::string> actions() const;
 
 	void play(const std::string& action);
 	void pause();

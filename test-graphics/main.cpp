@@ -1,21 +1,23 @@
 // ==================================================================================
 // = NAS2D Test App 2
-// = Copyright © 2008 - 2019 LairWorks Entertainment
+// = Copyright Â© 2008 - 2019 LairWorks Entertainment
 // ==================================================================================
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-#include "NAS2D/NAS2D.h"
+
 #include "TestGraphics.h"
+
+#include <NAS2D/NAS2D.h>
 
 #include <iostream>
 #include <string>
 
+
 int main(int /*argc*/, char *argv[])
 {
-
 	try
 	{
 		NAS2D::Game game("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks", argv[0]);

@@ -9,9 +9,12 @@
 // ==================================================================================
 
 #include "Sprite.h"
+#include "../Utility.h"
+#include "../Filesystem.h"
 #include "../ContainerUtils.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
+#include "../Renderer/Renderer.h"
 
 #include <utility>
 #include <iostream>
@@ -79,9 +82,9 @@ Point<int> Sprite::origin(Point<int> point) const
 /**
  * Gets a list of Actions available for the Sprite.
  *
- * \return	StringList of actions.
+ * \return	std::vector<std::string> of actions.
  */
-StringList Sprite::actions() const
+std::vector<std::string> Sprite::actions() const
 {
 	return getKeys(*mActions);
 }

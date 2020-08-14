@@ -10,13 +10,13 @@
 
 #pragma once
 
-#include "State.h"
-#include "Utility.h"
-
 #include <memory>
 
 
 namespace NAS2D {
+
+class State;
+
 
 /**
  * \class	StateManager

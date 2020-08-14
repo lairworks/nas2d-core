@@ -18,14 +18,16 @@
 #include "RectangleSkin.h"
 #include "../Timer.h"
 #include "../Signal.h"
-#include "../Resources/Image.h"
-#include "../Resources/Font.h"
 
 #include <string_view>
 #include <string>
 #include <vector>
 
 namespace NAS2D {
+
+class Font;
+class Image;
+
 
 /**
  * \class Renderer
@@ -63,7 +65,7 @@ public:
 	virtual void drawImageRepeated(const Image& image, Rectangle<float> rect) = 0;
 	virtual void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) = 0;
 
-	virtual void drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint) = 0;
+	virtual void drawImageToImage(const Image& source, const Image& destination, Point<float> dstPoint) = 0;
 
 	virtual void drawPoint(Point<float> position, Color color = Color::White) = 0;
 	virtual void drawLine(Point<float> startPosition, Point<float> endPosition, Color color = Color::White, int line_width = 1) = 0;
@@ -125,7 +127,7 @@ public:
 
 	virtual void setViewport(const Rectangle<int>& viewport) = 0;
 	virtual void setOrthoProjection(const Rectangle<float>& orthoBounds) = 0;
-	void setResolution(const Vector<int>& newResolution);
+	void setResolution(Vector<int> newResolution);
 
 protected:
 	Renderer(const std::string& appTitle);

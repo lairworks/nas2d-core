@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Color.h"
-#include "Renderer.h"
 #include "../Timer.h"
 #include "../Signal.h"
 
 
 namespace NAS2D {
+
+class Renderer;
+
 
 class Fade
 {

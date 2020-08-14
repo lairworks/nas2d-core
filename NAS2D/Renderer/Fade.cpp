@@ -1,5 +1,6 @@
 
 #include "Fade.h"
+#include "Renderer.h"
 
 #include <algorithm>
 

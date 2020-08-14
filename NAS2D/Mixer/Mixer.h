@@ -12,10 +12,12 @@
 
 #include "../Signal.h"
 
-#include "../Resources/Sound.h"
-#include "../Resources/Music.h"
 
 namespace NAS2D {
+
+class Sound;
+class Music;
+
 
 /**
  * \class Mixer

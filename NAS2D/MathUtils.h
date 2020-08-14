@@ -10,8 +10,6 @@
 #pragma once
 
 #include "Renderer/Point.h"
-#include "Renderer/Rectangle.h"
-#include "Renderer/Vector.h"
 
 #include <memory>
 #include <string>
@@ -21,7 +19,7 @@
 
 namespace NAS2D
 {
-	bool lineIntersectsCircle(const Point<int>& p, const Point<int>& q, const Point<int>& c, float r);
+	bool lineIntersectsCircle(Point<int> p, Point<int> q, Point<int> c, float r);
 
 	int divideUp(int to_divide, int divisor);
 

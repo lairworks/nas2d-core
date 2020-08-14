@@ -8,11 +8,12 @@
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
 
+#include "Game.h"
+#include "StateManager.h"
 #include "Configuration.h"
 #include "EventHandler.h"
 #include "Exception.h"
 #include "Filesystem.h"
-#include "Game.h"
 #include "Utility.h"
 #include "Version.h"
 

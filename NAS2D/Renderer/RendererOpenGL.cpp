@@ -11,6 +11,8 @@
 #include "RendererOpenGL.h"
 
 #include "VectorSizeRange.h"
+#include "../Resources/Image.h"
+#include "../Resources/Font.h"
 #include "../Trig.h"
 #include "../Configuration.h"
 #include "../EventHandler.h"
@@ -269,7 +271,7 @@ void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<fl
 }
 
 
-void RendererOpenGL::drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint)
+void RendererOpenGL::drawImageToImage(const Image& source, const Image& destination, Point<float> dstPoint)
 {
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();

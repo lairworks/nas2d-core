@@ -1,12 +1,15 @@
+#pragma once
+
 #include "NAS2D/NAS2D.h"
+
 
 class TestGraphics : public NAS2D::State
 {
-  public:
+public:
 	TestGraphics();
 	~TestGraphics();
 
-  protected:
+protected:
 	void initialize();
 	NAS2D::State* update();
 
@@ -16,10 +19,9 @@ class TestGraphics : public NAS2D::State
 
 	void onWindowResized(int w, int h);
 
-  private:
+private:
 	NAS2D::Timer mTimer;
 
 	NAS2D::Image mDxImage;
 	NAS2D::Image mOglImage;
-
 };

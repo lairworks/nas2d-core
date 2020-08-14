@@ -11,6 +11,8 @@
 
 #include "Renderer.h"
 
+#include <map>
+
 
 using SDL_GLContext = void*;
 struct SDL_Cursor;
@@ -61,7 +63,7 @@ public:
 	void drawImageRepeated(const Image& image, Rectangle<float> rect) override;
 	void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) override;
 
-	void drawImageToImage(const Image& source, const Image& destination, const Point<float>& dstPoint) override;
+	void drawImageToImage(const Image& source, const Image& destination, Point<float> dstPoint) override;
 
 	void drawPoint(Point<float> position, Color color = Color::White) override;
 	void drawLine(Point<float> startPosition, Point<float> endPosition, Color color = Color::White, int line_width = 1) override;

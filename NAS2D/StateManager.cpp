@@ -9,6 +9,9 @@
 // ==================================================================================
 
 #include "StateManager.h"
+#include "EventHandler.h"
+#include "Utility.h"
+#include "State.h"
 #include "Mixer/Mixer.h"
 
 #include <iostream>

@@ -7,8 +7,10 @@
 // = 
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-#include "NAS2D/NAS2D.h"
+
 #include "TestGraphics.h"
+
+#include <NAS2D/NAS2D.h>
 
 #include <iostream>
 #include <string>

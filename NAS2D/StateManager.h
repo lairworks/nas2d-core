@@ -11,7 +11,6 @@
 #pragma once
 
 #include "State.h"
-#include "Utility.h"
 
 #include <memory>
 

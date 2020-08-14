@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include "EventHandler.h"
 #include "Signal.h"
+
 
 namespace NAS2D {
 

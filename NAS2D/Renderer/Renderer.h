@@ -18,14 +18,16 @@
 #include "RectangleSkin.h"
 #include "../Timer.h"
 #include "../Signal.h"
-#include "../Resources/Image.h"
-#include "../Resources/Font.h"
 
 #include <string_view>
 #include <string>
 #include <vector>
 
 namespace NAS2D {
+
+class Font;
+class Image;
+
 
 /**
  * \class Renderer

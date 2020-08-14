@@ -10,8 +10,6 @@
 
 #pragma once
 
-#include "Signal.h"
-
 
 namespace NAS2D {
 

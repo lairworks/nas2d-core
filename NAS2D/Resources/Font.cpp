@@ -212,6 +212,7 @@ namespace {
 		fontInfo.ascent = TTF_FontAscent(font);
 		fontInfo.glyphSize = roundedCharSize;
 		fontInfo.textureId = generateFontTexture(fontSurface, glm);
+		SDL_FreeSurface(fontSurface);
 		TTF_CloseFont(font);
 
 		return fontInfo;
@@ -264,6 +265,7 @@ namespace {
 		fontInfo.ascent = glyphSize.y;
 		fontInfo.glyphSize = glyphSize;
 		fontInfo.textureId = generateFontTexture(fontSurface, glm);
+		SDL_FreeSurface(fontSurface);
 
 		return fontInfo;
 	}
@@ -279,7 +281,6 @@ namespace {
 		fillInTextureCoordinates(glyphMetricsList);
 
 		auto textureId = generateTexture(fontSurface);
-		SDL_FreeSurface(fontSurface);
 
 		return textureId;
 	}

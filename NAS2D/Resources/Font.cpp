@@ -279,10 +279,7 @@ namespace {
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		fillInTextureCoordinates(glyphMetricsList);
-
-		auto textureId = generateTexture(fontSurface);
-
-		return textureId;
+		return generateTexture(fontSurface);
 	}
 
 

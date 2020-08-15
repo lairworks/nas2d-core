@@ -54,7 +54,7 @@ Image::Image(const std::string& filePath) :
 		throw std::runtime_error("Image file is empty: " + mResourceName);
 	}
 
-	mSurface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
+	mSurface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 1);
 	if (!mSurface)
 	{
 		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});

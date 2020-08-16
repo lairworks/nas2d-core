@@ -66,6 +66,10 @@ namespace {
 	}
 
 
+	// This method should be scheduled for deprecation
+	// It should remain for a short while to allow configuration options to be resaved
+	// Resaving will convert data to a consistent format for all sections
+	// We will no longer need to be able to parse the special format of the "options" section
 	Dictionary ParseOptionsToDictionary(const Xml::XmlElement& element)
 	{
 		Dictionary dictionary;
@@ -143,22 +147,6 @@ namespace {
 	}
 
 
-	Xml::XmlElement* DictionaryToXmlElementOptions(const std::string& tagName, const Dictionary& dictionary)
-	{
-		auto* element = new Xml::XmlElement(tagName.c_str());
-
-		for (const auto& key : dictionary.keys())
-		{
-			auto* option = new Xml::XmlElement("option");
-			option->attribute("name", key);
-			option->attribute("value", dictionary.get(key));
-			element->linkEndChild(option);
-		}
-
-		return element;
-	}
-
-
 	Xml::XmlElement* SectionsToXmlElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
 	{
 		auto* element = new Xml::XmlElement(tagName);
@@ -190,7 +178,6 @@ void Configuration::loadData(const std::string& fileData)
 	// Start parsing through the Config.xml file.
 	mLoadedSettings = ParseXmlSections(fileData, "configuration");
 	mSettings = merge(mDefaults, mLoadedSettings);
-	ReportProblemNames(getKeys(mSettings), {"graphics", "audio", "options"});
 }
 
 
@@ -219,7 +206,6 @@ void Configuration::load(const std::string& filePath)
 			std::cout << "unable to process '" << filePath << "'. Using default options. Error: " << e.what() << std::endl;
 		}
 	}
-
 }
 
 
@@ -233,11 +219,7 @@ std::string Configuration::saveData() const
 	auto* comment = new Xml::XmlComment("Automatically generated Configuration file.");
 	doc.linkEndChild(comment);
 
-	const auto& graphics = mSettings.at("graphics");
-	const auto& audio = mSettings.at("audio");
-
-	auto* root = SectionsToXmlElement("configuration", std::map<std::string, Dictionary>{{"graphics", graphics}, {"audio", audio}});
-	root->linkEndChild(DictionaryToXmlElementOptions("options", mSettings.at("options")));
+	auto* root = SectionsToXmlElement("configuration", mSettings);
 	doc.linkEndChild(root);
 
 	// Write out the XML file.

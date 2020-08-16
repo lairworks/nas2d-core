@@ -174,7 +174,6 @@ void Configuration::loadData(const std::string& fileData)
 	// Start parsing through the Config.xml file.
 	mLoadedSettings = ParseXmlSections(fileData, "configuration");
 	mSettings = merge(mDefaults, mLoadedSettings);
-	ReportProblemNames(getKeys(mSettings), {"graphics", "audio", "options"});
 }
 
 

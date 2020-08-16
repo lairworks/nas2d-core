@@ -34,7 +34,7 @@ Sound::Sound(const std::string& filePath) :
 		throw std::runtime_error("Sound file is empty: " + mResourceName);
 	}
 
-	mMixChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 0);
+	mMixChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 1);
 	if (!mMixChunk)
 	{
 		throw std::runtime_error("Sound file could not be loaded: " + mResourceName + " : " + std::string{Mix_GetError()});

@@ -194,7 +194,7 @@ namespace {
 			throw std::runtime_error("Font file is empty: " + path);
 		}
 
-		TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0, static_cast<int>(ptSize));
+		TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 1, static_cast<int>(ptSize));
 		if (!font)
 		{
 			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});
@@ -231,7 +231,7 @@ namespace {
 			throw std::runtime_error("Font file is empty: " + path);
 		}
 
-		SDL_Surface* fontSurface = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 0);
+		SDL_Surface* fontSurface = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 1);
 		if (!fontSurface)
 		{
 			throw std::runtime_error("Font loadBitmap function failed: " + std::string{SDL_GetError()});

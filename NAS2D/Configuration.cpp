@@ -66,6 +66,10 @@ namespace {
 	}
 
 
+	// This method should be scheduled for deprecation
+	// It should remain for a short while to allow configuration options to be resaved
+	// Resaving will convert data to a consistent format for all sections
+	// We will no longer need to be able to parse the special format of the "options" section
 	Dictionary ParseOptionsToDictionary(const Xml::XmlElement& element)
 	{
 		Dictionary dictionary;

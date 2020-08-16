@@ -202,7 +202,6 @@ void Configuration::load(const std::string& filePath)
 			std::cout << "unable to process '" << filePath << "'. Using default options. Error: " << e.what() << std::endl;
 		}
 	}
-
 }
 
 

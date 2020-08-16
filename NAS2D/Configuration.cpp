@@ -143,22 +143,6 @@ namespace {
 	}
 
 
-	Xml::XmlElement* DictionaryToXmlElementOptions(const std::string& tagName, const Dictionary& dictionary)
-	{
-		auto* element = new Xml::XmlElement(tagName.c_str());
-
-		for (const auto& key : dictionary.keys())
-		{
-			auto* option = new Xml::XmlElement("option");
-			option->attribute("name", key);
-			option->attribute("value", dictionary.get(key));
-			element->linkEndChild(option);
-		}
-
-		return element;
-	}
-
-
 	Xml::XmlElement* SectionsToXmlElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
 	{
 		auto* element = new Xml::XmlElement(tagName);
@@ -233,11 +217,7 @@ std::string Configuration::saveData() const
 	auto* comment = new Xml::XmlComment("Automatically generated Configuration file.");
 	doc.linkEndChild(comment);
 
-	const auto& graphics = mSettings.at("graphics");
-	const auto& audio = mSettings.at("audio");
-
-	auto* root = SectionsToXmlElement("configuration", std::map<std::string, Dictionary>{{"graphics", graphics}, {"audio", audio}});
-	root->linkEndChild(DictionaryToXmlElementOptions("options", mSettings.at("options")));
+	auto* root = SectionsToXmlElement("configuration", mSettings);
 	doc.linkEndChild(root);
 
 	// Write out the XML file.

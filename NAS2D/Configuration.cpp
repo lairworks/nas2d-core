@@ -43,7 +43,7 @@ namespace {
 
 		const auto expected = required + optional;
 
-		const auto missing = names - required;
+		const auto missing = required - names;
 		const auto unexpected = names - expected;
 
 		if (!missing.empty() || !unexpected.empty())

@@ -125,6 +125,9 @@ TEST(String, dataStringData) {
 
 
 TEST(String, split) {
+	EXPECT_EQ((NAS2D::StringList{}), NAS2D::split(""));
+	EXPECT_EQ((NAS2D::StringList{"a"}), NAS2D::split("a"));
+
 	EXPECT_EQ((NAS2D::StringList{"a", "b", "c"}), NAS2D::split("a,b,c"));
 	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::split("abc"));
 	EXPECT_EQ((NAS2D::StringList{"", "abc"}), NAS2D::split(",abc"));

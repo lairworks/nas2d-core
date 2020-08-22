@@ -33,22 +33,6 @@ namespace {
 		return results;
 	}
 
-
-	template <typename T>
-	auto missingValues(const std::vector<T>& values, const std::vector<T>& required)
-	{
-		using namespace ContainerOperators;
-		return required - values;
-	}
-
-	template <typename T>
-	auto unexpectedValues(const std::vector<T>& values, const std::vector<T>& required, const std::vector<T>& optional = {})
-	{
-		using namespace ContainerOperators;
-		const auto expected = required + optional;
-		return values - expected;
-	}
-
 	void reportMissingOrUnexpected(const std::vector<std::string>& missing, const std::vector<std::string>& unexpected)
 	{
 		if (!missing.empty() || !unexpected.empty())

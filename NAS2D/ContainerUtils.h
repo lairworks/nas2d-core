@@ -45,6 +45,21 @@ namespace NAS2D {
 	}
 
 
+	template <typename T>
+	auto missingValues(const std::vector<T>& values, const std::vector<T>& required)
+	{
+		using namespace ContainerOperators;
+		return required - values;
+	}
+
+	template <typename T>
+	auto unexpectedValues(const std::vector<T>& values, const std::vector<T>& required, const std::vector<T>& optional = {})
+	{
+		using namespace ContainerOperators;
+		const auto expected = required + optional;
+		return values - expected;
+	}
+
 	template <typename Container>
 	bool has(const Container& container, const typename Container::value_type& value)
 	{

@@ -109,7 +109,7 @@ namespace {
 	}
 
 
-	std::map<std::string, Dictionary> subTagsToDictionaryMap(const std::string& xmlString, const std::string& sectionName, const std::string& requiredVersion = "")
+	std::map<std::string, Dictionary> parseXmlFileData(const std::string& xmlString, const std::string& sectionName, const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;
 		xmlDocument.parse(xmlString.c_str());
@@ -176,7 +176,7 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	mLoadedSettings = subTagsToDictionaryMap(fileData, "configuration");
+	mLoadedSettings = parseXmlFileData(fileData, "configuration");
 	mSettings = merge(mDefaults, mLoadedSettings);
 }
 

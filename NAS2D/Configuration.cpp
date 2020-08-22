@@ -23,12 +23,14 @@ using namespace NAS2D;
 
 
 namespace {
-	std::map<std::string, Dictionary> merge(const std::map<std::string, Dictionary>& defaults, const std::map<std::string, Dictionary>& priorityValues)
+	/// Key-wise merge of values from two key/value containers
+	template <typename KeyValueContainer>
+	KeyValueContainer mergeByKey(const KeyValueContainer& defaults, const KeyValueContainer& priorityValues)
 	{
-		std::map<std::string, Dictionary> results = defaults;
-		for (const auto& [key, dictionary] : priorityValues)
+		KeyValueContainer results = defaults;
+		for (const auto& [key, value] : priorityValues)
 		{
-			results[key] += dictionary;
+			results[key] += value;
 		}
 		return results;
 	}
@@ -176,7 +178,7 @@ void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
 	mLoadedSettings = parseXmlFileData(fileData, "configuration");
-	mSettings = merge(mDefaults, mLoadedSettings);
+	mSettings = mergeByKey(mDefaults, mLoadedSettings);
 }
 
 

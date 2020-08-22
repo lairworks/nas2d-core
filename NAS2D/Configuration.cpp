@@ -109,7 +109,7 @@ namespace {
 	}
 
 
-	std::map<std::string, Dictionary> parseXmlFileData(const std::string& xmlString, const std::string& sectionName, const std::string& requiredVersion = "")
+	std::map<std::string, Dictionary> parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;
 		xmlDocument.parse(xmlString.c_str());
@@ -119,7 +119,7 @@ namespace {
 			throw std::runtime_error("Error parsing XML file on (Row " + std::to_string(xmlDocument.errorRow()) + ", Column " + std::to_string(xmlDocument.errorCol()) + "): " + xmlDocument.errorDesc());
 		}
 
-		auto* root = xmlDocument.firstChildElement(sectionName);
+		auto* root = !sectionName.empty() ? xmlDocument.firstChildElement(sectionName) : xmlDocument.rootElement();
 		if (!root)
 		{
 			throw std::runtime_error("XML file does not contain tag: " + sectionName);

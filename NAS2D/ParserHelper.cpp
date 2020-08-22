@@ -22,4 +22,29 @@ namespace NAS2D {
 		const auto unexpected = unexpectedValues(names, required, optional);
 		reportMissingOrUnexpected(missing, unexpected);
 	}
+
+
+	Dictionary attributesToDictionary(const Xml::XmlElement& element)
+	{
+		Dictionary dictionary;
+		for (const auto* attribute = element.firstAttribute(); attribute; attribute = attribute->next())
+		{
+			dictionary.set(attribute->name(), attribute->value());
+		}
+		return dictionary;
+	}
+
+
+	std::map<std::string, Dictionary> subTagsToDictionaryMap(const Xml::XmlElement& element)
+	{
+		std::map<std::string, Dictionary> sections;
+		for (auto childElement = element.firstChildElement(); childElement; childElement = childElement->nextSiblingElement())
+		{
+			if (childElement->type() != Xml::XmlNode::NodeType::XML_COMMENT)
+			{
+				sections[childElement->value()] = attributesToDictionary(*childElement);
+			}
+		}
+		return sections;
+	}
 }

@@ -61,7 +61,7 @@ namespace {
 	void reportProblemNames(
 		const std::vector<std::string>& names,
 		const std::vector<std::string>& required,
-		const std::vector<std::string>& optional = {}
+		const std::vector<std::string>& optional
 	) {
 		const auto missing = missingValues(names, required);
 		const auto unexpected = unexpectedValues(names, required, optional);
@@ -95,7 +95,7 @@ namespace {
 			}
 
 			const auto optionDictionary = attributesToDictionary(*setting);
-			reportProblemNames(optionDictionary.keys(), {"name", "value"});
+			reportProblemNames(optionDictionary.keys(), {"name", "value"}, {});
 
 			const auto name = optionDictionary.get("name");
 			const auto value = optionDictionary.get("value");

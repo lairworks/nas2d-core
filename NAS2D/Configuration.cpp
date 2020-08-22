@@ -48,7 +48,8 @@ namespace {
 	}
 
 
-	std::map<std::string, Dictionary> parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
+	template <auto fileFormatParser(const Xml::XmlElement& element) = subTagsToDictionaryMap>
+	auto parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;
 		xmlDocument.parse(xmlString.c_str());
@@ -73,7 +74,7 @@ namespace {
 			}
 		}
 
-		return subTagsToDictionaryMap(*root);
+		return fileFormatParser(*root);
 	}
 
 

@@ -34,17 +34,26 @@ namespace {
 	}
 
 
+	auto missingValues(const std::vector<std::string>& values, const std::vector<std::string>& required)
+	{
+		using namespace ContainerOperators;
+		return required - values;
+	}
+
+	auto unexpectedValues(const std::vector<std::string>& values, const std::vector<std::string>& required, const std::vector<std::string>& optional = {})
+	{
+		using namespace ContainerOperators;
+		const auto expected = required + optional;
+		return values - expected;
+	}
+
 	void reportProblemNames(
 		const std::vector<std::string>& names,
 		const std::vector<std::string>& required,
 		const std::vector<std::string>& optional = {}
 	) {
-		using namespace ContainerOperators;
-
-		const auto expected = required + optional;
-
-		const auto missing = required - names;
-		const auto unexpected = names - expected;
+		const auto missing = missingValues(names, required);
+		const auto unexpected = unexpectedValues(names, required, optional);
 
 		if (!missing.empty() || !unexpected.empty())
 		{

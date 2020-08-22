@@ -77,4 +77,16 @@ namespace NAS2D {
 		}
 		return result;
 	}
+
+	/// Key-wise merge of values from two key/value containers
+	template <typename KeyValueContainer>
+	KeyValueContainer mergeByKey(const KeyValueContainer& defaults, const KeyValueContainer& priorityValues)
+	{
+		KeyValueContainer results = defaults;
+		for (const auto& [key, value] : priorityValues)
+		{
+			results[key] += value;
+		}
+		return results;
+	}
 }

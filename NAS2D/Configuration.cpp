@@ -23,18 +23,6 @@ using namespace NAS2D;
 
 
 namespace {
-	/// Key-wise merge of values from two key/value containers
-	template <typename KeyValueContainer>
-	KeyValueContainer mergeByKey(const KeyValueContainer& defaults, const KeyValueContainer& priorityValues)
-	{
-		KeyValueContainer results = defaults;
-		for (const auto& [key, value] : priorityValues)
-		{
-			results[key] += value;
-		}
-		return results;
-	}
-
 	void reportMissingOrUnexpected(const std::vector<std::string>& missing, const std::vector<std::string>& unexpected)
 	{
 		if (!missing.empty() || !unexpected.empty())

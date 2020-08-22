@@ -34,7 +34,7 @@ namespace {
 	}
 
 
-	void ReportProblemNames(
+	void reportProblemNames(
 		const std::vector<std::string>& names,
 		const std::vector<std::string>& required,
 		const std::vector<std::string>& optional = {}
@@ -53,7 +53,7 @@ namespace {
 	}
 
 
-	Dictionary ParseXmlElementAttributesToDictionary(const Xml::XmlElement& element)
+	Dictionary attributesToDictionary(const Xml::XmlElement& element)
 	{
 		Dictionary dictionary;
 
@@ -70,7 +70,7 @@ namespace {
 	// It should remain for a short while to allow configuration options to be resaved
 	// Resaving will convert data to a consistent format for all sections
 	// We will no longer need to be able to parse the special format of the "options" section
-	Dictionary ParseOptionsToDictionary(const Xml::XmlElement& element)
+	Dictionary optionsToDictionary(const Xml::XmlElement& element)
 	{
 		Dictionary dictionary;
 
@@ -81,8 +81,8 @@ namespace {
 				throw std::runtime_error("Unexpected tag found in configuration on row: " + std::to_string(setting->row()) + "  <" + setting->value() + ">");
 			}
 
-			const auto optionDictionary = ParseXmlElementAttributesToDictionary(*setting);
-			ReportProblemNames(optionDictionary.keys(), {"name", "value"});
+			const auto optionDictionary = attributesToDictionary(*setting);
+			reportProblemNames(optionDictionary.keys(), {"name", "value"});
 
 			const auto name = optionDictionary.get("name");
 			const auto value = optionDictionary.get("value");
@@ -99,7 +99,7 @@ namespace {
 	}
 
 
-	std::map<std::string, Dictionary> ParseXmlSections(const Xml::XmlElement& element)
+	std::map<std::string, Dictionary> subTagsToDictionaryMap(const Xml::XmlElement& element)
 	{
 		std::map<std::string, Dictionary> sections;
 
@@ -107,14 +107,14 @@ namespace {
 		{
 			if (childElement->type() == Xml::XmlNode::NodeType::XML_COMMENT) { continue; } // Ignore comments
 
-			sections[childElement->value()] = ParseXmlElementAttributesToDictionary(*childElement) + ParseOptionsToDictionary(*childElement);
+			sections[childElement->value()] = attributesToDictionary(*childElement) + optionsToDictionary(*childElement);
 		}
 
 		return sections;
 	}
 
 
-	std::map<std::string, Dictionary> ParseXmlSections(const std::string& xmlString, const std::string& sectionName)
+	std::map<std::string, Dictionary> subTagsToDictionaryMap(const std::string& xmlString, const std::string& sectionName)
 	{
 		Xml::XmlDocument xmlDocument;
 		xmlDocument.parse(xmlString.c_str());
@@ -130,11 +130,11 @@ namespace {
 			throw std::runtime_error("XML file does not contain tag: " + sectionName);
 		}
 
-		return ParseXmlSections(*root);
+		return subTagsToDictionaryMap(*root);
 	}
 
 
-	Xml::XmlElement* DictionaryToXmlElementAttributes(const std::string& tagName, const Dictionary& dictionary)
+	Xml::XmlElement* dictionaryToAttributes(const std::string& tagName, const Dictionary& dictionary)
 	{
 		auto* element = new Xml::XmlElement(tagName.c_str());
 
@@ -147,13 +147,13 @@ namespace {
 	}
 
 
-	Xml::XmlElement* SectionsToXmlElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
+	Xml::XmlElement* dictionaryMapToElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
 	{
 		auto* element = new Xml::XmlElement(tagName);
 
 		for (const auto& [key, dictionary] : sections)
 		{
-			element->linkEndChild(DictionaryToXmlElementAttributes(key, dictionary));
+			element->linkEndChild(dictionaryToAttributes(key, dictionary));
 		}
 
 		return element;
@@ -176,7 +176,7 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	mLoadedSettings = ParseXmlSections(fileData, "configuration");
+	mLoadedSettings = subTagsToDictionaryMap(fileData, "configuration");
 	mSettings = merge(mDefaults, mLoadedSettings);
 }
 
@@ -219,7 +219,7 @@ std::string Configuration::saveData() const
 	auto* comment = new Xml::XmlComment("Automatically generated Configuration file.");
 	doc.linkEndChild(comment);
 
-	auto* root = SectionsToXmlElement("configuration", mSettings);
+	auto* root = dictionaryMapToElement("configuration", mSettings);
 	doc.linkEndChild(root);
 
 	// Write out the XML file.

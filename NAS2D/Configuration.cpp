@@ -48,7 +48,10 @@ namespace {
 
 		if (!missing.empty() || !unexpected.empty())
 		{
-			throw std::runtime_error("Missing required names: {" + join(missing, ", ") +"}, unexpected names: {" + join(unexpected, ", ") + "}");
+			const auto missingString = !missing.empty() ? "Missing names: {" + join(missing, ", ") +"}" : "";
+			const auto unexpectedString = !unexpected.empty() ? "Unexpected names: {" + join(unexpected, ", ") + "}" : "";
+			const auto joinString = (!missingString.empty() && !unexpectedString.empty()) ? "\n" : "";
+			throw std::runtime_error(missingString + joinString + unexpectedString);
 		}
 	}
 

@@ -98,6 +98,24 @@ namespace {
 		}
 		return element;
 	}
+
+	template <typename Data, Xml::XmlElement* dataFormatter(const std::string& tagName, const Data& data) = dictionaryMapToElement>
+	std::string formatXmlData(const Data& data, const std::string& tagName, const std::string& comment = "")
+	{
+		Xml::XmlDocument doc;
+
+		if (!comment.empty())
+		{
+			doc.linkEndChild(new Xml::XmlComment(comment));
+		}
+		doc.linkEndChild(dataFormatter(tagName, data));
+
+		// Write out the XML file.
+		Xml::XmlMemoryBuffer buff;
+		doc.accept(&buff);
+
+		return buff.buffer();
+	}
 }
 
 
@@ -154,19 +172,7 @@ void Configuration::load(const std::string& filePath)
  */
 std::string Configuration::saveData() const
 {
-	Xml::XmlDocument doc;
-
-	auto* comment = new Xml::XmlComment("Automatically generated Configuration file.");
-	doc.linkEndChild(comment);
-
-	auto* root = dictionaryMapToElement("configuration", mSettings);
-	doc.linkEndChild(root);
-
-	// Write out the XML file.
-	Xml::XmlMemoryBuffer buff;
-	doc.accept(&buff);
-
-	return buff.buffer();
+	return formatXmlData(mSettings, "configuration", "Automatically generated Configuration file.");
 }
 
 

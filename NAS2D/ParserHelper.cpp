@@ -3,6 +3,8 @@
 #include "StringUtils.h"
 #include "ContainerUtils.h"
 
+#include "Xml/XmlNode.h"
+
 
 namespace NAS2D {
 	void reportMissingOrUnexpected(const std::vector<std::string>& missing, const std::vector<std::string>& unexpected)

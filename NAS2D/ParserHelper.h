@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Dictionary.h"
-#include "Xml/Xml.h"
+#include "Xml/XmlDocument.h"
+#include "Xml/XmlMemoryBuffer.h"
+#include "Xml/XmlComment.h"
+#include "Xml/XmlElement.h"
 
 #include <string>
 #include <vector>

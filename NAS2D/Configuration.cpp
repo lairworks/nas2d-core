@@ -100,8 +100,10 @@ namespace {
 		std::map<std::string, Dictionary> sections;
 		for (auto childElement = element.firstChildElement(); childElement; childElement = childElement->nextSiblingElement())
 		{
-			if (childElement->type() == Xml::XmlNode::NodeType::XML_COMMENT) { continue; } // Ignore comments
-			sections[childElement->value()] = attributesToDictionary(*childElement) + optionsToDictionary(*childElement);
+			if (childElement->type() != Xml::XmlNode::NodeType::XML_COMMENT)
+			{
+				sections[childElement->value()] = attributesToDictionary(*childElement) + optionsToDictionary(*childElement);
+			}
 		}
 		return sections;
 	}

@@ -109,7 +109,7 @@ namespace {
 	}
 
 
-	std::map<std::string, Dictionary> subTagsToDictionaryMap(const std::string& xmlString, const std::string& sectionName)
+	std::map<std::string, Dictionary> subTagsToDictionaryMap(const std::string& xmlString, const std::string& sectionName, const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;
 		xmlDocument.parse(xmlString.c_str());
@@ -123,6 +123,15 @@ namespace {
 		if (!root)
 		{
 			throw std::runtime_error("XML file does not contain tag: " + sectionName);
+		}
+
+		if (!requiredVersion.empty())
+		{
+			const auto actualVersion = root->attribute("version");
+			if (actualVersion != requiredVersion)
+			{
+				throw std::runtime_error("Version mismatch. Expected: " + std::string{requiredVersion} + " Actual: " + actualVersion);
+			}
 		}
 
 		return subTagsToDictionaryMap(*root);

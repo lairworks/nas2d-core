@@ -14,4 +14,7 @@ namespace NAS2D {
 
 	Dictionary attributesToDictionary(const Xml::XmlElement& element);
 	std::map<std::string, Dictionary> subTagsToDictionaryMap(const Xml::XmlElement& element);
+
+	Xml::XmlElement* dictionaryToAttributes(const std::string& tagName, const Dictionary& dictionary);
+	Xml::XmlElement* dictionaryMapToElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections);
 }

@@ -52,28 +52,6 @@ namespace {
 		return fileFormatParser(*root);
 	}
 
-
-	Xml::XmlElement* dictionaryToAttributes(const std::string& tagName, const Dictionary& dictionary)
-	{
-		auto* element = new Xml::XmlElement(tagName.c_str());
-		for (const auto& key : dictionary.keys())
-		{
-			element->attribute(key, dictionary.get(key));
-		}
-		return element;
-	}
-
-
-	Xml::XmlElement* dictionaryMapToElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
-	{
-		auto* element = new Xml::XmlElement(tagName);
-		for (const auto& [key, dictionary] : sections)
-		{
-			element->linkEndChild(dictionaryToAttributes(key, dictionary));
-		}
-		return element;
-	}
-
 	template <typename Data, Xml::XmlElement* dataFormatter(const std::string& tagName, const Data& data) = dictionaryMapToElement>
 	std::string formatXmlData(const Data& data, const std::string& tagName, const std::string& comment = "")
 	{

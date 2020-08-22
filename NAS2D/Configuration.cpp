@@ -47,14 +47,8 @@ namespace {
 		return values - expected;
 	}
 
-	void reportProblemNames(
-		const std::vector<std::string>& names,
-		const std::vector<std::string>& required,
-		const std::vector<std::string>& optional = {}
-	) {
-		const auto missing = missingValues(names, required);
-		const auto unexpected = unexpectedValues(names, required, optional);
-
+	void reportMissingOrUnexpected(const std::vector<std::string>& missing, const std::vector<std::string>& unexpected)
+	{
 		if (!missing.empty() || !unexpected.empty())
 		{
 			const auto missingString = !missing.empty() ? "Missing names: {" + join(missing, ", ") +"}" : "";
@@ -62,6 +56,16 @@ namespace {
 			const auto joinString = (!missingString.empty() && !unexpectedString.empty()) ? "\n" : "";
 			throw std::runtime_error(missingString + joinString + unexpectedString);
 		}
+	}
+
+	void reportProblemNames(
+		const std::vector<std::string>& names,
+		const std::vector<std::string>& required,
+		const std::vector<std::string>& optional = {}
+	) {
+		const auto missing = missingValues(names, required);
+		const auto unexpected = unexpectedValues(names, required, optional);
+		reportMissingOrUnexpected(missing, unexpected);
 	}
 
 

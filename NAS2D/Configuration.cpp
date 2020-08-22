@@ -58,11 +58,8 @@ namespace {
 		}
 	}
 
-	void reportProblemNames(
-		const std::vector<std::string>& names,
-		const std::vector<std::string>& required,
-		const std::vector<std::string>& optional
-	) {
+	void reportProblemNames(const std::vector<std::string>& names, const std::vector<std::string>& required, const std::vector<std::string>& optional)
+	{
 		const auto missing = missingValues(names, required);
 		const auto unexpected = unexpectedValues(names, required, optional);
 		reportMissingOrUnexpected(missing, unexpected);

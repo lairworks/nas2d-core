@@ -45,6 +45,21 @@ namespace NAS2D {
 	}
 
 
+	template <typename T>
+	auto missingValues(const std::vector<T>& values, const std::vector<T>& required)
+	{
+		using namespace ContainerOperators;
+		return required - values;
+	}
+
+	template <typename T>
+	auto unexpectedValues(const std::vector<T>& values, const std::vector<T>& required, const std::vector<T>& optional = {})
+	{
+		using namespace ContainerOperators;
+		const auto expected = required + optional;
+		return values - expected;
+	}
+
 	template <typename Container>
 	bool has(const Container& container, const typename Container::value_type& value)
 	{
@@ -61,5 +76,17 @@ namespace NAS2D {
 			result.push_back(pair.first);
 		}
 		return result;
+	}
+
+	/// Key-wise merge of values from two key/value containers
+	template <typename KeyValueContainer>
+	KeyValueContainer mergeByKey(const KeyValueContainer& defaults, const KeyValueContainer& priorityValues)
+	{
+		KeyValueContainer results = defaults;
+		for (const auto& [key, value] : priorityValues)
+		{
+			results[key] += value;
+		}
+		return results;
 	}
 }

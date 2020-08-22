@@ -23,45 +23,32 @@ using namespace NAS2D;
 
 
 namespace {
-	std::map<std::string, Dictionary> merge(const std::map<std::string, Dictionary>& defaults, const std::map<std::string, Dictionary>& priorityValues)
+	void reportMissingOrUnexpected(const std::vector<std::string>& missing, const std::vector<std::string>& unexpected)
 	{
-		std::map<std::string, Dictionary> results = defaults;
-		for (const auto& [key, dictionary] : priorityValues)
-		{
-			results[key] += dictionary;
-		}
-		return results;
-	}
-
-
-	void ReportProblemNames(
-		const std::vector<std::string>& names,
-		const std::vector<std::string>& required,
-		const std::vector<std::string>& optional = {}
-	) {
-		using namespace ContainerOperators;
-
-		const auto expected = required + optional;
-
-		const auto missing = required - names;
-		const auto unexpected = names - expected;
-
 		if (!missing.empty() || !unexpected.empty())
 		{
-			throw std::runtime_error("Missing required names: {" + join(missing, ", ") +"}, unexpected names: {" + join(unexpected, ", ") + "}");
+			const auto missingString = !missing.empty() ? "Missing names: {" + join(missing, ", ") +"}" : "";
+			const auto unexpectedString = !unexpected.empty() ? "Unexpected names: {" + join(unexpected, ", ") + "}" : "";
+			const auto joinString = (!missingString.empty() && !unexpectedString.empty()) ? "\n" : "";
+			throw std::runtime_error(missingString + joinString + unexpectedString);
 		}
 	}
 
+	void reportMissingOrUnexpected(const std::vector<std::string>& names, const std::vector<std::string>& required, const std::vector<std::string>& optional)
+	{
+		const auto missing = missingValues(names, required);
+		const auto unexpected = unexpectedValues(names, required, optional);
+		reportMissingOrUnexpected(missing, unexpected);
+	}
 
-	Dictionary ParseXmlElementAttributesToDictionary(const Xml::XmlElement& element)
+
+	Dictionary attributesToDictionary(const Xml::XmlElement& element)
 	{
 		Dictionary dictionary;
-
 		for (const auto* attribute = element.firstAttribute(); attribute; attribute = attribute->next())
 		{
 			dictionary.set(attribute->name(), attribute->value());
 		}
-
 		return dictionary;
 	}
 
@@ -70,10 +57,9 @@ namespace {
 	// It should remain for a short while to allow configuration options to be resaved
 	// Resaving will convert data to a consistent format for all sections
 	// We will no longer need to be able to parse the special format of the "options" section
-	Dictionary ParseOptionsToDictionary(const Xml::XmlElement& element)
+	Dictionary optionsToDictionary(const Xml::XmlElement& element)
 	{
 		Dictionary dictionary;
-
 		for (const auto* setting = element.firstChildElement(); setting; setting = setting->nextSiblingElement())
 		{
 			if (setting->value() != "option")
@@ -81,8 +67,8 @@ namespace {
 				throw std::runtime_error("Unexpected tag found in configuration on row: " + std::to_string(setting->row()) + "  <" + setting->value() + ">");
 			}
 
-			const auto optionDictionary = ParseXmlElementAttributesToDictionary(*setting);
-			ReportProblemNames(optionDictionary.keys(), {"name", "value"});
+			const auto optionDictionary = attributesToDictionary(*setting);
+			reportMissingOrUnexpected(optionDictionary.keys(), {"name", "value"}, {});
 
 			const auto name = optionDictionary.get("name");
 			const auto value = optionDictionary.get("value");
@@ -94,27 +80,25 @@ namespace {
 
 			dictionary.set(name, value);
 		}
-
 		return dictionary;
 	}
 
 
-	std::map<std::string, Dictionary> ParseXmlSections(const Xml::XmlElement& element)
+	std::map<std::string, Dictionary> subTagsToDictionaryMap(const Xml::XmlElement& element)
 	{
 		std::map<std::string, Dictionary> sections;
-
 		for (auto childElement = element.firstChildElement(); childElement; childElement = childElement->nextSiblingElement())
 		{
-			if (childElement->type() == Xml::XmlNode::NodeType::XML_COMMENT) { continue; } // Ignore comments
-
-			sections[childElement->value()] = ParseXmlElementAttributesToDictionary(*childElement) + ParseOptionsToDictionary(*childElement);
+			if (childElement->type() != Xml::XmlNode::NodeType::XML_COMMENT)
+			{
+				sections[childElement->value()] = attributesToDictionary(*childElement) + optionsToDictionary(*childElement);
+			}
 		}
-
 		return sections;
 	}
 
 
-	std::map<std::string, Dictionary> ParseXmlSections(const std::string& xmlString, const std::string& sectionName)
+	std::map<std::string, Dictionary> parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;
 		xmlDocument.parse(xmlString.c_str());
@@ -124,38 +108,43 @@ namespace {
 			throw std::runtime_error("Error parsing XML file on (Row " + std::to_string(xmlDocument.errorRow()) + ", Column " + std::to_string(xmlDocument.errorCol()) + "): " + xmlDocument.errorDesc());
 		}
 
-		auto* root = xmlDocument.firstChildElement(sectionName);
+		auto* root = !sectionName.empty() ? xmlDocument.firstChildElement(sectionName) : xmlDocument.rootElement();
 		if (!root)
 		{
-			throw std::runtime_error("XML file does not contain tag: " + sectionName);
+			throw std::runtime_error("XML file does not contain tag: " + (!sectionName.empty() ? sectionName : "(root element)"));
 		}
 
-		return ParseXmlSections(*root);
+		if (!requiredVersion.empty())
+		{
+			const auto actualVersion = root->attribute("version");
+			if (actualVersion != requiredVersion)
+			{
+				throw std::runtime_error("Version mismatch. Expected: " + std::string{requiredVersion} + " Actual: " + actualVersion);
+			}
+		}
+
+		return subTagsToDictionaryMap(*root);
 	}
 
 
-	Xml::XmlElement* DictionaryToXmlElementAttributes(const std::string& tagName, const Dictionary& dictionary)
+	Xml::XmlElement* dictionaryToAttributes(const std::string& tagName, const Dictionary& dictionary)
 	{
 		auto* element = new Xml::XmlElement(tagName.c_str());
-
 		for (const auto& key : dictionary.keys())
 		{
 			element->attribute(key, dictionary.get(key));
 		}
-
 		return element;
 	}
 
 
-	Xml::XmlElement* SectionsToXmlElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
+	Xml::XmlElement* dictionaryMapToElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
 	{
 		auto* element = new Xml::XmlElement(tagName);
-
 		for (const auto& [key, dictionary] : sections)
 		{
-			element->linkEndChild(DictionaryToXmlElementAttributes(key, dictionary));
+			element->linkEndChild(dictionaryToAttributes(key, dictionary));
 		}
-
 		return element;
 	}
 }
@@ -176,8 +165,8 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	mLoadedSettings = ParseXmlSections(fileData, "configuration");
-	mSettings = merge(mDefaults, mLoadedSettings);
+	mLoadedSettings = parseXmlFileData(fileData, "configuration");
+	mSettings = mergeByKey(mDefaults, mLoadedSettings);
 }
 
 
@@ -219,7 +208,7 @@ std::string Configuration::saveData() const
 	auto* comment = new Xml::XmlComment("Automatically generated Configuration file.");
 	doc.linkEndChild(comment);
 
-	auto* root = SectionsToXmlElement("configuration", mSettings);
+	auto* root = dictionaryMapToElement("configuration", mSettings);
 	doc.linkEndChild(root);
 
 	// Write out the XML file.

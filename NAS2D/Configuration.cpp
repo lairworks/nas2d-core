@@ -34,13 +34,15 @@ namespace {
 	}
 
 
-	auto missingValues(const std::vector<std::string>& values, const std::vector<std::string>& required)
+	template <typename T>
+	auto missingValues(const std::vector<T>& values, const std::vector<T>& required)
 	{
 		using namespace ContainerOperators;
 		return required - values;
 	}
 
-	auto unexpectedValues(const std::vector<std::string>& values, const std::vector<std::string>& required, const std::vector<std::string>& optional = {})
+	template <typename T>
+	auto unexpectedValues(const std::vector<T>& values, const std::vector<T>& required, const std::vector<T>& optional = {})
 	{
 		using namespace ContainerOperators;
 		const auto expected = required + optional;

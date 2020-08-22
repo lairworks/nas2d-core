@@ -34,37 +34,6 @@ namespace {
 	}
 
 
-	// This method should be scheduled for deprecation
-	// It should remain for a short while to allow configuration options to be resaved
-	// Resaving will convert data to a consistent format for all sections
-	// We will no longer need to be able to parse the special format of the "options" section
-	Dictionary optionsToDictionary(const Xml::XmlElement& element)
-	{
-		Dictionary dictionary;
-		for (const auto* setting = element.firstChildElement(); setting; setting = setting->nextSiblingElement())
-		{
-			if (setting->value() != "option")
-			{
-				throw std::runtime_error("Unexpected tag found in configuration on row: " + std::to_string(setting->row()) + "  <" + setting->value() + ">");
-			}
-
-			const auto optionDictionary = attributesToDictionary(*setting);
-			reportMissingOrUnexpected(optionDictionary.keys(), {"name", "value"}, {});
-
-			const auto name = optionDictionary.get("name");
-			const auto value = optionDictionary.get("value");
-
-			if (name.empty() || value.empty())
-			{
-				throw std::runtime_error("Invalid name/value pair in <option> tag in configuration file on row: " + std::to_string(setting->row()));
-			}
-
-			dictionary.set(name, value);
-		}
-		return dictionary;
-	}
-
-
 	std::map<std::string, Dictionary> subTagsToDictionaryMap(const Xml::XmlElement& element)
 	{
 		std::map<std::string, Dictionary> sections;
@@ -72,7 +41,7 @@ namespace {
 		{
 			if (childElement->type() != Xml::XmlNode::NodeType::XML_COMMENT)
 			{
-				sections[childElement->value()] = attributesToDictionary(*childElement) + optionsToDictionary(*childElement);
+				sections[childElement->value()] = attributesToDictionary(*childElement);
 			}
 		}
 		return sections;

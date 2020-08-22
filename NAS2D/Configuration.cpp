@@ -122,7 +122,7 @@ namespace {
 		auto* root = !sectionName.empty() ? xmlDocument.firstChildElement(sectionName) : xmlDocument.rootElement();
 		if (!root)
 		{
-			throw std::runtime_error("XML file does not contain tag: " + sectionName);
+			throw std::runtime_error("XML file does not contain tag: " + (!sectionName.empty() ? sectionName : "(root element)"));
 		}
 
 		if (!requiredVersion.empty())

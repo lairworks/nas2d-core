@@ -229,8 +229,8 @@ DockerRepository := outpostuniverse
 ImageName := nas2d
 ImageVersion := 1.4
 
-ImageName_gcc8 := nas2d-gcc8
-ImageVersion_gcc8 := 1.1
+ImageName_gcc := nas2d-gcc
+ImageVersion_gcc := 1.2
 
 ImageName_clang := nas2d-clang
 ImageVersion_clang := 1.1
@@ -258,22 +258,22 @@ root-debug-image:
 push-image:
 	docker push ${DockerRepository}/${ImageName}
 
-.PHONY: build-image-gcc8
-build-image-gcc8: ImageName := ${ImageName_gcc8}
-build-image-gcc8: ImageVersion := ${ImageVersion_gcc8}
-build-image-gcc8: | build-image
-.PHONY: run-image-gcc8
-run-image-gcc8: ImageName := ${ImageName_gcc8}
-run-image-gcc8: | run-image
-.PHONY: debug-image-gcc8
-debug-image-gcc8: ImageName := ${ImageName_gcc8}
-debug-image-gcc8: | debug-image
-.PHONY: root-debug-image-gcc8
-root-debug-image-gcc8: ImageName := ${ImageName_gcc8}
-root-debug-image-gcc8: | root-debug-image
-.PHONY: push-image-gcc8
-push-image-gcc8: ImageName := ${ImageName_gcc8}
-push-image-gcc8: | push-image
+.PHONY: build-image-gcc
+build-image-gcc: ImageName := ${ImageName_gcc}
+build-image-gcc: ImageVersion := ${ImageVersion_gcc}
+build-image-gcc: | build-image
+.PHONY: run-image-gcc
+run-image-gcc: ImageName := ${ImageName_gcc}
+run-image-gcc: | run-image
+.PHONY: debug-image-gcc
+debug-image-gcc: ImageName := ${ImageName_gcc}
+debug-image-gcc: | debug-image
+.PHONY: root-debug-image-gcc
+root-debug-image-gcc: ImageName := ${ImageName_gcc}
+root-debug-image-gcc: | root-debug-image
+.PHONY: push-image-gcc
+push-image-gcc: ImageName := ${ImageName_gcc}
+push-image-gcc: | push-image
 
 .PHONY: build-image-clang
 build-image-clang: ImageName := ${ImageName_clang}

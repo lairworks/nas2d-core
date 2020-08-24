@@ -1,23 +1,25 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages
 # Includes tools needed for primary CircleCI containers
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    mingw-w64=5.0.3-1 \
-    cmake=3.10.2-* \
-    make=4.1-* \
-    binutils=2.30-* \
-    git=1:2.17.1-* \
-    ssh=1:7.6p1-* \
-    curl=7.58.0-* \
-    tar=1.29b-* \
-    gzip=1.6-* \
-    bzip2=1.0.6-* \
-    gnupg=2.2.4-* \
-    software-properties-common=0.96.24.32.12 \
+# The software-properties-common package is needed for add-apt-repository, used to install wine
+# Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    mingw-w64=7.0.0-2 \
+    cmake=3.16.3-* \
+    make=4.2.1-* \
+    binutils=2.34-* \
+    git=1:2.25.1-* \
+    ssh=1:8.2p1-* \
+    curl=7.68.0-* \
+    tar=1.30+* \
+    gzip=1.10-* \
+    bzip2=1.0.8-* \
+    gnupg=2.2.19-* \
+    software-properties-common=0.98.9.2 \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
@@ -37,13 +39,13 @@ ENV  LD32=${ARCH32}-ld
 
 # Install wine so resulting unit test binaries can be run
 RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-  apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main' && \
+  add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' && \
   dpkg --add-architecture i386 && \
   apt-get update && apt-get install -y --no-install-recommends \
-    wine-stable-amd64=4.0.3~bionic \
-    wine-stable-i386=4.0.3~bionic \
-    wine-stable=4.0.3~bionic \
-    winehq-stable=4.0.3~bionic \
+    wine-stable-amd64=5.0.2~focal \
+    wine-stable-i386=5.0.2~focal \
+    wine-stable=5.0.2~focal \
+    winehq-stable=5.0.2~focal \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages
@@ -89,9 +91,9 @@ RUN curl --location https://github.com/google/googletest/archive/release-1.10.0.
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
-RUN curl https://libsdl.org/release/SDL2-devel-2.0.10-mingw.tar.gz | tar -xz && \
-  make -C SDL2-2.0.10/ cross && \
-  rm -rf SDL2-2.0.10/
+RUN curl https://libsdl.org/release/SDL2-devel-2.0.12-mingw.tar.gz | tar -xz && \
+  make -C SDL2-2.0.12/ cross && \
+  rm -rf SDL2-2.0.12/
 RUN curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.5-mingw.tar.gz | tar -xz && \
   make -C SDL2_image-2.0.5/ cross && \
   rm -rf SDL2_image-2.0.5/
@@ -123,8 +125,8 @@ ENV BIN64=${INSTALL64}bin/
 ENV BIN32=${INSTALL32}bin/
 ENV PATH64="${PATH}:${BIN64}"
 ENV PATH32="${PATH}:${BIN32}"
-ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/7.3-win32/
-ENV WINEPATH32=${BIN32};/usr/lib/gcc/${ARCH32}/7.3-win32/
+ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/9.3-win32/
+ENV WINEPATH32=${BIN32};/usr/lib/gcc/${ARCH32}/9.3-win32/
 
 # Setup compiler and tooling default folders
 ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
@@ -148,6 +150,8 @@ RUN wineboot
 # Set default extra C pre-processor flags
 # This makes proper rebuilding easier in a debug session
 ENV CPPFLAGS_EXTRA=-D"GLEW_STATIC"
+# Disable warnings for redundant declarations of intrinsics, triggered by SDL2
+ENV WARN_EXTRA=-Wno-redundant-decls
 
 # Be explicit about the extra flags with the default command
-CMD ["make", "--keep-going", "check", "CPPFLAGS_EXTRA=-DGLEW_STATIC"]
+CMD ["make", "--keep-going", "check"]

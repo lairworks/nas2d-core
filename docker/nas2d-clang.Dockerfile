@@ -1,19 +1,20 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages
 # Includes tools needed for primary CircleCI containers
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential=12.4* \
-    clang=1:6.0-* \
-    cmake=3.10.2-* \
-    curl=7.58.0-* \
-    git=1:2.17.1-* \
-    ssh=1:7.6p1-* \
-    tar=1.29b-* \
-    gzip=1.6-* \
+# Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    build-essential=12.8* \
+    clang=1:10.0-* \
+    cmake=3.16.3-* \
+    curl=7.68.0-* \
+    git=1:2.25.1-* \
+    ssh=1:8.2p1-* \
+    tar=1.30* \
+    gzip=1.10-* \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
@@ -45,12 +46,12 @@ RUN curl --location https://github.com/google/googletest/archive/release-1.10.0.
 
 # Install NAS2D specific dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libglew-dev=2.0.0-* \
-    libphysfs-dev=3.0.1-* \
-    libsdl2-dev=2.0.8+* \
-    libsdl2-image-dev=2.0.3+* \
-    libsdl2-mixer-dev=2.0.2+* \
-    libsdl2-ttf-dev=2.0.14+* \
+    libglew-dev=2.1.0-* \
+    libphysfs-dev=3.0.2-* \
+    libsdl2-dev=2.0.10+* \
+    libsdl2-image-dev=2.0.5+* \
+    libsdl2-mixer-dev=2.0.4+* \
+    libsdl2-ttf-dev=2.0.15+* \
   && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -s /bin/bash user

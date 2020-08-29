@@ -151,9 +151,9 @@ void Filesystem::unmount(const std::string& path) const
 /**
  * Returns a list of directories in the Search Path.
  */
-StringList Filesystem::searchPath() const
+std::vector<std::string> Filesystem::searchPath() const
 {
-	StringList searchPath;
+	std::vector<std::string> searchPath;
 
 	auto searchPathList = PHYSFS_getSearchPath();
 	for (char **i = searchPathList; *i != nullptr; ++i)
@@ -174,11 +174,11 @@ StringList Filesystem::searchPath() const
  *
  * \note	This function will also return the names of any directories in a specified search path
  */
-StringList Filesystem::directoryList(const std::string& dir, const std::string& filter) const
+std::vector<std::string> Filesystem::directoryList(const std::string& dir, const std::string& filter) const
 {
 	char **rc = PHYSFS_enumerateFiles(dir.c_str());
 
-	StringList fileList;
+	std::vector<std::string> fileList;
 	if (filter.empty())
 	{
 		for (char **i = rc; *i != nullptr; i++)

@@ -144,33 +144,6 @@ public:
 
 
 	/**
-	 * Creates a \c Utility<T> interface using a derived type \c T* for
-	 * derived implementation. This is useful when you need polymorphic
-	 * behavior in an object that you need global access to.
-	 *
-	 * \param	t	A pointer to a new derived object of type \c T.
-	 *
-	 * \note	This method should be called before <tt>Utility::get()</tt>.
-	 *
-	 * \warning	This method expects a pointer to a derived type that is
-	 *			created with \c new. It then takes ownership of the pointer
-	 *			and manages deallocation. Passing the address of a locally
-	 *			created object or deallocating the object will yield
-	 *			undefined behavior.
-	 */
-	[[deprecated("Consider using Utility::init instead")]]
-	static void instantiateDerived(T* t)
-	{
-		if (mInstance == t)
-			return;
-
-		delete mInstance;
-
-		mInstance = t;
-	}
-
-
-	/**
 	 * Frees any currently instantiated instances of \c T.
 	 *
 	 * \warning	Any remaining references to the object \c T that

@@ -11,6 +11,7 @@
 #include "Sprite.h"
 #include "../Utility.h"
 #include "../Filesystem.h"
+#include "../StringUtils.h"
 #include "../ContainerUtils.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"

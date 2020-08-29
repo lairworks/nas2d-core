@@ -1,6 +1,7 @@
 
 #include "RectangleSkin.h"
 #include "Renderer.h"
+#include "Rectangle.h"
 #include "../Resources/Image.h"
 
 

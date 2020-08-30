@@ -26,13 +26,13 @@ public:
 
 	void drawImage(const Image&, Point<float>, float = 1.0, Color = Color::Normal) override {}
 
-	void drawSubImage(const Image&, Point<float>, Rectangle<float>, Color = Color::Normal) override {}
-	void drawSubImageRotated(const Image&, Point<float>, Rectangle<float>, float, Color = Color::Normal) override {}
+	void drawSubImage(const Image&, Point<float>, const Rectangle<float>&, Color = Color::Normal) override {}
+	void drawSubImageRotated(const Image&, Point<float>, const Rectangle<float>&, float, Color = Color::Normal) override {}
 
 	void drawImageRotated(const Image&, Point<float>, float, Color = Color::Normal, float = 1.0f) override {}
-	void drawImageStretched(const Image&, Rectangle<float>, Color = Color::Normal) override {}
+	void drawImageStretched(const Image&, const Rectangle<float>&, Color = Color::Normal) override {}
 
-	void drawImageRepeated(const Image&, Rectangle<float>) override {}
+	void drawImageRepeated(const Image&, const Rectangle<float>&) override {}
 	void drawSubImageRepeated(const Image&, const Rectangle<float>&, const Rectangle<float>&) override {}
 
 	void drawImageToImage(const Image&, const Image&, Point<float>) override {}
@@ -43,7 +43,7 @@ public:
 	void drawBoxFilled(const Rectangle<float>&, Color = Color::White) override {}
 	void drawCircle(Point<float>, float, Color, int = 10, Vector<float> = Vector{1.0f, 1.0f}) override {}
 
-	void drawGradient(Rectangle<float>, Color, Color, Color, Color) override {}
+	void drawGradient(const Rectangle<float>&, Color, Color, Color, Color) override {}
 
 	void drawText(const Font&, std::string_view, Point<float>, Color = Color::White) override {}
 

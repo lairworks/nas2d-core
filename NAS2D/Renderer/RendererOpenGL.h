@@ -54,13 +54,13 @@ public:
 
 	void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 
-	void drawSubImage(const Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) override;
-	void drawSubImageRotated(const Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color = Color::Normal) override;
+	void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) override;
+	void drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, float degrees, Color color = Color::Normal) override;
 
 	void drawImageRotated(const Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) override;
-	void drawImageStretched(const Image& image, Rectangle<float> rect, Color color = Color::Normal) override;
+	void drawImageStretched(const Image& image, const Rectangle<float>& rect, Color color = Color::Normal) override;
 
-	void drawImageRepeated(const Image& image, Rectangle<float> rect) override;
+	void drawImageRepeated(const Image& image, const Rectangle<float>& rect) override;
 	void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) override;
 
 	void drawImageToImage(const Image& source, const Image& destination, Point<float> dstPoint) override;
@@ -71,7 +71,7 @@ public:
 	void drawBoxFilled(const Rectangle<float>& rect, Color color = Color::White) override;
 	void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector{1.0f, 1.0f}) override;
 
-	void drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4) override;
+	void drawGradient(const Rectangle<float>& rect, Color c1, Color c2, Color c3, Color c4) override;
 
 	void drawText(const Font& font, std::string_view text, Point<float> position, Color color = Color::White) override;
 

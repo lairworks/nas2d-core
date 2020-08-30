@@ -1,6 +1,7 @@
 
 #include "Fade.h"
 #include "Renderer.h"
+#include "Rectangle.h"
 
 #include <algorithm>
 

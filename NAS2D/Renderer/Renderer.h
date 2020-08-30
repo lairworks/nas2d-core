@@ -14,7 +14,6 @@
 #include "DisplayDesc.h"
 #include "Point.h"
 #include "Vector.h"
-#include "Rectangle.h"
 #include "../Timer.h"
 #include "../Signal.h"
 
@@ -27,6 +26,7 @@ namespace NAS2D {
 
 class Font;
 class Image;
+template <typename BaseType> struct Rectangle;
 
 
 /**

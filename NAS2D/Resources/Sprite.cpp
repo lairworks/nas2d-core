@@ -237,7 +237,7 @@ uint8_t Sprite::alpha() const
 /**
  * Sets the color tint of the Sprite.
  */
-void Sprite::color(const Color& color)
+void Sprite::color(Color color)
 {
 	mColor = color;
 }
@@ -246,7 +246,7 @@ void Sprite::color(const Color& color)
 /**
  * Gets the color tint of the Sprite.
  */
-const Color& Sprite::color() const
+Color Sprite::color() const
 {
 	return mColor;
 }

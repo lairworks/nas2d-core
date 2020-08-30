@@ -87,8 +87,8 @@ public:
 
 	void alpha(uint8_t alpha);
 	uint8_t alpha() const;
-	void color(const Color& color);
-	const Color& color() const;
+	void color(Color color);
+	Color color() const;
 
 	Callback& frameCallback();
 

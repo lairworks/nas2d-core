@@ -16,4 +16,4 @@ if not defined PLATFORM (
 )
 
 :Install
-vcpkg install --triplet %PLATFORM%-windows  physfs glew SDL2 SDL2-image SDL2-ttf SDL2-mixer[dynamic-load,libflac,mpg123,libmodplug,libvorbis,opusfile] gtest
+vcpkg install --triplet %PLATFORM%-windows  physfs glew SDL2 SDL2-image SDL2-ttf SDL2-mixer[dynamic-load,libflac,libmodplug,libvorbis,mpg123,nativemidi,opusfile] gtest

@@ -15,7 +15,6 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Rectangle.h"
-#include "RectangleSkin.h"
 #include "../Timer.h"
 #include "../Signal.h"
 

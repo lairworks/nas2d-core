@@ -22,7 +22,7 @@ namespace NAS2D {
 	Xml::XmlElement* dictionaryToAttributes(const std::string& tagName, const Dictionary& dictionary);
 	Xml::XmlElement* dictionaryMapToElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections);
 
-	template <auto fileFormatParser(const Xml::XmlElement& element) = subTagsToDictionaryMap>
+	template <typename ReturnType, ReturnType fileFormatParser(const Xml::XmlElement& element) = subTagsToDictionaryMap>
 	auto parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;

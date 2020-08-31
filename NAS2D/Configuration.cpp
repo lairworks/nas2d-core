@@ -36,7 +36,7 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	mLoadedSettings = parseXmlFileData(fileData, "configuration");
+	mLoadedSettings = parseXmlFileData<decltype(mLoadedSettings)>(fileData, "configuration");
 	mSettings = mergeByKey(mDefaults, mLoadedSettings);
 }
 

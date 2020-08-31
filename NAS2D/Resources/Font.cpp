@@ -70,9 +70,9 @@ namespace {
  *
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) :
-	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"}
+	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"},
+	mFontInfo{load(filePath, ptSize)}
 {
-	mFontInfo = load(filePath, ptSize);
 }
 
 
@@ -83,9 +83,9 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
  *
  */
 Font::Font(const std::string& filePath) :
-	mResourceName{filePath}
+	mResourceName{filePath},
+	mFontInfo{loadBitmap(filePath)}
 {
-	mFontInfo = loadBitmap(filePath);
 }
 
 

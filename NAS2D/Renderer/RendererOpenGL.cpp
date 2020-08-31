@@ -151,7 +151,7 @@ void RendererOpenGL::drawImage(const Image& image, Point<float> position, float 
 }
 
 
-void RendererOpenGL::drawSubImage(const Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color)
+void RendererOpenGL::drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color)
 {
 	setColor(color);
 
@@ -163,7 +163,7 @@ void RendererOpenGL::drawSubImage(const Image& image, Point<float> raster, Recta
 }
 
 
-void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color)
+void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, float degrees, Color color)
 {
 	glPushMatrix();
 
@@ -211,7 +211,7 @@ void RendererOpenGL::drawImageRotated(const Image& image, Point<float> position,
 }
 
 
-void RendererOpenGL::drawImageStretched(const Image& image, Rectangle<float> rect, Color color)
+void RendererOpenGL::drawImageStretched(const Image& image, const Rectangle<float>& rect, Color color)
 {
 	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -221,7 +221,7 @@ void RendererOpenGL::drawImageStretched(const Image& image, Rectangle<float> rec
 }
 
 
-void RendererOpenGL::drawImageRepeated(const Image& image, Rectangle<float> rect)
+void RendererOpenGL::drawImageRepeated(const Image& image, const Rectangle<float>& rect)
 {
 	setColor(Color::White);
 
@@ -372,7 +372,7 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 }
 
 
-void RendererOpenGL::drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4)
+void RendererOpenGL::drawGradient(const Rectangle<float>& rect, Color c1, Color c2, Color c3, Color c4)
 {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);

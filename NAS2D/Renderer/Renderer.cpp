@@ -9,9 +9,11 @@
 // ==================================================================================
 
 #include "Renderer.h"
+#include "Rectangle.h"
 
 #include <iostream>
 #include <algorithm>
+
 
 using namespace NAS2D;
 

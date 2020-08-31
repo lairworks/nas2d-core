@@ -14,8 +14,6 @@
 #include "DisplayDesc.h"
 #include "Point.h"
 #include "Vector.h"
-#include "Rectangle.h"
-#include "RectangleSkin.h"
 #include "../Timer.h"
 #include "../Signal.h"
 
@@ -23,10 +21,12 @@
 #include <string>
 #include <vector>
 
+
 namespace NAS2D {
 
 class Font;
 class Image;
+template <typename BaseType> struct Rectangle;
 
 
 /**
@@ -58,11 +58,11 @@ public:
 	virtual void window_icon(const std::string& path) = 0;
 
 	virtual void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
-	virtual void drawSubImage(const Image& image, Point<float> raster, Rectangle<float> subImageRect, Color color = Color::Normal) = 0;
-	virtual void drawSubImageRotated(const Image& image, Point<float> raster, Rectangle<float> subImageRect, float degrees, Color color = Color::Normal) = 0;
+	virtual void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) = 0;
+	virtual void drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, float degrees, Color color = Color::Normal) = 0;
 	virtual void drawImageRotated(const Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) = 0;
-	virtual void drawImageStretched(const Image& image, Rectangle<float> rect, Color color = Color::Normal) = 0;
-	virtual void drawImageRepeated(const Image& image, Rectangle<float> rect) = 0;
+	virtual void drawImageStretched(const Image& image, const Rectangle<float>& rect, Color color = Color::Normal) = 0;
+	virtual void drawImageRepeated(const Image& image, const Rectangle<float>& rect) = 0;
 	virtual void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) = 0;
 
 	virtual void drawImageToImage(const Image& source, const Image& destination, Point<float> dstPoint) = 0;
@@ -84,7 +84,7 @@ public:
 	 * |     |
 	 * 2-----3
 	 */
-	virtual void drawGradient(Rectangle<float> rect, Color c1, Color c2, Color c3, Color c4) = 0;
+	virtual void drawGradient(const Rectangle<float>& rect, Color c1, Color c2, Color c3, Color c4) = 0;
 
 	virtual void drawText(const Font& font, std::string_view text, Point<float> position, Color color = Color::White) = 0;
 	void drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor);

@@ -72,7 +72,7 @@ namespace {
 Font::Font(const std::string& filePath, unsigned int ptSize) :
 	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"}
 {
-	mFontInfo = ::load(filePath, ptSize);
+	mFontInfo = load(filePath, ptSize);
 }
 
 

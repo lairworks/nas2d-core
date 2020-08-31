@@ -67,12 +67,11 @@ namespace {
  *
  * \param	filePath	Path to a font file.
  * \param	ptSize		Point size of the font. Defaults to 12pt.
- *
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) :
-	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"}
+	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"},
+	mFontInfo{load(filePath, ptSize)}
 {
-	mFontInfo = ::load(filePath, ptSize);
 }
 
 
@@ -80,12 +79,11 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
  * Instantiate a Font as a bitmap font.
  *
  * \param	filePath	Path to a font file.
- *
  */
 Font::Font(const std::string& filePath) :
-	mResourceName{filePath}
+	mResourceName{filePath},
+	mFontInfo{loadBitmap(filePath)}
 {
-	mFontInfo = loadBitmap(filePath);
 }
 
 
@@ -212,6 +210,7 @@ namespace {
 		fontInfo.ascent = TTF_FontAscent(font);
 		fontInfo.glyphSize = roundedCharSize;
 		fontInfo.textureId = generateFontTexture(fontSurface, glm);
+		SDL_FreeSurface(fontSurface);
 		TTF_CloseFont(font);
 
 		return fontInfo;
@@ -264,6 +263,7 @@ namespace {
 		fontInfo.ascent = glyphSize.y;
 		fontInfo.glyphSize = glyphSize;
 		fontInfo.textureId = generateFontTexture(fontSurface, glm);
+		SDL_FreeSurface(fontSurface);
 
 		return fontInfo;
 	}
@@ -277,11 +277,7 @@ namespace {
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		fillInTextureCoordinates(glyphMetricsList);
-
-		auto textureId = generateTexture(fontSurface);
-		SDL_FreeSurface(fontSurface);
-
-		return textureId;
+		return generateTexture(fontSurface);
 	}
 
 

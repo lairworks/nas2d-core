@@ -61,6 +61,17 @@ std::vector<std::string> Sprite::AnimationSet::actionNames() const
 }
 
 
+const std::vector<Sprite::SpriteFrame>& Sprite::AnimationSet::frames(const std::string& actionName) const
+{
+	if (actions.find(actionName) == actions.end())
+	{
+		throw std::runtime_error("Sprite::play called on undefined action: " + actionName);
+	}
+
+	return actions.at(actionName);
+}
+
+
 /**
  * C'tor.
  *

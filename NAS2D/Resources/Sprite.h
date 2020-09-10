@@ -59,6 +59,7 @@ public:
 		AnimationSet& operator=(AnimationSet&& other) = default;
 
 		std::vector<std::string> actionNames() const;
+		const std::vector<SpriteFrame>& frames(const std::string& actionName) const;
 	};
 
 

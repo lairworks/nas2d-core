@@ -65,7 +65,7 @@ const std::vector<Sprite::SpriteFrame>& Sprite::AnimationSet::frames(const std::
 {
 	if (actions.find(actionName) == actions.end())
 	{
-		throw std::runtime_error("Sprite::play called on undefined action: " + actionName);
+		throw std::runtime_error("Sprite::play called on undefined action: " + actionName + "  (" + fileName + ")");
 	}
 
 	return actions.at(actionName);

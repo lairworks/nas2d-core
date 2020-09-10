@@ -57,6 +57,8 @@ public:
 		AnimationSet(AnimationSet&& other) = default;
 		AnimationSet& operator=(const AnimationSet& other) = delete;
 		AnimationSet& operator=(AnimationSet&& other) = default;
+
+		std::vector<std::string> actionNames() const;
 	};
 
 

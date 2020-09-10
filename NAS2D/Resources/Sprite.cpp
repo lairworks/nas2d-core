@@ -55,6 +55,12 @@ namespace {
 }
 
 
+std::vector<std::string> Sprite::AnimationSet::actionNames() const
+{
+	return getKeys(actions);
+}
+
+
 /**
  * C'tor.
  *

@@ -28,7 +28,7 @@ using namespace NAS2D;
 namespace {
 	const auto FRAME_PAUSE = unsigned(-1);
 
-	std::map<std::string, Sprite::SpriteAnimations> animationCache;
+	std::map<std::string, Sprite::AnimationSet> animationCache;
 
 
 	// Adds a row tag to the end of messages.
@@ -37,7 +37,7 @@ namespace {
 		return " (Row: " + std::to_string(row) + ")";
 	}
 
-	Sprite::SpriteAnimations processXml(const std::string& filePath);
+	Sprite::AnimationSet processXml(const std::string& filePath);
 	std::map<std::string, Image> processImageSheets(const std::string& basePath, const Xml::XmlElement* element);
 	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element);
 	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node);
@@ -265,7 +265,7 @@ namespace {
  *
  * \param filePath	File path of the sprite XML definition file.
  */
-Sprite::SpriteAnimations processXml(const std::string& filePath)
+Sprite::AnimationSet processXml(const std::string& filePath)
 {
 	try
 	{

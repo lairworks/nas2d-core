@@ -47,16 +47,16 @@ public:
 		unsigned int frameDelay;
 	};
 
-	struct SpriteAnimations
+	struct AnimationSet
 	{
 		std::map<std::string, Image> imageSheets;
 		std::map<std::string, std::vector<SpriteFrame>> actions;
 
-		SpriteAnimations() = default;
-		SpriteAnimations(const SpriteAnimations& other) = delete;
-		SpriteAnimations(SpriteAnimations&& other) = default;
-		SpriteAnimations& operator=(const SpriteAnimations& other) = delete;
-		SpriteAnimations& operator=(SpriteAnimations&& other) = default;
+		AnimationSet() = default;
+		AnimationSet(const AnimationSet& other) = delete;
+		AnimationSet(AnimationSet&& other) = default;
+		AnimationSet& operator=(const AnimationSet& other) = delete;
+		AnimationSet& operator=(AnimationSet&& other) = default;
 	};
 
 

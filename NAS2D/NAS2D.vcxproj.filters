@@ -63,6 +63,9 @@
     <ClCompile Include="Trig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Resources\AnimationSet.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
     <ClCompile Include="Resources\Font.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
@@ -216,6 +219,9 @@
       <Filter>Header Files\Mixer</Filter>
     </ClInclude>
     <ClInclude Include="Resources\ResourceCache.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources\AnimationSet.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Resources\Font.h">

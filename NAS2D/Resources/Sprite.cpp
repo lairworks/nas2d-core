@@ -55,20 +55,28 @@ namespace {
 }
 
 
+Sprite::AnimationSet::AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<Sprite::SpriteFrame>> actions) :
+	mFileName{std::move(fileName)},
+	mImageSheets{std::move(imageSheets)},
+	mActions{std::move(actions)}
+{
+}
+
+
 std::vector<std::string> Sprite::AnimationSet::actionNames() const
 {
-	return getKeys(actions);
+	return getKeys(mActions);
 }
 
 
 const std::vector<Sprite::SpriteFrame>& Sprite::AnimationSet::frames(const std::string& actionName) const
 {
-	if (actions.find(actionName) == actions.end())
+	if (mActions.find(actionName) == mActions.end())
 	{
-		throw std::runtime_error("Sprite::play called on undefined action: " + actionName + "  (" + fileName + ")");
+		throw std::runtime_error("Sprite::play called on undefined action: " + actionName + "  (" + mFileName + ")");
 	}
 
-	return actions.at(actionName);
+	return mActions.at(actionName);
 }
 
 

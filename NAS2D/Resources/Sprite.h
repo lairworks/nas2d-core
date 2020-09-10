@@ -49,6 +49,7 @@ public:
 
 	struct AnimationSet
 	{
+		std::string fileName;
 		std::map<std::string, Image> imageSheets;
 		std::map<std::string, std::vector<SpriteFrame>> actions;
 

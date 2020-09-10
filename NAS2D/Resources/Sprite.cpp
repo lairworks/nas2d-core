@@ -321,7 +321,7 @@ Sprite::AnimationSet processXml(const std::string& filePath)
 		// image sheets anywhere in the sprite file.
 		auto imageSheets = processImageSheets(basePath, xmlRootElement);
 		auto actions = processActions(imageSheets, xmlRootElement);
-		return {std::move(imageSheets), std::move(actions)};
+		return {filePath, std::move(imageSheets), std::move(actions)};
 	}
 	catch(const std::runtime_error& error)
 	{

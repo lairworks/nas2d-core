@@ -99,7 +99,7 @@ public:
 private:
 	std::string mSpriteName;
 
-	const std::map<std::string, std::vector<SpriteFrame>>* mActions;
+	const AnimationSet* mAnimationSet;
 	const std::vector<SpriteFrame>* mCurrentAction{nullptr};
 	std::size_t mCurrentFrame{0};
 

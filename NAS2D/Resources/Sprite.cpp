@@ -42,7 +42,7 @@ namespace {
 	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element);
 	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node);
 
-	const std::map<std::string, std::vector<Sprite::SpriteFrame>>& cachedLoad(const std::string& filePath)
+	const Sprite::AnimationSet& cachedLoad(const std::string& filePath)
 	{
 		auto iter = animationCache.find(filePath);
 		if (iter == animationCache.end())
@@ -50,7 +50,7 @@ namespace {
 			const auto result = animationCache.try_emplace(filePath, processXml(filePath));
 			iter = result.first;
 		}
-		return iter->second.actions;
+		return iter->second;
 	}
 }
 
@@ -79,8 +79,8 @@ const std::vector<Sprite::SpriteFrame>& Sprite::AnimationSet::frames(const std::
  */
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
 	mSpriteName{filePath},
-	mActions{&cachedLoad(filePath)},
-	mCurrentAction{&mActions->at(initialAction)}
+	mAnimationSet{&cachedLoad(filePath)},
+	mCurrentAction{&mAnimationSet->frames(initialAction)}
 {
 }
 
@@ -104,7 +104,7 @@ Point<int> Sprite::origin(Point<int> point) const
  */
 std::vector<std::string> Sprite::actions() const
 {
-	return getKeys(*mActions);
+	return mAnimationSet->actionNames();
 }
 
 
@@ -121,12 +121,7 @@ std::vector<std::string> Sprite::actions() const
  */
 void Sprite::play(const std::string& action)
 {
-	if (mActions->find(action) == mActions->end())
-	{
-		throw std::runtime_error("Sprite::play called on undefined action: '" + action + "' : " + mSpriteName);
-	}
-
-	mCurrentAction = &mActions->at(action);
+	mCurrentAction = &mAnimationSet->frames(action);
 	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();

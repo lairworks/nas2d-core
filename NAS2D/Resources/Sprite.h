@@ -50,12 +50,7 @@ public:
 	class AnimationSet
 	{
 	public:
-		AnimationSet() = default;
 		AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<SpriteFrame>> actions);
-		AnimationSet(const AnimationSet& other) = delete;
-		AnimationSet(AnimationSet&& other) = default;
-		AnimationSet& operator=(const AnimationSet& other) = delete;
-		AnimationSet& operator=(AnimationSet&& other) = default;
 
 		std::vector<std::string> actionNames() const;
 		const std::vector<SpriteFrame>& frames(const std::string& actionName) const;

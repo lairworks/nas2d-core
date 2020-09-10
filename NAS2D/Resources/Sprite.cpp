@@ -39,8 +39,8 @@ namespace {
 
 	Sprite::AnimationSet processXml(const std::string& filePath);
 	std::map<std::string, Image> processImageSheets(const std::string& basePath, const Xml::XmlElement* element);
-	std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element);
-	std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node);
+	std::map<std::string, std::vector<Sprite::AnimationSet::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element);
+	std::vector<Sprite::AnimationSet::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node);
 
 	const Sprite::AnimationSet& cachedLoad(const std::string& filePath)
 	{
@@ -55,7 +55,7 @@ namespace {
 }
 
 
-Sprite::AnimationSet::AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<Sprite::SpriteFrame>> actions) :
+Sprite::AnimationSet::AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<Sprite::AnimationSet::SpriteFrame>> actions) :
 	mFileName{std::move(fileName)},
 	mImageSheets{std::move(imageSheets)},
 	mActions{std::move(actions)}
@@ -69,7 +69,7 @@ std::vector<std::string> Sprite::AnimationSet::actionNames() const
 }
 
 
-const std::vector<Sprite::SpriteFrame>& Sprite::AnimationSet::frames(const std::string& actionName) const
+const std::vector<Sprite::AnimationSet::SpriteFrame>& Sprite::AnimationSet::frames(const std::string& actionName) const
 {
 	if (mActions.find(actionName) == mActions.end())
 	{
@@ -392,9 +392,9 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element)
+std::map<std::string, std::vector<Sprite::AnimationSet::SpriteFrame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element)
 {
-	std::map<std::string, std::vector<Sprite::SpriteFrame>> actions;
+	std::map<std::string, std::vector<Sprite::AnimationSet::SpriteFrame>> actions;
 
 	for (const auto* node = element->iterateChildren(nullptr);
 		node != nullptr;
@@ -435,9 +435,9 @@ std::map<std::string, std::vector<Sprite::SpriteFrame>> processActions(const std
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node)
+std::vector<Sprite::AnimationSet::SpriteFrame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node)
 {
-	std::vector<Sprite::SpriteFrame> frameList;
+	std::vector<Sprite::AnimationSet::SpriteFrame> frameList;
 
 	for (const auto* frame = node->iterateChildren(nullptr);
 		frame != nullptr;
@@ -508,7 +508,7 @@ std::vector<Sprite::SpriteFrame> processFrames(const std::map<std::string, Image
 
 		const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 		const auto anchorOffset = Vector{anchorx, anchory};
-		frameList.push_back(Sprite::SpriteFrame{imageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
+		frameList.push_back(Sprite::AnimationSet::SpriteFrame{imageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
 	}
 
 	if (frameList.size() <= 0)

@@ -39,17 +39,17 @@ class Sprite
 public:
 	using Callback = Signals::Signal<>; /**< Signal used when action animations complete. */
 
-	struct SpriteFrame
-	{
-		const Image& image;
-		Rectangle<int> bounds;
-		Vector<int> anchorOffset;
-		unsigned int frameDelay;
-	};
-
 	class AnimationSet
 	{
 	public:
+		struct SpriteFrame
+		{
+			const Image& image;
+			Rectangle<int> bounds;
+			Vector<int> anchorOffset;
+			unsigned int frameDelay;
+		};
+
 		AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<SpriteFrame>> actions);
 
 		std::vector<std::string> actionNames() const;
@@ -98,7 +98,7 @@ private:
 	std::string mSpriteName;
 
 	const AnimationSet* mAnimationSet;
-	const std::vector<SpriteFrame>* mCurrentAction{nullptr};
+	const std::vector<AnimationSet::SpriteFrame>* mCurrentAction{nullptr};
 	std::size_t mCurrentFrame{0};
 
 	bool mPaused{false};

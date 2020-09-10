@@ -483,7 +483,7 @@ std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, Image
 
 		const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 		const auto anchorOffset = Vector{anchorx, anchory};
-		frameList.push_back(AnimationSet::Frame{imageSheets.at(sheetId), bounds, anchorOffset, static_cast<unsigned int>(delay)});
+		frameList.push_back(AnimationSet::Frame{image, bounds, anchorOffset, static_cast<unsigned int>(delay)});
 	}
 
 	if (frameList.size() <= 0)

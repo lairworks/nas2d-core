@@ -25,6 +25,7 @@ using namespace NAS2D;
 
 
 namespace {
+	constexpr std::string_view SPRITE_VERSION{"0.99"};
 	const auto FRAME_PAUSE = unsigned(-1);
 
 	std::map<std::string, AnimationSet> animationCache;

@@ -21,9 +21,6 @@
 
 namespace NAS2D {
 
-constexpr std::string_view SPRITE_VERSION{"0.99"};
-
-
 /**
  * \class Sprite
  * \brief Sprite Resource.

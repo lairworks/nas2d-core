@@ -7,9 +7,9 @@
 using namespace NAS2D;
 
 
-AnimationSet::AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<AnimationSet::Frame>> actions) :
+AnimationSet::AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<AnimationSet::Frame>> actions) :
 	mFileName{std::move(fileName)},
-	mImageSheets{std::move(imageSheets)},
+	mImageSheetMap{std::move(imageSheetMap)},
 	mActions{std::move(actions)}
 {
 }

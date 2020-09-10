@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "Sprite.h"
+#include "ResourceCache.h"
 #include "../Utility.h"
 #include "../Filesystem.h"
 #include "../StringUtils.h"
@@ -28,6 +29,8 @@ namespace {
 	constexpr std::string_view SPRITE_VERSION{"0.99"};
 	const auto FRAME_PAUSE = unsigned(-1);
 
+	using ImageCache = ResourceCache<Image, std::string>;
+	ImageCache animationImageCache;
 	std::map<std::string, AnimationSet> animationCache;
 
 
@@ -37,17 +40,17 @@ namespace {
 		return " (Row: " + std::to_string(row) + ")";
 	}
 
-	AnimationSet processXml(const std::string& filePath);
-	std::map<std::string, Image> processImageSheets(const std::string& basePath, const Xml::XmlElement* element);
-	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element);
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node);
+	AnimationSet processXml(const std::string& filePath, ImageCache& imageCache);
+	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlNode* node, ImageCache& imageCache);
 
 	const AnimationSet& cachedLoad(const std::string& filePath)
 	{
 		auto iter = animationCache.find(filePath);
 		if (iter == animationCache.end())
 		{
-			const auto result = animationCache.try_emplace(filePath, processXml(filePath));
+			const auto result = animationCache.try_emplace(filePath, processXml(filePath, animationImageCache));
 			iter = result.first;
 		}
 		return iter->second;
@@ -260,7 +263,7 @@ namespace {
  *
  * \param filePath	File path of the sprite XML definition file.
  */
-AnimationSet processXml(const std::string& filePath)
+AnimationSet processXml(const std::string& filePath, ImageCache& imageCache)
 {
 	try
 	{
@@ -297,9 +300,9 @@ AnimationSet processXml(const std::string& filePath)
 		// Here instead of going through each element and calling a processing function to handle
 		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 		// image sheets anywhere in the sprite file.
-		auto imageSheets = processImageSheets(basePath, xmlRootElement);
-		auto actions = processActions(imageSheets, xmlRootElement);
-		return {filePath, std::move(imageSheets), std::move(actions)};
+		auto imageSheetMap = processImageSheets(basePath, xmlRootElement, imageCache);
+		auto actions = processActions(imageSheetMap, xmlRootElement, imageCache);
+		return {filePath, std::move(imageSheetMap), std::move(actions)};
 	}
 	catch(const std::runtime_error& error)
 	{
@@ -316,9 +319,9 @@ AnimationSet processXml(const std::string& filePath)
  *			element in a sprite definition, these elements can appear
  *			anywhere in a Sprite XML definition.
  */
-std::map<std::string, Image> processImageSheets(const std::string& basePath, const Xml::XmlElement* element)
+std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
 {
-	std::map<std::string, Image> imageSheets;
+	std::map<std::string, std::string> imageSheetMap;
 
 	for (const auto* node = element->iterateChildren(nullptr);
 		node != nullptr;
@@ -346,17 +349,18 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
 				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
-			if (imageSheets.find(id) != imageSheets.end())
+			if (imageSheetMap.find(id) != imageSheetMap.end())
 			{
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
 
 			const auto imagePath = basePath + src;
-			imageSheets.try_emplace(id, imagePath);
+			imageSheetMap.try_emplace(id, imagePath);
+			imageCache.load(imagePath);
 		}
 	}
 
-	return imageSheets;
+	return imageSheetMap;
 }
 
 
@@ -367,7 +371,7 @@ std::map<std::string, Image> processImageSheets(const std::string& basePath, con
  * \note	Action names are not case sensitive. "Case", "caSe",
  *			"CASE", etc. will all be viewed as identical.
  */
-std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, Image>& imageSheets, const Xml::XmlElement* element)
+std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 {
 	std::map<std::string, std::vector<AnimationSet::Frame>> actions;
 
@@ -399,7 +403,7 @@ std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std
 				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(node->row()));
 			}
 
-			actions[actionName] = processFrames(imageSheets, actionName, node);
+			actions[actionName] = processFrames(imageSheetMap, actionName, node, imageCache);
 		}
 	}
 
@@ -410,7 +414,7 @@ std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std
 /**
  * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
  */
-std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, Image>& imageSheets, const std::string& action, const Xml::XmlNode* node)
+std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlNode* node, ImageCache& imageCache)
 {
 	std::vector<AnimationSet::Frame> frameList;
 
@@ -453,13 +457,13 @@ std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, Image
 		{
 			throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
 		}
-		const auto iterator = imageSheets.find(sheetId);
-		if (iterator == imageSheets.end())
+		const auto iterator = imageSheetMap.find(sheetId);
+		if (iterator == imageSheetMap.end())
 		{
 			throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
 		}
 
-		const auto& image = iterator->second;
+		const auto& image = imageCache.load(iterator->second);
 		// X-Coordinate
 		if (x < 0 || x > image.size().x)
 		{

@@ -22,14 +22,14 @@ public:
 		unsigned int frameDelay;
 	};
 
-	AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<Frame>> actions);
+	AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions);
 
 	std::vector<std::string> actionNames() const;
 	const std::vector<Frame>& frames(const std::string& actionName) const;
 
 private:
 	std::string mFileName;
-	std::map<std::string, Image> mImageSheets;
+	std::map<std::string, std::string> mImageSheetMap;
 	std::map<std::string, std::vector<Frame>> mActions;
 };
 

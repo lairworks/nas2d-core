@@ -27,6 +27,29 @@ namespace NAS2D {
 constexpr std::string_view SPRITE_VERSION{"0.99"};
 
 
+class AnimationSet
+{
+public:
+	struct Frame
+	{
+		const Image& image;
+		Rectangle<int> bounds;
+		Vector<int> anchorOffset;
+		unsigned int frameDelay;
+	};
+
+	AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<Frame>> actions);
+
+	std::vector<std::string> actionNames() const;
+	const std::vector<Frame>& frames(const std::string& actionName) const;
+
+private:
+	std::string mFileName;
+	std::map<std::string, Image> mImageSheets;
+	std::map<std::string, std::vector<Frame>> mActions;
+};
+
+
 /**
  * \class Sprite
  * \brief Sprite Resource.
@@ -38,29 +61,6 @@ class Sprite
 {
 public:
 	using Callback = Signals::Signal<>; /**< Signal used when action animations complete. */
-
-	class AnimationSet
-	{
-	public:
-		struct Frame
-		{
-			const Image& image;
-			Rectangle<int> bounds;
-			Vector<int> anchorOffset;
-			unsigned int frameDelay;
-		};
-
-		AnimationSet(std::string fileName, std::map<std::string, Image> imageSheets, std::map<std::string, std::vector<Frame>> actions);
-
-		std::vector<std::string> actionNames() const;
-		const std::vector<Frame>& frames(const std::string& actionName) const;
-
-	private:
-		std::string mFileName;
-		std::map<std::string, Image> mImageSheets;
-		std::map<std::string, std::vector<Frame>> mActions;
-	};
-
 
 	Sprite(const std::string& filePath, const std::string& initialAction);
 	Sprite(const Sprite& sprite) = delete;

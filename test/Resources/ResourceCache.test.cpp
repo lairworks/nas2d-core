@@ -18,7 +18,7 @@ TEST(ResourceCache, load) {
 		int value;
 	};
 
-	ResourceCache<MockResource, std::string, int> cache;
+	NAS2D::ResourceCache<MockResource, std::string, int> cache;
 
 	const auto& value1 = cache.load("abc", 123);
 	const auto& value2 = cache.load("abc", 123);

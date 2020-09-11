@@ -4,6 +4,8 @@
 #include <tuple>
 
 
+namespace NAS2D {
+
 template <typename Resource, typename ... Params>
 class ResourceCache
 {
@@ -50,3 +52,5 @@ public:
 private:
 	std::map<Key, Resource> cache;
 };
+
+} // namespace

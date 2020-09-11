@@ -498,6 +498,7 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 	}
 
 	SDL_Cursor* cur = SDL_CreateColorCursor(surface, offx, offy);
+	SDL_FreeSurface(surface);
 	if (!cur)
 	{
 		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;

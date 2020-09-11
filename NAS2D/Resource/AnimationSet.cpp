@@ -62,9 +62,15 @@ bool AnimationSet::Frame::isStopFrame() const
 
 
 AnimationSet::AnimationSet(std::string fileName) :
+	AnimationSet{std::move(fileName), animationImageCache}
+{
+}
+
+
+AnimationSet::AnimationSet(std::string fileName, ImageCache& imageCache) :
 	mFileName{std::move(fileName)}
 {
-	auto [imageSheetMap, actions] = processXml(mFileName, animationImageCache);
+	auto [imageSheetMap, actions] = processXml(mFileName, imageCache);
 	mImageSheetMap = std::move(imageSheetMap);
 	mActions = std::move(actions);
 }

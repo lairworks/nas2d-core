@@ -21,6 +21,8 @@
 
 namespace NAS2D
 {
+	template <typename Resource, typename ... Params> class ResourceCache;
+
 
 	class AnimationSet
 	{
@@ -40,6 +42,7 @@ namespace NAS2D
 
 
 		AnimationSet(std::string fileName);
+		AnimationSet(std::string fileName, ResourceCache<Image, std::string>& imageCache);
 		AnimationSet(std::string fileName, ImageSheetMap imageSheetMap, ActionsMap actions);
 
 		std::vector<std::string> actionNames() const;

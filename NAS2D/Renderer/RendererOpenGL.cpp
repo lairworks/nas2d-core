@@ -490,7 +490,7 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 		return;
 	}
 
-	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 0);
+	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 1);
 	if (!surface)
 	{
 		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
@@ -652,7 +652,7 @@ void RendererOpenGL::window_icon(const std::string& path)
 	if (!Utility<Filesystem>::get().exists(path)) { return; }
 
 	File f = Utility<Filesystem>::get().open(path);
-	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(f.raw_bytes(), static_cast<int>(f.size())), 0);
+	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(f.raw_bytes(), static_cast<int>(f.size())), 1);
 	if (!icon)
 	{
 		std::cout << "RendererOpenGL::window_icon(): " << SDL_GetError() << std::endl;

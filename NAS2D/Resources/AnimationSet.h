@@ -22,6 +22,7 @@ public:
 		unsigned int frameDelay;
 	};
 
+	AnimationSet(std::string fileName);
 	AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions);
 
 	std::vector<std::string> actionNames() const;

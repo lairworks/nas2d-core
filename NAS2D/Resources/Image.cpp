@@ -171,14 +171,9 @@ namespace {
 			case 3:
 			{
 				auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
-				if constexpr (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-				{
-					return p[0] << 16 | p[1] << 8 | p[2];
-				}
-				else
-				{
-					return p[0] | p[1] << 8 | p[2] << 16;
-				}
+				return (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
+					(p[0] << 16 | p[1] << 8 | p[2]) :
+					(p[0] | p[1] << 8 | p[2] << 16);
 			}
 			case 4:
 			{

@@ -26,14 +26,14 @@ namespace {
 		return " (Row: " + std::to_string(row) + ")";
 	}
 
-	AnimationSet processXml(const std::string& filePath, ImageCache& imageCache);
+	AnimationSet processXml(std::string filePath, ImageCache& imageCache);
 	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
 	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlNode* node, ImageCache& imageCache);
 }
 
 
-AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(fileName, animationImageCache)}
+AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(std::move(fileName), animationImageCache)}
 {
 }
 
@@ -70,7 +70,7 @@ namespace {
  *
  * \param filePath	File path of the sprite XML definition file.
  */
-AnimationSet processXml(const std::string& filePath, ImageCache& imageCache)
+AnimationSet processXml(std::string filePath, ImageCache& imageCache)
 {
 	try
 	{
@@ -109,7 +109,7 @@ AnimationSet processXml(const std::string& filePath, ImageCache& imageCache)
 		// image sheets anywhere in the sprite file.
 		auto imageSheetMap = processImageSheets(basePath, xmlRootElement, imageCache);
 		auto actions = processActions(imageSheetMap, xmlRootElement, imageCache);
-		return {filePath, std::move(imageSheetMap), std::move(actions)};
+		return {std::move(filePath), std::move(imageSheetMap), std::move(actions)};
 	}
 	catch(const std::runtime_error& error)
 	{

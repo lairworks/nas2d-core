@@ -707,7 +707,7 @@ void RendererOpenGL::initGL()
 
 void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsync)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 	{
 		throw renderer_backend_init_failure(SDL_GetError());
 	}

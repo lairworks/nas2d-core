@@ -101,7 +101,7 @@ MixerSDL::MixerSDL() : MixerSDL(InvalidToDefault(ReadConfigurationOptions()))
 
 MixerSDL::MixerSDL(const Options& options)
 {
-	if (SDL_Init(SDL_INIT_AUDIO) < 0)
+	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
 		throw mixer_backend_init_failure(SDL_GetError());
 	}

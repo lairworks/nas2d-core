@@ -47,6 +47,8 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	std::cout << "Initializing subsystems...\n\n";
 	std::cout.flush();
 
+	SDL_Init(0);
+
 	auto& fs = Utility<Filesystem>::init<Filesystem>(argv_0, appName, organizationName);
 	fs.mountSoftFail(dataPath);
 	fs.mountSoftFail(fs.basePath() + dataPath);
@@ -106,10 +108,10 @@ Game::~Game()
 	Utility<Configuration>::clear();
 	Utility<Filesystem>::clear();
 
-	std::cout << "\nGame object has been terminated." << std::endl;
-
 	// Shut down all SDL subsystems.
 	SDL_Quit();
+
+	std::cout << "\nGame object has been terminated." << std::endl;
 }
 
 

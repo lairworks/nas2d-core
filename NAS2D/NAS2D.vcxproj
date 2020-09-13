@@ -197,6 +197,7 @@
     <ClCompile Include="Renderer\RectangleSkin.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\RendererOpenGL.cpp" />
+    <ClCompile Include="Resources\AnimationSet.cpp" />
     <ClCompile Include="Resources\Font.cpp" />
     <ClCompile Include="Resources\Image.cpp" />
     <ClCompile Include="Resources\Music.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\RendererOpenGL.h" />
     <ClInclude Include="Resources\ResourceCache.h" />
+    <ClInclude Include="Resources\AnimationSet.h" />
     <ClInclude Include="Resources\Font.h" />
     <ClInclude Include="Resources\Image.h" />
     <ClInclude Include="Resources\Music.h" />

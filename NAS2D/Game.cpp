@@ -108,10 +108,10 @@ Game::~Game()
 	Utility<Configuration>::clear();
 	Utility<Filesystem>::clear();
 
-	std::cout << "\nGame object has been terminated." << std::endl;
-
 	// Shut down all SDL subsystems.
 	SDL_Quit();
+
+	std::cout << "\nGame object has been terminated." << std::endl;
 }
 
 

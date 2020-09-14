@@ -37,11 +37,6 @@ XmlHandle::XmlHandle(const XmlHandle& ref) : node(ref.node)
 {}
 
 
-/**
- * Copy assignment operator.
- *
- * \param ref	XmlHandle to copy.
- */
 XmlHandle XmlHandle::operator=(const XmlHandle& ref)
 {
 	if (&ref != this)

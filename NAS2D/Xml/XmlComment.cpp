@@ -34,9 +34,6 @@ XmlComment::XmlComment(const XmlComment& copy) : XmlNode(XmlNode::NodeType::XML_
 }
 
 
-/**
- * Copy assignment operator.
- */
 XmlComment& XmlComment::operator=(const XmlComment& base)
 {
 	clear();

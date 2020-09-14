@@ -42,11 +42,6 @@ XmlDocument::XmlDocument(const XmlDocument& copy) :
 }
 
 
-/**
- * Copy assignment operator.
- *
- * \param copy XmlDocument to copy.
- */
 XmlDocument& XmlDocument::operator=(const XmlDocument& copy)
 {
 	clear();

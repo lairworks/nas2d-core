@@ -14,9 +14,6 @@
 
 using namespace NAS2D::Xml;
 
-/**
- * Default c'tor.
- */
 XmlNode::XmlNode() :
 	XmlBase(),
 	_parent(nullptr),
@@ -29,8 +26,6 @@ XmlNode::XmlNode() :
 
 
 /**
- * C'tor.
- *
  * Construct a node with a given type.
  *
  * \param	type	Type of the node. See XmlNode::NodeType.
@@ -46,9 +41,6 @@ XmlNode::XmlNode(NodeType type) :
 {}
 
 
-/**
- * D'tor
- */
 XmlNode::~XmlNode()
 {
 	XmlNode* node = _firstChild;

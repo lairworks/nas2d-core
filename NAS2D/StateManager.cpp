@@ -19,9 +19,6 @@
 using namespace std;
 using namespace NAS2D;
 
-/**
- * C'tor
- */
 StateManager::StateManager() :
 	mActiveState(nullptr),
 	mActive(true)
@@ -31,11 +28,6 @@ StateManager::StateManager() :
 }
 
 
-/**
- * D'tor.
- *
- * \note	The active State is destroyed when the StateManager is destroyed.
- */
 StateManager::~StateManager()
 {
 	if (mActiveState)

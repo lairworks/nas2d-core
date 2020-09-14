@@ -17,16 +17,11 @@
 
 using namespace NAS2D::Xml;
 
-/**
- * Default c'tor.
- */
 XmlHandle::XmlHandle() : node(nullptr)
 {}
 
 
 /**
- * C'tor
- *
  * \param _node	Pointer to an XmlNode.
  *
  * \note	XmlHandle does not take ownership of the pointer.
@@ -36,19 +31,12 @@ XmlHandle::XmlHandle(XmlNode* _node) : node(_node)
 
 
 /**
- * Copy c'tor.
- *
  * \param ref	XmlHandle to copy.
  */
 XmlHandle::XmlHandle(const XmlHandle& ref) : node(ref.node)
 {}
 
 
-/**
- * Copy assignment operator.
- *
- * \param ref	XmlHandle to copy.
- */
 XmlHandle XmlHandle::operator=(const XmlHandle& ref)
 {
 	if (&ref != this)

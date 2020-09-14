@@ -59,16 +59,10 @@ namespace NAS2D {
 }
 
 
-/**
- * Default c'tor.
- */
 EventHandler::EventHandler()
 {}
 
 
-/**
- * Default d'tor.
- */
 EventHandler::~EventHandler()
 {
 	cout << "EventHandler Terminated." << endl;

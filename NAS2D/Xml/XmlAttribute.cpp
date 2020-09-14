@@ -16,9 +16,6 @@
 using namespace std;
 using namespace NAS2D::Xml;
 
-/**
- * Default c'tor.
- */
 XmlAttribute::XmlAttribute() :
 	XmlBase(),
 	_document(nullptr),
@@ -28,8 +25,6 @@ XmlAttribute::XmlAttribute() :
 
 
 /**
- * C'tor.
- *
  * Constructs an XmlAttribute with a given name and value.
  *
  * \param	name	Name of the attribute.

@@ -106,7 +106,7 @@ void RendererOpenGL::WriteConfigurationOptions(const Options& options)
 
 
 /**
- * Instantiates an RendererOpenGL object with the title of the application window.
+ * Instantiates a RendererOpenGL object with the title of the application window.
  *
  * \param title	Title of the application window.
  */

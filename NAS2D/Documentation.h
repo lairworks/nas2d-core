@@ -15,13 +15,13 @@
  *
  * NAS2D is an open source, object oriented 2D game development framework written in C++. It was designed to make the development of games easier by providing a high-level interface. It handles the low-level tasks of setting up the video display, input, sound mixing, file loading, etc.
  *
- * By using well known and well tested low-level libraries, NAS2D brings you all the power you need to develop the games you want. It even comes with all of its dependencies packaged up for you so you don't have to waste time scouring the web for external API's.
+ * By using well known and well tested low-level libraries, NAS2D brings you all the power you need to develop the games you want. It even comes with all of its dependencies packaged up for you so you don't have to waste time scouring the web for external APIs.
  *
  * NAS2D's use of popular low level libraries also allows it to be highly portable. It's developed and officially supported on Windows and MacOS X and has been tested with success on Linux and BSD.
  *
  * \section overview Obtaining NAS2D
  *
- * Visit the <a href="http://nas2d.lairworks.com/">NAS2D Home Page</a> to get official builds for support platforms and IDE's.
+ * Visit the <a href="http://nas2d.lairworks.com/">NAS2D Home Page</a> to get official builds for support platforms and IDEs.
  *
  * \section design-elements Learning to Use NAS2D
  *

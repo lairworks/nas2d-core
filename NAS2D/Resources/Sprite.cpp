@@ -66,7 +66,7 @@ std::vector<std::string> Sprite::actions() const
 /**
  * Plays an action animation.
  *
- * \param	action	Name of the action to use for animation. Action's are not
+ * \param	action	Name of the action to use for animation. Actions are not
  *			case sensitive. "Case", "caSe", "CASE", etc. will all be viewed
  *			as identical.
  *

@@ -33,15 +33,10 @@ public:
 	using ByteStream = std::string; /**< Byte stream. */
 
 
-	/**
-	 * Default C'tor
-	 */
 	File()
 	{}
 
 	/**
-	 * C'tor
-	 *
 	 * \param	stream	A ByteStream representing the file.
 	 * \param	name	The full name of the file including path.
 	 */
@@ -50,16 +45,10 @@ public:
 		mFileName(name)
 	{}
 
-	/**
-	 * D'tor
-	 */
 	~File()
 	{}
 
 
-	/**
-	 * Copy c'tor
-	 */
 	File(const File& _f) :
 		mByteStream(_f.mByteStream),
 		mFileName(_f.mFileName)

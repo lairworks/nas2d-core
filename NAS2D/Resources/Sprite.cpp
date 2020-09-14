@@ -30,8 +30,6 @@ namespace {
 
 
 /**
- * C'tor.
- *
  * \param filePath	File path of the Sprite definition file.
  */
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :

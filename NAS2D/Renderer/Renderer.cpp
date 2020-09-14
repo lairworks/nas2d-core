@@ -27,9 +27,6 @@ Renderer::Renderer(const std::string& appTitle) : mTitle(appTitle)
 {}
 
 
-/**
- * D'tor
- */
 Renderer::~Renderer()
 {
 	fadeCompleteSignal.clear();

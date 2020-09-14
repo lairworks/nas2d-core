@@ -91,9 +91,6 @@ void MixerSDL::WriteConfigurationOptions(const Options& options)
 }
 
 
-/*
- * C'tor.
- */
 MixerSDL::MixerSDL() : MixerSDL(InvalidToDefault(ReadConfigurationOptions()))
 {
 }
@@ -119,9 +116,6 @@ MixerSDL::MixerSDL(const Options& options)
 }
 
 
-/*
- * D'tor.
- */
 MixerSDL::~MixerSDL()
 {
 	stopAllAudio();

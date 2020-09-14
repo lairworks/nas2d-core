@@ -14,9 +14,6 @@
 using namespace NAS2D::Xml;
 
 
-/**
- * Default c'tor.
- */
 XmlAttributeSet::XmlAttributeSet()
 {
 	sentinel._next = &sentinel;
@@ -24,9 +21,6 @@ XmlAttributeSet::XmlAttributeSet()
 }
 
 
-/**
- * D'tor
- */
 XmlAttributeSet::~XmlAttributeSet()
 {}
 

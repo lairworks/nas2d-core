@@ -106,8 +106,6 @@ void RendererOpenGL::WriteConfigurationOptions(const Options& options)
 
 
 /**
- * C'tor
- *
  * Instantiates an RendererOpenGL object with the title of the application window.
  *
  * \param title	Title of the application window.
@@ -125,9 +123,6 @@ RendererOpenGL::RendererOpenGL(const std::string& title, const Options& options)
 }
 
 
-/**
- * D'tor.
- */
 RendererOpenGL::~RendererOpenGL()
 {
 	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::onResize);

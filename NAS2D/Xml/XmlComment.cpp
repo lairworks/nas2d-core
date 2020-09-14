@@ -13,16 +13,11 @@
 
 using namespace NAS2D::Xml;
 
-/**
- * Default c'tor.
- */
 XmlComment::XmlComment() : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {}
 
 
 /**
- * C'tor.
- *
  * Constructs an XML Comment with a value.
  *
  * \param	commentValue	Reference to a \c std::string with the value to use for the comment.
@@ -33,9 +28,6 @@ XmlComment::XmlComment(const std::string& commentValue) : XmlNode(XmlNode::NodeT
 }
 
 
-/**
- * Copy c'tor.
- */
 XmlComment::XmlComment(const XmlComment& copy) : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {
 	copy.copyTo(this);

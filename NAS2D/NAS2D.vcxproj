@@ -186,6 +186,7 @@
     <ClCompile Include="FpsCounter.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="MathUtils.cpp" />
+    <ClCompile Include="ParserHelper.cpp" />
     <ClCompile Include="Mixer\Mixer.cpp" />
     <ClCompile Include="Mixer\MixerSDL.cpp" />
     <ClCompile Include="Mixer\MixerNull.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="Mixer\MixerSDL.h" />
     <ClInclude Include="Mixer\MixerNull.h" />
     <ClInclude Include="NAS2D.h" />
+    <ClInclude Include="ParserHelper.h" />
     <ClInclude Include="Renderer\DisplayDesc.h" />
     <ClInclude Include="Renderer\RendererNull.h" />
     <ClInclude Include="Renderer\Color.h" />

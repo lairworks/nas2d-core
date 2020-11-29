@@ -14,6 +14,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     binutils=2.34-* \
     git=1:2.25.1-* \
     ssh=1:8.2p1-* \
+    googletest=1.10.0-2 \
     curl=7.68.0-* \
     tar=1.30+* \
     gzip=1.10-* \
@@ -58,11 +59,11 @@ RUN mkdir --parents "${INSTALL64}" "${INSTALL32}"
 
 # Download, compile, and install Google Test source package
 WORKDIR /tmp/gtest/
-RUN curl --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar -xz && \
-  cmake -Hgoogletest-release-1.10.0/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH64}" && \
-  cmake -Hgoogletest-release-1.10.0/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH64}" && \
-  cmake -Hgoogletest-release-1.10.0/ -B"${ARCH32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH32}" && \
-  cmake -Hgoogletest-release-1.10.0/ -B"${ARCH32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH32}" && \
+RUN \
+  cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH64}" && \
+  cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH64}" && \
+  cmake -H/usr/src/googletest/ -B"${ARCH32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH32}" && \
+  cmake -H/usr/src/googletest/ -B"${ARCH32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++17" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH32}" && \
   cp --parents -r \
     "${ARCH64}/bin/" \
     "${ARCH64}/lib/" \
@@ -74,17 +75,17 @@ RUN curl --location https://github.com/google/googletest/archive/release-1.10.0.
     "${INSTALL64}include/" \
     "${INSTALL32}include/" && \
   cp -r \
-    googletest-release-1.10.0/googletest/include/ \
-    googletest-release-1.10.0/googlemock/include/ \
+    /usr/src/googletest/googletest/include/ \
+    /usr/src/googletest/googlemock/include/ \
     "${INSTALL_PREFIX}share/mingw-w64/" && \
   ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL64}include/" && \
   ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL64}include/" && \
   ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL32}include/" && \
   ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL32}include/" && \
   cp --parents -r \
-    googletest-release-1.10.0/CMakeLists.txt \
-    googletest-release-1.10.0/googletest/ \
-    googletest-release-1.10.0/googlemock/ \
+    /usr/src/googletest/CMakeLists.txt \
+    /usr/src/googletest/googletest/ \
+    /usr/src/googletest/googlemock/ \
     "${INSTALL_PREFIX}src/" && \
   rm -rf /tmp/gtest/
 

@@ -230,13 +230,13 @@ ImageName := nas2d
 ImageVersion := 1.4
 
 ImageName_gcc := nas2d-gcc
-ImageVersion_gcc := 1.2
+ImageVersion_gcc := 1.3
 
 ImageName_clang := nas2d-clang
-ImageVersion_clang := 1.1
+ImageVersion_clang := 1.2
 
 ImageName_mingw := nas2d-mingw
-ImageVersion_mingw := 1.5
+ImageVersion_mingw := 1.6
 
 .PHONY: build-image
 build-image:

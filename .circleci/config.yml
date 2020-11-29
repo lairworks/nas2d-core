@@ -29,7 +29,7 @@ commands:
 jobs:
   build-macos:
     macos:
-      xcode: "11.7.0"
+      xcode: "12.2.0"
     environment:
       - WARN_EXTRA: "-Wno-double-promotion"
     steps:

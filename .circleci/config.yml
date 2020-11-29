@@ -10,7 +10,7 @@ commands:
       - restore_cache:
           name: Restoring brew dependencies
           key: deps-v4-NAS2D-{{ arch }}
-      - run: brew install << parameters.packages >>
+      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install << parameters.packages >>
       - save_cache:
           name: Caching brew dependencies
           key: deps-v4-NAS2D-{{ arch }}

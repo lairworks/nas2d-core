@@ -19,7 +19,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     gzip=1.10-* \
     bzip2=1.0.8-* \
     gnupg=2.2.19-* \
-    software-properties-common=0.98.9.2 \
+    software-properties-common=0.98.9.3 \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 

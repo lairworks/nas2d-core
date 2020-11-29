@@ -9,7 +9,6 @@ FROM ubuntu:20.04
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     g++-10=10-20200411-* \
-    dpkg-dev=1.19.* \
     make=4.2.1-* \
     cmake=3.16.3-* \
     libgtest-dev=1.10.0-* \

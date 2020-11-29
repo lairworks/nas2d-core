@@ -9,11 +9,11 @@ commands:
     steps:
       - restore_cache:
           name: Restoring brew dependencies
-          key: deps-v3-NAS2D-{{ arch }}
+          key: deps-v4-NAS2D-{{ arch }}
       - run: brew install << parameters.packages >>
       - save_cache:
           name: Caching brew dependencies
-          key: deps-v3-NAS2D-{{ arch }}
+          key: deps-v4-NAS2D-{{ arch }}
           paths:
             - /usr/local/Cellar
       - run: brew link << parameters.packages >>

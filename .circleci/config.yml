@@ -84,13 +84,13 @@ jobs:
       - build-and-test
   build-linux-gcc:
     docker:
-      - image: outpostuniverse/nas2d-gcc:1.2
+      - image: outpostuniverse/nas2d-gcc:1.3
     steps:
       - checkout
       - build-and-test
   build-linux-clang:
     docker:
-      - image: outpostuniverse/nas2d-clang:1.1
+      - image: outpostuniverse/nas2d-clang:1.2
     environment:
       - WARN_EXTRA: "-Wdocumentation -Wdocumentation-unknown-command -Wcomma -Winconsistent-missing-destructor-override -Wmissing-prototypes"
     steps:
@@ -98,7 +98,7 @@ jobs:
       - build-and-test
   build-linux-mingw:
     docker:
-      - image: outpostuniverse/nas2d-mingw:1.5
+      - image: outpostuniverse/nas2d-mingw:1.6
     environment:
       - WARN_EXTRA: "-Wno-redundant-decls"
     steps:

@@ -54,6 +54,26 @@ TEST(Rectangle, startPointSet) {
 	EXPECT_EQ((NAS2D::Rectangle{5, 6, 3, 4}), rect);
 }
 
+TEST(Rectangle, inset) {
+	// Intuitive test is for start and end point adjustments
+	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Rectangle{0, 0, 10, 10}.inset(1).startPoint()));
+	EXPECT_EQ((NAS2D::Point{9, 9}), (NAS2D::Rectangle{0, 0, 10, 10}.inset(1).endPoint()));
+
+	// Adjust all edges equally, both inwards and outwards
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 8, 8}), (NAS2D::Rectangle{0, 0, 10, 10}.inset(1)));
+	EXPECT_EQ((NAS2D::Rectangle{2, 2, 6, 6}), (NAS2D::Rectangle{0, 0, 10, 10}.inset(2)));
+	EXPECT_EQ((NAS2D::Rectangle{-2, -2, 14, 14}), (NAS2D::Rectangle{0, 0, 10, 10}.inset(-2)));
+
+	// Adjust x and y edges independently
+	EXPECT_EQ((NAS2D::Rectangle{1, 2, 8, 6}), (NAS2D::Rectangle{0, 0, 10, 10}.inset({1, 2})));
+
+	// Adjust all 4 edges independently
+	EXPECT_EQ((NAS2D::Rectangle{1, 2, 6, 4}), (NAS2D::Rectangle{0, 0, 10, 10}.inset({1, 2}, {3, 4})));
+	// Intuitive test using start and end points
+	EXPECT_EQ((NAS2D::Point{1, 2}), (NAS2D::Rectangle{0, 0, 10, 10}.inset({1, 2}, {3, 4}).startPoint()));
+	EXPECT_EQ((NAS2D::Point{7, 6}), (NAS2D::Rectangle{0, 0, 10, 10}.inset({1, 2}, {3, 4}).endPoint()));
+}
+
 TEST(Rectangle, skewBy) {
 	EXPECT_EQ((NAS2D::Rectangle{1, 0, 1, 0}), (NAS2D::Rectangle{1, 1, 1, 1}.skewBy(NAS2D::Vector{1, 0})));
 	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 1}), (NAS2D::Rectangle{1, 1, 1, 1}.skewBy(NAS2D::Vector{1, 1})));

@@ -86,6 +86,18 @@ struct Rectangle
 		y = newStartPoint.y;
 	}
 
+	constexpr Rectangle inset(BaseType amount) const {
+		return {x + amount, y + amount, width - 2 * amount, height - 2 * amount};
+	}
+
+	constexpr Rectangle inset(Vector<BaseType> amount) const {
+		return {x + amount.x, y + amount.y, width - 2 * amount.x, height - 2 * amount.y};
+	}
+
+	constexpr Rectangle inset(Vector<BaseType> amountStart, Vector<BaseType> amountEnd) const {
+		return {x + amountStart.x, y + amountStart.y, width - amountStart.x - amountEnd.x, height - amountStart.y - amountEnd.y};
+	}
+
 	constexpr Rectangle skewBy(const Vector<BaseType>& scaleFactor) const {
 		return Create(startPoint().skewBy(scaleFactor), size().skewBy(scaleFactor));
 	}

@@ -2,6 +2,18 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <string>
+
+class ImplicitStringConversionTestFixture
+{
+public:
+	std::string data;
+
+	operator std::string() const
+	{
+		return data;
+	}
+};
 
 
 TEST(String, stringFrom) {
@@ -39,6 +51,10 @@ TEST(String, stringFrom) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
+
+	// Implicit string conversion
+	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
+	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
 }
 
 TEST(String, stringTo) {

@@ -56,7 +56,7 @@ std::vector<std::string> split(const std::string& str, char delim /*= ','*/)
 	{
 		result.push_back(curString);
 	}
-	if (ss.eof() && str.back() == delim)
+	if (ss.eof() && !str.empty() && str.back() == delim)
 	{
 		result.push_back(std::string{});
 	}

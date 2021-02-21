@@ -244,7 +244,7 @@ File Filesystem::open(const std::string& filename) const
 	}
 
 	// Create a char* buffer large enough to hold the entire file.
-	PHYSFS_uint32 fileLength = static_cast<PHYSFS_uint32>(len);
+	auto fileLength = static_cast<PHYSFS_uint32>(len);
 	char* fileBuffer = new char[std::size_t{fileLength} + std::size_t{1}];
 
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.

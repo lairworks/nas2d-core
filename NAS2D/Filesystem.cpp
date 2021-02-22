@@ -238,15 +238,15 @@ File Filesystem::open(const std::string& filename) const
 	}
 
 	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
-	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
-	if (len < 0 || len > UINT_MAX)
+	PHYSFS_sint64 fileLength = PHYSFS_fileLength(myFile);
+	if (fileLength < 0 || fileLength > UINT_MAX)
 	{
 		closeFile(myFile);
 		throw std::runtime_error(std::string("File '") + filename + "' is too large or size could not be determined");
 	}
 
 	// Create buffer large enough to hold entire file
-	auto bufferSize = static_cast<PHYSFS_uint32>(len);
+	auto bufferSize = static_cast<PHYSFS_uint32>(fileLength);
 	std::string fileBuffer;
 	fileBuffer.resize(std::size_t{bufferSize});
 
@@ -255,7 +255,7 @@ File Filesystem::open(const std::string& filename) const
 	closeFile(myFile);
 
 	// Ensure we read the expected length
-	if (actualReadLength < len)
+	if (actualReadLength < fileLength)
 	{
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}

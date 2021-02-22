@@ -11,6 +11,8 @@
 #pragma once
 
 #include <string>
+#include <utility>
+
 
 namespace NAS2D {
 
@@ -40,9 +42,9 @@ public:
 	 * \param	stream	A ByteStream representing the file.
 	 * \param	name	The full name of the file including path.
 	 */
-	File(const ByteStream& stream, const std::string& name) :
-		mByteStream(stream),
-		mFileName(name)
+	File(ByteStream stream, std::string name) :
+		mByteStream(std::move(stream)),
+		mFileName(std::move(name))
 	{}
 
 	~File()

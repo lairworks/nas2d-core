@@ -18,6 +18,9 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <utility>
+#include <limits>
+
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -235,31 +238,30 @@ File Filesystem::open(const std::string& filename) const
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
-	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
-	PHYSFS_sint64 len = PHYSFS_fileLength(myFile);
-	if (len < 0 || len > UINT_MAX)
+	// Ensure that the file size is greater than zero and can fit in a std::size_t
+	auto fileLength = PHYSFS_fileLength(myFile);
+	if (fileLength < 0 || static_cast<PHYSFS_uint64>(fileLength) > std::numeric_limits<std::size_t>::max())
 	{
 		closeFile(myFile);
 		throw std::runtime_error(std::string("File '") + filename + "' is too large or size could not be determined");
 	}
 
-	// Create a char* buffer large enough to hold the entire file.
-	PHYSFS_uint32 fileLength = static_cast<PHYSFS_uint32>(len);
-	char* fileBuffer = new char[std::size_t{fileLength} + std::size_t{1}];
+	// Create buffer large enough to hold entire file
+	const auto bufferSize = static_cast<std::size_t>(fileLength);
+	std::string fileBuffer;
+	fileBuffer.resize(bufferSize);
 
-	// If we read less then the file length, return an empty File object, log a message and free any used memory.
-	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
+	// Read file data into buffer and close file
+	const auto actualReadLength = PHYSFS_readBytes(myFile, fileBuffer.data(), bufferSize);
+	closeFile(myFile);
+
+	// Ensure we read the expected length
+	if (actualReadLength < fileLength)
 	{
-		delete[] fileBuffer;
-		closeFile(myFile);
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
-	File file(std::string(fileBuffer, fileLength), filename);
-	closeFile(myFile);
-	delete[] fileBuffer;
-
-	return file;
+	return File{std::move(fileBuffer), filename};
 }
 
 

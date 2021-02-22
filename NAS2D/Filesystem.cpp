@@ -255,7 +255,7 @@ File Filesystem::open(const std::string& filename) const
 	closeFile(myFile);
 
 	// Ensure we read the expected length
-	if (actualReadLength < fileLength)
+	if (actualReadLength < len)
 	{
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}

@@ -248,15 +248,17 @@ File Filesystem::open(const std::string& filename) const
 	std::string fileBuffer;
 	fileBuffer.resize(std::size_t{fileLength});
 
-	// If we read less then the file length, return an empty File object, log a message and free any used memory.
-	if (PHYSFS_readBytes(myFile, fileBuffer.data(), fileLength) < fileLength)
+	// Read file data into buffer and close file
+	const auto actualReadLength = PHYSFS_readBytes(myFile, fileBuffer.data(), fileLength);
+	closeFile(myFile);
+
+	// Ensure we read the expected length
+	if (actualReadLength < fileLength)
 	{
-		closeFile(myFile);
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	File file(fileBuffer, filename);
-	closeFile(myFile);
 
 	return file;
 }

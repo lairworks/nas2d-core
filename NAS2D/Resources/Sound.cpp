@@ -28,7 +28,7 @@ using namespace NAS2D;
 Sound::Sound(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	File soundFile = Utility<Filesystem>::get().open(mResourceName);
+	auto soundFile = Utility<Filesystem>::get().open(mResourceName);
 	if (soundFile.empty())
 	{
 		throw std::runtime_error("Sound file is empty: " + mResourceName);

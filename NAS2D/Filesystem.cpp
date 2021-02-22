@@ -19,6 +19,7 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
+#include <limits>
 
 
 using namespace NAS2D;
@@ -237,9 +238,9 @@ File Filesystem::open(const std::string& filename) const
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
-	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
+	// Ensure that the file size is greater than zero and can fit in a std::size_t
 	auto fileLength = PHYSFS_fileLength(myFile);
-	if (fileLength < 0 || fileLength > UINT_MAX)
+	if (fileLength < 0 || static_cast<PHYSFS_uint64>(fileLength) > std::numeric_limits<std::size_t>::max())
 	{
 		closeFile(myFile);
 		throw std::runtime_error(std::string("File '") + filename + "' is too large or size could not be determined");

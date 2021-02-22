@@ -258,9 +258,7 @@ File Filesystem::open(const std::string& filename) const
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
-	File file(fileBuffer, filename);
-
-	return file;
+	return File{fileBuffer, filename};
 }
 
 

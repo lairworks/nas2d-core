@@ -243,21 +243,20 @@ File Filesystem::open(const std::string& filename) const
 		throw std::runtime_error(std::string("File '") + filename + "' is too large or size could not be determined");
 	}
 
-	// Create a char* buffer large enough to hold the entire file.
+	// Create buffer large enough to hold entire file
 	auto fileLength = static_cast<PHYSFS_uint32>(len);
-	char* fileBuffer = new char[std::size_t{fileLength} + 1];
+	std::string fileBuffer;
+	fileBuffer.resize(std::size_t{fileLength});
 
 	// If we read less then the file length, return an empty File object, log a message and free any used memory.
-	if (PHYSFS_readBytes(myFile, fileBuffer, fileLength) < fileLength)
+	if (PHYSFS_readBytes(myFile, fileBuffer.data(), fileLength) < fileLength)
 	{
-		delete[] fileBuffer;
 		closeFile(myFile);
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
-	File file(std::string(fileBuffer, fileLength), filename);
+	File file(fileBuffer, filename);
 	closeFile(myFile);
-	delete[] fileBuffer;
 
 	return file;
 }

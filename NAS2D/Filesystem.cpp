@@ -238,7 +238,7 @@ File Filesystem::open(const std::string& filename) const
 	}
 
 	// Ensure that the file size is greater than zero and can fit in a 32-bit integer.
-	PHYSFS_sint64 fileLength = PHYSFS_fileLength(myFile);
+	auto fileLength = PHYSFS_fileLength(myFile);
 	if (fileLength < 0 || fileLength > UINT_MAX)
 	{
 		closeFile(myFile);

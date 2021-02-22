@@ -246,12 +246,12 @@ File Filesystem::open(const std::string& filename) const
 	}
 
 	// Create buffer large enough to hold entire file
-	auto fileLength = static_cast<PHYSFS_uint32>(len);
+	auto bufferSize = static_cast<PHYSFS_uint32>(len);
 	std::string fileBuffer;
-	fileBuffer.resize(std::size_t{fileLength});
+	fileBuffer.resize(std::size_t{bufferSize});
 
 	// Read file data into buffer and close file
-	const auto actualReadLength = PHYSFS_readBytes(myFile, fileBuffer.data(), fileLength);
+	const auto actualReadLength = PHYSFS_readBytes(myFile, fileBuffer.data(), bufferSize);
 	closeFile(myFile);
 
 	// Ensure we read the expected length

@@ -137,7 +137,7 @@ void Configuration::load(const std::string& filePath)
 	{
 		try {
 			// Read in the Config File.
-			File xmlFile = Utility<Filesystem>::get().open(filePath);
+			auto xmlFile = Utility<Filesystem>::get().open(filePath);
 			loadData(xmlFile.raw_bytes());
 			std::cout << "done." << std::endl;
 		}

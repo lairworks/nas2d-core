@@ -18,6 +18,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <utility>
+
 
 using namespace NAS2D;
 using namespace NAS2D::Exception;
@@ -258,7 +260,7 @@ File Filesystem::open(const std::string& filename) const
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
-	return File{fileBuffer, filename};
+	return File{std::move(fileBuffer), filename};
 }
 
 

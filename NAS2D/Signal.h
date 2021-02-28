@@ -13,10 +13,9 @@
 // = of NAS2D's library interface.
 // =
 // = Modifications include:
+// =	- Used variadic templates for arbitrary parameter lists
 // =	- Condensed lines for a more compact file
-// =	- Removed templates for parameter lists 6 - 8
 // =	- Replaced for loops using C++11 range-based loops
-// =	- Added doxygen comments for automatic generation of documentation.
 // =
 // = Created by Patrick Hogan on 5/18/09.
 // = https://github.com/pbhogan/Signals

@@ -474,13 +474,9 @@ public:
 
 #endif
 
-#define FASTDLGT_RETTYPE RetType
-
 template <class X, class Y, class RetType, typename ... Params>
-DelegateX<FASTDLGT_RETTYPE, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...)) { return DelegateX<FASTDLGT_RETTYPE, Params...>(x, func); }
+DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...)) { return DelegateX<RetType, Params...>(x, func); }
 template <class X, class Y, class RetType, typename ... Params>
-DelegateX<FASTDLGT_RETTYPE, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...) const) { return DelegateX<FASTDLGT_RETTYPE, Params...>(x, func); }
-
-#undef FASTDLGT_RETTYPE
+DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...) const) { return DelegateX<RetType, Params...>(x, func); }
 
 }

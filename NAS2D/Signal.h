@@ -16,6 +16,7 @@
 // =	- Used variadic templates for arbitrary parameter lists
 // =	- Condensed lines for a more compact file
 // =	- Replaced for loops using C++11 range-based loops
+// =	- Split client methods into SignalSource.h
 // =
 // = Created by Patrick Hogan on 5/18/09.
 // = https://github.com/pbhogan/Signals
@@ -24,8 +25,7 @@
 // ==================================================================================
 #pragma once
 
-#include "Delegate.h"
-#include <set>
+#include "SignalSource.h"
 
 
 namespace NAS2D::Signals {
@@ -38,37 +38,11 @@ namespace NAS2D::Signals {
  * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */
 template<typename ... Params>
-class Signal
+class Signal : public SignalSource<Params...>
 {
 public:
-	using DelegateType = DelegateX<void, Params...>;
-
-public:
-	bool empty() const { return delegateList.empty(); }
-
-	void clear() { delegateList.clear(); }
-
-	void connect(DelegateType delegate) { delegateList.insert(delegate); }
-
-	template<typename X, typename Y>
-	void connect(Y * obj, void (X::*func)(Params...)) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	template<typename X, typename Y>
-	void connect(Y * obj, void (X::*func)(Params...) const) { delegateList.insert(MakeDelegate(obj, func)); }
-
-	void disconnect(DelegateType delegate) { delegateList.erase(delegate); }
-
-	template<typename X, typename Y>
-	void disconnect(Y * obj, void (X::*func)(Params...)) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	template<typename X, typename Y>
-	void disconnect(Y * obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
-
-	void emit(Params...params) const { for (auto& delegate : delegateList) { delegate(params...); } }
+	void emit(Params...params) const { for (auto& delegate : this->delegateList) { delegate(params...); } }
 	void operator() (Params...params) const { emit(params...); }
-
-protected:
-	std::set<DelegateType> delegateList;
 };
 
 

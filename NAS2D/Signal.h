@@ -67,7 +67,7 @@ public:
 	void emit(Params...params) const { for (auto& delegate : delegateList) { delegate(params...); } }
 	void operator() (Params...params) const { emit(params...); }
 
-private:
+protected:
 	std::set<DelegateType> delegateList;
 };
 

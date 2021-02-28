@@ -44,6 +44,10 @@ public:
 	using DelegateType = DelegateX<void, Params...>;
 
 public:
+	bool empty() const { return delegateList.empty(); }
+
+	void clear() { delegateList.clear(); }
+
 	void connect(DelegateType delegate) { delegateList.insert(delegate); }
 
 	template<typename X, typename Y>
@@ -60,10 +64,8 @@ public:
 	template<typename X, typename Y>
 	void disconnect(Y * obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
-	void clear() { delegateList.clear(); }
 	void emit(Params...params) const { for (auto& delegate : delegateList) { delegate(params...); } }
 	void operator() (Params...params) const { emit(params...); }
-	bool empty() const { return delegateList.empty(); }
 
 private:
 	std::set<DelegateType> delegateList;

@@ -27,6 +27,7 @@
 #include <memory>
 #include <cstring>
 
+
 #define FASTDELEGATE_USESTATICFUNCTIONHACK
 
 // Compiler identification. It's not easy to identify Visual C++ because many vendors

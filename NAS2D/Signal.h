@@ -13,10 +13,9 @@
 // = of NAS2D's library interface.
 // =
 // = Modifications include:
+// =	- Used variadic templates for arbitrary parameter lists
 // =	- Condensed lines for a more compact file
-// =	- Removed templates for parameter lists 6 - 8
 // =	- Replaced for loops using C++11 range-based loops
-// =	- Added doxygen comments for automatic generation of documentation.
 // =
 // = Created by Patrick Hogan on 5/18/09.
 // = https://github.com/pbhogan/Signals
@@ -28,8 +27,9 @@
 #include "Delegate.h"
 #include <set>
 
-namespace NAS2D {
-namespace Signals {
+
+namespace NAS2D::Signals {
+
 
 /**
  * \class Signal
@@ -44,33 +44,32 @@ public:
 	using DelegateType = DelegateX<void, Params...>;
 
 public:
+	bool empty() const { return delegateList.empty(); }
+
+	void clear() { delegateList.clear(); }
+
 	void connect(DelegateType delegate) { delegateList.insert(delegate); }
 
-	template<class X, class Y>
+	template<typename X, typename Y>
 	void connect(Y * obj, void (X::*func)(Params...)) { delegateList.insert(MakeDelegate(obj, func)); }
 
-	template<class X, class Y>
+	template<typename X, typename Y>
 	void connect(Y * obj, void (X::*func)(Params...) const) { delegateList.insert(MakeDelegate(obj, func)); }
 
 	void disconnect(DelegateType delegate) { delegateList.erase(delegate); }
 
-	template<class X, class Y>
+	template<typename X, typename Y>
 	void disconnect(Y * obj, void (X::*func)(Params...)) { delegateList.erase(MakeDelegate(obj, func)); }
 
-	template<class X, class Y>
+	template<typename X, typename Y>
 	void disconnect(Y * obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
-	void clear() { delegateList.clear(); }
 	void emit(Params...params) const { for (auto& delegate : delegateList) { delegate(params...); } }
 	void operator() (Params...params) const { emit(params...); }
-	bool empty() const { return delegateList.empty(); }
 
 private:
-	using DelegateList = std::set<DelegateType>;
-	using DelegateIterator = typename DelegateList::const_iterator;
-	DelegateList delegateList;
+	std::set<DelegateType> delegateList;
 };
 
 
-} // namespace
 } // namespace

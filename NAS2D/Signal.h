@@ -46,18 +46,18 @@ public:
 public:
 	void connect(DelegateType delegate) { delegateList.insert(delegate); }
 
-	template<class X, class Y>
+	template<typename X, typename Y>
 	void connect(Y * obj, void (X::*func)(Params...)) { delegateList.insert(MakeDelegate(obj, func)); }
 
-	template<class X, class Y>
+	template<typename X, typename Y>
 	void connect(Y * obj, void (X::*func)(Params...) const) { delegateList.insert(MakeDelegate(obj, func)); }
 
 	void disconnect(DelegateType delegate) { delegateList.erase(delegate); }
 
-	template<class X, class Y>
+	template<typename X, typename Y>
 	void disconnect(Y * obj, void (X::*func)(Params...)) { delegateList.erase(MakeDelegate(obj, func)); }
 
-	template<class X, class Y>
+	template<typename X, typename Y>
 	void disconnect(Y * obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	void clear() { delegateList.clear(); }

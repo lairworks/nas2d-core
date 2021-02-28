@@ -55,10 +55,10 @@ namespace NAS2D {
 
 namespace detail {
 
-template <class OutputClass, class InputClass>
+template <typename OutputClass, typename InputClass>
 union horrible_union { OutputClass out; InputClass in; };
 
-template <class OutputClass, class InputClass>
+template <typename OutputClass, typename InputClass>
 inline OutputClass horrible_cast(const InputClass input)
 {
 	horrible_union<OutputClass, InputClass> u;
@@ -74,21 +74,21 @@ inline OutputClass horrible_cast(const InputClass input)
 using DefaultVoid = void;
 
 // Translate from 'DefaultVoid' to 'void'.
-template <class T>
+template <typename T>
 struct DefaultVoidToVoid { using type = T; };
 
 template <>
 struct DefaultVoidToVoid<DefaultVoid> { using type = void; };
 
 // Translate from 'void' into 'DefaultVoid'
-template <class T>
+template <typename T>
 struct VoidToDefaultVoid { using type = T; };
 
 template <>
 struct VoidToDefaultVoid<void> { using type = DefaultVoid; };
 
 
-template <class GenericMemFuncType, class XFuncType>
+template <typename GenericMemFuncType, typename XFuncType>
 GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
 {
 	#if __GNUC__ >= 8
@@ -118,7 +118,7 @@ const int SINGLE_MEMFUNCPTR_SIZE = sizeof(void (GenericClass::*)());
 template <int N>
 struct SimplifyMemFunc
 {
-	template <class X, class XFuncType, class GenericMemFuncType>
+	template <typename X, typename XFuncType, typename GenericMemFuncType>
 	inline static GenericClass* Convert(X* /*pthis*/, XFuncType /*function_to_bind*/, GenericMemFuncType& /*bound_func*/)
 	{
 		static_assert(N < 100, "Unsupported member function pointer on this compiler");
@@ -129,7 +129,7 @@ struct SimplifyMemFunc
 template <>
 struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE>
 {
-	template <class X, class XFuncType, class GenericMemFuncType>
+	template <typename X, typename XFuncType, typename GenericMemFuncType>
 	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 	{
 		#if defined __DMC__
@@ -146,7 +146,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE>
 template<>
 struct SimplifyMemFunc< SINGLE_MEMFUNCPTR_SIZE + sizeof(int) >
 {
-	template <class X, class XFuncType, class GenericMemFuncType>
+	template <typename X, typename XFuncType, typename GenericMemFuncType>
 	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 	{
 		union
@@ -181,7 +181,7 @@ struct GenericVirtualClass : virtual public GenericClass
 template <>
 struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2 * sizeof(int)>
 {
-	template <class X, class XFuncType, class GenericMemFuncType>
+	template <typename X, typename XFuncType, typename GenericMemFuncType>
 	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 	{
 		union { XFuncType func; GenericClass* (X::*ProbeFunc)(); MicrosoftVirtualMFP s; } u;
@@ -204,7 +204,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2 * sizeof(int)>
 template <>
 struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3 * sizeof(int)>
 {
-	template <class X, class XFuncType, class GenericMemFuncType>
+	template <typename X, typename XFuncType, typename GenericMemFuncType>
 	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 	{
 		union
@@ -305,11 +305,11 @@ protected:
 
 namespace detail
 {
-template <class GenericMemFunc, class StaticFuncPtr, class UnvoidStaticFuncPtr>
+template <typename GenericMemFunc, typename StaticFuncPtr, typename UnvoidStaticFuncPtr>
 class ClosurePtr : public DelegateMemento
 {
 public:
-	template <class X, class XMemFunc>
+	template <typename X, typename XMemFunc>
 	inline void bindmemfunc(X* pthis, XMemFunc function_to_bind)
 	{
 		m_pthis = SimplifyMemFunc< sizeof(function_to_bind) > ::Convert(pthis, function_to_bind, m_pFunction);
@@ -318,7 +318,7 @@ public:
 		#endif
 	}
 
-	template <class X, class XMemFunc>
+	template <typename X, typename XMemFunc>
 	inline void bindconstmemfunc(const X* pthis, XMemFunc function_to_bind)
 	{
 		m_pthis = SimplifyMemFunc< sizeof(function_to_bind) > ::Convert(const_cast<X*>(pthis), function_to_bind, m_pFunction);
@@ -328,7 +328,7 @@ public:
 	}
 
 #ifdef FASTDELEGATE_GCC_BUG_8271 // At present, GCC doesn't recognize constness of MFPs in templates
-	template <class X, class XMemFunc>
+	template <typename X, typename XMemFunc>
 	inline void bindmemfunc(const X* pthis, XMemFunc function_to_bind)
 	{
 		bindconstmemfunc(pthis, function_to_bind);
@@ -344,14 +344,14 @@ public:
 #if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 
 public:
-	template<class DerivedClass>
+	template<typename DerivedClass>
 	inline void CopyFrom(DerivedClass* pParent, const DelegateMemento& x)
 	{
 		SetMementoFrom(x);
 		if (m_pStaticFunction) m_pthis = reinterpret_cast<GenericClass*>(pParent);
 	}
 
-	template <class DerivedClass, class ParentInvokerSig>
+	template <typename DerivedClass, typename ParentInvokerSig>
 	inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 	{
 		if (!function_to_bind) m_pFunction = nullptr;
@@ -361,10 +361,10 @@ public:
 	inline UnvoidStaticFuncPtr GetStaticFunction() const { return reinterpret_cast<UnvoidStaticFuncPtr>(m_pStaticFunction); }
 #else
 
-	template<class DerivedClass>
+	template<typename DerivedClass>
 	inline void CopyFrom(DerivedClass*, const DelegateMemento& right) { SetMementoFrom(right); }
 
-	template <class DerivedClass, class ParentInvokerSig>
+	template <typename DerivedClass, typename ParentInvokerSig>
 	inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 	{
 		if (!function_to_bind) m_pFunction = nullptr;
@@ -390,7 +390,7 @@ public:
 }
 
 
-template<class RetType, typename ... Params>
+template<typename RetType, typename ... Params>
 class DelegateX
 {
 private:
@@ -412,14 +412,14 @@ public:
 	bool operator <(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
 	bool operator >(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
 
-	template < class X, class Y >
+	template < typename X, typename Y >
 	DelegateX(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-	template < class X, class Y >
+	template < typename X, typename Y >
 	inline void Bind(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 
-	template < class X, class Y >
+	template < typename X, typename Y >
 	DelegateX(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
-	template < class X, class Y >
+	template < typename X, typename Y >
 	inline void Bind(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 
 	DelegateX(DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
@@ -462,10 +462,10 @@ public:
 
 	Delegate() : BaseType() {}
 
-	template <class X, class Y>
+	template <typename X, typename Y>
 	Delegate(Y* pthis, RetType(X::*function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}
 
-	template <class X, class Y>
+	template <typename X, typename Y>
 	Delegate(const Y* pthis, RetType(X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
 
 	Delegate(RetType(*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
@@ -474,9 +474,9 @@ public:
 
 #endif
 
-template <class X, class Y, class RetType, typename ... Params>
+template <typename X, typename Y, typename RetType, typename ... Params>
 DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...)) { return DelegateX<RetType, Params...>(x, func); }
-template <class X, class Y, class RetType, typename ... Params>
+template <typename X, typename Y, typename RetType, typename ... Params>
 DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...) const) { return DelegateX<RetType, Params...>(x, func); }
 
 }

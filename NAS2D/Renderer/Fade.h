@@ -15,7 +15,7 @@ class Fade
 public:
 	Fade(Color fadeColor = Color::Black);
 
-	Signals::Signal<>& fadeComplete();
+	Signals::SignalSource<>& fadeComplete();
 
 	void fadeIn(unsigned int durationInMilliseconds);
 	void fadeOut(unsigned int durationInMilliseconds);

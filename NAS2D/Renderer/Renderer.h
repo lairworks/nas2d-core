@@ -94,7 +94,7 @@ public:
 	void fadeOut(float delayTime);
 	bool isFading() const;
 	bool isFaded() const;
-	Signals::Signal<>& fadeComplete();
+	Signals::SignalSource<>& fadeComplete();
 
 	virtual void showSystemPointer(bool) = 0;
 	virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;

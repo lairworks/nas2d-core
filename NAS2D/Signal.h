@@ -28,8 +28,9 @@
 #include "Delegate.h"
 #include <set>
 
-namespace NAS2D {
-namespace Signals {
+
+namespace NAS2D::Signals {
+
 
 /**
  * \class Signal
@@ -71,5 +72,4 @@ private:
 };
 
 
-} // namespace
 } // namespace

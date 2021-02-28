@@ -67,7 +67,6 @@ public:
 
 private:
 	using DelegateList = std::set<DelegateType>;
-	using DelegateIterator = typename DelegateList::const_iterator;
 	DelegateList delegateList;
 };
 

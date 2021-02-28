@@ -66,8 +66,7 @@ public:
 	bool empty() const { return delegateList.empty(); }
 
 private:
-	using DelegateList = std::set<DelegateType>;
-	DelegateList delegateList;
+	std::set<DelegateType> delegateList;
 };
 
 

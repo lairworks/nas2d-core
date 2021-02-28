@@ -143,8 +143,8 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE>
 
 #ifdef FASTDLGT_MICROSOFT_MFP
 
-template<>
-struct SimplifyMemFunc< SINGLE_MEMFUNCPTR_SIZE + sizeof(int) >
+template <>
+struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + sizeof(int)>
 {
 	template <typename X, typename XFuncType, typename GenericMemFuncType>
 	inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
@@ -312,7 +312,7 @@ public:
 	template <typename X, typename XMemFunc>
 	inline void bindmemfunc(X* pthis, XMemFunc function_to_bind)
 	{
-		m_pthis = SimplifyMemFunc< sizeof(function_to_bind) > ::Convert(pthis, function_to_bind, m_pFunction);
+		m_pthis = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(pthis, function_to_bind, m_pFunction);
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 		m_pStaticFunction = nullptr;
 		#endif
@@ -321,7 +321,7 @@ public:
 	template <typename X, typename XMemFunc>
 	inline void bindconstmemfunc(const X* pthis, XMemFunc function_to_bind)
 	{
-		m_pthis = SimplifyMemFunc< sizeof(function_to_bind) > ::Convert(const_cast<X*>(pthis), function_to_bind, m_pFunction);
+		m_pthis = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(const_cast<X*>(pthis), function_to_bind, m_pFunction);
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 		m_pStaticFunction = nullptr;
 		#endif
@@ -344,7 +344,7 @@ public:
 #if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 
 public:
-	template<typename DerivedClass>
+	template <typename DerivedClass>
 	inline void CopyFrom(DerivedClass* pParent, const DelegateMemento& x)
 	{
 		SetMementoFrom(x);
@@ -361,7 +361,7 @@ public:
 	inline UnvoidStaticFuncPtr GetStaticFunction() const { return reinterpret_cast<UnvoidStaticFuncPtr>(m_pStaticFunction); }
 #else
 
-	template<typename DerivedClass>
+	template <typename DerivedClass>
 	inline void CopyFrom(DerivedClass*, const DelegateMemento& right) { SetMementoFrom(right); }
 
 	template <typename DerivedClass, typename ParentInvokerSig>
@@ -390,7 +390,7 @@ public:
 }
 
 
-template<typename RetType, typename ... Params>
+template <typename RetType, typename ... Params>
 class DelegateX
 {
 private:
@@ -412,14 +412,14 @@ public:
 	bool operator <(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
 	bool operator >(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
 
-	template < typename X, typename Y >
+	template <typename X, typename Y>
 	DelegateX(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-	template < typename X, typename Y >
+	template <typename X, typename Y>
 	inline void Bind(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 
-	template < typename X, typename Y >
+	template <typename X, typename Y>
 	DelegateX(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
-	template < typename X, typename Y >
+	template <typename X, typename Y>
 	inline void Bind(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 
 	DelegateX(DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
@@ -453,7 +453,7 @@ private:
 template <typename Signature>
 class Delegate;
 
-template<typename RetType, typename ... Params>
+template <typename RetType, typename ... Params>
 class Delegate<RetType(Params...)> : public DelegateX<RetType, Params...>
 {
 public:

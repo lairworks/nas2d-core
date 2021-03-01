@@ -145,7 +145,7 @@ bool Renderer::isFaded() const
 /**
  * Gets a refernece to the callback signal for fade transitions.
  */
-Signals::Signal<>& Renderer::fadeComplete()
+Signals::SignalSource<>& Renderer::fadeComplete()
 {
 	return fadeCompleteSignal;
 }

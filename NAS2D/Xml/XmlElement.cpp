@@ -246,6 +246,20 @@ XmlNode* XmlElement::clone() const
 	return clone;
 }
 
+std::string XmlElement::GetText() const
+{
+	const XmlNode* child = this->firstChild();
+	if (child)
+	{
+		const XmlText* childText = child->toText();
+		if (childText)
+		{
+			return childText->value();
+		}
+	}
+
+	return std::string();
+}
 
 /**
  * Deletes an attribute with the given name.

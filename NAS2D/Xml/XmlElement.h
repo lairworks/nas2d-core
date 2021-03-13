@@ -49,7 +49,7 @@ public:
 	XmlNode* clone() const override;
 
 	// Convenience function for easy access to the text inside an element
-	std::string GetText() const;
+	std::string getText() const;
 
 	void write(std::string& buf, int depth) const override;
 

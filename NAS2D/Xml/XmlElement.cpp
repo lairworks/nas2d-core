@@ -246,7 +246,7 @@ XmlNode* XmlElement::clone() const
 	return clone;
 }
 
-std::string XmlElement::GetText() const
+std::string XmlElement::getText() const
 {
 	const XmlNode* child = this->firstChild();
 	if (child)

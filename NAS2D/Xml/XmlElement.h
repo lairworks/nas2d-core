@@ -14,6 +14,7 @@
 #include "XmlAttribute.h"
 #include "XmlAttributeSet.h"
 #include "XmlNode.h"
+#include <string>
 
 namespace NAS2D {
 namespace Xml {
@@ -46,6 +47,9 @@ public:
 	XmlAttribute* lastAttribute();
 
 	XmlNode* clone() const override;
+
+	// Convenience function for easy access to the text inside an element
+	std::string getText() const;
 
 	void write(std::string& buf, int depth) const override;
 

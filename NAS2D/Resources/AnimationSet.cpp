@@ -8,6 +8,7 @@
 #include "../StringUtils.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
+#include "../Xml/XmlSerializer.h"
 
 
 using namespace NAS2D;
@@ -77,20 +78,10 @@ AnimationSet processXml(std::string filePath, ImageCache& imageCache)
 		auto& filesystem = Utility<Filesystem>::get();
 		const auto basePath = filesystem.workingPath(filePath);
 
-		Xml::XmlDocument xmlDoc;
-		xmlDoc.parse(filesystem.open(filePath).raw_bytes());
+		auto xmlDoc = openXmlFile(basePath, "sprite");
 
-		if (xmlDoc.error())
-		{
-			throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
-		}
-
-		// Find the Sprite node.
+		// sprite node validated to exist within function openXmlFile
 		const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
-		if (!xmlRootElement)
-		{
-			throw std::runtime_error("Sprite file does not contain required <sprite> tag");
-		}
 
 		// Get the Sprite version.
 		const auto* version = xmlRootElement->firstAttribute();

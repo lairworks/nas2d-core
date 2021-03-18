@@ -78,10 +78,10 @@ AnimationSet processXml(std::string filePath, ImageCache& imageCache)
 		auto& filesystem = Utility<Filesystem>::get();
 		const auto basePath = filesystem.workingPath(filePath);
 
-		auto xmlDoc = openXmlFile(basePath, "sprite");
+		auto xmlDocument = openXmlFile(basePath, "sprite");
 
 		// sprite node validated to exist within function openXmlFile
-		const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
+		const auto* xmlRootElement = xmlDocument.firstChildElement("sprite");
 
 		// Get the Sprite version.
 		const auto* version = xmlRootElement->firstAttribute();

@@ -246,30 +246,30 @@ public:
 	};
 
 
-	using ActivateEventCallback = Signals::Signal<bool>;
-	using WindowHiddenEventCallback = Signals::Signal<bool>;
-	using WindowExposedEventCallback = Signals::Signal<>;
-	using WindowMinimizedEventCallback = Signals::Signal<>;
-	using WindowMaximizedEventCallback = Signals::Signal<>;
-	using WindowRestoredEventCallback = Signals::Signal<>;
-	using WindowResizedEventCallback = Signals::Signal<int, int>;
-	using WindowMouseEnterEventCallback = Signals::Signal<>;
-	using WindowMouseLeaveEventCallback = Signals::Signal<>;
+	using ActivateEventCallback = Signals::SignalSource<bool>;
+	using WindowHiddenEventCallback = Signals::SignalSource<bool>;
+	using WindowExposedEventCallback = Signals::SignalSource<>;
+	using WindowMinimizedEventCallback = Signals::SignalSource<>;
+	using WindowMaximizedEventCallback = Signals::SignalSource<>;
+	using WindowRestoredEventCallback = Signals::SignalSource<>;
+	using WindowResizedEventCallback = Signals::SignalSource<int, int>;
+	using WindowMouseEnterEventCallback = Signals::SignalSource<>;
+	using WindowMouseLeaveEventCallback = Signals::SignalSource<>;
 
-	using JoystickAxisMotionEventCallback = Signals::Signal<int, int, int>;
-	using JoystickBallMotionEventCallback = Signals::Signal<int, int, int, int>;
-	using JoystickButtonEventCallback = Signals::Signal<int, int>;
-	using JoystickHatMotionEventCallback = Signals::Signal<int, int, int>;
+	using JoystickAxisMotionEventCallback = Signals::SignalSource<int, int, int>;
+	using JoystickBallMotionEventCallback = Signals::SignalSource<int, int, int, int>;
+	using JoystickButtonEventCallback = Signals::SignalSource<int, int>;
+	using JoystickHatMotionEventCallback = Signals::SignalSource<int, int, int>;
 
-	using KeyDownEventCallback = Signals::Signal<KeyCode, KeyModifier, bool>;
-	using KeyUpEventCallback = Signals::Signal<KeyCode, KeyModifier>;
-	using TextInputEventCallback = Signals::Signal<const std::string&>;
+	using KeyDownEventCallback = Signals::SignalSource<KeyCode, KeyModifier, bool>;
+	using KeyUpEventCallback = Signals::SignalSource<KeyCode, KeyModifier>;
+	using TextInputEventCallback = Signals::SignalSource<const std::string&>;
 
-	using MouseButtonEventCallback = Signals::Signal<MouseButton, int, int>;
-	using MouseMotionEventCallback = Signals::Signal<int, int, int, int>;
-	using MouseWheelEventCallback = Signals::Signal<int, int>;
+	using MouseButtonEventCallback = Signals::SignalSource<MouseButton, int, int>;
+	using MouseMotionEventCallback = Signals::SignalSource<int, int, int, int>;
+	using MouseWheelEventCallback = Signals::SignalSource<int, int>;
 
-	using QuitEventCallback = Signals::Signal<>;
+	using QuitEventCallback = Signals::SignalSource<>;
 
 public:
 	EventHandler();

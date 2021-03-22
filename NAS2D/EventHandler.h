@@ -346,13 +346,13 @@ private:
 	Signals::Signal<int, int> mJoystickButtonDownEvent;
 	Signals::Signal<int, int, int> mJoystickHatMotionEvent;
 
-	Signals::Signal<KeyCode, KeyModifier> mKeyUpEvent;
 	Signals::Signal<KeyCode, KeyModifier, bool> mKeyDownEvent;
+	Signals::Signal<KeyCode, KeyModifier> mKeyUpEvent;
 
 	Signals::Signal<const std::string&> mTextInput;
 
-	Signals::Signal<MouseButton, int, int> mMouseButtonUpEvent;
 	Signals::Signal<MouseButton, int, int> mMouseButtonDownEvent;
+	Signals::Signal<MouseButton, int, int> mMouseButtonUpEvent;
 	Signals::Signal<MouseButton, int, int> mMouseDoubleClick;
 	Signals::Signal<int, int, int, int> mMouseMotionEvent;
 	Signals::Signal<int, int> mMouseWheelEvent;

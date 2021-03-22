@@ -34,23 +34,23 @@ public:
 	*/
 	enum class KeyModifier : uint16_t
 	{
-		KEY_MOD_NONE = 0x0000,
-		KEY_MOD_LSHIFT = 0x0001,
-		KEY_MOD_RSHIFT = 0x0002,
-		KEY_MOD_SHIFT = KEY_MOD_LSHIFT | KEY_MOD_RSHIFT,
-		KEY_MOD_LCTRL = 0x0040,
-		KEY_MOD_RCTRL = 0x0080,
-		KEY_MOD_CTRL = KEY_MOD_LCTRL | KEY_MOD_RCTRL,
-		KEY_MOD_LALT = 0x0100,
-		KEY_MOD_RALT = 0x0200,
-		KEY_MOD_ALT = KEY_MOD_LALT | KEY_MOD_RALT,
-		KEY_MOD_LMETA = 0x0400,
-		KEY_MOD_RMETA = 0x0800,
-		KEY_MOD_META = KEY_MOD_LMETA | KEY_MOD_RMETA,
-		KEY_MOD_NUM = 0x1000,
-		KEY_MOD_CAPS = 0x2000,
-		KEY_MOD_MODE = 0x4000,
-		KEY_MOD_RESERVED = 0x8000
+		None = 0x0000,
+		ShiftLeft = 0x0001,
+		ShiftRight = 0x0002,
+		Shift = ShiftLeft | ShiftRight,
+		CtrlLeft = 0x0040,
+		CtrlRight = 0x0080,
+		Ctrl = CtrlLeft | CtrlRight,
+		AltLeft = 0x0100,
+		AltRight = 0x0200,
+		Alt = AltLeft | AltRight,
+		MetaLeft = 0x0400,
+		MetaRight = 0x0800,
+		Meta = MetaLeft | MetaRight,
+		Num = 0x1000,
+		Caps = 0x2000,
+		Mode = 0x4000,
+		Reserved = 0x8000
 	};
 
 
@@ -239,10 +239,10 @@ public:
 	*/
 	enum class MouseButton
 	{
-		BUTTON_NONE,
-		BUTTON_LEFT,
-		BUTTON_MIDDLE,
-		BUTTON_RIGHT
+		None,
+		Left,
+		Middle,
+		Right
 	};
 
 

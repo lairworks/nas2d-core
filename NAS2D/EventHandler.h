@@ -246,66 +246,66 @@ public:
 	};
 
 
-	using ActivateEventCallback = Signals::SignalSource<bool>;
-	using WindowHiddenEventCallback = Signals::SignalSource<bool>;
-	using WindowExposedEventCallback = Signals::SignalSource<>;
-	using WindowMinimizedEventCallback = Signals::SignalSource<>;
-	using WindowMaximizedEventCallback = Signals::SignalSource<>;
-	using WindowRestoredEventCallback = Signals::SignalSource<>;
-	using WindowResizedEventCallback = Signals::SignalSource<int, int>;
-	using WindowMouseEnterEventCallback = Signals::SignalSource<>;
-	using WindowMouseLeaveEventCallback = Signals::SignalSource<>;
+	using ActivateEventSource = Signals::SignalSource<bool>;
+	using WindowHiddenEventSource = Signals::SignalSource<bool>;
+	using WindowExposedEventSource = Signals::SignalSource<>;
+	using WindowMinimizedEventSource = Signals::SignalSource<>;
+	using WindowMaximizedEventSource = Signals::SignalSource<>;
+	using WindowRestoredEventSource = Signals::SignalSource<>;
+	using WindowResizedEventSource = Signals::SignalSource<int, int>;
+	using WindowMouseEnterEventSource = Signals::SignalSource<>;
+	using WindowMouseLeaveEventSource = Signals::SignalSource<>;
 
-	using JoystickAxisMotionEventCallback = Signals::SignalSource<int, int, int>;
-	using JoystickBallMotionEventCallback = Signals::SignalSource<int, int, int, int>;
-	using JoystickButtonEventCallback = Signals::SignalSource<int, int>;
-	using JoystickHatMotionEventCallback = Signals::SignalSource<int, int, int>;
+	using JoystickAxisMotionEventSource = Signals::SignalSource<int, int, int>;
+	using JoystickBallMotionEventSource = Signals::SignalSource<int, int, int, int>;
+	using JoystickButtonEventSource = Signals::SignalSource<int, int>;
+	using JoystickHatMotionEventSource = Signals::SignalSource<int, int, int>;
 
-	using KeyDownEventCallback = Signals::SignalSource<KeyCode, KeyModifier, bool>;
-	using KeyUpEventCallback = Signals::SignalSource<KeyCode, KeyModifier>;
-	using TextInputEventCallback = Signals::SignalSource<const std::string&>;
+	using KeyDownEventSource = Signals::SignalSource<KeyCode, KeyModifier, bool>;
+	using KeyUpEventSource = Signals::SignalSource<KeyCode, KeyModifier>;
+	using TextInputEventSource = Signals::SignalSource<const std::string&>;
 
-	using MouseButtonEventCallback = Signals::SignalSource<MouseButton, int, int>;
-	using MouseMotionEventCallback = Signals::SignalSource<int, int, int, int>;
-	using MouseWheelEventCallback = Signals::SignalSource<int, int>;
+	using MouseButtonEventSource = Signals::SignalSource<MouseButton, int, int>;
+	using MouseMotionEventSource = Signals::SignalSource<int, int, int, int>;
+	using MouseWheelEventSource = Signals::SignalSource<int, int>;
 
-	using QuitEventCallback = Signals::SignalSource<>;
+	using QuitEventSource = Signals::SignalSource<>;
 
 public:
 	EventHandler();
 	~EventHandler();
 
-	ActivateEventCallback& activate();
+	ActivateEventSource& activate();
 
-	WindowHiddenEventCallback& windowHidden();
-	WindowExposedEventCallback& windowExposed();
+	WindowHiddenEventSource& windowHidden();
+	WindowExposedEventSource& windowExposed();
 
-	WindowMinimizedEventCallback& windowMinimized();
-	WindowMaximizedEventCallback& windowMaximized();
-	WindowRestoredEventCallback& windowRestored();
-	WindowResizedEventCallback& windowResized();
+	WindowMinimizedEventSource& windowMinimized();
+	WindowMaximizedEventSource& windowMaximized();
+	WindowRestoredEventSource& windowRestored();
+	WindowResizedEventSource& windowResized();
 
-	WindowMouseEnterEventCallback& windowMouseEnter();
-	WindowMouseLeaveEventCallback& windowMouseLeave();
+	WindowMouseEnterEventSource& windowMouseEnter();
+	WindowMouseLeaveEventSource& windowMouseLeave();
 
-	JoystickAxisMotionEventCallback& joystickAxisMotion();
-	JoystickBallMotionEventCallback& joystickBallMotion();
-	JoystickButtonEventCallback& joystickButtonUp();
-	JoystickButtonEventCallback& joystickButtonDown();
-	JoystickHatMotionEventCallback& joystickHatMotion();
+	JoystickAxisMotionEventSource& joystickAxisMotion();
+	JoystickBallMotionEventSource& joystickBallMotion();
+	JoystickButtonEventSource& joystickButtonUp();
+	JoystickButtonEventSource& joystickButtonDown();
+	JoystickHatMotionEventSource& joystickHatMotion();
 
-	KeyUpEventCallback& keyUp();
-	KeyDownEventCallback& keyDown();
+	KeyUpEventSource& keyUp();
+	KeyDownEventSource& keyDown();
 
-	TextInputEventCallback& textInput();
+	TextInputEventSource& textInput();
 
-	MouseButtonEventCallback& mouseButtonUp();
-	MouseButtonEventCallback& mouseButtonDown();
-	MouseButtonEventCallback& mouseDoubleClick();
-	MouseMotionEventCallback& mouseMotion();
-	MouseWheelEventCallback& mouseWheel();
+	MouseButtonEventSource& mouseButtonUp();
+	MouseButtonEventSource& mouseButtonDown();
+	MouseButtonEventSource& mouseDoubleClick();
+	MouseMotionEventSource& mouseMotion();
+	MouseWheelEventSource& mouseWheel();
 
-	QuitEventCallback& quit();
+	QuitEventSource& quit();
 
 	void grabMouse();
 	void releaseMouse();

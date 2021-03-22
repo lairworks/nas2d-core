@@ -329,35 +329,35 @@ public:
 	void disconnectAll();
 
 private:
-	ActivateEventCallback mActivateEvent;
+	Signals::Signal<bool> mActivateEvent;
 
-	WindowHiddenEventCallback mWindowHiddenEventCallback;
-	WindowExposedEventCallback mWindowExposedEventCallback;
-	WindowMinimizedEventCallback mWindowMinimizedEventCallback;
-	WindowMaximizedEventCallback mWindowMaximizedEventCallback;
-	WindowRestoredEventCallback mWindowRestoredEventCallback;
-	WindowResizedEventCallback mWindowResizedEventCallback;
-	WindowMouseEnterEventCallback mWindowMouseEnterEventCallback;
-	WindowMouseLeaveEventCallback mWindowMouseLeaveEventCallback;
+	Signals::Signal<bool> mWindowHiddenEventCallback;
+	Signals::Signal<> mWindowExposedEventCallback;
+	Signals::Signal<> mWindowMinimizedEventCallback;
+	Signals::Signal<> mWindowMaximizedEventCallback;
+	Signals::Signal<> mWindowRestoredEventCallback;
+	Signals::Signal<int, int> mWindowResizedEventCallback;
+	Signals::Signal<> mWindowMouseEnterEventCallback;
+	Signals::Signal<> mWindowMouseLeaveEventCallback;
 
-	JoystickAxisMotionEventCallback mJoystickAxisMotionEvent;
-	JoystickBallMotionEventCallback mJoystickBallMotionEvent;
-	JoystickButtonEventCallback mJoystickButtonUpEvent;
-	JoystickButtonEventCallback mJoystickButtonDownEvent;
-	JoystickHatMotionEventCallback mJoystickHatMotionEvent;
+	Signals::Signal<int, int, int> mJoystickAxisMotionEvent;
+	Signals::Signal<int, int, int, int> mJoystickBallMotionEvent;
+	Signals::Signal<int, int> mJoystickButtonUpEvent;
+	Signals::Signal<int, int> mJoystickButtonDownEvent;
+	Signals::Signal<int, int, int> mJoystickHatMotionEvent;
 
-	KeyUpEventCallback mKeyUpEvent;
-	KeyDownEventCallback mKeyDownEvent;
+	Signals::Signal<KeyCode, KeyModifier> mKeyUpEvent;
+	Signals::Signal<KeyCode, KeyModifier, bool> mKeyDownEvent;
 
-	TextInputEventCallback mTextInput;
+	Signals::Signal<const std::string&> mTextInput;
 
-	MouseButtonEventCallback mMouseButtonUpEvent;
-	MouseButtonEventCallback mMouseButtonDownEvent;
-	MouseButtonEventCallback mMouseDoubleClick;
-	MouseMotionEventCallback mMouseMotionEvent;
-	MouseWheelEventCallback mMouseWheelEvent;
+	Signals::Signal<MouseButton, int, int> mMouseButtonUpEvent;
+	Signals::Signal<MouseButton, int, int> mMouseButtonDownEvent;
+	Signals::Signal<MouseButton, int, int> mMouseDoubleClick;
+	Signals::Signal<int, int, int, int> mMouseMotionEvent;
+	Signals::Signal<int, int> mMouseWheelEvent;
 
-	QuitEventCallback mQuitEvent;
+	Signals::Signal<> mQuitEvent;
 };
 
 void postQuitEvent();

@@ -3,6 +3,8 @@
 #include "StringUtils.h"
 #include "ContainerUtils.h"
 
+#include "Xml/XmlNode.h"
+
 
 namespace NAS2D {
 	void reportMissingOrUnexpected(const std::vector<std::string>& missing, const std::vector<std::string>& unexpected)
@@ -21,5 +23,51 @@ namespace NAS2D {
 		const auto missing = missingValues(names, required);
 		const auto unexpected = unexpectedValues(names, required, optional);
 		reportMissingOrUnexpected(missing, unexpected);
+	}
+
+
+	Dictionary attributesToDictionary(const Xml::XmlElement& element)
+	{
+		Dictionary dictionary;
+		for (const auto* attribute = element.firstAttribute(); attribute; attribute = attribute->next())
+		{
+			dictionary.set(attribute->name(), attribute->value());
+		}
+		return dictionary;
+	}
+
+
+	std::map<std::string, Dictionary> subTagsToDictionaryMap(const Xml::XmlElement& element)
+	{
+		std::map<std::string, Dictionary> sections;
+		for (auto childElement = element.firstChildElement(); childElement; childElement = childElement->nextSiblingElement())
+		{
+			if (childElement->type() != Xml::XmlNode::NodeType::XML_COMMENT)
+			{
+				sections[childElement->value()] = attributesToDictionary(*childElement);
+			}
+		}
+		return sections;
+	}
+
+
+	Xml::XmlElement* dictionaryToAttributes(const std::string& tagName, const Dictionary& dictionary)
+	{
+		auto* element = new Xml::XmlElement(tagName.c_str());
+		for (const auto& key : dictionary.keys())
+		{
+			element->attribute(key, dictionary.get(key));
+		}
+		return element;
+	}
+
+	Xml::XmlElement* dictionaryMapToElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
+	{
+		auto* element = new Xml::XmlElement(tagName);
+		for (const auto& [key, dictionary] : sections)
+		{
+			element->linkEndChild(dictionaryToAttributes(key, dictionary));
+		}
+		return element;
 	}
 }

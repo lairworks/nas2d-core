@@ -13,91 +13,12 @@
 #include "ParserHelper.h"
 #include "Filesystem.h"
 #include "Utility.h"
-#include "Xml/Xml.h"
 
 #include <iostream>
 #include <algorithm>
 #include <utility>
 
 using namespace NAS2D;
-
-
-namespace {
-	Dictionary attributesToDictionary(const Xml::XmlElement& element)
-	{
-		Dictionary dictionary;
-		for (const auto* attribute = element.firstAttribute(); attribute; attribute = attribute->next())
-		{
-			dictionary.set(attribute->name(), attribute->value());
-		}
-		return dictionary;
-	}
-
-
-	std::map<std::string, Dictionary> subTagsToDictionaryMap(const Xml::XmlElement& element)
-	{
-		std::map<std::string, Dictionary> sections;
-		for (auto childElement = element.firstChildElement(); childElement; childElement = childElement->nextSiblingElement())
-		{
-			if (childElement->type() != Xml::XmlNode::NodeType::XML_COMMENT)
-			{
-				sections[childElement->value()] = attributesToDictionary(*childElement);
-			}
-		}
-		return sections;
-	}
-
-
-	std::map<std::string, Dictionary> parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
-	{
-		Xml::XmlDocument xmlDocument;
-		xmlDocument.parse(xmlString.c_str());
-
-		if (xmlDocument.error())
-		{
-			throw std::runtime_error("Error parsing XML file on (Row " + std::to_string(xmlDocument.errorRow()) + ", Column " + std::to_string(xmlDocument.errorCol()) + "): " + xmlDocument.errorDesc());
-		}
-
-		auto* root = !sectionName.empty() ? xmlDocument.firstChildElement(sectionName) : xmlDocument.rootElement();
-		if (!root)
-		{
-			throw std::runtime_error("XML file does not contain tag: " + (!sectionName.empty() ? sectionName : "(root element)"));
-		}
-
-		if (!requiredVersion.empty())
-		{
-			const auto actualVersion = root->attribute("version");
-			if (actualVersion != requiredVersion)
-			{
-				throw std::runtime_error("Version mismatch. Expected: " + std::string{requiredVersion} + " Actual: " + actualVersion);
-			}
-		}
-
-		return subTagsToDictionaryMap(*root);
-	}
-
-
-	Xml::XmlElement* dictionaryToAttributes(const std::string& tagName, const Dictionary& dictionary)
-	{
-		auto* element = new Xml::XmlElement(tagName.c_str());
-		for (const auto& key : dictionary.keys())
-		{
-			element->attribute(key, dictionary.get(key));
-		}
-		return element;
-	}
-
-
-	Xml::XmlElement* dictionaryMapToElement(const std::string& tagName, const std::map<std::string, Dictionary>& sections)
-	{
-		auto* element = new Xml::XmlElement(tagName);
-		for (const auto& [key, dictionary] : sections)
-		{
-			element->linkEndChild(dictionaryToAttributes(key, dictionary));
-		}
-		return element;
-	}
-}
 
 
 Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
@@ -115,7 +36,7 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	mLoadedSettings = parseXmlFileData(fileData, "configuration");
+	mLoadedSettings = parseXmlFileData<decltype(mLoadedSettings)>(fileData, "configuration");
 	mSettings = mergeByKey(mDefaults, mLoadedSettings);
 }
 
@@ -153,19 +74,7 @@ void Configuration::load(const std::string& filePath)
  */
 std::string Configuration::saveData() const
 {
-	Xml::XmlDocument doc;
-
-	auto* comment = new Xml::XmlComment("Automatically generated Configuration file.");
-	doc.linkEndChild(comment);
-
-	auto* root = dictionaryMapToElement("configuration", mSettings);
-	doc.linkEndChild(root);
-
-	// Write out the XML file.
-	Xml::XmlMemoryBuffer buff;
-	doc.accept(&buff);
-
-	return buff.buffer();
+	return formatXmlData(mSettings, "configuration", "Automatically generated Configuration file.");
 }
 
 

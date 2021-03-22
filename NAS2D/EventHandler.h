@@ -331,14 +331,14 @@ public:
 private:
 	Signals::Signal<bool> mActivateEvent;
 
-	Signals::Signal<bool> mWindowHiddenEventCallback;
-	Signals::Signal<> mWindowExposedEventCallback;
-	Signals::Signal<> mWindowMinimizedEventCallback;
-	Signals::Signal<> mWindowMaximizedEventCallback;
-	Signals::Signal<> mWindowRestoredEventCallback;
-	Signals::Signal<int, int> mWindowResizedEventCallback;
-	Signals::Signal<> mWindowMouseEnterEventCallback;
-	Signals::Signal<> mWindowMouseLeaveEventCallback;
+	Signals::Signal<bool> mWindowHiddenEvent;
+	Signals::Signal<> mWindowExposedEvent;
+	Signals::Signal<> mWindowMinimizedEvent;
+	Signals::Signal<> mWindowMaximizedEvent;
+	Signals::Signal<> mWindowRestoredEvent;
+	Signals::Signal<int, int> mWindowResizedEvent;
+	Signals::Signal<> mWindowMouseEnterEvent;
+	Signals::Signal<> mWindowMouseLeaveEvent;
 
 	Signals::Signal<int, int, int> mJoystickAxisMotionEvent;
 	Signals::Signal<int, int, int, int> mJoystickBallMotionEvent;

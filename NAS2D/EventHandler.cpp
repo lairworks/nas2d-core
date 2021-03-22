@@ -108,7 +108,7 @@ EventHandler::ActivateEventSource& EventHandler::activate()
  */
 EventHandler::WindowHiddenEventSource& EventHandler::windowHidden()
 {
-	return mWindowHiddenEventCallback;
+	return mWindowHiddenEvent;
 }
 
 
@@ -128,7 +128,7 @@ EventHandler::WindowHiddenEventSource& EventHandler::windowHidden()
  */
 EventHandler::WindowExposedEventSource& EventHandler::windowExposed()
 {
-	return mWindowExposedEventCallback;
+	return mWindowExposedEvent;
 }
 
 
@@ -148,7 +148,7 @@ EventHandler::WindowExposedEventSource& EventHandler::windowExposed()
  */
 EventHandler::WindowMinimizedEventSource& EventHandler::windowMinimized()
 {
-	return mWindowMinimizedEventCallback;
+	return mWindowMinimizedEvent;
 }
 
 
@@ -168,7 +168,7 @@ EventHandler::WindowMinimizedEventSource& EventHandler::windowMinimized()
  */
 EventHandler::WindowMaximizedEventSource& EventHandler::windowMaximized()
 {
-	return mWindowMaximizedEventCallback;
+	return mWindowMaximizedEvent;
 }
 
 
@@ -188,7 +188,7 @@ EventHandler::WindowMaximizedEventSource& EventHandler::windowMaximized()
  */
 EventHandler::WindowRestoredEventSource& EventHandler::windowRestored()
 {
-	return mWindowRestoredEventCallback;
+	return mWindowRestoredEvent;
 }
 
 
@@ -208,7 +208,7 @@ EventHandler::WindowRestoredEventSource& EventHandler::windowRestored()
  */
 EventHandler::WindowResizedEventSource& EventHandler::windowResized()
 {
-	return mWindowResizedEventCallback;
+	return mWindowResizedEvent;
 }
 
 
@@ -228,7 +228,7 @@ EventHandler::WindowResizedEventSource& EventHandler::windowResized()
  */
 EventHandler::WindowMouseEnterEventSource& EventHandler::windowMouseEnter()
 {
-	return mWindowMouseEnterEventCallback;
+	return mWindowMouseEnterEvent;
 }
 
 
@@ -248,7 +248,7 @@ EventHandler::WindowMouseEnterEventSource& EventHandler::windowMouseEnter()
  */
 EventHandler::WindowMouseLeaveEventSource& EventHandler::windowMouseLeave()
 {
-	return mWindowMouseLeaveEventCallback;
+	return mWindowMouseLeaveEvent;
 }
 
 
@@ -715,15 +715,15 @@ void EventHandler::pump()
 			// Not completely happy with this but meh, it works.
 			if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) { mActivateEvent(true); }
 			else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) { mActivateEvent(false); }
-			else if (event.window.event == SDL_WINDOWEVENT_SHOWN) { mWindowHiddenEventCallback(false); }
-			else if (event.window.event == SDL_WINDOWEVENT_HIDDEN) { mWindowHiddenEventCallback(true); }
-			else if (event.window.event == SDL_WINDOWEVENT_EXPOSED) { mWindowExposedEventCallback(); }
-			else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) { mWindowMinimizedEventCallback(); }
-			else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED) { mWindowMaximizedEventCallback(); }
-			else if (event.window.event == SDL_WINDOWEVENT_RESTORED) { mWindowRestoredEventCallback(); }
-			else if (event.window.event == SDL_WINDOWEVENT_ENTER) { mWindowMouseEnterEventCallback(); }
-			else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { mWindowMouseLeaveEventCallback(); }
-			else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedEventCallback(event.window.data1, event.window.data2); }
+			else if (event.window.event == SDL_WINDOWEVENT_SHOWN) { mWindowHiddenEvent(false); }
+			else if (event.window.event == SDL_WINDOWEVENT_HIDDEN) { mWindowHiddenEvent(true); }
+			else if (event.window.event == SDL_WINDOWEVENT_EXPOSED) { mWindowExposedEvent(); }
+			else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) { mWindowMinimizedEvent(); }
+			else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED) { mWindowMaximizedEvent(); }
+			else if (event.window.event == SDL_WINDOWEVENT_RESTORED) { mWindowRestoredEvent(); }
+			else if (event.window.event == SDL_WINDOWEVENT_ENTER) { mWindowMouseEnterEvent(); }
+			else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { mWindowMouseLeaveEvent(); }
+			else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedEvent(event.window.data1, event.window.data2); }
 			break;
 
 		case SDL_QUIT:

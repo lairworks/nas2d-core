@@ -767,7 +767,7 @@ bool EventHandler::textInputMode()
  */
 bool EventHandler::shift(KeyModifier mod) const
 {
-	return KeyModifier::KEY_MOD_NONE != (mod & (KeyModifier::KEY_MOD_SHIFT | KeyModifier::KEY_MOD_CAPS));
+	return KeyModifier::None != (mod & (KeyModifier::Shift | KeyModifier::Caps));
 }
 
 
@@ -778,7 +778,7 @@ bool EventHandler::shift(KeyModifier mod) const
  */
 bool EventHandler::alt(KeyModifier mod) const
 {
-	return KeyModifier::KEY_MOD_NONE != (mod & KeyModifier::KEY_MOD_ALT);
+	return KeyModifier::None != (mod & KeyModifier::Alt);
 }
 
 
@@ -789,7 +789,7 @@ bool EventHandler::alt(KeyModifier mod) const
  */
 bool EventHandler::numlock(KeyModifier mod) const
 {
-	return KeyModifier::KEY_MOD_NONE != (mod & KeyModifier::KEY_MOD_NUM);
+	return KeyModifier::None != (mod & KeyModifier::Num);
 }
 
 
@@ -800,7 +800,7 @@ bool EventHandler::numlock(KeyModifier mod) const
  */
 bool EventHandler::control(KeyModifier mod) const
 {
-	return KeyModifier::KEY_MOD_NONE != (mod & KeyModifier::KEY_MOD_CTRL);
+	return KeyModifier::None != (mod & KeyModifier::Ctrl);
 }
 
 
@@ -810,7 +810,7 @@ bool EventHandler::control(KeyModifier mod) const
 bool EventHandler::query_shift() const
 {
 	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::KEY_MOD_NONE != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::KEY_MOD_SHIFT));
+	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Shift));
 }
 
 
@@ -820,7 +820,7 @@ bool EventHandler::query_shift() const
 bool EventHandler::query_numlock() const
 {
 	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::KEY_MOD_NONE != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::KEY_MOD_NUM));
+	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Num));
 }
 
 
@@ -830,7 +830,7 @@ bool EventHandler::query_numlock() const
 bool EventHandler::query_control() const
 {
 	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::KEY_MOD_NONE != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::KEY_MOD_CTRL));
+	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Ctrl));
 }
 
 

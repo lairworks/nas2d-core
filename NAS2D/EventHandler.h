@@ -239,10 +239,10 @@ public:
 	*/
 	enum class MouseButton
 	{
-		BUTTON_NONE,
-		BUTTON_LEFT,
-		BUTTON_MIDDLE,
-		BUTTON_RIGHT
+		None,
+		Left,
+		Middle,
+		Right
 	};
 
 

@@ -246,288 +246,29 @@ public:
 	};
 
 
-	/**
-	 * \typedef	ActivateEventCallback
-	 * \brief	Triggered whenever the application gains or loses focus.
-	 *
-	 * The callback function expects one bool paramter.
-	 *
-	 * \code
-	 * void function(bool gained);
-	 * \endcode
-	 *
-	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
-	 */
 	using ActivateEventCallback = Signals::Signal<bool>;
-
-	/**
-	 * \typedef	WindowHiddenEventCallback
-	 * \brief	Triggered whenever the application's window is hidden or exposed.
-	 *
-	 * The callback function expects one bool paramter.
-	 *
-	 * \code
-	 * void function(bool hidden);
-	 * \endcode
-	 *
-	 * \arg \c gained	Bool value indicating whether or not the app lost focus.
-	 */
 	using WindowHiddenEventCallback = Signals::Signal<bool>;
-
-	/**
-	 * \typedef	WindowExposedEventCallback
-	 * \brief	Triggered whenever the application's window is exposed.
-	 *
-	 * \code
-	 * void function(void);
-	 * \endcode
-	 */
 	using WindowExposedEventCallback = Signals::Signal<>;
-
-	/**
-	 * \typedef	WindowMinimizedEventCallback
-	 * \brief	Triggered whenever the application's window is minimized.
-	 *
-	 * \code
-	 * void function(void);
-	 * \endcode
-	 */
 	using WindowMinimizedEventCallback = Signals::Signal<>;
-
-	/**
-	 * \typedef	WindowMaximizedEventCallback
-	 * \brief	Triggered whenever the application's window is maximized.
-	 *
-	 * \code
-	 * void function(void);
-	 * \endcode
-	 */
 	using WindowMaximizedEventCallback = Signals::Signal<>;
-
-	/**
-	 * \typedef	WindowRestoredEventCallback
-	 * \brief	Triggered whenever the application's window is restored to its original size and location.
-	 *
-	 * \code
-	 * void function(void);
-	 * \endcode
-	 */
 	using WindowRestoredEventCallback = Signals::Signal<>;
-
-	/**
-	 * \typedef	WindowMouseEnterEventCallback
-	 * \brief	Triggered whenever the mouse enters the application's window.
-	 *
-	 * \code
-	 * void function(void);
-	 * \endcode
-	 */
+	using WindowResizedEventCallback = Signals::Signal<int, int>;
 	using WindowMouseEnterEventCallback = Signals::Signal<>;
-
-	/**
-	 * \typedef	WindowMouseLeaveEventCallback
-	 * \brief	Triggered whenever the mouse leaves the application's window.
-	 *
-	 * \code
-	 * void function(void);
-	 * \endcode
-	 */
 	using WindowMouseLeaveEventCallback = Signals::Signal<>;
 
-	/**
-	 * \typedef	WindowResizedEventCallback
-	 * \brief	Triggered whenever the window is resized.
-	 *
-	 * \code
-	 * void function(int width, int height);
-	 * \endcode
-	 *
-	 * \arg \c width	Width of the resized window.
-	 * \arg \c height	Height of the resized window.
-	 */
-	using WindowResizedEventCallback = Signals::Signal<int, int>;
-
-	/**
-	 * \typedef	JoystickAxisMotionEventCallback
-	 * \brief	Joystic axis events generate three values: Device ID,
-	 *			Axis ID and Axis Position.
-	 *
-	 * The callback function expects three int paramter.
-	 *
-	 * \code
-	 * void function(int deviceId, int axisId, int pos);
-	 * \endcode
-	 *
-	 * \arg \c deviceId	Joystick ID which this event was generated from.
-	 * \arg \c axisId	Axis ID. Axis 0 is x, Axis 1 is Y. Some joysticks
-						use additional axis as buttons.
-	 * \arg \c pos		Current position of the axis.
-	 */
 	using JoystickAxisMotionEventCallback = Signals::Signal<int, int, int>;
-
-	/**
-	 * \typedef	JoystickBallMotionEventCallback
-	 * \brief	Joystick trackball events generate four values: Device ID,
-	 *			Ball ID, X motion change and Y motion change.
-	 *
-	 * The callback function expects four int paramter.
-	 *
-	 * \code
-	 * void function(int deviceId, int ballId, int xChange, int yChange);
-	 * \endcode
-	 *
-	 * \arg \c deviceId	Joystick ID which this event was generated from.
-	 * \arg \c ballId	Trackball ID.
-	 * \arg \c xChange	Change in relative position of the X position.
-	 * \arg \c yChange	Change in relative position of the Y position.
-	 */
 	using JoystickBallMotionEventCallback = Signals::Signal<int, int, int, int>;
-
-	/**
-	 * \typedef	JoystickButtonEventCallback
-	 * \brief	Joystick button events generate two values: Device ID
-	 *			and Button ID. Button events occure when a joystick
-	 *			button is pressed or released.
-	 *
-	 * The callback function expects two int paramters.
-	 *
-	 * \code
-	 * void function(int deviceId, int buttonId);
-	 * \endcode
-	 *
-	 * \arg \c deviceId	Joystick ID which this event was generated from.
-	 * \arg \c buttonId	Button ID which the event was generated from.
-	 */
 	using JoystickButtonEventCallback = Signals::Signal<int, int>;
-
-	/**
-	 * \typedef	JoystickHatMotionEventCallback
-	 * \brief	Joystick hat motion events generate three values: Device ID,
-	 *			Hat ID, and Hat Position.
-	 *
-	 * The callback function expects three int paramters.
-	 *
-	 * \code
-	 * void function(int deviceId, int hatId, int pos);
-	 * \endcode
-	 *
-	 * \arg \c deviceId	Joystick ID which this event was generated from.
-	 * \arg \c hatId	Hat ID.
-	 * \arg \c pos		Current position of the hat.
-	 */
 	using JoystickHatMotionEventCallback = Signals::Signal<int, int, int>;
 
-	/**
-	 * \typedef	KeyDownEventCallback
-	 * \brief	Keyboard key down events generate three values: Keyboard
-	 *			scan code, key modifier and a repeat flag.
-	 *
-	 * The callback function expects one KeyCode paramter, one KeyModifier paramter
-	 * and one bool parameter.
-	 *
-	 * \code
-	 * void function(KeyCode key, KeyModifier mod, bool repeat);
-	 * \endcode
-	 *
-	 * \arg \c key		KeyCode representing a key on the keyboard.
-	 * \arg \c mod		Keyboard modifier.
-	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
-	 */
 	using KeyDownEventCallback = Signals::Signal<KeyCode, KeyModifier, bool>;
-
-	/**
-	 * \typedef	KeyUpEventCallback
-	 * \brief	Keyboard key up events generate two values: Keyboard
-	 *			scan code and key modifier.
-	 *
-	 * The callback function expects one KeyCode paramter and one KeyModifier paramter.
-	 *
-	 * \code
-	 * void function(KeyCode key, KeyModifier mod, bool repeat);
-	 * \endcode
-	 *
-	 * \arg \c key		KeyCode representing a key on the keyboard.
-	 * \arg \c mod		Keyboard modifier.
-	 * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
-	 */
 	using KeyUpEventCallback = Signals::Signal<KeyCode, KeyModifier>;
-
-	/**
-	 * \typedef	MouseButtonEventCallback
-	 * \brief	Mouse button events generate three values: MouseButton, x
-	 *			and y.
-	 *
-	 * The callback function expects one MouseButton and two int parameters.
-	 *
-	 * \code
-	 * void function(MouseButton button, int x, int y);
-	 * \endcode
-	 *
-	 * \arg \c button:	MouseButton value indicating which button is pressed.
-	 * \arg	\c x:		X position of the mouse button event.
-	 * \arg	\c y:		Y position of the mouse button event.
-	 */
-	using MouseButtonEventCallback = Signals::Signal<MouseButton, int, int>;
-
-	/**
-	 * \typedef	MouseMotionEventCallback
-	 * \brief	Mouse motion events generate four values: x, y, relative x
-	 *			and relative y values.
-	 *
-	 * The callback function expects four int paramters.
-	 *
-	 * \code
-	 * void function(int x, int y, int relX, int relY);
-	 * \endcode
-	 *
-	 * \arg	\c x:		Absolute x position of the mouse.
-	 * \arg	\c y:		Absolute y position of the mouse.
-	 * \arg	\c relX:	X position of the mouse relative to its last position.
-	 * \arg	\c relY;	Y position of the mouse relative to its last position.
-	 */
-	using MouseMotionEventCallback = Signals::Signal<int, int, int, int>;
-
-	/**
-	 * \typedef	MouseWheelEventCallback
-	 * \brief	Mouse wheel events generate two values: x and y
-	 *			motion values.
-	 *
-	 * The callback function expects two int parameters.
-	 *
-	 * \code
-	 * void function(int x, int y);
-	 * \endcode
-	 *
-	 * \arg	\c x:		Change along the X-Axis.
-	 * \arg	\c y:		Change along the Y-Axis.
-	 *
-	 * \note	The value given in the axis parameters is the value
-	 * 			of a single 'click' of the mouse wheel. This may be
-	 * 			more than one (on Windows this value is typical 120,
-	 * 			not 1).
-	 */
-	using MouseWheelEventCallback = Signals::Signal<int, int>;
-
-	/**
-	 * \typedef	TextInputEventCallback
-	 * \brief	Fires whenever text input events occur.
-	 *
-	 * \code
-	 * void function(const std::string&);
-	 * \endcode
-	 */
 	using TextInputEventCallback = Signals::Signal<const std::string&>;
 
-	/**
-	 * \typedef	QuitEventCallback
-	 * \brief	Triggered whenever a Quit message is posted.
-	 *
-	 * A Quit callback function requires no paramters.
-	 *
-	 * \code
-	 * void function(void);
-	 * \endcode
-	 */
+	using MouseButtonEventCallback = Signals::Signal<MouseButton, int, int>;
+	using MouseMotionEventCallback = Signals::Signal<int, int, int, int>;
+	using MouseWheelEventCallback = Signals::Signal<int, int>;
+
 	using QuitEventCallback = Signals::Signal<>;
 
 public:

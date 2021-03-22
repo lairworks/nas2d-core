@@ -380,30 +380,6 @@ EventHandler::JoystickHatMotionEventCallback& EventHandler::joystickHatMotion()
 
 
 /**
- * \brief Keyboard key up events generate three values:
- * Keyboard scan code, key modifier, and a repeat flag.
- *
- * To connect an event handler to this event, call the 'connect()'
- * function as follows:
- *
- * \code
- * connect(this, &Object::function);
- * \endcode
- *
- * \code
- * void function(KeyCode key, KeyModifier mod);
- * \endcode
- *
- * \arg \c key		KeyCode representing a key on the keyboard.
- * \arg \c mod		Keyboard modifier.
- */
-EventHandler::KeyUpEventCallback& EventHandler::keyUp()
-{
-	return mKeyUpEvent;
-}
-
-
-/**
  * \brief Keyboard key down events generate three values:
  * Keyboard scan code, key modifier, and a repeat flag.
  *
@@ -425,6 +401,30 @@ EventHandler::KeyUpEventCallback& EventHandler::keyUp()
 EventHandler::KeyDownEventCallback& EventHandler::keyDown()
 {
 	return mKeyDownEvent;
+}
+
+
+/**
+ * \brief Keyboard key up events generate three values:
+ * Keyboard scan code, key modifier, and a repeat flag.
+ *
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ *
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ *
+ * \code
+ * void function(KeyCode key, KeyModifier mod);
+ * \endcode
+ *
+ * \arg \c key		KeyCode representing a key on the keyboard.
+ * \arg \c mod		Keyboard modifier.
+ */
+EventHandler::KeyUpEventCallback& EventHandler::keyUp()
+{
+	return mKeyUpEvent;
 }
 
 
@@ -467,9 +467,9 @@ EventHandler::TextInputEventCallback& EventHandler::textInput()
  * \arg \c x: X position of the mouse button event.
  * \arg \c y: Y position of the mouse button event.
  */
-EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonUp()
+EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonDown()
 {
-	return mMouseButtonUpEvent;
+	return mMouseButtonDownEvent;
 }
 
 
@@ -492,9 +492,9 @@ EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonUp()
  * \arg \c x: X position of the mouse button event.
  * \arg \c y: Y position of the mouse button event.
  */
-EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonDown()
+EventHandler::MouseButtonEventCallback& EventHandler::mouseButtonUp()
 {
-	return mMouseButtonDownEvent;
+	return mMouseButtonUpEvent;
 }
 
 

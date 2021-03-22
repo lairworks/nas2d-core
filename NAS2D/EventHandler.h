@@ -252,9 +252,9 @@ public:
 	using WindowMinimizedEventCallback = Signals::Signal<>;
 	using WindowMaximizedEventCallback = Signals::Signal<>;
 	using WindowRestoredEventCallback = Signals::Signal<>;
+	using WindowResizedEventCallback = Signals::Signal<int, int>;
 	using WindowMouseEnterEventCallback = Signals::Signal<>;
 	using WindowMouseLeaveEventCallback = Signals::Signal<>;
-	using WindowResizedEventCallback = Signals::Signal<int, int>;
 
 	using JoystickAxisMotionEventCallback = Signals::Signal<int, int, int>;
 	using JoystickBallMotionEventCallback = Signals::Signal<int, int, int, int>;
@@ -263,12 +263,12 @@ public:
 
 	using KeyDownEventCallback = Signals::Signal<KeyCode, KeyModifier, bool>;
 	using KeyUpEventCallback = Signals::Signal<KeyCode, KeyModifier>;
+	using TextInputEventCallback = Signals::Signal<const std::string&>;
 
 	using MouseButtonEventCallback = Signals::Signal<MouseButton, int, int>;
 	using MouseMotionEventCallback = Signals::Signal<int, int, int, int>;
 	using MouseWheelEventCallback = Signals::Signal<int, int>;
 
-	using TextInputEventCallback = Signals::Signal<const std::string&>;
 	using QuitEventCallback = Signals::Signal<>;
 
 public:

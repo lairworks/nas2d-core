@@ -1,4 +1,5 @@
 #include "NAS2D/Delegate.h"
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 

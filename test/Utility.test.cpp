@@ -1,4 +1,5 @@
 #include "NAS2D/Utility.h"
+
 #include <gtest/gtest.h>
 
 

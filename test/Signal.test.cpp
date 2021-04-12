@@ -1,4 +1,5 @@
 #include "NAS2D/Signal.h"
+#include "NAS2D/Connection.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -41,7 +42,7 @@ TEST(Signal, Connection) {
 
 	{
 		// Connection is only valid in this code block
-		auto connection = decltype(signal)::Connection{signal, delegate};
+		auto connection = NAS2D::Signals::Connection{signal, delegate};
 		signal.emit();
 	}
 

@@ -13,26 +13,6 @@ class SignalSource
 public:
 	using DelegateType = DelegateX<void, Params...>;
 
-	class Connection
-	{
-	public:
-		Connection(SignalSource& signalSource, DelegateType delegate) :
-			mSignalSource{signalSource},
-			mDelegate{delegate}
-		{
-			mSignalSource.connect(mDelegate);
-		}
-
-		~Connection()
-		{
-			mSignalSource.disconnect(mDelegate);
-		}
-
-	private:
-		SignalSource& mSignalSource;
-		DelegateType mDelegate;
-	};
-
 public:
 	bool empty() const { return delegateList.empty(); }
 

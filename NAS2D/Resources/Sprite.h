@@ -11,7 +11,7 @@
 #pragma once
 
 #include "AnimationSet.h"
-#include "../Signal.h"
+#include "../Signal/Signal.h"
 #include "../Timer.h"
 #include "../Renderer/Color.h"
 
@@ -31,7 +31,7 @@ namespace NAS2D {
 class Sprite
 {
 public:
-	using Callback = Signals::Signal<>; /**< Signal used when action animations complete. */
+	using Callback = Signal<>; /**< Signal used when action animations complete. */
 
 	Sprite(const std::string& filePath, const std::string& initialAction);
 

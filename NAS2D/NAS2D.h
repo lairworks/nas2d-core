@@ -10,7 +10,6 @@
 
 #include "Configuration.h"
 #include "ContainerUtils.h"
-#include "Delegate.h"
 #include "Dictionary.h"
 #include "EventHandler.h"
 #include "Exception.h"
@@ -19,7 +18,6 @@
 #include "FpsCounter.h"
 #include "Game.h"
 #include "MathUtils.h"
-#include "Signal.h"
 #include "State.h"
 #include "StateManager.h"
 #include "StringUtils.h"
@@ -38,5 +36,10 @@
 #include "Resources/Music.h"
 #include "Resources/Sound.h"
 #include "Resources/Sprite.h"
+
+#include "Signal/SignalConnection.h"
+#include "Signal/Delegate.h"
+#include "Signal/Signal.h"
+#include "Signal/SignalSource.h"
 
 #include "Xml/Xml.h"

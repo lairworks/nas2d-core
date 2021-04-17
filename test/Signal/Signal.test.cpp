@@ -1,4 +1,4 @@
-#include "NAS2D/Signal.h"
+#include "NAS2D/Signal/Signal.h"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -15,7 +15,7 @@ namespace {
 TEST(Signal, ConnectEmitDisconnect) {
 	MockHandler handler;
 	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
-	NAS2D::Signals::Signal<> signal;
+	NAS2D::Signal<> signal;
 
 	EXPECT_TRUE(signal.empty());
 

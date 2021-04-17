@@ -15,7 +15,7 @@
 #include "Point.h"
 #include "Vector.h"
 #include "../Timer.h"
-#include "../Signal.h"
+#include "../Signal/Signal.h"
 
 #include <string_view>
 #include <string>
@@ -94,7 +94,7 @@ public:
 	void fadeOut(float delayTime);
 	bool isFading() const;
 	bool isFaded() const;
-	Signals::SignalSource<>& fadeComplete();
+	SignalSource<>& fadeComplete();
 
 	virtual void showSystemPointer(bool) = 0;
 	virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;
@@ -153,7 +153,7 @@ private:
 
 	FadeType mCurrentFadeType{FadeType::None};
 	Timer fadeTimer;
-	Signals::Signal<> fadeCompleteSignal;
+	Signal<> fadeCompleteSignal;
 };
 
 } // namespace

@@ -34,7 +34,7 @@ namespace {
 	// INTEROP WITH SDL2_MIXER
 	// ==================================================================================
 	// Global so it can be accessed without capturing `this`
-	Signals::Signal<> musicFinished;
+	Signal<> musicFinished;
 	// ==================================================================================
 
 

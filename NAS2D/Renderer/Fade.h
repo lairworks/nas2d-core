@@ -2,7 +2,7 @@
 
 #include "Color.h"
 #include "../Timer.h"
-#include "../Signal.h"
+#include "../Signal/Signal.h"
 
 
 namespace NAS2D {
@@ -15,7 +15,7 @@ class Fade
 public:
 	Fade(Color fadeColor = Color::Black);
 
-	Signals::SignalSource<>& fadeComplete();
+	SignalSource<>& fadeComplete();
 
 	void fadeIn(unsigned int durationInMilliseconds);
 	void fadeOut(unsigned int durationInMilliseconds);
@@ -40,7 +40,7 @@ private:
 	FadeDirection mDirection{FadeDirection::None};
 	unsigned int mDuration{0};
 	Timer mFadeTimer;
-	Signals::Signal<> mFadeComplete;
+	Signal<> mFadeComplete;
 };
 
 }

@@ -4,11 +4,11 @@
 #include "SignalSource.h"
 
 
-namespace NAS2D::Signals {
+namespace NAS2D {
 
 
 template<typename ... Params>
-class Connection
+class SignalConnection
 {
 public:
 	using SignalType = SignalSource<Params...>;
@@ -19,19 +19,19 @@ public:
 	// The delegate parameter is likely tied to the address of the parent object
 	// When parent object is copied/moved, a new updated connection must be formed
 	// Disable copy/move to remove default copy/move from parent objects
-	Connection(const Connection&) = delete;
-	Connection(Connection&&) = delete;
-	Connection& operator=(const Connection&) = delete;
-	Connection& operator=(Connection&&) = delete;
+	SignalConnection(const SignalConnection&) = delete;
+	SignalConnection(SignalConnection&&) = delete;
+	SignalConnection& operator=(const SignalConnection&) = delete;
+	SignalConnection& operator=(SignalConnection&&) = delete;
 
-	Connection(SignalType& signalSource, DelegateType delegate) :
+	SignalConnection(SignalType& signalSource, DelegateType delegate) :
 		mSignalSource{signalSource},
 		mDelegate{delegate}
 	{
 		mSignalSource.connect(mDelegate);
 	}
 
-	~Connection()
+	~SignalConnection()
 	{
 		mSignalSource.disconnect(mDelegate);
 	}

@@ -37,7 +37,7 @@
 #include "Resources/Sound.h"
 #include "Resources/Sprite.h"
 
-#include "Signal/Connection.h"
+#include "Signal/SignalConnection.h"
 #include "Signal/Delegate.h"
 #include "Signal/Signal.h"
 #include "Signal/SignalSource.h"

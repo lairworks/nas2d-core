@@ -269,7 +269,7 @@
     <ClInclude Include="Renderer\Renderer.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Signal/Connection.h">
+    <ClInclude Include="Signal/SignalConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Signal/Delegate.h">

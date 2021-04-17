@@ -1,4 +1,4 @@
-#include "NAS2D/Signal/Connection.h"
+#include "NAS2D/Signal/SignalConnection.h"
 #include "NAS2D/Signal/Signal.h"
 
 #include <gtest/gtest.h>
@@ -13,7 +13,7 @@ namespace {
 }
 
 
-TEST(Connection, Scope) {
+TEST(SignalConnection, Scope) {
 	MockHandler handler;
 	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
 	NAS2D::Signal<> signal;
@@ -22,8 +22,8 @@ TEST(Connection, Scope) {
 	EXPECT_CALL(handler, MockMethod()).Times(1);
 
 	{
-		// Connection is only valid in this code block
-		auto connection = NAS2D::Connection{signal, delegate};
+		// SignalConnection is only valid in this code block
+		auto connection = NAS2D::SignalConnection{signal, delegate};
 		signal.emit();
 	}
 

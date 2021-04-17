@@ -56,7 +56,7 @@
     <ClCompile Include="ContainerUtils.test.cpp" />
     <ClCompile Include="Filesystem.test.cpp" />
     <ClCompile Include="MathUtils.test.cpp" />
-    <ClCompile Include="Signal/Connection.test.cpp" />
+    <ClCompile Include="Signal/SignalConnection.test.cpp" />
     <ClCompile Include="Signal/Delegate.test.cpp" />
     <ClCompile Include="Signal/Signal.test.cpp" />
     <ClCompile Include="StringUtils.test.cpp" />

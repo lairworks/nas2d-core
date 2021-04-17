@@ -4,7 +4,7 @@
 #include <set>
 
 
-namespace NAS2D::Signals {
+namespace NAS2D {
 
 
 template<typename ... Params>

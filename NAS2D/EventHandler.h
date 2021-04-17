@@ -246,30 +246,30 @@ public:
 	};
 
 
-	using ActivateEventSource = Signals::SignalSource<bool>;
-	using WindowHiddenEventSource = Signals::SignalSource<bool>;
-	using WindowExposedEventSource = Signals::SignalSource<>;
-	using WindowMinimizedEventSource = Signals::SignalSource<>;
-	using WindowMaximizedEventSource = Signals::SignalSource<>;
-	using WindowRestoredEventSource = Signals::SignalSource<>;
-	using WindowResizedEventSource = Signals::SignalSource<int, int>;
-	using WindowMouseEnterEventSource = Signals::SignalSource<>;
-	using WindowMouseLeaveEventSource = Signals::SignalSource<>;
+	using ActivateEventSource = SignalSource<bool>;
+	using WindowHiddenEventSource = SignalSource<bool>;
+	using WindowExposedEventSource = SignalSource<>;
+	using WindowMinimizedEventSource = SignalSource<>;
+	using WindowMaximizedEventSource = SignalSource<>;
+	using WindowRestoredEventSource = SignalSource<>;
+	using WindowResizedEventSource = SignalSource<int, int>;
+	using WindowMouseEnterEventSource = SignalSource<>;
+	using WindowMouseLeaveEventSource = SignalSource<>;
 
-	using JoystickAxisMotionEventSource = Signals::SignalSource<int, int, int>;
-	using JoystickBallMotionEventSource = Signals::SignalSource<int, int, int, int>;
-	using JoystickButtonEventSource = Signals::SignalSource<int, int>;
-	using JoystickHatMotionEventSource = Signals::SignalSource<int, int, int>;
+	using JoystickAxisMotionEventSource = SignalSource<int, int, int>;
+	using JoystickBallMotionEventSource = SignalSource<int, int, int, int>;
+	using JoystickButtonEventSource = SignalSource<int, int>;
+	using JoystickHatMotionEventSource = SignalSource<int, int, int>;
 
-	using KeyDownEventSource = Signals::SignalSource<KeyCode, KeyModifier, bool>;
-	using KeyUpEventSource = Signals::SignalSource<KeyCode, KeyModifier>;
-	using TextInputEventSource = Signals::SignalSource<const std::string&>;
+	using KeyDownEventSource = SignalSource<KeyCode, KeyModifier, bool>;
+	using KeyUpEventSource = SignalSource<KeyCode, KeyModifier>;
+	using TextInputEventSource = SignalSource<const std::string&>;
 
-	using MouseButtonEventSource = Signals::SignalSource<MouseButton, int, int>;
-	using MouseMotionEventSource = Signals::SignalSource<int, int, int, int>;
-	using MouseWheelEventSource = Signals::SignalSource<int, int>;
+	using MouseButtonEventSource = SignalSource<MouseButton, int, int>;
+	using MouseMotionEventSource = SignalSource<int, int, int, int>;
+	using MouseWheelEventSource = SignalSource<int, int>;
 
-	using QuitEventSource = Signals::SignalSource<>;
+	using QuitEventSource = SignalSource<>;
 
 public:
 	EventHandler();
@@ -329,35 +329,35 @@ public:
 	void disconnectAll();
 
 private:
-	Signals::Signal<bool> mActivateEvent;
+	Signal<bool> mActivateEvent;
 
-	Signals::Signal<bool> mWindowHiddenEvent;
-	Signals::Signal<> mWindowExposedEvent;
-	Signals::Signal<> mWindowMinimizedEvent;
-	Signals::Signal<> mWindowMaximizedEvent;
-	Signals::Signal<> mWindowRestoredEvent;
-	Signals::Signal<int, int> mWindowResizedEvent;
-	Signals::Signal<> mWindowMouseEnterEvent;
-	Signals::Signal<> mWindowMouseLeaveEvent;
+	Signal<bool> mWindowHiddenEvent;
+	Signal<> mWindowExposedEvent;
+	Signal<> mWindowMinimizedEvent;
+	Signal<> mWindowMaximizedEvent;
+	Signal<> mWindowRestoredEvent;
+	Signal<int, int> mWindowResizedEvent;
+	Signal<> mWindowMouseEnterEvent;
+	Signal<> mWindowMouseLeaveEvent;
 
-	Signals::Signal<int, int, int> mJoystickAxisMotionEvent;
-	Signals::Signal<int, int, int, int> mJoystickBallMotionEvent;
-	Signals::Signal<int, int> mJoystickButtonUpEvent;
-	Signals::Signal<int, int> mJoystickButtonDownEvent;
-	Signals::Signal<int, int, int> mJoystickHatMotionEvent;
+	Signal<int, int, int> mJoystickAxisMotionEvent;
+	Signal<int, int, int, int> mJoystickBallMotionEvent;
+	Signal<int, int> mJoystickButtonUpEvent;
+	Signal<int, int> mJoystickButtonDownEvent;
+	Signal<int, int, int> mJoystickHatMotionEvent;
 
-	Signals::Signal<KeyCode, KeyModifier, bool> mKeyDownEvent;
-	Signals::Signal<KeyCode, KeyModifier> mKeyUpEvent;
+	Signal<KeyCode, KeyModifier, bool> mKeyDownEvent;
+	Signal<KeyCode, KeyModifier> mKeyUpEvent;
 
-	Signals::Signal<const std::string&> mTextInput;
+	Signal<const std::string&> mTextInput;
 
-	Signals::Signal<MouseButton, int, int> mMouseButtonDownEvent;
-	Signals::Signal<MouseButton, int, int> mMouseButtonUpEvent;
-	Signals::Signal<MouseButton, int, int> mMouseDoubleClick;
-	Signals::Signal<int, int, int, int> mMouseMotionEvent;
-	Signals::Signal<int, int> mMouseWheelEvent;
+	Signal<MouseButton, int, int> mMouseButtonDownEvent;
+	Signal<MouseButton, int, int> mMouseButtonUpEvent;
+	Signal<MouseButton, int, int> mMouseDoubleClick;
+	Signal<int, int, int, int> mMouseMotionEvent;
+	Signal<int, int> mMouseWheelEvent;
 
-	Signals::Signal<> mQuitEvent;
+	Signal<> mQuitEvent;
 };
 
 void postQuitEvent();

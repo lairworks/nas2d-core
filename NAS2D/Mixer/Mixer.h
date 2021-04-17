@@ -152,11 +152,11 @@ public:
 	 */
 	virtual int musicVolume() const = 0;
 
-	void addMusicCompleteHandler(Signals::Signal<>::DelegateType handler);
-	void removeMusicCompleteHandler(Signals::Signal<>::DelegateType handler);
+	void addMusicCompleteHandler(Signal<>::DelegateType handler);
+	void removeMusicCompleteHandler(Signal<>::DelegateType handler);
 
 protected:
-	Signals::Signal<> mMusicComplete; /**< Callback used when music finished playing. */
+	Signal<> mMusicComplete; /**< Callback used when music finished playing. */
 };
 
 } // namespace

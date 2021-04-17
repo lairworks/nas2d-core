@@ -14,7 +14,7 @@ Fade::Fade(Color fadeColor) :
 {}
 
 
-Signals::SignalSource<>& Fade::fadeComplete()
+SignalSource<>& Fade::fadeComplete()
 {
 	return mFadeComplete;
 }

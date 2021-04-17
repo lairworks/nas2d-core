@@ -28,7 +28,7 @@
 #include "SignalSource.h"
 
 
-namespace NAS2D::Signals {
+namespace NAS2D {
 
 
 /**

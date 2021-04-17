@@ -15,7 +15,7 @@
 #include "Point.h"
 #include "Vector.h"
 #include "../Timer.h"
-#include "../Signal.h"
+#include "../Signal/Signal.h"
 
 #include <string_view>
 #include <string>

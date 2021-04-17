@@ -2,7 +2,7 @@
 
 #include "Color.h"
 #include "../Timer.h"
-#include "../Signal.h"
+#include "../Signal/Signal.h"
 
 
 namespace NAS2D {

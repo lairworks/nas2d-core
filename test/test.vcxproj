@@ -54,10 +54,11 @@
     <ClCompile Include="Resources/Image.test.cpp" />
     <ClCompile Include="Resources/ResourceCache.test.cpp" />
     <ClCompile Include="ContainerUtils.test.cpp" />
-    <ClCompile Include="Delegate.test.cpp" />
     <ClCompile Include="Filesystem.test.cpp" />
     <ClCompile Include="MathUtils.test.cpp" />
-    <ClCompile Include="Signal.test.cpp" />
+    <ClCompile Include="Signal/Connection.test.cpp" />
+    <ClCompile Include="Signal/Delegate.test.cpp" />
+    <ClCompile Include="Signal/Signal.test.cpp" />
     <ClCompile Include="StringUtils.test.cpp" />
     <ClCompile Include="StringValue.test.cpp" />
     <ClCompile Include="Utility.test.cpp" />

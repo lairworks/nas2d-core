@@ -226,7 +226,6 @@
   <ItemGroup>
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="ContainerUtils.h" />
-    <ClInclude Include="Delegate.h" />
     <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Documentation.h" />
     <ClInclude Include="EventHandler.h" />
@@ -260,7 +259,10 @@
     <ClInclude Include="Resources\Music.h" />
     <ClInclude Include="Resources\Sound.h" />
     <ClInclude Include="Resources\Sprite.h" />
-    <ClInclude Include="Signal.h" />
+    <ClInclude Include="Signal/Connection.h" />
+    <ClInclude Include="Signal/Delegate.h" />
+    <ClInclude Include="Signal/Signal.h" />
+    <ClInclude Include="Signal/SignalSource.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="StringUtils.h" />

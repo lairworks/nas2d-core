@@ -1,5 +1,5 @@
-#include "NAS2D/Connection.h"
-#include "NAS2D/Signal.h"
+#include "NAS2D/Signal/Connection.h"
+#include "NAS2D/Signal/Signal.h"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>

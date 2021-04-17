@@ -9,7 +9,7 @@
 // ==================================================================================
 #pragma once
 
-#include "Signal.h"
+#include "Signal/Signal.h"
 
 #include <string>
 

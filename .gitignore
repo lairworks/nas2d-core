@@ -9,3 +9,6 @@ Debug/
 x64/
 .vs/
 *.user
+
+# Doxygen documentation
+/doc/

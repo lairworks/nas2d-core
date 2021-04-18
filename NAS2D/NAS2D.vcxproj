@@ -219,7 +219,6 @@
     <ClCompile Include="Xml\XmlHandle.cpp" />
     <ClCompile Include="Xml\XmlMemoryBuffer.cpp" />
     <ClCompile Include="Xml\XmlParser.cpp" />
-    <ClCompile Include="Xml\XmlSerializer.cpp" />
     <ClCompile Include="Xml\XmlText.cpp" />
     <ClCompile Include="Xml\XmlUnknown.cpp" />
   </ItemGroup>
@@ -281,7 +280,6 @@
     <ClInclude Include="Xml\XmlHandle.h" />
     <ClInclude Include="Xml\XmlMemoryBuffer.h" />
     <ClInclude Include="Xml\XmlNode.h" />
-    <ClInclude Include="Xml\XmlSerializer.h" />
     <ClInclude Include="Xml\XmlText.h" />
     <ClInclude Include="Xml\XmlUnknown.h" />
     <ClInclude Include="Xml\XmlVisitor.h" />

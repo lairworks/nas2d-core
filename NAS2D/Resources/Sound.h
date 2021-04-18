@@ -19,7 +19,7 @@ namespace NAS2D {
 
 /**
  *  \class Sound
- *  \brief Sound Resource.
+ *  \brief Sound resource.
  *
  *  Represents a Sound.
  */

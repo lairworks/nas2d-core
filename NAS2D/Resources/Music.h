@@ -23,7 +23,7 @@ namespace NAS2D {
 
 /**
  *  \class Music
- *  \brief Music Resource.
+ *  \brief Music resource.
  */
 class Music
 {

@@ -134,7 +134,7 @@ EXCLUDE                = ./src/Xml\XmlAttributeSet.cpp \
 
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
-EXCLUDE_SYMBOLS        = 
+EXCLUDE_SYMBOLS        = detail
 EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO

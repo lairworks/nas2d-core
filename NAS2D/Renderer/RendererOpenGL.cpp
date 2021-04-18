@@ -11,8 +11,8 @@
 #include "RendererOpenGL.h"
 
 #include "VectorSizeRange.h"
-#include "../Resources/Image.h"
-#include "../Resources/Font.h"
+#include "../Resource/Image.h"
+#include "../Resource/Font.h"
 #include "../Trig.h"
 #include "../Configuration.h"
 #include "../EventHandler.h"

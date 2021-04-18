@@ -31,11 +31,11 @@
 
 #include "Renderer/Renderer.h"
 
-#include "Resources/Font.h"
-#include "Resources/Image.h"
-#include "Resources/Music.h"
-#include "Resources/Sound.h"
-#include "Resources/Sprite.h"
+#include "Resource/Font.h"
+#include "Resource/Image.h"
+#include "Resource/Music.h"
+#include "Resource/Sound.h"
+#include "Resource/Sprite.h"
 
 #include "Signal/SignalConnection.h"
 #include "Signal/Delegate.h"

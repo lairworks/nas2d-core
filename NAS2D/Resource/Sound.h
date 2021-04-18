@@ -7,44 +7,43 @@
 // =
 // = Acknowledgement of your use of NAS2D is appriciated but is not required.
 // ==================================================================================
-
 #pragma once
 
-#include "../File.h"
-
 #include <string>
-#include <map>
 
 
-typedef struct _Mix_Music Mix_Music;
+struct Mix_Chunk;
 
 
 namespace NAS2D {
 
 /**
- *  \class Music
- *  \brief Music Resource.
+ *  \class Sound
+ *  \brief Sound resource.
+ *
+ *  Represents a Sound.
  */
-class Music
+class Sound
 {
 public:
-	explicit Music(const std::string& filePath);
+	explicit Sound(const std::string& filePath);
 
-	Music(const Music& rhs) = delete;
-	Music& operator=(const Music& rhs) = delete;
+	Sound(const Sound& other) = delete;
+	Sound(Sound&& other) = delete;
+	Sound& operator=(const Sound& rhs) = delete;
+	Sound& operator=(Sound&& other) = delete;
 
-	~Music();
+	~Sound();
 
 	const std::string& name() const { return mResourceName; }
 
 protected:
 	friend class MixerSDL;
-	Mix_Music* music() const;
+	Mix_Chunk* sound() const;
 
 private:
 	std::string mResourceName; /**< File path */
-	const File mBuffer;
-	Mix_Music* mMusic{nullptr};
+	Mix_Chunk* mMixChunk{nullptr};
 };
 
 } // namespace

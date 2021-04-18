@@ -19,7 +19,7 @@
     <Filter Include="Source Files\Renderer">
       <UniqueIdentifier>{1b4aff9c-81d5-485b-bdc7-1b5850a90ff9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Resources">
+    <Filter Include="Source Files\Resource">
       <UniqueIdentifier>{abe87a21-5242-47d5-a2e5-cd4d11c06440}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Mixer">
@@ -28,7 +28,7 @@
     <Filter Include="Header Files\Renderer">
       <UniqueIdentifier>{f835e375-3047-4a58-8cf1-a8c2ac3a580c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Resources">
+    <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{8fc63a46-a921-4817-8885-8e16d6d47335}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Xml">
@@ -63,23 +63,23 @@
     <ClCompile Include="Trig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\AnimationSet.cpp">
-      <Filter>Source Files\Resources</Filter>
+    <ClCompile Include="Resource\AnimationSet.cpp">
+      <Filter>Source Files\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\Font.cpp">
-      <Filter>Source Files\Resources</Filter>
+    <ClCompile Include="Resource\Font.cpp">
+      <Filter>Source Files\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\Image.cpp">
-      <Filter>Source Files\Resources</Filter>
+    <ClCompile Include="Resource\Image.cpp">
+      <Filter>Source Files\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\Music.cpp">
-      <Filter>Source Files\Resources</Filter>
+    <ClCompile Include="Resource\Music.cpp">
+      <Filter>Source Files\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\Sound.cpp">
-      <Filter>Source Files\Resources</Filter>
+    <ClCompile Include="Resource\Sound.cpp">
+      <Filter>Source Files\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Resources\Sprite.cpp">
-      <Filter>Source Files\Resources</Filter>
+    <ClCompile Include="Resource\Sprite.cpp">
+      <Filter>Source Files\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Color.cpp">
       <Filter>Source Files\Renderer</Filter>
@@ -218,26 +218,26 @@
     <ClInclude Include="Mixer\Mixer.h">
       <Filter>Header Files\Mixer</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\ResourceCache.h">
-      <Filter>Header Files\Resources</Filter>
+    <ClInclude Include="Resource\ResourceCache.h">
+      <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\AnimationSet.h">
-      <Filter>Header Files\Resources</Filter>
+    <ClInclude Include="Resource\AnimationSet.h">
+      <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\Font.h">
-      <Filter>Header Files\Resources</Filter>
+    <ClInclude Include="Resource\Font.h">
+      <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\Image.h">
-      <Filter>Header Files\Resources</Filter>
+    <ClInclude Include="Resource\Image.h">
+      <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\Music.h">
-      <Filter>Header Files\Resources</Filter>
+    <ClInclude Include="Resource\Music.h">
+      <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\Sound.h">
-      <Filter>Header Files\Resources</Filter>
+    <ClInclude Include="Resource\Sound.h">
+      <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Resources\Sprite.h">
-      <Filter>Header Files\Resources</Filter>
+    <ClInclude Include="Resource\Sprite.h">
+      <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\RendererNull.h">
       <Filter>Header Files\Renderer</Filter>

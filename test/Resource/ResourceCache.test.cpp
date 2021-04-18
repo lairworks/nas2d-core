@@ -1,4 +1,4 @@
-#include "NAS2D/Resources/ResourceCache.h"
+#include "NAS2D/Resource/ResourceCache.h"
 #include <gtest/gtest.h>
 
 

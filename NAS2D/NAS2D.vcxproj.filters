@@ -165,9 +165,6 @@
     <ClCompile Include="Renderer\DisplayDesc.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Xml\XmlSerializer.cpp">
-      <Filter>Source Files\Xml</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Configuration.h">
@@ -346,9 +343,6 @@
     </ClInclude>
     <ClInclude Include="Renderer\DisplayDesc.h">
       <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Xml\XmlSerializer.h">
-      <Filter>Header Files\Xml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

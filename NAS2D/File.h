@@ -17,7 +17,6 @@
 namespace NAS2D {
 
 /**
- * \class File
  * \brief Represent a File object.
  *
  * The File object represents a file as a stream of bytes.

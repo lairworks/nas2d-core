@@ -20,7 +20,6 @@ class Music;
 
 
 /**
- * \class Mixer
  * \brief Mixer base class.
  *
  * Provides a standard Mixer interface. The base Mixer can be used

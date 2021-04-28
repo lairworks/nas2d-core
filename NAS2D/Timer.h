@@ -13,7 +13,6 @@
 namespace NAS2D {
 
 /**
- * \class Timer
  * \brief A timing class that provides high-resolution, millisecond-precision timing services.
  *
  * The Timer class provides three different method for getting and managing timing.

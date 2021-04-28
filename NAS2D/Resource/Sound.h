@@ -18,7 +18,6 @@ struct Mix_Chunk;
 namespace NAS2D {
 
 /**
- *  \class Sound
  *  \brief Sound resource.
  *
  *  Represents a Sound.

@@ -19,7 +19,6 @@ class State;
 
 
 /**
- * \class	StateManager
  * \brief	Implements a Finite State Machine model that switches between
  *			State objects.
  *

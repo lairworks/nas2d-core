@@ -21,12 +21,11 @@ struct SDL_Cursor;
 namespace NAS2D {
 
 /**
- * \class RendererOpenGL
  * \brief OpenGL Renderer.
  *
  * Implements an OpenGL based Renderer.
  */
-class RendererOpenGL: public Renderer
+class RendererOpenGL : public Renderer
 {
 public:
 	struct Options

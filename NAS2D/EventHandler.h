@@ -21,9 +21,7 @@ namespace NAS2D {
 
 
 /**
- * \class	EventHandler
  * \brief	Handles and dispatches low-level events.
- *
  */
 class EventHandler
 {

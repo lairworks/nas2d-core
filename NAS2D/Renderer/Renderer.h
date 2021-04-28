@@ -30,7 +30,6 @@ template <typename BaseType> struct Rectangle;
 
 
 /**
- * \class Renderer
  * \brief Renderer base class.
  *
  * Provides a standard Renderer interface. The base Renderer can be used

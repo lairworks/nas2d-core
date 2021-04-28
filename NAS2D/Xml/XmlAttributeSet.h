@@ -17,7 +17,6 @@ namespace NAS2D {
 namespace Xml {
 
 /**
- * \class XmlAttributeSet
  * \brief Used to manage a group of attributes.
  *
  * It is only used internally, both by the ELEMENT and the DECLARATION.

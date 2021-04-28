@@ -11,6 +11,7 @@ template<typename ... Params>
 class SignalSource
 {
 public:
+	using Source = SignalSource; // Restricted base interface for use in derived
 	using DelegateType = DelegateX<void, Params...>;
 
 public:

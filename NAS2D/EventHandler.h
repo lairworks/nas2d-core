@@ -28,7 +28,6 @@ class EventHandler
 {
 public:
 	/**
-	* \enum KeyModifier
 	* Key Modifiers
 	*/
 	enum class KeyModifier : uint16_t
@@ -54,7 +53,6 @@ public:
 
 
 		/**
-		* \enum KeyCode
 		* Keyboard scan codes.
 		*/
 	enum class KeyCode : uint32_t
@@ -233,7 +231,6 @@ public:
 	};
 
 	/**
-	* \enum		MouseButton
 	* \brief	Mouse button identifiers.
 	*/
 	enum class MouseButton

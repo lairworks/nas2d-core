@@ -22,7 +22,7 @@
 namespace NAS2D {
 
 /**
- * \brief Sprite resource.
+ * Sprite resource.
  *
  * The Sprite Class is a self-contained group of Image resources that displays
  * Images at a specified screen coordinate in sequence to display an animation.

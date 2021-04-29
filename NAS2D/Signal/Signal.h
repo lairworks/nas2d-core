@@ -32,7 +32,7 @@ namespace NAS2D {
 
 
 /**
- * \brief Signal with preset number of parameters
+ * Signal with preset number of parameters
  *
  * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
  */

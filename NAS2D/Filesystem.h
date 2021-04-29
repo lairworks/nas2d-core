@@ -19,7 +19,7 @@
 namespace NAS2D {
 
 /**
- * \brief Implements a virtual file system.
+ * Implements a virtual file system.
  *
  * Provides cross-platform and transparent archive Filesystem functions.
  */

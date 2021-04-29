@@ -18,7 +18,7 @@ namespace NAS2D {
 
 
 /**
- * \brief Configuration Parser.
+ * Configuration Parser.
  *
  * Parses and interprets Configuration data stored in XML files (e.g., config.xml).
  */

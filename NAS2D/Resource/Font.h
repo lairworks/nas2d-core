@@ -20,7 +20,7 @@
 namespace NAS2D {
 
 /**
- * \brief Font resource.
+ * Font resource.
  *
  * The Font class can be used to render TrueType, OpenType and Bitmap fonts. Two
  * contructors are provided for these types.

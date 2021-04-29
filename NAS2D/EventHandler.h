@@ -29,7 +29,7 @@ class EventHandler
 public:
 	/**
 	* \enum KeyModifier
-	* \brief Key Modifiers
+	* Key Modifiers
 	*/
 	enum class KeyModifier : uint16_t
 	{
@@ -55,7 +55,7 @@ public:
 
 		/**
 		* \enum KeyCode
-		* \brief Keyboard scan codes.
+		* Keyboard scan codes.
 		*/
 	enum class KeyCode : uint32_t
 	{

@@ -57,7 +57,7 @@ public:
 	void color(Color color);
 	Color color() const;
 
-	Callback& frameCallback();
+	Callback::Source& frameCallback();
 
 private:
 	std::string mSpriteName;

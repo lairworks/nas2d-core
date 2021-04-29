@@ -563,7 +563,7 @@ Vector<int> RendererOpenGL::size() const
 void RendererOpenGL::size(Vector<int> newSize)
 {
 	SDL_SetWindowSize(underlyingWindow, newSize.x, newSize.y);
-	onResize(newSize.x, newSize.y);
+	onResize(newSize);
 	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
@@ -575,7 +575,7 @@ void RendererOpenGL::minimumSize(Vector<int> newSize)
 	// Read back the window size, in case it was changed
 	// Window may need to have been enlarged to the minimum size
 	SDL_GetWindowSize(underlyingWindow, &newSize.x, &newSize.y);
-	onResize(newSize.x, newSize.y);
+	onResize(newSize);
 }
 
 
@@ -623,12 +623,11 @@ bool RendererOpenGL::resizeable() const
 }
 
 
-void RendererOpenGL::onResize(int w, int h)
+void RendererOpenGL::onResize(Vector<int> newSize)
 {
-	const auto dimensions = Vector{w, h};
-	setViewport(Rectangle{0, 0, w, h});
-	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, dimensions.to<float>()));
-	setResolution(dimensions);
+	setViewport(Rectangle{0, 0, newSize.x, newSize.y});
+	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, newSize.to<float>()));
+	setResolution(newSize);
 }
 
 void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
@@ -669,7 +668,7 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	onResize(size().x, size().y);
+	onResize(size());
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);

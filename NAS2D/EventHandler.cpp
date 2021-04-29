@@ -723,7 +723,7 @@ void EventHandler::pump()
 			else if (event.window.event == SDL_WINDOWEVENT_RESTORED) { mWindowRestoredEvent(); }
 			else if (event.window.event == SDL_WINDOWEVENT_ENTER) { mWindowMouseEnterEvent(); }
 			else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { mWindowMouseLeaveEvent(); }
-			else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedEvent(event.window.data1, event.window.data2); }
+			else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedEvent({event.window.data1, event.window.data2}); }
 			break;
 
 		case SDL_QUIT:

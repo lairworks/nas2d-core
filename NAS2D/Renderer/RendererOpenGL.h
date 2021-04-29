@@ -105,7 +105,7 @@ private:
 	void initGL();
 	void initVideo(Vector<int> resolution, bool fullscreen, bool vsync);
 
-	void onResize(int w, int h);
+	void onResize(Vector<int> newSize);
 
 
 	SDL_GLContext sdlOglContext; /**< Primary OpenGL render context. */

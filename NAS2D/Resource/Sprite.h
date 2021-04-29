@@ -57,7 +57,7 @@ public:
 	void color(Color color);
 	Color color() const;
 
-	AnimationCompleteSignal::Source& frameCallback();
+	AnimationCompleteSignal::Source& animationCompleteSignalSource();
 
 private:
 	std::string mSpriteName;

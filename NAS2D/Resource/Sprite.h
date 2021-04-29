@@ -30,7 +30,7 @@ namespace NAS2D {
 class Sprite
 {
 public:
-	using Callback = Signal<>; /**< Signal used when action animations complete. */
+	using AnimationCompleteSignal = Signal<>; /**< Signal used when action animations complete. */
 
 	Sprite(const std::string& filePath, const std::string& initialAction);
 
@@ -57,7 +57,7 @@ public:
 	void color(Color color);
 	Color color() const;
 
-	Callback::Source& frameCallback();
+	AnimationCompleteSignal::Source& frameCallback();
 
 private:
 	std::string mSpriteName;
@@ -68,7 +68,7 @@ private:
 
 	bool mPaused{false};
 	Timer mTimer;
-	Callback mAnimationCompleteCallback;
+	AnimationCompleteSignal mAnimationCompleteCallback;
 
 	Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
 	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */

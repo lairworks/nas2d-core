@@ -219,7 +219,7 @@ Color Sprite::color() const
 }
 
 
-Sprite::Callback::Source& Sprite::frameCallback()
+Sprite::AnimationCompleteSignal::Source& Sprite::frameCallback()
 {
 	return mAnimationCompleteCallback;
 }

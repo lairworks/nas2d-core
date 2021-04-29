@@ -129,7 +129,7 @@ void XmlNode::clear()
  *		 by the Xml library.
  *
  * \see insertEndChild
-*/
+ */
 XmlNode* XmlNode::linkEndChild(XmlNode* node)
 {
 	if (!node)
@@ -803,10 +803,10 @@ XmlNode* XmlNode::nextSibling()
 
 
 /**
-* Query the type of the node.
-*
-* \see XmlNode::NodeType
-*/
+ * Query the type of the node.
+ *
+ * \see XmlNode::NodeType
+ */
 XmlNode::NodeType XmlNode::type() const
 {
 	return _type;
@@ -814,8 +814,8 @@ XmlNode::NodeType XmlNode::type() const
 
 
 /**
-* Returns true if this node has children.
-*/
+ * Returns true if this node has children.
+ */
 bool XmlNode::hasChildren() const
 {
 	return _firstChild != nullptr;

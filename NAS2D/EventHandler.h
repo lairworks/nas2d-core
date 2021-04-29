@@ -22,14 +22,13 @@ namespace NAS2D {
 
 
 /**
- * \brief	Handles and dispatches low-level events.
+ * Handles and dispatches low-level events.
  */
 class EventHandler
 {
 public:
 	/**
-	* \enum KeyModifier
-	* \brief Key Modifiers
+	* Key Modifiers
 	*/
 	enum class KeyModifier : uint16_t
 	{
@@ -54,8 +53,7 @@ public:
 
 
 		/**
-		* \enum KeyCode
-		* \brief Keyboard scan codes.
+		* Keyboard scan codes.
 		*/
 	enum class KeyCode : uint32_t
 	{
@@ -233,8 +231,7 @@ public:
 	};
 
 	/**
-	* \enum		MouseButton
-	* \brief	Mouse button identifiers.
+	* Mouse button identifiers.
 	*/
 	enum class MouseButton
 	{

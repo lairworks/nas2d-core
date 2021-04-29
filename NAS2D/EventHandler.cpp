@@ -69,7 +69,7 @@ EventHandler::~EventHandler()
 }
 
 /**
- * \brief Triggered whenever the application gains or loses focus.
+ * Triggered whenever the application gains or loses focus.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -91,7 +91,7 @@ EventHandler::ActivateEventSource& EventHandler::activate()
 
 
 /**
- * \brief Triggered whenever the application's window is hidden or exposed.
+ * Triggered whenever the application's window is hidden or exposed.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -113,7 +113,7 @@ EventHandler::WindowHiddenEventSource& EventHandler::windowHidden()
 
 
 /**
- * \brief Triggered whenever the application's window is exposed.
+ * Triggered whenever the application's window is exposed.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -133,7 +133,7 @@ EventHandler::WindowExposedEventSource& EventHandler::windowExposed()
 
 
 /**
- * \brief Triggered whenever the application's window is minimized.
+ * Triggered whenever the application's window is minimized.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -153,7 +153,7 @@ EventHandler::WindowMinimizedEventSource& EventHandler::windowMinimized()
 
 
 /**
- * \brief Triggered whenever the application's window is maximized.
+ * Triggered whenever the application's window is maximized.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -173,7 +173,7 @@ EventHandler::WindowMaximizedEventSource& EventHandler::windowMaximized()
 
 
 /**
- * \brief Triggered whenever the application's window is restored to its original size and location.
+ * Triggered whenever the application's window is restored to its original size and location.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -193,7 +193,7 @@ EventHandler::WindowRestoredEventSource& EventHandler::windowRestored()
 
 
 /**
- * \brief Triggered whenever the window is resized.
+ * Triggered whenever the window is resized.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -213,7 +213,7 @@ EventHandler::WindowResizedEventSource& EventHandler::windowResized()
 
 
 /**
- * \brief Triggered whenever the mouse enters the application's window.
+ * Triggered whenever the mouse enters the application's window.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -233,7 +233,7 @@ EventHandler::WindowMouseEnterEventSource& EventHandler::windowMouseEnter()
 
 
 /**
- * \brief Triggered whenever the mouse leaves the application's window.
+ * Triggered whenever the mouse leaves the application's window.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -253,7 +253,7 @@ EventHandler::WindowMouseLeaveEventSource& EventHandler::windowMouseLeave()
 
 
 /**
- * \brief Joystic axis events generate three values:
+ * Joystic axis events generate three values:
  * Device ID, Axis ID and Axis Position.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -279,7 +279,7 @@ EventHandler::JoystickAxisMotionEventSource& EventHandler::joystickAxisMotion()
 
 
 /**
- * \brief Joystick trackball events generate four values:
+ * Joystick trackball events generate four values:
  * Device ID, Ball ID, X motion change and Y motion change.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -305,7 +305,7 @@ EventHandler::JoystickBallMotionEventSource& EventHandler::joystickBallMotion()
 
 
 /**
- * \brief Joystick button events generate two values:
+ * Joystick button events generate two values:
  * Device ID, and Button ID
  * Button events occure when a joystick button is pressed or released.
  *
@@ -330,7 +330,7 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonUp()
 
 
 /**
- * \brief Joystick button events generate two values:
+ * Joystick button events generate two values:
  * Device ID, and Button ID
  * Button events occure when a joystick button is pressed or released.
  *
@@ -355,7 +355,7 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonDown()
 
 
 /**
- * \brief Joystick hat motion events generate three values:
+ * Joystick hat motion events generate three values:
  * Device ID, Hat ID, and Hat Position.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -380,7 +380,7 @@ EventHandler::JoystickHatMotionEventSource& EventHandler::joystickHatMotion()
 
 
 /**
- * \brief Keyboard key down events generate three values:
+ * Keyboard key down events generate three values:
  * Keyboard scan code, key modifier, and a repeat flag.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -405,7 +405,7 @@ EventHandler::KeyDownEventSource& EventHandler::keyDown()
 
 
 /**
- * \brief Keyboard key up events generate three values:
+ * Keyboard key up events generate three values:
  * Keyboard scan code, key modifier, and a repeat flag.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -429,19 +429,19 @@ EventHandler::KeyUpEventSource& EventHandler::keyUp()
 
 
 /**
-* \brief Fires whenever text input events occur.
-*
-* To connect an event handler to this event, call the 'connect()'
-* function as follows:
-*
-* \code
-* connect(this, &Object::function);
-* \endcode
-*
-* \code
-* void function(const std::string&);
-* \endcode
-*/
+ * Fires whenever text input events occur.
+ *
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ *
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ *
+ * \code
+ * void function(const std::string&);
+ * \endcode
+ */
 EventHandler::TextInputEventSource& EventHandler::textInput()
 {
 	return mTextInput;
@@ -449,7 +449,7 @@ EventHandler::TextInputEventSource& EventHandler::textInput()
 
 
 /**
- * \brief Mouse button events generate three values:
+ * Mouse button events generate three values:
  * MouseButton, x, and y.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -474,7 +474,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
 
 
 /**
- * \brief Mouse button events generate three values:
+ * Mouse button events generate three values:
  * MouseButton, x, and y.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -499,7 +499,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
 
 
 /**
- * \brief Mouse button events generate three values:
+ * Mouse button events generate three values:
  * MouseButton, x, and y.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -524,7 +524,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
 
 
 /**
- * \brief Mouse motion events generate four values:
+ * Mouse motion events generate four values:
  * x, y, relative x, and relative y values.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -550,7 +550,7 @@ EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
 
 
 /**
- * \brief Mouse wheel events generate two values:
+ * Mouse wheel events generate two values:
  * x and y motion values.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -579,7 +579,7 @@ EventHandler::MouseWheelEventSource& EventHandler::mouseWheel()
 
 
 /**
- * \brief Triggered whenever a Quit message is posted.
+ * Triggered whenever a Quit message is posted.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:

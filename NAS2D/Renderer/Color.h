@@ -15,8 +15,7 @@
 namespace NAS2D {
 
 /**
- * \struct	Color
- * \brief	RGBA Color.
+ * RGBA Color.
  */
 struct Color
 {

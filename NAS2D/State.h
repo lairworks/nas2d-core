@@ -14,7 +14,7 @@
 namespace NAS2D {
 
 /**
- * \brief	The State class operates within a StateManager as a separate unit of
+ * The State class operates within a StateManager as a separate unit of
  *			logic.
  *
  * States make it easy to break certain parts of your program into separate and

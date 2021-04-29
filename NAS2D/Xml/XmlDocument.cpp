@@ -172,13 +172,13 @@ XmlBase::XmlErrorCode XmlDocument::errorId() const
 
 
 /**
-* Returns the location (if known) of the error. The first column is column 1, and the first
-* row is row 1. A value of 0 means the row and column wasn't applicable (memory errors, for
-* example, have no row/column) or the parser lost the error. (An error in the error
-* reporting, in that case.)
-*
-* @sa SetTabSize, Row, Column
-*/
+ * Returns the location (if known) of the error. The first column is column 1, and the first
+ * row is row 1. A value of 0 means the row and column wasn't applicable (memory errors, for
+ * example, have no row/column) or the parser lost the error. (An error in the error
+ * reporting, in that case.)
+ *
+ * @sa SetTabSize, Row, Column
+ */
 int XmlDocument::errorRow() const
 {
 	return _errorLocation.row + 1;

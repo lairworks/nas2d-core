@@ -24,7 +24,7 @@ struct SDL_Surface;
 namespace NAS2D {
 
 /**
- * \brief Image Class
+ * Image Class
  *
  * Provides a high level interface for image files. Can load the following formats:
  * - BMP

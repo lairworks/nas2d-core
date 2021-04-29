@@ -12,7 +12,7 @@
 namespace NAS2D {
 
 /**
- * \brief Implements a basic FPS Counter.
+ * Implements a basic FPS Counter.
  *
  * FPS values are only approximates. As the FPS count gets higher, the returned value
  * becomes a more average count.

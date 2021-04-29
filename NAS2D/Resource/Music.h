@@ -22,7 +22,7 @@ typedef struct _Mix_Music Mix_Music;
 namespace NAS2D {
 
 /**
- *  \brief Music resource.
+ *  Music resource.
  */
 class Music
 {

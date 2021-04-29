@@ -17,7 +17,7 @@
 namespace NAS2D {
 
 /**
- * \brief	Provides a simple interface to classes that should only be instantiated
+ * Provides a simple interface to classes that should only be instantiated
  *			once globally for a NAS2D application.
  *
  * \c Utility is a simple templated class designed to provide easy access to 'global'

@@ -47,14 +47,14 @@ class font_bad_data : public std::runtime_error { public: font_bad_data(); };
 
 
 /**
-* Thrown when a bitmap font is loaded but the texture does not conform to expected paramters.
-*/
+ * Thrown when a bitmap font is loaded but the texture does not conform to expected paramters.
+ */
 class font_invalid_glyph_map : public std::runtime_error { public: font_invalid_glyph_map(); font_invalid_glyph_map(const std::string& description); };
 
 
 /**
-* Thrown when an Image resource contains an invalid pixel buffer.
-*/
+ * Thrown when an Image resource contains an invalid pixel buffer.
+ */
 class image_bad_copy : public std::runtime_error { public: image_bad_copy(); };
 
 
@@ -84,26 +84,26 @@ class mixer_backend_init_failure : public std::runtime_error { public: mixer_bac
 
 
 /**
-* Thrown when the RendererOpenGL determines that no GLSL shading language is available.
-*/
+ * Thrown when the RendererOpenGL determines that no GLSL shading language is available.
+ */
 class renderer_no_glsl : public std::runtime_error { public: renderer_no_glsl(); };
 
 
 /**
-* Thrown when a derived Renderer type is unable to initialize itself.
-*/
+ * Thrown when a derived Renderer type is unable to initialize itself.
+ */
 class renderer_backend_init_failure : public std::runtime_error { public: renderer_backend_init_failure(const std::string& description); renderer_backend_init_failure();};
 
 
 /**
-* Thrown when a window context can't be created.
-*/
+ * Thrown when a window context can't be created.
+ */
 class renderer_window_creation_failure : public std::runtime_error { public: renderer_window_creation_failure(); };
 
 
 /**
-* Thrown when the RendererOpenGL can't create an OpenGL context.
-*/
+ * Thrown when the RendererOpenGL can't create an OpenGL context.
+ */
 class renderer_opengl_context_failure : public std::runtime_error { public: renderer_opengl_context_failure(); };
 
 } // exception namespace

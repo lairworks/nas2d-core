@@ -38,7 +38,7 @@ AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(std::
 }
 
 
-AnimationSet::AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<AnimationSet::Frame>> actions) :
+AnimationSet::AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions) :
 	mFileName{std::move(fileName)},
 	mImageSheetMap{std::move(imageSheetMap)},
 	mActions{std::move(actions)}

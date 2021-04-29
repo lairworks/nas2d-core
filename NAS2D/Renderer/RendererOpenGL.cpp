@@ -571,6 +571,10 @@ void RendererOpenGL::size(Vector<int> newSize)
 void RendererOpenGL::minimumSize(Vector<int> newSize)
 {
 	SDL_SetWindowMinimumSize(underlyingWindow, newSize.x, newSize.y);
+
+	// Read back the window size, in case it was changed
+	// Window may need to have been enlarged to the minimum size
+	SDL_GetWindowSize(underlyingWindow, &newSize.x, &newSize.y);
 	onResize(newSize.x, newSize.y);
 }
 

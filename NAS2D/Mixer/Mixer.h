@@ -151,8 +151,6 @@ public:
 	 */
 	virtual int musicVolume() const = 0;
 
-	void addMusicCompleteHandler(Signal<>::DelegateType handler);
-	void removeMusicCompleteHandler(Signal<>::DelegateType handler);
 	SignalSource<>& musicCompleteSignalSource();
 
 protected:

@@ -156,7 +156,7 @@ public:
 	SignalSource<>& musicCompleteSignalSource();
 
 protected:
-	Signal<> mMusicComplete; /**< Callback used when music finished playing. */
+	Signal<> mMusicComplete; /**< Signal used when music finished playing. */
 };
 
 } // namespace

@@ -571,6 +571,10 @@ void RendererOpenGL::size(Vector<int> newSize)
 void RendererOpenGL::minimumSize(Vector<int> newSize)
 {
 	SDL_SetWindowMinimumSize(underlyingWindow, newSize.x, newSize.y);
+
+	// Read back the window size, in case it was changed
+	// Window may need to have been enlarged to the minimum size
+	SDL_GetWindowSize(underlyingWindow, &newSize.x, &newSize.y);
 	onResize(newSize.x, newSize.y);
 }
 
@@ -625,7 +629,6 @@ void RendererOpenGL::onResize(int w, int h)
 	setViewport(Rectangle{0, 0, w, h});
 	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, dimensions.to<float>()));
 	setResolution(dimensions);
-
 }
 
 void RendererOpenGL::setViewport(const Rectangle<int>& viewport)

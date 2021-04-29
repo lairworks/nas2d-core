@@ -96,7 +96,7 @@ namespace NAS2D
 
 	/**
  * \typedef StringList
- * \brief	A list of std::string's.
+ * A list of std::string's.
  *
  * The StringList is provided primarily as a convenience typedef
  * but is also used by some of NAS2D's functions.

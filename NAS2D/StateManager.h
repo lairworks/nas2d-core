@@ -19,7 +19,7 @@ class State;
 
 
 /**
- * \brief	Implements a Finite State Machine model that switches between
+ * Implements a Finite State Machine model that switches between
  *			State objects.
  *
  * \note	StateManager handles distribution of input and system events to

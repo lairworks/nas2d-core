@@ -22,7 +22,7 @@ namespace NAS2D {
 
 
 /**
- * \brief	Handles and dispatches low-level events.
+ * Handles and dispatches low-level events.
  */
 class EventHandler
 {
@@ -231,7 +231,7 @@ public:
 	};
 
 	/**
-	* \brief	Mouse button identifiers.
+	* Mouse button identifiers.
 	*/
 	enum class MouseButton
 	{

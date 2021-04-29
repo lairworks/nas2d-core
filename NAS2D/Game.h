@@ -19,7 +19,7 @@ class State;
 
 
 /**
- * \brief	A simple way to start a NAS2D application.
+ * A simple way to start a NAS2D application.
  *
  * The Game class is a simple way to quickly delve right into developing a NAS2D
  * application without having to worry about initializing the core utilities. It

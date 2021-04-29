@@ -429,19 +429,19 @@ EventHandler::KeyUpEventSource& EventHandler::keyUp()
 
 
 /**
-* Fires whenever text input events occur.
-*
-* To connect an event handler to this event, call the 'connect()'
-* function as follows:
-*
-* \code
-* connect(this, &Object::function);
-* \endcode
-*
-* \code
-* void function(const std::string&);
-* \endcode
-*/
+ * Fires whenever text input events occur.
+ *
+ * To connect an event handler to this event, call the 'connect()'
+ * function as follows:
+ *
+ * \code
+ * connect(this, &Object::function);
+ * \endcode
+ *
+ * \code
+ * void function(const std::string&);
+ * \endcode
+ */
 EventHandler::TextInputEventSource& EventHandler::textInput()
 {
 	return mTextInput;

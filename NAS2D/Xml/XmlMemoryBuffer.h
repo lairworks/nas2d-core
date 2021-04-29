@@ -19,19 +19,19 @@ namespace NAS2D {
 namespace Xml {
 
 /**
-* Writes an XML Document to a memory buffer.
-*
-* Once you have a buffer containing the XML document, you can
-* save it to disk using the Filesystem class.
-*
-* \code{.cpp}
-* XmlDocument doc;
-* XmlMemoryBuffer buff;
-* doc.Accept(&buff);
-*
-* Utility<Filesystem>::get().write(File(buff.buffer(), mConfigPath));
-* \endcode
-*/
+ * Writes an XML Document to a memory buffer.
+ *
+ * Once you have a buffer containing the XML document, you can
+ * save it to disk using the Filesystem class.
+ *
+ * \code{.cpp}
+ * XmlDocument doc;
+ * XmlMemoryBuffer buff;
+ * doc.Accept(&buff);
+ *
+ * Utility<Filesystem>::get().write(File(buff.buffer(), mConfigPath));
+ * \endcode
+ */
 class XmlMemoryBuffer : public XmlVisitor
 {
 public:

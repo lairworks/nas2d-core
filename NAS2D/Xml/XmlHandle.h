@@ -100,7 +100,7 @@ namespace Xml {
  *	// do something
  * }
  * \endcode
-*/
+ */
 class XmlHandle
 {
 public:

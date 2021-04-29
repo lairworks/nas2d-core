@@ -118,7 +118,7 @@ FILE_PATTERNS          = *.c \
                          *.h++
 
 RECURSIVE              = YES
-EXCLUDE                =
+EXCLUDE                = NAS2D/Xml/
 
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 

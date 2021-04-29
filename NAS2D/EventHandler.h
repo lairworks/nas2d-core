@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Signal/Signal.h"
+#include "Renderer/Vector.h"
 
 #include <string>
 
@@ -250,7 +251,7 @@ public:
 	using WindowMinimizedEventSource = SignalSource<>;
 	using WindowMaximizedEventSource = SignalSource<>;
 	using WindowRestoredEventSource = SignalSource<>;
-	using WindowResizedEventSource = SignalSource<int, int>;
+	using WindowResizedEventSource = SignalSource<Vector<int>>;
 	using WindowMouseEnterEventSource = SignalSource<>;
 	using WindowMouseLeaveEventSource = SignalSource<>;
 
@@ -334,7 +335,7 @@ private:
 	Signal<> mWindowMinimizedEvent;
 	Signal<> mWindowMaximizedEvent;
 	Signal<> mWindowRestoredEvent;
-	Signal<int, int> mWindowResizedEvent;
+	Signal<Vector<int>> mWindowResizedEvent;
 	Signal<> mWindowMouseEnterEvent;
 	Signal<> mWindowMouseLeaveEvent;
 

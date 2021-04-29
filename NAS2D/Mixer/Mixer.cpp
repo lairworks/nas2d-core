@@ -31,13 +31,7 @@ void Mixer::resumeAllAudio()
 }
 
 
-void Mixer::addMusicCompleteHandler(Signal<>::DelegateType handler)
+SignalSource<>& Mixer::musicCompleteSignalSource()
 {
-	return mMusicComplete.connect(handler);
-}
-
-
-void Mixer::removeMusicCompleteHandler(Signal<>::DelegateType handler)
-{
-	return mMusicComplete.disconnect(handler);
+	return mMusicComplete;
 }

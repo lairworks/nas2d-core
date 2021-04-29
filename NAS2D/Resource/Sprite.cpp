@@ -145,12 +145,12 @@ void Sprite::update(Point<float> position)
 		if (mCurrentFrame >= mCurrentAction->size())
 		{
 			mCurrentFrame = 0;
-			mAnimationCompleteCallback();
+			mAnimationCompleteSignal();
 		}
 	}
 	else if (frame.frameDelay == FRAME_PAUSE)
 	{
-		mAnimationCompleteCallback();
+		mAnimationCompleteSignal();
 	}
 
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
@@ -219,7 +219,7 @@ Color Sprite::color() const
 }
 
 
-Sprite::Callback& Sprite::frameCallback()
+Sprite::AnimationCompleteSignal::Source& Sprite::animationCompleteSignalSource()
 {
-	return mAnimationCompleteCallback;
+	return mAnimationCompleteSignal;
 }

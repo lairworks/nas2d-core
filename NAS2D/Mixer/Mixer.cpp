@@ -41,3 +41,8 @@ void Mixer::removeMusicCompleteHandler(Signal<>::DelegateType handler)
 {
 	return mMusicComplete.disconnect(handler);
 }
+
+SignalSource<>& Mixer::musicCompleteSignalSource()
+{
+	return mMusicComplete;
+}

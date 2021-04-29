@@ -153,6 +153,7 @@ public:
 
 	void addMusicCompleteHandler(Signal<>::DelegateType handler);
 	void removeMusicCompleteHandler(Signal<>::DelegateType handler);
+	SignalSource<>& musicCompleteSignalSource();
 
 protected:
 	Signal<> mMusicComplete; /**< Callback used when music finished playing. */

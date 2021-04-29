@@ -68,7 +68,7 @@ private:
 
 	bool mPaused{false};
 	Timer mTimer;
-	AnimationCompleteSignal mAnimationCompleteCallback;
+	AnimationCompleteSignal mAnimationCompleteSignal;
 
 	Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
 	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */

@@ -6,11 +6,11 @@ commands:
     steps:
       - restore_cache:
           name: Restoring brew dependencies
-          key: deps-v5-NAS2D-{{ arch }}
+          key: deps-NAS2D-{{ arch }}-{{ checksum "BrewDeps.txt" }}
       - run: HOMEBREW_NO_AUTO_UPDATE=1 make install-dependencies-darwin
       - save_cache:
           name: Caching brew dependencies
-          key: deps-v5-NAS2D-{{ arch }}
+          key: deps-NAS2D-{{ arch }}-{{ checksum "BrewDeps.txt" }}
           paths:
             - /usr/local/Cellar
   build-and-test:

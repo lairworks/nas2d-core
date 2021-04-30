@@ -13,7 +13,6 @@ commands:
           key: deps-v5-NAS2D-{{ arch }}
           paths:
             - /usr/local/Cellar
-      - run: make brew-link
   build-and-test:
     steps:
       - run: make --keep-going --jobs CXXFLAGS_EXTRA="-Werror"

@@ -216,8 +216,6 @@ install-dependencies-arch:
 .PHONY: install-dependencies-darwin
 install-dependencies-darwin:
 	xargs brew install < BrewDeps.txt
-.PHONY: brew-link
-brew-link:
 	xargs brew link < BrewDeps.txt
 
 

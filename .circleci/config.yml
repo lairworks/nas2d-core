@@ -33,9 +33,9 @@ jobs:
     environment:
       - WARN_EXTRA: "-Wno-double-promotion"
     steps:
+      - checkout
       - brew-install:
           packages: physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf libpng libjpeg libtiff webp libmodplug libvorbis libogg freetype glew googletest
-      - checkout
       - build-and-test
   build-linux:
     docker:

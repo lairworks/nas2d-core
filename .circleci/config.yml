@@ -3,20 +3,16 @@ version: 2.1
 commands:
   brew-install:
     description: "Brew install MacOS dependencies (or restore from cache)"
-    parameters:
-      packages:
-        type: string
     steps:
       - restore_cache:
           name: Restoring brew dependencies
-          key: deps-v5-NAS2D-{{ arch }}
-      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install << parameters.packages >>
+          key: deps-NAS2D-{{ arch }}-{{ checksum "BrewDeps.txt" }}
+      - run: HOMEBREW_NO_AUTO_UPDATE=1 make install-dependencies-darwin
       - save_cache:
           name: Caching brew dependencies
-          key: deps-v5-NAS2D-{{ arch }}
+          key: deps-NAS2D-{{ arch }}-{{ checksum "BrewDeps.txt" }}
           paths:
             - /usr/local/Cellar
-      - run: brew link << parameters.packages >>
   build-and-test:
     steps:
       - run: make --keep-going --jobs CXXFLAGS_EXTRA="-Werror"
@@ -33,9 +29,8 @@ jobs:
     environment:
       - WARN_EXTRA: "-Wno-double-promotion"
     steps:
-      - brew-install:
-          packages: physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf libpng libjpeg libtiff webp libmodplug libvorbis libogg freetype glew googletest
       - checkout
+      - brew-install
       - build-and-test
   build-linux:
     docker:

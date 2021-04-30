@@ -215,7 +215,7 @@ install-dependencies-arch:
 ## MacOS ##
 .PHONY: install-dependencies-darwin
 install-dependencies-darwin:
-	brew install physfs sdl2 sdl2_image sdl2_mixer sdl2_ttf libpng libjpeg libtiff webp libmodplug libvorbis libogg freetype glew
+	xargs --verbose --arg-file=BrewDeps.txt brew install
 
 
 #### Docker related build rules ####

@@ -216,6 +216,9 @@ install-dependencies-arch:
 .PHONY: install-dependencies-darwin
 install-dependencies-darwin:
 	xargs --verbose --arg-file=BrewDeps.txt brew install
+.PHONY: brew-link
+brew-link:
+	xargs --verbose --arg-file=BrewDeps.txt brew link
 
 
 #### Docker related build rules ####

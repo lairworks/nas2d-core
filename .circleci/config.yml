@@ -7,7 +7,7 @@ commands:
       - restore_cache:
           name: Restoring brew dependencies
           key: deps-NAS2D-{{ arch }}-v1-{{ checksum "BrewDeps.txt" }}
-      - run: make install-dependencies-darwin
+      - run: make install-dependencies
       - save_cache:
           name: Caching brew dependencies
           key: deps-NAS2D-{{ arch }}-v1-{{ checksum "BrewDeps.txt" }}

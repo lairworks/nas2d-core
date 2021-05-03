@@ -10,6 +10,7 @@ webp
 libmodplug
 libvorbis
 libogg
+flac
 freetype
 glew
 

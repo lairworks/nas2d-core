@@ -458,7 +458,7 @@ template <typename RetType, typename ... Params>
 class Delegate<RetType(Params...)> : public DelegateX<RetType, Params...>
 {
 public:
-	using BaseType = Delegate<RetType(Params...)>;
+	using BaseType = DelegateX<RetType, Params...>;
 	using SelfType = Delegate;
 
 	Delegate() : BaseType() {}

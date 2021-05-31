@@ -32,7 +32,8 @@ Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
 
 SRCDIR := NAS2D
-BUILDDIR := .build
+ROOTBUILDDIR := .build
+BUILDDIR := $(ROOTBUILDDIR)
 BINDIR := lib
 INTDIR := $(BUILDDIR)/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a

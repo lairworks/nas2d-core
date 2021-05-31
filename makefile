@@ -5,13 +5,6 @@
 #       That should be the current Makefile, assuming no includes
 TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 
-SRCDIR := NAS2D
-BUILDDIR := .build
-BINDIR := lib
-INTDIR := $(BUILDDIR)/intermediate
-OUTPUT := $(BINDIR)/libnas2d.a
-PACKAGEDIR := $(BUILDDIR)/package
-
 # Determine OS (Linux, Darwin, ...)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
@@ -32,6 +25,13 @@ LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
+
+SRCDIR := NAS2D
+BUILDDIR := .build
+BINDIR := lib
+INTDIR := $(BUILDDIR)/intermediate
+OUTPUT := $(BINDIR)/libnas2d.a
+PACKAGEDIR := $(BUILDDIR)/package
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(INTDIR)/$*.Td
 

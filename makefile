@@ -5,12 +5,10 @@
 #       That should be the current Makefile, assuming no includes
 TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 
-SRCDIR := NAS2D
-BUILDDIR := .build
-BINDIR := lib
-INTDIR := $(BUILDDIR)/intermediate
-OUTPUT := $(BINDIR)/libnas2d.a
-PACKAGEDIR := $(BUILDDIR)/package
+CONFIG = debug
+debug_CXX_FLAGS := -Og -g
+release_CXX_FLAGS := -O3
+CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 
 # Determine OS (Linux, Darwin, ...)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
@@ -26,12 +24,19 @@ SDL_CONFIG_LIBS := $(shell type sdl2-config >/dev/null 2>&1 && sdl2-config --sta
 
 CPPFLAGS := $(CPPFLAGS_EXTRA)
 CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls $(WARN_EXTRA)
-CXXFLAGS := $(CXXFLAGS_EXTRA) -std=c++17 $(CXXFLAGS_WARN) $(SDL_CONFIG_CFLAGS)
+CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++17 $(CXXFLAGS_WARN) $(SDL_CONFIG_CFLAGS)
 LDFLAGS := $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(SDL_CONFIG_LIBS) $(OpenGL_LIBS)
 
 Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
+
+SRCDIR := NAS2D
+BUILDDIR := .build
+BINDIR := lib
+INTDIR := $(BUILDDIR)/intermediate
+OUTPUT := $(BINDIR)/libnas2d.a
+PACKAGEDIR := $(BUILDDIR)/package
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(INTDIR)/$*.Td
 

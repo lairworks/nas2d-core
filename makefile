@@ -87,7 +87,8 @@ clean:
 	-rm -rf $(INTDIR)
 clean-all: | clean
 	-rm -rf $(ROOTBUILDDIR)
-	-rm -rf $(BINDIR)
+	-rm --force $(OUTPUT)
+	-rm --force --dir $(BINDIR)
 
 
 ## Unit Test project ##

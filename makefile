@@ -84,9 +84,9 @@ $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
 
 .PHONY: clean clean-all
 clean:
-	-rm -rf $(INTDIR)
+	-rm --force --recursive $(INTDIR)
 clean-all: | clean
-	-rm -rf $(ROOTBUILDDIR)
+	-rm --force --recursive $(ROOTBUILDDIR)
 	-rm --force $(OUTPUT)
 	-rm --force --dir $(BINDIR)
 

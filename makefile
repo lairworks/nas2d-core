@@ -86,7 +86,7 @@ $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
 clean:
 	-rm -rf $(INTDIR)
 clean-all: | clean
-	-rm -rf $(BUILDDIR)
+	-rm -rf $(ROOTBUILDDIR)
 	-rm -rf $(BINDIR)
 
 

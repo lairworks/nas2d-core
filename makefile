@@ -32,7 +32,8 @@ Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
 
 SRCDIR := NAS2D
-BUILDDIR := .build
+ROOTBUILDDIR := .build
+BUILDDIR := $(ROOTBUILDDIR)/$(CONFIG)
 BINDIR := lib
 INTDIR := $(BUILDDIR)/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
@@ -83,10 +84,11 @@ $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
 
 .PHONY: clean clean-all
 clean:
-	-rm -fr $(INTDIR)
+	-rm --force --recursive $(INTDIR)
 clean-all: | clean
-	-rm -rf $(BUILDDIR)
-	-rm -fr $(BINDIR)
+	-rm --force --recursive $(ROOTBUILDDIR)
+	-rm --force $(OUTPUT)
+	-rm --force --dir $(BINDIR)
 
 
 ## Unit Test project ##

@@ -84,10 +84,10 @@ $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
 
 .PHONY: clean clean-all
 clean:
-	-rm -fr $(INTDIR)
+	-rm -rf $(INTDIR)
 clean-all: | clean
 	-rm -rf $(BUILDDIR)
-	-rm -fr $(BINDIR)
+	-rm -rf $(BINDIR)
 
 
 ## Unit Test project ##

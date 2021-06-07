@@ -52,11 +52,11 @@ FOLDERS := $(sort $(dir $(SRCS)))
 all: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
-	@mkdir --parents "${@D}"
+	@mkdir -p "${@D}"
 	ar rcs $@ $^
 
 $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
-	@mkdir --parents "${@D}"
+	@mkdir -p "${@D}"
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
 
@@ -77,7 +77,7 @@ TAR_RENAME_FLAG := $($(CURRENT_OS)_TAR_RENAME_FLAG)
 package: $(PACKAGE_NAME)
 
 $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
-	@mkdir --parents "$(PACKAGEDIR)"
+	@mkdir -p "$(PACKAGEDIR)"
 	# Package an "include/" folder containing all header files, plus the library file
 	find $(SRCDIR) -name '*.h' | tar -czf $(PACKAGE_NAME) $(TAR_RENAME_FLAG) -T - $(OUTPUT)
 
@@ -99,7 +99,7 @@ GTESTDIR := $(BUILDDIR)/gtest
 
 .PHONY: gtest
 gtest:
-	mkdir --parents $(GTESTDIR)
+	mkdir -p $(GTESTDIR)
 	cd $(GTESTDIR) && \
 	  curl --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar -xz && \
 	  cmake -DCMAKE_CXX_FLAGS="-std=c++17" googletest-release-1.10.0/ && \
@@ -147,11 +147,11 @@ check: | test
 	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
 
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
-	@mkdir --parents "${@D}"
+	@mkdir -p "${@D}"
 	$(CXX) $(TESTOBJS) $(TESTLDFLAGS) $(TESTLIBS) -o $@
 
 $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
-	@mkdir --parents "${@D}"
+	@mkdir -p "${@D}"
 	$(TESTCOMPILE.cpp) $(OUTPUT_OPTION) -I$(SRCDIR) $<
 	$(TESTPOSTCOMPILE)
 
@@ -164,7 +164,7 @@ include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 .PHONY: test-graphics
 test-graphics: $(BUILDDIR)/testGraphics
 $(BUILDDIR)/testGraphics: $(OUTPUT)
-	@mkdir --parents $(BUILDDIR)
+	@mkdir -p $(BUILDDIR)
 	$(CXX) -o $(BUILDDIR)/testGraphics test-graphics/*.cpp $(TESTCPPFLAGS) $(CXXFLAGS) $(TESTLDFLAGS) -lnas2d $(LDLIBS)
 
 .PHONY: run-test-graphics

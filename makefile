@@ -93,38 +93,6 @@ clean-all: | clean
 
 ## Unit Test project ##
 
-# Either of these should be a complete combined package. Only build one.
-GTESTSRCDIR := /usr/src/googletest/
-GTESTDIR := $(BUILDDIR)/gtest
-
-.PHONY: gtest
-gtest:
-	mkdir -p $(GTESTDIR)
-	cd $(GTESTDIR) && \
-	  curl --location https://github.com/google/googletest/archive/release-1.10.0.tar.gz | tar -xz && \
-	  cmake -DCMAKE_CXX_FLAGS="-std=c++17" googletest-release-1.10.0/ && \
-	  make && \
-	  cmake -DCMAKE_CXX_FLAGS="-std=c++17" -DBUILD_SHARED_LIBS=ON googletest-release-1.10.0/ && \
-	  make
-
-.PHONY: gtest-install
-gtest-install:
-	cd $(GTESTDIR) && \
-	  cp -r lib/ /usr/local/ && \
-	  cp -r \
-	    googletest-release-1.10.0/googletest/include/ \
-	    googletest-release-1.10.0/googlemock/include/ \
-	    /usr/local/ && \
-	  cp --parents -r \
-	    googletest-release-1.10.0/CMakeLists.txt \
-	    googletest-release-1.10.0/googletest/CMakeLists.txt \
-	    googletest-release-1.10.0/googletest/cmake/ \
-	    googletest-release-1.10.0/googletest/src/ \
-	    googletest-release-1.10.0/googlemock/CMakeLists.txt \
-	    googletest-release-1.10.0/googlemock/cmake/ \
-	    googletest-release-1.10.0/googlemock/src/ \
-	    /usr/local/src/
-
 TESTDIR := test
 TESTINTDIR := $(BUILDDIR)/testIntermediate
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')

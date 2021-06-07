@@ -66,8 +66,8 @@ include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
 
 
 VERSION = $(shell git describe --tags --dirty)
-CONFIG = $(TARGET_OS).x64
-PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(CONFIG).tar.gz
+PLATFORM = $(TARGET_OS).x64
+PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(PLATFORM)-$(CONFIG).tar.gz
 Darwin_TAR_RENAME_FLAG := -s '!^$(SRCDIR)/!include/\0!'
 Linux_TAR_RENAME_FLAG := --transform='s/^$(SRCDIR)/include\/\0/'
 TAR_RENAME_FLAG := $($(CURRENT_OS)_TAR_RENAME_FLAG)

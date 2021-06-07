@@ -46,7 +46,6 @@ POSTCOMPILE = @mv -f $(INTDIR)/$*.Td $(INTDIR)/$*.d && touch $@
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
-FOLDERS := $(sort $(dir $(SRCS)))
 
 .PHONY: all
 all: $(OUTPUT)
@@ -97,7 +96,6 @@ TESTDIR := test
 TESTINTDIR := $(BUILDDIR)/testIntermediate
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
-TESTFOLDERS := $(sort $(dir $(TESTSRCS)))
 TESTCPPFLAGS := $(CPPFLAGS) -I./
 TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)

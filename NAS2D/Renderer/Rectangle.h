@@ -124,9 +124,7 @@ struct Rectangle
 	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
 	// Area in interval notation: [x .. x + width), [y .. y + height)
 	constexpr bool contains(const Point<BaseType>& point) const {
-		auto px = point.x;
-		auto py = point.y;
-		return ((x <= px) && (px < x + width)) && ((y <= py) && (py < y + height));
+		return startPoint() <= point && point < endPoint();
 	}
 
 	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)

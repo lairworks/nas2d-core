@@ -124,15 +124,13 @@ struct Rectangle
 	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
 	// Area in interval notation: [x .. x + width), [y .. y + height)
 	constexpr bool contains(const Point<BaseType>& point) const {
-		auto px = point.x;
-		auto py = point.y;
-		return ((x <= px) && (px < x + width)) && ((y <= py) && (py < y + height));
+		return startPoint() <= point && point < endPoint();
 	}
 
 	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
 	// Area in interval notation: [x .. x + width), [y .. y + height)
 	constexpr bool overlaps(const Rectangle& rect) const {
-		return ((x < rect.x + rect.width) && (rect.x < x + width)) && ((y < rect.y + rect.height) && (rect.y < y + height));
+		return startPoint() < rect.endPoint() && rect.startPoint() < endPoint();
 	}
 
 	constexpr Point<BaseType> center() const {

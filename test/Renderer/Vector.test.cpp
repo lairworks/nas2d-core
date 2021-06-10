@@ -181,3 +181,45 @@ TEST(Vector, to) {
 	EXPECT_EQ((NAS2D::Vector<int>{1, 2}), (NAS2D::Vector<float>{1.0, 2.0}.to<int>()));
 	EXPECT_EQ((NAS2D::Vector<float>{1.0, 2.0}), (NAS2D::Vector<int>{1, 2}.to<float>()));
 }
+
+TEST(Vector, PartialOrderLessEqual) {
+	EXPECT_LE((NAS2D::Vector{0, 0}), (NAS2D::Vector{1, 1}));
+	EXPECT_LE((NAS2D::Vector{0, 1}), (NAS2D::Vector{1, 1}));
+	EXPECT_LE((NAS2D::Vector{1, 0}), (NAS2D::Vector{1, 1}));
+	EXPECT_LE((NAS2D::Vector{1, 1}), (NAS2D::Vector{1, 1}));
+
+	EXPECT_FALSE((NAS2D::Vector{0, 1}) <= (NAS2D::Vector{1, 0}));
+	EXPECT_FALSE((NAS2D::Vector{1, 0}) <= (NAS2D::Vector{0, 1}));
+}
+
+TEST(Vector, PartialOrderGreaterEqual) {
+	EXPECT_GE((NAS2D::Vector{1, 1}), (NAS2D::Vector{0, 0}));
+	EXPECT_GE((NAS2D::Vector{1, 1}), (NAS2D::Vector{0, 1}));
+	EXPECT_GE((NAS2D::Vector{1, 1}), (NAS2D::Vector{1, 0}));
+	EXPECT_GE((NAS2D::Vector{1, 1}), (NAS2D::Vector{1, 1}));
+
+	EXPECT_FALSE((NAS2D::Vector{0, 1}) >= (NAS2D::Vector{1, 0}));
+	EXPECT_FALSE((NAS2D::Vector{1, 0}) >= (NAS2D::Vector{0, 1}));
+}
+
+TEST(Vector, PartialOrderLess) {
+	EXPECT_LT((NAS2D::Vector{0, 0}), (NAS2D::Vector{1, 1}));
+
+	EXPECT_FALSE((NAS2D::Vector{0, 1}) < (NAS2D::Vector{1, 1}));
+	EXPECT_FALSE((NAS2D::Vector{1, 0}) < (NAS2D::Vector{1, 1}));
+	EXPECT_FALSE((NAS2D::Vector{1, 1}) < (NAS2D::Vector{1, 1}));
+
+	EXPECT_FALSE((NAS2D::Vector{0, 1}) < (NAS2D::Vector{1, 0}));
+	EXPECT_FALSE((NAS2D::Vector{1, 0}) < (NAS2D::Vector{0, 1}));
+}
+
+TEST(Vector, PartialOrderGreater) {
+	EXPECT_GT((NAS2D::Vector{1, 1}), (NAS2D::Vector{0, 0}));
+
+	EXPECT_FALSE((NAS2D::Vector{1, 1}) > (NAS2D::Vector{0, 1}));
+	EXPECT_FALSE((NAS2D::Vector{1, 1}) > (NAS2D::Vector{1, 0}));
+	EXPECT_FALSE((NAS2D::Vector{1, 1}) > (NAS2D::Vector{1, 1}));
+
+	EXPECT_FALSE((NAS2D::Vector{0, 1}) > (NAS2D::Vector{1, 0}));
+	EXPECT_FALSE((NAS2D::Vector{1, 0}) > (NAS2D::Vector{0, 1}));
+}

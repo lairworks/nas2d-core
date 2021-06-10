@@ -81,4 +81,28 @@ struct Point {
 template <typename BaseType>
 Point(BaseType, BaseType) -> Point<BaseType>;
 
+
+// Partial order comparisons
+
+template <typename BaseType>
+bool operator<=(Point<BaseType> p1, Point<BaseType> p2) {
+	return (p1.x <= p2.x) && (p1.y <= p2.y);
+}
+
+template <typename BaseType>
+bool operator>=(Point<BaseType> p1, Point<BaseType> p2) {
+	return p2 <= p1;
+}
+
+template <typename BaseType>
+bool operator<(Point<BaseType> p1, Point<BaseType> p2) {
+	return (p1.x < p2.x) && (p1.y < p2.y);
+}
+
+template <typename BaseType>
+bool operator>(Point<BaseType> p1, Point<BaseType> p2) {
+	return p2 < p1;
+}
+
+
 } // namespace

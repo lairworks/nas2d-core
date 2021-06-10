@@ -113,4 +113,27 @@ struct Vector {
 template <typename BaseType>
 Vector(BaseType, BaseType) -> Vector<BaseType>;
 
+
+// Partial order comparisons
+
+template <typename BaseType>
+bool operator<=(Vector<BaseType> v1, Vector<BaseType> v2) {
+	return (v1.x <= v2.x) && (v1.y <= v2.y);
+}
+
+template <typename BaseType>
+bool operator>=(Vector<BaseType> v1, Vector<BaseType> v2) {
+	return v2 <= v1;
+}
+
+template <typename BaseType>
+bool operator<(Vector<BaseType> v1, Vector<BaseType> v2) {
+	return (v1.x < v2.x) && (v1.y < v2.y);
+}
+
+template <typename BaseType>
+bool operator>(Vector<BaseType> v1, Vector<BaseType> v2) {
+	return v2 < v1;
+}
+
 }

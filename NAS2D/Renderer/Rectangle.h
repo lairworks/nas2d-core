@@ -130,7 +130,7 @@ struct Rectangle
 	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
 	// Area in interval notation: [x .. x + width), [y .. y + height)
 	constexpr bool overlaps(const Rectangle& rect) const {
-		return ((x < rect.x + rect.width) && (rect.x < x + width)) && ((y < rect.y + rect.height) && (rect.y < y + height));
+		return startPoint() < rect.endPoint() && rect.startPoint() < endPoint();
 	}
 
 	constexpr Point<BaseType> center() const {

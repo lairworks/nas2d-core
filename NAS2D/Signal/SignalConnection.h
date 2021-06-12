@@ -12,7 +12,7 @@ class SignalConnection
 {
 public:
 	using SignalType = SignalSource<Params...>;
-	using DelegateType = DelegateX<void, Params...>;
+	using DelegateType = typename SignalType::DelegateType;
 
 	// No copy/move construction/assignment
 	// This class is designed to handle a parent object's connection to a signal

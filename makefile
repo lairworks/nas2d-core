@@ -134,7 +134,7 @@ include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 test-graphics: $(BUILDDIR)/testGraphics
 $(BUILDDIR)/testGraphics: $(OUTPUT)
 	@mkdir -p "${@D}"
-	$(CXX) -o $(BUILDDIR)/testGraphics test-graphics/*.cpp $(TESTCPPFLAGS) $(CXXFLAGS) $(TESTLDFLAGS) -lnas2d $(LDLIBS)
+	$(CXX) -o $@ test-graphics/*.cpp $(TESTCPPFLAGS) $(CXXFLAGS) $(TESTLDFLAGS) -lnas2d $(LDLIBS)
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics

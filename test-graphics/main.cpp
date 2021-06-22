@@ -10,7 +10,7 @@
 
 #include "TestGraphics.h"
 
-#include <NAS2D/NAS2D.h>
+#include <NAS2D/Game.h>
 
 #include <iostream>
 #include <string>

@@ -47,8 +47,11 @@ POSTCOMPILE = @mv -f $(INTDIR)/$*.Td $(INTDIR)/$*.d && touch $@
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
+.PHONY: nas2d
+nas2d: $(OUTPUT)
+
 .PHONY: all
-all: $(OUTPUT)
+all: nas2d
 
 $(OUTPUT): $(OBJS)
 	@mkdir -p "${@D}"

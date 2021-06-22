@@ -51,7 +51,7 @@ OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 nas2d: $(OUTPUT)
 
 .PHONY: all
-all: nas2d
+all: nas2d test test-graphics
 
 $(OUTPUT): $(OBJS)
 	@mkdir -p "${@D}"

@@ -135,7 +135,7 @@ $(BUILDDIR)/testGraphics: $(OUTPUT)
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
-	cd test-graphics/ && ../.build/testGraphics ; cd ..
+	cd test-graphics/ && ../$(BUILDDIR)/testGraphics ; cd ..
 
 
 .PHONY: lint

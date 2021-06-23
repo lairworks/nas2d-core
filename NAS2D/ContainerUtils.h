@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <iterator>
 
 
 namespace NAS2D {
@@ -87,6 +88,18 @@ namespace NAS2D {
 		{
 			results[key] += value;
 		}
+		return results;
+	}
+
+	template <typename Container, typename UnaryOperation>
+	auto mapToVector(const Container& container, UnaryOperation mapFunction)
+	{
+		using ResultType = decltype(mapFunction(*std::begin(container)));
+
+		std::vector<ResultType> results;
+		results.reserve(std::size(container));
+
+		std::transform(std::begin(container), std::end(container), std::back_inserter(results), mapFunction);
 		return results;
 	}
 }

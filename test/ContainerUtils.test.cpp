@@ -135,4 +135,12 @@ TEST(Container, mapToVector) {
 		EXPECT_EQ((std::vector<std::size_t>{1, 2, 3}), (NAS2D::mapToVector(data, [](const auto& x){return x.length();})));
 		EXPECT_EQ((std::vector<std::size_t>{1, 2, 3}), (NAS2D::mapToVector(data, std::mem_fn(&std::string::length))));
 	}
+
+	{
+		struct Struct {
+			const int field;
+		};
+		const std::array<Struct, 3> data{{{1}, {2}, {3}}};
+		EXPECT_EQ((std::vector{1, 2, 3}), (NAS2D::mapToVector(data, std::mem_fn(&Struct::field))));
+	}
 }

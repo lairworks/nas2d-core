@@ -68,6 +68,34 @@ TEST(Container, VectorSubtract) {
 	}
 }
 
+
+TEST(Container, mapToVector) {
+	{
+		int data[]{1, 2, 3};
+		EXPECT_EQ((std::vector{1, 2, 3}), (NAS2D::mapToVector(data, [](auto x){return x;})));
+	}
+
+	{
+		const std::vector data{1, 2, 3};
+		EXPECT_EQ((std::vector{1, 2, 3}), (NAS2D::mapToVector(data, [](auto x){return x;})));
+		EXPECT_EQ((std::vector{2, 3, 4}), (NAS2D::mapToVector(data, [](auto x){return x + 1;})));
+	}
+
+	{
+		const std::vector<std::string> data{"a", "bb", "ccc"};
+		EXPECT_EQ((std::vector<std::size_t>{1, 2, 3}), (NAS2D::mapToVector(data, [](const auto& x){return x.length();})));
+		EXPECT_EQ((std::vector<std::size_t>{1, 2, 3}), (NAS2D::mapToVector(data, std::mem_fn(&std::string::length))));
+	}
+
+	{
+		struct Struct {
+			const int field;
+		};
+		const std::array<Struct, 3> data{{{1}, {2}, {3}}};
+		EXPECT_EQ((std::vector{1, 2, 3}), (NAS2D::mapToVector(data, std::mem_fn(&Struct::field))));
+	}
+}
+
 TEST(Container, has) {
 	EXPECT_FALSE(NAS2D::has(std::array<int, 0>{}, 1));
 	EXPECT_FALSE(NAS2D::has(std::array{2}, 1));
@@ -115,32 +143,5 @@ TEST(Container, getKeys) {
 		auto result = NAS2D::getKeys(std::unordered_multimap<int, int>{{1, 10}, {2, 20}});
 		std::sort(std::begin(result), std::end(result));
 		EXPECT_EQ((std::vector<int>{1, 2}), result);
-	}
-}
-
-TEST(Container, mapToVector) {
-	{
-		int data[]{1, 2, 3};
-		EXPECT_EQ((std::vector{1, 2, 3}), (NAS2D::mapToVector(data, [](auto x){return x;})));
-	}
-
-	{
-		const std::vector data{1, 2, 3};
-		EXPECT_EQ((std::vector{1, 2, 3}), (NAS2D::mapToVector(data, [](auto x){return x;})));
-		EXPECT_EQ((std::vector{2, 3, 4}), (NAS2D::mapToVector(data, [](auto x){return x + 1;})));
-	}
-
-	{
-		const std::vector<std::string> data{"a", "bb", "ccc"};
-		EXPECT_EQ((std::vector<std::size_t>{1, 2, 3}), (NAS2D::mapToVector(data, [](const auto& x){return x.length();})));
-		EXPECT_EQ((std::vector<std::size_t>{1, 2, 3}), (NAS2D::mapToVector(data, std::mem_fn(&std::string::length))));
-	}
-
-	{
-		struct Struct {
-			const int field;
-		};
-		const std::array<Struct, 3> data{{{1}, {2}, {3}}};
-		EXPECT_EQ((std::vector{1, 2, 3}), (NAS2D::mapToVector(data, std::mem_fn(&Struct::field))));
 	}
 }

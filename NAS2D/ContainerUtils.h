@@ -70,13 +70,7 @@ namespace NAS2D {
 	template <typename KeyValueContainer>
 	std::vector<typename KeyValueContainer::key_type> getKeys(const KeyValueContainer& map)
 	{
-		std::vector<typename KeyValueContainer::key_type> result;
-		result.reserve(map.size());
-		for (const auto& pair : map)
-		{
-			result.push_back(pair.first);
-		}
-		return result;
+		return mapToVector(map, [](auto keyValuePair){return keyValuePair.first;});
 	}
 
 	/// Key-wise merge of values from two key/value containers

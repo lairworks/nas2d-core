@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <iterator>
 
 
 namespace NAS2D {
@@ -45,6 +46,19 @@ namespace NAS2D {
 	}
 
 
+	template <typename Container, typename UnaryOperation>
+	auto mapToVector(const Container& container, UnaryOperation mapFunction)
+	{
+		using ResultType = decltype(mapFunction(*std::begin(container)));
+		using ElementType = std::remove_cv_t<std::remove_reference_t<ResultType>>;
+
+		std::vector<ElementType> results;
+		results.reserve(std::size(container));
+
+		std::transform(std::begin(container), std::end(container), std::back_inserter(results), mapFunction);
+		return results;
+	}
+
 	template <typename T>
 	auto missingValues(const std::vector<T>& values, const std::vector<T>& required)
 	{
@@ -69,13 +83,7 @@ namespace NAS2D {
 	template <typename KeyValueContainer>
 	std::vector<typename KeyValueContainer::key_type> getKeys(const KeyValueContainer& map)
 	{
-		std::vector<typename KeyValueContainer::key_type> result;
-		result.reserve(map.size());
-		for (const auto& pair : map)
-		{
-			result.push_back(pair.first);
-		}
-		return result;
+		return mapToVector(map, [](auto keyValuePair){return keyValuePair.first;});
 	}
 
 	/// Key-wise merge of values from two key/value containers

@@ -83,6 +83,21 @@ namespace NAS2D {
 		);
 	}
 
+	template <typename Container>
+	auto flatten(const Container& collectionOfCollection)
+	{
+		using InnerCollectionType = typename Container::value_type;
+
+		InnerCollectionType result;
+		result.reserve(flattenSize(collectionOfCollection));
+
+		for (const auto& innerCollection : collectionOfCollection)
+		{
+			result.insert(result.end(), innerCollection.begin(), innerCollection.end());
+		}
+		return result;
+	}
+
 	template <typename T>
 	auto missingValues(const std::vector<T>& values, const std::vector<T>& required)
 	{

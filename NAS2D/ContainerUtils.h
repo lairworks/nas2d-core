@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <numeric>
 
 
 namespace NAS2D {
@@ -57,6 +58,44 @@ namespace NAS2D {
 
 		std::transform(std::begin(container), std::end(container), std::back_inserter(results), mapFunction);
 		return results;
+	}
+
+	/**
+	 * Determine the number of elements in a collection of collection of elements
+	 *
+	 * Example:
+	 * A std::string is a collection of chars, so a std::vector<std::string> would
+	 * be a collection of collection of chars. The result of flattenSize would be
+	 * the char length if all those strings were joined into on. That is, the size
+	 * of flatten the collection of collection of chars into a collection of
+	 * chars.
+	 **/
+	template <typename Container>
+	auto flattenSize(const Container& collectionOfCollection)
+	{
+		return std::accumulate(
+			std::begin(collectionOfCollection),
+			std::end(collectionOfCollection),
+			std::size_t{0},
+			[](std::size_t sum, const typename Container::value_type& innerCollection) noexcept {
+				return sum + innerCollection.size();
+			}
+		);
+	}
+
+	template <typename Container>
+	auto flatten(const Container& collectionOfCollection)
+	{
+		using InnerCollectionType = typename Container::value_type;
+
+		InnerCollectionType result;
+		result.reserve(flattenSize(collectionOfCollection));
+
+		for (const auto& innerCollection : collectionOfCollection)
+		{
+			result.insert(result.end(), innerCollection.begin(), innerCollection.end());
+		}
+		return result;
 	}
 
 	template <typename T>

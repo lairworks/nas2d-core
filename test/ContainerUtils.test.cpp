@@ -96,6 +96,11 @@ TEST(Container, mapToVector) {
 	}
 }
 
+TEST(Container, flattenSize) {
+	EXPECT_EQ(std::size_t{6}, NAS2D::flattenSize(std::vector<std::string>{"1", "23", "456"}));
+	EXPECT_EQ(std::size_t{5}, NAS2D::flattenSize(std::vector<std::vector<int>>{{1, 2}, {3, 4, 5}}));
+}
+
 TEST(Container, has) {
 	EXPECT_FALSE(NAS2D::has(std::array<int, 0>{}, 1));
 	EXPECT_FALSE(NAS2D::has(std::array{2}, 1));

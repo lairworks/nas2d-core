@@ -20,7 +20,7 @@ namespace NAS2D {
 		Dictionary& operator+=(const Dictionary& other);
 
 
-		template <typename T = std::string>
+		template <typename T>
 		T get(const std::string& key, T defaultValue) const
 		{
 			const auto iterator = mDictionary.find(key);

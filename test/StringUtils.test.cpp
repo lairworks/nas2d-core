@@ -67,6 +67,8 @@ TEST(String, stringTo) {
 	EXPECT_THROW(NAS2D::stringTo<bool>("random text"), std::invalid_argument);
 	EXPECT_EQ(false, NAS2D::stringTo<bool>("false"));
 	EXPECT_EQ(true, NAS2D::stringTo<bool>("true"));
+	EXPECT_EQ(false, NAS2D::stringTo<bool>("0"));
+	EXPECT_EQ(true, NAS2D::stringTo<bool>("1"));
 
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::min() - 1)), std::out_of_range);
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::max() + 1)), std::out_of_range);

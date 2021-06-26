@@ -21,6 +21,13 @@ namespace NAS2D {
 
 
 		template <typename T = std::string>
+		T get(const std::string& key, T defaultValue) const
+		{
+			const auto iterator = mDictionary.find(key);
+			return (iterator != mDictionary.end()) ? iterator->second.to<T>() : defaultValue;
+		}
+
+		template <typename T = std::string>
 		T get(const std::string& key) const
 		{
 			return mDictionary.at(key).to<T>();

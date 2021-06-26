@@ -20,10 +20,22 @@ namespace NAS2D {
 		Dictionary& operator+=(const Dictionary& other);
 
 
+		template <typename T>
+		T get(const std::string& key, T defaultValue) const
+		{
+			const auto iterator = mDictionary.find(key);
+			return (iterator != mDictionary.end()) ? iterator->second.to<T>() : defaultValue;
+		}
+
 		template <typename T = std::string>
 		T get(const std::string& key) const
 		{
-			return mDictionary.at(key).to<T>();
+			const auto iterator = mDictionary.find(key);
+			if (iterator == mDictionary.end())
+			{
+				throw std::out_of_range("Dictionary lookup failed for key : " + key);
+			}
+			return iterator->second.to<T>();
 		}
 
 		template <typename T = std::string>

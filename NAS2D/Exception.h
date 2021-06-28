@@ -24,18 +24,6 @@ namespace NAS2D {
 
 
 		/**
-		 * Thrown when Font::operator=() is called but the font hasn't been loaded yet.
-		 */
-		class font_bad_data : public std::runtime_error { public: font_bad_data(); };
-
-
-		/**
-		 * Thrown when a bitmap font is loaded but the texture does not conform to expected paramters.
-		 */
-		class font_invalid_glyph_map : public std::runtime_error { public: font_invalid_glyph_map(); font_invalid_glyph_map(const std::string& description); };
-
-
-		/**
 		 * Thrown when an Image resource contains an invalid pixel buffer.
 		 */
 		class image_bad_copy : public std::runtime_error { public: image_bad_copy(); };

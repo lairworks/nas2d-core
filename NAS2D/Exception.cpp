@@ -16,18 +16,6 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-font_bad_data::font_bad_data() : runtime_error("Font contains invalid data.")
-{}
-
-
-font_invalid_glyph_map::font_invalid_glyph_map() : runtime_error("Bitmap font specified but image doesn't conform to expected parameters.")
-{}
-
-
-font_invalid_glyph_map::font_invalid_glyph_map(const std::string& description) : runtime_error("Bitmap font specified but image doesn't conform to expected parameters: " + description)
-{}
-
-
 image_bad_copy::image_bad_copy() : runtime_error("Attempted to copy an Image in an invalid load state.")
 {}
 

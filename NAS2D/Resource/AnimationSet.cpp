@@ -137,15 +137,9 @@ namespace
 		{
 			if (node->value() == "imagesheet")
 			{
-				std::string id, src;
-				const auto* attribute = node->firstAttribute();
-				while (attribute)
-				{
-					if (attribute->name() == "id") { id = attribute->value(); }
-					else if (attribute->name() == "src") { src = attribute->value(); }
-
-					attribute = attribute->next();
-				}
+				const auto dictionary = attributesToDictionary(*node);
+				const auto id = dictionary.get("id");
+				const auto src = dictionary.get("src");
 
 				if (id.empty())
 				{

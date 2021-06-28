@@ -23,46 +23,46 @@ struct SDL_Surface;
 
 namespace NAS2D {
 
-/**
- * Image Class
- *
- * Provides a high level interface for image files. Can load the following formats:
- * - BMP
- * - JPEG
- * - PCX
- * - PNG
- * - TGA
- * - TIFF
- * - WEBP
- */
-class Image
-{
-public:
-	explicit Image(const std::string& filePath);
-	Image(void* buffer, int bytesPerPixel, Vector<int> size);
+	/**
+	 * Image Class
+	 *
+	 * Provides a high level interface for image files. Can load the following formats:
+	 * - BMP
+	 * - JPEG
+	 * - PCX
+	 * - PNG
+	 * - TGA
+	 * - TIFF
+	 * - WEBP
+	 */
+	class Image
+	{
+	public:
+		explicit Image(const std::string& filePath);
+		Image(void* buffer, int bytesPerPixel, Vector<int> size);
 
-	Image(const Image &rhs) = delete;
-	Image& operator=(const Image& rhs) = delete;
+		Image(const Image &rhs) = delete;
+		Image& operator=(const Image& rhs) = delete;
 
-	~Image();
+		~Image();
 
-	const std::string& name() const { return mResourceName; }
+		const std::string& name() const { return mResourceName; }
 
-	Vector<int> size() const;
+		Vector<int> size() const;
 
-	Color pixelColor(Point<int> point) const;
+		Color pixelColor(Point<int> point) const;
 
-protected:
-	friend class RendererOpenGL;
-	unsigned int textureId() const;
-	unsigned int frameBufferObjectId() const;
+	protected:
+		friend class RendererOpenGL;
+		unsigned int textureId() const;
+		unsigned int frameBufferObjectId() const;
 
-private:
-	std::string mResourceName; /**< File path or internal identifier. */
-	SDL_Surface* mSurface{nullptr};
-	unsigned int mTextureId{0u};
-	mutable unsigned int mFrameBufferObjectId{0u};
-	Vector<int> mSize{0, 0};
-};
+	private:
+		std::string mResourceName; /**< File path or internal identifier. */
+		SDL_Surface* mSurface{nullptr};
+		unsigned int mTextureId{0u};
+		mutable unsigned int mFrameBufferObjectId{0u};
+		Vector<int> mSize{0, 0};
+	};
 
 } // namespace

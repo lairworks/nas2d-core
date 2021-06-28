@@ -154,7 +154,7 @@ cppclean:
 
 .PHONY: format
 format:
-	find NAS2D/ -name '*.cpp' -o -name '*.h' | xargs clang-format -i
+	find NAS2D/ -path NAS2D/Xml -prune -name '*.cpp' -o -name '*.h' | xargs clang-format -i
 
 ### Linux development package dependencies ###
 # This section contains install rules to aid setup and compiling on Linux.

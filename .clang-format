@@ -1,5 +1,6 @@
 Language: Cpp
-AlignTrailingComments: true
+AccessModifierOffset: -4
+AlignTrailingComments: false
 AllowShortBlocksOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: true
@@ -27,12 +28,12 @@ BraceWrapping:
     SplitEmptyNamespace: false
 
 BreakBeforeBinaryOperators: NonAssignment
-BreakConstructorInitializers: BeforeComma
+BreakConstructorInitializers: AfterColon
 ColumnLimit: 0
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
-ConstructorInitializerIndentWidth: 0
+ConstructorInitializerIndentWidth: 4
 FixNamespaceComments: true
-IncludeBlocks: Regroup
+IncludeBlocks: Preserve
 IncludeCategories:
 # Prefer project-specific includes first
 #i.e. Prefer "my" includes before other libraries
@@ -57,12 +58,13 @@ IndentCaseLabels: false
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
 IndentWrappedFunctionNames: false
+MaxEmptyLinesToKeep: 2
 NamespaceIndentation: All
 PointerAlignment: Left
 ReflowComments: false
-SortIncludes : true
+SortIncludes : false
 SortUsingDeclarations: true
-SpaceAfterTemplateKeyword: false
+SpaceAfterTemplateKeyword: true
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCpp11BracedList: false
 SpaceBeforeCtorInitializerColon: true

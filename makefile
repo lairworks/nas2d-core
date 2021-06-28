@@ -152,6 +152,10 @@ cppcheck:
 cppclean:
 	cppclean "$(SRCDIR)"
 
+.PHONY: format
+format:
+	find NAS2D/ -path NAS2D/Xml -prune -name '*.cpp' -o -name '*.h' | xargs clang-format -i
+
 ### Linux development package dependencies ###
 # This section contains install rules to aid setup and compiling on Linux.
 # Only a few common Linux distributions are covered. Other distributions

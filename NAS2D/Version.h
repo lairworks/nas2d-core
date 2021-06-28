@@ -19,8 +19,8 @@ namespace NAS2D
 	constexpr int NAS2D_PATCH_VERSION = 2;
 
 	/**
-    * Gets a string containing the version of NAS2D being used.
-    */
+	* Gets a string containing the version of NAS2D being used.
+	*/
 	const std::string versionString();
 
 	/**
@@ -29,13 +29,13 @@ namespace NAS2D
 	constexpr int versionMajor();
 
 	/**
-    * Gets version minor.
-    */
+	* Gets version minor.
+	*/
 	constexpr int versionMinor();
 
 	/**
-    * Gets version patch.
-    */
+	* Gets version patch.
+	*/
 	constexpr int versionPatch();
 
 } // namespace NAS2D

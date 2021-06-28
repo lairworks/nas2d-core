@@ -95,12 +95,12 @@ namespace NAS2D
 	bool endsWith(std::string_view string, char end) noexcept;
 
 	/**
- * \typedef StringList
- * A list of std::string's.
- *
- * The StringList is provided primarily as a convenience typedef
- * but is also used by some of NAS2D's functions.
- */
+	* \typedef StringList
+	* A list of std::string's.
+	*
+	* The StringList is provided primarily as a convenience typedef
+	* but is also used by some of NAS2D's functions.
+	*/
 	using StringList = std::vector<std::string>;
 
 } // namespace NAS2D

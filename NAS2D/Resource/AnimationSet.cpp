@@ -6,6 +6,7 @@
 #include "../Filesystem.h"
 #include "../ContainerUtils.h"
 #include "../StringUtils.h"
+#include "../ParserHelper.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
 
@@ -30,7 +31,7 @@ namespace
 	AnimationSet processXml(std::string filePath, ImageCache& imageCache);
 	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlNode* node, ImageCache& imageCache);
+	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
@@ -95,12 +96,12 @@ namespace
 			}
 
 			// Get the Sprite version.
-			const auto* version = xmlRootElement->firstAttribute();
-			if (!version || version->value().empty())
+			const auto version = xmlRootElement->attribute("version");
+			if (version.empty())
 			{
 				throw std::runtime_error("Sprite file's root element does not specify a version");
 			}
-			if (version->value() != SPRITE_VERSION)
+			if (version != SPRITE_VERSION)
 			{
 				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SPRITE_VERSION} + " Actual: " + versionString());
 			}
@@ -132,21 +133,13 @@ namespace
 	{
 		std::map<std::string, std::string> imageSheetMap;
 
-		for (const auto* node = element->iterateChildren(nullptr);
-			node != nullptr;
-			node = element->iterateChildren(node))
+		for (const auto* node = element->firstChildElement(); node; node = node->nextSiblingElement())
 		{
-			if (node->value() == "imagesheet" && node->toElement())
+			if (node->value() == "imagesheet")
 			{
-				std::string id, src;
-				const auto* attribute = node->toElement()->firstAttribute();
-				while (attribute)
-				{
-					if (toLowercase(attribute->name()) == "id") { id = attribute->value(); }
-					else if (toLowercase(attribute->name()) == "src") { src = attribute->value(); }
-
-					attribute = attribute->next();
-				}
+				const auto dictionary = attributesToDictionary(*node);
+				const auto id = dictionary.get("id");
+				const auto src = dictionary.get("src");
 
 				if (id.empty())
 				{
@@ -184,35 +177,23 @@ namespace
 	{
 		std::map<std::string, std::vector<AnimationSet::Frame>> actions;
 
-		for (const auto* node = element->iterateChildren(nullptr);
-			node != nullptr;
-			node = element->iterateChildren(node))
+		for (const auto* action = element->firstChildElement(); action; action = action->nextSiblingElement())
 		{
-			if (toLowercase(node->value()) == "action" && node->toElement())
+			if (action->value() == "action")
 			{
-
-				std::string actionName;
-				const auto* attribute = node->toElement()->firstAttribute();
-				while (attribute)
-				{
-					if (toLowercase(attribute->name()) == "name")
-					{
-						actionName = attribute->value();
-					}
-
-					attribute = attribute->next();
-				}
+				const auto dictionary = attributesToDictionary(*action);
+				const auto actionName = dictionary.get("name");
 
 				if (actionName.empty())
 				{
-					throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(node->row()));
+					throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(action->row()));
 				}
 				if (actions.find(actionName) != actions.end())
 				{
-					throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(node->row()));
+					throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
 				}
 
-				actions[actionName] = processFrames(imageSheetMap, actionName, node, imageCache);
+				actions[actionName] = processFrames(imageSheetMap, actionName, action, imageCache);
 			}
 		}
 
@@ -223,45 +204,30 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlNode* node, ImageCache& imageCache)
+	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::vector<AnimationSet::Frame> frameList;
 
-		for (const auto* frame = node->iterateChildren(nullptr);
-			frame != nullptr;
-			frame = node->iterateChildren(frame))
+		for (const auto* frame = element->firstChildElement(); frame; frame = frame->nextSiblingElement())
 		{
 			int currentRow = frame->row();
 
-			if (frame->value() != "frame" || !frame->toElement())
+			if (frame->value() != "frame")
 			{
 				throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow));
 			}
 
-			std::string sheetId;
-			int delay = 0;
-			int x = 0, y = 0;
-			int width = 0, height = 0;
-			int anchorx = 0, anchory = 0;
+			const auto dictionary = attributesToDictionary(*frame);
+			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "delay", "x", "y", "width", "height", "anchorx", "anchory"}, {});
 
-			const auto* attribute = frame->toElement()->firstAttribute();
-			while (attribute)
-			{
-				if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }
-				else if (toLowercase(attribute->name()) == "delay") { attribute->queryIntValue(delay); }
-				else if (toLowercase(attribute->name()) == "x") { attribute->queryIntValue(x); }
-				else if (toLowercase(attribute->name()) == "y") { attribute->queryIntValue(y); }
-				else if (toLowercase(attribute->name()) == "width") { attribute->queryIntValue(width); }
-				else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
-				else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
-				else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
-				else
-				{
-					throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow));
-				}
-
-				attribute = attribute->next();
-			}
+			const auto sheetId = dictionary.get("sheetid");
+			const auto delay = dictionary.get<int>("delay");
+			const auto x = dictionary.get<int>("x");
+			const auto y = dictionary.get<int>("y");
+			const auto width = dictionary.get<int>("width");
+			const auto height = dictionary.get<int>("height");
+			const auto anchorx = dictionary.get<int>("anchorx");
+			const auto anchory = dictionary.get<int>("anchory");
 
 			if (sheetId.empty())
 			{

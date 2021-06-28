@@ -1,4 +1,5 @@
 Language: Cpp
+AccessModifierOffset: -4
 AlignTrailingComments: true
 AllowShortBlocksOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true

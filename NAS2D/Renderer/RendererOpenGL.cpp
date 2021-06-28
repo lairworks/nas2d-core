@@ -16,7 +16,6 @@
 #include "../Trig.h"
 #include "../Configuration.h"
 #include "../EventHandler.h"
-#include "../Exception.h"
 #include "../Filesystem.h"
 #include "../MathUtils.h"
 #include "../Utility.h"
@@ -31,10 +30,11 @@
 #include <cmath>
 #include <array>
 #include <vector>
+#include <stdexcept>
+#include <string>
 
 
 using namespace NAS2D;
-using namespace NAS2D::Exception;
 
 
 // UGLY ASS HACK!

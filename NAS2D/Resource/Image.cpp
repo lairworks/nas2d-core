@@ -10,7 +10,6 @@
 #include "Image.h"
 
 #include "../Renderer/Rectangle.h"
-#include "../Exception.h"
 #include "../Filesystem.h"
 #include "../Utility.h"
 
@@ -24,7 +23,6 @@
 
 
 using namespace NAS2D;
-using namespace NAS2D::Exception;
 
 
 unsigned int generateTexture(SDL_Surface* surface);

@@ -9,7 +9,6 @@
 // ==================================================================================
 #include "Font.h"
 
-#include "../Exception.h"
 #include "../Filesystem.h"
 #include "../Utility.h"
 #include "../MathUtils.h"
@@ -25,13 +24,13 @@
 #include <algorithm>
 #include <cstddef>
 #include <stdexcept>
+#include <string>
 
 
 extern unsigned int generateTexture(SDL_Surface* surface);
 
 
 using namespace NAS2D;
-using namespace NAS2D::Exception;
 
 
 namespace {

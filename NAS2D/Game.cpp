@@ -12,7 +12,6 @@
 #include "StateManager.h"
 #include "Configuration.h"
 #include "EventHandler.h"
-#include "Exception.h"
 #include "Filesystem.h"
 #include "Utility.h"
 #include "Version.h"
@@ -25,6 +24,8 @@
 #include <SDL2/SDL.h>
 
 #include <iostream>
+#include <stdexcept>
+#include <string>
 
 
 using namespace NAS2D;

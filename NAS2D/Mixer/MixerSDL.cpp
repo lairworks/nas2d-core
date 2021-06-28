@@ -14,7 +14,6 @@
 #include "../Resource/Music.h"
 
 #include "../Configuration.h"
-#include "../Exception.h"
 #include "../Utility.h"
 #include "../ContainerUtils.h"
 
@@ -23,10 +22,11 @@
 
 #include <array>
 #include <algorithm>
+#include <stdexcept>
+#include <string>
 
 
 using namespace NAS2D;
-using namespace NAS2D::Exception;
 
 
 namespace {

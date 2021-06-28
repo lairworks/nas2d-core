@@ -9,7 +9,6 @@
 // ==================================================================================
 
 #include "Filesystem.h"
-#include "Exception.h"
 
 #include <physfs.h>
 
@@ -20,10 +19,10 @@
 #include <sstream>
 #include <utility>
 #include <limits>
+#include <stdexcept>
 
 
 using namespace NAS2D;
-using namespace NAS2D::Exception;
 
 
 static bool closeFile(void* file)

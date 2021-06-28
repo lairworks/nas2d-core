@@ -55,7 +55,8 @@
 namespace NAS2D
 {
 
-	namespace detail {
+	namespace detail
+	{
 
 		template <typename OutputClass, typename InputClass>
 		union horrible_union { OutputClass out; InputClass in; };

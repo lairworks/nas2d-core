@@ -56,13 +56,15 @@ void Configuration::load(const std::string& filePath)
 	}
 	else
 	{
-		try {
+		try
+		{
 			// Read in the Config File.
 			auto xmlFile = Utility<Filesystem>::get().open(filePath);
 			loadData(xmlFile.raw_bytes());
 			std::cout << "done." << std::endl;
 		}
-		catch (const std::runtime_error& e) {
+		catch (const std::runtime_error& e)
+		{
 			std::cout << "unable to process '" << filePath << "'. Using default options. Error: " << e.what() << std::endl;
 		}
 	}

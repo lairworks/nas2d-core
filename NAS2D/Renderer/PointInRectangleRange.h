@@ -9,12 +9,12 @@
 
 namespace NAS2D
 {
-
-
 	template <typename BaseType>
-	class PointInRectangleRange {
+	class PointInRectangleRange
+	{
 	public:
-		class Iterator {
+		class Iterator
+		{
 		public:
 			Iterator(const Rectangle<BaseType>& rect, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
 				mIterator(rect.size(), initial),
@@ -23,25 +23,30 @@ namespace NAS2D
 			Iterator(const Iterator& other) = default;
 			Iterator& operator=(const Iterator& other) = default;
 
-			Iterator& operator++() {
+			Iterator& operator++()
+			{
 				++mIterator;
 				return *this;
 			}
 
-			Iterator& operator--() {
+			Iterator& operator--()
+			{
 				--mIterator;
 				return *this;
 			}
 
-			bool operator==(const Iterator& other) const {
+			bool operator==(const Iterator& other) const
+			{
 				return **this == *other;
 			}
 
-			bool operator!=(const Iterator& other) const {
+			bool operator!=(const Iterator& other) const
+			{
 				return !(*this == other);
 			}
 
-			Point<BaseType> operator*() const {
+			Point<BaseType> operator*() const
+			{
 				return mStartPoint + *mIterator;
 			}
 
@@ -55,16 +60,17 @@ namespace NAS2D
 			mRect(rect)
 		{}
 
-		Iterator begin() const {
+		Iterator begin() const
+		{
 			return Iterator{mRect};
 		}
 
-		Iterator end() const {
+		Iterator end() const
+		{
 			return Iterator{mRect, Vector<BaseType>{0, mRect.height}};
 		}
 
 	private:
 		const Rectangle<BaseType> mRect;
 	};
-
 } // namespace

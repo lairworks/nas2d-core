@@ -32,7 +32,7 @@ ColumnLimit: 0
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 4
 FixNamespaceComments: true
-IncludeBlocks: Regroup
+IncludeBlocks: Preserve
 IncludeCategories:
 # Prefer project-specific includes first
 #i.e. Prefer "my" includes before other libraries
@@ -60,7 +60,7 @@ IndentWrappedFunctionNames: false
 NamespaceIndentation: All
 PointerAlignment: Left
 ReflowComments: false
-SortIncludes : true
+SortIncludes : false
 SortUsingDeclarations: true
 SpaceAfterTemplateKeyword: false
 SpaceBeforeAssignmentOperators: true

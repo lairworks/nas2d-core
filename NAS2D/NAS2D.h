@@ -12,7 +12,6 @@
 #include "ContainerUtils.h"
 #include "Dictionary.h"
 #include "EventHandler.h"
-#include "Exception.h"
 #include "File.h"
 #include "Filesystem.h"
 #include "FpsCounter.h"

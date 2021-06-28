@@ -96,12 +96,12 @@ namespace
 			}
 
 			// Get the Sprite version.
-			const auto* version = xmlRootElement->firstAttribute();
-			if (!version || version->value().empty())
+			const auto version = xmlRootElement->attribute("version");
+			if (version.empty())
 			{
 				throw std::runtime_error("Sprite file's root element does not specify a version");
 			}
-			if (version->value() != SPRITE_VERSION)
+			if (version != SPRITE_VERSION)
 			{
 				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SPRITE_VERSION} + " Actual: " + versionString());
 			}

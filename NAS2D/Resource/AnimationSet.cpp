@@ -13,7 +13,8 @@
 using namespace NAS2D;
 
 
-namespace {
+namespace
+{
 	constexpr std::string_view SPRITE_VERSION{"0.99"};
 
 	using ImageCache = ResourceCache<Image, std::string>;
@@ -63,7 +64,8 @@ const std::vector<AnimationSet::Frame>& AnimationSet::frames(const std::string& 
 }
 
 
-namespace {
+namespace
+{
 
 	/**
 	 * Parses a Sprite XML Definition File.

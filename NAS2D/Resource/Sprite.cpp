@@ -21,7 +21,8 @@
 using namespace NAS2D;
 
 
-namespace {
+namespace
+{
 	const auto FRAME_PAUSE = unsigned(-1);
 
 	using AnimationCache = ResourceCache<AnimationSet, std::string>;

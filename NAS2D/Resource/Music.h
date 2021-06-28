@@ -21,29 +21,29 @@ typedef struct _Mix_Music Mix_Music;
 
 namespace NAS2D {
 
-/**
- *  Music resource.
- */
-class Music
-{
-public:
-	explicit Music(const std::string& filePath);
+	/**
+	 *  Music resource.
+	 */
+	class Music
+	{
+	public:
+		explicit Music(const std::string& filePath);
 
-	Music(const Music& rhs) = delete;
-	Music& operator=(const Music& rhs) = delete;
+		Music(const Music& rhs) = delete;
+		Music& operator=(const Music& rhs) = delete;
 
-	~Music();
+		~Music();
 
-	const std::string& name() const { return mResourceName; }
+		const std::string& name() const { return mResourceName; }
 
-protected:
-	friend class MixerSDL;
-	Mix_Music* music() const;
+	protected:
+		friend class MixerSDL;
+		Mix_Music* music() const;
 
-private:
-	std::string mResourceName; /**< File path */
-	const File mBuffer;
-	Mix_Music* mMusic{nullptr};
-};
+	private:
+		std::string mResourceName; /**< File path */
+		const File mBuffer;
+		Mix_Music* mMusic{nullptr};
+	};
 
 } // namespace

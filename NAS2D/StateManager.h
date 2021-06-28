@@ -15,36 +15,36 @@
 
 namespace NAS2D {
 
-class State;
+	class State;
 
 
-/**
- * Implements a Finite State Machine model that switches between
- *			State objects.
- *
- * \note	StateManager handles distribution of input and system events to
- *			both State objects and to the Gui.
- */
-class StateManager
-{
-public:
-	// Constructor & destructor
-	StateManager();
-	~StateManager();
+	/**
+	 * Implements a Finite State Machine model that switches between
+	 *			State objects.
+	 *
+	 * \note	StateManager handles distribution of input and system events to
+	 *			both State objects and to the Gui.
+	 */
+	class StateManager
+	{
+	public:
+		// Constructor & destructor
+		StateManager();
+		~StateManager();
 
-	void setState(State* state);
-	bool update();
+		void setState(State* state);
+		bool update();
 
-	bool active() const;
+		bool active() const;
 
-	void forceStopAudio(bool);
+		void forceStopAudio(bool);
 
-private:
-	void handleQuit();
+	private:
+		void handleQuit();
 
-	std::unique_ptr<State> mActiveState;
-	bool mActive;
-	bool mForceStopAudio = true;
-};
+		std::unique_ptr<State> mActiveState;
+		bool mActive;
+		bool mForceStopAudio = true;
+	};
 
 } // namespace

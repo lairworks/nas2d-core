@@ -800,201 +800,201 @@ Vector<int> RendererOpenGL::getWindowClientArea() const noexcept
 // ==================================================================================
 
 namespace {
-/**
- * Draws a textured rectangle using a vertex and texture coordinate array
- */
-void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords)
-{
-	glBindTexture(GL_TEXTURE_2D, textureId);
-	glVertexPointer(2, GL_FLOAT, 0, verticies.data());
-	glTexCoordPointer(2, GL_FLOAT, 0, textureCoords.data());
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
-}
+	/**
+	 * Draws a textured rectangle using a vertex and texture coordinate array
+	 */
+	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords)
+	{
+		glBindTexture(GL_TEXTURE_2D, textureId);
+		glVertexPointer(2, GL_FLOAT, 0, verticies.data());
+		glTexCoordPointer(2, GL_FLOAT, 0, textureCoords.data());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
+	}
 
 
-/**
- * The following code was developed by Chris Tsang and lifted from:
- *
- * http://www.codeproject.com/KB/openGL/gllinedraw.aspx
- *
- * Modified: Removed option for non-alpha blending and general code cleanup.
- *
- * This is drop-in code that may be replaced in the future.
- */
-void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
-{
-	float Cr = color.red / 255.0f;
-	float Cg = color.green / 255.0f;
-	float Cb = color.blue / 255.0f;
-	float Ca = color.alpha / 255.0f;
+	/**
+	 * The following code was developed by Chris Tsang and lifted from:
+	 *
+	 * http://www.codeproject.com/KB/openGL/gllinedraw.aspx
+	 *
+	 * Modified: Removed option for non-alpha blending and general code cleanup.
+	 *
+	 * This is drop-in code that may be replaced in the future.
+	 */
+	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
+	{
+		float Cr = color.red / 255.0f;
+		float Cg = color.green / 255.0f;
+		float Cb = color.blue / 255.0f;
+		float Ca = color.alpha / 255.0f;
 
-	// What are these values for?
-	float t = 0.0f;
-	float R = 0.0f;
-	float f = lineWidth - static_cast<int>(lineWidth);
+		// What are these values for?
+		float t = 0.0f;
+		float R = 0.0f;
+		float f = lineWidth - static_cast<int>(lineWidth);
 
-	// HOLY CRAP magic numbers!
-	//determine parameters t, R
-	if (lineWidth >= 0.0f && lineWidth < 1.0f)
-	{
-		t = 0.05f;
-		R = 0.48f + 0.32f * f;
-	}
-	else if (lineWidth >= 1.0f && lineWidth < 2.0f)
-	{
-		t = 0.05f + f * 0.33f;
-		R = 0.768f + 0.312f * f;
-	}
-	else if (lineWidth >= 2.0f && lineWidth < 3.0f)
-	{
-		t = 0.38f + f * 0.58f;
-		R = 1.08f;
-	}
-	else if (lineWidth >= 3.0f && lineWidth < 4.0f)
-	{
-		t = 0.96f + f * 0.48f;
-		R = 1.08f;
-	}
-	else if (lineWidth >= 4.0f && lineWidth < 5.0f)
-	{
-		t = 1.44f + f * 0.46f;
-		R = 1.08f;
-	}
-	else if (lineWidth >= 5.0f && lineWidth < 6.0f)
-	{
-		t = 1.9f + f * 0.6f;
-		R = 1.08f;
-	}
-	else if (lineWidth >= 6.0f)
-	{
-		float ff = lineWidth - 6.0f;
-		t = 2.5f + ff * 0.50f;
-		R = 1.08f;
-	}
-	//printf( "lineWidth=%f, f=%f, C=%.4f\n", lineWidth, f, C);
-
-	//determine angle of the line to horizontal
-	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
-	float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
-	float cx = 0.0f, cy = 0.0f; //cap of a line
-	float ALW = 0.01f; // Dafuq is this?
-	float dx = p2.x - p1.x;
-	float dy = p2.y - p1.y;
-
-	if (std::abs(dx) < ALW)
-	{
-		//vertical
-		tx = t; ty = 0.0f;
-		Rx = R; Ry = 0.0f;
-		if (lineWidth > 0.0f && lineWidth <= 1.0f)
+		// HOLY CRAP magic numbers!
+		//determine parameters t, R
+		if (lineWidth >= 0.0f && lineWidth < 1.0f)
 		{
-			tx = 0.5f;
-			Rx = 0.0f;
+			t = 0.05f;
+			R = 0.48f + 0.32f * f;
 		}
-	}
-	else if (std::abs(dy) < ALW)
-	{
-		//horizontal
-		tx = 0.0f; ty = t;
-		Rx = 0.0f; Ry = R;
-		if (lineWidth > 0.0f && lineWidth <= 1.0f)
+		else if (lineWidth >= 1.0f && lineWidth < 2.0f)
 		{
-			ty = 0.5f;
-			Ry = 0.0f;
+			t = 0.05f + f * 0.33f;
+			R = 0.768f + 0.312f * f;
 		}
-	}
-	else
-	{
-		dx = p1.y - p2.y;
-		dy = p2.x - p1.x;
-
-		float L = sqrt(dx * dx + dy * dy);
-
-		dx /= L;
-		dy /= L;
-
-		cx = -dy;
-		cy = dx;
-
-		tx = t * dx;
-		ty = t * dy;
-
-		Rx = R * dx;
-		Ry = R * dy;
-	}
-
-	p1.x += cx * 0.5f;
-	p1.y += cy * 0.5f;
-
-	p2.x -= cx * 0.5f;
-	p2.y -= cy * 0.5f;
-
-	//draw the line by triangle strip
-	float line_vertex[] =
-	{
-		p1.x - tx - Rx - cx, p1.y - ty - Ry - cy, //fading edge1
-		p2.x - tx - Rx + cx, p2.y - ty - Ry + cy,
-		p1.x - tx - cx, p1.y - ty - cy,        //core
-		p2.x - tx + cx, p2.y - ty + cy,
-		p1.x + tx - cx, p1.y + ty - cy,
-		p2.x + tx + cx, p2.y + ty + cy,
-		p1.x + tx + Rx - cx, p1.y + ty + Ry - cy, //fading edge2
-		p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
-	};
-
-	float line_color[] =
-	{
-		Cr, Cg, Cb, 0,
-		Cr, Cg, Cb, 0,
-		Cr, Cg, Cb, Ca,
-		Cr, Cg, Cb, Ca,
-		Cr, Cg, Cb, Ca,
-		Cr, Cg, Cb, Ca,
-		Cr, Cg, Cb, 0,
-		Cr, Cg, Cb, 0
-	};
-
-	glVertexPointer(2, GL_FLOAT, 0, line_vertex);
-	glColorPointer(4, GL_FLOAT, 0, line_color);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
-
-	// Line End Caps
-	if (lineWidth > 3.0f) // <<< Arbitrary number.
-	{
-		float line_vertex2[] =
+		else if (lineWidth >= 2.0f && lineWidth < 3.0f)
 		{
-			p1.x - tx - cx, p1.y - ty - cy,
-			p1.x + tx + Rx, p1.y + ty + Ry,
-			p1.x + tx - cx, p1.y + ty - cy,
-			p1.x + tx + Rx - cx, p1.y + ty + Ry - cy,
-			p2.x - tx - Rx + cx, p2.y - ty - Ry + cy, //cap2
-			p2.x - tx - Rx, p2.y - ty - Ry,
+			t = 0.38f + f * 0.58f;
+			R = 1.08f;
+		}
+		else if (lineWidth >= 3.0f && lineWidth < 4.0f)
+		{
+			t = 0.96f + f * 0.48f;
+			R = 1.08f;
+		}
+		else if (lineWidth >= 4.0f && lineWidth < 5.0f)
+		{
+			t = 1.44f + f * 0.46f;
+			R = 1.08f;
+		}
+		else if (lineWidth >= 5.0f && lineWidth < 6.0f)
+		{
+			t = 1.9f + f * 0.6f;
+			R = 1.08f;
+		}
+		else if (lineWidth >= 6.0f)
+		{
+			float ff = lineWidth - 6.0f;
+			t = 2.5f + ff * 0.50f;
+			R = 1.08f;
+		}
+		//printf( "lineWidth=%f, f=%f, C=%.4f\n", lineWidth, f, C);
+
+		//determine angle of the line to horizontal
+		float tx = 0.0f, ty = 0.0f; //core thinkness of a line
+		float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
+		float cx = 0.0f, cy = 0.0f; //cap of a line
+		float ALW = 0.01f; // Dafuq is this?
+		float dx = p2.x - p1.x;
+		float dy = p2.y - p1.y;
+
+		if (std::abs(dx) < ALW)
+		{
+			//vertical
+			tx = t; ty = 0.0f;
+			Rx = R; Ry = 0.0f;
+			if (lineWidth > 0.0f && lineWidth <= 1.0f)
+			{
+				tx = 0.5f;
+				Rx = 0.0f;
+			}
+		}
+		else if (std::abs(dy) < ALW)
+		{
+			//horizontal
+			tx = 0.0f; ty = t;
+			Rx = 0.0f; Ry = R;
+			if (lineWidth > 0.0f && lineWidth <= 1.0f)
+			{
+				ty = 0.5f;
+				Ry = 0.0f;
+			}
+		}
+		else
+		{
+			dx = p1.y - p2.y;
+			dy = p2.x - p1.x;
+
+			float L = sqrt(dx * dx + dy * dy);
+
+			dx /= L;
+			dy /= L;
+
+			cx = -dy;
+			cy = dx;
+
+			tx = t * dx;
+			ty = t * dy;
+
+			Rx = R * dx;
+			Ry = R * dy;
+		}
+
+		p1.x += cx * 0.5f;
+		p1.y += cy * 0.5f;
+
+		p2.x -= cx * 0.5f;
+		p2.y -= cy * 0.5f;
+
+		//draw the line by triangle strip
+		float line_vertex[] =
+		{
+			p1.x - tx - Rx - cx, p1.y - ty - Ry - cy, //fading edge1
+			p2.x - tx - Rx + cx, p2.y - ty - Ry + cy,
+			p1.x - tx - cx, p1.y - ty - cy,        //core
 			p2.x - tx + cx, p2.y - ty + cy,
-			p2.x + tx + Rx, p2.y + ty + Ry,
+			p1.x + tx - cx, p1.y + ty - cy,
 			p2.x + tx + cx, p2.y + ty + cy,
+			p1.x + tx + Rx - cx, p1.y + ty + Ry - cy, //fading edge2
 			p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
 		};
 
-		float line_color2[] =
+		float line_color[] =
 		{
-			Cr, Cg, Cb, 0, //cap1
+			Cr, Cg, Cb, 0,
 			Cr, Cg, Cb, 0,
 			Cr, Cg, Cb, Ca,
-			Cr, Cg, Cb, 0,
+			Cr, Cg, Cb, Ca,
+			Cr, Cg, Cb, Ca,
 			Cr, Cg, Cb, Ca,
 			Cr, Cg, Cb, 0,
-			Cr, Cg, Cb, 0, //cap2
-			Cr, Cg, Cb, 0,
-			Cr, Cg, Cb, Ca,
-			Cr, Cg, Cb, 0,
-			Cr, Cg, Cb, Ca,
 			Cr, Cg, Cb, 0
 		};
 
-		glVertexPointer(2, GL_FLOAT, 0, line_vertex2);
-		glColorPointer(4, GL_FLOAT, 0, line_color2);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
+		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
+		glColorPointer(4, GL_FLOAT, 0, line_color);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
+
+		// Line End Caps
+		if (lineWidth > 3.0f) // <<< Arbitrary number.
+		{
+			float line_vertex2[] =
+			{
+				p1.x - tx - cx, p1.y - ty - cy,
+				p1.x + tx + Rx, p1.y + ty + Ry,
+				p1.x + tx - cx, p1.y + ty - cy,
+				p1.x + tx + Rx - cx, p1.y + ty + Ry - cy,
+				p2.x - tx - Rx + cx, p2.y - ty - Ry + cy, //cap2
+				p2.x - tx - Rx, p2.y - ty - Ry,
+				p2.x - tx + cx, p2.y - ty + cy,
+				p2.x + tx + Rx, p2.y + ty + Ry,
+				p2.x + tx + cx, p2.y + ty + cy,
+				p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
+			};
+
+			float line_color2[] =
+			{
+				Cr, Cg, Cb, 0, //cap1
+				Cr, Cg, Cb, 0,
+				Cr, Cg, Cb, Ca,
+				Cr, Cg, Cb, 0,
+				Cr, Cg, Cb, Ca,
+				Cr, Cg, Cb, 0,
+				Cr, Cg, Cb, 0, //cap2
+				Cr, Cg, Cb, 0,
+				Cr, Cg, Cb, Ca,
+				Cr, Cg, Cb, 0,
+				Cr, Cg, Cb, Ca,
+				Cr, Cg, Cb, 0
+			};
+
+			glVertexPointer(2, GL_FLOAT, 0, line_vertex2);
+			glColorPointer(4, GL_FLOAT, 0, line_color2);
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
+		}
 	}
-}
 
 }

@@ -6,51 +6,51 @@
 
 namespace NAS2D {
 
-template <typename Resource, typename ... Params>
-class ResourceCache
-{
-public:
-	using Key = std::tuple<Params...>;
-
-
-	const Resource& load(Params... params)
+	template <typename Resource, typename ... Params>
+	class ResourceCache
 	{
-		// Cache lookup key is a tuple of all Resource constructor parameters
-		const auto key = Key{params...};
+	public:
+		using Key = std::tuple<Params...>;
 
-		// Try to find resource from the cache
-		auto iter = cache.find(key);
-		if (iter == cache.end())
+
+		const Resource& load(Params... params)
 		{
-			// Resource wasn't found, so create new one using constructor parameters
-			const auto pairIterBool = cache.try_emplace(key, params...);
-			iter = pairIterBool.first;
+			// Cache lookup key is a tuple of all Resource constructor parameters
+			const auto key = Key{params...};
+
+			// Try to find resource from the cache
+			auto iter = cache.find(key);
+			if (iter == cache.end())
+			{
+				// Resource wasn't found, so create new one using constructor parameters
+				const auto pairIterBool = cache.try_emplace(key, params...);
+				iter = pairIterBool.first;
+			}
+
+			// Return reference to found or created cached object
+			return iter->second;
 		}
 
-		// Return reference to found or created cached object
-		return iter->second;
-	}
+
+		void unload(Params... params)
+		{
+			cache.erase(Key{params...});
+		}
 
 
-	void unload(Params... params)
-	{
-		cache.erase(Key{params...});
-	}
+		void clear()
+		{
+			cache.clear();
+		}
 
 
-	void clear()
-	{
-		cache.clear();
-	}
+		auto size() const
+		{
+			return cache.size();
+		}
 
-
-	auto size() const
-	{
-		return cache.size();
-	}
-
-private:
-	std::map<Key, Resource> cache;
-};
+	private:
+		std::map<Key, Resource> cache;
+	};
 
 } // namespace

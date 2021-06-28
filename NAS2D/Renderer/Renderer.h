@@ -133,7 +133,7 @@ namespace NAS2D {
 
 		void driverName(const std::string& name);
 
-		Vector<int> mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
+		Vector<int> mResolution{1600, 900}; /**< Screen resolution. Reasonable default in 2019*/
 
 	private:
 		enum class FadeType

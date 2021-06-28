@@ -14,7 +14,6 @@
 #include "../Resource/Music.h"
 
 #include "../Configuration.h"
-#include "../Exception.h"
 #include "../Utility.h"
 #include "../ContainerUtils.h"
 
@@ -23,10 +22,11 @@
 
 #include <array>
 #include <algorithm>
+#include <stdexcept>
+#include <string>
 
 
 using namespace NAS2D;
-using namespace NAS2D::Exception;
 
 
 namespace {
@@ -100,12 +100,12 @@ MixerSDL::MixerSDL(const Options& options)
 {
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 	{
-		throw mixer_backend_init_failure(SDL_GetError());
+		throw std::runtime_error(std::string{"Error initializing SDL audio: "} + SDL_GetError());
 	}
 
 	if (Mix_OpenAudio(options.mixRate, MIX_DEFAULT_FORMAT, options.numChannels, options.bufferSize))
 	{
-		throw mixer_backend_init_failure(Mix_GetError());
+		throw std::runtime_error(std::string{"Error opening audio mixer: "} + Mix_GetError());
 	}
 
 	soundVolume(options.sfxVolume);

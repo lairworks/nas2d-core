@@ -99,9 +99,6 @@
     <ClCompile Include="Renderer\Renderer.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Exception.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Xml\XmlParser.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
@@ -180,9 +177,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="File.h">

@@ -197,7 +197,6 @@
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="EventHandler.cpp" />
-    <ClCompile Include="Exception.cpp" />
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="FpsCounter.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -244,7 +243,6 @@
     <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Documentation.h" />
     <ClInclude Include="EventHandler.h" />
-    <ClInclude Include="Exception.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Filesystem.h" />
     <ClInclude Include="FpsCounter.h" />

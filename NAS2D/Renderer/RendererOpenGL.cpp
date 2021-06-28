@@ -16,7 +16,6 @@
 #include "../Trig.h"
 #include "../Configuration.h"
 #include "../EventHandler.h"
-#include "../Exception.h"
 #include "../Filesystem.h"
 #include "../MathUtils.h"
 #include "../Utility.h"
@@ -31,10 +30,11 @@
 #include <cmath>
 #include <array>
 #include <vector>
+#include <stdexcept>
+#include <string>
 
 
 using namespace NAS2D;
-using namespace NAS2D::Exception;
 
 
 // UGLY ASS HACK!
@@ -692,7 +692,7 @@ void RendererOpenGL::initGL()
 
 	if (glShadingLanguageVersion.empty())
 	{
-		//throw renderer_no_glsl();
+		//throw std::runtime_error("OpenGL shading language not supported");
 	}
 
 	glEnable(GL_TEXTURE_2D);
@@ -706,7 +706,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 {
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 	{
-		throw renderer_backend_init_failure(SDL_GetError());
+		throw std::runtime_error(std::string{"SDL video initialization failed: "} + SDL_GetError());
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -725,7 +725,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 
 	if (!underlyingWindow)
 	{
-		throw renderer_window_creation_failure();
+		throw std::runtime_error("Failed to create SDL window");
 	}
 
 	mResolution = resolution;
@@ -733,7 +733,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	sdlOglContext = SDL_GL_CreateContext(underlyingWindow);
 	if (!sdlOglContext)
 	{
-		throw renderer_opengl_context_failure();
+		throw std::runtime_error("Failed to create SDL OpenGL context");
 	}
 
 	SDL_ShowCursor(true);

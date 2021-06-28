@@ -7,8 +7,10 @@
 #include <numeric>
 
 
-namespace NAS2D {
-	namespace ContainerOperators {
+namespace NAS2D
+{
+	namespace ContainerOperators
+	{
 		template <typename T>
 		std::vector<T>& operator+=(std::vector<T>& container1, const std::vector<T>& container2)
 		{

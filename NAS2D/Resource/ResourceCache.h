@@ -4,7 +4,8 @@
 #include <tuple>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	template <typename Resource, typename ... Params>
 	class ResourceCache

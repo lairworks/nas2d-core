@@ -7,7 +7,8 @@
 #include "Point.h"
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 
 	template <typename BaseType>

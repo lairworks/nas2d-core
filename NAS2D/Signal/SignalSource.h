@@ -4,7 +4,8 @@
 #include <set>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 
 	template<typename ... Params>

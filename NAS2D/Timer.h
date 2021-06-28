@@ -10,7 +10,8 @@
 
 #pragma once
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * A timing class that provides high-resolution, millisecond-precision timing services.

@@ -13,7 +13,8 @@
 using namespace NAS2D;
 
 
-namespace {
+namespace
+{
 	constexpr std::string_view SPRITE_VERSION{"0.99"};
 
 	using ImageCache = ResourceCache<Image, std::string>;
@@ -63,7 +64,8 @@ const std::vector<AnimationSet::Frame>& AnimationSet::frames(const std::string& 
 }
 
 
-namespace {
+namespace
+{
 
 	/**
 	 * Parses a Sprite XML Definition File.
@@ -253,7 +255,8 @@ namespace {
 				else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
 				else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
 				else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
-				else {
+				else
+				{
 					throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow));
 				}
 

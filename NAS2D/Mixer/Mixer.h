@@ -13,7 +13,8 @@
 #include "../Signal/Signal.h"
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	class Sound;
 	class Music;

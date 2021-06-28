@@ -13,7 +13,8 @@
 #include "Renderer/Vector.h"
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	constexpr float PI = 3.14159265f;
 	constexpr float PI_2 = PI * 2;

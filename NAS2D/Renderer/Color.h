@@ -12,7 +12,8 @@
 
 #include <cstdint>
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * RGBA Color.

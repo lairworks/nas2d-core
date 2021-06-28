@@ -18,7 +18,8 @@ using SDL_GLContext = void*;
 struct SDL_Cursor;
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * OpenGL Renderer.

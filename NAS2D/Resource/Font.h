@@ -17,7 +17,8 @@
 #include <string_view>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * Font resource.

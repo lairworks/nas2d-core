@@ -33,7 +33,8 @@ extern unsigned int generateTexture(SDL_Surface* surface);
 using namespace NAS2D;
 
 
-namespace {
+namespace
+{
 	struct ColorMasks
 	{
 		unsigned int red;
@@ -166,7 +167,8 @@ unsigned int Font::textureId() const
 }
 
 
-namespace {
+namespace
+{
 	/**
 	 * Loads a TrueType or OpenType font from a file.
 	 *

@@ -12,7 +12,8 @@
 #include "Renderer.h"
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	class RendererNull : public Renderer
 	{

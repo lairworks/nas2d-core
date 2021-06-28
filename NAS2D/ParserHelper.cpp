@@ -6,7 +6,8 @@
 #include "Xml/XmlNode.h"
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 	void reportMissingOrUnexpected(const std::vector<std::string>& missing, const std::vector<std::string>& unexpected)
 	{
 		if (!missing.empty() || !unexpected.empty())

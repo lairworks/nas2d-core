@@ -13,7 +13,8 @@
 #include <cmath>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * Gets an angle in radians from degrees.

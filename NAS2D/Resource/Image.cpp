@@ -29,7 +29,8 @@ unsigned int generateTexture(SDL_Surface* surface);
 unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height);
 
 
-namespace {
+namespace
+{
 	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
 	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
 
@@ -153,7 +154,8 @@ unsigned int Image::frameBufferObjectId() const
 }
 
 
-namespace {
+namespace
+{
 	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel)
 	{
 		switch (bytesPerPixel)

@@ -4,7 +4,8 @@
 #include <map>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 	class Dictionary
 	{
 	public:

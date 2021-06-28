@@ -16,7 +16,8 @@
 #include <vector>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * Implements a virtual file system.

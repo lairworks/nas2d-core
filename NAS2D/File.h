@@ -14,7 +14,8 @@
 #include <utility>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * Represent a File object.

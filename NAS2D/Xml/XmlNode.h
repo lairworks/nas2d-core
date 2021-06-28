@@ -14,7 +14,8 @@
 #include "XmlBase.h"
 #include "XmlVisitor.h"
 
-namespace NAS2D {
+namespace NAS2D
+{
 namespace Xml {
 
 /**

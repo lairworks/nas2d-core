@@ -14,7 +14,8 @@
 #include <stdexcept>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * Provides a simple interface to classes that should only be instantiated

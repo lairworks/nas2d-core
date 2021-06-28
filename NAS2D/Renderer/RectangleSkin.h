@@ -1,7 +1,8 @@
 #pragma once
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 	class Image;
 	class Renderer;
 	template <typename BaseType> struct Rectangle;

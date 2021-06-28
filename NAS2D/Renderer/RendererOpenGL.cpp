@@ -42,7 +42,8 @@ using namespace NAS2D;
 SDL_Window* underlyingWindow = nullptr;
 
 
-namespace {
+namespace
+{
 	/**
 	 * Fills a vertex array with quad vertex information.
 	 */
@@ -799,7 +800,8 @@ Vector<int> RendererOpenGL::getWindowClientArea() const noexcept
 // = NON PUBLIC IMPLEMENTATION
 // ==================================================================================
 
-namespace {
+namespace
+{
 	/**
 	 * Draws a textured rectangle using a vertex and texture coordinate array
 	 */

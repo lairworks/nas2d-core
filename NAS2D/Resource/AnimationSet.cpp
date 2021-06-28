@@ -187,14 +187,14 @@ namespace
 
 		for (const auto* node = element->firstChildElement(); node; node = node->nextSiblingElement())
 		{
-			if (toLowercase(node->value()) == "action")
+			if (node->value() == "action")
 			{
 
 				std::string actionName;
 				const auto* attribute = node->firstAttribute();
 				while (attribute)
 				{
-					if (toLowercase(attribute->name()) == "name")
+					if (attribute->name() == "name")
 					{
 						actionName = attribute->value();
 					}

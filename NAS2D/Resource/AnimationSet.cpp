@@ -31,7 +31,7 @@ namespace
 	AnimationSet processXml(std::string filePath, ImageCache& imageCache);
 	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlNode* node, ImageCache& imageCache);
+	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
@@ -204,11 +204,11 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlNode* node, ImageCache& imageCache)
+	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::vector<AnimationSet::Frame> frameList;
 
-		for (const auto* frame = node->firstChildElement(); frame; frame = frame->nextSiblingElement())
+		for (const auto* frame = element->firstChildElement(); frame; frame = frame->nextSiblingElement())
 		{
 			int currentRow = frame->row();
 

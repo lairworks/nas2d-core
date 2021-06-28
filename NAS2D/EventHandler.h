@@ -15,12 +15,19 @@
 #include <string>
 
 
+namespace
+{
+	constexpr int scanCodeToKeyCode(int scanCode)
+	{
+		const auto scanCodeMask = 1 << 30;
+		const auto keyCode = scanCode | scanCodeMask;
+		return keyCode;
+	}
+}
+
+
 namespace NAS2D
 {
-
-	#define SCANCODE_MASK (1<<30)
-	#define SCANCODE_TO_KEYCODE(X) (X | SCANCODE_MASK)
-
 
 	/**
 	 * Handles and dispatches low-level events.
@@ -135,97 +142,97 @@ namespace NAS2D
 			KEY_z = 'z',
 
 			// Numeric Keypad
-			KEY_KP1 = SCANCODE_TO_KEYCODE(89),
-			KEY_KP2 = SCANCODE_TO_KEYCODE(90),
-			KEY_KP3 = SCANCODE_TO_KEYCODE(91),
-			KEY_KP4 = SCANCODE_TO_KEYCODE(92),
-			KEY_KP5 = SCANCODE_TO_KEYCODE(93),
-			KEY_KP6 = SCANCODE_TO_KEYCODE(94),
-			KEY_KP7 = SCANCODE_TO_KEYCODE(95),
-			KEY_KP8 = SCANCODE_TO_KEYCODE(96),
-			KEY_KP9 = SCANCODE_TO_KEYCODE(97),
-			KEY_KP0 = SCANCODE_TO_KEYCODE(98),
-			KEY_KP_PERIOD = SCANCODE_TO_KEYCODE(99),
-			KEY_KP_DIVIDE = SCANCODE_TO_KEYCODE(84),
-			KEY_KP_MULTIPLY = SCANCODE_TO_KEYCODE(85),
-			KEY_KP_MINUS = SCANCODE_TO_KEYCODE(86),
-			KEY_KP_PLUS = SCANCODE_TO_KEYCODE(87),
-			KEY_KP_ENTER = SCANCODE_TO_KEYCODE(88),
-			KEY_KP_EQUALS = SCANCODE_TO_KEYCODE(103),
-			KEY_KP_COMMA = SCANCODE_TO_KEYCODE(133),
+			KEY_KP1 = scanCodeToKeyCode(89),
+			KEY_KP2 = scanCodeToKeyCode(90),
+			KEY_KP3 = scanCodeToKeyCode(91),
+			KEY_KP4 = scanCodeToKeyCode(92),
+			KEY_KP5 = scanCodeToKeyCode(93),
+			KEY_KP6 = scanCodeToKeyCode(94),
+			KEY_KP7 = scanCodeToKeyCode(95),
+			KEY_KP8 = scanCodeToKeyCode(96),
+			KEY_KP9 = scanCodeToKeyCode(97),
+			KEY_KP0 = scanCodeToKeyCode(98),
+			KEY_KP_PERIOD = scanCodeToKeyCode(99),
+			KEY_KP_DIVIDE = scanCodeToKeyCode(84),
+			KEY_KP_MULTIPLY = scanCodeToKeyCode(85),
+			KEY_KP_MINUS = scanCodeToKeyCode(86),
+			KEY_KP_PLUS = scanCodeToKeyCode(87),
+			KEY_KP_ENTER = scanCodeToKeyCode(88),
+			KEY_KP_EQUALS = scanCodeToKeyCode(103),
+			KEY_KP_COMMA = scanCodeToKeyCode(133),
 
 			// Arrows/Home/End
-			KEY_UP = SCANCODE_TO_KEYCODE(82),
-			KEY_DOWN = SCANCODE_TO_KEYCODE(81),
-			KEY_RIGHT = SCANCODE_TO_KEYCODE(79),
-			KEY_LEFT = SCANCODE_TO_KEYCODE(80),
-			KEY_INSERT = SCANCODE_TO_KEYCODE(73),
-			KEY_PAUSE = SCANCODE_TO_KEYCODE(72),
-			KEY_HOME = SCANCODE_TO_KEYCODE(74),
-			KEY_END = SCANCODE_TO_KEYCODE(77),
+			KEY_UP = scanCodeToKeyCode(82),
+			KEY_DOWN = scanCodeToKeyCode(81),
+			KEY_RIGHT = scanCodeToKeyCode(79),
+			KEY_LEFT = scanCodeToKeyCode(80),
+			KEY_INSERT = scanCodeToKeyCode(73),
+			KEY_PAUSE = scanCodeToKeyCode(72),
+			KEY_HOME = scanCodeToKeyCode(74),
+			KEY_END = scanCodeToKeyCode(77),
 			KEY_DELETE = '\177',
-			KEY_PAGEUP = SCANCODE_TO_KEYCODE(75),
-			KEY_PAGEDOWN = SCANCODE_TO_KEYCODE(78),
+			KEY_PAGEUP = scanCodeToKeyCode(75),
+			KEY_PAGEDOWN = scanCodeToKeyCode(78),
 
 			// Function Keys
-			KEY_F1 = SCANCODE_TO_KEYCODE(58),
-			KEY_F2 = SCANCODE_TO_KEYCODE(59),
-			KEY_F3 = SCANCODE_TO_KEYCODE(60),
-			KEY_F4 = SCANCODE_TO_KEYCODE(61),
-			KEY_F5 = SCANCODE_TO_KEYCODE(62),
-			KEY_F6 = SCANCODE_TO_KEYCODE(63),
-			KEY_F7 = SCANCODE_TO_KEYCODE(64),
-			KEY_F8 = SCANCODE_TO_KEYCODE(65),
-			KEY_F9 = SCANCODE_TO_KEYCODE(66),
-			KEY_F10 = SCANCODE_TO_KEYCODE(67),
-			KEY_F11 = SCANCODE_TO_KEYCODE(68),
-			KEY_F12 = SCANCODE_TO_KEYCODE(69),
-			KEY_F13 = SCANCODE_TO_KEYCODE(104),
-			KEY_F14 = SCANCODE_TO_KEYCODE(105),
-			KEY_F15 = SCANCODE_TO_KEYCODE(106),
-			KEY_F16 = SCANCODE_TO_KEYCODE(107),
-			KEY_F17 = SCANCODE_TO_KEYCODE(108),
-			KEY_F18 = SCANCODE_TO_KEYCODE(109),
-			KEY_F19 = SCANCODE_TO_KEYCODE(110),
-			KEY_F20 = SCANCODE_TO_KEYCODE(111),
-			KEY_F21 = SCANCODE_TO_KEYCODE(112),
-			KEY_F22 = SCANCODE_TO_KEYCODE(113),
-			KEY_F23 = SCANCODE_TO_KEYCODE(114),
-			KEY_F24 = SCANCODE_TO_KEYCODE(115),
+			KEY_F1 = scanCodeToKeyCode(58),
+			KEY_F2 = scanCodeToKeyCode(59),
+			KEY_F3 = scanCodeToKeyCode(60),
+			KEY_F4 = scanCodeToKeyCode(61),
+			KEY_F5 = scanCodeToKeyCode(62),
+			KEY_F6 = scanCodeToKeyCode(63),
+			KEY_F7 = scanCodeToKeyCode(64),
+			KEY_F8 = scanCodeToKeyCode(65),
+			KEY_F9 = scanCodeToKeyCode(66),
+			KEY_F10 = scanCodeToKeyCode(67),
+			KEY_F11 = scanCodeToKeyCode(68),
+			KEY_F12 = scanCodeToKeyCode(69),
+			KEY_F13 = scanCodeToKeyCode(104),
+			KEY_F14 = scanCodeToKeyCode(105),
+			KEY_F15 = scanCodeToKeyCode(106),
+			KEY_F16 = scanCodeToKeyCode(107),
+			KEY_F17 = scanCodeToKeyCode(108),
+			KEY_F18 = scanCodeToKeyCode(109),
+			KEY_F19 = scanCodeToKeyCode(110),
+			KEY_F20 = scanCodeToKeyCode(111),
+			KEY_F21 = scanCodeToKeyCode(112),
+			KEY_F22 = scanCodeToKeyCode(113),
+			KEY_F23 = scanCodeToKeyCode(114),
+			KEY_F24 = scanCodeToKeyCode(115),
 
 			// Key State Modifiers
-			KEY_NUMLOCK = SCANCODE_TO_KEYCODE(83),
-			KEY_CAPSLOCK = SCANCODE_TO_KEYCODE(57),
-			KEY_SCROLLOCK = SCANCODE_TO_KEYCODE(71),
-			KEY_RSHIFT = SCANCODE_TO_KEYCODE(229),
-			KEY_LSHIFT = SCANCODE_TO_KEYCODE(225),
-			KEY_RCTRL = SCANCODE_TO_KEYCODE(228),
-			KEY_LCTRL = SCANCODE_TO_KEYCODE(224),
-			KEY_RALT = SCANCODE_TO_KEYCODE(230),
-			KEY_LALT = SCANCODE_TO_KEYCODE(226),
-			KEY_RGUI = SCANCODE_TO_KEYCODE(231),
-			KEY_LGUI = SCANCODE_TO_KEYCODE(227),
-			KEY_MODE = SCANCODE_TO_KEYCODE(257),
+			KEY_NUMLOCK = scanCodeToKeyCode(83),
+			KEY_CAPSLOCK = scanCodeToKeyCode(57),
+			KEY_SCROLLOCK = scanCodeToKeyCode(71),
+			KEY_RSHIFT = scanCodeToKeyCode(229),
+			KEY_LSHIFT = scanCodeToKeyCode(225),
+			KEY_RCTRL = scanCodeToKeyCode(228),
+			KEY_LCTRL = scanCodeToKeyCode(224),
+			KEY_RALT = scanCodeToKeyCode(230),
+			KEY_LALT = scanCodeToKeyCode(226),
+			KEY_RGUI = scanCodeToKeyCode(231),
+			KEY_LGUI = scanCodeToKeyCode(227),
+			KEY_MODE = scanCodeToKeyCode(257),
 
 			// Miscellaneous function keys
-			KEY_HELP = SCANCODE_TO_KEYCODE(117),
-			KEY_PRINTSCREEN = SCANCODE_TO_KEYCODE(70),
-			KEY_ALTERASE = SCANCODE_TO_KEYCODE(153),
-			KEY_SYSREQ = SCANCODE_TO_KEYCODE(154),
-			KEY_CLEAR = SCANCODE_TO_KEYCODE(159),
-			KEY_MENU = SCANCODE_TO_KEYCODE(118),
-			KEY_POWER = SCANCODE_TO_KEYCODE(102),
-			KEY_UNDO = SCANCODE_TO_KEYCODE(122),
+			KEY_HELP = scanCodeToKeyCode(117),
+			KEY_PRINTSCREEN = scanCodeToKeyCode(70),
+			KEY_ALTERASE = scanCodeToKeyCode(153),
+			KEY_SYSREQ = scanCodeToKeyCode(154),
+			KEY_CLEAR = scanCodeToKeyCode(159),
+			KEY_MENU = scanCodeToKeyCode(118),
+			KEY_POWER = scanCodeToKeyCode(102),
+			KEY_UNDO = scanCodeToKeyCode(122),
 
 			// Audio Control
-			KEY_MUTE = SCANCODE_TO_KEYCODE(127),
-			KEY_VOLUME_UP = SCANCODE_TO_KEYCODE(128),
-			KEY_VOLUME_DOWN = SCANCODE_TO_KEYCODE(129),
-			KEY_AUDIO_NEXT = SCANCODE_TO_KEYCODE(258),
-			KEY_AUDIO_PREV = SCANCODE_TO_KEYCODE(259),
-			KEY_AUDIO_STOP = SCANCODE_TO_KEYCODE(260),
-			KEY_AUDIO_PLAY = SCANCODE_TO_KEYCODE(261),
-			KEY_AUDIO_MUTE = SCANCODE_TO_KEYCODE(262),
+			KEY_MUTE = scanCodeToKeyCode(127),
+			KEY_VOLUME_UP = scanCodeToKeyCode(128),
+			KEY_VOLUME_DOWN = scanCodeToKeyCode(129),
+			KEY_AUDIO_NEXT = scanCodeToKeyCode(258),
+			KEY_AUDIO_PREV = scanCodeToKeyCode(259),
+			KEY_AUDIO_STOP = scanCodeToKeyCode(260),
+			KEY_AUDIO_PLAY = scanCodeToKeyCode(261),
+			KEY_AUDIO_MUTE = scanCodeToKeyCode(262),
 
 			// Additional Keys here
 			KEY_LAST

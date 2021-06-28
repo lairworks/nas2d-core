@@ -6,6 +6,7 @@
 #include "../Filesystem.h"
 #include "../ContainerUtils.h"
 #include "../StringUtils.h"
+#include "../ParserHelper.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
 
@@ -236,30 +237,17 @@ namespace
 				throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow));
 			}
 
-			std::string sheetId;
-			int delay = 0;
-			int x = 0, y = 0;
-			int width = 0, height = 0;
-			int anchorx = 0, anchory = 0;
+			const auto dictionary = attributesToDictionary(*frame);
+			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "delay", "x", "y", "width", "height", "anchorx", "anchory"}, {});
 
-			const auto* attribute = frame->firstAttribute();
-			while (attribute)
-			{
-				if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }
-				else if (toLowercase(attribute->name()) == "delay") { attribute->queryIntValue(delay); }
-				else if (toLowercase(attribute->name()) == "x") { attribute->queryIntValue(x); }
-				else if (toLowercase(attribute->name()) == "y") { attribute->queryIntValue(y); }
-				else if (toLowercase(attribute->name()) == "width") { attribute->queryIntValue(width); }
-				else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
-				else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
-				else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
-				else
-				{
-					throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow));
-				}
-
-				attribute = attribute->next();
-			}
+			const auto sheetId = dictionary.get("sheetid");
+			const auto delay = dictionary.get<int>("delay");
+			const auto x = dictionary.get<int>("x");
+			const auto y = dictionary.get<int>("y");
+			const auto width = dictionary.get<int>("width");
+			const auto height = dictionary.get<int>("height");
+			const auto anchorx = dictionary.get<int>("anchorx");
+			const auto anchory = dictionary.get<int>("anchory");
 
 			if (sheetId.empty())
 			{

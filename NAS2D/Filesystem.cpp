@@ -158,7 +158,7 @@ std::vector<std::string> Filesystem::searchPath() const
 	std::vector<std::string> searchPath;
 
 	auto searchPathList = PHYSFS_getSearchPath();
-	for (char** i = searchPathList; *i != nullptr; ++i)
+	for (auto i = searchPathList; *i != nullptr; ++i)
 	{
 		searchPath.push_back(*i);
 	}
@@ -178,12 +178,12 @@ std::vector<std::string> Filesystem::searchPath() const
  */
 std::vector<std::string> Filesystem::directoryList(const std::string& dir, const std::string& filter) const
 {
-	char** rc = PHYSFS_enumerateFiles(dir.c_str());
+	auto rc = PHYSFS_enumerateFiles(dir.c_str());
 
 	std::vector<std::string> fileList;
 	if (filter.empty())
 	{
-		for (char** i = rc; *i != nullptr; i++)
+		for (auto i = rc; *i != nullptr; i++)
 		{
 			fileList.push_back(*i);
 		}
@@ -191,7 +191,7 @@ std::vector<std::string> Filesystem::directoryList(const std::string& dir, const
 	else
 	{
 		std::size_t filterLen = filter.size();
-		for (char** i = rc; *i != nullptr; i++)
+		for (auto i = rc; *i != nullptr; i++)
 		{
 			std::string tmpStr = *i;
 			if (tmpStr.rfind(filter, tmpStr.length() - filterLen) != std::string::npos)

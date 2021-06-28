@@ -227,13 +227,11 @@ namespace
 	{
 		std::vector<AnimationSet::Frame> frameList;
 
-		for (const auto* frame = node->iterateChildren(nullptr);
-			frame != nullptr;
-			frame = node->iterateChildren(frame))
+		for (const auto* frame = node->firstChildElement(); frame; frame = frame->nextSiblingElement())
 		{
 			int currentRow = frame->row();
 
-			if (frame->value() != "frame" || !frame->toElement())
+			if (frame->value() != "frame")
 			{
 				throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow));
 			}
@@ -244,7 +242,7 @@ namespace
 			int width = 0, height = 0;
 			int anchorx = 0, anchory = 0;
 
-			const auto* attribute = frame->toElement()->firstAttribute();
+			const auto* attribute = frame->firstAttribute();
 			while (attribute)
 			{
 				if (toLowercase(attribute->name()) == "sheetid") { sheetId = attribute->value(); }

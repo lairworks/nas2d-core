@@ -15,25 +15,6 @@
 using namespace NAS2D;
 using namespace NAS2D::Exception;
 
-filesystem_already_initialized::filesystem_already_initialized() : runtime_error("Filesystem is already initialized.")
-{}
-
-
-filesystem_backend_init_failure::filesystem_backend_init_failure() : runtime_error("Unable to start virtual filesystem.")
-{}
-
-
-filesystem_backend_init_failure::filesystem_backend_init_failure(const std::string& description) : runtime_error("Unable to start virtual filesystem: " + description)
-{}
-
-
-filesystem_file_handle_still_open::filesystem_file_handle_still_open() : runtime_error("Unable to close file handle.")
-{}
-
-
-filesystem_file_handle_still_open::filesystem_file_handle_still_open(const std::string& description) : runtime_error("Unable to close file handle: " + description)
-{}
-
 
 font_bad_data::font_bad_data() : runtime_error("Font contains invalid data.")
 {}

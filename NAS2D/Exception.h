@@ -22,23 +22,6 @@ namespace NAS2D {
 		 * See <a href="https://github.com/lairworks/nas2d-core/wiki/Exceptions-&-Exception-Handling-in-NAS2D">Wiki Page (Exceptions)</a> for further details.
 		 */
 
-		/**
-		 * Thrown when the Filesystem is unable to initialize itself.
-		 */
-		class filesystem_backend_init_failure : public std::runtime_error { public: filesystem_backend_init_failure(const std::string& description); filesystem_backend_init_failure(); };
-
-
-		/**
-		 * Thrown when Filesystem::init() is called but the Filesystem is already initialized.
-		 */
-		class filesystem_already_initialized : public std::runtime_error { public: filesystem_already_initialized(); };
-
-
-		/**
-		 * Thrown when the Filesystem is unable to close a file handle.
-		 */
-		class filesystem_file_handle_still_open : public std::runtime_error { public: filesystem_file_handle_still_open(const std::string& description); filesystem_file_handle_still_open();};
-
 
 		/**
 		 * Thrown when Font::operator=() is called but the font hasn't been loaded yet.

@@ -141,8 +141,8 @@ namespace
 				const auto* attribute = node->firstAttribute();
 				while (attribute)
 				{
-					if (toLowercase(attribute->name()) == "id") { id = attribute->value(); }
-					else if (toLowercase(attribute->name()) == "src") { src = attribute->value(); }
+					if (attribute->name() == "id") { id = attribute->value(); }
+					else if (attribute->name() == "src") { src = attribute->value(); }
 
 					attribute = attribute->next();
 				}

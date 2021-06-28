@@ -1,6 +1,6 @@
 Language: Cpp
 AccessModifierOffset: -4
-AlignTrailingComments: true
+AlignTrailingComments: false
 AllowShortBlocksOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: true

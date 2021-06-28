@@ -255,7 +255,8 @@ namespace
 				else if (toLowercase(attribute->name()) == "height") { attribute->queryIntValue(height); }
 				else if (toLowercase(attribute->name()) == "anchorx") { attribute->queryIntValue(anchorx); }
 				else if (toLowercase(attribute->name()) == "anchory") { attribute->queryIntValue(anchory); }
-				else {
+				else
+				{
 					throw std::runtime_error("Sprite frame attribute unexpected: '" + attribute->name() + "' : " + endTag(currentRow));
 				}
 

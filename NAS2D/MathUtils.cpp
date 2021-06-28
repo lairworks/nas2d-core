@@ -45,7 +45,8 @@ namespace NAS2D
 	 */
 	int divideUp(int to_divide, int divisor)
 	{
-		if (divisor == 0) {
+		if (divisor == 0)
+		{
 			throw std::domain_error("Division by zero: divideUp(to_divide, 0)");
 		}
 		return (to_divide + (divisor - 1)) / divisor;

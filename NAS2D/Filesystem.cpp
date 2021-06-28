@@ -32,7 +32,7 @@ static bool closeFile(void* file)
 
 	if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
 
-	throw filesystem_file_handle_still_open(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+	throw std::runtime_error(std::string{"Unable to close file handle: "} + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 }
 
 
@@ -48,11 +48,11 @@ Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, co
 	mAppName(appName),
 	mOrganizationName(organizationName)
 {
-	if (PHYSFS_isInit()) { throw filesystem_already_initialized(); }
+	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized."); }
 
 	if (PHYSFS_init(argv_0.c_str()) == 0)
 	{
-		throw filesystem_backend_init_failure(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error(std::string{"Unable to start virtual filesystem: "} + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 

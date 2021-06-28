@@ -27,10 +27,10 @@ BraceWrapping:
     SplitEmptyNamespace: false
 
 BreakBeforeBinaryOperators: NonAssignment
-BreakConstructorInitializers: BeforeComma
+BreakConstructorInitializers: AfterColon
 ColumnLimit: 0
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
-ConstructorInitializerIndentWidth: 0
+ConstructorInitializerIndentWidth: 4
 FixNamespaceComments: true
 IncludeBlocks: Regroup
 IncludeCategories:

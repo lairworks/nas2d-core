@@ -41,7 +41,7 @@ namespace NAS2D {
 		explicit Image(const std::string& filePath);
 		Image(void* buffer, int bytesPerPixel, Vector<int> size);
 
-		Image(const Image &rhs) = delete;
+		Image(const Image& rhs) = delete;
 		Image& operator=(const Image& rhs) = delete;
 
 		~Image();

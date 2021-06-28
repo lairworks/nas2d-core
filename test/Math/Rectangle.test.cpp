@@ -114,7 +114,7 @@ TEST(Rectangle, to) {
 	EXPECT_EQ((NAS2D::Rectangle<float>{1.0, 2.0, 3.0, 4.0}), (NAS2D::Rectangle<int>{1, 2, 3, 4}.to<float>()));
 }
 
-TEST(Rectangle, contains) {
+TEST(Rectangle, containsPoint) {
 	NAS2D::Rectangle rect = {1, 1, 2, 2};
 
 	// Start point inclusive, and interior
@@ -133,6 +133,40 @@ TEST(Rectangle, contains) {
 	EXPECT_FALSE(rect.contains(NAS2D::Point{0, 4}));
 	EXPECT_FALSE(rect.contains(NAS2D::Point{4, 0}));
 	EXPECT_FALSE(rect.contains(NAS2D::Point{4, 4}));
+}
+
+TEST(Rectangle, containsRect) {
+	NAS2D::Rectangle rect = {1, 1, 4, 4};
+
+	// A rectangle contains itself (just barely)
+	EXPECT_TRUE(rect.contains(rect));
+
+	// Strict containment
+	EXPECT_TRUE(rect.contains({1, 1, 1, 1}));
+	EXPECT_TRUE(rect.contains({2, 2, 1, 1}));
+	EXPECT_TRUE(rect.contains({3, 3, 1, 1}));
+	EXPECT_TRUE(rect.contains({4, 4, 1, 1}));
+
+	// Overlap without strict containment
+	EXPECT_FALSE(rect.contains({0, 0, 2, 2}));
+	EXPECT_FALSE(rect.contains({4, 0, 2, 2}));
+	EXPECT_FALSE(rect.contains({0, 4, 2, 2}));
+	EXPECT_FALSE(rect.contains({4, 4, 2, 2}));
+
+	// Overlap with reverse containment
+	EXPECT_FALSE(rect.contains({0, 0, 6, 6}));
+
+	// Non-overlap, touching
+	EXPECT_FALSE(rect.contains({0, 0, 1, 1}));
+	EXPECT_FALSE(rect.contains({5, 0, 1, 1}));
+	EXPECT_FALSE(rect.contains({0, 5, 1, 1}));
+	EXPECT_FALSE(rect.contains({5, 5, 1, 1}));
+
+	// Non-overlap, not touching
+	EXPECT_FALSE(rect.contains({-1, -1, 1, 1}));
+	EXPECT_FALSE(rect.contains({-1, 6, 1, 1}));
+	EXPECT_FALSE(rect.contains({6, -1, 1, 1}));
+	EXPECT_FALSE(rect.contains({6, 6, 1, 1}));
 }
 
 TEST(Rectangle, overlaps) {

@@ -189,18 +189,8 @@ namespace
 		{
 			if (node->value() == "action")
 			{
-
-				std::string actionName;
-				const auto* attribute = node->firstAttribute();
-				while (attribute)
-				{
-					if (attribute->name() == "name")
-					{
-						actionName = attribute->value();
-					}
-
-					attribute = attribute->next();
-				}
+				const auto dictionary = attributesToDictionary(*node);
+				const auto actionName = dictionary.get("name");
 
 				if (actionName.empty())
 				{

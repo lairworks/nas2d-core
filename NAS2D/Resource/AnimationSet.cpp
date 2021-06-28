@@ -185,15 +185,13 @@ namespace
 	{
 		std::map<std::string, std::vector<AnimationSet::Frame>> actions;
 
-		for (const auto* node = element->iterateChildren(nullptr);
-			node != nullptr;
-			node = element->iterateChildren(node))
+		for (const auto* node = element->firstChildElement(); node; node = node->nextSiblingElement())
 		{
-			if (toLowercase(node->value()) == "action" && node->toElement())
+			if (toLowercase(node->value()) == "action")
 			{
 
 				std::string actionName;
-				const auto* attribute = node->toElement()->firstAttribute();
+				const auto* attribute = node->firstAttribute();
 				while (attribute)
 				{
 					if (toLowercase(attribute->name()) == "name")

@@ -24,31 +24,6 @@ namespace NAS2D {
 
 
 		/**
-		 * Thrown when an Image resource contains an invalid pixel buffer.
-		 */
-		class image_bad_copy : public std::runtime_error { public: image_bad_copy(); };
-
-
-		/**
-		 * Thrown when an Image resource contains an invalid pixel buffer.
-		 */
-		class image_bad_data : public std::runtime_error { public: image_bad_data(); };
-
-
-		/**
-		 * Thrown when an Image resource contains no data in its pixel buffer.
-		 */
-		class image_null_data : public std::runtime_error { public: image_null_data(); };
-
-
-		/**
-		 * Thrown when attempting to load or perform operations on an image file in
-		 * an 8-bit or 16-bit format. See Image for further details.
-		 */
-		class image_unsupported_bit_depth : public std::runtime_error { public: image_unsupported_bit_depth(); };
-
-
-		/**
 		 * Thrown when a derived Mixer type is unable to initialize itself.
 		 */
 		class mixer_backend_init_failure : public std::runtime_error { public: mixer_backend_init_failure(const std::string& description); mixer_backend_init_failure(); };

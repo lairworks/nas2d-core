@@ -133,14 +133,12 @@ namespace
 	{
 		std::map<std::string, std::string> imageSheetMap;
 
-		for (const auto* node = element->iterateChildren(nullptr);
-			node != nullptr;
-			node = element->iterateChildren(node))
+		for (const auto* node = element->firstChildElement(); node; node = node->nextSiblingElement())
 		{
-			if (node->value() == "imagesheet" && node->toElement())
+			if (node->value() == "imagesheet")
 			{
 				std::string id, src;
-				const auto* attribute = node->toElement()->firstAttribute();
+				const auto* attribute = node->firstAttribute();
 				while (attribute)
 				{
 					if (toLowercase(attribute->name()) == "id") { id = attribute->value(); }

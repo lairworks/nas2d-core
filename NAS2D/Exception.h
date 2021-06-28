@@ -24,12 +24,6 @@ namespace NAS2D {
 
 
 		/**
-		 * Thrown when a derived Mixer type is unable to initialize itself.
-		 */
-		class mixer_backend_init_failure : public std::runtime_error { public: mixer_backend_init_failure(const std::string& description); mixer_backend_init_failure(); };
-
-
-		/**
 		 * Thrown when the RendererOpenGL determines that no GLSL shading language is available.
 		 */
 		class renderer_no_glsl : public std::runtime_error { public: renderer_no_glsl(); };

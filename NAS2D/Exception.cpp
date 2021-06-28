@@ -16,14 +16,6 @@ using namespace NAS2D;
 using namespace NAS2D::Exception;
 
 
-mixer_backend_init_failure::mixer_backend_init_failure() : runtime_error("Failure initializing back end audio library.")
-{}
-
-
-mixer_backend_init_failure::mixer_backend_init_failure(const std::string& description) : runtime_error("Failure initializing back end audio library: " + description)
-{}
-
-
 renderer_no_glsl::renderer_no_glsl() : runtime_error("Graphics driver reports no GLSL support.")
 {}
 

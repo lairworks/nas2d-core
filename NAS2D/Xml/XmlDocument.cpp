@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -31,10 +31,6 @@ XmlDocument::XmlDocument(const std::string& documentName) :
 	clearError();
 }
 
-
-/**
- * \param copy XmlDocument to copy.
- */
 XmlDocument::XmlDocument(const XmlDocument& copy) :
 	XmlNode(XmlNode::NodeType::XML_DOCUMENT)
 {
@@ -86,10 +82,6 @@ void XmlDocument::write(std::string& buf, int depth) const
 	}
 }
 
-
-/**
- * Walk the XML tree visiting this node and all of its children.
- */
 bool XmlDocument::accept(void* visitor) const
 {
 	if (static_cast<XmlVisitor*>(visitor)->visitEnter(*this))
@@ -131,40 +123,21 @@ bool XmlDocument::error() const
 	return _error;
 }
 
-
-/**
- * Get the root element -- the only top level element -- of the document. In well formed XML,
- * there should only be one. TinyXml is tolerant of multiple elements at the document level.
- */
 const XmlElement* XmlDocument::rootElement() const
 {
 	return firstChildElement();
 }
 
-
-/**
- * Get the root element -- the only top level element -- of the document. In well formed XML,
- * there should only be one. TinyXml is tolerant of multiple elements at the document level.
- */
 XmlElement* XmlDocument::rootElement()
 {
 	return firstChildElement();
 }
 
-
-/**
- * Gets the error descrition.
- */
 const std::string& XmlDocument::errorDesc() const
 {
 	return _errorDesc;
 }
 
-
-/**
- * Generally, you probably want the error string ( ErrorDesc() ). But if you
- * prefer the ErrorId, this function will fetch it.
- */
 XmlBase::XmlErrorCode XmlDocument::errorId() const
 {
 	return _errorId;
@@ -176,8 +149,6 @@ XmlBase::XmlErrorCode XmlDocument::errorId() const
  * row is row 1. A value of 0 means the row and column wasn't applicable (memory errors, for
  * example, have no row/column) or the parser lost the error. (An error in the error
  * reporting, in that case.)
- *
- * @sa SetTabSize, Row, Column
  */
 int XmlDocument::errorRow() const
 {

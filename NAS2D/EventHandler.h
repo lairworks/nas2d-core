@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 #pragma once
 
@@ -20,16 +20,10 @@ namespace NAS2D {
 #define SCANCODE_MASK (1<<30)
 #define SCANCODE_TO_KEYCODE(X) (X | SCANCODE_MASK)
 
-
-/**
- * Handles and dispatches low-level events.
- */
 class EventHandler
 {
 public:
-	/**
-	* Key Modifiers
-	*/
+
 	enum class KeyModifier : uint16_t
 	{
 		None = 0x0000,
@@ -51,10 +45,6 @@ public:
 		Reserved = 0x8000
 	};
 
-
-		/**
-		* Keyboard scan codes.
-		*/
 	enum class KeyCode : uint32_t
 	{
 		KEY_UNKNOWN = 0,
@@ -98,7 +88,6 @@ public:
 		KEY_QUESTION = '?',
 		KEY_AT = '@',
 
-		// Special Symbols
 		KEY_LEFTBRACKET = '[',
 		KEY_BACKSLASH = '\\',
 		KEY_RIGHTBRACKET = ']',
@@ -133,7 +122,6 @@ public:
 		KEY_y = 'y',
 		KEY_z = 'z',
 
-		// Numeric Keypad
 		KEY_KP1 = SCANCODE_TO_KEYCODE(89),
 		KEY_KP2 = SCANCODE_TO_KEYCODE(90),
 		KEY_KP3 = SCANCODE_TO_KEYCODE(91),
@@ -153,7 +141,6 @@ public:
 		KEY_KP_EQUALS = SCANCODE_TO_KEYCODE(103),
 		KEY_KP_COMMA = SCANCODE_TO_KEYCODE(133),
 
-		// Arrows/Home/End
 		KEY_UP = SCANCODE_TO_KEYCODE(82),
 		KEY_DOWN = SCANCODE_TO_KEYCODE(81),
 		KEY_RIGHT = SCANCODE_TO_KEYCODE(79),
@@ -166,7 +153,6 @@ public:
 		KEY_PAGEUP = SCANCODE_TO_KEYCODE(75),
 		KEY_PAGEDOWN = SCANCODE_TO_KEYCODE(78),
 
-		// Function Keys
 		KEY_F1 = SCANCODE_TO_KEYCODE(58),
 		KEY_F2 = SCANCODE_TO_KEYCODE(59),
 		KEY_F3 = SCANCODE_TO_KEYCODE(60),
@@ -192,7 +178,6 @@ public:
 		KEY_F23 = SCANCODE_TO_KEYCODE(114),
 		KEY_F24 = SCANCODE_TO_KEYCODE(115),
 
-		// Key State Modifiers
 		KEY_NUMLOCK = SCANCODE_TO_KEYCODE(83),
 		KEY_CAPSLOCK = SCANCODE_TO_KEYCODE(57),
 		KEY_SCROLLOCK = SCANCODE_TO_KEYCODE(71),
@@ -206,7 +191,6 @@ public:
 		KEY_LGUI = SCANCODE_TO_KEYCODE(227),
 		KEY_MODE = SCANCODE_TO_KEYCODE(257),
 
-		// Miscellaneous function keys
 		KEY_HELP = SCANCODE_TO_KEYCODE(117),
 		KEY_PRINTSCREEN = SCANCODE_TO_KEYCODE(70),
 		KEY_ALTERASE = SCANCODE_TO_KEYCODE(153),
@@ -216,7 +200,6 @@ public:
 		KEY_POWER = SCANCODE_TO_KEYCODE(102),
 		KEY_UNDO = SCANCODE_TO_KEYCODE(122),
 
-		// Audio Control
 		KEY_MUTE = SCANCODE_TO_KEYCODE(127),
 		KEY_VOLUME_UP = SCANCODE_TO_KEYCODE(128),
 		KEY_VOLUME_DOWN = SCANCODE_TO_KEYCODE(129),
@@ -226,13 +209,9 @@ public:
 		KEY_AUDIO_PLAY = SCANCODE_TO_KEYCODE(261),
 		KEY_AUDIO_MUTE = SCANCODE_TO_KEYCODE(262),
 
-		// Additional Keys here
-		KEY_LAST
+		KEY_LAST /* Internal use only */
 	};
 
-	/**
-	* Mouse button identifiers.
-	*/
 	enum class MouseButton
 	{
 		None,

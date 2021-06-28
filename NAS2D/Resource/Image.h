@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 #pragma once
 
@@ -23,18 +23,6 @@ struct SDL_Surface;
 
 namespace NAS2D {
 
-/**
- * Image Class
- *
- * Provides a high level interface for image files. Can load the following formats:
- * - BMP
- * - JPEG
- * - PCX
- * - PNG
- * - TGA
- * - TIFF
- * - WEBP
- */
 class Image
 {
 public:
@@ -58,7 +46,8 @@ protected:
 	unsigned int frameBufferObjectId() const;
 
 private:
-	std::string mResourceName; /**< File path or internal identifier. */
+	//TODO: Rename filePath, change type to std::filesystem::path
+	std::string mResourceName;
 	SDL_Surface* mSurface{nullptr};
 	unsigned int mTextureId{0u};
 	mutable unsigned int mFrameBufferObjectId{0u};

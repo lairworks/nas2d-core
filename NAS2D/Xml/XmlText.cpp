@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -83,10 +83,6 @@ bool XmlText::blank() const
 	return true;
 }
 
-
-/**
- * Walk the XML tree visiting this node and all of its children.
- */
 bool XmlText::accept(void* visitor) const
 {
 	return static_cast<XmlVisitor*>(visitor)->visit(*this);

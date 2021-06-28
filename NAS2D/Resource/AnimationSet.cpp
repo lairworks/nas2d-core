@@ -1,4 +1,12 @@
-
+// ==================================================================================
+// = NAS2D
+// = Copyright © 2008 - 2020 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software under the terms of the zlib license.
+// =
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
+// ==================================================================================
 #include "AnimationSet.h"
 
 #include "ResourceCache.h"
@@ -20,7 +28,6 @@ namespace {
 	ImageCache animationImageCache;
 
 
-	// Adds a row tag to the end of messages.
 	std::string endTag(int row)
 	{
 		return " (Row: " + std::to_string(row) + ")";
@@ -65,11 +72,6 @@ const std::vector<AnimationSet::Frame>& AnimationSet::frames(const std::string& 
 
 namespace {
 
-/**
- * Parses a Sprite XML Definition File.
- *
- * \param filePath	File path of the sprite XML definition file.
- */
 AnimationSet processXml(std::string filePath, ImageCache& imageCache)
 {
 	try
@@ -85,14 +87,12 @@ AnimationSet processXml(std::string filePath, ImageCache& imageCache)
 			throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 		}
 
-		// Find the Sprite node.
 		const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
 		if (!xmlRootElement)
 		{
 			throw std::runtime_error("Sprite file does not contain required <sprite> tag");
 		}
 
-		// Get the Sprite version.
 		const auto* version = xmlRootElement->firstAttribute();
 		if (!version || version->value().empty())
 		{
@@ -236,6 +236,8 @@ std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::
 			throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow));
 		}
 
+		//TOOD: These don't change.
+		//Consider const-initializing with Immediately Invoked Initalizing Lambdas?
 		std::string sheetId;
 		int delay = 0;
 		int x = 0, y = 0;
@@ -271,22 +273,18 @@ std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::
 		}
 
 		const auto& image = imageCache.load(iterator->second);
-		// X-Coordinate
 		if (x < 0 || x > image.size().x)
 		{
 			throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow));
 		}
-		// Y-Coordinate
 		if (y < 0 || y > image.size().y)
 		{
 			throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow));
 		}
-		// Width
 		if (width <= 0 || width > image.size().x - x)
 		{
 			throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow));
 		}
-		// Height
 		if (height <= 0 || height > image.size().y - y)
 		{
 			throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow));

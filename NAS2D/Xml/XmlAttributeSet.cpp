@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -24,10 +24,6 @@ XmlAttributeSet::XmlAttributeSet()
 XmlAttributeSet::~XmlAttributeSet()
 {}
 
-
-/**
- * Adds an attribute to the set.
- */
 void XmlAttributeSet::add(XmlAttribute* attribute)
 {
 	attribute->_next = &sentinel;
@@ -37,10 +33,6 @@ void XmlAttributeSet::add(XmlAttribute* attribute)
 	sentinel._prev = attribute;
 }
 
-
-/**
- * Removes an attribute from the set.
- */
 void XmlAttributeSet::remove(XmlAttribute* attribute)
 {
 	XmlAttribute* node;
@@ -56,7 +48,6 @@ void XmlAttributeSet::remove(XmlAttribute* attribute)
 			return;
 		}
 	}
-	//assert(0); // we tried to remove a non-linked attribute.
 }
 
 

@@ -7,7 +7,6 @@
 // =
 // = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #include "Version.h"
 
 #include <sstream>

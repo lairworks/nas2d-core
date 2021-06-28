@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -18,10 +18,6 @@
 namespace NAS2D {
 namespace Xml {
 
-/**
- * An XmlAttribute is a name-value pair. Elements have an arbitrary number of attributes,
- * each with a unique name.
- */
 class XmlAttribute : public XmlBase
 {
 public:
@@ -64,27 +60,23 @@ public:
 
 	bool operator==(const std::string& rhs) const { return rhs == _name; }
 
-	/**
-	 * Attribute parsing starts: first letter of the name
-	 * returns: the next char after the value end quote
-	 */
 	const char* parse(const char* p, void* data) override;
 
 	void write(std::string& buf, int depth) const override;
 
 protected:
 	friend class XmlElement;
-	// Set the document pointer so the attribute can report errors.
+
 	void document(XmlDocument* doc) { _document = doc; }
 
 private:
 	friend class XmlAttributeSet;
 
-	XmlDocument* _document; /**< Comment Me. */
-	std::string _name; /**< Comment Me. */
-	std::string _value; /**< Comment Me. */
-	XmlAttribute* _prev; /**< Comment Me. */
-	XmlAttribute* _next; /**< Comment Me. */
+	XmlDocument* _document;
+	std::string _name;
+	std::string _value;
+	XmlAttribute* _prev;
+	XmlAttribute* _next;
 };
 
 } // namespace Xml

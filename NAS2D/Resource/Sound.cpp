@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #include "Sound.h"
 
 #include "../Filesystem.h"
@@ -22,9 +21,6 @@
 
 using namespace NAS2D;
 
-/**
- * \param	filePath	File path of the sound file to load.
- */
 Sound::Sound(const std::string& filePath) :
 	mResourceName{filePath}
 {
@@ -47,10 +43,6 @@ Sound::~Sound()
 	Mix_FreeChunk(mMixChunk);
 }
 
-
-/**
- * Gets a pointer to sound buffer.
- */
 Mix_Chunk* Sound::sound() const
 {
 	return mMixChunk;

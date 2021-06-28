@@ -1,4 +1,12 @@
-
+// ==================================================================================
+// = NAS2D
+// = Copyright © 2008 - 2020 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software under the terms of the zlib license.
+// =
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
+// ==================================================================================
 #include "Fade.h"
 #include "Renderer.h"
 #include "Rectangle.h"
@@ -20,15 +28,12 @@ SignalSource<>& Fade::fadeComplete()
 }
 
 
-// Fade in from fadeColor
 void Fade::fadeIn(unsigned int durationInMilliseconds)
 {
 	setDuration(durationInMilliseconds);
 	mDirection = FadeDirection::In;
 }
 
-
-// Fade out to fadeColor
 void Fade::fadeOut(unsigned int durationInMilliseconds)
 {
 	setDuration(durationInMilliseconds);

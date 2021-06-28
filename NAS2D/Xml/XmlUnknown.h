@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -16,13 +16,6 @@
 namespace NAS2D {
 namespace Xml {
 
-/**
- * Any tag that's unrecogmized is saved as an unknown. It is a tag of text,
- * but should not be modified. It will be written back to the XML, unchanged,
- * when the file is saved.
- *
- * Declarations and DTD tags get thrown into XmlUnknown's.
- */
 class XmlUnknown : public XmlNode
 {
 public:
@@ -34,9 +27,6 @@ public:
 
 	XmlNode* clone() const override;
 
-	/**
-	 * Print the Unknown to a buffer.
-	 */
 	void write(std::string& buf, int depth) const override;
 
 	const char* parse(const char* p, void* data) override;
@@ -44,9 +34,6 @@ public:
 	const XmlUnknown* toUnknown() const override { return this; }
 	XmlUnknown* toUnknown() override { return this; }
 
-	/**
-	 * Walk the XML tree visiting this node and all of its children.
-	 */
 	bool accept(void* visitor) const override;
 
 protected:

@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -17,20 +17,9 @@
 namespace NAS2D {
 namespace Xml {
 
-/**
- * The parent class for everything in the DOM (Except for attributes).
- *
- * Nodes have siblings, a parent, and children. A node can be in a document, or stand
- * on its own. The type of a XmlNode can be queried, and it can be cast to its more
- * defined type.
- */
 class XmlNode : public XmlBase
 {
 public:
-	/**
-	 * The types of XML nodes supported by TinyXml. (All the unsupported
-	 * types are picked up by UNKNOWN.)
-	 */
 	enum class NodeType
 	{
 		XML_DOCUMENT,
@@ -109,40 +98,21 @@ public:
 	const XmlDocument* document() const;
 	XmlDocument* document();
 
-	/// Cast the XmlNode to a more derived type.
+
 	virtual const XmlDocument* toDocument() const { return nullptr; }
-	/// Cast the XmlNode to a more derived type.
 	virtual const XmlElement* toElement() const { return nullptr; }
-	/// Cast the XmlNode to a more derived type.
 	virtual const XmlComment* toComment() const { return nullptr; }
-	/// Cast the XmlNode to a more derived type.
 	virtual const XmlUnknown* toUnknown() const { return nullptr; }
-	/// Cast the XmlNode to a more derived type.
 	virtual const XmlText* toText() const { return nullptr; }
 
-	/// Cast the XmlNode to a more derived type.
 	virtual XmlDocument* toDocument() { return nullptr; }
-	/// Cast the XmlNode to a more derived type.
 	virtual XmlElement* toElement() { return nullptr; }
-	/// Cast the XmlNode to a more derived type.
 	virtual XmlComment* toComment() { return nullptr; }
-	/// Cast the XmlNode to a more derived type.
 	virtual XmlUnknown* toUnknown() { return nullptr; }
-	/// Cast the XmlNode to a more derived type.
 	virtual XmlText* toText() { return nullptr; }
 
-	/**
-	 * Create an exact duplicate of this node and return it. The memory must be deleted by the caller.
-	 */
 	virtual XmlNode* clone() const = 0;
-
-	/**
-	 * Accept a hierchical visit the nodes in the TinyXML DOM. Every node in the  XML tree will be
-	 * conditionally visited and the host will be called back via the TiXmlVisitor interface.
-	 */
 	virtual bool accept(void* visitor) const = 0;
-
-	// The real work of the input operator.
 	virtual void streamIn(std::istream& in, std::string& tag) = 0;
 
 protected:
@@ -151,16 +121,16 @@ protected:
 	void copyTo(XmlNode* target) const;
 	XmlNode* identify(const char* start);
 
-	XmlNode* _parent; /**< Parent of the XmlNode. */
-	NodeType _type; /**< Type of the XmlNode. */
+	XmlNode* _parent;
+	NodeType _type;
 
-	XmlNode* _firstChild; /**< First child of the XmlNode. */
-	XmlNode* _lastChild; /**< Last child of the XmlNode. */
+	XmlNode* _firstChild;
+	XmlNode* _lastChild;
 
-	std::string _value; /**< Value of the XmlNode. */
+	std::string _value;
 
-	XmlNode* _prev; /**< Previous XmlNode. */
-	XmlNode* _next; /**< Next XmlNode. */
+	XmlNode* _prev;
+	XmlNode* _next;
 
 private:
 	friend class XmlDocument;

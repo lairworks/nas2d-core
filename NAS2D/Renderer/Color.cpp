@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #include "Color.h"
 
 using namespace NAS2D;
@@ -36,13 +35,6 @@ const Color Color::Yellow{255, 255, 0};
 const Color Color::Normal{255, 255, 255};
 const Color Color::NormalZ{128, 128, 255};
 const Color Color::NoAlpha{0, 0, 0, 0};
-
-
-
-// ==================================================================================
-// = Color Implementation
-// ==================================================================================
-
 
 bool Color::operator==(Color other) const
 {

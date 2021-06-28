@@ -19,26 +19,12 @@
 
 namespace NAS2D {
 
-/**
- * Converts a string to lowercase.
- *
- * \param str	Source string.
- *
- * \return	Returns the converted string.
- */
 std::string toLowercase(std::string str)
 {
 	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::tolower(c)); });
 	return str;
 }
 
-/**
- * Converts a string to uppercase.
- *
- * \param str	Source string.
- *
- * \return	Returns the converted string.
- */
 std::string toUppercase(std::string str)
 {
 	std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::toupper(c)); });

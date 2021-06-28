@@ -1,3 +1,12 @@
+// ==================================================================================
+// = NAS2D
+// = Copyright © 2008 - 2020 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software under the terms of the zlib license.
+// =
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
+// ==================================================================================
 #pragma once
 
 #include "XmlNode.h"
@@ -5,9 +14,6 @@
 namespace NAS2D {
 namespace Xml {
 
-/**
- * Always the top level node. A document binds together all the XML pieces.
- */
 class XmlDocument : public XmlNode
 {
 public:

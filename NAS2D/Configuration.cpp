@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #include "Configuration.h"
 #include "ContainerUtils.h"
 #include "ParserHelper.h"
@@ -27,25 +26,12 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 {
 }
 
-
-/**
- * Reads a given XML configuration file.
- *
- * \param fileData	Name of an XML Configuration file to be read.
- */
 void Configuration::loadData(const std::string& fileData)
 {
-	// Start parsing through the Config.xml file.
 	mLoadedSettings = parseXmlFileData<decltype(mLoadedSettings)>(fileData, "configuration");
 	mSettings = mergeByKey(mDefaults, mLoadedSettings);
 }
 
-
-/**
- * Loads a configuration file.
- *
- * \param	filePath	A string indicating the file to load and process for configuration.
- */
 void Configuration::load(const std::string& filePath)
 {
 	std::cout << "Initializing Configuration... ";
@@ -57,7 +43,6 @@ void Configuration::load(const std::string& filePath)
 	else
 	{
 		try {
-			// Read in the Config File.
 			auto xmlFile = Utility<Filesystem>::get().open(filePath);
 			loadData(xmlFile.raw_bytes());
 			std::cout << "done." << std::endl;
@@ -68,19 +53,11 @@ void Configuration::load(const std::string& filePath)
 	}
 }
 
-
-/**
- * Saves the Configuration to an XML string
- */
 std::string Configuration::saveData() const
 {
 	return formatXmlData(mSettings, "configuration", "Automatically generated Configuration file.");
 }
 
-
-/**
- * Saves the Configuration to an XML file.
- */
 void Configuration::save(const std::string& filePath) const
 {
 	try

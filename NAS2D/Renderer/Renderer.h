@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 #include "Color.h"
@@ -28,13 +27,6 @@ class Font;
 class Image;
 template <typename BaseType> struct Rectangle;
 
-
-/**
- * Renderer base class.
- *
- * Provides a standard Renderer interface. The base Renderer can be used
- * but will act as a NULL interface.
- */
 class Renderer
 {
 public:
@@ -72,25 +64,18 @@ public:
 	virtual void drawBoxFilled(const Rectangle<float>& rect, Color color = Color::White) = 0;
 	virtual void drawCircle(Point<float> position, float radius, Color color, int num_segments = 10, Vector<float> scale = Vector{1.0f, 1.0f}) = 0;
 
-	/**
-	 * Draws a rectangular area with a color gradient.
-	 *
-	 * Each point of the rectangular area can be given a different color value to
-	 * produce a variety of effects. The vertex orders are as follows:
-	 *
-	 * 1-----4
-	 * |     |
-	 * |     |
-	 * 2-----3
-	 */
+	//TODO: Rename color variables: topLeft, bottomLeft, bottomRight, topRight
 	virtual void drawGradient(const Rectangle<float>& rect, Color c1, Color c2, Color c3, Color c4) = 0;
 
 	virtual void drawText(const Font& font, std::string_view text, Point<float> position, Color color = Color::White) = 0;
 	void drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor);
 
 	void fadeColor(Color color);
+	//FIXME: Inconsistent name with formal arguments in implementation file.
+	//TODO: Rename to delayMs?
 	void fadeIn(float delayTime);
 	void fadeOut(float delayTime);
+
 	bool isFading() const;
 	bool isFaded() const;
 	SignalSource<>& fadeComplete();
@@ -108,11 +93,6 @@ public:
 
 	Point<int> center() const;
 
-	/**
-	 * Sets a rectangular area of the screen outside of which nothing is drawn.
-	 *
-	 * \see clipRectClear()
-	 */
 	virtual void clipRect(const Rectangle<float>& rect) = 0;
 	virtual void clipRectClear() = 0;
 
@@ -133,7 +113,7 @@ protected:
 
 	void driverName(const std::string& name);
 
-	Vector<int> mResolution{1600,900}; /**< Screen resolution. Reasonable default in 2019*/
+	Vector<int> mResolution{1600,900};
 
 private:
 	enum class FadeType
@@ -143,12 +123,12 @@ private:
 		Out = 1
 	};
 
-	std::string mDriverName{"NULL Renderer"}; /**< OS Driver name */
-	std::string mTitle{"Default Application"}; /**< Title to use for the application. */
+	std::string mDriverName{"NULL Renderer"};
+	std::string mTitle{"Default Application"};
 
-	Color mFadeColor{0,0,0,255}; /**< Fade Color. */
-	float mFadeStep{0.0f}; /**< Amount of fading to do per milisecond. */
-	float mCurrentFade{0.0f}; /**< Current fade amount. */
+	Color mFadeColor{0,0,0,255};
+	float mFadeStep{0.0f};
+	float mCurrentFade{0.0f};
 
 	FadeType mCurrentFadeType{FadeType::None};
 	Timer fadeTimer;

@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 #include "AnimationSet.h"
@@ -21,16 +20,10 @@
 
 namespace NAS2D {
 
-/**
- * Sprite resource.
- *
- * The Sprite Class is a self-contained group of Image resources that displays
- * Images at a specified screen coordinate in sequence to display an animation.
- */
 class Sprite
 {
 public:
-	using AnimationCompleteSignal = Signal<>; /**< Signal used when action animations complete. */
+	using AnimationCompleteSignal = Signal<>;
 
 	Sprite(const std::string& filePath, const std::string& initialAction);
 
@@ -49,6 +42,8 @@ public:
 
 	void update(Point<float> position);
 
+	//TODO: Rename argument angleDegrees?
+	//TODO: Rename function rotateDegrees?
 	void rotation(float angle);
 	float rotation() const;
 
@@ -70,8 +65,9 @@ private:
 	Timer mTimer;
 	AnimationCompleteSignal mAnimationCompleteSignal;
 
-	Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
-	float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
+	Color mColor{Color::Normal};
+	//TODO: Rename orientationDegrees?
+	float mRotationAngle{0.0f};
 };
 
 } // namespace

@@ -1,3 +1,12 @@
+// ==================================================================================
+// = NAS2D
+// = Copyright © 2008 - 2020 New Age Software
+// ==================================================================================
+// = NAS2D is distributed under the terms of the zlib license. You are free to copy,
+// = modify and distribute the software under the terms of the zlib license.
+// =
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
+// ==================================================================================
 #pragma once
 
 #include <stdexcept>
@@ -85,12 +94,10 @@ struct Vector {
 		return (x * other.x) + (y * other.y);
 	}
 
-	// Reflect the x-coordinate (flip across Y-axis)
 	constexpr Vector reflectX() const {
 		return {-x, y};
 	}
 
-	// Reflect the y-coordinate (flip across X-axis)
 	constexpr Vector reflectY() const {
 		return {x, -y};
 	}
@@ -113,8 +120,6 @@ struct Vector {
 template <typename BaseType>
 Vector(BaseType, BaseType) -> Vector<BaseType>;
 
-
-// Partial order comparisons
 
 template <typename BaseType>
 bool operator<=(Vector<BaseType> v1, Vector<BaseType> v2) {

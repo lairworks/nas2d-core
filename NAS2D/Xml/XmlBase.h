@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -24,27 +24,6 @@ class XmlElement;
 class XmlText;
 class XmlUnknown;
 
-/**
- * XmlBase is a base class for every class in TinyXml. It does little except to establish
- * that TinyXml classes can be printed and provide some utility functions.
- *
- * In XML, the document and elements can contain other elements and other types of nodes.
- *
- * A Document can contain:
- * \li Element (container or leaf)
- * \li Comment (leaf)
- * \li Unknown (leaf)
- * \li Declaration(leaf)
- *
- * An Element can contain:
- * \li Element (container or leaf)
- * \li Text (leaf)
- * \li Attributes (not on tree)
- * \li Comment (leaf)
- * \li Unknown (leaf)
- *
- * A Decleration contains: Attributes (not on tree)
- */
 class XmlBase
 {
 	friend class XmlNode;
@@ -57,12 +36,6 @@ public:
 	void operator=(const XmlBase& base) = delete;
 	virtual ~XmlBase() = default;
 
-	/**
-	 * Writes the XML entity to a string buffer.
-	 *
-	 * \param	buf		Reference to a \c std::string to write the XML entity to.
-	 * \param	indent	Indentation level.
-	 */
 	virtual void write(std::string& buf, int indent) const = 0;
 
 	static void whitespaceCondensed(bool condense);

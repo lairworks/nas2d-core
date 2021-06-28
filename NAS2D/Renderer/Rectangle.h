@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 #include "Point.h"
@@ -25,7 +24,6 @@ struct Rectangle
 	BaseType width = 0;
 	BaseType height = 0;
 
-	// Factory method
 	constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size) {
 		return {
 			startPoint.x,
@@ -35,7 +33,6 @@ struct Rectangle
 		};
 	}
 
-	// Factory method
 	constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint) {
 		return {
 			startPoint.x,
@@ -121,14 +118,10 @@ struct Rectangle
 		return static_cast<Rectangle<NewBaseType>>(*this);
 	}
 
-	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
-	// Area in interval notation: [x .. x + width), [y .. y + height)
 	constexpr bool contains(const Point<BaseType>& point) const {
 		return startPoint() <= point && point < endPoint();
 	}
 
-	// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
-	// Area in interval notation: [x .. x + width), [y .. y + height)
 	constexpr bool overlaps(const Rectangle& rect) const {
 		return startPoint() < rect.endPoint() && rect.startPoint() < endPoint();
 	}

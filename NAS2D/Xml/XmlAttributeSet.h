@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -16,16 +16,6 @@
 namespace NAS2D {
 namespace Xml {
 
-/**
- * Used to manage a group of attributes.
- *
- * It is only used internally, both by the ELEMENT and the DECLARATION.
- *
- * The set can be changed transparent to the Element and Declaration
- * classes that use it, but NOT transparent to the Attribute
- * which has to implement a next() and previous() method. Which makes
- * it a bit problematic and prevents the use of STL.
- */
 class XmlAttributeSet
 {
 public:
@@ -46,7 +36,7 @@ public:
 	XmlAttribute* findOrCreate(const std::string& _name);
 
 private:
-	XmlAttribute sentinel; /**< Comment me. */
+	XmlAttribute sentinel;
 };
 
 } // namespace Xml

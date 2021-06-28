@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -62,15 +62,6 @@ void XmlElement::clearThis()
 	}
 }
 
-
-/**
- * Gets the value of an attribute matching 'name'.
- *
- * \param name	Name of the attribute to find.
- *
- * \returns The value of the named attribute or an empty string if
- *			the attribute wasn't found.
- */
 std::string XmlElement::attribute(const std::string& name) const
 {
 	const XmlAttribute* node = attributeSet.find(name);
@@ -82,15 +73,6 @@ std::string XmlElement::attribute(const std::string& name) const
 	return "";
 }
 
-
-/**
- * Sets a value to a named attribute.
- *
- * \note	If no named attribute is found, one is created.
- *
- * \param name	Name of the attribute to find.
- * \param i		\c int value to set to the attribute.
- */
 void XmlElement::attribute(const std::string& name, int i)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
@@ -101,15 +83,6 @@ void XmlElement::attribute(const std::string& name, int i)
 	}
 }
 
-
-/**
- * Sets a value to a named attribute.
- *
- * \note	If no named attribute is found, one is created.
- *
- * \param name	Name of the attribute to find.
- * \param d		\c double value to set to the attribute.
- */
 void XmlElement::attribute(const std::string& name, double d)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
@@ -119,15 +92,6 @@ void XmlElement::attribute(const std::string& name, double d)
 	}
 }
 
-
-/**
- * Sets a value to a named attribute.
- *
- * \note	If no named attribute is found, one is created.
- *
- * \param name	Name of the attribute to find.
- * \param s		String value to set to the attribute.
- */
 void XmlElement::attribute(const std::string& name, const std::string& s)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
@@ -137,13 +101,6 @@ void XmlElement::attribute(const std::string& name, const std::string& s)
 	}
 }
 
-
-/**
- * Writes the element to a string buffer.
- *
- * \param buf	String buffer to write to.
- * \param depth	Indent depth to use when writing the element.
- */
 void XmlElement::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; ++i)
@@ -196,11 +153,8 @@ void XmlElement::write(std::string& buf, int depth) const
 
 void XmlElement::copyTo(XmlElement* target) const
 {
-	// superclass:
 	XmlNode::copyTo(target);
 
-	// Element class:
-	// Clone the attributes, then clone the children.
 	const XmlAttribute* attribute = nullptr;
 	for (attribute = attributeSet.first(); attribute; attribute = attribute->next())
 	{
@@ -214,10 +168,6 @@ void XmlElement::copyTo(XmlElement* target) const
 	}
 }
 
-
-/**
- * Walk the XML tree visiting this node and all of its children.
- */
 bool XmlElement::accept(void* visitor) const
 {
 	if (static_cast<XmlVisitor*>(visitor)->visitEnter(*this, attributeSet.first()))
@@ -230,10 +180,6 @@ bool XmlElement::accept(void* visitor) const
 	return static_cast<XmlVisitor*>(visitor)->visitExit(*this);
 }
 
-
-/**
- * Creates a new Element and returns it - the returned element is a copy.
- */
 XmlNode* XmlElement::clone() const
 {
 	XmlElement* clone = new XmlElement(value());
@@ -261,11 +207,6 @@ std::string XmlElement::getText() const
 	return std::string();
 }
 
-/**
- * Deletes an attribute with the given name.
- *
- * \param name	Name of the attribute to delete.
- */
 void XmlElement::removeAttribute(const std::string& name)
 {
 	XmlAttribute* node = attributeSet.find(name);
@@ -276,45 +217,21 @@ void XmlElement::removeAttribute(const std::string& name)
 	}
 }
 
-
-/**
- * Get the first attribute of the XmlElement.
- *
- * \returns Pointer to an XmlAttribute or nullptr if the
- *			element has no attributes.
- */
 const XmlAttribute* XmlElement::firstAttribute() const
 {
 	return attributeSet.first();
 }
 
-
-/**
- * Get the first attribute of the XmlElement.
- *
- * Non-const version of firstAttribute().
- *
- * \returns Pointer to an XmlAttribute or nullptr if the
- *			element has no attributes.
- */
 XmlAttribute* XmlElement::firstAttribute()
 {
 	return attributeSet.first();
 }
 
-
-/**
- * Get the last attribute of the XmlElement.
- */
 const XmlAttribute* XmlElement::lastAttribute() const
 {
 	return attributeSet.last();
 }
 
-
-/**
- * Get the last attribute of the XmlElement.
- */
 XmlAttribute* XmlElement::lastAttribute()
 {
 	return attributeSet.last();

@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -16,12 +16,6 @@ using namespace NAS2D::Xml;
 XmlComment::XmlComment() : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {}
 
-
-/**
- * Constructs an XML Comment with a value.
- *
- * \param	commentValue	Reference to a \c std::string with the value to use for the comment.
- */
 XmlComment::XmlComment(const std::string& commentValue) : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {
 	value(commentValue);
@@ -41,10 +35,6 @@ XmlComment& XmlComment::operator=(const XmlComment& base)
 	return *this;
 }
 
-
-/**
- * \see XmlBase::write()
- */
 void XmlComment::write(std::string& buf, int depth) const
 {
 	for (int i = 0; i < depth; i++)
@@ -55,12 +45,6 @@ void XmlComment::write(std::string& buf, int depth) const
 	buf += "<!--" + _value + "-->";
 }
 
-
-/**
- * Creates a clone of the Comment.
- *
- * \returns	A pointer to an XmlNode.
- */
 XmlNode* XmlComment::clone() const
 {
 	XmlComment* clone = new XmlComment();
@@ -70,10 +54,6 @@ XmlNode* XmlComment::clone() const
 	return clone;
 }
 
-
-/**
- * Walk the XML tree visiting this node and all of its children.
- */
 bool XmlComment::accept(void* visitor) const
 {
 	return static_cast<XmlVisitor*>(visitor)->visit(*this);

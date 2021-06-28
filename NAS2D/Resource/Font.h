@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 #pragma once
 
@@ -46,10 +46,7 @@ public:
 		int advance{0};
 	};
 
-	/**
-	 * Struct containing basic information related to Fonts. Not part of the public
-	 * interface.
-	 */
+	//TODO: Move into private section
 	struct FontInfo
 	{
 		unsigned int textureId{0u};
@@ -61,6 +58,9 @@ public:
 	};
 
 
+	//TODO: It is not obvious that these do totally different things. Consider making them private and creating static factory functions:
+	//static Font Font::CreateFromFont
+	//static Font Font::CreateFromBitmap
 	Font(const std::string& filePath, unsigned int ptSize);
 	explicit Font(const std::string& filePath);
 	Font(const Font& font) = delete;
@@ -83,7 +83,8 @@ public:
 	unsigned int textureId() const;
 
 private:
-	std::string mResourceName; /**< File path */
+	//TODO: Rename filePath, change type to std::filesystem::path
+	std::string mResourceName;
 	FontInfo mFontInfo;
 };
 

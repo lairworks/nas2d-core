@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 #pragma once
 
@@ -17,11 +17,6 @@ struct Mix_Chunk;
 
 namespace NAS2D {
 
-/**
- *  Sound resource.
- *
- *  Represents a Sound.
- */
 class Sound
 {
 public:
@@ -41,7 +36,8 @@ protected:
 	Mix_Chunk* sound() const;
 
 private:
-	std::string mResourceName; /**< File path */
+	//TODO: Rename filePath, change type to std::filesystem::path
+	std::string mResourceName;
 	Mix_Chunk* mMixChunk{nullptr};
 };
 

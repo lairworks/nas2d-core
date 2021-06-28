@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #include "RendererOpenGL.h"
 
 #include "VectorSizeRange.h"
@@ -43,9 +42,6 @@ SDL_Window* underlyingWindow = nullptr;
 
 
 namespace {
-	/**
-	 * Fills a vertex array with quad vertex information.
-	 */
 	constexpr std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect)
 	{
 		const auto p1 = rect.startPoint();
@@ -63,7 +59,6 @@ namespace {
 	}
 
 
-	/** Texture coordinate pairs. Default coordinates encompassing the entire texture. */
 	constexpr std::array<GLfloat, 12> DefaultTextureCoords = rectToQuad({0, 0, 1, 1});
 
 
@@ -104,12 +99,6 @@ void RendererOpenGL::WriteConfigurationOptions(const Options& options)
 	graphics.set("vsync", options.vsync);
 }
 
-
-/**
- * Instantiates a RendererOpenGL object with the title of the application window.
- *
- * \param title	Title of the application window.
- */
 RendererOpenGL::RendererOpenGL(const std::string& title) : RendererOpenGL(title, ReadConfigurationOptions())
 {
 }
@@ -162,11 +151,9 @@ void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster
 {
 	glPushMatrix();
 
-	// Find center point of the image.
 	const auto translate = subImageRect.size().to<float>() / 2;
 	const auto center = raster + translate;
 
-	// Adjust the translation so that images appear where expected.
 	glTranslatef(center.x, center.y, 0.0f);
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
 
@@ -186,12 +173,10 @@ void RendererOpenGL::drawImageRotated(const Image& image, Point<float> position,
 {
 	glPushMatrix();
 
-	// Find center point of the image.
 	const auto halfSize = image.size().to<float>() / 2;
 	const auto scaledHalfSize = halfSize * scale;
 	const auto center = position + halfSize;
 
-	// Adjust the translation so that images appear where expected.
 	glTranslatef(center.x, center.y, 0.0f);
 
 	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
@@ -222,7 +207,6 @@ void RendererOpenGL::drawImageRepeated(const Image& image, const Rectangle<float
 
 	glBindTexture(GL_TEXTURE_2D, image.textureId());
 
-	// Change texture mode to repeat at edges.
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -239,19 +223,6 @@ void RendererOpenGL::drawImageRepeated(const Image& image, const Rectangle<float
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
-
-/**
- * Draws part of a larger texture repeated.
- * 
- * This is a brute force method of doing this. Unfortunately OpenGL doesn't do texture
- * wrapping for only part of a texture, it only does it if geometry area is larger than
- * an entire texture.
- * 
- * There are two possible ways to get much better performance out of this: Use a fragment
- * shader (probably the simplest) or have the Renderer save the texture portion as a new
- * texture and reference it that way (bit of overhead to do a texture lookup and would
- * get unmanagable very quickly.
- */
 void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source)
 {
 	clipRect(destination);
@@ -274,7 +245,6 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 	const auto sourceBoundsInDestination = Rectangle<int>::Create(dstPointInt, sourceSize);
 	const auto destinationBounds = Rectangle<int>::Create(Point{0, 0}, destination.size());
 
-	// Ignore the call if the detination point is outside the bounds of destination image.
 	if (!sourceBoundsInDestination.overlaps(destinationBounds))
 	{
 		return;
@@ -293,7 +263,7 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 	GLuint fbo = destination.frameBufferObjectId();
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destination.textureId(), 0);
-	// Flip the Y axis to keep images drawing correctly.
+
 	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, clipSize.x, -clipSize.y});
 
 	drawTexturedQuad(source.textureId(), vertexArray);
@@ -328,14 +298,11 @@ void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPositi
 	glEnable(GL_TEXTURE_2D);
 }
 
-
-/*
- * The below code originally comes from http://slabode.exofire.net/circle_draw.shtml.
- *
- * Modified to support X/Y scaling to draw an ellipse.
- */
 void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
 {
+	//See http://slabode.exofire.net/circle_draw.shtml
+	//Modified to support drawing ellipsii.
+
 	glDisable(GL_TEXTURE_2D);
 	setColor(color);
 
@@ -348,15 +315,12 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	std::vector<GLfloat> verts;
 	verts.resize(static_cast<std::size_t>(num_segments) * std::size_t{2}); // Two coords per vertex
 
-	// During each iteration of the for loop, two indecies are accessed
-	// so we need to be sure that we step two index places for each loop.
 	for (std::size_t i = 0; i < verts.size(); i += 2)
 	{
 		const auto point = position + offset.skewBy(scale);
 		verts[i] = point.x;
 		verts[i + 1] = point.y;
 
-		// Apply the rotation matrix
 		offset = {cosTheta * offset.x - sinTheta * offset.y, sinTheta * offset.x + cosTheta * offset.y};
 	}
 
@@ -571,9 +535,6 @@ void RendererOpenGL::size(Vector<int> newSize)
 void RendererOpenGL::minimumSize(Vector<int> newSize)
 {
 	SDL_SetWindowMinimumSize(underlyingWindow, newSize.x, newSize.y);
-
-	// Read back the window size, in case it was changed
-	// Window may need to have been enlarged to the minimum size
 	SDL_GetWindowSize(underlyingWindow, &newSize.x, &newSize.y);
 	onResize(newSize);
 }
@@ -610,6 +571,7 @@ void RendererOpenGL::resizeable(bool resizable)
 		return;
 	}
 
+	//TODO: Remove suppression. External Code feature fixes this. 
 	#if defined(_MSC_VER)
 	#pragma warning(suppress: 26812) // C26812 Warns to use enum class (C++), but SDL is a C library
 	#endif
@@ -679,7 +641,8 @@ void RendererOpenGL::initGL()
 	glEnable(GL_LINE_SMOOTH);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-	// Spit out system graphics information.
+	//TODO: Extract to function?
+	//===VVVV
 	std::cout << "\t- OpenGL System Info -" << std::endl;
 
 	driverName(glString(GL_RENDERER));
@@ -689,7 +652,9 @@ void RendererOpenGL::initGL()
 	std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
 	auto glShadingLanguageVersion = glString(GL_SHADING_LANGUAGE_VERSION);
 	std::cout << "\tGLSL Version: " << glShadingLanguageVersion << std::endl;
+	//===/\/\/\
 
+	//TODO: Remove, this literally does nothing.
 	if (glShadingLanguageVersion.empty())
 	{
 		//throw renderer_no_glsl();
@@ -711,7 +676,8 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); /// \todo	Add checks to determine an appropriate depth buffer.
+	//TODO: Add checks to determine an appropriate depth buffer.
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
 	if (vsync) { SDL_GL_SetSwapInterval(1); }
@@ -795,14 +761,8 @@ Vector<int> RendererOpenGL::getWindowClientArea() const noexcept
 	return size;
 }
 
-// ==================================================================================
-// = NON PUBLIC IMPLEMENTATION
-// ==================================================================================
-
 namespace {
-/**
- * Draws a textured rectangle using a vertex and texture coordinate array
- */
+
 void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords)
 {
 	glBindTexture(GL_TEXTURE_2D, textureId);
@@ -811,30 +771,21 @@ void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 6);
 }
 
-
-/**
- * The following code was developed by Chris Tsang and lifted from:
- *
- * http://www.codeproject.com/KB/openGL/gllinedraw.aspx
- *
- * Modified: Removed option for non-alpha blending and general code cleanup.
- *
- * This is drop-in code that may be replaced in the future.
- */
 void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 {
+	/**
+	 * See: http://www.codeproject.com/KB/openGL/gllinedraw.aspx
+	 * Modified: Removed option for non-alpha blending and general code cleanup.
+	 */
 	float Cr = color.red / 255.0f;
 	float Cg = color.green / 255.0f;
 	float Cb = color.blue / 255.0f;
 	float Ca = color.alpha / 255.0f;
 
-	// What are these values for?
 	float t = 0.0f;
 	float R = 0.0f;
 	float f = lineWidth - static_cast<int>(lineWidth);
 
-	// HOLY CRAP magic numbers!
-	//determine parameters t, R
 	if (lineWidth >= 0.0f && lineWidth < 1.0f)
 	{
 		t = 0.05f;
@@ -871,7 +822,6 @@ void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 		t = 2.5f + ff * 0.50f;
 		R = 1.08f;
 	}
-	//printf( "lineWidth=%f, f=%f, C=%.4f\n", lineWidth, f, C);
 
 	//determine angle of the line to horizontal
 	float tx = 0.0f, ty = 0.0f; //core thinkness of a line
@@ -934,7 +884,7 @@ void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 	{
 		p1.x - tx - Rx - cx, p1.y - ty - Ry - cy, //fading edge1
 		p2.x - tx - Rx + cx, p2.y - ty - Ry + cy,
-		p1.x - tx - cx, p1.y - ty - cy,        //core
+		p1.x - tx - cx, p1.y - ty - cy,           //core
 		p2.x - tx + cx, p2.y - ty + cy,
 		p1.x + tx - cx, p1.y + ty - cy,
 		p2.x + tx + cx, p2.y + ty + cy,
@@ -959,7 +909,7 @@ void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
 
 	// Line End Caps
-	if (lineWidth > 3.0f) // <<< Arbitrary number.
+	if (lineWidth > 3.0f)
 	{
 		float line_vertex2[] =
 		{

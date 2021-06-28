@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
@@ -19,11 +19,6 @@
 namespace NAS2D {
 namespace Xml {
 
-/**
- * The XmlElement is a container class. It has a value, the element name, and can
- * contain other elements, text, comments, and unknowns. Elements may also contain
- * an arbitrary number of attributes.
- */
 class XmlElement : public XmlNode
 {
 public:
@@ -48,7 +43,6 @@ public:
 
 	XmlNode* clone() const override;
 
-	// Convenience function for easy access to the text inside an element
 	std::string getText() const;
 
 	void write(std::string& buf, int depth) const override;
@@ -62,7 +56,7 @@ public:
 
 protected:
 	void copyTo(XmlElement* target) const;
-	void clearThis(); // like clear, but initializes 'this' object as well
+	void clearThis();
 	void streamIn(std::istream& in, std::string& tag) override;
 	const char* readValue(const char* in, void* prevData);
 

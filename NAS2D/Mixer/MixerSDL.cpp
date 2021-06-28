@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #include "MixerSDL.h"
 
 #include "../Resource/Sound.h"
@@ -30,13 +29,8 @@ using namespace NAS2D::Exception;
 
 
 namespace {
-	// ==================================================================================
-	// INTEROP WITH SDL2_MIXER
-	// ==================================================================================
-	// Global so it can be accessed without capturing `this`
-	Signal<> musicFinished;
-	// ==================================================================================
 
+	Signal<> musicFinished;
 
 	constexpr int AudioVolumeMin = 0;
 	constexpr int AudioVolumeMax = 128;

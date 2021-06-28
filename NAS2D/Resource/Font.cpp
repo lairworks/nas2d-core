@@ -5,7 +5,7 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 #include "Font.h"
 
@@ -51,7 +51,9 @@ namespace {
 	const int GLYPH_MATRIX_SIZE = 16;
 	const int BITS_32 = 32;
 
+	//TODO: Rename loadFromFont?
 	Font::FontInfo load(const std::string& path, unsigned int ptSize);
+	//TODO: Rename loadFromBitmap?
 	Font::FontInfo loadBitmap(const std::string& path);
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize);
@@ -61,25 +63,13 @@ namespace {
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList);
 }
 
-
-/**
- * Instantiate a Font using a TrueType or OpenType font.
- *
- * \param	filePath	Path to a font file.
- * \param	ptSize		Point size of the font. Defaults to 12pt.
- */
 Font::Font(const std::string& filePath, unsigned int ptSize) :
+	//TODO: Hijacking the filepath is probably a bad idea.
 	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"},
 	mFontInfo{load(filePath, ptSize)}
 {
 }
 
-
-/**
- * Instantiate a Font as a bitmap font.
- *
- * \param	filePath	Path to a font file.
- */
 Font::Font(const std::string& filePath) :
 	mResourceName{filePath},
 	mFontInfo{loadBitmap(filePath)}
@@ -104,12 +94,6 @@ Vector<int> Font::size(std::string_view string) const
 	return {width(string), height()};
 }
 
-
-/**
- * Gets the width in pixels of a string rendered using the Font.
- *
- * \param	string		String to get the width of.
- */
 int Font::width(std::string_view string) const
 {
 	if (string.empty()) { return 0; }
@@ -127,28 +111,16 @@ int Font::width(std::string_view string) const
 	return width;
 }
 
-
-/**
- * Gets the height in pixels of the Font.
- */
 int Font::height() const
 {
 	return mFontInfo.height;
 }
 
-
-/**
- * The maximum pixel ascent of all glyphs in the Font.
- */
 int Font::ascent() const
 {
 	return mFontInfo.ascent;
 }
 
-
-/**
- * Returns the point size of the Font.
- */
 unsigned int Font::ptSize() const
 {
 	return mFontInfo.pointSize;
@@ -168,12 +140,6 @@ unsigned int Font::textureId() const
 
 
 namespace {
-	/**
-	 * Loads a TrueType or OpenType font from a file.
-	 *
-	 * \param	path	Path to the TTF or OTF font file.
-	 * \param	ptSize	Point size to use when loading the font.
-	 */
 	Font::FontInfo load(const std::string& path, unsigned int ptSize)
 	{
 		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
@@ -216,12 +182,6 @@ namespace {
 		return fontInfo;
 	}
 
-
-	/**
-	 * Internal function that loads a bitmap font from an file.
-	 *
-	 * \param	path		Path to the image file.
-	 */
 	Font::FontInfo loadBitmap(const std::string& path)
 	{
 		auto fontBuffer = Utility<Filesystem>::get().open(path);
@@ -268,12 +228,6 @@ namespace {
 		return fontInfo;
 	}
 
-
-	/**
-	 * Generates a glyph map of all ASCII standard characters from 0 - 255.
-	 *
-	 * Internal function used to generate a glyph texture map from an TTF_Font struct.
-	 */
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		fillInTextureCoordinates(glyphMetricsList);
@@ -338,7 +292,6 @@ namespace {
 
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
-		// Build table of character sizes
 		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 		{
 			auto& metrics = glyphMetricsList.emplace_back();

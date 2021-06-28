@@ -5,9 +5,8 @@
 // = NAS2D is distributed under the terms of the zlib license. You are free to copy,
 // = modify and distribute the software under the terms of the zlib license.
 // =
-// = Acknowledgement of your use of NAS2D is appriciated but is not required.
+// = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
-
 #pragma once
 
 #include "../File.h"
@@ -21,9 +20,6 @@ typedef struct _Mix_Music Mix_Music;
 
 namespace NAS2D {
 
-/**
- *  Music resource.
- */
 class Music
 {
 public:
@@ -41,7 +37,8 @@ protected:
 	Mix_Music* music() const;
 
 private:
-	std::string mResourceName; /**< File path */
+	//TODO: Rename filePath, change type to std::filesystem::path
+	std::string mResourceName;
 	const File mBuffer;
 	Mix_Music* mMusic{nullptr};
 };

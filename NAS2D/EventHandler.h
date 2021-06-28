@@ -15,7 +15,8 @@
 #include <string>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	#define SCANCODE_MASK (1<<30)
 	#define SCANCODE_TO_KEYCODE(X) (X | SCANCODE_MASK)

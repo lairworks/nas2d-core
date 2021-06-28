@@ -4,7 +4,8 @@
 #include <utility>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 	Dictionary::Dictionary(std::map<std::string, StringValue> initialEntries) :
 		mDictionary{std::move(initialEntries)}
 	{}

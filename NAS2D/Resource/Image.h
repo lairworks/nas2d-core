@@ -21,7 +21,8 @@
 struct SDL_Surface;
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * Image Class

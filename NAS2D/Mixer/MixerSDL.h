@@ -12,7 +12,8 @@
 
 #include "Mixer.h"
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * SDL Mixer.

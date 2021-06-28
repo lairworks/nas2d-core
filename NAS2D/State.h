@@ -11,7 +11,8 @@
 #pragma once
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * The State class operates within a StateManager as a separate unit of

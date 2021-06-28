@@ -3,7 +3,8 @@
 #include "StringUtils.h"
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 	struct StringValue
 	{
 		std::string value;

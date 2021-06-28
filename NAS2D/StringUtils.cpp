@@ -17,7 +17,8 @@
 #include <sstream>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * Converts a string to lowercase.

@@ -15,7 +15,8 @@
 struct Mix_Chunk;
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 *  Sound resource.

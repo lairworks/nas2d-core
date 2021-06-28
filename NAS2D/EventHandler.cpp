@@ -26,7 +26,8 @@ using namespace NAS2D;
  */
 const int MAX_MESSAGE_PROCESSING = 100;
 
-namespace NAS2D {
+namespace NAS2D
+{
 	EventHandler::KeyModifier& operator|=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept
 	{
 		using underlying = std::underlying_type_t<EventHandler::KeyModifier>;
@@ -856,7 +857,8 @@ void EventHandler::disconnectAll()
 }
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 	/**
 	 * Posts a quit event to the event system.
 	 */

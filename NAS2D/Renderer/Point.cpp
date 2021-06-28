@@ -10,7 +10,8 @@
 
 #include "Point.h"
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 
 	// Explicit template instantiation

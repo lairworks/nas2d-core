@@ -69,7 +69,8 @@ const std::vector<std::string> XML_ERROR_TABLE = {
 };
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 namespace Xml {
 
 // Note that "PutString" hardcodes the same list. This is less flexible

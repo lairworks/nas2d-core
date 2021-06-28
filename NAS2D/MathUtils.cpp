@@ -12,7 +12,8 @@
 #include <stdexcept>
 
 
-namespace NAS2D {
+namespace NAS2D
+{
 
 	/**
 	 * Determines if a given line intersects a given circle.

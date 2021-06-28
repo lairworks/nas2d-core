@@ -16,7 +16,8 @@
 #include "XmlNode.h"
 #include <string>
 
-namespace NAS2D {
+namespace NAS2D
+{
 namespace Xml {
 
 /**

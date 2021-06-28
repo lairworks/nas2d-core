@@ -191,7 +191,7 @@ namespace {
 			throw std::runtime_error("Font file is empty: " + path);
 		}
 
-		TTF_Font *font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 1, static_cast<int>(ptSize));
+		TTF_Font* font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.raw_bytes(), static_cast<int>(fontBuffer.size())), 1, static_cast<int>(ptSize));
 		if (!font)
 		{
 			throw std::runtime_error("Font load function failed: " + std::string{TTF_GetError()});

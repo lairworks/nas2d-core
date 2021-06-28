@@ -35,7 +35,7 @@ namespace NAS2D {
 	 *
 	 * #include <iostream>
 	 *
-	 * int main(int argc, char *argv[])
+	 * int main(int argc, char* argv[])
 	 * {
 	 *	try
 	 *	{

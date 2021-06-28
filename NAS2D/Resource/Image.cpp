@@ -77,12 +77,12 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 {
 	if (buffer == nullptr)
 	{
-		throw image_null_data();
+		throw std::runtime_error("Image construction requires non-nullptr buffer");
 	}
 
 	if (bytesPerPixel != 3 && bytesPerPixel != 4)
 	{
-		throw image_unsupported_bit_depth();
+		throw std::runtime_error("Image bit-depth unsupported with bytesPerPixel: " + std::to_string(bytesPerPixel));
 	}
 
 	++IMAGE_ARBITRARY;
@@ -121,7 +121,7 @@ Color Image::pixelColor(Point<int> point) const
 		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(point.x) + ", " + std::to_string(point.y) + "}");
 	}
 
-	if (!mSurface) { throw image_null_data(); }
+	if (!mSurface) { throw std::runtime_error("Image has no allocated surface"); }
 
 	uint8_t bytesPerPixel = mSurface->format->BytesPerPixel;
 	const auto unsignedPoint = point.to<std::size_t>();
@@ -181,7 +181,7 @@ namespace {
 			}
 			default: // Should never be possible.
 			{
-				throw image_bad_data();
+				throw std::runtime_error("Unknown pixel format with bytesPerPixel: " + std::to_string(bytesPerPixel));
 			}
 		}
 	}
@@ -247,7 +247,7 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 		break;
 
 	default:
-		throw image_unsupported_bit_depth();
+		throw std::runtime_error("Bit-depth unsupported with bytesPerPixel: " + std::to_string(bytesPerPixel));
 	}
 
 	GLuint textureId;

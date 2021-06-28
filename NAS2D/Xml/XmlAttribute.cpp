@@ -30,7 +30,7 @@ XmlAttribute::XmlAttribute() :
  * \param	name	Name of the attribute.
  * \param	value	Value of the attribute.
  */
-XmlAttribute::XmlAttribute(const std::string &name, std::string &value) :
+XmlAttribute::XmlAttribute(const std::string& name, std::string& value) :
 	XmlBase(),
 	_document(nullptr),
 	_name(name),

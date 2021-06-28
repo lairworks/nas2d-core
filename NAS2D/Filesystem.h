@@ -45,7 +45,7 @@ namespace NAS2D {
 		void mountReadWrite(const std::string& path) const;
 		void unmount(const std::string& path) const;
 
-		std::vector<std::string> directoryList(const std::string& dir, const std::string& filter = std::string {}) const;
+		std::vector<std::string> directoryList(const std::string& dir, const std::string& filter = std::string{}) const;
 
 		File open(const std::string& filename) const;
 		void write(const File& file, bool overwrite = true) const;

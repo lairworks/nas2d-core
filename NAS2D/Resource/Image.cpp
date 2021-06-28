@@ -232,7 +232,7 @@ unsigned int generateTexture(SDL_Surface* surface)
 }
 
 
-unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int height)
+unsigned int generateTexture(void* buffer, int bytesPerPixel, int width, int height)
 {
 	GLenum textureFormat = 0;
 	switch (bytesPerPixel)

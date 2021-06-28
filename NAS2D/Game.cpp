@@ -136,7 +136,7 @@ void Game::mount(const std::string& path)
  * \warning	The State object becomes owned by the StateManager. Do not delete
  *			the State.
  */
-void Game::go(State *state)
+void Game::go(State* state)
 {
 	std::cout << "** GAME STATE START **\n\n";
 	std::cout.flush();

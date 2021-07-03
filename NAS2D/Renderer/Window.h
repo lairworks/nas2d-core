@@ -85,6 +85,18 @@ public:
 
 	virtual void SetDimensionsAndPosition(std::pair<int, int> newClientDimensions, std::pair<int, int> newPosition) noexcept = 0;
 
+	/**
+	 * @brief Set the native OS-specific window icon resource.
+	 * @param iconResource: Handle to the icon resource.
+	 * @return 
+	*/
+	virtual void Icon(void* iconResource) noexcept = 0;
+
+	/**
+	 * @brief Get the native OS-specific window icon resource.
+	 * @return void* handle to the native OS-specific window icon resource.
+	*/
+	[[nodiscard]] virtual void* Icon() const noexcept = 0;
 protected:
 private:
 	

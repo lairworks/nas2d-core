@@ -265,6 +265,7 @@
     <ClInclude Include="Renderer\RectangleSkin.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\RendererOpenGL.h" />
+    <ClInclude Include="Renderer\Window.h" />
     <ClInclude Include="Resource\ResourceCache.h" />
     <ClInclude Include="Resource\AnimationSet.h" />
     <ClInclude Include="Resource\Font.h" />

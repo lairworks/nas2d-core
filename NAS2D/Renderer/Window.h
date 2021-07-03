@@ -14,7 +14,7 @@ struct WindowDesc
 {
 	//The client dimensions
 	//Window creation process should automatically add space for borders, menus and title bars
-	std::pair<int, int> dimensions{1600,600};
+	std::pair<int, int> dimensions{1600,900};
 	std::pair<int, int> position{0,0};
 	WindowDisplayMode mode{WindowDisplayMode::Windowed};
 };

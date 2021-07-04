@@ -492,20 +492,20 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 	auto imageData = Utility<Filesystem>::get().read(filePath);
 	if (imageData.size() == 0)
 	{
-		throw std::runtime_error("RendererOpenGL::addCursor(): '" + filePath + "' is empty.");
+		throw std::runtime_error("Cursor file is empty: " + filePath);
 	}
 
 	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageData.c_str(), static_cast<int>(imageData.size())), 1);
 	if (!surface)
 	{
-		throw std::runtime_error(std::string{"RendererOpenGL::addCursor(): "} + SDL_GetError());
+		throw std::runtime_error("Failed to load cursor: " + filePath + " : " + SDL_GetError());
 	}
 
 	SDL_Cursor* cur = SDL_CreateColorCursor(surface, offx, offy);
 	SDL_FreeSurface(surface);
 	if (!cur)
 	{
-		throw std::runtime_error(std::string{"RendererOpenGL::addCursor(): "} + SDL_GetError());
+		throw std::runtime_error("Failed to create color cursor: " + filePath + " : " + SDL_GetError());
 	}
 
 	if (cursors.count(cursorId))

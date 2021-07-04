@@ -221,19 +221,6 @@ void Filesystem::del(const std::string& filename) const
 }
 
 
-/**
- * Opens a file.
- *
- * \param filename	Path of the file to load.
- *
- * \return Returns a File.
- */
-File Filesystem::open(const std::string& filename) const
-{
-	return File{read(filename), filename};
-}
-
-
 std::string Filesystem::read(const std::string& filename) const
 {
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
@@ -306,19 +293,6 @@ bool Filesystem::isDirectory(const std::string& path) const
 bool Filesystem::exists(const std::string& filename) const
 {
 	return PHYSFS_exists(filename.c_str()) != 0;
-}
-
-
-/**
- * Writes a file to disk.
- *
- * \param	file		A reference to a \c const \c File object.
- * \param	overwrite	Flag indicating if a file should be overwritten if it already exists. Default is true.
- */
-void Filesystem::write(const File& file, bool overwrite) const
-{
-	const auto writeFlags = overwrite ? WriteFlags::Overwrite : WriteFlags::NoOverwrite;
-	write(file.filename(), file.bytes(), writeFlags);
 }
 
 

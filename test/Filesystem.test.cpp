@@ -76,6 +76,11 @@ TEST_F(FilesystemTest, open) {
 	EXPECT_EQ("Test data\n", file.bytes());
 }
 
+TEST_F(FilesystemTest, read) {
+	const auto data = fs.read("file.txt");
+	EXPECT_EQ("Test data\n", data);
+}
+
 // Test a few related methods. Some don't test well standalone.
 TEST_F(FilesystemTest, writeReadDeleteExists) {
 	const std::string testFilename = "TestFile.txt";
@@ -89,8 +94,8 @@ TEST_F(FilesystemTest, writeReadDeleteExists) {
 	EXPECT_NO_THROW(fs.write(file));
 	EXPECT_THROW(fs.write(file, false), std::runtime_error);
 
-	const auto fileRead = fs.open(testFilename);
-	EXPECT_EQ(testData, fileRead.bytes());
+	const auto data = fs.read(testFilename);
+	EXPECT_EQ(testData, data);
 
 	EXPECT_NO_THROW(fs.del(testFilename));
 	EXPECT_FALSE(fs.exists(testFilename));

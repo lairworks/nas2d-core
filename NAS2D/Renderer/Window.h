@@ -19,9 +19,7 @@ namespace NAS2D
 
 	struct WindowDesc
 	{
-		//The client dimensions
-		//Window creation process should automatically add space for borders, menus and title bars
-		Vector<int> dimensions{1600, 900};
+		Vector<int> clientDimensions{1600, 900};
 		Point<int> position{0, 0};
 		WindowDisplayMode mode{WindowDisplayMode::Windowed};
 	};

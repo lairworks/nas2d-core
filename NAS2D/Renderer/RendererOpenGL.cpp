@@ -685,8 +685,6 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	onResize(size());
-
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_BLEND);
@@ -696,14 +694,14 @@ void RendererOpenGL::initGL()
 	glEnable(GL_LINE_SMOOTH);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-	driverName(glString(GL_RENDERER));
-
-	dumpGraphicsInfo();
-
 	glEnable(GL_TEXTURE_2D);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	driverName(glString(GL_RENDERER));
+	onResize(size());
+	dumpGraphicsInfo();
 }
 
 

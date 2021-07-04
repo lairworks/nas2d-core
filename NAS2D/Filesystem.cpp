@@ -230,6 +230,12 @@ void Filesystem::del(const std::string& filename) const
  */
 File Filesystem::open(const std::string& filename) const
 {
+	return File{read(filename), filename};
+}
+
+
+std::string Filesystem::read(const std::string& filename) const
+{
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
 	if (!myFile)
 	{
@@ -260,7 +266,7 @@ File Filesystem::open(const std::string& filename) const
 		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
-	return File{std::move(fileBuffer), filename};
+	return fileBuffer;
 }
 
 

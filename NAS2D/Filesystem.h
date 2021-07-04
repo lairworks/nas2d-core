@@ -50,6 +50,9 @@ namespace NAS2D
 
 		File open(const std::string& filename) const;
 		void write(const File& file, bool overwrite = true) const;
+
+		std::string read(const std::string& filename) const;
+
 		void del(const std::string& path) const;
 		bool exists(const std::string& filename) const;
 

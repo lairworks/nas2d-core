@@ -28,13 +28,13 @@ using namespace NAS2D;
 Sound::Sound(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	auto soundFile = Utility<Filesystem>::get().open(mResourceName);
-	if (soundFile.empty())
+	auto data = Utility<Filesystem>::get().read(mResourceName);
+	if (data.empty())
 	{
 		throw std::runtime_error("Sound file is empty: " + mResourceName);
 	}
 
-	mMixChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(soundFile.raw_bytes(), static_cast<int>(soundFile.size())), 1);
+	mMixChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
 	if (!mMixChunk)
 	{
 		throw std::runtime_error("Sound file could not be loaded: " + mResourceName + " : " + std::string{Mix_GetError()});

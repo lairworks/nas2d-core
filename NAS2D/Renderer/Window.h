@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Rectangle.h"
+#include "Point.h"
+#include "Vector.h"
+
 #include <string>
 #include <utility>
 
@@ -17,8 +21,8 @@ namespace NAS2D
 	{
 		//The client dimensions
 		//Window creation process should automatically add space for borders, menus and title bars
-		std::pair<int, int> dimensions{1600,900};
-		std::pair<int, int> position{0,0};
+		Vector<int> dimensions{1600,900};
+		Point<int> position{0,0};
 		WindowDisplayMode mode{WindowDisplayMode::Windowed};
 	};
 
@@ -70,14 +74,14 @@ namespace NAS2D
 		 * @brief Dimensions of the entire window including any border, menus, or title bars.
 		 * @return std::pair<int, int> x/y components of the window dimensions
 		*/
-		[[nodiscard]] virtual std::pair<int, int> dimensions() const noexcept = 0;
+		[[nodiscard]] virtual Vector<int> dimensions() const noexcept = 0;
 
 		/**
 		 * @brief Dimensions of the renderable area of the window not including any borders, menus, or title bars.
 		 * @return std::pair<int, int> x/y components of the client area dimensions
 		*/
-		[[nodiscard]] virtual std::pair<int, int> clientDimensions() const noexcept = 0;
-		virtual void dimensions(std::pair<int, int> newClientDimensions) noexcept = 0;
+		[[nodiscard]] virtual Vector<int> clientDimensions() const noexcept = 0;
+		virtual void dimensions(Vector<int> newClientDimensions) noexcept = 0;
 
 		virtual void title(std::string newTitle) noexcept = 0;
 		[[nodiscard]] virtual std::string title() noexcept = 0;
@@ -85,10 +89,11 @@ namespace NAS2D
 		virtual void displayMode(WindowDisplayMode newDisplayMode) noexcept = 0;
 		[[nodiscard]] virtual WindowDisplayMode displayMode() noexcept = 0;
 
-		[[nodiscard]] virtual std::pair<int, int> position() const noexcept = 0;
-		virtual void position(std::pair<int, int> newPosition) noexcept = 0;
+		[[nodiscard]] virtual Point<int> position() const noexcept = 0;
+		virtual void position(Point<int> newPosition) noexcept = 0;
 
-		virtual void setDimensionsAndPosition(std::pair<int, int> newClientDimensions, std::pair<int, int> newPosition) noexcept = 0;
+		virtual void setPositionAndDimensions(Point<int> newPosition, Vector<int> newClientDimensions) noexcept = 0;
+		virtual void setPositionAndDimensions(Rectangle<int> newPositionAndClientDimensions) noexcept = 0;
 
 		/**
 		 * @brief Set the native OS-specific window icon resource.

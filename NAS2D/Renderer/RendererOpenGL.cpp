@@ -697,11 +697,6 @@ void RendererOpenGL::initGL()
 	auto glShadingLanguageVersion = glString(GL_SHADING_LANGUAGE_VERSION);
 	std::cout << "\tGLSL Version: " << glShadingLanguageVersion << std::endl;
 
-	if (glShadingLanguageVersion.empty())
-	{
-		//throw std::runtime_error("OpenGL shading language not supported");
-	}
-
 	glEnable(GL_TEXTURE_2D);
 
 	glEnableClientState(GL_VERTEX_ARRAY);

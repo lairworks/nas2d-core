@@ -87,7 +87,7 @@ void Configuration::save(const std::string& filePath) const
 {
 	try
 	{
-		Utility<Filesystem>::get().write(File(saveData(), filePath));
+		Utility<Filesystem>::get().write(filePath, saveData());
 	}
 	catch (const std::runtime_error& e)
 	{

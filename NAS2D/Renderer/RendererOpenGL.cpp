@@ -717,8 +717,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 
 	SDL_GL_SetSwapInterval(vsync ? 1 : 0);
 
-	Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
-
+	const Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
 	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resolution.x, resolution.y, sdlFlags);
 
 	if (!underlyingWindow)

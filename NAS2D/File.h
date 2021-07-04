@@ -22,7 +22,7 @@ namespace NAS2D
 	 *
 	 * The File object represents a file as a stream of bytes.
 	 */
-	class File
+	class [[deprecated]] File
 	{
 	public:
 

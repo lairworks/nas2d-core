@@ -107,9 +107,7 @@ namespace NAS2D
 		 * @return void* handle to the native OS-specific window icon resource.
 		*/
 		[[nodiscard]] virtual void* icon() const noexcept = 0;
-	protected:
-	private:
-
+	
 	};
 
 }

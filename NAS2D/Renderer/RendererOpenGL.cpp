@@ -715,8 +715,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); /// \todo	Add checks to determine an appropriate depth buffer.
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
-	if (vsync) { SDL_GL_SetSwapInterval(1); }
-	else { SDL_GL_SetSwapInterval(0); }
+	SDL_GL_SetSwapInterval(vsync ? 1 : 0);
 
 	Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 

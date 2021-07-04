@@ -81,7 +81,7 @@ namespace
 			const auto basePath = filesystem.workingPath(filePath);
 
 			Xml::XmlDocument xmlDoc;
-			xmlDoc.parse(filesystem.open(filePath).raw_bytes());
+			xmlDoc.parse(filesystem.read(filePath).c_str());
 
 			if (xmlDoc.error())
 			{

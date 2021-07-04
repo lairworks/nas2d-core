@@ -10,8 +10,6 @@
 
 #pragma once
 
-#include "../File.h"
-
 #include <string>
 #include <map>
 
@@ -43,7 +41,7 @@ namespace NAS2D
 
 	private:
 		std::string mResourceName; /**< File path */
-		const File mBuffer;
+		const std::string mBuffer;
 		Mix_Music* mMusic{nullptr};
 	};
 

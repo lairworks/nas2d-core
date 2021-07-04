@@ -686,11 +686,10 @@ void RendererOpenGL::initGL()
 	glEnable(GL_LINE_SMOOTH);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-	// Spit out system graphics information.
-	std::cout << "\t- OpenGL System Info -" << std::endl;
-
 	driverName(glString(GL_RENDERER));
 
+	// Spit out system graphics information.
+	std::cout << "\t- OpenGL System Info -" << std::endl;
 	std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
 	std::cout << "\tRenderer: " << driverName() << std::endl;
 	std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;

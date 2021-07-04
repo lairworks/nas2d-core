@@ -243,7 +243,6 @@
     <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Documentation.h" />
     <ClInclude Include="EventHandler.h" />
-    <ClInclude Include="File.h" />
     <ClInclude Include="Filesystem.h" />
     <ClInclude Include="FpsCounter.h" />
     <ClInclude Include="Game.h" />

@@ -554,7 +554,13 @@ Vector<int> RendererOpenGL::size() const
 {
 	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
 	{
-		return desktopResolution;
+		SDL_DisplayMode dm;
+		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+		{
+			throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
+		}
+
+		return {dm.w, dm.h};
 	}
 
 	return mResolution;
@@ -738,14 +744,6 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	initGL();
 
 	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::onResize);
-
-	SDL_DisplayMode dm;
-	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
-	{
-		throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
-	}
-
-	desktopResolution = {dm.w, dm.h};
 }
 
 std::vector<DisplayDesc> RendererOpenGL::getDisplayModes() const

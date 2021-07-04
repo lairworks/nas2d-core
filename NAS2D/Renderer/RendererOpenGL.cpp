@@ -742,7 +742,6 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	SDL_DisplayMode dm;
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
 	{
-		std::cout << "SDL_GetDesktopDisplayMode failed: " << SDL_GetError();
 		throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
 	}
 

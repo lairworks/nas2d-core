@@ -81,6 +81,16 @@ namespace
 		const auto apiResult = glGetString(name);
 		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
 	}
+
+	void dumpGraphicsInfo()
+	{
+		// Spit out system graphics information.
+		std::cout << "\t- OpenGL System Info -" << std::endl;
+		std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
+		std::cout << "\tRenderer: " << glString(GL_RENDERER) << std::endl;
+		std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
+		std::cout << "\tGLSL Version: " << glString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	}
 }
 
 
@@ -688,12 +698,7 @@ void RendererOpenGL::initGL()
 
 	driverName(glString(GL_RENDERER));
 
-	// Spit out system graphics information.
-	std::cout << "\t- OpenGL System Info -" << std::endl;
-	std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
-	std::cout << "\tRenderer: " << glString(GL_RENDERER) << std::endl;
-	std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
-	std::cout << "\tGLSL Version: " << glString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	dumpGraphicsInfo();
 
 	glEnable(GL_TEXTURE_2D);
 

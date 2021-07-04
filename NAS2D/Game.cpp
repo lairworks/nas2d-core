@@ -55,7 +55,31 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	fs.mountSoftFail(fs.basePath() + dataPath);
 	fs.mountReadWrite(fs.prefPath());
 
-	Configuration& cf = Utility<Configuration>::get();
+	Configuration& cf = Utility<Configuration>::init(
+		std::map<std::string, NAS2D::Dictionary>{
+			{
+				"graphics",
+				{{
+					{"screenwidth", 1000},
+					{"screenheight", 700},
+					{"bitdepth", 32},
+					{"fullscreen", false},
+					{"vsync", true}
+				}}
+			},
+			{
+				"audio",
+				{{
+					{"mixer", "SDL"},
+					{"musicvolume", 100},
+					{"sfxvolume", 128},
+					{"channels", 2},
+					{"mixrate", 22050},
+					{"bufferlength", 1024}
+				}}
+			}
+		}
+	);
 	cf.load(configPath);
 
 	try

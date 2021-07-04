@@ -54,8 +54,8 @@ namespace NAS2D
 
 		std::vector<std::string> directoryList(const std::string& dir, const std::string& filter = std::string{}) const;
 
-		File open(const std::string& filename) const;
-		void write(const File& file, bool overwrite = true) const;
+		[[deprecated]] File open(const std::string& filename) const;
+		[[deprecated]] void write(const File& file, bool overwrite = true) const;
 
 		std::string read(const std::string& filename) const;
 		void write(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite) const;

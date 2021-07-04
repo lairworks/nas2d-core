@@ -664,8 +664,6 @@ void RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
 
 void RendererOpenGL::window_icon(const std::string& path)
 {
-	if (!Utility<Filesystem>::get().exists(path)) { return; }
-
 	auto iconData = Utility<Filesystem>::get().read(path);
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(iconData.c_str(), static_cast<int>(iconData.size())), 1);
 	if (!icon)

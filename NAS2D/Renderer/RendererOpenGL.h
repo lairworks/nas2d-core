@@ -110,7 +110,6 @@ namespace NAS2D
 
 
 		SDL_GLContext sdlOglContext; /**< Primary OpenGL render context. */
-		Vector<int> desktopResolution;
 		std::map<int, SDL_Cursor*> cursors;
 	};
 

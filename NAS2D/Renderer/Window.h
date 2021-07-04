@@ -21,8 +21,8 @@ namespace NAS2D
 	{
 		//The client dimensions
 		//Window creation process should automatically add space for borders, menus and title bars
-		Vector<int> dimensions{1600,900};
-		Point<int> position{0,0};
+		Vector<int> dimensions{1600, 900};
+		Point<int> position{0, 0};
 		WindowDisplayMode mode{WindowDisplayMode::Windowed};
 	};
 

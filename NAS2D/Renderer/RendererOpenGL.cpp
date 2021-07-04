@@ -703,7 +703,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 {
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 	{
-		throw std::runtime_error(std::string{"SDL video initialization failed: "} + SDL_GetError());
+		throw std::runtime_error("SDL video initialization failed: " + std::string{SDL_GetError()});
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);

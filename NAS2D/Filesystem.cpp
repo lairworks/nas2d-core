@@ -317,21 +317,27 @@ bool Filesystem::exists(const std::string& filename) const
  */
 void Filesystem::write(const File& file, bool overwrite) const
 {
-	if (!overwrite && exists(file.filename()))
+	write(file.filename(), file.bytes(), overwrite);
+}
+
+
+void Filesystem::write(const std::string& filename, const std::string& data, bool overwrite) const
+{
+	if (!overwrite && exists(filename))
 	{
-		throw std::runtime_error(std::string("File exists: ") + file.filename());
+		throw std::runtime_error(std::string("File exists: ") + filename);
 	}
 
-	PHYSFS_file* myFile = PHYSFS_openWrite(file.filename().c_str());
+	PHYSFS_file* myFile = PHYSFS_openWrite(filename.c_str());
 	if (!myFile)
 	{
-		throw std::runtime_error(std::string("Couldn't open '") + file.filename() + "' for writing: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error(std::string("Couldn't open '") + filename + "' for writing: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
-	if (PHYSFS_writeBytes(myFile, file.bytes().c_str(), static_cast<PHYSFS_uint32>(file.size())) < static_cast<PHYSFS_sint64>(file.size()))
+	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint32>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
 	{
 		closeFile(myFile);
-		throw std::runtime_error(std::string("Error occured while writing to file '") + file.filename() + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error(std::string("Error occured while writing to file '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	closeFile(myFile);

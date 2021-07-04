@@ -27,6 +27,12 @@ namespace NAS2D
 	class Filesystem
 	{
 	public:
+		enum class WriteFlags
+		{
+			NoOverwrite,
+			Overwrite,
+		};
+
 		Filesystem() = delete;
 		Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 		Filesystem(const Filesystem&) = delete;
@@ -52,7 +58,7 @@ namespace NAS2D
 		void write(const File& file, bool overwrite = true) const;
 
 		std::string read(const std::string& filename) const;
-		void write(const std::string& filename, const std::string& data, bool overwrite = true) const;
+		void write(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite) const;
 
 		void del(const std::string& path) const;
 		bool exists(const std::string& filename) const;

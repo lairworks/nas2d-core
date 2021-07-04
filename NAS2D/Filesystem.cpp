@@ -317,13 +317,14 @@ bool Filesystem::exists(const std::string& filename) const
  */
 void Filesystem::write(const File& file, bool overwrite) const
 {
-	write(file.filename(), file.bytes(), overwrite);
+	const auto writeFlags = overwrite ? WriteFlags::Overwrite : WriteFlags::NoOverwrite;
+	write(file.filename(), file.bytes(), writeFlags);
 }
 
 
-void Filesystem::write(const std::string& filename, const std::string& data, bool overwrite) const
+void Filesystem::write(const std::string& filename, const std::string& data, WriteFlags flags) const
 {
-	if (!overwrite && exists(filename))
+	if (flags != WriteFlags::Overwrite && exists(filename))
 	{
 		throw std::runtime_error(std::string("File exists: ") + filename);
 	}

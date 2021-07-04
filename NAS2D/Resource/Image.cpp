@@ -47,13 +47,13 @@ namespace
 Image::Image(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	auto imageFile = Utility<Filesystem>::get().open(mResourceName);
-	if (imageFile.size() == 0)
+	auto data = Utility<Filesystem>::get().read(mResourceName);
+	if (data.size() == 0)
 	{
 		throw std::runtime_error("Image file is empty: " + mResourceName);
 	}
 
-	mSurface = IMG_Load_RW(SDL_RWFromConstMem(imageFile.raw_bytes(), static_cast<int>(imageFile.size())), 1);
+	mSurface = IMG_Load_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
 	if (!mSurface)
 	{
 		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});

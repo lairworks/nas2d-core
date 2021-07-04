@@ -668,7 +668,7 @@ void RendererOpenGL::window_icon(const std::string& path)
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(iconData.c_str(), static_cast<int>(iconData.size())), 1);
 	if (!icon)
 	{
-		throw std::runtime_error(std::string{"RendererOpenGL::window_icon(): "} + SDL_GetError());
+		throw std::runtime_error("Failed to set window icon: " + path + " : " + SDL_GetError());
 	}
 
 	SDL_SetWindowIcon(underlyingWindow, icon);

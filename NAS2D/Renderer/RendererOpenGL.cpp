@@ -742,7 +742,7 @@ std::vector<DisplayDesc> RendererOpenGL::getDisplayModes() const
 	const auto numResolutions = SDL_GetNumDisplayModes(displayIndex);
 	if (numResolutions < 0)
 	{
-		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(displayIndex) + " : " + std::string{SDL_GetError()});
+		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(displayIndex) + " : " + SDL_GetError());
 	}
 
 	std::vector<DisplayDesc> result{};

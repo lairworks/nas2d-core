@@ -91,6 +91,11 @@ namespace
 		std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
 		std::cout << "\tGLSL Version: " << glString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 	}
+
+	bool isAnyWindowFlagSet(Uint32 testFlags)
+	{
+		return (SDL_GetWindowFlags(underlyingWindow) & testFlags) != 0;
+	}
 }
 
 
@@ -559,7 +564,7 @@ void RendererOpenGL::update()
 
 Vector<int> RendererOpenGL::size() const
 {
-	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+	if (isAnyWindowFlagSet(SDL_WINDOW_FULLSCREEN_DESKTOP))
 	{
 		SDL_DisplayMode dm;
 		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
@@ -593,18 +598,19 @@ void RendererOpenGL::minimumSize(Vector<int> newSize)
 }
 
 
-void RendererOpenGL::fullscreen(bool fs, bool maintain)
+void RendererOpenGL::fullscreen(bool fullscreen, bool maintain)
 {
-	if (fs)
+	if (fullscreen)
 	{
-		if (!maintain) { SDL_SetWindowFullscreen(underlyingWindow, SDL_WINDOW_FULLSCREEN_DESKTOP); }
-		else { SDL_SetWindowFullscreen(underlyingWindow, SDL_WINDOW_FULLSCREEN); }
+		const auto windowFlags = maintain ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_FULLSCREEN_DESKTOP;
+		SDL_SetWindowFullscreen(underlyingWindow, windowFlags);
 		SDL_SetWindowResizable(underlyingWindow, SDL_FALSE);
 	}
 	else
 	{
 		SDL_SetWindowFullscreen(underlyingWindow, 0);
-		SDL_SetWindowSize(underlyingWindow, size().x, size().y);
+		const auto windowSize = size();
+		SDL_SetWindowSize(underlyingWindow, windowSize.x, windowSize.y);
 		SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }
@@ -612,8 +618,7 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 
 bool RendererOpenGL::fullscreen() const
 {
-	return ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
-		((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return isAnyWindowFlagSet(SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
@@ -633,7 +638,7 @@ void RendererOpenGL::resizeable(bool resizable)
 
 bool RendererOpenGL::resizeable() const
 {
-	return (SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
+	return isAnyWindowFlagSet(SDL_WINDOW_RESIZABLE);
 }
 
 

@@ -92,9 +92,9 @@ namespace
 		std::cout << "\tGLSL Version: " << glString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 	}
 
-	bool isAnyWindowFlagSet(Uint32 flags, Uint32 testFlags)
+	bool isAnyWindowFlagSet(Uint32 testFlags)
 	{
-		return (flags & testFlags) != 0;
+		return (SDL_GetWindowFlags(underlyingWindow) & testFlags) != 0;
 	}
 }
 
@@ -564,7 +564,7 @@ void RendererOpenGL::update()
 
 Vector<int> RendererOpenGL::size() const
 {
-	if (isAnyWindowFlagSet(SDL_GetWindowFlags(underlyingWindow), SDL_WINDOW_FULLSCREEN_DESKTOP))
+	if (isAnyWindowFlagSet(SDL_WINDOW_FULLSCREEN_DESKTOP))
 	{
 		SDL_DisplayMode dm;
 		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
@@ -618,7 +618,7 @@ void RendererOpenGL::fullscreen(bool fullscreen, bool maintain)
 
 bool RendererOpenGL::fullscreen() const
 {
-	return isAnyWindowFlagSet(SDL_GetWindowFlags(underlyingWindow), SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return isAnyWindowFlagSet(SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
@@ -638,7 +638,7 @@ void RendererOpenGL::resizeable(bool resizable)
 
 bool RendererOpenGL::resizeable() const
 {
-	return isAnyWindowFlagSet(SDL_GetWindowFlags(underlyingWindow), SDL_WINDOW_RESIZABLE);
+	return isAnyWindowFlagSet(SDL_WINDOW_RESIZABLE);
 }
 
 

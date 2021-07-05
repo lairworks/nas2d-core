@@ -619,8 +619,7 @@ void RendererOpenGL::fullscreen(bool fullscreen, bool maintain)
 bool RendererOpenGL::fullscreen() const
 {
 	const auto windowFlags = SDL_GetWindowFlags(underlyingWindow);
-	return isAnyWindowFlagSet(windowFlags, SDL_WINDOW_FULLSCREEN) ||
-		isAnyWindowFlagSet(windowFlags, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return isAnyWindowFlagSet(windowFlags, SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 

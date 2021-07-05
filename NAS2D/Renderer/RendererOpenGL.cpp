@@ -598,9 +598,9 @@ void RendererOpenGL::minimumSize(Vector<int> newSize)
 }
 
 
-void RendererOpenGL::fullscreen(bool fs, bool maintain)
+void RendererOpenGL::fullscreen(bool fullscreen, bool maintain)
 {
-	if (fs)
+	if (fullscreen)
 	{
 		const auto windowFlags = maintain ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_FULLSCREEN_DESKTOP;
 		SDL_SetWindowFullscreen(underlyingWindow, windowFlags);

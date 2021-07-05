@@ -91,6 +91,11 @@ namespace
 		std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
 		std::cout << "\tGLSL Version: " << glString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 	}
+
+	bool isWindowFlagSet(Uint32 flags, Uint32 testFlag)
+	{
+		return (flags & testFlag) == testFlag;
+	}
 }
 
 

@@ -609,7 +609,8 @@ void RendererOpenGL::fullscreen(bool fullscreen, bool maintain)
 	else
 	{
 		SDL_SetWindowFullscreen(underlyingWindow, 0);
-		SDL_SetWindowSize(underlyingWindow, size().x, size().y);
+		const auto windowSize = size();
+		SDL_SetWindowSize(underlyingWindow, windowSize.x, windowSize.y);
 		SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }

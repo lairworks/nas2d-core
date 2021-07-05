@@ -602,8 +602,8 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 {
 	if (fs)
 	{
-		if (!maintain) { SDL_SetWindowFullscreen(underlyingWindow, SDL_WINDOW_FULLSCREEN_DESKTOP); }
-		else { SDL_SetWindowFullscreen(underlyingWindow, SDL_WINDOW_FULLSCREEN); }
+		const auto windowFlags = maintain ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_FULLSCREEN_DESKTOP;
+		SDL_SetWindowFullscreen(underlyingWindow, windowFlags);
 		SDL_SetWindowResizable(underlyingWindow, SDL_FALSE);
 	}
 	else

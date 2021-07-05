@@ -76,11 +76,17 @@ void TestGraphics::onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandl
 		NAS2D::postQuitEvent();
 		break;
 	case NAS2D::EventHandler::KeyCode::KEY_F1:
-		NAS2D::Utility<NAS2D::Renderer>::get().fullscreen(!NAS2D::Utility<NAS2D::Renderer>::get().fullscreen());
+	{
+		auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
+		renderer.fullscreen(!renderer.fullscreen());
 		break;
+	}
 	case NAS2D::EventHandler::KeyCode::KEY_F2:
-		NAS2D::Utility<NAS2D::Renderer>::get().resizeable(!NAS2D::Utility<NAS2D::Renderer>::get().resizeable());
+	{
+		auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
+		renderer.resizeable(!renderer.resizeable());
 		break;
+	}
 	default:
 		break;
 	}

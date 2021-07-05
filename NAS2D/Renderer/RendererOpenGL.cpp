@@ -492,23 +492,20 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 	auto imageData = Utility<Filesystem>::get().read(filePath);
 	if (imageData.size() == 0)
 	{
-		std::cout << "RendererOpenGL::addCursor(): '" << filePath << "' is empty." << std::endl;
-		return;
+		throw std::runtime_error("Cursor file is empty: " + filePath);
 	}
 
 	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageData.c_str(), static_cast<int>(imageData.size())), 1);
 	if (!surface)
 	{
-		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Failed to load cursor: " + filePath + " : " + SDL_GetError());
 	}
 
 	SDL_Cursor* cur = SDL_CreateColorCursor(surface, offx, offy);
 	SDL_FreeSurface(surface);
 	if (!cur)
 	{
-		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Failed to create color cursor: " + filePath + " : " + SDL_GetError());
 	}
 
 	if (cursors.count(cursorId))
@@ -567,7 +564,7 @@ Vector<int> RendererOpenGL::size() const
 		SDL_DisplayMode dm;
 		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
 		{
-			throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
+			throw std::runtime_error("Unable to get desktop dislay mode: " + std::string{SDL_GetError()});
 		}
 
 		return {dm.w, dm.h};
@@ -664,14 +661,11 @@ void RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
 
 void RendererOpenGL::window_icon(const std::string& path)
 {
-	if (!Utility<Filesystem>::get().exists(path)) { return; }
-
 	auto iconData = Utility<Filesystem>::get().read(path);
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(iconData.c_str(), static_cast<int>(iconData.size())), 1);
 	if (!icon)
 	{
-		std::cout << "RendererOpenGL::window_icon(): " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Failed to set window icon: " + path + " : " + SDL_GetError());
 	}
 
 	SDL_SetWindowIcon(underlyingWindow, icon);
@@ -709,7 +703,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 {
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 	{
-		throw std::runtime_error(std::string{"SDL video initialization failed: "} + SDL_GetError());
+		throw std::runtime_error("SDL video initialization failed: " + std::string{SDL_GetError()});
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -748,7 +742,7 @@ std::vector<DisplayDesc> RendererOpenGL::getDisplayModes() const
 	const auto numResolutions = SDL_GetNumDisplayModes(displayIndex);
 	if (numResolutions < 0)
 	{
-		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(displayIndex) + " : " + std::string{SDL_GetError()});
+		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(displayIndex) + " : " + SDL_GetError());
 	}
 
 	std::vector<DisplayDesc> result{};

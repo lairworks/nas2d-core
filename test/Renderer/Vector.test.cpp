@@ -182,6 +182,10 @@ TEST(Vector, to) {
 	EXPECT_EQ((NAS2D::Vector<float>{1.0, 2.0}), (NAS2D::Vector<int>{1, 2}.to<float>()));
 }
 
+TEST(Vector, scalarVectorMultiply) {
+	EXPECT_EQ((NAS2D::Vector{2, 4}), (2 * NAS2D::Vector{1, 2}));
+}
+
 TEST(Vector, PartialOrderLessEqual) {
 	EXPECT_LE((NAS2D::Vector{0, 0}), (NAS2D::Vector{1, 1}));
 	EXPECT_LE((NAS2D::Vector{0, 1}), (NAS2D::Vector{1, 1}));

@@ -367,17 +367,10 @@ std::string Filesystem::dirSeparator() const
  */
 std::string Filesystem::workingPath(const std::string& filename) const
 {
-	if (!filename.empty())
-	{
-		std::string tmpStr(filename);
-		std::size_t pos = tmpStr.rfind("/");
-		tmpStr = tmpStr.substr(0, pos + 1);
-		return tmpStr;
-	}
-	else
-	{
-		return std::string();
-	}
+	std::string tmpStr(filename);
+	std::size_t pos = tmpStr.rfind("/");
+	tmpStr = tmpStr.substr(0, pos + 1);
+	return tmpStr;
 }
 
 

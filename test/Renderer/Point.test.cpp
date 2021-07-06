@@ -81,6 +81,10 @@ TEST(Point, to) {
 	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), (NAS2D::Point<int>{1, 2}.to<float>()));
 }
 
+TEST(Vector, VectorPointAdd) {
+	EXPECT_EQ((NAS2D::Point{2, 3}), (NAS2D::Vector{1, 2} + NAS2D::Point<int>{1, 1}));
+}
+
 TEST(Point, PartialOrderLessEqual) {
 	EXPECT_LE((NAS2D::Point{0, 0}), (NAS2D::Point{1, 1}));
 	EXPECT_LE((NAS2D::Point{0, 1}), (NAS2D::Point{1, 1}));

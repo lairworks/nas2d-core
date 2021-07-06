@@ -55,6 +55,7 @@ namespace NAS2D
 			y *= scalar;
 			return *this;
 		}
+
 		Vector& operator/=(BaseType scalar)
 		{
 			if (scalar == 0)
@@ -131,6 +132,14 @@ namespace NAS2D
 			return static_cast<Vector<NewBaseType>>(*this);
 		}
 	};
+
+
+	// Commutative scalar * vector
+	template <typename BaseType>
+	constexpr Vector<BaseType> operator*(BaseType scalar, Vector<BaseType> vector)
+	{
+		return vector * scalar;
+	}
 
 
 	template <typename BaseType>

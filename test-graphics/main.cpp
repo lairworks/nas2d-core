@@ -23,32 +23,6 @@ int main(int /*argc*/, char *argv[])
 {
 	try
 	{
-		NAS2D::Utility<NAS2D::Configuration>::init(
-			std::map<std::string, NAS2D::Dictionary>{
-				{
-					"graphics",
-					{{
-						{"screenwidth", 1000},
-						{"screenheight", 700},
-						{"bitdepth", 32},
-						{"fullscreen", false},
-						{"vsync", true}
-					}}
-				},
-				{
-					"audio",
-					{{
-						{"mixer", "SDL"},
-						{"musicvolume", 100},
-						{"sfxvolume", 128},
-						{"channels", 2},
-						{"mixrate", 22050},
-						{"bufferlength", 1024}
-					}}
-				}
-			}
-		);
-
 		NAS2D::Game game("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks", argv[0]);
 		game.go(new TestGraphics());
 	}

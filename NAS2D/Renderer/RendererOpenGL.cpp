@@ -81,6 +81,21 @@ namespace
 		const auto apiResult = glGetString(name);
 		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
 	}
+
+	void dumpGraphicsInfo()
+	{
+		// Spit out system graphics information.
+		std::cout << "\t- OpenGL System Info -" << std::endl;
+		std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
+		std::cout << "\tRenderer: " << glString(GL_RENDERER) << std::endl;
+		std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
+		std::cout << "\tGLSL Version: " << glString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	}
+
+	bool isAnyWindowFlagSet(Uint32 testFlags)
+	{
+		return (SDL_GetWindowFlags(underlyingWindow) & testFlags) != 0;
+	}
 }
 
 
@@ -482,23 +497,20 @@ void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int of
 	auto imageData = Utility<Filesystem>::get().read(filePath);
 	if (imageData.size() == 0)
 	{
-		std::cout << "RendererOpenGL::addCursor(): '" << filePath << "' is empty." << std::endl;
-		return;
+		throw std::runtime_error("Cursor file is empty: " + filePath);
 	}
 
 	SDL_Surface* surface = IMG_Load_RW(SDL_RWFromConstMem(imageData.c_str(), static_cast<int>(imageData.size())), 1);
 	if (!surface)
 	{
-		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Failed to load cursor: " + filePath + " : " + SDL_GetError());
 	}
 
 	SDL_Cursor* cur = SDL_CreateColorCursor(surface, offx, offy);
 	SDL_FreeSurface(surface);
 	if (!cur)
 	{
-		std::cout << "RendererOpenGL::addCursor(): " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Failed to create color cursor: " + filePath + " : " + SDL_GetError());
 	}
 
 	if (cursors.count(cursorId))
@@ -552,9 +564,15 @@ void RendererOpenGL::update()
 
 Vector<int> RendererOpenGL::size() const
 {
-	if ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
+	if (isAnyWindowFlagSet(SDL_WINDOW_FULLSCREEN_DESKTOP))
 	{
-		return desktopResolution;
+		SDL_DisplayMode dm;
+		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+		{
+			throw std::runtime_error("Unable to get desktop dislay mode: " + std::string{SDL_GetError()});
+		}
+
+		return {dm.w, dm.h};
 	}
 
 	return mResolution;
@@ -580,18 +598,20 @@ void RendererOpenGL::minimumSize(Vector<int> newSize)
 }
 
 
-void RendererOpenGL::fullscreen(bool fs, bool maintain)
+void RendererOpenGL::fullscreen(bool fullscreen, bool maintain)
 {
-	if (fs)
+	if (fullscreen)
 	{
-		if (!maintain) { SDL_SetWindowFullscreen(underlyingWindow, SDL_WINDOW_FULLSCREEN_DESKTOP); }
-		else { SDL_SetWindowFullscreen(underlyingWindow, SDL_WINDOW_FULLSCREEN); }
+		const auto windowFlags = maintain ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_FULLSCREEN_DESKTOP;
+		SDL_SetWindowFullscreen(underlyingWindow, windowFlags);
 		SDL_SetWindowResizable(underlyingWindow, SDL_FALSE);
 	}
 	else
 	{
 		SDL_SetWindowFullscreen(underlyingWindow, 0);
-		SDL_SetWindowSize(underlyingWindow, size().x, size().y);
+		const auto windowSize = size();
+		SDL_SetWindowSize(underlyingWindow, windowSize.x, windowSize.y);
+		onResize(windowSize);
 		SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }
@@ -599,8 +619,7 @@ void RendererOpenGL::fullscreen(bool fs, bool maintain)
 
 bool RendererOpenGL::fullscreen() const
 {
-	return ((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN) ||
-		((SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return isAnyWindowFlagSet(SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
@@ -620,7 +639,7 @@ void RendererOpenGL::resizeable(bool resizable)
 
 bool RendererOpenGL::resizeable() const
 {
-	return (SDL_GetWindowFlags(underlyingWindow) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
+	return isAnyWindowFlagSet(SDL_WINDOW_RESIZABLE);
 }
 
 
@@ -648,14 +667,11 @@ void RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
 
 void RendererOpenGL::window_icon(const std::string& path)
 {
-	if (!Utility<Filesystem>::get().exists(path)) { return; }
-
 	auto iconData = Utility<Filesystem>::get().read(path);
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(iconData.c_str(), static_cast<int>(iconData.size())), 1);
 	if (!icon)
 	{
-		std::cout << "RendererOpenGL::window_icon(): " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Failed to set window icon: " + path + " : " + SDL_GetError());
 	}
 
 	SDL_SetWindowIcon(underlyingWindow, icon);
@@ -669,8 +685,6 @@ void RendererOpenGL::initGL()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	onResize(size());
-
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_BLEND);
@@ -680,26 +694,14 @@ void RendererOpenGL::initGL()
 	glEnable(GL_LINE_SMOOTH);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-	// Spit out system graphics information.
-	std::cout << "\t- OpenGL System Info -" << std::endl;
-
-	driverName(glString(GL_RENDERER));
-
-	std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
-	std::cout << "\tRenderer: " << driverName() << std::endl;
-	std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
-	auto glShadingLanguageVersion = glString(GL_SHADING_LANGUAGE_VERSION);
-	std::cout << "\tGLSL Version: " << glShadingLanguageVersion << std::endl;
-
-	if (glShadingLanguageVersion.empty())
-	{
-		//throw std::runtime_error("OpenGL shading language not supported");
-	}
-
 	glEnable(GL_TEXTURE_2D);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	driverName(glString(GL_RENDERER));
+	onResize(size());
+	dumpGraphicsInfo();
 }
 
 
@@ -707,7 +709,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 {
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 	{
-		throw std::runtime_error(std::string{"SDL video initialization failed: "} + SDL_GetError());
+		throw std::runtime_error("SDL video initialization failed: " + std::string{SDL_GetError()});
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -715,13 +717,9 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); /// \todo	Add checks to determine an appropriate depth buffer.
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
 
-	if (vsync) { SDL_GL_SetSwapInterval(1); }
-	else { SDL_GL_SetSwapInterval(0); }
+	SDL_GL_SetSwapInterval(vsync ? 1 : 0);
 
-	Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-
-	if (fullscreen) { sdlFlags = sdlFlags | SDL_WINDOW_FULLSCREEN; }
-
+	const Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
 	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resolution.x, resolution.y, sdlFlags);
 
 	if (!underlyingWindow)
@@ -742,15 +740,6 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	initGL();
 
 	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::onResize);
-
-	SDL_DisplayMode dm;
-	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
-	{
-		std::cout << "SDL_GetDesktopDisplayMode failed: " << SDL_GetError();
-		throw std::runtime_error("Unable to get desktop dislay mode: " + std::string(SDL_GetError()));
-	}
-
-	desktopResolution = {dm.w, dm.h};
 }
 
 std::vector<DisplayDesc> RendererOpenGL::getDisplayModes() const
@@ -759,7 +748,7 @@ std::vector<DisplayDesc> RendererOpenGL::getDisplayModes() const
 	const auto numResolutions = SDL_GetNumDisplayModes(displayIndex);
 	if (numResolutions < 0)
 	{
-		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(displayIndex) + " : " + std::string{SDL_GetError()});
+		throw std::runtime_error("Error getting number of display modes for display index: " + std::to_string(displayIndex) + " : " + SDL_GetError());
 	}
 
 	std::vector<DisplayDesc> result{};

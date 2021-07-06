@@ -78,7 +78,7 @@ namespace
 		try
 		{
 			auto& filesystem = Utility<Filesystem>::get();
-			const auto basePath = filesystem.workingPath(filePath);
+			const auto basePath = filesystem.parentPath(filePath);
 
 			Xml::XmlDocument xmlDoc;
 			xmlDoc.parse(filesystem.read(filePath).c_str());

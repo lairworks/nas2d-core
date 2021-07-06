@@ -10,8 +10,9 @@
 
 #pragma once
 
-#include <string>
 #include <vector>
+#include <string>
+#include <string_view>
 
 
 namespace NAS2D
@@ -43,7 +44,6 @@ namespace NAS2D
 		std::string basePath() const;
 		std::string prefPath() const;
 
-		std::string workingPath(const std::string& filename) const;
 		std::vector<std::string> searchPath() const;
 		int mountSoftFail(const std::string& path) const;
 		void mount(const std::string& path) const;
@@ -58,12 +58,12 @@ namespace NAS2D
 		void del(const std::string& path) const;
 		bool exists(const std::string& filename) const;
 
-		std::string extension(const std::string& path) const;
-
-		std::string dirSeparator() const;
-
 		bool isDirectory(const std::string& path) const;
 		void makeDirectory(const std::string& path) const;
+
+		std::string dirSeparator() const;
+		std::string parentPath(std::string_view filePath) const;
+		std::string extension(std::string_view filePath) const;
 
 	private:
 		std::string mAppName;

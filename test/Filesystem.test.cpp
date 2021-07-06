@@ -37,23 +37,6 @@ TEST_F(FilesystemTest, prefPath) {
 	EXPECT_THAT(fs.prefPath(), testing::HasSubstr(AppName));
 }
 
-TEST_F(FilesystemTest, extension) {
-	EXPECT_EQ(".txt", fs.extension("subdir/file.txt"));
-	EXPECT_EQ(".txt", fs.extension("file.txt"));
-	EXPECT_EQ(".reallyLongExtensionName", fs.extension("file.reallyLongExtensionName"));
-	EXPECT_EQ(".a", fs.extension("file.a"));
-	EXPECT_EQ(".file", fs.extension(".file"));
-	EXPECT_EQ(".", fs.extension("file."));
-	EXPECT_EQ("", fs.extension("file"));
-}
-
-TEST_F(FilesystemTest, workingPath) {
-	EXPECT_EQ("data/", fs.workingPath("data/file.extension"));
-	EXPECT_EQ("data/subfolder/", fs.workingPath("data/subfolder/file.extension"));
-	EXPECT_EQ("anotherFolder/", fs.workingPath("anotherFolder/file.extension"));
-	EXPECT_EQ("", fs.workingPath("file.extension"));
-}
-
 TEST_F(FilesystemTest, searchPath) {
 	auto pathList = fs.searchPath();
 	EXPECT_EQ(3u, pathList.size());
@@ -132,4 +115,28 @@ TEST_F(FilesystemTest, dirSeparator) {
 	// New platforms may choose a new unique value
 	// Some platforms may not even have a hierarchal filesystem ("")
 	EXPECT_NO_THROW(fs.dirSeparator());
+}
+
+TEST_F(FilesystemTest, parentPath) {
+	EXPECT_EQ("", fs.parentPath(""));
+	EXPECT_EQ("", fs.parentPath("file.extension"));
+	EXPECT_EQ("/", fs.parentPath("/"));
+	EXPECT_EQ("data/", fs.parentPath("data/"));
+	EXPECT_EQ("data/", fs.parentPath("data/file.extension"));
+	EXPECT_EQ("data/subfolder/", fs.parentPath("data/subfolder/file.extension"));
+	EXPECT_EQ("anotherFolder/", fs.parentPath("anotherFolder/file.extension"));
+}
+
+TEST_F(FilesystemTest, extension) {
+	EXPECT_EQ("", fs.extension(""));
+	EXPECT_EQ("", fs.extension("file"));
+	EXPECT_EQ("", fs.extension("subdir/file"));
+	EXPECT_EQ("", fs.extension("subdir.ext/file"));
+	EXPECT_EQ(".", fs.extension("file."));
+	EXPECT_EQ(".file", fs.extension(".file"));
+
+	EXPECT_EQ(".a", fs.extension("file.a"));
+	EXPECT_EQ(".txt", fs.extension("file.txt"));
+	EXPECT_EQ(".txt", fs.extension("subdir/file.txt"));
+	EXPECT_EQ(".reallyLongExtensionName", fs.extension("file.reallyLongExtensionName"));
 }

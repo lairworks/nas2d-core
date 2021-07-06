@@ -368,7 +368,7 @@ std::string Filesystem::dirSeparator() const
  */
 std::string Filesystem::parentPath(const std::string& filePath) const
 {
-	const auto pos = filePath.rfind("/");
+	const auto pos = filePath.rfind('/');
 	return filePath.substr(0, pos + 1);
 }
 

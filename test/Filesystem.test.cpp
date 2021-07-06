@@ -47,14 +47,14 @@ TEST_F(FilesystemTest, extension) {
 	EXPECT_EQ("", fs.extension("file"));
 }
 
-TEST_F(FilesystemTest, workingPath) {
-	EXPECT_EQ("", fs.workingPath(""));
-	EXPECT_EQ("", fs.workingPath("file.extension"));
-	EXPECT_EQ("/", fs.workingPath("/"));
-	EXPECT_EQ("data/", fs.workingPath("data/"));
-	EXPECT_EQ("data/", fs.workingPath("data/file.extension"));
-	EXPECT_EQ("data/subfolder/", fs.workingPath("data/subfolder/file.extension"));
-	EXPECT_EQ("anotherFolder/", fs.workingPath("anotherFolder/file.extension"));
+TEST_F(FilesystemTest, parentPath) {
+	EXPECT_EQ("", fs.parentPath(""));
+	EXPECT_EQ("", fs.parentPath("file.extension"));
+	EXPECT_EQ("/", fs.parentPath("/"));
+	EXPECT_EQ("data/", fs.parentPath("data/"));
+	EXPECT_EQ("data/", fs.parentPath("data/file.extension"));
+	EXPECT_EQ("data/subfolder/", fs.parentPath("data/subfolder/file.extension"));
+	EXPECT_EQ("anotherFolder/", fs.parentPath("anotherFolder/file.extension"));
 }
 
 TEST_F(FilesystemTest, searchPath) {

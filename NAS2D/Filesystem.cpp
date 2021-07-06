@@ -365,7 +365,7 @@ std::string Filesystem::dirSeparator() const
  *
  * \return The path up to and including the last '/', or empty string if no '/'
  */
-std::string Filesystem::workingPath(const std::string& filePath) const
+std::string Filesystem::parentPath(const std::string& filePath) const
 {
 	const auto pos = filePath.rfind("/");
 	return filePath.substr(0, pos + 1);

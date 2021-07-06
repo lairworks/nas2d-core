@@ -359,11 +359,11 @@ std::string Filesystem::dirSeparator() const
 
 
 /**
- * Convenience function to get the working directory of a file.
+ * Convenience function to get the parent directory of a file.
  *
- * \param filename	A file path.
+ * \param filename A file path.
  *
- * \note	File paths should not have any trailing '/' characters.
+ * \return The path up to and including the last '/', or empty string if no '/'
  */
 std::string Filesystem::workingPath(const std::string& filename) const
 {

@@ -66,8 +66,8 @@ namespace NAS2D
 		void makeDirectory(const std::string& path) const;
 
 		std::string dirSeparator() const;
-		std::string workingPath(const std::string& filename) const;
-		std::string extension(const std::string& path) const;
+		std::string workingPath(const std::string& filePath) const;
+		std::string extension(const std::string& filePath) const;
 
 	private:
 		std::string mAppName;

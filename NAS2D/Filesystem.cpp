@@ -361,33 +361,33 @@ std::string Filesystem::dirSeparator() const
 /**
  * Convenience function to get the parent directory of a file.
  *
- * \param filename A file path.
+ * \param filePath A file path.
  *
  * \return The path up to and including the last '/', or empty string if no '/'
  */
-std::string Filesystem::workingPath(const std::string& filename) const
+std::string Filesystem::workingPath(const std::string& filePath) const
 {
-	const auto pos = filename.rfind("/");
-	return filename.substr(0, pos + 1);
+	const auto pos = filePath.rfind("/");
+	return filePath.substr(0, pos + 1);
 }
 
 
 /**
  * Gets the extension of a given file path.
  *
- * \param	path	Path to check for an extension.
+ * \param	filePath	Path to check for an extension.
  *
  * \return	Returns a string containing the file extension, including the dot (".").
  *			An empty string will be returned if the file has no extension.
  */
-std::string Filesystem::extension(const std::string& path) const
+std::string Filesystem::extension(const std::string& filePath) const
 {
 	// This is a naive approach but works for most cases.
-	std::size_t pos = path.find_last_of(".");
+	std::size_t pos = filePath.find_last_of(".");
 
 	if (pos != std::string::npos)
 	{
-		return path.substr(pos);
+		return filePath.substr(pos);
 	}
 	return std::string();
 }

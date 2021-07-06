@@ -15,7 +15,6 @@
 #include <climits>
 #include <cstring>
 #include <string>
-#include <string_view>
 #include <iostream>
 #include <sstream>
 #include <utility>
@@ -366,10 +365,10 @@ std::string Filesystem::dirSeparator() const
  *
  * \return The path up to and including the last '/', or empty string if no '/'
  */
-std::string Filesystem::parentPath(const std::string& filePath) const
+std::string Filesystem::parentPath(std::string_view filePath) const
 {
 	const auto pos = filePath.rfind('/');
-	return filePath.substr(0, pos + 1);
+	return std::string{filePath.substr(0, pos + 1)};
 }
 
 
@@ -381,9 +380,9 @@ std::string Filesystem::parentPath(const std::string& filePath) const
  * \return	Returns a string containing the file extension, including the dot (".").
  *			An empty string will be returned if the file has no extension.
  */
-std::string Filesystem::extension(const std::string& filePath) const
+std::string Filesystem::extension(std::string_view filePath) const
 {
-	const auto fileName = std::string_view{filePath}.substr(filePath.rfind('/') + 1);
+	const auto fileName = filePath.substr(filePath.rfind('/') + 1);
 	const auto pos = fileName.rfind('.');
 
 	if (pos != std::string::npos)

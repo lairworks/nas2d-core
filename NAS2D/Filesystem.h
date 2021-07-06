@@ -12,8 +12,9 @@
 
 #include "File.h"
 
-#include <string>
 #include <vector>
+#include <string>
+#include <string_view>
 
 
 namespace NAS2D
@@ -66,8 +67,8 @@ namespace NAS2D
 		void makeDirectory(const std::string& path) const;
 
 		std::string dirSeparator() const;
-		std::string parentPath(const std::string& filePath) const;
-		std::string extension(const std::string& filePath) const;
+		std::string parentPath(std::string_view filePath) const;
+		std::string extension(std::string_view filePath) const;
 
 	private:
 		std::string mAppName;

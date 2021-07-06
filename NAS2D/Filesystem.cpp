@@ -383,8 +383,8 @@ std::string Filesystem::parentPath(const std::string& filePath) const
  */
 std::string Filesystem::extension(const std::string& filePath) const
 {
-	const auto fileName = std::string_view{filePath}.substr(filePath.find_last_of('/') + 1);
-	const auto pos = fileName.find_last_of('.');
+	const auto fileName = std::string_view{filePath}.substr(filePath.rfind('/') + 1);
+	const auto pos = fileName.rfind('.');
 
 	if (pos != std::string::npos)
 	{

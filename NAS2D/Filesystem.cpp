@@ -15,6 +15,7 @@
 #include <climits>
 #include <cstring>
 #include <string>
+#include <string_view>
 #include <iostream>
 #include <sstream>
 #include <utility>
@@ -382,12 +383,12 @@ std::string Filesystem::parentPath(const std::string& filePath) const
  */
 std::string Filesystem::extension(const std::string& filePath) const
 {
-	// This is a naive approach but works for most cases.
-	std::size_t pos = filePath.find_last_of(".");
+	const auto fileName = std::string_view{filePath}.substr(filePath.find_last_of('/') + 1);
+	const auto pos = fileName.find_last_of('.');
 
 	if (pos != std::string::npos)
 	{
-		return filePath.substr(pos);
+		return std::string{fileName.substr(pos)};
 	}
 	return std::string{};
 }

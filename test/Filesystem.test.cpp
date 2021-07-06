@@ -133,7 +133,9 @@ TEST_F(FilesystemTest, parentPath) {
 }
 
 TEST_F(FilesystemTest, extension) {
+	EXPECT_EQ("", fs.extension(""));
 	EXPECT_EQ("", fs.extension("file"));
+	EXPECT_EQ("", fs.extension("subdir/file"));
 	EXPECT_EQ(".", fs.extension("file."));
 	EXPECT_EQ(".file", fs.extension(".file"));
 

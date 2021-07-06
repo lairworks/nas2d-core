@@ -389,5 +389,5 @@ std::string Filesystem::extension(const std::string& filePath) const
 	{
 		return filePath.substr(pos);
 	}
-	return std::string();
+	return std::string{};
 }

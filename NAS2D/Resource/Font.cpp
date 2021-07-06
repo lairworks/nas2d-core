@@ -177,8 +177,6 @@ namespace
 	 */
 	Font::FontInfo load(const std::string& path, unsigned int ptSize)
 	{
-		std::string fontname = path + "_" + std::to_string(ptSize) + "pt";
-
 		if (TTF_WasInit() == 0)
 		{
 			if (TTF_Init() != 0)

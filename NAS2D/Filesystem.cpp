@@ -346,6 +346,19 @@ void Filesystem::write(const std::string& filename, const std::string& data, Wri
 
 
 /**
+ * Gets the dir separator for the current platform
+ *
+ * The dir separator separates the directories within a path. This is typically either "\\" for Windows, or "/" for Linux.
+ *
+ * \note The path separator may be more than one character
+ */
+std::string Filesystem::dirSeparator() const
+{
+	return PHYSFS_getDirSeparator();
+}
+
+
+/**
  * Convenience function to get the working directory of a file.
  *
  * \param filename	A file path.
@@ -386,16 +399,4 @@ std::string Filesystem::extension(const std::string& path) const
 		return path.substr(pos);
 	}
 	return std::string();
-}
-
-/**
- * Gets the dir separator for the current platform
- *
- * The dir separator separates the directories within a path. This is typically either "\\" for Windows, or "/" for Linux.
- *
- * \note The path separator may be more than one character
- */
-std::string Filesystem::dirSeparator() const
-{
-	return PHYSFS_getDirSeparator();
 }

@@ -266,7 +266,7 @@ namespace
 			frameList.push_back(AnimationSet::Frame{image, bounds, anchorOffset, static_cast<unsigned int>(delay)});
 		}
 
-		if (frameList.size() <= 0)
+		if (frameList.empty())
 		{
 			throw std::runtime_error("Sprite Action contains no valid frames: " + action);
 		}

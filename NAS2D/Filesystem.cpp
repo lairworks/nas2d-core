@@ -346,49 +346,6 @@ void Filesystem::write(const std::string& filename, const std::string& data, Wri
 
 
 /**
- * Convenience function to get the working directory of a file.
- *
- * \param filename	A file path.
- *
- * \note	File paths should not have any trailing '/' characters.
- */
-std::string Filesystem::workingPath(const std::string& filename) const
-{
-	if (!filename.empty())
-	{
-		std::string tmpStr(filename);
-		std::size_t pos = tmpStr.rfind("/");
-		tmpStr = tmpStr.substr(0, pos + 1);
-		return tmpStr;
-	}
-	else
-	{
-		return std::string();
-	}
-}
-
-
-/**
- * Gets the extension of a given file path.
- *
- * \param	path	Path to check for an extension.
- *
- * \return	Returns a string containing the file extension, including the dot (".").
- *			An empty string will be returned if the file has no extension.
- */
-std::string Filesystem::extension(const std::string& path) const
-{
-	// This is a naive approach but works for most cases.
-	std::size_t pos = path.find_last_of(".");
-
-	if (pos != std::string::npos)
-	{
-		return path.substr(pos);
-	}
-	return std::string();
-}
-
-/**
  * Gets the dir separator for the current platform
  *
  * The dir separator separates the directories within a path. This is typically either "\\" for Windows, or "/" for Linux.
@@ -398,4 +355,38 @@ std::string Filesystem::extension(const std::string& path) const
 std::string Filesystem::dirSeparator() const
 {
 	return PHYSFS_getDirSeparator();
+}
+
+
+/**
+ * Convenience function to get the parent directory of a file.
+ *
+ * \param filePath A file path.
+ *
+ * \return The path up to and including the last '/', or empty string if no '/'
+ */
+std::string Filesystem::parentPath(std::string_view filePath) const
+{
+	return std::string{filePath.substr(0, filePath.rfind('/') + 1)};
+}
+
+
+/**
+ * Gets the extension of a given file path.
+ *
+ * \param	filePath	Path to check for an extension.
+ *
+ * \return	Returns a string containing the file extension, including the dot (".").
+ *			An empty string will be returned if the file has no extension.
+ */
+std::string Filesystem::extension(std::string_view filePath) const
+{
+	const auto fileName = filePath.substr(filePath.rfind('/') + 1);
+	const auto pos = fileName.rfind('.');
+
+	if (pos != std::string::npos)
+	{
+		return std::string{fileName.substr(pos)};
+	}
+	return std::string{};
 }

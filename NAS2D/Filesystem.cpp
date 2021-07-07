@@ -113,7 +113,7 @@ void Filesystem::mount(const std::string& path) const
 {
 	if (mountSoftFail(path) == 0)
 	{
-		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Couldn't add '" + path + "' to search path: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 
@@ -131,7 +131,7 @@ void Filesystem::mountReadWrite(const std::string& path) const
 	// Mount for write access
 	if (PHYSFS_setWriteDir(path.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string("Couldn't add write folder '") + path + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Couldn't add write folder '" + path + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 
@@ -145,7 +145,7 @@ void Filesystem::unmount(const std::string& path) const
 {
 	if (PHYSFS_unmount(path.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string("Couldn't remove '") + path + "' from search path : " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Couldn't remove '" + path + "' from search path : " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 

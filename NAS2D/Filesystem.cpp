@@ -216,7 +216,7 @@ void Filesystem::del(const std::string& filename) const
 {
 	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
-		throw std::runtime_error("Unable to delete '" + filename + "':" + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error deleting file: " + filename + " : " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 

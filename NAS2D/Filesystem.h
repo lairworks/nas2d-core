@@ -31,7 +31,6 @@ namespace NAS2D
 			Overwrite,
 		};
 
-		Filesystem() = delete;
 		Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 		Filesystem(const Filesystem&) = delete;
 		Filesystem& operator=(const Filesystem&) = delete;

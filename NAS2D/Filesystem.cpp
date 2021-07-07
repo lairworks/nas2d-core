@@ -25,7 +25,8 @@
 using namespace NAS2D;
 
 
-static bool closeFile(void* file)
+namespace {
+bool closeFile(void* file)
 {
 	if (!file) { return false; }
 
@@ -33,7 +34,7 @@ static bool closeFile(void* file)
 
 	throw std::runtime_error(std::string{"Unable to close file handle: "} + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 }
-
+}
 
 
 enum MountPosition

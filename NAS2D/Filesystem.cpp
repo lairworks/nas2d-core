@@ -26,14 +26,14 @@ using namespace NAS2D;
 
 
 namespace {
-bool closeFile(void* file)
-{
-	if (!file) { return false; }
+	bool closeFile(void* file)
+	{
+		if (!file) { return false; }
 
-	if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
+		if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
 
-	throw std::runtime_error(std::string{"Unable to close file handle: "} + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-}
+		throw std::runtime_error(std::string{"Unable to close file handle: "} + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+	}
 }
 
 

@@ -338,7 +338,7 @@ void Filesystem::write(const std::string& filename, const std::string& data, Wri
 	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint32>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
 	{
 		closeFile(myFile);
-		throw std::runtime_error("Error occured while writing to file '" + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error occurred while writing to file '" + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	closeFile(myFile);

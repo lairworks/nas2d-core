@@ -17,7 +17,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * Implements a virtual file system.
 	 *
@@ -39,7 +38,6 @@ namespace NAS2D
 		Filesystem(Filesystem&&) = delete;
 		Filesystem& operator=(Filesystem&&) = delete;
 		~Filesystem();
-
 
 		std::string basePath() const;
 		std::string prefPath() const;
@@ -69,5 +67,4 @@ namespace NAS2D
 		std::string mAppName;
 		std::string mOrganizationName;
 	};
-
 }

@@ -54,11 +54,11 @@ Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, co
 	mAppName(appName),
 	mOrganizationName(organizationName)
 {
-	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized."); }
+	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized"); }
 
 	if (PHYSFS_init(argv_0.c_str()) == 0)
 	{
-		throw std::runtime_error("Unable to start virtual filesystem: " + getLastPhysfsError());
+		throw std::runtime_error("Error initializing filesystem library: " + getLastPhysfsError());
 	}
 }
 

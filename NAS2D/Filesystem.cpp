@@ -25,15 +25,22 @@
 using namespace NAS2D;
 
 
-static bool closeFile(void* file)
-{
-	if (!file) { return false; }
+namespace {
+	std::string getLastPhysfsError()
+	{
+		return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
+	}
 
-	if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
 
-	throw std::runtime_error(std::string{"Unable to close file handle: "} + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+	bool closeFile(void* file)
+	{
+		if (!file) { return false; }
+
+		if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
+
+		throw std::runtime_error("Unable to close file handle: " + getLastPhysfsError());
+	}
 }
-
 
 
 enum MountPosition
@@ -47,11 +54,11 @@ Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, co
 	mAppName(appName),
 	mOrganizationName(organizationName)
 {
-	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized."); }
+	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized"); }
 
 	if (PHYSFS_init(argv_0.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string{"Unable to start virtual filesystem: "} + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error initializing filesystem library: " + getLastPhysfsError());
 	}
 }
 
@@ -113,7 +120,7 @@ void Filesystem::mount(const std::string& path) const
 {
 	if (mountSoftFail(path) == 0)
 	{
-		throw std::runtime_error(std::string("Couldn't add '") + path + "' to search path: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error mounting search path: " + path + " : " + getLastPhysfsError());
 	}
 }
 
@@ -131,7 +138,7 @@ void Filesystem::mountReadWrite(const std::string& path) const
 	// Mount for write access
 	if (PHYSFS_setWriteDir(path.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string("Couldn't add write folder '") + path + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error setting write folder: " + path + " : " + getLastPhysfsError());
 	}
 }
 
@@ -145,7 +152,7 @@ void Filesystem::unmount(const std::string& path) const
 {
 	if (PHYSFS_unmount(path.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string("Couldn't remove '") + path + "' from search path : " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error unmounting search path: " + path + " : " + getLastPhysfsError());
 	}
 }
 
@@ -216,7 +223,7 @@ void Filesystem::del(const std::string& filename) const
 {
 	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string("Unable to delete '") + filename + "':" + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error deleting file: " + filename + " : " + getLastPhysfsError());
 	}
 }
 
@@ -240,7 +247,7 @@ std::string Filesystem::read(const std::string& filename) const
 	if (!myFile)
 	{
 		closeFile(myFile);
-		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error opening file for reading: " + filename + " : " + getLastPhysfsError());
 	}
 
 	// Ensure that the file size is greater than zero and can fit in a std::size_t
@@ -248,7 +255,7 @@ std::string Filesystem::read(const std::string& filename) const
 	if (fileLength < 0 || static_cast<PHYSFS_uint64>(fileLength) > std::numeric_limits<std::size_t>::max())
 	{
 		closeFile(myFile);
-		throw std::runtime_error(std::string("File '") + filename + "' is too large or size could not be determined");
+		throw std::runtime_error("Error determining length of file or file too large: " + filename + " : Length = " + std::to_string(fileLength));
 	}
 
 	// Create buffer large enough to hold entire file
@@ -263,7 +270,7 @@ std::string Filesystem::read(const std::string& filename) const
 	// Ensure we read the expected length
 	if (actualReadLength < fileLength)
 	{
-		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error reading file data: " + filename + " : " + getLastPhysfsError());
 	}
 
 	return fileBuffer;
@@ -279,7 +286,7 @@ void Filesystem::makeDirectory(const std::string& path) const
 {
 	if (PHYSFS_mkdir(path.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string("Unable to create directory '" + path + "': ") + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error creating directory: " + path + " : " + getLastPhysfsError());
 	}
 }
 
@@ -326,19 +333,19 @@ void Filesystem::write(const std::string& filename, const std::string& data, Wri
 {
 	if (flags != WriteFlags::Overwrite && exists(filename))
 	{
-		throw std::runtime_error(std::string("File exists: ") + filename);
+		throw std::runtime_error("Overwrite flag not specified and file already exists: " + filename);
 	}
 
 	PHYSFS_file* myFile = PHYSFS_openWrite(filename.c_str());
 	if (!myFile)
 	{
-		throw std::runtime_error(std::string("Couldn't open '") + filename + "' for writing: " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error opening file for writing: " + filename + " : " + getLastPhysfsError());
 	}
 
 	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint32>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
 	{
 		closeFile(myFile);
-		throw std::runtime_error(std::string("Error occured while writing to file '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error writing file: " + filename + " : " + getLastPhysfsError());
 	}
 
 	closeFile(myFile);

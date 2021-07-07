@@ -54,11 +54,6 @@ TEST_F(FilesystemTest, exists) {
 	EXPECT_TRUE(fs.exists("file.txt"));
 }
 
-TEST_F(FilesystemTest, open) {
-	const auto file = fs.open("file.txt");
-	EXPECT_EQ("Test data\n", file.bytes());
-}
-
 TEST_F(FilesystemTest, read) {
 	const auto data = fs.read("file.txt");
 	EXPECT_EQ("Test data\n", data);

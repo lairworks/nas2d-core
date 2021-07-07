@@ -215,6 +215,45 @@ std::vector<std::string> Filesystem::directoryList(const std::string& dir, const
 
 
 /**
+ * Determines if a given path is a directory rather than a file.
+ *
+ * \param path	Path to check.
+ */
+bool Filesystem::isDirectory(const std::string& path) const
+{
+	PHYSFS_Stat stat;
+	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
+}
+
+
+/**
+ * Creates a new directory within the primary search path.
+ *
+ * \param path	Path of the directory to create.
+ */
+void Filesystem::makeDirectory(const std::string& path) const
+{
+	if (PHYSFS_mkdir(path.c_str()) == 0)
+	{
+		throw std::runtime_error("Error creating directory: " + path + " : " + getLastPhysfsError());
+	}
+}
+
+
+/**
+ * Checks for the existence of a file.
+ *
+ * \param	filename	File path to check.
+ *
+ * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
+ */
+bool Filesystem::exists(const std::string& filename) const
+{
+	return PHYSFS_exists(filename.c_str()) != 0;
+}
+
+
+/**
  * Deletes a specified file.
  *
  * \param	filename	Path of the file to delete relative to the Filesystem root directory.
@@ -264,45 +303,6 @@ std::string Filesystem::read(const std::string& filename) const
 }
 
 
-/**
- * Creates a new directory within the primary search path.
- *
- * \param path	Path of the directory to create.
- */
-void Filesystem::makeDirectory(const std::string& path) const
-{
-	if (PHYSFS_mkdir(path.c_str()) == 0)
-	{
-		throw std::runtime_error("Error creating directory: " + path + " : " + getLastPhysfsError());
-	}
-}
-
-
-/**
- * Determines if a given path is a directory rather than a file.
- *
- * \param path	Path to check.
- */
-bool Filesystem::isDirectory(const std::string& path) const
-{
-	PHYSFS_Stat stat;
-	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
-}
-
-
-/**
- * Checks for the existence of a file.
- *
- * \param	filename	File path to check.
- *
- * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
- */
-bool Filesystem::exists(const std::string& filename) const
-{
-	return PHYSFS_exists(filename.c_str()) != 0;
-}
-
-
 void Filesystem::write(const std::string& filename, const std::string& data, WriteFlags flags) const
 {
 	if (flags != WriteFlags::Overwrite && exists(filename))
@@ -316,7 +316,7 @@ void Filesystem::write(const std::string& filename, const std::string& data, Wri
 		throw std::runtime_error("Error opening file for writing: " + filename + " : " + getLastPhysfsError());
 	}
 
-	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint32>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
+	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint64>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
 	{
 		closeFile(myFile);
 		throw std::runtime_error("Error writing file: " + filename + " : " + getLastPhysfsError());

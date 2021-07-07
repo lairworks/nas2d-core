@@ -17,7 +17,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * Implements a virtual file system.
 	 *
@@ -32,7 +31,6 @@ namespace NAS2D
 			Overwrite,
 		};
 
-		Filesystem() = delete;
 		Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
 		Filesystem(const Filesystem&) = delete;
 		Filesystem& operator=(const Filesystem&) = delete;
@@ -40,26 +38,26 @@ namespace NAS2D
 		Filesystem& operator=(Filesystem&&) = delete;
 		~Filesystem();
 
-
 		std::string basePath() const;
 		std::string prefPath() const;
 
-		std::vector<std::string> searchPath() const;
 		int mountSoftFail(const std::string& path) const;
 		void mount(const std::string& path) const;
 		void mountReadWrite(const std::string& path) const;
 		void unmount(const std::string& path) const;
 
+		std::vector<std::string> searchPath() const;
+
 		std::vector<std::string> directoryList(const std::string& dir, const std::string& filter = std::string{}) const;
-
-		std::string read(const std::string& filename) const;
-		void write(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite) const;
-
-		void del(const std::string& path) const;
-		bool exists(const std::string& filename) const;
 
 		bool isDirectory(const std::string& path) const;
 		void makeDirectory(const std::string& path) const;
+
+		bool exists(const std::string& filename) const;
+		void del(const std::string& path) const;
+
+		std::string read(const std::string& filename) const;
+		void write(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite) const;
 
 		std::string dirSeparator() const;
 		std::string parentPath(std::string_view filePath) const;
@@ -69,5 +67,4 @@ namespace NAS2D
 		std::string mAppName;
 		std::string mOrganizationName;
 	};
-
 }

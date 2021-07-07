@@ -38,7 +38,7 @@ namespace {
 
 		if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
 
-		throw std::runtime_error(std::string{"Unable to close file handle: "} + getLastPhysfsError());
+		throw std::runtime_error("Unable to close file handle: " + getLastPhysfsError());
 	}
 }
 
@@ -58,7 +58,7 @@ Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, co
 
 	if (PHYSFS_init(argv_0.c_str()) == 0)
 	{
-		throw std::runtime_error(std::string{"Unable to start virtual filesystem: "} + getLastPhysfsError());
+		throw std::runtime_error("Unable to start virtual filesystem: " + getLastPhysfsError());
 	}
 }
 

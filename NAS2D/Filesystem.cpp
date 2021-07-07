@@ -240,7 +240,7 @@ std::string Filesystem::read(const std::string& filename) const
 	if (!myFile)
 	{
 		closeFile(myFile);
-		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Unable to load '" + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	// Ensure that the file size is greater than zero and can fit in a std::size_t
@@ -248,7 +248,7 @@ std::string Filesystem::read(const std::string& filename) const
 	if (fileLength < 0 || static_cast<PHYSFS_uint64>(fileLength) > std::numeric_limits<std::size_t>::max())
 	{
 		closeFile(myFile);
-		throw std::runtime_error(std::string("File '") + filename + "' is too large or size could not be determined");
+		throw std::runtime_error("File '" + filename + "' is too large or size could not be determined");
 	}
 
 	// Create buffer large enough to hold entire file
@@ -263,7 +263,7 @@ std::string Filesystem::read(const std::string& filename) const
 	// Ensure we read the expected length
 	if (actualReadLength < fileLength)
 	{
-		throw std::runtime_error(std::string("Unable to load '") + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Unable to load '" + filename + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 
 	return fileBuffer;

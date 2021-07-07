@@ -316,7 +316,7 @@ void Filesystem::write(const std::string& filename, const std::string& data, Wri
 		throw std::runtime_error("Error opening file for writing: " + filename + " : " + getLastPhysfsError());
 	}
 
-	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint32>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
+	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint64>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
 	{
 		closeFile(myFile);
 		throw std::runtime_error("Error writing file: " + filename + " : " + getLastPhysfsError());

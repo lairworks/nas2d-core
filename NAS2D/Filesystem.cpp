@@ -279,7 +279,7 @@ void Filesystem::makeDirectory(const std::string& path) const
 {
 	if (PHYSFS_mkdir(path.c_str()) == 0)
 	{
-		throw std::runtime_error("Unable to create directory '" + path + "': " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+		throw std::runtime_error("Error creating directory: " + path + " : " + PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 	}
 }
 

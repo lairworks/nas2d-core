@@ -435,7 +435,7 @@ namespace NAS2D
 		using unspecified_bool_type = StaticFunctionPtr SafeBoolStruct::*;
 
 	public:
-		operator unspecified_bool_type() const { return empty() ? 0 : &SafeBoolStruct::m_nonzero; }
+		operator unspecified_bool_type() const { return empty() ? nullptr : &SafeBoolStruct::m_nonzero; }
 
 		inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
 		inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }

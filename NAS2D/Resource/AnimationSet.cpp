@@ -169,9 +169,6 @@ namespace
 	/**
 	 * Iterates through all elements of a Sprite XML definition looking
 	 * for 'action' elements and processes them.
-	 *
-	 * \note	Action names are not case sensitive. "Case", "caSe",
-	 *			"CASE", etc. will all be viewed as identical.
 	 */
 	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 	{

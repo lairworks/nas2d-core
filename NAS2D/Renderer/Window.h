@@ -92,20 +92,6 @@ namespace NAS2D
 
 		virtual void setPositionAndDimensions(Point<int> newPosition, Vector<int> newClientDimensions) noexcept = 0;
 		virtual void setPositionAndDimensions(Rectangle<int> newPositionAndClientDimensions) noexcept = 0;
-
-		/**
-		 * @brief Set the native OS-specific window icon resource.
-		 * @param iconResource: Handle to the icon resource.
-		 * @return
-		*/
-		virtual void icon(void* iconResource) noexcept = 0;
-
-		/**
-		 * @brief Get the native OS-specific window icon resource.
-		 * @return void* handle to the native OS-specific window icon resource.
-		*/
-		[[nodiscard]] virtual void* icon() const noexcept = 0;
-	
 	};
 
 }

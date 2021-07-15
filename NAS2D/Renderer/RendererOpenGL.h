@@ -20,7 +20,6 @@ struct SDL_Cursor;
 
 namespace NAS2D
 {
-
 	/**
 	 * OpenGL Renderer.
 	 *
@@ -111,5 +110,4 @@ namespace NAS2D
 		SDL_GLContext sdlOglContext; /**< Primary OpenGL render context. */
 		std::map<int, SDL_Cursor*> cursors;
 	};
-
 } // namespace

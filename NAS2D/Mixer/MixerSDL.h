@@ -47,13 +47,11 @@ namespace NAS2D
 		MixerSDL& operator=(MixerSDL&&) = default;
 		~MixerSDL() override;
 
-		// Sound Functions
 		void playSound(const Sound& sound) override;
 		void stopSound() override;
 		void pauseSound() override;
 		void resumeSound() override;
 
-		// Music Functions
 		void stopMusic() override;
 		void pauseMusic() override;
 		void resumeMusic() override;
@@ -63,7 +61,6 @@ namespace NAS2D
 
 		bool musicPlaying() const override;
 
-		// Global Functions
 		void soundVolume(int level) override;
 		void musicVolume(int level) override;
 

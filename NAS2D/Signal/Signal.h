@@ -41,7 +41,14 @@ namespace NAS2D
 	class Signal : public SignalSource<Params...>
 	{
 	public:
-		void emit(Params...params) const { for (auto& delegate : this->delegateList) { delegate(params...); } }
+		void emit(Params...params) const
+		{
+			for (auto& delegate : this->delegateList)
+			{
+				delegate(params...);
+			}
+		}
+
 		void operator() (Params...params) const { emit(params...); }
 	};
 

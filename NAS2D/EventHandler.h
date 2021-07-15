@@ -60,9 +60,9 @@ namespace NAS2D
 		};
 
 
-			/**
-			* Keyboard scan codes.
-			*/
+		/**
+		* Keyboard scan codes.
+		*/
 		enum class KeyCode : uint32_t
 		{
 			KEY_UNKNOWN = 0,

@@ -6,7 +6,7 @@ AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: true
 
 AllowShortLambdasOnASingleLine: All
-AlwaysBreakTemplateDeclarations: true
+AlwaysBreakTemplateDeclarations: MultiLine
 BinPackArguments: true
 BinPackParameters: false
 #BreakBeforeBraces: Allman
@@ -32,7 +32,7 @@ BreakConstructorInitializers: AfterColon
 ColumnLimit: 0
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 4
-FixNamespaceComments: true
+FixNamespaceComments: false
 IncludeBlocks: Preserve
 IncludeCategories:
 # Prefer project-specific includes first

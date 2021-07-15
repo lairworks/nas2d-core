@@ -33,7 +33,6 @@
 // Compiler identification. It's not easy to identify Visual C++ because many vendors
 // fraudulently define Microsoft's identifiers.
 #if defined(_MSC_VER) && !defined(__MWERKS__) && !defined(__VECTOR_C) && !defined(__ICL) && !defined(__BORLANDC__)
-#define FASTDLGT_ISMSVC
 #define FASTDLGT_MICROSOFT_MFP
 #define FASTDLGT_HASINHERITANCE_KEYWORDS
 #endif

@@ -19,7 +19,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * Font resource.
 	 *
@@ -36,7 +35,6 @@ namespace NAS2D
 	class Font
 	{
 	public:
-
 		struct GlyphMetrics
 		{
 			Rectangle<float> uvRect{};
@@ -87,5 +85,4 @@ namespace NAS2D
 		std::string mResourceName; /**< File path */
 		FontInfo mFontInfo;
 	};
-
 } // namespace

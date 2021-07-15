@@ -20,7 +20,6 @@ struct SDL_Cursor;
 
 namespace NAS2D
 {
-
 	/**
 	 * OpenGL Renderer.
 	 *
@@ -102,7 +101,6 @@ namespace NAS2D
 		void setOrthoProjection(const Rectangle<float>& orthoBounds) override;
 
 	private:
-
 		void initGL();
 		void initVideo(Vector<int> resolution, bool fullscreen, bool vsync);
 
@@ -112,5 +110,4 @@ namespace NAS2D
 		SDL_GLContext sdlOglContext; /**< Primary OpenGL render context. */
 		std::map<int, SDL_Cursor*> cursors;
 	};
-
 } // namespace

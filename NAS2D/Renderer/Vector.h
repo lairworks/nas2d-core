@@ -46,17 +46,11 @@ namespace NAS2D
 
 		constexpr Vector operator+(const Vector& vector) const
 		{
-			return {
-				x + vector.x,
-				y + vector.y
-			};
+			return {x + vector.x, y + vector.y};
 		}
 		constexpr Vector operator-(const Vector& vector) const
 		{
-			return {
-				x - vector.x,
-				y - vector.y
-			};
+			return {x - vector.x, y - vector.y};
 		}
 
 		Vector& operator*=(BaseType scalar)
@@ -130,10 +124,7 @@ namespace NAS2D
 		template <typename NewBaseType>
 		constexpr operator Vector<NewBaseType>() const
 		{
-			return {
-				static_cast<NewBaseType>(x),
-				static_cast<NewBaseType>(y)
-			};
+			return {static_cast<NewBaseType>(x), static_cast<NewBaseType>(y)};
 		}
 
 		template <typename NewBaseType>

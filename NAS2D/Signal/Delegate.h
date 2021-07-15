@@ -28,8 +28,6 @@
 #include <cstring>
 
 
-#define FASTDELEGATE_USESTATICFUNCTIONHACK
-
 // Compiler identification. It's not easy to identify Visual C++ because many vendors
 // fraudulently define Microsoft's identifiers.
 #if defined(_MSC_VER) && !defined(__MWERKS__) && !defined(__VECTOR_C) && !defined(__ICL) && !defined(__BORLANDC__)
@@ -261,26 +259,7 @@ namespace NAS2D
 		detail::GenericClass* m_pthis;
 		GenericMemFuncType m_pFunction;
 
-	#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-		using GenericFuncPtr = void (*)();
-		GenericFuncPtr m_pStaticFunction;
-	#endif
-
 	public:
-	#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-		DelegateMemento() :
-			m_pthis(nullptr),
-			m_pFunction(nullptr),
-			m_pStaticFunction(nullptr),
-		{}
-
-		void clear()
-		{
-			m_pthis = nullptr;
-			m_pFunction = nullptr;
-			m_pStaticFunction = nullptr;
-		}
-	#else
 		DelegateMemento() :
 			m_pthis(nullptr),
 			m_pFunction(nullptr)
@@ -291,33 +270,13 @@ namespace NAS2D
 			m_pthis = nullptr;
 			m_pFunction = nullptr;
 		}
-	#endif
 	public:
-	#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-		inline bool IsEqual(const DelegateMemento& x) const
-		{
-			if (m_pFunction != x.m_pFunction) return false;
-			if (m_pStaticFunction != x.m_pStaticFunction) return false;
-			if (m_pStaticFunction)
-			{
-				return m_pthis == x.m_pthis;
-			}
-			else
-			{
-				return true;
-			}
-		}
-	#else
 		inline bool IsEqual(const DelegateMemento& x) const
 		{
 			return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction;
 		}
-	#endif
 		inline bool IsLess(const DelegateMemento& right) const
 		{
-			#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-			if (m_pStaticFunction || right.m_pStaticFunction) return m_pStaticFunction < right.m_pStaticFunction;
-			#endif
 			if (m_pthis != right.m_pthis) return m_pthis < right.m_pthis;
 
 			return memcmp(&m_pFunction, &right.m_pFunction, sizeof(m_pFunction)) < 0;
@@ -339,9 +298,6 @@ namespace NAS2D
 		DelegateMemento(const DelegateMemento& right) :
 			m_pthis(right.m_pthis),
 			m_pFunction(right.m_pFunction)
-			#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-			, m_pStaticFunction(right.m_pStaticFunction)
-			#endif
 		{}
 
 	protected:
@@ -349,9 +305,6 @@ namespace NAS2D
 		{
 			m_pFunction = right.m_pFunction;
 			m_pthis = right.m_pthis;
-			#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-			m_pStaticFunction = right.m_pStaticFunction;
-			#endif
 		}
 	};
 
@@ -366,18 +319,12 @@ namespace NAS2D
 			inline void bindmemfunc(X* pthis, XMemFunc function_to_bind)
 			{
 				m_pthis = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(pthis, function_to_bind, m_pFunction);
-				#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-				m_pStaticFunction = nullptr;
-				#endif
 			}
 
 			template <typename X, typename XMemFunc>
 			inline void bindconstmemfunc(const X* pthis, XMemFunc function_to_bind)
 			{
 				m_pthis = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(const_cast<X*>(pthis), function_to_bind, m_pFunction);
-				#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-				m_pStaticFunction = nullptr;
-				#endif
 			}
 
 			inline GenericClass* GetClosureThis() const
@@ -389,32 +336,6 @@ namespace NAS2D
 			{
 				return CastMemFuncPtr<GenericMemFunc>(m_pFunction);
 			}
-
-		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-
-		public:
-			template <typename DerivedClass>
-			inline void CopyFrom(DerivedClass* pParent, const DelegateMemento& x)
-			{
-				SetMementoFrom(x);
-				if (m_pStaticFunction) m_pthis = reinterpret_cast<GenericClass*>(pParent);
-			}
-
-			template <typename DerivedClass, typename ParentInvokerSig>
-			inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
-			{
-				if (!function_to_bind)
-				{
-					m_pFunction = nullptr;
-				}
-				else
-				{
-					bindmemfunc(pParent, static_function_invoker);
-				}
-				m_pStaticFunction = reinterpret_cast<GenericFuncPtr>(function_to_bind);
-			}
-			inline UnvoidStaticFuncPtr GetStaticFunction() const { return reinterpret_cast<UnvoidStaticFuncPtr>(m_pStaticFunction); }
-		#else
 
 			template <typename DerivedClass>
 			inline void CopyFrom(DerivedClass*, const DelegateMemento& right)
@@ -442,7 +363,6 @@ namespace NAS2D
 				static_assert(sizeof(UnvoidStaticFuncPtr) != sizeof(this), "Can't use evil method");
 				return horrible_cast<UnvoidStaticFuncPtr>(this);
 			}
-		#endif
 
 			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr)
 			{

@@ -48,10 +48,6 @@
 #define FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
 #endif
 
-#ifdef __GNUC__ // Workaround GCC bug #8271
-#define FASTDELEGATE_GCC_BUG_8271
-#endif
-
 namespace NAS2D
 {
 
@@ -395,17 +391,6 @@ namespace NAS2D
 				m_pStaticFunction = nullptr;
 				#endif
 			}
-
-		#ifdef FASTDELEGATE_GCC_BUG_8271 // At present, GCC doesn't recognize constness of MFPs in templates
-			template <typename X, typename XMemFunc>
-			inline void bindmemfunc(const X* pthis, XMemFunc function_to_bind)
-			{
-				bindconstmemfunc(pthis, function_to_bind);
-				#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-				m_pStaticFunction = nullptr;
-				#endif
-			}
-		#endif
 
 			inline GenericClass* GetClosureThis() const
 			{

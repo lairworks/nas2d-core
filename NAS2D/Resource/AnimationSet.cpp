@@ -143,10 +143,8 @@ namespace
 	{
 		std::map<std::string, std::string> imageSheetMap;
 
-		for (const auto* node = element->firstChildElement(); node; node = node->nextSiblingElement())
+		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
-			if (node->value() == "imagesheet")
-			{
 				const auto dictionary = attributesToDictionary(*node);
 				const auto id = dictionary.get("id");
 				const auto src = dictionary.get("src");
@@ -169,7 +167,6 @@ namespace
 				const auto imagePath = basePath + src;
 				imageSheetMap.try_emplace(id, imagePath);
 				imageCache.load(imagePath);
-			}
 		}
 
 		return imageSheetMap;

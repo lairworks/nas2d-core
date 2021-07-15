@@ -23,7 +23,7 @@ namespace NAS2D
 		~RendererNull() override {}
 
 		std::vector<DisplayDesc> getDisplayModes() const override { return {}; }
-		DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc&) const override { return{}; }
+		DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc&) const override { return {}; }
 		Vector<int> getWindowClientArea() const noexcept override { return {}; }
 
 		void drawImage(const Image&, Point<float>, float = 1.0, Color = Color::Normal) override {}

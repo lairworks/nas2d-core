@@ -32,7 +32,12 @@ namespace NAS2D
 
 		template <typename T>
 		T to() const { return stringTo<T>(value); }
+
 		template <typename T>
-		StringValue& from(T newValue) { value = stringFrom<T>(newValue); return *this; }
+		StringValue& from(T newValue)
+		{
+			value = stringFrom<T>(newValue);
+			return *this;
+		}
 	};
 }

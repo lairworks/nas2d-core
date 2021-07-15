@@ -66,8 +66,7 @@ namespace NAS2D
 		 * Type \c T must be default constructible to use this overload.
 		 */
 		template <typename Type = T>
-		static
-		std::enable_if_t<std::is_default_constructible<Type>::value, T&>
+		static std::enable_if_t<std::is_default_constructible<Type>::value, T&>
 		get()
 		{
 			if (!mInstance)
@@ -85,8 +84,7 @@ namespace NAS2D
 		 * Type \c T is not default constructible for this overload.
 		 */
 		template <typename Type = T>
-		static
-		std::enable_if_t<!std::is_default_constructible<Type>::value, T&>
+		static std::enable_if_t<!std::is_default_constructible<Type>::value, T&>
 		get()
 		{
 			if (!mInstance)

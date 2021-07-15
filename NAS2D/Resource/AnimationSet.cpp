@@ -143,33 +143,30 @@ namespace
 	{
 		std::map<std::string, std::string> imageSheetMap;
 
-		for (const auto* node = element->firstChildElement(); node; node = node->nextSiblingElement())
+		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
-			if (node->value() == "imagesheet")
+			const auto dictionary = attributesToDictionary(*node);
+			const auto id = dictionary.get("id");
+			const auto src = dictionary.get("src");
+
+			if (id.empty())
 			{
-				const auto dictionary = attributesToDictionary(*node);
-				const auto id = dictionary.get("id");
-				const auto src = dictionary.get("src");
-
-				if (id.empty())
-				{
-					throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row()));
-				}
-
-				if (src.empty())
-				{
-					throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
-				}
-
-				if (imageSheetMap.find(id) != imageSheetMap.end())
-				{
-					throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
-				}
-
-				const auto imagePath = basePath + src;
-				imageSheetMap.try_emplace(id, imagePath);
-				imageCache.load(imagePath);
+				throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row()));
 			}
+
+			if (src.empty())
+			{
+				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
+			}
+
+			if (imageSheetMap.find(id) != imageSheetMap.end())
+			{
+				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
+			}
+
+			const auto imagePath = basePath + src;
+			imageSheetMap.try_emplace(id, imagePath);
+			imageCache.load(imagePath);
 		}
 
 		return imageSheetMap;
@@ -184,24 +181,21 @@ namespace
 	{
 		std::map<std::string, std::vector<AnimationSet::Frame>> actions;
 
-		for (const auto* action = element->firstChildElement(); action; action = action->nextSiblingElement())
+		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))
 		{
-			if (action->value() == "action")
+			const auto dictionary = attributesToDictionary(*action);
+			const auto actionName = dictionary.get("name");
+
+			if (actionName.empty())
 			{
-				const auto dictionary = attributesToDictionary(*action);
-				const auto actionName = dictionary.get("name");
-
-				if (actionName.empty())
-				{
-					throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(action->row()));
-				}
-				if (actions.find(actionName) != actions.end())
-				{
-					throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
-				}
-
-				actions[actionName] = processFrames(imageSheetMap, actionName, action, imageCache);
+				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(action->row()));
 			}
+			if (actions.find(actionName) != actions.end())
+			{
+				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
+			}
+
+			actions[actionName] = processFrames(imageSheetMap, actionName, action, imageCache);
 		}
 
 		return actions;
@@ -215,14 +209,9 @@ namespace
 	{
 		std::vector<AnimationSet::Frame> frameList;
 
-		for (const auto* frame = element->firstChildElement(); frame; frame = frame->nextSiblingElement())
+		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))
 		{
 			int currentRow = frame->row();
-
-			if (frame->value() != "frame")
-			{
-				throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow));
-			}
 
 			const auto dictionary = attributesToDictionary(*frame);
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "delay", "x", "y", "width", "height", "anchorx", "anchory"}, {});

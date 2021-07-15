@@ -93,8 +93,7 @@ TEST(String, stringTo) {
 	EXPECT_EQ(int{0}, NAS2D::stringTo<int>("0"));
 	using unsignedInt = unsigned int;
 	EXPECT_EQ(unsignedInt{0}, NAS2D::stringTo<unsignedInt>("0"));
-	// TODO: Fix problem case with unexpected exception
-	// EXPECT_EQ(unsignedInt{std::numeric_limits<unsignedInt>::max()}, NAS2D::stringTo<unsignedInt>("-1"));
+	EXPECT_EQ(unsignedInt{std::numeric_limits<unsignedInt>::max()}, NAS2D::stringTo<unsignedInt>("-1"));
 
 	EXPECT_THROW(NAS2D::stringTo<long>(""), std::invalid_argument);
 	EXPECT_EQ(long{-1}, NAS2D::stringTo<long>("-1"));

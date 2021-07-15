@@ -38,16 +38,6 @@
 #define FASTDLGT_HASINHERITANCE_KEYWORDS
 #endif
 
-// Does it allow function declarator syntax? The following compilers are known to work:
-#if defined(FASTDLGT_ISMSVC) && (_MSC_VER >= 1310) // VC 7.1
-#define FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
-#endif
-
-// Gcc(2.95+), and versions of Digital Mars, Intel and Comeau in common use.
-#if defined(__DMC__) || defined(__GNUC__) || defined(__ICL) || defined(__COMO__)
-#define FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
-#endif
-
 namespace NAS2D
 {
 
@@ -573,8 +563,6 @@ namespace NAS2D
 	};
 
 
-	#ifdef FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
-
 	template <typename Signature>
 	class Delegate;
 
@@ -607,8 +595,6 @@ namespace NAS2D
 			return *this;
 		}
 	};
-
-	#endif
 
 	template <typename X, typename Y, typename RetType, typename... Params>
 	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType (X::*func)(Params...))

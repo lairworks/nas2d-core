@@ -27,7 +27,9 @@ namespace NAS2D
 
 	class Font;
 	class Image;
-	template <typename BaseType> struct Rectangle;
+
+	template <typename BaseType>
+	struct Rectangle;
 
 
 	/**

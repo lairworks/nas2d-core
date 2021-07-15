@@ -38,12 +38,7 @@ namespace NAS2D
 		// Factory method
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint)
 		{
-			return {
-				startPoint.x,
-				startPoint.y,
-				endPoint.x - startPoint.x,
-				endPoint.y - startPoint.y
-			};
+			return Create(startPoint, endPoint - startPoint);
 		}
 
 		constexpr bool operator==(const Rectangle& rect) const

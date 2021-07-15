@@ -21,8 +21,11 @@ namespace NAS2D
 
 
 		StringValue() = default;
+
 		template <typename T>
-		StringValue(T newValue) : value{stringFrom<T>(newValue)} {}
+		StringValue(T newValue) :
+			value{stringFrom<T>(newValue)}
+		{}
 
 		bool operator==(const StringValue& other) const { return value == other.value; }
 		bool operator!=(const StringValue& other) const { return !(*this == other); }
@@ -32,7 +35,12 @@ namespace NAS2D
 
 		template <typename T>
 		T to() const { return stringTo<T>(value); }
+
 		template <typename T>
-		StringValue& from(T newValue) { value = stringFrom<T>(newValue); return *this; }
+		StringValue& from(T newValue)
+		{
+			value = stringFrom<T>(newValue);
+			return *this;
+		}
 	};
 }

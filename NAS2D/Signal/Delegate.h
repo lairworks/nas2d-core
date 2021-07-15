@@ -393,7 +393,7 @@ namespace NAS2D
 	}
 
 
-	template <typename RetType, typename ... Params>
+	template <typename RetType, typename... Params>
 	class DelegateX
 	{
 	private:
@@ -456,7 +456,7 @@ namespace NAS2D
 	template <typename Signature>
 	class Delegate;
 
-	template <typename RetType, typename ... Params>
+	template <typename RetType, typename... Params>
 	class Delegate<RetType(Params...)> : public DelegateX<RetType, Params...>
 	{
 	public:
@@ -477,9 +477,9 @@ namespace NAS2D
 
 	#endif
 
-	template <typename X, typename Y, typename RetType, typename ... Params>
+	template <typename X, typename Y, typename RetType, typename... Params>
 	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...)) { return DelegateX<RetType, Params...>(x, func); }
-	template <typename X, typename Y, typename RetType, typename ... Params>
+	template <typename X, typename Y, typename RetType, typename... Params>
 	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...) const) { return DelegateX<RetType, Params...>(x, func); }
 
 }

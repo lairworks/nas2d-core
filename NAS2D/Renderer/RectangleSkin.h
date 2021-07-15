@@ -15,7 +15,9 @@ namespace NAS2D
 {
 	class Image;
 	class Renderer;
-	template <typename BaseType> struct Rectangle;
+
+	template <typename BaseType>
+	struct Rectangle;
 
 
 	class RectangleSkin

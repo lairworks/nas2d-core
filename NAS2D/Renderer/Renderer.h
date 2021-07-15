@@ -27,7 +27,9 @@ namespace NAS2D
 
 	class Font;
 	class Image;
-	template <typename BaseType> struct Rectangle;
+
+	template <typename BaseType>
+	struct Rectangle;
 
 
 	/**
@@ -147,7 +149,7 @@ namespace NAS2D
 		std::string mDriverName{"NULL Renderer"}; /**< OS Driver name */
 		std::string mTitle{"Default Application"}; /**< Title to use for the application. */
 
-		Color mFadeColor{0,0,0,255}; /**< Fade Color. */
+		Color mFadeColor{Color::Black}; /**< Fade Color. */
 		float mFadeStep{0.0f}; /**< Amount of fading to do per milisecond. */
 		float mCurrentFade{0.0f}; /**< Current fade amount. */
 

@@ -184,10 +184,8 @@ namespace
 	{
 		std::map<std::string, std::vector<AnimationSet::Frame>> actions;
 
-		for (const auto* action = element->firstChildElement(); action; action = action->nextSiblingElement())
+		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))
 		{
-			if (action->value() == "action")
-			{
 				const auto dictionary = attributesToDictionary(*action);
 				const auto actionName = dictionary.get("name");
 
@@ -201,7 +199,6 @@ namespace
 				}
 
 				actions[actionName] = processFrames(imageSheetMap, actionName, action, imageCache);
-			}
 		}
 
 		return actions;

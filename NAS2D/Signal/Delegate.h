@@ -214,9 +214,6 @@ namespace NAS2D
 		};
 
 
-		#if (_MSC_VER <1300)
-		#error Support for this compiler is no longer provided. Please upgrade.
-		#else
 		template <>
 		struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3 * sizeof(int)>
 		{
@@ -247,7 +244,6 @@ namespace NAS2D
 				return reinterpret_cast<GenericClass*>(reinterpret_cast<char*>(pthis) + u.s.delta + virtual_delta);
 			};
 		};
-		#endif
 		#endif
 	}
 

@@ -102,7 +102,6 @@ namespace NAS2D
 		void setOrthoProjection(const Rectangle<float>& orthoBounds) override;
 
 	private:
-
 		void initGL();
 		void initVideo(Vector<int> resolution, bool fullscreen, bool vsync);
 

@@ -213,11 +213,6 @@ namespace
 		{
 			int currentRow = frame->row();
 
-			if (frame->value() != "frame")
-			{
-				throw std::runtime_error("Sprite frame tag unexpected: <" + frame->value() + "> : " + endTag(currentRow));
-			}
-
 			const auto dictionary = attributesToDictionary(*frame);
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "delay", "x", "y", "width", "height", "anchorx", "anchory"}, {});
 

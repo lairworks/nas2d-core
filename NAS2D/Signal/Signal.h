@@ -37,7 +37,7 @@ namespace NAS2D
 	 *
 	 * See https://github.com/lairworks/nas2d-core/wiki/Signal-&-Slots for usage documentation.
 	 */
-	template <typename ... Params>
+	template <typename... Params>
 	class Signal : public SignalSource<Params...>
 	{
 	public:

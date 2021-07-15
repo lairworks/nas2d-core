@@ -17,7 +17,7 @@
 namespace NAS2D
 {
 
-	template <typename Resource, typename ... Params>
+	template <typename Resource, typename... Params>
 	class ResourceCache
 	{
 	public:

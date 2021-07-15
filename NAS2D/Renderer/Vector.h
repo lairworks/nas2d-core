@@ -37,6 +37,7 @@ namespace NAS2D
 			y += vector.y;
 			return *this;
 		}
+
 		Vector& operator-=(const Vector& vector)
 		{
 			x -= vector.x;
@@ -48,6 +49,7 @@ namespace NAS2D
 		{
 			return {x + vector.x, y + vector.y};
 		}
+
 		constexpr Vector operator-(const Vector& vector) const
 		{
 			return {x - vector.x, y - vector.y};

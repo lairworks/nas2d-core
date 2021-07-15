@@ -30,8 +30,6 @@
 
 namespace NAS2D
 {
-
-
 	/**
 	 * Signal with preset number of parameters
 	 *
@@ -51,6 +49,4 @@ namespace NAS2D
 
 		void operator() (Params...params) const { emit(params...); }
 	};
-
-
 } // namespace

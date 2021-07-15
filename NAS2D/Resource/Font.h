@@ -36,7 +36,6 @@ namespace NAS2D
 	class Font
 	{
 	public:
-
 		struct GlyphMetrics
 		{
 			Rectangle<float> uvRect{};

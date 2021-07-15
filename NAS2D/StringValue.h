@@ -21,6 +21,7 @@ namespace NAS2D
 
 
 		StringValue() = default;
+
 		template <typename T>
 		StringValue(T newValue) :
 			value{stringFrom<T>(newValue)}

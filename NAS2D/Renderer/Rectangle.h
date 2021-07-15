@@ -27,12 +27,7 @@ namespace NAS2D
 		// Factory method
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size)
 		{
-			return {
-				startPoint.x,
-				startPoint.y,
-				size.x,
-				size.y
-			};
+			return {startPoint.x, startPoint.y, size.x, size.y};
 		}
 
 		// Factory method

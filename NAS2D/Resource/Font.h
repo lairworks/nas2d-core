@@ -19,7 +19,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * Font resource.
 	 *
@@ -86,5 +85,4 @@ namespace NAS2D
 		std::string mResourceName; /**< File path */
 		FontInfo mFontInfo;
 	};
-
 } // namespace

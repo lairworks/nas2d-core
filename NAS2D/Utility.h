@@ -159,6 +159,7 @@ namespace NAS2D
 		static T* mInstance; /**< Internal instance of type \c T. */
 	};
 
-	template <typename T> T* Utility<T>::mInstance = nullptr;
 
+	template <typename T>
+	T* Utility<T>::mInstance = nullptr;
 } // namespace

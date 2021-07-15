@@ -104,4 +104,3 @@ namespace NAS2D
 	using StringList = std::vector<std::string>;
 
 } // namespace NAS2D
-

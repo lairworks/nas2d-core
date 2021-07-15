@@ -145,28 +145,28 @@ namespace
 
 		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
-				const auto dictionary = attributesToDictionary(*node);
-				const auto id = dictionary.get("id");
-				const auto src = dictionary.get("src");
+			const auto dictionary = attributesToDictionary(*node);
+			const auto id = dictionary.get("id");
+			const auto src = dictionary.get("src");
 
-				if (id.empty())
-				{
-					throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row()));
-				}
+			if (id.empty())
+			{
+				throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row()));
+			}
 
-				if (src.empty())
-				{
-					throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
-				}
+			if (src.empty())
+			{
+				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
+			}
 
-				if (imageSheetMap.find(id) != imageSheetMap.end())
-				{
-					throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
-				}
+			if (imageSheetMap.find(id) != imageSheetMap.end())
+			{
+				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
+			}
 
-				const auto imagePath = basePath + src;
-				imageSheetMap.try_emplace(id, imagePath);
-				imageCache.load(imagePath);
+			const auto imagePath = basePath + src;
+			imageSheetMap.try_emplace(id, imagePath);
+			imageCache.load(imagePath);
 		}
 
 		return imageSheetMap;

@@ -21,7 +21,7 @@
 
 namespace NAS2D
 {
-	template<typename T>
+	template <typename T>
 	std::string stringFrom(T value)
 	{
 		if constexpr (std::is_convertible<T, std::string>::value) {
@@ -33,7 +33,7 @@ namespace NAS2D
 		}
 	}
 
-	template<typename T>
+	template <typename T>
 	T stringTo(const std::string& value) {
 		if constexpr (std::is_same_v<T, std::string> || std::is_same_v<T, const char*>) {
 			return value;

@@ -51,7 +51,7 @@ namespace NAS2D
 	 * \note	\c Utility does not catch exceptions. If any instantiated object
 	 *			throws the client will be responsible for handling it.
 	 */
-	template<typename T>
+	template <typename T>
 	class Utility
 	{
 	public:
@@ -65,7 +65,7 @@ namespace NAS2D
 		 * \c T. If an instance doesn't exist, one is created.
 		 * Type \c T must be default constructible to use this overload.
 		 */
-		template<typename Type = T>
+		template <typename Type = T>
 		static
 		std::enable_if_t<std::is_default_constructible<Type>::value, T&>
 		get()
@@ -84,7 +84,7 @@ namespace NAS2D
 		 * \c T. If an instance doesn't exist, an exception is thrown.
 		 * Type \c T is not default constructible for this overload.
 		 */
-		template<typename Type = T>
+		template <typename Type = T>
 		static
 		std::enable_if_t<!std::is_default_constructible<Type>::value, T&>
 		get()
@@ -130,7 +130,7 @@ namespace NAS2D
 		 *
 		 * \note	This method should be called before <tt>Utility::get()</tt>.
 		 */
-		template<typename Type = T, typename... Args>
+		template <typename Type = T, typename... Args>
 		static Type& init(Args&&... args)
 		{
 			// Instantiate a new object with forwarded constructor arguments
@@ -159,6 +159,6 @@ namespace NAS2D
 		static T* mInstance; /**< Internal instance of type \c T. */
 	};
 
-	template<typename T> T* Utility<T>::mInstance = nullptr;
+	template <typename T> T* Utility<T>::mInstance = nullptr;
 
 } // namespace

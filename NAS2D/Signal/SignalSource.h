@@ -18,7 +18,7 @@ namespace NAS2D
 {
 
 
-	template<typename ... Params>
+	template <typename ... Params>
 	class SignalSource
 	{
 	public:
@@ -32,18 +32,18 @@ namespace NAS2D
 
 		void connect(DelegateType delegate) { delegateList.insert(delegate); }
 
-		template<typename X, typename Y>
+		template <typename X, typename Y>
 		void connect(Y * obj, void (X::*func)(Params...)) { delegateList.insert(MakeDelegate(obj, func)); }
 
-		template<typename X, typename Y>
+		template <typename X, typename Y>
 		void connect(Y * obj, void (X::*func)(Params...) const) { delegateList.insert(MakeDelegate(obj, func)); }
 
 		void disconnect(DelegateType delegate) { delegateList.erase(delegate); }
 
-		template<typename X, typename Y>
+		template <typename X, typename Y>
 		void disconnect(Y * obj, void (X::*func)(Params...)) { delegateList.erase(MakeDelegate(obj, func)); }
 
-		template<typename X, typename Y>
+		template <typename X, typename Y>
 		void disconnect(Y * obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	protected:

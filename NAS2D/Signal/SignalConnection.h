@@ -18,7 +18,7 @@ namespace NAS2D
 {
 
 
-	template<typename ... Params>
+	template <typename ... Params>
 	class SignalConnection
 	{
 	public:

@@ -41,7 +41,7 @@ namespace
 	AnimationSet processXml(std::string filePath, ImageCache& imageCache);
 	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
@@ -195,7 +195,12 @@ namespace
 				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
 			}
 
-			actions[actionName] = processFrames(imageSheetMap, actionName, action, imageCache);
+			actions[actionName] = processFrames(imageSheetMap, action, imageCache);
+
+			if (actions[actionName].empty())
+			{
+				throw std::runtime_error("Sprite Action contains no valid frames: " + actionName);
+			}
 		}
 
 		return actions;
@@ -205,7 +210,7 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const std::string& action, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::vector<AnimationSet::Frame> frameList;
 
@@ -260,11 +265,6 @@ namespace
 			const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 			const auto anchorOffset = Vector{anchorx, anchory};
 			frameList.push_back(AnimationSet::Frame{image, bounds, anchorOffset, delay});
-		}
-
-		if (frameList.empty())
-		{
-			throw std::runtime_error("Sprite Action contains no valid frames: " + action);
 		}
 
 		return frameList;

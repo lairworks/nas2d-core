@@ -186,19 +186,19 @@ namespace
 
 		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))
 		{
-				const auto dictionary = attributesToDictionary(*action);
-				const auto actionName = dictionary.get("name");
+			const auto dictionary = attributesToDictionary(*action);
+			const auto actionName = dictionary.get("name");
 
-				if (actionName.empty())
-				{
-					throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(action->row()));
-				}
-				if (actions.find(actionName) != actions.end())
-				{
-					throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
-				}
+			if (actionName.empty())
+			{
+				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(action->row()));
+			}
+			if (actions.find(actionName) != actions.end())
+			{
+				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
+			}
 
-				actions[actionName] = processFrames(imageSheetMap, actionName, action, imageCache);
+			actions[actionName] = processFrames(imageSheetMap, actionName, action, imageCache);
 		}
 
 		return actions;

@@ -71,11 +71,7 @@ namespace NAS2D
 			return static_cast<T>(integerValue);
 		} else if constexpr (std::is_integral_v<T> && std::is_unsigned_v<T>) {
 			const auto integerValue = std::stoul(value);
-			if constexpr (std::numeric_limits<unsigned long>::max() > std::numeric_limits<T>::max()) {
-				if (integerValue > std::numeric_limits<T>::max()) {
-					throw std::out_of_range("Value out of range: " + value);
-				}
-			}
+			// Out of range values have well defined wraparound for unsigned values
 			return static_cast<T>(integerValue);
 		} else {
 			static_assert(true, "Unsupported type");

@@ -25,7 +25,7 @@ namespace NAS2D
 
 	private:
 		static constexpr unsigned int FpsCountsSize = 25;
-		unsigned int fpsCounts[FpsCountsSize] = {0};
+		unsigned int fpsCounts[FpsCountsSize] = {};
 
 		unsigned int currentTick = 0;
 		unsigned int fpsCountIndex = 0;

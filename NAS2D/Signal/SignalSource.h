@@ -16,8 +16,6 @@
 
 namespace NAS2D
 {
-
-
 	template <typename... Params>
 	class SignalSource
 	{
@@ -49,6 +47,4 @@ namespace NAS2D
 	protected:
 		std::set<DelegateType> delegateList;
 	};
-
-
 } // namespace

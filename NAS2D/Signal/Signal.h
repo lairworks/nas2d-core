@@ -47,6 +47,6 @@ namespace NAS2D
 			}
 		}
 
-		void operator() (Params... params) const { emit(params...); }
+		void operator()(Params... params) const { emit(params...); }
 	};
 } // namespace

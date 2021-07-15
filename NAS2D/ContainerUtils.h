@@ -42,7 +42,7 @@ namespace NAS2D
 				std::remove_if(
 					container1.begin(),
 					container1.end(),
-					[&container2](const T& value){
+					[&container2](const T& value) {
 						return std::find(container2.begin(), container2.end(), value) != container2.end();
 					}
 				),
@@ -134,7 +134,7 @@ namespace NAS2D
 	template <typename KeyValueContainer>
 	std::vector<typename KeyValueContainer::key_type> getKeys(const KeyValueContainer& map)
 	{
-		return mapToVector(map, [](auto keyValuePair){return keyValuePair.first;});
+		return mapToVector(map, [](auto keyValuePair) { return keyValuePair.first; });
 	}
 
 	/// Key-wise merge of values from two key/value containers

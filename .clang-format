@@ -32,7 +32,7 @@ BreakConstructorInitializers: AfterColon
 ColumnLimit: 0
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 4
-FixNamespaceComments: true
+FixNamespaceComments: false
 IncludeBlocks: Preserve
 IncludeCategories:
 # Prefer project-specific includes first

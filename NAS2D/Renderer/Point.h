@@ -77,10 +77,7 @@ namespace NAS2D
 		template <typename NewBaseType>
 		constexpr operator Point<NewBaseType>() const
 		{
-			return {
-				static_cast<NewBaseType>(x),
-				static_cast<NewBaseType>(y)
-			};
+			return {static_cast<NewBaseType>(x), static_cast<NewBaseType>(y)};
 		}
 
 		template <typename NewBaseType>

@@ -93,12 +93,15 @@ TEST(String, stringTo) {
 	EXPECT_EQ(int{0}, NAS2D::stringTo<int>("0"));
 	using unsignedInt = unsigned int;
 	EXPECT_EQ(unsignedInt{0}, NAS2D::stringTo<unsignedInt>("0"));
+	// TODO: Fix problem case with unexpected exception
+	// EXPECT_EQ(unsignedInt{std::numeric_limits<unsignedInt>::max()}, NAS2D::stringTo<unsignedInt>("-1"));
 
 	EXPECT_THROW(NAS2D::stringTo<long>(""), std::invalid_argument);
 	EXPECT_EQ(long{-1}, NAS2D::stringTo<long>("-1"));
 	EXPECT_EQ(long{0}, NAS2D::stringTo<long>("0"));
 	using unsignedLong = unsigned long;
 	EXPECT_EQ(unsignedLong{0}, NAS2D::stringTo<unsignedLong>("0"));
+	EXPECT_EQ(unsignedLong{std::numeric_limits<unsignedLong>::max()}, NAS2D::stringTo<unsignedLong>("-1"));
 
 	using longLong = long long;
 	EXPECT_THROW(NAS2D::stringTo<longLong>(""), std::invalid_argument);
@@ -106,6 +109,7 @@ TEST(String, stringTo) {
 	EXPECT_EQ(longLong{0}, NAS2D::stringTo<longLong>("0"));
 	using unsignedLongLong = unsigned long long;
 	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>("0"));
+	EXPECT_EQ(unsignedLongLong{std::numeric_limits<unsignedLongLong>::max()}, NAS2D::stringTo<unsignedLongLong>("-1"));
 
 	EXPECT_THROW(NAS2D::stringTo<float>(""), std::invalid_argument);
 	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);

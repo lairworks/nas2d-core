@@ -37,12 +37,11 @@
 #define FASTDLGT_HASINHERITANCE_KEYWORDS
 #endif
 
+
 namespace NAS2D
 {
-
 	namespace detail
 	{
-
 		template <typename OutputClass, typename InputClass>
 		union horrible_union
 		{
@@ -457,7 +456,6 @@ namespace NAS2D
 				}
 			}
 		};
-
 	}
 
 

@@ -209,7 +209,7 @@ namespace
 	{
 		std::vector<AnimationSet::Frame> frameList;
 
-		for (const auto* frame = element->firstChildElement(); frame; frame = frame->nextSiblingElement())
+		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))
 		{
 			int currentRow = frame->row();
 

@@ -44,7 +44,7 @@
 #endif
 
 // Gcc(2.95+), and versions of Digital Mars, Intel and Comeau in common use.
-#if defined (__DMC__) || defined(__GNUC__) || defined(__ICL) || defined(__COMO__)
+#if defined(__DMC__) || defined(__GNUC__) || defined(__ICL) || defined(__COMO__)
 #define FASTDELEGATE_ALLOW_FUNCTION_TYPE_SYNTAX
 #endif
 

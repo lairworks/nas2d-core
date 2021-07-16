@@ -21,7 +21,7 @@ Functions should use doxygen style comments. Formal parameters should be documen
 ```cpp
 /**
  * Draws an image at a specified screen coordinate.
- * 
+ *
  * \param img	Reference to an Image.
  * \param x		X-Coordinate
  * \param y		Y-Coordinate
@@ -41,7 +41,7 @@ Comments should be used only to document functions or to note assumptions that t
 ```cpp
 // get the country code
 std::string country_code = get_country_code(SOME_INT_IDENTIFIER);
- 
+
 // if country code is US
 if (country_code == "US")
 {

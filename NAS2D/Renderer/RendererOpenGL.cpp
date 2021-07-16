@@ -258,11 +258,11 @@ void RendererOpenGL::drawImageRepeated(const Image& image, const Rectangle<float
 
 /**
  * Draws part of a larger texture repeated.
- * 
+ *
  * This is a brute force method of doing this. Unfortunately OpenGL doesn't do texture
  * wrapping for only part of a texture, it only does it if geometry area is larger than
  * an entire texture.
- * 
+ *
  * There are two possible ways to get much better performance out of this: Use a fragment
  * shader (probably the simplest) or have the Renderer save the texture portion as a new
  * texture and reference it that way (bit of overhead to do a texture lookup and would

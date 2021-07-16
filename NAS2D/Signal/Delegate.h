@@ -254,10 +254,21 @@ namespace NAS2D
 	public:
 	#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 		DelegateMemento() : m_pthis(nullptr), m_pFunction(nullptr), m_pStaticFunction(nullptr) {};
-		void clear() { m_pthis = nullptr; m_pFunction = nullptr; m_pStaticFunction = nullptr; }
+
+		void clear()
+		{
+			m_pthis = nullptr;
+			m_pFunction = nullptr;
+			m_pStaticFunction = nullptr;
+		}
 	#else
 		DelegateMemento() : m_pthis(nullptr), m_pFunction(nullptr) {}
-		void clear() { m_pthis = nullptr; m_pFunction = nullptr; }
+
+		void clear()
+		{
+			m_pthis = nullptr;
+			m_pFunction = nullptr;
+		}
 	#endif
 	public:
 	#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
@@ -269,7 +280,10 @@ namespace NAS2D
 			else return true;
 		}
 	#else
-		inline bool IsEqual(const DelegateMemento& x) const { return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction; }
+		inline bool IsEqual(const DelegateMemento& x) const
+		{
+			return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction;
+		}
 	#endif
 		inline bool IsLess(const DelegateMemento& right) const
 		{
@@ -285,9 +299,15 @@ namespace NAS2D
 		inline bool empty() const { return !m_pthis && !m_pFunction; }
 
 	public:
-		DelegateMemento& operator=(const DelegateMemento& right) { SetMementoFrom(right); return *this; }
+		DelegateMemento& operator=(const DelegateMemento& right)
+		{
+			SetMementoFrom(right);
+			return *this;
+		}
+
 		inline bool operator<(const DelegateMemento& right) { return IsLess(right); }
 		inline bool operator>(const DelegateMemento& right) { return right.IsLess(*this); }
+
 		DelegateMemento(const DelegateMemento& right) : m_pthis(right.m_pthis), m_pFunction(right.m_pFunction)
 			#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 			, m_pStaticFunction(right.m_pStaticFunction)
@@ -341,8 +361,15 @@ namespace NAS2D
 			}
 		#endif
 
-			inline GenericClass* GetClosureThis() const { return m_pthis; }
-			inline GenericMemFunc GetClosureMemPtr() const { return CastMemFuncPtr<GenericMemFunc>(m_pFunction); }
+			inline GenericClass* GetClosureThis() const
+			{
+				return m_pthis;
+			}
+
+			inline GenericMemFunc GetClosureMemPtr() const
+			{
+				return CastMemFuncPtr<GenericMemFunc>(m_pFunction);
+			}
 
 		#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 
@@ -365,7 +392,10 @@ namespace NAS2D
 		#else
 
 			template <typename DerivedClass>
-			inline void CopyFrom(DerivedClass*, const DelegateMemento& right) { SetMementoFrom(right); }
+			inline void CopyFrom(DerivedClass*, const DelegateMemento& right)
+			{
+				SetMementoFrom(right);
+			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>
 			inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
@@ -409,26 +439,62 @@ namespace NAS2D
 
 		DelegateX() { clear(); }
 		DelegateX(const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); }
-		DelegateX& operator=(const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); return *this; }
+
+		DelegateX& operator=(const DelegateX& x)
+		{
+			m_Closure.CopyFrom(this, x.m_Closure);
+			return *this;
+		}
+
 		bool operator==(const DelegateX& x) const { return m_Closure.IsEqual(x.m_Closure); }
 		bool operator!=(const DelegateX& x) const { return !m_Closure.IsEqual(x.m_Closure); }
 		bool operator<(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
 		bool operator>(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
 
 		template <typename X, typename Y>
-		DelegateX(Y* pthis, DesiredRetType (X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
-		template <typename X, typename Y>
-		inline void Bind(Y* pthis, DesiredRetType (X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
+		DelegateX(Y* pthis, DesiredRetType (X::*function_to_bind)(Params...))
+		{
+			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
+		}
 
 		template <typename X, typename Y>
-		DelegateX(const Y* pthis, DesiredRetType (X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
-		template <typename X, typename Y>
-		inline void Bind(const Y* pthis, DesiredRetType (X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
+		inline void Bind(Y* pthis, DesiredRetType (X::*function_to_bind)(Params...))
+		{
+			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
+		}
 
-		DelegateX(DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); }
-		DelegateX& operator=(DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); return *this; }
-		inline void Bind(DesiredRetType (*function_to_bind)(Params...)) { m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind); }
-		RetType operator() (Params...params) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...); }
+		template <typename X, typename Y>
+		DelegateX(const Y* pthis, DesiredRetType (X::*function_to_bind)(Params...) const)
+		{
+			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
+		}
+
+		template <typename X, typename Y>
+		inline void Bind(const Y* pthis, DesiredRetType (X::*function_to_bind)(Params...) const)
+		{
+			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
+		}
+
+		DelegateX(DesiredRetType (*function_to_bind)(Params...))
+		{
+			Bind(function_to_bind);
+		}
+
+		DelegateX& operator=(DesiredRetType (*function_to_bind)(Params...))
+		{
+			Bind(function_to_bind);
+			return *this;
+		}
+
+		inline void Bind(DesiredRetType (*function_to_bind)(Params...))
+		{
+			m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
+		}
+
+		RetType operator() (Params...params) const
+		{
+			return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...);
+		}
 
 	private:
 		using UselessTypedef = struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; };
@@ -447,7 +513,10 @@ namespace NAS2D
 		void SetMemento(const DelegateMemento& any) { m_Closure.CopyFrom(this, any); }
 
 	private:
-		RetType InvokeStaticFunction(Params...params) const { return (*(m_Closure.GetStaticFunction()))(params...); }
+		RetType InvokeStaticFunction(Params...params) const
+		{
+			return (*(m_Closure.GetStaticFunction()))(params...);
+		}
 	};
 
 
@@ -472,14 +541,26 @@ namespace NAS2D
 		Delegate(const Y* pthis, RetType (X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
 
 		Delegate(RetType (*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
-		Delegate& operator=(const BaseType& x) { *static_cast<BaseType*>(this) = x; return *this; }
+
+		Delegate& operator=(const BaseType& x)
+		{
+			*static_cast<BaseType*>(this) = x;
+			return *this;
+		}
 	};
 
 	#endif
 
 	template <typename X, typename Y, typename RetType, typename... Params>
-	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType (X::*func)(Params...)) { return DelegateX<RetType, Params...>(x, func); }
+	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType (X::*func)(Params...))
+	{
+		return DelegateX<RetType, Params...>(x, func);
+	}
+
 	template <typename X, typename Y, typename RetType, typename... Params>
-	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType (X::*func)(Params...) const) { return DelegateX<RetType, Params...>(x, func); }
+	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType (X::*func)(Params...) const)
+	{
+		return DelegateX<RetType, Params...>(x, func);
+	}
 
 }

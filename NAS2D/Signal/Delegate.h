@@ -281,13 +281,13 @@ namespace NAS2D
 			return memcmp(&m_pFunction, &right.m_pFunction, sizeof(m_pFunction)) < 0;
 		}
 
-		inline bool operator ! () const { return !m_pthis && !m_pFunction; }
+		inline bool operator!() const { return !m_pthis && !m_pFunction; }
 		inline bool empty() const { return !m_pthis && !m_pFunction; }
 
 	public:
-		DelegateMemento& operator = (const DelegateMemento& right) { SetMementoFrom(right); return *this; }
-		inline bool operator <(const DelegateMemento& right) { return IsLess(right); }
-		inline bool operator >(const DelegateMemento& right) { return right.IsLess(*this); }
+		DelegateMemento& operator=(const DelegateMemento& right) { SetMementoFrom(right); return *this; }
+		inline bool operator<(const DelegateMemento& right) { return IsLess(right); }
+		inline bool operator>(const DelegateMemento& right) { return right.IsLess(*this); }
 		DelegateMemento(const DelegateMemento& right) : m_pthis(right.m_pthis), m_pFunction(right.m_pFunction)
 			#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 			, m_pStaticFunction(right.m_pStaticFunction)
@@ -409,11 +409,11 @@ namespace NAS2D
 
 		DelegateX() { clear(); }
 		DelegateX(const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); }
-		DelegateX& operator = (const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); return *this; }
-		bool operator ==(const DelegateX& x) const { return m_Closure.IsEqual(x.m_Closure); }
-		bool operator !=(const DelegateX& x) const { return !m_Closure.IsEqual(x.m_Closure); }
-		bool operator <(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
-		bool operator >(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
+		DelegateX& operator=(const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); return *this; }
+		bool operator==(const DelegateX& x) const { return m_Closure.IsEqual(x.m_Closure); }
+		bool operator!=(const DelegateX& x) const { return !m_Closure.IsEqual(x.m_Closure); }
+		bool operator<(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
+		bool operator>(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
 
 		template <typename X, typename Y>
 		DelegateX(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
@@ -426,7 +426,7 @@ namespace NAS2D
 		inline void Bind(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 
 		DelegateX(DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); }
-		DelegateX& operator = (DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); return *this; }
+		DelegateX& operator=(DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); return *this; }
 		inline void Bind(DesiredRetType (*function_to_bind)(Params...)) { m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind); }
 		RetType operator() (Params...params) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...); }
 
@@ -472,7 +472,7 @@ namespace NAS2D
 		Delegate(const Y* pthis, RetType(X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
 
 		Delegate(RetType (*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
-		Delegate& operator = (const BaseType& x) { *static_cast<BaseType*>(this) = x; return *this; }
+		Delegate& operator=(const BaseType& x) { *static_cast<BaseType*>(this) = x; return *this; }
 	};
 
 	#endif

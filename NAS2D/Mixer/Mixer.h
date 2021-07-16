@@ -20,9 +20,10 @@ namespace NAS2D
 	class Music;
 
 	/**
-	 * @brief Mixer base class.
+	 * \brief Mixer base class.
 	 * 
-	 * Provides a standard Mixer interface. The base Mixer can be used but will act as a NULL interface.
+	 * Provides a standard Mixer interface.
+	 * The base Mixer can be used but will act as a NULL interface.
 	*/
 	class Mixer
 	{
@@ -61,14 +62,14 @@ namespace NAS2D
 		void resumeAllAudio();
 
 		/**
-		 * @brief Sets the sound volume.
-		 * @param level Volume level to set. Valid range is [0, 128].
+		 * \brief Sets the sound volume.
+		 * \param level Volume level to set. Valid range is [0, 128].
 		*/
 		virtual void soundVolume(int level) = 0;
 
 		/**
-		 * @brief Sets the music volume.
-		 * @param level Volume level to set. Valid range is [0, 128].
+		 * \brief Sets the music volume.
+		 * \param level Volume level to set. Valid range is [0, 128].
 		*/
 		virtual void musicVolume(int level) = 0;
 

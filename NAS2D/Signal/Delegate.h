@@ -463,7 +463,7 @@ namespace NAS2D
 		using BaseType = DelegateX<RetType, Params...>;
 		using SelfType = Delegate;
 
-		Delegate() : BaseType() {}
+		Delegate() = default;
 
 		template <typename X, typename Y>
 		Delegate(Y* pthis, RetType(X::*function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}

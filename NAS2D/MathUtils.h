@@ -40,11 +40,11 @@ namespace NAS2D
 	 *     scaleLinear(98.6f, 32.0f, 212.0f, 0.0f, 100.0f)
 	 *
 	 * will convert 98.6 degees Fahrenheit (average human body temperature) to its corresponding value `37.0` degrees Celsius.
-	 * 
+	 *
 	 * Avoid inputs such that the difference of domainPoint2 and domainPoint1 is zero. Otherwise, a divide by zero error could occur.
-	 * 
+	 *
 	 * If the difference of rangePoint2 and rangePoint1 is zero. The result of the function is always rangePoint1.
-	 * 
+	 *
 	 * InputType and OutputType must support all arithmetic operators and all arithmetic operators between each other.
 	 */
 	template <typename InputType, typename OutputType>

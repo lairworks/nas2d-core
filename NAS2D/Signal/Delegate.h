@@ -400,7 +400,7 @@ namespace NAS2D
 		using DesiredRetType = typename detail::DefaultVoidToVoid<RetType>::type;
 		using StaticFunctionPtr = DesiredRetType (*)(Params...);
 		using UnvoidStaticFunctionPtr = RetType (*)(Params...);
-		using GenericMemFn = RetType(detail::GenericClass::*)(Params...);
+		using GenericMemFn = RetType (detail::GenericClass::*)(Params...);
 		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr>;
 		ClosureType m_Closure;
 
@@ -416,14 +416,14 @@ namespace NAS2D
 		bool operator>(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
 
 		template <typename X, typename Y>
-		DelegateX(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
+		DelegateX(Y* pthis, DesiredRetType (X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 		template <typename X, typename Y>
-		inline void Bind(Y* pthis, DesiredRetType(X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
+		inline void Bind(Y* pthis, DesiredRetType (X::*function_to_bind)(Params...)) { m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind); }
 
 		template <typename X, typename Y>
-		DelegateX(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
+		DelegateX(const Y* pthis, DesiredRetType (X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 		template <typename X, typename Y>
-		inline void Bind(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
+		inline void Bind(const Y* pthis, DesiredRetType (X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 
 		DelegateX(DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); }
 		DelegateX& operator=(DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); return *this; }
@@ -466,10 +466,10 @@ namespace NAS2D
 		Delegate() = default;
 
 		template <typename X, typename Y>
-		Delegate(Y* pthis, RetType(X::*function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}
+		Delegate(Y* pthis, RetType (X::*function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}
 
 		template <typename X, typename Y>
-		Delegate(const Y* pthis, RetType(X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
+		Delegate(const Y* pthis, RetType (X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
 
 		Delegate(RetType (*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
 		Delegate& operator=(const BaseType& x) { *static_cast<BaseType*>(this) = x; return *this; }
@@ -478,8 +478,8 @@ namespace NAS2D
 	#endif
 
 	template <typename X, typename Y, typename RetType, typename... Params>
-	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...)) { return DelegateX<RetType, Params...>(x, func); }
+	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType (X::*func)(Params...)) { return DelegateX<RetType, Params...>(x, func); }
 	template <typename X, typename Y, typename RetType, typename... Params>
-	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType(X::*func)(Params...) const) { return DelegateX<RetType, Params...>(x, func); }
+	DelegateX<RetType, Params...> MakeDelegate(Y* x, RetType (X::*func)(Params...) const) { return DelegateX<RetType, Params...>(x, func); }
 
 }

@@ -247,7 +247,7 @@ namespace NAS2D
 		GenericMemFuncType m_pFunction;
 
 	#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-		using GenericFuncPtr = void(*)();
+		using GenericFuncPtr = void (*)();
 		GenericFuncPtr m_pStaticFunction;
 	#endif
 
@@ -398,8 +398,8 @@ namespace NAS2D
 	{
 	private:
 		using DesiredRetType = typename detail::DefaultVoidToVoid<RetType>::type;
-		using StaticFunctionPtr = DesiredRetType(*)(Params...);
-		using UnvoidStaticFunctionPtr = RetType(*)(Params...);
+		using StaticFunctionPtr = DesiredRetType (*)(Params...);
+		using UnvoidStaticFunctionPtr = RetType (*)(Params...);
 		using GenericMemFn = RetType(detail::GenericClass::*)(Params...);
 		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr>;
 		ClosureType m_Closure;
@@ -425,9 +425,9 @@ namespace NAS2D
 		template <typename X, typename Y>
 		inline void Bind(const Y* pthis, DesiredRetType(X::*function_to_bind)(Params...) const) { m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind); }
 
-		DelegateX(DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); }
-		DelegateX& operator = (DesiredRetType(*function_to_bind)(Params...)) { Bind(function_to_bind); return *this; }
-		inline void Bind(DesiredRetType(*function_to_bind)(Params...)) { m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind); }
+		DelegateX(DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); }
+		DelegateX& operator = (DesiredRetType (*function_to_bind)(Params...)) { Bind(function_to_bind); return *this; }
+		inline void Bind(DesiredRetType (*function_to_bind)(Params...)) { m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind); }
 		RetType operator() (Params...params) const { return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...); }
 
 	private:
@@ -471,7 +471,7 @@ namespace NAS2D
 		template <typename X, typename Y>
 		Delegate(const Y* pthis, RetType(X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
 
-		Delegate(RetType(*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
+		Delegate(RetType (*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
 		Delegate& operator = (const BaseType& x) { *static_cast<BaseType*>(this) = x; return *this; }
 	};
 

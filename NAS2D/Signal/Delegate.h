@@ -284,7 +284,11 @@ namespace NAS2D
 
 	public:
 	#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
-		DelegateMemento() : m_pthis(nullptr), m_pFunction(nullptr), m_pStaticFunction(nullptr) {};
+		DelegateMemento() :
+			m_pthis(nullptr),
+			m_pFunction(nullptr),
+			m_pStaticFunction(nullptr),
+		{};
 
 		void clear()
 		{
@@ -293,7 +297,10 @@ namespace NAS2D
 			m_pStaticFunction = nullptr;
 		}
 	#else
-		DelegateMemento() : m_pthis(nullptr), m_pFunction(nullptr) {}
+		DelegateMemento() :
+			m_pthis(nullptr),
+			m_pFunction(nullptr)
+		{}
 
 		void clear()
 		{
@@ -345,7 +352,9 @@ namespace NAS2D
 		inline bool operator<(const DelegateMemento& right) { return IsLess(right); }
 		inline bool operator>(const DelegateMemento& right) { return right.IsLess(*this); }
 
-		DelegateMemento(const DelegateMemento& right) : m_pthis(right.m_pthis), m_pFunction(right.m_pFunction)
+		DelegateMemento(const DelegateMemento& right) :
+			m_pthis(right.m_pthis),
+			m_pFunction(right.m_pFunction)
 			#if !defined(FASTDELEGATE_USESTATICFUNCTIONHACK)
 			, m_pStaticFunction(right.m_pStaticFunction)
 			#endif
@@ -594,12 +603,18 @@ namespace NAS2D
 		Delegate() = default;
 
 		template <typename X, typename Y>
-		Delegate(Y* pthis, RetType (X::*function_to_bind)(Params...)) : BaseType(pthis, function_to_bind) {}
+		Delegate(Y* pthis, RetType (X::*function_to_bind)(Params...)) :
+			BaseType(pthis, function_to_bind)
+		{}
 
 		template <typename X, typename Y>
-		Delegate(const Y* pthis, RetType (X::*function_to_bind)(Params...) const) : BaseType(pthis, function_to_bind) {}
+		Delegate(const Y* pthis, RetType (X::*function_to_bind)(Params...) const) :
+			BaseType(pthis, function_to_bind)
+		{}
 
-		Delegate(RetType (*function_to_bind)(Params...)) : BaseType(function_to_bind) {}
+		Delegate(RetType (*function_to_bind)(Params...)) :
+			BaseType(function_to_bind)
+		{}
 
 		Delegate& operator=(const BaseType& x)
 		{

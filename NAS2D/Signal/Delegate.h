@@ -288,7 +288,7 @@ namespace NAS2D
 			m_pthis(nullptr),
 			m_pFunction(nullptr),
 			m_pStaticFunction(nullptr),
-		{};
+		{}
 
 		void clear()
 		{

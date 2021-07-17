@@ -515,7 +515,7 @@ namespace NAS2D
 			m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
 		}
 
-		RetType operator() (Params...params) const
+		RetType operator() (Params... params) const
 		{
 			return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...);
 		}
@@ -537,7 +537,7 @@ namespace NAS2D
 		void SetMemento(const DelegateMemento& any) { m_Closure.CopyFrom(this, any); }
 
 	private:
-		RetType InvokeStaticFunction(Params...params) const
+		RetType InvokeStaticFunction(Params... params) const
 		{
 			return (*(m_Closure.GetStaticFunction()))(params...);
 		}

@@ -59,7 +59,11 @@ namespace NAS2D
 	{
 
 		template <typename OutputClass, typename InputClass>
-		union horrible_union { OutputClass out; InputClass in; };
+		union horrible_union
+		{
+			OutputClass out;
+			InputClass in;
+		};
 
 		template <typename OutputClass, typename InputClass>
 		inline OutputClass horrible_cast(const InputClass input)
@@ -78,17 +82,29 @@ namespace NAS2D
 
 		// Translate from 'DefaultVoid' to 'void'.
 		template <typename T>
-		struct DefaultVoidToVoid { using type = T; };
+		struct DefaultVoidToVoid
+		{
+			using type = T;
+		};
 
 		template <>
-		struct DefaultVoidToVoid<DefaultVoid> { using type = void; };
+		struct DefaultVoidToVoid<DefaultVoid>
+		{
+			using type = void;
+		};
 
 		// Translate from 'void' into 'DefaultVoid'
 		template <typename T>
-		struct VoidToDefaultVoid { using type = T; };
+		struct VoidToDefaultVoid
+		{
+			using type = T;
+		};
 
 		template <>
-		struct VoidToDefaultVoid<void> { using type = DefaultVoid; };
+		struct VoidToDefaultVoid<void>
+		{
+			using type = DefaultVoid;
+		};
 
 
 		template <typename GenericMemFuncType, typename XFuncType>
@@ -155,7 +171,11 @@ namespace NAS2D
 				union
 				{
 					XFuncType func;
-					struct { GenericMemFuncType funcaddress; int delta; } s;
+					struct
+					{
+						GenericMemFuncType funcaddress;
+						int delta;
+					} s;
 				} u;
 
 				static_assert(sizeof(function_to_bind) == sizeof(u.s), "Can't use horrible cast");
@@ -187,10 +207,21 @@ namespace NAS2D
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 			{
-				union { XFuncType func; GenericClass* (X::*ProbeFunc)(); MicrosoftVirtualMFP s; } u;
+				union
+				{
+					XFuncType func;
+					GenericClass* (X::*ProbeFunc)();
+					MicrosoftVirtualMFP s;
+				} u;
+
 				u.func = function_to_bind;
 				bound_func = CastMemFuncPtr<GenericMemFuncType>(u.s.codeptr);
-				union { GenericVirtualClass::ProbePtrType virtfunc; MicrosoftVirtualMFP s; } u2;
+
+				union
+				{
+					GenericVirtualClass::ProbePtrType virtfunc;
+					MicrosoftVirtualMFP s;
+				} u2;
 
 				static_assert(sizeof(function_to_bind) == sizeof(u.s) && sizeof(function_to_bind) == sizeof(u.ProbeFunc) && sizeof(u2.virtfunc) == sizeof(u2.s), "Can't use horrible cast");
 
@@ -521,7 +552,11 @@ namespace NAS2D
 		}
 
 	private:
-		using UselessTypedef = struct SafeBoolStruct { int a_data_pointer_to_this_is_0_on_buggy_compilers; StaticFunctionPtr m_nonzero; };
+		using UselessTypedef = struct SafeBoolStruct
+		{
+			int a_data_pointer_to_this_is_0_on_buggy_compilers;
+			StaticFunctionPtr m_nonzero;
+		};
 		using unspecified_bool_type = StaticFunctionPtr SafeBoolStruct::*;
 
 	public:

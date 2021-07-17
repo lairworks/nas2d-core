@@ -276,8 +276,14 @@ namespace NAS2D
 		{
 			if (m_pFunction != x.m_pFunction) return false;
 			if (m_pStaticFunction != x.m_pStaticFunction) return false;
-			if (m_pStaticFunction) return m_pthis == x.m_pthis;
-			else return true;
+			if (m_pStaticFunction)
+			{
+				return m_pthis == x.m_pthis;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	#else
 		inline bool IsEqual(const DelegateMemento& x) const
@@ -384,8 +390,14 @@ namespace NAS2D
 			template <typename DerivedClass, typename ParentInvokerSig>
 			inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 			{
-				if (!function_to_bind) m_pFunction = nullptr;
-				else bindmemfunc(pParent, static_function_invoker);
+				if (!function_to_bind)
+				{
+					m_pFunction = nullptr;
+				}
+				else
+				{
+					bindmemfunc(pParent, static_function_invoker);
+				}
 				m_pStaticFunction = reinterpret_cast<GenericFuncPtr>(function_to_bind);
 			}
 			inline UnvoidStaticFuncPtr GetStaticFunction() const { return reinterpret_cast<UnvoidStaticFuncPtr>(m_pStaticFunction); }
@@ -400,8 +412,14 @@ namespace NAS2D
 			template <typename DerivedClass, typename ParentInvokerSig>
 			inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 			{
-				if (!function_to_bind) m_pFunction = nullptr;
-				else bindmemfunc(pParent, static_function_invoker);
+				if (!function_to_bind)
+				{
+					m_pFunction = nullptr;
+				}
+				else
+				{
+					bindmemfunc(pParent, static_function_invoker);
+				}
 				static_assert(sizeof(GenericClass*) != sizeof(function_to_bind), "Can't use evil method");
 				m_pthis = horrible_cast<GenericClass*>(function_to_bind);
 			}
@@ -415,8 +433,14 @@ namespace NAS2D
 
 			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr)
 			{
-				if (!funcptr) return empty();
-				else return funcptr == reinterpret_cast<StaticFuncPtr>(GetStaticFunction());
+				if (!funcptr)
+				{
+					return empty();
+				}
+				else
+				{
+					return funcptr == reinterpret_cast<StaticFuncPtr>(GetStaticFunction());
+				}
 			}
 		};
 

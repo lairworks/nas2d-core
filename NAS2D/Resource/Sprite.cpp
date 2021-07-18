@@ -35,6 +35,13 @@ Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
 }
 
 
+Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialAction) :
+	mAnimationSet{animationSet},
+	mCurrentAction{&mAnimationSet.frames(initialAction)}
+{
+}
+
+
 Vector<int> Sprite::size() const
 {
 	return (*mCurrentAction)[mCurrentFrame].bounds.size();

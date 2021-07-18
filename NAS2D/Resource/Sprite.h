@@ -33,6 +33,7 @@ namespace NAS2D
 		using AnimationCompleteSignal = Signal<>; /**< Signal used when action animations complete. */
 
 		Sprite(const std::string& filePath, const std::string& initialAction);
+		Sprite(const AnimationSet& animationSet, const std::string& initialAction);
 
 		Vector<int> size() const;
 		Point<int> origin(Point<int> point) const;

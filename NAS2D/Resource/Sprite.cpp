@@ -33,8 +33,8 @@ namespace
  * \param initialAction	Name of initial action animation
  */
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
-	mAnimationSet{&animationCache.load(filePath)},
-	mCurrentAction{&mAnimationSet->frames(initialAction)}
+	mAnimationSet{animationCache.load(filePath)},
+	mCurrentAction{&mAnimationSet.frames(initialAction)}
 {
 }
 
@@ -58,7 +58,7 @@ Point<int> Sprite::origin(Point<int> point) const
  */
 std::vector<std::string> Sprite::actions() const
 {
-	return mAnimationSet->actionNames();
+	return mAnimationSet.actionNames();
 }
 
 
@@ -75,7 +75,7 @@ std::vector<std::string> Sprite::actions() const
  */
 void Sprite::play(const std::string& action)
 {
-	mCurrentAction = &mAnimationSet->frames(action);
+	mCurrentAction = &mAnimationSet.frames(action);
 	mCurrentFrame = 0;
 	mTimer.reset();
 	resume();

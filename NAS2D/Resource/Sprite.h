@@ -21,7 +21,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * Sprite resource.
 	 *
@@ -74,5 +73,4 @@ namespace NAS2D
 		Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
 		float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
 	};
-
 } // namespace

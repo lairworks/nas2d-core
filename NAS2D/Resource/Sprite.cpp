@@ -23,8 +23,6 @@ using namespace NAS2D;
 
 namespace
 {
-	const auto FRAME_PAUSE = unsigned(-1);
-
 	using AnimationCache = ResourceCache<AnimationSet, std::string>;
 	AnimationCache animationCache;
 }
@@ -136,9 +134,9 @@ void Sprite::update(Point<float> position)
 {
 	const auto& frame = (*mCurrentAction)[mCurrentFrame];
 
-	if (!mPaused && (frame.frameDelay != FRAME_PAUSE))
+	if (!mPaused && !frame.isStopFrame())
 	{
-		while (frame.frameDelay > 0 && mTimer.accumulator() >= frame.frameDelay)
+		while (mTimer.accumulator() >= frame.frameDelay)
 		{
 			mTimer.adjust_accumulator(frame.frameDelay);
 			mCurrentFrame++;
@@ -150,7 +148,7 @@ void Sprite::update(Point<float> position)
 			mAnimationCompleteSignal();
 		}
 	}
-	else if (frame.frameDelay == FRAME_PAUSE)
+	else if (frame.isStopFrame())
 	{
 		mAnimationCompleteSignal();
 	}

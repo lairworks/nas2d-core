@@ -45,6 +45,16 @@ namespace
 }
 
 
+bool AnimationSet::Frame::isStopFrame() const
+{
+	// We want to redefine the sentinel value for stop frames from -1 to 0
+	// Neither value makes sense as a delay, though the field is unsigned
+	// Using 0 would also help simplify some code, so makes the most sense
+	// Temporarily handle -1 for backwards compatibility during transition
+	return (frameDelay == 0) || (frameDelay == unsigned(-1));
+}
+
+
 AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(std::move(fileName), animationImageCache)}
 {
 }
@@ -219,10 +229,10 @@ namespace
 			int currentRow = frame->row();
 
 			const auto dictionary = attributesToDictionary(*frame);
-			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "delay", "x", "y", "width", "height", "anchorx", "anchory"}, {});
+			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
 			const auto sheetId = dictionary.get("sheetid");
-			const auto delay = dictionary.get<int>("delay");
+			const auto delay = dictionary.get<int>("delay", 0);
 			const auto x = dictionary.get<int>("x");
 			const auto y = dictionary.get<int>("y");
 			const auto width = dictionary.get<int>("width");

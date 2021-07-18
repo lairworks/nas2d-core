@@ -136,7 +136,7 @@ void Sprite::update(Point<float> position)
 
 	if (!mPaused && !frame.isStopFrame())
 	{
-		while (frame.frameDelay > 0 && mTimer.accumulator() >= frame.frameDelay)
+		while (mTimer.accumulator() >= frame.frameDelay)
 		{
 			mTimer.adjust_accumulator(frame.frameDelay);
 			mCurrentFrame++;

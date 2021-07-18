@@ -229,10 +229,10 @@ namespace
 			int currentRow = frame->row();
 
 			const auto dictionary = attributesToDictionary(*frame);
-			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "delay", "x", "y", "width", "height", "anchorx", "anchory"}, {});
+			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
 			const auto sheetId = dictionary.get("sheetid");
-			const auto delay = dictionary.get<int>("delay");
+			const auto delay = dictionary.get<int>("delay", 0);
 			const auto x = dictionary.get<int>("x");
 			const auto y = dictionary.get<int>("y");
 			const auto width = dictionary.get<int>("width");

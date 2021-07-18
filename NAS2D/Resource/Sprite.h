@@ -60,8 +60,6 @@ namespace NAS2D
 		AnimationCompleteSignal::Source& animationCompleteSignalSource();
 
 	private:
-		std::string mSpriteName;
-
 		const AnimationSet* mAnimationSet;
 		const std::vector<AnimationSet::Frame>* mCurrentAction{nullptr};
 		std::size_t mCurrentFrame{0};

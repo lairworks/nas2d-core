@@ -33,7 +33,6 @@ namespace
  * \param initialAction	Name of initial action animation
  */
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
-	mSpriteName{filePath},
 	mAnimationSet{&animationCache.load(filePath)},
 	mCurrentAction{&mAnimationSet->frames(initialAction)}
 {

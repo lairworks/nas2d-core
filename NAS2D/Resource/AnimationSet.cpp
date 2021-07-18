@@ -222,7 +222,7 @@ namespace
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "delay", "x", "y", "width", "height", "anchorx", "anchory"}, {});
 
 			const auto sheetId = dictionary.get("sheetid");
-			const auto delay = dictionary.get<unsigned int>("delay");
+			const auto delay = dictionary.get<int>("delay");
 			const auto x = dictionary.get<int>("x");
 			const auto y = dictionary.get<int>("y");
 			const auto width = dictionary.get<int>("width");
@@ -264,7 +264,7 @@ namespace
 
 			const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 			const auto anchorOffset = Vector{anchorx, anchory};
-			frameList.push_back(AnimationSet::Frame{image, bounds, anchorOffset, delay});
+			frameList.push_back(AnimationSet::Frame{image, bounds, anchorOffset, static_cast<unsigned int>(delay)});
 		}
 
 		return frameList;

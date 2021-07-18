@@ -31,6 +31,8 @@ namespace NAS2D
 			Rectangle<int> bounds;
 			Vector<int> anchorOffset;
 			unsigned int frameDelay;
+
+			bool isStopFrame() const;
 		};
 
 		AnimationSet(std::string fileName);

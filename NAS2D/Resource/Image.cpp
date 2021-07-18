@@ -45,9 +45,17 @@ namespace
  * \param filePath Path to an image file.
  */
 Image::Image(const std::string& filePath) :
-	mResourceName{filePath}
+	Image{
+		filePath,
+		Utility<Filesystem>::get().read(filePath)
+	}
 {
-	const auto& data = Utility<Filesystem>::get().read(mResourceName);
+}
+
+
+Image::Image(const std::string& resourceName, const std::string& data) :
+	mResourceName{resourceName}
+{
 	if (data.size() == 0)
 	{
 		throw std::runtime_error("Image file is empty: " + mResourceName);

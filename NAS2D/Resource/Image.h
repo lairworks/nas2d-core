@@ -40,6 +40,7 @@ namespace NAS2D
 	{
 	public:
 		explicit Image(const std::string& filePath);
+		Image(const std::string& resourceName, const std::string& data);
 		Image(void* buffer, int bytesPerPixel, Vector<int> size);
 
 		Image(const Image& rhs) = delete;

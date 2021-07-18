@@ -28,10 +28,6 @@ namespace
 }
 
 
-/**
- * \param filePath	File path of the Sprite definition file.
- * \param initialAction	Name of initial action animation
- */
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
 	mAnimationSet{animationCache.load(filePath)},
 	mCurrentAction{&mAnimationSet.frames(initialAction)}

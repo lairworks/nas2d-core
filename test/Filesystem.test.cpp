@@ -9,8 +9,7 @@ TEST(Filesystem, ConstructDestruct) {
 }
 
 class FilesystemTest : public ::testing::Test {
-  protected:
-
+protected:
 	static constexpr auto AppName = "NAS2DUnitTests";
 	static constexpr auto OrganizationName = "LairWorks";
 

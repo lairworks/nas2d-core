@@ -21,7 +21,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * Sprite resource.
 	 *
@@ -34,6 +33,7 @@ namespace NAS2D
 		using AnimationCompleteSignal = Signal<>; /**< Signal used when action animations complete. */
 
 		Sprite(const std::string& filePath, const std::string& initialAction);
+		Sprite(const AnimationSet& animationSet, const std::string& initialAction);
 
 		Vector<int> size() const;
 		Point<int> origin(Point<int> point) const;
@@ -61,9 +61,7 @@ namespace NAS2D
 		AnimationCompleteSignal::Source& animationCompleteSignalSource();
 
 	private:
-		std::string mSpriteName;
-
-		const AnimationSet* mAnimationSet;
+		const AnimationSet& mAnimationSet;
 		const std::vector<AnimationSet::Frame>* mCurrentAction{nullptr};
 		std::size_t mCurrentFrame{0};
 
@@ -74,5 +72,4 @@ namespace NAS2D
 		Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
 		float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
 	};
-
 } // namespace

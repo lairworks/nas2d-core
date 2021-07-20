@@ -140,6 +140,10 @@ Color Image::pixelColor(Point<int> point) const
 
 unsigned int Image::textureId() const
 {
+	if (mTextureId == 0)
+	{
+		mTextureId = generateTexture(mSurface);
+	}
 	return mTextureId;
 }
 

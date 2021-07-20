@@ -4,10 +4,6 @@
 #include <gmock/gmock.h>
 
 
-TEST(Filesystem, ConstructDestruct) {
-	EXPECT_NO_THROW(NAS2D::Filesystem fs("", "NAS2DUnitTests", "LairWorks"));
-}
-
 class FilesystemTest : public ::testing::Test {
 protected:
 	static constexpr auto AppName = "NAS2DUnitTests";

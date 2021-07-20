@@ -47,7 +47,7 @@ namespace
 Image::Image(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	auto data = Utility<Filesystem>::get().read(mResourceName);
+	const auto& data = Utility<Filesystem>::get().read(mResourceName);
 	if (data.size() == 0)
 	{
 		throw std::runtime_error("Image file is empty: " + mResourceName);

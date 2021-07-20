@@ -91,8 +91,8 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 
 Image::~Image()
 {
-	glDeleteTextures(1, &mTextureId);
 	glDeleteFramebuffers(1, &mFrameBufferObjectId);
+	glDeleteTextures(1, &mTextureId);
 	SDL_FreeSurface(mSurface);
 }
 

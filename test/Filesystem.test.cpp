@@ -4,12 +4,12 @@
 #include <gmock/gmock.h>
 
 
-class FilesystemTest : public ::testing::Test {
+class Filesystem : public ::testing::Test {
 protected:
 	static constexpr auto AppName = "NAS2DUnitTests";
 	static constexpr auto OrganizationName = "LairWorks";
 
-	FilesystemTest() :
+	Filesystem() :
 		fs("", AppName, OrganizationName)
 	{
 		fs.mount(fs.basePath());
@@ -21,41 +21,41 @@ protected:
 };
 
 
-TEST_F(FilesystemTest, basePath) {
+TEST_F(Filesystem, basePath) {
 	// Result is a directory, and should end with a directory separator
 	EXPECT_THAT(fs.basePath(), testing::EndsWith(fs.dirSeparator()));
 }
 
-TEST_F(FilesystemTest, prefPath) {
+TEST_F(Filesystem, prefPath) {
 	// Result is a directory, and should end with a directory separator
 	EXPECT_THAT(fs.prefPath(), testing::EndsWith(fs.dirSeparator()));
 	EXPECT_THAT(fs.prefPath(), testing::HasSubstr(AppName));
 }
 
-TEST_F(FilesystemTest, searchPath) {
+TEST_F(Filesystem, searchPath) {
 	auto pathList = fs.searchPath();
 	EXPECT_EQ(3u, pathList.size());
 	EXPECT_THAT(pathList, Contains(testing::HasSubstr("NAS2DUnitTests")));
 	EXPECT_THAT(pathList, Contains(testing::HasSubstr("data/")));
 }
 
-TEST_F(FilesystemTest, directoryList) {
+TEST_F(Filesystem, directoryList) {
 	auto pathList = fs.directoryList("");
 	EXPECT_LE(1u, pathList.size());
 	EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
 }
 
-TEST_F(FilesystemTest, exists) {
+TEST_F(Filesystem, exists) {
 	EXPECT_TRUE(fs.exists("file.txt"));
 }
 
-TEST_F(FilesystemTest, read) {
+TEST_F(Filesystem, read) {
 	const auto data = fs.read("file.txt");
 	EXPECT_EQ("Test data\n", data);
 }
 
 // Test a few related methods. Some don't test well standalone.
-TEST_F(FilesystemTest, writeReadDeleteExists) {
+TEST_F(Filesystem, writeReadDeleteExists) {
 	const std::string testFilename = "TestFile.txt";
 	const std::string testData = "Test file contents";
 
@@ -74,7 +74,7 @@ TEST_F(FilesystemTest, writeReadDeleteExists) {
 	EXPECT_THROW(fs.del(testFilename), std::runtime_error);
 }
 
-TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
+TEST_F(Filesystem, isDirectoryMakeDirectory) {
 	const std::string fileName = "file.txt";
 	const std::string folderName = "subfolder/";
 
@@ -90,7 +90,7 @@ TEST_F(FilesystemTest, isDirectoryMakeDirectory) {
 	EXPECT_FALSE(fs.isDirectory(folderName));
 }
 
-TEST_F(FilesystemTest, mountUnmount) {
+TEST_F(Filesystem, mountUnmount) {
 	const std::string extraMount = "data/extraData/";
 	const std::string extraFile = "extraFile.txt";
 
@@ -105,14 +105,14 @@ TEST_F(FilesystemTest, mountUnmount) {
 	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
 }
 
-TEST_F(FilesystemTest, dirSeparator) {
+TEST_F(Filesystem, dirSeparator) {
 	// Varies by platform, so we can't know the exact value ("/", "\", ":")
 	// New platforms may choose a new unique value
 	// Some platforms may not even have a hierarchal filesystem ("")
 	EXPECT_NO_THROW(fs.dirSeparator());
 }
 
-TEST_F(FilesystemTest, parentPath) {
+TEST_F(Filesystem, parentPath) {
 	EXPECT_EQ("", fs.parentPath(""));
 	EXPECT_EQ("", fs.parentPath("file.extension"));
 	EXPECT_EQ("/", fs.parentPath("/"));
@@ -122,7 +122,7 @@ TEST_F(FilesystemTest, parentPath) {
 	EXPECT_EQ("anotherFolder/", fs.parentPath("anotherFolder/file.extension"));
 }
 
-TEST_F(FilesystemTest, extension) {
+TEST_F(Filesystem, extension) {
 	EXPECT_EQ("", fs.extension(""));
 	EXPECT_EQ("", fs.extension("file"));
 	EXPECT_EQ("", fs.extension("subdir/file"));

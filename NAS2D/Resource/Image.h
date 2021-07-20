@@ -61,7 +61,7 @@ namespace NAS2D
 	private:
 		std::string mResourceName; /**< File path or internal identifier. */
 		SDL_Surface* mSurface{nullptr};
-		unsigned int mTextureId{0u};
+		mutable unsigned int mTextureId{0u};
 		mutable unsigned int mFrameBufferObjectId{0u};
 		Vector<int> mSize{0, 0};
 	};

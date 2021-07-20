@@ -47,7 +47,7 @@ namespace
 Image::Image(const std::string& filePath) :
 	mResourceName{filePath}
 {
-	auto data = Utility<Filesystem>::get().read(mResourceName);
+	const auto& data = Utility<Filesystem>::get().read(mResourceName);
 	if (data.size() == 0)
 	{
 		throw std::runtime_error("Image file is empty: " + mResourceName);
@@ -58,7 +58,6 @@ Image::Image(const std::string& filePath) :
 	{
 		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
 	}
-	mTextureId = generateTexture(mSurface);
 	mSize = Vector{mSurface->w, mSurface->h};
 }
 
@@ -87,14 +86,20 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 	++IMAGE_ARBITRARY;
 
 	mSurface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
-	mTextureId = generateTexture(mSurface);
 }
 
 
 Image::~Image()
 {
-	glDeleteTextures(1, &mTextureId);
-	glDeleteFramebuffers(1, &mFrameBufferObjectId);
+	if (mFrameBufferObjectId != 0)
+	{
+		glDeleteFramebuffers(1, &mFrameBufferObjectId);
+	}
+	if (mTextureId != 0)
+	{
+		glDeleteTextures(1, &mTextureId);
+	}
+
 	SDL_FreeSurface(mSurface);
 }
 
@@ -140,6 +145,10 @@ Color Image::pixelColor(Point<int> point) const
 
 unsigned int Image::textureId() const
 {
+	if (mTextureId == 0)
+	{
+		mTextureId = generateTexture(mSurface);
+	}
 	return mTextureId;
 }
 

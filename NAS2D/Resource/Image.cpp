@@ -58,7 +58,6 @@ Image::Image(const std::string& filePath) :
 	{
 		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
 	}
-	mTextureId = generateTexture(mSurface);
 	mSize = Vector{mSurface->w, mSurface->h};
 }
 
@@ -87,7 +86,6 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 	++IMAGE_ARBITRARY;
 
 	mSurface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
-	mTextureId = generateTexture(mSurface);
 }
 
 

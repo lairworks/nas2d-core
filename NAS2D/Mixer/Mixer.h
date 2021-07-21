@@ -49,10 +49,20 @@ namespace NAS2D
 		virtual void pauseMusic() = 0;
 		virtual void resumeMusic() = 0;
 
-		//TODO: Consider type-safety via std::chrono::milliseconds? or rename variable to fadeInMS
+		/**
+		 * Starts a Music track and fades it in to the current Music volume.
+		 *
+		 * \param	music	Reference to a Music Resource.
+		 * \param	loops	Number of times the Music should be repeated. -1 for continuous loop.
+		 * \param	time	Time, in milliseconds, for the fade to last. Default is 500.
+		 */
 		virtual void fadeInMusic(const Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) = 0;
 
-		//TODO: Consider type-safety via std::chrono::milliseconds? or rename variable to fadeOutMS
+		/**
+		 * Fades out the currently playing Music track.
+		 *
+		 * \param	time	Time, in milliseconds, for the fade to last. Default is 500.
+		 */
 		virtual void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) = 0;
 
 		virtual bool musicPlaying() const = 0;

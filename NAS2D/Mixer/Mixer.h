@@ -21,7 +21,7 @@ namespace NAS2D
 
 	/**
 	 * \brief Mixer base class.
-	 * 
+	 *
 	 * Provides a standard Mixer interface.
 	 * The base Mixer can be used but will act as a NULL interface.
 	*/

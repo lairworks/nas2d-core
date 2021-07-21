@@ -82,7 +82,15 @@ namespace NAS2D
 		*/
 		virtual void musicVolume(int level) = 0;
 
+
+		/**
+		 * \return The volume level in the range [0, 128]
+		*/
 		virtual int soundVolume() const = 0;
+
+		/**
+		 * \return The volume level in the range [0, 128]
+		*/
 		virtual int musicVolume() const = 0;
 
 		SignalSource<>& musicCompleteSignalSource();

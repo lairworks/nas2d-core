@@ -71,10 +71,15 @@ namespace NAS2D
 		void pauseAllAudio();
 		void resumeAllAudio();
 
-		//Returned values are in the closed range [0, 128].
+		/**
+		 * \param level Volume level, valid values are in the range [0, 128]
+		*/
 		virtual void soundVolume(int level) = 0;
 
-		//Returned values are in the closed range [0, 128].
+
+		/**
+		 * \param level Volume level, valid values are in the range [0, 128]
+		*/
 		virtual void musicVolume(int level) = 0;
 
 		virtual int soundVolume() const = 0;

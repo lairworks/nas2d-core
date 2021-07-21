@@ -44,6 +44,13 @@ namespace NAS2D
 		virtual void stopSound() = 0;
 		virtual void pauseSound() = 0;
 		virtual void resumeSound() = 0;
+
+		/**
+		 * Starts playing a Music track.
+		 *
+		 * \param music	Reference to a Music Resource.
+		 * \param loops	Number of times to repeat the music.
+		 */
 		void playMusic(const Music& music, int loops = Mixer::CONTINUOUS);
 		virtual void stopMusic() = 0;
 		virtual void pauseMusic() = 0;

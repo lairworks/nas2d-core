@@ -225,3 +225,33 @@ Sprite::AnimationCompleteSignal::Source& Sprite::animationCompleteSignalSource()
 {
 	return mAnimationCompleteSignal;
 }
+
+
+unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
+{
+	unsigned int accumulator = 0;
+
+	if (mPaused)
+	{
+		return accumulator;
+	}
+
+	const auto& frames = *mCurrentAction;
+	for (;;)
+	{
+		const auto frame = frames[mCurrentFrame];
+
+		if (frame.isStopFrame() || (timeDelta - accumulator < frame.frameDelay))
+		{
+			return accumulator;
+		}
+
+		accumulator += frame.frameDelay;
+		mCurrentFrame++;
+		if (mCurrentFrame >= frames.size())
+		{
+			mCurrentFrame = 0;
+			mAnimationCompleteSignal();
+		}
+	}
+}

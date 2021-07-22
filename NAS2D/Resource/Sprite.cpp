@@ -135,25 +135,12 @@ void Sprite::decrementFrame()
 void Sprite::update(Point<float> position)
 {
 	const auto& frame = (*mCurrentAction)[mCurrentFrame];
-
-	if (!mPaused && !frame.isStopFrame())
-	{
-		while (mTimer.accumulator() >= frame.frameDelay)
-		{
-			mTimer.adjust_accumulator(frame.frameDelay);
-			mCurrentFrame++;
-		}
-
-		if (mCurrentFrame >= mCurrentAction->size())
-		{
-			mCurrentFrame = 0;
-			mAnimationCompleteSignal();
-		}
-	}
-	else if (frame.isStopFrame())
+	if (frame.isStopFrame())
 	{
 		mAnimationCompleteSignal();
 	}
+
+	mTimer.adjust_accumulator(advanceByTimeDelta(mTimer.accumulator()));
 
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();

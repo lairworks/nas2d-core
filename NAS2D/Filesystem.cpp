@@ -271,16 +271,16 @@ std::string Filesystem::read(const std::string& filename) const
 		throw std::runtime_error("Error opening file for reading: " + filename + " : " + getLastPhysfsError());
 	}
 
-	// Ensure that the file size is greater than zero and can fit in a std::size_t
+	// Ensure that the file size is greater than zero and can fit in a std::string::size_type
 	auto fileLength = PHYSFS_fileLength(myFile);
-	if (fileLength < 0 || static_cast<PHYSFS_uint64>(fileLength) > std::numeric_limits<std::size_t>::max())
+	if (fileLength < 0 || static_cast<PHYSFS_uint64>(fileLength) > std::numeric_limits<std::string::size_type>::max())
 	{
 		closeFile(myFile);
 		throw std::runtime_error("Error determining length of file or file too large: " + filename + " : Length = " + std::to_string(fileLength));
 	}
 
 	// Create buffer large enough to hold entire file
-	const auto bufferSize = static_cast<std::size_t>(fileLength);
+	const auto bufferSize = static_cast<std::string::size_type>(fileLength);
 	std::string fileBuffer;
 	fileBuffer.resize(bufferSize);
 

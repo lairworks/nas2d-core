@@ -12,6 +12,7 @@
 
 #include <physfs.h>
 
+#include <cstddef>
 #include <cstring>
 #include <string>
 #include <utility>

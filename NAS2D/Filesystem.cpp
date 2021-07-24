@@ -197,7 +197,7 @@ std::vector<std::string> Filesystem::directoryList(const std::string& dir, const
 	}
 	else
 	{
-		std::size_t filterLen = filter.size();
+		const auto filterLen = filter.size();
 		for (auto i = rc; *i != nullptr; i++)
 		{
 			std::string tmpStr = *i;

@@ -42,8 +42,8 @@ namespace NAS2D
 		/**
 		 * Starts playing a Music track.
 		 *
-		 * \param music: Reference to a Music Resource.
-		 * \param loops: Number of times to repeat the music.
+		 * \param music Reference to a Music Resource.
+		 * \param loops Repeat count. -1 for continuous loop.
 		 */
 		void playMusic(const Music& music, int loops = Mixer::CONTINUOUS);
 		virtual void stopMusic() = 0;
@@ -53,16 +53,16 @@ namespace NAS2D
 		/**
 		 * Starts a Music track and fades it in to the current Music volume.
 		 *
-		 * \param music: Reference to a Music Resource.
-		 * \param loops: Number of times the Music should be repeated. -1 for continuous loop.
-		 * \param time: Time, in milliseconds, for the fade to last. Default is 500.
+		 * \param music Reference to a Music Resource.
+		 * \param loops Repeat count. -1 for continuous loop.
+		 * \param time Length of the fade in milliseconds. Default is 500.
 		 */
 		virtual void fadeInMusic(const Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) = 0;
 
 		/**
 		 * Fades out the currently playing Music track.
 		 *
-		 * \param time: Time, in milliseconds, for the fade to last. Default is 500.
+		 * \param time Length of the fade in milliseconds. Default is 500.
 		 */
 		virtual void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) = 0;
 
@@ -73,13 +73,13 @@ namespace NAS2D
 		void resumeAllAudio();
 
 		/**
-		 * \param level: Volume level, valid values are in the range [0, 128]
+		 * \param level Volume level, valid values are in the range [0, 128]
 		*/
 		virtual void soundVolume(int level) = 0;
 
 
 		/**
-		 * \param level: Volume level, valid values are in the range [0, 128]
+		 * \param level Volume level, valid values are in the range [0, 128]
 		*/
 		virtual void musicVolume(int level) = 0;
 

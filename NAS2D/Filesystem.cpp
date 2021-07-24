@@ -12,11 +12,8 @@
 
 #include <physfs.h>
 
-#include <climits>
 #include <cstring>
 #include <string>
-#include <iostream>
-#include <sstream>
 #include <utility>
 #include <limits>
 #include <stdexcept>

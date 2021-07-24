@@ -13,7 +13,6 @@
 #include <physfs.h>
 
 #include <cstddef>
-#include <string>
 #include <limits>
 #include <stdexcept>
 

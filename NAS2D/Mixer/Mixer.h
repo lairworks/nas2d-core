@@ -19,9 +19,6 @@ namespace NAS2D
 	class Sound;
 	class Music;
 
-	/**
-	Mixer base class.
-	*/
 	class Mixer
 	{
 	public:

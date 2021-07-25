@@ -24,7 +24,7 @@ namespace NAS2D
 	{
 	public:
 		static const int CONTINUOUS = -1;
-		static const int DEFAULT_FADE_TIME = 500;
+		static inline const std::chrono::milliseconds DEFAULT_FADE_TIME{500};
 
 	public:
 		Mixer() = default;
@@ -58,14 +58,14 @@ namespace NAS2D
 		 * \param loops Repeat count. -1 for continuous loop.
 		 * \param time Length of the fade in milliseconds. Default is 500.
 		 */
-		virtual void fadeInMusic(const Music& music, int loops = Mixer::CONTINUOUS, std::chrono::milliseconds time = std::chrono::milliseconds{Mixer::DEFAULT_FADE_TIME}) = 0;
+		virtual void fadeInMusic(const Music& music, int loops = Mixer::CONTINUOUS, std::chrono::milliseconds time = Mixer::DEFAULT_FADE_TIME) = 0;
 
 		/**
 		 * Fades out the currently playing Music track.
 		 *
 		 * \param time Length of the fade in milliseconds. Default is 500.
 		 */
-		virtual void fadeOutMusic(std::chrono::milliseconds time = std::chrono::milliseconds{Mixer::DEFAULT_FADE_TIME}) = 0;
+		virtual void fadeOutMusic(std::chrono::milliseconds time = Mixer::DEFAULT_FADE_TIME) = 0;
 
 		virtual bool musicPlaying() const = 0;
 

@@ -134,14 +134,9 @@ void Sprite::decrementFrame()
 
 void Sprite::update(Point<float> position)
 {
-	const auto& frame = (*mCurrentAction)[mCurrentFrame];
-	if (frame.isStopFrame())
-	{
-		mAnimationCompleteSignal();
-	}
-
 	mTimer.adjust_accumulator(advanceByTimeDelta(mTimer.accumulator()));
 
+	const auto& frame = (*mCurrentAction)[mCurrentFrame];
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
 	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, mRotationAngle, mColor);
@@ -228,7 +223,13 @@ unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
 	{
 		const auto frame = frames[mCurrentFrame];
 
-		if (frame.isStopFrame() || (timeDelta - accumulator < frame.frameDelay))
+		if (frame.isStopFrame())
+		{
+			mAnimationCompleteSignal();
+			return accumulator;
+		}
+
+		if (timeDelta - accumulator < frame.frameDelay)
 		{
 			return accumulator;
 		}

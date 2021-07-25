@@ -42,9 +42,9 @@ The NAS2D project uses Vcpkg to integrate any dependencies without explicitly ad
 
 From this point any missing headers should be found and future compilation will be successful.
 
-**WARNING**
-
-Do not commit the NuGet-specific changes made to the project in `.vcxproj`, `.vcxproj.filters`, `packages.config`, or the folder `./packages/...`. In addition to these changes being local to your system, they may contain potentially sensitive or personally identifiable information in the generated absolute path!
+**WARNING** |
+------------ |
+Do not commit the NuGet-specific changes made to the project in `.vcxproj`, `.vcxproj.filters`, `packages.config`, or the folder `./packages/...`. In addition to these changes being local to your system, they may contain potentially sensitive or personally identifiable information in the generated absolute path! |
 
 A workaround to allow for successful compilation or to work with the project file when adding or removing files or filters is as follows:
 
@@ -56,6 +56,6 @@ A workaround to allow for successful compilation or to work with the project fil
 
 For best results, these steps should be completed immediately after installing the local NuGet package so as to not include any unrelated changes.
 
-**NOTICE**
-
-Committing the NuGet changes to the project will break it for all other developers due to the local absolute path.
+**NOTICE** |
+---------- |
+Committing the NuGet changes to the project will break it for all other developers due to the local absolute path. |

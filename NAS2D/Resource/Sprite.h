@@ -60,6 +60,9 @@ namespace NAS2D
 
 		AnimationCompleteSignal::Source& animationCompleteSignalSource();
 
+	protected:
+		unsigned int advanceByTimeDelta(unsigned int timeDelta);
+
 	private:
 		const AnimationSet& mAnimationSet;
 		const std::vector<AnimationSet::Frame>* mCurrentAction{nullptr};

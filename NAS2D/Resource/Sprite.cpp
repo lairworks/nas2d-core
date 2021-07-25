@@ -134,27 +134,9 @@ void Sprite::decrementFrame()
 
 void Sprite::update(Point<float> position)
 {
+	mTimer.adjust_accumulator(advanceByTimeDelta(mTimer.accumulator()));
+
 	const auto& frame = (*mCurrentAction)[mCurrentFrame];
-
-	if (!mPaused && !frame.isStopFrame())
-	{
-		while (mTimer.accumulator() >= frame.frameDelay)
-		{
-			mTimer.adjust_accumulator(frame.frameDelay);
-			mCurrentFrame++;
-		}
-
-		if (mCurrentFrame >= mCurrentAction->size())
-		{
-			mCurrentFrame = 0;
-			mAnimationCompleteSignal();
-		}
-	}
-	else if (frame.isStopFrame())
-	{
-		mAnimationCompleteSignal();
-	}
-
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
 	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, mRotationAngle, mColor);
@@ -224,4 +206,40 @@ Color Sprite::color() const
 Sprite::AnimationCompleteSignal::Source& Sprite::animationCompleteSignalSource()
 {
 	return mAnimationCompleteSignal;
+}
+
+
+unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
+{
+	unsigned int accumulator = 0;
+
+	if (mPaused)
+	{
+		return accumulator;
+	}
+
+	const auto& frames = *mCurrentAction;
+	for (;;)
+	{
+		const auto frame = frames[mCurrentFrame];
+
+		if (frame.isStopFrame())
+		{
+			mAnimationCompleteSignal();
+			return accumulator;
+		}
+
+		if (timeDelta - accumulator < frame.frameDelay)
+		{
+			return accumulator;
+		}
+
+		accumulator += frame.frameDelay;
+		mCurrentFrame++;
+		if (mCurrentFrame >= frames.size())
+		{
+			mCurrentFrame = 0;
+			mAnimationCompleteSignal();
+		}
+	}
 }

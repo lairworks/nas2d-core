@@ -27,8 +27,8 @@ namespace NAS2D
 		void pauseMusic() override;
 		void resumeMusic() override;
 
-		void fadeInMusic(const Music& music, int loops = Mixer::CONTINUOUS, int time = Mixer::DEFAULT_FADE_TIME) override;
-		void fadeOutMusic(int time = Mixer::DEFAULT_FADE_TIME) override;
+		void fadeInMusic(const Music& music, int loops = Mixer::CONTINUOUS, std::chrono::milliseconds time = Mixer::DEFAULT_FADE_TIME) override;
+		void fadeOutMusic(std::chrono::milliseconds time = Mixer::DEFAULT_FADE_TIME) override;
 
 		bool musicPlaying() const override;
 

@@ -24,7 +24,7 @@ namespace NAS2D
 	{
 	public:
 		static const int CONTINUOUS = -1;
-		static inline const std::chrono::milliseconds DEFAULT_FADE_TIME{500};
+		static constexpr std::chrono::milliseconds DEFAULT_FADE_TIME{500};
 
 	public:
 		Mixer() = default;

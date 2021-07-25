@@ -33,12 +33,12 @@ NAS2D  is licensed under the zlib license. See LICENSE.txt for details.
 The NAS2D project uses Vcpkg to integrate any dependencies without explicitly adding the source to the project directly. If you do not want to install vcpkg in a user-wide context, vcpkg allows for a local NuGet package to be created. The following steps are specific to NAS2D:
 
 1. Clone `vcpkg`
-1. Run the command `./bootstrap-vcpkg.bat`
-1. Run the command `vcpkg integrate project`
-1. Copy the generated NuGet install command.
-1. Open Visual Studio's Package Manager Console (Tools > NuGet Package Manager > Package Manager Console)
-1. Paste and Run the generated NuGet install command.
-1. Build the NAS2D solution to install all dependencies.
+2. Run the command `./bootstrap-vcpkg.bat`
+3. Run the command `vcpkg integrate project`
+4. Copy the generated NuGet install command.
+5. Open Visual Studio's Package Manager Console (Tools > NuGet Package Manager > Package Manager Console)
+6. Paste and Run the generated NuGet install command.
+7. Build the NAS2D solution to install all dependencies.
 
 From this point any missing headers should be found and future compilation will be successful.
 
@@ -49,10 +49,10 @@ Do not commit the NuGet-specific changes made to the project in `.vcxproj`, `.vc
 A workaround to allow for successful compilation or to work with the project file when adding or removing files or filters is as follows:
 
 1. Stash the NuGet-specific changes with an appropriate name.
-1. Complete any work, make any commits.
-1. Pop/Unstash the NuGet-changes.
-1. Compile.
-1. Re-stash the NuGet-changes.
+2. Complete any work, make any commits.
+3. Pop/Unstash the NuGet-changes.
+4. Compile.
+5. Re-stash the NuGet-changes.
 
 For best results, these steps should be completed immediately after installing the local NuGet package so as to not include any unrelated changes.
 

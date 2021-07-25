@@ -179,13 +179,13 @@ void MixerSDL::resumeMusic()
 
 void MixerSDL::fadeInMusic(const Music& music, int loops, std::chrono::milliseconds time)
 {
-	Mix_FadeInMusic(music.music(), loops, time.count());
+	Mix_FadeInMusic(music.music(), loops, static_cast<int>(time.count()));
 }
 
 
 void MixerSDL::fadeOutMusic(std::chrono::milliseconds time)
 {
-	Mix_FadeOutMusic(time.count());
+	Mix_FadeOutMusic(static_cast<int>(time.count()));
 }
 
 

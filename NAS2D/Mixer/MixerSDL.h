@@ -56,8 +56,8 @@ namespace NAS2D
 		void pauseMusic() override;
 		void resumeMusic() override;
 
-		void fadeInMusic(const Music& music, int loops, std::chrono::milliseconds time) override;
-		void fadeOutMusic(std::chrono::milliseconds time) override;
+		void fadeInMusic(const Music& music, int loops, std::chrono::milliseconds fadeInTime) override;
+		void fadeOutMusic(std::chrono::milliseconds fadeOutTime) override;
 
 		bool musicPlaying() const override;
 

@@ -83,12 +83,12 @@ void Renderer::fadeColor(Color color)
 /**
  * Non-blocking screen fade.
  *
- * \param	delay	Time in miliseconds the fade should last. A value of 0
+ * \param	fadeInTime	Time in miliseconds the fade should last. A value of 0
  *					will instantly fade the screen in.
  */
-void Renderer::fadeIn(float delay)
+void Renderer::fadeIn(std::chrono::milliseconds fadeInTime)
 {
-	if (delay == 0)
+	if (fadeInTime.count() == 0LL)
 	{
 		mCurrentFade = 0.0f;
 		mCurrentFadeType = FadeType::None;
@@ -96,7 +96,7 @@ void Renderer::fadeIn(float delay)
 	}
 
 	mCurrentFadeType = FadeType::In;
-	mFadeStep = 255.0f / delay;
+	mFadeStep = 255.0f / static_cast<float>(fadeInTime.count());
 
 	fadeTimer.delta(); // clear timer
 }
@@ -105,12 +105,12 @@ void Renderer::fadeIn(float delay)
 /**
  * Non-blocking screen fade.
  *
- * \param	delay	Time in miliseconds the fade should last. A value of 0
+ * \param	fadeOutTime	Time in miliseconds the fade should last. A value of 0
  *					will instantly fade the screen in.
  */
-void Renderer::fadeOut(float delay)
+void Renderer::fadeOut(std::chrono::milliseconds fadeOutTime)
 {
-	if (delay == 0)
+	if (fadeOutTime.count() == 0LL)
 	{
 		mCurrentFade = 255.0f;
 		mCurrentFadeType = FadeType::None;
@@ -118,7 +118,7 @@ void Renderer::fadeOut(float delay)
 	}
 
 	mCurrentFadeType = FadeType::Out;
-	mFadeStep = 255.0f / delay;
+	mFadeStep = 255.0f / static_cast<float>(fadeOutTime.count());
 
 	fadeTimer.delta(); // clear timer
 }

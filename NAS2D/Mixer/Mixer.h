@@ -51,12 +51,6 @@ namespace NAS2D
 		virtual void pauseMusic() = 0;
 		virtual void resumeMusic() = 0;
 
-		/**
-		 * Starts a Music track and fades it in to the current Music volume.
-		 *
-		 * \param music Reference to a Music Resource.
-		 * \param loops Repeat count. -1 for continuous loop.
-		 */
 		virtual void fadeInMusic(const Music& music, int loops = Mixer::CONTINUOUS, std::chrono::milliseconds fadeInTime = Mixer::DEFAULT_FADE_TIME) = 0;
 
 		virtual void fadeOutMusic(std::chrono::milliseconds fadeOutTime = Mixer::DEFAULT_FADE_TIME) = 0;

@@ -59,33 +59,11 @@ TEST_F(Sprite, animationCompleteSignal) {
 	EXPECT_CALL(handler, MockMethod()).Times(2);
 	sprite.advanceByTimeDelta(4u);
 
-	sprite.play("frameStopAction");
-	EXPECT_CALL(handler, MockMethod());
-	sprite.advanceByTimeDelta(0u);
-	EXPECT_CALL(handler, MockMethod()).Times(0);
-	sprite.advanceByTimeDelta(0u);
-
-	sprite.play("frameStopAction");
-	EXPECT_CALL(handler, MockMethod());
-	sprite.advanceByTimeDelta(1u);
-	EXPECT_CALL(handler, MockMethod()).Times(0);
-	sprite.advanceByTimeDelta(1u);
-
-	sprite.play("frameStopAction");
-	EXPECT_CALL(handler, MockMethod());
-	sprite.advanceByTimeDelta(2u);
-	EXPECT_CALL(handler, MockMethod()).Times(0);
-	sprite.advanceByTimeDelta(2u);
-
-	sprite.play("frameStopAction");
-	EXPECT_CALL(handler, MockMethod());
-	sprite.advanceByTimeDelta(3u);
-	EXPECT_CALL(handler, MockMethod()).Times(0);
-	sprite.advanceByTimeDelta(3u);
-
-	sprite.play("frameStopAction");
-	EXPECT_CALL(handler, MockMethod());
-	sprite.advanceByTimeDelta(4u);
-	EXPECT_CALL(handler, MockMethod()).Times(0);
-	sprite.advanceByTimeDelta(4u);
+	for (auto i = 0u; i <= 4u; ++i) {
+		sprite.play("frameStopAction");
+		EXPECT_CALL(handler, MockMethod());
+		sprite.advanceByTimeDelta(i);
+		EXPECT_CALL(handler, MockMethod()).Times(0);
+		sprite.advanceByTimeDelta(i);
+	}
 }

@@ -20,11 +20,6 @@ struct SDL_Cursor;
 
 namespace NAS2D
 {
-	/**
-	 * OpenGL Renderer.
-	 *
-	 * Implements an OpenGL based Renderer.
-	 */
 	class RendererOpenGL : public Renderer
 	{
 	public:
@@ -107,7 +102,7 @@ namespace NAS2D
 		void onResize(Vector<int> newSize);
 
 
-		SDL_GLContext sdlOglContext; /**< Primary OpenGL render context. */
+		SDL_GLContext sdlOglContext;
 		std::map<int, SDL_Cursor*> cursors;
 	};
-} // namespace
+} // namespace NAS2D

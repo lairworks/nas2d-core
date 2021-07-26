@@ -111,13 +111,11 @@ namespace NAS2D
 			return (x * other.x) + (y * other.y);
 		}
 
-		// Reflect the x-coordinate (flip across Y-axis)
 		constexpr Vector reflectX() const
 		{
 			return {-x, y};
 		}
 
-		// Reflect the y-coordinate (flip across X-axis)
 		constexpr Vector reflectY() const
 		{
 			return {x, -y};

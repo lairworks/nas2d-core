@@ -13,13 +13,8 @@
 namespace NAS2D
 {
 
-
-	// Explicit template instantiation
 	template struct Point<int>;
 
-
-	// Explicit template instantiation
 	template struct Point<float>;
-
 
 }

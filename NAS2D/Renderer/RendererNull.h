@@ -76,4 +76,4 @@ namespace NAS2D
 		void setOrthoProjection(const Rectangle<float>&) override {}
 	};
 
-} // namespace
+} // namespace NAS2D

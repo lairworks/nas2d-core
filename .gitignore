@@ -12,3 +12,6 @@ x64/
 
 # Doxygen documentation
 /doc/
+
+# Vcpkg project integration
+/packages/**

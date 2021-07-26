@@ -58,4 +58,24 @@ TEST_F(Sprite, animationCompleteSignal) {
 
 	EXPECT_CALL(handler, MockMethod()).Times(2);
 	sprite.advanceByTimeDelta(4u);
+
+	sprite.play("frameStopAction");
+	EXPECT_CALL(handler, MockMethod());
+	sprite.advanceByTimeDelta(0u);
+
+	sprite.play("frameStopAction");
+	EXPECT_CALL(handler, MockMethod());
+	sprite.advanceByTimeDelta(1u);
+
+	sprite.play("frameStopAction");
+	EXPECT_CALL(handler, MockMethod());
+	sprite.advanceByTimeDelta(2u);
+
+	sprite.play("frameStopAction");
+	EXPECT_CALL(handler, MockMethod());
+	sprite.advanceByTimeDelta(3u);
+
+	sprite.play("frameStopAction");
+	EXPECT_CALL(handler, MockMethod());
+	sprite.advanceByTimeDelta(4u);
 }

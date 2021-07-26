@@ -226,6 +226,7 @@ unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
 		if (frame.isStopFrame())
 		{
 			mAnimationCompleteSignal();
+			mPaused = true;
 			return accumulator;
 		}
 

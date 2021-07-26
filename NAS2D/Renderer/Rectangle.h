@@ -135,8 +135,8 @@ namespace NAS2D
 			return startPoint() <= point && point < endPoint();
 		}
 
-		// Start point exclusive (x, y), endpoint exclusive (x + width, y + height)
-		// Area in interval notation: (x .. x + width), (y .. y + height)
+		// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
+		// Area in interval notation: [x .. x + width), [y .. y + height)
 		constexpr bool overlaps(const Rectangle& rect) const
 		{
 			return startPoint() < rect.endPoint() && rect.startPoint() < endPoint();

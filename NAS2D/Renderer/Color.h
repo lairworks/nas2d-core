@@ -15,9 +15,6 @@
 namespace NAS2D
 {
 
-	/**
-	 * RGBA Color.
-	 */
 	struct Color
 	{
 		uint8_t red = 255;

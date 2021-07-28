@@ -60,7 +60,12 @@ void Renderer::fadeColor(Color color)
 	mFadeColor = color;
 }
 
-
+/**
+ * Non-blocking screen fade.
+ *
+ * \param	fadeInTime	Length of time the fade should last.
+ *			A value of 0 will instantly fade the screen in.
+*/
 void Renderer::fadeIn(std::chrono::milliseconds fadeInTime)
 {
 	if (fadeInTime.count() == 0LL)

@@ -17,6 +17,7 @@
 #include "../Timer.h"
 #include "../Signal/Signal.h"
 
+#include <chrono>
 #include <string_view>
 #include <string>
 #include <vector>
@@ -92,8 +93,8 @@ namespace NAS2D
 		void drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor);
 
 		void fadeColor(Color color);
-		void fadeIn(float delayTime);
-		void fadeOut(float delayTime);
+		void fadeIn(std::chrono::milliseconds fadeInTime);
+		void fadeOut(std::chrono::milliseconds fadeOutTime);
 		bool isFading() const;
 		bool isFaded() const;
 		SignalSource<>& fadeComplete();

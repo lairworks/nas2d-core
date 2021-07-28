@@ -128,6 +128,12 @@ Point<int> Renderer::center() const
 }
 
 
+/**
+ * Updates the screen.
+ *
+ * \note	All derived Renderer objects must call Renderer::update()
+ *			before performing screen refreshes.
+ */
 void Renderer::update()
 {
 	if (mCurrentFadeType != FadeType::None)

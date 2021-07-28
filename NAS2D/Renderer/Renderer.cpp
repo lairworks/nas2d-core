@@ -77,6 +77,12 @@ void Renderer::fadeIn(std::chrono::milliseconds fadeInTime)
 }
 
 
+/**
+ * Non-blocking screen fade.
+ *
+ * \param	fadeOutTime	Length of time the fade should last.
+ *			A value of 0 will instantly fade the screen out.
+*/
 void Renderer::fadeOut(std::chrono::milliseconds fadeOutTime)
 {
 	if (fadeOutTime.count() == 0LL)

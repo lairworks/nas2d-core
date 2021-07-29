@@ -30,6 +30,7 @@ SignalSource<>& Fade::fadeComplete()
 }
 
 
+// Fade in from fadeColor
 void Fade::fadeIn(unsigned int durationInMilliseconds)
 {
 	setDuration(durationInMilliseconds);
@@ -37,6 +38,7 @@ void Fade::fadeIn(unsigned int durationInMilliseconds)
 }
 
 
+// Fade out to fadeColor
 void Fade::fadeOut(unsigned int durationInMilliseconds)
 {
 	setDuration(durationInMilliseconds);

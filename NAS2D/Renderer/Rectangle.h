@@ -24,13 +24,11 @@ namespace NAS2D
 		BaseType width = 0;
 		BaseType height = 0;
 
-		// Factory method
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size)
 		{
 			return {startPoint.x, startPoint.y, size.x, size.y};
 		}
 
-		// Factory method
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint)
 		{
 			return Create(startPoint, endPoint - startPoint);
@@ -153,4 +151,4 @@ namespace NAS2D
 
 	template <typename BaseType>
 	Rectangle(BaseType, BaseType, BaseType, BaseType) -> Rectangle<BaseType>;
-} // namespace
+} // namespace NAS2D

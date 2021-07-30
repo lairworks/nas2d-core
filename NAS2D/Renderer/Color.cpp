@@ -38,12 +38,6 @@ const Color Color::NormalZ{128, 128, 255};
 const Color Color::NoAlpha{0, 0, 0, 0};
 
 
-
-// ==================================================================================
-// = Color Implementation
-// ==================================================================================
-
-
 bool Color::operator==(Color other) const
 {
 	return (red == other.red) && (green == other.green) && (blue == other.blue) && (alpha == other.alpha);

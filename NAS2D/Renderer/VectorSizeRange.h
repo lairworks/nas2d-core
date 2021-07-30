@@ -90,4 +90,4 @@ namespace NAS2D
 	private:
 		const Vector<BaseType> mSize;
 	};
-} // namespace
+} // namespace NAS2D

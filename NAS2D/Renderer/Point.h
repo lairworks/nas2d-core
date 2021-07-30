@@ -125,4 +125,4 @@ namespace NAS2D
 	{
 		return p2 < p1;
 	}
-} // namespace
+} // namespace NAS2D

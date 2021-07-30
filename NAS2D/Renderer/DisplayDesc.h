@@ -14,7 +14,6 @@
 
 namespace NAS2D
 {
-	//A structure represents a display description.
 	struct DisplayDesc
 	{
 		int width{0};

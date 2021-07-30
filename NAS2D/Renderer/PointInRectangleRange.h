@@ -83,4 +83,4 @@ namespace NAS2D
 	private:
 		const Rectangle<BaseType> mRect;
 	};
-} // namespace
+} // namespace NAS2D

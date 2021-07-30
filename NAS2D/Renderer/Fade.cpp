@@ -33,7 +33,7 @@ SignalSource<>& Fade::fadeComplete()
 // Fade in from fadeColor
 void Fade::fadeIn(const std::chrono::milliseconds& fadeTime)
 {
-	setDuration(durationInMilliseconds);
+	setDuration(fadeTime);
 	mDirection = FadeDirection::In;
 }
 
@@ -41,7 +41,7 @@ void Fade::fadeIn(const std::chrono::milliseconds& fadeTime)
 // Fade out to fadeColor
 void Fade::fadeOut(const std::chrono::milliseconds& fadeTime)
 {
-	setDuration(durationInMilliseconds);
+	setDuration(fadeTime);
 	mDirection = FadeDirection::Out;
 }
 

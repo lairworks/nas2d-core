@@ -31,7 +31,7 @@ SignalSource<>& Fade::fadeComplete()
 
 
 // Fade in from fadeColor
-void Fade::fadeIn(unsigned int durationInMilliseconds)
+void Fade::fadeIn(const std::chrono::milliseconds& fadeTime)
 {
 	setDuration(durationInMilliseconds);
 	mDirection = FadeDirection::In;
@@ -39,7 +39,7 @@ void Fade::fadeIn(unsigned int durationInMilliseconds)
 
 
 // Fade out to fadeColor
-void Fade::fadeOut(unsigned int durationInMilliseconds)
+void Fade::fadeOut(const std::chrono::milliseconds& fadeTime)
 {
 	setDuration(durationInMilliseconds);
 	mDirection = FadeDirection::Out;
@@ -65,7 +65,7 @@ void Fade::update()
 		return;
 	}
 
-	const auto step = static_cast<uint8_t>(std::clamp(mFadeTimer.accumulator() * 255u / mDuration, 0u, 255u));
+	const auto step = static_cast<uint8_t>(std::clamp(mFadeTimer.accumulator() * 255u / static_cast<unsigned int>(mDuration.count()), 0u, 255u));
 	mFadeColor.alpha = (mDirection == FadeDirection::In) ? 255 - step : step;
 
 	if (step == 255)
@@ -86,13 +86,13 @@ void Fade::draw(Renderer& renderer) const
 }
 
 
-void Fade::setDuration(unsigned int durationInMilliseconds)
+void Fade::setDuration(const std::chrono::milliseconds& newDuration)
 {
-	if (durationInMilliseconds == 0)
+	if (newDuration.count() <= 0LL)
 	{
 		throw std::runtime_error("Fade duration must be positive");
 	}
 
-	mDuration = durationInMilliseconds;
+	mDuration = newDuration;
 	mFadeTimer.reset();
 }

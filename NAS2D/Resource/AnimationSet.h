@@ -36,7 +36,7 @@ namespace NAS2D
 			bool isStopFrame() const;
 		};
 
-		explicit AnimationSet(std::string fileName);
+		explicit AnimationSet(const std::string& fileName);
 		explicit AnimationSet(const Xml::XmlElement& element);
 		AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions);
 

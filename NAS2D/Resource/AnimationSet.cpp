@@ -50,7 +50,7 @@ bool AnimationSet::Frame::isStopFrame() const
 }
 
 
-AnimationSet::AnimationSet(std::string fileName) :
+AnimationSet::AnimationSet(const std::string& fileName) :
 	mFileName{fileName}
 {
 	try {

@@ -13,6 +13,7 @@
 #include "Image.h"
 #include "../Renderer/Vector.h"
 #include "../Renderer/Rectangle.h"
+#include "../Xml/Xml.h"
 
 #include <map>
 #include <vector>
@@ -36,15 +37,18 @@ namespace NAS2D
 		};
 
 		AnimationSet(std::string fileName);
+		AnimationSet(const Xml::XmlElement& element);
 		AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions);
 
 		std::vector<std::string> actionNames() const;
 		const std::vector<Frame>& frames(const std::string& actionName) const;
 
 	private:
-		std::string mFileName;
-		std::map<std::string, std::string> mImageSheetMap;
-		std::map<std::string, std::vector<Frame>> mActions;
+		void loadFromXml(const Xml::XmlElement& element);
+
+		std::string mFileName{};
+		std::map<std::string, std::string> mImageSheetMap{};
+		std::map<std::string, std::vector<Frame>> mActions{};
 	};
 
 } // namespace

@@ -221,7 +221,7 @@ unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
 	const auto& frames = *mCurrentAction;
 	for (;;)
 	{
-		const auto frame = frames[mCurrentFrame];
+		const auto& frame = frames[mCurrentFrame];
 
 		if (frame.isStopFrame())
 		{

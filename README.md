@@ -34,7 +34,10 @@ The NAS2D project uses Vcpkg to integrate any dependencies without explicitly ad
 
 ### User-wide integration
 
-
+1.  Clone `vcpkg`.
+2.  Run the command `./bootstrap-vcpkg.bat`.
+3.  Run the command `vcpkg integrate install`.
+4.  Build the NAS2D solution to install all dependencies.
 
 ### Project-specific integration
 

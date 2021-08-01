@@ -29,8 +29,8 @@ namespace NAS2D
 
 		SignalSource<>& fadeComplete();
 
-		void fadeIn(const std::chrono::milliseconds& fadeTime);
-		void fadeOut(const std::chrono::milliseconds& fadeTime);
+		void fadeIn(std::chrono::milliseconds fadeTime);
+		void fadeOut(std::chrono::milliseconds fadeTime);
 
 		bool isFading() const;
 		bool isFaded() const;
@@ -39,7 +39,7 @@ namespace NAS2D
 		void draw(Renderer& renderer) const;
 
 	private:
-		void setDuration(const std::chrono::milliseconds& newDuration);
+		void setDuration(std::chrono::milliseconds newDuration);
 
 		enum class FadeDirection
 		{

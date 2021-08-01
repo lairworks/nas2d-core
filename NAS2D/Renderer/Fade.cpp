@@ -88,7 +88,7 @@ void Fade::draw(Renderer& renderer) const
 
 void Fade::setDuration(std::chrono::milliseconds newDuration)
 {
-	if (newDuration == newDuration.zero())
+	if (newDuration == decltype(newDuration)::zero())
 	{
 		throw std::runtime_error("Fade duration must be positive");
 	}

@@ -52,14 +52,8 @@ From this point any missing headers should be found and future compilation will 
 
 > <span style="color:red">**WARNING** Do not commit the NuGet-specific changes made to the project in `.vcxproj`, `.vcxproj.filters`, `packages.config`, or the folder `./packages/...`. In addition to these changes being local to your system, they may contain potentially sensitive or personally identifiable information in the generated absolute path!</span>
 
-A workaround to allow for successful compilation or to work with the project file when adding or removing files or filters is as follows:
+A workaround to work with the project file when adding or removing files or filters is to stash the changes with an appropriate name.
 
-1.  Stash the NuGet-specific changes with an appropriate name.
-2.  Complete any work, make any commits.
-3.  Pop/Unstash the NuGet-changes.
-4.  Compile.
-5.  Re-stash the NuGet-changes.
-
-For best results, these steps should be completed immediately after installing the local NuGet package so as to not include any unrelated changes.
+For best results, you should stash the changes immediately after installing the local NuGet package so as to not include any unrelated changes.
 
 > <span style="color:red">**NOTICE** Committing the NuGet changes to the project will break it for all other developers due to the local absolute path.</span>

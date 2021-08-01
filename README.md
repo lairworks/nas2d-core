@@ -40,11 +40,11 @@ The NAS2D project uses Vcpkg to integrate any dependencies without explicitly ad
 
 If you do not want to install vcpkg in a user-wide context, vcpkg allows for a local NuGet package to be created. The following steps are specific to NAS2D:
 
-1.  Clone `vcpkg`
-2.  Run the command `./bootstrap-vcpkg.bat`
-3.  Run the command `vcpkg integrate project`
+1.  Clone `vcpkg`.
+2.  Run the command `./bootstrap-vcpkg.bat`.
+3.  Run the command `vcpkg integrate project`.
 4.  Copy the generated NuGet install command.
-5.  Open Visual Studio's Package Manager Console (Tools > NuGet Package Manager > Package Manager Console)
+5.  Open Visual Studio's Package Manager Console (Tools > NuGet Package Manager > Package Manager Console).
 6.  Paste and Run the generated NuGet install command.
 7.  Build the NAS2D solution to install all dependencies.
 

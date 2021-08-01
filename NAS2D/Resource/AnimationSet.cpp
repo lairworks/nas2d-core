@@ -55,8 +55,51 @@ bool AnimationSet::Frame::isStopFrame() const
 }
 
 
-AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(std::move(fileName), animationImageCache)}
+AnimationSet::AnimationSet(std::string fileName) :
+	mFileName{std::move(fileName)}
 {
+	try
+	{
+		auto& filesystem = Utility<Filesystem>::get();
+		const auto basePath = filesystem.parentPath(mFileName);
+
+		Xml::XmlDocument xmlDoc;
+		xmlDoc.parse(filesystem.read(mFileName).c_str());
+
+		if (xmlDoc.error())
+		{
+			throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
+		}
+
+		// Find the Sprite node.
+		const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
+		if (!xmlRootElement)
+		{
+			throw std::runtime_error("Sprite file does not contain required <sprite> tag");
+		}
+
+		// Get the Sprite version.
+		const auto version = xmlRootElement->attribute("version");
+		if (version.empty())
+		{
+			throw std::runtime_error("Sprite file's root element does not specify a version");
+		}
+		if (version != SPRITE_VERSION)
+		{
+			throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SPRITE_VERSION} + " Actual: " + versionString());
+		}
+
+		// Note:
+		// Here instead of going through each element and calling a processing function to handle
+		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
+		// image sheets anywhere in the sprite file.
+		mImageSheetMap = processImageSheets(basePath, xmlRootElement, animationImageCache);
+		mActions = processActions(mImageSheetMap, xmlRootElement, animationImageCache);
+	}
+	catch (const std::runtime_error& error)
+	{
+		throw std::runtime_error("Error parsing Sprite file: " + mFileName + "\nError: " + error.what());
+	}
 }
 
 

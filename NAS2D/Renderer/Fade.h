@@ -14,6 +14,7 @@
 #include "../Timer.h"
 #include "../Signal/Signal.h"
 
+#include <chrono>
 
 namespace NAS2D
 {
@@ -28,8 +29,8 @@ namespace NAS2D
 
 		SignalSource<>& fadeComplete();
 
-		void fadeIn(unsigned int durationInMilliseconds);
-		void fadeOut(unsigned int durationInMilliseconds);
+		void fadeIn(std::chrono::milliseconds fadeTime);
+		void fadeOut(std::chrono::milliseconds fadeTime);
 
 		bool isFading() const;
 		bool isFaded() const;
@@ -38,7 +39,7 @@ namespace NAS2D
 		void draw(Renderer& renderer) const;
 
 	private:
-		void setDuration(unsigned int durationInMilliseconds);
+		void setDuration(std::chrono::milliseconds newDuration);
 
 		enum class FadeDirection
 		{
@@ -49,7 +50,7 @@ namespace NAS2D
 
 		Color mFadeColor{Color::Black};
 		FadeDirection mDirection{FadeDirection::None};
-		unsigned int mDuration{0};
+		std::chrono::milliseconds mDuration{};
 		Timer mFadeTimer;
 		Signal<> mFadeComplete;
 	};

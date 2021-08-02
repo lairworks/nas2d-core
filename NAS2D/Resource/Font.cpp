@@ -66,7 +66,7 @@ namespace
  * Instantiate a Font using a TrueType or OpenType font.
  *
  * \param	filePath	Path to a font file.
- * \param	ptSize		Point size of the font.
+ * \param	ptSize		Point size of the font. Defaults to 12pt.
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) :
 	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"},
@@ -105,15 +105,20 @@ Vector<int> Font::size(std::string_view string) const
 }
 
 
-int Font::width(std::string_view text) const
+/**
+ * Gets the width in pixels of a string rendered using the Font.
+ *
+ * \param	string		String to get the width of.
+ */
+int Font::width(std::string_view string) const
 {
-	if (text.empty()) { return 0; }
+	if (string.empty()) { return 0; }
 
 	int width = 0;
 	auto& gml = mFontInfo.metrics;
 	if (gml.empty()) { return 0; }
 
-	for (auto character : text)
+	for (auto character : string)
 	{
 		auto glyph = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;
@@ -123,18 +128,27 @@ int Font::width(std::string_view text) const
 }
 
 
+/**
+ * Gets the height in pixels of the Font.
+ */
 int Font::height() const
 {
 	return mFontInfo.height;
 }
 
 
+/**
+ * The maximum pixel ascent of all glyphs in the Font.
+ */
 int Font::ascent() const
 {
 	return mFontInfo.ascent;
 }
 
 
+/**
+ * Returns the point size of the Font.
+ */
 unsigned int Font::ptSize() const
 {
 	return mFontInfo.pointSize;
@@ -254,6 +268,11 @@ namespace
 	}
 
 
+	/**
+	 * Generates a glyph map of all ASCII standard characters from 0 - 255.
+	 *
+	 * Internal function used to generate a glyph texture map from an TTF_Font struct.
+	 */
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		fillInTextureCoordinates(glyphMetricsList);
@@ -318,6 +337,7 @@ namespace
 
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
+		// Build table of character sizes
 		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 		{
 			auto& metrics = glyphMetricsList.emplace_back();

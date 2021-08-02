@@ -43,16 +43,32 @@ namespace NAS2D
 		Renderer& operator=(Renderer&& rhs) = default;
 		virtual ~Renderer();
 
+		const std::string& driverName() const;
 		virtual std::vector<DisplayDesc> getDisplayModes() const = 0;
 		virtual DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const = 0;
-		virtual Vector<int> getWindowClientArea() const noexcept = 0;
-
-		const std::string& driverName() const;
 
 		const std::string& title() const;
 		void title(const std::string& title);
 
 		virtual void window_icon(const std::string& path) = 0;
+
+		virtual void showSystemPointer(bool) = 0;
+		virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;
+		virtual void setCursor(int cursorId) = 0;
+
+		virtual void fullscreen(bool fs, bool maintain = false) = 0;
+		virtual bool fullscreen() const = 0;
+
+		virtual void resizeable(bool _r) = 0;
+		virtual bool resizeable() const = 0;
+
+		virtual void minimumSize(Vector<int> newSize) = 0;
+
+		virtual Vector<int> size() const = 0;
+		virtual void size(Vector<int> newSize) = 0;
+		void setResolution(Vector<int> newResolution);
+
+		virtual Vector<int> getWindowClientArea() const noexcept = 0;
 
 		virtual void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
 		virtual void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) = 0;
@@ -82,33 +98,17 @@ namespace NAS2D
 		bool isFaded() const;
 		SignalSource<>& fadeComplete();
 
-		virtual void showSystemPointer(bool) = 0;
-		virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;
-		virtual void setCursor(int cursorId) = 0;
-
 		virtual void clearScreen(Color color = Color::Black) = 0;
-
-		virtual Vector<int> size() const = 0;
-		virtual void size(Vector<int> newSize) = 0;
-
-		virtual void minimumSize(Vector<int> newSize) = 0;
 
 		Point<int> center() const;
 
 		virtual void clipRect(const Rectangle<float>& rect) = 0;
 		virtual void clipRectClear() = 0;
 
-		virtual void fullscreen(bool fs, bool maintain = false) = 0;
-		virtual bool fullscreen() const = 0;
-
-		virtual void resizeable(bool _r) = 0;
-		virtual bool resizeable() const = 0;
-
 		virtual void update();
 
 		virtual void setViewport(const Rectangle<int>& viewport) = 0;
 		virtual void setOrthoProjection(const Rectangle<float>& orthoBounds) = 0;
-		void setResolution(Vector<int> newResolution);
 
 	protected:
 		Renderer(const std::string& appTitle);

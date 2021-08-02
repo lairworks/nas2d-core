@@ -32,7 +32,6 @@ namespace
 	ImageCache animationImageCache;
 
 
-	// Adds a row tag to the end of messages.
 	std::string endTag(int row)
 	{
 		return " (Row: " + std::to_string(row) + ")";
@@ -88,11 +87,7 @@ const std::vector<AnimationSet::Frame>& AnimationSet::frames(const std::string& 
 namespace
 {
 
-	/**
-	 * Parses a Sprite XML Definition File.
-	 *
-	 * \param filePath	File path of the sprite XML definition file.
-	 */
+
 	AnimationSet processXml(std::string filePath, ImageCache& imageCache)
 	{
 		try
@@ -108,14 +103,12 @@ namespace
 				throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 			}
 
-			// Find the Sprite node.
 			const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
 			if (!xmlRootElement)
 			{
 				throw std::runtime_error("Sprite file does not contain required <sprite> tag");
 			}
 
-			// Get the Sprite version.
 			const auto version = xmlRootElement->attribute("version");
 			if (version.empty())
 			{
@@ -126,10 +119,6 @@ namespace
 				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SPRITE_VERSION} + " Actual: " + versionString());
 			}
 
-			// Note:
-			// Here instead of going through each element and calling a processing function to handle
-			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
-			// image sheets anywhere in the sprite file.
 			auto imageSheetMap = processImageSheets(basePath, xmlRootElement, imageCache);
 			auto actions = processActions(imageSheetMap, xmlRootElement, imageCache);
 			return {std::move(filePath), std::move(imageSheetMap), std::move(actions)};
@@ -141,14 +130,6 @@ namespace
 	}
 
 
-	/**
-	 * Iterates through all elements of a Sprite XML definition looking
-	 * for 'imagesheet' elements and processes them.
-	 *
-	 * \note	Since 'imagesheet' elements are processed before any other
-	 *			element in a sprite definition, these elements can appear
-	 *			anywhere in a Sprite XML definition.
-	 */
 	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::map<std::string, std::string> imageSheetMap;
@@ -183,10 +164,6 @@ namespace
 	}
 
 
-	/**
-	 * Iterates through all elements of a Sprite XML definition looking
-	 * for 'action' elements and processes them.
-	 */
 	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::map<std::string, std::vector<AnimationSet::Frame>> actions;
@@ -217,9 +194,6 @@ namespace
 	}
 
 
-	/**
-	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
-	 */
 	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::vector<AnimationSet::Frame> frameList;
@@ -251,22 +225,18 @@ namespace
 			}
 
 			const auto& image = imageCache.load(iterator->second);
-			// X-Coordinate
 			if (x < 0 || x > image.size().x)
 			{
 				throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow));
 			}
-			// Y-Coordinate
 			if (y < 0 || y > image.size().y)
 			{
 				throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow));
 			}
-			// Width
 			if (width <= 0 || width > image.size().x - x)
 			{
 				throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow));
 			}
-			// Height
 			if (height <= 0 || height > image.size().y - y)
 			{
 				throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow));

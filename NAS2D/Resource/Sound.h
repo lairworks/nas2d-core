@@ -9,6 +9,7 @@
 // ==================================================================================
 #pragma once
 
+#include <filesystem>
 #include <string>
 
 
@@ -18,11 +19,6 @@ struct Mix_Chunk;
 namespace NAS2D
 {
 
-	/**
-	 *  Sound resource.
-	 *
-	 *  Represents a Sound.
-	 */
 	class Sound
 	{
 	public:
@@ -42,8 +38,8 @@ namespace NAS2D
 		Mix_Chunk* sound() const;
 
 	private:
-		std::string mResourceName; /**< File path */
+		std::string mResourceName;
 		Mix_Chunk* mMixChunk{nullptr};
 	};
 
-} // namespace
+} // namespace NAS2D

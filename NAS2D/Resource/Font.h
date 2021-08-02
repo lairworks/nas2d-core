@@ -23,7 +23,7 @@ namespace NAS2D
 	 * Font resource.
 	 *
 	 * The Font class can be used to render TrueType, OpenType and Bitmap fonts. Two
-	 * contructors are provided for these types.
+	 * constructors are provided for these types.
 	 *
 	 * TrueType and OpenType fonts generate their own glyph map internally. Only
 	 * the ASCII values 0 - 255 are used. Unicode/UTF is not supported.
@@ -70,7 +70,7 @@ namespace NAS2D
 
 		Vector<int> glyphCellSize() const;
 		Vector<int> size(std::string_view string) const;
-		int width(std::string_view string) const;
+		int width(std::string_view text) const;
 		int height() const;
 		int ascent() const;
 		unsigned int ptSize() const;
@@ -82,7 +82,7 @@ namespace NAS2D
 		unsigned int textureId() const;
 
 	private:
-		std::string mResourceName; /**< File path */
+		std::string mResourceName;
 		FontInfo mFontInfo;
 	};
-} // namespace
+} // namespace NAS2D

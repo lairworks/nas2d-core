@@ -19,10 +19,6 @@ typedef struct _Mix_Music Mix_Music;
 
 namespace NAS2D
 {
-
-	/**
-	 *  Music resource.
-	 */
 	class Music
 	{
 	public:
@@ -40,9 +36,9 @@ namespace NAS2D
 		Mix_Music* music() const;
 
 	private:
-		std::string mResourceName; /**< File path */
+		std::string mResourceName;
 		const std::string mBuffer;
 		Mix_Music* mMusic{nullptr};
 	};
 
-} // namespace
+} // namespace NAS2D

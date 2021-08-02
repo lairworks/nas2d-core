@@ -743,13 +743,6 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 		throw std::runtime_error("SDL video initialization failed: " + std::string{SDL_GetError()});
 	}
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
-
-	SDL_GL_SetSwapInterval(vsync ? 1 : 0);
-
 	const Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
 	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resolution.x, resolution.y, sdlFlags);
 
@@ -759,6 +752,13 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	}
 
 	mResolution = resolution;
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 4);
+
+	SDL_GL_SetSwapInterval(vsync ? 1 : 0);
 
 	sdlOglContext = SDL_GL_CreateContext(underlyingWindow);
 	if (!sdlOglContext)

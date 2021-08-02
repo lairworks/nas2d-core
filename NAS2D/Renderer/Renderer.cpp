@@ -29,6 +29,12 @@ Renderer::~Renderer()
 }
 
 
+void Renderer::driverName(const std::string& name)
+{
+	mDriverName = name;
+}
+
+
 const std::string& Renderer::title() const
 {
 	return mTitle;
@@ -44,6 +50,15 @@ const std::string& Renderer::driverName() const
 void Renderer::title(const std::string& title)
 {
 	mTitle = title;
+}
+
+
+void Renderer::setResolution(Vector<int> newResolution)
+{
+	if (!fullscreen())
+	{
+		mResolution = newResolution;
+	}
 }
 
 
@@ -154,19 +169,4 @@ void Renderer::update()
 	{
 		drawBoxFilled(Rectangle<float>::Create({0, 0}, size().to<float>()), mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
 	}
-}
-
-
-void Renderer::setResolution(Vector<int> newResolution)
-{
-	if (!fullscreen())
-	{
-		mResolution = newResolution;
-	}
-}
-
-
-void Renderer::driverName(const std::string& name)
-{
-	mDriverName = name;
 }

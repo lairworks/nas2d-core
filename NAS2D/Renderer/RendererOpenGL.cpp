@@ -736,7 +736,7 @@ void RendererOpenGL::initGL()
 }
 
 
-void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsync)
+void RendererOpenGL::initSdl(Vector<int> resolution, bool fullscreen)
 {
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 	{
@@ -754,7 +754,11 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	mResolution = resolution;
 
 	SDL_ShowCursor(true);
+}
 
+
+void RendererOpenGL::initSdlGL(bool vsync)
+{
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -767,7 +771,13 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	{
 		throw std::runtime_error("Failed to create SDL OpenGL context");
 	}
+}
 
+
+void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsync)
+{
+	initSdl(resolution, fullscreen);
+	initSdlGL(vsync);
 	glewInit();
 	initGL();
 

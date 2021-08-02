@@ -99,6 +99,8 @@ namespace NAS2D
 
 	private:
 		void initGL();
+		void initSdl(Vector<int> resolution, bool fullscreen);
+		void initSdlGL(bool vsync);
 		void initVideo(Vector<int> resolution, bool fullscreen, bool vsync);
 
 		void onResize(Vector<int> newSize);

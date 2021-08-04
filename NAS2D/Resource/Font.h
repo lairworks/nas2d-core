@@ -66,7 +66,7 @@ namespace NAS2D
 		Font& operator=(const Font& font) = delete;
 		~Font();
 
-		const std::string& name() const { return mResourceName; }
+		const std::string& name() const { return mFilePath; }
 
 		Vector<int> glyphCellSize() const;
 		Vector<int> size(std::string_view string) const;
@@ -82,7 +82,7 @@ namespace NAS2D
 		unsigned int textureId() const;
 
 	private:
-		std::string mResourceName;
+		std::string mFilePath;
 		FontInfo mFontInfo;
 	};
 } // namespace NAS2D

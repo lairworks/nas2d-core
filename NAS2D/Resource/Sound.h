@@ -29,14 +29,14 @@ namespace NAS2D
 
 		~Sound();
 
-		const std::string& name() const { return mResourceName; }
+		const std::string& name() const { return mFilePath; }
 
 	protected:
 		friend class MixerSDL;
 		Mix_Chunk* sound() const;
 
 	private:
-		std::string mResourceName;
+		std::string mFilePath;
 		Mix_Chunk* mMixChunk{nullptr};
 	};
 

@@ -66,7 +66,7 @@ namespace
  * Instantiate a Font using a TrueType or OpenType font.
  *
  * \param	filePath	Path to a font file.
- * \param	ptSize		Point size of the font. Defaults to 12pt.
+ * \param	ptSize		Point size of the font.
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) :
 	mFilePath{filePath + "_" + std::to_string(ptSize) + "pt"},

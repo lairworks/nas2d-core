@@ -42,9 +42,9 @@ namespace NAS2D
 		const std::vector<Frame>& frames(const std::string& actionName) const;
 
 	private:
-		std::string mFileName{};
-		std::map<std::string, std::string> mImageSheetMap{};
-		std::map<std::string, std::vector<Frame>> mActions{};
+		std::string mFileName{"UNNAMED_ANIMATIONSET"};
+		std::map<std::string, std::string> mImageSheetMap;
+		std::map<std::string, std::vector<Frame>> mActions;
 	};
 
 } // namespace

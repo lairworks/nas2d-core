@@ -47,4 +47,4 @@ namespace NAS2D
 		std::map<std::string, std::vector<Frame>> mActions;
 	};
 
-} // namespace
+} // namespace NAS2D

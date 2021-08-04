@@ -21,16 +21,10 @@
 
 namespace NAS2D
 {
-	/**
-	 * Sprite resource.
-	 *
-	 * The Sprite Class is a self-contained group of Image resources that displays
-	 * Images at a specified screen coordinate in sequence to display an animation.
-	 */
 	class Sprite
 	{
 	public:
-		using AnimationCompleteSignal = Signal<>; /**< Signal used when action animations complete. */
+		using AnimationCompleteSignal = Signal<>;
 
 		Sprite(const std::string& filePath, const std::string& initialAction);
 		Sprite(const AnimationSet& animationSet, const std::string& initialAction);
@@ -72,7 +66,7 @@ namespace NAS2D
 		Timer mTimer;
 		AnimationCompleteSignal mAnimationCompleteSignal;
 
-		Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
-		float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
+		Color mColor{Color::Normal};
+		float mRotationAngle{0.0f};
 	};
-} // namespace
+} // namespace NAS2D

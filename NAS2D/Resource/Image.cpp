@@ -39,11 +39,6 @@ namespace
 }
 
 
-/**
- * Loads an Image from disk.
- *
- * \param filePath Path to an image file.
- */
 Image::Image(const std::string& filePath) :
 	mResourceName{filePath}
 {
@@ -62,13 +57,6 @@ Image::Image(const std::string& filePath) :
 }
 
 
-/**
- * Create an Image from a raw data buffer.
- *
- * \param	buffer			Pointer to a data buffer.
- * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
- * \param	size			Size of the Image in pixels.
- */
 Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 	mResourceName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)},
 	mSize{size}
@@ -104,20 +92,12 @@ Image::~Image()
 }
 
 
-/**
- * Gets the dimensions in pixels of the image.
- */
 Vector<int> Image::size() const
 {
 	return mSize;
 }
 
 
-/**
- * Gets the color of a pixel at a given coordinate.
- *
- * \param	point	Coordinates of the pixel to check.
- */
 Color Image::pixelColor(Point<int> point) const
 {
 	if (!Rectangle<int>::Create({0, 0}, mSize).contains(point))
@@ -188,7 +168,7 @@ namespace
 			{
 				return *reinterpret_cast<const uint32_t*>(pixelAddress);
 			}
-			default: // Should never be possible.
+			default:
 			{
 				throw std::runtime_error("Unknown pixel format with bytesPerPixel: " + std::to_string(bytesPerPixel));
 			}
@@ -196,9 +176,6 @@ namespace
 	}
 
 
-	/**
-	 * Generates an OpenGL Frame Buffer Object.
-	 */
 	unsigned int generateFbo(unsigned int textureId, Vector<int> imageSize)
 	{
 		unsigned int framebuffer;
@@ -225,9 +202,6 @@ namespace
 }
 
 
-/**
- * Generates a new OpenGL texture from an SDL_Surface.
- */
 unsigned int generateTexture(SDL_Surface* surface)
 {
 	const auto bytesPerPixel = surface->format->BytesPerPixel;
@@ -263,7 +237,6 @@ unsigned int generateTexture(void* buffer, int bytesPerPixel, int width, int hei
 	glGenTextures(1, &textureId);
 	glBindTexture(GL_TEXTURE_2D, textureId);
 
-	// Set texture and pixel handling states.
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

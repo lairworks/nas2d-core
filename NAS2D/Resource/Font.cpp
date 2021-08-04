@@ -105,11 +105,6 @@ Vector<int> Font::size(std::string_view string) const
 }
 
 
-/**
- * Gets the width in pixels of a string rendered using the Font.
- *
- * \param	string		String to get the width of.
- */
 int Font::width(std::string_view string) const
 {
 	if (string.empty()) { return 0; }
@@ -128,27 +123,18 @@ int Font::width(std::string_view string) const
 }
 
 
-/**
- * Gets the height in pixels of the Font.
- */
 int Font::height() const
 {
 	return mFontInfo.height;
 }
 
 
-/**
- * The maximum pixel ascent of all glyphs in the Font.
- */
 int Font::ascent() const
 {
 	return mFontInfo.ascent;
 }
 
 
-/**
- * Returns the point size of the Font.
- */
 unsigned int Font::ptSize() const
 {
 	return mFontInfo.pointSize;
@@ -337,7 +323,6 @@ namespace
 
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
-		// Build table of character sizes
 		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
 		{
 			auto& metrics = glyphMetricsList.emplace_back();

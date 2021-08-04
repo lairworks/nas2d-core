@@ -54,11 +54,6 @@ Point<int> Sprite::origin(Point<int> point) const
 }
 
 
-/**
- * Gets a list of Actions available for the Sprite.
- *
- * \return	std::vector<std::string> of actions.
- */
 std::vector<std::string> Sprite::actions() const
 {
 	return mAnimationSet.actionNames();
@@ -85,47 +80,30 @@ void Sprite::play(const std::string& action)
 }
 
 
-/**
- * Pauses animation for this Sprite.
- */
 void Sprite::pause()
 {
 	mPaused = true;
 }
 
 
-/**
- * Resumes the action of the Sprite.
- */
 void Sprite::resume()
 {
 	mPaused = false;
 }
 
 
-/**
- * Sets the animation playback frame.
- *
- * \param	frameIndex	New frame index
- */
 void Sprite::setFrame(std::size_t frameIndex)
 {
 	mCurrentFrame = frameIndex % mCurrentAction->size();
 }
 
 
-/**
- * Increments the frame counter.
- */
 void Sprite::incrementFrame()
 {
 	setFrame(mCurrentFrame + 1);
 }
 
 
-/**
- * Decrements the frame counter.
- */
 void Sprite::decrementFrame()
 {
 	setFrame(mCurrentFrame - 1);
@@ -143,60 +121,36 @@ void Sprite::update(Point<float> position)
 }
 
 
-/**
- * Sets the rotation angle of the Sprite.
- *
- * \param	angle	Angle of rotation in degrees.
- */
 void Sprite::rotation(float angle)
 {
 	mRotationAngle = angle;
 }
 
 
-/**
- * Gets the rotation angle of the Sprite.
- *
- * \return	Angle of rotation in degrees.
- */
 float Sprite::rotation() const
 {
 	return mRotationAngle;
 }
 
 
-/**
- * Sets the alpha value for the Sprite.
- *
- * \param	alpha	Alpha value to set between 0 - 255.
- */
 void Sprite::alpha(uint8_t alpha)
 {
 	mColor.alpha = alpha;
 }
 
 
-/**
- * Gets the alpha value for the Sprite.
- */
 uint8_t Sprite::alpha() const
 {
 	return mColor.alpha;
 }
 
 
-/**
- * Sets the color tint of the Sprite.
- */
 void Sprite::color(Color color)
 {
 	mColor = color;
 }
 
 
-/**
- * Gets the color tint of the Sprite.
- */
 Color Sprite::color() const
 {
 	return mColor;

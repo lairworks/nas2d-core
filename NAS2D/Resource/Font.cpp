@@ -99,21 +99,21 @@ Vector<int> Font::glyphCellSize() const
 }
 
 
-Vector<int> Font::size(std::string_view string) const
+Vector<int> Font::size(std::string_view text) const
 {
-	return {width(string), height()};
+	return {width(text), height()};
 }
 
 
-int Font::width(std::string_view string) const
+int Font::width(std::string_view text) const
 {
-	if (string.empty()) { return 0; }
+	if (text.empty()) { return 0; }
 
 	int width = 0;
 	auto& gml = mFontInfo.metrics;
 	if (gml.empty()) { return 0; }
 
-	for (auto character : string)
+	for (auto character : text)
 	{
 		auto glyph = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
 		width += gml[glyph].advance + gml[glyph].minX;

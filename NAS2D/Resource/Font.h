@@ -69,8 +69,8 @@ namespace NAS2D
 		const std::string& name() const { return mFilePath; }
 
 		Vector<int> glyphCellSize() const;
-		Vector<int> size(std::string_view string) const;
-		int width(std::string_view string) const;
+		Vector<int> size(std::string_view text) const;
+		int width(std::string_view text) const;
 		int height() const;
 		int ascent() const;
 		unsigned int ptSize() const;

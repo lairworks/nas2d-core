@@ -35,14 +35,14 @@ namespace NAS2D
 			bool isStopFrame() const;
 		};
 
-		AnimationSet(std::string fileName);
-		AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions);
+		AnimationSet(std::string filePath);
+		AnimationSet(std::string filePath, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions);
 
 		std::vector<std::string> actionNames() const;
 		const std::vector<Frame>& frames(const std::string& actionName) const;
 
 	private:
-		std::string mFileName;
+		std::string mFilePath;
 		std::map<std::string, std::string> mImageSheetMap;
 		std::map<std::string, std::vector<Frame>> mActions;
 	};

@@ -54,13 +54,13 @@ bool AnimationSet::Frame::isStopFrame() const
 }
 
 
-AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(std::move(fileName), animationImageCache)}
+AnimationSet::AnimationSet(std::string filePath) : AnimationSet{processXml(std::move(filePath), animationImageCache)}
 {
 }
 
 
-AnimationSet::AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions) :
-	mFileName{std::move(fileName)},
+AnimationSet::AnimationSet(std::string filePath, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions) :
+	mFilePath{std::move(filePath)},
 	mImageSheetMap{std::move(imageSheetMap)},
 	mActions{std::move(actions)}
 {
@@ -77,7 +77,7 @@ const std::vector<AnimationSet::Frame>& AnimationSet::frames(const std::string& 
 {
 	if (mActions.find(actionName) == mActions.end())
 	{
-		throw std::runtime_error("Sprite::play called on undefined action: " + actionName + "  (" + mFileName + ")");
+		throw std::runtime_error("Sprite::play called on undefined action: " + actionName + "  (" + mFilePath + ")");
 	}
 
 	return mActions.at(actionName);

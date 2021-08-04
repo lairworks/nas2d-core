@@ -44,7 +44,7 @@ namespace NAS2D
 
 		void update(Point<float> position);
 
-		void rotation(float angle);
+		void rotation(float angleDegrees);
 		float rotation() const;
 
 		void alpha(uint8_t alpha);
@@ -67,6 +67,6 @@ namespace NAS2D
 		AnimationCompleteSignal mAnimationCompleteSignal;
 
 		Color mColor{Color::Normal};
-		float mRotationAngle{0.0f};
+		float mRotationAngleDegrees{0.0f};
 	};
 } // namespace NAS2D

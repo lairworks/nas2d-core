@@ -39,7 +39,7 @@ namespace NAS2D
 	class Image
 	{
 	public:
-		explicit Image(const std::string& filePath);
+		explicit Image(const std::string& filePathOrName);
 		Image(void* buffer, int bytesPerPixel, Vector<int> size);
 
 		Image(const Image& rhs) = delete;
@@ -47,7 +47,7 @@ namespace NAS2D
 
 		~Image();
 
-		const std::string& name() const { return mResourceName; }
+		const std::string& name() const { return mFilePathOrName; }
 
 		Vector<int> size() const;
 
@@ -59,7 +59,7 @@ namespace NAS2D
 		unsigned int frameBufferObjectId() const;
 
 	private:
-		std::string mResourceName;
+		std::string mFilePathOrName;
 		SDL_Surface* mSurface{nullptr};
 		mutable unsigned int mTextureId{0u};
 		mutable unsigned int mFrameBufferObjectId{0u};

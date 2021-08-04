@@ -39,13 +39,13 @@ namespace
 }
 
 
-Image::Image(const std::string& filePath) :
-	mResourceName{filePath}
+Image::Image(const std::string& filePathOrName) :
+	mFilePathOrName{filePathOrName}
 {
-	const auto& data = Utility<Filesystem>::get().read(mResourceName);
+	const auto& data = Utility<Filesystem>::get().read(mFilePathOrName);
 	if (data.size() == 0)
 	{
-		throw std::runtime_error("Image file is empty: " + mResourceName);
+		throw std::runtime_error("Image file is empty: " + mFilePathOrName);
 	}
 
 	mSurface = IMG_Load_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
@@ -58,7 +58,7 @@ Image::Image(const std::string& filePath) :
 
 
 Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
-	mResourceName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)},
+	mFilePathOrName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)},
 	mSize{size}
 {
 	if (buffer == nullptr)

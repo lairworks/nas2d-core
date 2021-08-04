@@ -24,12 +24,12 @@ using namespace NAS2D;
 
 
 Music::Music(const std::string& filePath) :
-	mResourceName{filePath},
-	mBuffer{Utility<Filesystem>::get().read(mResourceName)}
+	mFilePath{filePath},
+	mBuffer{Utility<Filesystem>::get().read(mFilePath)}
 {
 	if (mBuffer.empty())
 	{
-		throw std::runtime_error("Music file is empty: " + mResourceName);
+		throw std::runtime_error("Music file is empty: " + mFilePath);
 	}
 
 	mMusic = Mix_LoadMUS_RW(SDL_RWFromConstMem(mBuffer.c_str(), static_cast<int>(mBuffer.size())), 1);

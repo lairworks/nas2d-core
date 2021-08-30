@@ -204,7 +204,7 @@ namespace NAS2D
 	template <typename BaseType>
 	bool operator>=(Vector3<BaseType> v1, Vector3<BaseType> v2)
 	{
-		return v2 <= v1;
+		return !(v1 < v2);
 	}
 
 	template <typename BaseType>
@@ -216,7 +216,7 @@ namespace NAS2D
 	template <typename BaseType>
 	bool operator<=(Vector3<BaseType> v1, Vector3<BaseType> v2)
 	{
-		return (v1.x <= v2.x) && (v1.y <= v2.y) && (v1.z <= v2.z);
+		return !(v2 < v1);
 	}
 
 }

@@ -259,6 +259,7 @@
     <ClInclude Include="Renderer\Point.h" />
     <ClInclude Include="Renderer\PointInRectangleRange.h" />
     <ClInclude Include="Renderer\Vector.h" />
+    <ClInclude Include="Renderer\Vector3.h" />
     <ClInclude Include="Renderer\VectorSizeRange.h" />
     <ClInclude Include="Renderer\Rectangle.h" />
     <ClInclude Include="Renderer\RectangleSkin.h" />

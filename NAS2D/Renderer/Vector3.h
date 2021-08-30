@@ -160,7 +160,15 @@ namespace NAS2D
 		template <typename NewBaseType>
 		constexpr operator Vector3<NewBaseType>() const
 		{
-			return {static_cast<NewBaseType>(x), static_cast<NewBaseType>(y), static_cast<NewBaseType>(z)};
+			//Floating-point -> Integral conversions require a call to floor due to rounding/truncation rules of negative numbers.
+			if constexpr(std::is_floating_point_v<BaseType> && std::is_integral_v<NewBaseType>)
+			{
+				return {static_cast<NewBaseType>(std::floor(x)), static_cast<NewBaseType>(std::floor(y)), static_cast<NewBaseType>(std::floor(z))};
+			}
+			else
+			{
+				return {static_cast<NewBaseType>(x), static_cast<NewBaseType>(y), static_cast<NewBaseType>(z)};
+			}
 		}
 
 		template <typename NewBaseType>

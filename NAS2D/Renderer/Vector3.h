@@ -12,7 +12,7 @@
 
 #include <cmath>
 #include <stdexcept>
-
+#include <tuple>
 
 namespace NAS2D
 {
@@ -198,7 +198,7 @@ namespace NAS2D
 	template <typename BaseType>
 	bool operator<(Vector3<BaseType> v1, Vector3<BaseType> v2)
 	{
-		return (v1.x < v2.x) && (v1.y < v2.y) && (v1.z < v2.z);
+		return std::tie(v1.x, v1.y, v1.z) < std::tie(v2.x, v2.y, v2.z);
 	}
 
 	template <typename BaseType>

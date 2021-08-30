@@ -67,6 +67,10 @@ namespace NAS2D
 			return {x - vector.x, y - vector.y, z - vector.z};
 		}
 
+		constexpr Vector3 operator-() const {
+			return {-x, -y, -z};
+		}
+
 		Vector3& operator*=(BaseType scalar)
 		{
 			x *= scalar;

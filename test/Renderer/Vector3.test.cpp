@@ -30,7 +30,8 @@ TEST(Vector3, OperatorEqualNotEqual) {
 TEST(Vector3, Conversion) {
 	// Allow explicit conversion
 	EXPECT_EQ((NAS2D::Vector3<int>{1, 1, 1}), static_cast<NAS2D::Vector3<int>>(NAS2D::Vector3<float>{1.0f, 1.0f, 1.0f}));
-	EXPECT_EQ((NAS2D::Vector3<int>{-1, -1, -1}), static_cast<NAS2D::Vector3<int>>(NAS2D::Vector3<float>{-1.5f, -1.5f, -1.5f}));
+	EXPECT_EQ((NAS2D::Vector3<int>{1, 1, 1}), static_cast<NAS2D::Vector3<int>>(NAS2D::Vector3<float>{1.5f, 1.5f, 1.5f}));
+	EXPECT_EQ((NAS2D::Vector3<int>{-2, -2, -2}), static_cast<NAS2D::Vector3<int>>(NAS2D::Vector3<float>{-1.5f, -1.5f, -1.5f}));
 	EXPECT_EQ((NAS2D::Vector3<float>{1.0, 1.0, 1.0}), static_cast<NAS2D::Vector3<float>>(NAS2D::Vector3<int>{1, 1, 1}));
 }
 
@@ -106,8 +107,8 @@ TEST(Vector3, skewInverseBy) {
 	EXPECT_EQ((NAS2D::Vector3{2, 1, 2}), (NAS2D::Vector3{9, 6, 12}.skewInverseBy(NAS2D::Vector3{4, 5, 6})));
 
 	EXPECT_EQ((NAS2D::Vector3{4, 2, 1}), (NAS2D::Vector3{8, 6, 4}.skewInverseBy(NAS2D::Vector3{2, 3, 4})));
-	EXPECT_EQ((NAS2D::Vector3{2, 3, 1}), (NAS2D::Vector3{8, 6, 4}.skewInverseBy(NAS2D::Vector3{4, 2, 1})));
-	EXPECT_EQ((NAS2D::Vector3{2, 1, 1}), (NAS2D::Vector3{8, 6, 4}.skewInverseBy(NAS2D::Vector3{3, 5, 7})));
+	EXPECT_EQ((NAS2D::Vector3{2, 3, 4}), (NAS2D::Vector3{8, 6, 4}.skewInverseBy(NAS2D::Vector3{4, 2, 1})));
+	EXPECT_EQ((NAS2D::Vector3{2, 1, 0}), (NAS2D::Vector3{8, 6, 4}.skewInverseBy(NAS2D::Vector3{3, 5, 7})));
 }
 
 TEST(Vector3, lengthSquared) {
@@ -164,15 +165,15 @@ TEST(Vector3, reflectY) {
 }
 
 TEST(Vector3, reflectZ) {
-	EXPECT_EQ((NAS2D::Vector3{1, 1, -1}), (NAS2D::Vector3{1, 1, 1}).reflectY());
-	EXPECT_EQ((NAS2D::Vector3{1, 2, -1}), (NAS2D::Vector3{1, 2, 1}).reflectY());
-	EXPECT_EQ((NAS2D::Vector3{2, 1, -1}), (NAS2D::Vector3{2, 1, 1}).reflectY());
-	EXPECT_EQ((NAS2D::Vector3{2, 2, -1}), (NAS2D::Vector3{2, 2, 1}).reflectY());
+	EXPECT_EQ((NAS2D::Vector3{1, 1, -1}), (NAS2D::Vector3{1, 1, 1}).reflectZ());
+	EXPECT_EQ((NAS2D::Vector3{1, 2, -1}), (NAS2D::Vector3{1, 2, 1}).reflectZ());
+	EXPECT_EQ((NAS2D::Vector3{2, 1, -1}), (NAS2D::Vector3{2, 1, 1}).reflectZ());
+	EXPECT_EQ((NAS2D::Vector3{2, 2, -1}), (NAS2D::Vector3{2, 2, 1}).reflectZ());
 
-	EXPECT_EQ((NAS2D::Vector3{1, 1, 1}), (NAS2D::Vector3{1, 1, -1}).reflectY());
-	EXPECT_EQ((NAS2D::Vector3{1, 2, 1}), (NAS2D::Vector3{1, 2, -1}).reflectY());
-	EXPECT_EQ((NAS2D::Vector3{2, 1, 1}), (NAS2D::Vector3{2, 1, -1}).reflectY());
-	EXPECT_EQ((NAS2D::Vector3{2, 2, 1}), (NAS2D::Vector3{2, 2, -1}).reflectY());
+	EXPECT_EQ((NAS2D::Vector3{1, 1, 1}), (NAS2D::Vector3{1, 1, -1}).reflectZ());
+	EXPECT_EQ((NAS2D::Vector3{1, 2, 1}), (NAS2D::Vector3{1, 2, -1}).reflectZ());
+	EXPECT_EQ((NAS2D::Vector3{2, 1, 1}), (NAS2D::Vector3{2, 1, -1}).reflectZ());
+	EXPECT_EQ((NAS2D::Vector3{2, 2, 1}), (NAS2D::Vector3{2, 2, -1}).reflectZ());
 }
 
 TEST(Vector3, Negate) {
@@ -185,9 +186,12 @@ TEST(Vector3, OperatorType) {
 }
 
 TEST(Vector3, to) {
-	EXPECT_EQ((NAS2D::Vector3<int>{1, 2}), (NAS2D::Vector3<float>{1.0, 2.0}.to<int>()));
-	EXPECT_EQ((NAS2D::Vector3<int>{1, 2}), (NAS2D::Vector3<float>{1.4, 2.6}.to<int>()));
-	EXPECT_EQ((NAS2D::Vector3<int>{-3, -8}), (NAS2D::Vector3<float>{-3.4, -8.6}.to<int>()));
+	EXPECT_EQ((NAS2D::Vector3<int>{1, 2}), (NAS2D::Vector3<float>{1.0f, 2.0f}.to<int>()));
+	EXPECT_EQ((NAS2D::Vector3<int>{1, 2}), (NAS2D::Vector3<double>{1.0, 2.0}.to<int>()));
+	EXPECT_EQ((NAS2D::Vector3<int>{1, 2}), (NAS2D::Vector3<float>{1.4f, 2.6f}.to<int>()));
+	EXPECT_EQ((NAS2D::Vector3<int>{1, 2}), (NAS2D::Vector3<double>{1.4, 2.6}.to<int>()));
+	EXPECT_EQ((NAS2D::Vector3<int>{-4, -9}), (NAS2D::Vector3<float>{-3.4f, -8.6f}.to<int>()));
+	EXPECT_EQ((NAS2D::Vector3<int>{3, 8}), (NAS2D::Vector3<double>{3.4, 8.6}.to<int>()));
 	EXPECT_EQ((NAS2D::Vector3<float>{1.0, 2.0}), (NAS2D::Vector3<int>{1, 2}.to<float>()));
 }
 
@@ -205,7 +209,7 @@ TEST(Vector3, PartialOrderLessEqual) {
 	EXPECT_LE((NAS2D::Vector3{1, 1, 0}), (NAS2D::Vector3{1, 1, 1}));
 	EXPECT_LE((NAS2D::Vector3{1, 1, 1}), (NAS2D::Vector3{1, 1, 1}));
 
-	EXPECT_FALSE((NAS2D::Vector3{0, 1, 0}) <= (NAS2D::Vector3{1, 0, 0}));
+	EXPECT_TRUE((NAS2D::Vector3{0, 1, 0}) <= (NAS2D::Vector3{1, 0, 0}));
 	EXPECT_FALSE((NAS2D::Vector3{1, 0, 0}) <= (NAS2D::Vector3{0, 1, 0}));
 }
 
@@ -215,30 +219,31 @@ TEST(Vector3, PartialOrderGreaterEqual) {
 	EXPECT_GE((NAS2D::Vector3{1, 1, 0}), (NAS2D::Vector3{1, 0, 0}));
 	EXPECT_GE((NAS2D::Vector3{1, 1, 0}), (NAS2D::Vector3{1, 1, 0}));
 	EXPECT_GE((NAS2D::Vector3{0, 0, 1}), (NAS2D::Vector3{0, 0, 0}));
-	EXPECT_GE((NAS2D::Vector3{0, 0, 1}), (NAS2D::Vector3{1, 0, 0}));
-	EXPECT_GE((NAS2D::Vector3{0, 0, 1}), (NAS2D::Vector3{0, 1, 0}));
-	EXPECT_GE((NAS2D::Vector3{0, 0, 1}), (NAS2D::Vector3{1, 1, 0}));
+	EXPECT_GE((NAS2D::Vector3{1, 0, 1}), (NAS2D::Vector3{1, 0, 0}));
+	EXPECT_GE((NAS2D::Vector3{0, 1, 1}), (NAS2D::Vector3{0, 1, 0}));
+	EXPECT_GE((NAS2D::Vector3{1, 1, 1}), (NAS2D::Vector3{1, 1, 0}));
 	EXPECT_GE((NAS2D::Vector3{0, 0, 1}), (NAS2D::Vector3{0, 0, 1}));
 }
 
 TEST(Vector3, PartialOrderLess) {
 	EXPECT_LT((NAS2D::Vector3{0, 0, 0}), (NAS2D::Vector3{1, 1, 0}));
+	EXPECT_LT((NAS2D::Vector3{0, 0, 1}), (NAS2D::Vector3{1, 1, 0}));
 
-	EXPECT_FALSE((NAS2D::Vector3{0, 1, 0}) < (NAS2D::Vector3{1, 1, 0}));
-	EXPECT_FALSE((NAS2D::Vector3{1, 0, 0}) < (NAS2D::Vector3{1, 1, 0}));
-	EXPECT_FALSE((NAS2D::Vector3{1, 1, 0}) < (NAS2D::Vector3{1, 1, 0}));
+	EXPECT_TRUE((NAS2D::Vector3{0, 1, 1}) < (NAS2D::Vector3{1, 1, 0}));
+	EXPECT_TRUE((NAS2D::Vector3{1, 0, 1}) < (NAS2D::Vector3{1, 1, 0}));
+	EXPECT_FALSE((NAS2D::Vector3{1, 1, 1}) < (NAS2D::Vector3{1, 1, 0}));
 
-	EXPECT_FALSE((NAS2D::Vector3{0, 1, 0}) < (NAS2D::Vector3{1, 0, 0}));
-	EXPECT_FALSE((NAS2D::Vector3{1, 0, 0}) < (NAS2D::Vector3{0, 1, 0}));
+	EXPECT_FALSE((NAS2D::Vector3{1, 0, 0}) < (NAS2D::Vector3{0, 1, 1}));
+	EXPECT_FALSE((NAS2D::Vector3{1, 0, 1}) < (NAS2D::Vector3{0, 1, 0}));
 }
 
 TEST(Vector3, PartialOrderGreater) {
 	EXPECT_GT((NAS2D::Vector3{1, 1, 0}), (NAS2D::Vector3{0, 0, 0}));
 
-	EXPECT_FALSE((NAS2D::Vector3{1, 1, 0}) > (NAS2D::Vector3{0, 1, 0}));
-	EXPECT_FALSE((NAS2D::Vector3{1, 1, 0}) > (NAS2D::Vector3{1, 0, 0}));
+	EXPECT_TRUE((NAS2D::Vector3{1, 1, 0}) > (NAS2D::Vector3{0, 1, 0}));
+	EXPECT_TRUE((NAS2D::Vector3{1, 1, 0}) > (NAS2D::Vector3{1, 0, 0}));
 	EXPECT_FALSE((NAS2D::Vector3{1, 1, 0}) > (NAS2D::Vector3{1, 1, 0}));
 
 	EXPECT_FALSE((NAS2D::Vector3{0, 1, 0}) > (NAS2D::Vector3{1, 0, 0}));
-	EXPECT_FALSE((NAS2D::Vector3{1, 0, 0}) > (NAS2D::Vector3{0, 1, 0}));
+	EXPECT_TRUE((NAS2D::Vector3{1, 0, 0}) > (NAS2D::Vector3{0, 1, 0}));
 }

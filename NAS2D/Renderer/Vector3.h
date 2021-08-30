@@ -18,18 +18,19 @@ namespace NAS2D
 	template <typename BaseType>
 	struct Vector3
 	{
-		static inline Vector3 Zero = Vector3(BaseType{}, BaseType{}, BaseType{});
-		static inline Vector3 X_Axis = Vector3(BaseType{1}, BaseType{}, BaseType{});
-		static inline Vector3 Y_Axis = Vector3(BaseType{}, BaseType{1}, BaseType{});
-		static inline Vector3 Z_Axis = Vector3(BaseType{}, BaseType{}, BaseType{1});
-		static inline Vector3 XY_Axis = Vector3(BaseType{1}, BaseType{1}, BaseType{});
-		static inline Vector3 XZ_Axis = Vector3(BaseType{1}, BaseType{}, BaseType{1});
-		static inline Vector3 YZ_Axis = Vector3(BaseType{}, BaseType{1}, BaseType{1});
-		static inline Vector3 One = Vector3(BaseType{1}, BaseType{1}, BaseType{1});
 
 		BaseType x{};
 		BaseType y{};
 		BaseType z{};
+
+		static Vector3<BaseType> Zero;
+		static Vector3<BaseType> X_Axis;
+		static Vector3<BaseType> Y_Axis;
+		static Vector3<BaseType> Z_Axis;
+		static Vector3<BaseType> XY_Axis;
+		static Vector3<BaseType> XZ_Axis;
+		static Vector3<BaseType> YZ_Axis;
+		static Vector3<BaseType> One;
 
 		constexpr bool operator==(const Vector3& vector) const
 		{
@@ -217,3 +218,20 @@ namespace NAS2D
 		return v2 < v1;
 	}
 }
+
+template<typename BaseType>
+NAS2D::Vector3<BaseType> NAS2D::Vector3<BaseType>::Zero{BaseType{}, BaseType{}, BaseType{}};
+template<typename BaseType>
+NAS2D::Vector3<BaseType> NAS2D::Vector3<BaseType>::X_Axis{BaseType{1}, BaseType{}, BaseType{}};
+template<typename BaseType>
+NAS2D::Vector3<BaseType> NAS2D::Vector3<BaseType>::Y_Axis{BaseType{}, BaseType{1}, BaseType{}};
+template<typename BaseType>
+NAS2D::Vector3<BaseType> NAS2D::Vector3<BaseType>::Z_Axis{BaseType{}, BaseType{}, BaseType{1}};
+template<typename BaseType>
+NAS2D::Vector3<BaseType> NAS2D::Vector3<BaseType>::XY_Axis{BaseType{1}, BaseType{1}, BaseType{}};
+template<typename BaseType>
+NAS2D::Vector3<BaseType> NAS2D::Vector3<BaseType>::XZ_Axis{BaseType{1}, BaseType{}, BaseType{1}};
+template<typename BaseType>
+NAS2D::Vector3<BaseType> NAS2D::Vector3<BaseType>::YZ_Axis{BaseType{}, BaseType{1}, BaseType{1}};
+template<typename BaseType>
+NAS2D::Vector3<BaseType> NAS2D::Vector3<BaseType>::One{BaseType{1}, BaseType{1}, BaseType{1}};

@@ -106,7 +106,7 @@ namespace NAS2D
 			return {x * other.x, y * other.y, z * other.z};
 		}
 
-		constexpr Vector skewInverseBy(const Vector& other) const
+		constexpr Vector3 skewInverseBy(const Vector3& other) const
 		{
 			if (other.x == 0 || other.y == 0 || other.z == 0)
 			{

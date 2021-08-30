@@ -51,6 +51,7 @@
     <ClCompile Include="Renderer/Rectangle.test.cpp" />
     <ClCompile Include="Renderer/Vector.test.cpp" />
     <ClCompile Include="Renderer/VectorSizeRange.test.cpp" />
+    <ClCompile Include="Renderer\Vector3.test.cpp" />
     <ClCompile Include="Resource/Image.test.cpp" />
     <ClCompile Include="Resource/ResourceCache.test.cpp" />
     <ClCompile Include="ContainerUtils.test.cpp" />

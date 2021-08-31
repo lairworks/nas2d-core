@@ -140,6 +140,27 @@ TEST(Vector3, length)
 }
 
 
+TEST(Vector3, normalize)
+{
+	EXPECT_NEAR(1.4142135623730950488016887242097f, NAS2D::Vector3<float>::XY_Axis.normalize(), 0.0001f);
+	EXPECT_NEAR(5.0f, (NAS2D::Vector3<float>{5.0f, 0.0f, 0.0f}).normalize(), 0.0001f);
+}
+
+TEST(Vector3, normal)
+{
+	{
+		const auto result = (NAS2D::Vector3<float>::XY_Axis).normal();
+		EXPECT_NEAR(0.7071f, result.x, 0.0001f);
+		EXPECT_NEAR(0.7071f, result.y, 0.0001f);
+		EXPECT_NEAR(0.0f, result.z, 0.0001f);
+	}
+	EXPECT_EQ((NAS2D::Vector3<float>{0.8f, 0.6f, 0.0f}), (NAS2D::Vector3<float>{0.8f, 0.6f, 0.0f}).normal());
+	EXPECT_EQ((NAS2D::Vector3<float>::X_Axis), (NAS2D::Vector3<float>{5.0f, 0.0f, 0.0f}).normal());
+	EXPECT_EQ((NAS2D::Vector3<float>::Y_Axis), (NAS2D::Vector3<float>{0.0f, 5.0f, 0.0f}).normal());
+	EXPECT_EQ((NAS2D::Vector3<float>::Z_Axis), (NAS2D::Vector3<float>{0.0f, 0.0f, 5.0f}).normal());
+}
+
+
 TEST(Vector3, dotProduct) {
 	EXPECT_EQ(3, (NAS2D::Vector3{1, 3, -5}).dotProduct(NAS2D::Vector3{4, -2, -1}));
 	EXPECT_EQ(3, (NAS2D::Vector3{3, 4, 5}).dotProduct(NAS2D::Vector3<int>::X_Axis));

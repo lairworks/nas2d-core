@@ -133,15 +133,15 @@ namespace NAS2D
 		
 		constexpr Vector3 crossProduct(const Vector3& other) const
 		{
-			const auto a1 = a.x;
-			const auto a2 = a.y;
-			const auto a3 = a.z;
+			const auto a1 = x;
+			const auto a2 = y;
+			const auto a3 = z;
 
-			const auto b1 = b.x;
-			const auto b2 = b.y;
-			const auto b3 = b.z;
+			const auto b1 = other.x;
+			const auto b2 = other.y;
+			const auto b3 = other.z;
 
-			return Vector3(a2 * b3 - a3 * b2, a3 * b1 - a1 * b3, a1 * b2 - a2 * b1);
+			return Vector3<BaseType>{a2 * b3 - a3 * b2, a3 * b1 - a1 * b3, a1 * b2 - a2 * b1};
 		}
 
 		constexpr Vector3 reflectX() const

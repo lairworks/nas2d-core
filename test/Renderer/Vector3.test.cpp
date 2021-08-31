@@ -138,6 +138,12 @@ TEST(Vector3, dotProduct) {
 	EXPECT_EQ(3, (NAS2D::Vector3{3, 4, 5}).dotProduct(NAS2D::Vector3<int>::X_Axis));
 	EXPECT_EQ(4, (NAS2D::Vector3{3, 4, 5}).dotProduct(NAS2D::Vector3<int>::Y_Axis));
 	EXPECT_EQ(5, (NAS2D::Vector3{3, 4, 5}).dotProduct(NAS2D::Vector3<int>::Z_Axis));
+	EXPECT_EQ(1.0f, (NAS2D::Vector3<float>::X_Axis.dotProduct(NAS2D::Vector3<float>::X_Axis)));
+	EXPECT_EQ(-1.0f, (NAS2D::Vector3<float>::X_Axis.dotProduct(-NAS2D::Vector3<float>::X_Axis)));
+	EXPECT_EQ(0.0f, (NAS2D::Vector3<float>::X_Axis.dotProduct(NAS2D::Vector3<float>::Y_Axis)));
+	EXPECT_EQ(0.0f, (NAS2D::Vector3<float>::X_Axis.dotProduct(-NAS2D::Vector3<float>::Y_Axis)));
+	EXPECT_GT((NAS2D::Vector3<float>::X_Axis).dotProduct((NAS2D::Vector3<float>{0.8f, 0.6f, 0.0f})), 0.0f);
+	EXPECT_LT((NAS2D::Vector3<float>::X_Axis.dotProduct(NAS2D::Vector3<float>{-0.8f, 0.6f, 0.0f})), 0.0f);
 }
 
 TEST(Vector3, reflectX) {

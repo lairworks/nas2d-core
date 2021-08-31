@@ -146,6 +146,10 @@ TEST(Vector3, dotProduct) {
 	EXPECT_LT((NAS2D::Vector3<float>::X_Axis.dotProduct(NAS2D::Vector3<float>{-0.8f, 0.6f, 0.0f})), 0.0f);
 }
 
+TEST(Vector3, crossProduct) {
+	EXPECT_EQ((NAS2D::Vector3<float>::Z_Axis), (NAS2D::Vector3<float>::X_Axis).crossProduct((NAS2D::Vector3<float>::Y_Axis)));
+}
+
 TEST(Vector3, reflectX) {
 	EXPECT_EQ((NAS2D::Vector3{-1, 1, 1}), (NAS2D::Vector3{1, 1, 1}).reflectX());
 	EXPECT_EQ((NAS2D::Vector3{-1, 2, 1}), (NAS2D::Vector3{1, 2, 1}).reflectX());

@@ -131,6 +131,30 @@ namespace NAS2D
 			return std::sqrt(lengthSquared());
 		}
 
+		BaseType normalize()
+		{
+			const auto l = length();
+			if (l != 0.0f)
+			{
+				const auto inv_l = BaseType{1} / l;
+				x *= inv_l;
+				y *= inv_l;
+				z *= inv_l;
+			}
+			return l;
+		}
+		
+		Vector3 normal()
+		{
+			const auto l = length();
+			if (l != 0.0f)
+			{
+				const auto inv_l = BaseType{1} / l;
+				return {x * inv_l, y * inv_l, z * inv_l};
+			}
+			return *this;
+		}
+
 		constexpr BaseType dotProduct(const Vector3& other) const
 		{
 			return (x * other.x) + (y * other.y) + (z * other.z);

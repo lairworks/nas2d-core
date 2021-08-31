@@ -126,7 +126,7 @@ namespace NAS2D
 			return (x * x) + (y * y) + (z * z);
 		}
 
-		constexpr BaseType length() const
+		BaseType length() const
 		{
 			return std::sqrt(lengthSquared());
 		}

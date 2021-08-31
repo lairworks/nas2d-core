@@ -133,6 +133,13 @@ TEST(Vector3, lengthSquared) {
 	EXPECT_EQ(50, (NAS2D::Vector3{3, 4, 5}).lengthSquared());
 }
 
+
+TEST(Vector3, length)
+{
+	EXPECT_EQ(1.0f, NAS2D::Vector3<float>::X_Axis.length());
+}
+
+
 TEST(Vector3, dotProduct) {
 	EXPECT_EQ(3, (NAS2D::Vector3{1, 3, -5}).dotProduct(NAS2D::Vector3{4, -2, -1}));
 	EXPECT_EQ(3, (NAS2D::Vector3{3, 4, 5}).dotProduct(NAS2D::Vector3<int>::X_Axis));

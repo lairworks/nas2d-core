@@ -83,7 +83,7 @@ namespace NAS2D
 
 		Vector3& operator/=(BaseType scalar)
 		{
-			if (scalar == 0)
+			if(scalar == BaseType{0})
 			{
 				throw std::domain_error("Cannot divide vector by 0");
 			}
@@ -100,7 +100,7 @@ namespace NAS2D
 
 		constexpr Vector3 operator/(BaseType scalar) const
 		{
-			if (scalar == 0)
+			if(scalar == BaseType{0})
 			{
 				throw std::domain_error("Cannot divide vector by 0");
 			}
@@ -114,7 +114,7 @@ namespace NAS2D
 
 		constexpr Vector3 skewInverseBy(const Vector3& other) const
 		{
-			if (other.x == 0 || other.y == 0 || other.z == 0)
+			if(other.x == BaseType{0} || other.y == BaseType{0} || other.z == BaseType{0})
 			{
 				throw std::domain_error("Cannot skewInverseBy a vector with a zero component");
 			}
@@ -134,7 +134,7 @@ namespace NAS2D
 		BaseType normalize()
 		{
 			const auto l = length();
-			if (l != 0.0f)
+			if (l != BaseType{0})
 			{
 				const auto inv_l = BaseType{1} / l;
 				x *= inv_l;
@@ -147,7 +147,7 @@ namespace NAS2D
 		Vector3 normal()
 		{
 			const auto l = length();
-			if (l != 0.0f)
+			if(l != BaseType{0})
 			{
 				const auto inv_l = BaseType{1} / l;
 				return {x * inv_l, y * inv_l, z * inv_l};

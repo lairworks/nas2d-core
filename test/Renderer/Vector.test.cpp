@@ -101,6 +101,10 @@ TEST(Vector, skewBy) {
 }
 
 TEST(Vector, skewInverseBy) {
+	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{0.0, 0.0})), std::domain_error);
+	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{0.0, 1.0})), std::domain_error);
+	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{1.0, 0.0})), std::domain_error);
+
 	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{0, 0})), std::domain_error);
 	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{0, 1})), std::domain_error);
 	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{1, 0})), std::domain_error);

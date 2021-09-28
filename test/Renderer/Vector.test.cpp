@@ -32,13 +32,13 @@ TEST(Vector, Conversion) {
 }
 
 TEST(Vector, SelfAdd) {
-	NAS2D::Vector<int> vector{1, 1};
+	auto vector = NAS2D::Vector{1, 1};
 	EXPECT_EQ(&vector, &(vector += NAS2D::Vector{1, 2}));
 	EXPECT_EQ((NAS2D::Vector{2, 3}), vector);
 }
 
 TEST(Vector, SelfSubtract) {
-	NAS2D::Vector<int> vector{2, 3};
+	auto vector = NAS2D::Vector{2, 3};
 	EXPECT_EQ(&vector, &(vector -= NAS2D::Vector{1, 2}));
 	EXPECT_EQ((NAS2D::Vector{1, 1}), vector);
 }
@@ -52,13 +52,13 @@ TEST(Vector, Subtract) {
 }
 
 TEST(Vector, SelfMultiplyScalar) {
-	NAS2D::Vector<int> vector{1, 2};
+	auto vector = NAS2D::Vector{1, 2};
 	EXPECT_EQ(&vector, &(vector *= 2));
 	EXPECT_EQ((NAS2D::Vector{2, 4}), vector);
 }
 
 TEST(Vector, SelfDivideScalar) {
-	NAS2D::Vector<int> vector{2, 4};
+	auto vector = NAS2D::Vector{2, 4};
 	EXPECT_EQ(&vector, &(vector /= 2));
 	EXPECT_EQ((NAS2D::Vector{1, 2}), vector);
 

@@ -1,4 +1,5 @@
 #include "NAS2D/Math/Point.h"
+
 #include <gtest/gtest.h>
 
 

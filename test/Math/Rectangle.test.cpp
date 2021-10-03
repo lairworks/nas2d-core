@@ -1,4 +1,5 @@
 #include "NAS2D/Math/Rectangle.h"
+
 #include <gtest/gtest.h>
 
 

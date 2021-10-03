@@ -1,5 +1,7 @@
 #include "NAS2D/Math/Vector.h"
+
 #include <gtest/gtest.h>
+
 #include <type_traits>
 
 

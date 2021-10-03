@@ -11,8 +11,8 @@
 #pragma once
 
 #include "Image.h"
-#include "../Renderer/Vector.h"
-#include "../Renderer/Rectangle.h"
+#include "../Math/Vector.h"
+#include "../Math/Rectangle.h"
 
 #include <map>
 #include <vector>

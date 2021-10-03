@@ -1,4 +1,4 @@
-#include "NAS2D/Renderer/VectorSizeRange.h"
+#include "NAS2D/Math/VectorSizeRange.h"
 #include <gtest/gtest.h>
 #include <vector>
 

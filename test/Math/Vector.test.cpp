@@ -1,4 +1,4 @@
-#include "NAS2D/Renderer/Vector.h"
+#include "NAS2D/Math/Vector.h"
 #include <gtest/gtest.h>
 #include <type_traits>
 

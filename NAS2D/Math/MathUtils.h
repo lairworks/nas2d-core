@@ -9,7 +9,7 @@
 // ==================================================================================
 #pragma once
 
-#include "Renderer/Point.h"
+#include "Point.h"
 
 #include <memory>
 #include <string>

@@ -60,7 +60,7 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Trig.cpp">
+    <ClCompile Include="Math\Trig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Resource\AnimationSet.cpp">
@@ -87,10 +87,10 @@
     <ClCompile Include="Renderer\Fade.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Point.cpp">
+    <ClCompile Include="Math\Point.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Rectangle.cpp">
+    <ClCompile Include="Math\Rectangle.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\RectangleSkin.cpp">
@@ -150,7 +150,7 @@
     <ClCompile Include="StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MathUtils.cpp">
+    <ClCompile Include="Math\MathUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParserHelper.cpp">
@@ -200,7 +200,7 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Trig.h">
+    <ClInclude Include="Math\Trig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utility.h">
@@ -239,19 +239,19 @@
     <ClInclude Include="Renderer\Fade.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Point.h">
+    <ClInclude Include="Math\Point.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\PointInRectangleRange.h">
+    <ClInclude Include="Math\PointInRectangleRange.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Vector.h">
+    <ClInclude Include="Math\Vector.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\VectorSizeRange.h">
+    <ClInclude Include="Math\VectorSizeRange.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Rectangle.h">
+    <ClInclude Include="Math\Rectangle.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\RectangleSkin.h">
@@ -326,7 +326,7 @@
     <ClInclude Include="StringValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MathUtils.h">
+    <ClInclude Include="Math\MathUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ParserHelper.h">

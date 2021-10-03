@@ -1,4 +1,4 @@
-#include "NAS2D/Renderer/PointInRectangleRange.h"
+#include "NAS2D/Math/PointInRectangleRange.h"
 #include <gtest/gtest.h>
 #include <vector>
 

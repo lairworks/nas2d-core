@@ -10,7 +10,7 @@
 #pragma once
 
 #include "Signal/Signal.h"
-#include "Renderer/Vector.h"
+#include "Math/Vector.h"
 
 #include <string>
 

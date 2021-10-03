@@ -349,9 +349,9 @@ namespace
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		const auto uvSize = Vector<float>{1, 1} / 16.0f;
-		for (const auto glyphPosition : PointInRectangleRange(Rectangle{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
+		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
 		{
-			const std::size_t glyph = static_cast<std::size_t>(glyphPosition.y) * GLYPH_MATRIX_SIZE + glyphPosition.x;
+			const std::size_t glyph = glyphPosition.y * GLYPH_MATRIX_SIZE + glyphPosition.x;
 			const auto uvStart = glyphPosition.to<float>().skewBy(uvSize);
 			glyphMetricsList[glyph].uvRect = Rectangle<float>::Create(uvStart, uvSize);
 		}

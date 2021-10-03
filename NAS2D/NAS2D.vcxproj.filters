@@ -60,8 +60,44 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Trig.cpp">
+    <ClCompile Include="Math\MathUtils.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Point.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Rectangle.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Trig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mixer\Mixer.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="Mixer\MixerNull.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="Mixer\MixerSDL.cpp">
+      <Filter>Source Files\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Color.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\DisplayDesc.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Fade.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\RectangleSkin.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Renderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\RendererOpenGL.cpp">
+      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Resource\AnimationSet.cpp">
       <Filter>Source Files\Resource</Filter>
@@ -80,24 +116,6 @@
     </ClCompile>
     <ClCompile Include="Resource\Sprite.cpp">
       <Filter>Source Files\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Color.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Fade.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Point.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Rectangle.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\RectangleSkin.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Renderer.cpp">
-      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Xml\XmlParser.cpp">
       <Filter>Source Files\Xml</Filter>
@@ -135,22 +153,7 @@
     <ClCompile Include="Xml\XmlNode.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
-    <ClCompile Include="Mixer\Mixer.cpp">
-      <Filter>Source Files\Mixer</Filter>
-    </ClCompile>
-    <ClCompile Include="Mixer\MixerNull.cpp">
-      <Filter>Source Files\Mixer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\RendererOpenGL.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Mixer\MixerSDL.cpp">
-      <Filter>Source Files\Mixer</Filter>
-    </ClCompile>
     <ClCompile Include="StringUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MathUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParserHelper.cpp">
@@ -158,9 +161,6 @@
     </ClCompile>
     <ClCompile Include="Version.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\DisplayDesc.cpp">
-      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Dictionary.cpp">
       <Filter>Source Files</Filter>
@@ -200,14 +200,59 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Trig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Math\MathUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Point.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\PointInRectangleRange.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Trig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\VectorSizeRange.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Rectangle.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="Mixer\Mixer.h">
       <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="Mixer\MixerNull.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="Mixer\MixerSDL.h">
+      <Filter>Header Files\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Color.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\DisplayDesc.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Fade.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\RectangleSkin.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Renderer.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\RendererNull.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\RendererOpenGL.h">
+      <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Resource\ResourceCache.h">
       <Filter>Header Files\Resource</Filter>
@@ -230,43 +275,13 @@
     <ClInclude Include="Resource\Sprite.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\RendererNull.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Color.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Fade.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Point.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\PointInRectangleRange.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Vector.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\VectorSizeRange.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Rectangle.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\RectangleSkin.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Renderer.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Signal/SignalConnection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Signal/Delegate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Signal/Signal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Signal/SignalConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Signal/SignalSource.h">
@@ -311,22 +326,10 @@
     <ClInclude Include="Xml\XmlMemoryBuffer.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
-    <ClInclude Include="Mixer\MixerNull.h">
-      <Filter>Header Files\Mixer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\RendererOpenGL.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Mixer\MixerSDL.h">
-      <Filter>Header Files\Mixer</Filter>
-    </ClInclude>
     <ClInclude Include="StringUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StringValue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MathUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ParserHelper.h">
@@ -334,9 +337,6 @@
     </ClInclude>
     <ClInclude Include="Version.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\DisplayDesc.h">
-      <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Dictionary.h">
       <Filter>Header Files</Filter>

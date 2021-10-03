@@ -1,4 +1,4 @@
-#include "NAS2D/Trig.h"
+#include "NAS2D/Math/Trig.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

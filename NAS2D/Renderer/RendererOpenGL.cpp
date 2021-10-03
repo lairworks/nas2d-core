@@ -10,14 +10,14 @@
 
 #include "RendererOpenGL.h"
 
-#include "VectorSizeRange.h"
+#include "../Math/VectorSizeRange.h"
 #include "../Resource/Image.h"
 #include "../Resource/Font.h"
-#include "../Trig.h"
+#include "../Math/Trig.h"
 #include "../Configuration.h"
 #include "../EventHandler.h"
 #include "../Filesystem.h"
-#include "../MathUtils.h"
+#include "../Math/MathUtils.h"
 #include "../Utility.h"
 
 #include <GL/glew.h>

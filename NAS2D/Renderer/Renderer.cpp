@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "Renderer.h"
-#include "Rectangle.h"
+#include "../Math/Rectangle.h"
 
 #include <iostream>
 #include <algorithm>

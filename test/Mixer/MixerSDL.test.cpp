@@ -1,4 +1,5 @@
 #include "NAS2D/Mixer/MixerSDL.h"
+
 #include <gtest/gtest.h>
 
 

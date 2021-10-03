@@ -1,4 +1,4 @@
-#include "NAS2D/MathUtils.h"
+#include "NAS2D/Math/MathUtils.h"
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

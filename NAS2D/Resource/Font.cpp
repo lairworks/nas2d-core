@@ -11,8 +11,8 @@
 
 #include "../Filesystem.h"
 #include "../Utility.h"
-#include "../MathUtils.h"
-#include "../Renderer/PointInRectangleRange.h"
+#include "../Math/MathUtils.h"
+#include "../Math/PointInRectangleRange.h"
 
 #include <GL/glew.h>
 

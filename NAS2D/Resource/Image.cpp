@@ -245,13 +245,16 @@ unsigned int generateTexture(SDL_Surface* surface)
 
 unsigned int generateTexture(void* buffer, int bytesPerPixel, int width, int height)
 {
+	GLint internalFormat = 0;
 	GLenum textureFormat = 0;
 	switch (bytesPerPixel)
 	{
 	case 4:
+		internalFormat = GL_RGBA;
 		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
 		break;
 	case 3:
+		internalFormat = GL_RGB;
 		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGR : GL_RGB;
 		break;
 
@@ -270,7 +273,7 @@ unsigned int generateTexture(void* buffer, int bytesPerPixel, int width, int hei
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, textureFormat, GL_UNSIGNED_BYTE, buffer);
 
 	return textureId;
 }

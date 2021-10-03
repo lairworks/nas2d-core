@@ -90,4 +90,9 @@ namespace NAS2D
 	private:
 		const Vector<BaseType> mSize;
 	};
+
+
+	template <typename BaseType>
+	VectorSizeRange(Vector<BaseType>) -> VectorSizeRange<BaseType>;
+
 } // namespace NAS2D

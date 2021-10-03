@@ -83,4 +83,9 @@ namespace NAS2D
 	private:
 		const Rectangle<BaseType> mRect;
 	};
+
+
+	template <typename BaseType>
+	PointInRectangleRange(Rectangle<BaseType>) -> PointInRectangleRange<BaseType>;
+
 } // namespace NAS2D

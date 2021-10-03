@@ -1,4 +1,5 @@
 #include "NAS2D/Renderer/Color.h"
+
 #include <gtest/gtest.h>
 
 

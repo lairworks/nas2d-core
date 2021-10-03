@@ -180,9 +180,10 @@ namespace
 			case 3:
 			{
 				auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
+				uint32_t p0 = p[0], p1 = p[1], p2 = p[2];
 				return (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
-					(uint32_t{p[0]} << 16 | uint32_t{p[1]} << 8 | uint32_t{p[2]}) :
-					(uint32_t{p[0]} | uint32_t{p[1]} << 8 | uint32_t{p[2]} << 16);
+					(p0 << 16 | p1 << 8 | p2) :
+					(p0 | p1 << 8 | p2 << 16);
 			}
 			case 4:
 			{

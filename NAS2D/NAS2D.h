@@ -15,15 +15,16 @@
 #include "Filesystem.h"
 #include "FpsCounter.h"
 #include "Game.h"
-#include "MathUtils.h"
 #include "State.h"
 #include "StateManager.h"
 #include "StringUtils.h"
 #include "StringValue.h"
 #include "Timer.h"
-#include "Trig.h"
 #include "Utility.h"
 #include "Version.h"
+
+#include "Math/MathUtils.h"
+#include "Math/Trig.h"
 
 #include "Mixer/Mixer.h"
 

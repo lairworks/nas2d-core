@@ -45,20 +45,20 @@
     <IntDir>$(SolutionDir)Temporary\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="Renderer/Color.test.cpp" />
+    <ClCompile Include="Math/MathUtils.test.cpp" />
     <ClCompile Include="Math/Point.test.cpp" />
     <ClCompile Include="Math/PointInRectangleRange.test.cpp" />
     <ClCompile Include="Math/Rectangle.test.cpp" />
     <ClCompile Include="Math/Vector.test.cpp" />
     <ClCompile Include="Math/VectorSizeRange.test.cpp" />
+    <ClCompile Include="Renderer/Color.test.cpp" />
     <ClCompile Include="Resource/Image.test.cpp" />
     <ClCompile Include="Resource/ResourceCache.test.cpp" />
-    <ClCompile Include="ContainerUtils.test.cpp" />
-    <ClCompile Include="Filesystem.test.cpp" />
-    <ClCompile Include="Math/MathUtils.test.cpp" />
-    <ClCompile Include="Signal/SignalConnection.test.cpp" />
     <ClCompile Include="Signal/Delegate.test.cpp" />
     <ClCompile Include="Signal/Signal.test.cpp" />
+    <ClCompile Include="Signal/SignalConnection.test.cpp" />
+    <ClCompile Include="ContainerUtils.test.cpp" />
+    <ClCompile Include="Filesystem.test.cpp" />
     <ClCompile Include="StringUtils.test.cpp" />
     <ClCompile Include="StringValue.test.cpp" />
     <ClCompile Include="Utility.test.cpp" />

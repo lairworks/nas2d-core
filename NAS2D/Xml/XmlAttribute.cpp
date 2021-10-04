@@ -19,6 +19,8 @@ using namespace NAS2D::Xml;
 XmlAttribute::XmlAttribute() :
 	XmlBase(),
 	_document(nullptr),
+	_name(),
+	_value(),
 	_prev(nullptr),
 	_next(nullptr)
 {}

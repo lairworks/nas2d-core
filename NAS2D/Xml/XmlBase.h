@@ -124,7 +124,7 @@ protected:
 
 	inline static int toLower(int v) { return tolower(v); }
 
-	ParseLocation location;
+	ParseLocation location{};
 
 private:
 	struct Entity

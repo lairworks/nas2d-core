@@ -68,7 +68,7 @@ protected:
 	const char* readValue(const char* in, void* prevData);
 
 private:
-	XmlAttributeSet attributeSet;
+	XmlAttributeSet attributeSet{};
 };
 
 } // namespace Xml

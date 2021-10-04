@@ -86,7 +86,7 @@ namespace NAS2D
 		SignalSource<>& musicCompleteSignalSource();
 
 	protected:
-		Signal<> mMusicComplete;
+		Signal<> mMusicComplete{};
 	};
 
 } // namespace

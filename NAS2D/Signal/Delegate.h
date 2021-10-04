@@ -496,7 +496,7 @@ namespace NAS2D
 		using UnvoidStaticFunctionPtr = RetType (*)(Params...);
 		using GenericMemFn = RetType (detail::GenericClass::*)(Params...);
 		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr>;
-		ClosureType m_Closure;
+		ClosureType m_Closure{};
 
 	public:
 		using type = DelegateX;

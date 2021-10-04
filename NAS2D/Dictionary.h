@@ -61,7 +61,7 @@ namespace NAS2D
 		std::vector<std::string> keys() const;
 
 	private:
-		std::map<std::string, StringValue> mDictionary;
+		std::map<std::string, StringValue> mDictionary{};
 	};
 
 

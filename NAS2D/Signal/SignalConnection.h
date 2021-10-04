@@ -52,4 +52,9 @@ namespace NAS2D
 		DelegateType mDelegate;
 	};
 
+
+	template <typename... Params>
+	SignalConnection(SignalSource<Params...>&, typename SignalSource<Params...>::DelegateType)
+		-> SignalConnection<Params...>;
+
 }

@@ -45,6 +45,6 @@ namespace NAS2D
 		void disconnect(Y* obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
 
 	protected:
-		std::set<DelegateType> delegateList;
+		std::set<DelegateType> delegateList{};
 	};
 } // namespace

@@ -106,7 +106,7 @@ namespace NAS2D
 		void onResize(Vector<int> newSize);
 
 
-		SDL_GLContext sdlOglContext;
-		std::map<int, SDL_Cursor*> cursors;
+		SDL_GLContext sdlOglContext{};
+		std::map<int, SDL_Cursor*> cursors{};
 	};
 } // namespace NAS2D

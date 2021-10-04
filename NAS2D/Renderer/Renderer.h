@@ -133,8 +133,8 @@ namespace NAS2D
 		float mCurrentFade{0.0f};
 
 		FadeType mCurrentFadeType{FadeType::None};
-		Timer fadeTimer;
-		Signal<> fadeCompleteSignal;
+		Timer fadeTimer{};
+		Signal<> fadeCompleteSignal{};
 	};
 
 } // namespace

@@ -333,35 +333,35 @@ namespace NAS2D
 		void disconnectAll();
 
 	private:
-		Signal<bool> mActivateEvent;
+		Signal<bool> mActivateEvent{};
 
-		Signal<bool> mWindowHiddenEvent;
-		Signal<> mWindowExposedEvent;
-		Signal<> mWindowMinimizedEvent;
-		Signal<> mWindowMaximizedEvent;
-		Signal<> mWindowRestoredEvent;
-		Signal<Vector<int>> mWindowResizedEvent;
-		Signal<> mWindowMouseEnterEvent;
-		Signal<> mWindowMouseLeaveEvent;
+		Signal<bool> mWindowHiddenEvent{};
+		Signal<> mWindowExposedEvent{};
+		Signal<> mWindowMinimizedEvent{};
+		Signal<> mWindowMaximizedEvent{};
+		Signal<> mWindowRestoredEvent{};
+		Signal<Vector<int>> mWindowResizedEvent{};
+		Signal<> mWindowMouseEnterEvent{};
+		Signal<> mWindowMouseLeaveEvent{};
 
-		Signal<int, int, int> mJoystickAxisMotionEvent;
-		Signal<int, int, int, int> mJoystickBallMotionEvent;
-		Signal<int, int> mJoystickButtonUpEvent;
-		Signal<int, int> mJoystickButtonDownEvent;
-		Signal<int, int, int> mJoystickHatMotionEvent;
+		Signal<int, int, int> mJoystickAxisMotionEvent{};
+		Signal<int, int, int, int> mJoystickBallMotionEvent{};
+		Signal<int, int> mJoystickButtonUpEvent{};
+		Signal<int, int> mJoystickButtonDownEvent{};
+		Signal<int, int, int> mJoystickHatMotionEvent{};
 
-		Signal<KeyCode, KeyModifier, bool> mKeyDownEvent;
-		Signal<KeyCode, KeyModifier> mKeyUpEvent;
+		Signal<KeyCode, KeyModifier, bool> mKeyDownEvent{};
+		Signal<KeyCode, KeyModifier> mKeyUpEvent{};
 
-		Signal<const std::string&> mTextInput;
+		Signal<const std::string&> mTextInput{};
 
-		Signal<MouseButton, int, int> mMouseButtonDownEvent;
-		Signal<MouseButton, int, int> mMouseButtonUpEvent;
-		Signal<MouseButton, int, int> mMouseDoubleClick;
-		Signal<int, int, int, int> mMouseMotionEvent;
-		Signal<int, int> mMouseWheelEvent;
+		Signal<MouseButton, int, int> mMouseButtonDownEvent{};
+		Signal<MouseButton, int, int> mMouseButtonUpEvent{};
+		Signal<MouseButton, int, int> mMouseDoubleClick{};
+		Signal<int, int, int, int> mMouseMotionEvent{};
+		Signal<int, int> mMouseWheelEvent{};
 
-		Signal<> mQuitEvent;
+		Signal<> mQuitEvent{};
 	};
 
 	void postQuitEvent();

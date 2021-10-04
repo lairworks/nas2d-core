@@ -17,7 +17,7 @@ namespace NAS2D
 {
 	struct StringValue
 	{
-		std::string value;
+		std::string value{};
 
 
 		StringValue() = default;

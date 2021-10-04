@@ -14,7 +14,7 @@ namespace {
 
 
 TEST(Delegate, DelegateCall) {
-	MockHandler handler;
+	MockHandler handler{};
 	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
 	EXPECT_CALL(handler, MockMethod(0));
 	EXPECT_CALL(handler, MockMethod(1));
@@ -23,7 +23,7 @@ TEST(Delegate, DelegateCall) {
 }
 
 TEST(Delegate, DelegateCallConst) {
-	const MockHandler handler;
+	const MockHandler handler{};
 	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
 	EXPECT_CALL(handler, MockMethod(0));
 	EXPECT_CALL(handler, MockMethod(1));
@@ -32,7 +32,7 @@ TEST(Delegate, DelegateCallConst) {
 }
 
 TEST(Delegate, CopyDelegate) {
-	const MockHandler handler;
+	const MockHandler handler{};
 	// Copy delegate (value copy, with value equal compare)
 	auto delegate1 = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
 	auto delegate2 = delegate1;
@@ -40,7 +40,7 @@ TEST(Delegate, CopyDelegate) {
 }
 
 TEST(Delegate, MakeDelegateEqual) {
-	const MockHandler handler;
+	const MockHandler handler{};
 	// Make identical delegates, which should compare equal
 	auto delegate1 = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
 	auto delegate2 = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
@@ -48,7 +48,7 @@ TEST(Delegate, MakeDelegateEqual) {
 }
 
 TEST(Delegate, MakeDelegateNotEqualMethods) {
-	const MockHandler handler;
+	const MockHandler handler{};
 	// Different handler methods should compare not equal
 	auto delegate1 = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
 	auto delegate2 = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod2);
@@ -56,8 +56,8 @@ TEST(Delegate, MakeDelegateNotEqualMethods) {
 }
 
 TEST(Delegate, MakeDelegateNotEqualObjects) {
-	const MockHandler handler1;
-	const MockHandler handler2;
+	const MockHandler handler1{};
+	const MockHandler handler2{};
 	// Different handler objects should compare not equal
 	auto delegate1 = NAS2D::MakeDelegate(&handler1, &MockHandler::MockMethod);
 	auto delegate2 = NAS2D::MakeDelegate(&handler2, &MockHandler::MockMethod);

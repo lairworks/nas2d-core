@@ -43,6 +43,8 @@ jobs:
   build-linux-gcc:
     docker:
       - image: outpostuniverse/nas2d-gcc:1.3
+    environment:
+      - WARN_EXTRA: "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast"
     steps:
       - checkout
       - build-and-test

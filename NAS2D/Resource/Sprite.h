@@ -69,8 +69,8 @@ namespace NAS2D
 		std::size_t mCurrentFrame{0};
 
 		bool mPaused{false};
-		Timer mTimer;
-		AnimationCompleteSignal mAnimationCompleteSignal;
+		Timer mTimer{};
+		AnimationCompleteSignal mAnimationCompleteSignal{};
 
 		Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
 		float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */

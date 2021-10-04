@@ -55,7 +55,7 @@ public:
 private:
 	int depth;
 
-	std::string _buffer;
+	std::string _buffer{};
 	std::string _indent;
 	std::string _lineBreak;
 };

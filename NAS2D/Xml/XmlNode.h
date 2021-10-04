@@ -158,7 +158,7 @@ protected:
 	XmlNode* _firstChild; /**< First child of the XmlNode. */
 	XmlNode* _lastChild; /**< Last child of the XmlNode. */
 
-	std::string _value; /**< Value of the XmlNode. */
+	std::string _value{}; /**< Value of the XmlNode. */
 
 	XmlNode* _prev; /**< Previous XmlNode. */
 	XmlNode* _next; /**< Next XmlNode. */

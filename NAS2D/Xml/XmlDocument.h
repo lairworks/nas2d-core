@@ -58,13 +58,13 @@ private:
 	void copyTo(XmlDocument* target) const;
 
 private:
-	XmlErrorCode _errorId;
+	XmlErrorCode _errorId{};
 
-	bool _error;
+	bool _error{};
 
-	std::string _errorDesc;
+	std::string _errorDesc{};
 
-	XmlBase::ParseLocation _errorLocation;
+	XmlBase::ParseLocation _errorLocation{};
 };
 
 } // namespace Xml

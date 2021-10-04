@@ -63,7 +63,7 @@ protected:
 	void streamIn(std::istream& in, std::string& tag) override;
 
 private:
-	bool cdata; // true if this should be input and output as a CDATA style text element
+	bool cdata{}; // true if this should be input and output as a CDATA style text element
 };
 
 } // namespace Xml

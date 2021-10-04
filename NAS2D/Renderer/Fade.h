@@ -51,8 +51,8 @@ namespace NAS2D
 		Color mFadeColor{Color::Black};
 		FadeDirection mDirection{FadeDirection::None};
 		std::chrono::milliseconds mDuration{};
-		Timer mFadeTimer;
-		Signal<> mFadeComplete;
+		Timer mFadeTimer{};
+		Signal<> mFadeComplete{};
 	};
 
 }

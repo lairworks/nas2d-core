@@ -61,7 +61,7 @@ namespace NAS2D
 		}
 
 	private:
-		std::map<Key, Resource> cache;
+		std::map<Key, Resource> cache{};
 	};
 
 } // namespace

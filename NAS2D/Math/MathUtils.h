@@ -9,16 +9,14 @@
 // ==================================================================================
 #pragma once
 
-#include "Point.h"
+#include <cstdint>
 
-#include <memory>
-#include <string>
-#include <string_view>
-#include <utility>
-#include <vector>
 
 namespace NAS2D
 {
+	template <typename BaseType>
+	struct Point;
+
 	bool lineIntersectsCircle(Point<int> p, Point<int> q, Point<int> c, float r);
 
 	int divideUp(int to_divide, int divisor);

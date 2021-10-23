@@ -8,6 +8,9 @@
 // = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 #include "MathUtils.h"
+
+#include "Point.h"
+
 #include <algorithm>
 #include <stdexcept>
 

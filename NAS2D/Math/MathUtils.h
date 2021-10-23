@@ -11,6 +11,8 @@
 
 #include "Point.h"
 
+#include <cstdint>
+
 
 namespace NAS2D
 {

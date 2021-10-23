@@ -9,6 +9,8 @@
 // ==================================================================================
 #include "MathUtils.h"
 
+#include "Point.h"
+
 #include <algorithm>
 #include <stdexcept>
 

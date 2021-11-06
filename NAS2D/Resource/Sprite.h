@@ -45,8 +45,6 @@ namespace NAS2D
 		void resume();
 
 		void setFrame(std::size_t frameIndex);
-		void incrementFrame();
-		void decrementFrame();
 
 		void update(Point<float> position);
 

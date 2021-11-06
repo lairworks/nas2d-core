@@ -114,24 +114,6 @@ void Sprite::setFrame(std::size_t frameIndex)
 }
 
 
-/**
- * Increments the frame counter.
- */
-void Sprite::incrementFrame()
-{
-	setFrame(mCurrentFrame + 1);
-}
-
-
-/**
- * Decrements the frame counter.
- */
-void Sprite::decrementFrame()
-{
-	setFrame(mCurrentFrame - 1);
-}
-
-
 void Sprite::update(Point<float> position)
 {
 	mTimer.adjust_accumulator(advanceByTimeDelta(mTimer.accumulator()));

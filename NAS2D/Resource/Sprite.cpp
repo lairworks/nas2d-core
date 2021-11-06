@@ -114,10 +114,9 @@ void Sprite::setFrame(std::size_t frameIndex)
 }
 
 
-void Sprite::update(Point<float> position)
+void Sprite::update()
 {
 	mTimer.adjust_accumulator(advanceByTimeDelta(mTimer.accumulator()));
-	draw(position);
 }
 
 

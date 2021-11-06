@@ -117,7 +117,12 @@ void Sprite::setFrame(std::size_t frameIndex)
 void Sprite::update(Point<float> position)
 {
 	mTimer.adjust_accumulator(advanceByTimeDelta(mTimer.accumulator()));
+	draw(position);
+}
 
+
+void Sprite::draw(Point<float> position) const
+{
 	const auto& frame = (*mCurrentAction)[mCurrentFrame];
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();

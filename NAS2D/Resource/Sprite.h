@@ -45,10 +45,9 @@ namespace NAS2D
 		void resume();
 
 		void setFrame(std::size_t frameIndex);
-		void incrementFrame();
-		void decrementFrame();
 
-		void update(Point<float> position);
+		void update();
+		void draw(Point<float> position) const;
 
 		void rotation(float angle);
 		float rotation() const;

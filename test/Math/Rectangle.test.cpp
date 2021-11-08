@@ -55,6 +55,12 @@ TEST(Rectangle, startPointSet) {
 	EXPECT_EQ((NAS2D::Rectangle{5, 6, 3, 4}), rect);
 }
 
+TEST(Rectangle, offset) {
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 1}), (NAS2D::Rectangle{0, 0, 1, 1}).offset({1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{2, 2, 1, 1}), (NAS2D::Rectangle{1, 1, 1, 1}).offset({1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{4, 6, 5, 6}), (NAS2D::Rectangle{3, 4, 5, 6}).offset({1, 2}));
+}
+
 TEST(Rectangle, inset) {
 	// Intuitive test is for start and end point adjustments
 	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Rectangle{0, 0, 10, 10}.inset(1).startPoint()));

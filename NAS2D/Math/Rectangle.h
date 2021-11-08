@@ -91,6 +91,30 @@ namespace NAS2D
 			return Create(startPoint() + offsetAmount, size());
 		}
 
+		constexpr Rectangle operator+(Vector<BaseType> translation) const
+		{
+			return Create(startPoint() + translation, size());
+		}
+
+		constexpr Rectangle operator-(Vector<BaseType> antiTranslation) const
+		{
+			return Create(startPoint() - antiTranslation, size());
+		}
+
+		constexpr Rectangle& operator+=(Vector<BaseType> translation)
+		{
+			x += translation.x;
+			y += translation.y;
+			return *this;
+		}
+
+		constexpr Rectangle& operator-=(Vector<BaseType> antiTranslation)
+		{
+			x -= antiTranslation.x;
+			y -= antiTranslation.y;
+			return *this;
+		}
+
 		constexpr Rectangle inset(BaseType amount) const
 		{
 			return {x + amount, y + amount, width - 2 * amount, height - 2 * amount};

@@ -86,6 +86,11 @@ namespace NAS2D
 			y = newStartPoint.y;
 		}
 
+		constexpr Rectangle offset(Vector<BaseType> offsetAmount) const
+		{
+			return Create(startPoint() + offsetAmount, size());
+		}
+
 		constexpr Rectangle inset(BaseType amount) const
 		{
 			return {x + amount, y + amount, width - 2 * amount, height - 2 * amount};

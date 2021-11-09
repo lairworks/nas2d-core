@@ -96,9 +96,9 @@ namespace NAS2D
 			return Create(startPoint() + translation, size());
 		}
 
-		constexpr Rectangle operator-(Vector<BaseType> antiTranslation) const
+		constexpr Rectangle operator-(Vector<BaseType> translation) const
 		{
-			return Create(startPoint() - antiTranslation, size());
+			return Create(startPoint() - translation, size());
 		}
 
 		constexpr Rectangle& operator+=(Vector<BaseType> translation)
@@ -108,10 +108,10 @@ namespace NAS2D
 			return *this;
 		}
 
-		constexpr Rectangle& operator-=(Vector<BaseType> antiTranslation)
+		constexpr Rectangle& operator-=(Vector<BaseType> translation)
 		{
-			x -= antiTranslation.x;
-			y -= antiTranslation.y;
+			x -= translation.x;
+			y -= translation.y;
 			return *this;
 		}
 

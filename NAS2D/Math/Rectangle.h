@@ -86,9 +86,9 @@ namespace NAS2D
 			y = newStartPoint.y;
 		}
 
-		constexpr Rectangle offset(Vector<BaseType> offsetAmount) const
+		constexpr Rectangle translate(Vector<BaseType> offset) const
 		{
-			return Create(startPoint() + offsetAmount, size());
+			return Create(startPoint() + offset, size());
 		}
 
 		constexpr Rectangle operator+(Vector<BaseType> translation) const

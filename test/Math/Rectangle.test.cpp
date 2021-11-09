@@ -61,6 +61,34 @@ TEST(Rectangle, translate) {
 	EXPECT_EQ((NAS2D::Rectangle{4, 6, 5, 6}), (NAS2D::Rectangle{3, 4, 5, 6}).translate({1, 2}));
 }
 
+TEST(Rectangle, operatorAddSubtract) {
+	//translate(...) and operator overloads are equivalent.
+	EXPECT_EQ((NAS2D::Rectangle{0, 0, 1, 1}).translate({1, 1}), (NAS2D::Rectangle{0, 0, 1, 1} + Vector<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 1}).translate({1, 1}), (NAS2D::Rectangle{1, 1, 1, 1} + Vector<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{3, 4, 5, 6}).translate({1, 2}), (NAS2D::Rectangle{3, 4, 5, 6} + Vector<int>{1, 2}));
+
+	//Translate by a negative vector is the same as adding a negative or subtracting a positive.
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 1}).translate({-1, -1}), (NAS2D::Rectangle{1, 1, 1, 1} + Vector<int>{-1, -1}));
+	EXPECT_EQ((NAS2D::Rectangle{1, 1, 1, 1}).translate({-1, -1}), (NAS2D::Rectangle{1, 1, 1, 1} - Vector<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Rectangle{3, 4, 5, 6}).translate({-1, 2}), (NAS2D::Rectangle{3, 4, 5, 6} + Vector<int>{1, 2}));
+
+	//Compound operators are the same as translating a rectangle then assigning it to itself...for now
+	{
+		auto r1 = NAS2D::Rectangle{1, 1, 1, 1};
+		r1 = r1.translate({1, 1});
+		auto r2 = NAS2D::Rectangle{1, 1, 1, 1};
+		r2 += Vector<int>{1, 1};
+		EXPECT_EQ(r1, r2);
+	}
+	{
+		auto r1 = NAS2D::Rectangle{1, 1, 1, 1};
+		r1 = r1.translate({-1, -1});
+		auto r2 = NAS2D::Rectangle{1, 1, 1, 1};
+		r2 -= {1, 1};
+		EXPECT_EQ(r1, r2);
+	}
+}
+
 TEST(Rectangle, inset) {
 	// Intuitive test is for start and end point adjustments
 	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Rectangle{0, 0, 10, 10}.inset(1).startPoint()));

@@ -221,7 +221,7 @@ ImageName_clang := nas2d-clang
 ImageVersion_clang := 1.2
 
 ImageName_mingw := nas2d-mingw
-ImageVersion_mingw := 1.6
+ImageVersion_mingw := 1.7
 
 .PHONY: build-image
 build-image:

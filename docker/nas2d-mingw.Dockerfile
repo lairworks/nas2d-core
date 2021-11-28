@@ -92,9 +92,9 @@ RUN \
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
-RUN curl https://libsdl.org/release/SDL2-devel-2.0.12-mingw.tar.gz | tar -xz && \
-  make -C SDL2-2.0.12/ cross && \
-  rm -rf SDL2-2.0.12/
+RUN curl https://libsdl.org/release/SDL2-devel-2.0.16-mingw.tar.gz | tar -xz && \
+  make -C SDL2-2.0.16/ cross && \
+  rm -rf SDL2-2.0.16/
 RUN curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.5-mingw.tar.gz | tar -xz && \
   make -C SDL2_image-2.0.5/ cross && \
   rm -rf SDL2_image-2.0.5/

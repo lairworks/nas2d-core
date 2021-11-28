@@ -38,10 +38,14 @@ namespace
 		return " (Row: " + std::to_string(row) + ")";
 	}
 
+	using ImageSheetMap = AnimationSet::ImageSheetMap;
+	using ActionsMap = AnimationSet::ActionsMap;
+
+
 	AnimationSet processXml(std::string filePath, ImageCache& imageCache);
-	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
+	ImageSheetMap processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
+	ActionsMap processActions(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationSet::Frame> processFrames(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
@@ -60,7 +64,7 @@ AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(std::
 }
 
 
-AnimationSet::AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions) :
+AnimationSet::AnimationSet(std::string fileName, ImageSheetMap imageSheetMap, ActionsMap actions) :
 	mFileName{std::move(fileName)},
 	mImageSheetMap{std::move(imageSheetMap)},
 	mActions{std::move(actions)}
@@ -149,9 +153,9 @@ namespace
 	 *			element in a sprite definition, these elements can appear
 	 *			anywhere in a Sprite XML definition.
 	 */
-	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
+	ImageSheetMap processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
-		std::map<std::string, std::string> imageSheetMap;
+		ImageSheetMap imageSheetMap;
 
 		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
@@ -187,9 +191,9 @@ namespace
 	 * Iterates through all elements of a Sprite XML definition looking
 	 * for 'action' elements and processes them.
 	 */
-	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
+	ActionsMap processActions(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
-		std::map<std::string, std::vector<AnimationSet::Frame>> actions;
+		ActionsMap actions;
 
 		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))
 		{
@@ -220,7 +224,7 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationSet::Frame> processFrames(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::vector<AnimationSet::Frame> frameList;
 

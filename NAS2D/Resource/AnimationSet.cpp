@@ -20,6 +20,8 @@
 #include "../Version.h"
 #include "../Xml/Xml.h"
 
+#include <tuple>
+
 
 using namespace NAS2D;
 
@@ -42,7 +44,7 @@ namespace
 	using ActionsMap = AnimationSet::ActionsMap;
 
 
-	AnimationSet processXml(std::string filePath, ImageCache& imageCache);
+	std::tuple<ImageSheetMap, ActionsMap> processXml(const std::string& filePath, ImageCache& imageCache);
 	ImageSheetMap processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	ActionsMap processActions(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
 	std::vector<AnimationSet::Frame> processFrames(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
@@ -59,8 +61,12 @@ bool AnimationSet::Frame::isStopFrame() const
 }
 
 
-AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(std::move(fileName), animationImageCache)}
+AnimationSet::AnimationSet(std::string fileName) :
+	mFileName{std::move(fileName)}
 {
+	auto [imageSheetMap, actions] = processXml(mFileName, animationImageCache);
+	mImageSheetMap = std::move(imageSheetMap);
+	mActions = std::move(actions);
 }
 
 
@@ -97,7 +103,7 @@ namespace
 	 *
 	 * \param filePath	File path of the sprite XML definition file.
 	 */
-	AnimationSet processXml(std::string filePath, ImageCache& imageCache)
+	std::tuple<ImageSheetMap, ActionsMap> processXml(const std::string& filePath, ImageCache& imageCache)
 	{
 		try
 		{
@@ -136,7 +142,7 @@ namespace
 			// image sheets anywhere in the sprite file.
 			auto imageSheetMap = processImageSheets(basePath, xmlRootElement, imageCache);
 			auto actions = processActions(imageSheetMap, xmlRootElement, imageCache);
-			return {std::move(filePath), std::move(imageSheetMap), std::move(actions)};
+			return std::tuple{std::move(imageSheetMap), std::move(actions)};
 		}
 		catch(const std::runtime_error& error)
 		{

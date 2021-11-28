@@ -43,10 +43,10 @@ RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
   add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' && \
   dpkg --add-architecture i386 && \
   apt-get update && apt-get install -y --no-install-recommends \
-    wine-stable-amd64=5.0.2~focal \
-    wine-stable-i386=5.0.2~focal \
-    wine-stable=5.0.2~focal \
-    winehq-stable=5.0.2~focal \
+    wine-stable-amd64=6.0.2~focal-1 \
+    wine-stable-i386=6.0.2~focal-1 \
+    wine-stable=6.0.2~focal-1 \
+    winehq-stable=6.0.2~focal-1 \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages

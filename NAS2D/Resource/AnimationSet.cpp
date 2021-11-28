@@ -20,6 +20,8 @@
 #include "../Version.h"
 #include "../Xml/Xml.h"
 
+#include <tuple>
+
 
 using namespace NAS2D;
 
@@ -38,10 +40,14 @@ namespace
 		return " (Row: " + std::to_string(row) + ")";
 	}
 
-	AnimationSet processXml(std::string filePath, ImageCache& imageCache);
-	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
+	using ImageSheetMap = AnimationSet::ImageSheetMap;
+	using ActionsMap = AnimationSet::ActionsMap;
+
+
+	std::tuple<ImageSheetMap, ActionsMap> processXml(const std::string& filePath, ImageCache& imageCache);
+	ImageSheetMap processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
+	ActionsMap processActions(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationSet::Frame> processFrames(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
@@ -55,12 +61,16 @@ bool AnimationSet::Frame::isStopFrame() const
 }
 
 
-AnimationSet::AnimationSet(std::string fileName) : AnimationSet{processXml(std::move(fileName), animationImageCache)}
+AnimationSet::AnimationSet(std::string fileName) :
+	mFileName{std::move(fileName)}
 {
+	auto [imageSheetMap, actions] = processXml(mFileName, animationImageCache);
+	mImageSheetMap = std::move(imageSheetMap);
+	mActions = std::move(actions);
 }
 
 
-AnimationSet::AnimationSet(std::string fileName, std::map<std::string, std::string> imageSheetMap, std::map<std::string, std::vector<Frame>> actions) :
+AnimationSet::AnimationSet(std::string fileName, ImageSheetMap imageSheetMap, ActionsMap actions) :
 	mFileName{std::move(fileName)},
 	mImageSheetMap{std::move(imageSheetMap)},
 	mActions{std::move(actions)}
@@ -93,7 +103,7 @@ namespace
 	 *
 	 * \param filePath	File path of the sprite XML definition file.
 	 */
-	AnimationSet processXml(std::string filePath, ImageCache& imageCache)
+	std::tuple<ImageSheetMap, ActionsMap> processXml(const std::string& filePath, ImageCache& imageCache)
 	{
 		try
 		{
@@ -132,7 +142,7 @@ namespace
 			// image sheets anywhere in the sprite file.
 			auto imageSheetMap = processImageSheets(basePath, xmlRootElement, imageCache);
 			auto actions = processActions(imageSheetMap, xmlRootElement, imageCache);
-			return {std::move(filePath), std::move(imageSheetMap), std::move(actions)};
+			return std::tuple{std::move(imageSheetMap), std::move(actions)};
 		}
 		catch(const std::runtime_error& error)
 		{
@@ -149,9 +159,9 @@ namespace
 	 *			element in a sprite definition, these elements can appear
 	 *			anywhere in a Sprite XML definition.
 	 */
-	std::map<std::string, std::string> processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
+	ImageSheetMap processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
-		std::map<std::string, std::string> imageSheetMap;
+		ImageSheetMap imageSheetMap;
 
 		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
@@ -187,9 +197,9 @@ namespace
 	 * Iterates through all elements of a Sprite XML definition looking
 	 * for 'action' elements and processes them.
 	 */
-	std::map<std::string, std::vector<AnimationSet::Frame>> processActions(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
+	ActionsMap processActions(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
-		std::map<std::string, std::vector<AnimationSet::Frame>> actions;
+		ActionsMap actions;
 
 		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))
 		{
@@ -220,7 +230,7 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationSet::Frame> processFrames(const std::map<std::string, std::string>& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationSet::Frame> processFrames(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::vector<AnimationSet::Frame> frameList;
 

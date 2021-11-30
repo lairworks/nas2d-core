@@ -211,9 +211,6 @@ DockerFolder := ${TopLevelFolder}/docker
 DockerRunFlags := --volume ${TopLevelFolder}:/code
 DockerRepository := outpostuniverse
 
-ImageName := nas2d
-ImageVersion := 1.4
-
 ImageName_gcc := nas2d-gcc
 ImageVersion_gcc := 1.3
 

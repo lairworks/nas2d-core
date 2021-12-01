@@ -45,3 +45,7 @@ jobs:
       run: |
         vcpkg integrate install
         msbuild /warnAsError /warnAsMessage:C26812 /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Test
+      working-directory: ./test/
+      run: ./${{env.PLATFORM}}/${{env.BUILD_CONFIGURATION}}/test.exe

@@ -51,7 +51,7 @@ TEST_F(Filesystem, exists) {
 
 TEST_F(Filesystem, read) {
 	const auto data = fs.read("file.txt");
-	EXPECT_EQ("Test data\n", data);
+	EXPECT_THAT(data, testing::StartsWith("Test data"));
 }
 
 // Test a few related methods. Some don't test well standalone.

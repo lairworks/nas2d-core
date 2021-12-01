@@ -241,53 +241,56 @@ push-image:
 	docker push ${DockerRepository}/${ImageName}
 
 .PHONY: build-image-gcc
+.PHONY: run-image-gcc
+.PHONY: debug-image-gcc
+.PHONY: root-debug-image-gcc
+.PHONY: push-image-gcc
+
 build-image-gcc: ImageName := ${ImageName_gcc}
 build-image-gcc: ImageVersion := ${ImageVersion_gcc}
 build-image-gcc: | build-image
-.PHONY: run-image-gcc
 run-image-gcc: ImageName := ${ImageName_gcc}
 run-image-gcc: | run-image
-.PHONY: debug-image-gcc
 debug-image-gcc: ImageName := ${ImageName_gcc}
 debug-image-gcc: | debug-image
-.PHONY: root-debug-image-gcc
 root-debug-image-gcc: ImageName := ${ImageName_gcc}
 root-debug-image-gcc: | root-debug-image
-.PHONY: push-image-gcc
 push-image-gcc: ImageName := ${ImageName_gcc}
 push-image-gcc: | push-image
 
 .PHONY: build-image-clang
+.PHONY: run-image-clang
+.PHONY: debug-image-clang
+.PHONY: root-debug-image-clang
+.PHONY: push-image-clang
+
 build-image-clang: ImageName := ${ImageName_clang}
 build-image-clang: ImageVersion := ${ImageVersion_clang}
 build-image-clang: | build-image
-.PHONY: run-image-clang
 run-image-clang: ImageName := ${ImageName_clang}
 run-image-clang: | run-image
-.PHONY: debug-image-clang
 debug-image-clang: ImageName := ${ImageName_clang}
 debug-image-clang: | debug-image
-.PHONY: root-debug-image-clang
 root-debug-image-clang: ImageName := ${ImageName_clang}
 root-debug-image-clang: | root-debug-image
-.PHONY: push-image-clang
 push-image-clang: ImageName := ${ImageName_clang}
 push-image-clang: | push-image
 
 .PHONY: build-image-mingw
+.PHONY: run-image-mingw
+.PHONY: debug-image-mingw
+.PHONY: root-debug-image-mingw
+.PHONY: push-image-mingw
+
 build-image-mingw: ImageName := ${ImageName_mingw}
 build-image-mingw: ImageVersion := ${ImageVersion_mingw}
 build-image-mingw: | build-image
-.PHONY: run-image-mingw
 run-image-mingw: ImageName := ${ImageName_mingw}
 run-image-mingw: | run-image
-.PHONY: debug-image-mingw
 debug-image-mingw: ImageName := ${ImageName_mingw}
 debug-image-mingw: | debug-image
-.PHONY: root-debug-image-mingw
 root-debug-image-mingw: ImageName := ${ImageName_mingw}
 root-debug-image-mingw: | root-debug-image
-.PHONY: push-image-mingw
 push-image-mingw: ImageName := ${ImageName_mingw}
 push-image-mingw: | push-image
 

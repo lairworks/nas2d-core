@@ -241,6 +241,8 @@ push-image:
 	docker push ${DockerRepository}/${ImageName}
 
 .PHONY: build-image-gcc run-image-gcc debug-image-gcc root-debug-image-gcc push-image-gcc
+.PHONY: build-image-clang run-image-clang debug-image-clang root-debug-image-clang push-image-clang
+.PHONY: build-image-mingw run-image-mingw debug-image-mingw root-debug-image-mingw push-image-mingw
 
 build-image-gcc: ImageName := ${ImageName_gcc}
 build-image-gcc: ImageVersion := ${ImageVersion_gcc}
@@ -254,8 +256,6 @@ root-debug-image-gcc: | root-debug-image
 push-image-gcc: ImageName := ${ImageName_gcc}
 push-image-gcc: | push-image
 
-.PHONY: build-image-clang run-image-clang debug-image-clang root-debug-image-clang push-image-clang
-
 build-image-clang: ImageName := ${ImageName_clang}
 build-image-clang: ImageVersion := ${ImageVersion_clang}
 build-image-clang: | build-image
@@ -267,8 +267,6 @@ root-debug-image-clang: ImageName := ${ImageName_clang}
 root-debug-image-clang: | root-debug-image
 push-image-clang: ImageName := ${ImageName_clang}
 push-image-clang: | push-image
-
-.PHONY: build-image-mingw run-image-mingw debug-image-mingw root-debug-image-mingw push-image-mingw
 
 build-image-mingw: ImageName := ${ImageName_mingw}
 build-image-mingw: ImageVersion := ${ImageVersion_mingw}

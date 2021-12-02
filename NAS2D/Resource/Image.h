@@ -14,8 +14,6 @@
 #include "../Math/Vector.h"
 
 #include <string>
-#include <vector>
-#include <utility>
 
 
 struct SDL_Surface;

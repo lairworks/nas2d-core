@@ -16,8 +16,8 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_image.h>
 
-#include <iostream>
-#include <map>
+#include <cstdint>
+#include <utility>
 #include <string>
 #include <stdexcept>
 

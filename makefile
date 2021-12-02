@@ -215,11 +215,13 @@ ImageVersion_gcc := 1.3
 ImageVersion_clang := 1.2
 ImageVersion_mingw := 1.7
 
-DockerBuildRules := build-image-gcc build-image-clang build-image-mingw
-DockerRunRules := run-image-gcc run-image-clang run-image-mingw
-DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw
-DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-image-mingw
-DockerPushRules := push-image-gcc push-image-clang push-image-mingw
+DockerImageNames := gcc clang mingw
+
+DockerBuildRules := $(foreach ImageName,${DockerImageNames},build-image-${ImageName})
+DockerRunRules := $(foreach ImageName,${DockerImageNames},run-image-${ImageName})
+DockerDebugRules := $(foreach ImageName,${DockerImageNames},debug-image-${ImageName})
+DockerDebugRootRules := $(foreach ImageName,${DockerImageNames},root-debug-image-${ImageName})
+DockerPushRules := $(foreach ImageName,${DockerImageNames},push-image-${ImageName})
 
 .PHONY: ${DockerBuildRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules} ${DockerPushRules}
 

@@ -221,6 +221,9 @@ ImageName_mingw := nas2d-mingw
 ImageVersion_mingw := 1.7
 
 .PHONY: build-image run-image debug-image root-debug-image push-image
+.PHONY: build-image-gcc run-image-gcc debug-image-gcc root-debug-image-gcc push-image-gcc
+.PHONY: build-image-clang run-image-clang debug-image-clang root-debug-image-clang push-image-clang
+.PHONY: build-image-mingw run-image-mingw debug-image-mingw root-debug-image-mingw push-image-mingw
 
 build-image:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}
@@ -236,10 +239,6 @@ root-debug-image:
 
 push-image:
 	docker push ${DockerRepository}/${ImageName}
-
-.PHONY: build-image-gcc run-image-gcc debug-image-gcc root-debug-image-gcc push-image-gcc
-.PHONY: build-image-clang run-image-clang debug-image-clang root-debug-image-clang push-image-clang
-.PHONY: build-image-mingw run-image-mingw debug-image-mingw root-debug-image-mingw push-image-mingw
 
 build-image-gcc: ImageName := ${ImageName_gcc}
 build-image-gcc: ImageVersion := ${ImageVersion_gcc}

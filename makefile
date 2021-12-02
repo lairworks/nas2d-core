@@ -224,7 +224,7 @@ DockerPushRules := push-image-gcc push-image-clang push-image-mingw
 .PHONY: ${DockerBuildRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules} ${DockerPushRules}
 
 ${DockerBuildRules}: build-image-%:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerRepository}/nas2d-$*:latest --tag ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
+	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerRepository}/nas2d-$*:${ImageVersion_$*} --tag ${DockerRepository}/nas2d-$*:latest
 
 ${DockerRunRules}: run-image-%:
 	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/nas2d-$*

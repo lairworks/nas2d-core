@@ -215,7 +215,7 @@ ImageVersion_gcc := 1.3
 ImageVersion_clang := 1.2
 ImageVersion_mingw := 1.7
 
-DockerImageNames := gcc clang mingw
+DockerImageNames := $(patsubst docker/nas2d-%.Dockerfile,%,$(wildcard docker/nas2d-*.Dockerfile))
 
 DockerBuildRules := $(foreach ImageName,${DockerImageNames},build-image-${ImageName})
 DockerRunRules := $(foreach ImageName,${DockerImageNames},run-image-${ImageName})

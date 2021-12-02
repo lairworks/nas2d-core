@@ -220,11 +220,7 @@ ImageVersion_clang := 1.2
 ImageName_mingw := nas2d-mingw
 ImageVersion_mingw := 1.7
 
-.PHONY: build-image
-.PHONY: run-image
-.PHONY: debug-image
-.PHONY: root-debug-image
-.PHONY: push-image
+.PHONY: build-image run-image debug-image root-debug-image push-image
 
 build-image:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}

@@ -16,8 +16,8 @@
 #include <GL/glew.h>
 #include <SDL2/SDL_image.h>
 
-#include <iostream>
-#include <map>
+#include <cstdint>
+#include <utility>
 #include <string>
 #include <stdexcept>
 
@@ -45,9 +45,17 @@ namespace
  * \param filePath Path to an image file.
  */
 Image::Image(const std::string& filePath) :
-	mResourceName{filePath}
+	Image{
+		filePath,
+		Utility<Filesystem>::get().read(filePath)
+	}
 {
-	const auto& data = Utility<Filesystem>::get().read(mResourceName);
+}
+
+
+Image::Image(std::string resourceName, const std::string& data) :
+	mResourceName{std::move(resourceName)}
+{
 	if (data.size() == 0)
 	{
 		throw std::runtime_error("Image file is empty: " + mResourceName);

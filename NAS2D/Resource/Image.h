@@ -14,8 +14,6 @@
 #include "../Math/Vector.h"
 
 #include <string>
-#include <vector>
-#include <utility>
 
 
 struct SDL_Surface;
@@ -40,6 +38,7 @@ namespace NAS2D
 	{
 	public:
 		explicit Image(const std::string& filePath);
+		Image(std::string resourceName, const std::string& data);
 		Image(void* buffer, int bytesPerPixel, Vector<int> size);
 
 		Image(const Image& rhs) = delete;

@@ -211,85 +211,32 @@ DockerFolder := ${TopLevelFolder}/docker
 DockerRunFlags := --volume ${TopLevelFolder}:/code
 DockerRepository := outpostuniverse
 
-ImageName_gcc := nas2d-gcc
 ImageVersion_gcc := 1.3
-
-ImageName_clang := nas2d-clang
 ImageVersion_clang := 1.2
-
-ImageName_mingw := nas2d-mingw
 ImageVersion_mingw := 1.7
 
-.PHONY: build-image
-build-image:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}
+DockerBuildRules := build-image-gcc build-image-clang build-image-mingw
+DockerRunRules := run-image-gcc run-image-clang run-image-mingw
+DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw
+DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-image-mingw
+DockerPushRules := push-image-gcc push-image-clang push-image-mingw
 
-.PHONY: run-image
-run-image:
-	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/${ImageName}
+.PHONY: ${DockerBuildRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules} ${DockerPushRules}
 
-.PHONY: debug-image
-debug-image:
-	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/${ImageName} bash
+${DockerBuildRules}: build-image-%:
+	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerRepository}/nas2d-$*:${ImageVersion_$*} --tag ${DockerRepository}/nas2d-$*:latest
 
-.PHONY: root-debug-image
-root-debug-image:
-	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/${ImageName} bash
+${DockerRunRules}: run-image-%:
+	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/nas2d-$*
 
-.PHONY: push-image
-push-image:
-	docker push ${DockerRepository}/${ImageName}
+${DockerDebugRules}: debug-image-%:
+	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/nas2d-$* bash
 
-.PHONY: build-image-gcc
-build-image-gcc: ImageName := ${ImageName_gcc}
-build-image-gcc: ImageVersion := ${ImageVersion_gcc}
-build-image-gcc: | build-image
-.PHONY: run-image-gcc
-run-image-gcc: ImageName := ${ImageName_gcc}
-run-image-gcc: | run-image
-.PHONY: debug-image-gcc
-debug-image-gcc: ImageName := ${ImageName_gcc}
-debug-image-gcc: | debug-image
-.PHONY: root-debug-image-gcc
-root-debug-image-gcc: ImageName := ${ImageName_gcc}
-root-debug-image-gcc: | root-debug-image
-.PHONY: push-image-gcc
-push-image-gcc: ImageName := ${ImageName_gcc}
-push-image-gcc: | push-image
+${DockerDebugRootRules}: root-debug-image-%:
+	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/nas2d-$* bash
 
-.PHONY: build-image-clang
-build-image-clang: ImageName := ${ImageName_clang}
-build-image-clang: ImageVersion := ${ImageVersion_clang}
-build-image-clang: | build-image
-.PHONY: run-image-clang
-run-image-clang: ImageName := ${ImageName_clang}
-run-image-clang: | run-image
-.PHONY: debug-image-clang
-debug-image-clang: ImageName := ${ImageName_clang}
-debug-image-clang: | debug-image
-.PHONY: root-debug-image-clang
-root-debug-image-clang: ImageName := ${ImageName_clang}
-root-debug-image-clang: | root-debug-image
-.PHONY: push-image-clang
-push-image-clang: ImageName := ${ImageName_clang}
-push-image-clang: | push-image
-
-.PHONY: build-image-mingw
-build-image-mingw: ImageName := ${ImageName_mingw}
-build-image-mingw: ImageVersion := ${ImageVersion_mingw}
-build-image-mingw: | build-image
-.PHONY: run-image-mingw
-run-image-mingw: ImageName := ${ImageName_mingw}
-run-image-mingw: | run-image
-.PHONY: debug-image-mingw
-debug-image-mingw: ImageName := ${ImageName_mingw}
-debug-image-mingw: | debug-image
-.PHONY: root-debug-image-mingw
-root-debug-image-mingw: ImageName := ${ImageName_mingw}
-root-debug-image-mingw: | root-debug-image
-.PHONY: push-image-mingw
-push-image-mingw: ImageName := ${ImageName_mingw}
-push-image-mingw: | push-image
+${DockerPushRules}: push-image-%:
+	docker push ${DockerRepository}/nas2d-$*
 
 #### CircleCI related build rules ####
 

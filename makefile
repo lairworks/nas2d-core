@@ -211,13 +211,8 @@ DockerFolder := ${TopLevelFolder}/docker
 DockerRunFlags := --volume ${TopLevelFolder}:/code
 DockerRepository := outpostuniverse
 
-ImageName_gcc := nas2d-gcc
 ImageVersion_gcc := 1.3
-
-ImageName_clang := nas2d-clang
 ImageVersion_clang := 1.2
-
-ImageName_mingw := nas2d-mingw
 ImageVersion_mingw := 1.7
 
 DockerBuildRules := build-image-gcc build-image-clang build-image-mingw

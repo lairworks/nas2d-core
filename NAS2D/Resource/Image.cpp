@@ -53,8 +53,8 @@ Image::Image(const std::string& filePath) :
 }
 
 
-Image::Image(const std::string& resourceName, const std::string& data) :
-	mResourceName{resourceName}
+Image::Image(std::string resourceName, const std::string& data) :
+	mResourceName{std::move(resourceName)}
 {
 	if (data.size() == 0)
 	{

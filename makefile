@@ -227,16 +227,16 @@ ${DockerBuildRules}: build-image-%:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerRepository}/nas2d-$*:${ImageVersion_$*} --tag ${DockerRepository}/nas2d-$*:latest
 
 ${DockerRunRules}: run-image-%:
-	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/nas2d-$*
+	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 
 ${DockerDebugRules}: debug-image-%:
-	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/nas2d-$* bash
+	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/nas2d-$*:${ImageVersion_$*} bash
 
 ${DockerDebugRootRules}: root-debug-image-%:
-	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/nas2d-$* bash
+	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/nas2d-$*:${ImageVersion_$*} bash
 
 ${DockerPushRules}: push-image-%:
-	docker push ${DockerRepository}/nas2d-$*
+	docker push ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 
 #### CircleCI related build rules ####
 

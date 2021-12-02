@@ -220,8 +220,6 @@ ImageVersion_clang := 1.2
 ImageName_mingw := nas2d-mingw
 ImageVersion_mingw := 1.7
 
-.PHONY: build-image run-image debug-image root-debug-image push-image
-
 DockerBuildRules := build-image-gcc build-image-clang build-image-mingw
 DockerRunRules := run-image-gcc run-image-clang run-image-mingw
 DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw
@@ -230,28 +228,18 @@ DockerPushRules := push-image-gcc push-image-clang push-image-mingw
 
 .PHONY: ${DockerBuildRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules} ${DockerPushRules}
 
-build-image:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/${ImageName}.Dockerfile --tag ${DockerRepository}/${ImageName}:latest --tag ${DockerRepository}/${ImageName}:${ImageVersion}
 ${DockerBuildRules}: build-image-%:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerRepository}/nas2d-$*:latest --tag ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 
-run-image:
-	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/${ImageName}
 ${DockerRunRules}: run-image-%:
 	docker run ${DockerRunFlags} --rm --tty ${DockerRepository}/nas2d-$*
 
-debug-image:
-	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/${ImageName} bash
 ${DockerDebugRules}: debug-image-%:
 	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerRepository}/nas2d-$* bash
 
-root-debug-image:
-	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/${ImageName} bash
 ${DockerDebugRootRules}: root-debug-image-%:
 	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerRepository}/nas2d-$* bash
 
-push-image:
-	docker push ${DockerRepository}/${ImageName}
 ${DockerPushRules}: push-image-%:
 	docker push ${DockerRepository}/nas2d-$*
 

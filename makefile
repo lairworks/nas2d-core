@@ -239,6 +239,7 @@ ${DockerDebugRootRules}: root-debug-image-%:
 
 ${DockerPushRules}: push-image-%:
 	docker push ${DockerImageName}
+	docker push ${DockerRepository}/nas2d-$*:latest
 
 #### CircleCI related build rules ####
 

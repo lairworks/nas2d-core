@@ -11,7 +11,7 @@
 #pragma once
 
 #include "Delegate.h"
-#include <set>
+#include <vector>
 #include <algorithm>
 
 
@@ -34,7 +34,7 @@ namespace NAS2D
 			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
 			if (iterator == delegateList.end())
 			{
-				delegateList.insert(delegate);
+				delegateList.push_back(delegate);
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace NAS2D
 			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
 			if (iterator != delegateList.end())
 			{
-				delegateList.erase(delegate);
+				delegateList.erase(iterator);
 			}
 		}
 
@@ -60,6 +60,6 @@ namespace NAS2D
 		void disconnect(Y* obj, void (X::*func)(Params...) const) { disconnect(MakeDelegate(obj, func)); }
 
 	protected:
-		std::set<DelegateType> delegateList{};
+		std::vector<DelegateType> delegateList{};
 	};
 } // namespace

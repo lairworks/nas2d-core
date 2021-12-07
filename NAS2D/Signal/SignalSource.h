@@ -11,7 +11,8 @@
 #pragma once
 
 #include "Delegate.h"
-#include <set>
+#include <vector>
+#include <algorithm>
 
 
 namespace NAS2D
@@ -28,23 +29,37 @@ namespace NAS2D
 
 		void clear() { delegateList.clear(); }
 
-		void connect(DelegateType delegate) { delegateList.insert(delegate); }
+		void connect(DelegateType delegate)
+		{
+			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
+			if (iterator == delegateList.end())
+			{
+				delegateList.push_back(delegate);
+			}
+		}
 
 		template <typename X, typename Y>
-		void connect(Y* obj, void (X::*func)(Params...)) { delegateList.insert(MakeDelegate(obj, func)); }
+		void connect(Y* obj, void (X::*func)(Params...)) { connect(MakeDelegate(obj, func)); }
 
 		template <typename X, typename Y>
-		void connect(Y* obj, void (X::*func)(Params...) const) { delegateList.insert(MakeDelegate(obj, func)); }
+		void connect(Y* obj, void (X::*func)(Params...) const) { connect(MakeDelegate(obj, func)); }
 
-		void disconnect(DelegateType delegate) { delegateList.erase(delegate); }
+		void disconnect(DelegateType delegate)
+		{
+			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
+			if (iterator != delegateList.end())
+			{
+				delegateList.erase(iterator);
+			}
+		}
 
 		template <typename X, typename Y>
-		void disconnect(Y* obj, void (X::*func)(Params...)) { delegateList.erase(MakeDelegate(obj, func)); }
+		void disconnect(Y* obj, void (X::*func)(Params...)) { disconnect(MakeDelegate(obj, func)); }
 
 		template <typename X, typename Y>
-		void disconnect(Y* obj, void (X::*func)(Params...) const) { delegateList.erase(MakeDelegate(obj, func)); }
+		void disconnect(Y* obj, void (X::*func)(Params...) const) { disconnect(MakeDelegate(obj, func)); }
 
 	protected:
-		std::set<DelegateType> delegateList{};
+		std::vector<DelegateType> delegateList;
 	};
 } // namespace

@@ -12,6 +12,7 @@
 
 #include "Delegate.h"
 #include <set>
+#include <algorithm>
 
 
 namespace NAS2D
@@ -30,7 +31,11 @@ namespace NAS2D
 
 		void connect(DelegateType delegate)
 		{
-			delegateList.insert(delegate);
+			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
+			if (iterator == delegateList.end())
+			{
+				delegateList.insert(delegate);
+			}
 		}
 
 		template <typename X, typename Y>
@@ -41,7 +46,11 @@ namespace NAS2D
 
 		void disconnect(DelegateType delegate)
 		{
-			delegateList.erase(delegate);
+			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
+			if (iterator != delegateList.end())
+			{
+				delegateList.erase(delegate);
+			}
 		}
 
 		template <typename X, typename Y>

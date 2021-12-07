@@ -28,7 +28,10 @@ namespace NAS2D
 
 		void clear() { delegateList.clear(); }
 
-		void connect(DelegateType delegate) { delegateList.insert(delegate); }
+		void connect(DelegateType delegate)
+		{
+			delegateList.insert(delegate);
+		}
 
 		template <typename X, typename Y>
 		void connect(Y* obj, void (X::*func)(Params...)) { connect(MakeDelegate(obj, func)); }
@@ -36,7 +39,10 @@ namespace NAS2D
 		template <typename X, typename Y>
 		void connect(Y* obj, void (X::*func)(Params...) const) { connect(MakeDelegate(obj, func)); }
 
-		void disconnect(DelegateType delegate) { delegateList.erase(delegate); }
+		void disconnect(DelegateType delegate)
+		{
+			delegateList.erase(delegate);
+		}
 
 		template <typename X, typename Y>
 		void disconnect(Y* obj, void (X::*func)(Params...)) { disconnect(MakeDelegate(obj, func)); }

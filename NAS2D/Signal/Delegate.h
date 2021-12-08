@@ -32,7 +32,6 @@
 // fraudulently define Microsoft's identifiers.
 #if defined(_MSC_VER) && !defined(__MWERKS__) && !defined(__VECTOR_C) && !defined(__ICL) && !defined(__BORLANDC__)
 #define FASTDLGT_MICROSOFT_MFP
-#define FASTDLGT_HASINHERITANCE_KEYWORDS
 #endif
 
 
@@ -105,10 +104,7 @@ namespace NAS2D
 		// GenericClass is a fake class, ONLY used to provide a type. It is vitally important
 		// that it is never defined.
 		#ifdef FASTDLGT_MICROSOFT_MFP
-
-		#ifdef FASTDLGT_HASINHERITANCE_KEYWORDS
 			class __single_inheritance GenericClass;
-		#endif
 			class GenericClass {};
 		#else
 			class GenericClass;

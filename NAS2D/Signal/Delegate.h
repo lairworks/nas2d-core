@@ -75,38 +75,6 @@ namespace NAS2D
 		}
 
 
-		// ==================================================================================
-		// = WORKAROUNDS
-		// ==================================================================================
-		using DefaultVoid = void;
-
-		// Translate from 'DefaultVoid' to 'void'.
-		template <typename T>
-		struct DefaultVoidToVoid
-		{
-			using type = T;
-		};
-
-		template <>
-		struct DefaultVoidToVoid<DefaultVoid>
-		{
-			using type = void;
-		};
-
-		// Translate from 'void' into 'DefaultVoid'
-		template <typename T>
-		struct VoidToDefaultVoid
-		{
-			using type = T;
-		};
-
-		template <>
-		struct VoidToDefaultVoid<void>
-		{
-			using type = DefaultVoid;
-		};
-
-
 		template <typename GenericMemFuncType, typename XFuncType>
 		GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
 		{
@@ -491,7 +459,7 @@ namespace NAS2D
 	class DelegateX
 	{
 	private:
-		using DesiredRetType = typename detail::DefaultVoidToVoid<RetType>::type;
+		using DesiredRetType = RetType;
 		using StaticFunctionPtr = DesiredRetType (*)(Params...);
 		using UnvoidStaticFunctionPtr = RetType (*)(Params...);
 		using GenericMemFn = RetType (detail::GenericClass::*)(Params...);

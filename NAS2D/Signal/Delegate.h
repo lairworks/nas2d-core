@@ -460,9 +460,8 @@ namespace NAS2D
 	{
 	private:
 		using StaticFunctionPtr = RetType (*)(Params...);
-		using UnvoidStaticFunctionPtr = RetType (*)(Params...);
 		using GenericMemFn = RetType (detail::GenericClass::*)(Params...);
-		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr>;
+		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, StaticFunctionPtr>;
 		ClosureType m_Closure{};
 
 	public:

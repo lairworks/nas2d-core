@@ -1,9 +1,13 @@
 #include "XmlSection.h"
 
+#include "XmlSubSectionRange.h"
+#include "XmlNamedSubSectionRange.h"
+
 #include "../Xml/XmlElement.h"
 #include "../ContainerUtils.h"
 
 #include <stdexcept>
+#include <utility>
 
 
 using namespace NAS2D;
@@ -107,6 +111,18 @@ XmlSection XmlSection::subSection(const std::string& name) const
 		throwError("Required sub-section name not found: " + name);
 	}
 	return XmlSection{*subElement};
+}
+
+
+XmlSubSectionRange XmlSection::subSections() const
+{
+	return XmlSubSectionRange{mXmlElement};
+}
+
+
+XmlNamedSubSectionRange XmlSection::subSections(std::string name) const
+{
+	return XmlNamedSubSectionRange{mXmlElement, std::move(name)};
 }
 
 

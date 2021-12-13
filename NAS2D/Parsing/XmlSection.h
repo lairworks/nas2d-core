@@ -14,6 +14,8 @@ namespace NAS2D
 	}
 
 	class XmlFile;
+	class XmlSubSectionRange;
+	class XmlNamedSubSectionRange;
 
 
 	class XmlSection
@@ -34,6 +36,9 @@ namespace NAS2D
 		bool hasKey(const std::string& key) const;
 
 		XmlSection subSection(const std::string& name) const;
+		XmlSubSectionRange subSections() const;
+		XmlNamedSubSectionRange subSections(std::string name) const;
+
 		NAS2D::StringValue valueOrEmpty(const std::string& key) const;
 
 		template <typename T = std::string>

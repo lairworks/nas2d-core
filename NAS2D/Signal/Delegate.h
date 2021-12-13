@@ -56,38 +56,6 @@ namespace NAS2D
 		}
 
 
-		// ==================================================================================
-		// = WORKAROUNDS
-		// ==================================================================================
-		using DefaultVoid = void;
-
-		// Translate from 'DefaultVoid' to 'void'.
-		template <typename T>
-		struct DefaultVoidToVoid
-		{
-			using type = T;
-		};
-
-		template <>
-		struct DefaultVoidToVoid<DefaultVoid>
-		{
-			using type = void;
-		};
-
-		// Translate from 'void' into 'DefaultVoid'
-		template <typename T>
-		struct VoidToDefaultVoid
-		{
-			using type = T;
-		};
-
-		template <>
-		struct VoidToDefaultVoid<void>
-		{
-			using type = DefaultVoid;
-		};
-
-
 		template <typename GenericMemFuncType, typename XFuncType>
 		GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
 		{
@@ -375,11 +343,9 @@ namespace NAS2D
 	class DelegateX
 	{
 	private:
-		using DesiredRetType = typename detail::DefaultVoidToVoid<RetType>::type;
-		using StaticFunctionPtr = DesiredRetType (*)(Params...);
-		using UnvoidStaticFunctionPtr = RetType (*)(Params...);
+		using StaticFunctionPtr = RetType (*)(Params...);
 		using GenericMemFn = RetType (detail::GenericClass::*)(Params...);
-		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr>;
+		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, StaticFunctionPtr>;
 		ClosureType m_Closure{};
 
 	public:
@@ -400,41 +366,41 @@ namespace NAS2D
 		bool operator>(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
 
 		template <typename X, typename Y>
-		DelegateX(Y* pthis, DesiredRetType (X::*function_to_bind)(Params...))
+		DelegateX(Y* pthis, RetType (X::*function_to_bind)(Params...))
 		{
 			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
 		}
 
 		template <typename X, typename Y>
-		inline void Bind(Y* pthis, DesiredRetType (X::*function_to_bind)(Params...))
+		inline void Bind(Y* pthis, RetType (X::*function_to_bind)(Params...))
 		{
 			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
 		}
 
 		template <typename X, typename Y>
-		DelegateX(const Y* pthis, DesiredRetType (X::*function_to_bind)(Params...) const)
+		DelegateX(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
 			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
 		template <typename X, typename Y>
-		inline void Bind(const Y* pthis, DesiredRetType (X::*function_to_bind)(Params...) const)
+		inline void Bind(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
 			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
-		DelegateX(DesiredRetType (*function_to_bind)(Params...))
+		DelegateX(RetType (*function_to_bind)(Params...))
 		{
 			Bind(function_to_bind);
 		}
 
-		DelegateX& operator=(DesiredRetType (*function_to_bind)(Params...))
+		DelegateX& operator=(RetType (*function_to_bind)(Params...))
 		{
 			Bind(function_to_bind);
 			return *this;
 		}
 
-		inline void Bind(DesiredRetType (*function_to_bind)(Params...))
+		inline void Bind(RetType (*function_to_bind)(Params...))
 		{
 			m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
 		}

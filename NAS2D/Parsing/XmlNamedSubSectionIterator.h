@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iterator>
 #include <string>
 
 
@@ -16,6 +17,12 @@ namespace NAS2D
 	class XmlNamedSubSectionIterator
 	{
 	public:
+		using value_type = XmlSection;
+		using reference = XmlSection&;
+		using pointer = XmlSection*;
+		using difference_type = std::ptrdiff_t;
+		using iterator_category = std::forward_iterator_tag;
+
 		explicit XmlNamedSubSectionIterator(const Xml::XmlElement* currentElement, std::string name);
 
 		XmlNamedSubSectionIterator& operator++();

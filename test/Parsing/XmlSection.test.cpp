@@ -82,11 +82,17 @@ TEST_F(XmlSection, subSection) {
 TEST_F(XmlSection, subSections) {
 	const auto sectionsRange = root.subSections();
 	EXPECT_EQ("subElement", (*sectionsRange.begin()).name());
+
+	const auto sections = std::vector<NAS2D::XmlSection>{sectionsRange.begin(), sectionsRange.end()};
+	EXPECT_GE(sections.size(), 1);
 }
 
 TEST_F(XmlSection, subSectionsNamed) {
 	const auto sectionsRange = root.subSections("subElement");
 	EXPECT_EQ("subElement", (*sectionsRange.begin()).name());
+
+	const auto sections = std::vector<NAS2D::XmlSection>{sectionsRange.begin(), sectionsRange.end()};
+	EXPECT_GE(sections.size(), 1);
 }
 
 TEST_F(XmlSection, valueOrEmpty) {

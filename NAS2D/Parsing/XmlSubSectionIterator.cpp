@@ -7,8 +7,8 @@
 using namespace NAS2D;
 
 
-XmlSubSectionIterator::XmlSubSectionIterator(const Xml::XmlElement& currentElement) :
-	mXmlElement{&currentElement}
+XmlSubSectionIterator::XmlSubSectionIterator(const Xml::XmlElement* currentElement) :
+	mXmlElement{currentElement}
 {
 }
 

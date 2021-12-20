@@ -9,8 +9,8 @@
 using namespace NAS2D;
 
 
-XmlNamedSubSectionIterator::XmlNamedSubSectionIterator(const Xml::XmlElement& currentElement, std::string name) :
-	mXmlElement{&currentElement},
+XmlNamedSubSectionIterator::XmlNamedSubSectionIterator(const Xml::XmlElement* currentElement, std::string name) :
+	mXmlElement{currentElement},
 	mName{std::move(name)}
 {
 }

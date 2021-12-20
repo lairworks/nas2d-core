@@ -14,7 +14,7 @@ XmlSubSectionRange::XmlSubSectionRange(const Xml::XmlElement& parentElement) :
 
 XmlSubSectionIterator XmlSubSectionRange::begin() const
 {
-	return XmlSubSectionIterator{*mParentElement.firstChildElement()};
+	return XmlSubSectionIterator{mParentElement.firstChildElement()};
 }
 
 

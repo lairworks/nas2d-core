@@ -16,7 +16,7 @@ namespace NAS2D
 	class XmlSubSectionIterator
 	{
 	public:
-		explicit XmlSubSectionIterator(const Xml::XmlElement& currentElement);
+		explicit XmlSubSectionIterator(const Xml::XmlElement* currentElement);
 
 		XmlSubSectionIterator& operator++();
 		bool operator!=(std::nullptr_t);

@@ -40,10 +40,10 @@ TEST_F(XmlSection, verifySubSections) {
 }
 
 TEST_F(XmlSection, verifyKeys) {
-	EXPECT_NO_THROW(root.verifyKeys({"attributeName"}));
-	EXPECT_NO_THROW(root.verifyKeys({"attributeName"}, {"optionalNotFound"}));
-	EXPECT_NO_THROW(root.verifyKeys({}, {"attributeName"}));
-	EXPECT_NO_THROW(root.verifyKeys({}, {"attributeName", "optionalNotFound"}));
+	EXPECT_NO_THROW(root.verifyKeys({"attributeName", "subElementValue"}));
+	EXPECT_NO_THROW(root.verifyKeys({"attributeName", "subElementValue"}, {"optionalNotFound"}));
+	EXPECT_NO_THROW(root.verifyKeys({}, {"attributeName", "subElementValue"}));
+	EXPECT_NO_THROW(root.verifyKeys({}, {"attributeName", "subElementValue", "optionalNotFound"}));
 
 	EXPECT_THROW(root.verifyKeys({"attributeNotFound"}), std::runtime_error);
 	EXPECT_THROW(root.verifyKeys({}), std::runtime_error);
@@ -55,7 +55,7 @@ TEST_F(XmlSection, subSectionNames) {
 }
 
 TEST_F(XmlSection, keys) {
-	EXPECT_EQ(std::vector<std::string>{"attributeName"}, root.keys());
+	EXPECT_EQ((std::vector<std::string>{"attributeName", "subElementValue"}), root.keys());
 }
 
 TEST_F(XmlSection, hasSubSection) {
@@ -91,15 +91,18 @@ TEST_F(XmlSection, subSectionsNamed) {
 
 TEST_F(XmlSection, valueOrEmpty) {
 	EXPECT_EQ(std::string{"attributeValue"}, root.valueOrEmpty("attributeName"));
+	EXPECT_EQ(std::string{"Value"}, root.valueOrEmpty("subElementValue"));
 	EXPECT_EQ(std::string{""}, root.valueOrEmpty("attributeNameNotFound"));
 }
 
 TEST_F(XmlSection, value) {
 	EXPECT_EQ("attributeValue", root.value("attributeName"));
+	EXPECT_EQ("Value", root.value("subElementValue"));
 	EXPECT_THROW(root.value("attributeNameNotFound"), std::runtime_error);
 }
 
 TEST_F(XmlSection, valueWithDefault) {
 	EXPECT_EQ("attributeValue", root.value("attributeName", std::string{""}));
+	EXPECT_EQ("Value", root.value("subElementValue", std::string{""}));
 	EXPECT_EQ("", root.value("attributeNameNotFound", std::string{""}));
 }

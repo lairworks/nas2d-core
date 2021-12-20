@@ -82,6 +82,16 @@ std::vector<std::string> XmlSection::keys() const
 	{
 		results.push_back(attribute->name());
 	}
+	// Add in attribute like sub elements that contain only values
+	for (const auto* subElement = mXmlElement.firstChildElement(); subElement; subElement = subElement->nextSiblingElement())
+	{
+		// Ignore anything with attributes or sub-elements of their own
+		// Such elements would be object like, rather than attribute like
+		if (subElement->firstAttribute() == nullptr && subElement->firstChildElement() == nullptr)
+		{
+			results.push_back(subElement->value());
+		}
+	}
 	return results;
 }
 
@@ -125,5 +135,14 @@ XmlNamedSubSectionRange XmlSection::subSections(std::string name) const
 
 NAS2D::StringValue XmlSection::valueOrEmpty(const std::string& key) const
 {
-	return NAS2D::StringValue{mXmlElement.attribute(key)};
+	auto value = mXmlElement.attribute(key);
+	if (value.empty())
+	{
+		const auto subElement = mXmlElement.firstChildElement(key);
+		if (subElement)
+		{
+			value = subElement->getText();
+		}
+	}
+	return NAS2D::StringValue{value};
 }

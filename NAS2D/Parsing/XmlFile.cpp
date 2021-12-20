@@ -1,11 +1,19 @@
 #include "XmlFile.h"
 
 #include "../Xml/XmlElement.h"
+#include "../Utility.h"
+#include "../Filesystem.h"
 
 #include <stdexcept>
 
 
 using namespace NAS2D;
+
+
+XmlFile XmlFile::Open(const std::string& fileName)
+{
+	return XmlFile{Utility<Filesystem>::get().read(fileName)};
+}
 
 
 XmlFile::XmlFile(const std::string& fileData)

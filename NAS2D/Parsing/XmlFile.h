@@ -12,6 +12,8 @@ namespace NAS2D
 	class XmlFile
 	{
 	public:
+		static XmlFile Open(const std::string& fileName);
+
 		explicit XmlFile(const std::string& fileData);
 
 		XmlSection root() const;

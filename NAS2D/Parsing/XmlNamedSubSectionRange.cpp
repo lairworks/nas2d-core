@@ -1,6 +1,5 @@
 #include "XmlNamedSubSectionRange.h"
 
-#include "XmlNamedSubSectionIterator.h"
 #include "../Xml/XmlElement.h"
 
 #include <utility>

@@ -1,8 +1,5 @@
 #include "XmlSection.h"
 
-#include "XmlSubSectionRange.h"
-#include "XmlNamedSubSectionRange.h"
-
 #include "../Xml/XmlElement.h"
 #include "../ContainerUtils.h"
 

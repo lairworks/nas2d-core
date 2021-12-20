@@ -20,8 +20,6 @@
 #include "../Version.h"
 #include "../Xml/Xml.h"
 #include "../Parsing/XmlFile.h"
-#include "../Parsing/XmlNamedSubSectionRange.h"
-#include "../Parsing/XmlNamedSubSectionIterator.h"
 
 #include <tuple>
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "XmlSubSectionIterator.h"
+
 #include <cstddef>
 
 
@@ -9,8 +11,6 @@ namespace NAS2D
 	{
 		class XmlElement;
 	}
-
-	class XmlSubSectionIterator;
 
 
 	class XmlSubSectionRange

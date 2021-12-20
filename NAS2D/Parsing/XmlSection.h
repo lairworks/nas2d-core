@@ -1,5 +1,8 @@
 #pragma once
 
+#include "XmlSubSectionRange.h"
+#include "XmlNamedSubSectionRange.h"
+
 #include "../StringValue.h"
 
 #include <string>
@@ -12,9 +15,6 @@ namespace NAS2D
 	{
 		class XmlElement;
 	}
-
-	class XmlSubSectionRange;
-	class XmlNamedSubSectionRange;
 
 
 	class XmlSection

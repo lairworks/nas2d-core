@@ -18,7 +18,7 @@ XmlSubSectionIterator XmlSubSectionRange::begin() const
 }
 
 
-std::nullptr_t XmlSubSectionRange::end() const
+XmlSubSectionIterator XmlSubSectionRange::end() const
 {
-	return nullptr;
+	return XmlSubSectionIterator{nullptr};
 }

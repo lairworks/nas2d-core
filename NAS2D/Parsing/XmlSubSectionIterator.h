@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstddef>
-
 
 namespace NAS2D
 {
@@ -19,7 +17,7 @@ namespace NAS2D
 		explicit XmlSubSectionIterator(const Xml::XmlElement* currentElement);
 
 		XmlSubSectionIterator& operator++();
-		bool operator!=(std::nullptr_t);
+		bool operator!=(const XmlSubSectionIterator& other);
 		XmlSection operator*() const;
 
 	protected:

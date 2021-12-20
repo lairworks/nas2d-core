@@ -20,9 +20,9 @@ XmlSubSectionIterator& XmlSubSectionIterator::operator++()
 }
 
 
-bool XmlSubSectionIterator::operator!=(std::nullptr_t)
+bool XmlSubSectionIterator::operator!=(const XmlSubSectionIterator& other)
 {
-	return mXmlElement != nullptr;
+	return mXmlElement != other.mXmlElement;
 }
 
 

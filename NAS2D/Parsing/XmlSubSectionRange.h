@@ -2,8 +2,6 @@
 
 #include "XmlSubSectionIterator.h"
 
-#include <cstddef>
-
 
 namespace NAS2D
 {
@@ -19,7 +17,7 @@ namespace NAS2D
 		explicit XmlSubSectionRange(const Xml::XmlElement& parentElement);
 
 		XmlSubSectionIterator begin() const;
-		std::nullptr_t end() const;
+		XmlSubSectionIterator end() const;
 
 	protected:
 		const Xml::XmlElement& mParentElement;

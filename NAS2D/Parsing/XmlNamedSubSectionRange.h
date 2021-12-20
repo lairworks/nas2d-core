@@ -3,7 +3,6 @@
 #include "XmlNamedSubSectionIterator.h"
 
 #include <string>
-#include <cstddef>
 
 
 namespace NAS2D
@@ -20,7 +19,7 @@ namespace NAS2D
 		explicit XmlNamedSubSectionRange(const Xml::XmlElement& parentElement, std::string name);
 
 		XmlNamedSubSectionIterator begin() const;
-		std::nullptr_t end() const;
+		XmlNamedSubSectionIterator end() const;
 
 	protected:
 		const Xml::XmlElement& mParentElement;

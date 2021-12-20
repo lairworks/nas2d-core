@@ -13,7 +13,6 @@ namespace NAS2D
 		class XmlElement;
 	}
 
-	class XmlFile;
 	class XmlSubSectionRange;
 	class XmlNamedSubSectionRange;
 

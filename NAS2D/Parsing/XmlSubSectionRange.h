@@ -10,7 +10,6 @@ namespace NAS2D
 		class XmlElement;
 	}
 
-	class XmlSection;
 	class XmlSubSectionIterator;
 
 

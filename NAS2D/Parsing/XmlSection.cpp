@@ -92,6 +92,11 @@ std::vector<std::string> XmlSection::keys() const
 			results.push_back(subElement->value());
 		}
 	}
+	// Add current element name as key if there is a value
+	if (!mXmlElement.getText().empty())
+	{
+		results.push_back(mXmlElement.value());
+	}
 	return results;
 }
 
@@ -142,6 +147,10 @@ NAS2D::StringValue XmlSection::valueOrEmpty(const std::string& key) const
 		if (subElement)
 		{
 			value = subElement->getText();
+		}
+		else if (key == mXmlElement.value())
+		{
+			value = mXmlElement.getText();
 		}
 	}
 	return NAS2D::StringValue{value};

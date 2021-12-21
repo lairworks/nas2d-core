@@ -106,6 +106,10 @@ TEST_F(XmlSection, value) {
 	EXPECT_EQ("attributeValue", root.value("attributeName"));
 	EXPECT_EQ("Value", root.value("subElementValue"));
 	EXPECT_THROW(root.value("attributeNameNotFound"), std::runtime_error);
+
+	const auto& dualUse = root.subSection("dualUse");
+	EXPECT_EQ("dualValue", dualUse.value("dualUse"));
+	EXPECT_EQ("dualAttribute", dualUse.value("attribute"));
 }
 
 TEST_F(XmlSection, valueWithDefault) {

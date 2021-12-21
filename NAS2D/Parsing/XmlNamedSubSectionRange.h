@@ -21,6 +21,8 @@ namespace NAS2D
 		XmlNamedSubSectionIterator begin() const;
 		XmlNamedSubSectionIterator end() const;
 
+		XmlNamedSubSectionIterator::difference_type size() const;
+
 	protected:
 		const Xml::XmlElement& mParentElement;
 		std::string mName;

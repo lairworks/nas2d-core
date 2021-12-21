@@ -3,6 +3,7 @@
 #include "../Xml/XmlElement.h"
 
 #include <utility>
+#include <iterator>
 
 
 using namespace NAS2D;
@@ -24,4 +25,10 @@ XmlNamedSubSectionIterator XmlNamedSubSectionRange::begin() const
 XmlNamedSubSectionIterator XmlNamedSubSectionRange::end() const
 {
 	return XmlNamedSubSectionIterator{nullptr, ""};
+}
+
+
+XmlNamedSubSectionIterator::difference_type XmlNamedSubSectionRange::size() const
+{
+	return std::distance(begin(), end());
 }

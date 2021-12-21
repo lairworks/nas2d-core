@@ -86,6 +86,7 @@ TEST_F(XmlSection, subSections) {
 
 	const auto sections = std::vector<NAS2D::XmlSection>{sectionsRange.begin(), sectionsRange.end()};
 	EXPECT_GE(sections.size(), 1);
+	EXPECT_EQ(sections.size(), sectionsRange.size());
 }
 
 TEST_F(XmlSection, subSectionsNamed) {
@@ -94,6 +95,7 @@ TEST_F(XmlSection, subSectionsNamed) {
 
 	const auto sections = std::vector<NAS2D::XmlSection>{sectionsRange.begin(), sectionsRange.end()};
 	EXPECT_GE(sections.size(), 1);
+	EXPECT_EQ(sections.size(), sectionsRange.size());
 }
 
 TEST_F(XmlSection, valueOrEmpty) {

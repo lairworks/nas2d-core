@@ -13,6 +13,7 @@ protected:
 		"<rootElement attributeName=\"attributeValue\">"
 			"<subElement subElementAttributeName=\"subElementAttributeValue\">Value</subElement>"
 			"<subElementValue>Value</subElementValue>"
+			"<dualUse attribute=\"dualAttribute\">dualValue</dualUse>"
 		"</rootElement>";
 	NAS2D::XmlFile xmlFile{fileData};
 	NAS2D::XmlSection root = xmlFile.root();
@@ -28,11 +29,11 @@ TEST_F(XmlSection, throwError) {
 }
 
 TEST_F(XmlSection, verifySubSections) {
-	EXPECT_NO_THROW(root.verifySubSections({"subElement", "subElementValue"}));
-	EXPECT_NO_THROW(root.verifySubSections({"subElement", "subElementValue"}, {"optionalNotFound"}));
-	EXPECT_NO_THROW(root.verifySubSections({"subElement"}, {"subElementValue"}));
-	EXPECT_NO_THROW(root.verifySubSections({}, {"subElement", "subElementValue"}));
-	EXPECT_NO_THROW(root.verifySubSections({}, {"subElement", "subElementValue", "optionalNotFound"}));
+	EXPECT_NO_THROW(root.verifySubSections({"subElement", "subElementValue", "dualUse"}));
+	EXPECT_NO_THROW(root.verifySubSections({"subElement", "subElementValue", "dualUse"}, {"optionalNotFound"}));
+	EXPECT_NO_THROW(root.verifySubSections({"subElement"}, {"subElementValue", "dualUse"}));
+	EXPECT_NO_THROW(root.verifySubSections({}, {"subElement", "subElementValue", "dualUse"}));
+	EXPECT_NO_THROW(root.verifySubSections({}, {"subElement", "subElementValue", "dualUse", "optionalNotFound"}));
 
 	EXPECT_THROW(root.verifySubSections({"subElementNotFound"}), std::runtime_error);
 	EXPECT_THROW(root.verifySubSections({}), std::runtime_error);
@@ -51,7 +52,7 @@ TEST_F(XmlSection, verifyKeys) {
 }
 
 TEST_F(XmlSection, subSectionNames) {
-	EXPECT_EQ((std::vector<std::string>{"subElement", "subElementValue"}), root.subSectionNames());
+	EXPECT_EQ((std::vector<std::string>{"subElement", "subElementValue", "dualUse"}), root.subSectionNames());
 }
 
 TEST_F(XmlSection, keys) {

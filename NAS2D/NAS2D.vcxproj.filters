@@ -37,6 +37,12 @@
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{f77ff9a8-6639-4ae0-8705-c016859865d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Parsing">
+      <UniqueIdentifier>{cd643ee8-ed26-43fa-ab3e-012a00b17a74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Parsing">
+      <UniqueIdentifier>{064e1bf7-5414-4749-bc5b-73bcd2d9c04f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Configuration.cpp">
@@ -164,6 +170,24 @@
     </ClCompile>
     <ClCompile Include="Dictionary.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parsing\XmlFile.cpp">
+      <Filter>Source Files\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="Parsing\XmlNamedSubSectionIterator.cpp">
+      <Filter>Source Files\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="Parsing\XmlNamedSubSectionRange.cpp">
+      <Filter>Source Files\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="Parsing\XmlSection.cpp">
+      <Filter>Source Files\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="Parsing\XmlSubSectionIterator.cpp">
+      <Filter>Source Files\Parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="Parsing\XmlSubSectionRange.cpp">
+      <Filter>Source Files\Parsing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,6 +364,24 @@
     </ClInclude>
     <ClInclude Include="Dictionary.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parsing\XmlFile.h">
+      <Filter>Header Files\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="Parsing\XmlNamedSubSectionIterator.h">
+      <Filter>Header Files\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="Parsing\XmlNamedSubSectionRange.h">
+      <Filter>Header Files\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="Parsing\XmlSection.h">
+      <Filter>Header Files\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="Parsing\XmlSubSectionIterator.h">
+      <Filter>Header Files\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="Parsing\XmlSubSectionRange.h">
+      <Filter>Header Files\Parsing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

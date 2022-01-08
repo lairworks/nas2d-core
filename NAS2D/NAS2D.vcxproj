@@ -208,6 +208,12 @@
     <ClCompile Include="Mixer\Mixer.cpp" />
     <ClCompile Include="Mixer\MixerSDL.cpp" />
     <ClCompile Include="Mixer\MixerNull.cpp" />
+    <ClCompile Include="Parsing\XmlFile.cpp" />
+    <ClCompile Include="Parsing\XmlNamedSubSectionIterator.cpp" />
+    <ClCompile Include="Parsing\XmlNamedSubSectionRange.cpp" />
+    <ClCompile Include="Parsing\XmlSection.cpp" />
+    <ClCompile Include="Parsing\XmlSubSectionIterator.cpp" />
+    <ClCompile Include="Parsing\XmlSubSectionRange.cpp" />
     <ClCompile Include="Renderer\Color.cpp" />
     <ClCompile Include="Renderer\DisplayDesc.cpp" />
     <ClCompile Include="Renderer\Fade.cpp" />
@@ -258,6 +264,12 @@
     <ClInclude Include="Mixer\MixerNull.h" />
     <ClInclude Include="NAS2D.h" />
     <ClInclude Include="ParserHelper.h" />
+    <ClInclude Include="Parsing\XmlFile.h" />
+    <ClInclude Include="Parsing\XmlNamedSubSectionIterator.h" />
+    <ClInclude Include="Parsing\XmlNamedSubSectionRange.h" />
+    <ClInclude Include="Parsing\XmlSection.h" />
+    <ClInclude Include="Parsing\XmlSubSectionIterator.h" />
+    <ClInclude Include="Parsing\XmlSubSectionRange.h" />
     <ClInclude Include="Renderer\DisplayDesc.h" />
     <ClInclude Include="Renderer\RendererNull.h" />
     <ClInclude Include="Renderer\Color.h" />

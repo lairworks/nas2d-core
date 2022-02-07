@@ -214,14 +214,15 @@ DockerRepository := outpostuniverse
 ImageVersion_gcc := 1.3
 ImageVersion_clang := 1.2
 ImageVersion_mingw := 1.7
+ImageVersion_arch := 1.0
 
 DockerImageName = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 
-DockerBuildRules := build-image-gcc build-image-clang build-image-mingw
-DockerRunRules := run-image-gcc run-image-clang run-image-mingw
-DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw
-DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-image-mingw
-DockerPushRules := push-image-gcc push-image-clang push-image-mingw
+DockerBuildRules := build-image-gcc build-image-clang build-image-mingw build-image-arch
+DockerRunRules := run-image-gcc run-image-clang run-image-mingw run-image-arch
+DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw debug-image-arch
+DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-image-mingw root-debug-image-arch
+DockerPushRules := push-image-gcc push-image-clang push-image-mingw push-image-arch
 
 .PHONY: ${DockerBuildRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules} ${DockerPushRules}
 

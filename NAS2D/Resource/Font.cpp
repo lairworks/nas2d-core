@@ -292,7 +292,7 @@ namespace
 
 			// Avoid glyph 0, which has size 0 for some fonts
 			// SDL_TTF will produce errors for a glyph of size 0
-			if (glyph == 0) { continue; }
+			if (glyph == 0 || glyph == 173) { continue; }
 
 			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(font, static_cast<uint16_t>(glyph), white);
 			if (!characterSurface)

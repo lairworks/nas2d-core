@@ -45,8 +45,8 @@ enum MountPosition
 
 
 Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName) :
-	mAppName(appName),
-	mOrganizationName(organizationName)
+	mAppName{appName},
+	mOrganizationName{organizationName}
 {
 	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized"); }
 

@@ -66,5 +66,7 @@ namespace NAS2D
 	private:
 		std::string mBasePath;
 		std::string mPrefPath;
+		std::string mWritePath;
+		std::vector<std::string> mSearchPaths;
 	};
 }

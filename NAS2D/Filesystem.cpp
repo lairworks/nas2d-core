@@ -120,6 +120,7 @@ std::string Filesystem::prefPath() const
  */
 int Filesystem::mountSoftFail(const std::string& path)
 {
+	mSearchPaths.push_back(path);
 	return PHYSFS_mount(path.c_str(), "/", MountPosition::MOUNT_APPEND);
 }
 
@@ -153,6 +154,7 @@ void Filesystem::mountReadWrite(const std::string& path)
 	{
 		throw std::runtime_error("Error setting write folder: " + path + " : " + getLastPhysfsError());
 	}
+	mWritePath = path;
 }
 
 
@@ -167,6 +169,7 @@ void Filesystem::unmount(const std::string& path)
 	{
 		throw std::runtime_error("Error unmounting search path: " + path + " : " + getLastPhysfsError());
 	}
+	mSearchPaths.erase(std::remove(mSearchPaths.begin(), mSearchPaths.end(), path), mSearchPaths.end());
 }
 
 
@@ -175,16 +178,7 @@ void Filesystem::unmount(const std::string& path)
  */
 std::vector<std::string> Filesystem::searchPath() const
 {
-	std::vector<std::string> searchPath;
-
-	auto searchPathList = PHYSFS_getSearchPath();
-	for (auto i = searchPathList; *i != nullptr; ++i)
-	{
-		searchPath.push_back(*i);
-	}
-	PHYSFS_freeList(searchPathList);
-
-	return searchPath;
+	return mSearchPaths;
 }
 
 

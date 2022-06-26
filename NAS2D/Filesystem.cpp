@@ -60,8 +60,8 @@ enum MountPosition
 
 
 Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName) :
-	mAppName{appName},
-	mOrganizationName{organizationName}
+	mBasePath{SdlString{SDL_GetBasePath()}.get()},
+	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()}
 {
 	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized"); }
 
@@ -88,7 +88,7 @@ Filesystem::~Filesystem()
  */
 std::string Filesystem::basePath() const
 {
-	return PHYSFS_getBaseDir();
+	return mBasePath;
 }
 
 
@@ -98,12 +98,10 @@ std::string Filesystem::basePath() const
  * The user should have write access to the preferences folder, which is generally under their user folder.
  *
  * \note This path is dependent on the Operating System (OS).
- * \note Path may be empty if the folder could not be created.
  */
 std::string Filesystem::prefPath() const
 {
-	auto prefDir = PHYSFS_getPrefDir(mOrganizationName.c_str(), mAppName.c_str());
-	return (prefDir != nullptr) ? prefDir : "";
+	return mPrefPath;
 }
 
 

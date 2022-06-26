@@ -192,28 +192,23 @@ std::vector<std::string> Filesystem::searchPath() const
  */
 std::vector<std::string> Filesystem::directoryList(const std::string& dir, const std::string& filter) const
 {
-	auto rc = PHYSFS_enumerateFiles(dir.c_str());
-
 	std::vector<std::string> fileList;
-	if (filter.empty())
+
+	for (const auto& searchPath : mSearchPaths)
 	{
-		for (auto i = rc; *i != nullptr; i++)
+		const auto dirPath = std::filesystem::path{searchPath} / dir;
+		if (std::filesystem::is_directory(dirPath))
 		{
-			fileList.push_back(*i);
-		}
-	}
-	else
-	{
-		for (auto i = rc; *i != nullptr; i++)
-		{
-			if (hasFileSuffix(*i, filter))
+			for (const auto& dirEntry : std::filesystem::directory_iterator(dirPath))
 			{
-				fileList.push_back(*i);
+				const auto& filePath = dirEntry.path().filename().generic_string();
+				if (hasFileSuffix(filePath, filter))
+				{
+					fileList.push_back(filePath);
+				}
 			}
 		}
 	}
-
-	PHYSFS_freeList(rc);
 
 	return fileList;
 }

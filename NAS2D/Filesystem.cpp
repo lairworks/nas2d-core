@@ -35,6 +35,12 @@ namespace {
 	using SdlString = std::unique_ptr<char, SdlStringDeleter>;
 
 
+	bool hasFileSuffix(const std::string& filePath, const std::string& suffix)
+	{
+		return filePath.rfind(suffix, filePath.length() - suffix.length()) != std::string::npos;
+	}
+
+
 	std::string getLastPhysfsError()
 	{
 		return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
@@ -204,11 +210,9 @@ std::vector<std::string> Filesystem::directoryList(const std::string& dir, const
 	}
 	else
 	{
-		const auto filterLen = filter.size();
 		for (auto i = rc; *i != nullptr; i++)
 		{
-			std::string tmpStr = *i;
-			if (tmpStr.rfind(filter, tmpStr.length() - filterLen) != std::string::npos)
+			if (hasFileSuffix(*i, filter))
 			{
 				fileList.push_back(*i);
 			}

@@ -112,7 +112,7 @@ std::string Filesystem::prefPath() const
  *
  * \return Nonzero on success, zero on error.
  */
-int Filesystem::mountSoftFail(const std::string& path) const
+int Filesystem::mountSoftFail(const std::string& path)
 {
 	return PHYSFS_mount(path.c_str(), "/", MountPosition::MOUNT_APPEND);
 }
@@ -123,7 +123,7 @@ int Filesystem::mountSoftFail(const std::string& path) const
  *
  * \param path	File path to add.
  */
-void Filesystem::mount(const std::string& path) const
+void Filesystem::mount(const std::string& path)
 {
 	if (mountSoftFail(path) == 0)
 	{
@@ -137,7 +137,7 @@ void Filesystem::mount(const std::string& path) const
  *
  * \param path	File path to add.
  */
-void Filesystem::mountReadWrite(const std::string& path) const
+void Filesystem::mountReadWrite(const std::string& path)
 {
 	// Mount for read access
 	mount(path);
@@ -155,7 +155,7 @@ void Filesystem::mountReadWrite(const std::string& path) const
  *
  * \param path	File path to remove.
  */
-void Filesystem::unmount(const std::string& path) const
+void Filesystem::unmount(const std::string& path)
 {
 	if (PHYSFS_unmount(path.c_str()) == 0)
 	{
@@ -238,7 +238,7 @@ bool Filesystem::isDirectory(const std::string& path) const
  *
  * \param path	Path of the directory to create.
  */
-void Filesystem::makeDirectory(const std::string& path) const
+void Filesystem::makeDirectory(const std::string& path)
 {
 	if (PHYSFS_mkdir(path.c_str()) == 0)
 	{
@@ -265,7 +265,7 @@ bool Filesystem::exists(const std::string& filename) const
  *
  * \param	filename	Path of the file to delete relative to the Filesystem root directory.
  */
-void Filesystem::del(const std::string& filename) const
+void Filesystem::del(const std::string& filename)
 {
 	if (PHYSFS_delete(filename.c_str()) == 0)
 	{
@@ -310,7 +310,7 @@ std::string Filesystem::readFile(const std::string& filename) const
 }
 
 
-void Filesystem::writeFile(const std::string& filename, const std::string& data, WriteFlags flags) const
+void Filesystem::writeFile(const std::string& filename, const std::string& data, WriteFlags flags)
 {
 	if (flags != WriteFlags::Overwrite && exists(filename))
 	{

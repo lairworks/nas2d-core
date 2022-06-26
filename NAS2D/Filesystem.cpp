@@ -330,7 +330,7 @@ void Filesystem::write(const std::string& filename, const std::string& data, Wri
  */
 std::string Filesystem::dirSeparator() const
 {
-	return PHYSFS_getDirSeparator();
+	return {std::filesystem::path::preferred_separator};
 }
 
 

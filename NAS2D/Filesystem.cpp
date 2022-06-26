@@ -11,16 +11,30 @@
 #include "Filesystem.h"
 
 #include <physfs.h>
+#include <SDL2/SDL_filesystem.h>
 
 #include <filesystem>
 #include <limits>
 #include <stdexcept>
+#include <memory>
 
 
 using namespace NAS2D;
 
 
 namespace {
+	struct SdlStringDeleter
+	{
+		void operator()(char* string)
+		{
+			SDL_free(string);
+		}
+	};
+
+
+	using SdlString = std::unique_ptr<char, SdlStringDeleter>;
+
+
 	std::string getLastPhysfsError()
 	{
 		return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());

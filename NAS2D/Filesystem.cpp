@@ -12,6 +12,7 @@
 
 #include <physfs.h>
 
+#include <filesystem>
 #include <limits>
 #include <stdexcept>
 

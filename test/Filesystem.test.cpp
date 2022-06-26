@@ -40,9 +40,17 @@ TEST_F(Filesystem, searchPath) {
 }
 
 TEST_F(Filesystem, directoryList) {
-	auto pathList = fs.directoryList("");
-	EXPECT_LE(1u, pathList.size());
-	EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
+	{
+		auto pathList = fs.directoryList("");
+		EXPECT_LE(1u, pathList.size());
+		EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
+	}
+
+	{
+		auto pathList = fs.directoryList("", "txt");
+		EXPECT_LE(1u, pathList.size());
+		EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
+	}
 }
 
 TEST_F(Filesystem, exists) {

@@ -254,13 +254,13 @@ void Filesystem::makeDirectory(const std::string& path)
 /**
  * Checks for the existence of a file.
  *
- * \param	filename	File path to check.
+ * \param	path	File path to check.
  *
- * Returns Returns \c true if the specified file exists. Otherwise, returns \c false.
+ * Returns Returns \c true if the specified file or directory exists. Otherwise, returns \c false.
  */
-bool Filesystem::exists(const std::string& filename) const
+bool Filesystem::exists(const std::string& path) const
 {
-	return PHYSFS_exists(filename.c_str()) != 0;
+	return PHYSFS_exists(path.c_str()) != 0;
 }
 
 

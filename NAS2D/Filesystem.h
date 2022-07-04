@@ -53,7 +53,7 @@ namespace NAS2D
 		bool isDirectory(const std::string& path) const;
 		void makeDirectory(const std::string& path);
 
-		bool exists(const std::string& filename) const;
+		bool exists(const std::string& path) const;
 		void del(const std::string& path);
 
 		std::string readFile(const std::string& filename) const;

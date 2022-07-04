@@ -138,7 +138,7 @@ void Filesystem::mountReadWrite(const std::string& path)
 
 
 /**
- * Removes a directory or supported archive from the Search Path.
+ * Removes a directory from the Search Path.
  *
  * \param path	File path to remove.
  */

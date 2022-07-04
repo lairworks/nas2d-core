@@ -64,7 +64,7 @@ namespace NAS2D
 		std::string extension(std::string_view filePath) const;
 
 	private:
-		std::string mAppName;
-		std::string mOrganizationName;
+		std::string mBasePath;
+		std::string mPrefPath;
 	};
 }

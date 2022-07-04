@@ -255,10 +255,8 @@ bool Filesystem::isDirectory(const std::string& path) const
  */
 void Filesystem::makeDirectory(const std::string& path)
 {
-	if (PHYSFS_mkdir(path.c_str()) == 0)
-	{
-		throw std::runtime_error("Error creating directory: " + path + " : " + getLastPhysfsError());
-	}
+	const auto& filePath = std::filesystem::path{mWritePath} / path;
+	std::filesystem::create_directories(filePath);
 }
 
 

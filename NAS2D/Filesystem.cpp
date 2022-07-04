@@ -270,7 +270,8 @@ void Filesystem::makeDirectory(const std::string& path)
  */
 bool Filesystem::exists(const std::string& path) const
 {
-	return PHYSFS_exists(path.c_str()) != 0;
+	const auto& filePath = findFirstPath(path, mSearchPaths);
+	return !filePath.empty();
 }
 
 

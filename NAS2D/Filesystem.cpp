@@ -14,6 +14,7 @@
 #include <SDL2/SDL_filesystem.h>
 
 #include <filesystem>
+#include <fstream>
 #include <limits>
 #include <stdexcept>
 #include <memory>
@@ -291,34 +292,35 @@ void Filesystem::del(const std::string& filename)
 
 std::string Filesystem::readFile(const std::string& filename) const
 {
-	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
-	if (!myFile)
+	const auto& filePath = findFirstPath(filename, mSearchPaths);
+	if (filePath.empty())
 	{
-		closeFile(myFile);
-		throw std::runtime_error("Error opening file for reading: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error opening file: " + filename + " : File does not exist");
 	}
 
-	// Ensure that the file size is greater than zero and can fit in a std::string::size_type
-	auto fileLength = PHYSFS_fileLength(myFile);
-	if (fileLength < 0 || static_cast<PHYSFS_uint64>(fileLength) > std::numeric_limits<std::string::size_type>::max())
+	std::ifstream file{filePath, std::ios::in | std::ios::binary};
+	if (!file)
 	{
-		closeFile(myFile);
-		throw std::runtime_error("Error determining length of file or file too large: " + filename + " : Length = " + std::to_string(fileLength));
+		throw std::runtime_error("Error opening file: " + filename + " : " + errorDescription());
 	}
 
-	// Create buffer large enough to hold entire file
-	const auto bufferSize = static_cast<std::string::size_type>(fileLength);
+	const auto fileSize = std::filesystem::file_size(filePath);
+	if constexpr (std::numeric_limits<decltype(fileSize)>::max() > std::numeric_limits<std::string::size_type>::max())
+	{
+		if (fileSize > std::numeric_limits<std::string::size_type>::max())
+		{
+			throw std::runtime_error("Error opening file: " + filename + " : File too large");
+		}
+	}
+	const auto bufferSize = static_cast<std::string::size_type>(fileSize);
+
 	std::string fileBuffer;
 	fileBuffer.resize(bufferSize);
 
-	// Read file data into buffer and close file
-	const auto actualReadLength = PHYSFS_readBytes(myFile, fileBuffer.data(), bufferSize);
-	closeFile(myFile);
-
-	// Ensure we read the expected length
-	if (actualReadLength < fileLength)
+	file.read(fileBuffer.data(), bufferSize);
+	if (!file)
 	{
-		throw std::runtime_error("Error reading file data: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error reading file: " + filename + " : " + errorDescription());
 	}
 
 	return fileBuffer;

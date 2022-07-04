@@ -41,6 +41,20 @@ namespace {
 	}
 
 
+	std::string findFirstPath(const std::string& path, const std::vector<std::string>& searchPaths)
+	{
+		for (const auto& searchPath : searchPaths)
+		{
+			const auto& filePath = std::filesystem::path{searchPath} / path;
+			if (std::filesystem::exists(filePath))
+			{
+				return filePath.string();
+			}
+		}
+		return {};
+	}
+
+
 	std::string getLastPhysfsError()
 	{
 		return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());

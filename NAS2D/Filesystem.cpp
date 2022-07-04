@@ -242,8 +242,8 @@ std::vector<std::string> Filesystem::directoryList(const std::string& dir, const
  */
 bool Filesystem::isDirectory(const std::string& path) const
 {
-	PHYSFS_Stat stat;
-	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
+	const auto& filePath = findFirstPath(path, mSearchPaths);
+	return std::filesystem::is_directory(filePath);
 }
 
 

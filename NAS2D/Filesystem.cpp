@@ -10,7 +10,6 @@
 
 #include "Filesystem.h"
 
-#include <physfs.h>
 #include <SDL2/SDL_filesystem.h>
 
 #include <filesystem>
@@ -61,12 +60,6 @@ namespace {
 	{
 		return std::error_code{errno, std::generic_category()}.message();
 	}
-
-
-	std::string getLastPhysfsError()
-	{
-		return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
-	}
 }
 
 
@@ -77,25 +70,15 @@ enum MountPosition
 };
 
 
-Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName) :
+Filesystem::Filesystem(const std::string& /*argv_0*/, const std::string& appName, const std::string& organizationName) :
 	mBasePath{SdlString{SDL_GetBasePath()}.get()},
 	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()}
 {
-	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized"); }
-
-	if (PHYSFS_init(argv_0.c_str()) == 0)
-	{
-		throw std::runtime_error("Error initializing filesystem library: " + getLastPhysfsError());
-	}
 }
 
 
-/**
- * Shuts down PhysFS and cleans up.
- */
 Filesystem::~Filesystem()
 {
-	PHYSFS_deinit();
 }
 
 
@@ -133,7 +116,7 @@ std::string Filesystem::prefPath() const
 int Filesystem::mountSoftFail(const std::string& path)
 {
 	mSearchPaths.push_back(path);
-	return PHYSFS_mount(path.c_str(), "/", MountPosition::MOUNT_APPEND);
+	return std::filesystem::exists(path);
 }
 
 
@@ -146,7 +129,7 @@ void Filesystem::mount(const std::string& path)
 {
 	if (mountSoftFail(path) == 0)
 	{
-		throw std::runtime_error("Error mounting search path: " + path + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error mounting search path: " + path + " : " + errorDescription());
 	}
 }
 
@@ -158,15 +141,11 @@ void Filesystem::mount(const std::string& path)
  */
 void Filesystem::mountReadWrite(const std::string& path)
 {
+	std::filesystem::create_directories(path);
+	mWritePath = path;
+
 	// Mount for read access
 	mount(path);
-
-	// Mount for write access
-	if (PHYSFS_setWriteDir(path.c_str()) == 0)
-	{
-		throw std::runtime_error("Error setting write folder: " + path + " : " + getLastPhysfsError());
-	}
-	mWritePath = path;
 }
 
 
@@ -177,10 +156,6 @@ void Filesystem::mountReadWrite(const std::string& path)
  */
 void Filesystem::unmount(const std::string& path)
 {
-	if (PHYSFS_unmount(path.c_str()) == 0)
-	{
-		throw std::runtime_error("Error unmounting search path: " + path + " : " + getLastPhysfsError());
-	}
 	mSearchPaths.erase(std::remove(mSearchPaths.begin(), mSearchPaths.end(), path), mSearchPaths.end());
 }
 

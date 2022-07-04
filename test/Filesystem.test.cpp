@@ -60,6 +60,8 @@ TEST_F(Filesystem, exists) {
 TEST_F(Filesystem, read) {
 	const auto data = fs.readFile("file.txt");
 	EXPECT_THAT(data, testing::StartsWith("Test data"));
+
+	EXPECT_THROW(fs.readFile("FileDoesNotExist.txt"), std::runtime_error);
 }
 
 // Test a few related methods. Some don't test well standalone.

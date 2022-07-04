@@ -67,16 +67,6 @@ namespace {
 	{
 		return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
 	}
-
-
-	bool closeFile(void* file)
-	{
-		if (!file) { return false; }
-
-		if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
-
-		throw std::runtime_error("Unable to close file handle: " + getLastPhysfsError());
-	}
 }
 
 
@@ -333,19 +323,18 @@ void Filesystem::writeFile(const std::string& filename, const std::string& data,
 		throw std::runtime_error("Overwrite flag not specified and file already exists: " + filename);
 	}
 
-	PHYSFS_file* myFile = PHYSFS_openWrite(filename.c_str());
-	if (!myFile)
+	const auto& filePath = std::filesystem::path{mWritePath} / filename;
+	std::ofstream file{filePath, std::ios::out | std::ios::binary};
+	if (!file)
 	{
-		throw std::runtime_error("Error opening file for writing: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error opening file for writing: " + filename + " : " + errorDescription());
 	}
 
-	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint64>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
+	file << data;
+	if (!file)
 	{
-		closeFile(myFile);
-		throw std::runtime_error("Error writing file: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error writing file: " + filename + " : " + errorDescription());
 	}
-
-	closeFile(myFile);
 }
 
 

@@ -36,7 +36,7 @@ namespace NAS2D
 		Filesystem& operator=(const Filesystem&) = delete;
 		Filesystem(Filesystem&&) = delete;
 		Filesystem& operator=(Filesystem&&) = delete;
-		~Filesystem();
+		~Filesystem() = default;
 
 		std::string basePath() const;
 		std::string prefPath() const;

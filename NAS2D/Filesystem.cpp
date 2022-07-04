@@ -70,11 +70,6 @@ Filesystem::Filesystem(const std::string& /*argv_0*/, const std::string& appName
 }
 
 
-Filesystem::~Filesystem()
-{
-}
-
-
 /**
  * Determines the path to the folder where the executable is located
  *

@@ -281,9 +281,10 @@ bool Filesystem::exists(const std::string& path) const
  */
 void Filesystem::del(const std::string& filename)
 {
-	if (PHYSFS_delete(filename.c_str()) == 0)
+	const auto& filePath = std::filesystem::path{mWritePath} / filename;
+	if (!std::filesystem::remove(filePath))
 	{
-		throw std::runtime_error("Error deleting file: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error deleting file: " + filename + " : " + errorDescription());
 	}
 }
 

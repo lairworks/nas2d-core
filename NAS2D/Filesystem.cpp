@@ -63,13 +63,6 @@ namespace {
 }
 
 
-enum MountPosition
-{
-	MOUNT_PREPEND = 0,
-	MOUNT_APPEND = 1,
-};
-
-
 Filesystem::Filesystem(const std::string& /*argv_0*/, const std::string& appName, const std::string& organizationName) :
 	mBasePath{SdlString{SDL_GetBasePath()}.get()},
 	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()}

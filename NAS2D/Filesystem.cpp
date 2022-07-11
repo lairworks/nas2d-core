@@ -17,6 +17,7 @@
 #include <limits>
 #include <stdexcept>
 #include <memory>
+#include <system_error>
 
 
 using namespace NAS2D;
@@ -52,6 +53,12 @@ namespace {
 			}
 		}
 		return {};
+	}
+
+
+	std::string errorDescription()
+	{
+		return std::error_code{errno, std::generic_category()}.message();
 	}
 
 

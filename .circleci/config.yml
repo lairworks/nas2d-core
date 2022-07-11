@@ -4,15 +4,7 @@ commands:
   brew-install:
     description: "Brew install MacOS dependencies (or restore from cache)"
     steps:
-      - restore_cache:
-          name: Restoring brew dependencies
-          key: deps-NAS2D-{{ arch }}-v1-{{ checksum "BrewDeps.txt" }}
       - run: make install-dependencies
-      - save_cache:
-          name: Caching brew dependencies
-          key: deps-NAS2D-{{ arch }}-v1-{{ checksum "BrewDeps.txt" }}
-          paths:
-            - /usr/local/Cellar
   build-and-test:
     steps:
       - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror"

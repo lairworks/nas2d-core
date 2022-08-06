@@ -182,7 +182,7 @@ DisplayDesc RendererOpenGL::getClosestMatchingDisplayMode(const DisplayDesc& pre
 
 void RendererOpenGL::window_icon(const std::string& path)
 {
-	auto iconData = Utility<Filesystem>::get().read(path);
+	auto iconData = Utility<Filesystem>::get().readFile(path);
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(iconData.c_str(), static_cast<int>(iconData.size())), 1);
 	if (!icon)
 	{
@@ -202,7 +202,7 @@ void RendererOpenGL::showSystemPointer(bool _b)
 
 void RendererOpenGL::addCursor(const std::string& filePath, int cursorId, int offx, int offy)
 {
-	auto imageData = Utility<Filesystem>::get().read(filePath);
+	auto imageData = Utility<Filesystem>::get().readFile(filePath);
 	if (imageData.size() == 0)
 	{
 		throw std::runtime_error("Cursor file is empty: " + filePath);

@@ -185,7 +185,7 @@ namespace
 			}
 		}
 
-		auto fontBuffer = Utility<Filesystem>::get().read(path);
+		auto fontBuffer = Utility<Filesystem>::get().readFile(path);
 		if (fontBuffer.empty())
 		{
 			throw std::runtime_error("Font file is empty: " + path);
@@ -223,7 +223,7 @@ namespace
 	 */
 	Font::FontInfo loadBitmap(const std::string& path)
 	{
-		auto fontBuffer = Utility<Filesystem>::get().read(path);
+		auto fontBuffer = Utility<Filesystem>::get().readFile(path);
 		if (fontBuffer.empty())
 		{
 			throw std::runtime_error("Font file is empty: " + path);

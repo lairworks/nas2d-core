@@ -50,7 +50,7 @@ TEST_F(Filesystem, exists) {
 }
 
 TEST_F(Filesystem, read) {
-	const auto data = fs.read("file.txt");
+	const auto data = fs.readFile("file.txt");
 	EXPECT_THAT(data, testing::StartsWith("Test data"));
 }
 
@@ -66,7 +66,7 @@ TEST_F(Filesystem, writeReadDeleteExists) {
 	EXPECT_NO_THROW(fs.write(testFilename, testData));
 	EXPECT_THROW(fs.write(testFilename, testData, NAS2D::Filesystem::WriteFlags::NoOverwrite), std::runtime_error);
 
-	const auto data = fs.read(testFilename);
+	const auto data = fs.readFile(testFilename);
 	EXPECT_EQ(testData, data);
 
 	EXPECT_NO_THROW(fs.del(testFilename));

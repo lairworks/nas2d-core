@@ -117,7 +117,7 @@ namespace
 			const auto basePath = filesystem.parentPath(filePath);
 
 			Xml::XmlDocument xmlDoc;
-			xmlDoc.parse(filesystem.read(filePath).c_str());
+			xmlDoc.parse(filesystem.readFile(filePath).c_str());
 
 			if (xmlDoc.error())
 			{

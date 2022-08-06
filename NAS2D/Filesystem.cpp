@@ -310,7 +310,7 @@ std::string Filesystem::readFile(const std::string& filename) const
 }
 
 
-void Filesystem::write(const std::string& filename, const std::string& data, WriteFlags flags) const
+void Filesystem::writeFile(const std::string& filename, const std::string& data, WriteFlags flags) const
 {
 	if (flags != WriteFlags::Overwrite && exists(filename))
 	{

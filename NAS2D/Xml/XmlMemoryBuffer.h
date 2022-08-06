@@ -30,7 +30,7 @@ namespace Xml {
  * XmlMemoryBuffer buff;
  * doc.Accept(&buff);
  *
- * Utility<Filesystem>::get().write(filePath, buff.buffer());
+ * Utility<Filesystem>::get().writeFile(filePath, buff.buffer());
  * \endcode
  */
 class XmlMemoryBuffer : public XmlVisitor

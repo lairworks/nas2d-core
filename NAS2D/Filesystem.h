@@ -17,11 +17,6 @@
 
 namespace NAS2D
 {
-	/**
-	 * Implements a virtual file system.
-	 *
-	 * Provides cross-platform and transparent archive Filesystem functions.
-	 */
 	class Filesystem
 	{
 	public:
@@ -36,7 +31,7 @@ namespace NAS2D
 		Filesystem& operator=(const Filesystem&) = delete;
 		Filesystem(Filesystem&&) = delete;
 		Filesystem& operator=(Filesystem&&) = delete;
-		~Filesystem();
+		~Filesystem() = default;
 
 		std::string basePath() const;
 		std::string prefPath() const;
@@ -66,5 +61,7 @@ namespace NAS2D
 	private:
 		std::string mBasePath;
 		std::string mPrefPath;
+		std::string mWritePath;
+		std::vector<std::string> mSearchPaths;
 	};
 }

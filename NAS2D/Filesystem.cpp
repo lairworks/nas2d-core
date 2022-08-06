@@ -10,13 +10,14 @@
 
 #include "Filesystem.h"
 
-#include <physfs.h>
 #include <SDL2/SDL_filesystem.h>
 
 #include <filesystem>
+#include <fstream>
 #include <limits>
 #include <stdexcept>
 #include <memory>
+#include <system_error>
 
 
 using namespace NAS2D;
@@ -41,49 +42,31 @@ namespace {
 	}
 
 
-	std::string getLastPhysfsError()
+	std::string findFirstPath(const std::string& path, const std::vector<std::string>& searchPaths)
 	{
-		return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
+		for (const auto& searchPath : searchPaths)
+		{
+			const auto& filePath = std::filesystem::path{searchPath} / path;
+			if (std::filesystem::exists(filePath))
+			{
+				return filePath.string();
+			}
+		}
+		return {};
 	}
 
 
-	bool closeFile(void* file)
+	std::string errorDescription()
 	{
-		if (!file) { return false; }
-
-		if (PHYSFS_close(static_cast<PHYSFS_File*>(file)) != 0) { return true; }
-
-		throw std::runtime_error("Unable to close file handle: " + getLastPhysfsError());
+		return std::error_code{errno, std::generic_category()}.message();
 	}
 }
 
 
-enum MountPosition
-{
-	MOUNT_PREPEND = 0,
-	MOUNT_APPEND = 1,
-};
-
-
-Filesystem::Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName) :
+Filesystem::Filesystem(const std::string& /*argv_0*/, const std::string& appName, const std::string& organizationName) :
 	mBasePath{SdlString{SDL_GetBasePath()}.get()},
 	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()}
 {
-	if (PHYSFS_isInit()) { throw std::runtime_error("Filesystem is already initialized"); }
-
-	if (PHYSFS_init(argv_0.c_str()) == 0)
-	{
-		throw std::runtime_error("Error initializing filesystem library: " + getLastPhysfsError());
-	}
-}
-
-
-/**
- * Shuts down PhysFS and cleans up.
- */
-Filesystem::~Filesystem()
-{
-	PHYSFS_deinit();
 }
 
 
@@ -120,7 +103,8 @@ std::string Filesystem::prefPath() const
  */
 int Filesystem::mountSoftFail(const std::string& path)
 {
-	return PHYSFS_mount(path.c_str(), "/", MountPosition::MOUNT_APPEND);
+	mSearchPaths.push_back(path);
+	return std::filesystem::exists(path);
 }
 
 
@@ -133,7 +117,7 @@ void Filesystem::mount(const std::string& path)
 {
 	if (mountSoftFail(path) == 0)
 	{
-		throw std::runtime_error("Error mounting search path: " + path + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error mounting search path: " + path + " : " + errorDescription());
 	}
 }
 
@@ -145,28 +129,22 @@ void Filesystem::mount(const std::string& path)
  */
 void Filesystem::mountReadWrite(const std::string& path)
 {
+	std::filesystem::create_directories(path);
+	mWritePath = path;
+
 	// Mount for read access
 	mount(path);
-
-	// Mount for write access
-	if (PHYSFS_setWriteDir(path.c_str()) == 0)
-	{
-		throw std::runtime_error("Error setting write folder: " + path + " : " + getLastPhysfsError());
-	}
 }
 
 
 /**
- * Removes a directory or supported archive from the Search Path.
+ * Removes a directory from the Search Path.
  *
  * \param path	File path to remove.
  */
 void Filesystem::unmount(const std::string& path)
 {
-	if (PHYSFS_unmount(path.c_str()) == 0)
-	{
-		throw std::runtime_error("Error unmounting search path: " + path + " : " + getLastPhysfsError());
-	}
+	mSearchPaths.erase(std::remove(mSearchPaths.begin(), mSearchPaths.end(), path), mSearchPaths.end());
 }
 
 
@@ -175,16 +153,7 @@ void Filesystem::unmount(const std::string& path)
  */
 std::vector<std::string> Filesystem::searchPath() const
 {
-	std::vector<std::string> searchPath;
-
-	auto searchPathList = PHYSFS_getSearchPath();
-	for (auto i = searchPathList; *i != nullptr; ++i)
-	{
-		searchPath.push_back(*i);
-	}
-	PHYSFS_freeList(searchPathList);
-
-	return searchPath;
+	return mSearchPaths;
 }
 
 
@@ -198,28 +167,23 @@ std::vector<std::string> Filesystem::searchPath() const
  */
 std::vector<std::string> Filesystem::directoryList(const std::string& dir, const std::string& filter) const
 {
-	auto rc = PHYSFS_enumerateFiles(dir.c_str());
-
 	std::vector<std::string> fileList;
-	if (filter.empty())
+
+	for (const auto& searchPath : mSearchPaths)
 	{
-		for (auto i = rc; *i != nullptr; i++)
+		const auto dirPath = std::filesystem::path{searchPath} / dir;
+		if (std::filesystem::is_directory(dirPath))
 		{
-			fileList.push_back(*i);
-		}
-	}
-	else
-	{
-		for (auto i = rc; *i != nullptr; i++)
-		{
-			if (hasFileSuffix(*i, filter))
+			for (const auto& dirEntry : std::filesystem::directory_iterator(dirPath))
 			{
-				fileList.push_back(*i);
+				const auto& filePath = dirEntry.path().filename().generic_string();
+				if (hasFileSuffix(filePath, filter))
+				{
+					fileList.push_back(filePath);
+				}
 			}
 		}
 	}
-
-	PHYSFS_freeList(rc);
 
 	return fileList;
 }
@@ -232,8 +196,8 @@ std::vector<std::string> Filesystem::directoryList(const std::string& dir, const
  */
 bool Filesystem::isDirectory(const std::string& path) const
 {
-	PHYSFS_Stat stat;
-	return (PHYSFS_stat(path.c_str(), &stat) != 0) && (stat.filetype == PHYSFS_FILETYPE_DIRECTORY);
+	const auto& filePath = findFirstPath(path, mSearchPaths);
+	return std::filesystem::is_directory(filePath);
 }
 
 
@@ -244,10 +208,8 @@ bool Filesystem::isDirectory(const std::string& path) const
  */
 void Filesystem::makeDirectory(const std::string& path)
 {
-	if (PHYSFS_mkdir(path.c_str()) == 0)
-	{
-		throw std::runtime_error("Error creating directory: " + path + " : " + getLastPhysfsError());
-	}
+	const auto& filePath = std::filesystem::path{mWritePath} / path;
+	std::filesystem::create_directories(filePath);
 }
 
 
@@ -260,7 +222,8 @@ void Filesystem::makeDirectory(const std::string& path)
  */
 bool Filesystem::exists(const std::string& path) const
 {
-	return PHYSFS_exists(path.c_str()) != 0;
+	const auto& filePath = findFirstPath(path, mSearchPaths);
+	return !filePath.empty();
 }
 
 
@@ -271,43 +234,45 @@ bool Filesystem::exists(const std::string& path) const
  */
 void Filesystem::del(const std::string& filename)
 {
-	if (PHYSFS_delete(filename.c_str()) == 0)
+	const auto& filePath = std::filesystem::path{mWritePath} / filename;
+	if (!std::filesystem::remove(filePath))
 	{
-		throw std::runtime_error("Error deleting file: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error deleting file: " + filename + " : " + errorDescription());
 	}
 }
 
 
 std::string Filesystem::readFile(const std::string& filename) const
 {
-	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
-	if (!myFile)
+	const auto& filePath = findFirstPath(filename, mSearchPaths);
+	if (filePath.empty())
 	{
-		closeFile(myFile);
-		throw std::runtime_error("Error opening file for reading: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error opening file: " + filename + " : File does not exist");
 	}
 
-	// Ensure that the file size is greater than zero and can fit in a std::string::size_type
-	auto fileLength = PHYSFS_fileLength(myFile);
-	if (fileLength < 0 || static_cast<PHYSFS_uint64>(fileLength) > std::numeric_limits<std::string::size_type>::max())
+	std::ifstream file{filePath, std::ios::in | std::ios::binary};
+	if (!file)
 	{
-		closeFile(myFile);
-		throw std::runtime_error("Error determining length of file or file too large: " + filename + " : Length = " + std::to_string(fileLength));
+		throw std::runtime_error("Error opening file: " + filename + " : " + errorDescription());
 	}
 
-	// Create buffer large enough to hold entire file
-	const auto bufferSize = static_cast<std::string::size_type>(fileLength);
+	const auto fileSize = std::filesystem::file_size(filePath);
+	if constexpr (std::numeric_limits<decltype(fileSize)>::max() > std::numeric_limits<std::string::size_type>::max())
+	{
+		if (fileSize > std::numeric_limits<std::string::size_type>::max())
+		{
+			throw std::runtime_error("Error opening file: " + filename + " : File too large");
+		}
+	}
+	const auto bufferSize = static_cast<std::string::size_type>(fileSize);
+
 	std::string fileBuffer;
 	fileBuffer.resize(bufferSize);
 
-	// Read file data into buffer and close file
-	const auto actualReadLength = PHYSFS_readBytes(myFile, fileBuffer.data(), bufferSize);
-	closeFile(myFile);
-
-	// Ensure we read the expected length
-	if (actualReadLength < fileLength)
+	file.read(fileBuffer.data(), bufferSize);
+	if (!file)
 	{
-		throw std::runtime_error("Error reading file data: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error reading file: " + filename + " : " + errorDescription());
 	}
 
 	return fileBuffer;
@@ -321,19 +286,18 @@ void Filesystem::writeFile(const std::string& filename, const std::string& data,
 		throw std::runtime_error("Overwrite flag not specified and file already exists: " + filename);
 	}
 
-	PHYSFS_file* myFile = PHYSFS_openWrite(filename.c_str());
-	if (!myFile)
+	const auto& filePath = std::filesystem::path{mWritePath} / filename;
+	std::ofstream file{filePath, std::ios::out | std::ios::binary};
+	if (!file)
 	{
-		throw std::runtime_error("Error opening file for writing: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error opening file for writing: " + filename + " : " + errorDescription());
 	}
 
-	if (PHYSFS_writeBytes(myFile, data.c_str(), static_cast<PHYSFS_uint64>(data.size())) < static_cast<PHYSFS_sint64>(data.size()))
+	file << data;
+	if (!file)
 	{
-		closeFile(myFile);
-		throw std::runtime_error("Error writing file: " + filename + " : " + getLastPhysfsError());
+		throw std::runtime_error("Error writing file: " + filename + " : " + errorDescription());
 	}
-
-	closeFile(myFile);
 }
 
 

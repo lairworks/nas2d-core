@@ -9,18 +9,18 @@ FROM ubuntu:22.04
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     mingw-w64=8.0.0-1 \
-    cmake=3.18.4-* \
+    cmake=3.22.1-* \
     make=4.3-* \
-    binutils=2.37-* \
-    git=1:2.32.0-* \
-    ssh=1:8.7p1-2 \
+    binutils=2.38-* \
+    git=1:2.34.1-* \
+    ssh=1:8.9p1-3 \
     googletest=1.11.0-3 \
-    curl=7.74.0-* \
+    curl=7.81.0-* \
     tar=1.34+* \
     gzip=1.10-* \
     bzip2=1.0.8-* \
     gnupg=2.2.27-* \
-    software-properties-common=0.99.16 \
+    software-properties-common=0.99.22.2 \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 

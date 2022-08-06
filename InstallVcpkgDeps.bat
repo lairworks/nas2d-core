@@ -17,4 +17,4 @@ if not defined PLATFORM (
 
 :Install
 REM Install dependencies (recursively)
-vcpkg install --recurse --triplet %PLATFORM%-windows  physfs glew SDL2 SDL2-image SDL2-ttf SDL2-mixer[dynamic-load,libflac,libmodplug,libvorbis,mpg123,nativemidi,opusfile] gtest
+vcpkg install --recurse --triplet %PLATFORM%-windows  physfs glew SDL2 SDL2-image SDL2-ttf SDL2-mixer[libflac,libmodplug,libvorbis,mpg123,nativemidi,opusfile] gtest

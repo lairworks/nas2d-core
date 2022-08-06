@@ -56,8 +56,8 @@ namespace NAS2D
 		bool exists(const std::string& filename) const;
 		void del(const std::string& path) const;
 
-		std::string read(const std::string& filename) const;
-		void write(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite) const;
+		std::string readFile(const std::string& filename) const;
+		void writeFile(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite) const;
 
 		std::string dirSeparator() const;
 		std::string parentPath(std::string_view filePath) const;

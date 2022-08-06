@@ -59,7 +59,7 @@ void Configuration::load(const std::string& filePath)
 		try
 		{
 			// Read in the Config File.
-			auto xmlData = Utility<Filesystem>::get().read(filePath);
+			auto xmlData = Utility<Filesystem>::get().readFile(filePath);
 			loadData(xmlData.c_str());
 			std::cout << "done." << std::endl;
 		}
@@ -87,7 +87,7 @@ void Configuration::save(const std::string& filePath) const
 {
 	try
 	{
-		Utility<Filesystem>::get().write(filePath, saveData());
+		Utility<Filesystem>::get().writeFile(filePath, saveData());
 	}
 	catch (const std::runtime_error& e)
 	{

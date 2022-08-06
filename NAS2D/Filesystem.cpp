@@ -274,7 +274,7 @@ void Filesystem::del(const std::string& filename) const
 }
 
 
-std::string Filesystem::read(const std::string& filename) const
+std::string Filesystem::readFile(const std::string& filename) const
 {
 	PHYSFS_file* myFile = PHYSFS_openRead(filename.c_str());
 	if (!myFile)
@@ -310,7 +310,7 @@ std::string Filesystem::read(const std::string& filename) const
 }
 
 
-void Filesystem::write(const std::string& filename, const std::string& data, WriteFlags flags) const
+void Filesystem::writeFile(const std::string& filename, const std::string& data, WriteFlags flags) const
 {
 	if (flags != WriteFlags::Overwrite && exists(filename))
 	{

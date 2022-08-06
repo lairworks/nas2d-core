@@ -25,7 +25,7 @@ using namespace NAS2D;
 
 Music::Music(const std::string& filePath) :
 	mResourceName{filePath},
-	mBuffer{Utility<Filesystem>::get().read(mResourceName)}
+	mBuffer{Utility<Filesystem>::get().readFile(mResourceName)}
 {
 	if (mBuffer.empty())
 	{

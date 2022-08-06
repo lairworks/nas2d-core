@@ -40,9 +40,17 @@ TEST_F(Filesystem, searchPath) {
 }
 
 TEST_F(Filesystem, directoryList) {
-	auto pathList = fs.directoryList("");
-	EXPECT_LE(1u, pathList.size());
-	EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
+	{
+		auto pathList = fs.directoryList("");
+		EXPECT_LE(1u, pathList.size());
+		EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
+	}
+
+	{
+		auto pathList = fs.directoryList("", "txt");
+		EXPECT_LE(1u, pathList.size());
+		EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
+	}
 }
 
 TEST_F(Filesystem, exists) {
@@ -52,6 +60,8 @@ TEST_F(Filesystem, exists) {
 TEST_F(Filesystem, read) {
 	const auto data = fs.readFile("file.txt");
 	EXPECT_THAT(data, testing::StartsWith("Test data"));
+
+	EXPECT_THROW(fs.readFile("FileDoesNotExist.txt"), std::runtime_error);
 }
 
 // Test a few related methods. Some don't test well standalone.

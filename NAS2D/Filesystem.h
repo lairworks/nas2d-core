@@ -41,23 +41,23 @@ namespace NAS2D
 		std::string basePath() const;
 		std::string prefPath() const;
 
-		int mountSoftFail(const std::string& path) const;
-		void mount(const std::string& path) const;
-		void mountReadWrite(const std::string& path) const;
-		void unmount(const std::string& path) const;
+		int mountSoftFail(const std::string& path);
+		void mount(const std::string& path);
+		void mountReadWrite(const std::string& path);
+		void unmount(const std::string& path);
 
 		std::vector<std::string> searchPath() const;
 
 		std::vector<std::string> directoryList(const std::string& dir, const std::string& filter = std::string{}) const;
 
 		bool isDirectory(const std::string& path) const;
-		void makeDirectory(const std::string& path) const;
+		void makeDirectory(const std::string& path);
 
-		bool exists(const std::string& filename) const;
-		void del(const std::string& path) const;
+		bool exists(const std::string& path) const;
+		void del(const std::string& path);
 
 		std::string readFile(const std::string& filename) const;
-		void writeFile(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite) const;
+		void writeFile(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite);
 
 		std::string dirSeparator() const;
 		std::string parentPath(std::string_view filePath) const;

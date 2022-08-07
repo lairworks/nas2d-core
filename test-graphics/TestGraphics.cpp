@@ -53,12 +53,10 @@ NAS2D::State* TestGraphics::update()
 	r.drawImage(mDxImage, {256, 256});
 	r.drawImage(mOglImage, {768, 256});
 
+	for (auto i = 0u; i < 2000u; ++i)
 	{
-		for (auto i = 0u; i < 2000u; ++i)
-		{
-			const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
-			r.drawPoint(NAS2D::Point{10 + jitter(), 250 + jitter()}, NAS2D::Color{grey, grey, grey});
-		}
+		const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
+		r.drawPoint(NAS2D::Point{10 + jitter(), 250 + jitter()}, NAS2D::Color{grey, grey, grey});
 	}
 
 	r.drawBox({10, 50, 40, 40});

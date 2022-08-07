@@ -18,7 +18,6 @@ RUN pacman --sync --refresh --noconfirm \
 
 RUN pacman --sync --refresh --noconfirm \
     glew \
-    physfs \
     sdl2 \
     sdl2_image \
     sdl2_mixer \

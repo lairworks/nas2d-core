@@ -26,7 +26,7 @@ CPPFLAGS := $(CPPFLAGS_EXTRA)
 CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN) $(SDL_CONFIG_CFLAGS)
 LDFLAGS := $(LDFLAGS_EXTRA)
-LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lphysfs -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(SDL_CONFIG_LIBS) $(OpenGL_LIBS)
+LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(SDL_CONFIG_LIBS) $(OpenGL_LIBS)
 
 Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
@@ -178,13 +178,13 @@ install-dependencies:
 ## Ubuntu ##
 .PHONY: install-dependencies-ubuntu
 install-dependencies-ubuntu:
-	apt --yes install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libphysfs-dev
+	apt --yes install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev
 
 ## CentOS ##
 .PHONY: install-dependencies-centos
 install-dependencies-centos: | install-dependencies-repository-centos
 	# Install development packages (-y answers "yes" to prompts)
-	yum --assumeyes install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel physfs-devel
+	yum --assumeyes install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel
 .PHONY: install-dependencies-repository-centos
 install-dependencies-repository-centos:
 	# Default CentOS repositories only contain SDL1
@@ -194,7 +194,7 @@ install-dependencies-repository-centos:
 ## Arch Linux ##
 .PHONY: install-dependencies-arch
 install-dependencies-arch:
-	pacman --sync --refresh sdl2 sdl2_mixer sdl2_image sdl2_ttf glew physfs
+	pacman --sync --refresh sdl2 sdl2_mixer sdl2_image sdl2_ttf glew
 
 ## MacOS ##
 .PHONY: install-dependencies-darwin

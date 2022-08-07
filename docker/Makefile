@@ -12,8 +12,8 @@
 .PHONY: download-sdl2-modules compile-sdl2-modules install-sdl2-modules
 .PHONY: clean-sdl2-modules clean-all-sdl2-modules
 
-all: install-sdl2 install-sdl2-modules install-glew install-physfs
-download-all: download-sdl2 download-sdl2-modules download-glew download-physfs
+all: install-sdl2 install-sdl2-modules install-glew
+download-all: download-sdl2 download-sdl2-modules download-glew
 download-sdl2-modules: download-sdl2-image download-sdl2-mixer download-sdl2-ttf
 compile-sdl2-modules: compile-sdl2-image compile-sdl2-mixer compile-sdl2-ttf
 install-sdl2-modules: install-sdl2-image install-sdl2-mixer install-sdl2-ttf
@@ -25,7 +25,6 @@ Sdl2PackageUrl := https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
 Sdl2ImagePackageUrl := https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.3.tar.gz
 Sdl2MixerPackageUrl := https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.2.tar.gz
 Sdl2TtfPackageUrl := https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.tar.gz
-PhysfsPackageUrl := https://icculus.org/physfs/downloads/physfs-3.0.1.tar.bz2
 GlewPackageUrl := https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.tgz
 
 # Note: This variable can be overridden from the command line
@@ -89,5 +88,4 @@ $(eval $(call SourcePackageInstallRules,sdl2,${Sdl2PackageUrl}))
 $(eval $(call SourcePackageInstallRules,sdl2-image,${Sdl2ImagePackageUrl}))
 $(eval $(call SourcePackageInstallRules,sdl2-mixer,${Sdl2MixerPackageUrl}))
 $(eval $(call SourcePackageInstallRules,sdl2-ttf,${Sdl2TtfPackageUrl}))
-$(eval $(call SourcePackageInstallRules,physfs,${PhysfsPackageUrl}))
 $(eval $(call SourcePackageInstallRules,glew,${GlewPackageUrl}))

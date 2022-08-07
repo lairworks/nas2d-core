@@ -25,7 +25,6 @@ ENV  CC=clang
 # Install NAS2D specific dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libglew-dev=2.2.0-* \
-    libphysfs-dev=3.0.2-* \
     libsdl2-dev=2.0.20+* \
     libsdl2-image-dev=2.0.5+* \
     libsdl2-mixer-dev=2.0.4+* \

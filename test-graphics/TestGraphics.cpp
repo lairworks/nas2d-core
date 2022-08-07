@@ -8,8 +8,11 @@
 #include <random>
 
 
-static std::mt19937 generator;
-static std::uniform_int_distribution<int> jitterDistribution(0, 64);
+namespace
+{
+	std::mt19937 generator;
+	std::uniform_int_distribution<int> jitterDistribution(0, 64);
+}
 
 
 TestGraphics::TestGraphics() :

@@ -8,7 +8,7 @@ FROM ubuntu:22.04
 # Install latest available GCC compiler (which may not be the default)
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    g++-10=10.3.0-* \
+    g++=4:11.2.0-* \
     make=4.3-* \
     cmake=3.22.1-* \
     libgtest-dev=1.11.0-* \
@@ -20,8 +20,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
-ENV CXX=g++-10
-ENV  CC=gcc-10
+ENV CXX=g++
+ENV  CC=gcc
 
 # Install NAS2D specific dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \

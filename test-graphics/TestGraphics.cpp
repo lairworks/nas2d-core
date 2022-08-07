@@ -12,6 +12,12 @@ namespace
 {
 	std::mt19937 generator;
 	std::uniform_int_distribution<int> jitterDistribution(0, 64);
+
+
+	auto jitter()
+	{
+		return jitterDistribution(generator);
+	}
 }
 
 
@@ -48,9 +54,6 @@ NAS2D::State* TestGraphics::update()
 	r.drawImage(mOglImage, {768, 256});
 
 	{
-		const auto jitter = [&]() -> decltype(auto) {
-			return jitterDistribution(generator);
-		};
 		for (auto i = 0u; i < 2000u; ++i)
 		{
 			const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;

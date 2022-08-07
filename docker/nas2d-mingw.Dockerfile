@@ -9,18 +9,18 @@ FROM ubuntu:22.04
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     mingw-w64=8.0.0-1 \
-    cmake=3.18.4-* \
+    cmake=3.22.1-* \
     make=4.3-* \
-    binutils=2.37-* \
-    git=1:2.32.0-* \
-    ssh=1:8.7p1-2 \
+    binutils=2.38-* \
+    git=1:2.34.1-* \
+    ssh=1:8.9p1-3 \
     googletest=1.11.0-3 \
-    curl=7.74.0-* \
+    curl=7.81.0-* \
     tar=1.34+* \
     gzip=1.10-* \
     bzip2=1.0.8-* \
     gnupg=2.2.27-* \
-    software-properties-common=0.99.16 \
+    software-properties-common=0.99.22.2 \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
@@ -110,12 +110,6 @@ RUN curl --location https://github.com/nigels-com/glew/releases/download/glew-2.
   make -C glew-2.1.0/ distclean && \
   make -C glew-2.1.0/ SYSTEM=linux-mingw-w64 CC="${CC32}" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
   rm -rf glew-2.1.0/ glew.*
-RUN curl https://icculus.org/physfs/downloads/physfs-3.0.2.tar.bz2 | tar -xj && \
-  cmake -H"physfs-3.0.2/" -B"${ARCH64}" -DCMAKE_INSTALL_PREFIX="${INSTALL64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
-  make -C "${ARCH64}" install && \
-  cmake -H"physfs-3.0.2/" -B"${ARCH32}" -DCMAKE_INSTALL_PREFIX="${INSTALL32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" && \
-  make -C "${ARCH32}" install && \
-  rm -rf physfs-3.0.2/ "${ARCH64}" "${ARCH32}"
 
 # Custom variables for install locations
 ENV INCLUDE64=${INSTALL64}include/

@@ -27,6 +27,7 @@ namespace NAS2D
 		};
 
 		Filesystem(const std::string& argv_0, const std::string& appName, const std::string& organizationName);
+		Filesystem(const std::string& appName, const std::string& organizationName);
 		Filesystem(const Filesystem&) = delete;
 		Filesystem& operator=(const Filesystem&) = delete;
 		Filesystem(Filesystem&&) = delete;

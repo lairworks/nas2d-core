@@ -9,7 +9,7 @@
 
 
 static std::mt19937 generator;
-static std::uniform_int_distribution<int> jitter_distribution(0, 64);
+static std::uniform_int_distribution<int> jitterDistribution(0, 64);
 
 
 TestGraphics::TestGraphics() :
@@ -46,7 +46,7 @@ NAS2D::State* TestGraphics::update()
 
 	{
 		const auto jitter = [&]() -> decltype(auto) {
-			return jitter_distribution(generator);
+			return jitterDistribution(generator);
 		};
 		for (auto i = 0u; i < 2000u; ++i)
 		{

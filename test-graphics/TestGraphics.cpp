@@ -46,12 +46,11 @@ NAS2D::State* TestGraphics::update()
 
 	{
 		const auto jitter = [&]() -> decltype(auto) {
-			std::uniform_int_distribution<uint8_t> dist(0, 64);
-			return dist(generator);
+			return jitter_distribution(generator);
 		};
 		for (auto i = 0u; i < 2000u; ++i)
 		{
-			const uint8_t grey = jitter() * 2u + 100u;
+			const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
 			r.drawPoint(NAS2D::Point{10 + jitter(), 250 + jitter()}, NAS2D::Color{grey, grey, grey});
 		}
 	}

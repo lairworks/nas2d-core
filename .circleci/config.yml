@@ -28,7 +28,7 @@ jobs:
       - build-and-test
   build-linux-gcc:
     docker:
-      - image: outpostuniverse/nas2d-gcc:1.3
+      - image: outpostuniverse/nas2d-gcc:1.4
     environment:
       - WARN_EXTRA: "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast"
     steps:
@@ -36,7 +36,7 @@ jobs:
       - build-and-test
   build-linux-clang:
     docker:
-      - image: outpostuniverse/nas2d-clang:1.2
+      - image: outpostuniverse/nas2d-clang:1.3
     environment:
       - WARN_EXTRA: "-Wdocumentation -Wdocumentation-unknown-command -Wcomma -Winconsistent-missing-destructor-override -Wmissing-prototypes -Wctad-maybe-unsupported"
     steps:
@@ -44,7 +44,7 @@ jobs:
       - build-and-test
   build-linux-mingw:
     docker:
-      - image: outpostuniverse/nas2d-mingw:1.7
+      - image: outpostuniverse/nas2d-mingw:1.8
     environment:
       - WARN_EXTRA: "-Wno-redundant-decls"
     steps:

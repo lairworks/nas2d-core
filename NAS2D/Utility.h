@@ -55,10 +55,10 @@ namespace NAS2D
 	class Utility
 	{
 	public:
-		Utility<T>() = delete;
+		Utility() = delete;
 		~Utility() = delete;
-		Utility<T>(const Utility& s) = delete;
-		Utility<T>& operator=(const Utility& s) = delete;
+		Utility(const Utility& s) = delete;
+		Utility& operator=(const Utility& s) = delete;
 
 		/**
 		 * Gets a reference to a global instance of the specified type

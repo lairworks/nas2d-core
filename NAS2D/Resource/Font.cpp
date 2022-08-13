@@ -290,22 +290,16 @@ namespace
 		{
 			const std::size_t glyph = glyphPosition.y * GLYPH_MATRIX_SIZE + glyphPosition.x;
 
-			// Avoid glyph 0, which has size 0 for some fonts
-			// SDL_TTF will produce errors for a glyph of size 0
-			if (glyph == 0) { continue; }
-
 			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(font, static_cast<uint16_t>(glyph), white);
-			if (!characterSurface)
+			// A character surface can fail to be created for glyphs of size 0
+			if (characterSurface)
 			{
-				SDL_FreeSurface(fontSurface);
-				throw std::runtime_error("Font failed to generate surface for character : " + std::to_string(glyph) + " : " + std::string(TTF_GetError()));
+				SDL_SetSurfaceBlendMode(characterSurface, SDL_BLENDMODE_NONE);
+				const auto pixelPosition = glyphPosition.to<int>().skewBy(characterSize);
+				SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
+				SDL_BlitSurface(characterSurface, nullptr, fontSurface, &rect);
+				SDL_FreeSurface(characterSurface);
 			}
-
-			SDL_SetSurfaceBlendMode(characterSurface, SDL_BLENDMODE_NONE);
-			const auto pixelPosition = glyphPosition.to<int>().skewBy(characterSize);
-			SDL_Rect rect = { pixelPosition.x, pixelPosition.y, 0, 0 };
-			SDL_BlitSurface(characterSurface, nullptr, fontSurface, &rect);
-			SDL_FreeSurface(characterSurface);
 		}
 
 		return fontSurface;

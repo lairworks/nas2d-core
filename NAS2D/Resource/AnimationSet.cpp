@@ -267,25 +267,12 @@ namespace
 			}
 
 			const auto& image = imageCache.load(iterator->second);
-			// X-Coordinate
-			if (x < 0 || x > image.size().x)
+
+			const auto frameRect = Rectangle{x, y, width, height};
+			const auto imageRect = Rectangle<int>::Create({0, 0}, image.size());
+			if (!imageRect.contains(frameRect))
 			{
-				throw std::runtime_error("Sprite frame attribute 'x' is out of bounds: " + endTag(currentRow));
-			}
-			// Y-Coordinate
-			if (y < 0 || y > image.size().y)
-			{
-				throw std::runtime_error("Sprite frame attribute 'y' is out of bounds: " + endTag(currentRow));
-			}
-			// Width
-			if (width <= 0 || width > image.size().x - x)
-			{
-				throw std::runtime_error("Sprite frame attribute 'width' is out of bounds: " + endTag(currentRow));
-			}
-			// Height
-			if (height <= 0 || height > image.size().y - y)
-			{
-				throw std::runtime_error("Sprite frame attribute 'height' is out of bounds: " + endTag(currentRow));
+				throw std::runtime_error("Sprite frame bounds exceeds image sheet bounds: " + endTag(currentRow));
 			}
 
 			const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});

@@ -30,7 +30,7 @@ jobs:
     docker:
       - image: outpostuniverse/nas2d-gcc:1.4
     environment:
-      - WARN_EXTRA: "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast"
+      - WARN_EXTRA: "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++"
     steps:
       - checkout
       - build-and-test

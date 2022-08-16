@@ -150,7 +150,7 @@ cppcheck:
 
 .PHONY: cppclean
 cppclean:
-	cppclean "$(SRCDIR)" --exclude="NAS2D.h"
+	cppclean "$(SRCDIR)" --exclude="NAS2D.h" --exclude="Xml"
 
 .PHONY: format
 format:

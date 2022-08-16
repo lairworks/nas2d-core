@@ -71,7 +71,9 @@ Filesystem::Filesystem(const std::string& /*argv_0*/, const std::string& appName
 
 Filesystem::Filesystem(const std::string& appName, const std::string& organizationName) :
 	mBasePath{SdlString{SDL_GetBasePath()}.get()},
-	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()}
+	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()},
+	mWritePath{},
+	mSearchPaths{}
 {
 }
 

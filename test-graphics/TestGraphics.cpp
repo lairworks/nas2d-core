@@ -22,8 +22,8 @@ namespace
 
 
 TestGraphics::TestGraphics() :
-	mDxImage("Test_DirectX.png"),
-	mOglImage("Test_OpenGL.png")
+	mDxImage{"Test_DirectX.png"},
+	mOglImage{"Test_OpenGL.png"}
 {}
 
 TestGraphics::~TestGraphics()

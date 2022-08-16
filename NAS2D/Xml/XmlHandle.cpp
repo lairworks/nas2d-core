@@ -37,7 +37,7 @@ XmlHandle::XmlHandle(const XmlHandle& ref) : node(ref.node)
 {}
 
 
-XmlHandle XmlHandle::operator=(const XmlHandle& ref)
+XmlHandle& XmlHandle::operator=(const XmlHandle& ref)
 {
 	if (&ref != this)
 	{

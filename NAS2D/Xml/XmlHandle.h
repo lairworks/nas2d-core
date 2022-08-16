@@ -108,7 +108,7 @@ public:
 	XmlHandle();
 	explicit XmlHandle(XmlNode* _node);
 	XmlHandle(const XmlHandle& ref);
-	XmlHandle operator=(const XmlHandle& ref);
+	XmlHandle& operator=(const XmlHandle& ref);
 
 	XmlHandle firstChild() const;
 	XmlHandle firstChild(const std::string& value) const;

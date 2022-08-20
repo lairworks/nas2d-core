@@ -35,7 +35,9 @@ namespace NAS2D
 		Sprite(const std::string& filePath, const std::string& initialAction);
 		Sprite(const AnimationSet& animationSet, const std::string& initialAction);
 		Sprite(const Sprite&) = default;
+		Sprite(Sprite&&) = default;
 		const Sprite& operator=(const Sprite&) = delete;
+		Sprite& operator=(Sprite&&) = delete;
 
 		Vector<int> size() const;
 		Point<int> origin(Point<int> point) const;

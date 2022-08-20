@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Signal/Signal.h"
+#include "Math/Point.h"
 #include "Math/Vector.h"
 
 #include <string>
@@ -261,7 +262,7 @@ namespace NAS2D
 		using WindowMouseLeaveEventSource = SignalSource<>;
 
 		using JoystickAxisMotionEventSource = SignalSource<int, int, int>;
-		using JoystickBallMotionEventSource = SignalSource<int, int, int, int>;
+		using JoystickBallMotionEventSource = SignalSource<int, int, Vector<int>>;
 		using JoystickButtonEventSource = SignalSource<int, int>;
 		using JoystickHatMotionEventSource = SignalSource<int, int, int>;
 
@@ -269,9 +270,9 @@ namespace NAS2D
 		using KeyUpEventSource = SignalSource<KeyCode, KeyModifier>;
 		using TextInputEventSource = SignalSource<const std::string&>;
 
-		using MouseButtonEventSource = SignalSource<MouseButton, int, int>;
-		using MouseMotionEventSource = SignalSource<int, int, int, int>;
-		using MouseWheelEventSource = SignalSource<int, int>;
+		using MouseButtonEventSource = SignalSource<MouseButton, Point<int>>;
+		using MouseMotionEventSource = SignalSource<Point<int>, Vector<int>>;
+		using MouseWheelEventSource = SignalSource<Vector<int>>;
 
 		using QuitEventSource = SignalSource<>;
 
@@ -345,7 +346,7 @@ namespace NAS2D
 		Signal<> mWindowMouseLeaveEvent{};
 
 		Signal<int, int, int> mJoystickAxisMotionEvent{};
-		Signal<int, int, int, int> mJoystickBallMotionEvent{};
+		Signal<int, int, Vector<int>> mJoystickBallMotionEvent{};
 		Signal<int, int> mJoystickButtonUpEvent{};
 		Signal<int, int> mJoystickButtonDownEvent{};
 		Signal<int, int, int> mJoystickHatMotionEvent{};
@@ -355,11 +356,11 @@ namespace NAS2D
 
 		Signal<const std::string&> mTextInput{};
 
-		Signal<MouseButton, int, int> mMouseButtonDownEvent{};
-		Signal<MouseButton, int, int> mMouseButtonUpEvent{};
-		Signal<MouseButton, int, int> mMouseDoubleClick{};
-		Signal<int, int, int, int> mMouseMotionEvent{};
-		Signal<int, int> mMouseWheelEvent{};
+		Signal<MouseButton, Point<int>> mMouseButtonDownEvent{};
+		Signal<MouseButton, Point<int>> mMouseButtonUpEvent{};
+		Signal<MouseButton, Point<int>> mMouseDoubleClick{};
+		Signal<Point<int>, Vector<int>> mMouseMotionEvent{};
+		Signal<Vector<int>> mMouseWheelEvent{};
 
 		Signal<> mQuitEvent{};
 	};

@@ -17,8 +17,8 @@ protected:
 	NAS2D::State* update();
 
 	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
-	void onMouseMove(int x, int y, int relX, int relY);
-	void onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
+	void onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change);
+	void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
 
 	void onWindowResized(int w, int h);
 

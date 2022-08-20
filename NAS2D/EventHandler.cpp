@@ -280,8 +280,8 @@ EventHandler::JoystickAxisMotionEventSource& EventHandler::joystickAxisMotion()
 
 
 /**
- * Joystick trackball events generate four values:
- * Device ID, Ball ID, X motion change and Y motion change.
+ * Joystick trackball events generate three values:
+ * Device ID, Ball ID, X and Y motion change.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -291,13 +291,12 @@ EventHandler::JoystickAxisMotionEventSource& EventHandler::joystickAxisMotion()
  * \endcode
  *
  * \code
- * void function(int deviceId, int ballId, int xChange, int yChange);
+ * void function(int deviceId, int ballId, NAS2D::Vector<int> change);
  * \endcode
  *
  * \arg \c deviceId Joystick ID which this event was generated from.
  * \arg \c ballId Trackball ID.
- * \arg \c xChange Change in relative position of the X position.
- * \arg \c yChange Change in relative position of the Y position.
+ * \arg \c change Change in relative position.
  */
 EventHandler::JoystickBallMotionEventSource& EventHandler::joystickBallMotion()
 {
@@ -450,8 +449,8 @@ EventHandler::TextInputEventSource& EventHandler::textInput()
 
 
 /**
- * Mouse button events generate three values:
- * MouseButton, x, and y.
+ * Mouse button events generate two values:
+ * MouseButton, position of mouse.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -461,12 +460,11 @@ EventHandler::TextInputEventSource& EventHandler::textInput()
  * \endcode
  *
  * \code
- * void function(MouseButton button, int x, int y);
+ * void function(MouseButton button, NAS2D::Point<int> position);
  * \endcode
  *
  * \arg \c button: MouseButton value indicating which button is pressed.
- * \arg \c x: X position of the mouse button event.
- * \arg \c y: Y position of the mouse button event.
+ * \arg \c position: Position of the mouse button event.
  */
 EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
 {
@@ -475,8 +473,8 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
 
 
 /**
- * Mouse button events generate three values:
- * MouseButton, x, and y.
+ * Mouse button events generate two values:
+ * MouseButton, position of mouse.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -486,12 +484,11 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
  * \endcode
  *
  * \code
- * void function(MouseButton button, int x, int y);
+ * void function(MouseButton button, NAS2D::Point<int> position);
  * \endcode
  *
  * \arg \c button: MouseButton value indicating which button is pressed.
- * \arg \c x: X position of the mouse button event.
- * \arg \c y: Y position of the mouse button event.
+ * \arg \c position: Position of the mouse button event.
  */
 EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
 {
@@ -500,8 +497,8 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
 
 
 /**
- * Mouse button events generate three values:
- * MouseButton, x, and y.
+ * Mouse button events generate two values:
+ * MouseButton, position of mouse.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -511,12 +508,11 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
  * \endcode
  *
  * \code
- * void function(MouseButton button, int x, int y);
+ * void function(MouseButton button, NAS2D::Point<int> position);
  * \endcode
  *
  * \arg \c button: MouseButton value indicating which button is pressed.
- * \arg \c x: X position of the mouse button event.
- * \arg \c y: Y position of the mouse button event.
+ * \arg \c position: Position of the mouse button event.
  */
 EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
 {
@@ -525,8 +521,8 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
 
 
 /**
- * Mouse motion events generate four values:
- * x, y, relative x, and relative y values.
+ * Mouse motion events generate two values:
+ * mouse position, and relative position change.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -536,13 +532,11 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
  * \endcode
  *
  * \code
- * void function(int x, int y, int relX, int relY);
+ * void function(NAS2D::Point<int> position, NAS2D::Vector<int> change);
  * \endcode
  *
- * \arg \c x: Absolute x position of the mouse.
- * \arg \c y: Absolute y position of the mouse.
- * \arg \c relX: X position of the mouse relative to its last position.
- * \arg \c relY: Y position of the mouse relative to its last position.
+ * \arg \c position: Absolute position of the mouse.
+ * \arg \c change: position of the mouse relative to its last position.
  */
 EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
 {
@@ -551,8 +545,8 @@ EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
 
 
 /**
- * Mouse wheel events generate two values:
- * x and y motion values.
+ * Mouse wheel events generate one value:
+ * change in the x and y motion values.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -562,11 +556,10 @@ EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
  * \endcode
  *
  * \code
- * void function(int x, int y);
+ * void function(NAS2D::Vector<int> change);
  * \endcode
  *
- * \arg \c x: Change along the X-Axis.
- * \arg \c y: Change along the Y-Axis.
+ * \arg \c change: Change along the X and Y axis.
  *
  * \note The value given in the axis parameters is the value
  * of a single 'click' of the mouse wheel. This may be
@@ -631,7 +624,7 @@ void EventHandler::warpMouse(int x, int y)
 	if (underlyingWindow)
 	{
 		SDL_WarpMouseInWindow(underlyingWindow, x, y);
-		mMouseMotionEvent.emit(x, y, 0, 0);
+		mMouseMotionEvent.emit({x, y}, {0, 0});
 	}
 }
 
@@ -660,7 +653,7 @@ void EventHandler::pump()
 		switch (event.type)
 		{
 		case SDL_MOUSEMOTION:
-			mMouseMotionEvent(event.motion.x, event.motion.y, event.motion.xrel, event.motion.yrel);
+			mMouseMotionEvent({event.motion.x, event.motion.y}, {event.motion.xrel, event.motion.yrel});
 			break;
 
 		case SDL_KEYDOWN:
@@ -678,18 +671,18 @@ void EventHandler::pump()
 		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.clicks == 2)
 			{
-				mMouseDoubleClick(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+				mMouseDoubleClick(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
 			}
 
-			mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+			mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			mMouseButtonUpEvent(static_cast<MouseButton>(event.button.button), event.button.x, event.button.y);
+			mMouseButtonUpEvent(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
 			break;
 
 		case SDL_MOUSEWHEEL:
-			mMouseWheelEvent(event.wheel.x, event.wheel.y);
+			mMouseWheelEvent({event.wheel.x, event.wheel.y});
 			break;
 
 		case SDL_JOYAXISMOTION:
@@ -697,7 +690,7 @@ void EventHandler::pump()
 			break;
 
 		case SDL_JOYBALLMOTION:
-			mJoystickBallMotionEvent(event.jball.which, event.jball.ball, event.jball.xrel, event.jball.yrel);
+			mJoystickBallMotionEvent(event.jball.which, event.jball.ball, {event.jball.xrel, event.jball.yrel});
 			break;
 
 		case SDL_JOYHATMOTION:

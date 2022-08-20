@@ -96,10 +96,10 @@ void TestGraphics::onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandl
 	}
 }
 
-void TestGraphics::onMouseMove(int /*x*/, int /*y*/, int /*relX*/, int /*relY*/)
+void TestGraphics::onMouseMove(NAS2D::Point<int> /*position*/, NAS2D::Vector<int> /*change*/)
 {}
 
-void TestGraphics::onMouseDown(NAS2D::EventHandler::MouseButton /*button*/, int /*x*/, int /*y*/)
+void TestGraphics::onMouseDown(NAS2D::EventHandler::MouseButton /*button*/, NAS2D::Point<int> /*position*/)
 {}
 
 void TestGraphics::onWindowResized(int /*w*/, int /*h*/)

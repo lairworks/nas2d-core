@@ -10,7 +10,7 @@ protected:
 	static constexpr auto OrganizationName = "LairWorks";
 
 	Filesystem() :
-		fs("", AppName, OrganizationName)
+		fs(AppName, OrganizationName)
 	{
 		fs.mount(fs.basePath());
 		fs.mount("data/");

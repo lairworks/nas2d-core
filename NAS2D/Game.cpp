@@ -37,11 +37,10 @@ using namespace NAS2D;
  * \param	title		The title that should be used for the game window.
  * \param appName		The name of the app (used to create an app data write path)
  * \param organizationName		The name of the organization (used to create an app data write path)
- * \param	argv_0		argv[0] from main()'s argument list. Necessary for Linux compatibility.
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Intitial data path. Defaults to 'data'.
  */
-Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& /*argv_0*/, const std::string& configPath, const std::string& dataPath)
+Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& configPath, const std::string& dataPath)
 {
 	std::cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << '\n';
 	std::cout << "NAS2D VERSION: " << versionString() << "\n\n";

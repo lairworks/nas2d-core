@@ -271,7 +271,7 @@ std::string Filesystem::readFile(const std::string& filename) const
 	std::string fileBuffer;
 	fileBuffer.resize(bufferSize);
 
-	file.read(fileBuffer.data(), bufferSize);
+	file.read(fileBuffer.data(), static_cast<std::streamsize>(bufferSize));
 	if (!file)
 	{
 		throw std::runtime_error("Error reading file: " + filename + " : " + errorDescription());

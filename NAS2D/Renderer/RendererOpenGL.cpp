@@ -819,7 +819,7 @@ namespace
 
 		float t = 0.0f;
 		float R = 0.0f;
-		float f = lineWidth - static_cast<int>(lineWidth);
+		float f = lineWidth - static_cast<float>(static_cast<int>(lineWidth));
 
 		if (lineWidth >= 0.0f && lineWidth < 1.0f)
 		{

@@ -153,7 +153,7 @@ void Renderer::update()
 {
 	if (mCurrentFadeType != FadeType::None)
 	{
-		float fade = (fadeTimer.delta() * mFadeStep) * static_cast<int>(mCurrentFadeType);
+		float fade = (static_cast<float>(fadeTimer.delta()) * mFadeStep) * static_cast<float>(mCurrentFadeType);
 
 		mCurrentFade += fade;
 

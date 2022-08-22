@@ -38,6 +38,7 @@
 #include <fstream>
 #include <cstring>
 #include <string>
+#include <array>
 
 
 //#define DEBUG_PARSER
@@ -52,7 +53,7 @@
 
 namespace
 {
-	const std::vector<std::string> XML_ERROR_TABLE = {
+	const auto XML_ERROR_TABLE = std::array{
 		"No error",
 		"Unspecified Error",
 		"Error parsing Element.",

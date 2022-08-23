@@ -24,19 +24,13 @@ using namespace NAS2D;
 namespace
 {
 	using AnimationCache = ResourceCache<AnimationSet, std::string>;
-	AnimationCache defaultAnimationCache;
-}
-
-
-Sprite::Sprite(const std::string& filePath, const std::string& initialAction, AnimationCache& animationCache) :
-	mAnimationSet{animationCache.load(filePath)},
-	mCurrentAction{&mAnimationSet.frames(initialAction)}
-{
+	AnimationCache animationCache;
 }
 
 
 Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
-	Sprite{filePath, initialAction, defaultAnimationCache}
+	mAnimationSet{animationCache.load(filePath)},
+	mCurrentAction{&mAnimationSet.frames(initialAction)}
 {
 }
 

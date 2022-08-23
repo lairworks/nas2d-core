@@ -41,7 +41,7 @@ namespace NAS2D
 		using ActionsMap = std::map<std::string, std::vector<Frame>>;
 
 
-		AnimationSet(std::string fileName);
+		explicit AnimationSet(std::string fileName);
 		AnimationSet(std::string fileName, ResourceCache<Image, std::string>& imageCache);
 		AnimationSet(std::string fileName, ImageSheetMap imageSheetMap, ActionsMap actions);
 

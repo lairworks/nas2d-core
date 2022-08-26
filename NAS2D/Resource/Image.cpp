@@ -31,11 +31,15 @@ unsigned int generateTexture(void *buffer, int bytesPerPixel, int width, int hei
 
 namespace
 {
-	const std::string ARBITRARY_IMAGE_NAME = "arbitrary_image_";
-	int IMAGE_ARBITRARY = 0; /**< Counter for arbitrary image ID's. */
-
 	unsigned int generateFbo(unsigned int textureId, Vector<int> imageSize);
 	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel);
+
+	std::string generateImageName()
+	{
+		static int imageNumber = 0;
+
+		return "arbitrary_image_" + std::to_string(imageNumber++);
+	}
 }
 
 
@@ -78,7 +82,7 @@ Image::Image(std::string resourceName, const std::string& data) :
  * \param	size			Size of the Image in pixels.
  */
 Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
-	mResourceName{ARBITRARY_IMAGE_NAME + std::to_string(IMAGE_ARBITRARY)},
+	mResourceName{generateImageName()},
 	mSize{size}
 {
 	if (buffer == nullptr)
@@ -90,8 +94,6 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 	{
 		throw std::runtime_error("Image bit-depth unsupported with bytesPerPixel: " + std::to_string(bytesPerPixel));
 	}
-
-	++IMAGE_ARBITRARY;
 
 	mSurface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
 }

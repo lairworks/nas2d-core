@@ -91,13 +91,6 @@ namespace NAS2D
 		virtual void drawText(const Font& font, std::string_view text, Point<float> position, Color color = Color::White) = 0;
 		void drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor);
 
-		void fadeColor(Color color);
-		void fadeIn(std::chrono::milliseconds fadeInTime);
-		void fadeOut(std::chrono::milliseconds fadeOutTime);
-		bool isFading() const;
-		bool isFaded() const;
-		SignalSource<>& fadeComplete();
-
 		virtual void clearScreen(Color color = Color::Black) = 0;
 
 		Point<int> center() const;
@@ -105,7 +98,7 @@ namespace NAS2D
 		virtual void clipRect(const Rectangle<float>& rect) = 0;
 		virtual void clipRectClear() = 0;
 
-		virtual void update();
+		virtual void update() = 0;
 
 		virtual void setViewport(const Rectangle<int>& viewport) = 0;
 		virtual void setOrthoProjection(const Rectangle<float>& orthoBounds) = 0;
@@ -127,14 +120,6 @@ namespace NAS2D
 
 		std::string mDriverName{"NULL Renderer"};
 		std::string mTitle{"Default Application"};
-
-		Color mFadeColor{Color::Black};
-		float mFadeStep{0.0f};
-		float mCurrentFade{0.0f};
-
-		FadeType mCurrentFadeType{FadeType::None};
-		Timer fadeTimer{};
-		Signal<> fadeCompleteSignal{};
 	};
 
 } // namespace

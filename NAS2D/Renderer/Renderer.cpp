@@ -24,7 +24,6 @@ Renderer::Renderer(const std::string& appTitle) : mTitle(appTitle)
 
 Renderer::~Renderer()
 {
-	fadeCompleteSignal.clear();
 	std::cout << "Renderer Terminated." << std::endl;
 }
 
@@ -70,103 +69,7 @@ void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<flo
 }
 
 
-void Renderer::fadeColor(Color color)
-{
-	mFadeColor = color;
-}
-
-/**
- * Non-blocking screen fade.
- *
- * \param	fadeInTime	Length of time the fade should last.
- *			A value of 0 will instantly fade the screen in.
-*/
-void Renderer::fadeIn(std::chrono::milliseconds fadeInTime)
-{
-	if (fadeInTime.count() == 0LL)
-	{
-		mCurrentFade = 0.0f;
-		mCurrentFadeType = FadeType::None;
-		return;
-	}
-
-	mCurrentFadeType = FadeType::In;
-	mFadeStep = 255.0f / static_cast<float>(fadeInTime.count());
-
-	fadeTimer.delta(); // clear timer
-}
-
-
-/**
- * Non-blocking screen fade.
- *
- * \param	fadeOutTime	Length of time the fade should last.
- *			A value of 0 will instantly fade the screen out.
-*/
-void Renderer::fadeOut(std::chrono::milliseconds fadeOutTime)
-{
-	if (fadeOutTime.count() == 0LL)
-	{
-		mCurrentFade = 255.0f;
-		mCurrentFadeType = FadeType::None;
-		return;
-	}
-
-	mCurrentFadeType = FadeType::Out;
-	mFadeStep = 255.0f / static_cast<float>(fadeOutTime.count());
-
-	fadeTimer.delta(); // clear timer
-}
-
-
-bool Renderer::isFading() const
-{
-	return (mCurrentFadeType != FadeType::None);
-}
-
-
-bool Renderer::isFaded() const
-{
-	return (mCurrentFade == 255.0f);
-}
-
-
-SignalSource<>& Renderer::fadeComplete()
-{
-	return fadeCompleteSignal;
-}
-
-
 Point<int> Renderer::center() const
 {
 	return Point{0, 0} + mResolution / 2;
-}
-
-
-/**
- * Updates the screen.
- *
- * \note	All derived Renderer objects must call Renderer::update()
- *			before performing screen refreshes.
- */
-void Renderer::update()
-{
-	if (mCurrentFadeType != FadeType::None)
-	{
-		float fade = (static_cast<float>(fadeTimer.delta()) * mFadeStep) * static_cast<float>(mCurrentFadeType);
-
-		mCurrentFade += fade;
-
-		if (mCurrentFade < 0.0f || mCurrentFade > 255.0f)
-		{
-			mCurrentFade = std::clamp(mCurrentFade, 0.0f, 255.0f);
-			mCurrentFadeType = FadeType::None;
-			fadeCompleteSignal();
-		}
-	}
-
-	if (mCurrentFade > 0.0f)
-	{
-		drawBoxFilled(Rectangle<float>::Create({0, 0}, size().to<float>()), mFadeColor.alphaFade(static_cast<uint8_t>(mCurrentFade)));
-	}
 }

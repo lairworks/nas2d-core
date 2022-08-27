@@ -682,7 +682,6 @@ void RendererOpenGL::clearScreen(Color color)
 
 void RendererOpenGL::update()
 {
-	Renderer::update();
 	SDL_GL_SwapWindow(underlyingWindow);
 }
 

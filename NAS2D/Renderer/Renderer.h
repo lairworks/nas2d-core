@@ -111,13 +111,6 @@ namespace NAS2D
 		Vector<int> mResolution{1600, 900};
 
 	private:
-		enum class FadeType
-		{
-			In = -1,
-			None = 0,
-			Out = 1
-		};
-
 		std::string mDriverName{"NULL Renderer"};
 		std::string mTitle{"Default Application"};
 	};

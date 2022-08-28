@@ -38,12 +38,6 @@ namespace NAS2D
 			}
 		}
 
-		template <typename X, typename Y>
-		void connect(Y* obj, void (X::*func)(Params...)) { connect(MakeDelegate(obj, func)); }
-
-		template <typename X, typename Y>
-		void connect(Y* obj, void (X::*func)(Params...) const) { connect(MakeDelegate(obj, func)); }
-
 		void disconnect(DelegateType delegate)
 		{
 			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
@@ -52,12 +46,6 @@ namespace NAS2D
 				delegateList.erase(iterator);
 			}
 		}
-
-		template <typename X, typename Y>
-		void disconnect(Y* obj, void (X::*func)(Params...)) { disconnect(MakeDelegate(obj, func)); }
-
-		template <typename X, typename Y>
-		void disconnect(Y* obj, void (X::*func)(Params...) const) { disconnect(MakeDelegate(obj, func)); }
 
 	protected:
 		std::vector<DelegateType> delegateList{};

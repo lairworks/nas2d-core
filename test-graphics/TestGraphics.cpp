@@ -29,17 +29,17 @@ TestGraphics::TestGraphics() :
 
 TestGraphics::~TestGraphics()
 {
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseMotion().disconnect(this, &TestGraphics::onMouseMove);
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseButtonDown().disconnect(this, &TestGraphics::onMouseDown);
-	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().disconnect(this, &TestGraphics::onKeyDown);
+	NAS2D::Utility<NAS2D::EventHandler>::get().mouseMotion().disconnect({this, &TestGraphics::onMouseMove});
+	NAS2D::Utility<NAS2D::EventHandler>::get().mouseButtonDown().disconnect({this, &TestGraphics::onMouseDown});
+	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().disconnect({this, &TestGraphics::onKeyDown});
 
 }
 
 void TestGraphics::initialize()
 {
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseMotion().connect(this, &TestGraphics::onMouseMove);
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseButtonDown().connect(this, &TestGraphics::onMouseDown);
-	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().connect(this, &TestGraphics::onKeyDown);
+	NAS2D::Utility<NAS2D::EventHandler>::get().mouseMotion().connect({this, &TestGraphics::onMouseMove});
+	NAS2D::Utility<NAS2D::EventHandler>::get().mouseButtonDown().connect({this, &TestGraphics::onMouseDown});
+	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().connect({this, &TestGraphics::onKeyDown});
 
 	NAS2D::Utility<NAS2D::Renderer>::get().showSystemPointer(true);
 	NAS2D::Utility<NAS2D::Renderer>::get().minimumSize({1600, 900});

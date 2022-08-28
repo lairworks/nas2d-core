@@ -131,7 +131,7 @@ RendererOpenGL::RendererOpenGL(const std::string& title, const Options& options)
 
 RendererOpenGL::~RendererOpenGL()
 {
-	Utility<EventHandler>::get().windowResized().disconnect(this, &RendererOpenGL::onResize);
+	Utility<EventHandler>::get().windowResized().disconnect({this, &RendererOpenGL::onResize});
 
 	SDL_GL_DeleteContext(sdlOglContext);
 	SDL_DestroyWindow(underlyingWindow);
@@ -780,7 +780,7 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	glewInit();
 	initGL();
 
-	Utility<EventHandler>::get().windowResized().connect(this, &RendererOpenGL::onResize);
+	Utility<EventHandler>::get().windowResized().connect({this, &RendererOpenGL::onResize});
 }
 
 // ==================================================================================

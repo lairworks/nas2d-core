@@ -112,7 +112,7 @@ MixerSDL::MixerSDL(const Options& options)
 	soundVolume(options.sfxVolume);
 	musicVolume(options.musicVolume);
 
-	musicFinished.connect(this, &MixerSDL::onMusicFinished);
+	musicFinished.connect({this, &MixerSDL::onMusicFinished});
 	Mix_HookMusicFinished([](){ musicFinished(); });
 }
 
@@ -124,7 +124,7 @@ MixerSDL::~MixerSDL()
 	Mix_CloseAudio();
 
 	Mix_HookMusicFinished(nullptr);
-	musicFinished.disconnect(this, &MixerSDL::onMusicFinished);
+	musicFinished.disconnect({this, &MixerSDL::onMusicFinished});
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }

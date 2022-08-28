@@ -24,7 +24,7 @@ StateManager::StateManager() :
 	mActive(true)
 {
 	// Ensure that all quit messages are handled in some way even if a State object doesn't.
-	Utility<EventHandler>::get().quit().connect(this, &StateManager::handleQuit);
+	Utility<EventHandler>::get().quit().connect({this, &StateManager::handleQuit});
 }
 
 

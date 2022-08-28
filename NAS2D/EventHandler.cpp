@@ -76,7 +76,7 @@ EventHandler::~EventHandler()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -98,7 +98,7 @@ EventHandler::ActivateEventSource& EventHandler::activate()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -120,7 +120,7 @@ EventHandler::WindowHiddenEventSource& EventHandler::windowHidden()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -140,7 +140,7 @@ EventHandler::WindowExposedEventSource& EventHandler::windowExposed()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -160,7 +160,7 @@ EventHandler::WindowMinimizedEventSource& EventHandler::windowMinimized()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -180,7 +180,7 @@ EventHandler::WindowMaximizedEventSource& EventHandler::windowMaximized()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -200,7 +200,7 @@ EventHandler::WindowRestoredEventSource& EventHandler::windowRestored()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -220,7 +220,7 @@ EventHandler::WindowResizedEventSource& EventHandler::windowResized()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -240,7 +240,7 @@ EventHandler::WindowMouseEnterEventSource& EventHandler::windowMouseEnter()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -261,7 +261,7 @@ EventHandler::WindowMouseLeaveEventSource& EventHandler::windowMouseLeave()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -287,7 +287,7 @@ EventHandler::JoystickAxisMotionEventSource& EventHandler::joystickAxisMotion()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -313,7 +313,7 @@ EventHandler::JoystickBallMotionEventSource& EventHandler::joystickBallMotion()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -338,7 +338,7 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonUp()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -362,7 +362,7 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonDown()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -387,7 +387,7 @@ EventHandler::JoystickHatMotionEventSource& EventHandler::joystickHatMotion()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -412,7 +412,7 @@ EventHandler::KeyDownEventSource& EventHandler::keyDown()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -435,7 +435,7 @@ EventHandler::KeyUpEventSource& EventHandler::keyUp()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -456,7 +456,7 @@ EventHandler::TextInputEventSource& EventHandler::textInput()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -480,7 +480,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -504,7 +504,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -528,7 +528,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -552,7 +552,7 @@ EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code
@@ -579,7 +579,7 @@ EventHandler::MouseWheelEventSource& EventHandler::mouseWheel()
  * function as follows:
  *
  * \code
- * connect(this, &Object::function);
+ * connect({this, &Object::function});
  * \endcode
  *
  * \code

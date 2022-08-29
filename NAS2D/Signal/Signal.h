@@ -41,7 +41,10 @@ namespace NAS2D
 	public:
 		void emit(Params... params) const
 		{
-			for (auto& delegate : this->delegateList)
+			// Copy the callback list, in case a callback updates Signal connections
+			// Updated signal connections would invalidate iterators to the original list
+			const auto delegateListCopy = this->delegateList;
+			for (auto& delegate : delegateListCopy)
 			{
 				delegate(params...);
 			}

@@ -14,7 +14,6 @@
 #include "Window.h"
 #include "../Math/Point.h"
 #include "../Math/Vector.h"
-#include "../Timer.h"
 #include "../Signal/Signal.h"
 
 #include <chrono>

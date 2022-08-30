@@ -12,58 +12,51 @@
 
 #include <SDL2/SDL.h>
 
+
 using namespace NAS2D;
 
-/**
- * Gets the current tick.
- */
-unsigned int Timer::tick() const
+
+unsigned int Timer::tick()
 {
 	return SDL_GetTicks();
 }
 
 
-/**
- * Gets the difference in time since the last call to delta().
- */
-unsigned int Timer::delta()
-{
-	unsigned int mLastTick = mCurrentTick;
-	mCurrentTick = SDL_GetTicks();
+Timer::Timer() :
+	Timer{Timer::tick()}
+{}
 
-	return mCurrentTick - mLastTick;
+
+Timer::Timer(unsigned int startTick) :
+	mStartTick{startTick}
+{}
+
+
+unsigned int Timer::elapsedTicks() const
+{
+	return tick() - mStartTick;
 }
 
 
-/**
- * Updates the Accumulator value.
- *
- * \return	Returns an accumulator value.
- */
-unsigned int Timer::accumulator()
+void Timer::adjustStartTick(unsigned int ticksForward)
 {
-	mAccumulator += delta();
-
-	return mAccumulator;
+	mStartTick += ticksForward;
 }
 
 
-/**
- * Adjusts the Accumulator value by a given amount.
- *
- * \param	a	Amount to adjust the Accumulator by.
- */
-void Timer::adjust_accumulator(unsigned int a)
+unsigned int Timer::accumulator() const
 {
-	mAccumulator -= a;
+	return elapsedTicks();
 }
 
 
-/**
- * Resets the accumulator and updates the tick counter.
- */
+void Timer::adjust_accumulator(unsigned int ticksForward)
+{
+	adjustStartTick(ticksForward);
+}
+
+
 void Timer::reset()
 {
-	delta();
-	mAccumulator = 0;
+	mStartTick = tick();
 }

@@ -9,6 +9,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#if defined(WINDOWS) || defined(WIN32)
+	#include <Windows.h>
+	#include <SDL2/SDL_syswm.h>
+#endif
+
+#include <array>
+
 
 using namespace NAS2D;
 
@@ -23,6 +30,86 @@ namespace
 	bool isAnyWindowFlagSet(Uint32 testFlags)
 	{
 		return (SDL_GetWindowFlags(underlyingWindow) & testFlags) != 0;
+	}
+
+
+	#if defined(WINDOWS) || defined(WIN32)
+		/**
+		 * Gets a Windows API HWND handle to the application window.
+		 */
+		HWND getWin32Handle(SDL_Window* sdlWindow)
+		{
+			SDL_SysWMinfo systemInfo;
+			SDL_VERSION(&systemInfo.version);
+
+			if (SDL_GetWindowWMInfo(sdlWindow, &systemInfo) == 1)
+			{
+				return systemInfo.info.win.window;
+			}
+
+			return nullptr;
+		}
+	#endif
+
+
+	/**
+	 * Shows a message dialog box.
+	 */
+	void doModalError(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
+	{
+		#if defined(WINDOWS) || defined(WIN32)
+			MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		#else
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.c_str(), message.c_str(), sdlWindow);
+		#endif
+	}
+
+
+	/**
+	 * Shows a message dialog box with no icon.
+	 */
+	void doModalAlert(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
+	{
+		#if defined(WINDOWS) || defined(WIN32)
+			MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_OK | MB_TASKMODAL);
+		#else
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title.c_str(), message.c_str(), sdlWindow);
+		#endif
+	}
+
+
+	/**
+	 * Shows a message dialog box with Yes and No buttons.
+	 */
+	bool doModalYesNo(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
+	{
+		bool isYes = false;
+		#if defined(WINDOWS) || defined(WIN32)
+			isYes = (MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_YESNO | MB_ICONINFORMATION | MB_TASKMODAL) == IDYES);
+		#else
+			constexpr std::array<SDL_MessageBoxButtonData, 2> buttons =
+			{{
+				{SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Yes"},
+				{SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "No"},
+			}};
+
+			const SDL_MessageBoxData messageBoxData =
+			{
+				SDL_MESSAGEBOX_INFORMATION,
+				sdlWindow,
+				title.c_str(),
+				message.c_str(),
+				buttons.size(),
+				buttons.data(),
+				nullptr
+			};
+
+			int buttonId = 0;
+			SDL_ShowMessageBox(&messageBoxData, &buttonId);
+			isYes = (buttonId == 1);
+		#endif
+
+		return isYes;
 	}
 }
 
@@ -185,6 +272,19 @@ bool Window::fullscreen() const
 }
 
 
+void Window::maximize()
+{
+	SDL_MaximizeWindow(underlyingWindow);
+}
+
+
+bool Window::isMaximized() const
+{
+	const auto flags = SDL_GetWindowFlags(underlyingWindow);
+	return (flags & SDL_WINDOW_MAXIMIZED);
+}
+
+
 void Window::resizeable(bool resizable)
 {
 	if (fullscreen())
@@ -251,4 +351,22 @@ Vector<int> Window::getWindowClientArea() const noexcept
 	Vector<int> size;
 	SDL_GetWindowSize(underlyingWindow, &size.x, &size.y);
 	return size;
+}
+
+
+void Window::doModalError(const std::string& title, const std::string& message) const
+{
+	::doModalError(title, message, underlyingWindow);
+}
+
+
+void Window::doModalAlert(const std::string& title, const std::string& message) const
+{
+	::doModalAlert(title, message, underlyingWindow);
+}
+
+
+bool Window::doModalYesNo(const std::string& title, const std::string& message) const
+{
+	return ::doModalYesNo(title, message, underlyingWindow);
 }

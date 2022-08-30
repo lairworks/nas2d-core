@@ -37,6 +37,9 @@ namespace NAS2D
 		virtual void fullscreen(bool fs, bool maintain = false);
 		virtual bool fullscreen() const;
 
+		void maximize();
+		bool isMaximized() const;
+
 		virtual void resizeable(bool _r);
 		virtual bool resizeable() const;
 
@@ -47,6 +50,10 @@ namespace NAS2D
 		void setResolution(Vector<int> newResolution);
 
 		virtual Vector<int> getWindowClientArea() const noexcept;
+
+		void doModalError(const std::string& title, const std::string& message) const;
+		void doModalAlert(const std::string& title, const std::string& message) const;
+		bool doModalYesNo(const std::string& title, const std::string& message) const;
 
 	protected:
 		virtual void onResize(Vector<int> newSize);

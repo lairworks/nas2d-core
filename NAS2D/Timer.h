@@ -40,6 +40,9 @@ namespace NAS2D
 		Timer(const Timer&) = default;
 		Timer& operator=(const Timer&) = default;
 
+		unsigned int elapsedTicks() const;
+		void adjustStartTick(unsigned int ticksForward);
+
 		unsigned int accumulator() const;
 		void adjust_accumulator(unsigned int ticksForward);
 

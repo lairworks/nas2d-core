@@ -32,15 +32,27 @@ Timer::Timer(unsigned int startTick) :
 {}
 
 
-unsigned int Timer::accumulator() const
+unsigned int Timer::elapsedTicks() const
 {
 	return tick() - mStartTick;
 }
 
 
-void Timer::adjust_accumulator(unsigned int ticksForward)
+void Timer::adjustStartTick(unsigned int ticksForward)
 {
 	mStartTick += ticksForward;
+}
+
+
+unsigned int Timer::accumulator() const
+{
+	return elapsedTicks();
+}
+
+
+void Timer::adjust_accumulator(unsigned int ticksForward)
+{
+	adjustStartTick(ticksForward);
 }
 
 

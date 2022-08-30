@@ -18,7 +18,7 @@
 using namespace NAS2D;
 
 
-Renderer::Renderer(const std::string& appTitle) : mTitle(appTitle)
+Renderer::Renderer(const std::string& appTitle) : Window(appTitle)
 {}
 
 
@@ -34,30 +34,9 @@ void Renderer::driverName(const std::string& name)
 }
 
 
-const std::string& Renderer::title() const
-{
-	return mTitle;
-}
-
-
 const std::string& Renderer::driverName() const
 {
 	return mDriverName;
-}
-
-
-void Renderer::title(const std::string& title)
-{
-	mTitle = title;
-}
-
-
-void Renderer::setResolution(Vector<int> newResolution)
-{
-	if (!fullscreen())
-	{
-		mResolution = newResolution;
-	}
 }
 
 

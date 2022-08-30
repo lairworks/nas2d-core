@@ -214,6 +214,7 @@
     <ClCompile Include="Renderer\RectangleSkin.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\RendererOpenGL.cpp" />
+    <ClCompile Include="Renderer\Window.cpp" />
     <ClCompile Include="Resource\AnimationSet.cpp" />
     <ClCompile Include="Resource\Font.cpp" />
     <ClCompile Include="Resource\Image.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="Renderer\RectangleSkin.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\RendererOpenGL.h" />
+    <ClInclude Include="Renderer\Window.h" />
     <ClInclude Include="Resource\ResourceCache.h" />
     <ClInclude Include="Resource\AnimationSet.h" />
     <ClInclude Include="Resource\Font.h" />

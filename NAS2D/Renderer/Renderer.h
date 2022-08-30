@@ -11,7 +11,7 @@
 #pragma once
 
 #include "Color.h"
-#include "DisplayDesc.h"
+#include "Window.h"
 #include "../Math/Point.h"
 #include "../Math/Vector.h"
 #include "../Timer.h"
@@ -33,7 +33,7 @@ namespace NAS2D
 	struct Rectangle;
 
 
-	class Renderer
+	class Renderer : public Window
 	{
 	public:
 		Renderer() = default;
@@ -44,31 +44,6 @@ namespace NAS2D
 		virtual ~Renderer();
 
 		const std::string& driverName() const;
-		virtual std::vector<DisplayDesc> getDisplayModes() const = 0;
-		virtual DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const = 0;
-
-		const std::string& title() const;
-		void title(const std::string& title);
-
-		virtual void window_icon(const std::string& path) = 0;
-
-		virtual void showSystemPointer(bool) = 0;
-		virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy) = 0;
-		virtual void setCursor(int cursorId) = 0;
-
-		virtual void fullscreen(bool fs, bool maintain = false) = 0;
-		virtual bool fullscreen() const = 0;
-
-		virtual void resizeable(bool _r) = 0;
-		virtual bool resizeable() const = 0;
-
-		virtual void minimumSize(Vector<int> newSize) = 0;
-
-		virtual Vector<int> size() const = 0;
-		virtual void size(Vector<int> newSize) = 0;
-		void setResolution(Vector<int> newResolution);
-
-		virtual Vector<int> getWindowClientArea() const noexcept = 0;
 
 		virtual void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
 		virtual void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) = 0;
@@ -108,11 +83,8 @@ namespace NAS2D
 
 		void driverName(const std::string& name);
 
-		Vector<int> mResolution{1600, 900};
-
 	private:
 		std::string mDriverName{"NULL Renderer"};
-		std::string mTitle{"Default Application"};
 	};
 
 } // namespace

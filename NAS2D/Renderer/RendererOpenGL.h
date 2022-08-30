@@ -15,7 +15,6 @@
 
 
 using SDL_GLContext = void*;
-struct SDL_Cursor;
 
 
 namespace NAS2D
@@ -41,28 +40,6 @@ namespace NAS2D
 		RendererOpenGL& operator=(const RendererOpenGL& rhs) = delete;
 		RendererOpenGL& operator=(RendererOpenGL&& rhs) = delete;
 		virtual ~RendererOpenGL() override;
-
-		std::vector<DisplayDesc> getDisplayModes() const override;
-		DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const override;
-
-		void window_icon(const std::string& path) override;
-
-		void showSystemPointer(bool) override;
-		void addCursor(const std::string& filePath, int cursorId, int offx, int offy) override;
-		void setCursor(int cursorId) override;
-
-		void fullscreen(bool fs, bool maintain = false) override;
-		bool fullscreen() const override;
-
-		void resizeable(bool resizable) override;
-		bool resizeable() const override;
-
-		void minimumSize(Vector<int> newSize) override;
-
-		Vector<int> size() const override;
-		void size(Vector<int> newSize) override;
-
-		Vector<int> getWindowClientArea() const noexcept override;
 
 		void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 
@@ -103,10 +80,9 @@ namespace NAS2D
 		void initSdlGL(bool vsync);
 		void initVideo(Vector<int> resolution, bool fullscreen, bool vsync);
 
-		void onResize(Vector<int> newSize);
+		void onResize(Vector<int> newSize) override;
 
 
 		SDL_GLContext sdlOglContext{};
-		std::map<int, SDL_Cursor*> cursors{};
 	};
 } // namespace NAS2D

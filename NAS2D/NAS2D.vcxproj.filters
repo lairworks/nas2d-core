@@ -99,6 +99,9 @@
     <ClCompile Include="Renderer\RendererOpenGL.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\Window.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Resource\AnimationSet.cpp">
       <Filter>Source Files\Resource</Filter>
     </ClCompile>
@@ -252,6 +255,9 @@
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\RendererOpenGL.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Window.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Resource\ResourceCache.h">

@@ -89,8 +89,8 @@ namespace
 		#else
 			constexpr std::array<SDL_MessageBoxButtonData, 2> buttons =
 			{{
+				{SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Yes"},
 				{SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "No"},
-				{SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Yes"}
 			}};
 
 			const SDL_MessageBoxData messageBoxData =

@@ -37,6 +37,9 @@ namespace NAS2D
 		virtual void fullscreen(bool fs, bool maintain = false);
 		virtual bool fullscreen() const;
 
+		void maximize();
+		bool isMaximized() const;
+
 		virtual void resizeable(bool _r);
 		virtual bool resizeable() const;
 

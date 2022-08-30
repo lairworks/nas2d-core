@@ -185,6 +185,19 @@ bool Window::fullscreen() const
 }
 
 
+void Window::maximize()
+{
+	SDL_MaximizeWindow(underlyingWindow);
+}
+
+
+bool Window::isMaximized() const
+{
+	const auto flags = SDL_GetWindowFlags(underlyingWindow);
+	return (flags & SDL_WINDOW_MAXIMIZED);
+}
+
+
 void Window::resizeable(bool resizable)
 {
 	if (fullscreen())

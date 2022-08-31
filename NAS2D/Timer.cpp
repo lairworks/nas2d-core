@@ -52,18 +52,6 @@ void Timer::adjustStartTick(unsigned int ticksForward)
 }
 
 
-unsigned int Timer::accumulator() const
-{
-	return elapsedTicks();
-}
-
-
-void Timer::adjust_accumulator(unsigned int ticksForward)
-{
-	adjustStartTick(ticksForward);
-}
-
-
 void Timer::reset()
 {
 	mStartTick = tick();

@@ -38,6 +38,14 @@ unsigned int Timer::elapsedTicks() const
 }
 
 
+unsigned int Timer::delta()
+{
+	const auto elapsed = elapsedTicks();
+	adjustStartTick(elapsed);
+	return elapsed;
+}
+
+
 void Timer::adjustStartTick(unsigned int ticksForward)
 {
 	mStartTick += ticksForward;

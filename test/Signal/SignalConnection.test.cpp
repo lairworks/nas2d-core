@@ -15,7 +15,7 @@ namespace {
 
 TEST(SignalConnection, Scope) {
 	MockHandler handler{};
-	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
+	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 	NAS2D::Signal<> signal;
 
 	// Expect a single call to MockMethod

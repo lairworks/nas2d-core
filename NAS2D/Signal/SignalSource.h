@@ -22,7 +22,7 @@ namespace NAS2D
 	{
 	public:
 		using Source = SignalSource; // Restricted base interface for use in derived
-		using DelegateType = DelegateX<void, Params...>;
+		using DelegateType = Delegate<void(Params...)>;
 
 	public:
 		bool empty() const { return delegateList.empty(); }

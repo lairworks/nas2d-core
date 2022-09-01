@@ -39,7 +39,7 @@ TEST(Delegate, CopyDelegate) {
 	EXPECT_EQ(delegate1, delegate2);
 }
 
-TEST(Delegate, MakeDelegateEqual) {
+TEST(Delegate, DelegateEqual) {
 	const MockHandler handler{};
 	// Make identical delegates, which should compare equal
 	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
@@ -47,7 +47,7 @@ TEST(Delegate, MakeDelegateEqual) {
 	EXPECT_EQ(delegate1, delegate2);
 }
 
-TEST(Delegate, MakeDelegateNotEqualMethods) {
+TEST(Delegate, DelegateNotEqualMethods) {
 	const MockHandler handler{};
 	// Different handler methods should compare not equal
 	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
@@ -55,7 +55,7 @@ TEST(Delegate, MakeDelegateNotEqualMethods) {
 	EXPECT_NE(delegate1, delegate2);
 }
 
-TEST(Delegate, MakeDelegateNotEqualObjects) {
+TEST(Delegate, DelegateNotEqualObjects) {
 	const MockHandler handler1{};
 	const MockHandler handler2{};
 	// Different handler objects should compare not equal

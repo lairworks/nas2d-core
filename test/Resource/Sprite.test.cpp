@@ -44,7 +44,7 @@ TEST_F(Sprite, advanceByTimeDelta) {
 
 TEST_F(Sprite, animationCompleteSignal) {
 	MockHandler handler{};
-	auto delegate = NAS2D::MakeDelegate(&handler, &MockHandler::MockMethod);
+	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 	sprite.animationCompleteSignalSource().connect(delegate);
 
 	sprite.advanceByTimeDelta(0u);

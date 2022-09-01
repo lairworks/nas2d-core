@@ -41,13 +41,8 @@ namespace NAS2D
 		Timer& operator=(const Timer&) = default;
 
 		unsigned int elapsedTicks() const;
+		unsigned int delta();
 		void adjustStartTick(unsigned int ticksForward);
-
-		[[deprecated("Replaced by `elapsedTicks`")]]
-		unsigned int accumulator() const;
-		[[deprecated("Replaced by `adjustStartTick`")]]
-		void adjust_accumulator(unsigned int ticksForward);
-
 		void reset();
 
 	private:

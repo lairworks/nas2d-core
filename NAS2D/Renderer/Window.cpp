@@ -127,6 +127,15 @@ Window::Window(const std::string& appTitle) :
 }
 
 
+Window::~Window()
+{
+	for(auto& [key, cursor] : cursors)
+	{
+		SDL_FreeCursor(cursor);
+	}
+}
+
+
 const std::string& Window::title() const
 {
 	return mTitle;

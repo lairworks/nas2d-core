@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM archlinux:base-20220731.0.71623
+FROM archlinux:base-20220828.0.78480
 
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages

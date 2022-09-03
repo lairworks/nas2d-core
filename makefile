@@ -214,7 +214,7 @@ DockerRepository := outpostuniverse
 ImageVersion_gcc := 1.4
 ImageVersion_clang := 1.3
 ImageVersion_mingw := 1.8
-ImageVersion_arch := 1.1
+ImageVersion_arch := 1.2
 
 DockerImageName = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 

@@ -42,3 +42,22 @@ jobs:
     - name: Test
       working-directory: ./test/
       run: ./${{env.PLATFORM}}/${{env.BUILD_CONFIGURATION}}/test.exe
+
+  build-linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+        - "outpostuniverse/nas2d-arch:1.3"
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.image }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror"
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" test
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" check
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" test-graphics
+    - run: make package

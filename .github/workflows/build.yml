@@ -3,7 +3,7 @@ name: Build
 on: [push]
 
 jobs:
-  build:
+  build-windows:
     strategy:
       fail-fast: false
       matrix:

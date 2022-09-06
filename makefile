@@ -208,13 +208,14 @@ install-dependencies-darwin:
 # Build rules relating to Docker images
 
 DockerFolder := ${TopLevelFolder}/docker
-DockerRunFlags := --volume ${TopLevelFolder}:/code
+DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
+DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository := outpostuniverse
 
-ImageVersion_gcc := 1.4
-ImageVersion_clang := 1.3
-ImageVersion_mingw := 1.8
-ImageVersion_arch := 1.2
+ImageVersion_gcc := 1.5
+ImageVersion_clang := 1.4
+ImageVersion_mingw := 1.9
+ImageVersion_arch := 1.3
 
 DockerImageName = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 
@@ -230,13 +231,13 @@ ${DockerBuildRules}: build-image-%:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerImageName} --tag ${DockerRepository}/nas2d-$*:latest
 
 ${DockerRunRules}: run-image-%:
-	docker run ${DockerRunFlags} --rm --tty ${DockerImageName}
+	docker run ${DockerRunFlags} ${DockerUserFlags} ${DockerImageName}
 
 ${DockerDebugRules}: debug-image-%:
-	docker run ${DockerRunFlags} --rm --tty --interactive ${DockerImageName} bash
+	docker run ${DockerRunFlags} --interactive ${DockerUserFlags} ${DockerImageName} bash
 
 ${DockerDebugRootRules}: root-debug-image-%:
-	docker run ${DockerRunFlags} --rm --tty --interactive --user=0 ${DockerImageName} bash
+	docker run ${DockerRunFlags} --interactive ${DockerImageName} bash
 
 ${DockerPushRules}: push-image-%:
 	docker push ${DockerImageName}

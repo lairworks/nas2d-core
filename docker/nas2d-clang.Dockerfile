@@ -31,10 +31,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsdl2-ttf-dev=2.0.18+* \
   && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m -s /bin/bash user
-USER user
-
-VOLUME /code
-WORKDIR /code
-
 CMD ["make", "--keep-going", "check"]

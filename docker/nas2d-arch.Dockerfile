@@ -24,7 +24,4 @@ RUN pacman --sync --refresh --noconfirm \
     sdl2_ttf \
   && rm -rf /var/cache/pacman/pkg
 
-VOLUME /code
-WORKDIR /code
-
 CMD ["make", "--keep-going", "check"]

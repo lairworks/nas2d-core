@@ -208,7 +208,7 @@ install-dependencies-darwin:
 # Build rules relating to Docker images
 
 DockerFolder := ${TopLevelFolder}/docker
-DockerRunFlags := --volume ${TopLevelFolder}:/code
+DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository := outpostuniverse
 

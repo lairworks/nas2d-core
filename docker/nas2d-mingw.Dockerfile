@@ -133,9 +133,6 @@ ENV WINEPATH="${WINEPATH64}"
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
 
-VOLUME /code
-WORKDIR /code
-
 # Pre-setup Wine to save startup time later
 RUN wineboot
 

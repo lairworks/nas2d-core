@@ -133,9 +133,6 @@ ENV WINEPATH="${WINEPATH64}"
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
 
-RUN useradd -m -s /bin/bash user
-USER user
-
 VOLUME /code
 WORKDIR /code
 

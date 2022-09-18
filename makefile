@@ -180,17 +180,6 @@ install-dependencies:
 install-dependencies-ubuntu:
 	apt --yes install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev
 
-## CentOS ##
-.PHONY: install-dependencies-centos
-install-dependencies-centos: | install-dependencies-repository-centos
-	# Install development packages (-y answers "yes" to prompts)
-	yum --assumeyes install SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_ttf-devel glew-devel
-.PHONY: install-dependencies-repository-centos
-install-dependencies-repository-centos:
-	# Default CentOS repositories only contain SDL1
-	# For SDL2 use EPEL repo (EPEL = Extra Packages for Enterprise Linux)
-	yum --assumeyes install epel-release
-
 ## Arch Linux ##
 .PHONY: install-dependencies-arch
 install-dependencies-arch:

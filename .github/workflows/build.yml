@@ -3,7 +3,7 @@ name: Build
 on: [push]
 
 jobs:
-  build-windows:
+  windows:
     strategy:
       fail-fast: false
       matrix:
@@ -43,7 +43,7 @@ jobs:
       working-directory: ./test/
       run: ./${{env.PLATFORM}}/${{env.BUILD_CONFIGURATION}}/test.exe
 
-  build-linux:
+  linux:
     strategy:
       fail-fast: false
       matrix:

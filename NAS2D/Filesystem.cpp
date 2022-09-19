@@ -24,7 +24,8 @@
 using namespace NAS2D;
 
 
-namespace {
+namespace
+{
 	struct SdlStringDeleter
 	{
 		void operator()(char* string)

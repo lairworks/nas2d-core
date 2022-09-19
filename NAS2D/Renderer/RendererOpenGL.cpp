@@ -56,7 +56,7 @@ namespace
 
 			p2.x, p2.y,
 			p2.x, p1.y,
-			p1.x, p1.y
+			p1.x, p1.y,
 		};
 	}
 
@@ -96,7 +96,7 @@ RendererOpenGL::Options RendererOpenGL::ReadConfigurationOptions()
 	return {
 		{graphics.get<int>("screenwidth"), graphics.get<int>("screenheight")},
 		graphics.get<bool>("fullscreen"),
-		graphics.get<bool>("vsync")
+		graphics.get<bool>("vsync"),
 	};
 }
 
@@ -280,7 +280,7 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 	const auto availableSize = destinationBounds.endPoint() - dstPointInt;
 	const auto clipSize = Vector{
 		std::min(sourceSize.x, availableSize.x),
-		std::min(sourceSize.y, availableSize.y)
+		std::min(sourceSize.y, availableSize.y),
 	}.to<float>();
 
 	setColor(Color::White);

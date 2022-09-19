@@ -123,7 +123,7 @@ namespace NAS2D
 				static_cast<NewBaseType>(x),
 				static_cast<NewBaseType>(y),
 				static_cast<NewBaseType>(width),
-				static_cast<NewBaseType>(height)
+				static_cast<NewBaseType>(height),
 			};
 		}
 

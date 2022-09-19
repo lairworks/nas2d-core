@@ -21,7 +21,8 @@
 
 namespace NAS2D
 {
-	template <typename Resource, typename ... Params> class ResourceCache;
+	template <typename Resource, typename... Params>
+	class ResourceCache;
 
 
 	class AnimationSet

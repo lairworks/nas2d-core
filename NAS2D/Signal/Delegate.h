@@ -78,7 +78,7 @@ namespace NAS2D
 			class GenericClass;
 		#endif
 
-		const int SINGLE_MEMFUNCPTR_SIZE = sizeof(void (GenericClass::*)());
+		const int SINGLE_MEMFUNCPTR_SIZE = sizeof(void(GenericClass::*)());
 
 		template <int N>
 		struct SimplifyMemFunc
@@ -472,8 +472,8 @@ namespace NAS2D
 	};
 
 	template <typename X, typename Y, typename RetType, typename... Params>
-	Delegate(Y*, RetType(X::*func)(Params...)) -> Delegate<RetType(Params...)>;
+	Delegate(Y*, RetType (X::*func)(Params...)) -> Delegate<RetType(Params...)>;
 
 	template <typename X, typename Y, typename RetType, typename... Params>
-	Delegate(Y*, RetType(X::*func)(Params...) const) -> Delegate<RetType(Params...)>;
+	Delegate(Y*, RetType (X::*func)(Params...) const) -> Delegate<RetType(Params...)>;
 }

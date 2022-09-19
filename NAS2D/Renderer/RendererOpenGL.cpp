@@ -111,12 +111,14 @@ void RendererOpenGL::WriteConfigurationOptions(const Options& options)
 }
 
 
-RendererOpenGL::RendererOpenGL(const std::string& title) : RendererOpenGL(title, ReadConfigurationOptions())
+RendererOpenGL::RendererOpenGL(const std::string& title) :
+	RendererOpenGL(title, ReadConfigurationOptions())
 {
 }
 
 
-RendererOpenGL::RendererOpenGL(const std::string& title, const Options& options) : Renderer(title)
+RendererOpenGL::RendererOpenGL(const std::string& title, const Options& options) :
+	Renderer(title)
 {
 	std::cout << "Starting OpenGL Renderer:" << std::endl;
 

@@ -72,7 +72,7 @@ namespace
 	}
 
 
-	constexpr std::array<GLfloat, 12> DefaultTextureCoords = rectToQuad({0, 0, 1, 1});
+	constexpr auto DefaultTextureCoords = rectToQuad({0, 0, 1, 1});
 
 
 	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = DefaultTextureCoords);

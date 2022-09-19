@@ -114,7 +114,7 @@ MixerSDL::MixerSDL(const Options& options)
 	musicVolume(options.musicVolume);
 
 	musicFinished.connect({this, &MixerSDL::onMusicFinished});
-	Mix_HookMusicFinished([](){ musicFinished(); });
+	Mix_HookMusicFinished([]() { musicFinished(); });
 }
 
 

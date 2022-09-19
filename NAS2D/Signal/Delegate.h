@@ -31,7 +31,7 @@
 // Compiler identification. It's not easy to identify Visual C++ because many vendors
 // fraudulently define Microsoft's identifiers.
 #if defined(_MSC_VER) && !defined(__MWERKS__) && !defined(__VECTOR_C) && !defined(__ICL) && !defined(__BORLANDC__)
-#define FASTDLGT_MICROSOFT_MFP
+	#define FASTDLGT_MICROSOFT_MFP
 #endif
 
 
@@ -59,24 +59,25 @@ namespace NAS2D
 		template <typename GenericMemFuncType, typename XFuncType>
 		GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
 		{
-			#if __GNUC__ >= 8
-			#pragma GCC diagnostic push
-			#pragma GCC diagnostic ignored "-Wcast-function-type"
-			#endif
+#if __GNUC__ >= 8
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
 			return reinterpret_cast<GenericMemFuncType>(function_to_bind);
-			#if __GNUC__ >= 8
-			#pragma GCC diagnostic pop
-			#endif
+#if __GNUC__ >= 8
+	#pragma GCC diagnostic pop
+#endif
 		}
 
-		// GenericClass is a fake class, ONLY used to provide a type. It is vitally important
-		// that it is never defined.
-		#ifdef FASTDLGT_MICROSOFT_MFP
-			class __single_inheritance GenericClass;
-			class GenericClass {};
-		#else
-			class GenericClass;
-		#endif
+// GenericClass is a fake class, ONLY used to provide a type. It is vitally important
+// that it is never defined.
+#ifdef FASTDLGT_MICROSOFT_MFP
+		class __single_inheritance GenericClass;
+		class GenericClass
+		{};
+#else
+		class GenericClass;
+#endif
 
 		const int SINGLE_MEMFUNCPTR_SIZE = sizeof(void(GenericClass::*)());
 
@@ -97,16 +98,16 @@ namespace NAS2D
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 			{
-				#if defined __DMC__
+#if defined __DMC__
 				bound_func = horrible_cast<GenericMemFuncType>(function_to_bind);
-				#else
+#else
 				bound_func = CastMemFuncPtr<GenericMemFuncType>(function_to_bind);
-				#endif
+#endif
 				return reinterpret_cast<GenericClass*>(pthis);
 			}
 		};
 
-		#ifdef FASTDLGT_MICROSOFT_MFP
+#ifdef FASTDLGT_MICROSOFT_MFP
 
 		template <>
 		struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + sizeof(int)>
@@ -208,7 +209,7 @@ namespace NAS2D
 				return reinterpret_cast<GenericClass*>(reinterpret_cast<char*>(pthis) + u.s.delta + virtual_delta);
 			};
 		};
-		#endif
+#endif
 	}
 
 

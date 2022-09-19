@@ -1,5 +1,6 @@
 Language: Cpp
 AccessModifierOffset: -4
+AlignAfterOpenBracket: BlockIndent
 AlignTrailingComments: false
 AllowShortBlocksOnASingleLine: true
 AllowShortCaseLabelsOnASingleLine: true

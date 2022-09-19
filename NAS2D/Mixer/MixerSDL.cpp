@@ -63,7 +63,7 @@ MixerSDL::Options MixerSDL::InvalidToDefault(const Options& options)
 		std::clamp(options.numChannels, AudioNumChannelsMin, AudioNumChannelsMax),
 		std::clamp(options.sfxVolume, AudioVolumeMin, AudioVolumeMax),
 		std::clamp(options.musicVolume, AudioVolumeMin, AudioVolumeMax),
-		std::clamp(options.bufferSize, AudioBufferSizeMin, AudioBufferSizeMax)
+		std::clamp(options.bufferSize, AudioBufferSizeMin, AudioBufferSizeMax),
 	};
 }
 
@@ -76,7 +76,7 @@ MixerSDL::Options MixerSDL::ReadConfigurationOptions()
 		audio.get<int>("channels"),
 		audio.get<int>("sfxvolume"),
 		audio.get<int>("musicvolume"),
-		audio.get<int>("bufferlength")
+		audio.get<int>("bufferlength"),
 	};
 }
 

@@ -230,6 +230,7 @@ namespace NAS2D
 			m_pthis = nullptr;
 			m_pFunction = nullptr;
 		}
+
 	public:
 		inline bool IsEqual(const DelegateMemento& x) const
 		{

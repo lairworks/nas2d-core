@@ -278,10 +278,7 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 	}
 
 	const auto availableSize = destinationBounds.endPoint() - dstPointInt;
-	const auto clipSize = Vector{
-		std::min(sourceSize.x, availableSize.x),
-		std::min(sourceSize.y, availableSize.y),
-	}.to<float>();
+	const auto clipSize = Vector{std::min(sourceSize.x, availableSize.x), std::min(sourceSize.y, availableSize.y)}.to<float>();
 
 	setColor(Color::White);
 

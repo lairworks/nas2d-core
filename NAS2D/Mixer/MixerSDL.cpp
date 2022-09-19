@@ -92,7 +92,8 @@ void MixerSDL::WriteConfigurationOptions(const Options& options)
 }
 
 
-MixerSDL::MixerSDL() : MixerSDL(InvalidToDefault(ReadConfigurationOptions()))
+MixerSDL::MixerSDL() :
+	MixerSDL(InvalidToDefault(ReadConfigurationOptions()))
 {
 }
 

@@ -51,7 +51,7 @@ namespace
 Image::Image(const std::string& filePath) :
 	Image{
 		filePath,
-		Utility<Filesystem>::get().readFile(filePath)
+		Utility<Filesystem>::get().readFile(filePath),
 	}
 {
 }

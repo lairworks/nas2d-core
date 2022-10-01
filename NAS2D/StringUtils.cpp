@@ -29,7 +29,7 @@ namespace NAS2D
 	 */
 	std::string toLowercase(std::string str)
 	{
-		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::tolower(c)); });
+		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
 		return str;
 	}
 
@@ -42,7 +42,7 @@ namespace NAS2D
 	 */
 	std::string toUppercase(std::string str)
 	{
-		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept->unsigned char { return static_cast<unsigned char>(::toupper(c)); });
+		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
 		return str;
 	}
 

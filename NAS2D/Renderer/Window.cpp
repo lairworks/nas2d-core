@@ -87,21 +87,19 @@ namespace
 #if defined(WINDOWS) || defined(WIN32)
 		isYes = (MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_YESNO | MB_ICONINFORMATION | MB_TASKMODAL) == IDYES);
 #else
-		constexpr std::array<SDL_MessageBoxButtonData, 2> buttons =
-		{{
+		constexpr std::array<SDL_MessageBoxButtonData, 2> buttons = {{
 			{SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Yes"},
 			{SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "No"},
 		}};
 
-		const SDL_MessageBoxData messageBoxData =
-		{
+		const SDL_MessageBoxData messageBoxData = {
 			SDL_MESSAGEBOX_INFORMATION,
 			sdlWindow,
 			title.c_str(),
 			message.c_str(),
 			buttons.size(),
 			buttons.data(),
-			nullptr
+			nullptr,
 		};
 
 		int buttonId = 0;

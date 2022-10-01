@@ -183,13 +183,10 @@ namespace
 			return *reinterpret_cast<const uint8_t*>(pixelAddress);
 		case 2:
 			return *reinterpret_cast<const uint16_t*>(pixelAddress);
-		case 3:
-		{
+		case 3: {
 			auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
 			uint32_t p0 = p[0], p1 = p[1], p2 = p[2];
-			return (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
-				(p0 << 16 | p1 << 8 | p2) :
-				(p0 | p1 << 8 | p2 << 16);
+			return (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? (p0 << 16 | p1 << 8 | p2) : (p0 | p1 << 8 | p2 << 16);
 		}
 		case 4:
 			return *reinterpret_cast<const uint32_t*>(pixelAddress);

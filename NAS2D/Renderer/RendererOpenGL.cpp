@@ -720,8 +720,7 @@ namespace
 		p2.y -= cy * 0.5f;
 
 		//draw the line by triangle strip
-		float line_vertex[] =
-		{
+		float line_vertex[] = {
 			p1.x - tx - Rx - cx, p1.y - ty - Ry - cy, //fading edge1
 			p2.x - tx - Rx + cx, p2.y - ty - Ry + cy,
 			p1.x - tx - cx, p1.y - ty - cy,        //core
@@ -729,11 +728,10 @@ namespace
 			p1.x + tx - cx, p1.y + ty - cy,
 			p2.x + tx + cx, p2.y + ty + cy,
 			p1.x + tx + Rx - cx, p1.y + ty + Ry - cy, //fading edge2
-			p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
+			p2.x + tx + Rx + cx, p2.y + ty + Ry + cy,
 		};
 
-		float line_color[] =
-		{
+		float line_color[] = {
 			Cr, Cg, Cb, 0,
 			Cr, Cg, Cb, 0,
 			Cr, Cg, Cb, Ca,
@@ -741,7 +739,7 @@ namespace
 			Cr, Cg, Cb, Ca,
 			Cr, Cg, Cb, Ca,
 			Cr, Cg, Cb, 0,
-			Cr, Cg, Cb, 0
+			Cr, Cg, Cb, 0,
 		};
 
 		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
@@ -751,8 +749,7 @@ namespace
 		// Line End Caps
 		if (lineWidth > 3.0f)
 		{
-			float line_vertex2[] =
-			{
+			float line_vertex2[] = {
 				p1.x - tx - cx, p1.y - ty - cy,
 				p1.x + tx + Rx, p1.y + ty + Ry,
 				p1.x + tx - cx, p1.y + ty - cy,
@@ -762,11 +759,10 @@ namespace
 				p2.x - tx + cx, p2.y - ty + cy,
 				p2.x + tx + Rx, p2.y + ty + Ry,
 				p2.x + tx + cx, p2.y + ty + cy,
-				p2.x + tx + Rx + cx, p2.y + ty + Ry + cy
+				p2.x + tx + Rx + cx, p2.y + ty + Ry + cy,
 			};
 
-			float line_color2[] =
-			{
+			float line_color2[] = {
 				Cr, Cg, Cb, 0, //cap1
 				Cr, Cg, Cb, 0,
 				Cr, Cg, Cb, Ca,
@@ -778,7 +774,7 @@ namespace
 				Cr, Cg, Cb, Ca,
 				Cr, Cg, Cb, 0,
 				Cr, Cg, Cb, Ca,
-				Cr, Cg, Cb, 0
+				Cr, Cg, Cb, 0,
 			};
 
 			glVertexPointer(2, GL_FLOAT, 0, line_vertex2);

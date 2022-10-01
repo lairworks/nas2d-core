@@ -18,7 +18,8 @@
 using namespace NAS2D;
 
 
-Renderer::Renderer(const std::string& appTitle) : Window(appTitle)
+Renderer::Renderer(const std::string& appTitle) :
+	Window(appTitle)
 {}
 
 

@@ -33,23 +33,23 @@ namespace
 	}
 
 
-	#if defined(WINDOWS) || defined(WIN32)
-		/**
-		 * Gets a Windows API HWND handle to the application window.
-		 */
-		HWND getWin32Handle(SDL_Window* sdlWindow)
+#if defined(WINDOWS) || defined(WIN32)
+	/**
+	 * Gets a Windows API HWND handle to the application window.
+	 */
+	HWND getWin32Handle(SDL_Window* sdlWindow)
+	{
+		SDL_SysWMinfo systemInfo;
+		SDL_VERSION(&systemInfo.version);
+
+		if (SDL_GetWindowWMInfo(sdlWindow, &systemInfo) == 1)
 		{
-			SDL_SysWMinfo systemInfo;
-			SDL_VERSION(&systemInfo.version);
-
-			if (SDL_GetWindowWMInfo(sdlWindow, &systemInfo) == 1)
-			{
-				return systemInfo.info.win.window;
-			}
-
-			return nullptr;
+			return systemInfo.info.win.window;
 		}
-	#endif
+
+		return nullptr;
+	}
+#endif
 
 
 	/**
@@ -57,11 +57,11 @@ namespace
 	 */
 	void doModalError(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
 	{
-		#if defined(WINDOWS) || defined(WIN32)
-			MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_OK | MB_ICONERROR | MB_TASKMODAL);
-		#else
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.c_str(), message.c_str(), sdlWindow);
-		#endif
+#if defined(WINDOWS) || defined(WIN32)
+		MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_OK | MB_ICONERROR | MB_TASKMODAL);
+#else
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.c_str(), message.c_str(), sdlWindow);
+#endif
 	}
 
 
@@ -70,11 +70,11 @@ namespace
 	 */
 	void doModalAlert(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
 	{
-		#if defined(WINDOWS) || defined(WIN32)
-			MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_OK | MB_TASKMODAL);
-		#else
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title.c_str(), message.c_str(), sdlWindow);
-		#endif
+#if defined(WINDOWS) || defined(WIN32)
+		MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_OK | MB_TASKMODAL);
+#else
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title.c_str(), message.c_str(), sdlWindow);
+#endif
 	}
 
 
@@ -84,30 +84,28 @@ namespace
 	bool doModalYesNo(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
 	{
 		bool isYes = false;
-		#if defined(WINDOWS) || defined(WIN32)
-			isYes = (MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_YESNO | MB_ICONINFORMATION | MB_TASKMODAL) == IDYES);
-		#else
-			constexpr std::array<SDL_MessageBoxButtonData, 2> buttons =
-			{{
-				{SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Yes"},
-				{SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "No"},
-			}};
+#if defined(WINDOWS) || defined(WIN32)
+		isYes = (MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_YESNO | MB_ICONINFORMATION | MB_TASKMODAL) == IDYES);
+#else
+		constexpr std::array<SDL_MessageBoxButtonData, 2> buttons = {{
+			{SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, "Yes"},
+			{SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "No"},
+		}};
 
-			const SDL_MessageBoxData messageBoxData =
-			{
-				SDL_MESSAGEBOX_INFORMATION,
-				sdlWindow,
-				title.c_str(),
-				message.c_str(),
-				buttons.size(),
-				buttons.data(),
-				nullptr
-			};
+		const SDL_MessageBoxData messageBoxData = {
+			SDL_MESSAGEBOX_INFORMATION,
+			sdlWindow,
+			title.c_str(),
+			message.c_str(),
+			buttons.size(),
+			buttons.data(),
+			nullptr,
+		};
 
-			int buttonId = 0;
-			SDL_ShowMessageBox(&messageBoxData, &buttonId);
-			isYes = (buttonId == 1);
-		#endif
+		int buttonId = 0;
+		SDL_ShowMessageBox(&messageBoxData, &buttonId);
+		isYes = (buttonId == 1);
+#endif
 
 		return isYes;
 	}
@@ -129,7 +127,7 @@ Window::Window(const std::string& appTitle) :
 
 Window::~Window()
 {
-	for(auto& [key, cursor] : cursors)
+	for (auto& [key, cursor] : cursors)
 	{
 		SDL_FreeCursor(cursor);
 	}
@@ -301,9 +299,9 @@ void Window::resizeable(bool resizable)
 		return;
 	}
 
-	#if defined(_MSC_VER)
-	#pragma warning(suppress: 26812) // C26812 Warns to use enum class (C++), but SDL is a C library
-	#endif
+#if defined(_MSC_VER)
+	#pragma warning(suppress : 26812) // C26812 Warns to use enum class (C++), but SDL is a C library
+#endif
 	SDL_SetWindowResizable(underlyingWindow, resizable ? SDL_TRUE : SDL_FALSE);
 }
 

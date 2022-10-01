@@ -152,7 +152,7 @@ namespace
 			auto actions = processActions(imageSheetMap, xmlRootElement, imageCache);
 			return std::tuple{std::move(imageSheetMap), std::move(actions)};
 		}
-		catch(const std::runtime_error& error)
+		catch (const std::runtime_error& error)
 		{
 			throw std::runtime_error("Error parsing Sprite file: " + filePath + "\nError: " + error.what());
 		}

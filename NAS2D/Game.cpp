@@ -63,8 +63,8 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 					{"screenheight", 700},
 					{"bitdepth", 32},
 					{"fullscreen", false},
-					{"vsync", true}
-				}}
+					{"vsync", true},
+				}},
 			},
 			{
 				"audio",
@@ -74,9 +74,9 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 					{"sfxvolume", 128},
 					{"channels", 2},
 					{"mixrate", 22050},
-					{"bufferlength", 1024}
-				}}
-			}
+					{"bufferlength", 1024},
+				}},
+			},
 		}
 	);
 	cf.load(configPath);

@@ -50,13 +50,24 @@ namespace
 		const auto p2 = rect.endPoint();
 
 		return {
-			p1.x, p1.y,
-			p1.x, p2.y,
-			p2.x, p2.y,
+			p1.x,
+			p1.y,
 
-			p2.x, p2.y,
-			p2.x, p1.y,
-			p1.x, p1.y,
+			p1.x,
+			p2.y,
+
+			p2.x,
+			p2.y,
+
+
+			p2.x,
+			p2.y,
+
+			p2.x,
+			p1.y,
+
+			p1.x,
+			p1.y,
 		};
 	}
 
@@ -674,8 +685,12 @@ namespace
 		if (std::abs(dx) < ALW)
 		{
 			//vertical
-			tx = t; ty = 0.0f;
-			Rx = R; Ry = 0.0f;
+			tx = t;
+			ty = 0.0f;
+
+			Rx = R;
+			Ry = 0.0f;
+
 			if (lineWidth > 0.0f && lineWidth <= 1.0f)
 			{
 				tx = 0.5f;
@@ -685,8 +700,12 @@ namespace
 		else if (std::abs(dy) < ALW)
 		{
 			//horizontal
-			tx = 0.0f; ty = t;
-			Rx = 0.0f; Ry = R;
+			tx = 0.0f;
+			ty = t;
+
+			Rx = 0.0f;
+			Ry = R;
+
 			if (lineWidth > 0.0f && lineWidth <= 1.0f)
 			{
 				ty = 0.5f;
@@ -721,25 +740,71 @@ namespace
 
 		//draw the line by triangle strip
 		float line_vertex[] = {
-			p1.x - tx - Rx - cx, p1.y - ty - Ry - cy, //fading edge1
-			p2.x - tx - Rx + cx, p2.y - ty - Ry + cy,
-			p1.x - tx - cx, p1.y - ty - cy,        //core
-			p2.x - tx + cx, p2.y - ty + cy,
-			p1.x + tx - cx, p1.y + ty - cy,
-			p2.x + tx + cx, p2.y + ty + cy,
-			p1.x + tx + Rx - cx, p1.y + ty + Ry - cy, //fading edge2
-			p2.x + tx + Rx + cx, p2.y + ty + Ry + cy,
+			p1.x - tx - Rx - cx,
+			p1.y - ty - Ry - cy, //fading edge1
+
+			p2.x - tx - Rx + cx,
+			p2.y - ty - Ry + cy,
+
+			p1.x - tx - cx,
+			p1.y - ty - cy, //core
+
+			p2.x - tx + cx,
+			p2.y - ty + cy,
+
+			p1.x + tx - cx,
+			p1.y + ty - cy,
+
+			p2.x + tx + cx,
+			p2.y + ty + cy,
+
+			p1.x + tx + Rx - cx,
+			p1.y + ty + Ry - cy, //fading edge2
+
+			p2.x + tx + Rx + cx,
+			p2.y + ty + Ry + cy,
 		};
 
 		float line_color[] = {
-			Cr, Cg, Cb, 0,
-			Cr, Cg, Cb, 0,
-			Cr, Cg, Cb, Ca,
-			Cr, Cg, Cb, Ca,
-			Cr, Cg, Cb, Ca,
-			Cr, Cg, Cb, Ca,
-			Cr, Cg, Cb, 0,
-			Cr, Cg, Cb, 0,
+			Cr,
+			Cg,
+			Cb,
+			0,
+
+			Cr,
+			Cg,
+			Cb,
+			0,
+
+			Cr,
+			Cg,
+			Cb,
+			Ca,
+
+			Cr,
+			Cg,
+			Cb,
+			Ca,
+
+			Cr,
+			Cg,
+			Cb,
+			Ca,
+
+			Cr,
+			Cg,
+			Cb,
+			Ca,
+
+			Cr,
+			Cg,
+			Cb,
+			0,
+
+			Cr,
+			Cg,
+			Cb,
+			0,
 		};
 
 		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
@@ -750,31 +815,97 @@ namespace
 		if (lineWidth > 3.0f)
 		{
 			float line_vertex2[] = {
-				p1.x - tx - cx, p1.y - ty - cy,
-				p1.x + tx + Rx, p1.y + ty + Ry,
-				p1.x + tx - cx, p1.y + ty - cy,
-				p1.x + tx + Rx - cx, p1.y + ty + Ry - cy,
-				p2.x - tx - Rx + cx, p2.y - ty - Ry + cy, //cap2
-				p2.x - tx - Rx, p2.y - ty - Ry,
-				p2.x - tx + cx, p2.y - ty + cy,
-				p2.x + tx + Rx, p2.y + ty + Ry,
-				p2.x + tx + cx, p2.y + ty + cy,
-				p2.x + tx + Rx + cx, p2.y + ty + Ry + cy,
+				p1.x - tx - cx,
+				p1.y - ty - cy,
+
+				p1.x + tx + Rx,
+				p1.y + ty + Ry,
+
+				p1.x + tx - cx,
+				p1.y + ty - cy,
+
+				p1.x + tx + Rx - cx,
+				p1.y + ty + Ry - cy,
+
+				p2.x - tx - Rx + cx,
+				p2.y - ty - Ry + cy, //cap2
+
+				p2.x - tx - Rx,
+				p2.y - ty - Ry,
+
+				p2.x - tx + cx,
+				p2.y - ty + cy,
+
+				p2.x + tx + Rx,
+				p2.y + ty + Ry,
+
+				p2.x + tx + cx,
+				p2.y + ty + cy,
+
+				p2.x + tx + Rx + cx,
+				p2.y + ty + Ry + cy,
 			};
 
 			float line_color2[] = {
-				Cr, Cg, Cb, 0, //cap1
-				Cr, Cg, Cb, 0,
-				Cr, Cg, Cb, Ca,
-				Cr, Cg, Cb, 0,
-				Cr, Cg, Cb, Ca,
-				Cr, Cg, Cb, 0,
-				Cr, Cg, Cb, 0, //cap2
-				Cr, Cg, Cb, 0,
-				Cr, Cg, Cb, Ca,
-				Cr, Cg, Cb, 0,
-				Cr, Cg, Cb, Ca,
-				Cr, Cg, Cb, 0,
+				Cr,
+				Cg,
+				Cb,
+				0, //cap1
+
+				Cr,
+				Cg,
+				Cb,
+				0,
+
+				Cr,
+				Cg,
+				Cb,
+				Ca,
+
+				Cr,
+				Cg,
+				Cb,
+				0,
+
+				Cr,
+				Cg,
+				Cb,
+				Ca,
+
+				Cr,
+				Cg,
+				Cb,
+				0,
+
+				Cr,
+				Cg,
+				Cb,
+				0, //cap2
+
+				Cr,
+				Cg,
+				Cb,
+				0,
+
+				Cr,
+				Cg,
+				Cb,
+				Ca,
+
+				Cr,
+				Cg,
+				Cb,
+				0,
+
+				Cr,
+				Cg,
+				Cb,
+				Ca,
+
+				Cr,
+				Cg,
+				Cb,
+				0,
 			};
 
 			glVertexPointer(2, GL_FLOAT, 0, line_vertex2);

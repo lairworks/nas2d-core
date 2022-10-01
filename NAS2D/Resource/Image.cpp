@@ -179,22 +179,22 @@ namespace
 	{
 		switch (bytesPerPixel)
 		{
-			case 1:
-				return *reinterpret_cast<const uint8_t*>(pixelAddress);
-			case 2:
-				return *reinterpret_cast<const uint16_t*>(pixelAddress);
-			case 3:
-			{
-				auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
-				uint32_t p0 = p[0], p1 = p[1], p2 = p[2];
-				return (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
-					(p0 << 16 | p1 << 8 | p2) :
-					(p0 | p1 << 8 | p2 << 16);
-			}
-			case 4:
-				return *reinterpret_cast<const uint32_t*>(pixelAddress);
-			default: // Should never be possible.
-				throw std::runtime_error("Unknown pixel format with bytesPerPixel: " + std::to_string(bytesPerPixel));
+		case 1:
+			return *reinterpret_cast<const uint8_t*>(pixelAddress);
+		case 2:
+			return *reinterpret_cast<const uint16_t*>(pixelAddress);
+		case 3:
+		{
+			auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
+			uint32_t p0 = p[0], p1 = p[1], p2 = p[2];
+			return (SDL_BYTEORDER == SDL_BIG_ENDIAN) ?
+				(p0 << 16 | p1 << 8 | p2) :
+				(p0 | p1 << 8 | p2 << 16);
+		}
+		case 4:
+			return *reinterpret_cast<const uint32_t*>(pixelAddress);
+		default: // Should never be possible.
+			throw std::runtime_error("Unknown pixel format with bytesPerPixel: " + std::to_string(bytesPerPixel));
 		}
 	}
 

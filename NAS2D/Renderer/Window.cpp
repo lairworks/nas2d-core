@@ -302,7 +302,7 @@ void Window::resizeable(bool resizable)
 	}
 
 #if defined(_MSC_VER)
-	#pragma warning(suppress: 26812) // C26812 Warns to use enum class (C++), but SDL is a C library
+	#pragma warning(suppress : 26812) // C26812 Warns to use enum class (C++), but SDL is a C library
 #endif
 	SDL_SetWindowResizable(underlyingWindow, resizable ? SDL_TRUE : SDL_FALSE);
 }

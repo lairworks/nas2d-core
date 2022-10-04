@@ -13,6 +13,7 @@
 #include <vector>
 #include <string>
 #include <string_view>
+#include <filesystem>
 
 
 namespace NAS2D
@@ -37,15 +38,15 @@ namespace NAS2D
 		Filesystem& operator=(Filesystem&&) = delete;
 		~Filesystem() = default;
 
-		std::string basePath() const;
-		std::string prefPath() const;
+		std::filesystem::path basePath() const;
+		std::filesystem::path prefPath() const;
 
-		int mountSoftFail(const std::string& path);
-		void mount(const std::string& path);
-		void mountReadWrite(const std::string& path);
-		void unmount(const std::string& path);
+		int mountSoftFail(const std::filesystem::path& path);
+		void mount(const std::filesystem::path& path);
+		void mountReadWrite(const std::filesystem::path& path);
+		void unmount(const std::filesystem::path& path);
 
-		std::vector<std::string> searchPath() const;
+		std::vector<std::filesystem::path> searchPath() const;
 
 		std::vector<std::string> directoryList(const std::string& dir, const std::string& filter = std::string{}) const;
 
@@ -59,9 +60,9 @@ namespace NAS2D
 		void writeFile(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite);
 
 	private:
-		std::string mBasePath;
-		std::string mPrefPath;
-		std::string mWritePath;
-		std::vector<std::string> mSearchPaths;
+		std::filesystem::path mBasePath;
+		std::filesystem::path mPrefPath;
+		std::filesystem::path mWritePath;
+		std::vector<std::filesystem::path> mSearchPaths;
 	};
 }

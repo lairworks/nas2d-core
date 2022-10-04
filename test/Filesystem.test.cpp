@@ -54,12 +54,12 @@ protected:
 
 
 constexpr auto EndsWithDirSeparator = []() {
-	return testing::EndsWith(NAS2D::Filesystem::dirSeparator());
+	return testing::Truly([](const auto& path) { return path.string().ends_with(NAS2D::Filesystem::dirSeparator()); });
 };
 
 
 constexpr auto HasPartialPath = [](const auto& subString) {
-	return testing::HasSubstr(subString);
+	return testing::Truly([&](const auto& path) { return path.string().find(subString) != std::string::npos; });
 };
 
 

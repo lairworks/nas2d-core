@@ -13,7 +13,6 @@
 #include <SDL2/SDL_filesystem.h>
 
 #include <algorithm>
-#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <stdexcept>
@@ -44,11 +43,11 @@ namespace
 	}
 
 
-	std::string findFirstPath(const std::string& path, const std::vector<std::string>& searchPaths)
+	std::string findFirstPath(const std::string& path, const std::vector<std::filesystem::path>& searchPaths)
 	{
 		for (const auto& searchPath : searchPaths)
 		{
-			const auto& filePath = std::filesystem::path{searchPath} / path;
+			const auto& filePath = searchPath / path;
 			if (std::filesystem::exists(filePath))
 			{
 				return filePath.string();
@@ -126,7 +125,7 @@ Filesystem::Filesystem(const std::string& appName, const std::string& organizati
  *
  * The base path may or may not be the current working directory.
  */
-std::string Filesystem::basePath() const
+std::filesystem::path Filesystem::basePath() const
 {
 	return mBasePath;
 }
@@ -139,7 +138,7 @@ std::string Filesystem::basePath() const
  *
  * \note This path is dependent on the Operating System (OS).
  */
-std::string Filesystem::prefPath() const
+std::filesystem::path Filesystem::prefPath() const
 {
 	return mPrefPath;
 }
@@ -152,7 +151,7 @@ std::string Filesystem::prefPath() const
  *
  * \return Nonzero on success, zero on error.
  */
-int Filesystem::mountSoftFail(const std::string& path)
+int Filesystem::mountSoftFail(const std::filesystem::path& path)
 {
 	mSearchPaths.push_back(path);
 	return std::filesystem::exists(path);
@@ -164,11 +163,11 @@ int Filesystem::mountSoftFail(const std::string& path)
  *
  * \param path	File path to add.
  */
-void Filesystem::mount(const std::string& path)
+void Filesystem::mount(const std::filesystem::path& path)
 {
 	if (mountSoftFail(path) == 0)
 	{
-		throw std::runtime_error("Error mounting search path: " + path + " : " + errorDescription());
+		throw std::runtime_error("Error mounting search path: " + path.string() + " : " + errorDescription());
 	}
 }
 
@@ -178,7 +177,7 @@ void Filesystem::mount(const std::string& path)
  *
  * \param path	File path to add.
  */
-void Filesystem::mountReadWrite(const std::string& path)
+void Filesystem::mountReadWrite(const std::filesystem::path& path)
 {
 	std::filesystem::create_directories(path);
 	mWritePath = path;
@@ -193,7 +192,7 @@ void Filesystem::mountReadWrite(const std::string& path)
  *
  * \param path	File path to remove.
  */
-void Filesystem::unmount(const std::string& path)
+void Filesystem::unmount(const std::filesystem::path& path)
 {
 	mSearchPaths.erase(std::remove(mSearchPaths.begin(), mSearchPaths.end(), path), mSearchPaths.end());
 }
@@ -202,7 +201,7 @@ void Filesystem::unmount(const std::string& path)
 /**
  * Returns a list of directories in the Search Path.
  */
-std::vector<std::string> Filesystem::searchPath() const
+std::vector<std::filesystem::path> Filesystem::searchPath() const
 {
 	return mSearchPaths;
 }
@@ -222,7 +221,7 @@ std::vector<std::string> Filesystem::directoryList(const std::string& dir, const
 
 	for (const auto& searchPath : mSearchPaths)
 	{
-		const auto dirPath = std::filesystem::path{searchPath} / dir;
+		const auto dirPath = searchPath / dir;
 		if (std::filesystem::is_directory(dirPath))
 		{
 			for (const auto& dirEntry : std::filesystem::directory_iterator(dirPath))
@@ -259,7 +258,7 @@ bool Filesystem::isDirectory(const std::string& path) const
  */
 void Filesystem::makeDirectory(const std::string& path)
 {
-	const auto& filePath = std::filesystem::path{mWritePath} / path;
+	const auto& filePath = mWritePath / path;
 	std::filesystem::create_directories(filePath);
 }
 
@@ -285,7 +284,7 @@ bool Filesystem::exists(const std::string& path) const
  */
 void Filesystem::del(const std::string& filename)
 {
-	const auto& filePath = std::filesystem::path{mWritePath} / filename;
+	const auto& filePath = mWritePath / filename;
 	if (!std::filesystem::remove(filePath))
 	{
 		throw std::runtime_error("Error deleting file: " + filename + " : " + errorDescription());
@@ -337,7 +336,7 @@ void Filesystem::writeFile(const std::string& filename, const std::string& data,
 		throw std::runtime_error("Overwrite flag not specified and file already exists: " + filename);
 	}
 
-	const auto& filePath = std::filesystem::path{mWritePath} / filename;
+	const auto& filePath = mWritePath / filename;
 	std::ofstream file{filePath, std::ios::out | std::ios::binary};
 	if (!file)
 	{

@@ -115,14 +115,15 @@ TEST_F(Filesystem, mountUnmount) {
 	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
 }
 
-TEST_F(Filesystem, dirSeparator) {
+
+TEST(FilesystemStatic, dirSeparator) {
 	// Varies by platform, so we can't know the exact value ("/", "\", ":")
 	// New platforms may choose a new unique value
 	// Some platforms may not even have a hierarchal filesystem ("")
 	EXPECT_NO_THROW(NAS2D::Filesystem::dirSeparator());
 }
 
-TEST_F(Filesystem, parentPath) {
+TEST(FilesystemStatic, parentPath) {
 	EXPECT_EQ("", NAS2D::Filesystem::parentPath(""));
 	EXPECT_EQ("", NAS2D::Filesystem::parentPath("file.extension"));
 	EXPECT_EQ("/", NAS2D::Filesystem::parentPath("/"));
@@ -132,7 +133,7 @@ TEST_F(Filesystem, parentPath) {
 	EXPECT_EQ("anotherFolder/", NAS2D::Filesystem::parentPath("anotherFolder/file.extension"));
 }
 
-TEST_F(Filesystem, extension) {
+TEST(FilesystemStatic, extension) {
 	EXPECT_EQ("", NAS2D::Filesystem::extension(""));
 	EXPECT_EQ("", NAS2D::Filesystem::extension("file"));
 	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir/file"));

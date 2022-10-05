@@ -4,6 +4,38 @@
 #include <gmock/gmock.h>
 
 
+TEST(FilesystemStatic, dirSeparator) {
+	// Varies by platform, so we can't know the exact value ("/", "\", ":")
+	// New platforms may choose a new unique value
+	// Some platforms may not even have a hierarchal filesystem ("")
+	EXPECT_NO_THROW(NAS2D::Filesystem::dirSeparator());
+}
+
+TEST(FilesystemStatic, parentPath) {
+	EXPECT_EQ("", NAS2D::Filesystem::parentPath(""));
+	EXPECT_EQ("", NAS2D::Filesystem::parentPath("file.extension"));
+	EXPECT_EQ("/", NAS2D::Filesystem::parentPath("/"));
+	EXPECT_EQ("data/", NAS2D::Filesystem::parentPath("data/"));
+	EXPECT_EQ("data/", NAS2D::Filesystem::parentPath("data/file.extension"));
+	EXPECT_EQ("data/subfolder/", NAS2D::Filesystem::parentPath("data/subfolder/file.extension"));
+	EXPECT_EQ("anotherFolder/", NAS2D::Filesystem::parentPath("anotherFolder/file.extension"));
+}
+
+TEST(FilesystemStatic, extension) {
+	EXPECT_EQ("", NAS2D::Filesystem::extension(""));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("file"));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir/file"));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir.ext/file"));
+	EXPECT_EQ(".", NAS2D::Filesystem::extension("file."));
+	EXPECT_EQ(".file", NAS2D::Filesystem::extension(".file"));
+
+	EXPECT_EQ(".a", NAS2D::Filesystem::extension("file.a"));
+	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("file.txt"));
+	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("subdir/file.txt"));
+	EXPECT_EQ(".reallyLongExtensionName", NAS2D::Filesystem::extension("file.reallyLongExtensionName"));
+}
+
+
 class Filesystem : public ::testing::Test {
 protected:
 	static constexpr auto AppName = "NAS2DUnitTests";
@@ -113,36 +145,4 @@ TEST_F(Filesystem, mountUnmount) {
 	EXPECT_FALSE(fs.exists(extraFile));
 
 	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
-}
-
-
-TEST(FilesystemStatic, dirSeparator) {
-	// Varies by platform, so we can't know the exact value ("/", "\", ":")
-	// New platforms may choose a new unique value
-	// Some platforms may not even have a hierarchal filesystem ("")
-	EXPECT_NO_THROW(NAS2D::Filesystem::dirSeparator());
-}
-
-TEST(FilesystemStatic, parentPath) {
-	EXPECT_EQ("", NAS2D::Filesystem::parentPath(""));
-	EXPECT_EQ("", NAS2D::Filesystem::parentPath("file.extension"));
-	EXPECT_EQ("/", NAS2D::Filesystem::parentPath("/"));
-	EXPECT_EQ("data/", NAS2D::Filesystem::parentPath("data/"));
-	EXPECT_EQ("data/", NAS2D::Filesystem::parentPath("data/file.extension"));
-	EXPECT_EQ("data/subfolder/", NAS2D::Filesystem::parentPath("data/subfolder/file.extension"));
-	EXPECT_EQ("anotherFolder/", NAS2D::Filesystem::parentPath("anotherFolder/file.extension"));
-}
-
-TEST(FilesystemStatic, extension) {
-	EXPECT_EQ("", NAS2D::Filesystem::extension(""));
-	EXPECT_EQ("", NAS2D::Filesystem::extension("file"));
-	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir/file"));
-	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir.ext/file"));
-	EXPECT_EQ(".", NAS2D::Filesystem::extension("file."));
-	EXPECT_EQ(".file", NAS2D::Filesystem::extension(".file"));
-
-	EXPECT_EQ(".a", NAS2D::Filesystem::extension("file.a"));
-	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("file.txt"));
-	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("subdir/file.txt"));
-	EXPECT_EQ(".reallyLongExtensionName", NAS2D::Filesystem::extension("file.reallyLongExtensionName"));
 }

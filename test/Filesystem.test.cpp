@@ -54,12 +54,12 @@ protected:
 
 
 constexpr auto EndsWithDirSeparator = []() {
-	return testing::EndsWith(NAS2D::Filesystem::dirSeparator());
+	return testing::Truly([](const auto& path) { return path.string().ends_with(NAS2D::Filesystem::dirSeparator()); });
 };
 
 
 constexpr auto HasPartialPath = [](const auto& subString) {
-	return testing::HasSubstr(subString);
+	return testing::Truly([&](const auto& path) { return path.string().find(subString) != std::string::npos; });
 };
 
 
@@ -85,13 +85,13 @@ TEST_F(Filesystem, directoryList) {
 	{
 		auto pathList = fs.directoryList("");
 		EXPECT_LE(1u, pathList.size());
-		EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
+		EXPECT_THAT(pathList, testing::Contains(std::filesystem::path{"file.txt"}));
 	}
 
 	{
 		auto pathList = fs.directoryList("", "txt");
 		EXPECT_LE(1u, pathList.size());
-		EXPECT_THAT(pathList, Contains(testing::StrEq("file.txt")));
+		EXPECT_THAT(pathList, testing::Contains(std::filesystem::path{"file.txt"}));
 	}
 }
 

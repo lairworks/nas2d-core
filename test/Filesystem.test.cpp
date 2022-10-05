@@ -4,6 +4,38 @@
 #include <gmock/gmock.h>
 
 
+TEST(FilesystemStatic, dirSeparator) {
+	// Varies by platform, so we can't know the exact value ("/", "\", ":")
+	// New platforms may choose a new unique value
+	// Some platforms may not even have a hierarchal filesystem ("")
+	EXPECT_NO_THROW(NAS2D::Filesystem::dirSeparator());
+}
+
+TEST(FilesystemStatic, parentPath) {
+	EXPECT_EQ("", NAS2D::Filesystem::parentPath(""));
+	EXPECT_EQ("", NAS2D::Filesystem::parentPath("file.extension"));
+	EXPECT_EQ("/", NAS2D::Filesystem::parentPath("/"));
+	EXPECT_EQ("data/", NAS2D::Filesystem::parentPath("data/"));
+	EXPECT_EQ("data/", NAS2D::Filesystem::parentPath("data/file.extension"));
+	EXPECT_EQ("data/subfolder/", NAS2D::Filesystem::parentPath("data/subfolder/file.extension"));
+	EXPECT_EQ("anotherFolder/", NAS2D::Filesystem::parentPath("anotherFolder/file.extension"));
+}
+
+TEST(FilesystemStatic, extension) {
+	EXPECT_EQ("", NAS2D::Filesystem::extension(""));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("file"));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir/file"));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir.ext/file"));
+	EXPECT_EQ(".", NAS2D::Filesystem::extension("file."));
+	EXPECT_EQ(".file", NAS2D::Filesystem::extension(".file"));
+
+	EXPECT_EQ(".a", NAS2D::Filesystem::extension("file.a"));
+	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("file.txt"));
+	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("subdir/file.txt"));
+	EXPECT_EQ(".reallyLongExtensionName", NAS2D::Filesystem::extension("file.reallyLongExtensionName"));
+}
+
+
 class Filesystem : public ::testing::Test {
 protected:
 	static constexpr auto AppName = "NAS2DUnitTests";
@@ -21,22 +53,32 @@ protected:
 };
 
 
+constexpr auto EndsWithDirSeparator = []() {
+	return testing::EndsWith(NAS2D::Filesystem::dirSeparator());
+};
+
+
+constexpr auto HasPartialPath = [](const auto& subString) {
+	return testing::HasSubstr(subString);
+};
+
+
 TEST_F(Filesystem, basePath) {
 	// Result is a directory, and should end with a directory separator
-	EXPECT_THAT(fs.basePath(), testing::EndsWith(fs.dirSeparator()));
+	EXPECT_THAT(fs.basePath(), EndsWithDirSeparator());
 }
 
 TEST_F(Filesystem, prefPath) {
 	// Result is a directory, and should end with a directory separator
-	EXPECT_THAT(fs.prefPath(), testing::EndsWith(fs.dirSeparator()));
-	EXPECT_THAT(fs.prefPath(), testing::HasSubstr(AppName));
+	EXPECT_THAT(fs.prefPath(), EndsWithDirSeparator());
+	EXPECT_THAT(fs.prefPath(), HasPartialPath(AppName));
 }
 
 TEST_F(Filesystem, searchPath) {
 	auto pathList = fs.searchPath();
 	EXPECT_EQ(3u, pathList.size());
-	EXPECT_THAT(pathList, Contains(testing::HasSubstr("NAS2DUnitTests")));
-	EXPECT_THAT(pathList, Contains(testing::HasSubstr("data/")));
+	EXPECT_THAT(pathList, Contains(HasPartialPath("NAS2DUnitTests")));
+	EXPECT_THAT(pathList, Contains(HasPartialPath("data/")));
 }
 
 TEST_F(Filesystem, directoryList) {
@@ -106,42 +148,11 @@ TEST_F(Filesystem, mountUnmount) {
 
 	EXPECT_FALSE(fs.exists(extraFile));
 	EXPECT_NO_THROW(fs.mount(extraMount));
-	EXPECT_THAT(fs.searchPath(), Contains(testing::HasSubstr(extraMount)));
+	EXPECT_THAT(fs.searchPath(), Contains(HasPartialPath(extraMount)));
 	EXPECT_TRUE(fs.exists(extraFile));
 
 	EXPECT_NO_THROW(fs.unmount(extraMount));
 	EXPECT_FALSE(fs.exists(extraFile));
 
 	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
-}
-
-TEST_F(Filesystem, dirSeparator) {
-	// Varies by platform, so we can't know the exact value ("/", "\", ":")
-	// New platforms may choose a new unique value
-	// Some platforms may not even have a hierarchal filesystem ("")
-	EXPECT_NO_THROW(fs.dirSeparator());
-}
-
-TEST_F(Filesystem, parentPath) {
-	EXPECT_EQ("", fs.parentPath(""));
-	EXPECT_EQ("", fs.parentPath("file.extension"));
-	EXPECT_EQ("/", fs.parentPath("/"));
-	EXPECT_EQ("data/", fs.parentPath("data/"));
-	EXPECT_EQ("data/", fs.parentPath("data/file.extension"));
-	EXPECT_EQ("data/subfolder/", fs.parentPath("data/subfolder/file.extension"));
-	EXPECT_EQ("anotherFolder/", fs.parentPath("anotherFolder/file.extension"));
-}
-
-TEST_F(Filesystem, extension) {
-	EXPECT_EQ("", fs.extension(""));
-	EXPECT_EQ("", fs.extension("file"));
-	EXPECT_EQ("", fs.extension("subdir/file"));
-	EXPECT_EQ("", fs.extension("subdir.ext/file"));
-	EXPECT_EQ(".", fs.extension("file."));
-	EXPECT_EQ(".file", fs.extension(".file"));
-
-	EXPECT_EQ(".a", fs.extension("file.a"));
-	EXPECT_EQ(".txt", fs.extension("file.txt"));
-	EXPECT_EQ(".txt", fs.extension("subdir/file.txt"));
-	EXPECT_EQ(".reallyLongExtensionName", fs.extension("file.reallyLongExtensionName"));
 }

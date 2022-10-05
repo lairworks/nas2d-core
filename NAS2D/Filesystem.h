@@ -26,6 +26,10 @@ namespace NAS2D
 			Overwrite,
 		};
 
+		static std::string dirSeparator();
+		static std::string parentPath(std::string_view filePath);
+		static std::string extension(std::string_view filePath);
+
 		Filesystem(const std::string& appName, const std::string& organizationName);
 		Filesystem(const Filesystem&) = delete;
 		Filesystem& operator=(const Filesystem&) = delete;
@@ -53,10 +57,6 @@ namespace NAS2D
 
 		std::string readFile(const std::string& filename) const;
 		void writeFile(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite);
-
-		std::string dirSeparator() const;
-		std::string parentPath(std::string_view filePath) const;
-		std::string extension(std::string_view filePath) const;
 
 	private:
 		std::string mBasePath;

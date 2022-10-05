@@ -65,6 +65,53 @@ namespace
 }
 
 
+/**
+ * Gets the dir separator for the current platform
+ *
+ * The dir separator separates the directories within a path. This is typically either "\\" for Windows, or "/" for Linux.
+ *
+ * \note The path separator may be more than one character
+ */
+std::string Filesystem::dirSeparator()
+{
+	return {std::filesystem::path::preferred_separator};
+}
+
+
+/**
+ * Convenience function to get the parent directory of a file.
+ *
+ * \param filePath A file path.
+ *
+ * \return The path up to and including the last '/', or empty string if no '/'
+ */
+std::string Filesystem::parentPath(std::string_view filePath)
+{
+	return std::string{filePath.substr(0, filePath.rfind('/') + 1)};
+}
+
+
+/**
+ * Gets the extension of a given file path.
+ *
+ * \param	filePath	Path to check for an extension.
+ *
+ * \return	Returns a string containing the file extension, including the dot (".").
+ *			An empty string will be returned if the file has no extension.
+ */
+std::string Filesystem::extension(std::string_view filePath)
+{
+	const auto fileName = filePath.substr(filePath.rfind('/') + 1);
+	const auto pos = fileName.rfind('.');
+
+	if (pos != std::string::npos)
+	{
+		return std::string{fileName.substr(pos)};
+	}
+	return std::string{};
+}
+
+
 Filesystem::Filesystem(const std::string& appName, const std::string& organizationName) :
 	mBasePath{SdlString{SDL_GetBasePath()}.get()},
 	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()},
@@ -302,51 +349,4 @@ void Filesystem::writeFile(const std::string& filename, const std::string& data,
 	{
 		throw std::runtime_error("Error writing file: " + filename + " : " + errorDescription());
 	}
-}
-
-
-/**
- * Gets the dir separator for the current platform
- *
- * The dir separator separates the directories within a path. This is typically either "\\" for Windows, or "/" for Linux.
- *
- * \note The path separator may be more than one character
- */
-std::string Filesystem::dirSeparator() const
-{
-	return {std::filesystem::path::preferred_separator};
-}
-
-
-/**
- * Convenience function to get the parent directory of a file.
- *
- * \param filePath A file path.
- *
- * \return The path up to and including the last '/', or empty string if no '/'
- */
-std::string Filesystem::parentPath(std::string_view filePath) const
-{
-	return std::string{filePath.substr(0, filePath.rfind('/') + 1)};
-}
-
-
-/**
- * Gets the extension of a given file path.
- *
- * \param	filePath	Path to check for an extension.
- *
- * \return	Returns a string containing the file extension, including the dot (".").
- *			An empty string will be returned if the file has no extension.
- */
-std::string Filesystem::extension(std::string_view filePath) const
-{
-	const auto fileName = filePath.substr(filePath.rfind('/') + 1);
-	const auto pos = fileName.rfind('.');
-
-	if (pos != std::string::npos)
-	{
-		return std::string{fileName.substr(pos)};
-	}
-	return std::string{};
 }

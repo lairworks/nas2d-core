@@ -23,12 +23,12 @@ protected:
 
 TEST_F(Filesystem, basePath) {
 	// Result is a directory, and should end with a directory separator
-	EXPECT_THAT(fs.basePath(), testing::EndsWith(fs.dirSeparator()));
+	EXPECT_THAT(fs.basePath(), testing::EndsWith(NAS2D::Filesystem::dirSeparator()));
 }
 
 TEST_F(Filesystem, prefPath) {
 	// Result is a directory, and should end with a directory separator
-	EXPECT_THAT(fs.prefPath(), testing::EndsWith(fs.dirSeparator()));
+	EXPECT_THAT(fs.prefPath(), testing::EndsWith(NAS2D::Filesystem::dirSeparator()));
 	EXPECT_THAT(fs.prefPath(), testing::HasSubstr(AppName));
 }
 
@@ -119,29 +119,29 @@ TEST_F(Filesystem, dirSeparator) {
 	// Varies by platform, so we can't know the exact value ("/", "\", ":")
 	// New platforms may choose a new unique value
 	// Some platforms may not even have a hierarchal filesystem ("")
-	EXPECT_NO_THROW(fs.dirSeparator());
+	EXPECT_NO_THROW(NAS2D::Filesystem::dirSeparator());
 }
 
 TEST_F(Filesystem, parentPath) {
-	EXPECT_EQ("", fs.parentPath(""));
-	EXPECT_EQ("", fs.parentPath("file.extension"));
-	EXPECT_EQ("/", fs.parentPath("/"));
-	EXPECT_EQ("data/", fs.parentPath("data/"));
-	EXPECT_EQ("data/", fs.parentPath("data/file.extension"));
-	EXPECT_EQ("data/subfolder/", fs.parentPath("data/subfolder/file.extension"));
-	EXPECT_EQ("anotherFolder/", fs.parentPath("anotherFolder/file.extension"));
+	EXPECT_EQ("", NAS2D::Filesystem::parentPath(""));
+	EXPECT_EQ("", NAS2D::Filesystem::parentPath("file.extension"));
+	EXPECT_EQ("/", NAS2D::Filesystem::parentPath("/"));
+	EXPECT_EQ("data/", NAS2D::Filesystem::parentPath("data/"));
+	EXPECT_EQ("data/", NAS2D::Filesystem::parentPath("data/file.extension"));
+	EXPECT_EQ("data/subfolder/", NAS2D::Filesystem::parentPath("data/subfolder/file.extension"));
+	EXPECT_EQ("anotherFolder/", NAS2D::Filesystem::parentPath("anotherFolder/file.extension"));
 }
 
 TEST_F(Filesystem, extension) {
-	EXPECT_EQ("", fs.extension(""));
-	EXPECT_EQ("", fs.extension("file"));
-	EXPECT_EQ("", fs.extension("subdir/file"));
-	EXPECT_EQ("", fs.extension("subdir.ext/file"));
-	EXPECT_EQ(".", fs.extension("file."));
-	EXPECT_EQ(".file", fs.extension(".file"));
+	EXPECT_EQ("", NAS2D::Filesystem::extension(""));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("file"));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir/file"));
+	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir.ext/file"));
+	EXPECT_EQ(".", NAS2D::Filesystem::extension("file."));
+	EXPECT_EQ(".file", NAS2D::Filesystem::extension(".file"));
 
-	EXPECT_EQ(".a", fs.extension("file.a"));
-	EXPECT_EQ(".txt", fs.extension("file.txt"));
-	EXPECT_EQ(".txt", fs.extension("subdir/file.txt"));
-	EXPECT_EQ(".reallyLongExtensionName", fs.extension("file.reallyLongExtensionName"));
+	EXPECT_EQ(".a", NAS2D::Filesystem::extension("file.a"));
+	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("file.txt"));
+	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("subdir/file.txt"));
+	EXPECT_EQ(".reallyLongExtensionName", NAS2D::Filesystem::extension("file.reallyLongExtensionName"));
 }

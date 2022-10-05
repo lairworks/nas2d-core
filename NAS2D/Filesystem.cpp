@@ -100,14 +100,7 @@ std::string Filesystem::parentPath(std::string_view filePath)
  */
 std::string Filesystem::extension(std::string_view filePath)
 {
-	const auto fileName = filePath.substr(filePath.rfind('/') + 1);
-	const auto pos = fileName.rfind('.');
-
-	if (pos != std::string::npos)
-	{
-		return std::string{fileName.substr(pos)};
-	}
-	return std::string{};
+	return std::filesystem::path{filePath}.extension().string();
 }
 
 

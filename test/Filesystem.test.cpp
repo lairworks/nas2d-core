@@ -27,7 +27,7 @@ TEST(FilesystemStatic, extension) {
 	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir/file"));
 	EXPECT_EQ("", NAS2D::Filesystem::extension("subdir.ext/file"));
 	EXPECT_EQ(".", NAS2D::Filesystem::extension("file."));
-	EXPECT_EQ(".file", NAS2D::Filesystem::extension(".file"));
+	EXPECT_EQ("", NAS2D::Filesystem::extension(".file"));
 
 	EXPECT_EQ(".a", NAS2D::Filesystem::extension("file.a"));
 	EXPECT_EQ(".txt", NAS2D::Filesystem::extension("file.txt"));

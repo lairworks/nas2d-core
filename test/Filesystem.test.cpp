@@ -53,14 +53,19 @@ protected:
 };
 
 
+constexpr auto EndsWithDirSeparator = []() {
+	return testing::EndsWith(NAS2D::Filesystem::dirSeparator());
+};
+
+
 TEST_F(Filesystem, basePath) {
 	// Result is a directory, and should end with a directory separator
-	EXPECT_THAT(fs.basePath(), testing::EndsWith(NAS2D::Filesystem::dirSeparator()));
+	EXPECT_THAT(fs.basePath(), EndsWithDirSeparator());
 }
 
 TEST_F(Filesystem, prefPath) {
 	// Result is a directory, and should end with a directory separator
-	EXPECT_THAT(fs.prefPath(), testing::EndsWith(NAS2D::Filesystem::dirSeparator()));
+	EXPECT_THAT(fs.prefPath(), EndsWithDirSeparator());
 	EXPECT_THAT(fs.prefPath(), testing::HasSubstr(AppName));
 }
 

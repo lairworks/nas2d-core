@@ -48,16 +48,16 @@ namespace NAS2D
 
 		std::vector<std::filesystem::path> searchPath() const;
 
-		std::vector<std::string> directoryList(const std::string& dir, const std::string& filter = std::string{}) const;
+		std::vector<std::filesystem::path> directoryList(const std::filesystem::path& dir, const std::string& filter = std::string{}) const;
 
-		bool isDirectory(const std::string& path) const;
-		void makeDirectory(const std::string& path);
+		bool isDirectory(const std::filesystem::path& path) const;
+		void makeDirectory(const std::filesystem::path& path);
 
-		bool exists(const std::string& path) const;
-		void del(const std::string& path);
+		bool exists(const std::filesystem::path& path) const;
+		void del(const std::filesystem::path& path);
 
-		std::string readFile(const std::string& filename) const;
-		void writeFile(const std::string& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite);
+		std::string readFile(const std::filesystem::path& filename) const;
+		void writeFile(const std::filesystem::path& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite);
 
 	private:
 		std::filesystem::path mBasePath;

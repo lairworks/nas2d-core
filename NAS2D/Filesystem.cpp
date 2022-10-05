@@ -312,7 +312,7 @@ void Filesystem::writeFile(const std::string& filename, const std::string& data,
  *
  * \note The path separator may be more than one character
  */
-std::string Filesystem::dirSeparator() const
+std::string Filesystem::dirSeparator()
 {
 	return {std::filesystem::path::preferred_separator};
 }
@@ -325,7 +325,7 @@ std::string Filesystem::dirSeparator() const
  *
  * \return The path up to and including the last '/', or empty string if no '/'
  */
-std::string Filesystem::parentPath(std::string_view filePath) const
+std::string Filesystem::parentPath(std::string_view filePath)
 {
 	return std::string{filePath.substr(0, filePath.rfind('/') + 1)};
 }
@@ -339,7 +339,7 @@ std::string Filesystem::parentPath(std::string_view filePath) const
  * \return	Returns a string containing the file extension, including the dot (".").
  *			An empty string will be returned if the file has no extension.
  */
-std::string Filesystem::extension(std::string_view filePath) const
+std::string Filesystem::extension(std::string_view filePath)
 {
 	const auto fileName = filePath.substr(filePath.rfind('/') + 1);
 	const auto pos = fileName.rfind('.');

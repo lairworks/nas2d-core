@@ -58,6 +58,11 @@ constexpr auto EndsWithDirSeparator = []() {
 };
 
 
+constexpr auto HasPartialPath = [](const auto& subString) {
+	return testing::HasSubstr(subString);
+};
+
+
 TEST_F(Filesystem, basePath) {
 	// Result is a directory, and should end with a directory separator
 	EXPECT_THAT(fs.basePath(), EndsWithDirSeparator());
@@ -66,14 +71,14 @@ TEST_F(Filesystem, basePath) {
 TEST_F(Filesystem, prefPath) {
 	// Result is a directory, and should end with a directory separator
 	EXPECT_THAT(fs.prefPath(), EndsWithDirSeparator());
-	EXPECT_THAT(fs.prefPath(), testing::HasSubstr(AppName));
+	EXPECT_THAT(fs.prefPath(), HasPartialPath(AppName));
 }
 
 TEST_F(Filesystem, searchPath) {
 	auto pathList = fs.searchPath();
 	EXPECT_EQ(3u, pathList.size());
-	EXPECT_THAT(pathList, Contains(testing::HasSubstr("NAS2DUnitTests")));
-	EXPECT_THAT(pathList, Contains(testing::HasSubstr("data/")));
+	EXPECT_THAT(pathList, Contains(HasPartialPath("NAS2DUnitTests")));
+	EXPECT_THAT(pathList, Contains(HasPartialPath("data/")));
 }
 
 TEST_F(Filesystem, directoryList) {
@@ -143,7 +148,7 @@ TEST_F(Filesystem, mountUnmount) {
 
 	EXPECT_FALSE(fs.exists(extraFile));
 	EXPECT_NO_THROW(fs.mount(extraMount));
-	EXPECT_THAT(fs.searchPath(), Contains(testing::HasSubstr(extraMount)));
+	EXPECT_THAT(fs.searchPath(), Contains(HasPartialPath(extraMount)));
 	EXPECT_TRUE(fs.exists(extraFile));
 
 	EXPECT_NO_THROW(fs.unmount(extraMount));

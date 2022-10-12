@@ -270,16 +270,15 @@ namespace
 
 			const auto& image = imageCache.load(iterator->second);
 
-			const auto frameRect = Rectangle{x, y, width, height};
+			const auto frameRect = Rectangle<int>::Create({x, y}, Vector{width, height});
 			const auto imageRect = Rectangle<int>::Create({0, 0}, image.size());
 			if (!imageRect.contains(frameRect))
 			{
 				throw std::runtime_error("Sprite frame bounds exceeds image sheet bounds: " + endTag(currentRow));
 			}
 
-			const auto bounds = Rectangle<int>::Create(Point<int>{x, y}, Vector{width, height});
 			const auto anchorOffset = Vector{anchorx, anchory};
-			frameList.push_back(AnimationSet::Frame{image, bounds, anchorOffset, delay});
+			frameList.push_back(AnimationSet::Frame{image, frameRect, anchorOffset, delay});
 		}
 
 		return frameList;

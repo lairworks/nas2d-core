@@ -505,8 +505,8 @@ void RendererOpenGL::update()
 
 void RendererOpenGL::onResize(Vector<int> newSize)
 {
-	setViewport(Rectangle{0, 0, newSize.x, newSize.y});
-	setOrthoProjection(Rectangle<float>::Create(Point{0.0f, 0.0f}, newSize.to<float>()));
+	setViewport(Rectangle<int>::Create({0, 0}, newSize));
+	setOrthoProjection(Rectangle<float>::Create({0.0f, 0.0f}, newSize.to<float>()));
 	setResolution(newSize);
 }
 

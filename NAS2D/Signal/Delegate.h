@@ -79,7 +79,7 @@ namespace NAS2D
 		class GenericClass;
 #endif
 
-		constexpr int SINGLE_MEMFUNCPTR_SIZE = sizeof(void(GenericClass::*)());
+		static constexpr int SINGLE_MEMFUNCPTR_SIZE = sizeof(void(GenericClass::*)());
 
 		template <int N>
 		struct SimplifyMemFunc

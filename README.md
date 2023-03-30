@@ -1,8 +1,8 @@
 # NAS2D: Core
 
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/lairworks/nas2d-core?branch=master&svg=true)](https://ci.appveyor.com/project/OPU/nas2d-core)
-[![CircleCI](https://circleci.com/gh/lairworks/nas2d-core/tree/master.svg?style=svg)](https://circleci.com/gh/lairworks/nas2d-core/tree/master)
-[![Codacy](https://api.codacy.com/project/badge/Grade/bcf32f1b0a864f3ead9d45ae6099d07c)](https://www.codacy.com/app/ldicker83/nas2d-core)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/lairworks/nas2d-core/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/lairworks/nas2d-core/tree/main)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5537c92504e84f1499c99396713cbd86)](https://app.codacy.com/gh/lairworks/nas2d-core/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 *NAS2D* is an open source, object oriented 2D game development framework written in portable C++. It was designed to make the development of games and other applications that needed a 2D interface easier by providing a high-level interface. It handles the low-level tasks of setting up the video display, input, sound mixing, file loading, etc.
 

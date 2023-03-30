@@ -1,5 +1,6 @@
 # NAS2D: Core
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5ed92dd4b4249e186afd9f15905c492)](https://app.codacy.com/gh/lairworks/nas2d-core?utm_source=github.com&utm_medium=referral&utm_content=lairworks/nas2d-core&utm_campaign=Badge_Grade)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/lairworks/nas2d-core?branch=master&svg=true)](https://ci.appveyor.com/project/OPU/nas2d-core)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/lairworks/nas2d-core/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/lairworks/nas2d-core/tree/main)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5537c92504e84f1499c99396713cbd86)](https://app.codacy.com/gh/lairworks/nas2d-core/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)

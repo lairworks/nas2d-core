@@ -14,10 +14,15 @@
 #include "../Math/MathUtils.h"
 #include "../Math/PointInRectangleRange.h"
 
+#if defined(__XCODE_BUILD__)
+#include <GLEW/GLEW.h>
+#include <SDL2_image/SDL_image.h>
+#include <SDL2_ttf/SDL_ttf.h>
+#else
 #include <GL/glew.h>
-
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#endif
 
 #include <iostream>
 #include <cmath>

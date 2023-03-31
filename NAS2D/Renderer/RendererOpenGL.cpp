@@ -20,10 +20,15 @@
 #include "../Math/MathUtils.h"
 #include "../Utility.h"
 
-#include <GL/glew.h>
-
 #include <SDL2/SDL.h>
+
+#if defined(__XCODE_BUILD__)
+#include <GLEW/GLEW.h>
+#include <SDL2_image/SDL_image.h>
+#else
+#include <GL/glew.h>
 #include <SDL2/SDL_image.h>
+#endif
 
 #include <iostream>
 #include <algorithm>

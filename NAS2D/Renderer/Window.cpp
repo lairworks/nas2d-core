@@ -7,7 +7,12 @@
 #include "../EventHandler.h"
 
 #include <SDL2/SDL.h>
+
+#if defined(__XCODE_BUILD__)
+#include <SDL2_image/SDL_image.h>
+#else
 #include <SDL2/SDL_image.h>
+#endif
 
 #if defined(WINDOWS) || defined(WIN32)
 	#include <Windows.h>

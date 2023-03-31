@@ -13,8 +13,13 @@
 #include "../Filesystem.h"
 #include "../Utility.h"
 
+#if defined(__XCODE_BUILD__)
+#include <GLEW/GLEW.h>
+#include <SDL2_image/SDL_image.h>
+#else
 #include <GL/glew.h>
 #include <SDL2/SDL_image.h>
+#endif
 
 #include <cstdint>
 #include <utility>

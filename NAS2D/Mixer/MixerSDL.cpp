@@ -18,7 +18,12 @@
 #include "../ContainerUtils.h"
 
 #include <SDL2/SDL.h>
+
+#if defined(__XCODE_BUILD__)
+#include <SDL2_mixer/SDL_mixer.h>
+#else
 #include <SDL2/SDL_mixer.h>
+#endif
 
 #include <array>
 #include <algorithm>

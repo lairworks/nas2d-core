@@ -2,6 +2,9 @@
 /.build/
 /lib/
 
+# VS Code
+.vscode/
+
 # Windows - Visual Studio
 Temporary/
 Release/

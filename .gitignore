@@ -15,4 +15,6 @@ x64/
 
 # Vcpkg project integration
 /packages/**
+
+# MacOS
 .DS_Store

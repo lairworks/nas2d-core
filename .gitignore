@@ -2,6 +2,9 @@
 /.build/
 /lib/
 
+# VS Code
+.vscode/
+
 # Windows - Visual Studio
 Temporary/
 Release/
@@ -15,4 +18,6 @@ x64/
 
 # Vcpkg project integration
 /packages/**
+
+# MacOS
 .DS_Store

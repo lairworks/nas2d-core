@@ -427,6 +427,11 @@ void RendererOpenGL::drawGradient(const Rectangle<float>& rect, Color c1, Color 
 
 void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 {
+	if (rect.empty())
+	{
+		return;
+	}
+
 	glDisable(GL_TEXTURE_2D);
 
 	setColor(color);
@@ -443,6 +448,11 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 
 void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 {
+	if (rect.empty())
+	{
+		return;
+	}
+
 	setColor(color);
 	glDisable(GL_TEXTURE_2D);
 

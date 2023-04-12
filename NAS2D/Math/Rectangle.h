@@ -74,6 +74,11 @@ namespace NAS2D
 			return (width == 0) || (height == 0);
 		}
 
+		constexpr bool empty() const
+		{
+			return (width <= 0) || (height <= 0);
+		}
+
 		void size(NAS2D::Vector<BaseType> newSize)
 		{
 			width = newSize.x;

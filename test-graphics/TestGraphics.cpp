@@ -68,6 +68,13 @@ NAS2D::State* TestGraphics::update()
 	r.drawCircle({150, 120}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
 	r.drawCircle({150, 170}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
 
+	for (auto i = 0; i < 10; ++i)
+	{
+		NAS2D::Rectangle<int> boxRect = {200 + 10 * i, 50, i, i};
+		r.drawBox(boxRect, NAS2D::Color::Red);
+		r.drawBoxFilled(boxRect.inset(1), NAS2D::Color::White);
+	}
+
 	return this;
 }
 

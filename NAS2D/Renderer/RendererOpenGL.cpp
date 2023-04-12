@@ -435,10 +435,11 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 	glDisable(GL_TEXTURE_2D);
 
 	setColor(color);
+
 	const auto p1 = rect.startPoint();
 	const auto p2 = rect.endPoint();
-
 	const GLfloat corners[] = { p1.x, p1.y, p2.x, p1.y, p2.x, p2.y, p1.x, p2.y };
+
 	glVertexPointer(2, GL_FLOAT, 0, corners);
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 

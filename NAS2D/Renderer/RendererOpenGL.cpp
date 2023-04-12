@@ -428,17 +428,15 @@ void RendererOpenGL::drawGradient(const Rectangle<float>& rect, Color c1, Color 
 void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 {
 	glDisable(GL_TEXTURE_2D);
-	glEnableClientState(GL_COLOR_ARRAY);
 
-	const auto adjustedCrossYPoint = rect.crossYPoint() + Vector{0.0f, 0.5f};
-	const auto adjustedEndPoint = rect.endPoint() + Vector{0.0f, 0.5f};
+	setColor(color);
+	const auto p1 = rect.startPoint();
+	const auto p2 = rect.endPoint();
 
-	line(rect.startPoint(), rect.crossXPoint(), 1.0f, color);
-	line(rect.startPoint(), adjustedCrossYPoint, 1.0f, color);
-	line(adjustedCrossYPoint, adjustedEndPoint, 1.0f, color);
-	line(rect.crossXPoint(), adjustedEndPoint, 1.0f, color);
+	const GLfloat corners[] = { p1.x, p1.y, p2.x, p1.y, p2.x, p2.y, p1.x, p2.y };
+	glVertexPointer(2, GL_FLOAT, 0, corners);
+	glDrawArrays(GL_LINE_LOOP, 0, 4);
 
-	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 }
 

@@ -427,13 +427,19 @@ void RendererOpenGL::drawGradient(const Rectangle<float>& rect, Color c1, Color 
 
 void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 {
+	if (rect.empty())
+	{
+		return;
+	}
+
 	glDisable(GL_TEXTURE_2D);
 
 	setColor(color);
-	const auto p1 = rect.startPoint();
-	const auto p2 = rect.endPoint();
 
+	const auto p1 = rect.startPoint() +  Vector{0.5, 0.5}; // OpenGL centers pixels between integer values
+	const auto p2 = rect.endPoint(); // No adjustment here so as to exclude the bottom right sides
 	const GLfloat corners[] = { p1.x, p1.y, p2.x, p1.y, p2.x, p2.y, p1.x, p2.y };
+
 	glVertexPointer(2, GL_FLOAT, 0, corners);
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 
@@ -443,6 +449,11 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 
 void RendererOpenGL::drawBoxFilled(const Rectangle<float>& rect, Color color)
 {
+	if (rect.empty())
+	{
+		return;
+	}
+
 	setColor(color);
 	glDisable(GL_TEXTURE_2D);
 

@@ -15,7 +15,7 @@
 #endif
 
 #if defined(WINDOWS) || defined(WIN32)
-	#include <Windows.h>
+	#include <windows.h>
 	#include <SDL2/SDL_syswm.h>
 #endif
 

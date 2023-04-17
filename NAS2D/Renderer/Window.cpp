@@ -14,7 +14,7 @@
 #include <SDL2/SDL_image.h>
 #endif
 
-#if defined(WINDOWS) || defined(WIN32)
+#if defined(_WIN32)
 	#include <windows.h>
 	#include <SDL2/SDL_syswm.h>
 #endif
@@ -38,7 +38,7 @@ namespace
 	}
 
 
-#if defined(WINDOWS) || defined(WIN32)
+#if defined(_WIN32)
 	/**
 	 * Gets a Windows API HWND handle to the application window.
 	 */
@@ -62,7 +62,7 @@ namespace
 	 */
 	void doModalError(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
 	{
-#if defined(WINDOWS) || defined(WIN32)
+#if defined(_WIN32)
 		MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_OK | MB_ICONERROR | MB_TASKMODAL);
 #else
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title.c_str(), message.c_str(), sdlWindow);
@@ -75,7 +75,7 @@ namespace
 	 */
 	void doModalAlert(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
 	{
-#if defined(WINDOWS) || defined(WIN32)
+#if defined(_WIN32)
 		MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_OK | MB_TASKMODAL);
 #else
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, title.c_str(), message.c_str(), sdlWindow);
@@ -89,7 +89,7 @@ namespace
 	bool doModalYesNo(const std::string& title, const std::string& message, SDL_Window* sdlWindow)
 	{
 		bool isYes = false;
-#if defined(WINDOWS) || defined(WIN32)
+#if defined(_WIN32)
 		isYes = (MessageBoxA(getWin32Handle(sdlWindow), message.c_str(), title.c_str(), MB_YESNO | MB_ICONINFORMATION | MB_TASKMODAL) == IDYES);
 #else
 		constexpr std::array<SDL_MessageBoxButtonData, 2> buttons = {{

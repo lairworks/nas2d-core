@@ -17,4 +17,4 @@ if not defined PLATFORM (
 
 :Install
 REM Install dependencies (recursively)
-vcpkg install --recurse --triplet %PLATFORM%-windows  glew SDL2 SDL2-image SDL2-ttf SDL2-mixer gtest
+vcpkg install --recurse --triplet %PLATFORM%-windows  glew sdl2 sdl2-image sdl2-ttf sdl2-mixer gtest

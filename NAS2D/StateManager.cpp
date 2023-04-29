@@ -14,8 +14,6 @@
 #include "State.h"
 #include "Mixer/Mixer.h"
 
-#include <iostream>
-
 using namespace std;
 using namespace NAS2D;
 

@@ -80,9 +80,8 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	{
 		Utility<Mixer>::init<MixerSDL>();
 	}
-	catch (std::exception& e)
+	catch (std::exception& /*exception*/)
 	{
-		std::cout << "Unable to create SDL Audio Mixer: " << e.what() << ". Setting NULL driver." << std::endl;
 		Utility<Mixer>::init<MixerNull>();
 	}
 

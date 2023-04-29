@@ -42,11 +42,6 @@ using namespace NAS2D;
  */
 Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& configPath, const std::string& dataPath)
 {
-	std::cout << "NAS2D BUILD: " << __DATE__ << " | " << __TIME__ << '\n';
-	std::cout << "NAS2D VERSION: " << versionString() << "\n\n";
-	std::cout << "Initializing subsystems...\n\n";
-	std::cout.flush();
-
 	SDL_Init(0);
 
 	auto& fs = Utility<Filesystem>::init<Filesystem>(appName, organizationName);
@@ -91,17 +86,9 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 		Utility<Mixer>::init<MixerNull>();
 	}
 
-	std::cout << "Initializing Event Handler... ";
 	Utility<EventHandler>::get();
-	std::cout << "done.\n\n";
-	std::cout.flush();
 
 	Utility<Renderer>::init<RendererOpenGL>(title);
-
-
-	std::cout << "\nSubsystems initialized.\n\n";
-	std::cout << "===================================\n\n";
-	std::cout.flush();
 }
 
 
@@ -110,9 +97,6 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
  */
 Game::~Game()
 {
-	std::cout << "\n===================================\n\n";
-	std::cout << "Shutting down..." << std::endl;
-
 	// Destroy all of our various components in reverse order.
 	Utility<Renderer>::clear();
 	Utility<EventHandler>::clear();
@@ -122,8 +106,6 @@ Game::~Game()
 
 	// Shut down all SDL subsystems.
 	SDL_Quit();
-
-	std::cout << "\nGame object has been terminated." << std::endl;
 }
 
 
@@ -149,9 +131,6 @@ void Game::mount(const std::string& path)
  */
 void Game::go(State* state)
 {
-	std::cout << "** GAME STATE START **\n\n";
-	std::cout.flush();
-
 	StateManager stateManager;
 
 	stateManager.setState(state);

@@ -38,9 +38,13 @@ TEST(Configuration, OperatorSubscript) {
 
 		EXPECT_TRUE((std::is_same_v<NAS2D::Dictionary&, decltype(value)>));
 		EXPECT_EQ(value, DefaultGraphics);
+		EXPECT_FALSE(config.anyLoadedConfig());
+		EXPECT_FALSE(config.anyNonDefaultConfig());
 
 		EXPECT_NO_THROW(config["graphics"]["customAttribute"] = "custom value");
 		EXPECT_NE(value, DefaultGraphics);
+		EXPECT_FALSE(config.anyLoadedConfig());
+		EXPECT_TRUE(config.anyNonDefaultConfig());
 	}
 }
 
@@ -68,10 +72,20 @@ TEST(Configuration, loadData) {
 
 	{
 		// Defaults (before data load)
+		EXPECT_FALSE(config.anyLoadedConfig());
+		EXPECT_FALSE(config.anyNonDefaultConfig());
 		const auto& options = config["options"];
 		EXPECT_EQ("Some string value", options.get("Key1"));
 		EXPECT_EQ("true", options.get("Key2"));
 		EXPECT_EQ("-1", options.get("Key3"));
+	}
+
+	// Load config data matching defaults
+	config.loadData(config.saveData());
+	{
+		// Defaults (after data load)
+		EXPECT_TRUE(config.anyLoadedConfig());
+		EXPECT_FALSE(config.anyNonDefaultConfig());
 	}
 
 	config.loadData(
@@ -87,6 +101,8 @@ TEST(Configuration, loadData) {
 
 	{
 		// Defaults (after data load)
+		EXPECT_TRUE(config.anyLoadedConfig());
+		EXPECT_TRUE(config.anyNonDefaultConfig());
 		const auto& options = config["options"];
 		EXPECT_EQ("Some string value", options.get("Key1"));
 		EXPECT_EQ("true", options.get("Key2"));

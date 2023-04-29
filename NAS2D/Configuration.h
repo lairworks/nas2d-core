@@ -37,6 +37,9 @@ namespace NAS2D
 		const Dictionary& operator[](const std::string& key) const;
 		Dictionary& operator[](const std::string& key);
 
+		bool anyLoadedConfig() const;
+		bool anyNonDefaultConfig() const;
+
 		void loadData(const std::string& fileData);
 		void load(const std::string& filePath);
 		std::string saveData() const;

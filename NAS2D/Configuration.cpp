@@ -40,6 +40,18 @@ Dictionary& Configuration::operator[](const std::string& key)
 }
 
 
+bool Configuration::anyLoadedConfig() const
+{
+	return !mLoadedSettings.empty();
+}
+
+
+bool Configuration::anyNonDefaultConfig() const
+{
+	return mSettings != mDefaults;
+}
+
+
 /**
  * Reads a given XML configuration file.
  *

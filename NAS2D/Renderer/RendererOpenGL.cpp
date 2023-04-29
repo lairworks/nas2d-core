@@ -593,7 +593,6 @@ void RendererOpenGL::initGL()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	driverName(glString(GL_RENDERER));
 	onResize(size());
 	dumpGraphicsInfo(*this);
 }

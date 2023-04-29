@@ -42,8 +42,6 @@ namespace NAS2D
 		Renderer& operator=(Renderer&& rhs) = default;
 		virtual ~Renderer();
 
-		const std::string& driverName() const;
-
 		virtual void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
 		virtual void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) = 0;
 		virtual void drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, float degrees, Color color = Color::Normal) = 0;
@@ -79,11 +77,6 @@ namespace NAS2D
 
 	protected:
 		Renderer(const std::string& appTitle);
-
-		void driverName(const std::string& name);
-
-	private:
-		std::string mDriverName{"NULL Renderer"};
 	};
 
 } // namespace

@@ -29,18 +29,6 @@ Renderer::~Renderer()
 }
 
 
-void Renderer::driverName(const std::string& name)
-{
-	mDriverName = name;
-}
-
-
-const std::string& Renderer::driverName() const
-{
-	return mDriverName;
-}
-
-
 void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)
 {
 	const auto shadowPosition = position + shadowOffset;

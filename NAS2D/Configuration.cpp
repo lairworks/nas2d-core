@@ -113,6 +113,6 @@ void Configuration::save(const std::string& filePath) const
 	}
 	catch (const std::runtime_error& e)
 	{
-		throw std::runtime_error("Error saving configuration file: '" + filePath + "'  Error: " + e.what());
+		throw std::runtime_error("Error saving configuration file: '" + filePath + "' : " + e.what());
 	}
 }

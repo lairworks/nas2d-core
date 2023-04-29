@@ -14,7 +14,6 @@
 #include "Filesystem.h"
 #include "Utility.h"
 
-#include <iostream>
 #include <algorithm>
 #include <utility>
 #include <stdexcept>
@@ -73,8 +72,6 @@ void Configuration::loadData(const std::string& fileData)
  */
 void Configuration::load(const std::string& filePath)
 {
-	std::cout << "Initializing Configuration... ";
-
 	const auto& filesystem = Utility<Filesystem>::get();
 	if (filesystem.exists(filePath))
 	{
@@ -83,7 +80,6 @@ void Configuration::load(const std::string& filePath)
 			// Read in the Config File.
 			auto xmlData = filesystem.readFile(filePath);
 			loadData(xmlData.c_str());
-			std::cout << "done." << std::endl;
 		}
 		catch (const std::runtime_error& e)
 		{

@@ -9,7 +9,6 @@
 // ==================================================================================
 #include "EventHandler.h"
 #include <SDL2/SDL.h>
-#include <iostream>
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.
@@ -59,15 +58,6 @@ namespace NAS2D
 	}
 }
 
-
-EventHandler::EventHandler()
-{}
-
-
-EventHandler::~EventHandler()
-{
-	cout << "EventHandler Terminated." << endl;
-}
 
 /**
  * Triggered whenever the application gains or loses focus.

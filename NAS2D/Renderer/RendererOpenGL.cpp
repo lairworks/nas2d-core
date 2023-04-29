@@ -30,7 +30,6 @@
 #include <SDL2/SDL_image.h>
 #endif
 
-#include <iostream>
 #include <algorithm>
 #include <cmath>
 #include <array>
@@ -93,22 +92,6 @@ namespace
 		const auto apiResult = glGetString(name);
 		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
 	}
-
-	void dumpGraphicsInfo(RendererOpenGL& renderer)
-	{
-		std::vector<std::string> info{
-			"- OpenGL System Info -",
-			"Vendor: " + renderer.getVendor(),
-			"Renderer: " + renderer.getRenderer(),
-			"Driver Version: " + renderer.getDriverVersion(),
-			"GLSL Version: " + renderer.getShaderVersion(),
-		};
-
-		for (const auto& str : info)
-		{
-			std::cout << "\t" << str << std::endl;
-		}
-	}
 }
 
 
@@ -144,8 +127,6 @@ RendererOpenGL::RendererOpenGL(const std::string& title) :
 RendererOpenGL::RendererOpenGL(const std::string& title, const Options& options) :
 	Renderer(title)
 {
-	std::cout << "Starting OpenGL Renderer:" << std::endl;
-
 	initVideo(options.resolution, options.fullscreen, options.vsync);
 }
 
@@ -158,8 +139,6 @@ RendererOpenGL::~RendererOpenGL()
 	SDL_DestroyWindow(underlyingWindow);
 	underlyingWindow = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
-
-	std::cout << "OpenGL Renderer Terminated." << std::endl;
 }
 
 
@@ -594,7 +573,6 @@ void RendererOpenGL::initGL()
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	onResize(size());
-	dumpGraphicsInfo(*this);
 }
 
 

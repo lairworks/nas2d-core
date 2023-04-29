@@ -17,6 +17,7 @@
 #include <iostream>
 #include <algorithm>
 #include <utility>
+#include <stdexcept>
 
 using namespace NAS2D;
 
@@ -90,7 +91,7 @@ void Configuration::load(const std::string& filePath)
 		}
 		catch (const std::runtime_error& e)
 		{
-			std::cout << "unable to process '" << filePath << "'. Using default options. Error: " << e.what() << std::endl;
+			throw std::runtime_error("Error loading configuration file: '" + filePath + "' : " + e.what());
 		}
 	}
 }

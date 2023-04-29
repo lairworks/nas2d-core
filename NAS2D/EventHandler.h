@@ -277,9 +277,6 @@ namespace NAS2D
 		using QuitEventSource = SignalSource<>;
 
 	public:
-		EventHandler();
-		~EventHandler();
-
 		ActivateEventSource& activate();
 
 		WindowHiddenEventSource& windowHidden();

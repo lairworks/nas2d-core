@@ -59,14 +59,6 @@ namespace NAS2D
 }
 
 
-EventHandler::EventHandler()
-{}
-
-
-EventHandler::~EventHandler()
-{
-}
-
 /**
  * Triggered whenever the application gains or loses focus.
  *

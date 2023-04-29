@@ -28,6 +28,30 @@ Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 }
 
 
+const Dictionary& Configuration::operator[](const std::string& key) const
+{
+	return mSettings.at(key);
+}
+
+
+Dictionary& Configuration::operator[](const std::string& key)
+{
+	return mSettings.at(key);
+}
+
+
+bool Configuration::anyLoadedConfig() const
+{
+	return !mLoadedSettings.empty();
+}
+
+
+bool Configuration::anyNonDefaultConfig() const
+{
+	return mSettings != mDefaults;
+}
+
+
 /**
  * Reads a given XML configuration file.
  *

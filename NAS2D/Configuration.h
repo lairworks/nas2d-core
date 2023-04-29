@@ -34,8 +34,11 @@ namespace NAS2D
 		Configuration& operator=(Configuration&&) = delete;
 		~Configuration() = default;
 
-		const Dictionary& operator[](const std::string& key) const { return mSettings.at(key); }
-		Dictionary& operator[](const std::string& key) { return mSettings.at(key); }
+		const Dictionary& operator[](const std::string& key) const;
+		Dictionary& operator[](const std::string& key);
+
+		bool anyLoadedConfig() const;
+		bool anyNonDefaultConfig() const;
 
 		void loadData(const std::string& fileData);
 		void load(const std::string& filePath);

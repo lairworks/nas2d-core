@@ -17,6 +17,7 @@
 #include <iostream>
 #include <algorithm>
 #include <utility>
+#include <stdexcept>
 
 using namespace NAS2D;
 
@@ -74,22 +75,19 @@ void Configuration::load(const std::string& filePath)
 {
 	std::cout << "Initializing Configuration... ";
 
-	if (!Utility<Filesystem>::get().exists(filePath))
-	{
-		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
-	}
-	else
+	const auto& filesystem = Utility<Filesystem>::get();
+	if (filesystem.exists(filePath))
 	{
 		try
 		{
 			// Read in the Config File.
-			auto xmlData = Utility<Filesystem>::get().readFile(filePath);
+			auto xmlData = filesystem.readFile(filePath);
 			loadData(xmlData.c_str());
 			std::cout << "done." << std::endl;
 		}
 		catch (const std::runtime_error& e)
 		{
-			std::cout << "unable to process '" << filePath << "'. Using default options. Error: " << e.what() << std::endl;
+			throw std::runtime_error("Error loading configuration file: '" + filePath + "' : " + e.what());
 		}
 	}
 }
@@ -115,6 +113,6 @@ void Configuration::save(const std::string& filePath) const
 	}
 	catch (const std::runtime_error& e)
 	{
-		throw std::runtime_error("Error saving configuration file: '" + filePath + "'  Error: " + e.what());
+		throw std::runtime_error("Error saving configuration file: '" + filePath + "' : " + e.what());
 	}
 }

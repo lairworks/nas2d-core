@@ -48,9 +48,6 @@ namespace NAS2D
 	 *	{
 	 *		std::cout << "Error: " << e.what() << std::endl;
 	 *	}
-	 *	catch (...)
-	 *	{
-	 *	}
 	 *	return 0;
 	 * }
 	 * \endcode

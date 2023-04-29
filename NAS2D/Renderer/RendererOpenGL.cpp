@@ -30,7 +30,6 @@
 #include <SDL2/SDL_image.h>
 #endif
 
-#include <iostream>
 #include <algorithm>
 #include <cmath>
 #include <array>
@@ -128,8 +127,6 @@ RendererOpenGL::RendererOpenGL(const std::string& title) :
 RendererOpenGL::RendererOpenGL(const std::string& title, const Options& options) :
 	Renderer(title)
 {
-	std::cout << "Starting OpenGL Renderer:" << std::endl;
-
 	initVideo(options.resolution, options.fullscreen, options.vsync);
 }
 
@@ -142,8 +139,6 @@ RendererOpenGL::~RendererOpenGL()
 	SDL_DestroyWindow(underlyingWindow);
 	underlyingWindow = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
-
-	std::cout << "OpenGL Renderer Terminated." << std::endl;
 }
 
 

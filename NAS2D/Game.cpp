@@ -90,10 +90,6 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 		std::cout << "Unable to create SDL Audio Mixer: " << e.what() << ". Setting NULL driver." << std::endl;
 		Utility<Mixer>::init<MixerNull>();
 	}
-	catch (...)
-	{
-		throw std::runtime_error("Unexpected exception occured while creating a Mixer.");
-	}
 
 	std::cout << "Initializing Event Handler... ";
 	Utility<EventHandler>::get();

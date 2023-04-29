@@ -34,8 +34,6 @@ namespace NAS2D
 	 * #include "NAS2D.h"
 	 * #include "MyState.h"
 	 *
-	 * #include <iostream>
-	 *
 	 * int main(int argc, char* argv[])
 	 * {
 	 *	try
@@ -44,9 +42,10 @@ namespace NAS2D
 	 *		game.mount("gfx.zip");
 	 *		game.go(new MyState());
 	 *	}
-	 *	catch (const std::exception& e)
+	 *	catch (const std::exception& exception)
 	 *	{
-	 *		std::cout << "Error: " << e.what() << std::endl;
+	 *		// Report error message in `exception.what()`
+	 *		// ...
 	 *	}
 	 *	return 0;
 	 * }

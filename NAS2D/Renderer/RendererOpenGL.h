@@ -11,7 +11,7 @@
 
 #include "Renderer.h"
 
-#include <map>
+#include <string>
 
 
 using SDL_GLContext = void*;

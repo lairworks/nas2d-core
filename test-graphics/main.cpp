@@ -40,20 +40,6 @@ int main(int /*argc*/, char *argv[])
 		// MessageBoxA(NULL, "Unknown error occurred.", "Unexpected Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 		// #endif
 	}
-	catch(...)
-	{
-		std::cout << "Unknown error occurred." << std::endl;
-		return 2;
-		// Recomment for portability and no more direct inclusion of <windows.h>...
-		// --------------
-		// NAS2D::MessageBox_Okay("Unexpected Error", "Unknown error occurred", MessageBoxSeverityLevel::Error);
-		// --------------
-		// Original test used
-		// --------------
-		// #ifdef WINDOWS
-		// MessageBoxA(NULL, "Unknown error occurred.", "Unexpected Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
-		// #endif
-	}
 
 	return 0;
 }

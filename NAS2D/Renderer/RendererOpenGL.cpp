@@ -93,22 +93,6 @@ namespace
 		const auto apiResult = glGetString(name);
 		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
 	}
-
-	void dumpGraphicsInfo(RendererOpenGL& renderer)
-	{
-		std::vector<std::string> info{
-			"- OpenGL System Info -",
-			"Vendor: " + renderer.getVendor(),
-			"Renderer: " + renderer.getRenderer(),
-			"Driver Version: " + renderer.getDriverVersion(),
-			"GLSL Version: " + renderer.getShaderVersion(),
-		};
-
-		for (const auto& str : info)
-		{
-			std::cout << "\t" << str << std::endl;
-		}
-	}
 }
 
 
@@ -594,7 +578,6 @@ void RendererOpenGL::initGL()
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	onResize(size());
-	dumpGraphicsInfo(*this);
 }
 
 

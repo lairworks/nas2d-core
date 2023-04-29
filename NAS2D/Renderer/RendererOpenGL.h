@@ -41,6 +41,11 @@ namespace NAS2D
 		RendererOpenGL& operator=(RendererOpenGL&& rhs) = delete;
 		virtual ~RendererOpenGL() override;
 
+		std::string getVendor();
+		std::string getRenderer();
+		std::string getDriverVersion();
+		std::string getShaderVersion();
+
 		void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 
 		void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) override;

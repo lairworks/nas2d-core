@@ -116,6 +116,7 @@ RendererOpenGL::Options RendererOpenGL::ReadConfigurationOptions()
 	};
 }
 
+
 void RendererOpenGL::WriteConfigurationOptions(const Options& options)
 {
 	auto& configuration = Utility<Configuration>::get();
@@ -152,6 +153,30 @@ RendererOpenGL::~RendererOpenGL()
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	std::cout << "OpenGL Renderer Terminated." << std::endl;
+}
+
+
+std::string RendererOpenGL::getVendor()
+{
+	return glString(GL_VENDOR);
+}
+
+
+std::string RendererOpenGL::getRenderer()
+{
+	return glString(GL_RENDERER);
+}
+
+
+std::string RendererOpenGL::getDriverVersion()
+{
+	return glString(GL_VERSION);
+}
+
+
+std::string RendererOpenGL::getShaderVersion()
+{
+	return glString(GL_SHADING_LANGUAGE_VERSION);
 }
 
 

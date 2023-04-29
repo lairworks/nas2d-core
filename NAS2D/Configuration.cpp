@@ -76,11 +76,7 @@ void Configuration::load(const std::string& filePath)
 	std::cout << "Initializing Configuration... ";
 
 	const auto& filesystem = Utility<Filesystem>::get();
-	if (!filesystem.exists(filePath))
-	{
-		std::cout << "configuration file '" << filePath << "' does not exist. Using default options." << std::endl;
-	}
-	else
+	if (filesystem.exists(filePath))
 	{
 		try
 		{

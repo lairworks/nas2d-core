@@ -94,13 +94,13 @@ namespace
 		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
 	}
 
-	void dumpGraphicsInfo()
+	void dumpGraphicsInfo(RendererOpenGL& renderer)
 	{
 		std::cout << "\t- OpenGL System Info -" << std::endl;
-		std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
-		std::cout << "\tRenderer: " << glString(GL_RENDERER) << std::endl;
-		std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
-		std::cout << "\tGLSL Version: " << glString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+		std::cout << "\tVendor: " << renderer.getVendor() << std::endl;
+		std::cout << "\tRenderer: " << renderer.getRenderer() << std::endl;
+		std::cout << "\tDriver Version: " << renderer.getDriverVersion() << std::endl;
+		std::cout << "\tGLSL Version: " << renderer.getShaderVersion() << std::endl;
 	}
 }
 
@@ -588,7 +588,7 @@ void RendererOpenGL::initGL()
 
 	driverName(glString(GL_RENDERER));
 	onResize(size());
-	dumpGraphicsInfo();
+	dumpGraphicsInfo(*this);
 }
 
 

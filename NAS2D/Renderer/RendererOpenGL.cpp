@@ -96,11 +96,18 @@ namespace
 
 	void dumpGraphicsInfo(RendererOpenGL& renderer)
 	{
-		std::cout << "\t- OpenGL System Info -" << std::endl;
-		std::cout << "\tVendor: " << renderer.getVendor() << std::endl;
-		std::cout << "\tRenderer: " << renderer.getRenderer() << std::endl;
-		std::cout << "\tDriver Version: " << renderer.getDriverVersion() << std::endl;
-		std::cout << "\tGLSL Version: " << renderer.getShaderVersion() << std::endl;
+		std::vector<std::string> info{
+			"- OpenGL System Info -",
+			"Vendor: " + renderer.getVendor(),
+			"Renderer: " + renderer.getRenderer(),
+			"Driver Version: " + renderer.getDriverVersion(),
+			"GLSL Version: " + renderer.getShaderVersion(),
+		};
+
+		for (const auto& str : info)
+		{
+			std::cout << "\t" << str << std::endl;
+		}
 	}
 }
 

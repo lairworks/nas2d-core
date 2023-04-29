@@ -94,13 +94,20 @@ namespace
 		return apiResult ? reinterpret_cast<const char*>(apiResult) : "";
 	}
 
-	void dumpGraphicsInfo()
+	void dumpGraphicsInfo(RendererOpenGL& renderer)
 	{
-		std::cout << "\t- OpenGL System Info -" << std::endl;
-		std::cout << "\tVendor: " << glString(GL_VENDOR) << std::endl;
-		std::cout << "\tRenderer: " << glString(GL_RENDERER) << std::endl;
-		std::cout << "\tDriver Version: " << glString(GL_VERSION) << std::endl;
-		std::cout << "\tGLSL Version: " << glString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+		std::vector<std::string> info{
+			"- OpenGL System Info -",
+			"Vendor: " + renderer.getVendor(),
+			"Renderer: " + renderer.getRenderer(),
+			"Driver Version: " + renderer.getDriverVersion(),
+			"GLSL Version: " + renderer.getShaderVersion(),
+		};
+
+		for (const auto& str : info)
+		{
+			std::cout << "\t" << str << std::endl;
+		}
 	}
 }
 
@@ -115,6 +122,7 @@ RendererOpenGL::Options RendererOpenGL::ReadConfigurationOptions()
 		graphics.get<bool>("vsync"),
 	};
 }
+
 
 void RendererOpenGL::WriteConfigurationOptions(const Options& options)
 {
@@ -152,6 +160,30 @@ RendererOpenGL::~RendererOpenGL()
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
 	std::cout << "OpenGL Renderer Terminated." << std::endl;
+}
+
+
+std::string RendererOpenGL::getVendor()
+{
+	return glString(GL_VENDOR);
+}
+
+
+std::string RendererOpenGL::getRenderer()
+{
+	return glString(GL_RENDERER);
+}
+
+
+std::string RendererOpenGL::getDriverVersion()
+{
+	return glString(GL_VERSION);
+}
+
+
+std::string RendererOpenGL::getShaderVersion()
+{
+	return glString(GL_SHADING_LANGUAGE_VERSION);
 }
 
 
@@ -561,9 +593,8 @@ void RendererOpenGL::initGL()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	driverName(glString(GL_RENDERER));
 	onResize(size());
-	dumpGraphicsInfo();
+	dumpGraphicsInfo(*this);
 }
 
 

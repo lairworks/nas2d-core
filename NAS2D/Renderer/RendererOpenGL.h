@@ -11,7 +11,7 @@
 
 #include "Renderer.h"
 
-#include <map>
+#include <string>
 
 
 using SDL_GLContext = void*;
@@ -40,6 +40,11 @@ namespace NAS2D
 		RendererOpenGL& operator=(const RendererOpenGL& rhs) = delete;
 		RendererOpenGL& operator=(RendererOpenGL&& rhs) = delete;
 		virtual ~RendererOpenGL() override;
+
+		std::string getVendor();
+		std::string getRenderer();
+		std::string getDriverVersion();
+		std::string getShaderVersion();
 
 		void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 

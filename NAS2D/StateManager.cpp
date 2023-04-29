@@ -14,7 +14,6 @@
 #include "State.h"
 #include "Mixer/Mixer.h"
 
-using namespace std;
 using namespace NAS2D;
 
 StateManager::StateManager() :

@@ -13,7 +13,6 @@
 #include "XmlAttribute.h"
 #include <stdexcept>
 
-using namespace std;
 using namespace NAS2D::Xml;
 
 XmlAttribute::XmlAttribute() :

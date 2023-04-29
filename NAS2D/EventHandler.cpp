@@ -15,7 +15,6 @@
 extern SDL_Window* underlyingWindow;
 
 
-using namespace std;
 using namespace NAS2D;
 
 /**

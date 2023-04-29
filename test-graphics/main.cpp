@@ -28,17 +28,10 @@ int main(int /*argc*/, char *argv[])
 	}
 	catch(std::exception& e)
 	{
+		// For portable modal popups (once Renderer is initialized), use:
+		// window.doModalError("Application Error", e.what());
 		std::cout << e.what() << std::endl;
 		return 1;
-		// Recommend for portability and no more direct inclusion of <windows.h>...
-		// --------------
-		// NAS2D::MessageBox_Okay("Application Error", e.what(), MessageBoxSeverityLevel::Error);
-		// --------------
-		// Original test used
-		// --------------
-		// #ifdef WINDOWS
-		// MessageBoxA(NULL, "Unknown error occurred.", "Unexpected Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
-		// #endif
 	}
 
 	return 0;

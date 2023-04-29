@@ -100,15 +100,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	std::cout << "done.\n\n";
 	std::cout.flush();
 
-	try
-	{
-		Utility<Renderer>::init<RendererOpenGL>(title);
-	}
-	catch (const std::exception& e)
-	{
-		std::cerr << "Unable to create OGL Renderer: " << e.what() << ". Setting NULL driver." << std::endl;
-		Utility<Renderer>::init<RendererNull>();
-	}
+	Utility<Renderer>::init<RendererOpenGL>(title);
 
 
 	std::cout << "\nSubsystems initialized.\n\n";

@@ -11,7 +11,6 @@
 #include "Renderer.h"
 #include "../Math/Rectangle.h"
 
-#include <iostream>
 #include <algorithm>
 
 
@@ -21,12 +20,6 @@ using namespace NAS2D;
 Renderer::Renderer(const std::string& appTitle) :
 	Window(appTitle)
 {}
-
-
-Renderer::~Renderer()
-{
-	std::cout << "Renderer Terminated." << std::endl;
-}
 
 
 void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)

@@ -9,11 +9,11 @@ class TestGraphics : public NAS2D::State
 {
 public:
 	TestGraphics();
-	~TestGraphics();
+	~TestGraphics() override;
 
 protected:
-	void initialize();
-	NAS2D::State* update();
+	void initialize() override;
+	NAS2D::State* update() override;
 
 	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 	void onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change);

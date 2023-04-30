@@ -141,6 +141,10 @@ run-test-graphics: | test-graphics
 	cd test-graphics/ && ../$(BUILDDIR)/testGraphics ; cd ..
 
 
+.PHONY: show-warnings
+show-warnings:
+	$(MAKE) -j1 clean all CXX=clang++ CXXFLAGS_WARN=-Weverything 2>&1 >/dev/null | grep -o "\[-W.*\]" | sort | uniq
+
 .PHONY: lint
 lint: cppcheck cppclean
 

@@ -83,7 +83,7 @@
       <Message>Installing vcpkg dependencies</Message>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>..\Package.bat "$(TargetPath)" "$(Platform)" "$(Configuration)"</Command>
+      <Command>..\Package.bat "$(Configuration)" "$(Platform)" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +110,7 @@
       <Message>Installing vcpkg dependencies</Message>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>..\Package.bat "$(TargetPath)" "$(Platform)" "$(Configuration)"</Command>
+      <Command>..\Package.bat "$(Configuration)" "$(Platform)" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -144,7 +144,7 @@
       <Message>Installing vcpkg dependencies</Message>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>..\Package.bat "$(TargetPath)" "$(Platform)" "$(Configuration)"</Command>
+      <Command>..\Package.bat "$(Configuration)" "$(Platform)" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -178,7 +178,7 @@
       <Message>Installing vcpkg dependencies</Message>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>..\Package.bat "$(TargetPath)" "$(Platform)" "$(Configuration)"</Command>
+      <Command>..\Package.bat "$(Configuration)" "$(Platform)" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -1,8 +1,8 @@
 @echo off
 
-set "TargetPath=%~1"
+set "Configuration=%~1"
 set "Platform=%~2"
-set "Configuration=%~3"
+set "TargetPath=%~3"
 
 set "ProjectName=NAS2D"
 set "OutputFolder=Temporary\"

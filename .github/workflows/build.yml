@@ -41,7 +41,7 @@ jobs:
 
     - name: Test
       working-directory: ./test/
-      run: ./${{env.PLATFORM}}/${{env.BUILD_CONFIGURATION}}/test.exe
+      run: ../.build/${{env.BUILD_CONFIGURATION}}_${{env.PLATFORM}}_test/test.exe
 
   linux:
     strategy:

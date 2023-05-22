@@ -1,12 +1,12 @@
 @echo off
 
+set "Configuration=%~1"
+set "Platform=%~2"
+set "TargetPath=%~3"
+
 set "ProjectName=NAS2D"
 set "OutputFolder=Temporary\"
 set "PackageFolder=%OutputFolder%Package\"
-
-set "TargetPath=%~1"
-set "Platform=%~2"
-set "Configuration=%~3"
 
 
 for /f %%i in ('git describe --tags --dirty') do set Version=%%i

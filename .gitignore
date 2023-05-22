@@ -5,6 +5,9 @@
 # VS Code
 .vscode/
 
+# Vcpkg
+vcpkg_installed/
+
 # Windows - Visual Studio
 Temporary/
 Release/

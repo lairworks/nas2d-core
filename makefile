@@ -5,9 +5,9 @@
 #       That should be the current Makefile, assuming no includes
 TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 
-CONFIG = debug
-debug_CXX_FLAGS := -Og -g
-release_CXX_FLAGS := -O3
+CONFIG = Debug
+Debug_CXX_FLAGS := -Og -g
+Release_CXX_FLAGS := -O3
 CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 
 # Determine OS (Linux, Darwin, ...)
@@ -33,9 +33,9 @@ RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
 
 SRCDIR := NAS2D
 ROOTBUILDDIR := .build
-BUILDDIR := $(ROOTBUILDDIR)/$(CONFIG)
+BUILDDIR := $(ROOTBUILDDIR)/$(CONFIG)/Linux
 BINDIR := lib
-INTDIR := $(BUILDDIR)/intermediate
+INTDIR := $(BUILDDIR)/nas2d/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
 PACKAGEDIR := $(BUILDDIR)/package
 
@@ -96,13 +96,13 @@ clean-all: | clean
 ## Unit Test project ##
 
 TESTDIR := test
-TESTINTDIR := $(BUILDDIR)/testIntermediate
+TESTINTDIR := $(BUILDDIR)/test/intermediate
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 TESTCPPFLAGS := $(CPPFLAGS) -I./
 TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
-TESTOUTPUT := $(BUILDDIR)/testBin/runTests
+TESTOUTPUT := $(BUILDDIR)/test/test
 
 TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTINTDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
@@ -130,15 +130,17 @@ $(TESTINTDIR)/%.d: ;
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 
 
+TESTGRAPHICSDIR := $(BUILDDIR)/testGraphics
+
 .PHONY: test-graphics
-test-graphics: $(BUILDDIR)/testGraphics
-$(BUILDDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
+test-graphics: $(TESTGRAPHICSDIR)/testGraphics
+$(TESTGRAPHICSDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
 	@mkdir -p "${@D}"
 	$(CXX) -o $@ test-graphics/*.cpp $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) -lnas2d $(LDLIBS)
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
-	cd test-graphics/ && ../$(BUILDDIR)/testGraphics ; cd ..
+	cd test-graphics/ && ../$(TESTGRAPHICSDIR)/testGraphics ; cd ..
 
 
 .PHONY: show-warnings

@@ -5,9 +5,9 @@
 #       That should be the current Makefile, assuming no includes
 TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 
-CONFIG = debug
-debug_CXX_FLAGS := -Og -g
-release_CXX_FLAGS := -O3
+CONFIG = Debug
+Debug_CXX_FLAGS := -Og -g
+Release_CXX_FLAGS := -O3
 CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 
 # Determine OS (Linux, Darwin, ...)

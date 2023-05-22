@@ -37,7 +37,7 @@ BUILDDIR := $(ROOTBUILDDIR)/$(CONFIG)/Linux
 BINDIR := lib
 INTDIR := $(BUILDDIR)/nas2d/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
-PACKAGEDIR := $(BUILDDIR)/package
+PACKAGEDIR := $(ROOTBUILDDIR)/package
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(INTDIR)/$*.Td
 

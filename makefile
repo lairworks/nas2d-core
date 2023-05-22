@@ -33,9 +33,9 @@ RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
 
 SRCDIR := NAS2D
 ROOTBUILDDIR := .build
-BUILDDIR := $(ROOTBUILDDIR)/$(CONFIG)/Linux
+BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)/Linux
 BINDIR := lib
-INTDIR := $(BUILDDIR)/nas2d/intermediate
+INTDIR := $(BUILDDIRPREFIX)/nas2d/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
 PACKAGEDIR := $(ROOTBUILDDIR)/package
 
@@ -96,13 +96,13 @@ clean-all: | clean
 ## Unit Test project ##
 
 TESTDIR := test
-TESTINTDIR := $(BUILDDIR)/test/intermediate
+TESTINTDIR := $(BUILDDIRPREFIX)/test/intermediate
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 TESTCPPFLAGS := $(CPPFLAGS) -I./
 TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
-TESTOUTPUT := $(BUILDDIR)/test/test
+TESTOUTPUT := $(BUILDDIRPREFIX)/test/test
 
 TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTINTDIR)/$*.Td
 TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
@@ -130,7 +130,7 @@ $(TESTINTDIR)/%.d: ;
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 
 
-TESTGRAPHICSDIR := $(BUILDDIR)/testGraphics
+TESTGRAPHICSDIR := $(BUILDDIRPREFIX)/testGraphics
 
 .PHONY: test-graphics
 test-graphics: $(TESTGRAPHICSDIR)/testGraphics

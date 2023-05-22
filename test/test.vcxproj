@@ -5,13 +5,13 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -28,55 +28,10 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(ProjectDir)x86\$(Configuration)\</OutDir>
+  <PropertyGroup>
+    <OutDir>$(ProjectDir)$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Temporary\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ProjectDir)x86\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Temporary\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Temporary\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Temporary\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <ItemGroup>
-    <ClCompile Include="Math/MathUtils.test.cpp" />
-    <ClCompile Include="Math/Point.test.cpp" />
-    <ClCompile Include="Math/PointInRectangleRange.test.cpp" />
-    <ClCompile Include="Math/Rectangle.test.cpp" />
-    <ClCompile Include="Math/Trig.test.cpp" />
-    <ClCompile Include="Math/Vector.test.cpp" />
-    <ClCompile Include="Math/VectorSizeRange.test.cpp" />
-    <ClCompile Include="Mixer/MixerSDL.test.cpp" />
-    <ClCompile Include="Renderer/Color.test.cpp" />
-    <ClCompile Include="Renderer/DisplayDesc.test.cpp" />
-    <ClCompile Include="Resource/Image.test.cpp" />
-    <ClCompile Include="Resource/ResourceCache.test.cpp" />
-    <ClCompile Include="Resource/Sprite.test.cpp" />
-    <ClCompile Include="Signal/Delegate.test.cpp" />
-    <ClCompile Include="Signal/Signal.test.cpp" />
-    <ClCompile Include="Signal/SignalConnection.test.cpp" />
-    <ClCompile Include="Configuration.test.cpp" />
-    <ClCompile Include="ContainerUtils.test.cpp" />
-    <ClCompile Include="Dictionary.test.cpp" />
-    <ClCompile Include="Filesystem.test.cpp" />
-    <ClCompile Include="ParserHelper.test.cpp" />
-    <ClCompile Include="StringUtils.test.cpp" />
-    <ClCompile Include="StringValue.test.cpp" />
-    <ClCompile Include="Utility.test.cpp" />
-    <ClCompile Include="Version.test.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NAS2D\NAS2D.vcxproj">
-      <Project>{3350562d-6204-42fc-898a-c85fd62e04e8}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -175,4 +130,37 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Math/MathUtils.test.cpp" />
+    <ClCompile Include="Math/Point.test.cpp" />
+    <ClCompile Include="Math/PointInRectangleRange.test.cpp" />
+    <ClCompile Include="Math/Rectangle.test.cpp" />
+    <ClCompile Include="Math/Trig.test.cpp" />
+    <ClCompile Include="Math/Vector.test.cpp" />
+    <ClCompile Include="Math/VectorSizeRange.test.cpp" />
+    <ClCompile Include="Mixer/MixerSDL.test.cpp" />
+    <ClCompile Include="Renderer/Color.test.cpp" />
+    <ClCompile Include="Renderer/DisplayDesc.test.cpp" />
+    <ClCompile Include="Resource/Image.test.cpp" />
+    <ClCompile Include="Resource/ResourceCache.test.cpp" />
+    <ClCompile Include="Resource/Sprite.test.cpp" />
+    <ClCompile Include="Signal/Delegate.test.cpp" />
+    <ClCompile Include="Signal/Signal.test.cpp" />
+    <ClCompile Include="Signal/SignalConnection.test.cpp" />
+    <ClCompile Include="Configuration.test.cpp" />
+    <ClCompile Include="ContainerUtils.test.cpp" />
+    <ClCompile Include="Dictionary.test.cpp" />
+    <ClCompile Include="Filesystem.test.cpp" />
+    <ClCompile Include="ParserHelper.test.cpp" />
+    <ClCompile Include="StringUtils.test.cpp" />
+    <ClCompile Include="StringValue.test.cpp" />
+    <ClCompile Include="Utility.test.cpp" />
+    <ClCompile Include="Version.test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NAS2D\NAS2D.vcxproj">
+      <Project>{3350562d-6204-42fc-898a-c85fd62e04e8}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

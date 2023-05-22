@@ -30,7 +30,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup>
     <OutDir>$(ProjectDir)$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Temporary\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
+    <IntDir>$(ProjectDir)..\Temporary\$(ProjectName)_$(PlatformShortName)_$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

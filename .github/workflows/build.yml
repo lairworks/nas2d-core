@@ -43,6 +43,9 @@ jobs:
       working-directory: ./test/
       run: ../.build/${{env.BUILD_CONFIGURATION}}_${{env.PLATFORM}}_test/test.exe
 
+    - name: Package
+      run: ./Package.bat "${{env.BUILD_CONFIGURATION}}" "${{matrix.platform}}"
+
   linux:
     strategy:
       fail-fast: false

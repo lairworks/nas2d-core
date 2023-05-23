@@ -5,7 +5,7 @@ set "Platform=%~2"
 set "TargetPath=%~3"
 
 set "ProjectName=NAS2D"
-set "OutputFolder=Temporary\"
+set "OutputFolder=.build\"
 set "PackageFolder=%OutputFolder%Package\"
 
 

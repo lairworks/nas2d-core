@@ -25,11 +25,11 @@ jobs:
       id: cache
       with:
         path: C:\vcpkg\installed\
-        key: ${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('InstallVcpkgDeps.bat') }}
+        key: ${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
 
     - name: Install vcpkg dependencies
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: ./InstallVcpkgDeps.bat
+      run: vcpkg install --triplet ${{env.PLATFORM}}-windows
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}

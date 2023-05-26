@@ -39,7 +39,7 @@ Music::Music(const std::string& filePath) :
 	mMusic = Mix_LoadMUS_RW(SDL_RWFromConstMem(mBuffer.c_str(), static_cast<int>(mBuffer.size())), 1);
 	if (!mMusic)
 	{
-		throw std::runtime_error("Music::load() error: " + std::string{Mix_GetError()});
+		throw std::runtime_error("Music load error: " + std::string{Mix_GetError()});
 	}
 }
 

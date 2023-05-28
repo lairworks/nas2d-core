@@ -77,7 +77,7 @@ namespace NAS2D
 
 		Iterator end() const
 		{
-			return Iterator{mRect, Vector<BaseType>{0, mRect.height}};
+			return Iterator{mRect, Vector<BaseType>{0, mRect.size().y}};
 		}
 
 	private:

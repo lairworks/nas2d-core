@@ -23,8 +23,8 @@ protected:
 
 	uint32_t imageBuffer[1 * 1];
 	NAS2D::Image image{&imageBuffer, 4, {1, 1}};
-	NAS2D::AnimationSet::Frame frame{image, {0, 0, 1, 1}, {0, 0}, 2};
-	NAS2D::AnimationSet::Frame frameStop{image, {0, 0, 1, 1}, {0, 0}, 0};
+	NAS2D::AnimationSet::Frame frame{image, {{0, 0}, 1, 1}, {0, 0}, 2};
+	NAS2D::AnimationSet::Frame frameStop{image, {{0, 0}, 1, 1}, {0, 0}, 0};
 	NAS2D::AnimationSet animationSet{"", {}, {{"defaultAction", {frame}}, {"frameStopAction", {frameStop}}}};
 	SpriteDerived sprite{animationSet, "defaultAction"};
 };

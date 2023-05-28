@@ -19,14 +19,13 @@ namespace NAS2D
 	template <typename BaseType>
 	struct Rectangle
 	{
-		BaseType x = 0;
-		BaseType y = 0;
+		Point<BaseType> position;
 		BaseType width = 0;
 		BaseType height = 0;
 
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size)
 		{
-			return {startPoint.x, startPoint.y, size.x, size.y};
+			return {startPoint, size.x, size.y};
 		}
 
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint)
@@ -36,7 +35,7 @@ namespace NAS2D
 
 		constexpr bool operator==(const Rectangle& rect) const
 		{
-			return (x == rect.x) && (y == rect.y) && (width == rect.width) && (height == rect.height);
+			return (position == rect.position) && (width == rect.width) && (height == rect.height);
 		}
 
 		constexpr bool operator!=(const Rectangle& rect) const
@@ -51,22 +50,22 @@ namespace NAS2D
 
 		constexpr Point<BaseType> startPoint() const
 		{
-			return {x, y};
+			return position;
 		}
 
 		constexpr Point<BaseType> endPoint() const
 		{
-			return Point{x, y} + Vector{width, height};
+			return position + Vector{width, height};
 		}
 
 		constexpr Point<BaseType> crossXPoint() const
 		{
-			return {x + width, y};
+			return {position.x + width, position.y};
 		}
 
 		constexpr Point<BaseType> crossYPoint() const
 		{
-			return {x, y + height};
+			return {position.x, position.y + height};
 		}
 
 		constexpr bool null() const
@@ -87,8 +86,7 @@ namespace NAS2D
 
 		void startPoint(NAS2D::Point<BaseType> newStartPoint)
 		{
-			x = newStartPoint.x;
-			y = newStartPoint.y;
+			position = newStartPoint;
 		}
 
 		constexpr Rectangle translate(Vector<BaseType> offset) const
@@ -98,17 +96,17 @@ namespace NAS2D
 
 		constexpr Rectangle inset(BaseType amount) const
 		{
-			return {x + amount, y + amount, width - 2 * amount, height - 2 * amount};
+			return {{position.x + amount, position.y + amount}, width - 2 * amount, height - 2 * amount};
 		}
 
 		constexpr Rectangle inset(Vector<BaseType> amount) const
 		{
-			return {x + amount.x, y + amount.y, width - 2 * amount.x, height - 2 * amount.y};
+			return {position + amount, width - 2 * amount.x, height - 2 * amount.y};
 		}
 
 		constexpr Rectangle inset(Vector<BaseType> amountStart, Vector<BaseType> amountEnd) const
 		{
-			return {x + amountStart.x, y + amountStart.y, width - amountStart.x - amountEnd.x, height - amountStart.y - amountEnd.y};
+			return {position + amountStart, width - amountStart.x - amountEnd.x, height - amountStart.y - amountEnd.y};
 		}
 
 		constexpr Rectangle skewBy(const Vector<BaseType>& scaleFactor) const
@@ -125,8 +123,7 @@ namespace NAS2D
 		constexpr operator Rectangle<NewBaseType>() const
 		{
 			return {
-				static_cast<NewBaseType>(x),
-				static_cast<NewBaseType>(y),
+				static_cast<Point<NewBaseType>>(position),
 				static_cast<NewBaseType>(width),
 				static_cast<NewBaseType>(height),
 			};
@@ -159,11 +156,14 @@ namespace NAS2D
 
 		constexpr Point<BaseType> center() const
 		{
-			return {x + (width / 2), y + (height / 2)};
+			return {position.x + (width / 2), position.y + (height / 2)};
 		}
 	};
 
 
 	template <typename BaseType>
 	Rectangle(BaseType, BaseType, BaseType, BaseType) -> Rectangle<BaseType>;
+
+	template <typename BaseType>
+	Rectangle(Point<BaseType>, BaseType, BaseType) -> Rectangle<BaseType>;
 } // namespace NAS2D

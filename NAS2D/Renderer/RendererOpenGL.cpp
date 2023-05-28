@@ -180,7 +180,8 @@ void RendererOpenGL::drawSubImage(const Image& image, Point<float> raster, const
 {
 	setColor(color);
 
-	const auto vertexArray = rectToQuad({raster.x, raster.y, subImageRect.width, subImageRect.height});
+	const auto& subImageSize = subImageRect.size();
+	const auto vertexArray = rectToQuad({raster.x, raster.y, subImageSize.x, subImageSize.y});
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
@@ -503,7 +504,9 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 {
 	const auto intRect = rect.to<int>();
-	glScissor(intRect.x, size().y - (intRect.y + intRect.height), intRect.width, intRect.height);
+	const auto& position = intRect.startPoint();
+	const auto& clipSize = intRect.size();
+	glScissor(position.x, size().y - (position.y + clipSize.y), clipSize.x, clipSize.y);
 
 	glEnable(GL_SCISSOR_TEST);
 }
@@ -538,7 +541,9 @@ void RendererOpenGL::onResize(Vector<int> newSize)
 
 void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
 {
-	glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
+	const auto& position = viewport.startPoint();
+	const auto& size = viewport.size();
+	glViewport(position.x, position.y, size.x, size.y);
 }
 
 

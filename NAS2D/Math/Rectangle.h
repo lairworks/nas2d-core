@@ -22,15 +22,12 @@ namespace NAS2D
 		Point<BaseType> position;
 		Vector<BaseType> size;
 
-		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Vector<BaseType> size)
-		{
-			return {startPoint, size};
-		}
 
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint)
 		{
 			return {startPoint, endPoint - startPoint};
 		}
+
 
 		constexpr bool operator==(const Rectangle& rect) const
 		{

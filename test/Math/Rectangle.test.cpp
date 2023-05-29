@@ -3,15 +3,11 @@
 #include <gtest/gtest.h>
 
 
-TEST(Rectangle, CreatePointVector) {
-	EXPECT_EQ((NAS2D::Rectangle<int>{{0, 0}, {1, 1}}), NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, NAS2D::Vector{1, 1}));
-	EXPECT_EQ((NAS2D::Rectangle<int>{{1, 1}, {2, 3}}), NAS2D::Rectangle<int>::Create(NAS2D::Point{1, 1}, NAS2D::Vector{2, 3}));
-}
-
 TEST(Rectangle, CreatePointPoint) {
 	EXPECT_EQ((NAS2D::Rectangle<int>{{0, 0}, {1, 1}}), NAS2D::Rectangle<int>::Create(NAS2D::Point{0, 0}, NAS2D::Point{1, 1}));
 	EXPECT_EQ((NAS2D::Rectangle<int>{{1, 1}, {1, 2}}), NAS2D::Rectangle<int>::Create(NAS2D::Point{1, 1}, NAS2D::Point{2, 3}));
 }
+
 
 TEST(Rectangle, size) {
 	EXPECT_EQ((NAS2D::Vector{0, 0}), (NAS2D::Rectangle<int>{{0, 0}, {0, 0}}.size));

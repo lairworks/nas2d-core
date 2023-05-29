@@ -290,7 +290,7 @@ namespace
 		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, matrixSize.x, matrixSize.y, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
 		SDL_Color white = {255, 255, 255, 255};
-		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
+		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{{0, 0}, {GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}}))
 		{
 			const std::size_t glyph = glyphPosition.y * GLYPH_MATRIX_SIZE + glyphPosition.x;
 
@@ -347,7 +347,7 @@ namespace
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		const auto uvSize = Vector<float>{1, 1} / 16.0f;
-		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{0, 0, GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}))
+		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{{0, 0}, {GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}}))
 		{
 			const std::size_t glyph = glyphPosition.y * GLYPH_MATRIX_SIZE + glyphPosition.x;
 			const auto uvStart = glyphPosition.to<float>().skewBy(uvSize);

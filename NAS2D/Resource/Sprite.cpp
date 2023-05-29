@@ -43,7 +43,7 @@ Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialActio
 
 Vector<int> Sprite::size() const
 {
-	return (*mCurrentAction)[mCurrentFrame].bounds.size();
+	return (*mCurrentAction)[mCurrentFrame].bounds.size;
 }
 
 

@@ -76,7 +76,7 @@ namespace
 	}
 
 
-	constexpr auto DefaultTextureCoords = rectToQuad({0, 0, 1, 1});
+	constexpr auto DefaultTextureCoords = rectToQuad({{0, 0}, {1, 1}});
 
 
 	void drawTexturedQuad(GLuint textureId, const std::array<GLfloat, 12>& verticies, const std::array<GLfloat, 12>& textureCoords = DefaultTextureCoords);
@@ -171,7 +171,7 @@ void RendererOpenGL::drawImage(const Image& image, Point<float> position, float 
 	setColor(color);
 
 	const auto imageSize = image.size().to<float>() * scale;
-	const auto vertexArray = rectToQuad({position.x, position.y, imageSize.x, imageSize.y});
+	const auto vertexArray = rectToQuad({position, imageSize});
 	drawTexturedQuad(image.textureId(), vertexArray);
 }
 
@@ -180,8 +180,8 @@ void RendererOpenGL::drawSubImage(const Image& image, Point<float> raster, const
 {
 	setColor(color);
 
-	const auto& subImageSize = subImageRect.size();
-	const auto vertexArray = rectToQuad({raster.x, raster.y, subImageSize.x, subImageSize.y});
+	const auto& subImageSize = subImageRect.size;
+	const auto vertexArray = rectToQuad({raster, subImageSize});
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
@@ -193,7 +193,7 @@ void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster
 {
 	glPushMatrix();
 
-	const auto translate = subImageRect.size().to<float>() / 2;
+	const auto translate = subImageRect.size.to<float>() / 2;
 	const auto center = raster + translate;
 
 	glTranslatef(center.x, center.y, 0.0f);
@@ -201,7 +201,7 @@ void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster
 
 	setColor(color);
 
-	const auto vertexArray = rectToQuad({-translate.x, -translate.y, translate.x * 2, translate.y * 2});
+	const auto vertexArray = rectToQuad({{-translate.x, -translate.y}, translate * 2});
 	const auto imageSize = image.size().to<float>();
 	const auto textureCoordArray = rectToQuad(subImageRect.skewInverseBy(imageSize));
 
@@ -226,7 +226,7 @@ void RendererOpenGL::drawImageRotated(const Image& image, Point<float> position,
 	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	const auto vertexArray = rectToQuad({-scaledHalfSize.x, -scaledHalfSize.y, scaledHalfSize.x * 2, scaledHalfSize.y * 2});
+	const auto vertexArray = rectToQuad({{-scaledHalfSize.x, -scaledHalfSize.y}, scaledHalfSize * 2});
 
 	drawTexturedQuad(image.textureId(), vertexArray);
 	glPopMatrix();
@@ -254,7 +254,7 @@ void RendererOpenGL::drawImageRepeated(const Image& image, const Rectangle<float
 
 	const auto vertexArray = rectToQuad(rect);
 	const auto imageSize = image.size().to<float>();
-	const auto textureCoordArray = rectToQuad(Rectangle<float>::Create({0.0f, 0.0f}, rect.size().skewInverseBy(imageSize)));
+	const auto textureCoordArray = rectToQuad(Rectangle<float>::Create({0.0f, 0.0f}, rect.size.skewInverseBy(imageSize)));
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray.data());
 
@@ -282,10 +282,10 @@ void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<fl
 {
 	clipRect(destination);
 
-	const auto tileCountSize = destination.size().skewInverseBy(source.size()).to<int>() + Vector{1, 1};
+	const auto tileCountSize = destination.size.skewInverseBy(source.size).to<int>() + Vector{1, 1};
 	for (const auto tileOffset : VectorSizeRange(tileCountSize))
 	{
-		drawSubImage(image, destination.startPoint() + tileOffset.to<float>().skewBy(source.size()), source);
+		drawSubImage(image, destination.startPoint() + tileOffset.to<float>().skewBy(source.size), source);
 	}
 
 	clipRectClear();
@@ -316,7 +316,7 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, destination.textureId(), 0);
 	// OpenGL expects UV texture coordinates to start at the lower left.
-	const auto vertexArray = rectToQuad({dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y, clipSize.x, -clipSize.y});
+	const auto vertexArray = rectToQuad({{dstPoint.x, static_cast<float>(destination.size().y) - dstPoint.y}, {clipSize.x, -clipSize.y}});
 
 	drawTexturedQuad(source.textureId(), vertexArray);
 	glBindTexture(GL_TEXTURE_2D, destination.textureId());
@@ -492,7 +492,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 
 		const auto glyphCellSize = font.glyphCellSize().to<float>();
 		const auto adjustX = (gm.minX < 0) ? gm.minX : 0;
-		const auto vertexArray = rectToQuad({position.x + offset + adjustX, position.y, glyphCellSize.x, glyphCellSize.y});
+		const auto vertexArray = rectToQuad({{position.x + offset + adjustX, position.y}, glyphCellSize});
 		const auto textureCoordArray = rectToQuad(gm.uvRect);
 
 		drawTexturedQuad(font.textureId(), vertexArray, textureCoordArray);
@@ -505,7 +505,7 @@ void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 {
 	const auto intRect = rect.to<int>();
 	const auto& position = intRect.startPoint();
-	const auto& clipSize = intRect.size();
+	const auto& clipSize = intRect.size;
 	glScissor(position.x, size().y - (position.y + clipSize.y), clipSize.x, clipSize.y);
 
 	glEnable(GL_SCISSOR_TEST);
@@ -542,7 +542,7 @@ void RendererOpenGL::onResize(Vector<int> newSize)
 void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
 {
 	const auto& position = viewport.startPoint();
-	const auto& size = viewport.size();
+	const auto& size = viewport.size;
 	glViewport(position.x, position.y, size.x, size.y);
 }
 

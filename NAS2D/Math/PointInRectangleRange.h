@@ -27,7 +27,7 @@ namespace NAS2D
 		{
 		public:
 			Iterator(const Rectangle<BaseType>& rect, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
-				mIterator(rect.size(), initial),
+				mIterator(rect.size, initial),
 				mStartPoint(rect.startPoint())
 			{}
 			Iterator(const Iterator& other) = default;
@@ -77,7 +77,7 @@ namespace NAS2D
 
 		Iterator end() const
 		{
-			return Iterator{mRect, Vector<BaseType>{0, mRect.size().y}};
+			return Iterator{mRect, Vector<BaseType>{0, mRect.size.y}};
 		}
 
 	private:

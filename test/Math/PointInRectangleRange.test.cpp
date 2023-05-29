@@ -8,9 +8,9 @@
 TEST(PointInRectangleRange, Iteration) {
 	using Items = std::vector<NAS2D::Point<int>>;
 
-	const auto pointRange1 = NAS2D::PointInRectangleRange{NAS2D::Rectangle{0, 0, 0, 0}};
-	const auto pointRange2 = NAS2D::PointInRectangleRange{NAS2D::Rectangle{1, 1, 1, 1}};
-	const auto pointRange3 = NAS2D::PointInRectangleRange{NAS2D::Rectangle{4, 5, 2, 3}};
+	const auto pointRange1 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{0, 0}, {0, 0}}};
+	const auto pointRange2 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}};
+	const auto pointRange3 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}};
 
 	// Dereference produces the expected starting value
 	// (Later tests also proves the range is restartable)

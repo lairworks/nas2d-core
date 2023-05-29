@@ -50,7 +50,7 @@ namespace
 {
 	constexpr std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect)
 	{
-		const auto p1 = rect.startPoint();
+		const auto p1 = rect.position;
 		const auto p2 = rect.endPoint();
 
 		return {
@@ -254,7 +254,7 @@ void RendererOpenGL::drawImageRepeated(const Image& image, const Rectangle<float
 
 	const auto vertexArray = rectToQuad(rect);
 	const auto imageSize = image.size().to<float>();
-	const auto textureCoordArray = rectToQuad(Rectangle<float>::Create({0.0f, 0.0f}, rect.size.skewInverseBy(imageSize)));
+	const auto textureCoordArray = rectToQuad(Rectangle{{0.0f, 0.0f}, rect.size.skewInverseBy(imageSize)});
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray.data());
 
@@ -285,7 +285,7 @@ void RendererOpenGL::drawSubImageRepeated(const Image& image, const Rectangle<fl
 	const auto tileCountSize = destination.size.skewInverseBy(source.size).to<int>() + Vector{1, 1};
 	for (const auto tileOffset : VectorSizeRange(tileCountSize))
 	{
-		drawSubImage(image, destination.startPoint() + tileOffset.to<float>().skewBy(source.size), source);
+		drawSubImage(image, destination.position + tileOffset.to<float>().skewBy(source.size), source);
 	}
 
 	clipRectClear();
@@ -297,8 +297,8 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();
 
-	const auto sourceBoundsInDestination = Rectangle<int>::Create(dstPointInt, sourceSize);
-	const auto destinationBounds = Rectangle<int>::Create(Point{0, 0}, destination.size());
+	const auto sourceBoundsInDestination = Rectangle{dstPointInt, sourceSize};
+	const auto destinationBounds = Rectangle{Point{0, 0}, destination.size()};
 
 	if (!sourceBoundsInDestination.overlaps(destinationBounds))
 	{
@@ -448,7 +448,7 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 
 	setColor(color);
 
-	const auto p1 = rect.startPoint() +  Vector{0.5, 0.5}; // OpenGL centers pixels between integer values
+	const auto p1 = rect.position +  Vector{0.5, 0.5}; // OpenGL centers pixels between integer values
 	const auto p2 = rect.endPoint(); // No adjustment here so as to exclude the bottom right sides
 	const GLfloat corners[] = { p1.x, p1.y, p2.x, p1.y, p2.x, p2.y, p1.x, p2.y };
 
@@ -504,7 +504,7 @@ void RendererOpenGL::drawText(const Font& font, std::string_view text, Point<flo
 void RendererOpenGL::clipRect(const Rectangle<float>& rect)
 {
 	const auto intRect = rect.to<int>();
-	const auto& position = intRect.startPoint();
+	const auto& position = intRect.position;
 	const auto& clipSize = intRect.size;
 	glScissor(position.x, size().y - (position.y + clipSize.y), clipSize.x, clipSize.y);
 
@@ -533,7 +533,7 @@ void RendererOpenGL::update()
 
 void RendererOpenGL::onResize(Vector<int> newSize)
 {
-	const auto viewportRect = Rectangle<int>::Create({0, 0}, newSize);
+	const auto viewportRect = Rectangle{{0, 0}, newSize};
 	setViewport(viewportRect);
 	setOrthoProjection(viewportRect.to<float>());
 	setResolution(newSize);
@@ -541,7 +541,7 @@ void RendererOpenGL::onResize(Vector<int> newSize)
 
 void RendererOpenGL::setViewport(const Rectangle<int>& viewport)
 {
-	const auto& position = viewport.startPoint();
+	const auto& position = viewport.position;
 	const auto& size = viewport.size;
 	glViewport(position.x, position.y, size.x, size.y);
 }
@@ -552,7 +552,7 @@ void RendererOpenGL::setOrthoProjection(const Rectangle<float>& orthoBounds)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	const auto bounds = orthoBounds.to<double>();
-	glOrtho(bounds.startPoint().x, bounds.endPoint().x, bounds.endPoint().y, bounds.startPoint().y, -1.0, 1.0);
+	glOrtho(bounds.position.x, bounds.endPoint().x, bounds.endPoint().y, bounds.position.y, -1.0, 1.0);
 	glMatrixMode(GL_MODELVIEW);
 }
 

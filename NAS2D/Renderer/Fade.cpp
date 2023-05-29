@@ -80,7 +80,7 @@ void Fade::draw(Renderer& renderer) const
 {
 	if (mFadeColor.alpha > 0)
 	{
-		const auto displayRect = Rectangle<int>::Create({0, 0}, renderer.size());
+		const auto displayRect = Rectangle{{0, 0}, renderer.size()};
 		renderer.drawBoxFilled(displayRect, mFadeColor);
 	}
 }

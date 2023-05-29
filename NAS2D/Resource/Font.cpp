@@ -351,7 +351,7 @@ namespace
 		{
 			const std::size_t glyph = glyphPosition.y * GLYPH_MATRIX_SIZE + glyphPosition.x;
 			const auto uvStart = glyphPosition.to<float>().skewBy(uvSize);
-			glyphMetricsList[glyph].uvRect = Rectangle<float>::Create(uvStart, uvSize);
+			glyphMetricsList[glyph].uvRect = Rectangle{uvStart, uvSize};
 		}
 	}
 }

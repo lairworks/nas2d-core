@@ -28,7 +28,7 @@ namespace NAS2D
 		public:
 			Iterator(const Rectangle<BaseType>& rect, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
 				mIterator(rect.size, initial),
-				mStartPoint(rect.startPoint())
+				mStartPoint(rect.position)
 			{}
 			Iterator(const Iterator& other) = default;
 			Iterator& operator=(const Iterator& other) = default;

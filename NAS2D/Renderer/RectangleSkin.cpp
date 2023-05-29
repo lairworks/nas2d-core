@@ -33,8 +33,8 @@ RectangleSkin::RectangleSkin(const Image& topLeft, const Image& top, const Image
 
 void RectangleSkin::draw(Renderer& renderer, const Rectangle<float>& rect) const
 {
-	const auto p0 = rect.startPoint();
-	const auto p1 = rect.startPoint() + mTopLeft.size().to<float>();
+	const auto p0 = rect.position;
+	const auto p1 = rect.position + mTopLeft.size().to<float>();
 	const auto p2 = rect.crossXPoint() + mTopRight.size().reflectX().to<float>();
 	const auto p3 = rect.crossYPoint() + mBottomLeft.size().reflectY().to<float>();
 	const auto p4 = rect.endPoint() - mBottomRight.size().to<float>();
@@ -49,7 +49,7 @@ void RectangleSkin::draw(Renderer& renderer, const Rectangle<float>& rect) const
 	renderer.drawImageRepeated(mRight, Rectangle<float>::Create(p2, Point{rect.endPoint().x, p4.y}));
 
 	// Draw the corners
-	renderer.drawImage(mTopLeft, rect.startPoint());
+	renderer.drawImage(mTopLeft, rect.position);
 	renderer.drawImage(mTopRight, {p2.x, p0.y});
 	renderer.drawImage(mBottomLeft, {p0.x, p3.y});
 	renderer.drawImage(mBottomRight, p4);

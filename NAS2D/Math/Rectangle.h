@@ -29,7 +29,7 @@ namespace NAS2D
 
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint)
 		{
-			return Create(startPoint, endPoint - startPoint);
+			return {startPoint, endPoint - startPoint};
 		}
 
 		constexpr bool operator==(const Rectangle& rect) const
@@ -79,7 +79,7 @@ namespace NAS2D
 
 		constexpr Rectangle translate(Vector<BaseType> offset) const
 		{
-			return Create(startPoint() + offset, size);
+			return {position + offset, size};
 		}
 
 		constexpr Rectangle inset(BaseType amount) const
@@ -99,12 +99,12 @@ namespace NAS2D
 
 		constexpr Rectangle skewBy(const Vector<BaseType>& scaleFactor) const
 		{
-			return Create(startPoint().skewBy(scaleFactor), size.skewBy(scaleFactor));
+			return {position.skewBy(scaleFactor), size.skewBy(scaleFactor)};
 		}
 
 		constexpr Rectangle skewInverseBy(const Vector<BaseType>& scaleFactor) const
 		{
-			return Create(startPoint().skewInverseBy(scaleFactor), size.skewInverseBy(scaleFactor));
+			return {position.skewInverseBy(scaleFactor), size.skewInverseBy(scaleFactor)};
 		}
 
 		template <typename NewBaseType>
@@ -126,24 +126,24 @@ namespace NAS2D
 		// Area in interval notation: [x .. x + width), [y .. y + height)
 		constexpr bool contains(const Point<BaseType>& point) const
 		{
-			return startPoint() <= point && point < endPoint();
+			return position <= point && point < endPoint();
 		}
 
 		constexpr bool contains(const Rectangle<BaseType>& rect) const
 		{
-			return startPoint() <= rect.startPoint() && rect.endPoint() <= endPoint();
+			return position <= rect.position && rect.endPoint() <= endPoint();
 		}
 
 		// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)
 		// Area in interval notation: [x .. x + width), [y .. y + height)
 		constexpr bool overlaps(const Rectangle& rect) const
 		{
-			return startPoint() < rect.endPoint() && rect.startPoint() < endPoint();
+			return position < rect.endPoint() && rect.position < endPoint();
 		}
 
 		constexpr Point<BaseType> center() const
 		{
-			return {position.x + (size.x / 2), position.y + (size.y / 2)};
+			return position + size / 2;
 		}
 	};
 

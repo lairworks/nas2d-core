@@ -63,7 +63,7 @@ TEST(Rectangle, translate) {
 
 TEST(Rectangle, inset) {
 	// Intuitive test is for start and end point adjustments
-	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Rectangle<int>{{0, 0}, {10, 10}}.inset(1).startPoint()));
+	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Rectangle<int>{{0, 0}, {10, 10}}.inset(1).position));
 	EXPECT_EQ((NAS2D::Point{9, 9}), (NAS2D::Rectangle<int>{{0, 0}, {10, 10}}.inset(1).endPoint()));
 
 	// Adjust all edges equally, both inwards and outwards
@@ -77,7 +77,7 @@ TEST(Rectangle, inset) {
 	// Adjust all 4 edges independently
 	EXPECT_EQ((NAS2D::Rectangle<int>{{1, 2}, {6, 4}}), (NAS2D::Rectangle<int>{{0, 0}, {10, 10}}.inset({1, 2}, {3, 4})));
 	// Intuitive test using start and end points
-	EXPECT_EQ((NAS2D::Point{1, 2}), (NAS2D::Rectangle<int>{{0, 0}, {10, 10}}.inset({1, 2}, {3, 4}).startPoint()));
+	EXPECT_EQ((NAS2D::Point{1, 2}), (NAS2D::Rectangle<int>{{0, 0}, {10, 10}}.inset({1, 2}, {3, 4}).position));
 	EXPECT_EQ((NAS2D::Point{7, 6}), (NAS2D::Rectangle<int>{{0, 0}, {10, 10}}.inset({1, 2}, {3, 4}).endPoint()));
 }
 

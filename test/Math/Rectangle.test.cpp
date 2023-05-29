@@ -14,9 +14,9 @@ TEST(Rectangle, CreatePointPoint) {
 }
 
 TEST(Rectangle, size) {
-	EXPECT_EQ((NAS2D::Vector{0, 0}), (NAS2D::Rectangle<int>{{0, 0}, {0, 0}}.size()));
-	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Rectangle<int>{{0, 0}, {1, 1}}.size()));
-	EXPECT_EQ((NAS2D::Vector{3, 4}), (NAS2D::Rectangle<int>{{1, 2}, {3, 4}}.size()));
+	EXPECT_EQ((NAS2D::Vector{0, 0}), (NAS2D::Rectangle<int>{{0, 0}, {0, 0}}.size));
+	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Rectangle<int>{{0, 0}, {1, 1}}.size));
+	EXPECT_EQ((NAS2D::Vector{3, 4}), (NAS2D::Rectangle<int>{{1, 2}, {3, 4}}.size));
 }
 
 TEST(Rectangle, startPoint) {
@@ -45,7 +45,7 @@ TEST(Rectangle, crossYPoint) {
 
 TEST(Rectangle, sizeSet) {
 	NAS2D::Rectangle<int> rect{{1, 2}, {3, 4}};
-	EXPECT_NO_THROW(rect.size({5, 6}));
+	rect.size = {5, 6};
 	EXPECT_EQ((NAS2D::Rectangle<int>{{1, 2}, {5, 6}}), rect);
 }
 

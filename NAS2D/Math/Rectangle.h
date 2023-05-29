@@ -143,7 +143,7 @@ namespace NAS2D
 
 		constexpr Point<BaseType> center() const
 		{
-			return {position.x + (size.x / 2), position.y + (size.y / 2)};
+			return position + size / 2;
 		}
 	};
 

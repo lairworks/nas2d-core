@@ -270,8 +270,8 @@ namespace
 
 			const auto& image = imageCache.load(iterator->second);
 
-			const auto frameRect = Rectangle<int>::Create({x, y}, Vector{width, height});
-			const auto imageRect = Rectangle<int>::Create({0, 0}, image.size());
+			const auto frameRect = Rectangle<int>{{x, y}, {width, height}};
+			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
 				throw std::runtime_error("Sprite frame bounds exceeds image sheet bounds: " + endTag(currentRow));

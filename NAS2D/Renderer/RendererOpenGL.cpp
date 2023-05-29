@@ -254,7 +254,7 @@ void RendererOpenGL::drawImageRepeated(const Image& image, const Rectangle<float
 
 	const auto vertexArray = rectToQuad(rect);
 	const auto imageSize = image.size().to<float>();
-	const auto textureCoordArray = rectToQuad(Rectangle<float>::Create({0.0f, 0.0f}, rect.size.skewInverseBy(imageSize)));
+	const auto textureCoordArray = rectToQuad(Rectangle{{0.0f, 0.0f}, rect.size.skewInverseBy(imageSize)});
 
 	glVertexPointer(2, GL_FLOAT, 0, vertexArray.data());
 
@@ -297,8 +297,8 @@ void RendererOpenGL::drawImageToImage(const Image& source, const Image& destinat
 	const auto dstPointInt = dstPoint.to<int>();
 	const auto sourceSize = source.size();
 
-	const auto sourceBoundsInDestination = Rectangle<int>::Create(dstPointInt, sourceSize);
-	const auto destinationBounds = Rectangle<int>::Create(Point{0, 0}, destination.size());
+	const auto sourceBoundsInDestination = Rectangle{dstPointInt, sourceSize};
+	const auto destinationBounds = Rectangle{Point{0, 0}, destination.size()};
 
 	if (!sourceBoundsInDestination.overlaps(destinationBounds))
 	{
@@ -533,7 +533,7 @@ void RendererOpenGL::update()
 
 void RendererOpenGL::onResize(Vector<int> newSize)
 {
-	const auto viewportRect = Rectangle<int>::Create({0, 0}, newSize);
+	const auto viewportRect = Rectangle{{0, 0}, newSize};
 	setViewport(viewportRect);
 	setOrthoProjection(viewportRect.to<float>());
 	setResolution(newSize);

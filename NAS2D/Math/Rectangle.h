@@ -29,7 +29,7 @@ namespace NAS2D
 
 		constexpr static Rectangle<BaseType> Create(Point<BaseType> startPoint, Point<BaseType> endPoint)
 		{
-			return Create(startPoint, endPoint - startPoint);
+			return {startPoint, endPoint - startPoint};
 		}
 
 		constexpr bool operator==(const Rectangle& rect) const
@@ -79,7 +79,7 @@ namespace NAS2D
 
 		constexpr Rectangle translate(Vector<BaseType> offset) const
 		{
-			return Create(position + offset, size);
+			return {position + offset, size};
 		}
 
 		constexpr Rectangle inset(BaseType amount) const
@@ -99,12 +99,12 @@ namespace NAS2D
 
 		constexpr Rectangle skewBy(const Vector<BaseType>& scaleFactor) const
 		{
-			return Create(position.skewBy(scaleFactor), size.skewBy(scaleFactor));
+			return {position.skewBy(scaleFactor), size.skewBy(scaleFactor)};
 		}
 
 		constexpr Rectangle skewInverseBy(const Vector<BaseType>& scaleFactor) const
 		{
-			return Create(position.skewInverseBy(scaleFactor), size.skewInverseBy(scaleFactor));
+			return {position.skewInverseBy(scaleFactor), size.skewInverseBy(scaleFactor)};
 		}
 
 		template <typename NewBaseType>

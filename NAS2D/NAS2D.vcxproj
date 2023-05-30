@@ -1,106 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3350562D-6204-42FC-898A-C85FD62E04E8}</ProjectGuid>
     <RootNamespace>NAS2D</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="..\MsvcProjectDefaults\Defaults.targets" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <IntDir>$(ProjectDir)..\.build\$(Configuration)_$(PlatformShortName)_$(ProjectName)\Intermediate\</IntDir>
-    <OutDir>$(ProjectDir)..\.build\$(Configuration)_$(PlatformShortName)_$(ProjectName)\</OutDir>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg">
-    <VcpkgEnableManifest>true</VcpkgEnableManifest>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <EnablePREfast>true</EnablePREfast>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/we4242 /we4254 /we4263 /we4265 /we4287 /we4289 /we4296 /we4311 /we4545 /we4546 /we4547 /we4549 /we4555 /we4619 /we4640 /we4826 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
-      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <EnablePREfast>true</EnablePREfast>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/we4242 /we4254 /we4263 /we4265 /we4287 /we4289 /we4296 /we4311 /we4545 /we4546 /we4547 /we4549 /we4555 /we4619 /we4640 /we4826 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
-      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -108,24 +45,14 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OmitFramePointers>true</OmitFramePointers>
-      <EnablePREfast>true</EnablePREfast>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/we4242 /we4254 /we4263 /we4265 /we4287 /we4289 /we4296 /we4311 /we4545 /we4546 /we4547 /we4549 /we4555 /we4619 /we4640 /we4826 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
-      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -133,17 +60,8 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OmitFramePointers>true</OmitFramePointers>
-      <EnablePREfast>true</EnablePREfast>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/we4242 /we4254 /we4263 /we4265 /we4287 /we4289 /we4296 /we4311 /we4545 /we4546 /we4547 /we4549 /we4555 /we4619 /we4640 /we4826 /we4905 /we4906 /we4928 %(AdditionalOptions)</AdditionalOptions>
-      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
-      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>

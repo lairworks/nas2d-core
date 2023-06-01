@@ -47,14 +47,16 @@ POSTCOMPILE = @mv -f $(INTDIR)/$*.Td $(INTDIR)/$*.d && touch $@
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
-.PHONY: nas2d
-nas2d: $(OUTPUT)
+.DEFAULT_GOAL := nas2d
 
 .PHONY: all
 all: nas2d test test-graphics
 
 
 ## NAS2D project ##
+
+.PHONY: nas2d
+nas2d: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
 	@mkdir -p "${@D}"

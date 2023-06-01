@@ -53,6 +53,9 @@ nas2d: $(OUTPUT)
 .PHONY: all
 all: nas2d test test-graphics
 
+
+## NAS2D project ##
+
 $(OUTPUT): $(OBJS)
 	@mkdir -p "${@D}"
 	ar rcs $@ $^
@@ -66,31 +69,6 @@ $(INTDIR)/%.d: ;
 .PRECIOUS: $(INTDIR)/%.d
 
 include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
-
-
-VERSION = $(shell git describe --tags --dirty)
-PLATFORM = $(TARGET_OS).x64
-PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(PLATFORM)-$(CONFIG).tar.gz
-Darwin_TAR_RENAME_FLAG := -s '!^$(SRCDIR)/!include/\0!'
-Linux_TAR_RENAME_FLAG := --transform='s/^$(SRCDIR)/include\/\0/'
-TAR_RENAME_FLAG := $($(CURRENT_OS)_TAR_RENAME_FLAG)
-
-.PHONY: package
-package: $(PACKAGE_NAME)
-
-$(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
-	@mkdir -p "${@D}"
-	# Package an "include/" folder containing all header files, plus the library file
-	find $(SRCDIR) -name '*.h' | tar -czf $(PACKAGE_NAME) $(TAR_RENAME_FLAG) -T - $(OUTPUT)
-
-
-.PHONY: clean clean-all
-clean:
-	-rm --force --recursive $(INTDIR)
-clean-all: | clean
-	-rm --force --recursive $(ROOTBUILDDIR)
-	-rm --force $(OUTPUT)
-	-rm --force --dir $(BINDIR)
 
 
 ## Unit Test project ##
@@ -111,10 +89,6 @@ TESTPOSTCOMPILE = @mv -f $(TESTINTDIR)/$*.Td $(TESTINTDIR)/$*.d && touch $@
 .PHONY: test
 test: $(TESTOUTPUT)
 
-.PHONY: check
-check: | test
-	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
-
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
 	@mkdir -p "${@D}"
 	$(CXX) $(TESTOBJS) $(TESTLDFLAGS) $(TESTLIBS) -o $@
@@ -130,6 +104,13 @@ $(TESTINTDIR)/%.d: ;
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 
 
+.PHONY: check
+check: | test
+	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
+
+
+## Graphics test project ##
+
 TESTGRAPHICSDIR := $(BUILDDIRPREFIX)testGraphics
 
 .PHONY: test-graphics
@@ -142,6 +123,37 @@ $(TESTGRAPHICSDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
 run-test-graphics: | test-graphics
 	cd test-graphics/ && ../$(TESTGRAPHICSDIR)/testGraphics ; cd ..
 
+
+## Clean ##
+
+.PHONY: clean clean-all
+clean:
+	-rm --force --recursive $(INTDIR)
+clean-all: | clean
+	-rm --force --recursive $(ROOTBUILDDIR)
+	-rm --force $(OUTPUT)
+	-rm --force --dir $(BINDIR)
+
+
+## Package ##
+
+VERSION = $(shell git describe --tags --dirty)
+PLATFORM = $(TARGET_OS).x64
+PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(PLATFORM)-$(CONFIG).tar.gz
+Darwin_TAR_RENAME_FLAG := -s '!^$(SRCDIR)/!include/\0!'
+Linux_TAR_RENAME_FLAG := --transform='s/^$(SRCDIR)/include\/\0/'
+TAR_RENAME_FLAG := $($(CURRENT_OS)_TAR_RENAME_FLAG)
+
+.PHONY: package
+package: $(PACKAGE_NAME)
+
+$(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
+	@mkdir -p "${@D}"
+	# Package an "include/" folder containing all header files, plus the library file
+	find $(SRCDIR) -name '*.h' | tar -czf $(PACKAGE_NAME) $(TAR_RENAME_FLAG) -T - $(OUTPUT)
+
+
+## Linting ##
 
 .PHONY: show-warnings
 show-warnings:

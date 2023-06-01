@@ -37,7 +37,6 @@ BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
 BINDIR := lib
 INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
-PACKAGEDIR := $(ROOTBUILDDIR)/package
 
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
 
@@ -144,6 +143,7 @@ clean-all: | clean
 
 ## Package ##
 
+PACKAGEDIR := $(ROOTBUILDDIR)/package
 VERSION = $(shell git describe --tags --dirty)
 PLATFORM = $(TARGET_OS).x64
 PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(PLATFORM)-$(CONFIG).tar.gz

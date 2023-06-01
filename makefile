@@ -95,7 +95,7 @@ $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
 
 $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
 	@mkdir -p "${@D}"
-	$(TESTCOMPILE.cpp) $(OUTPUT_OPTION) -I$(SRCDIR) $<
+	$(TESTCOMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
 
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))

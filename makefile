@@ -35,6 +35,8 @@ LDFLAGS := $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(SDL_CONFIG_LIBS) $(OpenGL_LIBS)
 
 
+## Default and top-level targets ##
+
 .DEFAULT_GOAL := nas2d
 
 .PHONY: all

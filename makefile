@@ -96,13 +96,15 @@ check: | test
 
 ## Graphics test project ##
 
+TESTGRAPHICSDIR := test-graphics
 TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics
+TESTGRAPHICSSRCS := $(shell find $(TESTGRAPHICSDIR) -name '*.cpp')
 
 .PHONY: test-graphics
 test-graphics: $(TESTGRAPHICSOUTPUT)
-$(TESTGRAPHICSOUTPUT): test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
+$(TESTGRAPHICSOUTPUT): $(TESTGRAPHICSSRCS) test-graphics/*.h $(OUTPUT)
 	@mkdir -p "${@D}"
-	$(CXX) test-graphics/*.cpp $(OUTPUT) $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) $(LDLIBS) -o $@
+	$(CXX) $(TESTGRAPHICSSRCS) $(OUTPUT) $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) $(LDLIBS) -o $@
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics

@@ -39,10 +39,12 @@ INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
 PACKAGEDIR := $(ROOTBUILDDIR)/package
 
-DEPFLAGS = -MT $@ -MMD -MP -MF $(INTDIR)/$*.Td
+PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
 
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
-POSTCOMPILE = @mv -f $(INTDIR)/$*.Td $(INTDIR)/$*.d && touch $@
+DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
+POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
+
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(PROJECT_FLAGS) $(TARGET_ARCH) -c
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
@@ -59,16 +61,7 @@ all: nas2d test test-graphics
 nas2d: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
-	@mkdir -p "${@D}"
-	ar rcs $@ $^
-
 $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
-	@mkdir -p "${@D}"
-	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
-	$(POSTCOMPILE)
-
-$(INTDIR)/%.d: ;
-.PRECIOUS: $(INTDIR)/%.d
 
 include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
 
@@ -80,28 +73,21 @@ TESTINTDIR := $(BUILDDIRPREFIX)test/intermediate
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 TESTCPPFLAGS := $(CPPFLAGS) -I./
-TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
-TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
+TESTLDFLAGS := $(LDFLAGS)
+TESTLIBS := -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIRPREFIX)test/test
 
-TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTINTDIR)/$*.Td
-TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
-TESTPOSTCOMPILE = @mv -f $(TESTINTDIR)/$*.Td $(TESTINTDIR)/$*.d && touch $@
+TESTPROJECT_FLAGS = $(TESTCPPFLAGS) $(CXXFLAGS)
+TESTPROJECT_LINKFLAGS = $(TESTLDFLAGS) $(TESTLIBS)
 
 .PHONY: test
 test: $(TESTOUTPUT)
 
+$(TESTOUTPUT): PROJECT_LINKFLAGS = $(TESTPROJECT_LINKFLAGS)
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
-	@mkdir -p "${@D}"
-	$(CXX) $(TESTOBJS) $(TESTLDFLAGS) $(TESTLIBS) -o $@
 
+$(TESTOBJS): PROJECT_FLAGS = $(TESTPROJECT_FLAGS)
 $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
-	@mkdir -p "${@D}"
-	$(TESTCOMPILE.cpp) $(OUTPUT_OPTION) -I$(SRCDIR) $<
-	$(TESTPOSTCOMPILE)
-
-$(TESTINTDIR)/%.d: ;
-.PRECIOUS: $(TESTINTDIR)/%.d
 
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 
@@ -119,11 +105,30 @@ TESTGRAPHICSDIR := $(BUILDDIRPREFIX)testGraphics
 test-graphics: $(TESTGRAPHICSDIR)/testGraphics
 $(TESTGRAPHICSDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
 	@mkdir -p "${@D}"
-	$(CXX) -o $@ test-graphics/*.cpp $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) -lnas2d $(LDLIBS)
+	$(CXX) -o $@ test-graphics/*.cpp $(OUTPUT) $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) $(LDLIBS)
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
 	cd test-graphics/ && ../$(TESTGRAPHICSDIR)/testGraphics ; cd ..
+
+
+## Compile rules ##
+
+%:
+	@mkdir -p "${@D}"
+	$(CXX) $^ $(PROJECT_LINKFLAGS) -o $@
+
+lib%.a:
+	@mkdir -p "${@D}"
+	ar rcs $@ $^
+
+%.o:
+	@mkdir -p "${@D}"
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
+
+%.d: ;
+.PRECIOUS: %.d
 
 
 ## Clean ##

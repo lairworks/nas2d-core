@@ -65,9 +65,6 @@ $(OUTPUT): $(OBJS)
 	ar rcs $@ $^
 
 $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
-	@mkdir -p "${@D}"
-	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
-	$(POSTCOMPILE)
 
 %.d: ;
 .PRECIOUS: %.d
@@ -97,9 +94,6 @@ $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
 
 $(TESTOBJS): PROJECT_FLAGS = $(TESTPROJECT_FLAGS)
 $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
-	@mkdir -p "${@D}"
-	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
-	$(POSTCOMPILE)
 
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 
@@ -122,6 +116,14 @@ $(TESTGRAPHICSDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
 	cd test-graphics/ && ../$(TESTGRAPHICSDIR)/testGraphics ; cd ..
+
+
+## Compile rules ##
+
+%.o:
+	@mkdir -p "${@D}"
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
 
 
 ## Clean ##

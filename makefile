@@ -102,7 +102,7 @@ TESTGRAPHICSDIR := $(BUILDDIRPREFIX)testGraphics
 test-graphics: $(TESTGRAPHICSDIR)/testGraphics
 $(TESTGRAPHICSDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
 	@mkdir -p "${@D}"
-	$(CXX) -o $@ test-graphics/*.cpp $(OUTPUT) $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) $(LDLIBS)
+	$(CXX) test-graphics/*.cpp $(OUTPUT) $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) $(LDLIBS) -o $@
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics

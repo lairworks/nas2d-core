@@ -96,17 +96,17 @@ check: | test
 
 ## Graphics test project ##
 
-TESTGRAPHICSDIR := $(BUILDDIRPREFIX)testGraphics
+TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics
 
 .PHONY: test-graphics
-test-graphics: $(TESTGRAPHICSDIR)/testGraphics
-$(TESTGRAPHICSDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
+test-graphics: $(TESTGRAPHICSOUTPUT)
+$(TESTGRAPHICSOUTPUT): test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
 	@mkdir -p "${@D}"
 	$(CXX) test-graphics/*.cpp $(OUTPUT) $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) $(LDLIBS) -o $@
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
-	cd test-graphics/ && ../$(TESTGRAPHICSDIR)/testGraphics ; cd ..
+	cd test-graphics/ && ../$(TESTGRAPHICSOUTPUT) ; cd ..
 
 
 ## Compile rules ##

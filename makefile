@@ -85,8 +85,6 @@ test: $(TESTOUTPUT)
 
 $(TESTOUTPUT): PROJECT_LINKFLAGS = $(TESTPROJECT_LINKFLAGS)
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
-	@mkdir -p "${@D}"
-	$(CXX) $^ $(PROJECT_LINKFLAGS) -o $@
 
 $(TESTOBJS): PROJECT_FLAGS = $(TESTPROJECT_FLAGS)
 $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
@@ -115,6 +113,10 @@ run-test-graphics: | test-graphics
 
 
 ## Compile rules ##
+
+%:
+	@mkdir -p "${@D}"
+	$(CXX) $^ $(PROJECT_LINKFLAGS) -o $@
 
 lib%.a:
 	@mkdir -p "${@D}"

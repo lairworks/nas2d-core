@@ -39,10 +39,12 @@ INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
 PACKAGEDIR := $(ROOTBUILDDIR)/package
 
+PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
+
 DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
 POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
 
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(PROJECT_FLAGS) $(TARGET_ARCH) -c
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
@@ -84,7 +86,9 @@ TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIRPREFIX)test/test
 
-TESTCOMPILE.cpp = $(CXX) $(DEPFLAGS) $(TESTCPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
+TESTPROJECT_FLAGS = $(TESTCPPFLAGS) $(CXXFLAGS)
+
+TESTCOMPILE.cpp = $(CXX) $(DEPFLAGS) $(TESTPROJECT_FLAGS) $(TARGET_ARCH) -c
 
 .PHONY: test
 test: $(TESTOUTPUT)

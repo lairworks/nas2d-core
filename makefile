@@ -41,11 +41,6 @@ PACKAGEDIR := $(ROOTBUILDDIR)/package
 
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
 
-DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
-POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
-
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(PROJECT_FLAGS) $(TARGET_ARCH) -c
-
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
@@ -113,6 +108,11 @@ run-test-graphics: | test-graphics
 
 
 ## Compile rules ##
+
+DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(PROJECT_FLAGS) $(TARGET_ARCH) -c
+POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
+
 
 %:
 	@mkdir -p "${@D}"

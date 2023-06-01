@@ -40,9 +40,9 @@ OUTPUT := $(BINDIR)/libnas2d.a
 PACKAGEDIR := $(ROOTBUILDDIR)/package
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
+POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
 
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
-POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
 
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))

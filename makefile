@@ -67,8 +67,8 @@ $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
 
-$(INTDIR)/%.d: ;
-.PRECIOUS: $(INTDIR)/%.d
+%.d: ;
+.PRECIOUS: %.d
 
 include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
 
@@ -99,9 +99,6 @@ $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
 	@mkdir -p "${@D}"
 	$(TESTCOMPILE.cpp) $(OUTPUT_OPTION) -I$(SRCDIR) $<
 	$(TESTPOSTCOMPILE)
-
-$(TESTINTDIR)/%.d: ;
-.PRECIOUS: $(TESTINTDIR)/%.d
 
 include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
 

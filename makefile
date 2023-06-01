@@ -84,7 +84,7 @@ TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIRPREFIX)test/test
 
-TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(DEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
+TESTCOMPILE.cpp = $(CXX) $(DEPFLAGS) $(TESTCPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 
 .PHONY: test
 test: $(TESTOUTPUT)

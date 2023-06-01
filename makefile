@@ -39,7 +39,7 @@ INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
 OUTPUT := $(BINDIR)/libnas2d.a
 PACKAGEDIR := $(ROOTBUILDDIR)/package
 
-DEPFLAGS = -MT $@ -MMD -MP -MF $(INTDIR)/$*.Td
+DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
 
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(INTDIR)/$*.Td $(INTDIR)/$*.d && touch $@
@@ -84,8 +84,7 @@ TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
 TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIRPREFIX)test/test
 
-TESTDEPFLAGS = -MT $@ -MMD -MP -MF $(TESTINTDIR)/$*.Td
-TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(TESTDEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
+TESTCOMPILE.cpp = $(CXX) $(TESTCPPFLAGS) $(DEPFLAGS) $(CXXFLAGS) $(TARGET_ARCH) -c
 TESTPOSTCOMPILE = @mv -f $(TESTINTDIR)/$*.Td $(TESTINTDIR)/$*.d && touch $@
 
 .PHONY: test

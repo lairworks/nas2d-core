@@ -73,8 +73,8 @@ TESTINTDIR := $(BUILDDIRPREFIX)test/intermediate
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 TESTCPPFLAGS := $(CPPFLAGS) -I./
-TESTLDFLAGS := -L$(BINDIR) $(LDFLAGS)
-TESTLIBS := -lnas2d -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
+TESTLDFLAGS := $(LDFLAGS)
+TESTLIBS := -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
 TESTOUTPUT := $(BUILDDIRPREFIX)test/test
 
 TESTPROJECT_FLAGS = $(TESTCPPFLAGS) $(CXXFLAGS)
@@ -84,7 +84,7 @@ test: $(TESTOUTPUT)
 
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
 	@mkdir -p "${@D}"
-	$(CXX) $(TESTOBJS) $(TESTLDFLAGS) $(TESTLIBS) -o $@
+	$(CXX) $(TESTOBJS) $(OUTPUT) $(TESTLDFLAGS) $(TESTLIBS) -o $@
 
 $(TESTOBJS): PROJECT_FLAGS = $(TESTPROJECT_FLAGS)
 $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
@@ -105,7 +105,7 @@ TESTGRAPHICSDIR := $(BUILDDIRPREFIX)testGraphics
 test-graphics: $(TESTGRAPHICSDIR)/testGraphics
 $(TESTGRAPHICSDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
 	@mkdir -p "${@D}"
-	$(CXX) -o $@ test-graphics/*.cpp $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) -lnas2d $(LDLIBS)
+	$(CXX) -o $@ test-graphics/*.cpp $(OUTPUT) $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) $(LDLIBS)
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics

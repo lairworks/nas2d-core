@@ -61,13 +61,7 @@ all: nas2d test test-graphics
 nas2d: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
-	@mkdir -p "${@D}"
-	ar rcs $@ $^
-
 $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
-
-%.d: ;
-.PRECIOUS: %.d
 
 include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
 
@@ -120,10 +114,17 @@ run-test-graphics: | test-graphics
 
 ## Compile rules ##
 
+lib%.a:
+	@mkdir -p "${@D}"
+	ar rcs $@ $^
+
 %.o:
 	@mkdir -p "${@D}"
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
+
+%.d: ;
+.PRECIOUS: %.d
 
 
 ## Clean ##

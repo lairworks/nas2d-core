@@ -31,17 +31,9 @@ LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(SDL_CO
 Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
 
-SRCDIR := NAS2D
 ROOTBUILDDIR := .build
 BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
-BINDIR := lib
-INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
-OUTPUT := $(BINDIR)/libnas2d.a
 
-PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
-
-SRCS := $(shell find $(SRCDIR) -name '*.cpp')
-OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
 .DEFAULT_GOAL := nas2d
 
@@ -50,6 +42,15 @@ all: nas2d test test-graphics
 
 
 ## NAS2D project ##
+
+SRCDIR := NAS2D
+BINDIR := lib
+INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
+OUTPUT := $(BINDIR)/libnas2d.a
+SRCS := $(shell find $(SRCDIR) -name '*.cpp')
+OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
+
+PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
 
 .PHONY: nas2d
 nas2d: $(OUTPUT)

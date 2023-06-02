@@ -14,6 +14,30 @@ CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
+Windows_RUN_PREFIX := wine
+RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
+
+ROOTBUILDDIR := .build
+BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
+
+
+## Default and top-level targets ##
+
+.DEFAULT_GOAL := nas2d
+
+.PHONY: all
+all: nas2d test test-graphics
+
+
+## NAS2D project ##
+
+SRCDIR := NAS2D
+BINDIR := lib
+INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
+OUTPUT := $(BINDIR)/libnas2d.a
+SRCS := $(shell find $(SRCDIR) -name '*.cpp')
+OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
+
 Linux_OpenGL_LIBS := -lGLEW -lGL
 Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
 Windows_OpenGL_LIBS := -lglew32 -lopengl32
@@ -28,34 +52,7 @@ CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN) $(
 LDFLAGS := $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(SDL_CONFIG_LIBS) $(OpenGL_LIBS)
 
-Windows_RUN_PREFIX := wine
-RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
-
-SRCDIR := NAS2D
-ROOTBUILDDIR := .build
-BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
-BINDIR := lib
-INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
-OUTPUT := $(BINDIR)/libnas2d.a
-PACKAGEDIR := $(ROOTBUILDDIR)/package
-
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
-
-DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
-POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
-
-COMPILE.cpp = $(CXX) $(DEPFLAGS) $(PROJECT_FLAGS) $(TARGET_ARCH) -c
-
-SRCS := $(shell find $(SRCDIR) -name '*.cpp')
-OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
-
-.DEFAULT_GOAL := nas2d
-
-.PHONY: all
-all: nas2d test test-graphics
-
-
-## NAS2D project ##
 
 .PHONY: nas2d
 nas2d: $(OUTPUT)
@@ -72,10 +69,10 @@ TESTDIR := test
 TESTINTDIR := $(BUILDDIRPREFIX)test/intermediate
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
+TESTOUTPUT := $(BUILDDIRPREFIX)test/test
 TESTCPPFLAGS := $(CPPFLAGS) -I./
 TESTLDFLAGS := $(LDFLAGS)
 TESTLIBS := -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
-TESTOUTPUT := $(BUILDDIRPREFIX)test/test
 
 TESTPROJECT_FLAGS = $(TESTCPPFLAGS) $(CXXFLAGS)
 TESTPROJECT_LINKFLAGS = $(TESTLDFLAGS) $(TESTLIBS)
@@ -114,6 +111,11 @@ run-test-graphics: | test-graphics
 
 ## Compile rules ##
 
+DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
+COMPILE.cpp = $(CXX) $(DEPFLAGS) $(PROJECT_FLAGS) $(TARGET_ARCH) -c
+POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
+
+
 %:
 	@mkdir -p "${@D}"
 	$(CXX) $^ $(PROJECT_LINKFLAGS) -o $@
@@ -144,6 +146,7 @@ clean-all: | clean
 
 ## Package ##
 
+PACKAGEDIR := $(ROOTBUILDDIR)/package
 VERSION = $(shell git describe --tags --dirty)
 PLATFORM = $(TARGET_OS).x64
 PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(PLATFORM)-$(CONFIG).tar.gz

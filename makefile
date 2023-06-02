@@ -96,17 +96,30 @@ check: | test
 
 ## Graphics test project ##
 
-TESTGRAPHICSDIR := $(BUILDDIRPREFIX)testGraphics
+TESTGRAPHICSDIR := test-graphics
+TESTGRAPHICSINTDIR := $(BUILDDIRPREFIX)testGraphics/intermediate
+TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics
+TESTGRAPHICSSRCS := $(shell find $(TESTGRAPHICSDIR) -name '*.cpp')
+TESTGRAPHICSOBJS := $(patsubst $(TESTGRAPHICSDIR)/%.cpp,$(TESTGRAPHICSINTDIR)/%.o,$(TESTGRAPHICSSRCS))
+
+# The `-Umain` needs to come after `sdl2-config` flags in `CXXFLAGS`
+TESTGRAPHICSPROJECT_FLAGS = $(TESTCPPFLAGS) $(CXXFLAGS) -Umain
+TESTGRAPHICSPROJECT_LINKFLAGS = $(TESTLDFLAGS) $(LDLIBS)
 
 .PHONY: test-graphics
-test-graphics: $(TESTGRAPHICSDIR)/testGraphics
-$(TESTGRAPHICSDIR)/testGraphics: test-graphics/*.cpp test-graphics/*.h $(OUTPUT)
-	@mkdir -p "${@D}"
-	$(CXX) -o $@ test-graphics/*.cpp $(OUTPUT) $(TESTCPPFLAGS) $(CXXFLAGS) -Umain $(TESTLDFLAGS) $(LDLIBS)
+test-graphics: $(TESTGRAPHICSOUTPUT)
+
+$(TESTGRAPHICSOUTPUT): PROJECT_LINKFLAGS = $(TESTGRAPHICSPROJECT_LINKFLAGS)
+$(TESTGRAPHICSOUTPUT): $(TESTGRAPHICSOBJS) $(OUTPUT)
+
+$(TESTGRAPHICSOBJS): PROJECT_FLAGS = $(TESTGRAPHICSPROJECT_FLAGS)
+$(TESTGRAPHICSOBJS): $(TESTGRAPHICSINTDIR)/%.o : $(TESTGRAPHICSDIR)/%.cpp $(TESTGRAPHICSINTDIR)/%.d
+
+include $(wildcard $(patsubst $(TESTGRAPHICSDIR)/%.cpp,$(TESTGRAPHICSINTDIR)/%.d,$(TESTGRAPHICSSRCS)))
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
-	cd test-graphics/ && ../$(TESTGRAPHICSDIR)/testGraphics ; cd ..
+	cd test-graphics/ && ../$(TESTGRAPHICSOUTPUT) ; cd ..
 
 
 ## Compile rules ##

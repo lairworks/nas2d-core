@@ -100,6 +100,7 @@ TESTGRAPHICSDIR := test-graphics
 TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics
 TESTGRAPHICSSRCS := $(shell find $(TESTGRAPHICSDIR) -name '*.cpp')
 
+# The `-Umain` needs to come after `sdl2-config` flags in `CXXFLAGS`
 TESTGRAPHICSPROJECT_FLAGS = $(TESTCPPFLAGS) $(CXXFLAGS) -Umain
 TESTGRAPHICSPROJECT_LINKFLAGS = $(TESTLDFLAGS) $(LDLIBS)
 

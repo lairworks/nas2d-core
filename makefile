@@ -60,7 +60,7 @@ nas2d: $(OUTPUT)
 $(OUTPUT): $(OBJS)
 $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
 
-include $(wildcard $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.d,$(SRCS)))
+include $(wildcard $(patsubst %.o,%.d,$(OBJS)))
 
 
 ## Unit Test project ##
@@ -87,7 +87,7 @@ $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
 $(TESTOBJS): PROJECT_FLAGS = $(TESTPROJECT_FLAGS)
 $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
 
-include $(wildcard $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.d,$(TESTSRCS)))
+include $(wildcard $(patsubst %.o,%.d,$(TESTOBJS)))
 
 
 .PHONY: check
@@ -116,7 +116,8 @@ $(TESTGRAPHICSOUTPUT): $(TESTGRAPHICSOBJS) $(OUTPUT)
 $(TESTGRAPHICSOBJS): PROJECT_FLAGS = $(TESTGRAPHICSPROJECT_FLAGS)
 $(TESTGRAPHICSOBJS): $(TESTGRAPHICSINTDIR)/%.o : $(TESTGRAPHICSDIR)/%.cpp $(TESTGRAPHICSINTDIR)/%.d
 
-include $(wildcard $(patsubst $(TESTGRAPHICSDIR)/%.cpp,$(TESTGRAPHICSINTDIR)/%.d,$(TESTGRAPHICSSRCS)))
+include $(wildcard $(patsubst %.o,%.d,$(TESTGRAPHICSOBJS)))
+
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics

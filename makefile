@@ -70,6 +70,7 @@ TESTINTDIR := $(BUILDDIRPREFIX)test/intermediate
 TESTOUTPUT := $(BUILDDIRPREFIX)test/test
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
+
 TESTCPPFLAGS := $(CPPFLAGS) -I./
 TESTLDFLAGS := $(LDFLAGS)
 TESTLIBS := -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)

@@ -54,6 +54,7 @@ namespace NAS2D
 	std::vector<std::string> split(const std::string& string, char delimiter /*= ','*/)
 	{
 		std::vector<std::string> result{};
+		if (string.empty()) { return result; }
 		result.reserve(1 + countDelimiters(string, delimiter));
 
 		std::istringstream ss(string);

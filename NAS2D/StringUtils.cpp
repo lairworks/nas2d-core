@@ -63,7 +63,7 @@ namespace NAS2D
 		{
 			result.push_back(curString);
 		}
-		if (ss.eof() && !string.empty() && string.back() == delimiter)
+		if (!string.empty() && string.back() == delimiter)
 		{
 			result.push_back(std::string{});
 		}

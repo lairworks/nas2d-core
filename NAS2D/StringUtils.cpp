@@ -23,43 +23,43 @@ namespace NAS2D
 	/**
 	 * Converts a string to lowercase.
 	 *
-	 * \param str	Source string.
+	 * \param string	Source string.
 	 *
 	 * \return	Returns the converted string.
 	 */
-	std::string toLowercase(std::string str)
+	std::string toLowercase(std::string string)
 	{
-		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
-		return str;
+		std::transform(std::begin(string), std::end(string), std::begin(string), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
+		return string;
 	}
 
 	/**
 	 * Converts a string to uppercase.
 	 *
-	 * \param str	Source string.
+	 * \param string	Source string.
 	 *
 	 * \return	Returns the converted string.
 	 */
-	std::string toUppercase(std::string str)
+	std::string toUppercase(std::string string)
 	{
-		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
-		return str;
+		std::transform(std::begin(string), std::end(string), std::begin(string), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
+		return string;
 	}
 
-	std::vector<std::string> split(const std::string& str, char delimiter /*= ','*/)
+	std::vector<std::string> split(const std::string& string, char delimiter /*= ','*/)
 	{
-		const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(str), std::end(str), delimiter));
+		const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(string), std::end(string), delimiter));
 		StringList result{};
 		result.reserve(potentialCount);
 
-		std::istringstream ss(str);
+		std::istringstream ss(string);
 
 		std::string curString{};
 		while (std::getline(ss, curString, delimiter))
 		{
 			result.push_back(curString);
 		}
-		if (ss.eof() && !str.empty() && str.back() == delimiter)
+		if (ss.eof() && !string.empty() && string.back() == delimiter)
 		{
 			result.push_back(std::string{});
 		}
@@ -67,29 +67,29 @@ namespace NAS2D
 		return result;
 	}
 
-	std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delimiter)
+	std::pair<std::string, std::string> splitOnFirst(const std::string& string, char delimiter)
 	{
-		const auto delim_loc = str.find_first_of(delimiter);
+		const auto delim_loc = string.find_first_of(delimiter);
 		if (delim_loc == std::string::npos)
 		{
-			return std::make_pair(str, std::string{});
+			return std::make_pair(string, std::string{});
 		}
 		else
 		{
-			return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+			return std::make_pair(string.substr(0, delim_loc), string.substr(delim_loc + 1));
 		}
 	}
 
-	std::pair<std::string, std::string> splitOnLast(const std::string& str, char delimiter)
+	std::pair<std::string, std::string> splitOnLast(const std::string& string, char delimiter)
 	{
-		const auto delim_loc = str.find_last_of(delimiter);
+		const auto delim_loc = string.find_last_of(delimiter);
 		if (delim_loc == std::string::npos)
 		{
-			return std::make_pair(std::string{}, str);
+			return std::make_pair(std::string{}, string);
 		}
 		else
 		{
-			return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+			return std::make_pair(string.substr(0, delim_loc), string.substr(delim_loc + 1));
 		}
 	}
 

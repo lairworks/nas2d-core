@@ -116,6 +116,7 @@ namespace NAS2D
 
 	std::string toLowercase(std::string string);
 	std::string toUppercase(std::string string);
+	std::size_t countDelimiters(const std::string& string, char delimiter = ',');
 	std::vector<std::string> split(const std::string& string, char delimiter = ',');
 	std::pair<std::string, std::string> splitOnFirst(const std::string& string, char delimiter);
 	std::pair<std::string, std::string> splitOnLast(const std::string& string, char delimiter);

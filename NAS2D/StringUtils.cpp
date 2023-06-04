@@ -46,6 +46,11 @@ namespace NAS2D
 		return string;
 	}
 
+	std::size_t countDelimiters(const std::string& string, char delimiter)
+	{
+		return static_cast<std::size_t>(std::count(std::begin(string), std::end(string), delimiter));
+	}
+
 	std::vector<std::string> split(const std::string& string, char delimiter /*= ','*/)
 	{
 		const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(string), std::end(string), delimiter));

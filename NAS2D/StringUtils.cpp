@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <cctype>
 #include <numeric>
-#include <sstream>
 
 
 namespace NAS2D
@@ -54,20 +53,16 @@ namespace NAS2D
 	std::vector<std::string> split(const std::string& string, char delimiter /*= ','*/)
 	{
 		std::vector<std::string> result{};
+		if (string.empty()) { return result; }
 		result.reserve(1 + countDelimiters(string, delimiter));
 
-		std::istringstream ss(string);
+		const auto length = string.size();
+		for (std::size_t begin = 0, current = 0; current <= length; begin = ++current)
+		{
+			while (current < length && string[current] != delimiter) { ++current; }
+			result.push_back(std::string(string, begin, current - begin));
+		}
 
-		std::string curString{};
-		while (std::getline(ss, curString, delimiter))
-		{
-			result.push_back(curString);
-		}
-		if (ss.eof() && !string.empty() && string.back() == delimiter)
-		{
-			result.push_back(std::string{});
-		}
-		result.shrink_to_fit();
 		return result;
 	}
 

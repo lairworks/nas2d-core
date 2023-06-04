@@ -67,7 +67,6 @@ namespace NAS2D
 		{
 			result.push_back(std::string{});
 		}
-		result.shrink_to_fit();
 		return result;
 	}
 

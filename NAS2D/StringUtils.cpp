@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <cctype>
 #include <numeric>
-#include <sstream>
 
 
 namespace NAS2D
@@ -57,17 +56,14 @@ namespace NAS2D
 		if (string.empty()) { return result; }
 		result.reserve(1 + countDelimiters(string, delimiter));
 
-		std::istringstream ss(string);
+		const char* str = string.c_str();
+		do
+		{
+			const char* begin = str;
+			while (*str != delimiter && *str) { str++; }
+			result.push_back(std::string(begin, str));
+		} while (0 != *str++);
 
-		std::string curString{};
-		while (std::getline(ss, curString, delimiter))
-		{
-			result.push_back(curString);
-		}
-		if (!string.empty() && string.back() == delimiter)
-		{
-			result.push_back(std::string{});
-		}
 		return result;
 	}
 

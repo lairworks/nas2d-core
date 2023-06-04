@@ -23,43 +23,47 @@ namespace NAS2D
 	/**
 	 * Converts a string to lowercase.
 	 *
-	 * \param str	Source string.
+	 * \param string	Source string.
 	 *
 	 * \return	Returns the converted string.
 	 */
-	std::string toLowercase(std::string str)
+	std::string toLowercase(std::string string)
 	{
-		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
-		return str;
+		std::transform(std::begin(string), std::end(string), std::begin(string), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::tolower(c)); });
+		return string;
 	}
 
 	/**
 	 * Converts a string to uppercase.
 	 *
-	 * \param str	Source string.
+	 * \param string	Source string.
 	 *
 	 * \return	Returns the converted string.
 	 */
-	std::string toUppercase(std::string str)
+	std::string toUppercase(std::string string)
 	{
-		std::transform(std::begin(str), std::end(str), std::begin(str), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
-		return str;
+		std::transform(std::begin(string), std::end(string), std::begin(string), [](unsigned char c) noexcept -> unsigned char { return static_cast<unsigned char>(::toupper(c)); });
+		return string;
 	}
 
-	std::vector<std::string> split(const std::string& str, char delim /*= ','*/)
+	std::size_t countDelimiters(const std::string& string, char delimiter)
 	{
-		const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(str), std::end(str), delim));
-		StringList result{};
-		result.reserve(potentialCount);
+		return static_cast<std::size_t>(std::count(std::begin(string), std::end(string), delimiter));
+	}
 
-		std::istringstream ss(str);
+	std::vector<std::string> split(const std::string& string, char delimiter /*= ','*/)
+	{
+		std::vector<std::string> result{};
+		result.reserve(1 + countDelimiters(string, delimiter));
+
+		std::istringstream ss(string);
 
 		std::string curString{};
-		while (std::getline(ss, curString, delim))
+		while (std::getline(ss, curString, delimiter))
 		{
 			result.push_back(curString);
 		}
-		if (ss.eof() && !str.empty() && str.back() == delim)
+		if (ss.eof() && !string.empty() && string.back() == delimiter)
 		{
 			result.push_back(std::string{});
 		}
@@ -67,44 +71,44 @@ namespace NAS2D
 		return result;
 	}
 
-	std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim)
+	std::pair<std::string, std::string> splitOnFirst(const std::string& string, char delimiter)
 	{
-		const auto delim_loc = str.find_first_of(delim);
-		if (delim_loc == std::string::npos)
+		const auto delimiterLocation = string.find_first_of(delimiter);
+		if (delimiterLocation == std::string::npos)
 		{
-			return std::make_pair(str, std::string{});
+			return std::make_pair(string, std::string{});
 		}
 		else
 		{
-			return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+			return std::make_pair(string.substr(0, delimiterLocation), string.substr(delimiterLocation + 1));
 		}
 	}
 
-	std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim)
+	std::pair<std::string, std::string> splitOnLast(const std::string& string, char delimiter)
 	{
-		const auto delim_loc = str.find_last_of(delim);
-		if (delim_loc == std::string::npos)
+		const auto delimiterLocation = string.find_last_of(delimiter);
+		if (delimiterLocation == std::string::npos)
 		{
-			return std::make_pair(std::string{}, str);
+			return std::make_pair(std::string{}, string);
 		}
 		else
 		{
-			return std::make_pair(str.substr(0, delim_loc), str.substr(delim_loc + 1));
+			return std::make_pair(string.substr(0, delimiterLocation), string.substr(delimiterLocation + 1));
 		}
 	}
 
-	std::string join(const std::vector<std::string>& strs, std::string_view delimiter)
+	std::string join(const std::vector<std::string>& strings, std::string_view delimiter)
 	{
 		std::string result;
 
-		if (!strs.empty())
+		if (!strings.empty())
 		{
-			const auto totalStringSize = flattenSize(strs);
-			const auto delimiterSize = (strs.size() - 1) * delimiter.size();
+			const auto totalStringSize = flattenSize(strings);
+			const auto delimiterSize = (strings.size() - 1) * delimiter.size();
 			result.reserve(totalStringSize + delimiterSize);
 
-			result += strs.front();
-			for (auto iter = std::begin(strs) + 1; iter != std::end(strs); ++iter)
+			result += strings.front();
+			for (auto iter = std::begin(strings) + 1; iter != std::end(strings); ++iter)
 			{
 				result += delimiter;
 				result += (*iter);

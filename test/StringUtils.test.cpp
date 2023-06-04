@@ -144,6 +144,28 @@ TEST(String, dataStringData) {
 }
 
 
+TEST(String, countDelimiters) {
+	EXPECT_EQ(0u, NAS2D::countDelimiters(""));
+	EXPECT_EQ(1u, NAS2D::countDelimiters(","));
+	EXPECT_EQ(2u, NAS2D::countDelimiters(",,"));
+	EXPECT_EQ(3u, NAS2D::countDelimiters(",,,"));
+
+	EXPECT_EQ(0u, NAS2D::countDelimiters("a"));
+	EXPECT_EQ(1u, NAS2D::countDelimiters("a,b"));
+	EXPECT_EQ(2u, NAS2D::countDelimiters("a,b,c"));
+	EXPECT_EQ(3u, NAS2D::countDelimiters("a,b,c,d"));
+
+	EXPECT_EQ(3u, NAS2D::countDelimiters(",b,c,d"));
+	EXPECT_EQ(3u, NAS2D::countDelimiters("a,,c,d"));
+	EXPECT_EQ(3u, NAS2D::countDelimiters("a,b,,d"));
+	EXPECT_EQ(3u, NAS2D::countDelimiters("a,b,c,"));
+
+	EXPECT_EQ(0u, NAS2D::countDelimiters("", '.'));
+	EXPECT_EQ(1u, NAS2D::countDelimiters(".", '.'));
+	EXPECT_EQ(2u, NAS2D::countDelimiters("..", '.'));
+	EXPECT_EQ(3u, NAS2D::countDelimiters("...", '.'));
+}
+
 TEST(String, split) {
 	EXPECT_EQ((NAS2D::StringList{}), NAS2D::split(""));
 	EXPECT_EQ((NAS2D::StringList{"a"}), NAS2D::split("a"));

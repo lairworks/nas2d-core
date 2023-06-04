@@ -62,7 +62,7 @@ namespace NAS2D
 			const char* begin = str;
 			while (*str != delimiter && *str) { str++; }
 			result.push_back(std::string(begin, str));
-		} while (0 != *str++);
+		} while (*str++);
 
 		return result;
 	}

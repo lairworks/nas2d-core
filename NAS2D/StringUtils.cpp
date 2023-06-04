@@ -56,13 +56,13 @@ namespace NAS2D
 		if (string.empty()) { return result; }
 		result.reserve(1 + countDelimiters(string, delimiter));
 
-		const char* str = string.c_str();
+		std::size_t current = 0;
 		do
 		{
-			const char* begin = str;
-			while (*str != delimiter && *str) { str++; }
-			result.push_back(std::string(begin, str));
-		} while (*str++);
+			const std::size_t begin = current;
+			while (current < string.size() && string[current] != delimiter) { ++current; }
+			result.push_back(std::string(string, begin, current - begin));
+		} while (current++ < string.size());
 
 		return result;
 	}

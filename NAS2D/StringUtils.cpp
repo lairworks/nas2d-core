@@ -93,18 +93,18 @@ namespace NAS2D
 		}
 	}
 
-	std::string join(const std::vector<std::string>& strs, std::string_view delimiter)
+	std::string join(const std::vector<std::string>& strings, std::string_view delimiter)
 	{
 		std::string result;
 
-		if (!strs.empty())
+		if (!strings.empty())
 		{
-			const auto totalStringSize = flattenSize(strs);
-			const auto delimiterSize = (strs.size() - 1) * delimiter.size();
+			const auto totalStringSize = flattenSize(strings);
+			const auto delimiterSize = (strings.size() - 1) * delimiter.size();
 			result.reserve(totalStringSize + delimiterSize);
 
-			result += strs.front();
-			for (auto iter = std::begin(strs) + 1; iter != std::end(strs); ++iter)
+			result += strings.front();
+			for (auto iter = std::begin(strings) + 1; iter != std::end(strings); ++iter)
 			{
 				result += delimiter;
 				result += (*iter);

@@ -63,7 +63,7 @@ namespace NAS2D
 			const std::size_t begin = current;
 			while (current < length && string[current] != delimiter) { ++current; }
 			result.push_back(std::string(string, begin, current - begin));
-		} while (current++ < length);
+		} while (++current <= length);
 
 		return result;
 	}

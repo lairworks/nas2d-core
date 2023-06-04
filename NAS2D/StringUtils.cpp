@@ -49,7 +49,7 @@ namespace NAS2D
 	std::vector<std::string> split(const std::string& string, char delimiter /*= ','*/)
 	{
 		const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(string), std::end(string), delimiter));
-		StringList result{};
+		std::vector<std::string> result{};
 		result.reserve(potentialCount);
 
 		std::istringstream ss(string);

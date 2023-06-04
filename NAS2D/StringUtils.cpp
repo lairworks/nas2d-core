@@ -46,20 +46,20 @@ namespace NAS2D
 		return str;
 	}
 
-	std::vector<std::string> split(const std::string& str, char delim /*= ','*/)
+	std::vector<std::string> split(const std::string& str, char delimiter /*= ','*/)
 	{
-		const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(str), std::end(str), delim));
+		const auto potentialCount = static_cast<std::size_t>(1 + std::count(std::begin(str), std::end(str), delimiter));
 		StringList result{};
 		result.reserve(potentialCount);
 
 		std::istringstream ss(str);
 
 		std::string curString{};
-		while (std::getline(ss, curString, delim))
+		while (std::getline(ss, curString, delimiter))
 		{
 			result.push_back(curString);
 		}
-		if (ss.eof() && !str.empty() && str.back() == delim)
+		if (ss.eof() && !str.empty() && str.back() == delimiter)
 		{
 			result.push_back(std::string{});
 		}
@@ -67,9 +67,9 @@ namespace NAS2D
 		return result;
 	}
 
-	std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delim)
+	std::pair<std::string, std::string> splitOnFirst(const std::string& str, char delimiter)
 	{
-		const auto delim_loc = str.find_first_of(delim);
+		const auto delim_loc = str.find_first_of(delimiter);
 		if (delim_loc == std::string::npos)
 		{
 			return std::make_pair(str, std::string{});
@@ -80,9 +80,9 @@ namespace NAS2D
 		}
 	}
 
-	std::pair<std::string, std::string> splitOnLast(const std::string& str, char delim)
+	std::pair<std::string, std::string> splitOnLast(const std::string& str, char delimiter)
 	{
-		const auto delim_loc = str.find_last_of(delim);
+		const auto delim_loc = str.find_last_of(delimiter);
 		if (delim_loc == std::string::npos)
 		{
 			return std::make_pair(std::string{}, str);

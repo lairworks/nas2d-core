@@ -36,6 +36,8 @@ unsigned int generateTexture(void* buffer, int bytesPerPixel, int width, int hei
 
 namespace
 {
+	constexpr bool isBigEndian = SDL_BYTEORDER == SDL_BIG_ENDIAN;
+
 	unsigned int generateFbo(unsigned int textureId, Vector<int> imageSize);
 	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel);
 
@@ -100,7 +102,7 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 		throw std::runtime_error("Image bit-depth unsupported with bytesPerPixel: " + std::to_string(bytesPerPixel));
 	}
 
-	mSurface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0x000000FF : 0xFF000000);
+	mSurface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, isBigEndian ? 0x000000FF : 0xFF000000);
 }
 
 
@@ -191,7 +193,7 @@ namespace
 		case 3: {
 			auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
 			uint32_t p0 = p[0], p1 = p[1], p2 = p[2];
-			return (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? (p0 << 16 | p1 << 8 | p2) : (p0 | p1 << 8 | p2 << 16);
+			return (isBigEndian) ? (p0 << 16 | p1 << 8 | p2) : (p0 | p1 << 8 | p2 << 16);
 		}
 		case 4:
 			return *reinterpret_cast<const uint32_t*>(pixelAddress);
@@ -215,7 +217,7 @@ namespace
 			unsigned int textureColorbuffer;
 			glGenTextures(1, &textureColorbuffer);
 			glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-			const auto textureFormat = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? GL_BGRA : GL_RGBA;
+			const auto textureFormat = (isBigEndian) ? GL_BGRA : GL_RGBA;
 
 			glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, imageSize.x, imageSize.y, 0, textureFormat, GL_UNSIGNED_BYTE, nullptr);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -256,11 +258,11 @@ unsigned int generateTexture(void* buffer, int bytesPerPixel, int width, int hei
 	{
 	case 4:
 		internalFormat = GL_RGBA;
-		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGRA : GL_RGBA;
+		textureFormat = isBigEndian ? GL_BGRA : GL_RGBA;
 		break;
 	case 3:
 		internalFormat = GL_RGB;
-		textureFormat = SDL_BYTEORDER == SDL_BIG_ENDIAN ? GL_BGR : GL_RGB;
+		textureFormat = isBigEndian ? GL_BGR : GL_RGB;
 		break;
 
 	default:

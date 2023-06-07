@@ -50,6 +50,30 @@ namespace
 }
 
 
+SDL_Surface* Image::fileToSdlSurface(const std::string& filePath)
+{
+	const auto& data = Utility<Filesystem>::get().readFile(filePath);
+
+	if (data.size() == 0)
+	{
+		throw std::runtime_error("Image file is empty: " + filePath);
+	}
+
+	return dataToSdlSurface(data);
+}
+
+
+SDL_Surface* Image::dataToSdlSurface(const std::string& data)
+{
+	auto surface = IMG_Load_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
+	if (!surface)
+	{
+		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
+	}
+	return surface;
+}
+
+
 /**
  * Loads an Image from disk.
  *

@@ -126,6 +126,14 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 }
 
 
+Image::Image(SDL_Surface& surface) :
+	mResourceName{},
+	mSurface{&surface},
+	mSize{mSurface->w, mSurface->h}
+{
+}
+
+
 Image::~Image()
 {
 	if (mFrameBufferObjectId != 0)

@@ -45,6 +45,7 @@ namespace NAS2D
 		explicit Image(const std::string& filePath);
 		Image(std::string resourceName, const std::string& data);
 		Image(void* buffer, int bytesPerPixel, Vector<int> size);
+		Image(SDL_Surface& surface);
 
 		Image(const Image& rhs) = delete;
 		Image& operator=(const Image& rhs) = delete;

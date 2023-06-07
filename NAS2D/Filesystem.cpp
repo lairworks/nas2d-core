@@ -10,6 +10,7 @@
 
 #include "Filesystem.h"
 
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_filesystem.h>
 
 #include <algorithm>
@@ -35,6 +36,28 @@ namespace
 
 
 	using SdlString = std::unique_ptr<char, SdlStringDeleter>;
+
+
+	std::string getBasePath()
+	{
+		const auto pathPtr = SdlString{SDL_GetBasePath()};
+		if (pathPtr.get() == nullptr)
+		{
+			throw std::runtime_error("Error getting BasePath: " + std::string{SDL_GetError()});
+		}
+		return pathPtr.get();
+	}
+
+
+	std::string getPrefPath(const std::string& appName, const std::string& organizationName)
+	{
+		const auto pathPtr = SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())};
+		if (pathPtr.get() == nullptr)
+		{
+			throw std::runtime_error("Error getting PrefPath: " + std::string{SDL_GetError()});
+		}
+		return pathPtr.get();
+	}
 
 
 	bool hasFileSuffix(const std::string& filePath, const std::string& suffix)
@@ -105,8 +128,8 @@ std::string Filesystem::extension(std::string_view filePath)
 
 
 Filesystem::Filesystem(const std::string& appName, const std::string& organizationName) :
-	mBasePath{SdlString{SDL_GetBasePath()}.get()},
-	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()},
+	mBasePath{getBasePath()},
+	mPrefPath{getPrefPath(appName, organizationName)},
 	mWritePath{},
 	mSearchPaths{}
 {

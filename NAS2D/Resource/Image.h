@@ -52,8 +52,6 @@ namespace NAS2D
 
 		~Image();
 
-		const std::string& name() const { return mResourceName; }
-
 		Vector<int> size() const;
 
 		Color pixelColor(Point<int> point) const;

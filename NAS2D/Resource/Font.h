@@ -66,8 +66,6 @@ namespace NAS2D
 		Font& operator=(const Font& font) = delete;
 		~Font();
 
-		const std::string& name() const { return mResourceName; }
-
 		Vector<int> glyphCellSize() const;
 		Vector<int> size(std::string_view string) const;
 		int width(std::string_view string) const;

@@ -35,8 +35,6 @@ namespace NAS2D
 
 		~Sound();
 
-		const std::string& name() const { return mResourceName; }
-
 	protected:
 		friend class MixerSDL;
 		Mix_Chunk* sound() const;

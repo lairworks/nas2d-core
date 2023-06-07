@@ -104,19 +104,10 @@ Image::Image(const std::string& filePath) :
 
 
 Image::Image(std::string resourceName, const std::string& data) :
-	mResourceName{std::move(resourceName)}
+	mResourceName{std::move(resourceName)},
+	mSurface{dataToSdlSurface(data)},
+	mSize{mSurface->w, mSurface->h}
 {
-	if (data.size() == 0)
-	{
-		throw std::runtime_error("Image file is empty: " + mResourceName);
-	}
-
-	mSurface = IMG_Load_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
-	if (!mSurface)
-	{
-		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
-	}
-	mSize = Vector{mSurface->w, mSurface->h};
 }
 
 

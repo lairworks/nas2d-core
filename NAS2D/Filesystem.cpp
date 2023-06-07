@@ -10,6 +10,7 @@
 
 #include "Filesystem.h"
 
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_filesystem.h>
 
 #include <algorithm>
@@ -39,12 +40,23 @@ namespace
 
 	std::string getBasePath()
 	{
-		return SdlString{SDL_GetBasePath()}.get();
+		const auto pathPtr = SdlString{SDL_GetBasePath()};
+		if (pathPtr.get() == nullptr)
+		{
+			throw std::runtime_error("Error getting BasePath: " + std::string{SDL_GetError()});
+		}
+		return pathPtr.get();
 	}
+
 
 	std::string getPrefPath(const std::string& appName, const std::string& organizationName)
 	{
-		return SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get();
+		const auto pathPtr = SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())};
+		if (pathPtr.get() == nullptr)
+		{
+			throw std::runtime_error("Error getting PrefPath: " + std::string{SDL_GetError()});
+		}
+		return pathPtr.get();
 	}
 
 

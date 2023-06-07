@@ -37,6 +37,17 @@ namespace
 	using SdlString = std::unique_ptr<char, SdlStringDeleter>;
 
 
+	std::string getBasePath()
+	{
+		return SdlString{SDL_GetBasePath()}.get();
+	}
+
+	std::string getPrefPath(const std::string& appName, const std::string& organizationName)
+	{
+		return SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get();
+	}
+
+
 	bool hasFileSuffix(const std::string& filePath, const std::string& suffix)
 	{
 		return filePath.rfind(suffix, filePath.length() - suffix.length()) != std::string::npos;
@@ -105,8 +116,8 @@ std::string Filesystem::extension(std::string_view filePath)
 
 
 Filesystem::Filesystem(const std::string& appName, const std::string& organizationName) :
-	mBasePath{SdlString{SDL_GetBasePath()}.get()},
-	mPrefPath{SdlString{SDL_GetPrefPath(organizationName.c_str(), appName.c_str())}.get()},
+	mBasePath{getBasePath()},
+	mPrefPath{getPrefPath(appName, organizationName)},
 	mWritePath{},
 	mSearchPaths{}
 {

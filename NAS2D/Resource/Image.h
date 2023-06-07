@@ -39,6 +39,7 @@ namespace NAS2D
 	protected:
 		static SDL_Surface* fileToSdlSurface(const std::string& filePath);
 		static SDL_Surface* dataToSdlSurface(const std::string& data);
+		static SDL_Surface* dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int> size);
 
 	public:
 		explicit Image(const std::string& filePath);

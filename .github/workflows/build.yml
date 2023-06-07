@@ -62,7 +62,7 @@ jobs:
       fail-fast: false
       matrix:
         image:
-        - "nas2d-arch:1.3"
+        - "nas2d-arch:1.4"
     runs-on: ubuntu-latest
     container:
       image: "outpostuniverse/${{ matrix.image }}"

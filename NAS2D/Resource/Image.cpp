@@ -96,10 +96,9 @@ SDL_Surface* Image::dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int
  * \param filePath Path to an image file.
  */
 Image::Image(const std::string& filePath) :
-	Image{
-		filePath,
-		Utility<Filesystem>::get().readFile(filePath),
-	}
+	mResourceName{filePath},
+	mSurface{fileToSdlSurface(filePath)},
+	mSize{mSurface->w, mSurface->h}
 {
 }
 

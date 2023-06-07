@@ -96,18 +96,16 @@ SDL_Surface* Image::dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int
  * \param filePath Path to an image file.
  */
 Image::Image(const std::string& filePath) :
-	mResourceName{filePath},
-	mSurface{fileToSdlSurface(filePath)},
-	mSize{mSurface->w, mSurface->h}
+	Image{*fileToSdlSurface(filePath)}
 {
+	mResourceName = filePath;
 }
 
 
 Image::Image(std::string resourceName, const std::string& data) :
-	mResourceName{std::move(resourceName)},
-	mSurface{dataToSdlSurface(data)},
-	mSize{mSurface->w, mSurface->h}
+	Image{*dataToSdlSurface(data)}
 {
+	mResourceName = resourceName;
 }
 
 
@@ -119,10 +117,9 @@ Image::Image(std::string resourceName, const std::string& data) :
  * \param	size			Size of the Image in pixels.
  */
 Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
-	mResourceName{generateImageName()},
-	mSize{size}
+	Image{*dataToSdlSurface(buffer, bytesPerPixel, size)}
 {
-	mSurface = dataToSdlSurface(buffer, bytesPerPixel, size);
+	mResourceName = generateImageName();
 }
 
 

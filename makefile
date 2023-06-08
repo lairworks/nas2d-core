@@ -92,7 +92,7 @@ include $(wildcard $(patsubst %.o,%.d,$(TESTOBJS)))
 
 .PHONY: check
 check: | test
-	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT)
+	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT) $(GTEST_OPTIONS)
 
 
 ## Graphics test project ##

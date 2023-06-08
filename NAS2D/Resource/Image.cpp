@@ -102,13 +102,6 @@ Image::Image(const std::string& filePath) :
 }
 
 
-Image::Image(std::string resourceName, const std::string& data) :
-	Image{*dataToSdlSurface(data)}
-{
-	mResourceName = resourceName;
-}
-
-
 /**
  * Create an Image from a raw data buffer.
  *

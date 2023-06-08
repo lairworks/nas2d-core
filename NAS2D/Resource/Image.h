@@ -43,7 +43,6 @@ namespace NAS2D
 
 	public:
 		explicit Image(const std::string& filePath);
-		Image(std::string resourceName, const std::string& data);
 		Image(void* buffer, int bytesPerPixel, Vector<int> size);
 		Image(SDL_Surface& surface);
 
@@ -51,8 +50,6 @@ namespace NAS2D
 		Image& operator=(const Image& rhs) = delete;
 
 		~Image();
-
-		const std::string& name() const { return mResourceName; }
 
 		Vector<int> size() const;
 
@@ -64,7 +61,6 @@ namespace NAS2D
 		unsigned int frameBufferObjectId() const;
 
 	private:
-		std::string mResourceName; /**< File path or internal identifier. */
 		SDL_Surface* mSurface{nullptr};
 		mutable unsigned int mTextureId{0u};
 		mutable unsigned int mFrameBufferObjectId{0u};

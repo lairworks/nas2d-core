@@ -68,18 +68,16 @@ AnimationSet::AnimationSet(std::string fileName) :
 
 
 AnimationSet::AnimationSet(std::string fileName, ImageCache& imageCache) :
-	mFileName{std::move(fileName)},
 	mImageSheetMap{},
 	mActions{}
 {
-	auto [imageSheetMap, actions] = processXml(mFileName, imageCache);
+	auto [imageSheetMap, actions] = processXml(fileName, imageCache);
 	mImageSheetMap = std::move(imageSheetMap);
 	mActions = std::move(actions);
 }
 
 
-AnimationSet::AnimationSet(std::string fileName, ImageSheetMap imageSheetMap, ActionsMap actions) :
-	mFileName{std::move(fileName)},
+AnimationSet::AnimationSet(ImageSheetMap imageSheetMap, ActionsMap actions) :
 	mImageSheetMap{std::move(imageSheetMap)},
 	mActions{std::move(actions)}
 {
@@ -96,7 +94,7 @@ const std::vector<AnimationSet::Frame>& AnimationSet::frames(const std::string& 
 {
 	if (mActions.find(actionName) == mActions.end())
 	{
-		throw std::runtime_error("Sprite::play called on undefined action: " + actionName + "  (" + mFileName + ")");
+		throw std::runtime_error("AnimationSet::frames called on undefined action: " + actionName);
 	}
 
 	return mActions.at(actionName);

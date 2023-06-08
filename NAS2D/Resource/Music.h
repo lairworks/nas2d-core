@@ -33,14 +33,11 @@ namespace NAS2D
 
 		~Music();
 
-		const std::string& name() const { return mResourceName; }
-
 	protected:
 		friend class MixerSDL;
 		Mix_Music* music() const;
 
 	private:
-		std::string mResourceName; /**< File path */
 		const std::string mBuffer;
 		Mix_Music* mMusic{nullptr};
 	};

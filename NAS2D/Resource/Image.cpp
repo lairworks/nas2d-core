@@ -50,47 +50,31 @@ namespace
 }
 
 
-/**
- * Loads an Image from disk.
- *
- * \param filePath Path to an image file.
- */
-Image::Image(const std::string& filePath) :
-	Image{
-		filePath,
-		Utility<Filesystem>::get().readFile(filePath),
-	}
+SDL_Surface* Image::fileToSdlSurface(const std::string& filePath)
 {
+	const auto& data = Utility<Filesystem>::get().readFile(filePath);
+
+	if (data.size() == 0)
+	{
+		throw std::runtime_error("Image file is empty: " + filePath);
+	}
+
+	return dataToSdlSurface(data);
 }
 
 
-Image::Image(std::string resourceName, const std::string& data) :
-	mResourceName{std::move(resourceName)}
+SDL_Surface* Image::dataToSdlSurface(const std::string& data)
 {
-	if (data.size() == 0)
-	{
-		throw std::runtime_error("Image file is empty: " + mResourceName);
-	}
-
-	mSurface = IMG_Load_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
-	if (!mSurface)
+	auto surface = IMG_Load_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
+	if (!surface)
 	{
 		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});
 	}
-	mSize = Vector{mSurface->w, mSurface->h};
+	return surface;
 }
 
 
-/**
- * Create an Image from a raw data buffer.
- *
- * \param	buffer			Pointer to a data buffer.
- * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
- * \param	size			Size of the Image in pixels.
- */
-Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
-	mResourceName{generateImageName()},
-	mSize{size}
+SDL_Surface* Image::dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int> size)
 {
 	if (buffer == nullptr)
 	{
@@ -102,7 +86,48 @@ Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 		throw std::runtime_error("Image bit-depth unsupported with bytesPerPixel: " + std::to_string(bytesPerPixel));
 	}
 
-	mSurface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, isBigEndian ? 0x000000FF : 0xFF000000);
+	return SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, isBigEndian ? 0x000000FF : 0xFF000000);
+}
+
+
+/**
+ * Loads an Image from disk.
+ *
+ * \param filePath Path to an image file.
+ */
+Image::Image(const std::string& filePath) :
+	Image{*fileToSdlSurface(filePath)}
+{
+	mResourceName = filePath;
+}
+
+
+Image::Image(std::string resourceName, const std::string& data) :
+	Image{*dataToSdlSurface(data)}
+{
+	mResourceName = resourceName;
+}
+
+
+/**
+ * Create an Image from a raw data buffer.
+ *
+ * \param	buffer			Pointer to a data buffer.
+ * \param	bytesPerPixel	Number of bytes per pixel. Valid values are 3 and 4 (images < 24-bit are not supported).
+ * \param	size			Size of the Image in pixels.
+ */
+Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
+	Image{*dataToSdlSurface(buffer, bytesPerPixel, size)}
+{
+	mResourceName = generateImageName();
+}
+
+
+Image::Image(SDL_Surface& surface) :
+	mResourceName{},
+	mSurface{&surface},
+	mSize{mSurface->w, mSurface->h}
+{
 }
 
 

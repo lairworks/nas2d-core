@@ -36,10 +36,16 @@ namespace NAS2D
 	 */
 	class Image
 	{
+	protected:
+		static SDL_Surface* fileToSdlSurface(const std::string& filePath);
+		static SDL_Surface* dataToSdlSurface(const std::string& data);
+		static SDL_Surface* dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int> size);
+
 	public:
 		explicit Image(const std::string& filePath);
 		Image(std::string resourceName, const std::string& data);
 		Image(void* buffer, int bytesPerPixel, Vector<int> size);
+		Image(SDL_Surface& surface);
 
 		Image(const Image& rhs) = delete;
 		Image& operator=(const Image& rhs) = delete;

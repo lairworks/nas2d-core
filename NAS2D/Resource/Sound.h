@@ -40,7 +40,6 @@ namespace NAS2D
 		Mix_Chunk* sound() const;
 
 	private:
-		std::string mResourceName; /**< File path */
 		Mix_Chunk* mMixChunk{nullptr};
 	};
 

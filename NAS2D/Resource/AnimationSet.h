@@ -44,13 +44,12 @@ namespace NAS2D
 
 		explicit AnimationSet(std::string fileName);
 		AnimationSet(std::string fileName, ResourceCache<Image, std::string>& imageCache);
-		AnimationSet(std::string fileName, ImageSheetMap imageSheetMap, ActionsMap actions);
+		AnimationSet(ImageSheetMap imageSheetMap, ActionsMap actions);
 
 		std::vector<std::string> actionNames() const;
 		const std::vector<Frame>& frames(const std::string& actionName) const;
 
 	private:
-		std::string mFileName;
 		ImageSheetMap mImageSheetMap;
 		ActionsMap mActions;
 	};

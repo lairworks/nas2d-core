@@ -80,7 +80,6 @@ namespace NAS2D
 		unsigned int textureId() const;
 
 	private:
-		std::string mResourceName; /**< File path */
 		FontInfo mFontInfo;
 	};
 } // namespace

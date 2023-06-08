@@ -73,7 +73,6 @@ namespace
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  */
 Font::Font(const std::string& filePath, unsigned int ptSize) :
-	mResourceName{filePath + "_" + std::to_string(ptSize) + "pt"},
 	mFontInfo{load(filePath, ptSize)}
 {
 }
@@ -85,7 +84,6 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
  * \param	filePath	Path to a font file.
  */
 Font::Font(const std::string& filePath) :
-	mResourceName{filePath},
 	mFontInfo{loadBitmap(filePath)}
 {
 }

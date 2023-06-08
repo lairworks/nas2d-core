@@ -68,18 +68,16 @@ AnimationSet::AnimationSet(std::string fileName) :
 
 
 AnimationSet::AnimationSet(std::string fileName, ImageCache& imageCache) :
-	mFileName{std::move(fileName)},
 	mImageSheetMap{},
 	mActions{}
 {
-	auto [imageSheetMap, actions] = processXml(mFileName, imageCache);
+	auto [imageSheetMap, actions] = processXml(fileName, imageCache);
 	mImageSheetMap = std::move(imageSheetMap);
 	mActions = std::move(actions);
 }
 
 
-AnimationSet::AnimationSet(std::string fileName, ImageSheetMap imageSheetMap, ActionsMap actions) :
-	mFileName{std::move(fileName)},
+AnimationSet::AnimationSet(ImageSheetMap imageSheetMap, ActionsMap actions) :
 	mImageSheetMap{std::move(imageSheetMap)},
 	mActions{std::move(actions)}
 {

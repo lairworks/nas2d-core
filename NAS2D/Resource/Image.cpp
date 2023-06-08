@@ -40,13 +40,6 @@ namespace
 
 	unsigned int generateFbo(unsigned int textureId, Vector<int> imageSize);
 	unsigned int readPixelValue(std::uintptr_t pixelAddress, unsigned int bytesPerPixel);
-
-	std::string generateImageName()
-	{
-		static int imageNumber = 0;
-
-		return "arbitrary_image_" + std::to_string(imageNumber++);
-	}
 }
 
 
@@ -98,7 +91,6 @@ SDL_Surface* Image::dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int
 Image::Image(const std::string& filePath) :
 	Image{*fileToSdlSurface(filePath)}
 {
-	mResourceName = filePath;
 }
 
 
@@ -112,12 +104,10 @@ Image::Image(const std::string& filePath) :
 Image::Image(void* buffer, int bytesPerPixel, Vector<int> size) :
 	Image{*dataToSdlSurface(buffer, bytesPerPixel, size)}
 {
-	mResourceName = generateImageName();
 }
 
 
 Image::Image(SDL_Surface& surface) :
-	mResourceName{},
 	mSurface{&surface},
 	mSize{mSurface->w, mSurface->h}
 {

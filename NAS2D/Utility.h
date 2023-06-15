@@ -154,7 +154,7 @@ namespace NAS2D
 		}
 
 	private:
-		static T* mInstance; /**< Internal instance of type \c T. */
+		static T* mInstance;
 	};
 
 

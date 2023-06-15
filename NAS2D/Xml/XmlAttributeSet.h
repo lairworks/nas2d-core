@@ -47,7 +47,7 @@ public:
 	XmlAttribute* findOrCreate(const std::string& _name);
 
 private:
-	XmlAttribute sentinel{}; /**< Comment me. */
+	XmlAttribute sentinel{};
 };
 
 } // namespace Xml

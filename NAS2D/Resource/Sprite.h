@@ -30,7 +30,7 @@ namespace NAS2D
 	class Sprite
 	{
 	public:
-		using AnimationCompleteSignal = Signal<>; /**< Signal used when action animations complete. */
+		using AnimationCompleteSignal = Signal<>;
 
 		Sprite(const std::string& filePath, const std::string& initialAction);
 		Sprite(const AnimationSet& animationSet, const std::string& initialAction);

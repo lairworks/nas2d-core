@@ -75,7 +75,7 @@ namespace NAS2D
 		Timer mTimer{};
 		AnimationCompleteSignal mAnimationCompleteSignal{};
 
-		Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
+		Color mTintColor{Color::Normal};
 		float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
 	};
 } // namespace

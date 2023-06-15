@@ -76,6 +76,6 @@ namespace NAS2D
 		AnimationCompleteSignal mAnimationCompleteSignal{};
 
 		Color mTintColor{Color::Normal};
-		float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
+		float mRotationAngleDegrees{0.0f};
 	};
 } // namespace

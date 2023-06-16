@@ -30,7 +30,7 @@ namespace NAS2D
 	class Sprite
 	{
 	public:
-		using AnimationCompleteSignal = Signal<>; /**< Signal used when action animations complete. */
+		using AnimationCompleteSignal = Signal<>;
 
 		Sprite(const std::string& filePath, const std::string& initialAction);
 		Sprite(const AnimationSet& animationSet, const std::string& initialAction);
@@ -75,7 +75,7 @@ namespace NAS2D
 		Timer mTimer{};
 		AnimationCompleteSignal mAnimationCompleteSignal{};
 
-		Color mColor{Color::Normal}; /**< Color tint to use for drawing the sprite. */
-		float mRotationAngle{0.0f}; /**< Angle of rotation in degrees. */
+		Color mTintColor{Color::Normal};
+		float mRotationAngleDegrees{0.0f};
 	};
 } // namespace

@@ -81,11 +81,11 @@ protected:
 private:
 	friend class XmlAttributeSet;
 
-	XmlDocument* _document; /**< Comment Me. */
-	std::string _name; /**< Comment Me. */
-	std::string _value; /**< Comment Me. */
-	XmlAttribute* _prev; /**< Comment Me. */
-	XmlAttribute* _next; /**< Comment Me. */
+	XmlDocument* _document;
+	std::string _name;
+	std::string _value;
+	XmlAttribute* _prev;
+	XmlAttribute* _next;
 };
 
 } // namespace Xml

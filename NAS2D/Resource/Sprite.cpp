@@ -124,7 +124,7 @@ void Sprite::draw(Point<float> position) const
 	const auto& frame = (*mCurrentAction)[mCurrentFrame];
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, mRotationAngle, mColor);
+	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, mRotationAngleDegrees, mTintColor);
 }
 
 
@@ -135,7 +135,7 @@ void Sprite::draw(Point<float> position) const
  */
 void Sprite::rotation(float angle)
 {
-	mRotationAngle = angle;
+	mRotationAngleDegrees = angle;
 }
 
 
@@ -146,7 +146,7 @@ void Sprite::rotation(float angle)
  */
 float Sprite::rotation() const
 {
-	return mRotationAngle;
+	return mRotationAngleDegrees;
 }
 
 
@@ -157,7 +157,7 @@ float Sprite::rotation() const
  */
 void Sprite::alpha(uint8_t alpha)
 {
-	mColor.alpha = alpha;
+	mTintColor.alpha = alpha;
 }
 
 
@@ -166,7 +166,7 @@ void Sprite::alpha(uint8_t alpha)
  */
 uint8_t Sprite::alpha() const
 {
-	return mColor.alpha;
+	return mTintColor.alpha;
 }
 
 
@@ -175,7 +175,7 @@ uint8_t Sprite::alpha() const
  */
 void Sprite::color(Color color)
 {
-	mColor = color;
+	mTintColor = color;
 }
 
 
@@ -184,7 +184,7 @@ void Sprite::color(Color color)
  */
 Color Sprite::color() const
 {
-	return mColor;
+	return mTintColor;
 }
 
 

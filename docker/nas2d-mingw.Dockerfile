@@ -105,11 +105,11 @@ RUN curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.20.2-m
   make -C SDL2_ttf-2.20.2/ cross && \
   rm -rf SDL2_ttf-2.20.2/
 # Install dependencies from source packages
-RUN curl --location https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.tgz | tar -xz && \
-  make -C glew-2.1.0/ SYSTEM=linux-mingw-w64 CC="${CC64}" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
-  make -C glew-2.1.0/ distclean && \
-  make -C glew-2.1.0/ SYSTEM=linux-mingw-w64 CC="${CC32}" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
-  rm -rf glew-2.1.0/ glew.*
+RUN curl --location https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz | tar -xz && \
+  make -C glew-2.2.0/ SYSTEM=linux-mingw64 CC="${CC64}" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
+  make -C glew-2.2.0/ distclean && \
+  make -C glew-2.2.0/ SYSTEM=linux-mingw64 CC="${CC32}" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
+  rm -rf glew-2.2.0/ glew.*
 
 # Custom variables for install locations
 ENV INCLUDE64=${INSTALL64}include/

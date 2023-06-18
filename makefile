@@ -58,9 +58,9 @@ PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
 nas2d: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
-$(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.d
+$(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.dep
 
-include $(wildcard $(patsubst %.o,%.d,$(OBJS)))
+include $(wildcard $(patsubst %.o,%.dep,$(OBJS)))
 
 
 ## Unit Test project ##
@@ -85,9 +85,9 @@ $(TESTOUTPUT): PROJECT_LINKFLAGS = $(TESTPROJECT_LINKFLAGS)
 $(TESTOUTPUT): $(TESTOBJS) $(OUTPUT)
 
 $(TESTOBJS): PROJECT_FLAGS = $(TESTPROJECT_FLAGS)
-$(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.d
+$(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.dep
 
-include $(wildcard $(patsubst %.o,%.d,$(TESTOBJS)))
+include $(wildcard $(patsubst %.o,%.dep,$(TESTOBJS)))
 
 
 .PHONY: check
@@ -114,9 +114,9 @@ $(TESTGRAPHICSOUTPUT): PROJECT_LINKFLAGS = $(TESTGRAPHICSPROJECT_LINKFLAGS)
 $(TESTGRAPHICSOUTPUT): $(TESTGRAPHICSOBJS) $(OUTPUT)
 
 $(TESTGRAPHICSOBJS): PROJECT_FLAGS = $(TESTGRAPHICSPROJECT_FLAGS)
-$(TESTGRAPHICSOBJS): $(TESTGRAPHICSINTDIR)/%.o : $(TESTGRAPHICSDIR)/%.cpp $(TESTGRAPHICSINTDIR)/%.d
+$(TESTGRAPHICSOBJS): $(TESTGRAPHICSINTDIR)/%.o : $(TESTGRAPHICSDIR)/%.cpp $(TESTGRAPHICSINTDIR)/%.dep
 
-include $(wildcard $(patsubst %.o,%.d,$(TESTGRAPHICSOBJS)))
+include $(wildcard $(patsubst %.o,%.dep,$(TESTGRAPHICSOBJS)))
 
 
 .PHONY: run-test-graphics
@@ -126,9 +126,9 @@ run-test-graphics: | test-graphics
 
 ## Compile rules ##
 
-DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.Td)
+DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.d)
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(PROJECT_FLAGS) $(TARGET_ARCH) -c
-POSTCOMPILE = @mv -f $(@:.o=.Td) $(@:.o=.d) && touch $@
+POSTCOMPILE = @mv -f $(@:.o=.d) $(@:.o=.dep) && touch $@
 
 
 %:
@@ -144,8 +144,8 @@ lib%.a:
 	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
 	$(POSTCOMPILE)
 
-%.d: ;
-.PRECIOUS: %.d
+%.dep: ;
+.PRECIOUS: %.dep
 
 
 ## Clean ##

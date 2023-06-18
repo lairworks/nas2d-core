@@ -126,7 +126,7 @@ run-test-graphics: | test-graphics
 
 ## Compile rules ##
 
-DEPFLAGS = -MT $@ -MMD -MP -MF $(@:.o=.d)
+DEPFLAGS = -MT $@ -MMD -MP
 COMPILE.cpp = $(CXX) $(DEPFLAGS) $(PROJECT_FLAGS) $(TARGET_ARCH) -c
 POSTCOMPILE = @mv -f $(@:.o=.d) $(@:.o=.dep) && touch $@
 

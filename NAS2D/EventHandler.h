@@ -322,9 +322,9 @@ namespace NAS2D
 		static bool control(KeyModifier mod);
 		static bool alt(KeyModifier mod);
 
-		bool query_shift() const;
-		bool query_numlock() const;
-		bool query_control() const;
+		bool shift() const;
+		bool numlock() const;
+		bool control() const;
 
 		void pump();
 

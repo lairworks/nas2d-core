@@ -792,7 +792,7 @@ bool EventHandler::control(KeyModifier mod)
  */
 bool EventHandler::query_shift() const
 {
-	return KeyModifier::None != (static_cast<KeyModifier>(SDL_GetModState()) & KeyModifier::Shift);
+	return shift(static_cast<KeyModifier>(SDL_GetModState()));
 }
 
 
@@ -801,7 +801,7 @@ bool EventHandler::query_shift() const
  */
 bool EventHandler::query_numlock() const
 {
-	return KeyModifier::None != (static_cast<KeyModifier>(SDL_GetModState()) & KeyModifier::Num);
+	return numlock(static_cast<KeyModifier>(SDL_GetModState()));
 }
 
 
@@ -810,7 +810,7 @@ bool EventHandler::query_numlock() const
  */
 bool EventHandler::query_control() const
 {
-	return KeyModifier::None != (static_cast<KeyModifier>(SDL_GetModState()) & KeyModifier::Ctrl);
+	return control(static_cast<KeyModifier>(SDL_GetModState()));
 }
 
 

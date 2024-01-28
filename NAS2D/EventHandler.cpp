@@ -748,7 +748,7 @@ bool EventHandler::textInputMode()
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::shift(KeyModifier mod) const
+bool EventHandler::shift(KeyModifier mod)
 {
 	return KeyModifier::None != (mod & (KeyModifier::Shift | KeyModifier::Caps));
 }
@@ -759,7 +759,7 @@ bool EventHandler::shift(KeyModifier mod) const
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::alt(KeyModifier mod) const
+bool EventHandler::alt(KeyModifier mod)
 {
 	return KeyModifier::None != (mod & KeyModifier::Alt);
 }
@@ -770,7 +770,7 @@ bool EventHandler::alt(KeyModifier mod) const
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::numlock(KeyModifier mod) const
+bool EventHandler::numlock(KeyModifier mod)
 {
 	return KeyModifier::None != (mod & KeyModifier::Num);
 }
@@ -781,7 +781,7 @@ bool EventHandler::numlock(KeyModifier mod) const
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::control(KeyModifier mod) const
+bool EventHandler::control(KeyModifier mod)
 {
 	return KeyModifier::None != (mod & KeyModifier::Ctrl);
 }

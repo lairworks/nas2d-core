@@ -792,8 +792,7 @@ bool EventHandler::control(KeyModifier mod)
  */
 bool EventHandler::query_shift() const
 {
-	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Shift));
+	return KeyModifier::None != (static_cast<KeyModifier>(SDL_GetModState()) & KeyModifier::Shift);
 }
 
 
@@ -802,8 +801,7 @@ bool EventHandler::query_shift() const
  */
 bool EventHandler::query_numlock() const
 {
-	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Num));
+	return KeyModifier::None != (static_cast<KeyModifier>(SDL_GetModState()) & KeyModifier::Num);
 }
 
 
@@ -812,8 +810,7 @@ bool EventHandler::query_numlock() const
  */
 bool EventHandler::query_control() const
 {
-	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Ctrl));
+	return KeyModifier::None != (static_cast<KeyModifier>(SDL_GetModState()) & KeyModifier::Ctrl);
 }
 
 

@@ -750,7 +750,7 @@ bool EventHandler::textInputMode()
  */
 bool EventHandler::shift(KeyModifier mod)
 {
-	return KeyModifier::None != (mod & (KeyModifier::Shift | KeyModifier::Caps));
+	return KeyModifier::None != (mod & (KeyModifier::Shift));
 }
 
 

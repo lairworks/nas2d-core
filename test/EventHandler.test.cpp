@@ -8,7 +8,7 @@ TEST(EventHandler, shift) {
 	EXPECT_TRUE(NAS2D::EventHandler::shift(NAS2D::EventHandler::KeyModifier::ShiftLeft));
 	EXPECT_TRUE(NAS2D::EventHandler::shift(NAS2D::EventHandler::KeyModifier::ShiftRight));
 	EXPECT_TRUE(NAS2D::EventHandler::shift(NAS2D::EventHandler::KeyModifier::ShiftLeft | NAS2D::EventHandler::KeyModifier::CtrlLeft));
-	EXPECT_TRUE(NAS2D::EventHandler::shift(NAS2D::EventHandler::KeyModifier::Caps));
+	EXPECT_FALSE(NAS2D::EventHandler::shift(NAS2D::EventHandler::KeyModifier::Caps));
 	EXPECT_FALSE(NAS2D::EventHandler::shift(NAS2D::EventHandler::KeyModifier::Ctrl));
 	EXPECT_FALSE(NAS2D::EventHandler::shift(NAS2D::EventHandler::KeyModifier::Alt));
 }

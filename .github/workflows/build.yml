@@ -18,10 +18,10 @@ jobs:
       VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.3.1
+      uses: microsoft/setup-msbuild@v1.3.2
 
     - name: Setup NuGet credentials
       shell: bash
@@ -39,7 +39,7 @@ jobs:
         -source "https://nuget.pkg.github.com/lairworks/index.json"
 
     - name: Restore vcpkg dependency cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: cache
       with:
         path: vcpkg_installed
@@ -70,7 +70,7 @@ jobs:
       image: "outpostuniverse/${{ matrix.image }}"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror"
     - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" test

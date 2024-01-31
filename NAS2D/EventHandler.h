@@ -317,14 +317,14 @@ namespace NAS2D
 		void textInputMode(bool);
 		bool textInputMode();
 
-		bool shift(KeyModifier mod) const;
-		bool numlock(KeyModifier mod) const;
-		bool control(KeyModifier mod) const;
-		bool alt(KeyModifier mod) const;
+		static bool shift(KeyModifier mod);
+		static bool numlock(KeyModifier mod);
+		static bool control(KeyModifier mod);
+		static bool alt(KeyModifier mod);
 
-		bool query_shift() const;
-		bool query_numlock() const;
-		bool query_control() const;
+		bool shift() const;
+		bool numlock() const;
+		bool control() const;
 
 		void pump();
 

@@ -748,9 +748,9 @@ bool EventHandler::textInputMode()
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::shift(KeyModifier mod) const
+bool EventHandler::shift(KeyModifier mod)
 {
-	return KeyModifier::None != (mod & (KeyModifier::Shift | KeyModifier::Caps));
+	return KeyModifier::None != (mod & (KeyModifier::Shift));
 }
 
 
@@ -759,7 +759,7 @@ bool EventHandler::shift(KeyModifier mod) const
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::alt(KeyModifier mod) const
+bool EventHandler::alt(KeyModifier mod)
 {
 	return KeyModifier::None != (mod & KeyModifier::Alt);
 }
@@ -770,7 +770,7 @@ bool EventHandler::alt(KeyModifier mod) const
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::numlock(KeyModifier mod) const
+bool EventHandler::numlock(KeyModifier mod)
 {
 	return KeyModifier::None != (mod & KeyModifier::Num);
 }
@@ -781,7 +781,7 @@ bool EventHandler::numlock(KeyModifier mod) const
  *
  * \param mod	Modifier value to decode.
  */
-bool EventHandler::control(KeyModifier mod) const
+bool EventHandler::control(KeyModifier mod)
 {
 	return KeyModifier::None != (mod & KeyModifier::Ctrl);
 }
@@ -790,30 +790,27 @@ bool EventHandler::control(KeyModifier mod) const
 /**
  * Queries state of the Shift key modifier.
  */
-bool EventHandler::query_shift() const
+bool EventHandler::shift() const
 {
-	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Shift));
+	return shift(static_cast<KeyModifier>(SDL_GetModState()));
 }
 
 
 /**
  * Queries state of the Shift key modifier.
  */
-bool EventHandler::query_numlock() const
+bool EventHandler::numlock() const
 {
-	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Num));
+	return numlock(static_cast<KeyModifier>(SDL_GetModState()));
 }
 
 
 /**
  * Queries state of the Shift key modifier.
  */
-bool EventHandler::query_control() const
+bool EventHandler::control() const
 {
-	using underlying = std::underlying_type_t<KeyModifier>;
-	return KeyModifier::None != static_cast<KeyModifier>(SDL_GetModState() & static_cast<underlying>(KeyModifier::Ctrl));
+	return control(static_cast<KeyModifier>(SDL_GetModState()));
 }
 
 

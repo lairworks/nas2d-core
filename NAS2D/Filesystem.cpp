@@ -26,15 +26,7 @@ using namespace NAS2D;
 
 namespace
 {
-	struct SdlStringDeleter
-	{
-		void operator()(char* string)
-		{
-			SDL_free(string);
-		}
-	};
-
-
+	using SdlStringDeleter = decltype([](char* string) { SDL_free(string); });
 	using SdlString = std::unique_ptr<char, SdlStringDeleter>;
 
 

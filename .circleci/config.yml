@@ -20,8 +20,8 @@ jobs:
     macos:
       xcode: "13.4.1"
     environment:
-      - HOMEBREW_NO_AUTO_UPDATE: 1
-      - WARN_EXTRA: "-isystem /usr/local/include"
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      WARN_EXTRA: "-isystem /usr/local/include"
     steps:
       - checkout
       - brew-install
@@ -30,7 +30,7 @@ jobs:
     docker:
       - image: outpostuniverse/nas2d-gcc:1.5
     environment:
-      - WARN_EXTRA: "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++"
+      WARN_EXTRA: "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++"
     steps:
       - checkout
       - build-and-test
@@ -38,7 +38,7 @@ jobs:
     docker:
       - image: outpostuniverse/nas2d-clang:1.4
     environment:
-      - WARN_EXTRA: "-Wdocumentation -Wdocumentation-unknown-command -Wcomma -Winconsistent-missing-destructor-override -Wmissing-prototypes -Wctad-maybe-unsupported -Wimplicit-int-float-conversion -Wsign-conversion"
+      WARN_EXTRA: "-Wdocumentation -Wdocumentation-unknown-command -Wcomma -Winconsistent-missing-destructor-override -Wmissing-prototypes -Wctad-maybe-unsupported -Wimplicit-int-float-conversion -Wsign-conversion"
     steps:
       - checkout
       - build-and-test
@@ -46,7 +46,7 @@ jobs:
     docker:
       - image: outpostuniverse/nas2d-mingw:1.10
     environment:
-      - WARN_EXTRA: "-Wno-redundant-decls"
+      WARN_EXTRA: "-Wno-redundant-decls"
     steps:
       - checkout
       - build-and-test

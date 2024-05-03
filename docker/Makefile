@@ -20,7 +20,7 @@ install-sdl2-modules: install-sdl2-image install-sdl2-mixer install-sdl2-ttf
 clean-sdl2-modules: clean-sdl2-image clean-sdl2-mixer clean-sdl2-ttf
 clean-all-sdl2-modules: clean-all-sdl2-image clean-all-sdl2-mixer clean-all-sdl2-ttf
 
-# Source pakcage URLs
+# Source package URLs
 Sdl2PackageUrl := https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
 Sdl2ImagePackageUrl := https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.3.tar.gz
 Sdl2MixerPackageUrl := https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.2.tar.gz

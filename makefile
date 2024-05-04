@@ -252,15 +252,19 @@ ImageVersion_arch := 1.4
 DockerImageName = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 
 DockerBuildRules := build-image-gcc build-image-clang build-image-mingw build-image-arch
+DockerPushRules := push-image-gcc push-image-clang push-image-mingw push-image-arch
 DockerRunRules := run-image-gcc run-image-clang run-image-mingw run-image-arch
 DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw debug-image-arch
 DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-image-mingw root-debug-image-arch
-DockerPushRules := push-image-gcc push-image-clang push-image-mingw push-image-arch
 
-.PHONY: ${DockerBuildRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules} ${DockerPushRules}
+.PHONY: ${DockerBuildRules} ${DockerPushRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules}
 
 ${DockerBuildRules}: build-image-%:
 	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerImageName} --tag ${DockerRepository}/nas2d-$*:latest
+
+${DockerPushRules}: push-image-%:
+	docker push ${DockerImageName}
+	docker push ${DockerRepository}/nas2d-$*:latest
 
 ${DockerRunRules}: run-image-%:
 	docker run ${DockerRunFlags} ${DockerUserFlags} ${DockerImageName}
@@ -270,10 +274,6 @@ ${DockerDebugRules}: debug-image-%:
 
 ${DockerDebugRootRules}: root-debug-image-%:
 	docker run ${DockerRunFlags} --interactive ${DockerImageName} bash
-
-${DockerPushRules}: push-image-%:
-	docker push ${DockerImageName}
-	docker push ${DockerRepository}/nas2d-$*:latest
 
 #### CircleCI related build rules ####
 

@@ -249,6 +249,8 @@ ImageVersion_clang := 1.4
 ImageVersion_mingw := 1.10
 ImageVersion_arch := 1.4
 
+DockerFileName = ${DockerFolder}/nas2d-$*.Dockerfile
+
 DockerImageName = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 DockerImageNameLatest = ${DockerRepository}/nas2d-$*:latest
 
@@ -261,7 +263,7 @@ DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-i
 .PHONY: ${DockerBuildRules} ${DockerPushRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules}
 
 ${DockerBuildRules}: build-image-%:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerImageName} --tag ${DockerImageNameLatest}
+	docker build ${DockerFolder}/ --file ${DockerFileName} --tag ${DockerImageName} --tag ${DockerImageNameLatest}
 
 ${DockerPushRules}: push-image-%:
 	docker push ${DockerImageName}

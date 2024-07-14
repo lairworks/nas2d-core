@@ -1,10 +1,5 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
-# Capture top level folder before any Makefile includes
-# Note: MAKEFILE_LIST's last entry is the last processed Makefile.
-#       That should be the current Makefile, assuming no includes
-TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
-
 CONFIG = Debug
 Debug_CXX_FLAGS := -Og -g
 Release_CXX_FLAGS := -O3

@@ -1,6 +1,11 @@
 # Build rules relating to Docker images
 
-DockerFolder := ${TopLevelFolder}/docker
+# Capture top level folder before any Makefile includes
+# Note: MAKEFILE_LIST's last entry is the last processed Makefile.
+#       That should be the current Makefile, assuming no includes
+DockerFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
+TopLevelFolder := $(abspath $(DockerFolder)/..)
+
 DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository := outpostuniverse

@@ -1,10 +1,5 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
-# Capture top level folder before any Makefile includes
-# Note: MAKEFILE_LIST's last entry is the last processed Makefile.
-#       That should be the current Makefile, assuming no includes
-TopLevelFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
-
 CONFIG = Debug
 Debug_CXX_FLAGS := -Og -g
 Release_CXX_FLAGS := -O3
@@ -237,43 +232,7 @@ install-dependencies-darwin:
 
 #### Docker related build rules ####
 
-# Build rules relating to Docker images
-
-DockerFolder := ${TopLevelFolder}/docker
-DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
-DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
-DockerRepository := outpostuniverse
-
-ImageVersion_gcc := 1.5
-ImageVersion_clang := 1.4
-ImageVersion_mingw := 1.10
-ImageVersion_arch := 1.4
-
-DockerImageName = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
-
-DockerBuildRules := build-image-gcc build-image-clang build-image-mingw build-image-arch
-DockerRunRules := run-image-gcc run-image-clang run-image-mingw run-image-arch
-DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw debug-image-arch
-DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-image-mingw root-debug-image-arch
-DockerPushRules := push-image-gcc push-image-clang push-image-mingw push-image-arch
-
-.PHONY: ${DockerBuildRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules} ${DockerPushRules}
-
-${DockerBuildRules}: build-image-%:
-	docker build ${DockerFolder}/ --file ${DockerFolder}/nas2d-$*.Dockerfile --tag ${DockerImageName} --tag ${DockerRepository}/nas2d-$*:latest
-
-${DockerRunRules}: run-image-%:
-	docker run ${DockerRunFlags} ${DockerUserFlags} ${DockerImageName}
-
-${DockerDebugRules}: debug-image-%:
-	docker run ${DockerRunFlags} --interactive ${DockerUserFlags} ${DockerImageName} bash
-
-${DockerDebugRootRules}: root-debug-image-%:
-	docker run ${DockerRunFlags} --interactive ${DockerImageName} bash
-
-${DockerPushRules}: push-image-%:
-	docker push ${DockerImageName}
-	docker push ${DockerRepository}/nas2d-$*:latest
+include docker/makefile
 
 #### CircleCI related build rules ####
 

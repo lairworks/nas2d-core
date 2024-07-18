@@ -21,10 +21,13 @@ jobs:
       xcode: "15.4.0"
     environment:
       HOMEBREW_NO_AUTO_UPDATE: 1
-      WARN_EXTRA: "-isystem /opt/homebrew/include"
     steps:
       - checkout
       - brew-install
+      - run:
+          name: Add Brew include path to system include paths
+          command: |
+            echo "export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:$(brew --prefix)/include" >> "${BASH_ENV}"
       - build-and-test
   build-linux-gcc:
     docker:

@@ -10,10 +10,7 @@ DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository := outpostuniverse
 
-ImageVersion_gcc := 1.5
-ImageVersion_clang := 1.4
-ImageVersion_mingw := 1.10
-ImageVersion_arch := 1.4
+include $(wildcard $(DockerFolder)/nas2d-*.version.mk)
 
 DockerFileName = ${DockerFolder}/nas2d-$*.Dockerfile
 

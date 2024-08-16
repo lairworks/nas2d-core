@@ -64,10 +64,10 @@ jobs:
       fail-fast: false
       matrix:
         image:
-        - "nas2d-arch:1.4"
+        - "nas2d-arch:1.5"
     runs-on: ubuntu-latest
     container:
-      image: "outpostuniverse/${{ matrix.image }}"
+      image: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}"
 
     steps:
     - uses: actions/checkout@v4

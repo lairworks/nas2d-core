@@ -8,7 +8,7 @@ TopLevelFolder := $(abspath $(DockerFolder)/..)
 
 DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
-DockerRepository := outpostuniverse
+DockerRepository ?= outpostuniverse
 
 include $(wildcard $(DockerFolder)/nas2d-*.version.mk)
 

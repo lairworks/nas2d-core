@@ -3,8 +3,8 @@ name: Docker Build
 on:
   push:
     paths:
-      - ".github/workflows/dockerBuild.yml"
-      - "docker/*"
+      - '.github/workflows/dockerBuild.yml'
+      - 'docker/*'
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        - "arch"
+        - 'arch'
     env:
       DockerRepository: ghcr.io/${{ github.repository_owner }}
 

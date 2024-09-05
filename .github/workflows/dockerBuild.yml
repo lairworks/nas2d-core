@@ -2,6 +2,11 @@ name: Docker Build
 
 on:
   push:
+    # Builds should happen on feature branches
+    # Only successfully tested builds should be merged to main
+    # We don't want to rebuild after testing and verifying
+    branches-ignore:
+      - 'main'
     paths:
       - '.github/workflows/dockerBuild.yml'
       - 'docker/*'

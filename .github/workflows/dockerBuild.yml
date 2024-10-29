@@ -26,9 +26,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: make -C docker build-image-${{ matrix.platform }}
+      - name: Docker build
+        run: make -C docker build-image-${{ matrix.platform }}
 
       - name: Docker login
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --username "${{ github.repository_owner }}" --password-stdin
 
-      - run: make -C docker push-image-${{ matrix.platform }}
+      - name: Docker push
+        run: make -C docker push-image-${{ matrix.platform }}

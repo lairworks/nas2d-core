@@ -20,6 +20,8 @@ jobs:
       matrix:
         platform:
         - 'arch'
+        - 'clang'
+        - 'gcc'
     env:
       DockerRepository: ghcr.io/${{ github.repository_owner }}
 

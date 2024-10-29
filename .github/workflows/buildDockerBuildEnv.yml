@@ -20,6 +20,8 @@ jobs:
       matrix:
         platform:
         - 'arch'
+        - 'clang'
+        - 'gcc'
 
     steps:
       - uses: actions/checkout@v4

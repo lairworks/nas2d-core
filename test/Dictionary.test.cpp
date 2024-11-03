@@ -44,7 +44,7 @@ TEST(Dictionary, OperatorEquality) {
 
 TEST(Dictionary, OperatorSubscript) {
 	{
-		const NAS2D::Dictionary dictionary{{{"Key1", "Value1"}}};;
+		const NAS2D::Dictionary dictionary{{{"Key1", "Value1"}}};
 		auto& value = dictionary["Key1"];
 
 		EXPECT_TRUE((std::is_same_v<const NAS2D::StringValue&, decltype(value)>));

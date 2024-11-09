@@ -178,7 +178,7 @@ $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
 .PHONY: show-warnings
 show-warnings:
 	@$(MAKE) clean > /dev/null
-	$(MAKE) -j1 all CXX=clang++ CXXFLAGS_WARN=-Weverything 2>&1 >/dev/null | grep -o "\[-W.*\]" | sort | uniq
+	$(MAKE) --output-sync all CXX=clang++ CXXFLAGS_WARN=-Weverything 2>&1 >/dev/null | grep -o "\[-W.*\]" | sort | uniq
 	@$(MAKE) clean > /dev/null
 
 .PHONY: lint

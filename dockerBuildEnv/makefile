@@ -8,7 +8,7 @@ TopLevelFolder := $(abspath $(DockerBuildEnvFolder)/..)
 
 DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
-DockerRepository ?= outpostuniverse
+DockerRepository ?= ghcr.io/lairworks
 
 include $(wildcard $(DockerBuildEnvFolder)/nas2d-*.version.mk)
 

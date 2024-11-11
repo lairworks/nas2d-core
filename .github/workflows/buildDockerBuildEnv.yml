@@ -20,8 +20,6 @@ jobs:
       matrix:
         platform:
         - 'arch'
-    env:
-      DockerRepository: ghcr.io/${{ github.repository_owner }}
 
     steps:
       - uses: actions/checkout@v4

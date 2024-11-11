@@ -14,7 +14,7 @@ include $(wildcard $(DockerFolder)/nas2d-*.version.mk)
 
 DockerFileName = ${DockerFolder}/nas2d-$*.Dockerfile
 
-DockerImageName = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
+DockerImageNameTagged = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
 DockerImageNameLatest = ${DockerRepository}/nas2d-$*:latest
 
 DockerBuildRules := build-image-gcc build-image-clang build-image-mingw build-image-arch
@@ -26,17 +26,17 @@ DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-i
 .PHONY: ${DockerBuildRules} ${DockerPushRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules}
 
 ${DockerBuildRules}: build-image-%:
-	docker build ${DockerFolder}/ --file ${DockerFileName} --tag ${DockerImageName} --tag ${DockerImageNameLatest}
+	docker build ${DockerFolder}/ --file ${DockerFileName} --tag ${DockerImageNameTagged} --tag ${DockerImageNameLatest}
 
 ${DockerPushRules}: push-image-%:
-	docker push ${DockerImageName}
+	docker push ${DockerImageNameTagged}
 	docker push ${DockerImageNameLatest}
 
 ${DockerRunRules}: run-image-%:
-	docker run ${DockerRunFlags} ${DockerUserFlags} ${DockerImageName}
+	docker run ${DockerRunFlags} ${DockerUserFlags} ${DockerImageNameTagged}
 
 ${DockerDebugRules}: debug-image-%:
-	docker run ${DockerRunFlags} --interactive ${DockerUserFlags} ${DockerImageName} bash
+	docker run ${DockerRunFlags} --interactive ${DockerUserFlags} ${DockerImageNameTagged} bash
 
 ${DockerDebugRootRules}: root-debug-image-%:
-	docker run ${DockerRunFlags} --interactive ${DockerImageName} bash
+	docker run ${DockerRunFlags} --interactive ${DockerImageNameTagged} bash

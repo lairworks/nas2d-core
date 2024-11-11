@@ -35,7 +35,7 @@ jobs:
         id: diff
         run: |
           set +e
-          git diff --exit-code --no-patch origin/main docker/nas2d-${{ matrix.platform }}.* ; echo "modified=$?" >> $GITHUB_OUTPUT
+          git diff --exit-code --no-patch origin/main docker/makefile docker/nas2d-${{ matrix.platform }}.* ; echo "modified=$?" >> $GITHUB_OUTPUT
 
       - name: Docker build
         if: ${{ fromJSON(steps.diff.outputs.modified) }}

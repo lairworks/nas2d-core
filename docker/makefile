@@ -14,8 +14,9 @@ include $(wildcard $(DockerFolder)/nas2d-*.version.mk)
 
 DockerFileName = ${DockerFolder}/nas2d-$*.Dockerfile
 
-DockerImageNameTagged = ${DockerRepository}/nas2d-$*:${ImageVersion_$*}
-DockerImageNameLatest = ${DockerRepository}/nas2d-$*:latest
+DockerImageName = ${DockerRepository}/nas2d-$*
+DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
+DockerImageNameLatest = ${DockerImageName}:latest
 
 DockerBuildRules := build-image-gcc build-image-clang build-image-mingw build-image-arch
 DockerPushRules := push-image-gcc push-image-clang push-image-mingw push-image-arch

@@ -91,18 +91,18 @@ RUN \
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
-RUN curl https://libsdl.org/release/SDL2-devel-2.27.1-mingw.tar.gz | tar -xz && \
-  make -C SDL2-2.27.1/ cross && \
-  rm -rf SDL2-2.27.1/
-RUN curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.6.3-mingw.tar.gz | tar -xz && \
-  make -C SDL2_image-2.6.3/ cross && \
-  rm -rf SDL2_image-2.6.3/
-RUN curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.6.3-mingw.tar.gz | tar -xz && \
-  make -C SDL2_mixer-2.6.3/ cross && \
-  rm -rf SDL2_mixer-2.6.3/
-RUN curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.20.2-mingw.tar.gz | tar -xz && \
-  make -C SDL2_ttf-2.20.2/ cross && \
-  rm -rf SDL2_ttf-2.20.2/
+RUN curl https://libsdl.org/release/SDL2-devel-2.30.9-mingw.tar.gz | tar -xz && \
+  make -C SDL2-2.30.9/ cross && \
+  rm -rf SDL2-2.30.9/
+RUN curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.8.2-mingw.tar.gz | tar -xz && \
+  make -C SDL2_image-2.8.2/ cross && \
+  rm -rf SDL2_image-2.8.2/
+RUN curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.8.0-mingw.tar.gz | tar -xz && \
+  make -C SDL2_mixer-2.8.0/ cross && \
+  rm -rf SDL2_mixer-2.8.0/
+RUN curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.22.0-mingw.tar.gz | tar -xz && \
+  make -C SDL2_ttf-2.22.0/ cross && \
+  rm -rf SDL2_ttf-2.22.0/
 # Install dependencies from source packages
 RUN curl --location https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz | tar -xz && \
   make -C glew-2.2.0/ SYSTEM=linux-mingw64 CC="${CC64}" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \

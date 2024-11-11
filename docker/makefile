@@ -3,16 +3,16 @@
 # Capture top level folder before any Makefile includes
 # Note: MAKEFILE_LIST's last entry is the last processed Makefile.
 #       That should be the current Makefile, assuming no includes
-DockerFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
-TopLevelFolder := $(abspath $(DockerFolder)/..)
+DockerBuildEnvFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
+TopLevelFolder := $(abspath $(DockerBuildEnvFolder)/..)
 
 DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository ?= outpostuniverse
 
-include $(wildcard $(DockerFolder)/nas2d-*.version.mk)
+include $(wildcard $(DockerBuildEnvFolder)/nas2d-*.version.mk)
 
-DockerFileName = ${DockerFolder}/nas2d-$*.Dockerfile
+DockerFileName = ${DockerBuildEnvFolder}/nas2d-$*.Dockerfile
 
 DockerImageName = ${DockerRepository}/build-env-nas2d-$*
 DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
@@ -27,7 +27,7 @@ DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-i
 .PHONY: ${DockerBuildRules} ${DockerPushRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules}
 
 ${DockerBuildRules}: build-image-%:
-	docker build ${DockerFolder}/ --file ${DockerFileName} --tag ${DockerImageNameTagged} --tag ${DockerImageNameLatest}
+	docker build ${DockerBuildEnvFolder}/ --file ${DockerFileName} --tag ${DockerImageNameTagged} --tag ${DockerImageNameLatest}
 
 ${DockerPushRules}: push-image-%:
 	docker push ${DockerImageNameTagged}

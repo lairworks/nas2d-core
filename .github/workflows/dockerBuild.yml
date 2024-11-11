@@ -39,7 +39,7 @@ jobs:
 
       - name: Docker build
         if: ${{ fromJSON(steps.diff.outputs.modified) }}
-        run: make -C docker build-image-${{ matrix.platform }}
+        run: make build-image-${{ matrix.platform }}
 
       - name: Docker login
         if: ${{ fromJSON(steps.diff.outputs.modified) }}
@@ -47,4 +47,4 @@ jobs:
 
       - name: Docker push
         if: ${{ fromJSON(steps.diff.outputs.modified) }}
-        run: make -C docker push-image-${{ matrix.platform }}
+        run: make push-image-${{ matrix.platform }}

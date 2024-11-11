@@ -14,7 +14,7 @@ include $(wildcard $(DockerFolder)/nas2d-*.version.mk)
 
 DockerFileName = ${DockerFolder}/nas2d-$*.Dockerfile
 
-DockerImageName = ${DockerRepository}/nas2d-$*
+DockerImageName = ${DockerRepository}/build-env-nas2d-$*
 DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
 DockerImageNameLatest = ${DockerImageName}:latest
 

@@ -31,7 +31,7 @@ jobs:
       - build-and-test
   build-linux-gcc:
     docker:
-      - image: outpostuniverse/nas2d-gcc:1.5
+      - image: ghcr.io/lairworks/build-env-nas2d-gcc:1.6
     environment:
       WARN_EXTRA: "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++"
     steps:
@@ -39,7 +39,7 @@ jobs:
       - build-and-test
   build-linux-clang:
     docker:
-      - image: outpostuniverse/nas2d-clang:1.4
+      - image: ghcr.io/lairworks/build-env-nas2d-clang:1.5
     environment:
       WARN_EXTRA: "-Wdocumentation -Wdocumentation-unknown-command -Wcomma -Winconsistent-missing-destructor-override -Wmissing-prototypes -Wctad-maybe-unsupported -Wimplicit-int-float-conversion -Wsign-conversion"
     steps:

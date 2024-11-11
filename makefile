@@ -234,7 +234,7 @@ install-dependencies-darwin:
 
 #### Docker related build rules ####
 
-include docker/makefile
+include dockerBuildEnv/makefile
 
 #### CircleCI related build rules ####
 

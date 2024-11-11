@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages
@@ -8,19 +8,20 @@ FROM ubuntu:22.04
 # The software-properties-common package is needed for add-apt-repository, used to install wine
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    mingw-w64=8.0.0-1 \
-    cmake=3.22.1-* \
+    mingw-w64=11.0.1-* \
+    cmake=3.28.3-* \
     make=4.3-* \
-    binutils=2.38-* \
-    git=1:2.34.1-* \
-    ssh=1:8.9p1-* \
-    googletest=1.11.0-3 \
-    curl=7.81.0-* \
-    tar=1.34+* \
-    gzip=1.10-* \
+    binutils=2.42-* \
+    libgtest-dev=1.14.0-* \
+    libgmock-dev=1.14.0-* \
+    git=1:2.43.0-* \
+    ssh=1:9.6p1-* \
+    curl=8.5.0-* \
+    tar=1.35+* \
+    gzip=1.12-* \
     bzip2=1.0.8-* \
-    gnupg=2.2.27-* \
-    software-properties-common=0.99.22.7 \
+    gnupg=2.4.4-* \
+    software-properties-common=0.99.48 \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
@@ -40,13 +41,11 @@ ENV  LD32=${ARCH32}-ld
 
 # Install wine so resulting unit test binaries can be run
 RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-  add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ impish main' && \
+  add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ noble main' && \
   dpkg --add-architecture i386 && \
-  apt-get update && apt-get install -y --no-install-recommends \
-    wine-stable-amd64=6.0.2~impish-1 \
-    wine-stable-i386=6.0.2~impish-1 \
-    wine-stable=6.0.2~impish-1 \
-    winehq-stable=6.0.2~impish-1 \
+  apt-get update &&apt-get install -y --no-install-recommends \
+    wine=9.0~repack-4build3 \
+    wine32:i386=9.0~repack-4build3 \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages

@@ -40,8 +40,8 @@ ENV  CC32=${ARCH32}-gcc
 ENV  LD32=${ARCH32}-ld
 
 # Install wine so resulting unit test binaries can be run
-RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-  add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ noble main' && \
+RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+  echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
   dpkg --add-architecture i386 && \
   apt-get update &&apt-get install -y --no-install-recommends \
     wine=9.0~repack-4build3 \

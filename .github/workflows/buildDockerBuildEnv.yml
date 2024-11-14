@@ -22,6 +22,7 @@ jobs:
         - 'arch'
         - 'clang'
         - 'gcc'
+        - 'mingw'
 
     steps:
       - uses: actions/checkout@v4

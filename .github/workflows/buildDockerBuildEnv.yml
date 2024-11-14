@@ -22,6 +22,7 @@ jobs:
         - 'arch'
         - 'clang'
         - 'gcc'
+        - 'mingw'
     env:
       defaultBranch: ${{ github.event.repository.default_branch }}
 

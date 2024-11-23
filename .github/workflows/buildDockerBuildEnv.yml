@@ -31,7 +31,7 @@ jobs:
       - name: Fetch default branch
         run: |
           git remote set-branches --add origin "${defaultBranch}"
-          git fetch --depth 1
+          git fetch --depth 1 origin "${defaultBranch}"
 
       - name: Check for changes
         id: diff

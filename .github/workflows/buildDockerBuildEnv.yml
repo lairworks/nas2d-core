@@ -22,20 +22,22 @@ jobs:
         - 'arch'
         - 'clang'
         - 'gcc'
+    env:
+      defaultBranch: ${{ github.event.repository.default_branch }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch main
+      - name: Fetch default branch
         run: |
-          git remote set-branches --add origin main
+          git remote set-branches --add origin "${defaultBranch}"
           git fetch --depth 1
 
       - name: Check for changes
         id: diff
         run: |
           set +e
-          git diff --exit-code --no-patch origin/main dockerBuildEnv/makefile dockerBuildEnv/nas2d-${{ matrix.platform }}.* ; echo "modified=$?" >> $GITHUB_OUTPUT
+          git diff --exit-code --no-patch "origin/${defaultBranch}" dockerBuildEnv/makefile dockerBuildEnv/nas2d-${{ matrix.platform }}.* ; echo "modified=$?" >> $GITHUB_OUTPUT
 
       - name: Docker build
         if: ${{ fromJSON(steps.diff.outputs.modified) }}

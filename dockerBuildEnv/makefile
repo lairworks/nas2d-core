@@ -9,7 +9,7 @@ DockerRunFlags = --volume ${CURDIR}:/code --workdir=/code --rm --tty ${DockerAdd
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository ?= ghcr.io/lairworks
 
-include $(wildcard $(DockerBuildEnvFolder)/nas2d-*.version.mk)
+include $(wildcard ${DockerBuildEnvFolder}/nas2d-*.version.mk)
 
 DockerFileName = ${DockerBuildEnvFolder}/nas2d-$*.Dockerfile
 

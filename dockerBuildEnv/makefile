@@ -6,7 +6,7 @@
 DockerBuildEnvFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 TopLevelFolder := $(abspath $(DockerBuildEnvFolder)/..)
 
-DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
+DockerRunFlags = --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty ${DockerAdditionalFlags}
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository ?= ghcr.io/lairworks
 

@@ -703,17 +703,17 @@ namespace
 			R = 1.08f;
 		}
 
-		//determine angle of the line to horizontal
-		float tx = 0.0f, ty = 0.0f; //core thickness of a line
-		float Rx = 0.0f, Ry = 0.0f; //fading edge of a line
-		float cx = 0.0f, cy = 0.0f; //cap of a line
+		// Determine angle of the line to horizontal
+		float tx = 0.0f, ty = 0.0f; // Core thickness of a line
+		float Rx = 0.0f, Ry = 0.0f; // Fading edge of a line
+		float cx = 0.0f, cy = 0.0f; // Cap of a line
 		float ALW = 0.01f;
 		float dx = p2.x - p1.x;
 		float dy = p2.y - p1.y;
 
 		if (std::abs(dx) < ALW)
 		{
-			//vertical
+			// Vertical
 			tx = t;
 			ty = 0.0f;
 
@@ -728,7 +728,7 @@ namespace
 		}
 		else if (std::abs(dy) < ALW)
 		{
-			//horizontal
+			// Horizontal
 			tx = 0.0f;
 			ty = t;
 
@@ -767,16 +767,16 @@ namespace
 		p2.x -= cx * 0.5f;
 		p2.y -= cy * 0.5f;
 
-		//draw the line by triangle strip
+		// Draw the line by triangle strip
 		float line_vertex[] = {
 			p1.x - tx - Rx - cx,
-			p1.y - ty - Ry - cy, //fading edge1
+			p1.y - ty - Ry - cy, // Fading edge1
 
 			p2.x - tx - Rx + cx,
 			p2.y - ty - Ry + cy,
 
 			p1.x - tx - cx,
-			p1.y - ty - cy, //core
+			p1.y - ty - cy, // Core
 
 			p2.x - tx + cx,
 			p2.y - ty + cy,
@@ -788,7 +788,7 @@ namespace
 			p2.y + ty + cy,
 
 			p1.x + tx + Rx - cx,
-			p1.y + ty + Ry - cy, //fading edge2
+			p1.y + ty + Ry - cy, // Fading edge2
 
 			p2.x + tx + Rx + cx,
 			p2.y + ty + Ry + cy,
@@ -857,7 +857,7 @@ namespace
 				p1.y + ty + Ry - cy,
 
 				p2.x - tx - Rx + cx,
-				p2.y - ty - Ry + cy, //cap2
+				p2.y - ty - Ry + cy, // Cap2
 
 				p2.x - tx - Rx,
 				p2.y - ty - Ry,
@@ -879,7 +879,7 @@ namespace
 				Cr,
 				Cg,
 				Cb,
-				0, //cap1
+				0, // Cap1
 
 				Cr,
 				Cg,
@@ -909,7 +909,7 @@ namespace
 				Cr,
 				Cg,
 				Cb,
-				0, //cap2
+				0, // Cap2
 
 				Cr,
 				Cg,

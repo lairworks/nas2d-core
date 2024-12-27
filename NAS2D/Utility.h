@@ -9,6 +9,7 @@
 // ==================================================================================
 #pragma once
 
+#include <memory>
 #include <utility>
 #include <type_traits>
 #include <stdexcept>
@@ -71,7 +72,7 @@ namespace NAS2D
 		{
 			if (!mInstance)
 			{
-				mInstance = new T();
+				mInstance = std::make_unique<T>();
 			}
 
 			return *mInstance;
@@ -132,12 +133,11 @@ namespace NAS2D
 		static Type& init(Args&&... args)
 		{
 			// Instantiate a new object with forwarded constructor arguments
-			auto newInstance = new Type(std::forward<Args>(args)...);
-
-			delete mInstance;
-
-			mInstance = newInstance;
-			return *newInstance;
+			auto newInstance = std::make_unique<Type>(std::forward<Args>(args)...);
+			// The new instance may be a sub-type of T, so return as sub-type
+			auto typedNewInstance = newInstance.release();
+			mInstance.reset(typedNewInstance);
+			return *typedNewInstance;
 		}
 
 
@@ -149,15 +149,14 @@ namespace NAS2D
 		 */
 		static void clear()
 		{
-			delete mInstance;
-			mInstance = nullptr;
+			mInstance.reset();
 		}
 
 	private:
-		static T* mInstance;
+		static std::unique_ptr<T> mInstance;
 	};
 
 
 	template <typename T>
-	T* Utility<T>::mInstance = nullptr;
+	std::unique_ptr<T> Utility<T>::mInstance{};
 } // namespace

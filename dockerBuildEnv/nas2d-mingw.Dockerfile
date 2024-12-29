@@ -40,13 +40,13 @@ ENV  LD32=${ARCH32}-ld
 
 # Install wine so resulting unit test binaries can be run
 RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
-  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ impish main" > /etc/apt/sources.list.d/wine.list && \
+  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
   dpkg --add-architecture i386 && \
   apt-get update && apt-get install -y --no-install-recommends \
-    wine-stable-amd64=7.0.0.0~* \
-    wine-stable-i386=7.0.0.0~* \
-    wine-stable=7.0.0.0~* \
-    winehq-stable=7.0.0.0~* \
+    wine-stable-amd64=7.0.1~* \
+    wine-stable-i386=7.0.1~* \
+    wine-stable=7.0.1~* \
+    winehq-stable=7.0.1~* \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages

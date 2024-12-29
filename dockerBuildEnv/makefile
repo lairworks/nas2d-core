@@ -4,13 +4,12 @@
 # Note: MAKEFILE_LIST's last entry is the last processed Makefile.
 #       That should be the current Makefile, assuming no includes
 DockerBuildEnvFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
-TopLevelFolder := $(abspath $(DockerBuildEnvFolder)/..)
 
-DockerRunFlags := --volume ${TopLevelFolder}:/code --workdir=/code --rm --tty
+DockerRunFlags = --volume ${CURDIR}:/code --workdir=/code --rm --tty ${DockerAdditionalFlags}
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository ?= ghcr.io/lairworks
 
-include $(wildcard $(DockerBuildEnvFolder)/nas2d-*.version.mk)
+include $(wildcard ${DockerBuildEnvFolder}/nas2d-*.version.mk)
 
 DockerFileName = ${DockerBuildEnvFolder}/nas2d-$*.Dockerfile
 

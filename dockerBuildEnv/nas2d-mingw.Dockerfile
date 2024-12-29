@@ -39,8 +39,8 @@ ENV  CC32=${ARCH32}-gcc
 ENV  LD32=${ARCH32}-ld
 
 # Install wine so resulting unit test binaries can be run
-RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-  add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ impish main' && \
+RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ impish main" > /etc/apt/sources.list.d/wine.list && \
   dpkg --add-architecture i386 && \
   apt-get update && apt-get install -y --no-install-recommends \
     wine-stable-amd64=6.0.2~impish-1 \

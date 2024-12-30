@@ -43,10 +43,10 @@ RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
   dpkg --add-architecture i386 && \
   apt-get update && apt-get install -y --no-install-recommends \
-    wine-stable-amd64=8.0.2~* \
-    wine-stable-i386=8.0.2~* \
-    wine-stable=8.0.2~* \
-    winehq-stable=8.0.2~* \
+    wine-stable-amd64=9.0.0.0~* \
+    wine-stable-i386=9.0.0.0~* \
+    wine-stable=9.0.0.0~* \
+    winehq-stable=9.0.0.0~* \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages

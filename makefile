@@ -12,6 +12,9 @@ TARGET_OS ?= $(CURRENT_OS)
 Windows_RUN_PREFIX := wine
 RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
 
+Windows_EXE_SUFFIX := .exe
+EXE_SUFFIX := $($(TARGET_OS)_EXE_SUFFIX)
+
 ROOTBUILDDIR := .build
 BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
 
@@ -62,7 +65,7 @@ include $(wildcard $(patsubst %.o,%.dep,$(OBJS)))
 
 TESTDIR := test
 TESTINTDIR := $(BUILDDIRPREFIX)test/intermediate
-TESTOUTPUT := $(BUILDDIRPREFIX)test/test
+TESTOUTPUT := $(BUILDDIRPREFIX)test/test$(EXE_SUFFIX)
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 
@@ -94,7 +97,7 @@ check: | test
 
 TESTGRAPHICSDIR := test-graphics
 TESTGRAPHICSINTDIR := $(BUILDDIRPREFIX)testGraphics/intermediate
-TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics
+TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics$(EXE_SUFFIX)
 TESTGRAPHICSSRCS := $(shell find $(TESTGRAPHICSDIR) -name '*.cpp')
 TESTGRAPHICSOBJS := $(patsubst $(TESTGRAPHICSDIR)/%.cpp,$(TESTGRAPHICSINTDIR)/%.o,$(TESTGRAPHICSSRCS))
 

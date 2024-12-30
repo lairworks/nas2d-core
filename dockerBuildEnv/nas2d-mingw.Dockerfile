@@ -92,24 +92,29 @@ RUN \
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
-RUN curl https://libsdl.org/release/SDL2-devel-2.27.1-mingw.tar.gz | tar -xz && \
-  make -C SDL2-2.27.1/ cross && \
-  rm -rf SDL2-2.27.1/
-RUN curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.6.3-mingw.tar.gz | tar -xz && \
-  make -C SDL2_image-2.6.3/ cross && \
-  rm -rf SDL2_image-2.6.3/
-RUN curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.6.3-mingw.tar.gz | tar -xz && \
-  make -C SDL2_mixer-2.6.3/ cross && \
-  rm -rf SDL2_mixer-2.6.3/
-RUN curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.20.2-mingw.tar.gz | tar -xz && \
-  make -C SDL2_ttf-2.20.2/ cross && \
-  rm -rf SDL2_ttf-2.20.2/
+RUN sdlVersion="2.27.1" && \
+  curl https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | tar -xz && \
+  make -C SDL2-${sdlVersion}/ cross && \
+  rm -rf SDL2-${sdlVersion}/
+RUN sdlImageVersion="2.6.3" && \
+  curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | tar -xz && \
+  make -C SDL2_image-${sdlImageVersion}/ cross && \
+  rm -rf SDL2_image-${sdlImageVersion}/
+RUN sdlMixerVersion="2.6.3" && \
+  curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | tar -xz && \
+  make -C SDL2_mixer-${sdlMixerVersion}/ cross && \
+  rm -rf SDL2_mixer-${sdlMixerVersion}/
+RUN sdlTtfVersion="2.20.2" && \
+  curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | tar -xz && \
+  make -C SDL2_ttf-${sdlTtfVersion}/ cross && \
+  rm -rf SDL2_ttf-${sdlTtfVersion}/
 # Install dependencies from source packages
-RUN curl --location https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz | tar -xz && \
-  make -C glew-2.2.0/ SYSTEM=linux-mingw64 CC="${CC64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
-  make -C glew-2.2.0/ distclean && \
-  make -C glew-2.2.0/ SYSTEM=linux-mingw64 CC="${CC32}" WARN="-Wno-cast-function-type" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
-  rm -rf glew-2.2.0/ glew.*
+RUN glewVersion="2.2.0" && \
+  curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
+  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
+  make -C glew-${glewVersion}/ distclean && \
+  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC32}" WARN="-Wno-cast-function-type" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
+  rm -rf glew-${glewVersion}/ glew.*
 
 # Custom variables for install locations
 ENV INCLUDE64=${INSTALL64}include/

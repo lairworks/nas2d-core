@@ -133,8 +133,13 @@ ENV WINEPATH="${WINEPATH64}"
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
 
+RUN useradd --uid 1000 -m -s /bin/bash user
+USER user
+
 # Pre-setup Wine to save startup time later
 RUN wineboot
+
+USER root
 
 # Set default extra C pre-processor flags
 # This makes proper rebuilding easier in a debug session

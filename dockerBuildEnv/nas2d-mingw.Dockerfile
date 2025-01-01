@@ -20,7 +20,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     gzip=1.10-* \
     bzip2=1.0.8-* \
     gnupg=2.2.27-* \
-    software-properties-common=0.99.22.7 \
+    software-properties-common=0.99.22.* \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
@@ -39,14 +39,14 @@ ENV  CC32=${ARCH32}-gcc
 ENV  LD32=${ARCH32}-ld
 
 # Install wine so resulting unit test binaries can be run
-RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | apt-key add - && \
-  add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ impish main' && \
+RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
   dpkg --add-architecture i386 && \
   apt-get update && apt-get install -y --no-install-recommends \
-    wine-stable-amd64=6.0.2~impish-1 \
-    wine-stable-i386=6.0.2~impish-1 \
-    wine-stable=6.0.2~impish-1 \
-    winehq-stable=6.0.2~impish-1 \
+    wine-stable-amd64=8.0.2~* \
+    wine-stable-i386=8.0.2~* \
+    wine-stable=8.0.2~* \
+    winehq-stable=8.0.2~* \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages
@@ -92,24 +92,29 @@ RUN \
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
-RUN curl https://libsdl.org/release/SDL2-devel-2.27.1-mingw.tar.gz | tar -xz && \
-  make -C SDL2-2.27.1/ cross && \
-  rm -rf SDL2-2.27.1/
-RUN curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.6.3-mingw.tar.gz | tar -xz && \
-  make -C SDL2_image-2.6.3/ cross && \
-  rm -rf SDL2_image-2.6.3/
-RUN curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.6.3-mingw.tar.gz | tar -xz && \
-  make -C SDL2_mixer-2.6.3/ cross && \
-  rm -rf SDL2_mixer-2.6.3/
-RUN curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.20.2-mingw.tar.gz | tar -xz && \
-  make -C SDL2_ttf-2.20.2/ cross && \
-  rm -rf SDL2_ttf-2.20.2/
+RUN sdlVersion="2.30.9" && \
+  curl https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | tar -xz && \
+  make -C SDL2-${sdlVersion}/ cross && \
+  rm -rf SDL2-${sdlVersion}/
+RUN sdlImageVersion="2.8.4" && \
+  curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | tar -xz && \
+  make -C SDL2_image-${sdlImageVersion}/ cross && \
+  rm -rf SDL2_image-${sdlImageVersion}/
+RUN sdlMixerVersion="2.8.0" && \
+  curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | tar -xz && \
+  make -C SDL2_mixer-${sdlMixerVersion}/ cross && \
+  rm -rf SDL2_mixer-${sdlMixerVersion}/
+RUN sdlTtfVersion="2.22.0" && \
+  curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | tar -xz && \
+  make -C SDL2_ttf-${sdlTtfVersion}/ cross && \
+  rm -rf SDL2_ttf-${sdlTtfVersion}/
 # Install dependencies from source packages
-RUN curl --location https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz | tar -xz && \
-  make -C glew-2.2.0/ SYSTEM=linux-mingw64 CC="${CC64}" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
-  make -C glew-2.2.0/ distclean && \
-  make -C glew-2.2.0/ SYSTEM=linux-mingw64 CC="${CC32}" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
-  rm -rf glew-2.2.0/ glew.*
+RUN glewVersion="2.2.0" && \
+  curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
+  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
+  make -C glew-${glewVersion}/ distclean && \
+  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC32}" WARN="-Wno-cast-function-type" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
+  rm -rf glew-${glewVersion}/ glew.*
 
 # Custom variables for install locations
 ENV INCLUDE64=${INSTALL64}include/
@@ -133,8 +138,15 @@ ENV WINEPATH="${WINEPATH64}"
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
 
+RUN useradd --uid 1000 -m -s /bin/bash user
+
+# Cache the result of `wineboot` for faster startup (or don't for smaller images)
+# USER user
+
 # Pre-setup Wine to save startup time later
-RUN wineboot
+# RUN wineboot
+
+# USER root
 
 # Set default extra C pre-processor flags
 # This makes proper rebuilding easier in a debug session

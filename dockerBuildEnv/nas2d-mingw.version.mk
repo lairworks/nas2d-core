@@ -1,1 +1,1 @@
-ImageVersion_mingw := 1.11
+ImageVersion_mingw := 1.12

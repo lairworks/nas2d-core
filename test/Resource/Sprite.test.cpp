@@ -54,19 +54,28 @@ protected:
 };
 
 
-TEST_F(SpriteCompleteSignal, animationCompleteSignal) {
+TEST_F(SpriteCompleteSignal, animationCompleteSignalNone) {
+	EXPECT_CALL(handler, MockMethod()).Times(0);
 	sprite.advanceByTimeDelta(0u);
 	sprite.advanceByTimeDelta(1u);
+}
 
+TEST_F(SpriteCompleteSignal, animationCompleteSignalOnceDelta2) {
 	EXPECT_CALL(handler, MockMethod());
 	sprite.advanceByTimeDelta(2u);
+}
 
+TEST_F(SpriteCompleteSignal, animationCompleteSignalOnceDelta3) {
 	EXPECT_CALL(handler, MockMethod());
 	sprite.advanceByTimeDelta(3u);
+}
 
+TEST_F(SpriteCompleteSignal, animationCompleteSignalTwice) {
 	EXPECT_CALL(handler, MockMethod()).Times(2);
 	sprite.advanceByTimeDelta(4u);
+}
 
+TEST_F(SpriteCompleteSignal, animationCompleteSignal) {
 	for (auto i = 0u; i <= 4u; ++i) {
 		sprite.play("frameStopAction");
 		EXPECT_CALL(handler, MockMethod());

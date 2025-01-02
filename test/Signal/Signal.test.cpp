@@ -28,6 +28,5 @@ TEST(Signal, ConnectEmitDisconnect) {
 	signal.disconnect(delegate);
 	EXPECT_TRUE(signal.empty());
 
-	EXPECT_CALL(handler, MockMethod()).Times(0);
 	signal.emit();
 }

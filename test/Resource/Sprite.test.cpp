@@ -18,10 +18,11 @@ protected:
 
 	static constexpr NAS2D::Vector imageSize{1, 1};
 	static constexpr NAS2D::Rectangle imageRect{{0, 0}, imageSize};
+	static constexpr NAS2D::Vector anchorOffset{0, 0};
 	uint32_t imageBuffer[imageSize.x * imageSize.y];
 	NAS2D::Image image{&imageBuffer, 4, imageSize};
-	NAS2D::AnimationSet::Frame frame{image, imageRect, {0, 0}, 2};
-	NAS2D::AnimationSet::Frame frameStop{image, imageRect, {0, 0}, 0};
+	NAS2D::AnimationSet::Frame frame{image, imageRect, anchorOffset, 2};
+	NAS2D::AnimationSet::Frame frameStop{image, imageRect, anchorOffset, 0};
 	NAS2D::AnimationSet testAnimationSet{{}, {{"defaultAction", {frame}}, {"frameStopAction", {frameStop}}}};
 	SpriteDerived sprite{testAnimationSet, "defaultAction"};
 };

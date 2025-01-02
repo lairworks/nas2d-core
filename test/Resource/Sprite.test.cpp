@@ -16,15 +16,13 @@ protected:
 		using Sprite::advanceByTimeDelta;
 	};
 
-	class MockHandler {
-	public:
-		MOCK_CONST_METHOD0(MockMethod, void());
-	};
-
-	uint32_t imageBuffer[1 * 1];
-	NAS2D::Image image{&imageBuffer, 4, {1, 1}};
-	NAS2D::AnimationSet::Frame frame{image, {{0, 0}, {1, 1}}, {0, 0}, 2};
-	NAS2D::AnimationSet::Frame frameStop{image, {{0, 0}, {1, 1}}, {0, 0}, 0};
+	static constexpr NAS2D::Vector imageSize{1, 1};
+	static constexpr NAS2D::Rectangle imageRect{{0, 0}, imageSize};
+	static constexpr NAS2D::Vector anchorOffset{0, 0};
+	uint32_t imageBuffer[imageSize.x * imageSize.y];
+	NAS2D::Image image{&imageBuffer, 4, imageSize};
+	NAS2D::AnimationSet::Frame frame{image, imageRect, anchorOffset, 2};
+	NAS2D::AnimationSet::Frame frameStop{image, imageRect, anchorOffset, 0};
 	NAS2D::AnimationSet testAnimationSet{{}, {{"defaultAction", {frame}}, {"frameStopAction", {frameStop}}}};
 	SpriteDerived sprite{testAnimationSet, "defaultAction"};
 };
@@ -42,28 +40,54 @@ TEST_F(Sprite, advanceByTimeDelta) {
 	EXPECT_EQ(4u, sprite.advanceByTimeDelta(4u));
 }
 
-TEST_F(Sprite, animationCompleteSignal) {
-	MockHandler handler{};
-	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
-	sprite.animationCompleteSignalSource().connect(delegate);
 
+class SpriteCompleteSignal : public Sprite {
+protected:
+	class MockHandler {
+	public:
+		MOCK_CONST_METHOD0(MockMethod, void());
+	};
+
+	MockHandler handler{};
+	NAS2D::Delegate<void()> delegate{&handler, &MockHandler::MockMethod};
+
+	void SetUp() override {
+		sprite.animationCompleteSignalSource().connect(delegate);
+	}
+};
+
+
+TEST_F(SpriteCompleteSignal, animationCompleteSignalNone) {
+	EXPECT_CALL(handler, MockMethod()).Times(0);
 	sprite.advanceByTimeDelta(0u);
 	sprite.advanceByTimeDelta(1u);
+}
 
+TEST_F(SpriteCompleteSignal, animationCompleteSignalOnceDelta2) {
 	EXPECT_CALL(handler, MockMethod());
 	sprite.advanceByTimeDelta(2u);
+}
 
+TEST_F(SpriteCompleteSignal, animationCompleteSignalOnceDelta3) {
 	EXPECT_CALL(handler, MockMethod());
 	sprite.advanceByTimeDelta(3u);
+}
 
+TEST_F(SpriteCompleteSignal, animationCompleteSignalTwice) {
 	EXPECT_CALL(handler, MockMethod()).Times(2);
 	sprite.advanceByTimeDelta(4u);
+}
 
-	for (auto i = 0u; i <= 4u; ++i) {
-		sprite.play("frameStopAction");
-		EXPECT_CALL(handler, MockMethod());
-		sprite.advanceByTimeDelta(i);
-		EXPECT_CALL(handler, MockMethod()).Times(0);
-		sprite.advanceByTimeDelta(i);
-	}
+TEST_F(SpriteCompleteSignal, animationCompleteSignalStopFrameDelta0) {
+	EXPECT_CALL(handler, MockMethod());
+	sprite.play("frameStopAction");
+	sprite.advanceByTimeDelta(0u); // Trigger handler
+	sprite.advanceByTimeDelta(0u); // No additional trigger
+}
+
+TEST_F(SpriteCompleteSignal, animationCompleteSignalStopFrameDelta4) {
+	EXPECT_CALL(handler, MockMethod());
+	sprite.play("frameStopAction");
+	sprite.advanceByTimeDelta(4u); // Trigger handler
+	sprite.advanceByTimeDelta(4u); // No additional trigger
 }

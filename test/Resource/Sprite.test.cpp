@@ -16,11 +16,6 @@ protected:
 		using Sprite::advanceByTimeDelta;
 	};
 
-	class MockHandler {
-	public:
-		MOCK_CONST_METHOD0(MockMethod, void());
-	};
-
 	uint32_t imageBuffer[1 * 1];
 	NAS2D::Image image{&imageBuffer, 4, {1, 1}};
 	NAS2D::AnimationSet::Frame frame{image, {{0, 0}, {1, 1}}, {0, 0}, 2};
@@ -42,11 +37,24 @@ TEST_F(Sprite, advanceByTimeDelta) {
 	EXPECT_EQ(4u, sprite.advanceByTimeDelta(4u));
 }
 
-TEST_F(Sprite, animationCompleteSignal) {
-	MockHandler handler{};
-	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
-	sprite.animationCompleteSignalSource().connect(delegate);
 
+class SpriteCompleteSignal : public Sprite {
+protected:
+	class MockHandler {
+	public:
+		MOCK_CONST_METHOD0(MockMethod, void());
+	};
+
+	MockHandler handler{};
+	NAS2D::Delegate<void()> delegate{&handler, &MockHandler::MockMethod};
+
+	void SetUp() override {
+		sprite.animationCompleteSignalSource().connect(delegate);
+	}
+};
+
+
+TEST_F(SpriteCompleteSignal, animationCompleteSignal) {
 	sprite.advanceByTimeDelta(0u);
 	sprite.advanceByTimeDelta(1u);
 

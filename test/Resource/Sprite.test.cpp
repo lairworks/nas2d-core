@@ -17,10 +17,11 @@ protected:
 	};
 
 	static constexpr NAS2D::Vector imageSize{1, 1};
+	static constexpr NAS2D::Rectangle imageRect{{0, 0}, imageSize};
 	uint32_t imageBuffer[imageSize.x * imageSize.y];
 	NAS2D::Image image{&imageBuffer, 4, imageSize};
-	NAS2D::AnimationSet::Frame frame{image, {{0, 0}, imageSize}, {0, 0}, 2};
-	NAS2D::AnimationSet::Frame frameStop{image, {{0, 0}, imageSize}, {0, 0}, 0};
+	NAS2D::AnimationSet::Frame frame{image, imageRect, {0, 0}, 2};
+	NAS2D::AnimationSet::Frame frameStop{image, imageRect, {0, 0}, 0};
 	NAS2D::AnimationSet testAnimationSet{{}, {{"defaultAction", {frame}}, {"frameStopAction", {frameStop}}}};
 	SpriteDerived sprite{testAnimationSet, "defaultAction"};
 };

@@ -75,11 +75,16 @@ TEST_F(SpriteCompleteSignal, animationCompleteSignalTwice) {
 	sprite.advanceByTimeDelta(4u);
 }
 
-TEST_F(SpriteCompleteSignal, animationCompleteSignal) {
-	for (auto i = 0u; i <= 4u; ++i) {
-		EXPECT_CALL(handler, MockMethod());
-		sprite.play("frameStopAction");
-		sprite.advanceByTimeDelta(i); // Trigger handler
-		sprite.advanceByTimeDelta(i); // No additional trigger
-	}
+TEST_F(SpriteCompleteSignal, animationCompleteSignalStopFrameDelta0) {
+	EXPECT_CALL(handler, MockMethod());
+	sprite.play("frameStopAction");
+	sprite.advanceByTimeDelta(0u); // Trigger handler
+	sprite.advanceByTimeDelta(0u); // No additional trigger
+}
+
+TEST_F(SpriteCompleteSignal, animationCompleteSignalStopFrameDelta4) {
+	EXPECT_CALL(handler, MockMethod());
+	sprite.play("frameStopAction");
+	sprite.advanceByTimeDelta(4u); // Trigger handler
+	sprite.advanceByTimeDelta(4u); // No additional trigger
 }

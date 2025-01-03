@@ -71,7 +71,7 @@ TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 
 TESTCPPFLAGS := $(CPPFLAGS) -I./
 TESTLDFLAGS := $(LDFLAGS)
-TESTLIBS := -lgtest -lgtest_main -lgmock -lgmock_main -lpthread $(LDLIBS)
+TESTLIBS := -lgtest -lgmock -lgmock_main -lpthread $(LDLIBS)
 
 TESTPROJECT_FLAGS = $(TESTCPPFLAGS) $(CXXFLAGS)
 TESTPROJECT_LINKFLAGS = $(TESTLDFLAGS) $(TESTLIBS)

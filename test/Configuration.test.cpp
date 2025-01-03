@@ -1,6 +1,5 @@
 #include "NAS2D/Configuration.h"
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 

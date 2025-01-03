@@ -1,6 +1,5 @@
 #include "NAS2D/Math/Trig.h"
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 

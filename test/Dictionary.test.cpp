@@ -1,6 +1,5 @@
 #include "NAS2D/Dictionary.h"
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 

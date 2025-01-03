@@ -1,7 +1,7 @@
 #include "NAS2D/Version.h"
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 
 TEST(Version, versionString) {

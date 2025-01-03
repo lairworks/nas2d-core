@@ -2,7 +2,6 @@
 
 #include "NAS2D/Math/Point.h"
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 

@@ -101,7 +101,7 @@ TEST(MathUtils, roundUpPowerOf2) {
 }
 
 TEST(MathUtils, mapDomainToRange) {
-	// Fahrenheit to Celcius
+	// Fahrenheit to Celsius
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 212.0f, 32.0f, 100.0f, 0.0f), 0.0001f);
 
@@ -110,7 +110,7 @@ TEST(MathUtils, mapDomainToRange) {
 	EXPECT_NEAR(-17.22222f, NAS2D::scaleLinear(1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(100.0f, NAS2D::scaleLinear(212.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 
-	// Celcius to Fahrenheit
+	// Celsius to Fahrenheit
 	EXPECT_NEAR(30.2f, NAS2D::scaleLinear(-1.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
 	EXPECT_NEAR(32.0f, NAS2D::scaleLinear(0.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
 	EXPECT_NEAR(33.8f, NAS2D::scaleLinear(1.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);

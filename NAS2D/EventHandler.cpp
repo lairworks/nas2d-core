@@ -243,7 +243,7 @@ EventHandler::WindowMouseLeaveEventSource& EventHandler::windowMouseLeave()
 
 
 /**
- * Joystic axis events generate three values:
+ * Joystick axis events generate three values:
  * Device ID, Axis ID and Axis Position.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -296,7 +296,7 @@ EventHandler::JoystickBallMotionEventSource& EventHandler::joystickBallMotion()
 /**
  * Joystick button events generate two values:
  * Device ID, and Button ID
- * Button events occure when a joystick button is pressed or released.
+ * Button events occur when a joystick button is pressed or released.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -321,7 +321,7 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonUp()
 /**
  * Joystick button events generate two values:
  * Device ID, and Button ID
- * Button events occure when a joystick button is pressed or released.
+ * Button events occur when a joystick button is pressed or released.
  *
  * To connect an event handler to this event, call the 'connect()'
  * function as follows:
@@ -619,7 +619,7 @@ void EventHandler::warpMouse(int x, int y)
 
 
 /**
- * Sets mouse updates to relative or absolute mostion.
+ * Sets mouse updates to relative or absolute motion.
  *
  * \param	rel		True for relative mode. False for absolute mode.
  */

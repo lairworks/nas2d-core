@@ -121,7 +121,7 @@ namespace NAS2D
 		 * Utility<Base>::init<Derived>(arg1, arg2, arg3);
 		 * \endcode
 		 *
-		 * \param	args	A list of arguments to be forwarded to the \c Type objects's constructor
+		 * \param	args	A list of arguments to be forwarded to the \c Type object's constructor
 		 *
 		 * \return Reference to the newly created object as \c Type.
 		 * This allows further method calls to complete initialization or setup

@@ -18,7 +18,7 @@ TEST(DisplayDesc, OperatorEqual) {
 }
 
 TEST(DisplayDesc, OperatorLessEqual) {
-	// Check full equlity
+	// Check full equality
 	EXPECT_LE((NAS2D::DisplayDesc{0, 0, 0}), (NAS2D::DisplayDesc{0, 0, 0}));
 	EXPECT_LE((NAS2D::DisplayDesc{640, 480, 30}), (NAS2D::DisplayDesc{640, 480, 30}));
 
@@ -37,7 +37,7 @@ TEST(DisplayDesc, OperatorLessEqual) {
 }
 
 TEST(DisplayDesc, OperatorGreaterEqual) {
-	// Check full equlity
+	// Check full equality
 	EXPECT_GE((NAS2D::DisplayDesc{0, 0, 0}), (NAS2D::DisplayDesc{0, 0, 0}));
 	EXPECT_GE((NAS2D::DisplayDesc{640, 480, 30}), (NAS2D::DisplayDesc{640, 480, 30}));
 
@@ -56,7 +56,7 @@ TEST(DisplayDesc, OperatorGreaterEqual) {
 }
 
 TEST(DisplayDesc, OperatorLess) {
-	// Check full equlity
+	// Check full equality
 	EXPECT_FALSE((NAS2D::DisplayDesc{0, 0, 0}) < (NAS2D::DisplayDesc{0, 0, 0}));
 	EXPECT_FALSE((NAS2D::DisplayDesc{640, 480, 30}) < (NAS2D::DisplayDesc{640, 480, 30}));
 
@@ -75,7 +75,7 @@ TEST(DisplayDesc, OperatorLess) {
 }
 
 TEST(DisplayDesc, OperatorGreater) {
-	// Check full equlity
+	// Check full equality
 	EXPECT_FALSE((NAS2D::DisplayDesc{0, 0, 0}) > (NAS2D::DisplayDesc{0, 0, 0}));
 	EXPECT_FALSE((NAS2D::DisplayDesc{640, 480, 30}) > (NAS2D::DisplayDesc{640, 480, 30}));
 

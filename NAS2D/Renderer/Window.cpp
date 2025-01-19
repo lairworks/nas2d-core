@@ -335,7 +335,7 @@ Vector<int> Window::size() const
 		SDL_DisplayMode dm;
 		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
 		{
-			throw std::runtime_error("Unable to get desktop dislay mode: " + std::string{SDL_GetError()});
+			throw std::runtime_error("Unable to get desktop display mode: " + std::string{SDL_GetError()});
 		}
 
 		return {dm.w, dm.h};

@@ -244,7 +244,7 @@ namespace
 		{
 			SDL_FreeSurface(fontSurface);
 			const auto vectorToString = [](auto vector) { return "{" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + "}"; };
-			throw std::runtime_error("Unexpected font image size. Image dimensions " + vectorToString(fontSurfaceSize) + " must both be evenly divisble by " + std::to_string(GLYPH_MATRIX_SIZE));
+			throw std::runtime_error("Unexpected font image size. Image dimensions " + vectorToString(fontSurfaceSize) + " must both be evenly divisible by " + std::to_string(GLYPH_MATRIX_SIZE));
 		}
 
 		Font::FontInfo fontInfo;

@@ -77,7 +77,7 @@ TEST(Dictionary, setGet) {
 	EXPECT_EQ(true, dictionary.get<bool>("Key3"));
 	EXPECT_EQ(1, dictionary.get<int>("Key4"));
 
-	// Read back typed values with deaults
+	// Read back typed values with defaults
 	EXPECT_EQ("Some string value", dictionary.get<std::string>("Key1", "Default string"));
 	EXPECT_EQ("Default string", dictionary.get<std::string>("KeyDoesNotExist", "Default string"));
 	EXPECT_EQ("Default string", dictionary.get("KeyDoesNotExist", std::string{"Default string"}));

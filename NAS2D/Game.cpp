@@ -37,7 +37,7 @@ using namespace NAS2D;
  * \param appName		The name of the app (used to create an app data write path)
  * \param organizationName		The name of the organization (used to create an app data write path)
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
- * \param	dataPath	Intitial data path. Defaults to 'data'.
+ * \param	dataPath	Initial data path. Defaults to 'data'.
  */
 Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& configPath, const std::string& dataPath)
 {

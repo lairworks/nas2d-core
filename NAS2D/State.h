@@ -34,7 +34,7 @@ namespace NAS2D
 	 *
 	 * After the State is constructed, the \c initialize() function is called. This only
 	 * happens once and is usually where event hooks are setup. Also, any GUI layouts
-	 * and other initialization that is inappapropriate to do in a constructor are done
+	 * and other initialization that is inappropriate to do in a constructor are done
 	 * in this function.
 	 *
 	 * \section state-update State Updates
@@ -69,7 +69,7 @@ namespace NAS2D
 	 * Note that the pointer to a State object as a member of the template class
 	 * is not required but recommended as a best practice for handling state switches.
 	 *
-	 * \note	The State class has twp functions ('initialize()', 'upate()') that all
+	 * \note	The State class has twp functions ('initialize()', 'update()') that all
 	 *			derived State objects must override.
 	 */
 	class State

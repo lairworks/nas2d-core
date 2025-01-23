@@ -23,7 +23,7 @@ namespace NAS2D
 	 * Font resource.
 	 *
 	 * The Font class can be used to render TrueType, OpenType and Bitmap fonts. Two
-	 * contructors are provided for these types.
+	 * constructors are provided for these types.
 	 *
 	 * TrueType and OpenType fonts generate their own glyph map internally. Only
 	 * the ASCII values 0 - 255 are used. Unicode/UTF is not supported.

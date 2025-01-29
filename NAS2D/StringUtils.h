@@ -48,7 +48,7 @@ namespace NAS2D
 		else if constexpr (std::is_same_v<T, bool>)
 		{
 			return value == "true" || value == "1" ? true : value == "false" || value == "0" ? false
-																							 : throw std::invalid_argument("Value must be 'true' or 'false': " + std::string{value});
+				: throw std::invalid_argument("Value must be 'true' or 'false': " + std::string{value});
 		}
 		else if constexpr (std::is_same_v<T, long double>)
 		{

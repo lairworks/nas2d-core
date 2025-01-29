@@ -48,7 +48,7 @@ namespace NAS2D
 		else if constexpr (std::is_same_v<T, bool>)
 		{
 			return value == "true" || value == "1" ? true : value == "false" || value == "0" ? false
-																							 : throw std::invalid_argument("Value must be 'true' or 'false': " + std::string{value});
+				: throw std::invalid_argument("Value must be 'true' or 'false': " + std::string{value});
 		}
 		else if constexpr (std::is_same_v<T, long double>)
 		{
@@ -126,14 +126,4 @@ namespace NAS2D
 	bool endsWith(std::string_view string, std::string_view end) noexcept;
 	bool startsWith(std::string_view string, char start) noexcept;
 	bool endsWith(std::string_view string, char end) noexcept;
-
-	/**
-	* \typedef StringList
-	* A list of std::string's.
-	*
-	* The StringList is provided primarily as a convenience typedef
-	* but is also used by some of NAS2D's functions.
-	*/
-	using StringList = std::vector<std::string>;
-
 } // namespace NAS2D

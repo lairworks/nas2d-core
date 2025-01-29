@@ -167,38 +167,42 @@ TEST(String, countDelimiters) {
 }
 
 TEST(String, split) {
-	EXPECT_EQ((NAS2D::StringList{}), NAS2D::split(""));
-	EXPECT_EQ((NAS2D::StringList{"a"}), NAS2D::split("a"));
+	using StringList = std::vector<std::string>;
 
-	EXPECT_EQ((NAS2D::StringList{"a", "b", "c"}), NAS2D::split("a,b,c"));
-	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::split("abc"));
-	EXPECT_EQ((NAS2D::StringList{"", "abc"}), NAS2D::split(",abc"));
-	EXPECT_EQ((NAS2D::StringList{"a", "bc"}), NAS2D::split("a,bc"));
-	EXPECT_EQ((NAS2D::StringList{"ab", "c"}), NAS2D::split("ab,c"));
-	EXPECT_EQ((NAS2D::StringList{"abc", ""}), NAS2D::split("abc,"));
+	EXPECT_EQ((StringList{}), NAS2D::split(""));
+	EXPECT_EQ((StringList{"a"}), NAS2D::split("a"));
 
-	EXPECT_EQ((NAS2D::StringList{"a", "b", "c"}), NAS2D::split("a.b.c", '.'));
-	EXPECT_EQ((NAS2D::StringList{"abc"}), NAS2D::split("abc", '.'));
-	EXPECT_EQ((NAS2D::StringList{"", "abc"}), NAS2D::split(".abc", '.'));
-	EXPECT_EQ((NAS2D::StringList{"a", "bc"}), NAS2D::split("a.bc", '.'));
-	EXPECT_EQ((NAS2D::StringList{"ab", "c"}), NAS2D::split("ab.c", '.'));
-	EXPECT_EQ((NAS2D::StringList{"abc", ""}), NAS2D::split("abc.", '.'));
+	EXPECT_EQ((StringList{"a", "b", "c"}), NAS2D::split("a,b,c"));
+	EXPECT_EQ((StringList{"abc"}), NAS2D::split("abc"));
+	EXPECT_EQ((StringList{"", "abc"}), NAS2D::split(",abc"));
+	EXPECT_EQ((StringList{"a", "bc"}), NAS2D::split("a,bc"));
+	EXPECT_EQ((StringList{"ab", "c"}), NAS2D::split("ab,c"));
+	EXPECT_EQ((StringList{"abc", ""}), NAS2D::split("abc,"));
+
+	EXPECT_EQ((StringList{"a", "b", "c"}), NAS2D::split("a.b.c", '.'));
+	EXPECT_EQ((StringList{"abc"}), NAS2D::split("abc", '.'));
+	EXPECT_EQ((StringList{"", "abc"}), NAS2D::split(".abc", '.'));
+	EXPECT_EQ((StringList{"a", "bc"}), NAS2D::split("a.bc", '.'));
+	EXPECT_EQ((StringList{"ab", "c"}), NAS2D::split("ab.c", '.'));
+	EXPECT_EQ((StringList{"abc", ""}), NAS2D::split("abc.", '.'));
 }
 
 TEST(String, join) {
-	EXPECT_EQ("", NAS2D::join(NAS2D::StringList{}));
-	EXPECT_EQ("a", NAS2D::join(NAS2D::StringList{"a"}));
-	EXPECT_EQ("ab", NAS2D::join(NAS2D::StringList{"a", "b"}));
-	EXPECT_EQ("abc", NAS2D::join(NAS2D::StringList{"a", "b", "c"}));
+	using StringList = std::vector<std::string>;
 
-	EXPECT_EQ("ac", NAS2D::join(NAS2D::StringList{"a", "", "c"}));
+	EXPECT_EQ("", NAS2D::join(StringList{}));
+	EXPECT_EQ("a", NAS2D::join(StringList{"a"}));
+	EXPECT_EQ("ab", NAS2D::join(StringList{"a", "b"}));
+	EXPECT_EQ("abc", NAS2D::join(StringList{"a", "b", "c"}));
 
-	EXPECT_EQ("", NAS2D::join(NAS2D::StringList{}, ","));
-	EXPECT_EQ("a", NAS2D::join(NAS2D::StringList{"a"}, ","));
-	EXPECT_EQ("a,b", NAS2D::join(NAS2D::StringList{"a", "b"}, ","));
-	EXPECT_EQ("a,b,c", NAS2D::join(NAS2D::StringList{"a", "b", "c"}, ","));
+	EXPECT_EQ("ac", NAS2D::join(StringList{"a", "", "c"}));
 
-	EXPECT_EQ("a,,c", NAS2D::join(NAS2D::StringList{"a", "", "c"}, ","));
+	EXPECT_EQ("", NAS2D::join(StringList{}, ","));
+	EXPECT_EQ("a", NAS2D::join(StringList{"a"}, ","));
+	EXPECT_EQ("a,b", NAS2D::join(StringList{"a", "b"}, ","));
+	EXPECT_EQ("a,b,c", NAS2D::join(StringList{"a", "b", "c"}, ","));
 
-	EXPECT_EQ("a, b, c", NAS2D::join(NAS2D::StringList{"a", "b", "c"}, ", "));
+	EXPECT_EQ("a,,c", NAS2D::join(StringList{"a", "", "c"}, ","));
+
+	EXPECT_EQ("a, b, c", NAS2D::join(StringList{"a", "b", "c"}, ", "));
 }

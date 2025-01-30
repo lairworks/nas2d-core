@@ -95,16 +95,16 @@ namespace NAS2D
 	};
 
 
+	template <typename BaseType>
+	Point(BaseType, BaseType) -> Point<BaseType>;
+
+
 	// Commutative Vector + Point
 	template <typename BaseType>
 	constexpr Point<BaseType> operator+(Vector<BaseType> vector, Point<BaseType> point)
 	{
 		return point + vector;
 	}
-
-
-	template <typename BaseType>
-	Point(BaseType, BaseType) -> Point<BaseType>;
 
 
 	// Partial order comparisons

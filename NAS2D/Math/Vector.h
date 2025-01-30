@@ -141,16 +141,16 @@ namespace NAS2D
 	};
 
 
+	template <typename BaseType>
+	Vector(BaseType, BaseType) -> Vector<BaseType>;
+
+
 	// Commutative scalar * vector
 	template <typename BaseType>
 	constexpr Vector<BaseType> operator*(BaseType scalar, Vector<BaseType> vector)
 	{
 		return vector * scalar;
 	}
-
-
-	template <typename BaseType>
-	Vector(BaseType, BaseType) -> Vector<BaseType>;
 
 
 	// Partial order comparisons

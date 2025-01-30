@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <string>
 #include <stdexcept>
 
 
@@ -131,6 +132,11 @@ namespace NAS2D
 		constexpr Vector<NewBaseType> to() const
 		{
 			return static_cast<Vector<NewBaseType>>(*this);
+		}
+
+		explicit operator std::string() const
+		{
+			return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 		}
 	};
 

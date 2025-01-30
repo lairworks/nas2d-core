@@ -7,10 +7,12 @@ TEST(Point, DefaultConstructibleZeroInit) {
 	EXPECT_EQ((NAS2D::Point{0, 0}), NAS2D::Point<int>{});
 }
 
-TEST(Point, OperatorEqualNotEqual) {
+TEST(Point, OperatorEqual) {
 	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Point{1, 1}));
 	EXPECT_EQ((NAS2D::Point{2, 2}), (NAS2D::Point{2, 2}));
+}
 
+TEST(Point, OperatorNotEqual) {
 	EXPECT_NE((NAS2D::Point{1, 1}), (NAS2D::Point{1, 2}));
 	EXPECT_NE((NAS2D::Point{1, 1}), (NAS2D::Point{2, 1}));
 }

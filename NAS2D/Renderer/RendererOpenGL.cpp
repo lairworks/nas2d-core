@@ -339,19 +339,19 @@ void RendererOpenGL::drawPoint(Point<float> position, Color color)
 }
 
 
-void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPosition, Color color, int line_width)
+void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPosition, Color color, int lineWidth)
 {
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(startPosition, endPosition, static_cast<float>(line_width), color);
+	line(startPosition, endPosition, static_cast<float>(lineWidth), color);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 }
 
 
-void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
+void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int numSegments, Vector<float> scale)
 {
 
 	/*
@@ -364,14 +364,14 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	glDisable(GL_TEXTURE_2D);
 	setColor(color);
 
-	auto theta = PI_2 / static_cast<float>(num_segments);
+	auto theta = PI_2 / static_cast<float>(numSegments);
 	auto cosTheta = std::cos(theta);
 	auto sinTheta = std::sin(theta);
 
 	auto offset = Vector<float>{radius, 0};
 
 	std::vector<GLfloat> verts;
-	verts.resize(static_cast<std::size_t>(num_segments) * std::size_t{2});
+	verts.resize(static_cast<std::size_t>(numSegments) * std::size_t{2});
 
 	for (std::size_t i = 0; i < verts.size(); i += 2)
 	{
@@ -383,7 +383,7 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	}
 
 	glVertexPointer(2, GL_FLOAT, 0, verts.data());
-	glDrawArrays(GL_LINE_LOOP, 0, num_segments);
+	glDrawArrays(GL_LINE_LOOP, 0, numSegments);
 
 	glEnable(GL_TEXTURE_2D);
 }
@@ -768,7 +768,7 @@ namespace
 		p2.y -= cy * 0.5f;
 
 		// Draw the line by triangle strip
-		float line_vertex[] = {
+		float lineVertex[] = {
 			p1.x - tx - Rx - cx,
 			p1.y - ty - Ry - cy, // Fading edge1
 
@@ -794,7 +794,7 @@ namespace
 			p2.y + ty + Ry + cy,
 		};
 
-		float line_color[] = {
+		float lineColor[] = {
 			Cr,
 			Cg,
 			Cb,
@@ -836,14 +836,14 @@ namespace
 			0,
 		};
 
-		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
-		glColorPointer(4, GL_FLOAT, 0, line_color);
+		glVertexPointer(2, GL_FLOAT, 0, lineVertex);
+		glColorPointer(4, GL_FLOAT, 0, lineColor);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
 
 		// Line End Caps
 		if (lineWidth > 3.0f)
 		{
-			float line_vertex2[] = {
+			float lineVertex2[] = {
 				p1.x - tx - cx,
 				p1.y - ty - cy,
 
@@ -875,7 +875,7 @@ namespace
 				p2.y + ty + Ry + cy,
 			};
 
-			float line_color2[] = {
+			float lineColor2[] = {
 				Cr,
 				Cg,
 				Cb,
@@ -937,8 +937,8 @@ namespace
 				0,
 			};
 
-			glVertexPointer(2, GL_FLOAT, 0, line_vertex2);
-			glColorPointer(4, GL_FLOAT, 0, line_color2);
+			glVertexPointer(2, GL_FLOAT, 0, lineVertex2);
+			glColorPointer(4, GL_FLOAT, 0, lineColor2);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 		}
 	}

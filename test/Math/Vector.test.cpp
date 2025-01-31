@@ -31,8 +31,8 @@ TEST(Vector, OperatorNotEqual) {
 
 TEST(Vector, Conversion) {
 	// Allow explicit conversion
-	EXPECT_EQ((NAS2D::Vector<int>{1, 1}), static_cast<NAS2D::Vector<int>>(NAS2D::Vector<float>{1.0, 1.0}));
-	EXPECT_EQ((NAS2D::Vector<float>{1.0, 1.0}), static_cast<NAS2D::Vector<float>>(NAS2D::Vector<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Vector<int>{1, 1}), NAS2D::Vector<int>(NAS2D::Vector<float>{1.0, 1.0}));
+	EXPECT_EQ((NAS2D::Vector<float>{1.0, 1.0}), NAS2D::Vector<float>(NAS2D::Vector<int>{1, 1}));
 }
 
 TEST(Vector, SelfAdd) {

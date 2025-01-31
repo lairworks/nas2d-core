@@ -768,7 +768,7 @@ namespace
 		p2.y -= cy * 0.5f;
 
 		// Draw the line by triangle strip
-		float line_vertex[] = {
+		float lineVertex[] = {
 			p1.x - tx - Rx - cx,
 			p1.y - ty - Ry - cy, // Fading edge1
 
@@ -794,7 +794,7 @@ namespace
 			p2.y + ty + Ry + cy,
 		};
 
-		float line_color[] = {
+		float lineColor[] = {
 			Cr,
 			Cg,
 			Cb,
@@ -836,14 +836,14 @@ namespace
 			0,
 		};
 
-		glVertexPointer(2, GL_FLOAT, 0, line_vertex);
-		glColorPointer(4, GL_FLOAT, 0, line_color);
+		glVertexPointer(2, GL_FLOAT, 0, lineVertex);
+		glColorPointer(4, GL_FLOAT, 0, lineColor);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
 
 		// Line End Caps
 		if (lineWidth > 3.0f)
 		{
-			float line_vertex2[] = {
+			float lineVertex2[] = {
 				p1.x - tx - cx,
 				p1.y - ty - cy,
 
@@ -875,7 +875,7 @@ namespace
 				p2.y + ty + Ry + cy,
 			};
 
-			float line_color2[] = {
+			float lineColor2[] = {
 				Cr,
 				Cg,
 				Cb,
@@ -937,8 +937,8 @@ namespace
 				0,
 			};
 
-			glVertexPointer(2, GL_FLOAT, 0, line_vertex2);
-			glColorPointer(4, GL_FLOAT, 0, line_color2);
+			glVertexPointer(2, GL_FLOAT, 0, lineVertex2);
+			glColorPointer(4, GL_FLOAT, 0, lineColor2);
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 		}
 	}

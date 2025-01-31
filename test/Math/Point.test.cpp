@@ -29,15 +29,15 @@ TEST(Point, SelfSubtractVector) {
 	EXPECT_EQ((NAS2D::Point{1, 2}), point);
 }
 
-TEST(Vector, AddVector) {
+TEST(Point, AddVector) {
 	EXPECT_EQ((NAS2D::Point{2, 3}), (NAS2D::Point<int>{1, 1}) + (NAS2D::Vector{1, 2}));
 }
 
-TEST(Vector, SubtractVector) {
+TEST(Point, SubtractVector) {
 	EXPECT_EQ((NAS2D::Point{1, 2}), (NAS2D::Point<int>{2, 5}) - (NAS2D::Vector{1, 3}));
 }
 
-TEST(Vector, SubtractPointToVector) {
+TEST(Point, SubtractPointToVector) {
 	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Point<int>{2, 3}) - (NAS2D::Point{1, 2}));
 }
 
@@ -95,7 +95,7 @@ TEST(Point, stringConversion) {
 	EXPECT_EQ("(0, 1)", (std::string{NAS2D::Point{0, 1}}));
 }
 
-TEST(Vector, VectorPointAdd) {
+TEST(Point, VectorPointAdd) {
 	EXPECT_EQ((NAS2D::Point{2, 3}), (NAS2D::Vector{1, 2} + NAS2D::Point<int>{1, 1}));
 }
 

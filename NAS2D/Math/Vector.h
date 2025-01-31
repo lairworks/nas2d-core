@@ -125,13 +125,13 @@ namespace NAS2D
 		template <typename NewBaseType>
 		constexpr operator Vector<NewBaseType>() const
 		{
-			return {static_cast<NewBaseType>(x), static_cast<NewBaseType>(y)};
+			return {NewBaseType(x), NewBaseType(y)};
 		}
 
 		template <typename NewBaseType>
 		constexpr Vector<NewBaseType> to() const
 		{
-			return static_cast<Vector<NewBaseType>>(*this);
+			return Vector<NewBaseType>(*this);
 		}
 
 		explicit operator std::string() const

@@ -351,7 +351,7 @@ void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPositi
 }
 
 
-void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int num_segments, Vector<float> scale)
+void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int numSegments, Vector<float> scale)
 {
 
 	/*
@@ -364,14 +364,14 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	glDisable(GL_TEXTURE_2D);
 	setColor(color);
 
-	auto theta = PI_2 / static_cast<float>(num_segments);
+	auto theta = PI_2 / static_cast<float>(numSegments);
 	auto cosTheta = std::cos(theta);
 	auto sinTheta = std::sin(theta);
 
 	auto offset = Vector<float>{radius, 0};
 
 	std::vector<GLfloat> verts;
-	verts.resize(static_cast<std::size_t>(num_segments) * std::size_t{2});
+	verts.resize(static_cast<std::size_t>(numSegments) * std::size_t{2});
 
 	for (std::size_t i = 0; i < verts.size(); i += 2)
 	{
@@ -383,7 +383,7 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	}
 
 	glVertexPointer(2, GL_FLOAT, 0, verts.data());
-	glDrawArrays(GL_LINE_LOOP, 0, num_segments);
+	glDrawArrays(GL_LINE_LOOP, 0, numSegments);
 
 	glEnable(GL_TEXTURE_2D);
 }

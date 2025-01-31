@@ -79,13 +79,13 @@ namespace NAS2D
 		template <typename NewBaseType>
 		constexpr operator Point<NewBaseType>() const
 		{
-			return {static_cast<NewBaseType>(x), static_cast<NewBaseType>(y)};
+			return {NewBaseType(x), NewBaseType(y)};
 		}
 
 		template <typename NewBaseType>
 		constexpr Point<NewBaseType> to() const
 		{
-			return static_cast<Point<NewBaseType>>(*this);
+			return Point<NewBaseType>(*this);
 		}
 
 		explicit operator std::string() const

@@ -108,15 +108,15 @@ namespace NAS2D
 		constexpr operator Rectangle<NewBaseType>() const
 		{
 			return {
-				static_cast<Point<NewBaseType>>(position),
-				static_cast<Vector<NewBaseType>>(size),
+				Point<NewBaseType>(position),
+				Vector<NewBaseType>(size),
 			};
 		}
 
 		template <typename NewBaseType>
 		constexpr Rectangle<NewBaseType> to() const
 		{
-			return static_cast<Rectangle<NewBaseType>>(*this);
+			return Rectangle<NewBaseType>(*this);
 		}
 
 		// Start point inclusive (x, y), endpoint exclusive (x + width, y + height)

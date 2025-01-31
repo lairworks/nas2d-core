@@ -19,18 +19,20 @@ TEST(Vector, DefaultConstructible) {
 	EXPECT_EQ((NAS2D::Vector{0, 0}), NAS2D::Vector<int>{});
 }
 
-TEST(Vector, OperatorEqualNotEqual) {
+TEST(Vector, OperatorEqual) {
 	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Vector{1, 1}));
 	EXPECT_EQ((NAS2D::Vector{2, 2}), (NAS2D::Vector{2, 2}));
+}
 
+TEST(Vector, OperatorNotEqual) {
 	EXPECT_NE((NAS2D::Vector{1, 1}), (NAS2D::Vector{1, 2}));
 	EXPECT_NE((NAS2D::Vector{1, 1}), (NAS2D::Vector{2, 1}));
 }
 
 TEST(Vector, Conversion) {
 	// Allow explicit conversion
-	EXPECT_EQ((NAS2D::Vector<int>{1, 1}), static_cast<NAS2D::Vector<int>>(NAS2D::Vector<float>{1.0, 1.0}));
-	EXPECT_EQ((NAS2D::Vector<float>{1.0, 1.0}), static_cast<NAS2D::Vector<float>>(NAS2D::Vector<int>{1, 1}));
+	EXPECT_EQ((NAS2D::Vector<int>{1, 1}), NAS2D::Vector<int>(NAS2D::Vector<float>{1.0, 1.0}));
+	EXPECT_EQ((NAS2D::Vector<float>{1.0, 1.0}), NAS2D::Vector<float>(NAS2D::Vector<int>{1, 1}));
 }
 
 TEST(Vector, SelfAdd) {
@@ -103,25 +105,32 @@ TEST(Vector, skewBy) {
 }
 
 TEST(Vector, skewInverseBy) {
-	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{0.0, 0.0})), std::domain_error);
-	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{0.0, 1.0})), std::domain_error);
-	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{1.0, 0.0})), std::domain_error);
-
-	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{0, 0})), std::domain_error);
-	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{0, 1})), std::domain_error);
-	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{1, 0})), std::domain_error);
-
 	EXPECT_EQ((NAS2D::Vector{8, 4}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{1, 2})));
 	EXPECT_EQ((NAS2D::Vector{4, 2}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{2, 4})));
-	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{3, 5})));
 
 	EXPECT_EQ((NAS2D::Vector{9, 2}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{1, 3})));
 	EXPECT_EQ((NAS2D::Vector{3, 3}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{3, 2})));
-	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{4, 5})));
 
 	EXPECT_EQ((NAS2D::Vector{4, 2}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{2, 3})));
 	EXPECT_EQ((NAS2D::Vector{2, 3}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{4, 2})));
+}
+
+TEST(Vector, skewInverseByRounded) {
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{3, 5})));
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{4, 5})));
 	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{3, 5})));
+}
+
+TEST(Vector, skewInverseByDomainErrorInt) {
+	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{0, 0})), std::domain_error);
+	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{0, 1})), std::domain_error);
+	EXPECT_THROW((NAS2D::Vector{1, 1}.skewInverseBy(NAS2D::Vector{1, 0})), std::domain_error);
+}
+
+TEST(Vector, skewInverseByDomainErrorDouble) {
+	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{0.0, 0.0})), std::domain_error);
+	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{0.0, 1.0})), std::domain_error);
+	EXPECT_THROW((NAS2D::Vector{1.0, 1.0}.skewInverseBy(NAS2D::Vector{1.0, 0.0})), std::domain_error);
 }
 
 TEST(Vector, lengthSquared) {

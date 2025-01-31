@@ -7,10 +7,12 @@ TEST(Point, DefaultConstructibleZeroInit) {
 	EXPECT_EQ((NAS2D::Point{0, 0}), NAS2D::Point<int>{});
 }
 
-TEST(Point, OperatorEqualNotEqual) {
+TEST(Point, OperatorEqual) {
 	EXPECT_EQ((NAS2D::Point{1, 1}), (NAS2D::Point{1, 1}));
 	EXPECT_EQ((NAS2D::Point{2, 2}), (NAS2D::Point{2, 2}));
+}
 
+TEST(Point, OperatorNotEqual) {
 	EXPECT_NE((NAS2D::Point{1, 1}), (NAS2D::Point{1, 2}));
 	EXPECT_NE((NAS2D::Point{1, 1}), (NAS2D::Point{2, 1}));
 }
@@ -27,15 +29,15 @@ TEST(Point, SelfSubtractVector) {
 	EXPECT_EQ((NAS2D::Point{1, 2}), point);
 }
 
-TEST(Vector, AddVector) {
+TEST(Point, AddVector) {
 	EXPECT_EQ((NAS2D::Point{2, 3}), (NAS2D::Point<int>{1, 1}) + (NAS2D::Vector{1, 2}));
 }
 
-TEST(Vector, SubtractVector) {
+TEST(Point, SubtractVector) {
 	EXPECT_EQ((NAS2D::Point{1, 2}), (NAS2D::Point<int>{2, 5}) - (NAS2D::Vector{1, 3}));
 }
 
-TEST(Vector, SubtractPointToVector) {
+TEST(Point, SubtractPointToVector) {
 	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Point<int>{2, 3}) - (NAS2D::Point{1, 2}));
 }
 
@@ -54,27 +56,32 @@ TEST(Point, skewBy) {
 }
 
 TEST(Point, skewInverseBy) {
-	EXPECT_THROW((NAS2D::Point{1, 1}.skewInverseBy(NAS2D::Vector{0, 0})), std::domain_error);
-	EXPECT_THROW((NAS2D::Point{1, 1}.skewInverseBy(NAS2D::Vector{0, 1})), std::domain_error);
-	EXPECT_THROW((NAS2D::Point{1, 1}.skewInverseBy(NAS2D::Vector{1, 0})), std::domain_error);
-
 	EXPECT_EQ((NAS2D::Point{8, 4}), (NAS2D::Point{8, 8}.skewInverseBy(NAS2D::Vector{1, 2})));
 	EXPECT_EQ((NAS2D::Point{4, 2}), (NAS2D::Point{8, 8}.skewInverseBy(NAS2D::Vector{2, 4})));
-	EXPECT_EQ((NAS2D::Point{2, 1}), (NAS2D::Point{8, 8}.skewInverseBy(NAS2D::Vector{3, 5})));
 
 	EXPECT_EQ((NAS2D::Point{9, 2}), (NAS2D::Point{9, 6}.skewInverseBy(NAS2D::Vector{1, 3})));
 	EXPECT_EQ((NAS2D::Point{3, 3}), (NAS2D::Point{9, 6}.skewInverseBy(NAS2D::Vector{3, 2})));
-	EXPECT_EQ((NAS2D::Point{2, 1}), (NAS2D::Point{9, 6}.skewInverseBy(NAS2D::Vector{4, 5})));
 
 	EXPECT_EQ((NAS2D::Point{4, 2}), (NAS2D::Point{8, 6}.skewInverseBy(NAS2D::Vector{2, 3})));
 	EXPECT_EQ((NAS2D::Point{2, 3}), (NAS2D::Point{8, 6}.skewInverseBy(NAS2D::Vector{4, 2})));
+}
+
+TEST(Point, skewInverseByRounded) {
+	EXPECT_EQ((NAS2D::Point{2, 1}), (NAS2D::Point{8, 8}.skewInverseBy(NAS2D::Vector{3, 5})));
+	EXPECT_EQ((NAS2D::Point{2, 1}), (NAS2D::Point{9, 6}.skewInverseBy(NAS2D::Vector{4, 5})));
 	EXPECT_EQ((NAS2D::Point{2, 1}), (NAS2D::Point{8, 6}.skewInverseBy(NAS2D::Vector{3, 5})));
+}
+
+TEST(Point, skewInverseByDomainError) {
+	EXPECT_THROW((NAS2D::Point{1, 1}.skewInverseBy(NAS2D::Vector{0, 0})), std::domain_error);
+	EXPECT_THROW((NAS2D::Point{1, 1}.skewInverseBy(NAS2D::Vector{0, 1})), std::domain_error);
+	EXPECT_THROW((NAS2D::Point{1, 1}.skewInverseBy(NAS2D::Vector{1, 0})), std::domain_error);
 }
 
 TEST(Point, OperatorType) {
 	// Allow explicit conversion
-	EXPECT_EQ((NAS2D::Point<int>{1, 2}), static_cast<NAS2D::Point<int>>(NAS2D::Point<float>{1.0, 2.0}));
-	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), static_cast<NAS2D::Point<float>>(NAS2D::Point<int>{1, 2}));
+	EXPECT_EQ((NAS2D::Point<int>{1, 2}), NAS2D::Point<int>(NAS2D::Point<float>{1.0, 2.0}));
+	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), NAS2D::Point<float>(NAS2D::Point<int>{1, 2}));
 }
 
 TEST(Point, to) {
@@ -88,7 +95,7 @@ TEST(Point, stringConversion) {
 	EXPECT_EQ("(0, 1)", (std::string{NAS2D::Point{0, 1}}));
 }
 
-TEST(Vector, VectorPointAdd) {
+TEST(Point, VectorPointAdd) {
 	EXPECT_EQ((NAS2D::Point{2, 3}), (NAS2D::Vector{1, 2} + NAS2D::Point<int>{1, 1}));
 }
 

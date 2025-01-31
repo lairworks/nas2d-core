@@ -147,7 +147,7 @@ Color Image::pixelColor(Point<int> point) const
 {
 	if (!Rectangle{{0, 0}, mSize}.contains(point))
 	{
-		throw std::runtime_error("Pixel coordinates out of bounds: {" + std::to_string(point.x) + ", " + std::to_string(point.y) + "}");
+		throw std::runtime_error("Pixel coordinates out of bounds: " + std::string{point});
 	}
 
 	if (!mSurface) { throw std::runtime_error("Image has no allocated surface"); }

@@ -107,14 +107,17 @@ TEST(Vector, skewBy) {
 TEST(Vector, skewInverseBy) {
 	EXPECT_EQ((NAS2D::Vector{8, 4}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{1, 2})));
 	EXPECT_EQ((NAS2D::Vector{4, 2}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{2, 4})));
-	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{3, 5})));
 
 	EXPECT_EQ((NAS2D::Vector{9, 2}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{1, 3})));
 	EXPECT_EQ((NAS2D::Vector{3, 3}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{3, 2})));
-	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{4, 5})));
 
 	EXPECT_EQ((NAS2D::Vector{4, 2}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{2, 3})));
 	EXPECT_EQ((NAS2D::Vector{2, 3}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{4, 2})));
+}
+
+TEST(Vector, skewInverseByRounded) {
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{8, 8}.skewInverseBy(NAS2D::Vector{3, 5})));
+	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{9, 6}.skewInverseBy(NAS2D::Vector{4, 5})));
 	EXPECT_EQ((NAS2D::Vector{2, 1}), (NAS2D::Vector{8, 6}.skewInverseBy(NAS2D::Vector{3, 5})));
 }
 

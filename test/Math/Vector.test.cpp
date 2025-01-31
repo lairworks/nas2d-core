@@ -19,10 +19,12 @@ TEST(Vector, DefaultConstructible) {
 	EXPECT_EQ((NAS2D::Vector{0, 0}), NAS2D::Vector<int>{});
 }
 
-TEST(Vector, OperatorEqualNotEqual) {
+TEST(Vector, OperatorEqual) {
 	EXPECT_EQ((NAS2D::Vector{1, 1}), (NAS2D::Vector{1, 1}));
 	EXPECT_EQ((NAS2D::Vector{2, 2}), (NAS2D::Vector{2, 2}));
+}
 
+TEST(Vector, OperatorNotEqual) {
 	EXPECT_NE((NAS2D::Vector{1, 1}), (NAS2D::Vector{1, 2}));
 	EXPECT_NE((NAS2D::Vector{1, 1}), (NAS2D::Vector{2, 1}));
 }

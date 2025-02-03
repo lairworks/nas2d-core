@@ -31,7 +31,7 @@ namespace NAS2D
 		virtual void window_icon(const std::string& path);
 
 		virtual void showSystemPointer(bool);
-		virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy);
+		virtual void addCursor(const std::string& filePath, int cursorId, Vector<int> hotOffset);
 		virtual void setCursor(int cursorId);
 
 		virtual void fullscreen(bool fs, bool maintain = false);

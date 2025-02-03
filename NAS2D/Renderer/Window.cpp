@@ -218,7 +218,7 @@ void Window::showSystemPointer(bool _b)
 }
 
 
-void Window::addCursor(int cursorId, const std::string& filePath, Vector<int> hotOffset)
+void Window::addCursor(CursorId cursorId, const std::string& filePath, Vector<int> hotOffset)
 {
 	auto imageData = Utility<Filesystem>::get().readFile(filePath);
 	if (imageData.size() == 0)
@@ -239,12 +239,12 @@ void Window::addCursor(int cursorId, const std::string& filePath, Vector<int> ho
 		throw std::runtime_error("Failed to create color cursor: " + filePath + " : " + SDL_GetError());
 	}
 
-	if (cursors.contains(cursorId))
+	if (cursors.contains(cursorId.id))
 	{
-		SDL_FreeCursor(cursors[cursorId]);
+		SDL_FreeCursor(cursors[cursorId.id]);
 	}
 
-	cursors[cursorId] = cursor;
+	cursors[cursorId.id] = cursor;
 
 	if (cursors.size() == 1)
 	{
@@ -253,9 +253,9 @@ void Window::addCursor(int cursorId, const std::string& filePath, Vector<int> ho
 }
 
 
-void Window::setCursor(int cursorId)
+void Window::setCursor(CursorId cursorId)
 {
-	SDL_SetCursor(cursors[cursorId]);
+	SDL_SetCursor(cursors[cursorId.id]);
 }
 
 

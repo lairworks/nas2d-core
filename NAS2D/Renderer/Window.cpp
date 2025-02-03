@@ -239,7 +239,7 @@ void Window::addCursor(int cursorId, const std::string& filePath, Vector<int> ho
 		throw std::runtime_error("Failed to create color cursor: " + filePath + " : " + SDL_GetError());
 	}
 
-	if (cursors.count(cursorId))
+	if (cursors.contains(cursorId))
 	{
 		SDL_FreeCursor(cursors[cursorId]);
 	}

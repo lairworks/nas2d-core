@@ -15,6 +15,12 @@ namespace NAS2D
 	struct DisplayDesc;
 
 
+	struct CursorId
+	{
+		int id;
+	};
+
+
 	class Window
 	{
 	public:
@@ -31,8 +37,8 @@ namespace NAS2D
 		virtual void window_icon(const std::string& path);
 
 		virtual void showSystemPointer(bool);
-		virtual void addCursor(const std::string& filePath, int cursorId, int offx, int offy);
-		virtual void setCursor(int cursorId);
+		virtual void addCursor(CursorId cursorId, const std::string& filePath, Vector<int> hotOffset);
+		virtual void setCursor(CursorId cursorId);
 
 		virtual void fullscreen(bool fs, bool maintain = false);
 		virtual bool fullscreen() const;

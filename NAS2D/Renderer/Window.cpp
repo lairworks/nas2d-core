@@ -232,9 +232,9 @@ void Window::addCursor(const std::string& filePath, int cursorId, Vector<int> ho
 		throw std::runtime_error("Failed to load cursor: " + filePath + " : " + SDL_GetError());
 	}
 
-	SDL_Cursor* cur = SDL_CreateColorCursor(surface, hotOffset.x, hotOffset.y);
+	SDL_Cursor* cursor = SDL_CreateColorCursor(surface, hotOffset.x, hotOffset.y);
 	SDL_FreeSurface(surface);
-	if (!cur)
+	if (!cursor)
 	{
 		throw std::runtime_error("Failed to create color cursor: " + filePath + " : " + SDL_GetError());
 	}
@@ -244,7 +244,7 @@ void Window::addCursor(const std::string& filePath, int cursorId, Vector<int> ho
 		SDL_FreeCursor(cursors[cursorId]);
 	}
 
-	cursors[cursorId] = cur;
+	cursors[cursorId] = cursor;
 
 	if (cursors.size() == 1)
 	{

@@ -218,7 +218,7 @@ void Window::showSystemPointer(bool _b)
 }
 
 
-void Window::addCursor(const std::string& filePath, int cursorId, Vector<int> hotOffset)
+void Window::addCursor(int cursorId, const std::string& filePath, Vector<int> hotOffset)
 {
 	auto imageData = Utility<Filesystem>::get().readFile(filePath);
 	if (imageData.size() == 0)

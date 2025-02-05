@@ -12,9 +12,8 @@ jobs:
         platform: [x86, x64]
     runs-on: windows-latest
     env:
-      PLATFORM: ${{ matrix.platform }}
-      BUILD_CONFIGURATION: Release
-      SOLUTION_FILE_PATH: .
+      Platform: ${{ matrix.platform }}
+      Configuration: Release
       VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
 
     steps:
@@ -83,7 +82,7 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
-        msbuild /maxCpuCount /warnAsError /property:RunCodeAnalysis=true /property:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+        msbuild . /maxCpuCount /warnAsError /property:RunCodeAnalysis=true
 
     - name: Save incremental build cache
       uses: actions/cache/save@v4
@@ -93,10 +92,10 @@ jobs:
 
     - name: Test
       working-directory: ./test/
-      run: ../.build/${{env.BUILD_CONFIGURATION}}_${{env.PLATFORM}}_test/test.exe
+      run: ../.build/${{env.Configuration}}_${{env.Platform}}_test/test.exe
 
     - name: Package
-      run: ./Package.bat "${{env.BUILD_CONFIGURATION}}" "${{matrix.platform}}"
+      run: ./Package.bat "${{env.Configuration}}" "${{matrix.platform}}"
 
   linux:
     strategy:

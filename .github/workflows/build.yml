@@ -14,6 +14,7 @@ jobs:
     env:
       Platform: ${{ matrix.platform }}
       Configuration: Release
+      VcpkgManifestInstall: false
       VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
 
     steps:
@@ -35,11 +36,24 @@ jobs:
           core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
     - name: Restore vcpkg dependency cache
-      uses: actions/cache@v4
-      id: cache
+      uses: actions/cache/restore@v4
+      id: cacheRestoreVcpkg
       with:
         path: vcpkg_installed
         key: vcpkgCache-${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
+
+    - name: Pre-install vcpkg dependencies
+      env:
+        VcpkgManifestInstall: true
+      run: |
+        msbuild . /target:VcpkgInstallManifestDependencies
+
+    - name: Save vcpkg dependency cache
+      uses: actions/cache/save@v4
+      if: steps.cacheRestoreVcpkg.outputs.cache-hit != 'true'
+      with:
+        path: vcpkg_installed
+        key: ${{ steps.cacheRestoreVcpkg.outputs.cache-primary-key }}
 
     - name: Restore incremental build cache
       uses: actions/cache/restore@v4
@@ -79,8 +93,6 @@ jobs:
           echo "${{ github.sha }}" > .build/lastBuildSha.txt
 
     - name: Build
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
         msbuild . /maxCpuCount /warnAsError /property:RunCodeAnalysis=true
 

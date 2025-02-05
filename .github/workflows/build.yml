@@ -14,6 +14,7 @@ jobs:
     env:
       Platform: ${{ matrix.platform }}
       Configuration: Release
+      VcpkgManifestInstall: false
       VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
 
     steps:
@@ -40,6 +41,12 @@ jobs:
       with:
         path: vcpkg_installed
         key: vcpkgCache-${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
+
+    - name: Pre-install vcpkg dependencies
+      env:
+        VcpkgManifestInstall: true
+      run: |
+        msbuild . /target:VcpkgInstallManifestDependencies
 
     - name: Restore incremental build cache
       uses: actions/cache/restore@v4

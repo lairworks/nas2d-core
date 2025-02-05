@@ -82,7 +82,7 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
-        msbuild . /maxCpuCount /warnAsError /property:RunCodeAnalysis=true /property:Configuration=${{env.CONFIGURATION}}
+        msbuild . /maxCpuCount /warnAsError /property:RunCodeAnalysis=true
 
     - name: Save incremental build cache
       uses: actions/cache/save@v4

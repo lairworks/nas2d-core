@@ -12,8 +12,8 @@ jobs:
         platform: [x86, x64]
     runs-on: windows-latest
     env:
-      PLATFORM: ${{ matrix.platform }}
-      CONFIGURATION: Release
+      Platform: ${{ matrix.platform }}
+      Configuration: Release
       VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
 
     steps:
@@ -92,10 +92,10 @@ jobs:
 
     - name: Test
       working-directory: ./test/
-      run: ../.build/${{env.CONFIGURATION}}_${{env.PLATFORM}}_test/test.exe
+      run: ../.build/${{env.Configuration}}_${{env.Platform}}_test/test.exe
 
     - name: Package
-      run: ./Package.bat "${{env.CONFIGURATION}}" "${{matrix.platform}}"
+      run: ./Package.bat "${{env.Configuration}}" "${{matrix.platform}}"
 
   linux:
     strategy:

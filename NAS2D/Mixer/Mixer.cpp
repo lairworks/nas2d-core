@@ -14,9 +14,9 @@
 using namespace NAS2D;
 
 
-void Mixer::playMusic(const Music& music, int loops /*= Mixer::CONTINUOUS*/)
+void Mixer::playMusic(const Music& music)
 {
-	fadeInMusic(music, loops, std::chrono::milliseconds{0});
+	fadeInMusic(music, std::chrono::milliseconds{0});
 }
 
 

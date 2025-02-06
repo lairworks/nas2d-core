@@ -206,6 +206,9 @@
     <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Angle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Math\MathUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>

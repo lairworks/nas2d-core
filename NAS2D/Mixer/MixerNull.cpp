@@ -34,7 +34,7 @@ namespace NAS2D
 	void MixerNull::resumeMusic()
 	{}
 
-	void MixerNull::fadeInMusic(const Music& /*music*/, int /*loops*/ /*= Mixer::CONTINUOUS*/, std::chrono::milliseconds /*fadeInTime*/ /*= Mixer::DEFAULT_FADE_TIME*/)
+	void MixerNull::fadeInMusic(const Music& /*music*/, std::chrono::milliseconds /*fadeInTime*/ /*= Mixer::DEFAULT_FADE_TIME*/)
 	{}
 
 	void MixerNull::fadeOutMusic(std::chrono::milliseconds /*fadeOutTime*/ /*= Mixer::DEFAULT_FADE_TIME*/)

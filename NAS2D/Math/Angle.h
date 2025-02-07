@@ -9,7 +9,7 @@ namespace NAS2D
 	{
 	protected:
 		// Non-public constructor forces the use of static factory methods
-		constexpr Angle(float radians) : radianMeasure{radians} {}
+		constexpr Angle(float degrees) : degreeMeasure{degrees} {}
 
 		static constexpr float DegreeToRadians = std::numbers::pi_v<float> / 180;
 		static constexpr float RadiansToDegrees = 180 / std::numbers::pi_v<float>;
@@ -19,13 +19,13 @@ namespace NAS2D
 
 	public:
 		// Static factory methods, with an explicit angle measure
-		static constexpr Angle degrees(float degrees) { return Angle{degToRad(degrees)}; }
-		static constexpr Angle radians(float radians) { return Angle{radians}; }
+		static constexpr Angle degrees(float degrees) { return Angle{degrees}; }
+		static constexpr Angle radians(float radians) { return Angle{radToDeg(radians)}; }
 
-		constexpr float degrees() const { return radToDeg(radianMeasure); }
-		constexpr float radians() const { return radianMeasure; }
+		constexpr float degrees() const { return degreeMeasure; }
+		constexpr float radians() const { return degToRad(degreeMeasure); }
 
 	private:
-		float radianMeasure;
+		float degreeMeasure;
 	};
 }

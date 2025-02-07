@@ -34,3 +34,18 @@ TEST(Angle, subtraction) {
 	constexpr auto angle = NAS2D::Angle::degrees(180.0f) - NAS2D::Angle::degrees(90.0f);
 	EXPECT_FLOAT_EQ(90.0f, angle.degrees());
 }
+
+TEST(Angle, multiply) {
+	constexpr auto angle = NAS2D::Angle::degrees(90.0f) * 2;
+	EXPECT_FLOAT_EQ(180.0f, angle.degrees());
+}
+
+TEST(Angle, divide) {
+	constexpr auto angle = NAS2D::Angle::degrees(180.0f) / 2;
+	EXPECT_FLOAT_EQ(90.0f, angle.degrees());
+}
+
+TEST(Angle, multiplyCommutative) {
+	constexpr auto angle = 2 * NAS2D::Angle::degrees(90.0f);
+	EXPECT_FLOAT_EQ(180.0f, angle.degrees());
+}

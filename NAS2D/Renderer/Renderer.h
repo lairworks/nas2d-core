@@ -27,6 +27,7 @@ namespace NAS2D
 
 	class Font;
 	class Image;
+	class Angle;
 
 	template <typename BaseType>
 	struct Rectangle;
@@ -43,8 +44,8 @@ namespace NAS2D
 
 		virtual void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
 		virtual void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) = 0;
-		virtual void drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, float degrees, Color color = Color::Normal) = 0;
-		virtual void drawImageRotated(const Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) = 0;
+		virtual void drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Angle angle, Color color = Color::Normal) = 0;
+		virtual void drawImageRotated(const Image& image, Point<float> position, Angle angle, Color color = Color::Normal, float scale = 1.0f) = 0;
 		virtual void drawImageStretched(const Image& image, const Rectangle<float>& rect, Color color = Color::Normal) = 0;
 		virtual void drawImageRepeated(const Image& image, const Rectangle<float>& rect) = 0;
 		virtual void drawSubImageRepeated(const Image& image, const Rectangle<float>& destination, const Rectangle<float>& source) = 0;

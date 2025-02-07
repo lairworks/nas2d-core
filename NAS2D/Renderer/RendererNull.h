@@ -11,6 +11,8 @@
 
 #include "Renderer.h"
 
+#include "../Math/Angle.h"
+
 
 namespace NAS2D
 {
@@ -25,9 +27,9 @@ namespace NAS2D
 		void drawImage(const Image&, Point<float>, float = 1.0, Color = Color::Normal) override {}
 
 		void drawSubImage(const Image&, Point<float>, const Rectangle<float>&, Color = Color::Normal) override {}
-		void drawSubImageRotated(const Image&, Point<float>, const Rectangle<float>&, float, Color = Color::Normal) override {}
+		void drawSubImageRotated(const Image&, Point<float>, const Rectangle<float>&, Angle, Color = Color::Normal) override {}
 
-		void drawImageRotated(const Image&, Point<float>, float, Color = Color::Normal, float = 1.0f) override {}
+		void drawImageRotated(const Image&, Point<float>, Angle, Color = Color::Normal, float = 1.0f) override {}
 		void drawImageStretched(const Image&, const Rectangle<float>&, Color = Color::Normal) override {}
 
 		void drawImageRepeated(const Image&, const Rectangle<float>&) override {}

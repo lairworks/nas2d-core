@@ -13,6 +13,7 @@
 #include "../Math/VectorSizeRange.h"
 #include "../Resource/Image.h"
 #include "../Resource/Font.h"
+#include "../Math/Angle.h"
 #include "../Math/Trig.h"
 #include "../Configuration.h"
 #include "../EventHandler.h"
@@ -189,7 +190,7 @@ void RendererOpenGL::drawSubImage(const Image& image, Point<float> raster, const
 }
 
 
-void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, float degrees, Color color)
+void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Angle angle, Color color)
 {
 	glPushMatrix();
 
@@ -197,7 +198,7 @@ void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster
 	const auto center = raster + translate;
 
 	glTranslatef(center.x, center.y, 0.0f);
-	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+	glRotatef(angle.degrees(), 0.0f, 0.0f, 1.0f);
 
 	setColor(color);
 
@@ -211,7 +212,7 @@ void RendererOpenGL::drawSubImageRotated(const Image& image, Point<float> raster
 }
 
 
-void RendererOpenGL::drawImageRotated(const Image& image, Point<float> position, float degrees, Color color, float scale)
+void RendererOpenGL::drawImageRotated(const Image& image, Point<float> position, Angle angle, Color color, float scale)
 {
 	glPushMatrix();
 
@@ -221,7 +222,7 @@ void RendererOpenGL::drawImageRotated(const Image& image, Point<float> position,
 
 	glTranslatef(center.x, center.y, 0.0f);
 
-	glRotatef(degrees, 0.0f, 0.0f, 1.0f);
+	glRotatef(angle.degrees(), 0.0f, 0.0f, 1.0f);
 
 	setColor(color);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);

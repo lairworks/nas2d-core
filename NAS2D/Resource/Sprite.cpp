@@ -124,29 +124,29 @@ void Sprite::draw(Point<float> position) const
 	const auto& frame = (*mCurrentAction)[mCurrentFrame];
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, mRotationAngleDegrees, mTintColor);
+	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, mRotationAngle, mTintColor);
 }
 
 
 /**
  * Sets the rotation angle of the Sprite.
  *
- * \param	angle	Angle of rotation in degrees.
+ * \param	angle	Angle of rotation.
  */
-void Sprite::rotation(float angle)
+void Sprite::rotation(Angle angle)
 {
-	mRotationAngleDegrees = angle;
+	mRotationAngle = angle;
 }
 
 
 /**
  * Gets the rotation angle of the Sprite.
  *
- * \return	Angle of rotation in degrees.
+ * \return	Angle of rotation.
  */
-float Sprite::rotation() const
+Angle Sprite::rotation() const
 {
-	return mRotationAngleDegrees;
+	return mRotationAngle;
 }
 
 

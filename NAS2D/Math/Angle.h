@@ -27,10 +27,16 @@ namespace NAS2D
 		constexpr Angle operator+(const Angle& other) const { return Angle{degreeMeasure + other.degreeMeasure}; }
 		constexpr Angle operator-(const Angle& other) const { return Angle{degreeMeasure - other.degreeMeasure}; }
 
+		constexpr Angle operator*(float scalar) const { return Angle{degreeMeasure * scalar}; }
+		constexpr Angle operator/(float scalar) const { return Angle{degreeMeasure / scalar}; }
+
 		constexpr float degrees() const { return degreeMeasure; }
 		constexpr float radians() const { return degToRad(degreeMeasure); }
 
 	private:
 		float degreeMeasure;
 	};
+
+
+	constexpr Angle operator*(float scalar, Angle angle) { return angle * scalar; }
 }

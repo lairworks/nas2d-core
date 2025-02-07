@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Math/Angle.test.cpp" />
     <ClCompile Include="Math/MathUtils.test.cpp" />
     <ClCompile Include="Math/Point.test.cpp" />
     <ClCompile Include="Math/PointInRectangleRange.test.cpp" />

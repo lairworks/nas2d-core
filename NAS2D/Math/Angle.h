@@ -22,6 +22,11 @@ namespace NAS2D
 		static constexpr Angle degrees(float degrees) { return Angle{degrees}; }
 		static constexpr Angle radians(float radians) { return Angle{radToDeg(radians)}; }
 
+		constexpr Angle operator-() const { return Angle{-degreeMeasure}; }
+
+		constexpr Angle operator+(const Angle& other) const { return Angle{degreeMeasure + other.degreeMeasure}; }
+		constexpr Angle operator-(const Angle& other) const { return Angle{degreeMeasure - other.degreeMeasure}; }
+
 		constexpr float degrees() const { return degreeMeasure; }
 		constexpr float radians() const { return degToRad(degreeMeasure); }
 

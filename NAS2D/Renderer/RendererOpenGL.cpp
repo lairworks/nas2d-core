@@ -365,6 +365,9 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	glDisable(GL_TEXTURE_2D);
 	setColor(color);
 
+	constexpr float PI = 3.14159265f;
+	constexpr float PI_2 = PI * 2;
+
 	auto theta = PI_2 / static_cast<float>(numSegments);
 	auto cosTheta = std::cos(theta);
 	auto sinTheta = std::sin(theta);

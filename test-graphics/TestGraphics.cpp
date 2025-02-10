@@ -1,7 +1,9 @@
 #include "TestGraphics.h"
 
 #include <NAS2D/Utility.h>
+#include <NAS2D/Filesystem.h>
 #include <NAS2D/Renderer/Renderer.h>
+#include <NAS2D/Resource/Font.h>
 #include <NAS2D/Math/Rectangle.h>
 
 #include <functional>
@@ -11,6 +13,30 @@
 namespace
 {
 	std::mt19937 generator;
+
+
+	NAS2D::Font getFont()
+	{
+		static const std::string fileName = "../../../data/fonts/opensans.ttf";
+
+		const auto& filesystem = NAS2D::Utility<NAS2D::Filesystem>::get();
+		if (filesystem.exists(fileName))
+		{
+			return NAS2D::Font{fileName, 16};
+		}
+		return NAS2D::Font::null();
+	}
+
+
+	void drawBoundedText(NAS2D::Renderer& renderer, NAS2D::Point<int> position, const std::string& text)
+	{
+		static const NAS2D::Font font = getFont();
+
+		renderer.drawText(font, text, position);
+		const auto textSize = font.size(text);
+		const auto boxRect = NAS2D::Rectangle{position, textSize}.inset(-1);
+		renderer.drawBox(boxRect);
+	}
 }
 
 
@@ -61,6 +87,12 @@ NAS2D::State* TestGraphics::update()
 	r.drawCircle({250, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
 	r.drawCircle({290, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
 	r.drawCircle({330, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
+
+	drawBoundedText(r, {360, 10}, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	drawBoundedText(r, {360, 34}, "abcdefghijklmnopqrstuvwxyz");
+	drawBoundedText(r, {360, 58}, "WWWW");
+	drawBoundedText(r, {360, 82}, "iii");
+	drawBoundedText(r, {360, 106}, " ");
 
 	r.drawGradient({{10, 60}, {64, 64}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
 

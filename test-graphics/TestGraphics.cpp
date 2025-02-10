@@ -66,11 +66,11 @@ NAS2D::State* TestGraphics::update()
 
 		const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
 		const auto offset = NAS2D::Vector{jitter(), jitter()};
-		r.drawPoint(NAS2D::Point{120, 60} + offset, NAS2D::Color{grey, grey, grey});
+		r.drawPoint(NAS2D::Point{84, 60} + offset, NAS2D::Color{grey, grey, grey});
 	}
 
-	r.drawImage(mDxImage, {10, 170});
-	r.drawImage(mOglImage, {10 + 512, 170});
+	r.drawImage(mDxImage, {10, 134});
+	r.drawImage(mOglImage, {10 + 512, 134});
 
 	return this;
 }

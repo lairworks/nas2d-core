@@ -203,6 +203,7 @@
     <ClInclude Include="Filesystem.h" />
     <ClInclude Include="FpsCounter.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Math\Angle.h" />
     <ClInclude Include="Math\MathUtils.h" />
     <ClInclude Include="Math\Point.h" />
     <ClInclude Include="Math\PointInRectangleRange.h" />

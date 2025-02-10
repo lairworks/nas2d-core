@@ -13,6 +13,7 @@
 #include "AnimationSet.h"
 #include "../Signal/Signal.h"
 #include "../Timer.h"
+#include "../Math/Angle.h"
 #include "../Renderer/Color.h"
 
 #include <vector>
@@ -53,8 +54,8 @@ namespace NAS2D
 		void update();
 		void draw(Point<float> position) const;
 
-		void rotation(float angle);
-		float rotation() const;
+		void rotation(Angle angle);
+		Angle rotation() const;
 
 		void alpha(uint8_t alpha);
 		uint8_t alpha() const;
@@ -76,6 +77,6 @@ namespace NAS2D
 		AnimationCompleteSignal mAnimationCompleteSignal{};
 
 		Color mTintColor{Color::Normal};
-		float mRotationAngleDegrees{0.0f};
+		Angle mRotationAngle = Angle::degrees(0.0f);
 	};
 } // namespace

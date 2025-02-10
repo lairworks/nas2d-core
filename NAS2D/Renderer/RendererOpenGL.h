@@ -49,9 +49,9 @@ namespace NAS2D
 		void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) override;
 
 		void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) override;
-		void drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, float degrees, Color color = Color::Normal) override;
+		void drawSubImageRotated(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Angle angle, Color color = Color::Normal) override;
 
-		void drawImageRotated(const Image& image, Point<float> position, float degrees, Color color = Color::Normal, float scale = 1.0f) override;
+		void drawImageRotated(const Image& image, Point<float> position, Angle angle, Color color = Color::Normal, float scale = 1.0f) override;
 		void drawImageStretched(const Image& image, const Rectangle<float>& rect, Color color = Color::Normal) override;
 
 		void drawImageRepeated(const Image& image, const Rectangle<float>& rect) override;

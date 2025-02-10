@@ -11,13 +11,6 @@
 namespace
 {
 	std::mt19937 generator;
-	std::uniform_int_distribution<int> jitterDistribution(0, 64);
-
-
-	auto jitter()
-	{
-		return jitterDistribution(generator);
-	}
 }
 
 
@@ -28,20 +21,25 @@ TestGraphics::TestGraphics() :
 
 TestGraphics::~TestGraphics()
 {
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseMotion().disconnect({this, &TestGraphics::onMouseMove});
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseButtonDown().disconnect({this, &TestGraphics::onMouseDown});
-	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().disconnect({this, &TestGraphics::onKeyDown});
+	auto& eventHandler = NAS2D::Utility<NAS2D::EventHandler>::get();
+	eventHandler.mouseMotion().disconnect({this, &TestGraphics::onMouseMove});
+	eventHandler.mouseButtonDown().disconnect({this, &TestGraphics::onMouseDown});
+	eventHandler.keyDown().disconnect({this, &TestGraphics::onKeyDown});
 
 }
 
 void TestGraphics::initialize()
 {
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseMotion().connect({this, &TestGraphics::onMouseMove});
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseButtonDown().connect({this, &TestGraphics::onMouseDown});
-	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().connect({this, &TestGraphics::onKeyDown});
+	auto& eventHandler = NAS2D::Utility<NAS2D::EventHandler>::get();
+	eventHandler.mouseMotion().connect({this, &TestGraphics::onMouseMove});
+	eventHandler.mouseButtonDown().connect({this, &TestGraphics::onMouseDown});
+	eventHandler.keyDown().connect({this, &TestGraphics::onKeyDown});
 
-	NAS2D::Utility<NAS2D::Renderer>::get().showSystemPointer(true);
-	NAS2D::Utility<NAS2D::Renderer>::get().minimumSize({1600, 900});
+	auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
+	renderer.showSystemPointer(true);
+	const auto minSize = NAS2D::Vector{10 + 1024 + 10, 134 + 512 + 10};
+	renderer.minimumSize(minSize);
+	renderer.size(minSize);
 }
 
 NAS2D::State* TestGraphics::update()
@@ -50,30 +48,34 @@ NAS2D::State* TestGraphics::update()
 
 	r.clearScreen(NAS2D::Color::Gray);
 
-	r.drawImage(mDxImage, {256, 256});
-	r.drawImage(mOglImage, {768, 256});
-
-	for (auto i = 0u; i < 2000u; ++i)
-	{
-		const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
-		r.drawPoint(NAS2D::Point{10 + jitter(), 250 + jitter()}, NAS2D::Color{grey, grey, grey});
-	}
-
-	r.drawBox({{10, 50}, {40, 40}});
-	r.drawBoxFilled({{70, 50}, {40, 40}}, NAS2D::Color{200, 0, 0});
-
-	r.drawGradient({{10, 100}, {100, 100}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
-
-	r.drawCircle({150, 70}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
-	r.drawCircle({150, 120}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
-	r.drawCircle({150, 170}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
+	r.drawBox({{10, 10}, {40, 40}});
+	r.drawBoxFilled({{70, 10}, {40, 40}}, NAS2D::Color{200, 0, 0});
 
 	for (auto i = 0; i < 10; ++i)
 	{
-		NAS2D::Rectangle<int> boxRect = {{200 + 10 * i, 50}, {i, i}};
+		NAS2D::Rectangle<int> boxRect = {{120 + 10 * i, 10}, {i, i}};
 		r.drawBox(boxRect, NAS2D::Color::Red);
 		r.drawBoxFilled(boxRect.inset(1), NAS2D::Color::White);
 	}
+
+	r.drawCircle({250, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
+	r.drawCircle({290, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
+	r.drawCircle({330, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
+
+	r.drawGradient({{10, 60}, {64, 64}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
+
+	for (auto i = 0u; i < 2000u; ++i)
+	{
+		std::uniform_int_distribution<int> jitterDistribution(0, 63);
+		auto jitter = [&jitterDistribution](){ return jitterDistribution(generator); };
+
+		const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
+		const auto offset = NAS2D::Vector{jitter(), jitter()};
+		r.drawPoint(NAS2D::Point{84, 60} + offset, NAS2D::Color{grey, grey, grey});
+	}
+
+	r.drawImage(mDxImage, {10, 134});
+	r.drawImage(mOglImage, {10 + 512, 134});
 
 	return this;
 }

@@ -139,7 +139,7 @@ int Font::width(std::string_view string) const
 	for (auto character : string)
 	{
 		auto glyph = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
-		width += gml[glyph].advance + gml[glyph].minX;
+		width += gml[glyph].advance;
 	}
 
 	return width;

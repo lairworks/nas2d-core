@@ -53,18 +53,18 @@ NAS2D::State* TestGraphics::update()
 	r.drawBox({{10, 10}, {40, 40}});
 	r.drawBoxFilled({{70, 10}, {40, 40}}, NAS2D::Color{200, 0, 0});
 
-	r.drawGradient({{10, 60}, {100, 100}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
-
-	r.drawCircle({250, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
-	r.drawCircle({290, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
-	r.drawCircle({330, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
-
 	for (auto i = 0; i < 10; ++i)
 	{
 		NAS2D::Rectangle<int> boxRect = {{120 + 10 * i, 10}, {i, i}};
 		r.drawBox(boxRect, NAS2D::Color::Red);
 		r.drawBoxFilled(boxRect.inset(1), NAS2D::Color::White);
 	}
+
+	r.drawCircle({250, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
+	r.drawCircle({290, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
+	r.drawCircle({330, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
+
+	r.drawGradient({{10, 60}, {100, 100}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
 
 	for (auto i = 0u; i < 2000u; ++i)
 	{

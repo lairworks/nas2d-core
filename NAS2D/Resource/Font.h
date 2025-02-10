@@ -59,6 +59,7 @@ namespace NAS2D
 			std::vector<GlyphMetrics> metrics{};
 		};
 
+		static Font null();
 
 		Font(const std::string& filePath, unsigned int ptSize);
 		explicit Font(const std::string& filePath);
@@ -78,6 +79,9 @@ namespace NAS2D
 		// Intended only to be used by RendererOpenGL
 		// As it is so specific, it should not be part of the Font class, nor FontInfo
 		unsigned int textureId() const;
+
+	protected:
+		Font();
 
 	private:
 		FontInfo mFontInfo;

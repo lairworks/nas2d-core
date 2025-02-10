@@ -11,13 +11,6 @@
 namespace
 {
 	std::mt19937 generator;
-	std::uniform_int_distribution<int> jitterDistribution(0, 64);
-
-
-	auto jitter()
-	{
-		return jitterDistribution(generator);
-	}
 }
 
 
@@ -68,6 +61,9 @@ NAS2D::State* TestGraphics::update()
 
 	for (auto i = 0u; i < 2000u; ++i)
 	{
+		std::uniform_int_distribution<int> jitterDistribution(0, 64);
+		auto jitter = [&jitterDistribution](){ return jitterDistribution(generator); };
+
 		const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
 		const auto offset = NAS2D::Vector{jitter(), jitter()};
 		r.drawPoint(NAS2D::Point{120, 60} + offset, NAS2D::Color{grey, grey, grey});

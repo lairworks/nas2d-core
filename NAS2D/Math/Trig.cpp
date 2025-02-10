@@ -17,25 +17,6 @@
 
 namespace NAS2D
 {
-
-	/**
-	 * Gets an angle in radians from degrees.
-	 */
-	float degToRad(float degree)
-	{
-		return degree * DEG2RAD;
-	}
-
-
-	/**
-	 * Gets an angle in degrees from radians.
-	 */
-	float radToDeg(float rad)
-	{
-		return rad * RAD2DEG;
-	}
-
-
 	/**
 	 * Gets the angle of a direction vector
 	 */
@@ -53,5 +34,4 @@ namespace NAS2D
 		const auto radian = angle.radians();
 		return {std::cos(radian), std::sin(radian)};
 	}
-
 }

@@ -5,14 +5,6 @@
 #include <gtest/gtest.h>
 
 
-TEST(Trig, degToRadToDeg) {
-	EXPECT_FLOAT_EQ(0.0f, NAS2D::radToDeg(NAS2D::degToRad(0.0f)));
-	EXPECT_FLOAT_EQ(90.0f, NAS2D::radToDeg(NAS2D::degToRad(90.0f)));
-	EXPECT_FLOAT_EQ(180.0f, NAS2D::radToDeg(NAS2D::degToRad(180.0f)));
-	EXPECT_FLOAT_EQ(270.0f, NAS2D::radToDeg(NAS2D::degToRad(270.0f)));
-	EXPECT_FLOAT_EQ(-90.0f, NAS2D::radToDeg(NAS2D::degToRad(-90.0f)));
-}
-
 TEST(Trig, getAngle) {
 	EXPECT_FLOAT_EQ(0.0f, NAS2D::getAngle(NAS2D::Vector<float>{0, 0}).degrees());
 

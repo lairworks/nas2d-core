@@ -21,22 +21,25 @@ TestGraphics::TestGraphics() :
 
 TestGraphics::~TestGraphics()
 {
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseMotion().disconnect({this, &TestGraphics::onMouseMove});
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseButtonDown().disconnect({this, &TestGraphics::onMouseDown});
-	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().disconnect({this, &TestGraphics::onKeyDown});
+	auto& eventHandler = NAS2D::Utility<NAS2D::EventHandler>::get();
+	eventHandler.mouseMotion().disconnect({this, &TestGraphics::onMouseMove});
+	eventHandler.mouseButtonDown().disconnect({this, &TestGraphics::onMouseDown});
+	eventHandler.keyDown().disconnect({this, &TestGraphics::onKeyDown});
 
 }
 
 void TestGraphics::initialize()
 {
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseMotion().connect({this, &TestGraphics::onMouseMove});
-	NAS2D::Utility<NAS2D::EventHandler>::get().mouseButtonDown().connect({this, &TestGraphics::onMouseDown});
-	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().connect({this, &TestGraphics::onKeyDown});
+	auto& eventHandler = NAS2D::Utility<NAS2D::EventHandler>::get();
+	eventHandler.mouseMotion().connect({this, &TestGraphics::onMouseMove});
+	eventHandler.mouseButtonDown().connect({this, &TestGraphics::onMouseDown});
+	eventHandler.keyDown().connect({this, &TestGraphics::onKeyDown});
 
-	NAS2D::Utility<NAS2D::Renderer>::get().showSystemPointer(true);
+	auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
+	renderer.showSystemPointer(true);
 	const auto minSize = NAS2D::Vector{10 + 1024 + 10, 134 + 512 + 10};
-	NAS2D::Utility<NAS2D::Renderer>::get().minimumSize(minSize);
-	NAS2D::Utility<NAS2D::Renderer>::get().size(minSize);
+	renderer.minimumSize(minSize);
+	renderer.size(minSize);
 }
 
 NAS2D::State* TestGraphics::update()

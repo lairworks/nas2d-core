@@ -66,6 +66,17 @@ namespace
 }
 
 
+Font Font::null()
+{
+	return Font{};
+}
+
+
+Font::Font() :
+	mFontInfo{}
+{
+}
+
 /**
  * Instantiate a Font using a TrueType or OpenType font.
  *

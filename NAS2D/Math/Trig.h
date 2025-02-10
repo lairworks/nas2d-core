@@ -15,6 +15,8 @@
 
 namespace NAS2D
 {
+	class Angle;
+
 
 	constexpr float PI = 3.14159265f;
 	constexpr float PI_2 = PI * 2;
@@ -25,7 +27,7 @@ namespace NAS2D
 
 	float degToRad(float degree);
 	float radToDeg(float rad);
-	float getAngle(Vector<float> direction);
-	Vector<float> getDirectionVector(float angle);
 
+	Angle getAngle(Vector<float> direction);
+	Vector<float> getDirectionVector(Angle angle);
 }

@@ -91,7 +91,12 @@ Font::Font(const std::string& filePath) :
 
 Font::~Font()
 {
-	glDeleteTextures(1, &mFontInfo.textureId);
+	// Documentation for `glDeleteTextures` says it should be safe to delete 0
+	// However, MacOS shows a segmentation fault when 0 is passed
+	if (mFontInfo.textureId)
+	{
+		glDeleteTextures(1, &mFontInfo.textureId);
+	}
 }
 
 

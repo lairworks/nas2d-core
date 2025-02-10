@@ -34,7 +34,9 @@ void TestGraphics::initialize()
 	NAS2D::Utility<NAS2D::EventHandler>::get().keyDown().connect({this, &TestGraphics::onKeyDown});
 
 	NAS2D::Utility<NAS2D::Renderer>::get().showSystemPointer(true);
-	NAS2D::Utility<NAS2D::Renderer>::get().minimumSize({1600, 900});
+	const auto minSize = NAS2D::Vector{10 + 1024 + 10, 134 + 512 + 10};
+	NAS2D::Utility<NAS2D::Renderer>::get().minimumSize(minSize);
+	NAS2D::Utility<NAS2D::Renderer>::get().size(minSize);
 }
 
 NAS2D::State* TestGraphics::update()

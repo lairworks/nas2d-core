@@ -57,11 +57,11 @@ NAS2D::State* TestGraphics::update()
 	r.drawCircle({290, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
 	r.drawCircle({330, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
 
-	r.drawGradient({{10, 60}, {100, 100}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
+	r.drawGradient({{10, 60}, {64, 64}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
 
 	for (auto i = 0u; i < 2000u; ++i)
 	{
-		std::uniform_int_distribution<int> jitterDistribution(0, 64);
+		std::uniform_int_distribution<int> jitterDistribution(0, 63);
 		auto jitter = [&jitterDistribution](){ return jitterDistribution(generator); };
 
 		const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;

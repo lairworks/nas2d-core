@@ -10,45 +10,28 @@
 
 #include "Trig.h"
 
+#include "Angle.h"
+
 #include <cmath>
 
 
 namespace NAS2D
 {
-
-	/**
-	 * Gets an angle in radians from degrees.
-	 */
-	float degToRad(float degree)
-	{
-		return degree * DEG2RAD;
-	}
-
-
-	/**
-	 * Gets an angle in degrees from radians.
-	 */
-	float radToDeg(float rad)
-	{
-		return rad * RAD2DEG;
-	}
-
-
 	/**
 	 * Gets the angle of a direction vector
 	 */
-	float getAngle(Vector<float> direction)
+	Angle getAngle(Vector<float> direction)
 	{
-		return std::atan2(direction.y, direction.x);
+		return Angle::radians(std::atan2(direction.y, direction.x));
 	}
 
 
 	/**
-	 * Gets a directional vector from an angle in radians.
+	 * Gets a directional vector from an angle
 	 */
-	Vector<float> getDirectionVector(float radian)
+	Vector<float> getDirectionVector(Angle angle)
 	{
+		const auto radian = angle.radians();
 		return {std::cos(radian), std::sin(radian)};
 	}
-
 }

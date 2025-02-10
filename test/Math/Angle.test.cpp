@@ -20,6 +20,14 @@ TEST(Angle, degreesToRadians) {
 	EXPECT_FLOAT_EQ(std::numbers::pi_v<float>, angle.radians());
 }
 
+TEST(Angle, degreesToRadiansToDegrees) {
+	EXPECT_FLOAT_EQ(0.0f, NAS2D::Angle::radians(NAS2D::Angle::degrees(0.0f).radians()).degrees());
+	EXPECT_FLOAT_EQ(90.0f, NAS2D::Angle::radians(NAS2D::Angle::degrees(90.0f).radians()).degrees());
+	EXPECT_FLOAT_EQ(180.0f, NAS2D::Angle::radians(NAS2D::Angle::degrees(180.0f).radians()).degrees());
+	EXPECT_FLOAT_EQ(270.0f, NAS2D::Angle::radians(NAS2D::Angle::degrees(270.0f).radians()).degrees());
+	EXPECT_FLOAT_EQ(-90.0f, NAS2D::Angle::radians(NAS2D::Angle::degrees(-90.0f).radians()).degrees());
+}
+
 TEST(Angle, unaryMinus) {
 	constexpr auto angle = -NAS2D::Angle::degrees(180.0f);
 	EXPECT_FLOAT_EQ(-180.0f, angle.degrees());

@@ -365,10 +365,7 @@ void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color
 	glDisable(GL_TEXTURE_2D);
 	setColor(color);
 
-	constexpr float PI = 3.14159265f;
-	constexpr float PI_2 = PI * 2;
-
-	const auto theta = Angle::radians(PI_2) / static_cast<float>(numSegments);
+	const auto theta = Angle::degrees(360) / static_cast<float>(numSegments);
 	const auto direction = getDirectionVector(theta);
 	const auto cosTheta = direction.x;
 	const auto sinTheta = direction.y;

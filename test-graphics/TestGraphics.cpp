@@ -55,13 +55,13 @@ NAS2D::State* TestGraphics::update()
 
 	r.drawGradient({{10, 60}, {100, 100}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
 
-	r.drawCircle({150, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
-	r.drawCircle({150, 70}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
-	r.drawCircle({150, 100}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
+	r.drawCircle({250, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
+	r.drawCircle({290, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
+	r.drawCircle({330, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
 
 	for (auto i = 0; i < 10; ++i)
 	{
-		NAS2D::Rectangle<int> boxRect = {{180 + 10 * i, 10}, {i, i}};
+		NAS2D::Rectangle<int> boxRect = {{120 + 10 * i, 10}, {i, i}};
 		r.drawBox(boxRect, NAS2D::Color::Red);
 		r.drawBoxFilled(boxRect.inset(1), NAS2D::Color::White);
 	}
@@ -69,11 +69,11 @@ NAS2D::State* TestGraphics::update()
 	for (auto i = 0u; i < 2000u; ++i)
 	{
 		const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
-		r.drawPoint(NAS2D::Point{10 + jitter(), 170 + jitter()}, NAS2D::Color{grey, grey, grey});
+		r.drawPoint(NAS2D::Point{120 + jitter(), 60 + jitter()}, NAS2D::Color{grey, grey, grey});
 	}
 
-	r.drawImage(mDxImage, {84, 170});
-	r.drawImage(mOglImage, {84 + 512, 170});
+	r.drawImage(mDxImage, {10, 170});
+	r.drawImage(mOglImage, {10 + 512, 170});
 
 	return this;
 }

@@ -155,19 +155,7 @@ Vector<int> Font::size(std::string_view string) const
  */
 int Font::width(std::string_view string) const
 {
-	if (string.empty()) { return 0; }
-
-	int width = 0;
-	auto& gml = mFontInfo.metrics;
-	if (gml.empty()) { return 0; }
-
-	for (auto character : string)
-	{
-		auto glyph = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
-		width += gml[glyph].advance;
-	}
-
-	return width;
+	return size(string).x;
 }
 
 

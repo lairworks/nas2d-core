@@ -18,7 +18,6 @@
 #include "../Configuration.h"
 #include "../EventHandler.h"
 #include "../Filesystem.h"
-#include "../Math/MathUtils.h"
 #include "../Utility.h"
 
 #include <SDL2/SDL.h>

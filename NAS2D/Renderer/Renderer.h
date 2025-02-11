@@ -12,8 +12,6 @@
 
 #include "Color.h"
 #include "Window.h"
-#include "../Math/Point.h"
-#include "../Math/Vector.h"
 
 #include <string_view>
 #include <string>
@@ -26,6 +24,10 @@ namespace NAS2D
 	class Image;
 	class Angle;
 
+	template <typename BaseType>
+	struct Point;
+	template <typename BaseType>
+	struct Vector;
 	template <typename BaseType>
 	struct Rectangle;
 

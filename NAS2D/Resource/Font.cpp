@@ -119,7 +119,32 @@ Vector<int> Font::glyphCellSize() const
 
 Vector<int> Font::size(std::string_view string) const
 {
-	return {width(string), height()};
+	const auto& gml = mFontInfo.metrics;
+	if (gml.empty()) { return {0, 0}; }
+
+	Vector<int> size{0, 0};
+	int lineWidth = 0;
+	for (auto character : string)
+	{
+		if (character == '\n')
+		{
+			size.y += height();
+			size.x = std::max(size.x, lineWidth);
+			lineWidth = 0;
+		}
+		else
+		{
+			auto glyph = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
+			lineWidth += gml[glyph].advance;
+		}
+	}
+	if (!string.empty())
+	{
+		size.y += height();
+		size.x = std::max(size.x, lineWidth);
+	}
+
+	return size;
 }
 
 
@@ -130,19 +155,7 @@ Vector<int> Font::size(std::string_view string) const
  */
 int Font::width(std::string_view string) const
 {
-	if (string.empty()) { return 0; }
-
-	int width = 0;
-	auto& gml = mFontInfo.metrics;
-	if (gml.empty()) { return 0; }
-
-	for (auto character : string)
-	{
-		auto glyph = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
-		width += gml[glyph].advance;
-	}
-
-	return width;
+	return size(string).x;
 }
 
 

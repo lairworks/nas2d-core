@@ -9,6 +9,7 @@
 // ==================================================================================
 #include "Image.h"
 
+#include "../Renderer/Color.h"
 #include "../Math/Rectangle.h"
 #include "../Filesystem.h"
 #include "../Utility.h"

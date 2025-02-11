@@ -9,7 +9,6 @@
 // ==================================================================================
 #pragma once
 
-#include "../Renderer/Color.h"
 #include "../Math/Vector.h"
 
 #include <string>
@@ -20,6 +19,8 @@ struct SDL_Surface;
 
 namespace NAS2D
 {
+	struct Color;
+
 	template <typename BaseType>
 	struct Point;
 

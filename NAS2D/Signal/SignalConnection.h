@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include "Delegate.h"
 #include "SignalSource.h"
 
 

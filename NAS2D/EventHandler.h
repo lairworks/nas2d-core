@@ -14,6 +14,7 @@
 #include "Math/Vector.h"
 
 #include <string>
+#include <cstdint>
 
 
 namespace

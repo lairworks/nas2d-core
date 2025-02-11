@@ -12,14 +12,9 @@
 
 #include "Color.h"
 #include "Window.h"
-#include "../Math/Point.h"
-#include "../Math/Vector.h"
-#include "../Signal/Signal.h"
 
-#include <chrono>
 #include <string_view>
 #include <string>
-#include <vector>
 
 
 namespace NAS2D
@@ -29,6 +24,10 @@ namespace NAS2D
 	class Image;
 	class Angle;
 
+	template <typename BaseType>
+	struct Point;
+	template <typename BaseType>
+	struct Vector;
 	template <typename BaseType>
 	struct Rectangle;
 

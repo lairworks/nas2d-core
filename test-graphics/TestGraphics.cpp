@@ -94,6 +94,8 @@ NAS2D::State* TestGraphics::update()
 	drawBoundedText(r, {360, 82}, "iii");
 	drawBoundedText(r, {360, 106}, " ");
 
+	drawBoundedText(r, {630, 10}, "A\nmulti\nline\nstring.");
+
 	r.drawGradient({{10, 60}, {64, 64}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
 
 	for (auto i = 0u; i < 2000u; ++i)

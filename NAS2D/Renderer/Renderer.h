@@ -14,12 +14,9 @@
 #include "Window.h"
 #include "../Math/Point.h"
 #include "../Math/Vector.h"
-#include "../Signal/Signal.h"
 
-#include <chrono>
 #include <string_view>
 #include <string>
-#include <vector>
 
 
 namespace NAS2D

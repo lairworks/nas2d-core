@@ -19,6 +19,12 @@
 using namespace NAS2D;
 
 
+Fade::Fade() :
+	Fade(Color::Black)
+{
+}
+
+
 Fade::Fade(Color fadeColor) :
 	mFadeColor{fadeColor.alphaFade(255)}
 {}

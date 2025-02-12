@@ -25,7 +25,8 @@ namespace NAS2D
 	class Fade
 	{
 	public:
-		explicit Fade(Color fadeColor = Color::Black);
+		Fade();
+		explicit Fade(Color fadeColor);
 
 		SignalSource<>& fadeComplete();
 

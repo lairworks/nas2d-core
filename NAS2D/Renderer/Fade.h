@@ -30,6 +30,8 @@ namespace NAS2D
 
 		Fade();
 		explicit Fade(Color fadeColor);
+		explicit Fade(FadeCompleteSignal::DelegateType onFadeComplete);
+		explicit Fade(Color fadeColor, FadeCompleteSignal::DelegateType onFadeComplete);
 
 		FadeCompleteSignal::Source& fadeComplete();
 

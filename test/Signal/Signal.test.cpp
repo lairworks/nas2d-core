@@ -47,3 +47,17 @@ TEST(Signal, ConnectEmitDisconnect) {
 	signal.disconnect(delegate);
 	signal.emit();
 }
+
+TEST(Signal, MultiListener) {
+	NAS2D::Signal<> signal;
+	MockHandler handler1{};
+	MockHandler handler2{};
+	auto delegate1 = NAS2D::Delegate{&handler1, &MockHandler::MockMethod};
+	auto delegate2 = NAS2D::Delegate{&handler2, &MockHandler::MockMethod};
+
+	EXPECT_CALL(handler1, MockMethod()).Times(1);
+	EXPECT_CALL(handler2, MockMethod()).Times(1);
+	signal.connect(delegate1);
+	signal.connect(delegate2);
+	signal.emit();
+}

@@ -19,9 +19,33 @@
 using namespace NAS2D;
 
 
+Fade::Fade() :
+	Fade(Color::Black)
+{
+}
+
+
 Fade::Fade(Color fadeColor) :
-	mFadeColor{fadeColor.alphaFade(255)}
+	mFadeColor{fadeColor.alphaFade(255)},
+	mDirection{FadeDirection::None},
+	mDuration{},
+	mFadeTimer{},
+	mFadeComplete{}
 {}
+
+
+Fade::Fade(FadeCompleteSignal::DelegateType onFadeComplete) :
+	Fade()
+{
+	mFadeComplete.connect(onFadeComplete);
+}
+
+
+Fade::Fade(Color fadeColor, FadeCompleteSignal::DelegateType onFadeComplete) :
+	Fade(fadeColor)
+{
+	mFadeComplete.connect(onFadeComplete);
+}
 
 
 SignalSource<>& Fade::fadeComplete()

@@ -26,7 +26,11 @@ Fade::Fade() :
 
 
 Fade::Fade(Color fadeColor) :
-	mFadeColor{fadeColor.alphaFade(255)}
+	mFadeColor{fadeColor.alphaFade(255)},
+	mDirection{FadeDirection::None},
+	mDuration{},
+	mFadeTimer{},
+	mFadeComplete{}
 {}
 
 

@@ -25,10 +25,13 @@ namespace NAS2D
 	class Fade
 	{
 	public:
+		using FadeCompleteSignal = Signal<>;
+
+
 		Fade();
 		explicit Fade(Color fadeColor);
 
-		SignalSource<>& fadeComplete();
+		FadeCompleteSignal::Source& fadeComplete();
 
 		void fadeIn(std::chrono::milliseconds fadeTime);
 		void fadeOut(std::chrono::milliseconds fadeTime);
@@ -53,7 +56,7 @@ namespace NAS2D
 		FadeDirection mDirection;
 		std::chrono::milliseconds mDuration;
 		Timer mFadeTimer;
-		Signal<> mFadeComplete;
+		FadeCompleteSignal mFadeComplete;
 	};
 
 }

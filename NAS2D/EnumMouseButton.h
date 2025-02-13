@@ -3,11 +3,11 @@
 
 namespace NAS2D
 {
-enum class MouseButton
-{
-	None,
-	Left,
-	Middle,
-	Right
-};
+	enum class MouseButton
+	{
+		None,
+		Left,
+		Middle,
+		Right
+	};
 }

@@ -31,63 +31,63 @@ namespace NAS2D
 		enum class MouseButton;
 
 
-		using ActivateEvent = Signal<bool>;
-		using WindowHiddenEvent = Signal<bool>;
-		using WindowExposedEvent = Signal<>;
-		using WindowMinimizedEvent = Signal<>;
-		using WindowMaximizedEvent = Signal<>;
-		using WindowRestoredEvent = Signal<>;
-		using WindowResizedEvent = Signal<Vector<int>>;
-		using WindowMouseEnterEvent = Signal<>;
-		using WindowMouseLeaveEvent = Signal<>;
+		using ActivateSignal = Signal<bool>;
+		using WindowHiddenSignal = Signal<bool>;
+		using WindowExposedSignal = Signal<>;
+		using WindowMinimizedSignal = Signal<>;
+		using WindowMaximizedSignal = Signal<>;
+		using WindowRestoredSignal = Signal<>;
+		using WindowResizedSignal = Signal<Vector<int>>;
+		using WindowMouseEnterSignal = Signal<>;
+		using WindowMouseLeaveSignal = Signal<>;
 
-		using JoystickAxisMotionEvent = Signal<int, int, int>;
-		using JoystickBallMotionEvent = Signal<int, int, Vector<int>>;
-		using JoystickButtonEvent = Signal<int, int>;
-		using JoystickHatMotionEvent = Signal<int, int, int>;
+		using JoystickAxisMotionSignal = Signal<int, int, int>;
+		using JoystickBallMotionSignal = Signal<int, int, Vector<int>>;
+		using JoystickButtonSignal = Signal<int, int>;
+		using JoystickHatMotionSignal = Signal<int, int, int>;
 
-		using KeyDownEvent = Signal<KeyCode, KeyModifier, bool>;
-		using KeyUpEvent = Signal<KeyCode, KeyModifier>;
-		using TextInputEvent = Signal<const std::string&>;
+		using KeyDownSignal = Signal<KeyCode, KeyModifier, bool>;
+		using KeyUpSignal = Signal<KeyCode, KeyModifier>;
+		using TextInputSignal = Signal<const std::string&>;
 
-		using MouseButtonEvent = Signal<MouseButton, Point<int>>;
-		using MouseMotionEvent = Signal<Point<int>, Vector<int>>;
-		using MouseWheelEvent = Signal<Vector<int>>;
+		using MouseButtonSignal = Signal<MouseButton, Point<int>>;
+		using MouseMotionSignal = Signal<Point<int>, Vector<int>>;
+		using MouseWheelSignal = Signal<Vector<int>>;
 
-		using QuitEvent = Signal<>;
+		using QuitSignal = Signal<>;
 
 	public:
-		ActivateEvent::Source& activate();
+		ActivateSignal::Source& activate();
 
-		WindowHiddenEvent::Source& windowHidden();
-		WindowExposedEvent::Source& windowExposed();
+		WindowHiddenSignal::Source& windowHidden();
+		WindowExposedSignal::Source& windowExposed();
 
-		WindowMinimizedEvent::Source& windowMinimized();
-		WindowMaximizedEvent::Source& windowMaximized();
-		WindowRestoredEvent::Source& windowRestored();
-		WindowResizedEvent::Source& windowResized();
+		WindowMinimizedSignal::Source& windowMinimized();
+		WindowMaximizedSignal::Source& windowMaximized();
+		WindowRestoredSignal::Source& windowRestored();
+		WindowResizedSignal::Source& windowResized();
 
-		WindowMouseEnterEvent::Source& windowMouseEnter();
-		WindowMouseLeaveEvent::Source& windowMouseLeave();
+		WindowMouseEnterSignal::Source& windowMouseEnter();
+		WindowMouseLeaveSignal::Source& windowMouseLeave();
 
-		JoystickAxisMotionEvent::Source& joystickAxisMotion();
-		JoystickBallMotionEvent::Source& joystickBallMotion();
-		JoystickButtonEvent::Source& joystickButtonUp();
-		JoystickButtonEvent::Source& joystickButtonDown();
-		JoystickHatMotionEvent::Source& joystickHatMotion();
+		JoystickAxisMotionSignal::Source& joystickAxisMotion();
+		JoystickBallMotionSignal::Source& joystickBallMotion();
+		JoystickButtonSignal::Source& joystickButtonUp();
+		JoystickButtonSignal::Source& joystickButtonDown();
+		JoystickHatMotionSignal::Source& joystickHatMotion();
 
-		KeyUpEvent::Source& keyUp();
-		KeyDownEvent::Source& keyDown();
+		KeyUpSignal::Source& keyUp();
+		KeyDownSignal::Source& keyDown();
 
-		TextInputEvent::Source& textInput();
+		TextInputSignal::Source& textInput();
 
-		MouseButtonEvent::Source& mouseButtonUp();
-		MouseButtonEvent::Source& mouseButtonDown();
-		MouseButtonEvent::Source& mouseDoubleClick();
-		MouseMotionEvent::Source& mouseMotion();
-		MouseWheelEvent::Source& mouseWheel();
+		MouseButtonSignal::Source& mouseButtonUp();
+		MouseButtonSignal::Source& mouseButtonDown();
+		MouseButtonSignal::Source& mouseDoubleClick();
+		MouseMotionSignal::Source& mouseMotion();
+		MouseWheelSignal::Source& mouseWheel();
 
-		QuitEvent::Source& quit();
+		QuitSignal::Source& quit();
 
 		void grabMouse();
 		void releaseMouse();
@@ -111,35 +111,35 @@ namespace NAS2D
 		void disconnectAll();
 
 	private:
-		ActivateEvent mActivateEvent{};
+		ActivateSignal mActivateSignal{};
 
-		WindowHiddenEvent mWindowHiddenEvent{};
-		WindowExposedEvent mWindowExposedEvent{};
-		WindowMinimizedEvent mWindowMinimizedEvent{};
-		WindowMaximizedEvent mWindowMaximizedEvent{};
-		WindowRestoredEvent mWindowRestoredEvent{};
-		WindowResizedEvent mWindowResizedEvent{};
-		WindowMouseEnterEvent mWindowMouseEnterEvent{};
-		WindowMouseLeaveEvent mWindowMouseLeaveEvent{};
+		WindowHiddenSignal mWindowHiddenSignal{};
+		WindowExposedSignal mWindowExposedSignal{};
+		WindowMinimizedSignal mWindowMinimizedSignal{};
+		WindowMaximizedSignal mWindowMaximizedSignal{};
+		WindowRestoredSignal mWindowRestoredSignal{};
+		WindowResizedSignal mWindowResizedSignal{};
+		WindowMouseEnterSignal mWindowMouseEnterSignal{};
+		WindowMouseLeaveSignal mWindowMouseLeaveSignal{};
 
-		JoystickAxisMotionEvent mJoystickAxisMotionEvent{};
-		JoystickBallMotionEvent mJoystickBallMotionEvent{};
-		JoystickButtonEvent mJoystickButtonUpEvent{};
-		JoystickButtonEvent mJoystickButtonDownEvent{};
-		JoystickHatMotionEvent mJoystickHatMotionEvent{};
+		JoystickAxisMotionSignal mJoystickAxisMotionSignal{};
+		JoystickBallMotionSignal mJoystickBallMotionSignal{};
+		JoystickButtonSignal mJoystickButtonUpSignal{};
+		JoystickButtonSignal mJoystickButtonDownSignal{};
+		JoystickHatMotionSignal mJoystickHatMotionSignal{};
 
-		KeyDownEvent mKeyDownEvent{};
-		KeyUpEvent mKeyUpEvent{};
+		KeyDownSignal mKeyDownSignal{};
+		KeyUpSignal mKeyUpSignal{};
 
-		TextInputEvent mTextInputEvent{};
+		TextInputSignal mTextInputSignal{};
 
-		MouseButtonEvent mMouseButtonDownEvent{};
-		MouseButtonEvent mMouseButtonUpEvent{};
-		MouseButtonEvent mMouseDoubleClickEvent{};
-		MouseMotionEvent mMouseMotionEvent{};
-		MouseWheelEvent mMouseWheelEvent{};
+		MouseButtonSignal mMouseButtonDownSignal{};
+		MouseButtonSignal mMouseButtonUpSignal{};
+		MouseButtonSignal mMouseDoubleClickSignal{};
+		MouseMotionSignal mMouseMotionSignal{};
+		MouseWheelSignal mMouseWheelSignal{};
 
-		QuitEvent mQuitEvent{};
+		QuitSignal mQuitSignal{};
 	};
 
 	void postQuitEvent();

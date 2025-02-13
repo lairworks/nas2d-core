@@ -1,4 +1,5 @@
 #include "NAS2D/EventHandler.h"
+#include "NAS2D/EventHandlerKeyModifier.h"
 
 #include <gtest/gtest.h>
 

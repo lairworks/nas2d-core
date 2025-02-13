@@ -8,7 +8,11 @@
 // = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 #include "EventHandler.h"
+
+#include "EventHandlerKeyModifier.h"
+
 #include <SDL2/SDL.h>
+
 
 // UGLY ASS HACK!
 // This is required for mouse grabbing in the EventHandler class.

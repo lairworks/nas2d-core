@@ -182,6 +182,15 @@
     <ClInclude Include="EventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EventHandlerKeyCode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandlerKeyModifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandlerMouseButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Filesystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>

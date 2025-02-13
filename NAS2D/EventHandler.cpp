@@ -824,16 +824,25 @@ bool EventHandler::control() const
 void EventHandler::disconnectAll()
 {
 	mActivateEvent.clear();
+	mWindowHiddenEvent.clear();
+	mWindowExposedEvent.clear();
+	mWindowMinimizedEvent.clear();
+	mWindowMaximizedEvent.clear();
+	mWindowRestoredEvent.clear();
+	mWindowResizedEvent.clear();
+	mWindowMouseEnterEvent.clear();
+	mWindowMouseLeaveEvent.clear();
 	mJoystickAxisMotionEvent.clear();
 	mJoystickBallMotionEvent.clear();
 	mJoystickButtonUpEvent.clear();
 	mJoystickButtonDownEvent.clear();
 	mJoystickHatMotionEvent.clear();
-	mKeyUpEvent.clear();
 	mKeyDownEvent.clear();
+	mKeyUpEvent.clear();
 	mTextInputEvent.clear();
-	mMouseButtonUpEvent.clear();
 	mMouseButtonDownEvent.clear();
+	mMouseButtonUpEvent.clear();
+	mMouseDoubleClickEvent.clear();
 	mMouseMotionEvent.clear();
 	mMouseWheelEvent.clear();
 	mQuitEvent.clear();

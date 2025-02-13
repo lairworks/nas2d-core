@@ -78,9 +78,9 @@ namespace NAS2D
  *
  * \arg \c gained Bool value indicating whether or not the app lost focus.
  */
-EventHandler::ActivateEventSource& EventHandler::activate()
+EventHandler::ActivateSignal::Source& EventHandler::activate()
 {
-	return mActivateEvent;
+	return mActivateSignal;
 }
 
 
@@ -100,9 +100,9 @@ EventHandler::ActivateEventSource& EventHandler::activate()
  *
  * \arg \c gained Bool value indicating whether or not the window was hidden.
  */
-EventHandler::WindowHiddenEventSource& EventHandler::windowHidden()
+EventHandler::WindowHiddenSignal::Source& EventHandler::windowHidden()
 {
-	return mWindowHiddenEvent;
+	return mWindowHiddenSignal;
 }
 
 
@@ -120,9 +120,9 @@ EventHandler::WindowHiddenEventSource& EventHandler::windowHidden()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowExposedEventSource& EventHandler::windowExposed()
+EventHandler::WindowExposedSignal::Source& EventHandler::windowExposed()
 {
-	return mWindowExposedEvent;
+	return mWindowExposedSignal;
 }
 
 
@@ -140,9 +140,9 @@ EventHandler::WindowExposedEventSource& EventHandler::windowExposed()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowMinimizedEventSource& EventHandler::windowMinimized()
+EventHandler::WindowMinimizedSignal::Source& EventHandler::windowMinimized()
 {
-	return mWindowMinimizedEvent;
+	return mWindowMinimizedSignal;
 }
 
 
@@ -160,9 +160,9 @@ EventHandler::WindowMinimizedEventSource& EventHandler::windowMinimized()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowMaximizedEventSource& EventHandler::windowMaximized()
+EventHandler::WindowMaximizedSignal::Source& EventHandler::windowMaximized()
 {
-	return mWindowMaximizedEvent;
+	return mWindowMaximizedSignal;
 }
 
 
@@ -180,9 +180,9 @@ EventHandler::WindowMaximizedEventSource& EventHandler::windowMaximized()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowRestoredEventSource& EventHandler::windowRestored()
+EventHandler::WindowRestoredSignal::Source& EventHandler::windowRestored()
 {
-	return mWindowRestoredEvent;
+	return mWindowRestoredSignal;
 }
 
 
@@ -200,9 +200,9 @@ EventHandler::WindowRestoredEventSource& EventHandler::windowRestored()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowResizedEventSource& EventHandler::windowResized()
+EventHandler::WindowResizedSignal::Source& EventHandler::windowResized()
 {
-	return mWindowResizedEvent;
+	return mWindowResizedSignal;
 }
 
 
@@ -220,9 +220,9 @@ EventHandler::WindowResizedEventSource& EventHandler::windowResized()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowMouseEnterEventSource& EventHandler::windowMouseEnter()
+EventHandler::WindowMouseEnterSignal::Source& EventHandler::windowMouseEnter()
 {
-	return mWindowMouseEnterEvent;
+	return mWindowMouseEnterSignal;
 }
 
 
@@ -240,9 +240,9 @@ EventHandler::WindowMouseEnterEventSource& EventHandler::windowMouseEnter()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowMouseLeaveEventSource& EventHandler::windowMouseLeave()
+EventHandler::WindowMouseLeaveSignal::Source& EventHandler::windowMouseLeave()
 {
-	return mWindowMouseLeaveEvent;
+	return mWindowMouseLeaveSignal;
 }
 
 
@@ -266,9 +266,9 @@ EventHandler::WindowMouseLeaveEventSource& EventHandler::windowMouseLeave()
  * Some joysticks use additional axis as buttons.
  * \arg \c pos Current position of the axis.
  */
-EventHandler::JoystickAxisMotionEventSource& EventHandler::joystickAxisMotion()
+EventHandler::JoystickAxisMotionSignal::Source& EventHandler::joystickAxisMotion()
 {
-	return mJoystickAxisMotionEvent;
+	return mJoystickAxisMotionSignal;
 }
 
 
@@ -291,9 +291,9 @@ EventHandler::JoystickAxisMotionEventSource& EventHandler::joystickAxisMotion()
  * \arg \c ballId Trackball ID.
  * \arg \c change Change in relative position.
  */
-EventHandler::JoystickBallMotionEventSource& EventHandler::joystickBallMotion()
+EventHandler::JoystickBallMotionSignal::Source& EventHandler::joystickBallMotion()
 {
-	return mJoystickBallMotionEvent;
+	return mJoystickBallMotionSignal;
 }
 
 
@@ -316,9 +316,9 @@ EventHandler::JoystickBallMotionEventSource& EventHandler::joystickBallMotion()
  * \arg \c deviceId	Joystick ID which this event was generated from.
  * \arg \c buttonId	Button ID which the event was generated from.
  */
-EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonUp()
+EventHandler::JoystickButtonSignal::Source& EventHandler::joystickButtonUp()
 {
-	return mJoystickButtonUpEvent;
+	return mJoystickButtonUpSignal;
 }
 
 
@@ -341,9 +341,9 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonUp()
  * \arg \c deviceId	Joystick ID which this event was generated from.
  * \arg \c buttonId	Button ID which the event was generated from.
  */
-EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonDown()
+EventHandler::JoystickButtonSignal::Source& EventHandler::joystickButtonDown()
 {
-	return mJoystickButtonDownEvent;
+	return mJoystickButtonDownSignal;
 }
 
 
@@ -366,9 +366,9 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonDown()
  * \arg \c hatId	Hat ID.
  * \arg \c pos		Current position of the hat.
  */
-EventHandler::JoystickHatMotionEventSource& EventHandler::joystickHatMotion()
+EventHandler::JoystickHatMotionSignal::Source& EventHandler::joystickHatMotion()
 {
-	return mJoystickHatMotionEvent;
+	return mJoystickHatMotionSignal;
 }
 
 
@@ -391,9 +391,9 @@ EventHandler::JoystickHatMotionEventSource& EventHandler::joystickHatMotion()
  * \arg \c mod		Keyboard modifier.
  * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
  */
-EventHandler::KeyDownEventSource& EventHandler::keyDown()
+EventHandler::KeyDownSignal::Source& EventHandler::keyDown()
 {
-	return mKeyDownEvent;
+	return mKeyDownSignal;
 }
 
 
@@ -415,9 +415,9 @@ EventHandler::KeyDownEventSource& EventHandler::keyDown()
  * \arg \c key		KeyCode representing a key on the keyboard.
  * \arg \c mod		Keyboard modifier.
  */
-EventHandler::KeyUpEventSource& EventHandler::keyUp()
+EventHandler::KeyUpSignal::Source& EventHandler::keyUp()
 {
-	return mKeyUpEvent;
+	return mKeyUpSignal;
 }
 
 
@@ -435,9 +435,9 @@ EventHandler::KeyUpEventSource& EventHandler::keyUp()
  * void function(const std::string&);
  * \endcode
  */
-EventHandler::TextInputEventSource& EventHandler::textInput()
+EventHandler::TextInputSignal::Source& EventHandler::textInput()
 {
-	return mTextInput;
+	return mTextInputSignal;
 }
 
 
@@ -459,9 +459,9 @@ EventHandler::TextInputEventSource& EventHandler::textInput()
  * \arg \c button: MouseButton value indicating which button is pressed.
  * \arg \c position: Position of the mouse button event.
  */
-EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
+EventHandler::MouseButtonSignal::Source& EventHandler::mouseButtonDown()
 {
-	return mMouseButtonDownEvent;
+	return mMouseButtonDownSignal;
 }
 
 
@@ -483,9 +483,9 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
  * \arg \c button: MouseButton value indicating which button is pressed.
  * \arg \c position: Position of the mouse button event.
  */
-EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
+EventHandler::MouseButtonSignal::Source& EventHandler::mouseButtonUp()
 {
-	return mMouseButtonUpEvent;
+	return mMouseButtonUpSignal;
 }
 
 
@@ -507,9 +507,9 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
  * \arg \c button: MouseButton value indicating which button is pressed.
  * \arg \c position: Position of the mouse button event.
  */
-EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
+EventHandler::MouseButtonSignal::Source& EventHandler::mouseDoubleClick()
 {
-	return mMouseDoubleClick;
+	return mMouseDoubleClickSignal;
 }
 
 
@@ -531,9 +531,9 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
  * \arg \c position: Absolute position of the mouse.
  * \arg \c change: position of the mouse relative to its last position.
  */
-EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
+EventHandler::MouseMotionSignal::Source& EventHandler::mouseMotion()
 {
-	return mMouseMotionEvent;
+	return mMouseMotionSignal;
 }
 
 
@@ -559,9 +559,9 @@ EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
  * more than one (on Windows this value is typical 120,
  * not 1).
  */
-EventHandler::MouseWheelEventSource& EventHandler::mouseWheel()
+EventHandler::MouseWheelSignal::Source& EventHandler::mouseWheel()
 {
-	return mMouseWheelEvent;
+	return mMouseWheelSignal;
 }
 
 
@@ -579,9 +579,9 @@ EventHandler::MouseWheelEventSource& EventHandler::mouseWheel()
  * void function(void);
  * \endcode
  */
-EventHandler::QuitEventSource& EventHandler::quit()
+EventHandler::QuitSignal::Source& EventHandler::quit()
 {
-	return mQuitEvent;
+	return mQuitSignal;
 }
 
 
@@ -617,7 +617,7 @@ void EventHandler::warpMouse(int x, int y)
 	if (underlyingWindow)
 	{
 		SDL_WarpMouseInWindow(underlyingWindow, x, y);
-		mMouseMotionEvent.emit({x, y}, {0, 0});
+		mMouseMotionSignal.emit({x, y}, {0, 0});
 	}
 }
 
@@ -646,75 +646,75 @@ void EventHandler::pump()
 		switch (event.type)
 		{
 		case SDL_MOUSEMOTION:
-			mMouseMotionEvent({event.motion.x, event.motion.y}, {event.motion.xrel, event.motion.yrel});
+			mMouseMotionSignal({event.motion.x, event.motion.y}, {event.motion.xrel, event.motion.yrel});
 			break;
 
 		case SDL_KEYDOWN:
-			mKeyDownEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod), event.key.repeat != 0 ? true : false);
+			mKeyDownSignal(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod), event.key.repeat != 0 ? true : false);
 			break;
 
 		case SDL_KEYUP:
-			mKeyUpEvent(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
+			mKeyUpSignal(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
 			break;
 
 		case SDL_TEXTINPUT:
-			mTextInput(event.text.text);
+			mTextInputSignal(event.text.text);
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.clicks == 2)
 			{
-				mMouseDoubleClick(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
+				mMouseDoubleClickSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
 			}
 
-			mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
+			mMouseButtonDownSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			mMouseButtonUpEvent(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
+			mMouseButtonUpSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
 			break;
 
 		case SDL_MOUSEWHEEL:
-			mMouseWheelEvent({event.wheel.x, event.wheel.y});
+			mMouseWheelSignal({event.wheel.x, event.wheel.y});
 			break;
 
 		case SDL_JOYAXISMOTION:
-			mJoystickAxisMotionEvent(event.jaxis.which, event.jaxis.axis, event.jaxis.value);
+			mJoystickAxisMotionSignal(event.jaxis.which, event.jaxis.axis, event.jaxis.value);
 			break;
 
 		case SDL_JOYBALLMOTION:
-			mJoystickBallMotionEvent(event.jball.which, event.jball.ball, {event.jball.xrel, event.jball.yrel});
+			mJoystickBallMotionSignal(event.jball.which, event.jball.ball, {event.jball.xrel, event.jball.yrel});
 			break;
 
 		case SDL_JOYHATMOTION:
-			mJoystickHatMotionEvent(event.jhat.which, event.jhat.hat, event.jhat.value);
+			mJoystickHatMotionSignal(event.jhat.which, event.jhat.hat, event.jhat.value);
 			break;
 
 		case SDL_JOYBUTTONDOWN:
-			mJoystickButtonDownEvent(event.jbutton.which, event.jbutton.button);
+			mJoystickButtonDownSignal(event.jbutton.which, event.jbutton.button);
 			break;
 
 		case SDL_JOYBUTTONUP:
-			mJoystickButtonUpEvent(event.jbutton.which, event.jbutton.button);
+			mJoystickButtonUpSignal(event.jbutton.which, event.jbutton.button);
 			break;
 
 		case SDL_WINDOWEVENT:
 			// Not completely happy with this but meh, it works.
-			if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) { mActivateEvent(true); }
-			else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) { mActivateEvent(false); }
-			else if (event.window.event == SDL_WINDOWEVENT_SHOWN) { mWindowHiddenEvent(false); }
-			else if (event.window.event == SDL_WINDOWEVENT_HIDDEN) { mWindowHiddenEvent(true); }
-			else if (event.window.event == SDL_WINDOWEVENT_EXPOSED) { mWindowExposedEvent(); }
-			else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) { mWindowMinimizedEvent(); }
-			else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED) { mWindowMaximizedEvent(); }
-			else if (event.window.event == SDL_WINDOWEVENT_RESTORED) { mWindowRestoredEvent(); }
-			else if (event.window.event == SDL_WINDOWEVENT_ENTER) { mWindowMouseEnterEvent(); }
-			else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { mWindowMouseLeaveEvent(); }
-			else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedEvent({event.window.data1, event.window.data2}); }
+			if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) { mActivateSignal(true); }
+			else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) { mActivateSignal(false); }
+			else if (event.window.event == SDL_WINDOWEVENT_SHOWN) { mWindowHiddenSignal(false); }
+			else if (event.window.event == SDL_WINDOWEVENT_HIDDEN) { mWindowHiddenSignal(true); }
+			else if (event.window.event == SDL_WINDOWEVENT_EXPOSED) { mWindowExposedSignal(); }
+			else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) { mWindowMinimizedSignal(); }
+			else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED) { mWindowMaximizedSignal(); }
+			else if (event.window.event == SDL_WINDOWEVENT_RESTORED) { mWindowRestoredSignal(); }
+			else if (event.window.event == SDL_WINDOWEVENT_ENTER) { mWindowMouseEnterSignal(); }
+			else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { mWindowMouseLeaveSignal(); }
+			else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedSignal({event.window.data1, event.window.data2}); }
 			break;
 
 		case SDL_QUIT:
-			mQuitEvent();
+			mQuitSignal();
 			break;
 
 		default:
@@ -823,20 +823,29 @@ bool EventHandler::control() const
  */
 void EventHandler::disconnectAll()
 {
-	mActivateEvent.clear();
-	mJoystickAxisMotionEvent.clear();
-	mJoystickBallMotionEvent.clear();
-	mJoystickButtonUpEvent.clear();
-	mJoystickButtonDownEvent.clear();
-	mJoystickHatMotionEvent.clear();
-	mKeyUpEvent.clear();
-	mKeyDownEvent.clear();
-	mTextInput.clear();
-	mMouseButtonUpEvent.clear();
-	mMouseButtonDownEvent.clear();
-	mMouseMotionEvent.clear();
-	mMouseWheelEvent.clear();
-	mQuitEvent.clear();
+	mActivateSignal.clear();
+	mWindowHiddenSignal.clear();
+	mWindowExposedSignal.clear();
+	mWindowMinimizedSignal.clear();
+	mWindowMaximizedSignal.clear();
+	mWindowRestoredSignal.clear();
+	mWindowResizedSignal.clear();
+	mWindowMouseEnterSignal.clear();
+	mWindowMouseLeaveSignal.clear();
+	mJoystickAxisMotionSignal.clear();
+	mJoystickBallMotionSignal.clear();
+	mJoystickButtonUpSignal.clear();
+	mJoystickButtonDownSignal.clear();
+	mJoystickHatMotionSignal.clear();
+	mKeyDownSignal.clear();
+	mKeyUpSignal.clear();
+	mTextInputSignal.clear();
+	mMouseButtonDownSignal.clear();
+	mMouseButtonUpSignal.clear();
+	mMouseDoubleClickSignal.clear();
+	mMouseMotionSignal.clear();
+	mMouseWheelSignal.clear();
+	mQuitSignal.clear();
 }
 
 

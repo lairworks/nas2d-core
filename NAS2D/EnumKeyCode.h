@@ -16,8 +16,8 @@ namespace
 
 enum class NAS2D::KeyCode : uint32_t
 {
-	KEY_UNKNOWN = 0,
 	KEY_FIRST = 0,
+	KEY_UNKNOWN = 0,
 	KEY_BACKSPACE = '\b',
 	KEY_TAB = '\t',
 	KEY_RETURN = '\r',

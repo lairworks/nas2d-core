@@ -30,10 +30,6 @@ namespace NAS2D
 	class EventHandler
 	{
 	public:
-		using KeyModifier = NAS2D::KeyModifier;
-		using KeyCode = NAS2D::KeyCode;
-		using MouseButton = NAS2D::MouseButton;
-
 		using ActivateSignal = Signal<bool>;
 		using WindowHiddenSignal = Signal<bool>;
 		using WindowExposedSignal = Signal<>;

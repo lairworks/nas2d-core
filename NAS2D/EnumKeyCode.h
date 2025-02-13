@@ -188,6 +188,6 @@ namespace NAS2D
 		KEY_AUDIO_MUTE = scanCodeToKeyCode(262),
 
 		// Additional Keys here
-		KEY_LAST
+		KEY_LAST,
 	};
 }

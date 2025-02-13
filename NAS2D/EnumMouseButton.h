@@ -8,6 +8,6 @@ namespace NAS2D
 		None,
 		Left,
 		Middle,
-		Right
+		Right,
 	};
 }

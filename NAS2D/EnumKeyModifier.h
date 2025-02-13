@@ -23,7 +23,7 @@ namespace NAS2D
 		Num = 0x1000,
 		Caps = 0x2000,
 		Mode = 0x4000,
-		Reserved = 0x8000
+		Reserved = 0x8000,
 	};
 
 

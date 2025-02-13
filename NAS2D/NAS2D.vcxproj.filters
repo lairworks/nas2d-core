@@ -42,6 +42,9 @@
     <ClCompile Include="Configuration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EnumKeyModifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="EventHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -182,16 +185,16 @@
     <ClInclude Include="Documentation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnumKeyCode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumKeyModifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumMouseButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="EventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EventHandlerKeyCode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EventHandlerKeyModifier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EventHandlerMouseButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Filesystem.h">

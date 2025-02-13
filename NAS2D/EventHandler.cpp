@@ -78,7 +78,7 @@ namespace NAS2D
  *
  * \arg \c gained Bool value indicating whether or not the app lost focus.
  */
-EventHandler::ActivateEventSource& EventHandler::activate()
+EventHandler::ActivateEvent::Source& EventHandler::activate()
 {
 	return mActivateEvent;
 }
@@ -100,7 +100,7 @@ EventHandler::ActivateEventSource& EventHandler::activate()
  *
  * \arg \c gained Bool value indicating whether or not the window was hidden.
  */
-EventHandler::WindowHiddenEventSource& EventHandler::windowHidden()
+EventHandler::WindowHiddenEvent::Source& EventHandler::windowHidden()
 {
 	return mWindowHiddenEvent;
 }
@@ -120,7 +120,7 @@ EventHandler::WindowHiddenEventSource& EventHandler::windowHidden()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowExposedEventSource& EventHandler::windowExposed()
+EventHandler::WindowExposedEvent::Source& EventHandler::windowExposed()
 {
 	return mWindowExposedEvent;
 }
@@ -140,7 +140,7 @@ EventHandler::WindowExposedEventSource& EventHandler::windowExposed()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowMinimizedEventSource& EventHandler::windowMinimized()
+EventHandler::WindowMinimizedEvent::Source& EventHandler::windowMinimized()
 {
 	return mWindowMinimizedEvent;
 }
@@ -160,7 +160,7 @@ EventHandler::WindowMinimizedEventSource& EventHandler::windowMinimized()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowMaximizedEventSource& EventHandler::windowMaximized()
+EventHandler::WindowMaximizedEvent::Source& EventHandler::windowMaximized()
 {
 	return mWindowMaximizedEvent;
 }
@@ -180,7 +180,7 @@ EventHandler::WindowMaximizedEventSource& EventHandler::windowMaximized()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowRestoredEventSource& EventHandler::windowRestored()
+EventHandler::WindowRestoredEvent::Source& EventHandler::windowRestored()
 {
 	return mWindowRestoredEvent;
 }
@@ -200,7 +200,7 @@ EventHandler::WindowRestoredEventSource& EventHandler::windowRestored()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowResizedEventSource& EventHandler::windowResized()
+EventHandler::WindowResizedEvent::Source& EventHandler::windowResized()
 {
 	return mWindowResizedEvent;
 }
@@ -220,7 +220,7 @@ EventHandler::WindowResizedEventSource& EventHandler::windowResized()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowMouseEnterEventSource& EventHandler::windowMouseEnter()
+EventHandler::WindowMouseEnterEvent::Source& EventHandler::windowMouseEnter()
 {
 	return mWindowMouseEnterEvent;
 }
@@ -240,7 +240,7 @@ EventHandler::WindowMouseEnterEventSource& EventHandler::windowMouseEnter()
  * void function(void);
  * \endcode
  */
-EventHandler::WindowMouseLeaveEventSource& EventHandler::windowMouseLeave()
+EventHandler::WindowMouseLeaveEvent::Source& EventHandler::windowMouseLeave()
 {
 	return mWindowMouseLeaveEvent;
 }
@@ -266,7 +266,7 @@ EventHandler::WindowMouseLeaveEventSource& EventHandler::windowMouseLeave()
  * Some joysticks use additional axis as buttons.
  * \arg \c pos Current position of the axis.
  */
-EventHandler::JoystickAxisMotionEventSource& EventHandler::joystickAxisMotion()
+EventHandler::JoystickAxisMotionEvent::Source& EventHandler::joystickAxisMotion()
 {
 	return mJoystickAxisMotionEvent;
 }
@@ -291,7 +291,7 @@ EventHandler::JoystickAxisMotionEventSource& EventHandler::joystickAxisMotion()
  * \arg \c ballId Trackball ID.
  * \arg \c change Change in relative position.
  */
-EventHandler::JoystickBallMotionEventSource& EventHandler::joystickBallMotion()
+EventHandler::JoystickBallMotionEvent::Source& EventHandler::joystickBallMotion()
 {
 	return mJoystickBallMotionEvent;
 }
@@ -316,7 +316,7 @@ EventHandler::JoystickBallMotionEventSource& EventHandler::joystickBallMotion()
  * \arg \c deviceId	Joystick ID which this event was generated from.
  * \arg \c buttonId	Button ID which the event was generated from.
  */
-EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonUp()
+EventHandler::JoystickButtonEvent::Source& EventHandler::joystickButtonUp()
 {
 	return mJoystickButtonUpEvent;
 }
@@ -341,7 +341,7 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonUp()
  * \arg \c deviceId	Joystick ID which this event was generated from.
  * \arg \c buttonId	Button ID which the event was generated from.
  */
-EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonDown()
+EventHandler::JoystickButtonEvent::Source& EventHandler::joystickButtonDown()
 {
 	return mJoystickButtonDownEvent;
 }
@@ -366,7 +366,7 @@ EventHandler::JoystickButtonEventSource& EventHandler::joystickButtonDown()
  * \arg \c hatId	Hat ID.
  * \arg \c pos		Current position of the hat.
  */
-EventHandler::JoystickHatMotionEventSource& EventHandler::joystickHatMotion()
+EventHandler::JoystickHatMotionEvent::Source& EventHandler::joystickHatMotion()
 {
 	return mJoystickHatMotionEvent;
 }
@@ -391,7 +391,7 @@ EventHandler::JoystickHatMotionEventSource& EventHandler::joystickHatMotion()
  * \arg \c mod		Keyboard modifier.
  * \arg \c repeat	Indicates that this event is a repeat and not an initial key event.
  */
-EventHandler::KeyDownEventSource& EventHandler::keyDown()
+EventHandler::KeyDownEvent::Source& EventHandler::keyDown()
 {
 	return mKeyDownEvent;
 }
@@ -415,7 +415,7 @@ EventHandler::KeyDownEventSource& EventHandler::keyDown()
  * \arg \c key		KeyCode representing a key on the keyboard.
  * \arg \c mod		Keyboard modifier.
  */
-EventHandler::KeyUpEventSource& EventHandler::keyUp()
+EventHandler::KeyUpEvent::Source& EventHandler::keyUp()
 {
 	return mKeyUpEvent;
 }
@@ -435,7 +435,7 @@ EventHandler::KeyUpEventSource& EventHandler::keyUp()
  * void function(const std::string&);
  * \endcode
  */
-EventHandler::TextInputEventSource& EventHandler::textInput()
+EventHandler::TextInputEvent::Source& EventHandler::textInput()
 {
 	return mTextInput;
 }
@@ -459,7 +459,7 @@ EventHandler::TextInputEventSource& EventHandler::textInput()
  * \arg \c button: MouseButton value indicating which button is pressed.
  * \arg \c position: Position of the mouse button event.
  */
-EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
+EventHandler::MouseButtonEvent::Source& EventHandler::mouseButtonDown()
 {
 	return mMouseButtonDownEvent;
 }
@@ -483,7 +483,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonDown()
  * \arg \c button: MouseButton value indicating which button is pressed.
  * \arg \c position: Position of the mouse button event.
  */
-EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
+EventHandler::MouseButtonEvent::Source& EventHandler::mouseButtonUp()
 {
 	return mMouseButtonUpEvent;
 }
@@ -507,7 +507,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseButtonUp()
  * \arg \c button: MouseButton value indicating which button is pressed.
  * \arg \c position: Position of the mouse button event.
  */
-EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
+EventHandler::MouseButtonEvent::Source& EventHandler::mouseDoubleClick()
 {
 	return mMouseDoubleClick;
 }
@@ -531,7 +531,7 @@ EventHandler::MouseButtonEventSource& EventHandler::mouseDoubleClick()
  * \arg \c position: Absolute position of the mouse.
  * \arg \c change: position of the mouse relative to its last position.
  */
-EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
+EventHandler::MouseMotionEvent::Source& EventHandler::mouseMotion()
 {
 	return mMouseMotionEvent;
 }
@@ -559,7 +559,7 @@ EventHandler::MouseMotionEventSource& EventHandler::mouseMotion()
  * more than one (on Windows this value is typical 120,
  * not 1).
  */
-EventHandler::MouseWheelEventSource& EventHandler::mouseWheel()
+EventHandler::MouseWheelEvent::Source& EventHandler::mouseWheel()
 {
 	return mMouseWheelEvent;
 }
@@ -579,7 +579,7 @@ EventHandler::MouseWheelEventSource& EventHandler::mouseWheel()
  * void function(void);
  * \endcode
  */
-EventHandler::QuitEventSource& EventHandler::quit()
+EventHandler::QuitEvent::Source& EventHandler::quit()
 {
 	return mQuitEvent;
 }

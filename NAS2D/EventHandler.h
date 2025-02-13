@@ -31,63 +31,63 @@ namespace NAS2D
 		enum class MouseButton;
 
 
-		using ActivateEventSource = SignalSource<bool>;
-		using WindowHiddenEventSource = SignalSource<bool>;
-		using WindowExposedEventSource = SignalSource<>;
-		using WindowMinimizedEventSource = SignalSource<>;
-		using WindowMaximizedEventSource = SignalSource<>;
-		using WindowRestoredEventSource = SignalSource<>;
-		using WindowResizedEventSource = SignalSource<Vector<int>>;
-		using WindowMouseEnterEventSource = SignalSource<>;
-		using WindowMouseLeaveEventSource = SignalSource<>;
+		using ActivateEvent = Signal<bool>;
+		using WindowHiddenEvent = Signal<bool>;
+		using WindowExposedEvent = Signal<>;
+		using WindowMinimizedEvent = Signal<>;
+		using WindowMaximizedEvent = Signal<>;
+		using WindowRestoredEvent = Signal<>;
+		using WindowResizedEvent = Signal<Vector<int>>;
+		using WindowMouseEnterEvent = Signal<>;
+		using WindowMouseLeaveEvent = Signal<>;
 
-		using JoystickAxisMotionEventSource = SignalSource<int, int, int>;
-		using JoystickBallMotionEventSource = SignalSource<int, int, Vector<int>>;
-		using JoystickButtonEventSource = SignalSource<int, int>;
-		using JoystickHatMotionEventSource = SignalSource<int, int, int>;
+		using JoystickAxisMotionEvent = Signal<int, int, int>;
+		using JoystickBallMotionEvent = Signal<int, int, Vector<int>>;
+		using JoystickButtonEvent = Signal<int, int>;
+		using JoystickHatMotionEvent = Signal<int, int, int>;
 
-		using KeyDownEventSource = SignalSource<KeyCode, KeyModifier, bool>;
-		using KeyUpEventSource = SignalSource<KeyCode, KeyModifier>;
-		using TextInputEventSource = SignalSource<const std::string&>;
+		using KeyDownEvent = Signal<KeyCode, KeyModifier, bool>;
+		using KeyUpEvent = Signal<KeyCode, KeyModifier>;
+		using TextInputEvent = Signal<const std::string&>;
 
-		using MouseButtonEventSource = SignalSource<MouseButton, Point<int>>;
-		using MouseMotionEventSource = SignalSource<Point<int>, Vector<int>>;
-		using MouseWheelEventSource = SignalSource<Vector<int>>;
+		using MouseButtonEvent = Signal<MouseButton, Point<int>>;
+		using MouseMotionEvent = Signal<Point<int>, Vector<int>>;
+		using MouseWheelEvent = Signal<Vector<int>>;
 
-		using QuitEventSource = SignalSource<>;
+		using QuitEvent = Signal<>;
 
 	public:
-		ActivateEventSource& activate();
+		ActivateEvent::Source& activate();
 
-		WindowHiddenEventSource& windowHidden();
-		WindowExposedEventSource& windowExposed();
+		WindowHiddenEvent::Source& windowHidden();
+		WindowExposedEvent::Source& windowExposed();
 
-		WindowMinimizedEventSource& windowMinimized();
-		WindowMaximizedEventSource& windowMaximized();
-		WindowRestoredEventSource& windowRestored();
-		WindowResizedEventSource& windowResized();
+		WindowMinimizedEvent::Source& windowMinimized();
+		WindowMaximizedEvent::Source& windowMaximized();
+		WindowRestoredEvent::Source& windowRestored();
+		WindowResizedEvent::Source& windowResized();
 
-		WindowMouseEnterEventSource& windowMouseEnter();
-		WindowMouseLeaveEventSource& windowMouseLeave();
+		WindowMouseEnterEvent::Source& windowMouseEnter();
+		WindowMouseLeaveEvent::Source& windowMouseLeave();
 
-		JoystickAxisMotionEventSource& joystickAxisMotion();
-		JoystickBallMotionEventSource& joystickBallMotion();
-		JoystickButtonEventSource& joystickButtonUp();
-		JoystickButtonEventSource& joystickButtonDown();
-		JoystickHatMotionEventSource& joystickHatMotion();
+		JoystickAxisMotionEvent::Source& joystickAxisMotion();
+		JoystickBallMotionEvent::Source& joystickBallMotion();
+		JoystickButtonEvent::Source& joystickButtonUp();
+		JoystickButtonEvent::Source& joystickButtonDown();
+		JoystickHatMotionEvent::Source& joystickHatMotion();
 
-		KeyUpEventSource& keyUp();
-		KeyDownEventSource& keyDown();
+		KeyUpEvent::Source& keyUp();
+		KeyDownEvent::Source& keyDown();
 
-		TextInputEventSource& textInput();
+		TextInputEvent::Source& textInput();
 
-		MouseButtonEventSource& mouseButtonUp();
-		MouseButtonEventSource& mouseButtonDown();
-		MouseButtonEventSource& mouseDoubleClick();
-		MouseMotionEventSource& mouseMotion();
-		MouseWheelEventSource& mouseWheel();
+		MouseButtonEvent::Source& mouseButtonUp();
+		MouseButtonEvent::Source& mouseButtonDown();
+		MouseButtonEvent::Source& mouseDoubleClick();
+		MouseMotionEvent::Source& mouseMotion();
+		MouseWheelEvent::Source& mouseWheel();
 
-		QuitEventSource& quit();
+		QuitEvent::Source& quit();
 
 		void grabMouse();
 		void releaseMouse();

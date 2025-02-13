@@ -72,6 +72,9 @@
     <ClCompile Include="Math\Trig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Math\Vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Mixer\Mixer.cpp">
       <Filter>Source Files\Mixer</Filter>
     </ClCompile>

@@ -161,6 +161,7 @@
     <ClCompile Include="Math\Point.cpp" />
     <ClCompile Include="Math\Rectangle.cpp" />
     <ClCompile Include="Math\Trig.cpp" />
+    <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Mixer\Mixer.cpp" />
     <ClCompile Include="Mixer\MixerSDL.cpp" />
     <ClCompile Include="Mixer\MixerNull.cpp" />

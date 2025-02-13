@@ -12,9 +12,6 @@
 
 namespace NAS2D
 {
-
 	template struct Rectangle<int>;
-
 	template struct Rectangle<float>;
-
 }

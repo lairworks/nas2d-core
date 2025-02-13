@@ -150,4 +150,8 @@ namespace NAS2D
 
 	template <typename BaseType>
 	Rectangle(Point<BaseType>, Vector<BaseType>) -> Rectangle<BaseType>;
+
+
+	extern template struct Rectangle<int>;
+	extern template struct Rectangle<float>;
 } // namespace NAS2D

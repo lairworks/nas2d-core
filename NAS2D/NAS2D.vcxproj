@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="Dictionary.cpp" />
+    <ClCompile Include="EnumKeyModifier.cpp" />
     <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="FpsCounter.cpp" />

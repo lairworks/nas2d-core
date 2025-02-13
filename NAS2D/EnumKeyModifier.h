@@ -25,4 +25,10 @@ namespace NAS2D
 		Mode = 0x4000,
 		Reserved = 0x8000
 	};
+
+
+	KeyModifier& operator|=(KeyModifier& a, const KeyModifier& b) noexcept;
+	KeyModifier& operator&=(KeyModifier& a, const KeyModifier& b) noexcept;
+	KeyModifier operator|(KeyModifier a, const KeyModifier& b) noexcept;
+	KeyModifier operator&(KeyModifier a, const KeyModifier& b) noexcept;
 }

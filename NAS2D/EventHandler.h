@@ -142,12 +142,4 @@ namespace NAS2D
 	};
 
 	void postQuitEvent();
-
-
-	KeyModifier& operator|=(KeyModifier& a, const KeyModifier& b) noexcept;
-	KeyModifier& operator&=(KeyModifier& a, const KeyModifier& b) noexcept;
-	KeyModifier operator|(KeyModifier a, const KeyModifier& b) noexcept;
-	KeyModifier operator&(KeyModifier a, const KeyModifier& b) noexcept;
-
-
 } // namespace

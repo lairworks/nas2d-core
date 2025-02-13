@@ -437,7 +437,7 @@ EventHandler::KeyUpEvent::Source& EventHandler::keyUp()
  */
 EventHandler::TextInputEvent::Source& EventHandler::textInput()
 {
-	return mTextInput;
+	return mTextInputEvent;
 }
 
 
@@ -509,7 +509,7 @@ EventHandler::MouseButtonEvent::Source& EventHandler::mouseButtonUp()
  */
 EventHandler::MouseButtonEvent::Source& EventHandler::mouseDoubleClick()
 {
-	return mMouseDoubleClick;
+	return mMouseDoubleClickEvent;
 }
 
 
@@ -658,13 +658,13 @@ void EventHandler::pump()
 			break;
 
 		case SDL_TEXTINPUT:
-			mTextInput(event.text.text);
+			mTextInputEvent(event.text.text);
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
 			if (event.button.clicks == 2)
 			{
-				mMouseDoubleClick(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
+				mMouseDoubleClickEvent(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
 			}
 
 			mMouseButtonDownEvent(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
@@ -831,7 +831,7 @@ void EventHandler::disconnectAll()
 	mJoystickHatMotionEvent.clear();
 	mKeyUpEvent.clear();
 	mKeyDownEvent.clear();
-	mTextInput.clear();
+	mTextInputEvent.clear();
 	mMouseButtonUpEvent.clear();
 	mMouseButtonDownEvent.clear();
 	mMouseMotionEvent.clear();

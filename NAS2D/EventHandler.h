@@ -131,11 +131,11 @@ namespace NAS2D
 		KeyDownEvent mKeyDownEvent{};
 		KeyUpEvent mKeyUpEvent{};
 
-		TextInputEvent mTextInput{};
+		TextInputEvent mTextInputEvent{};
 
 		MouseButtonEvent mMouseButtonDownEvent{};
 		MouseButtonEvent mMouseButtonUpEvent{};
-		MouseButtonEvent mMouseDoubleClick{};
+		MouseButtonEvent mMouseDoubleClickEvent{};
 		MouseMotionEvent mMouseMotionEvent{};
 		MouseWheelEvent mMouseWheelEvent{};
 

@@ -54,7 +54,7 @@ namespace NAS2D
 		KeyColon = ':',
 		KeySemicolon = ';',
 		KeyLess = '<',
-		KeyEquals = '=',
+		KeyEqual = '=',
 		KeyGreater = '>',
 		KeyQuestion = '?',
 		KeyAt = '@',
@@ -111,7 +111,7 @@ namespace NAS2D
 		KeyKeypadMinus = scanCodeToKeyCode(86),
 		KeyKeypadPlus = scanCodeToKeyCode(87),
 		KeyKeypadEnter = scanCodeToKeyCode(88),
-		KeyKeypadEquals = scanCodeToKeyCode(103),
+		KeyKeypadEqual = scanCodeToKeyCode(103),
 		KeyKeypadComma = scanCodeToKeyCode(133),
 
 		// Arrows/Home/End

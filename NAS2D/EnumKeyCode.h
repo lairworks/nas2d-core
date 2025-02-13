@@ -14,7 +14,9 @@ namespace
 }
 
 
-enum class NAS2D::KeyCode : uint32_t
+namespace NAS2D
+{
+enum class KeyCode : uint32_t
 {
 	KEY_FIRST = 0,
 	KEY_UNKNOWN = 0,
@@ -188,3 +190,4 @@ enum class NAS2D::KeyCode : uint32_t
 	// Additional Keys here
 	KEY_LAST
 };
+}

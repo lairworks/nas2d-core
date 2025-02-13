@@ -3,7 +3,9 @@
 #include <cstdint>
 
 
-enum class NAS2D::KeyModifier : uint16_t
+namespace NAS2D
+{
+enum class KeyModifier : uint16_t
 {
 	None = 0x0000,
 	ShiftLeft = 0x0001,
@@ -23,3 +25,4 @@ enum class NAS2D::KeyModifier : uint16_t
 	Mode = 0x4000,
 	Reserved = 0x8000
 };
+}

@@ -1,5 +1,5 @@
 #include "NAS2D/EventHandler.h"
-#include "NAS2D/EventHandlerKeyModifier.h"
+#include "NAS2D/EnumKeyModifier.h"
 
 #include <gtest/gtest.h>
 

@@ -200,10 +200,10 @@
     <ClInclude Include="ContainerUtils.h" />
     <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Documentation.h" />
+    <ClInclude Include="EnumKeyCode.h" />
+    <ClInclude Include="EnumKeyModifier.h" />
+    <ClInclude Include="EnumMouseButton.h" />
     <ClInclude Include="EventHandler.h" />
-    <ClInclude Include="EventHandlerKeyCode.h" />
-    <ClInclude Include="EventHandlerKeyModifier.h" />
-    <ClInclude Include="EventHandlerMouseButton.h" />
     <ClInclude Include="Filesystem.h" />
     <ClInclude Include="FpsCounter.h" />
     <ClInclude Include="Game.h" />

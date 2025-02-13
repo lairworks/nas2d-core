@@ -9,7 +9,7 @@
 // ==================================================================================
 #include "EventHandler.h"
 
-#include "EventHandlerKeyModifier.h"
+#include "EnumKeyModifier.h"
 
 #include <SDL2/SDL.h>
 

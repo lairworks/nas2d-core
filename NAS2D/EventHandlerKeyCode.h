@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EventHandler.h"
+#include <cstdint>
 
 
 namespace
@@ -14,7 +14,7 @@ namespace
 }
 
 
-enum class NAS2D::EventHandler::KeyCode : uint32_t
+enum class NAS2D::KeyCode : uint32_t
 {
 	KEY_UNKNOWN = 0,
 	KEY_FIRST = 0,

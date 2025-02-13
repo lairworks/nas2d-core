@@ -19,6 +19,10 @@
 
 namespace NAS2D
 {
+	enum class KeyModifier : uint16_t;
+	enum class KeyCode : uint32_t;
+	enum class MouseButton;
+
 
 	/**
 	 * Handles and dispatches low-level events.
@@ -26,10 +30,9 @@ namespace NAS2D
 	class EventHandler
 	{
 	public:
-		enum class KeyModifier : uint16_t;
-		enum class KeyCode : uint32_t;
-		enum class MouseButton;
-
+		using KeyModifier = NAS2D::KeyModifier;
+		using KeyCode = NAS2D::KeyCode;
+		using MouseButton = NAS2D::MouseButton;
 
 		using ActivateSignal = Signal<bool>;
 		using WindowHiddenSignal = Signal<bool>;

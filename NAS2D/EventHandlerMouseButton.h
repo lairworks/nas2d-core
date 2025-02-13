@@ -1,9 +1,7 @@
 #pragma once
 
-#include "EventHandler.h"
 
-
-enum class NAS2D::EventHandler::MouseButton
+enum class NAS2D::MouseButton
 {
 	None,
 	Left,

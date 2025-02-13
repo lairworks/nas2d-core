@@ -1,9 +1,9 @@
 #pragma once
 
-#include "EventHandler.h"
+#include <cstdint>
 
 
-enum class NAS2D::EventHandler::KeyModifier : uint16_t
+enum class NAS2D::KeyModifier : uint16_t
 {
 	None = 0x0000,
 	ShiftLeft = 0x0001,

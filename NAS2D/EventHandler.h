@@ -148,10 +148,10 @@ namespace NAS2D
 	void postQuitEvent();
 
 
-	EventHandler::KeyModifier& operator|=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept;
-	EventHandler::KeyModifier& operator&=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept;
-	EventHandler::KeyModifier operator|(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept;
-	EventHandler::KeyModifier operator&(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept;
+	KeyModifier& operator|=(KeyModifier& a, const KeyModifier& b) noexcept;
+	KeyModifier& operator&=(KeyModifier& a, const KeyModifier& b) noexcept;
+	KeyModifier operator|(KeyModifier a, const KeyModifier& b) noexcept;
+	KeyModifier operator&(KeyModifier a, const KeyModifier& b) noexcept;
 
 
 } // namespace

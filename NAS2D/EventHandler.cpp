@@ -30,31 +30,31 @@ const int MAX_MESSAGE_PROCESSING = 100;
 
 namespace NAS2D
 {
-	EventHandler::KeyModifier& operator|=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept
+	KeyModifier& operator|=(KeyModifier& a, const KeyModifier& b) noexcept
 	{
-		using underlying = std::underlying_type_t<EventHandler::KeyModifier>;
+		using underlying = std::underlying_type_t<KeyModifier>;
 		auto underlying_a = static_cast<underlying>(a);
 		auto underlying_b = static_cast<underlying>(b);
-		a = static_cast<EventHandler::KeyModifier>(underlying_a | underlying_b);
+		a = static_cast<KeyModifier>(underlying_a | underlying_b);
 		return a;
 	}
 
-	EventHandler::KeyModifier& operator&=(EventHandler::KeyModifier& a, const EventHandler::KeyModifier& b) noexcept
+	KeyModifier& operator&=(KeyModifier& a, const KeyModifier& b) noexcept
 	{
-		using underlying = std::underlying_type_t<EventHandler::KeyModifier>;
+		using underlying = std::underlying_type_t<KeyModifier>;
 		auto underlying_a = static_cast<underlying>(a);
 		auto underlying_b = static_cast<underlying>(b);
-		a = static_cast<EventHandler::KeyModifier>(underlying_a & underlying_b);
+		a = static_cast<KeyModifier>(underlying_a & underlying_b);
 		return a;
 	}
 
-	EventHandler::KeyModifier operator|(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept
+	KeyModifier operator|(KeyModifier a, const KeyModifier& b) noexcept
 	{
 		a |= b;
 		return a;
 	}
 
-	EventHandler::KeyModifier operator&(EventHandler::KeyModifier a, const EventHandler::KeyModifier& b) noexcept
+	KeyModifier operator&(KeyModifier a, const KeyModifier& b) noexcept
 	{
 		a &= b;
 		return a;

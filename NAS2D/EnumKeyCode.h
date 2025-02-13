@@ -156,7 +156,7 @@ namespace NAS2D
 		// Key State Modifiers
 		KeyNumlock = scanCodeToKeyCode(83),
 		KeyCapslock = scanCodeToKeyCode(57),
-		KeyScrollock = scanCodeToKeyCode(71),
+		KeyScrolllock = scanCodeToKeyCode(71),
 		KeyRightshift = scanCodeToKeyCode(229),
 		KeyLeftshift = scanCodeToKeyCode(225),
 		KeyRightctrl = scanCodeToKeyCode(228),

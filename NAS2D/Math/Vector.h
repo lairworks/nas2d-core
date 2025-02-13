@@ -178,4 +178,8 @@ namespace NAS2D
 	{
 		return v2 < v1;
 	}
+
+
+	extern template struct Vector<int>;
+	extern template struct Vector<float>;
 }

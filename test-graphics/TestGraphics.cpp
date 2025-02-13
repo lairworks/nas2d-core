@@ -119,16 +119,16 @@ void TestGraphics::onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier /*mod*/, boo
 {
 	switch (key)
 	{
-	case NAS2D::KeyCode::KEY_ESCAPE:
+	case NAS2D::KeyCode::Escape:
 		NAS2D::postQuitEvent();
 		break;
-	case NAS2D::KeyCode::KEY_F1:
+	case NAS2D::KeyCode::F1:
 	{
 		auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
 		renderer.fullscreen(!renderer.fullscreen());
 		break;
 	}
-	case NAS2D::KeyCode::KEY_F2:
+	case NAS2D::KeyCode::F2:
 	{
 		auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
 		renderer.resizeable(!renderer.resizeable());

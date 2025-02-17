@@ -445,15 +445,14 @@ void RendererOpenGL::drawBox(const Rectangle<float>& rect, Color color)
 		return;
 	}
 
+	setColor(color);
 	glDisable(GL_TEXTURE_2D);
 
-	setColor(color);
-
-	const auto p1 = rect.position +  Vector{0.5, 0.5}; // OpenGL centers pixels between integer values
+	const auto p1 = rect.position + Vector{0.5, 0.5}; // OpenGL centers pixels between integer values
 	const auto p2 = rect.endPoint(); // No adjustment here so as to exclude the bottom right sides
 	const GLfloat corners[] = { p1.x, p1.y, p2.x, p1.y, p2.x, p2.y, p1.x, p2.y };
 
-	glVertexPointer(2, GL_FLOAT, 0, corners);
+	glVertexPointer(2, GL_FLOAT, 0, &corners);
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 
 	glEnable(GL_TEXTURE_2D);
@@ -584,6 +583,8 @@ void RendererOpenGL::initGL()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glTexCoordPointer(2, GL_FLOAT, 0, DefaultTextureCoords.data());
 
 	onResize(size());
 }

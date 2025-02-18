@@ -27,8 +27,6 @@ namespace NAS2D
 	public:
 		bool isEmpty() const { return delegateList.empty(); }
 
-		void clear() { delegateList.clear(); }
-
 		void connect(DelegateType delegate)
 		{
 			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
@@ -46,6 +44,8 @@ namespace NAS2D
 				delegateList.erase(iterator);
 			}
 		}
+
+		void clear() { delegateList.clear(); }
 
 	protected:
 		std::vector<DelegateType> delegateList{};

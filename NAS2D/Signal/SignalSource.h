@@ -25,7 +25,7 @@ namespace NAS2D
 		using DelegateType = Delegate<void(Params...)>;
 
 	public:
-		bool empty() const { return delegateList.empty(); }
+		bool isEmpty() const { return delegateList.empty(); }
 
 		void clear() { delegateList.clear(); }
 

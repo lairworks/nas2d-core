@@ -14,7 +14,7 @@ namespace {
 
 TEST(Signal, InitEmpty) {
 	NAS2D::Signal<> signal;
-	EXPECT_TRUE(signal.empty());
+	EXPECT_TRUE(signal.isEmpty());
 }
 
 TEST(Signal, ConnectNonEmpty) {
@@ -23,7 +23,7 @@ TEST(Signal, ConnectNonEmpty) {
 	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 
 	signal.connect(delegate);
-	EXPECT_FALSE(signal.empty());
+	EXPECT_FALSE(signal.isEmpty());
 }
 
 TEST(Signal, DisconnectEmpty) {
@@ -33,7 +33,7 @@ TEST(Signal, DisconnectEmpty) {
 
 	signal.connect(delegate);
 	signal.disconnect(delegate);
-	EXPECT_TRUE(signal.empty());
+	EXPECT_TRUE(signal.isEmpty());
 }
 
 TEST(Signal, ConnectEmitDisconnect) {

@@ -37,8 +37,7 @@ namespace NAS2D
 
 		void connect(DelegateType delegate)
 		{
-			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
-			if (iterator == delegateList.end())
+			if (!isConnected(delegate))
 			{
 				delegateList.push_back(delegate);
 			}

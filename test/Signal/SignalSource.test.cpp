@@ -61,3 +61,30 @@ TEST(SignalSource, DisconnectEmpty) {
 	signalSource.disconnect(delegate);
 	EXPECT_TRUE(signalSource.isEmpty());
 }
+
+TEST(SignalSource, IsConnectedInitially) {
+	NAS2D::SignalSource<> signalSource;
+	MockHandler handler{};
+	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+
+	EXPECT_FALSE(signalSource.isConnected(delegate));
+}
+
+TEST(SignalSource, IsConnectedAfterConnect) {
+	NAS2D::SignalSource<> signalSource;
+	MockHandler handler{};
+	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+
+	signalSource.connect(delegate);
+	EXPECT_TRUE(signalSource.isConnected(delegate));
+}
+
+TEST(SignalSource, IsConnectedAfterDisconnect) {
+	NAS2D::SignalSource<> signalSource;
+	MockHandler handler{};
+	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+
+	signalSource.connect(delegate);
+	signalSource.disconnect(delegate);
+	EXPECT_FALSE(signalSource.isConnected(delegate));
+}

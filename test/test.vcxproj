@@ -159,6 +159,7 @@
     <ClCompile Include="Signal/Delegate.test.cpp" />
     <ClCompile Include="Signal/Signal.test.cpp" />
     <ClCompile Include="Signal/SignalConnection.test.cpp" />
+    <ClCompile Include="Signal/SignalSource.test.cpp" />
     <ClCompile Include="Configuration.test.cpp" />
     <ClCompile Include="ContainerUtils.test.cpp" />
     <ClCompile Include="Dictionary.test.cpp" />

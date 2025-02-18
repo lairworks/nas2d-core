@@ -25,14 +25,19 @@ namespace NAS2D
 		using DelegateType = Delegate<void(Params...)>;
 
 	public:
-		bool empty() const { return delegateList.empty(); }
+		std::size_t count() const { return delegateList.size(); }
 
-		void clear() { delegateList.clear(); }
+		bool isEmpty() const { return delegateList.empty(); }
+
+		bool isConnected(DelegateType delegate) const
+		{
+			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
+			return (iterator != delegateList.end());
+		}
 
 		void connect(DelegateType delegate)
 		{
-			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
-			if (iterator == delegateList.end())
+			if (!isConnected(delegate))
 			{
 				delegateList.push_back(delegate);
 			}
@@ -46,6 +51,8 @@ namespace NAS2D
 				delegateList.erase(iterator);
 			}
 		}
+
+		void clear() { delegateList.clear(); }
 
 	protected:
 		std::vector<DelegateType> delegateList{};

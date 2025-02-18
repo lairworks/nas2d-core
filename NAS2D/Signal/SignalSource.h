@@ -25,6 +25,8 @@ namespace NAS2D
 		using DelegateType = Delegate<void(Params...)>;
 
 	public:
+		std::size_t count() const { return delegateList.size(); }
+
 		bool isEmpty() const { return delegateList.empty(); }
 
 		void connect(DelegateType delegate)

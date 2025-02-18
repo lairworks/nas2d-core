@@ -29,6 +29,12 @@ namespace NAS2D
 
 		bool isEmpty() const { return delegateList.empty(); }
 
+		bool isConnected(DelegateType delegate)
+		{
+			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
+			return (iterator != delegateList.end());
+		}
+
 		void connect(DelegateType delegate)
 		{
 			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);

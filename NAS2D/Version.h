@@ -24,8 +24,8 @@ namespace NAS2D
 	const std::string versionString();
 
 	/**
-    * Gets version major.
-    */
+	* Gets version major.
+	*/
 	constexpr int versionMajor();
 
 	/**

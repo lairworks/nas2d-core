@@ -12,9 +12,17 @@
 
 #include <sstream>
 
+
+namespace
+{
+	constexpr int VersionMajor = 1;
+	constexpr int VersionMinor = 4;
+	constexpr int VersionPatch = 2;
+}
+
+
 namespace NAS2D
 {
-
 	const std::string versionString()
 	{
 		std::ostringstream ss;
@@ -24,17 +32,16 @@ namespace NAS2D
 
 	constexpr int versionMajor()
 	{
-		return NAS2D_MAJOR_VERSION;
+		return VersionMajor;
 	}
 
 	constexpr int versionMinor()
 	{
-		return NAS2D_MINOR_VERSION;
+		return VersionMinor;
 	}
 
 	constexpr int versionPatch()
 	{
-		return NAS2D_PATCH_VERSION;
+		return VersionPatch;
 	}
-
 } // namespace NAS2D

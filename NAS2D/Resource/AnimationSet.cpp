@@ -28,7 +28,7 @@ using namespace NAS2D;
 
 namespace
 {
-	constexpr std::string_view SPRITE_VERSION{"0.99"};
+	constexpr std::string_view SpriteVersion{"0.99"};
 
 	using ImageCache = ResourceCache<Image, std::string>;
 	ImageCache animationImageCache;
@@ -137,9 +137,9 @@ namespace
 			{
 				throw std::runtime_error("Sprite file's root element does not specify a version");
 			}
-			if (version != SPRITE_VERSION)
+			if (version != SpriteVersion)
 			{
-				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SPRITE_VERSION} + " Actual: " + versionString());
+				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SpriteVersion} + " Actual: " + versionString());
 			}
 
 			// Note:

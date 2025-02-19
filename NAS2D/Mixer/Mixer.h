@@ -23,7 +23,7 @@ namespace NAS2D
 	class Mixer
 	{
 	public:
-		static constexpr std::chrono::milliseconds DEFAULT_FADE_TIME{500};
+		static constexpr std::chrono::milliseconds DefaultFadeTime{500};
 
 	public:
 		Mixer() = default;
@@ -49,9 +49,9 @@ namespace NAS2D
 		virtual void pauseMusic() = 0;
 		virtual void resumeMusic() = 0;
 
-		virtual void fadeInMusic(const Music& music, std::chrono::milliseconds fadeInTime = Mixer::DEFAULT_FADE_TIME) = 0;
+		virtual void fadeInMusic(const Music& music, std::chrono::milliseconds fadeInTime = Mixer::DefaultFadeTime) = 0;
 
-		virtual void fadeOutMusic(std::chrono::milliseconds fadeOutTime = Mixer::DEFAULT_FADE_TIME) = 0;
+		virtual void fadeOutMusic(std::chrono::milliseconds fadeOutTime = Mixer::DefaultFadeTime) = 0;
 
 		virtual bool musicPlaying() const = 0;
 

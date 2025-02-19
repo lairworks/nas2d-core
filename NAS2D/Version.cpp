@@ -12,9 +12,17 @@
 
 #include <sstream>
 
+
+namespace
+{
+	constexpr int NAS2D_MAJOR_VERSION = 1;
+	constexpr int NAS2D_MINOR_VERSION = 4;
+	constexpr int NAS2D_PATCH_VERSION = 2;
+}
+
+
 namespace NAS2D
 {
-
 	const std::string versionString()
 	{
 		std::ostringstream ss;
@@ -36,5 +44,4 @@ namespace NAS2D
 	{
 		return NAS2D_PATCH_VERSION;
 	}
-
 } // namespace NAS2D

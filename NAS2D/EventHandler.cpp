@@ -26,7 +26,7 @@ using namespace NAS2D;
  *
  * \todo	Make this configurable?
  */
-const int MAX_MESSAGE_PROCESSING = 100;
+const int MaxMessageProcessing = 100;
 
 
 /**
@@ -608,7 +608,7 @@ void EventHandler::pump()
 	SDL_Event event;
 
 	int count = 0;
-	while ((SDL_PollEvent(&event) != 0) && (count < MAX_MESSAGE_PROCESSING))
+	while ((SDL_PollEvent(&event) != 0) && (count < MaxMessageProcessing))
 	{
 		switch (event.type)
 		{

@@ -15,9 +15,9 @@
 
 namespace
 {
-	constexpr int NAS2D_MAJOR_VERSION = 1;
-	constexpr int NAS2D_MINOR_VERSION = 4;
-	constexpr int NAS2D_PATCH_VERSION = 2;
+	constexpr int MAJOR_VERSION = 1;
+	constexpr int MINOR_VERSION = 4;
+	constexpr int PATCH_VERSION = 2;
 }
 
 
@@ -32,16 +32,16 @@ namespace NAS2D
 
 	constexpr int versionMajor()
 	{
-		return NAS2D_MAJOR_VERSION;
+		return MAJOR_VERSION;
 	}
 
 	constexpr int versionMinor()
 	{
-		return NAS2D_MINOR_VERSION;
+		return MINOR_VERSION;
 	}
 
 	constexpr int versionPatch()
 	{
-		return NAS2D_PATCH_VERSION;
+		return PATCH_VERSION;
 	}
 } // namespace NAS2D

@@ -51,9 +51,9 @@ namespace
 	constexpr ColorMasks MasksBigEndian{0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff};
 	constexpr ColorMasks MasksDefault = (SDL_BYTEORDER == SDL_LIL_ENDIAN) ? MasksLittleEndian : MasksBigEndian;
 
-	const int ASCII_TABLE_COUNT = 256;
-	const int GLYPH_MATRIX_SIZE = 16;
-	const int BITS_32 = 32;
+	const int AsciiTableCount = 256;
+	const int GlyphMatrixSize = 16;
+	const int Bits32 = 32;
 
 	Font::FontInfo load(const std::string& path, unsigned int ptSize);
 	Font::FontInfo loadBitmap(const std::string& path);
@@ -268,16 +268,16 @@ namespace
 
 		// Assume image is square array of equal sized character cells
 		const auto fontSurfaceSize = Vector{fontSurface->w, fontSurface->h};
-		const auto glyphSize = fontSurfaceSize / GLYPH_MATRIX_SIZE;
-		if (fontSurfaceSize != glyphSize * GLYPH_MATRIX_SIZE)
+		const auto glyphSize = fontSurfaceSize / GlyphMatrixSize;
+		if (fontSurfaceSize != glyphSize * GlyphMatrixSize)
 		{
 			SDL_FreeSurface(fontSurface);
-			throw std::runtime_error("Unexpected font image size. Image dimensions " + std::string{fontSurfaceSize} + " must both be evenly divisible by " + std::to_string(GLYPH_MATRIX_SIZE));
+			throw std::runtime_error("Unexpected font image size. Image dimensions " + std::string{fontSurfaceSize} + " must both be evenly divisible by " + std::to_string(GlyphMatrixSize));
 		}
 
 		Font::FontInfo fontInfo;
 		auto& glm = fontInfo.metrics;
-		glm.resize(ASCII_TABLE_COUNT);
+		glm.resize(AsciiTableCount);
 		for (auto& metrics : glm)
 		{
 			metrics.minX = 0;
@@ -312,13 +312,13 @@ namespace
 
 	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize)
 	{
-		const auto matrixSize = characterSize * GLYPH_MATRIX_SIZE;
-		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, matrixSize.x, matrixSize.y, BITS_32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
+		const auto matrixSize = characterSize * GlyphMatrixSize;
+		SDL_Surface* fontSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, matrixSize.x, matrixSize.y, Bits32, MasksDefault.red, MasksDefault.green, MasksDefault.blue, MasksDefault.alpha);
 
 		SDL_Color white = {255, 255, 255, 255};
-		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{{0, 0}, {GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}}))
+		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{{0, 0}, {GlyphMatrixSize, GlyphMatrixSize}}))
 		{
-			const std::size_t glyph = glyphPosition.y * GLYPH_MATRIX_SIZE + glyphPosition.x;
+			const std::size_t glyph = glyphPosition.y * GlyphMatrixSize + glyphPosition.x;
 
 			SDL_Surface* characterSurface = TTF_RenderGlyph_Blended(font, static_cast<uint16_t>(glyph), white);
 			// A character surface can fail to be created for glyphs of size 0
@@ -362,7 +362,7 @@ namespace
 	void fillInCharacterDimensions(TTF_Font* font, std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		// Build table of character sizes
-		for (Uint16 i = 0; i < ASCII_TABLE_COUNT; i++)
+		for (Uint16 i = 0; i < AsciiTableCount; i++)
 		{
 			auto& metrics = glyphMetricsList.emplace_back();
 			TTF_GlyphMetrics(font, i, &metrics.minX, &metrics.maxX, &metrics.minY, &metrics.maxY, &metrics.advance);
@@ -373,9 +373,9 @@ namespace
 	void fillInTextureCoordinates(std::vector<Font::GlyphMetrics>& glyphMetricsList)
 	{
 		const auto uvSize = Vector<float>{1, 1} / 16.0f;
-		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{{0, 0}, {GLYPH_MATRIX_SIZE, GLYPH_MATRIX_SIZE}}))
+		for (const auto glyphPosition : PointInRectangleRange(Rectangle<std::size_t>{{0, 0}, {GlyphMatrixSize, GlyphMatrixSize}}))
 		{
-			const std::size_t glyph = glyphPosition.y * GLYPH_MATRIX_SIZE + glyphPosition.x;
+			const std::size_t glyph = glyphPosition.y * GlyphMatrixSize + glyphPosition.x;
 			const auto uvStart = glyphPosition.to<float>().skewBy(uvSize);
 			glyphMetricsList[glyph].uvRect = Rectangle{uvStart, uvSize};
 		}

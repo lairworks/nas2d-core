@@ -17,6 +17,9 @@
 #include <cstdint>
 
 
+union SDL_Event;
+
+
 namespace NAS2D
 {
 	enum class KeyModifier : uint16_t;
@@ -111,6 +114,9 @@ namespace NAS2D
 		void pump();
 
 		void disconnectAll();
+
+	protected:
+		void onMessage(const SDL_Event& event);
 
 	private:
 		ActivateSignal mActivateSignal{};

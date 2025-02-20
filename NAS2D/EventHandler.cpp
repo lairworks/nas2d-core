@@ -21,6 +21,21 @@ extern SDL_Window* underlyingWindow;
 
 using namespace NAS2D;
 
+
+namespace NAS2D
+{
+	/**
+	 * Posts a quit event to the event system.
+	 */
+	void postQuitEvent()
+	{
+		SDL_Event event;
+		event.type = SDL_QUIT;
+		SDL_PushEvent(&event);
+	}
+}
+
+
 /**
  * Maximum number of events to process each frame.
  *
@@ -813,18 +828,4 @@ void EventHandler::disconnectAll()
 	mMouseMotionSignal.clear();
 	mMouseWheelSignal.clear();
 	mQuitSignal.clear();
-}
-
-
-namespace NAS2D
-{
-	/**
-	 * Posts a quit event to the event system.
-	 */
-	void postQuitEvent()
-	{
-		SDL_Event event;
-		event.type = SDL_QUIT;
-		SDL_PushEvent(&event);
-	}
 }

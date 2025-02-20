@@ -24,6 +24,9 @@ namespace NAS2D
 	enum class MouseButton;
 
 
+	void postQuitEvent();
+
+
 	/**
 	 * Handles and dispatches low-level events.
 	 */
@@ -140,6 +143,4 @@ namespace NAS2D
 
 		QuitSignal mQuitSignal{};
 	};
-
-	void postQuitEvent();
 } // namespace

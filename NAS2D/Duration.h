@@ -5,5 +5,5 @@
 
 struct Duration
 {
-	uint64_t milliseconds;
+	uint32_t milliseconds;
 };

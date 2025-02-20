@@ -11,10 +11,10 @@
 #pragma once
 
 #include "Color.h"
+#include "../Duration.h"
 #include "../Timer.h"
 #include "../Signal/Signal.h"
 
-#include <chrono>
 
 namespace NAS2D
 {
@@ -35,8 +35,8 @@ namespace NAS2D
 
 		FadeCompleteSignal::Source& fadeComplete();
 
-		void fadeIn(std::chrono::milliseconds fadeTime);
-		void fadeOut(std::chrono::milliseconds fadeTime);
+		void fadeIn(Duration fadeTime);
+		void fadeOut(Duration fadeTime);
 
 		bool isFading() const;
 		bool isFaded() const;
@@ -45,7 +45,7 @@ namespace NAS2D
 		void draw(Renderer& renderer) const;
 
 	private:
-		void setDuration(std::chrono::milliseconds newDuration);
+		void setDuration(Duration newDuration);
 
 		enum class FadeDirection
 		{
@@ -56,7 +56,7 @@ namespace NAS2D
 
 		Color mFadeColor;
 		FadeDirection mDirection;
-		std::chrono::milliseconds mDuration;
+		Duration mDuration;
 		Timer mFadeTimer;
 		FadeCompleteSignal mFadeComplete;
 	};

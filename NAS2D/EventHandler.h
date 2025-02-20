@@ -62,6 +62,8 @@ namespace NAS2D
 		using QuitSignal = Signal<>;
 
 	public:
+		virtual ~EventHandler() = default;
+
 		ActivateSignal::Source& activate();
 
 		WindowHiddenSignal::Source& windowHidden();
@@ -111,7 +113,7 @@ namespace NAS2D
 		bool numlock() const;
 		bool control() const;
 
-		void pump();
+		virtual void pump();
 
 		void disconnectAll();
 

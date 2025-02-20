@@ -16,7 +16,7 @@ using namespace NAS2D;
 
 void Mixer::playMusic(const Music& music)
 {
-	fadeInMusic(music, std::chrono::milliseconds{0});
+	fadeInMusic(music, Duration{0});
 }
 
 

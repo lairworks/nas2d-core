@@ -12,6 +12,7 @@
 
 #include "Mixer.h"
 
+
 namespace NAS2D
 {
 
@@ -56,8 +57,8 @@ namespace NAS2D
 		void pauseMusic() override;
 		void resumeMusic() override;
 
-		void fadeInMusic(const Music& music, std::chrono::milliseconds fadeInTime) override;
-		void fadeOutMusic(std::chrono::milliseconds fadeOutTime) override;
+		void fadeInMusic(const Music& music, Duration fadeInTime) override;
+		void fadeOutMusic(Duration fadeOutTime) override;
 
 		bool musicPlaying() const override;
 

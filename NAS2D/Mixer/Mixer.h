@@ -10,20 +10,20 @@
 
 #pragma once
 
+#include "../Duration.h"
 #include "../Signal/Signal.h"
 
-#include <chrono>
 
 namespace NAS2D
 {
-
 	class Sound;
 	class Music;
+
 
 	class Mixer
 	{
 	public:
-		static constexpr std::chrono::milliseconds DefaultFadeTime{500};
+		static constexpr Duration DefaultFadeTime{500};
 
 	public:
 		Mixer() = default;
@@ -49,9 +49,9 @@ namespace NAS2D
 		virtual void pauseMusic() = 0;
 		virtual void resumeMusic() = 0;
 
-		virtual void fadeInMusic(const Music& music, std::chrono::milliseconds fadeInTime = Mixer::DefaultFadeTime) = 0;
+		virtual void fadeInMusic(const Music& music, Duration fadeInTime = Mixer::DefaultFadeTime) = 0;
 
-		virtual void fadeOutMusic(std::chrono::milliseconds fadeOutTime = Mixer::DefaultFadeTime) = 0;
+		virtual void fadeOutMusic(Duration fadeOutTime = Mixer::DefaultFadeTime) = 0;
 
 		virtual bool musicPlaying() const = 0;
 

@@ -201,6 +201,7 @@
     <ClInclude Include="ContainerUtils.h" />
     <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Documentation.h" />
+    <ClInclude Include="Duration.h" />
     <ClInclude Include="EnumKeyCode.h" />
     <ClInclude Include="EnumKeyModifier.h" />
     <ClInclude Include="EnumMouseButton.h" />

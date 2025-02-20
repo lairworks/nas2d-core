@@ -10,6 +10,9 @@
 
 #pragma once
 
+#include <cstdint>
+
+
 namespace NAS2D
 {
 
@@ -32,21 +35,21 @@ namespace NAS2D
 	class Timer
 	{
 	public:
-		static unsigned int tick();
+		static uint32_t tick();
 
 		Timer();
-		Timer(unsigned int startTick);
+		Timer(uint32_t startTick);
 
 		Timer(const Timer&) = default;
 		Timer& operator=(const Timer&) = default;
 
-		unsigned int elapsedTicks() const;
-		unsigned int delta();
-		void adjustStartTick(unsigned int ticksForward);
+		uint32_t elapsedTicks() const;
+		uint32_t delta();
+		void adjustStartTick(uint32_t ticksForward);
 		void reset();
 
 	private:
-		unsigned int mStartTick;
+		uint32_t mStartTick;
 	};
 
 } // namespace

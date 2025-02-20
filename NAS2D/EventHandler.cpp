@@ -21,6 +21,21 @@ extern SDL_Window* underlyingWindow;
 
 using namespace NAS2D;
 
+
+namespace NAS2D
+{
+	/**
+	 * Posts a quit event to the event system.
+	 */
+	void postQuitEvent()
+	{
+		SDL_Event event;
+		event.type = SDL_QUIT;
+		SDL_PushEvent(&event);
+	}
+}
+
+
 /**
  * Maximum number of events to process each frame.
  *
@@ -610,85 +625,91 @@ void EventHandler::pump()
 	int count = 0;
 	while ((SDL_PollEvent(&event) != 0) && (count < MaxMessageProcessing))
 	{
-		switch (event.type)
-		{
-		case SDL_MOUSEMOTION:
-			mMouseMotionSignal({event.motion.x, event.motion.y}, {event.motion.xrel, event.motion.yrel});
-			break;
-
-		case SDL_KEYDOWN:
-			mKeyDownSignal(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod), event.key.repeat != 0 ? true : false);
-			break;
-
-		case SDL_KEYUP:
-			mKeyUpSignal(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
-			break;
-
-		case SDL_TEXTINPUT:
-			mTextInputSignal(event.text.text);
-			break;
-
-		case SDL_MOUSEBUTTONDOWN:
-			if (event.button.clicks == 2)
-			{
-				mMouseDoubleClickSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
-			}
-
-			mMouseButtonDownSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
-			break;
-
-		case SDL_MOUSEBUTTONUP:
-			mMouseButtonUpSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
-			break;
-
-		case SDL_MOUSEWHEEL:
-			mMouseWheelSignal({event.wheel.x, event.wheel.y});
-			break;
-
-		case SDL_JOYAXISMOTION:
-			mJoystickAxisMotionSignal(event.jaxis.which, event.jaxis.axis, event.jaxis.value);
-			break;
-
-		case SDL_JOYBALLMOTION:
-			mJoystickBallMotionSignal(event.jball.which, event.jball.ball, {event.jball.xrel, event.jball.yrel});
-			break;
-
-		case SDL_JOYHATMOTION:
-			mJoystickHatMotionSignal(event.jhat.which, event.jhat.hat, event.jhat.value);
-			break;
-
-		case SDL_JOYBUTTONDOWN:
-			mJoystickButtonDownSignal(event.jbutton.which, event.jbutton.button);
-			break;
-
-		case SDL_JOYBUTTONUP:
-			mJoystickButtonUpSignal(event.jbutton.which, event.jbutton.button);
-			break;
-
-		case SDL_WINDOWEVENT:
-			// Not completely happy with this but meh, it works.
-			if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) { mActivateSignal(true); }
-			else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) { mActivateSignal(false); }
-			else if (event.window.event == SDL_WINDOWEVENT_SHOWN) { mWindowHiddenSignal(false); }
-			else if (event.window.event == SDL_WINDOWEVENT_HIDDEN) { mWindowHiddenSignal(true); }
-			else if (event.window.event == SDL_WINDOWEVENT_EXPOSED) { mWindowExposedSignal(); }
-			else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) { mWindowMinimizedSignal(); }
-			else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED) { mWindowMaximizedSignal(); }
-			else if (event.window.event == SDL_WINDOWEVENT_RESTORED) { mWindowRestoredSignal(); }
-			else if (event.window.event == SDL_WINDOWEVENT_ENTER) { mWindowMouseEnterSignal(); }
-			else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { mWindowMouseLeaveSignal(); }
-			else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedSignal({event.window.data1, event.window.data2}); }
-			break;
-
-		case SDL_QUIT:
-			mQuitSignal();
-			break;
-
-		default:
-			// Ignore any cases not handled.
-			break;
-		}
+		onMessage(event);
 		count++;
+	}
+}
+
+
+void EventHandler::onMessage(const SDL_Event& event)
+{
+	switch (event.type)
+	{
+	case SDL_MOUSEMOTION:
+		mMouseMotionSignal({event.motion.x, event.motion.y}, {event.motion.xrel, event.motion.yrel});
+		break;
+
+	case SDL_KEYDOWN:
+		mKeyDownSignal(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod), event.key.repeat != 0 ? true : false);
+		break;
+
+	case SDL_KEYUP:
+		mKeyUpSignal(static_cast<KeyCode>(event.key.keysym.sym), static_cast<KeyModifier>(event.key.keysym.mod));
+		break;
+
+	case SDL_TEXTINPUT:
+		mTextInputSignal(event.text.text);
+		break;
+
+	case SDL_MOUSEBUTTONDOWN:
+		if (event.button.clicks == 2)
+		{
+			mMouseDoubleClickSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
+		}
+
+		mMouseButtonDownSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
+		break;
+
+	case SDL_MOUSEBUTTONUP:
+		mMouseButtonUpSignal(static_cast<MouseButton>(event.button.button), {event.button.x, event.button.y});
+		break;
+
+	case SDL_MOUSEWHEEL:
+		mMouseWheelSignal({event.wheel.x, event.wheel.y});
+		break;
+
+	case SDL_JOYAXISMOTION:
+		mJoystickAxisMotionSignal(event.jaxis.which, event.jaxis.axis, event.jaxis.value);
+		break;
+
+	case SDL_JOYBALLMOTION:
+		mJoystickBallMotionSignal(event.jball.which, event.jball.ball, {event.jball.xrel, event.jball.yrel});
+		break;
+
+	case SDL_JOYHATMOTION:
+		mJoystickHatMotionSignal(event.jhat.which, event.jhat.hat, event.jhat.value);
+		break;
+
+	case SDL_JOYBUTTONDOWN:
+		mJoystickButtonDownSignal(event.jbutton.which, event.jbutton.button);
+		break;
+
+	case SDL_JOYBUTTONUP:
+		mJoystickButtonUpSignal(event.jbutton.which, event.jbutton.button);
+		break;
+
+	case SDL_WINDOWEVENT:
+		// Not completely happy with this but meh, it works.
+		if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) { mActivateSignal(true); }
+		else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) { mActivateSignal(false); }
+		else if (event.window.event == SDL_WINDOWEVENT_SHOWN) { mWindowHiddenSignal(false); }
+		else if (event.window.event == SDL_WINDOWEVENT_HIDDEN) { mWindowHiddenSignal(true); }
+		else if (event.window.event == SDL_WINDOWEVENT_EXPOSED) { mWindowExposedSignal(); }
+		else if (event.window.event == SDL_WINDOWEVENT_MINIMIZED) { mWindowMinimizedSignal(); }
+		else if (event.window.event == SDL_WINDOWEVENT_MAXIMIZED) { mWindowMaximizedSignal(); }
+		else if (event.window.event == SDL_WINDOWEVENT_RESTORED) { mWindowRestoredSignal(); }
+		else if (event.window.event == SDL_WINDOWEVENT_ENTER) { mWindowMouseEnterSignal(); }
+		else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { mWindowMouseLeaveSignal(); }
+		else if (event.window.event == SDL_WINDOWEVENT_RESIZED) { mWindowResizedSignal({event.window.data1, event.window.data2}); }
+		break;
+
+	case SDL_QUIT:
+		mQuitSignal();
+		break;
+
+	default:
+		// Ignore any cases not handled.
+		break;
 	}
 }
 
@@ -813,18 +834,4 @@ void EventHandler::disconnectAll()
 	mMouseMotionSignal.clear();
 	mMouseWheelSignal.clear();
 	mQuitSignal.clear();
-}
-
-
-namespace NAS2D
-{
-	/**
-	 * Posts a quit event to the event system.
-	 */
-	void postQuitEvent()
-	{
-		SDL_Event event;
-		event.type = SDL_QUIT;
-		SDL_PushEvent(&event);
-	}
 }

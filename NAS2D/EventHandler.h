@@ -17,11 +17,17 @@
 #include <cstdint>
 
 
+union SDL_Event;
+
+
 namespace NAS2D
 {
 	enum class KeyModifier : uint16_t;
 	enum class KeyCode : uint32_t;
 	enum class MouseButton;
+
+
+	void postQuitEvent();
 
 
 	/**
@@ -109,6 +115,9 @@ namespace NAS2D
 
 		void disconnectAll();
 
+	protected:
+		void onMessage(const SDL_Event& event);
+
 	private:
 		ActivateSignal mActivateSignal{};
 
@@ -140,6 +149,4 @@ namespace NAS2D
 
 		QuitSignal mQuitSignal{};
 	};
-
-	void postQuitEvent();
 } // namespace

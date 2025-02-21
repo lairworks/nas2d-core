@@ -89,7 +89,7 @@ SDL_LIBS := -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
 
 CPPFLAGS := $(IncludeSearchFlags) $(SpecialPreprocessorFlags) $(CPPFLAGS_EXTRA)
 CXXFLAGS_WARN := $(WarnFlags) $(SpecialWarnFlags) $(WARN_EXTRA)
-CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN)
+CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++23 $(CXXFLAGS_WARN)
 LDFLAGS := $(LibrarySearchFlags) $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)
 

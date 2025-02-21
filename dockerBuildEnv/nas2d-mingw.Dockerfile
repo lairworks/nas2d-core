@@ -5,7 +5,7 @@ FROM ubuntu:22.04
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages
 # Includes tools needed for primary CircleCI containers
-# The software-properties-common package is needed for add-apt-repository, used to install wine
+# The lsb-release package is used to install wine
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     mingw-w64=8.0.0-1 \
@@ -20,7 +20,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     gzip=1.10-* \
     bzip2=1.0.8-* \
     gnupg=2.2.27-* \
-    software-properties-common=0.99.22.* \
+    lsb-release=11.1.0* \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 

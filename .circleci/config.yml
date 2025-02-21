@@ -28,6 +28,7 @@ jobs:
           name: Add Brew include path to system include paths
           command: |
             echo "export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:$(brew --prefix)/include" >> "${BASH_ENV}"
+            echo "export LDFLAGS_EXTRA=-L$(brew --prefix)/lib" >> "${BASH_ENV}"
       - build-and-test
   build-linux-gcc:
     docker:
@@ -50,6 +51,7 @@ jobs:
       - image: outpostuniverse/nas2d-mingw:1.11
     environment:
       WARN_EXTRA: "-Wno-redundant-decls"
+      LDFLAGS_EXTRA: "-L/usr/local/x86_64-w64-mingw32/lib"
     steps:
       - checkout
       - build-and-test

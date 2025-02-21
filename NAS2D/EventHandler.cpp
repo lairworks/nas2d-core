@@ -37,14 +37,6 @@ namespace NAS2D
 
 
 /**
- * Maximum number of events to process each frame.
- *
- * \todo	Make this configurable?
- */
-const int MaxMessageProcessing = 100;
-
-
-/**
  * Triggered whenever the application gains or loses focus.
  *
  * To connect an event handler to this event, call the 'connect()'
@@ -622,11 +614,9 @@ void EventHandler::pump()
 {
 	SDL_Event event;
 
-	int count = 0;
-	while ((SDL_PollEvent(&event) != 0) && (count < MaxMessageProcessing))
+	while (SDL_PollEvent(&event))
 	{
 		onMessage(event);
-		count++;
 	}
 }
 

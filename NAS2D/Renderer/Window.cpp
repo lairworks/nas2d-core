@@ -366,6 +366,18 @@ Vector<int> Window::getWindowClientArea() const noexcept
 }
 
 
+void Window::captureMouse()
+{
+	SDL_SetWindowGrab(underlyingWindow, SDL_TRUE);
+}
+
+
+void Window::releaseMouse()
+{
+	SDL_SetWindowGrab(underlyingWindow, SDL_FALSE);
+}
+
+
 void Window::doModalError(const std::string& title, const std::string& message) const
 {
 	::doModalError(title, message, underlyingWindow);

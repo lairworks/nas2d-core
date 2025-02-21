@@ -560,24 +560,6 @@ EventHandler::QuitSignal::Source& EventHandler::quit()
 
 
 /**
- * Grabs exclusive mouse input.
- */
-void EventHandler::grabMouse()
-{
-	if (underlyingWindow) { SDL_SetWindowGrab(underlyingWindow, SDL_TRUE); }
-}
-
-
-/**
- * Releases exclusive mouse input.
- */
-void EventHandler::releaseMouse()
-{
-	if (underlyingWindow) { SDL_SetWindowGrab(underlyingWindow, SDL_FALSE); }
-}
-
-
-/**
  * Sets the mouse pointer to a specified location within the application window.
  *
  * \param x X-Coordinate.

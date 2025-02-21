@@ -57,6 +57,9 @@ namespace NAS2D
 
 		virtual Vector<int> getWindowClientArea() const noexcept;
 
+		void captureMouse();
+		void releaseMouse();
+
 		void doModalError(const std::string& title, const std::string& message) const;
 		void doModalAlert(const std::string& title, const std::string& message) const;
 		bool doModalYesNo(const std::string& title, const std::string& message) const;

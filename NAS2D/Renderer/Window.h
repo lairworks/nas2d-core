@@ -14,6 +14,9 @@ namespace NAS2D
 {
 	struct DisplayDesc;
 
+	template <typename BaseType>
+	struct Point;
+
 
 	struct CursorId
 	{
@@ -56,6 +59,11 @@ namespace NAS2D
 		void setResolution(Vector<int> newResolution);
 
 		virtual Vector<int> getWindowClientArea() const noexcept;
+
+		void captureMouse();
+		void releaseMouse();
+
+		void warpMouse(Point<int> mousePositionInWindow);
 
 		void doModalError(const std::string& title, const std::string& message) const;
 		void doModalAlert(const std::string& title, const std::string& message) const;

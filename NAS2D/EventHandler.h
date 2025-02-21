@@ -96,8 +96,6 @@ namespace NAS2D
 
 		QuitSignal::Source& quit();
 
-		void grabMouse();
-		void releaseMouse();
 		void warpMouse(int x, int y);
 		void mouseRelativeMode(bool rel);
 

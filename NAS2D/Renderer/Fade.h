@@ -26,12 +26,13 @@ namespace NAS2D
 	{
 	public:
 		using FadeCompleteSignal = Signal<>;
+		using DelegateType = FadeCompleteSignal::DelegateType;
 
 
 		Fade();
 		explicit Fade(Color fadeColor);
-		explicit Fade(FadeCompleteSignal::DelegateType onFadeComplete);
-		explicit Fade(Color fadeColor, FadeCompleteSignal::DelegateType onFadeComplete);
+		explicit Fade(DelegateType onFadeComplete);
+		explicit Fade(Color fadeColor, DelegateType onFadeComplete);
 
 		void fadeIn(Duration fadeTime);
 		void fadeOut(Duration fadeTime);

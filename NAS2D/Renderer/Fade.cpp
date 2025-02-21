@@ -34,14 +34,14 @@ Fade::Fade(Color fadeColor) :
 {}
 
 
-Fade::Fade(FadeCompleteSignal::DelegateType onFadeComplete) :
+Fade::Fade(DelegateType onFadeComplete) :
 	Fade()
 {
 	mFadeComplete.connect(onFadeComplete);
 }
 
 
-Fade::Fade(Color fadeColor, FadeCompleteSignal::DelegateType onFadeComplete) :
+Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
 	Fade(fadeColor)
 {
 	mFadeComplete.connect(onFadeComplete);

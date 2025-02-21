@@ -30,7 +30,7 @@ Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
 	mDirection{FadeDirection::None},
 	mDuration{},
 	mFadeTimer{},
-	mFadeComplete{onFadeComplete}
+	mOnFadeComplete{onFadeComplete}
 {
 }
 
@@ -76,9 +76,9 @@ void Fade::update()
 	if (step == 255)
 	{
 		mDirection = FadeDirection::None;
-		if (!mFadeComplete.empty())
+		if (!mOnFadeComplete.empty())
 		{
-			mFadeComplete();
+			mOnFadeComplete();
 		}
 	}
 }

@@ -54,7 +54,7 @@ namespace NAS2D
 		FadeDirection mDirection;
 		Duration mDuration;
 		Timer mFadeTimer;
-		DelegateType mFadeComplete;
+		DelegateType mOnFadeComplete;
 	};
 
 }

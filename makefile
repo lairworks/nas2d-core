@@ -41,15 +41,13 @@ Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
 Windows_OpenGL_LIBS := -lglew32 -lopengl32
 OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
-SDL_CONFIG := sdl2-config
-SDL_CONFIG_CFLAGS := $(shell type $(SDL_CONFIG) >/dev/null 2>&1 && $(SDL_CONFIG) --cflags)
-SDL_CONFIG_LIBS := $(shell type $(SDL_CONFIG) >/dev/null 2>&1 && $(SDL_CONFIG) --libs)
+SDL_LIBS := -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
 
 CPPFLAGS := $(CPPFLAGS_EXTRA)
 CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(WARN_EXTRA)
-CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN) $(SDL_CONFIG_CFLAGS)
+CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN)
 LDFLAGS := $(LDFLAGS_EXTRA)
-LDLIBS := $(LDLIBS_EXTRA) -lstdc++ -lSDL2_image -lSDL2_mixer -lSDL2_ttf $(SDL_CONFIG_LIBS) $(OpenGL_LIBS)
+LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)
 
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
 

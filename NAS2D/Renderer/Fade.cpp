@@ -19,38 +19,19 @@
 using namespace NAS2D;
 
 
-Fade::Fade() :
-	Fade(Color::Black)
+Fade::Fade(DelegateType onFadeComplete) :
+	Fade{Color::Black, onFadeComplete}
 {
 }
 
 
-Fade::Fade(Color fadeColor) :
+Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
 	mFadeColor{fadeColor.alphaFade(255)},
 	mDirection{FadeDirection::None},
 	mDuration{},
 	mFadeTimer{},
-	mFadeComplete{}
-{}
-
-
-Fade::Fade(FadeCompleteSignal::DelegateType onFadeComplete) :
-	Fade()
+	mOnFadeComplete{onFadeComplete}
 {
-	mFadeComplete.connect(onFadeComplete);
-}
-
-
-Fade::Fade(Color fadeColor, FadeCompleteSignal::DelegateType onFadeComplete) :
-	Fade(fadeColor)
-{
-	mFadeComplete.connect(onFadeComplete);
-}
-
-
-SignalSource<>& Fade::fadeComplete()
-{
-	return mFadeComplete;
 }
 
 
@@ -95,7 +76,10 @@ void Fade::update()
 	if (step == 255)
 	{
 		mDirection = FadeDirection::None;
-		mFadeComplete();
+		if (!mOnFadeComplete.empty())
+		{
+			mOnFadeComplete();
+		}
 	}
 }
 

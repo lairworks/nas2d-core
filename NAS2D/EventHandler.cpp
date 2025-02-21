@@ -14,11 +14,6 @@
 #include <SDL2/SDL.h>
 
 
-// UGLY ASS HACK!
-// This is required for mouse grabbing in the EventHandler class.
-extern SDL_Window* underlyingWindow;
-
-
 using namespace NAS2D;
 
 
@@ -556,24 +551,6 @@ EventHandler::MouseWheelSignal::Source& EventHandler::mouseWheel()
 EventHandler::QuitSignal::Source& EventHandler::quit()
 {
 	return mQuitSignal;
-}
-
-
-/**
- * Sets the mouse pointer to a specified location within the application window.
- *
- * \param x X-Coordinate.
- * \param y Y-Coordinate.
- *
- * \note	Coordinates can only be set within the bounds of the application's
- *			window. Coordinates will be clamped for all other values.
- */
-void EventHandler::warpMouse(int x, int y)
-{
-	if (underlyingWindow)
-	{
-		SDL_WarpMouseInWindow(underlyingWindow, x, y);
-	}
 }
 
 

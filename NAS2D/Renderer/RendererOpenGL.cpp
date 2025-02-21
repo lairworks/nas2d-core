@@ -42,7 +42,6 @@ using namespace NAS2D;
 
 
 // UGLY ASS HACK!
-// This is required for mouse grabbing in the EventHandler class.
 extern SDL_Window* underlyingWindow;
 
 

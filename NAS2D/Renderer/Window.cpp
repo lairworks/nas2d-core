@@ -5,6 +5,7 @@
 #include "../Utility.h"
 #include "../Filesystem.h"
 #include "../EventHandler.h"
+#include "../Math/Point.h"
 
 #include <SDL2/SDL.h>
 
@@ -26,7 +27,6 @@ using namespace NAS2D;
 
 
 // UGLY ASS HACK!
-// This is required for mouse grabbing in the EventHandler class.
 SDL_Window* underlyingWindow = nullptr;
 
 
@@ -375,6 +375,17 @@ void Window::captureMouse()
 void Window::releaseMouse()
 {
 	SDL_SetWindowGrab(underlyingWindow, SDL_FALSE);
+}
+
+
+/**
+ * Sets the mouse pointer to a specified location within the application window.
+ *
+ * \note Coordinates will be clamped to the window's dimensions.
+ */
+void Window::warpMouse(Point<int> mousePositionInWindow)
+{
+	SDL_WarpMouseInWindow(underlyingWindow, mousePositionInWindow.x, mousePositionInWindow.y);
 }
 
 

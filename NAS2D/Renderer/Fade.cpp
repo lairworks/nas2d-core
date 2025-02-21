@@ -48,12 +48,6 @@ Fade::Fade(Color fadeColor, FadeCompleteSignal::DelegateType onFadeComplete) :
 }
 
 
-SignalSource<>& Fade::fadeComplete()
-{
-	return mFadeComplete;
-}
-
-
 // Fade in from fadeColor
 void Fade::fadeIn(Duration fadeTime)
 {

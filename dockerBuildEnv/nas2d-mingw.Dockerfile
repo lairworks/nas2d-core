@@ -1,26 +1,27 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages
 # Includes tools needed for primary CircleCI containers
-# The software-properties-common package is needed for add-apt-repository, used to install wine
+# The lsb-release package is used to install wine
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    mingw-w64=8.0.0-1 \
-    cmake=3.22.1-* \
+    mingw-w64=11.0.1-* \
+    cmake=3.28.3-* \
     make=4.3-* \
-    binutils=2.38-* \
-    git=1:2.34.1-* \
-    ssh=1:8.9p1-* \
-    googletest=1.11.0-3 \
-    curl=7.81.0-* \
-    tar=1.34+* \
-    gzip=1.10-* \
+    binutils=2.42-* \
+    libgtest-dev=1.14.0-* \
+    libgmock-dev=1.14.0-* \
+    git=1:2.43.0-* \
+    ssh=1:9.6p1-* \
+    curl=8.5.0-* \
+    tar=1.35+* \
+    gzip=1.12-* \
     bzip2=1.0.8-* \
-    gnupg=2.2.27-* \
-    software-properties-common=0.99.22.* \
+    gnupg=2.4.4-* \
+    lsb-release=12.0-* \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
@@ -43,10 +44,9 @@ RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
   dpkg --add-architecture i386 && \
   apt-get update && apt-get install -y --no-install-recommends \
-    wine-stable-amd64=8.0.2~* \
-    wine-stable-i386=8.0.2~* \
-    wine-stable=8.0.2~* \
-    winehq-stable=8.0.2~* \
+    wine=9.0~repack-4build3 \
+    wine64=9.0~repack-4build3 \
+    wine32:i386=9.0~repack-4build3 \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages
@@ -125,8 +125,8 @@ ENV BIN64=${INSTALL64}bin/
 ENV BIN32=${INSTALL32}bin/
 ENV PATH64="${PATH}:${BIN64}"
 ENV PATH32="${PATH}:${BIN32}"
-ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/10-win32/
-ENV WINEPATH32=${BIN32};/usr/lib/gcc/${ARCH32}/10-win32/
+ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/13-win32/
+ENV WINEPATH32=${BIN32};/usr/lib/gcc/${ARCH32}/13-win32/
 
 # Setup compiler and tooling default folders
 ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
@@ -137,8 +137,6 @@ ENV WINEPATH="${WINEPATH64}"
 # Set default compiler
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
-
-RUN useradd --uid 1000 -m -s /bin/bash user
 
 # Cache the result of `wineboot` for faster startup (or don't for smaller images)
 # USER user
@@ -153,6 +151,8 @@ RUN useradd --uid 1000 -m -s /bin/bash user
 ENV CPPFLAGS_EXTRA=-D"GLEW_STATIC"
 # Disable warnings for redundant declarations of intrinsics, triggered by SDL2
 ENV WARN_EXTRA=-Wno-redundant-decls
+# Set a library search path to make rebuilding easier in a debug sessions
+ENV LDFLAGS_EXTRA="-L/usr/local/x86_64-w64-mingw32/lib"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

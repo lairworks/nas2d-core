@@ -28,10 +28,8 @@ namespace NAS2D
 		using DelegateType = Delegate<void()>;
 
 
-		Fade();
-		explicit Fade(Color fadeColor);
-		explicit Fade(DelegateType onFadeComplete);
-		explicit Fade(Color fadeColor, DelegateType onFadeComplete);
+		explicit Fade(DelegateType onFadeComplete = {});
+		explicit Fade(Color fadeColor, DelegateType onFadeComplete = {});
 
 		void fadeIn(Duration fadeTime);
 		void fadeOut(Duration fadeTime);

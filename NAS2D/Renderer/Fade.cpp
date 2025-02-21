@@ -19,32 +19,19 @@
 using namespace NAS2D;
 
 
-Fade::Fade() :
-	Fade(Color::Black)
-{
-}
-
-
-Fade::Fade(Color fadeColor) :
-	mFadeColor{fadeColor.alphaFade(255)},
-	mDirection{FadeDirection::None},
-	mDuration{},
-	mFadeTimer{},
-	mFadeComplete{}
-{}
-
-
 Fade::Fade(DelegateType onFadeComplete) :
-	Fade()
+	Fade{Color::Black, onFadeComplete}
 {
-	mFadeComplete = onFadeComplete;
 }
 
 
 Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
-	Fade(fadeColor)
+	mFadeColor{fadeColor.alphaFade(255)},
+	mDirection{FadeDirection::None},
+	mDuration{},
+	mFadeTimer{},
+	mFadeComplete{onFadeComplete}
 {
-	mFadeComplete = onFadeComplete;
 }
 
 

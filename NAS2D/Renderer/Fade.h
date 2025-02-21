@@ -13,7 +13,7 @@
 #include "Color.h"
 #include "../Duration.h"
 #include "../Timer.h"
-#include "../Signal/Signal.h"
+#include "../Signal/Delegate.h"
 
 
 namespace NAS2D
@@ -25,8 +25,7 @@ namespace NAS2D
 	class Fade
 	{
 	public:
-		using FadeCompleteSignal = Signal<>;
-		using DelegateType = FadeCompleteSignal::DelegateType;
+		using DelegateType = Delegate<void()>;
 
 
 		Fade();
@@ -57,7 +56,7 @@ namespace NAS2D
 		FadeDirection mDirection;
 		Duration mDuration;
 		Timer mFadeTimer;
-		FadeCompleteSignal mFadeComplete;
+		DelegateType mFadeComplete;
 	};
 
 }

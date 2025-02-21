@@ -37,14 +37,14 @@ Fade::Fade(Color fadeColor) :
 Fade::Fade(DelegateType onFadeComplete) :
 	Fade()
 {
-	mFadeComplete.connect(onFadeComplete);
+	mFadeComplete = onFadeComplete;
 }
 
 
 Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
 	Fade(fadeColor)
 {
-	mFadeComplete.connect(onFadeComplete);
+	mFadeComplete = onFadeComplete;
 }
 
 
@@ -89,7 +89,10 @@ void Fade::update()
 	if (step == 255)
 	{
 		mDirection = FadeDirection::None;
-		mFadeComplete();
+		if (!mFadeComplete.empty())
+		{
+			mFadeComplete();
+		}
 	}
 }
 

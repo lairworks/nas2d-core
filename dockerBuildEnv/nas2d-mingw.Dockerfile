@@ -153,6 +153,8 @@ RUN useradd --uid 1000 -m -s /bin/bash user
 ENV CPPFLAGS_EXTRA=-D"GLEW_STATIC"
 # Disable warnings for redundant declarations of intrinsics, triggered by SDL2
 ENV WARN_EXTRA=-Wno-redundant-decls
+# Set a library search path to make rebuilding easier in a debug sessions
+ENV LDFLAGS_EXTRA="-L/usr/local/x86_64-w64-mingw32/lib"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

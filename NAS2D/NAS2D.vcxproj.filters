@@ -138,6 +138,9 @@
     <ClCompile Include="Resource\Sprite.cpp">
       <Filter>Source Files\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="Signal\Signal.cpp">
+      <Filter>Source Files\Signal</Filter>
+    </ClCompile>
     <ClCompile Include="Xml\XmlParser.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>

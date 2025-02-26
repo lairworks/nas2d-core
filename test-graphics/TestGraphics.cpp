@@ -6,6 +6,7 @@
 #include <NAS2D/Renderer/Renderer.h>
 #include <NAS2D/Resource/Font.h>
 #include <NAS2D/Math/Rectangle.h>
+#include "NAS2D/Math/Angle.h"
 
 #include <functional>
 #include <random>
@@ -42,6 +43,8 @@ namespace
 
 
 TestGraphics::TestGraphics() :
+	mTimer{},
+	mGear{"Gear.png"},
 	mDxImage{"Test_DirectX.png"},
 	mOglImage{"Test_OpenGL.png"}
 {}
@@ -108,6 +111,10 @@ NAS2D::State* TestGraphics::update()
 		const auto offset = NAS2D::Vector{jitter(), jitter()};
 		r.drawPoint(NAS2D::Point{84, 60} + offset, NAS2D::Color{grey, grey, grey});
 	}
+
+	const auto angle = NAS2D::Angle::degrees(static_cast<float>(mTimer.tick() * 360 / 10 / 1000));
+	r.drawImageRotated(mGear, {158, 60}, angle);
+	r.drawImageRotated(mGear, {219, 60}, -angle);
 
 	r.drawImage(mDxImage, {10, 134});
 	r.drawImage(mOglImage, {10 + 512, 134});

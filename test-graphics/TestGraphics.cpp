@@ -116,6 +116,10 @@ NAS2D::State* TestGraphics::update()
 	r.drawImageRotated(mGear, {158, 60}, angle);
 	r.drawImageRotated(mGear, {219, 60}, -angle);
 
+	r.drawSubImage(mGear, {284, 60}, {{32, 0}, {32, 32}});
+	r.drawSubImageRotated(mGear, {320, 60}, {{0, 0}, {32, 32}}, angle);
+	r.drawSubImageRepeated(mGear, {{284, 98}, {60, 26}}, {{16, 0}, {16, 16}});
+
 	r.drawImage(mDxImage, {10, 134});
 	r.drawImage(mOglImage, {10 + 512, 134});
 

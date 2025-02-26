@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Resource">
       <UniqueIdentifier>{abe87a21-5242-47d5-a2e5-cd4d11c06440}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Xml">
+      <UniqueIdentifier>{7d97d5b5-2a02-45fa-b77b-5421848a65aa}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Mixer">
       <UniqueIdentifier>{e726c591-8921-4e48-bcd1-b31f16365f75}</UniqueIdentifier>
     </Filter>
@@ -30,9 +33,6 @@
     </Filter>
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{8fc63a46-a921-4817-8885-8e16d6d47335}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Xml">
-      <UniqueIdentifier>{7d97d5b5-2a02-45fa-b77b-5421848a65aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{f77ff9a8-6639-4ae0-8705-c016859865d9}</UniqueIdentifier>

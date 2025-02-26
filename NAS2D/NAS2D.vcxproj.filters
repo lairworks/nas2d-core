@@ -293,9 +293,6 @@
     <ClInclude Include="Renderer\Window.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\ResourceCache.h">
-      <Filter>Header Files\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="Resource\AnimationSet.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
@@ -306,6 +303,9 @@
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Music.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\ResourceCache.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Sound.h">

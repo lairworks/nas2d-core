@@ -242,6 +242,9 @@
     <ClInclude Include="Math\PointInRectangleRange.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Rectangle.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
     <ClInclude Include="Math\Trig.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
@@ -249,9 +252,6 @@
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\VectorSizeRange.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Rectangle.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Mixer\Mixer.h">

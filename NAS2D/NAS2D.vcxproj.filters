@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{693ea8b6-f252-40dd-8516-770d9322bf44}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Mixer">
       <UniqueIdentifier>{38850f27-88ca-4a9f-8398-c4fc4063e7d2}</UniqueIdentifier>
     </Filter>
@@ -21,6 +24,15 @@
     </Filter>
     <Filter Include="Source Files\Resource">
       <UniqueIdentifier>{abe87a21-5242-47d5-a2e5-cd4d11c06440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Signal">
+      <UniqueIdentifier>{2f8ff49c-01f2-4fa6-af32-0f3549495729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Xml">
+      <UniqueIdentifier>{7d97d5b5-2a02-45fa-b77b-5421848a65aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{93fa0daa-090a-4bd8-9d29-3342b0960f69}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Mixer">
       <UniqueIdentifier>{e726c591-8921-4e48-bcd1-b31f16365f75}</UniqueIdentifier>
@@ -31,8 +43,8 @@
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{8fc63a46-a921-4817-8885-8e16d6d47335}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Xml">
-      <UniqueIdentifier>{7d97d5b5-2a02-45fa-b77b-5421848a65aa}</UniqueIdentifier>
+    <Filter Include="Header Files\Signal">
+      <UniqueIdentifier>{9c5b4d3f-8225-44f8-9de5-70086a2f366b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{f77ff9a8-6639-4ae0-8705-c016859865d9}</UniqueIdentifier>
@@ -64,19 +76,19 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Math\MathUtils.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Math\Point.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Math\Rectangle.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Math\Trig.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Math\Vector.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Mixer\Mixer.cpp">
       <Filter>Source Files\Mixer</Filter>
@@ -225,28 +237,28 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Math\Angle.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\MathUtils.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\Point.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\PointInRectangleRange.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Trig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\Vector.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\VectorSizeRange.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\Rectangle.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Trig.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\VectorSizeRange.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Mixer\Mixer.h">
       <Filter>Header Files\Mixer</Filter>
@@ -281,9 +293,6 @@
     <ClInclude Include="Renderer\Window.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\ResourceCache.h">
-      <Filter>Header Files\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="Resource\AnimationSet.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
@@ -296,6 +305,9 @@
     <ClInclude Include="Resource\Music.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\ResourceCache.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
     <ClInclude Include="Resource\Sound.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
@@ -303,16 +315,16 @@
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Signal/Delegate.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="Signal/Signal.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="Signal/SignalConnection.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="Signal/SignalSource.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="Xml\Xml.h">
       <Filter>Header Files\Xml</Filter>

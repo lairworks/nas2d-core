@@ -19,6 +19,14 @@ using namespace NAS2D;
 
 namespace NAS2D
 {
+	template class Signal<KeyCode, KeyModifier>;
+	template class Signal<KeyCode, KeyModifier, bool>;
+	template class Signal<MouseButton, Point<int>>;
+	template class Signal<Point<int>, Vector<int>>;
+	template class Signal<Vector<int>>;
+	template class Signal<int, int, Vector<int>>;
+
+
 	/**
 	 * Posts a quit event to the event system.
 	 */

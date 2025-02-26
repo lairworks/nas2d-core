@@ -26,6 +26,13 @@ namespace NAS2D
 	enum class KeyCode : uint32_t;
 	enum class MouseButton;
 
+	extern template class Signal<KeyCode, KeyModifier>;
+	extern template class Signal<KeyCode, KeyModifier, bool>;
+	extern template class Signal<MouseButton, Point<int>>;
+	extern template class Signal<Point<int>, Vector<int>>;
+	extern template class Signal<Vector<int>>;
+	extern template class Signal<int, int, Vector<int>>;
+
 
 	void postQuitEvent();
 

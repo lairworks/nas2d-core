@@ -52,4 +52,11 @@ namespace NAS2D
 
 		void operator()(Params... params) const { emit(params...); }
 	};
+
+
+	extern template class Signal<>;
+	extern template class Signal<bool>;
+	extern template class Signal<int>;
+	extern template class Signal<int, int>;
+	extern template class Signal<int, int, int>;
 } // namespace

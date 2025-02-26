@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Resource">
       <UniqueIdentifier>{abe87a21-5242-47d5-a2e5-cd4d11c06440}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Signal">
+      <UniqueIdentifier>{2f8ff49c-01f2-4fa6-af32-0f3549495729}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Xml">
       <UniqueIdentifier>{7d97d5b5-2a02-45fa-b77b-5421848a65aa}</UniqueIdentifier>
     </Filter>
@@ -39,6 +42,9 @@
     </Filter>
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{8fc63a46-a921-4817-8885-8e16d6d47335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Signal">
+      <UniqueIdentifier>{9c5b4d3f-8225-44f8-9de5-70086a2f366b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{f77ff9a8-6639-4ae0-8705-c016859865d9}</UniqueIdentifier>
@@ -309,16 +315,16 @@
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Signal/Delegate.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="Signal/Signal.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="Signal/SignalConnection.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="Signal/SignalSource.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Signal</Filter>
     </ClInclude>
     <ClInclude Include="Xml\Xml.h">
       <Filter>Header Files\Xml</Filter>

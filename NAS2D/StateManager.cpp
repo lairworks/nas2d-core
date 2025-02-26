@@ -68,6 +68,8 @@ void StateManager::setState(State* state)
  */
 bool StateManager::update()
 {
+	Utility<EventHandler>::get().pump();
+
 	if (mActiveState)
 	{
 		State* nextState = mActiveState->update();
@@ -80,8 +82,6 @@ bool StateManager::update()
 		{
 			setState(nextState);
 		}
-
-		Utility<EventHandler>::get().pump();
 	}
 	else
 	{

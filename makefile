@@ -9,11 +9,11 @@ CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
-WindowsRunPrefix := wine
-RunPrefix := $($(TARGET_OS)RunPrefix)
-
 WindowsExeSuffix := .exe
 ExeSuffix := $($(TARGET_OS)ExeSuffix)
+
+WindowsRunPrefix := wine
+RunPrefix := $($(TARGET_OS)RunPrefix)
 
 ROOTBUILDDIR := .build
 BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_

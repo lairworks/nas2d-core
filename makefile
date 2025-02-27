@@ -9,6 +9,15 @@ CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
+WindowsPreprocessorFlags = $(shell x86_64-w64-mingw32-pkg-config --cflags-only-I sdl2) -DGLEW_STATIC
+CPPFLAGS_EXTRA := $($(TARGET_OS)PreprocessorFlags)
+
+WindowsSpecialWarnFlags = -Wno-redundant-decls
+WARN_EXTRA := $($(TARGET_OS)SpecialWarnFlags)
+
+WindowsLibrarySearchPath = $(shell x86_64-w64-mingw32-pkg-config --libs-only-L sdl2)
+LDFLAGS_EXTRA := $($(TARGET_OS)LibrarySearchPath)
+
 WindowsExeSuffix := .exe
 ExeSuffix := $($(TARGET_OS)ExeSuffix)
 

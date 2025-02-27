@@ -15,12 +15,12 @@ TEST(Font, nullSafelyUsable) {
 	EXPECT_EQ(0, font.width(""));
 	EXPECT_EQ(0, font.height());
 	EXPECT_EQ(0, font.ascent());
-	EXPECT_EQ(0, font.ptSize());
+	EXPECT_EQ(0u, font.ptSize());
 
 	const auto& metrics = font.metrics();
-	EXPECT_EQ(0, metrics.size());
+	EXPECT_EQ(0u, metrics.size());
 
-	EXPECT_EQ(0, font.textureId());
+	EXPECT_EQ(0u, font.textureId());
 }
 
 TEST(Font, nullWidthNonEmptyString) {

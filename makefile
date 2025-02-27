@@ -117,7 +117,7 @@ $(TESTGRAPHICSOBJS): $(TESTGRAPHICSINTDIR)/%.o : $(TESTGRAPHICSDIR)/%.cpp $(TEST
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
-	cd test-graphics/ && ../$(TESTGRAPHICSOUTPUT) ; cd ..
+	cd test-graphics/ && $(RUN_PREFIX) ../$(TESTGRAPHICSOUTPUT) ; cd ..
 
 
 ## Compile rules ##

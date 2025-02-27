@@ -9,11 +9,20 @@ CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
-Windows_RUN_PREFIX := wine
-RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
+WindowsPreprocessorFlags = $(shell x86_64-w64-mingw32-pkg-config --cflags-only-I sdl2) -DGLEW_STATIC
+PreprocessorFlags := $($(TARGET_OS)PreprocessorFlags)
 
-Windows_EXE_SUFFIX := .exe
-EXE_SUFFIX := $($(TARGET_OS)_EXE_SUFFIX)
+WindowsSpecialWarnFlags = -Wno-redundant-decls
+SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
+
+WindowsLibrarySearchPath = $(shell x86_64-w64-mingw32-pkg-config --libs-only-L sdl2)
+LibrarySearchPath := $($(TARGET_OS)LibrarySearchPath)
+
+WindowsExeSuffix := .exe
+ExeSuffix := $($(TARGET_OS)ExeSuffix)
+
+WindowsRunPrefix := wine
+RunPrefix := $($(TARGET_OS)RunPrefix)
 
 ROOTBUILDDIR := .build
 BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
@@ -43,10 +52,10 @@ OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 SDL_LIBS := -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
 
-CPPFLAGS := $(CPPFLAGS_EXTRA)
-CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(WARN_EXTRA)
+CPPFLAGS := $(PreprocessorFlags) $(CPPFLAGS_EXTRA)
+CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(SpecialWarnFlags) $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN)
-LDFLAGS := $(LDFLAGS_EXTRA)
+LDFLAGS := $(LibrarySearchPath) $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)
 
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
@@ -64,7 +73,7 @@ $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.dep
 
 TESTDIR := test
 TESTINTDIR := $(BUILDDIRPREFIX)test/intermediate
-TESTOUTPUT := $(BUILDDIRPREFIX)test/test$(EXE_SUFFIX)
+TESTOUTPUT := $(BUILDDIRPREFIX)test/test$(ExeSuffix)
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 
@@ -89,14 +98,14 @@ $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.dep
 
 .PHONY: check
 check: | test
-	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT) $(GTEST_OPTIONS)
+	cd test && $(RunPrefix) ../$(TESTOUTPUT) $(GTEST_OPTIONS)
 
 
 ## Graphics test project ##
 
 TESTGRAPHICSDIR := test-graphics
 TESTGRAPHICSINTDIR := $(BUILDDIRPREFIX)testGraphics/intermediate
-TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics$(EXE_SUFFIX)
+TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics$(ExeSuffix)
 TESTGRAPHICSSRCS := $(shell find $(TESTGRAPHICSDIR) -name '*.cpp')
 TESTGRAPHICSOBJS := $(patsubst $(TESTGRAPHICSDIR)/%.cpp,$(TESTGRAPHICSINTDIR)/%.o,$(TESTGRAPHICSSRCS))
 
@@ -117,7 +126,7 @@ $(TESTGRAPHICSOBJS): $(TESTGRAPHICSINTDIR)/%.o : $(TESTGRAPHICSDIR)/%.cpp $(TEST
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
-	cd test-graphics/ && ../$(TESTGRAPHICSOUTPUT) ; cd ..
+	cd test-graphics/ && $(RunPrefix) ../$(TESTGRAPHICSOUTPUT) ; cd ..
 
 
 ## Compile rules ##

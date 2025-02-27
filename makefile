@@ -9,11 +9,11 @@ CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
-Windows_RUN_PREFIX := wine
-RUN_PREFIX := $($(TARGET_OS)_RUN_PREFIX)
+WindowsRunPrefix := wine
+RunPrefix := $($(TARGET_OS)RunPrefix)
 
-Windows_EXE_SUFFIX := .exe
-EXE_SUFFIX := $($(TARGET_OS)_EXE_SUFFIX)
+WindowsExeSuffix := .exe
+ExeSuffix := $($(TARGET_OS)ExeSuffix)
 
 ROOTBUILDDIR := .build
 BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
@@ -64,7 +64,7 @@ $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.dep
 
 TESTDIR := test
 TESTINTDIR := $(BUILDDIRPREFIX)test/intermediate
-TESTOUTPUT := $(BUILDDIRPREFIX)test/test$(EXE_SUFFIX)
+TESTOUTPUT := $(BUILDDIRPREFIX)test/test$(ExeSuffix)
 TESTSRCS := $(shell find $(TESTDIR) -name '*.cpp')
 TESTOBJS := $(patsubst $(TESTDIR)/%.cpp,$(TESTINTDIR)/%.o,$(TESTSRCS))
 
@@ -89,14 +89,14 @@ $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.dep
 
 .PHONY: check
 check: | test
-	cd test && $(RUN_PREFIX) ../$(TESTOUTPUT) $(GTEST_OPTIONS)
+	cd test && $(RunPrefix) ../$(TESTOUTPUT) $(GTEST_OPTIONS)
 
 
 ## Graphics test project ##
 
 TESTGRAPHICSDIR := test-graphics
 TESTGRAPHICSINTDIR := $(BUILDDIRPREFIX)testGraphics/intermediate
-TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics$(EXE_SUFFIX)
+TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics$(ExeSuffix)
 TESTGRAPHICSSRCS := $(shell find $(TESTGRAPHICSDIR) -name '*.cpp')
 TESTGRAPHICSOBJS := $(patsubst $(TESTGRAPHICSDIR)/%.cpp,$(TESTGRAPHICSINTDIR)/%.o,$(TESTGRAPHICSSRCS))
 
@@ -117,7 +117,7 @@ $(TESTGRAPHICSOBJS): $(TESTGRAPHICSINTDIR)/%.o : $(TESTGRAPHICSDIR)/%.cpp $(TEST
 
 .PHONY: run-test-graphics
 run-test-graphics: | test-graphics
-	cd test-graphics/ && $(RUN_PREFIX) ../$(TESTGRAPHICSOUTPUT) ; cd ..
+	cd test-graphics/ && $(RunPrefix) ../$(TESTGRAPHICSOUTPUT) ; cd ..
 
 
 ## Compile rules ##

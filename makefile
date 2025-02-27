@@ -10,13 +10,13 @@ CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
 WindowsPreprocessorFlags = $(shell x86_64-w64-mingw32-pkg-config --cflags-only-I sdl2) -DGLEW_STATIC
-CPPFLAGS_EXTRA := $($(TARGET_OS)PreprocessorFlags)
+PreprocessorFlags := $($(TARGET_OS)PreprocessorFlags)
 
 WindowsSpecialWarnFlags = -Wno-redundant-decls
-WARN_EXTRA := $($(TARGET_OS)SpecialWarnFlags)
+SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
 
 WindowsLibrarySearchPath = $(shell x86_64-w64-mingw32-pkg-config --libs-only-L sdl2)
-LDFLAGS_EXTRA := $($(TARGET_OS)LibrarySearchPath)
+LibrarySearchPath := $($(TARGET_OS)LibrarySearchPath)
 
 WindowsExeSuffix := .exe
 ExeSuffix := $($(TARGET_OS)ExeSuffix)
@@ -52,10 +52,10 @@ OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 SDL_LIBS := -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
 
-CPPFLAGS := $(CPPFLAGS_EXTRA)
-CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(WARN_EXTRA)
+CPPFLAGS := $(PreprocessorFlags) $(CPPFLAGS_EXTRA)
+CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(SpecialWarnFlags) $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN)
-LDFLAGS := $(LDFLAGS_EXTRA)
+LDFLAGS := $(LibrarySearchPath) $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)
 
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)

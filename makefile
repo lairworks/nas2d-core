@@ -33,7 +33,7 @@ BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
 .DEFAULT_GOAL := nas2d
 
 .PHONY: all
-all: nas2d test test-graphics
+all: nas2d test demoGraphics
 
 
 ## NAS2D project ##
@@ -101,19 +101,19 @@ check: | test
 	cd test && $(RunPrefix) ../$(TESTOUTPUT) $(GTEST_OPTIONS)
 
 
-## Graphics test project ##
+## Graphics demo project ##
 
-TESTGRAPHICSDIR := test-graphics
-TESTGRAPHICSINTDIR := $(BUILDDIRPREFIX)testGraphics/intermediate
-TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)testGraphics/testGraphics$(ExeSuffix)
+TESTGRAPHICSDIR := demoGraphics
+TESTGRAPHICSINTDIR := $(BUILDDIRPREFIX)demoGraphics/intermediate
+TESTGRAPHICSOUTPUT := $(BUILDDIRPREFIX)demoGraphics/demoGraphics$(ExeSuffix)
 TESTGRAPHICSSRCS := $(shell find $(TESTGRAPHICSDIR) -name '*.cpp')
 TESTGRAPHICSOBJS := $(patsubst $(TESTGRAPHICSDIR)/%.cpp,$(TESTGRAPHICSINTDIR)/%.o,$(TESTGRAPHICSSRCS))
 
 TESTGRAPHICSPROJECT_FLAGS = $(TESTCPPFLAGS) $(CXXFLAGS)
 TESTGRAPHICSPROJECT_LINKFLAGS = $(TESTLDFLAGS) $(LDLIBS)
 
-.PHONY: test-graphics
-test-graphics: $(TESTGRAPHICSOUTPUT)
+.PHONY: demoGraphics
+demoGraphics: $(TESTGRAPHICSOUTPUT)
 
 $(TESTGRAPHICSOUTPUT): PROJECT_LINKFLAGS = $(TESTGRAPHICSPROJECT_LINKFLAGS)
 $(TESTGRAPHICSOUTPUT): $(TESTGRAPHICSOBJS) $(OUTPUT)
@@ -124,9 +124,9 @@ $(TESTGRAPHICSOBJS): $(TESTGRAPHICSINTDIR)/%.o : $(TESTGRAPHICSDIR)/%.cpp $(TEST
 -include $(patsubst %.o,%.dep,$(TESTGRAPHICSOBJS))
 
 
-.PHONY: run-test-graphics
-run-test-graphics: | test-graphics
-	cd test-graphics/ && $(RunPrefix) ../$(TESTGRAPHICSOUTPUT) ; cd ..
+.PHONY: run-demoGraphics
+run-demoGraphics: | demoGraphics
+	cd demoGraphics/ && $(RunPrefix) ../$(TESTGRAPHICSOUTPUT) ; cd ..
 
 
 ## Compile rules ##

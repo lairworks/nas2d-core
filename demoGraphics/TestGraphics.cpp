@@ -8,7 +8,6 @@
 #include <NAS2D/Math/Rectangle.h>
 #include "NAS2D/Math/Angle.h"
 
-#include <functional>
 #include <random>
 
 

@@ -63,3 +63,9 @@ TEST(Delegate, DelegateNotEqualObjects) {
 	auto delegate2 = NAS2D::Delegate{&handler2, &MockHandler::MockMethod};
 	EXPECT_NE(delegate1, delegate2);
 }
+
+TEST(Delegate, LambdaVariableCapture) {
+	const auto lambda = [](){ return 42; };
+	auto delegate = NAS2D::Delegate{&lambda, &decltype(lambda)::operator()};
+	EXPECT_EQ(42, delegate());
+}

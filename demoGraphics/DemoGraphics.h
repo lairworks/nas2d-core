@@ -6,11 +6,11 @@
 #include "NAS2D/Resource/Image.h"
 
 
-class TestGraphics : public NAS2D::State
+class DemoGraphics : public NAS2D::State
 {
 public:
-	TestGraphics();
-	~TestGraphics() override;
+	DemoGraphics();
+	~DemoGraphics() override;
 
 protected:
 	void initialize() override;

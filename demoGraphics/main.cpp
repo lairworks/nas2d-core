@@ -9,7 +9,7 @@
 // ==================================================================================
 
 #include "SdlVersionInfo.h"
-#include "TestGraphics.h"
+#include "DemoGraphics.h"
 
 #include <NAS2D/Game.h>
 #include <NAS2D/Utility.h>
@@ -27,7 +27,7 @@ int main()
 	try
 	{
 		NAS2D::Game game("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks");
-		game.go(new TestGraphics());
+		game.go(new DemoGraphics());
 	}
 	catch(std::exception& e)
 	{

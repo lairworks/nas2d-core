@@ -3,10 +3,10 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SdlVersionInfo.cpp" />
-    <ClCompile Include="TestGraphics.cpp" />
+    <ClCompile Include="DemoGraphics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SdlVersionInfo.h" />
-    <ClInclude Include="TestGraphics.h" />
+    <ClInclude Include="DemoGraphics.h" />
   </ItemGroup>
 </Project>

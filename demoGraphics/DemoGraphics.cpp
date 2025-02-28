@@ -1,4 +1,4 @@
-#include "TestGraphics.h"
+#include "DemoGraphics.h"
 
 #include <NAS2D/EnumKeyCode.h>
 #include <NAS2D/Utility.h>
@@ -8,7 +8,6 @@
 #include <NAS2D/Math/Rectangle.h>
 #include "NAS2D/Math/Angle.h"
 
-#include <functional>
 #include <random>
 
 
@@ -42,28 +41,28 @@ namespace
 }
 
 
-TestGraphics::TestGraphics() :
+DemoGraphics::DemoGraphics() :
 	mTimer{},
 	mGear{"Gear.png"},
 	mDxImage{"Test_DirectX.png"},
 	mOglImage{"Test_OpenGL.png"}
 {}
 
-TestGraphics::~TestGraphics()
+DemoGraphics::~DemoGraphics()
 {
 	auto& eventHandler = NAS2D::Utility<NAS2D::EventHandler>::get();
-	eventHandler.mouseMotion().disconnect({this, &TestGraphics::onMouseMove});
-	eventHandler.mouseButtonDown().disconnect({this, &TestGraphics::onMouseDown});
-	eventHandler.keyDown().disconnect({this, &TestGraphics::onKeyDown});
+	eventHandler.mouseMotion().disconnect({this, &DemoGraphics::onMouseMove});
+	eventHandler.mouseButtonDown().disconnect({this, &DemoGraphics::onMouseDown});
+	eventHandler.keyDown().disconnect({this, &DemoGraphics::onKeyDown});
 
 }
 
-void TestGraphics::initialize()
+void DemoGraphics::initialize()
 {
 	auto& eventHandler = NAS2D::Utility<NAS2D::EventHandler>::get();
-	eventHandler.mouseMotion().connect({this, &TestGraphics::onMouseMove});
-	eventHandler.mouseButtonDown().connect({this, &TestGraphics::onMouseDown});
-	eventHandler.keyDown().connect({this, &TestGraphics::onKeyDown});
+	eventHandler.mouseMotion().connect({this, &DemoGraphics::onMouseMove});
+	eventHandler.mouseButtonDown().connect({this, &DemoGraphics::onMouseDown});
+	eventHandler.keyDown().connect({this, &DemoGraphics::onKeyDown});
 
 	auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
 	renderer.showSystemPointer(true);
@@ -72,7 +71,7 @@ void TestGraphics::initialize()
 	renderer.size(minSize);
 }
 
-NAS2D::State* TestGraphics::update()
+NAS2D::State* DemoGraphics::update()
 {
 	NAS2D::Renderer& r = NAS2D::Utility<NAS2D::Renderer>::get();
 
@@ -126,7 +125,7 @@ NAS2D::State* TestGraphics::update()
 	return this;
 }
 
-void TestGraphics::onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier /*mod*/, bool /*repeat*/)
+void DemoGraphics::onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier /*mod*/, bool /*repeat*/)
 {
 	switch (key)
 	{
@@ -150,11 +149,11 @@ void TestGraphics::onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier /*mod*/, boo
 	}
 }
 
-void TestGraphics::onMouseMove(NAS2D::Point<int> /*position*/, NAS2D::Vector<int> /*change*/)
+void DemoGraphics::onMouseMove(NAS2D::Point<int> /*position*/, NAS2D::Vector<int> /*change*/)
 {}
 
-void TestGraphics::onMouseDown(NAS2D::MouseButton /*button*/, NAS2D::Point<int> /*position*/)
+void DemoGraphics::onMouseDown(NAS2D::MouseButton /*button*/, NAS2D::Point<int> /*position*/)
 {}
 
-void TestGraphics::onWindowResized(int /*w*/, int /*h*/)
+void DemoGraphics::onWindowResized(int /*w*/, int /*h*/)
 {}

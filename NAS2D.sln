@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAS2D", "NAS2D\NAS2D.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{78F02848-BACB-4AD3-985E-0EB0D5B3DD53}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-graphics", "test-graphics\test-graphics.vcxproj", "{BC10CE9A-9BDA-4922-8C1F-F91C1E389483}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demoGraphics", "demoGraphics\demoGraphics.vcxproj", "{BC10CE9A-9BDA-4922-8C1F-F91C1E389483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

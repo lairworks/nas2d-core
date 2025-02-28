@@ -171,9 +171,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SdlVersionInfo.cpp" />
     <ClCompile Include="TestGraphics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SdlVersionInfo.h" />
     <ClInclude Include="TestGraphics.h" />
   </ItemGroup>
   <ItemGroup>

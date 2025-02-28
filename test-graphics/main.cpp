@@ -8,6 +8,7 @@
 // = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 
+#include "SdlVersionInfo.h"
 #include "TestGraphics.h"
 
 #include <NAS2D/Game.h>
@@ -21,6 +22,8 @@
 
 int main()
 {
+	printSdlVersionInfo();
+
 	try
 	{
 		NAS2D::Game game("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks");

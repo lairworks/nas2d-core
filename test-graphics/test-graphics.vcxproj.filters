@@ -2,9 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SdlVersionInfo.cpp" />
     <ClCompile Include="TestGraphics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SdlVersionInfo.h" />
     <ClInclude Include="TestGraphics.h" />
   </ItemGroup>
 </Project>

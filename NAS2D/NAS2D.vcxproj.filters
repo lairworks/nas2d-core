@@ -183,6 +183,9 @@
     <ClCompile Include="Xml\XmlNode.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
+    <ClCompile Include="Xml\XmlVisitor.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
     <ClCompile Include="StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

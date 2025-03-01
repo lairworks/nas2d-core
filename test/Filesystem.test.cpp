@@ -36,21 +36,23 @@ TEST(FilesystemStatic, extension) {
 }
 
 
-class Filesystem : public ::testing::Test {
-protected:
-	static constexpr auto AppName = "NAS2DUnitTests";
-	static constexpr auto OrganizationName = "LairWorks";
+namespace {
+	class Filesystem : public ::testing::Test {
+	protected:
+		static constexpr auto AppName = "NAS2DUnitTests";
+		static constexpr auto OrganizationName = "LairWorks";
 
-	Filesystem() :
-		fs(AppName, OrganizationName)
-	{
-		fs.mount(fs.basePath());
-		fs.mount("data/");
-		fs.mountReadWrite(fs.prefPath());
-	}
+		Filesystem() :
+			fs(AppName, OrganizationName)
+		{
+			fs.mount(fs.basePath());
+			fs.mount("data/");
+			fs.mountReadWrite(fs.prefPath());
+		}
 
-	NAS2D::Filesystem fs;
-};
+		NAS2D::Filesystem fs;
+	};
+}
 
 
 constexpr auto EndsWithDirSeparator = []() {

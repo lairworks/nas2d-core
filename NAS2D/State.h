@@ -75,7 +75,7 @@ namespace NAS2D
 	class State
 	{
 	public:
-		State() {}
+		State() = default;
 
 		virtual ~State() = default;
 

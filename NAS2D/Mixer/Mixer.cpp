@@ -14,6 +14,11 @@
 using namespace NAS2D;
 
 
+Mixer::~Mixer()
+{
+}
+
+
 void Mixer::playMusic(const Music& music)
 {
 	fadeInMusic(music, Duration{0});

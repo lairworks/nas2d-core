@@ -2,6 +2,7 @@
 
 #include "../Math/Point.h"
 #include "../Math/Vector.h"
+#include "../Math/Angle.h"
 
 
 using namespace NAS2D;

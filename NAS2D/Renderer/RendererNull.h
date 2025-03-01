@@ -11,11 +11,11 @@
 
 #include "Renderer.h"
 
-#include "../Math/Angle.h"
-
 
 namespace NAS2D
 {
+	class Angle;
+
 
 	class RendererNull : public Renderer
 	{

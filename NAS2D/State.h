@@ -91,7 +91,7 @@ namespace NAS2D
 		 * of the State object. Use it for one-time initialization of any
 		 * members, event hooks, etc.
 		 */
-		virtual void initialize() = 0;
+		virtual void initialize();
 
 
 		/**

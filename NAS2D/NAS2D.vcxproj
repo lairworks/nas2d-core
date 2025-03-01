@@ -181,6 +181,7 @@
     <ClCompile Include="Resource\Sound.cpp" />
     <ClCompile Include="Resource\Sprite.cpp" />
     <ClCompile Include="Signal\Signal.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="Timer.cpp" />

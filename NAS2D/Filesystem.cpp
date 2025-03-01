@@ -76,6 +76,20 @@ namespace
 	{
 		return std::error_code{errno, std::generic_category()}.message();
 	}
+
+
+	template <typename ToType, typename FromType>
+	auto safeConvert(FromType value)
+	{
+		if constexpr (std::numeric_limits<FromType>::max() > std::numeric_limits<ToType>::max())
+		{
+			if (value > std::numeric_limits<ToType>::max())
+			{
+				throw std::runtime_error("Value is too large to convert to destination type: " + std::to_string(value));
+			}
+		}
+		return static_cast<ToType>(value);
+	}
 }
 
 
@@ -315,14 +329,7 @@ std::string Filesystem::readFile(const std::filesystem::path& filename) const
 	}
 
 	const auto fileSize = std::filesystem::file_size(filePath);
-	if constexpr (std::numeric_limits<decltype(fileSize)>::max() > std::numeric_limits<std::string::size_type>::max())
-	{
-		if (fileSize > std::numeric_limits<std::string::size_type>::max())
-		{
-			throw std::runtime_error("Error opening file: " + filename.string() + " : File too large");
-		}
-	}
-	const auto bufferSize = static_cast<std::string::size_type>(fileSize);
+	const auto bufferSize = safeConvert<std::string::size_type>(fileSize);
 
 	std::string fileBuffer;
 	fileBuffer.resize(bufferSize);

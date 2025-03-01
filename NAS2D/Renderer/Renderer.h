@@ -38,6 +38,7 @@ namespace NAS2D
 		Renderer() = default;
 		Renderer(const Renderer& rhs) = default;
 		Renderer(Renderer&& rhs) = default;
+		~Renderer() override;
 
 		Renderer& operator=(const Renderer& rhs) = default;
 		Renderer& operator=(Renderer&& rhs) = default;

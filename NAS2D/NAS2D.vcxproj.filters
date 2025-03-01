@@ -114,6 +114,9 @@
     <ClCompile Include="Renderer\Renderer.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\RendererNull.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Renderer\RendererOpenGL.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>

@@ -69,6 +69,9 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="StateManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -112,6 +115,9 @@
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Renderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\RendererNull.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\RendererOpenGL.cpp">
@@ -175,6 +181,9 @@
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
     <ClCompile Include="Xml\XmlNode.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="Xml\XmlVisitor.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
     <ClCompile Include="StringUtils.cpp">

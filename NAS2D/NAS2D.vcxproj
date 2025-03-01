@@ -171,6 +171,7 @@
     <ClCompile Include="Renderer\Fade.cpp" />
     <ClCompile Include="Renderer\RectangleSkin.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
+    <ClCompile Include="Renderer\RendererNull.cpp" />
     <ClCompile Include="Renderer\RendererOpenGL.cpp" />
     <ClCompile Include="Renderer\Window.cpp" />
     <ClCompile Include="Resource\AnimationSet.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="Resource\Sound.cpp" />
     <ClCompile Include="Resource\Sprite.cpp" />
     <ClCompile Include="Signal\Signal.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -196,6 +198,7 @@
     <ClCompile Include="Xml\XmlParser.cpp" />
     <ClCompile Include="Xml\XmlText.cpp" />
     <ClCompile Include="Xml\XmlUnknown.cpp" />
+    <ClCompile Include="Xml\XmlVisitor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Configuration.h" />

@@ -19,7 +19,13 @@ using namespace NAS2D;
 
 Renderer::Renderer(const std::string& appTitle) :
 	Window(appTitle)
-{}
+{
+}
+
+
+Renderer::~Renderer()
+{
+}
 
 
 void Renderer::drawTextShadow(const Font& font, std::string_view text, Point<float> position, Vector<float> shadowOffset, Color textColor, Color shadowColor)

@@ -53,7 +53,7 @@ class XmlBase
 	friend class XmlDocument;
 
 public:
-	XmlBase() {}
+	XmlBase() = default;
 	XmlBase(const XmlBase&) = delete;
 	void operator=(const XmlBase& base) = delete;
 	virtual ~XmlBase() = default;

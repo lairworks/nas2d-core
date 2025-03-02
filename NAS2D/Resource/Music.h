@@ -13,8 +13,11 @@
 #include <string>
 #include <map>
 
-
-typedef struct _Mix_Music Mix_Music;
+#if defined(__XCODE_BUILD__)
+#include <SDL2_mixer/SDL_mixer.h>
+#else
+#include <SDL2/SDL_mixer.h>
+#endif
 
 
 namespace NAS2D

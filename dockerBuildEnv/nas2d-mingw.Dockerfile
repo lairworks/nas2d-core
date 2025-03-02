@@ -92,19 +92,19 @@ RUN \
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
-RUN sdlVersion="2.30.9" && \
+RUN sdlVersion="2.32.0" && \
   curl https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2-${sdlVersion}/ cross && \
   rm -rf SDL2-${sdlVersion}/
-RUN sdlImageVersion="2.8.4" && \
+RUN sdlImageVersion="2.8.5" && \
   curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2_image-${sdlImageVersion}/ cross && \
   rm -rf SDL2_image-${sdlImageVersion}/
-RUN sdlMixerVersion="2.8.0" && \
+RUN sdlMixerVersion="2.8.1" && \
   curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2_mixer-${sdlMixerVersion}/ cross && \
   rm -rf SDL2_mixer-${sdlMixerVersion}/
-RUN sdlTtfVersion="2.22.0" && \
+RUN sdlTtfVersion="2.24.0" && \
   curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2_ttf-${sdlTtfVersion}/ cross && \
   rm -rf SDL2_ttf-${sdlTtfVersion}/

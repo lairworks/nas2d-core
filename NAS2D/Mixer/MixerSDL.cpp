@@ -53,6 +53,12 @@ namespace
 
 	// Global so it can be accessed without capturing `this`
 	Signal<> musicFinished;
+
+
+	void onMusicFinished()
+	{
+		musicFinished();
+	}
 }
 
 
@@ -114,7 +120,7 @@ MixerSDL::MixerSDL(const Options& options)
 	musicVolume(options.musicVolume);
 
 	musicFinished.connect({this, &MixerSDL::onMusicFinished});
-	Mix_HookMusicFinished([]() { musicFinished(); });
+	Mix_HookMusicFinished(&::onMusicFinished);
 }
 
 

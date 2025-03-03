@@ -41,9 +41,9 @@ namespace NAS2D
 		static void WriteConfigurationOptions(const Options& options);
 
 		MixerSDL();
-		MixerSDL(const Options& options);
 		MixerSDL(const MixerSDL&) = delete;
 		MixerSDL(MixerSDL&&) = default;
+		explicit MixerSDL(const Options& options);
 		~MixerSDL() override;
 
 		MixerSDL& operator=(const MixerSDL&) = delete;

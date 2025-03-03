@@ -40,7 +40,8 @@ namespace NAS2D
 		Sprite(const AnimationSet& animationSet, const std::string& initialAction, Delegate<void()> animationCompleteHandler);
 		Sprite(const Sprite&) = default;
 		Sprite(Sprite&&) = default;
-		const Sprite& operator=(const Sprite&) = delete;
+
+		Sprite& operator=(const Sprite&) = delete;
 		Sprite& operator=(Sprite&&) = delete;
 
 		Vector<int> size() const;

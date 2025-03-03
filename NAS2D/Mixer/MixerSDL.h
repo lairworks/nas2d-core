@@ -44,6 +44,8 @@ namespace NAS2D
 		MixerSDL(const MixerSDL&) = delete;
 		MixerSDL(MixerSDL&&) = default;
 		explicit MixerSDL(const Options& options);
+		explicit MixerSDL(const Options& options, Delegate<void()> musicCompleteHandler);
+		explicit MixerSDL(Delegate<void()> musicCompleteHandler);
 		~MixerSDL() override;
 
 		MixerSDL& operator=(const MixerSDL&) = delete;

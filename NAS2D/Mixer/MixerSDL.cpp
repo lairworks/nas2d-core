@@ -123,6 +123,20 @@ MixerSDL::MixerSDL(const Options& options)
 }
 
 
+MixerSDL::MixerSDL(const Options& options, Delegate<void()> musicCompleteHandler) :
+	MixerSDL(options)
+{
+	mMusicComplete.connect(musicCompleteHandler);
+}
+
+
+MixerSDL::MixerSDL(Delegate<void()> musicCompleteHandler) :
+	MixerSDL()
+{
+	mMusicComplete.connect(musicCompleteHandler);
+}
+
+
 MixerSDL::~MixerSDL()
 {
 	stopAllAudio();

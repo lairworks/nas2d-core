@@ -12,6 +12,7 @@
 
 #include "../Duration.h"
 #include "../Signal/Signal.h"
+#include "../Signal/Delegate.h"
 
 
 namespace NAS2D
@@ -28,10 +29,12 @@ namespace NAS2D
 	public:
 		Mixer() = default;
 		Mixer(const Mixer&) = default;
-		Mixer& operator=(const Mixer&) = default;
 		Mixer(Mixer&&) = default;
-		Mixer& operator=(Mixer&&) = default;
+		explicit Mixer(Delegate<void()> musicCompleteHandler);
 		virtual ~Mixer();
+
+		Mixer& operator=(const Mixer&) = default;
+		Mixer& operator=(Mixer&&) = default;
 
 	public:
 		virtual void playSound(const Sound& sound) = 0;

@@ -36,14 +36,6 @@ using namespace NAS2D;
 
 namespace
 {
-	// ==================================================================================
-	// INTEROP WITH SDL2_MIXER
-	// ==================================================================================
-	// Global so it can be accessed without capturing `this`
-	Signal<> musicFinished;
-	// ==================================================================================
-
-
 	constexpr int AudioVolumeMin = 0;
 	constexpr int AudioVolumeMax = 128;
 
@@ -58,6 +50,18 @@ namespace
 
 	constexpr int AudioBufferSizeMin = 256;
 	constexpr int AudioBufferSizeMax = 4096;
+
+	// Global so it can be accessed without capturing `this`
+	Delegate<void()> musicFinished;
+
+
+	void onMusicFinished()
+	{
+		if (musicFinished)
+		{
+			musicFinished();
+		}
+	}
 }
 
 
@@ -118,8 +122,22 @@ MixerSDL::MixerSDL(const Options& options)
 	soundVolume(options.sfxVolume);
 	musicVolume(options.musicVolume);
 
-	musicFinished.connect({this, &MixerSDL::onMusicFinished});
-	Mix_HookMusicFinished([]() { musicFinished(); });
+	musicFinished = Delegate{this, &MixerSDL::onMusicFinished};
+	Mix_HookMusicFinished(&::onMusicFinished);
+}
+
+
+MixerSDL::MixerSDL(const Options& options, Delegate<void()> musicCompleteHandler) :
+	MixerSDL(options)
+{
+	mMusicComplete.connect(musicCompleteHandler);
+}
+
+
+MixerSDL::MixerSDL(Delegate<void()> musicCompleteHandler) :
+	MixerSDL()
+{
+	mMusicComplete.connect(musicCompleteHandler);
 }
 
 
@@ -130,7 +148,7 @@ MixerSDL::~MixerSDL()
 	Mix_CloseAudio();
 
 	Mix_HookMusicFinished(nullptr);
-	musicFinished.disconnect({this, &MixerSDL::onMusicFinished});
+	musicFinished.clear();
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }

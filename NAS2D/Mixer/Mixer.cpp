@@ -14,6 +14,12 @@
 using namespace NAS2D;
 
 
+Mixer::Mixer(Delegate<void()> musicCompleteHandler)
+{
+	mMusicComplete.connect(musicCompleteHandler);
+}
+
+
 Mixer::~Mixer()
 {
 }

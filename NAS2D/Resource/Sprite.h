@@ -15,6 +15,7 @@
 #include "../Math/Angle.h"
 #include "../Renderer/Color.h"
 #include "../Signal/Signal.h"
+#include "../Signal/Delegate.h"
 
 #include <vector>
 #include <string>
@@ -35,6 +36,8 @@ namespace NAS2D
 
 		Sprite(const std::string& filePath, const std::string& initialAction);
 		Sprite(const AnimationSet& animationSet, const std::string& initialAction);
+		Sprite(const std::string& filePath, const std::string& initialAction, Delegate<void()> animationCompleteHandler);
+		Sprite(const AnimationSet& animationSet, const std::string& initialAction, Delegate<void()> animationCompleteHandler);
 		Sprite(const Sprite&) = default;
 		Sprite(Sprite&&) = default;
 		const Sprite& operator=(const Sprite&) = delete;

@@ -28,10 +28,11 @@ namespace NAS2D
 	public:
 		Mixer() = default;
 		Mixer(const Mixer&) = default;
-		Mixer& operator=(const Mixer&) = default;
 		Mixer(Mixer&&) = default;
-		Mixer& operator=(Mixer&&) = default;
 		virtual ~Mixer();
+
+		Mixer& operator=(const Mixer&) = default;
+		Mixer& operator=(Mixer&&) = default;
 
 	public:
 		virtual void playSound(const Sound& sound) = 0;

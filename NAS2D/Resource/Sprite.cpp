@@ -41,6 +41,20 @@ Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialActio
 }
 
 
+Sprite::Sprite(const std::string& filePath, const std::string& initialAction, Delegate<void()> animationCompleteHandler) :
+	Sprite(filePath, initialAction)
+{
+	mAnimationCompleteSignal.connect(animationCompleteHandler);
+}
+
+
+Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialAction, Delegate<void()> animationCompleteHandler) :
+	Sprite(animationSet, initialAction)
+{
+	mAnimationCompleteSignal.connect(animationCompleteHandler);
+}
+
+
 Vector<int> Sprite::size() const
 {
 	return (*mCurrentAction)[mCurrentFrame].bounds.size;

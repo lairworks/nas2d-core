@@ -36,13 +36,8 @@ using namespace NAS2D;
 
 namespace
 {
-	// ==================================================================================
-	// INTEROP WITH SDL2_MIXER
-	// ==================================================================================
 	// Global so it can be accessed without capturing `this`
 	Signal<> musicFinished;
-	// ==================================================================================
-
 
 	constexpr int AudioVolumeMin = 0;
 	constexpr int AudioVolumeMax = 128;

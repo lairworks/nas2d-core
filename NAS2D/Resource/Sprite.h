@@ -11,10 +11,10 @@
 #pragma once
 
 #include "AnimationSet.h"
-#include "../Signal/Signal.h"
 #include "../Timer.h"
 #include "../Math/Angle.h"
 #include "../Renderer/Color.h"
+#include "../Signal/Signal.h"
 
 #include <vector>
 #include <string>

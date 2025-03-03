@@ -52,12 +52,15 @@ namespace
 	constexpr int AudioBufferSizeMax = 4096;
 
 	// Global so it can be accessed without capturing `this`
-	Signal<> musicFinished;
+	Delegate<void()> musicFinished;
 
 
 	void onMusicFinished()
 	{
-		musicFinished();
+		if (musicFinished)
+		{
+			musicFinished();
+		}
 	}
 }
 
@@ -119,7 +122,7 @@ MixerSDL::MixerSDL(const Options& options)
 	soundVolume(options.sfxVolume);
 	musicVolume(options.musicVolume);
 
-	musicFinished.connect({this, &MixerSDL::onMusicFinished});
+	musicFinished = Delegate{this, &MixerSDL::onMusicFinished};
 	Mix_HookMusicFinished(&::onMusicFinished);
 }
 
@@ -145,7 +148,7 @@ MixerSDL::~MixerSDL()
 	Mix_CloseAudio();
 
 	Mix_HookMusicFinished(nullptr);
-	musicFinished.disconnect({this, &MixerSDL::onMusicFinished});
+	musicFinished.clear();
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }

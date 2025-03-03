@@ -36,9 +36,6 @@ using namespace NAS2D;
 
 namespace
 {
-	// Global so it can be accessed without capturing `this`
-	Signal<> musicFinished;
-
 	constexpr int AudioVolumeMin = 0;
 	constexpr int AudioVolumeMax = 128;
 
@@ -53,6 +50,9 @@ namespace
 
 	constexpr int AudioBufferSizeMin = 256;
 	constexpr int AudioBufferSizeMax = 4096;
+
+	// Global so it can be accessed without capturing `this`
+	Signal<> musicFinished;
 }
 
 

@@ -29,7 +29,10 @@ namespace NAS2D
 	public:
 		Window();
 		Window(const std::string& appTitle);
+		Window(const Window&) = delete;
 		virtual ~Window();
+
+		Window& operator=(const Window&) = delete;
 
 		virtual std::vector<DisplayDesc> getDisplayModes() const;
 		virtual DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const;

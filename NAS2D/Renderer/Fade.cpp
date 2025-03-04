@@ -60,7 +60,7 @@ bool Fade::isFading() const
 
 bool Fade::isFaded() const
 {
-	return (mFadeColor.alpha == 255);
+	return (mDirection == FadeDirection::None) && (mFadeColor.alpha == 255);
 }
 
 

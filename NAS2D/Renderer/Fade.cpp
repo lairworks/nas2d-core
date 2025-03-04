@@ -14,9 +14,17 @@
 #include "../Math/Rectangle.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 
 using namespace NAS2D;
+
+
+namespace
+{
+	constexpr uint8_t alphaTransparent = 0;
+	constexpr uint8_t alphaOpaque = 255;
+}
 
 
 Fade::Fade(DelegateType onFadeComplete) :
@@ -26,7 +34,7 @@ Fade::Fade(DelegateType onFadeComplete) :
 
 
 Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
-	mFadeColor{fadeColor.alphaFade(255)},
+	mFadeColor{fadeColor.alphaFade(alphaOpaque)},
 	mDirection{FadeDirection::None},
 	mDuration{},
 	mFadeTimer{},
@@ -59,7 +67,7 @@ bool Fade::isFading() const
 
 bool Fade::isFaded() const
 {
-	return (mFadeColor.alpha == 255);
+	return (mDirection == FadeDirection::None) && (mFadeColor.alpha == alphaOpaque);
 }
 
 
@@ -70,7 +78,7 @@ void Fade::update()
 		return;
 	}
 
-	const auto step = static_cast<uint8_t>(std::clamp(mFadeTimer.elapsedTicks() * 255u / static_cast<unsigned int>(mDuration.milliseconds), 0u, 255u));
+	const auto step = static_cast<uint8_t>(std::clamp<unsigned int>(mFadeTimer.elapsedTicks() * 255u / mDuration.milliseconds, 0u, 255u));
 	mFadeColor.alpha = (mDirection == FadeDirection::In) ? 255 - step : step;
 
 	if (step == 255)
@@ -86,7 +94,7 @@ void Fade::update()
 
 void Fade::draw(Renderer& renderer) const
 {
-	if (mFadeColor.alpha > 0)
+	if (mFadeColor.alpha != alphaTransparent)
 	{
 		const auto displayRect = Rectangle{{0, 0}, renderer.size()};
 		renderer.drawBoxFilled(displayRect, mFadeColor);
@@ -98,7 +106,7 @@ void Fade::setDuration(Duration newDuration)
 {
 	if (newDuration.milliseconds == 0)
 	{
-		throw std::runtime_error("Fade duration must be positive");
+		throw std::domain_error("Fade duration must be positive");
 	}
 
 	mDuration = newDuration;

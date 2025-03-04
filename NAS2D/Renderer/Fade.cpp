@@ -99,7 +99,7 @@ void Fade::setDuration(Duration newDuration)
 {
 	if (newDuration.milliseconds == 0)
 	{
-		throw std::runtime_error("Fade duration must be positive");
+		throw std::domain_error("Fade duration must be positive");
 	}
 
 	mDuration = newDuration;

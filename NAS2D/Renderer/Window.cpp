@@ -158,7 +158,7 @@ void Window::setResolution(Vector<int> newResolution)
 
 std::vector<DisplayDesc> Window::getDisplayModes() const
 {
-	const auto displayIndex = SDL_GetWindowDisplayIndex(underlyingWindow);
+	const auto displayIndex = SDL_GetWindowDisplayIndex(window);
 	const auto numResolutions = SDL_GetNumDisplayModes(displayIndex);
 	if (numResolutions < 0)
 	{
@@ -179,7 +179,7 @@ std::vector<DisplayDesc> Window::getDisplayModes() const
 
 DisplayDesc Window::getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const
 {
-	const auto displayIndex = SDL_GetWindowDisplayIndex(underlyingWindow);
+	const auto displayIndex = SDL_GetWindowDisplayIndex(window);
 	SDL_DisplayMode preferredMode{};
 	preferredMode.w = preferredDisplayDesc.width;
 	preferredMode.h = preferredDisplayDesc.height;
@@ -203,7 +203,7 @@ void Window::window_icon(const std::string& path)
 		throw std::runtime_error("Failed to set window icon: " + path + " : " + SDL_GetError());
 	}
 
-	SDL_SetWindowIcon(underlyingWindow, icon);
+	SDL_SetWindowIcon(window, icon);
 	SDL_FreeSurface(icon);
 }
 
@@ -260,35 +260,35 @@ void Window::fullscreen(bool fullscreen, bool maintain)
 	if (fullscreen)
 	{
 		const auto windowFlags = maintain ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_FULLSCREEN_DESKTOP;
-		SDL_SetWindowFullscreen(underlyingWindow, windowFlags);
-		SDL_SetWindowResizable(underlyingWindow, SDL_FALSE);
+		SDL_SetWindowFullscreen(window, windowFlags);
+		SDL_SetWindowResizable(window, SDL_FALSE);
 	}
 	else
 	{
-		SDL_SetWindowFullscreen(underlyingWindow, 0);
+		SDL_SetWindowFullscreen(window, 0);
 		const auto windowSize = size();
-		SDL_SetWindowSize(underlyingWindow, windowSize.x, windowSize.y);
+		SDL_SetWindowSize(window, windowSize.x, windowSize.y);
 		onResize(windowSize);
-		SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+		SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 }
 
 
 bool Window::fullscreen() const
 {
-	return isAnyWindowFlagSet(underlyingWindow, SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return isAnyWindowFlagSet(window, SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
 void Window::maximize()
 {
-	SDL_MaximizeWindow(underlyingWindow);
+	SDL_MaximizeWindow(window);
 }
 
 
 bool Window::isMaximized() const
 {
-	const auto flags = SDL_GetWindowFlags(underlyingWindow);
+	const auto flags = SDL_GetWindowFlags(window);
 	return (flags & SDL_WINDOW_MAXIMIZED);
 }
 
@@ -303,30 +303,30 @@ void Window::resizeable(bool resizable)
 #if defined(_MSC_VER)
 	#pragma warning(suppress : 26812) // C26812 Warns to use enum class (C++), but SDL is a C library
 #endif
-	SDL_SetWindowResizable(underlyingWindow, resizable ? SDL_TRUE : SDL_FALSE);
+	SDL_SetWindowResizable(window, resizable ? SDL_TRUE : SDL_FALSE);
 }
 
 
 bool Window::resizeable() const
 {
-	return isAnyWindowFlagSet(underlyingWindow, SDL_WINDOW_RESIZABLE);
+	return isAnyWindowFlagSet(window, SDL_WINDOW_RESIZABLE);
 }
 
 
 void Window::minimumSize(Vector<int> newSize)
 {
-	SDL_SetWindowMinimumSize(underlyingWindow, newSize.x, newSize.y);
+	SDL_SetWindowMinimumSize(window, newSize.x, newSize.y);
 
 	// Read back the window size, in case it was changed
 	// Window may need to have been enlarged to the minimum size
-	SDL_GetWindowSize(underlyingWindow, &newSize.x, &newSize.y);
+	SDL_GetWindowSize(window, &newSize.x, &newSize.y);
 	onResize(newSize);
 }
 
 
 Vector<int> Window::size() const
 {
-	if (isAnyWindowFlagSet(underlyingWindow, SDL_WINDOW_FULLSCREEN_DESKTOP))
+	if (isAnyWindowFlagSet(window, SDL_WINDOW_FULLSCREEN_DESKTOP))
 	{
 		SDL_DisplayMode dm;
 		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
@@ -343,9 +343,9 @@ Vector<int> Window::size() const
 
 void Window::size(Vector<int> newSize)
 {
-	SDL_SetWindowSize(underlyingWindow, newSize.x, newSize.y);
+	SDL_SetWindowSize(window, newSize.x, newSize.y);
 	onResize(newSize);
-	SDL_SetWindowPosition(underlyingWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
 
@@ -357,20 +357,20 @@ void Window::onResize(Vector<int> /*newSize*/)
 Vector<int> Window::getWindowClientArea() const noexcept
 {
 	Vector<int> size;
-	SDL_GetWindowSize(underlyingWindow, &size.x, &size.y);
+	SDL_GetWindowSize(window, &size.x, &size.y);
 	return size;
 }
 
 
 void Window::captureMouse()
 {
-	SDL_SetWindowGrab(underlyingWindow, SDL_TRUE);
+	SDL_SetWindowGrab(window, SDL_TRUE);
 }
 
 
 void Window::releaseMouse()
 {
-	SDL_SetWindowGrab(underlyingWindow, SDL_FALSE);
+	SDL_SetWindowGrab(window, SDL_FALSE);
 }
 
 
@@ -381,23 +381,23 @@ void Window::releaseMouse()
  */
 void Window::warpMouse(Point<int> mousePositionInWindow)
 {
-	SDL_WarpMouseInWindow(underlyingWindow, mousePositionInWindow.x, mousePositionInWindow.y);
+	SDL_WarpMouseInWindow(window, mousePositionInWindow.x, mousePositionInWindow.y);
 }
 
 
 void Window::doModalError(const std::string& title, const std::string& message) const
 {
-	::doModalError(title, message, underlyingWindow);
+	::doModalError(title, message, window);
 }
 
 
 void Window::doModalAlert(const std::string& title, const std::string& message) const
 {
-	::doModalAlert(title, message, underlyingWindow);
+	::doModalAlert(title, message, window);
 }
 
 
 bool Window::doModalYesNo(const std::string& title, const std::string& message) const
 {
-	return ::doModalYesNo(title, message, underlyingWindow);
+	return ::doModalYesNo(title, message, window);
 }

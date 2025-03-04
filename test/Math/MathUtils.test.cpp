@@ -100,7 +100,7 @@ TEST(MathUtils, roundUpPowerOf2) {
 	EXPECT_EQ(2147483648u, NAS2D::roundUpPowerOf2(2147483648));
 }
 
-TEST(MathUtils, mapDomainToRange) {
+TEST(MathUtils, scaleLinearFloatFahrenheitToCelsius) {
 	// Fahrenheit to Celsius
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 212.0f, 32.0f, 100.0f, 0.0f), 0.0001f);
@@ -109,20 +109,25 @@ TEST(MathUtils, mapDomainToRange) {
 	EXPECT_NEAR(-17.77777f, NAS2D::scaleLinear(0.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(-17.22222f, NAS2D::scaleLinear(1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(100.0f, NAS2D::scaleLinear(212.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
+}
 
+TEST(MathUtils, scaleLinearFloatCelsiusToFahrenheit) {
 	// Celsius to Fahrenheit
 	EXPECT_NEAR(30.2f, NAS2D::scaleLinear(-1.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
 	EXPECT_NEAR(32.0f, NAS2D::scaleLinear(0.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
 	EXPECT_NEAR(33.8f, NAS2D::scaleLinear(1.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
 	EXPECT_NEAR(212.0f, NAS2D::scaleLinear(100.0f, 0.0f, 100.0f, 32.0f, 212.0f), 0.0001f);
+}
 
+TEST(MathUtils, scaleLinearFloatUnitInterval) {
 	// unsigned char to normalized float
 	EXPECT_NEAR(0.0f, (NAS2D::scaleLinear<unsigned char, float>(0, 0, 255, 0.0f, 1.0f)), 0.01f);
 	EXPECT_NEAR(0.5f, (NAS2D::scaleLinear<unsigned char, float>(128, 0, 255, 0.0f, 1.0f)), 0.01f);
 	EXPECT_NEAR(1.0f, (NAS2D::scaleLinear<unsigned char, float>(255, 0, 255, 0.0f, 1.0f)), 0.01f);
+}
 
+TEST(MathUtils, scaleLinearFloatSymmetricRange) {
 	EXPECT_NEAR(-1.0f, (NAS2D::scaleLinear<unsigned char, float>(0, 0, 255, -1.0f, 1.0f)), 0.01f);
 	EXPECT_NEAR(0.0f, (NAS2D::scaleLinear<unsigned char, float>(128, 0, 255, -1.0f, 1.0f)), 0.01f);
 	EXPECT_NEAR(1.0f, (NAS2D::scaleLinear<unsigned char, float>(255, 0, 255, -1.0f, 1.0f)), 0.01f);
-
 }

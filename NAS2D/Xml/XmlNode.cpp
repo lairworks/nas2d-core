@@ -17,11 +17,11 @@ using namespace NAS2D::Xml;
 XmlNode::XmlNode() :
 	XmlBase(),
 	_parent(nullptr),
-	_type(NodeType::XML_UNKNOWN),
 	_firstChild(nullptr),
 	_lastChild(nullptr),
 	_prev(nullptr),
-	_next(nullptr)
+	_next(nullptr),
+	_type(NodeType::XML_UNKNOWN)
 {}
 
 
@@ -33,11 +33,11 @@ XmlNode::XmlNode() :
 XmlNode::XmlNode(NodeType type) :
 	XmlBase(),
 	_parent(nullptr),
-	_type(type),
 	_firstChild(nullptr),
 	_lastChild(nullptr),
 	_prev(nullptr),
-	_next(nullptr)
+	_next(nullptr),
+	_type(type)
 {}
 
 

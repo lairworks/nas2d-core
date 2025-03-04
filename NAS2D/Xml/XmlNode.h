@@ -153,15 +153,13 @@ protected:
 	XmlNode* identify(const char* start);
 
 	XmlNode* _parent;
-	NodeType _type;
-
 	XmlNode* _firstChild;
 	XmlNode* _lastChild;
-
-	std::string _value{};
-
 	XmlNode* _prev;
 	XmlNode* _next;
+	std::string _value{};
+	NodeType _type;
+	int _padding{};
 
 private:
 	friend class XmlDocument;

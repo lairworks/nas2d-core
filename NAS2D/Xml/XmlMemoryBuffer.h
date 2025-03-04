@@ -53,11 +53,12 @@ public:
 	const std::string& buffer();
 
 private:
-	int depth;
-
 	std::string _buffer{};
 	std::string _indent;
 	std::string _lineBreak;
+	int depth;
+protected:
+	int _padding{};
 };
 
 } // namespace Xml

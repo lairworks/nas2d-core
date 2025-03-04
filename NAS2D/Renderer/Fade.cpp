@@ -14,6 +14,7 @@
 #include "../Math/Rectangle.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 
 using namespace NAS2D;

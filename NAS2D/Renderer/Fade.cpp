@@ -22,6 +22,7 @@ using namespace NAS2D;
 
 namespace
 {
+	constexpr uint8_t alphaTransparent = 0;
 	constexpr uint8_t alphaOpaque = 255;
 }
 
@@ -93,7 +94,7 @@ void Fade::update()
 
 void Fade::draw(Renderer& renderer) const
 {
-	if (mFadeColor.alpha > 0)
+	if (mFadeColor.alpha != alphaTransparent)
 	{
 		const auto displayRect = Rectangle{{0, 0}, renderer.size()};
 		renderer.drawBoxFilled(displayRect, mFadeColor);

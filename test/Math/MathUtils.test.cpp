@@ -100,7 +100,7 @@ TEST(MathUtils, roundUpPowerOf2) {
 	EXPECT_EQ(2147483648u, NAS2D::roundUpPowerOf2(2147483648));
 }
 
-TEST(MathUtils, mapDomainToRange) {
+TEST(MathUtils, scaleLinearFloatRange) {
 	// Fahrenheit to Celsius
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 212.0f, 32.0f, 100.0f, 0.0f), 0.0001f);

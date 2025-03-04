@@ -59,12 +59,10 @@ private:
 
 private:
 	XmlErrorCode _errorId{};
-
-	bool _error{};
-
-	std::string _errorDesc{};
-
 	XmlBase::ParseLocation _errorLocation{};
+	std::string _errorDesc{};
+	bool _error{};
+	char padding[7];
 };
 
 } // namespace Xml

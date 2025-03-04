@@ -64,6 +64,7 @@ protected:
 
 private:
 	bool cdata{}; // true if this should be input and output as a CDATA style text element
+	char padding[7]{};
 };
 
 } // namespace Xml

@@ -37,7 +37,7 @@ inline void line_break(const std::string& linebreak, std::string& buffer)
 }
 
 
-XmlMemoryBuffer::XmlMemoryBuffer() : depth(0), _indent("\t"), _lineBreak("\n")
+XmlMemoryBuffer::XmlMemoryBuffer() : _indent("\t"), _lineBreak("\n"), depth(0)
 {}
 
 

@@ -26,15 +26,11 @@
 using namespace NAS2D;
 
 
-// UGLY ASS HACK!
-SDL_Window* underlyingWindow = nullptr;
-
-
 namespace
 {
-	bool isAnyWindowFlagSet(Uint32 testFlags)
+	bool isAnyWindowFlagSet(SDL_Window* window, Uint32 testFlags)
 	{
-		return (SDL_GetWindowFlags(underlyingWindow) & testFlags) != 0;
+		return (SDL_GetWindowFlags(window) & testFlags) != 0;
 	}
 
 
@@ -280,7 +276,7 @@ void Window::fullscreen(bool fullscreen, bool maintain)
 
 bool Window::fullscreen() const
 {
-	return isAnyWindowFlagSet(SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
+	return isAnyWindowFlagSet(underlyingWindow, SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 
@@ -313,7 +309,7 @@ void Window::resizeable(bool resizable)
 
 bool Window::resizeable() const
 {
-	return isAnyWindowFlagSet(SDL_WINDOW_RESIZABLE);
+	return isAnyWindowFlagSet(underlyingWindow, SDL_WINDOW_RESIZABLE);
 }
 
 
@@ -330,7 +326,7 @@ void Window::minimumSize(Vector<int> newSize)
 
 Vector<int> Window::size() const
 {
-	if (isAnyWindowFlagSet(SDL_WINDOW_FULLSCREEN_DESKTOP))
+	if (isAnyWindowFlagSet(underlyingWindow, SDL_WINDOW_FULLSCREEN_DESKTOP))
 	{
 		SDL_DisplayMode dm;
 		if (SDL_GetDesktopDisplayMode(0, &dm) != 0)

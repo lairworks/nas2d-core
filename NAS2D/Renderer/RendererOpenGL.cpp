@@ -41,10 +41,6 @@
 using namespace NAS2D;
 
 
-// UGLY ASS HACK!
-extern SDL_Window* underlyingWindow;
-
-
 namespace
 {
 	constexpr std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect)

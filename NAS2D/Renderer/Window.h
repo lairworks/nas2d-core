@@ -8,6 +8,7 @@
 
 
 struct SDL_Cursor;
+struct SDL_Window;
 
 
 namespace NAS2D
@@ -79,5 +80,6 @@ namespace NAS2D
 		Vector<int> mResolution{1600, 900};
 		std::string mTitle;
 		std::map<int, SDL_Cursor*> cursors{};
+		SDL_Window* underlyingWindow{nullptr};
 	};
 }

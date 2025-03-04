@@ -41,10 +41,6 @@
 using namespace NAS2D;
 
 
-// UGLY ASS HACK!
-extern SDL_Window* underlyingWindow;
-
-
 namespace
 {
 	constexpr std::array<GLfloat, 12> rectToQuad(Rectangle<GLfloat> rect)
@@ -135,8 +131,8 @@ RendererOpenGL::~RendererOpenGL()
 	Utility<EventHandler>::get().windowResized().disconnect({this, &RendererOpenGL::onResize});
 
 	SDL_GL_DeleteContext(sdlOglContext);
-	SDL_DestroyWindow(underlyingWindow);
-	underlyingWindow = nullptr;
+	SDL_DestroyWindow(window);
+	window = nullptr;
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
@@ -533,7 +529,7 @@ void RendererOpenGL::clearScreen(Color color)
 
 void RendererOpenGL::update()
 {
-	SDL_GL_SwapWindow(underlyingWindow);
+	SDL_GL_SwapWindow(window);
 }
 
 
@@ -597,9 +593,9 @@ void RendererOpenGL::initSdl(Vector<int> resolution, bool fullscreen)
 	}
 
 	const Uint32 sdlFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | (fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
-	underlyingWindow = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resolution.x, resolution.y, sdlFlags);
+	window = SDL_CreateWindow(title().c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, resolution.x, resolution.y, sdlFlags);
 
-	if (!underlyingWindow)
+	if (!window)
 	{
 		throw std::runtime_error("Failed to create SDL window");
 	}
@@ -619,7 +615,7 @@ void RendererOpenGL::initSdlGL(bool vsync)
 
 	SDL_GL_SetSwapInterval(vsync ? 1 : 0);
 
-	sdlOglContext = SDL_GL_CreateContext(underlyingWindow);
+	sdlOglContext = SDL_GL_CreateContext(window);
 	if (!sdlOglContext)
 	{
 		throw std::runtime_error("Failed to create SDL OpenGL context");

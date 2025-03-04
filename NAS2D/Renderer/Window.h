@@ -8,6 +8,7 @@
 
 
 struct SDL_Cursor;
+struct SDL_Window;
 
 
 namespace NAS2D
@@ -29,7 +30,10 @@ namespace NAS2D
 	public:
 		Window();
 		Window(const std::string& appTitle);
+		Window(const Window&) = delete;
 		virtual ~Window();
+
+		Window& operator=(const Window&) = delete;
 
 		virtual std::vector<DisplayDesc> getDisplayModes() const;
 		virtual DisplayDesc getClosestMatchingDisplayMode(const DisplayDesc& preferredDisplayDesc) const;
@@ -76,5 +80,6 @@ namespace NAS2D
 		Vector<int> mResolution{1600, 900};
 		std::string mTitle;
 		std::map<int, SDL_Cursor*> cursors{};
+		SDL_Window* window{nullptr};
 	};
 }

@@ -20,6 +20,12 @@
 using namespace NAS2D;
 
 
+namespace
+{
+	constexpr uint8_t alphaOpaque = 255;
+}
+
+
 Fade::Fade(DelegateType onFadeComplete) :
 	Fade{Color::Black, onFadeComplete}
 {
@@ -27,7 +33,7 @@ Fade::Fade(DelegateType onFadeComplete) :
 
 
 Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
-	mFadeColor{fadeColor.alphaFade(255)},
+	mFadeColor{fadeColor.alphaFade(alphaOpaque)},
 	mDirection{FadeDirection::None},
 	mDuration{},
 	mFadeTimer{},
@@ -60,7 +66,7 @@ bool Fade::isFading() const
 
 bool Fade::isFaded() const
 {
-	return (mDirection == FadeDirection::None) && (mFadeColor.alpha == 255);
+	return (mDirection == FadeDirection::None) && (mFadeColor.alpha == alphaOpaque);
 }
 
 

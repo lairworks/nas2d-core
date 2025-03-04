@@ -36,12 +36,7 @@ namespace NAS2D
 	{
 	public:
 		Renderer() = default;
-		Renderer(const Renderer& rhs) = default;
-		Renderer(Renderer&& rhs) = default;
 		~Renderer() override;
-
-		Renderer& operator=(const Renderer& rhs) = default;
-		Renderer& operator=(Renderer&& rhs) = default;
 
 		virtual void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;
 		virtual void drawSubImage(const Image& image, Point<float> raster, const Rectangle<float>& subImageRect, Color color = Color::Normal) = 0;

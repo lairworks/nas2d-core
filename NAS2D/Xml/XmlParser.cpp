@@ -70,24 +70,35 @@ namespace
 		"Error parsing CDATA.",
 		"Error adding XmlDocument to document: XmlDocument can only be at the root.",
 	};
+
+	struct Entity
+	{
+		const char* str;
+		unsigned int strLength;
+		char chr;
+	};
+
+	enum
+	{
+		NUM_ENTITY = 5,
+		MAX_ENTITY_LENGTH = 6
+
+	};
+
+	Entity entity[NUM_ENTITY] =
+	{
+		{ "&amp;",  5, '&' },
+		{ "&lt;",   4, '<' },
+		{ "&gt;",   4, '>' },
+		{ "&quot;", 6, '\"' },
+		{ "&apos;", 6, '\'' }
+	};
 }
 
 
 namespace NAS2D
 {
 namespace Xml {
-
-// Note that "PutString" hardcodes the same list. This is less flexible
-// than it appears. Changing the entries or order will break putstring.
-XmlBase::Entity XmlBase::entity[ XmlBase::NUM_ENTITY ] =
-{
-	{ "&amp;",  5, '&' },
-	{ "&lt;",   4, '<' },
-	{ "&gt;",   4, '>' },
-	{ "&quot;", 6, '\"' },
-	{ "&apos;", 6, '\'' }
-};
-
 
 int XmlBase::isAlpha(unsigned char anyByte)
 {

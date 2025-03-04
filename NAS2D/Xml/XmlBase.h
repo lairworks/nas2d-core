@@ -127,21 +127,6 @@ protected:
 	ParseLocation location{};
 
 private:
-	struct Entity
-	{
-		const char* str;
-		unsigned int strLength;
-		char chr;
-	};
-
-	enum
-	{
-		NUM_ENTITY = 5,
-		MAX_ENTITY_LENGTH = 6
-
-	};
-
-	static Entity entity[NUM_ENTITY];
 	static bool condenseWhiteSpace;
 };
 

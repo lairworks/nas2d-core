@@ -48,7 +48,7 @@ namespace NAS2D
 	template <typename InputType, typename OutputType>
 	constexpr OutputType scaleLinear(const InputType& value, const InputType& domainPoint1, const InputType& domainPoint2, const OutputType& rangePoint1, const OutputType& rangePoint2)
 	{
-		return (value - domainPoint1) * (rangePoint2 - rangePoint1) / (domainPoint2 - domainPoint1) + rangePoint1;
+		return static_cast<OutputType>((value - domainPoint1) * (rangePoint2 - rangePoint1) / (domainPoint2 - domainPoint1) + rangePoint1);
 	}
 
 } // namespace NAS2D

@@ -100,6 +100,22 @@ TEST(MathUtils, roundUpPowerOf2) {
 	EXPECT_EQ(2147483648u, NAS2D::roundUpPowerOf2(2147483648));
 }
 
+TEST(MathUtils, scaleLinearForwardUint8toUint8) {
+	EXPECT_EQ(uint8_t{0}, NAS2D::scaleLinear(uint8_t{0}, uint8_t{0}, uint8_t{255}, uint8_t{0}, uint8_t{255}));
+	EXPECT_EQ(uint8_t{64}, NAS2D::scaleLinear(uint8_t{64}, uint8_t{0}, uint8_t{255}, uint8_t{0}, uint8_t{255}));
+	EXPECT_EQ(uint8_t{128}, NAS2D::scaleLinear(uint8_t{128}, uint8_t{0}, uint8_t{255}, uint8_t{0}, uint8_t{255}));
+	EXPECT_EQ(uint8_t{192}, NAS2D::scaleLinear(uint8_t{192}, uint8_t{0}, uint8_t{255}, uint8_t{0}, uint8_t{255}));
+	EXPECT_EQ(uint8_t{255}, NAS2D::scaleLinear(uint8_t{255}, uint8_t{0}, uint8_t{255}, uint8_t{0}, uint8_t{255}));
+}
+
+TEST(MathUtils, scaleLinearReverseUint8toUint8) {
+	EXPECT_EQ(uint8_t{255}, NAS2D::scaleLinear(uint8_t{0}, uint8_t{0}, uint8_t{255}, uint8_t{255}, uint8_t{0}));
+	EXPECT_EQ(uint8_t{191}, NAS2D::scaleLinear(uint8_t{64}, uint8_t{0}, uint8_t{255}, uint8_t{255}, uint8_t{0}));
+	EXPECT_EQ(uint8_t{127}, NAS2D::scaleLinear(uint8_t{128}, uint8_t{0}, uint8_t{255}, uint8_t{255}, uint8_t{0}));
+	EXPECT_EQ(uint8_t{63}, NAS2D::scaleLinear(uint8_t{192}, uint8_t{0}, uint8_t{255}, uint8_t{255}, uint8_t{0}));
+	EXPECT_EQ(uint8_t{0}, NAS2D::scaleLinear(uint8_t{255}, uint8_t{0}, uint8_t{255}, uint8_t{255}, uint8_t{0}));
+}
+
 TEST(MathUtils, scaleLinearFloatFahrenheitToCelsius) {
 	// Fahrenheit to Celsius
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);

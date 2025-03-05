@@ -116,6 +116,14 @@ TEST(MathUtils, scaleLinearReverseUint8toUint8) {
 	EXPECT_EQ(uint8_t{0}, NAS2D::scaleLinear(uint8_t{255}, uint8_t{0}, uint8_t{255}, uint8_t{255}, uint8_t{0}));
 }
 
+TEST(MathUtils, scaleLinearForwardUint32toUint8) {
+	EXPECT_EQ(uint8_t{0}, NAS2D::scaleLinear(uint32_t{0}, uint32_t{0}, uint32_t{10000}, uint8_t{0}, uint8_t{255}));
+	EXPECT_EQ(uint8_t{63}, NAS2D::scaleLinear(uint32_t{2500}, uint32_t{0}, uint32_t{10000}, uint8_t{0}, uint8_t{255}));
+	EXPECT_EQ(uint8_t{127}, NAS2D::scaleLinear(uint32_t{5000}, uint32_t{0}, uint32_t{10000}, uint8_t{0}, uint8_t{255}));
+	EXPECT_EQ(uint8_t{191}, NAS2D::scaleLinear(uint32_t{7500}, uint32_t{0}, uint32_t{10000}, uint8_t{0}, uint8_t{255}));
+	EXPECT_EQ(uint8_t{255}, NAS2D::scaleLinear(uint32_t{10000}, uint32_t{0}, uint32_t{10000}, uint8_t{0}, uint8_t{255}));
+}
+
 TEST(MathUtils, scaleLinearFloatFahrenheitToCelsius) {
 	// Fahrenheit to Celsius
 	EXPECT_NEAR(-18.33333f, NAS2D::scaleLinear(-1.0f, 32.0f, 212.0f, 0.0f, 100.0f), 0.0001f);

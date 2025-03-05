@@ -46,9 +46,9 @@ namespace NAS2D
 	 * InputType and OutputType must support all arithmetic operators and all arithmetic operators between each other.
 	 */
 	template <typename InputType, typename OutputType>
-	OutputType scaleLinear(const InputType& value, const InputType& domainPoint1, const InputType& domainPoint2, const OutputType& rangePoint1, const OutputType& rangePoint2)
+	constexpr OutputType scaleLinear(const InputType& value, const InputType& domainPoint1, const InputType& domainPoint2, const OutputType& rangePoint1, const OutputType& rangePoint2)
 	{
-		return (value - domainPoint1) * (rangePoint2 - rangePoint1) / (domainPoint2 - domainPoint1) + rangePoint1;
+		return static_cast<OutputType>(((domainPoint2 - value) * rangePoint1 + (value - domainPoint1) * rangePoint2) / (domainPoint2 - domainPoint1));
 	}
 
 } // namespace NAS2D

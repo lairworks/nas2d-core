@@ -69,10 +69,7 @@ namespace NAS2D
 
 		constexpr Point skewInverseBy(const Vector<BaseType>& other) const
 		{
-			if (other.x == 0 || other.y == 0)
-			{
-				throw std::domain_error("Cannot skewInverseBy a vector with a zero component");
-			}
+			verifyNotZero(other.x, other.y, "Cannot skewInverseBy a vector with a zero component");
 			return {x / other.x, y / other.y};
 		}
 

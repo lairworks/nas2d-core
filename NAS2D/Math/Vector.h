@@ -10,8 +10,9 @@
 
 #pragma once
 
+#include "IsZero.h"
+
 #include <string>
-#include <stdexcept>
 
 
 namespace NAS2D
@@ -65,10 +66,7 @@ namespace NAS2D
 
 		Vector& operator/=(BaseType scalar)
 		{
-			if (scalar == 0)
-			{
-				throw std::domain_error("Cannot divide vector by 0");
-			}
+			verifyNotZero(scalar, "Cannot divide vector by 0");
 			x /= scalar;
 			y /= scalar;
 			return *this;
@@ -81,10 +79,7 @@ namespace NAS2D
 
 		constexpr Vector operator/(BaseType scalar) const
 		{
-			if (scalar == 0)
-			{
-				throw std::domain_error("Cannot divide vector by 0");
-			}
+			verifyNotZero(scalar, "Cannot divide vector by 0");
 			return {x / scalar, y / scalar};
 		}
 
@@ -95,10 +90,7 @@ namespace NAS2D
 
 		constexpr Vector skewInverseBy(const Vector& other) const
 		{
-			if (other.x == 0 || other.y == 0)
-			{
-				throw std::domain_error("Cannot skewInverseBy a vector with a zero component");
-			}
+			verifyNotZero(other.x, other.y, "Cannot skewInverseBy a vector with a zero component");
 			return {x / other.x, y / other.y};
 		}
 

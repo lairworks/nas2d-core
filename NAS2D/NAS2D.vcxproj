@@ -158,6 +158,7 @@
     <ClCompile Include="FpsCounter.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ParserHelper.cpp" />
+    <ClCompile Include="Math\IsZero.cpp" />
     <ClCompile Include="Math\MathUtils.cpp" />
     <ClCompile Include="Math\Point.cpp" />
     <ClCompile Include="Math\Rectangle.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="FpsCounter.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Math\Angle.h" />
+    <ClInclude Include="Math\IsZero.h" />
     <ClInclude Include="Math\MathUtils.h" />
     <ClInclude Include="Math\Point.h" />
     <ClInclude Include="Math\PointInRectangleRange.h" />

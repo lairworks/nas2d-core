@@ -78,6 +78,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Math\IsZero.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
     <ClCompile Include="Math\MathUtils.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
@@ -249,6 +252,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Math\Angle.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\IsZero.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\MathUtils.h">

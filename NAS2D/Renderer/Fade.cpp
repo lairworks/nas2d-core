@@ -78,10 +78,11 @@ void Fade::update()
 		return;
 	}
 
-	const auto step = static_cast<uint8_t>(std::clamp<unsigned int>(mFadeTimer.elapsedTicks() * 255u / mDuration.milliseconds, 0u, 255u));
+	const auto currentMilliseconds = mFadeTimer.elapsedTicks();
+	const auto step = static_cast<uint8_t>(std::clamp<unsigned int>(currentMilliseconds * 255u / mDuration.milliseconds, 0u, 255u));
 	mFadeColor.alpha = (mDirection == FadeDirection::In) ? 255 - step : step;
 
-	if (step == 255)
+	if (currentMilliseconds >= mDuration.milliseconds)
 	{
 		mDirection = FadeDirection::None;
 		if (!mOnFadeComplete.empty())

@@ -12,6 +12,7 @@
 #include "Fade.h"
 #include "Renderer.h"
 #include "../Math/Rectangle.h"
+#include "../Math/MathUtils.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -78,10 +79,12 @@ void Fade::update()
 		return;
 	}
 
-	const auto step = static_cast<uint8_t>(std::clamp<unsigned int>(mFadeTimer.elapsedTicks() * 255u / mDuration.milliseconds, 0u, 255u));
-	mFadeColor.alpha = (mDirection == FadeDirection::In) ? 255 - step : step;
+	const auto currentMilliseconds = std::min(mFadeTimer.elapsedTicks(), mDuration.milliseconds);
+	mFadeColor.alpha = (mDirection == FadeDirection::In) ?
+		scaleLinear(currentMilliseconds, uint32_t{0}, mDuration.milliseconds, alphaOpaque, alphaTransparent) :
+		scaleLinear(currentMilliseconds, uint32_t{0}, mDuration.milliseconds, alphaTransparent, alphaOpaque);
 
-	if (step == 255)
+	if (currentMilliseconds >= mDuration.milliseconds)
 	{
 		mDirection = FadeDirection::None;
 		if (!mOnFadeComplete.empty())

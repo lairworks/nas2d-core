@@ -166,6 +166,7 @@
     <ClCompile Include="Filesystem.test.cpp" />
     <ClCompile Include="ParserHelper.test.cpp" />
     <ClCompile Include="StringFrom.test.cpp" />
+    <ClCompile Include="StringFromTo.test.cpp" />
     <ClCompile Include="StringTo.test.cpp" />
     <ClCompile Include="StringUtils.test.cpp" />
     <ClCompile Include="StringValue.test.cpp" />

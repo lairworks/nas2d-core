@@ -126,6 +126,18 @@ NAS2D::State* DemoGraphics::update()
 	return this;
 }
 
+void DemoGraphics::onToggleFullscreen()
+{
+	auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
+	renderer.fullscreen(!renderer.fullscreen());
+}
+
+void DemoGraphics::onToggleResizable()
+{
+	auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
+	renderer.resizeable(!renderer.resizeable());
+}
+
 void DemoGraphics::onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier /*mod*/, bool /*repeat*/)
 {
 	switch (key)
@@ -135,14 +147,12 @@ void DemoGraphics::onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier /*mod*/, boo
 		break;
 	case NAS2D::KeyCode::F1:
 	{
-		auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
-		renderer.fullscreen(!renderer.fullscreen());
+		onToggleFullscreen();
 		break;
 	}
 	case NAS2D::KeyCode::F2:
 	{
-		auto& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
-		renderer.resizeable(!renderer.resizeable());
+		onToggleResizable();
 		break;
 	}
 	default:

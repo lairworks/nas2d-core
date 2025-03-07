@@ -29,6 +29,34 @@
 
 using namespace NAS2D;
 
+
+namespace
+{
+	NAS2D::Dictionary defaultConfigGraphics()
+	{
+		return {{
+			{"screenwidth", 1000},
+			{"screenheight", 700},
+			{"bitdepth", 32},
+			{"fullscreen", false},
+			{"vsync", true},
+		}};
+	}
+
+	NAS2D::Dictionary defaultConfigAudio()
+	{
+		return {{
+			{"mixer", "SDL"},
+			{"musicvolume", 100},
+			{"sfxvolume", 128},
+			{"channels", 2},
+			{"mixrate", 22050},
+			{"bufferlength", 1024},
+		}};
+	}
+}
+
+
 /**
  * Starts the engine by initializing all of the engine sub components and
  * setting up any default values should they be needed.
@@ -52,24 +80,11 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 		std::map<std::string, NAS2D::Dictionary>{
 			{
 				"graphics",
-				{{
-					{"screenwidth", 1000},
-					{"screenheight", 700},
-					{"bitdepth", 32},
-					{"fullscreen", false},
-					{"vsync", true},
-				}},
+				defaultConfigGraphics()
 			},
 			{
 				"audio",
-				{{
-					{"mixer", "SDL"},
-					{"musicvolume", 100},
-					{"sfxvolume", 128},
-					{"channels", 2},
-					{"mixrate", 22050},
-					{"bufferlength", 1024},
-				}},
+				defaultConfigAudio()
 			},
 		}
 	);

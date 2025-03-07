@@ -11,6 +11,9 @@
 #pragma once
 
 #include "StringValue.h"
+
+#include <string>
+#include <vector>
 #include <map>
 
 

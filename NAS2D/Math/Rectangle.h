@@ -61,7 +61,7 @@ namespace NAS2D
 
 		constexpr bool null() const
 		{
-			return (size.x == 0) || (size.y == 0);
+			return size == Vector<BaseType>{0, 0};
 		}
 
 		constexpr bool empty() const

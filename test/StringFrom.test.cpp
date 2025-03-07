@@ -6,16 +6,19 @@
 #include <string>
 
 
-class ImplicitStringConversionTestFixture
+namespace
 {
-public:
-	std::string data;
-
-	operator std::string() const
+	class ImplicitStringConversionTestFixture
 	{
-		return data;
-	}
-};
+	public:
+		std::string data;
+
+		operator std::string() const
+		{
+			return data;
+		}
+	};
+}
 
 
 TEST(StringFrom, stringFrom) {

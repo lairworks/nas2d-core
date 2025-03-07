@@ -256,3 +256,29 @@ circleci-validate:
 	circleci config validate
 circleci-build:
 	circleci build
+
+
+## GitHub ##
+.PHONY: cache-list-all cache-list-main cache-list-branch cache-delete-main-stale cache-delete-branch
+GhCacheKeyIncremental := buildCache-
+GhCacheLimit := 100
+GhCacheFields := id,ref,key,version,sizeInBytes,createdAt,lastAccessedAt
+GhCacheListJson := gh cache list --limit $(GhCacheLimit) --json $(GhCacheFields)
+GhCacheListMain := $(GhCacheListJson) --ref refs/heads/main --key $(GhCacheKeyIncremental) --jq 'sort_by(.lastAccessedAt)'
+GhCacheListBranch := $(GhCacheListJson) --jq '.[] | select(.ref!="refs/heads/main")'
+GhCacheDeleteIds := xargs -I '{}' gh cache delete '{}'
+
+cache-list-all:
+	$(GhCacheListJson)
+
+cache-list-main:
+	$(GhCacheListMain)
+
+cache-list-branch:
+	$(GhCacheListBranch)
+
+cache-delete-main-stale:
+	$(GhCacheListMain) | jq '.[0:-2] | .[] .id' | $(GhCacheDeleteIds)
+
+cache-delete-branch:
+	$(GhCacheListBranch) | jq '.id' | $(GhCacheDeleteIds)

@@ -1,9 +1,16 @@
 #pragma once
 
 #include "NAS2D/State.h"
-#include "NAS2D/EventHandler.h"
 #include "NAS2D/Timer.h"
 #include "NAS2D/Resource/Image.h"
+
+
+namespace NAS2D
+{
+	enum class KeyCode : uint32_t;
+	enum class KeyModifier : uint16_t;
+	enum class MouseButton;
+}
 
 
 class DemoGraphics : public NAS2D::State

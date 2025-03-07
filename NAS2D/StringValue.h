@@ -10,7 +10,8 @@
 
 #pragma once
 
-#include "StringUtils.h"
+#include "StringFrom.h"
+#include "StringTo.h"
 
 
 namespace NAS2D

@@ -5,10 +5,9 @@
 
 void printSdlVersionInfo()
 {
-	SDL_version compiled;
+	SDL_version compiled = SDL_version{ SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL };
 	SDL_version linked;
 
-	SDL_VERSION(&compiled);
 	SDL_GetVersion(&linked);
 
 	SDL_Log("Compiled against SDL version %u.%u.%u.\n", compiled.major, compiled.minor, compiled.patch);

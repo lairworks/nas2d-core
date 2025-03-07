@@ -23,8 +23,8 @@ protected:
 	void onWindowResized(int w, int h);
 
 private:
-	NAS2D::Timer mTimer;
 	NAS2D::Image mGear;
 	NAS2D::Image mDxImage;
 	NAS2D::Image mOglImage;
+	NAS2D::Timer mTimer;
 };

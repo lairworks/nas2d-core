@@ -42,10 +42,10 @@ namespace
 
 
 DemoGraphics::DemoGraphics() :
-	mTimer{},
 	mGear{"Gear.png"},
 	mDxImage{"Test_DirectX.png"},
-	mOglImage{"Test_OpenGL.png"}
+	mOglImage{"Test_OpenGL.png"},
+	mTimer{}
 {}
 
 DemoGraphics::~DemoGraphics()

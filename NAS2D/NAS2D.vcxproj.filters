@@ -383,6 +383,12 @@
     <ClInclude Include="Xml\XmlMemoryBuffer.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
+    <ClInclude Include="StringFrom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringTo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="StringUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>

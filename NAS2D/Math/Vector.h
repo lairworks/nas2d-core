@@ -25,7 +25,7 @@ namespace NAS2D
 
 		constexpr bool operator==(const Vector& vector) const
 		{
-			return (x == vector.x) && (y == vector.y);
+			return isEqual(x, vector.x) && isEqual(y, vector.y);
 		}
 
 		constexpr bool operator!=(const Vector& vector) const

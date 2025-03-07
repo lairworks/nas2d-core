@@ -74,33 +74,33 @@ void DemoGraphics::initialize()
 
 NAS2D::State* DemoGraphics::update()
 {
-	NAS2D::Renderer& r = NAS2D::Utility<NAS2D::Renderer>::get();
+	NAS2D::Renderer& renderer = NAS2D::Utility<NAS2D::Renderer>::get();
 
-	r.clearScreen(NAS2D::Color::Gray);
+	renderer.clearScreen(NAS2D::Color::Gray);
 
-	r.drawBox({{10, 10}, {40, 40}});
-	r.drawBoxFilled({{70, 10}, {40, 40}}, NAS2D::Color{200, 0, 0});
+	renderer.drawBox({{10, 10}, {40, 40}});
+	renderer.drawBoxFilled({{70, 10}, {40, 40}}, NAS2D::Color{200, 0, 0});
 
 	for (auto i = 0; i < 10; ++i)
 	{
 		NAS2D::Rectangle<int> boxRect = {{120 + 10 * i, 10}, {i, i}};
-		r.drawBox(boxRect, NAS2D::Color::Red);
-		r.drawBoxFilled(boxRect.inset(1), NAS2D::Color::White);
+		renderer.drawBox(boxRect, NAS2D::Color::Red);
+		renderer.drawBoxFilled(boxRect.inset(1), NAS2D::Color::White);
 	}
 
-	r.drawCircle({250, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
-	r.drawCircle({290, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
-	r.drawCircle({330, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
+	renderer.drawCircle({250, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16);
+	renderer.drawCircle({290, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {0.5f, 0.5f});
+	renderer.drawCircle({330, 30}, 20, NAS2D::Color{0, 200, 0, 255}, 16, {1.0f, 0.5f});
 
-	drawBoundedText(r, {360, 10}, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	drawBoundedText(r, {360, 34}, "abcdefghijklmnopqrstuvwxyz");
-	drawBoundedText(r, {360, 58}, "WWWW");
-	drawBoundedText(r, {360, 82}, "iii");
-	drawBoundedText(r, {360, 106}, " ");
+	drawBoundedText(renderer, {360, 10}, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	drawBoundedText(renderer, {360, 34}, "abcdefghijklmnopqrstuvwxyz");
+	drawBoundedText(renderer, {360, 58}, "WWWW");
+	drawBoundedText(renderer, {360, 82}, "iii");
+	drawBoundedText(renderer, {360, 106}, " ");
 
-	drawBoundedText(r, {630, 10}, "A\nmulti\nline\nstring.");
+	drawBoundedText(renderer, {630, 10}, "A\nmulti\nline\nstring.");
 
-	r.drawGradient({{10, 60}, {64, 64}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
+	renderer.drawGradient({{10, 60}, {64, 64}}, NAS2D::Color::Blue, NAS2D::Color::Green, NAS2D::Color::Red, NAS2D::Color::Magenta);
 
 	for (auto i = 0u; i < 2000u; ++i)
 	{
@@ -109,19 +109,19 @@ NAS2D::State* DemoGraphics::update()
 
 		const uint8_t grey = static_cast<uint8_t>(jitter()) * 2u + 100u;
 		const auto offset = NAS2D::Vector{jitter(), jitter()};
-		r.drawPoint(NAS2D::Point{84, 60} + offset, NAS2D::Color{grey, grey, grey});
+		renderer.drawPoint(NAS2D::Point{84, 60} + offset, NAS2D::Color{grey, grey, grey});
 	}
 
 	const auto angle = NAS2D::Angle::degrees(static_cast<float>(mTimer.tick() * 360 / 10 / 1000));
-	r.drawImageRotated(mGear, {158, 60}, angle);
-	r.drawImageRotated(mGear, {219, 60}, -angle);
+	renderer.drawImageRotated(mGear, {158, 60}, angle);
+	renderer.drawImageRotated(mGear, {219, 60}, -angle);
 
-	r.drawSubImage(mGear, {284, 60}, {{32, 0}, {32, 32}});
-	r.drawSubImageRotated(mGear, {320, 60}, {{0, 0}, {32, 32}}, angle);
-	r.drawSubImageRepeated(mGear, {{284, 98}, {60, 26}}, {{16, 0}, {16, 16}});
+	renderer.drawSubImage(mGear, {284, 60}, {{32, 0}, {32, 32}});
+	renderer.drawSubImageRotated(mGear, {320, 60}, {{0, 0}, {32, 32}}, angle);
+	renderer.drawSubImageRepeated(mGear, {{284, 98}, {60, 26}}, {{16, 0}, {16, 16}});
 
-	r.drawImage(mDxImage, {10, 134});
-	r.drawImage(mOglImage, {10 + 512, 134});
+	renderer.drawImage(mDxImage, {10, 134});
+	renderer.drawImage(mOglImage, {10 + 512, 134});
 
 	return this;
 }

@@ -140,23 +140,17 @@ void DemoGraphics::onToggleResizable()
 
 void DemoGraphics::onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier /*mod*/, bool /*repeat*/)
 {
-	switch (key)
+	if (key == NAS2D::KeyCode::Escape)
 	{
-	case NAS2D::KeyCode::Escape:
 		NAS2D::postQuitEvent();
-		break;
-	case NAS2D::KeyCode::F1:
+	}
+	else if (key == NAS2D::KeyCode::F1)
 	{
 		onToggleFullscreen();
-		break;
 	}
-	case NAS2D::KeyCode::F2:
+	else if (key == NAS2D::KeyCode::F2)
 	{
 		onToggleResizable();
-		break;
-	}
-	default:
-		break;
 	}
 }
 

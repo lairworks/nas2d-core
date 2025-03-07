@@ -249,6 +249,8 @@
     <ClInclude Include="Signal/SignalSource.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateManager.h" />
+    <ClInclude Include="StringFrom.h" />
+    <ClInclude Include="StringTo.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="StringValue.h" />
     <ClInclude Include="Timer.h" />

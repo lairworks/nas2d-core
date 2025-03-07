@@ -54,6 +54,14 @@ namespace
 			{"bufferlength", 1024},
 		}};
 	}
+
+	std::map<std::string, NAS2D::Dictionary> defaultConfig()
+	{
+		return {
+			{"graphics", defaultConfigGraphics()},
+			{"audio", defaultConfigAudio()},
+		};
+	}
 }
 
 
@@ -76,18 +84,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	fs.mountSoftFail(fs.basePath() / dataPath);
 	fs.mountReadWrite(fs.prefPath());
 
-	Configuration& cf = Utility<Configuration>::init(
-		std::map<std::string, NAS2D::Dictionary>{
-			{
-				"graphics",
-				defaultConfigGraphics()
-			},
-			{
-				"audio",
-				defaultConfigAudio()
-			},
-		}
-	);
+	Configuration& cf = Utility<Configuration>::init(defaultConfig());
 	cf.load(configPath);
 
 	try

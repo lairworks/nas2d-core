@@ -42,4 +42,11 @@ namespace NAS2D
 			throwDomainError(errorMessage);
 		}
 	}
+
+
+	template <typename NumericType>
+	constexpr bool isEqual(NumericType value1, NumericType value2)
+	{
+		return isZero(value2 - value1);
+	}
 }

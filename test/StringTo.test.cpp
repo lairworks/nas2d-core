@@ -6,7 +6,7 @@
 #include <string>
 
 
-TEST(String, stringTo) {
+TEST(StringTo, stringTo) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>(std::string{"SomeStringValue"}));
 

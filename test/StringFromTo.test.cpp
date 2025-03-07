@@ -7,7 +7,7 @@
 #include <string>
 
 
-TEST(String, stringDataString) {
+TEST(StringFromTo, stringDataString) {
 	EXPECT_EQ("Some string value", NAS2D::stringFrom<std::string>(NAS2D::stringTo<std::string>("Some string value")));
 
 	EXPECT_EQ("false", NAS2D::stringFrom<bool>(NAS2D::stringTo<bool>("false")));
@@ -20,7 +20,7 @@ TEST(String, stringDataString) {
 	EXPECT_THAT(NAS2D::stringFrom<float>(NAS2D::stringTo<float>("1.0")), testing::StartsWith("1.0"));
 }
 
-TEST(String, dataStringData) {
+TEST(StringFromTo, dataStringData) {
 	EXPECT_EQ("Some string value", NAS2D::stringTo<std::string>(NAS2D::stringFrom<std::string>("Some string value")));
 
 	EXPECT_EQ(false, NAS2D::stringTo<bool>(NAS2D::stringFrom<bool>(false)));

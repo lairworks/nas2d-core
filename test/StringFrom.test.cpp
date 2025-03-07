@@ -18,7 +18,7 @@ public:
 };
 
 
-TEST(String, stringFrom) {
+TEST(StringFrom, stringFrom) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
 

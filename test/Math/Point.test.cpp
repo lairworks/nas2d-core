@@ -89,12 +89,6 @@ TEST(Point, to) {
 	EXPECT_EQ((NAS2D::Point<float>{1.0, 2.0}), (NAS2D::Point<int>{1, 2}.to<float>()));
 }
 
-TEST(Point, stringConversion) {
-	EXPECT_EQ("(0, 0)", (std::string{NAS2D::Point{0, 0}}));
-	EXPECT_EQ("(1, 0)", (std::string{NAS2D::Point{1, 0}}));
-	EXPECT_EQ("(0, 1)", (std::string{NAS2D::Point{0, 1}}));
-}
-
 TEST(Point, VectorPointAdd) {
 	EXPECT_EQ((NAS2D::Point{2, 3}), (NAS2D::Vector{1, 2} + NAS2D::Point<int>{1, 1}));
 }

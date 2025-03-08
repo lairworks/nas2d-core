@@ -12,8 +12,6 @@
 
 #include "Vector.h"
 
-#include <string>
-
 
 namespace NAS2D
 {
@@ -83,11 +81,6 @@ namespace NAS2D
 		constexpr Point<NewBaseType> to() const
 		{
 			return Point<NewBaseType>(*this);
-		}
-
-		explicit operator std::string() const
-		{
-			return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 		}
 	};
 

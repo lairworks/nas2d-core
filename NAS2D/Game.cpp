@@ -69,9 +69,9 @@ namespace
  * Starts the engine by initializing all of the engine sub components and
  * setting up any default values should they be needed.
  *
- * \param	title		The title that should be used for the game window.
- * \param appName		The name of the app (used to create an app data write path)
- * \param organizationName		The name of the organization (used to create an app data write path)
+ * \param	title	The title that should be used for the game window.
+ * \param	appName	The name of the app (used to create an app data write path)
+ * \param	organizationName	The name of the organization (used to create an app data write path)
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Initial data path. Defaults to 'data'.
  */

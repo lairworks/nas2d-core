@@ -24,6 +24,11 @@ namespace
 }
 
 
+TEST(StringFrom, implicitConversion) {
+	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
+	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
+}
+
 TEST(StringFrom, stringFrom) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
@@ -59,10 +64,6 @@ TEST(StringFrom, stringFrom) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
-
-	// Implicit string conversion
-	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
-	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
 }
 
 TEST(StringFrom, point) {

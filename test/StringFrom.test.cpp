@@ -34,10 +34,12 @@ TEST(StringFrom, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
 }
 
-TEST(StringFrom, stringFrom) {
+TEST(StringFrom, boolean) {
 	EXPECT_EQ("false", NAS2D::stringFrom(false));
 	EXPECT_EQ("true", NAS2D::stringFrom(true));
+}
 
+TEST(StringFrom, stringFrom) {
 	using signedChar = signed char;
 	using unsignedChar = unsigned char;
 	EXPECT_EQ("-1", NAS2D::stringFrom(signedChar{-1}));

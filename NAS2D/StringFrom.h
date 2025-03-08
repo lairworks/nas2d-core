@@ -6,6 +6,10 @@
 
 namespace NAS2D
 {
+	template <typename BaseType> struct Point;
+	template <typename BaseType> struct Vector;
+
+
 	template <typename T>
 	std::string stringFrom(T value)
 	{
@@ -21,5 +25,19 @@ namespace NAS2D
 		{
 			return std::to_string(value);
 		}
+	}
+
+
+	template <typename BaseType>
+	std::string stringFrom(Point<BaseType> point)
+	{
+		return "(" + std::to_string(point.x) + ", " + std::to_string(point.y) + ")";
+	}
+
+
+	template <typename BaseType>
+	std::string stringFrom(Vector<BaseType> vector)
+	{
+		return "(" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + ")";
 	}
 }

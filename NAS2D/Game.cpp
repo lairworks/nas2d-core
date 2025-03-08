@@ -84,8 +84,8 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	fs.mountSoftFail(fs.basePath() / dataPath);
 	fs.mountReadWrite(fs.prefPath());
 
-	Configuration& cf = Utility<Configuration>::init(defaultConfig());
-	cf.load(configPath);
+	Configuration& configuration = Utility<Configuration>::init(defaultConfig());
+	configuration.load(configPath);
 
 	try
 	{

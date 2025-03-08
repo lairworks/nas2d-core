@@ -29,10 +29,12 @@ TEST(StringFrom, implicitConversion) {
 	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
 }
 
-TEST(StringFrom, stringFrom) {
+TEST(StringFrom, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
+}
 
+TEST(StringFrom, stringFrom) {
 	EXPECT_EQ("false", NAS2D::stringFrom(false));
 	EXPECT_EQ("true", NAS2D::stringFrom(true));
 

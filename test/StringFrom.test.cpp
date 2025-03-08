@@ -39,7 +39,7 @@ TEST(StringFrom, boolean) {
 	EXPECT_EQ("true", NAS2D::stringFrom(true));
 }
 
-TEST(StringFrom, stringFrom) {
+TEST(StringFrom, integers) {
 	using signedChar = signed char;
 	using unsignedChar = unsigned char;
 	EXPECT_EQ("-1", NAS2D::stringFrom(signedChar{-1}));
@@ -63,7 +63,9 @@ TEST(StringFrom, stringFrom) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1ll));
 	EXPECT_EQ("0", NAS2D::stringFrom(0ll));
 	EXPECT_EQ("1", NAS2D::stringFrom(1ull));
+}
 
+TEST(StringFrom, floatingPoint) {
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));

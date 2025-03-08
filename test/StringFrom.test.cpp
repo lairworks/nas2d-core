@@ -1,5 +1,8 @@
 #include "NAS2D/StringFrom.h"
 
+#include "NAS2D/Math/Point.h"
+#include "NAS2D/Math/Vector.h"
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -60,4 +63,16 @@ TEST(StringFrom, stringFrom) {
 	// Implicit string conversion
 	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
 	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
+}
+
+TEST(StringFrom, point) {
+	EXPECT_EQ("(0, 0)", NAS2D::stringFrom(NAS2D::Point{0, 0}));
+	EXPECT_EQ("(1, 0)", NAS2D::stringFrom(NAS2D::Point{1, 0}));
+	EXPECT_EQ("(0, 1)", NAS2D::stringFrom(NAS2D::Point{0, 1}));
+}
+
+TEST(StringFrom, vector) {
+	EXPECT_EQ("(0, 0)", NAS2D::stringFrom(NAS2D::Vector{0, 0}));
+	EXPECT_EQ("(1, 0)", NAS2D::stringFrom(NAS2D::Vector{1, 0}));
+	EXPECT_EQ("(0, 1)", NAS2D::stringFrom(NAS2D::Vector{0, 1}));
 }

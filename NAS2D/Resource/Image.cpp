@@ -13,6 +13,7 @@
 #include "../Math/Rectangle.h"
 #include "../Filesystem.h"
 #include "../Utility.h"
+#include "../StringFrom.h"
 
 #if defined(__XCODE_BUILD__)
 #include <GLEW/GLEW.h>
@@ -148,7 +149,7 @@ Color Image::pixelColor(Point<int> point) const
 {
 	if (!Rectangle{{0, 0}, mSize}.contains(point))
 	{
-		throw std::runtime_error("Pixel coordinates out of bounds: " + std::string{point});
+		throw std::runtime_error("Pixel coordinates out of bounds: " + stringFrom(point));
 	}
 
 	if (!mSurface) { throw std::runtime_error("Image has no allocated surface"); }

@@ -11,6 +11,7 @@
 
 #include "../Filesystem.h"
 #include "../Utility.h"
+#include "../StringFrom.h"
 #include "../Math/MathUtils.h"
 #include "../Math/PointInRectangleRange.h"
 
@@ -272,7 +273,7 @@ namespace
 		if (fontSurfaceSize != glyphSize * GlyphMatrixSize)
 		{
 			SDL_FreeSurface(fontSurface);
-			throw std::runtime_error("Unexpected font image size. Image dimensions " + std::string{fontSurfaceSize} + " must both be evenly divisible by " + std::to_string(GlyphMatrixSize));
+			throw std::runtime_error("Unexpected font image size. Image dimensions " + stringFrom(fontSurfaceSize) + " must both be evenly divisible by " + std::to_string(GlyphMatrixSize));
 		}
 
 		Font::FontInfo fontInfo;

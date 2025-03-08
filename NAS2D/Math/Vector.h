@@ -12,8 +12,6 @@
 
 #include "IsZero.h"
 
-#include <string>
-
 
 namespace NAS2D
 {
@@ -124,11 +122,6 @@ namespace NAS2D
 		constexpr Vector<NewBaseType> to() const
 		{
 			return Vector<NewBaseType>(*this);
-		}
-
-		explicit operator std::string() const
-		{
-			return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 		}
 	};
 

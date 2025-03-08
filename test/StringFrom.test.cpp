@@ -1,5 +1,8 @@
 #include "NAS2D/StringFrom.h"
 
+#include "NAS2D/Math/Point.h"
+#include "NAS2D/Math/Vector.h"
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -21,13 +24,22 @@ namespace
 }
 
 
-TEST(StringFrom, stringFrom) {
+TEST(StringFrom, implicitConversion) {
+	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
+	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
+}
+
+TEST(StringFrom, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
+}
 
+TEST(StringFrom, boolean) {
 	EXPECT_EQ("false", NAS2D::stringFrom(false));
 	EXPECT_EQ("true", NAS2D::stringFrom(true));
+}
 
+TEST(StringFrom, integers) {
 	using signedChar = signed char;
 	using unsignedChar = unsigned char;
 	EXPECT_EQ("-1", NAS2D::stringFrom(signedChar{-1}));
@@ -51,13 +63,23 @@ TEST(StringFrom, stringFrom) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1ll));
 	EXPECT_EQ("0", NAS2D::stringFrom(0ll));
 	EXPECT_EQ("1", NAS2D::stringFrom(1ull));
+}
 
+TEST(StringFrom, floatingPoint) {
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
+}
 
-	// Implicit string conversion
-	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
-	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
+TEST(StringFrom, point) {
+	EXPECT_EQ("(0, 0)", NAS2D::stringFrom(NAS2D::Point{0, 0}));
+	EXPECT_EQ("(1, 0)", NAS2D::stringFrom(NAS2D::Point{1, 0}));
+	EXPECT_EQ("(0, 1)", NAS2D::stringFrom(NAS2D::Point{0, 1}));
+}
+
+TEST(StringFrom, vector) {
+	EXPECT_EQ("(0, 0)", NAS2D::stringFrom(NAS2D::Vector{0, 0}));
+	EXPECT_EQ("(1, 0)", NAS2D::stringFrom(NAS2D::Vector{1, 0}));
+	EXPECT_EQ("(0, 1)", NAS2D::stringFrom(NAS2D::Vector{0, 1}));
 }

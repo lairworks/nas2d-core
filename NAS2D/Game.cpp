@@ -29,13 +29,49 @@
 
 using namespace NAS2D;
 
+
+namespace
+{
+	NAS2D::Dictionary defaultConfigGraphics()
+	{
+		return {{
+			{"screenwidth", 1000},
+			{"screenheight", 700},
+			{"bitdepth", 32},
+			{"fullscreen", false},
+			{"vsync", true},
+		}};
+	}
+
+	NAS2D::Dictionary defaultConfigAudio()
+	{
+		return {{
+			{"mixer", "SDL"},
+			{"musicvolume", 100},
+			{"sfxvolume", 128},
+			{"channels", 2},
+			{"mixrate", 22050},
+			{"bufferlength", 1024},
+		}};
+	}
+
+	std::map<std::string, NAS2D::Dictionary> defaultConfig()
+	{
+		return {
+			{"graphics", defaultConfigGraphics()},
+			{"audio", defaultConfigAudio()},
+		};
+	}
+}
+
+
 /**
  * Starts the engine by initializing all of the engine sub components and
  * setting up any default values should they be needed.
  *
- * \param	title		The title that should be used for the game window.
- * \param appName		The name of the app (used to create an app data write path)
- * \param organizationName		The name of the organization (used to create an app data write path)
+ * \param	title	The title that should be used for the game window.
+ * \param	appName	The name of the app (used to create an app data write path)
+ * \param	organizationName	The name of the organization (used to create an app data write path)
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Initial data path. Defaults to 'data'.
  */
@@ -48,32 +84,8 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	fs.mountSoftFail(fs.basePath() / dataPath);
 	fs.mountReadWrite(fs.prefPath());
 
-	Configuration& cf = Utility<Configuration>::init(
-		std::map<std::string, NAS2D::Dictionary>{
-			{
-				"graphics",
-				{{
-					{"screenwidth", 1000},
-					{"screenheight", 700},
-					{"bitdepth", 32},
-					{"fullscreen", false},
-					{"vsync", true},
-				}},
-			},
-			{
-				"audio",
-				{{
-					{"mixer", "SDL"},
-					{"musicvolume", 100},
-					{"sfxvolume", 128},
-					{"channels", 2},
-					{"mixrate", 22050},
-					{"bufferlength", 1024},
-				}},
-			},
-		}
-	);
-	cf.load(configPath);
+	Configuration& configuration = Utility<Configuration>::init(defaultConfig());
+	configuration.load(configPath);
 
 	try
 	{

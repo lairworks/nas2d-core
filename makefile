@@ -1,39 +1,66 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
-CONFIG = Debug
-Debug_CXX_FLAGS := -Og -g
-Release_CXX_FLAGS := -O3
-CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
-
-# Determine OS (Linux, Darwin, ...)
-CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
-TARGET_OS ?= $(CURRENT_OS)
-
-WindowsPreprocessorFlags = $(shell x86_64-w64-mingw32-pkg-config --cflags-only-I sdl2) -DGLEW_STATIC
-PreprocessorFlags := $($(TARGET_OS)PreprocessorFlags)
-
-WindowsSpecialWarnFlags = -Wno-redundant-decls
-SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
-
-WindowsLibrarySearchPath = $(shell x86_64-w64-mingw32-pkg-config --libs-only-L sdl2)
-LibrarySearchPath := $($(TARGET_OS)LibrarySearchPath)
-
-WindowsExeSuffix := .exe
-ExeSuffix := $($(TARGET_OS)ExeSuffix)
-
-WindowsRunPrefix := wine
-RunPrefix := $($(TARGET_OS)RunPrefix)
-
-ROOTBUILDDIR := .build
-BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
-
-
 ## Default and top-level targets ##
 
 .DEFAULT_GOAL := nas2d
 
 .PHONY: all
 all: nas2d test demoGraphics
+
+# Determine OS (Linux, Darwin, ...)
+CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
+TARGET_OS ?= $(CURRENT_OS)
+
+# Toolchain: gcc, clang, mingw, (or blank for environment default)
+Toolchain ?=
+
+PkgConfig := pkg-config
+WarnFlags := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2
+
+gccCXX := g++
+gccWarnFlags := $(WarnFlags) -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++
+gccPkgConfig := $(PkgConfig)
+gccTARGET_OS := $(TARGET_OS)
+
+clangCXX := clang++
+clangWarnNotInterested := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
+clangWarnAllowed := -Wno-padded -Wno-cast-function-type-strict
+clangWarnKnown := -Wno-unsafe-buffer-usage -Wno-global-constructors -Wno-exit-time-destructors -Wno-unused-member-function
+clangWarnShow := -Weverything $(clangWarnNotInterested)
+clangWarnFlags := $(clangWarnShow) $(clangWarnAllowed) $(clangWarnKnown)
+clangPkgConfig := $(PkgConfig)
+clangTARGET_OS := $(TARGET_OS)
+
+mingwCXX := x86_64-w64-mingw32-g++
+mingwWarnFlags := $(WarnFlags)
+mingwPkgConfig := x86_64-w64-mingw32-pkg-config
+mingwTARGET_OS := Windows
+
+CXX := $($(Toolchain)CXX)
+WarnFlags := $($(Toolchain)WarnFlags)
+PkgConfig := $($(Toolchain)PkgConfig)
+TARGET_OS := $($(Toolchain)TARGET_OS)
+
+# Build configuration
+CONFIG = Debug
+
+Debug_CXX_FLAGS := -Og -g
+Release_CXX_FLAGS := -O3
+CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
+
+# Target specific settings
+WindowsSpecialPreprocessorFlags = -DGLEW_STATIC
+WindowsSpecialWarnFlags = -Wno-redundant-decls
+WindowsExeSuffix := .exe
+WindowsRunPrefix := wine
+
+SpecialPreprocessorFlags := $($(TARGET_OS)SpecialPreprocessorFlags)
+SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
+ExeSuffix := $($(TARGET_OS)ExeSuffix)
+RunPrefix := $($(TARGET_OS)RunPrefix)
+
+ROOTBUILDDIR := .build
+BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
 
 
 ## NAS2D project ##
@@ -45,6 +72,9 @@ OUTPUT := $(BINDIR)/libnas2d.a
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
+IncludeSearchPath := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --cflags-only-I sdl2)
+LibrarySearchPath := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --libs-only-L sdl2)
+
 Linux_OpenGL_LIBS := -lGLEW -lGL
 Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
 Windows_OpenGL_LIBS := -lglew32 -lopengl32
@@ -52,8 +82,8 @@ OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 SDL_LIBS := -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
 
-CPPFLAGS := $(PreprocessorFlags) $(CPPFLAGS_EXTRA)
-CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(SpecialWarnFlags) $(WARN_EXTRA)
+CPPFLAGS := $(IncludeSearchPath) $(SpecialPreprocessorFlags) $(CPPFLAGS_EXTRA)
+CXXFLAGS_WARN := $(WarnFlags) $(SpecialWarnFlags) $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN)
 LDFLAGS := $(LibrarySearchPath) $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)
@@ -185,12 +215,10 @@ $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
 
 ## Linting ##
 
-WarnNoUninteresting := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
-
 .PHONY: show-warnings
 show-warnings:
 	@$(MAKE) clean-all > /dev/null
-	$(MAKE) --output-sync all CXX=clang++ CXXFLAGS_WARN="-Weverything $(WarnNoUninteresting)" 2>&1 >/dev/null | grep -o "\[-W.*\]" | sort | uniq
+	$(MAKE) --output-sync all CXX=clang++ CXXFLAGS_WARN="$(clangWarnShow)" 2>&1 >/dev/null | grep -o "\[-W.*\]" | sort | uniq
 	@$(MAKE) clean-all > /dev/null
 
 .PHONY: lint

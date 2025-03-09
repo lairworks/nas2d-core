@@ -56,10 +56,8 @@ WindowsRunPrefix := wine
 WindowsRunSuffixUnitTest := --gtest_color=yes | cat -
 
 DarwinIncludeSearchFlags = -isystem$(shell brew --prefix)/include
-DarwinLibrarySearchFlags = -L$(shell brew --prefix)/lib
 
 IncludeSearchFlags := $($(TARGET_OS)IncludeSearchFlags)
-LibrarySearchFlags := $($(TARGET_OS)LibrarySearchFlags)
 SpecialPreprocessorFlags := $($(TARGET_OS)SpecialPreprocessorFlags)
 SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
 ExeSuffix := $($(TARGET_OS)ExeSuffix)
@@ -80,7 +78,7 @@ SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
 IncludeSearchFlags := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --cflags-only-I sdl2) $(IncludeSearchFlags)
-LibrarySearchFlags := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --libs-only-L sdl2) $(LibrarySearchFlags)
+LibrarySearchFlags := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --libs-only-L sdl2)
 
 Linux_OpenGL_LIBS := -lGLEW -lGL
 Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL

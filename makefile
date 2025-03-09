@@ -207,10 +207,8 @@ Linux_TAR_RENAME_FLAG := --transform='s/^$(SRCDIR)/include\/\0/'
 TAR_RENAME_FLAG := $($(CURRENT_OS)_TAR_RENAME_FLAG)
 
 .PHONY: package
-package: $(PACKAGE_NAME)
-
-$(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
-	@mkdir -p "${@D}"
+package: $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
+	@mkdir -p "$(PACKAGEDIR)"
 	# Package an "include/" folder containing all header files, plus the library file
 	find $(SRCDIR) -name '*.h' | tar -czf $(PACKAGE_NAME) $(TAR_RENAME_FLAG) -T - $(OUTPUT)
 

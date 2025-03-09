@@ -30,20 +30,17 @@ Debug_CXX_FLAGS := -Og -g
 Release_CXX_FLAGS := -O3
 CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 
-
+# Target specific settings
 WindowsPreprocessorFlags = $(shell $(PkgConfig) --cflags-only-I sdl2) -DGLEW_STATIC
-PreprocessorFlags := $($(TARGET_OS)PreprocessorFlags)
-
 WindowsSpecialWarnFlags = -Wno-redundant-decls
-SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
-
 WindowsLibrarySearchPath = $(shell $(PkgConfig) --libs-only-L sdl2)
-LibrarySearchPath := $($(TARGET_OS)LibrarySearchPath)
-
 WindowsExeSuffix := .exe
-ExeSuffix := $($(TARGET_OS)ExeSuffix)
-
 WindowsRunPrefix := wine
+
+PreprocessorFlags := $($(TARGET_OS)PreprocessorFlags)
+SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
+LibrarySearchPath := $($(TARGET_OS)LibrarySearchPath)
+ExeSuffix := $($(TARGET_OS)ExeSuffix)
 RunPrefix := $($(TARGET_OS)RunPrefix)
 
 ROOTBUILDDIR := .build

@@ -61,8 +61,8 @@ OUTPUT := $(BINDIR)/libnas2d.a
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
-IncludeSearchPath := $(shell $(PkgConfig) --cflags-only-I sdl2)
-LibrarySearchPath := $(shell $(PkgConfig) --libs-only-L sdl2)
+IncludeSearchPath := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --cflags-only-I sdl2)
+LibrarySearchPath := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --libs-only-L sdl2)
 
 Linux_OpenGL_LIBS := -lGLEW -lGL
 Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL

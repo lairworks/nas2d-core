@@ -4,6 +4,19 @@
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
+# Toolchain: gcc, clang, mingw, (or blank for environment default)
+Toolchain :=
+
+gccCXX := g++
+gccTARGET_OS := $(TARGET_OS)
+clangCXX := clang++
+clangTARGET_OS := $(TARGET_OS)
+mingwCXX := x86_64-w64-mingw32-g++
+mingwTARGET_OS := Windows
+
+CXX := $($(Toolchain)CXX)
+TARGET_OS := $($(Toolchain)TARGET_OS)
+
 # Build configuration
 CONFIG = Debug
 

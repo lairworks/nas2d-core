@@ -15,18 +15,25 @@ TARGET_OS ?= $(CURRENT_OS)
 Toolchain :=
 
 PkgConfig := pkg-config
+WarnFlags := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2
 
 gccCXX := g++
+gccWarnFlags := $(WarnFlags)
 gccPkgConfig := $(PkgConfig)
 gccTARGET_OS := $(TARGET_OS)
+
 clangCXX := clang++
+clangWarnFlags := $(WarnFlags)
 clangPkgConfig := $(PkgConfig)
 clangTARGET_OS := $(TARGET_OS)
+
 mingwCXX := x86_64-w64-mingw32-g++
+mingwWarnFlags := $(WarnFlags)
 mingwPkgConfig := x86_64-w64-mingw32-pkg-config
 mingwTARGET_OS := Windows
 
 CXX := $($(Toolchain)CXX)
+WarnFlags := $($(Toolchain)WarnFlags)
 PkgConfig := $($(Toolchain)PkgConfig)
 TARGET_OS := $($(Toolchain)TARGET_OS)
 
@@ -72,7 +79,7 @@ OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 SDL_LIBS := -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
 
 CPPFLAGS := $(IncludeSearchPath) $(SpecialPreprocessorFlags) $(CPPFLAGS_EXTRA)
-CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(SpecialWarnFlags) $(WARN_EXTRA)
+CXXFLAGS_WARN := $(WarnFlags) $(SpecialWarnFlags) $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN)
 LDFLAGS := $(LibrarySearchPath) $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)

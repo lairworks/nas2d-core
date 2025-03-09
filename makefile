@@ -211,12 +211,12 @@ $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
 
 ## Linting ##
 
-WarnNoUninteresting := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
+clangWarnNotInterested := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
 
 .PHONY: show-warnings
 show-warnings:
 	@$(MAKE) clean-all > /dev/null
-	$(MAKE) --output-sync all CXX=clang++ CXXFLAGS_WARN="-Weverything $(WarnNoUninteresting)" 2>&1 >/dev/null | grep -o "\[-W.*\]" | sort | uniq
+	$(MAKE) --output-sync all CXX=clang++ CXXFLAGS_WARN="-Weverything $(clangWarnNotInterested)" 2>&1 >/dev/null | grep -o "\[-W.*\]" | sort | uniq
 	@$(MAKE) clean-all > /dev/null
 
 .PHONY: lint

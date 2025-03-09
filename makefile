@@ -7,14 +7,20 @@ TARGET_OS ?= $(CURRENT_OS)
 # Toolchain: gcc, clang, mingw, (or blank for environment default)
 Toolchain :=
 
+PkgConfig := pkg-config
+
 gccCXX := g++
+gccPkgConfig := $(PkgConfig)
 gccTARGET_OS := $(TARGET_OS)
 clangCXX := clang++
+clangPkgConfig := $(PkgConfig)
 clangTARGET_OS := $(TARGET_OS)
 mingwCXX := x86_64-w64-mingw32-g++
+mingwPkgConfig := x86_64-w64-mingw32-pkg-config
 mingwTARGET_OS := Windows
 
 CXX := $($(Toolchain)CXX)
+PkgConfig := $($(Toolchain)PkgConfig)
 TARGET_OS := $($(Toolchain)TARGET_OS)
 
 # Build configuration
@@ -25,13 +31,13 @@ Release_CXX_FLAGS := -O3
 CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 
 
-WindowsPreprocessorFlags = $(shell x86_64-w64-mingw32-pkg-config --cflags-only-I sdl2) -DGLEW_STATIC
+WindowsPreprocessorFlags = $(shell $(PkgConfig) --cflags-only-I sdl2) -DGLEW_STATIC
 PreprocessorFlags := $($(TARGET_OS)PreprocessorFlags)
 
 WindowsSpecialWarnFlags = -Wno-redundant-decls
 SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
 
-WindowsLibrarySearchPath = $(shell x86_64-w64-mingw32-pkg-config --libs-only-L sdl2)
+WindowsLibrarySearchPath = $(shell $(PkgConfig) --libs-only-L sdl2)
 LibrarySearchPath := $($(TARGET_OS)LibrarySearchPath)
 
 WindowsExeSuffix := .exe

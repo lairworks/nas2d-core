@@ -1,13 +1,13 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
+# Determine OS (Linux, Darwin, ...)
+CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
+TARGET_OS ?= $(CURRENT_OS)
+
 CONFIG = Debug
 Debug_CXX_FLAGS := -Og -g
 Release_CXX_FLAGS := -O3
 CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
-
-# Determine OS (Linux, Darwin, ...)
-CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
-TARGET_OS ?= $(CURRENT_OS)
 
 WindowsPreprocessorFlags = $(shell x86_64-w64-mingw32-pkg-config --cflags-only-I sdl2) -DGLEW_STATIC
 PreprocessorFlags := $($(TARGET_OS)PreprocessorFlags)

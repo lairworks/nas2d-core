@@ -39,7 +39,7 @@ jobs:
     docker:
       - image: ghcr.io/lairworks/build-env-nas2d-clang:1.5
     environment:
-      WARN_EXTRA: "-Wdocumentation -Wdocumentation-unknown-command -Wcomma -Winconsistent-missing-destructor-override -Wmissing-prototypes -Wctad-maybe-unsupported -Wimplicit-int-float-conversion -Wsign-conversion"
+      Toolchain: "clang"
     steps:
       - checkout
       - build-and-test
@@ -47,8 +47,7 @@ jobs:
     docker:
       - image: ghcr.io/lairworks/build-env-nas2d-mingw:1.13
     environment:
-      WARN_EXTRA: "-Wno-redundant-decls"
-      LDFLAGS_EXTRA: "-L/usr/local/x86_64-w64-mingw32/lib"
+      Toolchain: "mingw"
     steps:
       - checkout
       - build-and-test

@@ -23,7 +23,11 @@ gccPkgConfig := $(PkgConfig)
 gccTARGET_OS := $(TARGET_OS)
 
 clangCXX := clang++
-clangWarnFlags := $(WarnFlags)
+clangWarnNotInterested := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
+clangWarnAllowed := -Wno-padded
+clangWarnKnown := -Wno-global-constructors -Wno-exit-time-destructors -Wno-unused-member-function
+clangWarnShow := -Weverything $(clangWarnNotInterested)
+clangWarnFlags := $(clangWarnShow) $(clangWarnAllowed) $(clangWarnKnown)
 clangPkgConfig := $(PkgConfig)
 clangTARGET_OS := $(TARGET_OS)
 
@@ -210,12 +214,6 @@ $(PACKAGE_NAME): $(OUTPUT) $(shell find $(SRCDIR) -name '*.h')
 
 
 ## Linting ##
-
-clangWarnNotInterested := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
-clangWarnAllowed := -Wno-padded
-clangWarnKnown := -Wno-global-constructors -Wno-exit-time-destructors -Wno-unused-member-function
-clangWarnShow := -Weverything $(clangWarnNotInterested)
-clangWarnFlags := $(clangWarnShow) $(clangWarnAllowed) $(clangWarnKnown)
 
 .PHONY: show-warnings
 show-warnings:

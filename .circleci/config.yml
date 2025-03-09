@@ -21,11 +21,6 @@ jobs:
     steps:
       - checkout
       - brew-install
-      - run:
-          name: Add Brew include path to system include paths
-          command: |
-            echo "export CPLUS_INCLUDE_PATH=${CPLUS_INCLUDE_PATH}:$(brew --prefix)/include" >> "${BASH_ENV}"
-            echo "export LDFLAGS_EXTRA=-L$(brew --prefix)/lib" >> "${BASH_ENV}"
       - build-and-test
   build-linux-gcc:
     docker:

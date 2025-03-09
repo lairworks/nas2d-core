@@ -1,5 +1,12 @@
 # Source http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
 
+## Default and top-level targets ##
+
+.DEFAULT_GOAL := nas2d
+
+.PHONY: all
+all: nas2d test demoGraphics
+
 # Determine OS (Linux, Darwin, ...)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
@@ -45,14 +52,6 @@ RunPrefix := $($(TARGET_OS)RunPrefix)
 
 ROOTBUILDDIR := .build
 BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
-
-
-## Default and top-level targets ##
-
-.DEFAULT_GOAL := nas2d
-
-.PHONY: all
-all: nas2d test demoGraphics
 
 
 ## NAS2D project ##

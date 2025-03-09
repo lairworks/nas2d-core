@@ -18,7 +18,7 @@ PkgConfig := pkg-config
 WarnFlags := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2
 
 gccCXX := g++
-gccWarnFlags := $(WarnFlags)
+gccWarnFlags := $(WarnFlags) -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++
 gccPkgConfig := $(PkgConfig)
 gccTARGET_OS := $(TARGET_OS)
 

@@ -31,7 +31,7 @@ jobs:
     docker:
       - image: ghcr.io/lairworks/build-env-nas2d-gcc:1.6
     environment:
-      WARN_EXTRA: "-Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++"
+      Toolchain: "gcc"
     steps:
       - checkout
       - build-and-test

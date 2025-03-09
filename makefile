@@ -53,11 +53,13 @@ WindowsSpecialPreprocessorFlags = -DGLEW_STATIC
 WindowsSpecialWarnFlags = -Wno-redundant-decls
 WindowsExeSuffix := .exe
 WindowsRunPrefix := wine
+WindowsRunSuffixUnitTest := --gtest_color=yes | cat -
 
 SpecialPreprocessorFlags := $($(TARGET_OS)SpecialPreprocessorFlags)
 SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
 ExeSuffix := $($(TARGET_OS)ExeSuffix)
 RunPrefix := $($(TARGET_OS)RunPrefix)
+RunSuffixUnitTest := $($(TARGET_OS)RunSuffixUnitTest)
 
 ROOTBUILDDIR := .build
 BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux_
@@ -128,7 +130,7 @@ $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.dep
 
 .PHONY: check
 check: | test
-	cd test && $(RunPrefix) ../$(TESTOUTPUT) $(GTEST_OPTIONS)
+	cd test && $(RunPrefix) ../$(TESTOUTPUT) $(GTEST_OPTIONS) $(RunSuffixUnitTest)
 
 
 ## Graphics demo project ##

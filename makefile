@@ -24,8 +24,8 @@ gccTARGET_OS := $(TARGET_OS)
 
 clangCXX := clang++
 clangWarnNotInterested := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
-clangWarnAllowed := -Wno-padded
-clangWarnKnown := -Wno-global-constructors -Wno-exit-time-destructors -Wno-unused-member-function
+clangWarnAllowed := -Wno-padded -Wno-cast-function-type-strict
+clangWarnKnown := -Wno-unsafe-buffer-usage -Wno-global-constructors -Wno-exit-time-destructors -Wno-unused-member-function
 clangWarnShow := -Weverything $(clangWarnNotInterested)
 clangWarnFlags := $(clangWarnShow) $(clangWarnAllowed) $(clangWarnKnown)
 clangPkgConfig := $(PkgConfig)

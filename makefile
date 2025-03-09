@@ -38,15 +38,13 @@ Release_CXX_FLAGS := -O3
 CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 
 # Target specific settings
-WindowsPreprocessorFlags = $(shell $(PkgConfig) --cflags-only-I sdl2) -DGLEW_STATIC
+WindowsSpecialPreprocessorFlags = -DGLEW_STATIC
 WindowsSpecialWarnFlags = -Wno-redundant-decls
-WindowsLibrarySearchPath = $(shell $(PkgConfig) --libs-only-L sdl2)
 WindowsExeSuffix := .exe
 WindowsRunPrefix := wine
 
-PreprocessorFlags := $($(TARGET_OS)PreprocessorFlags)
+SpecialPreprocessorFlags := $($(TARGET_OS)SpecialPreprocessorFlags)
 SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
-LibrarySearchPath := $($(TARGET_OS)LibrarySearchPath)
 ExeSuffix := $($(TARGET_OS)ExeSuffix)
 RunPrefix := $($(TARGET_OS)RunPrefix)
 
@@ -63,6 +61,9 @@ OUTPUT := $(BINDIR)/libnas2d.a
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
+IncludeSearchPath := $(shell $(PkgConfig) --cflags-only-I sdl2)
+LibrarySearchPath := $(shell $(PkgConfig) --libs-only-L sdl2)
+
 Linux_OpenGL_LIBS := -lGLEW -lGL
 Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
 Windows_OpenGL_LIBS := -lglew32 -lopengl32
@@ -70,7 +71,7 @@ OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 SDL_LIBS := -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
 
-CPPFLAGS := $(PreprocessorFlags) $(CPPFLAGS_EXTRA)
+CPPFLAGS := $(IncludeSearchPath) $(SpecialPreprocessorFlags) $(CPPFLAGS_EXTRA)
 CXXFLAGS_WARN := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2 $(SpecialWarnFlags) $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN)
 LDFLAGS := $(LibrarySearchPath) $(LDFLAGS_EXTRA)

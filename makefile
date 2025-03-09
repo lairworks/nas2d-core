@@ -55,6 +55,9 @@ WindowsExeSuffix := .exe
 WindowsRunPrefix := wine
 WindowsRunSuffixUnitTest := --gtest_color=yes | cat -
 
+DarwinIncludeSearchFlags = -isystem$(shell brew --prefix)/include
+
+IncludeSearchFlags := $($(TARGET_OS)IncludeSearchFlags)
 SpecialPreprocessorFlags := $($(TARGET_OS)SpecialPreprocessorFlags)
 SpecialWarnFlags := $($(TARGET_OS)SpecialWarnFlags)
 ExeSuffix := $($(TARGET_OS)ExeSuffix)
@@ -74,8 +77,8 @@ OUTPUT := $(BINDIR)/libnas2d.a
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
-IncludeSearchPath := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --cflags-only-I sdl2)
-LibrarySearchPath := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --libs-only-L sdl2)
+IncludeSearchFlags := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --cflags-only-I sdl2) $(IncludeSearchFlags)
+LibrarySearchFlags := $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --libs-only-L sdl2)
 
 Linux_OpenGL_LIBS := -lGLEW -lGL
 Darwin_OpenGL_LIBS := -lGLEW -framework OpenGL
@@ -84,10 +87,10 @@ OpenGL_LIBS := $($(TARGET_OS)_OpenGL_LIBS)
 
 SDL_LIBS := -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2
 
-CPPFLAGS := $(IncludeSearchPath) $(SpecialPreprocessorFlags) $(CPPFLAGS_EXTRA)
+CPPFLAGS := $(IncludeSearchFlags) $(SpecialPreprocessorFlags) $(CPPFLAGS_EXTRA)
 CXXFLAGS_WARN := $(WarnFlags) $(SpecialWarnFlags) $(WARN_EXTRA)
 CXXFLAGS := $(CXXFLAGS_EXTRA) $(CONFIG_CXX_FLAGS) -std=c++20 $(CXXFLAGS_WARN)
-LDFLAGS := $(LibrarySearchPath) $(LDFLAGS_EXTRA)
+LDFLAGS := $(LibrarySearchFlags) $(LDFLAGS_EXTRA)
 LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)
 
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)

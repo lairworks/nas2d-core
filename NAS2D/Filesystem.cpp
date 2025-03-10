@@ -58,7 +58,7 @@ namespace
 	}
 
 
-	std::string findFirstPath(const std::filesystem::path& path, const std::vector<std::filesystem::path>& searchPaths)
+	std::string findFirstPath(const VirtualPath& path, const std::vector<RealPath>& searchPaths)
 	{
 		for (const auto& searchPath : searchPaths)
 		{
@@ -147,7 +147,7 @@ Filesystem::Filesystem(const std::string& appName, const std::string& organizati
  *
  * The base path may or may not be the current working directory.
  */
-std::filesystem::path Filesystem::basePath() const
+RealPath Filesystem::basePath() const
 {
 	return mBasePath;
 }
@@ -160,7 +160,7 @@ std::filesystem::path Filesystem::basePath() const
  *
  * \note This path is dependent on the Operating System (OS).
  */
-std::filesystem::path Filesystem::prefPath() const
+RealPath Filesystem::prefPath() const
 {
 	return mPrefPath;
 }
@@ -173,7 +173,7 @@ std::filesystem::path Filesystem::prefPath() const
  *
  * \return Nonzero on success, zero on error.
  */
-int Filesystem::mountSoftFail(const std::filesystem::path& path)
+int Filesystem::mountSoftFail(const RealPath& path)
 {
 	mSearchPaths.push_back(path);
 	return std::filesystem::exists(path);
@@ -185,7 +185,7 @@ int Filesystem::mountSoftFail(const std::filesystem::path& path)
  *
  * \param path	File path to add.
  */
-void Filesystem::mount(const std::filesystem::path& path)
+void Filesystem::mount(const RealPath& path)
 {
 	if (mountSoftFail(path) == 0)
 	{
@@ -199,7 +199,7 @@ void Filesystem::mount(const std::filesystem::path& path)
  *
  * \param path	File path to add.
  */
-void Filesystem::mountReadWrite(const std::filesystem::path& path)
+void Filesystem::mountReadWrite(const RealPath& path)
 {
 	std::filesystem::create_directories(path);
 	mWritePath = path;
@@ -214,7 +214,7 @@ void Filesystem::mountReadWrite(const std::filesystem::path& path)
  *
  * \param path	File path to remove.
  */
-void Filesystem::unmount(const std::filesystem::path& path)
+void Filesystem::unmount(const RealPath& path)
 {
 	mSearchPaths.erase(std::remove(mSearchPaths.begin(), mSearchPaths.end(), path), mSearchPaths.end());
 }
@@ -223,7 +223,7 @@ void Filesystem::unmount(const std::filesystem::path& path)
 /**
  * Returns a list of directories in the Search Path.
  */
-std::vector<std::filesystem::path> Filesystem::searchPath() const
+std::vector<RealPath> Filesystem::searchPath() const
 {
 	return mSearchPaths;
 }
@@ -237,9 +237,9 @@ std::vector<std::filesystem::path> Filesystem::searchPath() const
  *
  * \note	This function will also return the names of any directories in a specified search path
  */
-std::vector<std::filesystem::path> Filesystem::directoryList(const std::filesystem::path& dir, const std::string& filter) const
+std::vector<VirtualPath> Filesystem::directoryList(const VirtualPath& dir, const std::string& filter) const
 {
-	std::vector<std::filesystem::path> fileList;
+	std::vector<VirtualPath> fileList;
 
 	for (const auto& searchPath : mSearchPaths)
 	{
@@ -266,7 +266,7 @@ std::vector<std::filesystem::path> Filesystem::directoryList(const std::filesyst
  *
  * \param path	Path to check.
  */
-bool Filesystem::isDirectory(const std::filesystem::path& path) const
+bool Filesystem::isDirectory(const VirtualPath& path) const
 {
 	const auto& filePath = findFirstPath(path, mSearchPaths);
 	return std::filesystem::is_directory(filePath);
@@ -278,7 +278,7 @@ bool Filesystem::isDirectory(const std::filesystem::path& path) const
  *
  * \param path	Path of the directory to create.
  */
-void Filesystem::makeDirectory(const std::filesystem::path& path)
+void Filesystem::makeDirectory(const VirtualPath& path)
 {
 	const auto& filePath = mWritePath / path;
 	std::filesystem::create_directories(filePath);
@@ -292,7 +292,7 @@ void Filesystem::makeDirectory(const std::filesystem::path& path)
  *
  * Returns Returns \c true if the specified file or directory exists. Otherwise, returns \c false.
  */
-bool Filesystem::exists(const std::filesystem::path& path) const
+bool Filesystem::exists(const VirtualPath& path) const
 {
 	const auto& filePath = findFirstPath(path, mSearchPaths);
 	return !filePath.empty();
@@ -304,7 +304,7 @@ bool Filesystem::exists(const std::filesystem::path& path) const
  *
  * \param	filename	Path of the file to delete relative to the Filesystem root directory.
  */
-void Filesystem::del(const std::filesystem::path& filename)
+void Filesystem::del(const VirtualPath& filename)
 {
 	const auto& filePath = mWritePath / filename;
 	if (!std::filesystem::remove(filePath))
@@ -314,7 +314,7 @@ void Filesystem::del(const std::filesystem::path& filename)
 }
 
 
-std::string Filesystem::readFile(const std::filesystem::path& filename) const
+std::string Filesystem::readFile(const VirtualPath& filename) const
 {
 	const auto& filePath = findFirstPath(filename, mSearchPaths);
 	if (filePath.empty())
@@ -344,7 +344,7 @@ std::string Filesystem::readFile(const std::filesystem::path& filename) const
 }
 
 
-void Filesystem::writeFile(const std::filesystem::path& filename, const std::string& data, WriteFlags flags)
+void Filesystem::writeFile(const VirtualPath& filename, const std::string& data, WriteFlags flags)
 {
 	if (flags != WriteFlags::Overwrite && exists(filename))
 	{

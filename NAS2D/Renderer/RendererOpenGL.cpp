@@ -631,9 +631,6 @@ void RendererOpenGL::initVideo(Vector<int> resolution, bool fullscreen, bool vsy
 	Utility<EventHandler>::get().windowResized().connect({this, &RendererOpenGL::onResize});
 }
 
-// ==================================================================================
-// = NON PUBLIC IMPLEMENTATION
-// ==================================================================================
 
 namespace
 {

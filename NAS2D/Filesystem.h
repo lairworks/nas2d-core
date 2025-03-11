@@ -10,14 +10,19 @@
 
 #pragma once
 
+#include "FilesystemPath.h"
+
 #include <vector>
 #include <string>
 #include <string_view>
-#include <filesystem>
 
 
 namespace NAS2D
 {
+	using RealPath = FilesystemPath;
+	using VirtualPath = FilesystemPath;
+
+
 	class Filesystem
 	{
 	public:
@@ -38,31 +43,31 @@ namespace NAS2D
 		Filesystem& operator=(Filesystem&&) = delete;
 		~Filesystem() = default;
 
-		std::filesystem::path basePath() const;
-		std::filesystem::path prefPath() const;
+		RealPath basePath() const;
+		RealPath prefPath() const;
 
-		int mountSoftFail(const std::filesystem::path& path);
-		void mount(const std::filesystem::path& path);
-		void mountReadWrite(const std::filesystem::path& path);
-		void unmount(const std::filesystem::path& path);
+		int mountSoftFail(const RealPath& path);
+		void mount(const RealPath& path);
+		void mountReadWrite(const RealPath& path);
+		void unmount(const RealPath& path);
 
-		std::vector<std::filesystem::path> searchPath() const;
+		std::vector<RealPath> searchPath() const;
 
-		std::vector<std::filesystem::path> directoryList(const std::filesystem::path& dir, const std::string& filter = std::string{}) const;
+		std::vector<VirtualPath> directoryList(const VirtualPath& dir, const std::string& filter = std::string{}) const;
 
-		bool isDirectory(const std::filesystem::path& path) const;
-		void makeDirectory(const std::filesystem::path& path);
+		bool isDirectory(const VirtualPath& path) const;
+		void makeDirectory(const VirtualPath& path);
 
-		bool exists(const std::filesystem::path& path) const;
-		void del(const std::filesystem::path& path);
+		bool exists(const VirtualPath& path) const;
+		void del(const VirtualPath& path);
 
-		std::string readFile(const std::filesystem::path& filename) const;
-		void writeFile(const std::filesystem::path& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite);
+		std::string readFile(const VirtualPath& filename) const;
+		void writeFile(const VirtualPath& filename, const std::string& data, WriteFlags flags = WriteFlags::Overwrite);
 
 	private:
-		std::filesystem::path mBasePath;
-		std::filesystem::path mPrefPath;
-		std::filesystem::path mWritePath;
-		std::vector<std::filesystem::path> mSearchPaths;
+		RealPath mBasePath;
+		RealPath mPrefPath;
+		RealPath mWritePath;
+		std::vector<RealPath> mSearchPaths;
 	};
 }

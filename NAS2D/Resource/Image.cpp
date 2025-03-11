@@ -207,7 +207,7 @@ namespace
 		}
 		case 4:
 			return *reinterpret_cast<const uint32_t*>(pixelAddress);
-		default: // Should never be possible.
+		default:
 			throw std::runtime_error("Unknown pixel format with bytesPerPixel: " + std::to_string(bytesPerPixel));
 		}
 	}

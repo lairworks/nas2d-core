@@ -124,14 +124,12 @@ namespace
 				throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 			}
 
-			// Find the Sprite node.
 			const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
 			if (!xmlRootElement)
 			{
 				throw std::runtime_error("Sprite file does not contain required <sprite> tag");
 			}
 
-			// Get the Sprite version.
 			const auto version = xmlRootElement->attribute("version");
 			if (version.empty())
 			{

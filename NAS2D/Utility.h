@@ -32,10 +32,10 @@ namespace NAS2D
 	 *
 	 * \code{.cpp}
 	 * // Keep a reference to use multiple times in a code block.
-	 * Renderer& r Utility<Renderer>::get();
+	 * Renderer& renderer = Utility<Renderer>::get();
 	 *
-	 * r.drawBox(0, 0, 10, 10, 255, 255, 255, 255);
-	 * r.drawLine( 10, 10, 400, 200, 255, 0, 0, 255, 4);
+	 * renderer.drawBox(0, 0, 10, 10, 255, 255, 255, 255);
+	 * renderer.drawLine( 10, 10, 400, 200, 255, 0, 0, 255, 4);
 	 * // and so on
 	 * \endcode
 	 *
@@ -132,7 +132,6 @@ namespace NAS2D
 		template <typename Type = T, typename... Args>
 		static Type& init(Args&&... args)
 		{
-			// Instantiate a new object with forwarded constructor arguments
 			auto newInstance = std::make_unique<Type>(std::forward<Args>(args)...);
 			// The new instance may be a sub-type of T, so return as sub-type
 			auto typedNewInstance = newInstance.release();

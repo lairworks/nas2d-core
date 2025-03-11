@@ -165,3 +165,33 @@ void Game::go(State* state)
 		Utility<Renderer>::get().update();
 	}
 }
+
+
+Filesystem& Game::filesystem()
+{
+	return Utility<Filesystem>::get();
+}
+
+
+Configuration& Game::configuration()
+{
+	return Utility<Configuration>::get();
+}
+
+
+EventHandler& Game::eventHandler()
+{
+	return Utility<EventHandler>::get();
+}
+
+
+Renderer& Game::renderer()
+{
+	return Utility<Renderer>::get();
+}
+
+
+Mixer& Game::mixer()
+{
+	return Utility<Mixer>::get();
+}

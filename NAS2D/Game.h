@@ -15,7 +15,11 @@
 
 namespace NAS2D
 {
-
+	class Filesystem;
+	class Configuration;
+	class EventHandler;
+	class Renderer;
+	class Mixer;
 	class State;
 
 
@@ -61,6 +65,12 @@ namespace NAS2D
 		void mountFindFromBase(const std::string& path);
 
 		void go(State* state);
+
+		Filesystem& filesystem();
+		Configuration& configuration();
+		EventHandler& eventHandler();
+		Renderer& renderer();
+		Mixer& mixer();
 	};
 
 } // namespace

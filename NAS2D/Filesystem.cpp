@@ -14,6 +14,7 @@
 #include <SDL2/SDL_filesystem.h>
 
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <stdexcept>

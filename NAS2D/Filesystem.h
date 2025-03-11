@@ -10,16 +10,17 @@
 
 #pragma once
 
+#include "FilesystemPath.h"
+
 #include <vector>
 #include <string>
 #include <string_view>
-#include <filesystem>
 
 
 namespace NAS2D
 {
-	using RealPath = std::filesystem::path;
-	using VirtualPath = std::filesystem::path;
+	using RealPath = FilesystemPath;
+	using VirtualPath = FilesystemPath;
 
 
 	class Filesystem

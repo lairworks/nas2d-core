@@ -155,6 +155,7 @@
     <ClCompile Include="EnumKeyModifier.cpp" />
     <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Filesystem.cpp" />
+    <ClCompile Include="FilesystemPath.cpp" />
     <ClCompile Include="FpsCounter.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ParserHelper.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="EnumMouseButton.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Filesystem.h" />
+    <ClInclude Include="FilesystemPath.h" />
     <ClInclude Include="FpsCounter.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Math\Angle.h" />

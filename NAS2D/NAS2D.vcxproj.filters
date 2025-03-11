@@ -63,6 +63,9 @@
     <ClCompile Include="Filesystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FilesystemPath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="FpsCounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -228,6 +231,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilesystemPath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FpsCounter.h">

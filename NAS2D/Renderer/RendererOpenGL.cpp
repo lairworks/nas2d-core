@@ -348,13 +348,11 @@ void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPositi
 
 void RendererOpenGL::drawCircle(Point<float> position, float radius, Color color, int numSegments, Vector<float> scale)
 {
-
 	/*
 	* See: http://slabode.exofire.net/circle_draw.shtml.
 	*
 	* Modified to support X/Y scaling to draw an ellipse.
 	*/
-
 
 	glDisable(GL_TEXTURE_2D);
 	setColor(color);
@@ -649,7 +647,6 @@ namespace
 
 	void line(Point<float> p1, Point<float> p2, float lineWidth, Color color)
 	{
-
 		/**
 		 * The following code was developed by Chris Tsang and lifted from:
 		 *
@@ -659,7 +656,6 @@ namespace
 		 *
 		 * This is drop-in code that may be replaced in the future.
 		 */
-
 
 		float Cr = color.red / 255.0f;
 		float Cg = color.green / 255.0f;
@@ -946,5 +942,4 @@ namespace
 			glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 		}
 	}
-
 }

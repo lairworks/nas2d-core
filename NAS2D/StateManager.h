@@ -29,7 +29,6 @@ namespace NAS2D
 	class StateManager
 	{
 	public:
-		// Constructor & destructor
 		StateManager();
 		~StateManager();
 

@@ -17,7 +17,7 @@ namespace NAS2D
 		FilesystemPath operator/(const FilesystemPath& path) const;
 
 		FilesystemPath stem() const;
-		std::string string() const;
+		const std::string& string() const;
 	private:
 		std::string mPath;
 	};

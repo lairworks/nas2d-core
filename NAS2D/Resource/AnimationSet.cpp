@@ -20,6 +20,7 @@
 #include "../Xml/Xml.h"
 
 #include <tuple>
+#include <utility>
 
 
 using namespace NAS2D;

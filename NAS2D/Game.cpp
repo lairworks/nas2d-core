@@ -25,6 +25,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <map>
 
 
 using namespace NAS2D;

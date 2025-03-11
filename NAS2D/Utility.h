@@ -132,7 +132,6 @@ namespace NAS2D
 		template <typename Type = T, typename... Args>
 		static Type& init(Args&&... args)
 		{
-			// Instantiate a new object with forwarded constructor arguments
 			auto newInstance = std::make_unique<Type>(std::forward<Args>(args)...);
 			// The new instance may be a sub-type of T, so return as sub-type
 			auto typedNewInstance = newInstance.release();

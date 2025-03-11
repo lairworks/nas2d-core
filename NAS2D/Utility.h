@@ -32,10 +32,10 @@ namespace NAS2D
 	 *
 	 * \code{.cpp}
 	 * // Keep a reference to use multiple times in a code block.
-	 * Renderer& r = Utility<Renderer>::get();
+	 * Renderer& renderer = Utility<Renderer>::get();
 	 *
-	 * r.drawBox(0, 0, 10, 10, 255, 255, 255, 255);
-	 * r.drawLine( 10, 10, 400, 200, 255, 0, 0, 255, 4);
+	 * renderer.drawBox(0, 0, 10, 10, 255, 255, 255, 255);
+	 * renderer.drawLine( 10, 10, 400, 200, 255, 0, 0, 255, 4);
 	 * // and so on
 	 * \endcode
 	 *

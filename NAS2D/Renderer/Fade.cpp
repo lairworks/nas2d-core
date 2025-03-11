@@ -44,7 +44,6 @@ Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
 }
 
 
-// Fade in from fadeColor
 void Fade::fadeIn(Duration fadeTime)
 {
 	setDuration(fadeTime);
@@ -52,7 +51,6 @@ void Fade::fadeIn(Duration fadeTime)
 }
 
 
-// Fade out to fadeColor
 void Fade::fadeOut(Duration fadeTime)
 {
 	setDuration(fadeTime);

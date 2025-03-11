@@ -176,8 +176,12 @@ RealPath Filesystem::prefPath() const
  */
 int Filesystem::mountSoftFail(const RealPath& path)
 {
-	mSearchPaths.push_back(path);
-	return std::filesystem::exists(path.string());
+	const auto result = std::filesystem::exists(path.string());
+	if (result)
+	{
+		mSearchPaths.push_back(path);
+	}
+	return result;
 }
 
 

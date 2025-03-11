@@ -14,7 +14,9 @@
 #include "XmlAttribute.h"
 #include "XmlAttributeSet.h"
 #include "XmlNode.h"
+
 #include <string>
+
 
 namespace NAS2D
 {

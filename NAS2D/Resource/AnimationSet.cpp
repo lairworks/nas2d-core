@@ -15,12 +15,12 @@
 #include "../Utility.h"
 #include "../Filesystem.h"
 #include "../ContainerUtils.h"
-#include "../StringUtils.h"
 #include "../ParserHelper.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
 
 #include <tuple>
+#include <utility>
 
 
 using namespace NAS2D;

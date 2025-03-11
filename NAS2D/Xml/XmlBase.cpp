@@ -9,7 +9,7 @@
 // ==================================================================================
 // = Originally based on TinyXML. See Xml.h for additional details.
 // ==================================================================================
-#include "Xml.h"
+#include "XmlBase.h"
 
 using namespace NAS2D::Xml;
 

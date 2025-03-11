@@ -15,7 +15,6 @@
 #include "XmlAttributeSet.h"
 #include "XmlComment.h"
 #include "XmlDocument.h"
-#include "XmlElement.h"
 #include "XmlText.h"
 #include "XmlUnknown.h"
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <filesystem>
 
 
 namespace NAS2D
@@ -13,7 +12,6 @@ namespace NAS2D
 		FilesystemPath(const char* path);
 		FilesystemPath(std::string path);
 
-		operator std::filesystem::path() const;
 		operator std::string() const;
 
 		bool operator==(const FilesystemPath& other) const;

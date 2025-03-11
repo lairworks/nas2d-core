@@ -1,5 +1,7 @@
 #include "FilesystemPath.h"
 
+#include <filesystem>
+
 
 using namespace NAS2D;
 
@@ -19,12 +21,6 @@ FilesystemPath::FilesystemPath(const char* path) :
 FilesystemPath::FilesystemPath(std::string path) :
 	mPath{path}
 {
-}
-
-
-FilesystemPath::operator std::filesystem::path() const
-{
-	return mPath;
 }
 
 

@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <cctype>
 #include <numeric>
+#include <utility>
 
 
 namespace NAS2D

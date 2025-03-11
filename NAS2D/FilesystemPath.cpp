@@ -24,12 +24,6 @@ FilesystemPath::FilesystemPath(std::string path) :
 }
 
 
-FilesystemPath::operator std::string() const
-{
-	return mPath;
-}
-
-
 bool FilesystemPath::operator==(const FilesystemPath& other) const
 {
 	return mPath == other.mPath;

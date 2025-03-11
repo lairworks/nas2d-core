@@ -353,7 +353,7 @@ void Filesystem::writeFile(const VirtualPath& filename, const std::string& data,
 	}
 
 	const auto& filePath = mWritePath / filename;
-	std::ofstream file{filePath, std::ios::out | std::ios::binary};
+	std::ofstream file{filePath.string(), std::ios::out | std::ios::binary};
 	if (!file)
 	{
 		throw std::runtime_error("Error opening file for writing: " + filename.string() + " : " + errorDescription());

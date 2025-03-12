@@ -9,30 +9,30 @@ TEST(FilesystemPath, constructionDefault) {
 	EXPECT_EQ("", path.string());
 }
 
-
 TEST(FilesystemPath, constructionConstCharStar) {
 	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
 	EXPECT_EQ("a/b/c/", path.string());
 }
-
 
 TEST(FilesystemPath, constructionString) {
 	const auto path = NAS2D::FilesystemPath{std::string{"a/b/c/"}};
 	EXPECT_EQ("a/b/c/", path.string());
 }
 
+TEST(FilesystemPath, operatorString) {
+	const auto path = NAS2D::FilesystemPath{std::string{"a/b/c/"}};
+	EXPECT_EQ(std::string{"a/b/c/"}, std::string{path});
+}
 
 TEST(FilesystemPath, operatorEqual) {
 	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
 	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/"}, path);
 }
 
-
 TEST(FilesystemPath, operatorLess) {
 	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
 	EXPECT_LT(NAS2D::FilesystemPath{"a/b/b/"}, path);
 }
-
 
 TEST(FilesystemPath, operatorSlash) {
 	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
@@ -40,14 +40,18 @@ TEST(FilesystemPath, operatorSlash) {
 	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/filename"}, path / "filename");
 }
 
-
 TEST(FilesystemPath, stem) {
 	const auto path = NAS2D::FilesystemPath{"path/to/filename.ext"};
 	EXPECT_EQ(NAS2D::FilesystemPath{"filename"}, path.stem());
 }
 
-
 TEST(FilesystemPath, string) {
 	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
 	EXPECT_EQ(std::string{"a/b/c/"}, path.string());
+}
+
+TEST(FilesystemPath, constCharStarConcat) {
+	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
+	EXPECT_EQ(std::string{"Path is: a/b/c/"}, "Path is: " + path);
+	EXPECT_EQ(std::string{"a/b/c/ was the path"}, path + " was the path");
 }

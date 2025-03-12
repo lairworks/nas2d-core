@@ -25,6 +25,12 @@ FilesystemPath::FilesystemPath(std::string path) :
 }
 
 
+FilesystemPath::operator const std::string&() const
+{
+	return mPath;
+}
+
+
 bool FilesystemPath::operator==(const FilesystemPath& other) const
 {
 	return mPath == other.mPath;
@@ -39,7 +45,7 @@ bool FilesystemPath::operator<(const FilesystemPath& other) const
 
 FilesystemPath FilesystemPath::operator/(const FilesystemPath& path) const
 {
-	return (std::filesystem::path{mPath} / std::filesystem::path{path.string()}).string();
+	return (std::filesystem::path{mPath} / std::filesystem::path{std::string{path}}).string();
 }
 
 
@@ -52,4 +58,16 @@ FilesystemPath FilesystemPath::stem() const
 const std::string& FilesystemPath::string() const
 {
 	return mPath;
+}
+
+
+std::string NAS2D::operator+(const char* string, const FilesystemPath& path)
+{
+	return string + std::string{path};
+}
+
+
+std::string NAS2D::operator+(const FilesystemPath& path, const char* string)
+{
+	return std::string{path} + string;
 }

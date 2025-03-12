@@ -64,7 +64,7 @@ namespace
 		for (const auto& searchPath : searchPaths)
 		{
 			const auto& filePath = searchPath / path;
-			if (std::filesystem::exists(filePath.string()))
+			if (std::filesystem::exists(std::string{filePath}))
 			{
 				return filePath.string();
 			}
@@ -176,7 +176,7 @@ RealPath Filesystem::prefPath() const
  */
 int Filesystem::mountSoftFail(const RealPath& path)
 {
-	const auto result = std::filesystem::exists(path.string());
+	const auto result = std::filesystem::exists(std::string{path});
 	if (result)
 	{
 		mSearchPaths.push_back(path);
@@ -194,7 +194,7 @@ void Filesystem::mount(const RealPath& path)
 {
 	if (mountSoftFail(path) == 0)
 	{
-		throw std::runtime_error("Error mounting search path: " + path.string() + " : " + errorDescription());
+		throw std::runtime_error("Error mounting search path: " + path + " : " + errorDescription());
 	}
 }
 
@@ -206,7 +206,7 @@ void Filesystem::mount(const RealPath& path)
  */
 void Filesystem::mountReadWrite(const RealPath& path)
 {
-	std::filesystem::create_directories(path.string());
+	std::filesystem::create_directories(std::string{path});
 	mWritePath = path;
 
 	// Mount for read access
@@ -248,7 +248,7 @@ std::vector<VirtualPath> Filesystem::directoryList(const VirtualPath& dir, const
 
 	for (const auto& searchPath : mSearchPaths)
 	{
-		const auto dirPath = (searchPath / dir).string();
+		const auto dirPath = std::string{searchPath / dir};
 		if (std::filesystem::is_directory(dirPath))
 		{
 			for (const auto& dirEntry : std::filesystem::directory_iterator(dirPath))
@@ -285,8 +285,8 @@ bool Filesystem::isDirectory(const VirtualPath& path) const
  */
 void Filesystem::makeDirectory(const VirtualPath& path)
 {
-	const auto& filePath = mWritePath / path;
-	std::filesystem::create_directories(filePath.string());
+	const auto& filePath = std::string{mWritePath / path};
+	std::filesystem::create_directories(filePath);
 }
 
 
@@ -312,9 +312,9 @@ bool Filesystem::exists(const VirtualPath& path) const
 void Filesystem::del(const VirtualPath& filename)
 {
 	const auto& filePath = mWritePath / filename;
-	if (!std::filesystem::remove(filePath.string()))
+	if (!std::filesystem::remove(std::string{filePath}))
 	{
-		throw std::runtime_error("Error deleting file: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error deleting file: " + filename + " : " + errorDescription());
 	}
 }
 
@@ -324,13 +324,13 @@ std::string Filesystem::readFile(const VirtualPath& filename) const
 	const auto& filePath = findFirstPath(filename, mSearchPaths);
 	if (filePath.empty())
 	{
-		throw std::runtime_error("Error opening file: " + filename.string() + " : File does not exist");
+		throw std::runtime_error("Error opening file: " + filename + " : File does not exist");
 	}
 
 	std::ifstream file{filePath, std::ios::in | std::ios::binary};
 	if (!file)
 	{
-		throw std::runtime_error("Error opening file: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error opening file: " + filename + " : " + errorDescription());
 	}
 
 	const auto fileSize = std::filesystem::file_size(filePath);
@@ -342,7 +342,7 @@ std::string Filesystem::readFile(const VirtualPath& filename) const
 	file.read(fileBuffer.data(), static_cast<std::streamsize>(bufferSize));
 	if (!file)
 	{
-		throw std::runtime_error("Error reading file: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error reading file: " + filename + " : " + errorDescription());
 	}
 
 	return fileBuffer;
@@ -353,19 +353,19 @@ void Filesystem::writeFile(const VirtualPath& filename, const std::string& data,
 {
 	if (flags != WriteFlags::Overwrite && exists(filename))
 	{
-		throw std::runtime_error("Overwrite flag not specified and file already exists: " + filename.string());
+		throw std::runtime_error("Overwrite flag not specified and file already exists: " + filename);
 	}
 
 	const auto& filePath = mWritePath / filename;
 	std::ofstream file{filePath.string(), std::ios::out | std::ios::binary};
 	if (!file)
 	{
-		throw std::runtime_error("Error opening file for writing: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error opening file for writing: " + filename + " : " + errorDescription());
 	}
 
 	file << data;
 	if (!file)
 	{
-		throw std::runtime_error("Error writing file: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error writing file: " + filename + " : " + errorDescription());
 	}
 }

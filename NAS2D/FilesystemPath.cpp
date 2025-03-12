@@ -45,7 +45,7 @@ bool FilesystemPath::operator<(const FilesystemPath& other) const
 
 FilesystemPath FilesystemPath::operator/(const FilesystemPath& path) const
 {
-	return (std::filesystem::path{mPath} / std::filesystem::path{path.string()}).string();
+	return (std::filesystem::path{mPath} / std::filesystem::path{std::string{path}}).string();
 }
 
 

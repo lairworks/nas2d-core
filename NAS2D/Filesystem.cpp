@@ -64,7 +64,7 @@ namespace
 		for (const auto& searchPath : searchPaths)
 		{
 			const auto& filePath = searchPath / path;
-			if (std::filesystem::exists(filePath.string()))
+			if (std::filesystem::exists(std::string{filePath}))
 			{
 				return filePath.string();
 			}
@@ -176,7 +176,7 @@ RealPath Filesystem::prefPath() const
  */
 int Filesystem::mountSoftFail(const RealPath& path)
 {
-	const auto result = std::filesystem::exists(path.string());
+	const auto result = std::filesystem::exists(std::string{path});
 	if (result)
 	{
 		mSearchPaths.push_back(path);
@@ -206,7 +206,7 @@ void Filesystem::mount(const RealPath& path)
  */
 void Filesystem::mountReadWrite(const RealPath& path)
 {
-	std::filesystem::create_directories(path.string());
+	std::filesystem::create_directories(std::string{path});
 	mWritePath = path;
 
 	// Mount for read access
@@ -248,7 +248,7 @@ std::vector<VirtualPath> Filesystem::directoryList(const VirtualPath& dir, const
 
 	for (const auto& searchPath : mSearchPaths)
 	{
-		const auto dirPath = (searchPath / dir).string();
+		const auto dirPath = std::string{searchPath / dir};
 		if (std::filesystem::is_directory(dirPath))
 		{
 			for (const auto& dirEntry : std::filesystem::directory_iterator(dirPath))
@@ -285,8 +285,8 @@ bool Filesystem::isDirectory(const VirtualPath& path) const
  */
 void Filesystem::makeDirectory(const VirtualPath& path)
 {
-	const auto& filePath = mWritePath / path;
-	std::filesystem::create_directories(filePath.string());
+	const auto& filePath = std::string{mWritePath / path};
+	std::filesystem::create_directories(filePath);
 }
 
 
@@ -312,7 +312,7 @@ bool Filesystem::exists(const VirtualPath& path) const
 void Filesystem::del(const VirtualPath& filename)
 {
 	const auto& filePath = mWritePath / filename;
-	if (!std::filesystem::remove(filePath.string()))
+	if (!std::filesystem::remove(std::string{filePath}))
 	{
 		throw std::runtime_error("Error deleting file: " + filename.string() + " : " + errorDescription());
 	}

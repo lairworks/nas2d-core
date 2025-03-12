@@ -12,6 +12,7 @@ namespace NAS2D
 		FilesystemPath(const char* path);
 		FilesystemPath(std::string path);
 
+		explicit operator const std::string&() const;
 		bool operator==(const FilesystemPath& other) const;
 		bool operator<(const FilesystemPath& other) const;
 		FilesystemPath operator/(const FilesystemPath& path) const;

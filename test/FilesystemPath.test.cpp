@@ -49,3 +49,9 @@ TEST(FilesystemPath, string) {
 	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
 	EXPECT_EQ(std::string{"a/b/c/"}, path.string());
 }
+
+TEST(FilesystemPath, constCharStarConcat) {
+	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
+	EXPECT_EQ(std::string{"Path is: a/b/c/"}, "Path is: " + path);
+	EXPECT_EQ(std::string{"a/b/c/ was the path"}, path + " was the path");
+}

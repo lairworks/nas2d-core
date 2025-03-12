@@ -59,3 +59,15 @@ const std::string& FilesystemPath::string() const
 {
 	return mPath;
 }
+
+
+std::string NAS2D::operator+(const char* string, const FilesystemPath& path)
+{
+	return string + std::string{path};
+}
+
+
+std::string NAS2D::operator+(const FilesystemPath& path, const char* string)
+{
+	return std::string{path} + string;
+}

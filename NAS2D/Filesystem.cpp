@@ -194,7 +194,7 @@ void Filesystem::mount(const RealPath& path)
 {
 	if (mountSoftFail(path) == 0)
 	{
-		throw std::runtime_error("Error mounting search path: " + path.string() + " : " + errorDescription());
+		throw std::runtime_error("Error mounting search path: " + path + " : " + errorDescription());
 	}
 }
 
@@ -314,7 +314,7 @@ void Filesystem::del(const VirtualPath& filename)
 	const auto& filePath = mWritePath / filename;
 	if (!std::filesystem::remove(std::string{filePath}))
 	{
-		throw std::runtime_error("Error deleting file: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error deleting file: " + filename + " : " + errorDescription());
 	}
 }
 
@@ -324,13 +324,13 @@ std::string Filesystem::readFile(const VirtualPath& filename) const
 	const auto& filePath = findFirstPath(filename, mSearchPaths);
 	if (filePath.empty())
 	{
-		throw std::runtime_error("Error opening file: " + filename.string() + " : File does not exist");
+		throw std::runtime_error("Error opening file: " + filename + " : File does not exist");
 	}
 
 	std::ifstream file{filePath, std::ios::in | std::ios::binary};
 	if (!file)
 	{
-		throw std::runtime_error("Error opening file: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error opening file: " + filename + " : " + errorDescription());
 	}
 
 	const auto fileSize = std::filesystem::file_size(filePath);
@@ -342,7 +342,7 @@ std::string Filesystem::readFile(const VirtualPath& filename) const
 	file.read(fileBuffer.data(), static_cast<std::streamsize>(bufferSize));
 	if (!file)
 	{
-		throw std::runtime_error("Error reading file: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error reading file: " + filename + " : " + errorDescription());
 	}
 
 	return fileBuffer;
@@ -353,19 +353,19 @@ void Filesystem::writeFile(const VirtualPath& filename, const std::string& data,
 {
 	if (flags != WriteFlags::Overwrite && exists(filename))
 	{
-		throw std::runtime_error("Overwrite flag not specified and file already exists: " + filename.string());
+		throw std::runtime_error("Overwrite flag not specified and file already exists: " + filename);
 	}
 
 	const auto& filePath = mWritePath / filename;
 	std::ofstream file{filePath.string(), std::ios::out | std::ios::binary};
 	if (!file)
 	{
-		throw std::runtime_error("Error opening file for writing: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error opening file for writing: " + filename + " : " + errorDescription());
 	}
 
 	file << data;
 	if (!file)
 	{
-		throw std::runtime_error("Error writing file: " + filename.string() + " : " + errorDescription());
+		throw std::runtime_error("Error writing file: " + filename + " : " + errorDescription());
 	}
 }

@@ -17,6 +17,7 @@ namespace NAS2D
 		bool operator<(const FilesystemPath& other) const;
 		FilesystemPath operator/(const FilesystemPath& path) const;
 
+		FilesystemPath parent() const;
 		FilesystemPath stem() const;
 		const std::string& string() const;
 	private:

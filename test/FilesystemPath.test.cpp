@@ -40,6 +40,30 @@ TEST(FilesystemPath, operatorSlash) {
 	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/filename"}, path / "filename");
 }
 
+TEST(FilesystemPath, parentFoldersRelative) {
+	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
+	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/"}, path.parent());
+	EXPECT_EQ(NAS2D::FilesystemPath{"a/"}, path.parent().parent());
+	EXPECT_EQ(NAS2D::FilesystemPath{""}, path.parent().parent().parent());
+}
+
+TEST(FilesystemPath, parentFoldersAbsolute) {
+	const auto path = NAS2D::FilesystemPath{"/a/b/c/"};
+	EXPECT_EQ(NAS2D::FilesystemPath{"/a/b/"}, path.parent());
+	EXPECT_EQ(NAS2D::FilesystemPath{"/a/"}, path.parent().parent());
+	EXPECT_EQ(NAS2D::FilesystemPath{"/"}, path.parent().parent().parent());
+}
+
+TEST(FilesystemPath, parentFileRelative) {
+	const auto path = NAS2D::FilesystemPath{"a/b/c/filename"};
+	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/"}, path.parent());
+}
+
+TEST(FilesystemPath, parentFileAbsolute) {
+	const auto path = NAS2D::FilesystemPath{"/a/b/c/filename"};
+	EXPECT_EQ(NAS2D::FilesystemPath{"/a/b/c/"}, path.parent());
+}
+
 TEST(FilesystemPath, stem) {
 	const auto path = NAS2D::FilesystemPath{"path/to/filename.ext"};
 	EXPECT_EQ(NAS2D::FilesystemPath{"filename"}, path.stem());

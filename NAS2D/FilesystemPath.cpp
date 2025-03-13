@@ -49,6 +49,14 @@ FilesystemPath FilesystemPath::operator/(const FilesystemPath& path) const
 }
 
 
+FilesystemPath FilesystemPath::parent() const
+{
+	// Keep the trailing "/" as part of the folder name
+	// This is contrary to how <filesystem> behaves, which strips the trailing "/"
+	return ((std::filesystem::path{mPath} / "").parent_path().remove_filename()).string();
+}
+
+
 FilesystemPath FilesystemPath::stem() const
 {
 	return std::filesystem::path{mPath}.stem().string();

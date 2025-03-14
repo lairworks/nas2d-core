@@ -65,6 +65,12 @@ std::size_t FilesystemPath::componentCount() const
 }
 
 
+FilesystemPath FilesystemPath::absolute() const
+{
+	return std::filesystem::absolute(mPath).string();
+}
+
+
 FilesystemPath FilesystemPath::parent() const
 {
 	// Keep the trailing "/" as part of the folder name

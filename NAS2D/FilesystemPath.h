@@ -20,6 +20,7 @@ namespace NAS2D
 
 		bool isRelative() const;
 		std::size_t componentCount() const;
+		FilesystemPath absolute() const;
 		FilesystemPath parent() const;
 		FilesystemPath stem() const;
 		const std::string& string() const;

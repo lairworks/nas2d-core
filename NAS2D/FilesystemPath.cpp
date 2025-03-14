@@ -50,6 +50,12 @@ FilesystemPath FilesystemPath::operator/(const FilesystemPath& path) const
 }
 
 
+bool FilesystemPath::isRelative() const
+{
+	return std::filesystem::path{mPath}.is_relative();
+}
+
+
 std::size_t FilesystemPath::componentCount() const
 {
 	// Don't treat a trailing "/" as an extra path component

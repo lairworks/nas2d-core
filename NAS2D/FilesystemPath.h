@@ -18,6 +18,7 @@ namespace NAS2D
 		bool operator<(const FilesystemPath& other) const;
 		FilesystemPath operator/(const FilesystemPath& path) const;
 
+		bool isRelative() const;
 		std::size_t componentCount() const;
 		FilesystemPath parent() const;
 		FilesystemPath stem() const;

@@ -1,6 +1,7 @@
 #include "FilesystemPath.h"
 
 #include <filesystem>
+#include <iterator>
 #include <utility>
 
 
@@ -46,6 +47,15 @@ bool FilesystemPath::operator<(const FilesystemPath& other) const
 FilesystemPath FilesystemPath::operator/(const FilesystemPath& path) const
 {
 	return (std::filesystem::path{mPath} / std::filesystem::path{std::string{path}}).string();
+}
+
+
+std::size_t FilesystemPath::componentCount() const
+{
+	// Don't treat a trailing "/" as an extra path component
+	// Multiple consecutive path separators are stripped by `parent_path()`
+	const auto path = (std::filesystem::path{mPath} / "").parent_path();
+	return static_cast<std::size_t>(std::distance(path.begin(), path.end()));
 }
 
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <string>
 
 
@@ -17,6 +18,7 @@ namespace NAS2D
 		bool operator<(const FilesystemPath& other) const;
 		FilesystemPath operator/(const FilesystemPath& path) const;
 
+		std::size_t componentCount() const;
 		FilesystemPath parent() const;
 		FilesystemPath stem() const;
 		const std::string& string() const;

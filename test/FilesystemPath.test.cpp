@@ -40,6 +40,22 @@ TEST(FilesystemPath, operatorSlash) {
 	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/filename"}, path / "filename");
 }
 
+TEST(FilesystemPath, componentCountRelative) {
+	EXPECT_EQ(0u, NAS2D::FilesystemPath{""}.componentCount());
+	EXPECT_EQ(1u, NAS2D::FilesystemPath{"a/"}.componentCount());
+	EXPECT_EQ(2u, NAS2D::FilesystemPath{"a/b/"}.componentCount());
+	EXPECT_EQ(3u, NAS2D::FilesystemPath{"a/b/c/"}.componentCount());
+	EXPECT_EQ(4u, NAS2D::FilesystemPath{"a/b/c/filename"}.componentCount());
+}
+
+TEST(FilesystemPath, componentCountAbsolute) {
+	EXPECT_EQ(1u, NAS2D::FilesystemPath{"/"}.componentCount());
+	EXPECT_EQ(2u, NAS2D::FilesystemPath{"/a/"}.componentCount());
+	EXPECT_EQ(3u, NAS2D::FilesystemPath{"/a/b/"}.componentCount());
+	EXPECT_EQ(4u, NAS2D::FilesystemPath{"/a/b/c/"}.componentCount());
+	EXPECT_EQ(5u, NAS2D::FilesystemPath{"/a/b/c/filename"}.componentCount());
+}
+
 TEST(FilesystemPath, parentFoldersRelative) {
 	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
 	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/"}, path.parent());

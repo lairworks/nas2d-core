@@ -40,6 +40,12 @@ TEST(FilesystemPath, operatorSlash) {
 	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/filename"}, path / "filename");
 }
 
+TEST(FilesystemPath, isRelative) {
+	EXPECT_TRUE(NAS2D::FilesystemPath{""}.isRelative());
+	EXPECT_TRUE(NAS2D::FilesystemPath{"a/"}.isRelative());
+	EXPECT_TRUE(NAS2D::FilesystemPath{"a/filename"}.isRelative());
+}
+
 TEST(FilesystemPath, componentCountRelative) {
 	EXPECT_EQ(0u, NAS2D::FilesystemPath{""}.componentCount());
 	EXPECT_EQ(1u, NAS2D::FilesystemPath{"a/"}.componentCount());

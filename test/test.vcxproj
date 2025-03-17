@@ -165,6 +165,7 @@
     <ClCompile Include="Dictionary.test.cpp" />
     <ClCompile Include="Filesystem.test.cpp" />
     <ClCompile Include="FilesystemPath.test.cpp" />
+    <ClCompile Include="FilesystemPathParents.test.cpp" />
     <ClCompile Include="ParserHelper.test.cpp" />
     <ClCompile Include="StringFrom.test.cpp" />
     <ClCompile Include="StringFromTo.test.cpp" />

@@ -55,25 +55,17 @@ namespace {
 }
 
 
-constexpr auto EndsWithDirSeparator = []() {
-	return testing::Truly([](const auto& path) { return path.string().ends_with(NAS2D::Filesystem::dirSeparator()); });
-};
-
-
-constexpr auto HasPartialPath = [](const auto& subString) {
-	return testing::Truly([&](const auto& path) { return path.string().find(subString) != std::string::npos; });
-};
-
-
 TEST_F(Filesystem, basePath) {
 	// Result is a directory, and should end with a directory separator
-	EXPECT_THAT(fs.basePath(), EndsWithDirSeparator());
+	const auto dirSeparator = NAS2D::Filesystem::dirSeparator();
+	EXPECT_THAT(fs.basePath(), testing::EndsWith(dirSeparator));
 }
 
 TEST_F(Filesystem, prefPath) {
 	// Result is a directory, and should end with a directory separator
-	EXPECT_THAT(fs.prefPath(), EndsWithDirSeparator());
-	EXPECT_THAT(fs.prefPath(), HasPartialPath(AppName));
+	const auto dirSeparator = NAS2D::Filesystem::dirSeparator();
+	EXPECT_THAT(fs.prefPath(), testing::EndsWith(dirSeparator));
+	EXPECT_THAT(fs.prefPath(), testing::EndsWith(AppName + dirSeparator));
 }
 
 TEST_F(Filesystem, findInParentsExist) {
@@ -94,22 +86,22 @@ TEST_F(Filesystem, findInParentsNotExist) {
 TEST_F(Filesystem, searchPath) {
 	auto pathList = fs.searchPath();
 	EXPECT_EQ(3u, pathList.size());
-	EXPECT_THAT(pathList, Contains(HasPartialPath("NAS2DUnitTests")));
-	EXPECT_THAT(pathList, Contains(HasPartialPath("data/")));
+
+	const auto dirSeparator = NAS2D::Filesystem::dirSeparator();
+	EXPECT_THAT(pathList, Contains(testing::EndsWith(AppName + dirSeparator)));
+	EXPECT_THAT(pathList, Contains(testing::EndsWith("data/")));
 }
 
 TEST_F(Filesystem, directoryList) {
-	{
-		auto pathList = fs.directoryList("");
-		EXPECT_LE(1u, pathList.size());
-		EXPECT_THAT(pathList, testing::Contains(NAS2D::VirtualPath{"file.txt"}));
-	}
+	auto pathList = fs.directoryList("");
+	EXPECT_LE(1u, pathList.size());
+	EXPECT_THAT(pathList, testing::Contains(NAS2D::VirtualPath{"file.txt"}));
+}
 
-	{
-		auto pathList = fs.directoryList("", "txt");
-		EXPECT_LE(1u, pathList.size());
-		EXPECT_THAT(pathList, testing::Contains(NAS2D::VirtualPath{"file.txt"}));
-	}
+TEST_F(Filesystem, directoryListWithFilter) {
+	auto pathList = fs.directoryList("", "txt");
+	EXPECT_LE(1u, pathList.size());
+	EXPECT_THAT(pathList, testing::Contains(NAS2D::VirtualPath{"file.txt"}));
 }
 
 TEST_F(Filesystem, exists) {
@@ -133,7 +125,8 @@ TEST_F(Filesystem, writeReadDeleteExists) {
 
 	// Try to overwrite file, with and without permission
 	EXPECT_NO_THROW(fs.writeFile(testFilename, testData));
-	EXPECT_THROW(fs.writeFile(testFilename, testData, NAS2D::Filesystem::WriteFlags::NoOverwrite), std::runtime_error);
+	using NAS2D::Filesystem::WriteFlags::NoOverwrite;
+	EXPECT_THROW(fs.writeFile(testFilename, testData, NoOverwrite), std::runtime_error);
 
 	const auto data = fs.readFile(testFilename);
 	EXPECT_EQ(testData, data);
@@ -165,7 +158,7 @@ TEST_F(Filesystem, mountUnmount) {
 
 	EXPECT_FALSE(fs.exists(extraFile));
 	EXPECT_NO_THROW(fs.mount(extraMount));
-	EXPECT_THAT(fs.searchPath(), Contains(HasPartialPath(extraMount)));
+	EXPECT_THAT(fs.searchPath(), Contains(testing::EndsWith(extraMount)));
 	EXPECT_TRUE(fs.exists(extraFile));
 
 	EXPECT_NO_THROW(fs.unmount(extraMount));

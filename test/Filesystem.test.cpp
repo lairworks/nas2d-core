@@ -76,6 +76,21 @@ TEST_F(Filesystem, prefPath) {
 	EXPECT_THAT(fs.prefPath(), HasPartialPath(AppName));
 }
 
+TEST_F(Filesystem, findInParentsExist) {
+	// Try to find the unit test project folder
+	const auto folder = "test/";
+	EXPECT_THAT(fs.findInParents(folder, fs.basePath()), testing::EndsWith(folder));
+	EXPECT_THAT(fs.findInParents(folder, fs.basePath(), 4), testing::EndsWith(folder));
+}
+
+TEST_F(Filesystem, findInParentsNotExist) {
+	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 0));
+	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 1));
+	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 2));
+	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 3));
+	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 4));
+}
+
 TEST_F(Filesystem, searchPath) {
 	auto pathList = fs.searchPath();
 	EXPECT_EQ(3u, pathList.size());

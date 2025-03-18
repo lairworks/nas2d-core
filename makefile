@@ -161,7 +161,7 @@ $(DEMOGRAPHICSOBJS): $(DEMOGRAPHICSINTDIR)/%.o : $(DEMOGRAPHICSDIR)/%.cpp $(DEMO
 
 .PHONY: run-demoGraphics
 run-demoGraphics: | demoGraphics
-	cd demoGraphics/ && $(RunPrefix) ../$(DEMOGRAPHICSOUTPUT) ; cd ..
+	$(RunPrefix) $(DEMOGRAPHICSOUTPUT)
 
 
 ## Compile rules ##

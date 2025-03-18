@@ -19,7 +19,7 @@ namespace
 
 	NAS2D::Font getFont()
 	{
-		static const std::string fileName = "../../../data/fonts/opensans.ttf";
+		static const std::string fileName = "fonts/opensans.ttf";
 
 		const auto& filesystem = NAS2D::Utility<NAS2D::Filesystem>::get();
 		if (filesystem.exists(fileName))
@@ -55,7 +55,6 @@ DemoGraphics::~DemoGraphics()
 	eventHandler.mouseMotion().disconnect({this, &DemoGraphics::onMouseMove});
 	eventHandler.mouseButtonDown().disconnect({this, &DemoGraphics::onMouseDown});
 	eventHandler.keyDown().disconnect({this, &DemoGraphics::onKeyDown});
-
 }
 
 void DemoGraphics::initialize()

@@ -121,8 +121,7 @@ Game::~Game()
 
 
 /**
- * Adds an additional directory or archive to the search path
- * of the Filesystem.
+ * Adds an additional directory to the search path of the Filesystem.
  *
  * \param path	Path to add to the search path.
  */

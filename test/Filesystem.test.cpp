@@ -94,7 +94,7 @@ TEST_F(Filesystem, findInParentsNotExist) {
 TEST_F(Filesystem, searchPath) {
 	auto pathList = fs.searchPath();
 	EXPECT_EQ(3u, pathList.size());
-	EXPECT_THAT(pathList, Contains(HasPartialPath("NAS2DUnitTests")));
+	EXPECT_THAT(pathList, Contains(HasPartialPath(AppName)));
 	EXPECT_THAT(pathList, Contains(HasPartialPath("data/")));
 }
 

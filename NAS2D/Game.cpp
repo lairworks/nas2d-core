@@ -132,6 +132,20 @@ void Game::mount(const std::string& path)
 
 
 /**
+ * Adds an additional directory to the search path of the Filesystem.
+ *
+ * The path is searched for starting from the `basePath` and searching up.
+ *
+ * \param path	Path to add to the search path.
+ */
+void Game::mountFindFromBase(const std::string& path)
+{
+	auto& filesystem = Utility<Filesystem>::get();
+	filesystem.mount(filesystem.findInParents(path, filesystem.basePath()));
+}
+
+
+/**
  * Primes the EventHandler and StateManager and enters the main game loop.
  *
  * \param state	A pointer to a State object.

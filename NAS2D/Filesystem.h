@@ -46,6 +46,9 @@ namespace NAS2D
 		RealPath basePath() const;
 		RealPath prefPath() const;
 
+		RealPath findInParents(const RealPath& path, const RealPath& startPath) const;
+		RealPath findInParents(const RealPath& path, const RealPath& startPath, std::size_t maxLevels) const;
+
 		int mountSoftFail(const RealPath& path);
 		void mount(const RealPath& path);
 		void mountReadWrite(const RealPath& path);

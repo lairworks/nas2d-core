@@ -133,7 +133,7 @@ $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.dep
 
 .PHONY: check
 check: | test
-	cd test && $(RunPrefix) ../$(TESTOUTPUT) $(GTEST_OPTIONS) $(RunSuffixUnitTest)
+	$(RunPrefix) $(TESTOUTPUT) $(GTEST_OPTIONS) $(RunSuffixUnitTest)
 
 
 ## Graphics demo project ##
@@ -161,7 +161,7 @@ $(DEMOGRAPHICSOBJS): $(DEMOGRAPHICSINTDIR)/%.o : $(DEMOGRAPHICSDIR)/%.cpp $(DEMO
 
 .PHONY: run-demoGraphics
 run-demoGraphics: | demoGraphics
-	cd demoGraphics/ && $(RunPrefix) ../$(DEMOGRAPHICSOUTPUT) ; cd ..
+	$(RunPrefix) $(DEMOGRAPHICSOUTPUT)
 
 
 ## Compile rules ##

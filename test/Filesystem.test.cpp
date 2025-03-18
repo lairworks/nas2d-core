@@ -46,7 +46,7 @@ namespace {
 			fs(AppName, OrganizationName)
 		{
 			fs.mount(fs.basePath());
-			fs.mount("data/");
+			fs.mount(fs.findInParents("test/data/", fs.basePath()));
 			fs.mountReadWrite(fs.prefPath());
 		}
 
@@ -153,7 +153,7 @@ TEST_F(Filesystem, isDirectoryMakeDirectory) {
 }
 
 TEST_F(Filesystem, mountUnmount) {
-	const std::string extraMount = "data/extraData/";
+	const auto extraMount = fs.findInParents("test/data/extraData/", fs.basePath());
 	const std::string extraFile = "extraFile.txt";
 
 	EXPECT_FALSE(fs.exists(extraFile));

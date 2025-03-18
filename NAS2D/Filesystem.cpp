@@ -10,6 +10,8 @@
 
 #include "Filesystem.h"
 
+#include "FilesystemPathParents.h"
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_filesystem.h>
 
@@ -164,6 +166,26 @@ RealPath Filesystem::basePath() const
 RealPath Filesystem::prefPath() const
 {
 	return mPrefPath;
+}
+
+
+RealPath Filesystem::findInParents(const RealPath& path, const RealPath& startPath) const
+{
+	return findInParents(path, startPath, std::numeric_limits<std::size_t>::max());
+}
+
+
+RealPath Filesystem::findInParents(const RealPath& path, const RealPath& startPath, std::size_t maxLevels) const
+{
+	for (const auto& currentPath : FilesystemPathParents(startPath, maxLevels))
+	{
+		const auto checkPath = currentPath / path.string();
+		if (std::filesystem::exists(std::string{checkPath}))
+		{
+			return checkPath.string();
+		}
+	}
+	return {};
 }
 
 

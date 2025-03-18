@@ -82,7 +82,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 
 	auto& fs = Utility<Filesystem>::init<Filesystem>(appName, organizationName);
 	fs.mountSoftFail(dataPath);
-	fs.mountSoftFail(fs.basePath() / dataPath);
+	fs.mountSoftFail(fs.findInParents(dataPath, fs.basePath()));
 	fs.mountReadWrite(fs.prefPath());
 
 	Configuration& configuration = Utility<Configuration>::init(defaultConfig());

@@ -153,7 +153,8 @@ TEST_F(Filesystem, isDirectoryMakeDirectory) {
 }
 
 TEST_F(Filesystem, mountUnmount) {
-	const std::string extraMount = "data/extraData/";
+	const auto projectFolder = fs.findInParents("test/", fs.basePath());
+	const auto extraMount = projectFolder / "data/extraData/";
 	const std::string extraFile = "extraFile.txt";
 
 	EXPECT_FALSE(fs.exists(extraFile));

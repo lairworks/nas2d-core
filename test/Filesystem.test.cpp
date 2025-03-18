@@ -131,7 +131,8 @@ TEST_F(Filesystem, writeReadDeleteExists) {
 
 	// Try to overwrite file, with and without permission
 	EXPECT_NO_THROW(fs.writeFile(testFilename, testData));
-	EXPECT_THROW(fs.writeFile(testFilename, testData, NAS2D::Filesystem::WriteFlags::NoOverwrite), std::runtime_error);
+	using NAS2D::Filesystem::WriteFlags::NoOverwrite;
+	EXPECT_THROW(fs.writeFile(testFilename, testData, NoOverwrite), std::runtime_error);
 
 	const auto data = fs.readFile(testFilename);
 	EXPECT_EQ(testData, data);

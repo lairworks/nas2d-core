@@ -82,7 +82,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 
 	auto& fs = Utility<Filesystem>::init<Filesystem>(appName, organizationName);
 	fs.mountSoftFail(dataPath);
-	fs.mountSoftFail(fs.basePath() / dataPath);
+	fs.mountSoftFail(fs.findInParents(dataPath, fs.basePath()));
 	fs.mountReadWrite(fs.prefPath());
 
 	Configuration& configuration = Utility<Configuration>::init(defaultConfig());
@@ -121,14 +121,27 @@ Game::~Game()
 
 
 /**
- * Adds an additional directory or archive to the search path
- * of the Filesystem.
+ * Adds an additional directory to the search path of the Filesystem.
  *
  * \param path	Path to add to the search path.
  */
 void Game::mount(const std::string& path)
 {
 	Utility<Filesystem>::get().mount(path);
+}
+
+
+/**
+ * Adds an additional directory to the search path of the Filesystem.
+ *
+ * The path is searched for starting from the `basePath` and searching up.
+ *
+ * \param path	Path to add to the search path.
+ */
+void Game::mountFindFromBase(const std::string& path)
+{
+	auto& filesystem = Utility<Filesystem>::get();
+	filesystem.mount(filesystem.findInParents(path, filesystem.basePath()));
 }
 
 

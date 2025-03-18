@@ -58,6 +58,7 @@ namespace NAS2D
 		~Game();
 
 		void mount(const std::string& path);
+		void mountFindFromBase(const std::string& path);
 
 		void go(State* state);
 	};

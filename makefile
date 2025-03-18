@@ -133,7 +133,7 @@ $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.dep
 
 .PHONY: check
 check: | test
-	cd test && $(RunPrefix) ../$(TESTOUTPUT) $(GTEST_OPTIONS) $(RunSuffixUnitTest)
+	$(RunPrefix) $(TESTOUTPUT) $(GTEST_OPTIONS) $(RunSuffixUnitTest)
 
 
 ## Graphics demo project ##

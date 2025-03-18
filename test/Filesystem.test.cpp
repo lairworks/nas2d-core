@@ -46,7 +46,7 @@ namespace {
 			fs(AppName, OrganizationName)
 		{
 			fs.mount(fs.basePath());
-			fs.mount("data/");
+			fs.mount(fs.findInParents("test/", fs.basePath()) / "data/");
 			fs.mountReadWrite(fs.prefPath());
 		}
 

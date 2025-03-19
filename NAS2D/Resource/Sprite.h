@@ -14,8 +14,6 @@
 #include "../Timer.h"
 #include "../Math/Angle.h"
 #include "../Renderer/Color.h"
-#include "../Signal/Signal.h"
-#include "../Signal/Delegate.h"
 
 #include <vector>
 #include <string>
@@ -32,12 +30,8 @@ namespace NAS2D
 	class Sprite
 	{
 	public:
-		using AnimationCompleteSignal = Signal<>;
-
 		Sprite(const std::string& filePath, const std::string& initialAction);
 		Sprite(const AnimationSet& animationSet, const std::string& initialAction);
-		Sprite(const std::string& filePath, const std::string& initialAction, Delegate<void()> animationCompleteHandler);
-		Sprite(const AnimationSet& animationSet, const std::string& initialAction, Delegate<void()> animationCompleteHandler);
 		Sprite(const Sprite&) = default;
 		Sprite(Sprite&&) = default;
 
@@ -67,8 +61,6 @@ namespace NAS2D
 		void color(Color color);
 		Color color() const;
 
-		AnimationCompleteSignal::Source& animationCompleteSignalSource();
-
 	protected:
 		unsigned int advanceByTimeDelta(unsigned int timeDelta);
 
@@ -79,7 +71,6 @@ namespace NAS2D
 
 		bool mPaused{false};
 		Timer mTimer{};
-		AnimationCompleteSignal mAnimationCompleteSignal{};
 
 		Color mTintColor{Color::Normal};
 		Angle mRotationAngle = Angle::degrees(0.0f);

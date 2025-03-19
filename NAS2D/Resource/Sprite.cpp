@@ -41,20 +41,6 @@ Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialActio
 }
 
 
-Sprite::Sprite(const std::string& filePath, const std::string& initialAction, Delegate<void()> animationCompleteHandler) :
-	Sprite(filePath, initialAction)
-{
-	mAnimationCompleteSignal.connect(animationCompleteHandler);
-}
-
-
-Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialAction, Delegate<void()> animationCompleteHandler) :
-	Sprite(animationSet, initialAction)
-{
-	mAnimationCompleteSignal.connect(animationCompleteHandler);
-}
-
-
 Vector<int> Sprite::size() const
 {
 	return (*mCurrentAction)[mCurrentFrame].bounds.size;
@@ -208,12 +194,6 @@ Color Sprite::color() const
 }
 
 
-Sprite::AnimationCompleteSignal::Source& Sprite::animationCompleteSignalSource()
-{
-	return mAnimationCompleteSignal;
-}
-
-
 unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
 {
 	unsigned int accumulator = 0;
@@ -230,7 +210,6 @@ unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
 
 		if (frame.isStopFrame())
 		{
-			mAnimationCompleteSignal();
 			mPaused = true;
 			return accumulator;
 		}
@@ -245,7 +224,6 @@ unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
 		if (mCurrentFrame >= frames.size())
 		{
 			mCurrentFrame = 0;
-			mAnimationCompleteSignal();
 		}
 	}
 }

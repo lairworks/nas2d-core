@@ -52,6 +52,7 @@ namespace NAS2D
 		void play(const std::string& action);
 		void pause();
 		void resume();
+		bool isPaused() const;
 
 		void setFrame(std::size_t frameIndex);
 

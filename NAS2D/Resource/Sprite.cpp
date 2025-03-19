@@ -116,6 +116,12 @@ void Sprite::resume()
 }
 
 
+bool Sprite::isPaused() const
+{
+	return mPaused || (*mCurrentAction)[mCurrentFrame].isStopFrame();
+}
+
+
 /**
  * Sets the animation playback frame.
  *

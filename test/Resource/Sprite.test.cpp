@@ -34,6 +34,15 @@ TEST_F(Sprite, size) {
 	EXPECT_EQ((NAS2D::Vector{1, 1}), sprite.size());
 }
 
+TEST_F(Sprite, isPaused) {
+	EXPECT_FALSE(sprite.isPaused());
+}
+
+TEST_F(Sprite, isPausedStopAnimation) {
+	sprite.play("frameStopAction");
+	EXPECT_TRUE(sprite.isPaused());
+}
+
 TEST_F(Sprite, advanceByTimeDelta) {
 	EXPECT_EQ(0u, sprite.advanceByTimeDelta(0u));
 	EXPECT_EQ(0u, sprite.advanceByTimeDelta(1u));

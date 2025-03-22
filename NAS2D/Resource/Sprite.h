@@ -12,7 +12,6 @@
 
 #include "AnimationSet.h"
 #include "../Timer.h"
-#include "../Math/Angle.h"
 #include "../Renderer/Color.h"
 
 #include <vector>
@@ -21,6 +20,9 @@
 
 namespace NAS2D
 {
+	class Angle;
+
+
 	/**
 	 * Sprite resource.
 	 *
@@ -52,6 +54,7 @@ namespace NAS2D
 
 		void update();
 		void draw(Point<float> position) const;
+		void draw(Point<float> position, Angle rotation) const;
 
 		void rotation(Angle angle);
 		Angle rotation() const;
@@ -73,6 +76,5 @@ namespace NAS2D
 		Timer mTimer{};
 
 		Color mTintColor{Color::Normal};
-		Angle mRotationAngle = Angle::degrees(0.0f);
 	};
 } // namespace

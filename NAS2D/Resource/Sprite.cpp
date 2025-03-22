@@ -9,7 +9,9 @@
 // ==================================================================================
 
 #include "Sprite.h"
+
 #include "ResourceCache.h"
+#include "../Math/Angle.h"
 #include "../Renderer/Renderer.h"
 #include "../Utility.h"
 
@@ -130,29 +132,16 @@ void Sprite::draw(Point<float> position) const
 	const auto& frame = (*mCurrentAction)[mCurrentFrame];
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, mRotationAngle, mTintColor);
+	Utility<Renderer>::get().drawSubImage(frame.image, drawPosition, frameBounds, mTintColor);
 }
 
 
-/**
- * Sets the rotation angle of the Sprite.
- *
- * \param	angle	Angle of rotation.
- */
-void Sprite::rotation(Angle angle)
+void Sprite::draw(Point<float> position, Angle rotation) const
 {
-	mRotationAngle = angle;
-}
-
-
-/**
- * Gets the rotation angle of the Sprite.
- *
- * \return	Angle of rotation.
- */
-Angle Sprite::rotation() const
-{
-	return mRotationAngle;
+	const auto& frame = (*mCurrentAction)[mCurrentFrame];
+	const auto drawPosition = position - frame.anchorOffset.to<float>();
+	const auto frameBounds = frame.bounds.to<float>();
+	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, rotation, mTintColor);
 }
 
 

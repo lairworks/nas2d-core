@@ -134,6 +134,15 @@ void Sprite::draw(Point<float> position) const
 }
 
 
+void Sprite::draw(Point<float> position, Angle rotation) const
+{
+	const auto& frame = (*mCurrentAction)[mCurrentFrame];
+	const auto drawPosition = position - frame.anchorOffset.to<float>();
+	const auto frameBounds = frame.bounds.to<float>();
+	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, rotation, mTintColor);
+}
+
+
 /**
  * Sets the rotation angle of the Sprite.
  *

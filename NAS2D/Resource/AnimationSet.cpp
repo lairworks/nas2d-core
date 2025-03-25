@@ -40,14 +40,14 @@ namespace
 		return " (Row: " + std::to_string(row) + ")";
 	}
 
-	using ImageSheetMap = AnimationSet::ImageSheetMap;
-	using ActionsMap = AnimationSet::ActionsMap;
+	using ImageSheets = AnimationSet::ImageSheets;
+	using Actions = AnimationSet::Actions;
 
 
-	std::tuple<ImageSheetMap, ActionsMap> processXml(const std::string& filePath, ImageCache& imageCache);
-	ImageSheetMap processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
-	ActionsMap processActions(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationSet::Frame> processFrames(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::tuple<ImageSheets, Actions> processXml(const std::string& filePath, ImageCache& imageCache);
+	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
+	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationSet::Frame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
@@ -68,17 +68,17 @@ AnimationSet::AnimationSet(std::string fileName) :
 
 
 AnimationSet::AnimationSet(std::string fileName, ImageCache& imageCache) :
-	mImageSheetMap{},
+	mImageSheets{},
 	mActions{}
 {
-	auto [imageSheetMap, actions] = processXml(fileName, imageCache);
-	mImageSheetMap = std::move(imageSheetMap);
+	auto [imageSheets, actions] = processXml(fileName, imageCache);
+	mImageSheets = std::move(imageSheets);
 	mActions = std::move(actions);
 }
 
 
-AnimationSet::AnimationSet(ImageSheetMap imageSheetMap, ActionsMap actions) :
-	mImageSheetMap{std::move(imageSheetMap)},
+AnimationSet::AnimationSet(ImageSheets imageSheets, Actions actions) :
+	mImageSheets{std::move(imageSheets)},
 	mActions{std::move(actions)}
 {
 }
@@ -109,7 +109,7 @@ namespace
 	 *
 	 * \param filePath	File path of the sprite XML definition file.
 	 */
-	std::tuple<ImageSheetMap, ActionsMap> processXml(const std::string& filePath, ImageCache& imageCache)
+	std::tuple<ImageSheets, Actions> processXml(const std::string& filePath, ImageCache& imageCache)
 	{
 		try
 		{
@@ -144,9 +144,9 @@ namespace
 			// Here instead of going through each element and calling a processing function to handle
 			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 			// image sheets anywhere in the sprite file.
-			auto imageSheetMap = processImageSheets(basePath, xmlRootElement, imageCache);
-			auto actions = processActions(imageSheetMap, xmlRootElement, imageCache);
-			return std::tuple{std::move(imageSheetMap), std::move(actions)};
+			auto imageSheets = processImageSheets(basePath, xmlRootElement, imageCache);
+			auto actions = processActions(imageSheets, xmlRootElement, imageCache);
+			return std::tuple{std::move(imageSheets), std::move(actions)};
 		}
 		catch (const std::runtime_error& error)
 		{
@@ -163,9 +163,9 @@ namespace
 	 *			element in a sprite definition, these elements can appear
 	 *			anywhere in a Sprite XML definition.
 	 */
-	ImageSheetMap processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
+	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
-		ImageSheetMap imageSheetMap;
+		ImageSheets imageSheets;
 
 		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
@@ -183,17 +183,17 @@ namespace
 				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
-			if (imageSheetMap.find(id) != imageSheetMap.end())
+			if (imageSheets.find(id) != imageSheets.end())
 			{
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
 
 			const auto imagePath = basePath + src;
-			imageSheetMap.try_emplace(id, imagePath);
+			imageSheets.try_emplace(id, imagePath);
 			imageCache.load(imagePath);
 		}
 
-		return imageSheetMap;
+		return imageSheets;
 	}
 
 
@@ -201,9 +201,9 @@ namespace
 	 * Iterates through all elements of a Sprite XML definition looking
 	 * for 'action' elements and processes them.
 	 */
-	ActionsMap processActions(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
+	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
-		ActionsMap actions;
+		Actions actions;
 
 		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))
 		{
@@ -219,7 +219,7 @@ namespace
 				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
 			}
 
-			actions[actionName] = processFrames(imageSheetMap, action, imageCache);
+			actions[actionName] = processFrames(imageSheets, action, imageCache);
 
 			if (actions[actionName].empty())
 			{
@@ -234,7 +234,7 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationSet::Frame> processFrames(const ImageSheetMap& imageSheetMap, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationSet::Frame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::vector<AnimationSet::Frame> frameList;
 
@@ -258,8 +258,8 @@ namespace
 			{
 				throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
 			}
-			const auto iterator = imageSheetMap.find(sheetId);
-			if (iterator == imageSheetMap.end())
+			const auto iterator = imageSheets.find(sheetId);
+			if (iterator == imageSheets.end())
 			{
 				throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
 			}

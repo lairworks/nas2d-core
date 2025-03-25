@@ -38,20 +38,20 @@ namespace NAS2D
 			bool isStopFrame() const;
 		};
 
-		using ImageSheetMap = std::map<std::string, std::string>;
-		using ActionsMap = std::map<std::string, std::vector<Frame>>;
+		using ImageSheets = std::map<std::string, std::string>;
+		using Actions = std::map<std::string, std::vector<Frame>>;
 
 
 		explicit AnimationSet(std::string fileName);
 		AnimationSet(std::string fileName, ResourceCache<Image, std::string>& imageCache);
-		AnimationSet(ImageSheetMap imageSheetMap, ActionsMap actions);
+		AnimationSet(ImageSheets imageSheets, Actions actions);
 
 		std::vector<std::string> actionNames() const;
 		const std::vector<Frame>& frames(const std::string& actionName) const;
 
 	private:
-		ImageSheetMap mImageSheetMap;
-		ActionsMap mActions;
+		ImageSheets mImageSheets;
+		Actions mActions;
 	};
 
 } // namespace

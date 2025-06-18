@@ -58,18 +58,15 @@ namespace NAS2D
 		void pauseSound() override;
 		void resumeSound() override;
 
+		void fadeInMusic(const Music& music, Duration fadeInTime) override;
+		void fadeOutMusic(Duration fadeOutTime) override;
 		void stopMusic() override;
 		void pauseMusic() override;
 		void resumeMusic() override;
-
-		void fadeInMusic(const Music& music, Duration fadeInTime) override;
-		void fadeOutMusic(Duration fadeOutTime) override;
-
 		bool musicPlaying() const override;
 
 		void soundVolume(Volume level) override;
 		void musicVolume(Volume level) override;
-
 		Volume soundVolume() const override;
 		Volume musicVolume() const override;
 

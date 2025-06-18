@@ -183,6 +183,18 @@ void MixerSDL::resumeSound()
 }
 
 
+void MixerSDL::fadeInMusic(const Music& music, Duration fadeInTime)
+{
+	Mix_FadeInMusic(music.music(), 0, static_cast<int>(fadeInTime.milliseconds));
+}
+
+
+void MixerSDL::fadeOutMusic(Duration fadeOutTime)
+{
+	Mix_FadeOutMusic(static_cast<int>(fadeOutTime.milliseconds));
+}
+
+
 void MixerSDL::stopMusic()
 {
 	Mix_HaltMusic();
@@ -198,18 +210,6 @@ void MixerSDL::pauseMusic()
 void MixerSDL::resumeMusic()
 {
 	Mix_ResumeMusic();
-}
-
-
-void MixerSDL::fadeInMusic(const Music& music, Duration fadeInTime)
-{
-	Mix_FadeInMusic(music.music(), 0, static_cast<int>(fadeInTime.milliseconds));
-}
-
-
-void MixerSDL::fadeOutMusic(Duration fadeOutTime)
-{
-	Mix_FadeOutMusic(static_cast<int>(fadeOutTime.milliseconds));
 }
 
 

@@ -43,11 +43,6 @@ namespace NAS2D
 		virtual void pauseSound() = 0;
 		virtual void resumeSound() = 0;
 
-		/**
-		 * Starts playing a Music track.
-		 *
-		 * \param music Reference to a Music Resource.
-		 */
 		void playMusic(const Music& music);
 		virtual void stopMusic() = 0;
 		virtual void pauseMusic() = 0;

@@ -45,18 +45,18 @@ namespace NAS2D
 		return false;
 	}
 
-	void MixerNull::soundVolume(int /*level*/)
+	void MixerNull::soundVolume(Volume /*level*/)
 	{}
 
-	void MixerNull::musicVolume(int /*level*/)
+	void MixerNull::musicVolume(Volume /*level*/)
 	{}
 
-	int MixerNull::soundVolume() const
+	Volume MixerNull::soundVolume() const
 	{
 		return 0;
 	}
 
-	int MixerNull::musicVolume() const
+	Volume MixerNull::musicVolume() const
 	{
 		return 0;
 	}

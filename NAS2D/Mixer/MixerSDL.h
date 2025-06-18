@@ -67,11 +67,11 @@ namespace NAS2D
 
 		bool musicPlaying() const override;
 
-		void soundVolume(int level) override;
-		void musicVolume(int level) override;
+		void soundVolume(Volume level) override;
+		void musicVolume(Volume level) override;
 
-		int soundVolume() const override;
-		int musicVolume() const override;
+		Volume soundVolume() const override;
+		Volume musicVolume() const override;
 
 		void addMusicCompleteHandler(Delegate<void()> musicCompleteHandler) override;
 		void removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler) override;

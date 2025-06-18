@@ -219,25 +219,25 @@ bool MixerSDL::musicPlaying() const
 }
 
 
-void MixerSDL::soundVolume(int volume)
+void MixerSDL::soundVolume(Volume volume)
 {
 	Mix_Volume(-1, std::clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 
-void MixerSDL::musicVolume(int volume)
+void MixerSDL::musicVolume(Volume volume)
 {
 	Mix_VolumeMusic(std::clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 
-int MixerSDL::soundVolume() const
+Volume MixerSDL::soundVolume() const
 {
 	return Mix_Volume(-1, -1);
 }
 
 
-int MixerSDL::musicVolume() const
+Volume MixerSDL::musicVolume() const
 {
 	return Mix_VolumeMusic(-1);
 }

@@ -25,6 +25,12 @@ namespace NAS2D
 	void MixerNull::resumeSound()
 	{}
 
+	void MixerNull::fadeInMusic(const Music& /*music*/, Duration /*fadeInTime*/ /*= Mixer::DefaultFadeTime*/)
+	{}
+
+	void MixerNull::fadeOutMusic(Duration /*fadeOutTime*/ /*= Mixer::DefaultFadeTime*/)
+	{}
+
 	void MixerNull::stopMusic()
 	{}
 
@@ -34,29 +40,23 @@ namespace NAS2D
 	void MixerNull::resumeMusic()
 	{}
 
-	void MixerNull::fadeInMusic(const Music& /*music*/, Duration /*fadeInTime*/ /*= Mixer::DefaultFadeTime*/)
-	{}
-
-	void MixerNull::fadeOutMusic(Duration /*fadeOutTime*/ /*= Mixer::DefaultFadeTime*/)
-	{}
-
 	bool MixerNull::musicPlaying() const
 	{
 		return false;
 	}
 
-	void MixerNull::soundVolume(int /*level*/)
+	void MixerNull::soundVolume(Volume /*level*/)
 	{}
 
-	void MixerNull::musicVolume(int /*level*/)
+	void MixerNull::musicVolume(Volume /*level*/)
 	{}
 
-	int MixerNull::soundVolume() const
+	Volume MixerNull::soundVolume() const
 	{
 		return 0;
 	}
 
-	int MixerNull::musicVolume() const
+	Volume MixerNull::musicVolume() const
 	{
 		return 0;
 	}

@@ -33,8 +33,8 @@ namespace NAS2D
 		{
 			int mixRate;
 			int numChannels;
-			int sfxVolume;
-			int musicVolume;
+			Volume sfxVolume;
+			Volume musicVolume;
 			int bufferSize;
 		};
 
@@ -58,20 +58,17 @@ namespace NAS2D
 		void pauseSound() override;
 		void resumeSound() override;
 
+		void fadeInMusic(const Music& music, Duration fadeInTime) override;
+		void fadeOutMusic(Duration fadeOutTime) override;
 		void stopMusic() override;
 		void pauseMusic() override;
 		void resumeMusic() override;
-
-		void fadeInMusic(const Music& music, Duration fadeInTime) override;
-		void fadeOutMusic(Duration fadeOutTime) override;
-
 		bool musicPlaying() const override;
 
-		void soundVolume(int level) override;
-		void musicVolume(int level) override;
-
-		int soundVolume() const override;
-		int musicVolume() const override;
+		void soundVolume(Volume level) override;
+		void musicVolume(Volume level) override;
+		Volume soundVolume() const override;
+		Volume musicVolume() const override;
 
 		void addMusicCompleteHandler(Delegate<void()> musicCompleteHandler) override;
 		void removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler) override;

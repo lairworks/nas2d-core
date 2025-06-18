@@ -43,20 +43,12 @@ namespace NAS2D
 		virtual void pauseSound() = 0;
 		virtual void resumeSound() = 0;
 
-		/**
-		 * Starts playing a Music track.
-		 *
-		 * \param music Reference to a Music Resource.
-		 */
 		void playMusic(const Music& music);
+		virtual void fadeInMusic(const Music& music, Duration fadeInTime = Mixer::DefaultFadeTime) = 0;
+		virtual void fadeOutMusic(Duration fadeOutTime = Mixer::DefaultFadeTime) = 0;
 		virtual void stopMusic() = 0;
 		virtual void pauseMusic() = 0;
 		virtual void resumeMusic() = 0;
-
-		virtual void fadeInMusic(const Music& music, Duration fadeInTime = Mixer::DefaultFadeTime) = 0;
-
-		virtual void fadeOutMusic(Duration fadeOutTime = Mixer::DefaultFadeTime) = 0;
-
 		virtual bool musicPlaying() const = 0;
 
 		void stopAllAudio();
@@ -65,7 +57,6 @@ namespace NAS2D
 
 		virtual void soundVolume(Volume level) = 0;
 		virtual void musicVolume(Volume level) = 0;
-
 		virtual Volume soundVolume() const = 0;
 		virtual Volume musicVolume() const = 0;
 

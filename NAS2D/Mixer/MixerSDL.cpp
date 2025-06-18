@@ -153,11 +153,6 @@ MixerSDL::~MixerSDL()
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
 
-void MixerSDL::onMusicFinished()
-{
-	mMusicComplete.emit();
-}
-
 
 void MixerSDL::playSound(const Sound& sound)
 {
@@ -183,6 +178,18 @@ void MixerSDL::resumeSound()
 }
 
 
+void MixerSDL::fadeInMusic(const Music& music, Duration fadeInTime)
+{
+	Mix_FadeInMusic(music.music(), 0, static_cast<int>(fadeInTime.milliseconds));
+}
+
+
+void MixerSDL::fadeOutMusic(Duration fadeOutTime)
+{
+	Mix_FadeOutMusic(static_cast<int>(fadeOutTime.milliseconds));
+}
+
+
 void MixerSDL::stopMusic()
 {
 	Mix_HaltMusic();
@@ -201,43 +208,31 @@ void MixerSDL::resumeMusic()
 }
 
 
-void MixerSDL::fadeInMusic(const Music& music, Duration fadeInTime)
-{
-	Mix_FadeInMusic(music.music(), 0, static_cast<int>(fadeInTime.milliseconds));
-}
-
-
-void MixerSDL::fadeOutMusic(Duration fadeOutTime)
-{
-	Mix_FadeOutMusic(static_cast<int>(fadeOutTime.milliseconds));
-}
-
-
 bool MixerSDL::musicPlaying() const
 {
 	return Mix_PlayingMusic() == 1;
 }
 
 
-void MixerSDL::soundVolume(int volume)
+void MixerSDL::soundVolume(Volume volume)
 {
 	Mix_Volume(-1, std::clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 
-void MixerSDL::musicVolume(int volume)
+void MixerSDL::musicVolume(Volume volume)
 {
 	Mix_VolumeMusic(std::clamp(volume, 0, SDL_MIX_MAXVOLUME));
 }
 
 
-int MixerSDL::soundVolume() const
+Volume MixerSDL::soundVolume() const
 {
 	return Mix_Volume(-1, -1);
 }
 
 
-int MixerSDL::musicVolume() const
+Volume MixerSDL::musicVolume() const
 {
 	return Mix_VolumeMusic(-1);
 }
@@ -252,4 +247,10 @@ void MixerSDL::addMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
 void MixerSDL::removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
 {
 	mMusicComplete.disconnect(musicCompleteHandler);
+}
+
+
+void MixerSDL::onMusicFinished()
+{
+	mMusicComplete.emit();
 }

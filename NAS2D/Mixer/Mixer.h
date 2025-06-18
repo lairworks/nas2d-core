@@ -87,8 +87,6 @@ namespace NAS2D
 		virtual void addMusicCompleteHandler(Delegate<void()> musicCompleteHandler);
 		virtual void removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler);
 
-		SignalSource<>& musicCompleteSignalSource();
-
 	protected:
 		Signal<> mMusicComplete{};
 	};

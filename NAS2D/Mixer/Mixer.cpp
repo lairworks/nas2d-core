@@ -62,9 +62,3 @@ void Mixer::removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
 {
 	mMusicComplete.disconnect(musicCompleteHandler);
 }
-
-
-SignalSource<>& Mixer::musicCompleteSignalSource()
-{
-	return mMusicComplete;
-}

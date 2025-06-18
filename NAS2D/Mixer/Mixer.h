@@ -19,6 +19,9 @@ namespace NAS2D
 	class Sound;
 	class Music;
 
+	// Volume level, valid values are in the range [0, 128]
+	using Volume = int;
+
 
 	class Mixer
 	{
@@ -60,27 +63,11 @@ namespace NAS2D
 		void pauseAllAudio();
 		void resumeAllAudio();
 
-		/**
-		 * \param level Volume level, valid values are in the range [0, 128]
-		*/
-		virtual void soundVolume(int level) = 0;
+		virtual void soundVolume(Volume level) = 0;
+		virtual void musicVolume(Volume level) = 0;
 
-
-		/**
-		 * \param level Volume level, valid values are in the range [0, 128]
-		*/
-		virtual void musicVolume(int level) = 0;
-
-
-		/**
-		 * \return The volume level in the range [0, 128]
-		*/
-		virtual int soundVolume() const = 0;
-
-		/**
-		 * \return The volume level in the range [0, 128]
-		*/
-		virtual int musicVolume() const = 0;
+		virtual Volume soundVolume() const = 0;
+		virtual Volume musicVolume() const = 0;
 
 		virtual void addMusicCompleteHandler(Delegate<void()> musicCompleteHandler) = 0;
 		virtual void removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler) = 0;

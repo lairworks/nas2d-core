@@ -153,11 +153,6 @@ MixerSDL::~MixerSDL()
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
 
-void MixerSDL::onMusicFinished()
-{
-	mMusicComplete.emit();
-}
-
 
 void MixerSDL::playSound(const Sound& sound)
 {
@@ -252,4 +247,10 @@ void MixerSDL::addMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
 void MixerSDL::removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
 {
 	mMusicComplete.disconnect(musicCompleteHandler);
+}
+
+
+void MixerSDL::onMusicFinished()
+{
+	mMusicComplete.emit();
 }

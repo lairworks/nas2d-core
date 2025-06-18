@@ -71,7 +71,7 @@ namespace NAS2D
 		int soundVolume() const override;
 		int musicVolume() const override;
 
-	private:
+	protected:
 		void onMusicFinished();
 	};
 

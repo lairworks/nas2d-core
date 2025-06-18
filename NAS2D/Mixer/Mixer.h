@@ -11,7 +11,6 @@
 #pragma once
 
 #include "../Duration.h"
-#include "../Signal/Signal.h"
 #include "../Signal/Delegate.h"
 
 
@@ -30,7 +29,6 @@ namespace NAS2D
 		Mixer() = default;
 		Mixer(const Mixer&) = default;
 		Mixer(Mixer&&) = default;
-		explicit Mixer(Delegate<void()> musicCompleteHandler);
 		virtual ~Mixer();
 
 		Mixer& operator=(const Mixer&) = default;
@@ -84,10 +82,10 @@ namespace NAS2D
 		*/
 		virtual int musicVolume() const = 0;
 
-		SignalSource<>& musicCompleteSignalSource();
+		virtual void addMusicCompleteHandler(Delegate<void()> musicCompleteHandler) = 0;
+		virtual void removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler) = 0;
 
 	protected:
-		Signal<> mMusicComplete{};
 	};
 
 } // namespace

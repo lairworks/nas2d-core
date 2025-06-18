@@ -241,3 +241,15 @@ int MixerSDL::musicVolume() const
 {
 	return Mix_VolumeMusic(-1);
 }
+
+
+void MixerSDL::addMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
+{
+	mMusicComplete.connect(musicCompleteHandler);
+}
+
+
+void MixerSDL::removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
+{
+	mMusicComplete.disconnect(musicCompleteHandler);
+}

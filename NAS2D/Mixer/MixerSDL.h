@@ -33,8 +33,8 @@ namespace NAS2D
 		{
 			int mixRate;
 			int numChannels;
-			int sfxVolume;
-			int musicVolume;
+			Volume sfxVolume;
+			Volume musicVolume;
 			int bufferSize;
 		};
 

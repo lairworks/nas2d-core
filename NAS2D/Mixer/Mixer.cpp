@@ -52,6 +52,18 @@ void Mixer::resumeAllAudio()
 }
 
 
+void Mixer::addMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
+{
+	mMusicComplete.connect(musicCompleteHandler);
+}
+
+
+void Mixer::removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
+{
+	mMusicComplete.disconnect(musicCompleteHandler);
+}
+
+
 SignalSource<>& Mixer::musicCompleteSignalSource()
 {
 	return mMusicComplete;

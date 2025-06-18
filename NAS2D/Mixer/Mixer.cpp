@@ -14,12 +14,6 @@
 using namespace NAS2D;
 
 
-Mixer::Mixer(Delegate<void()> musicCompleteHandler)
-{
-	mMusicComplete.connect(musicCompleteHandler);
-}
-
-
 Mixer::~Mixer()
 {
 }
@@ -49,16 +43,4 @@ void Mixer::resumeAllAudio()
 {
 	resumeMusic();
 	resumeSound();
-}
-
-
-void Mixer::addMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
-{
-	mMusicComplete.connect(musicCompleteHandler);
-}
-
-
-void Mixer::removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
-{
-	mMusicComplete.disconnect(musicCompleteHandler);
 }

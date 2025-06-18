@@ -12,6 +12,8 @@
 
 #include "Mixer.h"
 
+#include "../Signal/Signal.h"
+
 
 namespace NAS2D
 {
@@ -71,8 +73,14 @@ namespace NAS2D
 		int soundVolume() const override;
 		int musicVolume() const override;
 
+		void addMusicCompleteHandler(Delegate<void()> musicCompleteHandler) override;
+		void removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler) override;
+
 	protected:
 		void onMusicFinished();
+
+	protected:
+		Signal<> mMusicComplete{};
 	};
 
 }

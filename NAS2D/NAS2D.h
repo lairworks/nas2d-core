@@ -63,9 +63,9 @@
 #include "Resource/Sound.h"
 #include "Resource/Sprite.h"
 
-#include "Signal/SignalConnection.h"
 #include "Signal/Delegate.h"
 #include "Signal/Signal.h"
+#include "Signal/SignalConnection.h"
 #include "Signal/SignalSource.h"
 
 #include "Xml/Xml.h"

@@ -11,8 +11,8 @@
 #pragma once
 
 #include "Delegate.h"
+
 #include <vector>
-#include <algorithm>
 
 
 namespace NAS2D

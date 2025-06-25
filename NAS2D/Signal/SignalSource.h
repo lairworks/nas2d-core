@@ -45,11 +45,7 @@ namespace NAS2D
 
 		void disconnect(DelegateType delegate)
 		{
-			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
-			if (iterator != delegateList.end())
-			{
-				delegateList.erase(iterator);
-			}
+			std::erase(delegateList, delegate);
 		}
 
 		void clear() { delegateList.clear(); }

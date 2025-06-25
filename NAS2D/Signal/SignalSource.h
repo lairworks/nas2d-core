@@ -11,8 +11,8 @@
 #pragma once
 
 #include "Delegate.h"
+
 #include <vector>
-#include <algorithm>
 
 
 namespace NAS2D
@@ -31,8 +31,11 @@ namespace NAS2D
 
 		bool isConnected(DelegateType delegate) const
 		{
-			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
-			return (iterator != delegateList.end());
+			for (const auto& referenceDelegate : delegateList)
+			{
+				if (referenceDelegate == delegate) { return true; }
+			}
+			return false;
 		}
 
 		void connect(DelegateType delegate)
@@ -45,11 +48,7 @@ namespace NAS2D
 
 		void disconnect(DelegateType delegate)
 		{
-			const auto iterator = std::find(delegateList.begin(), delegateList.end(), delegate);
-			if (iterator != delegateList.end())
-			{
-				delegateList.erase(iterator);
-			}
+			std::erase(delegateList, delegate);
 		}
 
 		void clear() { delegateList.clear(); }

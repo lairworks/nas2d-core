@@ -70,6 +70,7 @@ namespace NAS2D
 		Vector<int> glyphCellSize() const;
 		Vector<int> size(std::string_view string) const;
 		int width(std::string_view string) const;
+		int width(char character) const;
 		int height() const;
 		int ascent() const;
 		unsigned int ptSize() const;

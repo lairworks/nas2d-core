@@ -27,3 +27,8 @@ TEST(Font, nullWidthNonEmptyString) {
 	const auto font = NAS2D::Font::null();
 	EXPECT_EQ(0, font.width("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
 }
+
+TEST(Font, nullWidthChar) {
+	const auto font = NAS2D::Font::null();
+	EXPECT_EQ(0, font.width('A'));
+}

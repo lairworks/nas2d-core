@@ -160,6 +160,16 @@ int Font::width(std::string_view string) const
 }
 
 
+int Font::width(char character) const
+{
+	const auto& gml = mFontInfo.metrics;
+	if (gml.empty()) { return 0; }
+
+	const auto glyphIndex = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
+	return gml[glyphIndex].advance;
+}
+
+
 /**
  * Gets the height in pixels of the Font.
  */

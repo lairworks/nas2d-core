@@ -186,6 +186,23 @@ Image Image::resized(Vector<int> newSize) const
 }
 
 
+Image Image::sliced(Rectangle<int> sliceArea) const
+{
+	const auto* format = mSurface->format;
+	auto newSurface = SDL_CreateRGBSurface(0, sliceArea.size.x, sliceArea.size.y, format->BytesPerPixel * 8, format->Rmask, format->Gmask, format->Bmask, format->Amask);
+	if (!newSurface) { throw std::runtime_error("Failed to created sliced surface: " + stringFrom(sliceArea) + " : " + std::string{SDL_GetError()}); }
+
+	const auto sdlSliceRect = SDL_Rect{sliceArea.position.x, sliceArea.position.y, sliceArea.size.x, sliceArea.size.y};
+	if (SDL_BlitSurface(mSurface, &sdlSliceRect, newSurface, nullptr))
+	{
+		SDL_FreeSurface(newSurface);
+		throw std::runtime_error("Failed to slice image area: " + stringFrom(sliceArea) + " : " + std::string{SDL_GetError()});
+	}
+
+	return Image{*newSurface};
+}
+
+
 unsigned int Image::textureId() const
 {
 	if (mTextureId == 0)

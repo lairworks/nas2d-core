@@ -8,6 +8,7 @@ namespace NAS2D
 {
 	template <typename BaseType> struct Point;
 	template <typename BaseType> struct Vector;
+	template <typename BaseType> struct Rectangle;
 
 
 	template <typename T>
@@ -39,5 +40,12 @@ namespace NAS2D
 	std::string stringFrom(Vector<BaseType> vector)
 	{
 		return "(" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + ")";
+	}
+
+
+	template <typename BaseType>
+	std::string stringFrom(Rectangle<BaseType> rectangle)
+	{
+		return "(" + stringFrom(rectangle.position) + ", " + stringFrom(rectangle.size) + ")";
 	}
 }

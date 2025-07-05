@@ -22,6 +22,7 @@ namespace NAS2D
 	struct Color;
 
 	template <typename BaseType> struct Point;
+	template <typename BaseType> struct Rectangle;
 
 
 	/**
@@ -58,6 +59,7 @@ namespace NAS2D
 		Color pixelColor(Point<int> point) const;
 
 		Image resized(Vector<int> newSize) const;
+		Image sliced(Rectangle<int> sliceArea) const;
 
 	protected:
 		friend class RendererOpenGL;

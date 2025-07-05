@@ -44,6 +44,7 @@ namespace
 
 DemoGraphics::DemoGraphics() :
 	mGear{"Gear.png"},
+	mResizedGear{mGear.resized(mGear.size() / 2)},
 	mDxImage{"Test_DirectX.png"},
 	mOglImage{"Test_OpenGL.png"},
 	mTimer{}
@@ -112,6 +113,7 @@ NAS2D::State* DemoGraphics::update()
 	}
 
 	const auto angle = NAS2D::Angle::degrees(static_cast<float>(mTimer.tick() * 360 / 10 / 1000));
+	renderer.drawImageRotated(mResizedGear, {198, 30}, angle);
 	renderer.drawImageRotated(mGear, {158, 60}, angle);
 	renderer.drawImageRotated(mGear, {219, 60}, -angle);
 

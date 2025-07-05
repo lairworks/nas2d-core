@@ -34,6 +34,7 @@ protected:
 
 private:
 	NAS2D::Image mGear;
+	NAS2D::Image mResizedGear;
 	NAS2D::Image mDxImage;
 	NAS2D::Image mOglImage;
 	NAS2D::Timer mTimer;

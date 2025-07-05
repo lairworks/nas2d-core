@@ -58,6 +58,8 @@ namespace NAS2D
 
 		Color pixelColor(Point<int> point) const;
 
+		Image resized(Vector<int> newSize) const;
+
 	protected:
 		friend class RendererOpenGL;
 		unsigned int textureId() const;

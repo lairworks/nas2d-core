@@ -21,8 +21,7 @@ namespace NAS2D
 {
 	struct Color;
 
-	template <typename BaseType>
-	struct Point;
+	template <typename BaseType> struct Point;
 
 
 	/**

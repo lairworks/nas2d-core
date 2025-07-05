@@ -45,6 +45,7 @@ namespace
 DemoGraphics::DemoGraphics() :
 	mGear{"Gear.png"},
 	mResizedGear{mGear.resized(mGear.size() / 2)},
+	mSlicedGear{mGear.sliced({{mGear.size().x / 5, 0}, mGear.size() * 2 / 5})},
 	mDxImage{"Test_DirectX.png"},
 	mOglImage{"Test_OpenGL.png"},
 	mTimer{}
@@ -111,6 +112,8 @@ NAS2D::State* DemoGraphics::update()
 		const auto offset = NAS2D::Vector{jitter(), jitter()};
 		renderer.drawPoint(NAS2D::Point{84, 60} + offset, NAS2D::Color{grey, grey, grey});
 	}
+
+	renderer.drawImage(mSlicedGear, {165, 30});
 
 	const auto angle = NAS2D::Angle::degrees(static_cast<float>(mTimer.tick() * 360 / 10 / 1000));
 	renderer.drawImageRotated(mResizedGear, {198, 30}, angle);

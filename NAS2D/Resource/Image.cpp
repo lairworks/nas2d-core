@@ -176,7 +176,7 @@ Image Image::resized(Vector<int> newSize) const
 	auto resizedSurface = SDL_CreateRGBSurface(0, newSize.x, newSize.y, format->BytesPerPixel * 8, format->Rmask, format->Gmask, format->Bmask, format->Amask);
 	if (!resizedSurface) { throw std::runtime_error("Failed to created resized surface: " + stringFrom(newSize) + " : " + std::string{SDL_GetError()}); }
 
-	if (SDL_BlitScaled(mSurface, nullptr, resizedSurface, nullptr))
+	if (SDL_SoftStretchLinear(mSurface, nullptr, resizedSurface, nullptr))
 	{
 		SDL_FreeSurface(resizedSurface);
 		throw std::runtime_error("Failed to scale image to new size: " + stringFrom(newSize) + " : " + std::string{SDL_GetError()});

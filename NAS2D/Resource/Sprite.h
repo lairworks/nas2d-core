@@ -56,9 +56,6 @@ namespace NAS2D
 		void draw(Point<float> position) const;
 		void draw(Point<float> position, Angle rotation) const;
 
-		void rotation(Angle angle);
-		Angle rotation() const;
-
 		void alpha(uint8_t alpha);
 		uint8_t alpha() const;
 		void color(Color color);

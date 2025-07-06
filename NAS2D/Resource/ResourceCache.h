@@ -36,9 +36,10 @@ namespace NAS2D
 				// Resource wasn't found, so create new one using constructor parameters
 				const auto pairIterBool = cache.try_emplace(key, params...);
 				iter = pairIterBool.first;
+				return iter->second;
 			}
 
-			// Return reference to found or created cached object
+			// Return reference to found cached object
 			return iter->second;
 		}
 

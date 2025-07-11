@@ -31,6 +31,12 @@ RectangleSkin::RectangleSkin(const Image& topLeft, const Image& top, const Image
 {}
 
 
+Vector<int> RectangleSkin::minSize() const
+{
+	return mTopLeft.size() + mBottomRight.size();
+}
+
+
 void RectangleSkin::draw(Renderer& renderer, const Rectangle<float>& rect) const
 {
 	const auto p0 = rect.position;

@@ -16,8 +16,8 @@ namespace NAS2D
 	class Image;
 	class Renderer;
 
-	template <typename BaseType>
-	struct Rectangle;
+	template <typename BaseType> struct Vector;
+	template <typename BaseType> struct Rectangle;
 
 
 	class RectangleSkin
@@ -25,7 +25,9 @@ namespace NAS2D
 	public:
 		RectangleSkin(const Image& topLeft, const Image& top, const Image& topRight, const Image& left, const Image& center, const Image& right, const Image& bottomLeft, const Image& bottom, const Image& bottomRight);
 
-		void draw(Renderer& renderer, const Rectangle<float>& rect) const;
+		Vector<int> minSize() const;
+
+		void draw(Renderer& renderer, const Rectangle<int>& rect) const;
 
 	private:
 		const Image& mTopLeft;

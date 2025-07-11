@@ -31,14 +31,15 @@ namespace NAS2D
 
 			// Try to find resource from the cache
 			auto iter = cache.find(key);
-			if (iter == cache.end())
+			if (iter != cache.end())
 			{
-				// Resource wasn't found, so create new one using constructor parameters
-				const auto pairIterBool = cache.try_emplace(key, params...);
-				iter = pairIterBool.first;
+				// Return reference to found cached object
+				return iter->second;
 			}
 
-			// Return reference to found or created cached object
+			// Resource wasn't found, so create new one using constructor parameters
+			const auto pairIterBool = cache.try_emplace(key, params...);
+			iter = pairIterBool.first;
 			return iter->second;
 		}
 

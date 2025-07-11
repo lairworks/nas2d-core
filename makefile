@@ -225,7 +225,7 @@ show-warnings:
 	@$(MAKE) clean-all > /dev/null
 
 .PHONY: lint
-lint: cppcheck cppclean
+lint: cppcheck cppclean cppinclude
 
 .PHONY: cppcheck
 cppcheck:
@@ -235,10 +235,33 @@ cppcheck:
 cppclean:
 	cppclean "$(SRCDIR)" --exclude="NAS2D.h" --exclude="Xml"
 
+.PHONY: cppinclude
+cppinclude:
+	cppinclude
+
 .PHONY: format
 format:
 	clang-format --version
 	find NAS2D/ -not -path 'NAS2D/Xml/*' -regex '.*\.\(cpp\|h\)' | xargs clang-format -i
+
+
+## Debugging ##
+
+.PHONY: stale
+stale:
+	@$(MAKE) -n | grep -oE '[^ ]+\.cpp$$' || true
+
+.PHONY: stale-objs
+stale-objs:
+	@$(MAKE) -n | grep -oE '[^ ]+\.o$$' || true
+
+
+## Compile performance ##
+
+.PHONY: flame-charts
+flame-charts:
+	$(MAKE) all CXX=clang++ CXXFLAGS_EXTRA="-ftime-trace"
+
 
 ### Linux development package dependencies ###
 # This section contains install rules to aid setup and compiling on Linux.

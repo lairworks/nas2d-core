@@ -1,0 +1,6 @@
+{
+	"project_dir": "NAS2D",
+	"include_dirs": ["/usr/include"],
+	"ignore_dirs": [],
+	"ignore_files": ["windows.h"]
+}

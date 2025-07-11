@@ -39,6 +39,9 @@ Vector<int> RectangleSkin::minSize() const
 
 void RectangleSkin::draw(Renderer& renderer, const Rectangle<int>& rect) const
 {
+	// Partial order comparison - must hold for both components simultaneously
+	if (!(minSize() <= rect.size)) { return; }
+
 	const auto p0 = rect.position;
 	const auto p1 = rect.position + mTopLeft.size();
 	const auto p2 = rect.crossXPoint() + mTopRight.size().reflectX();

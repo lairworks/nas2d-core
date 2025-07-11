@@ -27,7 +27,7 @@ namespace NAS2D
 
 		Vector<int> minSize() const;
 
-		void draw(Renderer& renderer, const Rectangle<float>& rect) const;
+		void draw(Renderer& renderer, const Rectangle<int>& rect) const;
 
 	private:
 		const Image& mTopLeft;

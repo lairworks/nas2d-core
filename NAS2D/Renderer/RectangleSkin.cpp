@@ -37,26 +37,26 @@ Vector<int> RectangleSkin::minSize() const
 }
 
 
-void RectangleSkin::draw(Renderer& renderer, const Rectangle<float>& rect) const
+void RectangleSkin::draw(Renderer& renderer, const Rectangle<int>& rect) const
 {
 	const auto p0 = rect.position;
-	const auto p1 = rect.position + mTopLeft.size().to<float>();
-	const auto p2 = rect.crossXPoint() + mTopRight.size().reflectX().to<float>();
-	const auto p3 = rect.crossYPoint() + mBottomLeft.size().reflectY().to<float>();
-	const auto p4 = rect.endPoint() - mBottomRight.size().to<float>();
+	const auto p1 = rect.position + mTopLeft.size();
+	const auto p2 = rect.crossXPoint() + mTopRight.size().reflectX();
+	const auto p3 = rect.crossYPoint() + mBottomLeft.size().reflectY();
+	const auto p4 = rect.endPoint() - mBottomRight.size();
 
 	// Draw the center area
-	renderer.drawImageRepeated(mCenter, Rectangle<float>::Create(p1, p4));
+	renderer.drawImageRepeated(mCenter, Rectangle<int>::Create(p1, p4));
 
 	// Draw the sides
-	renderer.drawImageRepeated(mTop, Rectangle<float>::Create({p1.x, p0.y}, p2));
-	renderer.drawImageRepeated(mBottom, Rectangle<float>::Create(p3, Point{p4.x, rect.endPoint().y}));
-	renderer.drawImageRepeated(mLeft, Rectangle<float>::Create({p0.x, p1.y}, p3));
-	renderer.drawImageRepeated(mRight, Rectangle<float>::Create(p2, Point{rect.endPoint().x, p4.y}));
+	renderer.drawImageRepeated(mTop, Rectangle<int>::Create({p1.x, p0.y}, p2));
+	renderer.drawImageRepeated(mBottom, Rectangle<int>::Create(p3, Point{p4.x, rect.endPoint().y}));
+	renderer.drawImageRepeated(mLeft, Rectangle<int>::Create({p0.x, p1.y}, p3));
+	renderer.drawImageRepeated(mRight, Rectangle<int>::Create(p2, Point{rect.endPoint().x, p4.y}));
 
 	// Draw the corners
 	renderer.drawImage(mTopLeft, rect.position);
-	renderer.drawImage(mTopRight, {p2.x, p0.y});
-	renderer.drawImage(mBottomLeft, {p0.x, p3.y});
+	renderer.drawImage(mTopRight, Point{p2.x, p0.y});
+	renderer.drawImage(mBottomLeft, Point{p0.x, p3.y});
 	renderer.drawImage(mBottomRight, p4);
 }

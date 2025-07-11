@@ -252,6 +252,13 @@ stale-objs:
 	@$(MAKE) -n | grep -oE '[^ ]+\.o$$' || true
 
 
+## Compile performance ##
+
+.PHONY: flame-charts
+flame-charts:
+	$(MAKE) all CXX=clang++ CXXFLAGS_EXTRA="-ftime-trace"
+
+
 ### Linux development package dependencies ###
 # This section contains install rules to aid setup and compiling on Linux.
 # Only a few common Linux distributions are covered. Other distributions

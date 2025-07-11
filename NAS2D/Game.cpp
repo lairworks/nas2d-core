@@ -88,6 +88,10 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	Configuration& configuration = Utility<Configuration>::init(defaultConfig());
 	configuration.load(configPath);
 
+	Utility<EventHandler>::get();
+
+	Utility<Renderer>::init<RendererOpenGL>(title);
+
 	try
 	{
 		Utility<Mixer>::init<MixerSDL>();
@@ -96,10 +100,6 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	{
 		Utility<Mixer>::init<MixerNull>();
 	}
-
-	Utility<EventHandler>::get();
-
-	Utility<Renderer>::init<RendererOpenGL>(title);
 }
 
 
@@ -109,9 +109,9 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 Game::~Game()
 {
 	// Destroy all of our various components in reverse order.
+	Utility<Mixer>::clear();
 	Utility<Renderer>::clear();
 	Utility<EventHandler>::clear();
-	Utility<Mixer>::clear();
 	Utility<Configuration>::clear();
 	Utility<Filesystem>::clear();
 
@@ -164,4 +164,34 @@ void Game::go(State* state)
 	{
 		Utility<Renderer>::get().update();
 	}
+}
+
+
+Filesystem& Game::filesystem()
+{
+	return Utility<Filesystem>::get();
+}
+
+
+Configuration& Game::configuration()
+{
+	return Utility<Configuration>::get();
+}
+
+
+EventHandler& Game::eventHandler()
+{
+	return Utility<EventHandler>::get();
+}
+
+
+Renderer& Game::renderer()
+{
+	return Utility<Renderer>::get();
+}
+
+
+Mixer& Game::mixer()
+{
+	return Utility<Mixer>::get();
 }

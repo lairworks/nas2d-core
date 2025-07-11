@@ -240,6 +240,18 @@ format:
 	clang-format --version
 	find NAS2D/ -not -path 'NAS2D/Xml/*' -regex '.*\.\(cpp\|h\)' | xargs clang-format -i
 
+
+## Debugging ##
+
+.PHONY: stale
+stale:
+	@$(MAKE) -n | grep -oE '[^ ]+\.cpp$$' || true
+
+.PHONY: stale-objs
+stale-objs:
+	@$(MAKE) -n | grep -oE '[^ ]+\.o$$' || true
+
+
 ### Linux development package dependencies ###
 # This section contains install rules to aid setup and compiling on Linux.
 # Only a few common Linux distributions are covered. Other distributions

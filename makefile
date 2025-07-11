@@ -225,7 +225,7 @@ show-warnings:
 	@$(MAKE) clean-all > /dev/null
 
 .PHONY: lint
-lint: cppcheck cppclean
+lint: cppcheck cppclean cppinclude
 
 .PHONY: cppcheck
 cppcheck:
@@ -234,6 +234,10 @@ cppcheck:
 .PHONY: cppclean
 cppclean:
 	cppclean "$(SRCDIR)" --exclude="NAS2D.h" --exclude="Xml"
+
+.PHONY: cppinclude
+cppinclude:
+	cppinclude
 
 .PHONY: format
 format:

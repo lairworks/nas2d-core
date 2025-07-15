@@ -64,7 +64,7 @@ namespace NAS2D
 
 	Xml::XmlElement* dictionaryToAttributes(const std::string& tagName, const Dictionary& dictionary)
 	{
-		auto* element = new Xml::XmlElement(tagName.c_str());
+		auto* element = new Xml::XmlElement(tagName);
 		for (const auto& key : dictionary.keys())
 		{
 			element->attribute(key, dictionary.get(key));

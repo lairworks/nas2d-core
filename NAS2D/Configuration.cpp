@@ -79,7 +79,7 @@ void Configuration::load(const std::string& filePath)
 		{
 			// Read in the Config File.
 			auto xmlData = filesystem.readFile(filePath);
-			loadData(xmlData.c_str());
+			loadData(xmlData);
 		}
 		catch (const std::runtime_error& e)
 		{

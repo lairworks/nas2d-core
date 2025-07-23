@@ -53,3 +53,13 @@ Color Color::alphaFade(uint8_t newAlpha) const
 {
 	return {red, green, blue, newAlpha};
 }
+
+Color Color::alphaBlend(Color background) const
+{
+	return {
+		static_cast<uint8_t>((red * alpha + background.red * (255 - alpha)) / 255),
+		static_cast<uint8_t>((green * alpha + background.green * (255 - alpha)) / 255),
+		static_cast<uint8_t>((blue * alpha + background.blue * (255 - alpha)) / 255),
+		static_cast<uint8_t>((alpha * alpha + background.alpha * (255 - alpha)) / 255),
+	};
+}

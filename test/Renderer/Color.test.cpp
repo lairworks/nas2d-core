@@ -32,3 +32,14 @@ TEST(Color, alphaFade) {
 	EXPECT_EQ((NAS2D::Color{0, 0, 255, 128}), NAS2D::Color::Blue.alphaFade(128));
 	EXPECT_EQ((NAS2D::Color{0, 0, 255, 0}), NAS2D::Color::Blue.alphaFade(0));
 }
+
+TEST(Color, alphaBlend) {
+	EXPECT_EQ((NAS2D::Color{0, 0, 0, 255}), (NAS2D::Color{0, 0, 0, 255}.alphaBlend({255, 255, 255, 255})));
+	EXPECT_EQ((NAS2D::Color{255, 255, 255, 255}), (NAS2D::Color{255, 255, 255, 255}.alphaBlend({255, 255, 255, 255})));
+
+	EXPECT_EQ((NAS2D::Color{255, 255, 255, 255}), (NAS2D::Color{0, 0, 0, 0}.alphaBlend({255, 255, 255, 255})));
+	EXPECT_EQ((NAS2D::Color{255, 255, 255, 255}), (NAS2D::Color{255, 255, 255, 0}.alphaBlend({255, 255, 255, 255})));
+	EXPECT_EQ((NAS2D::Color{0, 0, 0, 255}), (NAS2D::Color{255, 255, 255, 0}.alphaBlend({0, 0, 0, 255})));
+
+	EXPECT_EQ((NAS2D::Color{128, 127, 0, 191}), (NAS2D::Color{255, 0, 0, 128}.alphaBlend({0, 255, 0, 255})));
+}

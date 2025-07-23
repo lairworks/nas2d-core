@@ -27,6 +27,7 @@ namespace NAS2D
 		bool operator!=(Color other) const;
 
 		Color alphaFade(uint8_t newAlpha) const;
+		Color alphaBlend(Color background) const;
 
 
 		static const Color Black;

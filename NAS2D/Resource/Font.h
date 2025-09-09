@@ -12,9 +12,9 @@
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 
+#include <string_view>
 #include <string>
 #include <vector>
-#include <string_view>
 
 
 namespace NAS2D

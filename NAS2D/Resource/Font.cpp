@@ -170,6 +170,25 @@ int Font::width(char character) const
 }
 
 
+std::size_t Font::widthBoundedSubstringLength(std::string_view string, int widthBound) const
+{
+	const auto& gml = mFontInfo.metrics;
+	if (gml.empty()) { return 0; }
+
+	std::size_t substringLength = 0;
+	int currentStringWidth = 0;
+	for (const auto character : string)
+	{
+		const auto glyphIndex = std::clamp<std::size_t>(static_cast<uint8_t>(character), 0, 255);
+		const auto characterWidth = gml[glyphIndex].advance;
+		currentStringWidth += characterWidth;
+		if (currentStringWidth > widthBound) { return substringLength; }
+		++substringLength;
+	}
+	return substringLength;
+}
+
+
 /**
  * Gets the height in pixels of the Font.
  */

@@ -12,9 +12,10 @@
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 
+#include <cstddef>
+#include <string_view>
 #include <string>
 #include <vector>
-#include <string_view>
 
 
 namespace NAS2D
@@ -71,6 +72,7 @@ namespace NAS2D
 		Vector<int> size(std::string_view string) const;
 		int width(std::string_view string) const;
 		int width(char character) const;
+		std::size_t widthBoundedSubstringLength(std::string_view string, int widthBound) const;
 		int height() const;
 		int ascent() const;
 		unsigned int ptSize() const;

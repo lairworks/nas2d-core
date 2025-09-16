@@ -339,7 +339,8 @@ void RendererOpenGL::drawLine(Point<float> startPosition, Point<float> endPositi
 	glDisable(GL_TEXTURE_2D);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	line(startPosition, endPosition, static_cast<float>(lineWidth), color);
+	const auto offset = Vector<float>{0.5, 0.5};
+	line(startPosition + offset, endPosition + offset, static_cast<float>(lineWidth), color);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnable(GL_TEXTURE_2D);

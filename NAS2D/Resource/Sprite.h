@@ -67,7 +67,7 @@ namespace NAS2D
 
 	private:
 		const AnimationSet& mAnimationSet;
-		const std::vector<AnimationSet::AnimationFrame>* mCurrentAction{nullptr};
+		const std::vector<AnimationFrame>* mCurrentAction{nullptr};
 		std::size_t mCurrentFrame{0};
 
 		bool mPaused{false};

@@ -26,19 +26,20 @@ namespace NAS2D
 	class ResourceCache;
 
 
+	struct AnimationFrame
+	{
+		const Image& image;
+		Rectangle<int> bounds;
+		Vector<int> anchorOffset;
+		Duration frameDelay;
+
+		bool isStopFrame() const;
+	};
+
+
 	class AnimationSet
 	{
 	public:
-		struct AnimationFrame
-		{
-			const Image& image;
-			Rectangle<int> bounds;
-			Vector<int> anchorOffset;
-			Duration frameDelay;
-
-			bool isStopFrame() const;
-		};
-
 		using ImageSheets = std::map<std::string, std::string>;
 		using Actions = std::map<std::string, std::vector<AnimationFrame>>;
 

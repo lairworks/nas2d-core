@@ -24,8 +24,8 @@ namespace {
 		static constexpr NAS2D::Vector anchorOffset{0, 0};
 		uint32_t imageBuffer[imageSize.x * imageSize.y];
 		NAS2D::Image image{&imageBuffer, 4, imageSize};
-		NAS2D::AnimationSet::AnimationFrame frame{image, imageRect, anchorOffset, {2}};
-		NAS2D::AnimationSet::AnimationFrame frameStop{image, imageRect, anchorOffset, {0}};
+		NAS2D::AnimationFrame frame{image, imageRect, anchorOffset, {2}};
+		NAS2D::AnimationFrame frameStop{image, imageRect, anchorOffset, {0}};
 		NAS2D::AnimationSet testAnimationSet{{}, {{"defaultAction", {frame}}, {"frameStopAction", {frameStop}}}};
 		SpriteDerived sprite{testAnimationSet, "defaultAction"};
 	};

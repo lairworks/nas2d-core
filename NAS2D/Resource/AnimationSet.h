@@ -29,7 +29,7 @@ namespace NAS2D
 	class AnimationSet
 	{
 	public:
-		struct Frame
+		struct AnimationFrame
 		{
 			const Image& image;
 			Rectangle<int> bounds;
@@ -40,7 +40,7 @@ namespace NAS2D
 		};
 
 		using ImageSheets = std::map<std::string, std::string>;
-		using Actions = std::map<std::string, std::vector<Frame>>;
+		using Actions = std::map<std::string, std::vector<AnimationFrame>>;
 
 
 		explicit AnimationSet(std::string fileName);
@@ -48,7 +48,7 @@ namespace NAS2D
 		AnimationSet(ImageSheets imageSheets, Actions actions);
 
 		std::vector<std::string> actionNames() const;
-		const std::vector<Frame>& frames(const std::string& actionName) const;
+		const std::vector<AnimationFrame>& frames(const std::string& actionName) const;
 
 	private:
 		ImageSheets mImageSheets;

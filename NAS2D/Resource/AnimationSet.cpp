@@ -47,11 +47,11 @@ namespace
 	std::tuple<ImageSheets, Actions> processXml(const std::string& filePath, ImageCache& imageCache);
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationSet::Frame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationSet::AnimationFrame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
-bool AnimationSet::Frame::isStopFrame() const
+bool AnimationSet::AnimationFrame::isStopFrame() const
 {
 	// We want to redefine the sentinel value for stop frames from -1 to 0
 	// Neither value makes sense as a delay, though the field is unsigned
@@ -90,7 +90,7 @@ std::vector<std::string> AnimationSet::actionNames() const
 }
 
 
-const std::vector<AnimationSet::Frame>& AnimationSet::frames(const std::string& actionName) const
+const std::vector<AnimationSet::AnimationFrame>& AnimationSet::frames(const std::string& actionName) const
 {
 	if (mActions.find(actionName) == mActions.end())
 	{
@@ -234,9 +234,9 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationSet::Frame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationSet::AnimationFrame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
-		std::vector<AnimationSet::Frame> frameList;
+		std::vector<AnimationSet::AnimationFrame> frameList;
 
 		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))
 		{
@@ -274,7 +274,7 @@ namespace
 			}
 
 			const auto anchorOffset = Vector{anchorx, anchory};
-			frameList.push_back(AnimationSet::Frame{image, frameRect, anchorOffset, {delay}});
+			frameList.push_back(AnimationSet::AnimationFrame{image, frameRect, anchorOffset, {delay}});
 		}
 
 		return frameList;

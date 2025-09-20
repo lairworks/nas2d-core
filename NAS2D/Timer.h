@@ -32,7 +32,7 @@ namespace NAS2D
 	 *
 	 * A static method is provided for the raw time in ticks.
 	 *
-	 * With the current implementation, raw ticks are since app startup, and wrap back to 0 after about 49 days.
+	 * Raw ticks are since app startup.
 	 */
 	class Timer
 	{

@@ -163,6 +163,7 @@
     <ClCompile Include="Configuration.test.cpp" />
     <ClCompile Include="ContainerUtils.test.cpp" />
     <ClCompile Include="Dictionary.test.cpp" />
+    <ClCompile Include="Duration.test.cpp" />
     <ClCompile Include="Filesystem.test.cpp" />
     <ClCompile Include="FilesystemPath.test.cpp" />
     <ClCompile Include="FilesystemPathParents.test.cpp" />

@@ -183,9 +183,9 @@ Color Sprite::color() const
 }
 
 
-unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
+Duration Sprite::advanceByTimeDelta(Duration timeDelta)
 {
-	unsigned int accumulator = 0;
+	Duration accumulator{0};
 
 	if (mPaused)
 	{

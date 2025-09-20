@@ -11,6 +11,7 @@
 #pragma once
 
 #include "AnimationSet.h"
+#include "../Duration.h"
 #include "../Timer.h"
 #include "../Renderer/Color.h"
 
@@ -62,7 +63,7 @@ namespace NAS2D
 		Color color() const;
 
 	protected:
-		unsigned int advanceByTimeDelta(unsigned int timeDelta);
+		Duration advanceByTimeDelta(Duration timeDelta);
 
 	private:
 		const AnimationSet& mAnimationSet;

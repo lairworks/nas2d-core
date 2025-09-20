@@ -11,6 +11,7 @@
 #pragma once
 
 #include "Image.h"
+#include "../Duration.h"
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 
@@ -33,7 +34,7 @@ namespace NAS2D
 			const Image& image;
 			Rectangle<int> bounds;
 			Vector<int> anchorOffset;
-			unsigned int frameDelay;
+			Duration frameDelay;
 
 			bool isStopFrame() const;
 		};

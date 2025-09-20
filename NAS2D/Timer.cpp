@@ -10,6 +10,8 @@
 
 #include "Timer.h"
 
+#include "Duration.h"
+
 #include <SDL2/SDL.h>
 
 
@@ -32,13 +34,13 @@ Timer::Timer(uint32_t startTick) :
 {}
 
 
-uint32_t Timer::elapsedTicks() const
+Duration Timer::elapsedTicks() const
 {
-	return tick() - mStartTick;
+	return {tick() - mStartTick};
 }
 
 
-uint32_t Timer::delta()
+Duration Timer::delta()
 {
 	const auto elapsed = elapsedTicks();
 	adjustStartTick(elapsed);
@@ -46,9 +48,9 @@ uint32_t Timer::delta()
 }
 
 
-void Timer::adjustStartTick(uint32_t ticksForward)
+void Timer::adjustStartTick(Duration ticksForward)
 {
-	mStartTick += ticksForward;
+	mStartTick += ticksForward.milliseconds;
 }
 
 

@@ -1,5 +1,7 @@
 #include "NAS2D/Resource/Sprite.h"
 
+#include "NAS2D/Duration.h"
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -22,8 +24,8 @@ namespace {
 		static constexpr NAS2D::Vector anchorOffset{0, 0};
 		uint32_t imageBuffer[imageSize.x * imageSize.y];
 		NAS2D::Image image{&imageBuffer, 4, imageSize};
-		NAS2D::AnimationSet::Frame frame{image, imageRect, anchorOffset, 2};
-		NAS2D::AnimationSet::Frame frameStop{image, imageRect, anchorOffset, 0};
+		NAS2D::AnimationSet::Frame frame{image, imageRect, anchorOffset, {2}};
+		NAS2D::AnimationSet::Frame frameStop{image, imageRect, anchorOffset, {0}};
 		NAS2D::AnimationSet testAnimationSet{{}, {{"defaultAction", {frame}}, {"frameStopAction", {frameStop}}}};
 		SpriteDerived sprite{testAnimationSet, "defaultAction"};
 	};
@@ -44,9 +46,9 @@ TEST_F(Sprite, isPausedStopAnimation) {
 }
 
 TEST_F(Sprite, advanceByTimeDelta) {
-	EXPECT_EQ(0u, sprite.advanceByTimeDelta(0u));
-	EXPECT_EQ(0u, sprite.advanceByTimeDelta(1u));
-	EXPECT_EQ(2u, sprite.advanceByTimeDelta(2u));
-	EXPECT_EQ(2u, sprite.advanceByTimeDelta(3u));
-	EXPECT_EQ(4u, sprite.advanceByTimeDelta(4u));
+	EXPECT_EQ(NAS2D::Duration{0u}, sprite.advanceByTimeDelta(NAS2D::Duration{0u}));
+	EXPECT_EQ(NAS2D::Duration{0u}, sprite.advanceByTimeDelta(NAS2D::Duration{1u}));
+	EXPECT_EQ(NAS2D::Duration{2u}, sprite.advanceByTimeDelta(NAS2D::Duration{2u}));
+	EXPECT_EQ(NAS2D::Duration{2u}, sprite.advanceByTimeDelta(NAS2D::Duration{3u}));
+	EXPECT_EQ(NAS2D::Duration{4u}, sprite.advanceByTimeDelta(NAS2D::Duration{4u}));
 }

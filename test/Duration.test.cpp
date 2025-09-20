@@ -66,3 +66,10 @@ TEST(Duration, OperatorModulo) {
 	EXPECT_EQ(NAS2D::Duration{1}, NAS2D::Duration{1} % 2);
 	EXPECT_EQ(NAS2D::Duration{0}, NAS2D::Duration{2} % 2);
 }
+
+TEST(Duration, OperatorDivideDuration) {
+	EXPECT_EQ(0u, NAS2D::Duration{0} / NAS2D::Duration{1});
+	EXPECT_EQ(1u, NAS2D::Duration{1} / NAS2D::Duration{1});
+	EXPECT_EQ(2u, NAS2D::Duration{2} / NAS2D::Duration{1});
+	EXPECT_EQ(2u, NAS2D::Duration{4} / NAS2D::Duration{2});
+}

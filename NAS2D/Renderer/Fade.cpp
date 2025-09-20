@@ -77,12 +77,12 @@ void Fade::update()
 		return;
 	}
 
-	const auto currentMilliseconds = std::min(mFadeTimer.elapsedTicks().milliseconds, mDuration.milliseconds);
+	const auto currentMilliseconds = std::min(mFadeTimer.elapsedTicks(), mDuration);
 	mFadeColor.alpha = (mDirection == FadeDirection::In) ?
-		scaleLinear(currentMilliseconds, uint32_t{0}, mDuration.milliseconds, alphaOpaque, alphaTransparent) :
-		scaleLinear(currentMilliseconds, uint32_t{0}, mDuration.milliseconds, alphaTransparent, alphaOpaque);
+		scaleLinear(currentMilliseconds, Duration{0}, mDuration, alphaOpaque, alphaTransparent) :
+		scaleLinear(currentMilliseconds, Duration{0}, mDuration, alphaTransparent, alphaOpaque);
 
-	if (currentMilliseconds >= mDuration.milliseconds)
+	if (currentMilliseconds >= mDuration)
 	{
 		mDirection = FadeDirection::None;
 		if (!mOnFadeComplete.empty())

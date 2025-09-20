@@ -123,7 +123,7 @@ void Sprite::setFrame(std::size_t frameIndex)
 
 void Sprite::update()
 {
-	mTimer.adjustStartTick(advanceByTimeDelta(mTimer.elapsedTicks()));
+	mTimer.adjustStartTick(advanceByTimeDelta(Duration{mTimer.elapsedTicks()}).milliseconds);
 }
 
 
@@ -183,9 +183,9 @@ Color Sprite::color() const
 }
 
 
-unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
+Duration Sprite::advanceByTimeDelta(Duration timeDelta)
 {
-	unsigned int accumulator{0};
+	Duration accumulator{0};
 
 	if (mPaused)
 	{
@@ -203,12 +203,12 @@ unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
 			return accumulator;
 		}
 
-		if (timeDelta - accumulator < frame.frameDelay.milliseconds)
+		if (timeDelta - accumulator < frame.frameDelay)
 		{
 			return accumulator;
 		}
 
-		accumulator += frame.frameDelay.milliseconds;
+		accumulator += frame.frameDelay;
 		mCurrentFrame++;
 		if (mCurrentFrame >= frames.size())
 		{

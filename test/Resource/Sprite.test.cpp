@@ -46,9 +46,9 @@ TEST_F(Sprite, isPausedStopAnimation) {
 }
 
 TEST_F(Sprite, advanceByTimeDelta) {
-	EXPECT_EQ(0u, sprite.advanceByTimeDelta(0u));
-	EXPECT_EQ(0u, sprite.advanceByTimeDelta(1u));
-	EXPECT_EQ(2u, sprite.advanceByTimeDelta(2u));
-	EXPECT_EQ(2u, sprite.advanceByTimeDelta(3u));
-	EXPECT_EQ(4u, sprite.advanceByTimeDelta(4u));
+	EXPECT_EQ(NAS2D::Duration{0u}, sprite.advanceByTimeDelta(NAS2D::Duration{0u}));
+	EXPECT_EQ(NAS2D::Duration{0u}, sprite.advanceByTimeDelta(NAS2D::Duration{1u}));
+	EXPECT_EQ(NAS2D::Duration{2u}, sprite.advanceByTimeDelta(NAS2D::Duration{2u}));
+	EXPECT_EQ(NAS2D::Duration{2u}, sprite.advanceByTimeDelta(NAS2D::Duration{3u}));
+	EXPECT_EQ(NAS2D::Duration{4u}, sprite.advanceByTimeDelta(NAS2D::Duration{4u}));
 }

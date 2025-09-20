@@ -31,6 +31,20 @@ TEST(Duration, OperatorMinus) {
 	EXPECT_EQ(NAS2D::Duration{1}, NAS2D::Duration{2} - NAS2D::Duration{1});
 }
 
+TEST(Duration, OperatorPlusEqual) {
+	auto duration1 = NAS2D::Duration{1};
+	const auto duration2 = NAS2D::Duration{2};
+	EXPECT_EQ(NAS2D::Duration{3}, duration1 += duration2);
+	EXPECT_EQ(NAS2D::Duration{3}, duration1);
+}
+
+TEST(Duration, OperatorMinusEqual) {
+	auto duration1 = NAS2D::Duration{3};
+	const auto duration2 = NAS2D::Duration{1};
+	EXPECT_EQ(NAS2D::Duration{2}, duration1 -= duration2);
+	EXPECT_EQ(NAS2D::Duration{2}, duration1);
+}
+
 TEST(Duration, OperatorMultiply) {
 	EXPECT_EQ(NAS2D::Duration{0}, NAS2D::Duration{0} * 0);
 	EXPECT_EQ(NAS2D::Duration{0}, NAS2D::Duration{1} * 0);

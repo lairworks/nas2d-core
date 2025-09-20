@@ -15,6 +15,7 @@
 #include "ResourceCache.h"
 #include "../Math/Angle.h"
 #include "../Renderer/Renderer.h"
+#include "../Duration.h"
 #include "../Utility.h"
 
 #include <utility>

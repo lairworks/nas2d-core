@@ -20,7 +20,7 @@ using namespace NAS2D;
 
 uint64_t Timer::tick()
 {
-	return SDL_GetTicks();
+	return SDL_GetTicks64();
 }
 
 

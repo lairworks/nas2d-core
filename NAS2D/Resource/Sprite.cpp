@@ -123,7 +123,7 @@ void Sprite::setFrame(std::size_t frameIndex)
 
 void Sprite::update()
 {
-	mTimer.adjustStartTick(advanceByTimeDelta(Duration{mTimer.elapsedTicks()}).milliseconds);
+	mTimer.adjustStartTick(advanceByTimeDelta(mTimer.elapsedTicks()));
 }
 
 

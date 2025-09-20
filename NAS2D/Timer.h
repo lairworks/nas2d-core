@@ -15,6 +15,8 @@
 
 namespace NAS2D
 {
+	struct Duration;
+
 
 	/**
 	 * A timing class that provides high-resolution, millisecond-precision timing services.
@@ -43,9 +45,9 @@ namespace NAS2D
 		Timer(const Timer&) = default;
 		Timer& operator=(const Timer&) = default;
 
-		uint32_t elapsedTicks() const;
-		uint32_t delta();
-		void adjustStartTick(uint32_t ticksForward);
+		Duration elapsedTicks() const;
+		Duration delta();
+		void adjustStartTick(Duration ticksForward);
 		void reset();
 
 	private:

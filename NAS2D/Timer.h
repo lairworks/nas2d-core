@@ -37,10 +37,10 @@ namespace NAS2D
 	class Timer
 	{
 	public:
-		static uint32_t tick();
+		static uint64_t tick();
 
 		Timer();
-		Timer(uint32_t startTick);
+		Timer(uint64_t startTick);
 
 		Timer(const Timer&) = default;
 		Timer& operator=(const Timer&) = default;
@@ -51,7 +51,7 @@ namespace NAS2D
 		void reset();
 
 	private:
-		uint32_t mStartTick;
+		uint64_t mStartTick;
 	};
 
 } // namespace

@@ -7,7 +7,7 @@ namespace NAS2D
 {
 	struct Duration
 	{
-		uint32_t milliseconds;
+		uint64_t milliseconds;
 	};
 
 
@@ -25,10 +25,10 @@ namespace NAS2D
 	inline Duration operator+(Duration duration1, Duration duration2) { return Duration{duration1.milliseconds + duration2.milliseconds}; }
 	inline Duration operator-(Duration duration1, Duration duration2) { return Duration{duration1.milliseconds - duration2.milliseconds}; }
 
-	inline Duration operator*(Duration duration, uint32_t scalar) { return Duration{duration.milliseconds * scalar}; }
+	inline Duration operator*(Duration duration, uint64_t scalar) { return Duration{duration.milliseconds * scalar}; }
 
-	inline Duration operator/(Duration duration, uint32_t scalar) { return Duration{duration.milliseconds / scalar}; }
-	inline uint32_t operator/(Duration duration, Duration duration2) { return duration.milliseconds / duration2.milliseconds; }
+	inline Duration operator/(Duration duration, uint64_t scalar) { return Duration{duration.milliseconds / scalar}; }
+	inline uint64_t operator/(Duration duration, Duration duration2) { return duration.milliseconds / duration2.milliseconds; }
 
 	inline Duration operator%(Duration duration, Duration duration2) { return Duration{duration.milliseconds % duration2.milliseconds}; }
 }

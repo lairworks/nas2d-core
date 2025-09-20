@@ -16,7 +16,7 @@
 using namespace NAS2D;
 
 
-unsigned int Timer::tick()
+uint32_t Timer::tick()
 {
 	return SDL_GetTicks();
 }
@@ -27,18 +27,18 @@ Timer::Timer() :
 {}
 
 
-Timer::Timer(unsigned int startTick) :
+Timer::Timer(uint32_t startTick) :
 	mStartTick{startTick}
 {}
 
 
-unsigned int Timer::elapsedTicks() const
+uint32_t Timer::elapsedTicks() const
 {
 	return tick() - mStartTick;
 }
 
 
-unsigned int Timer::delta()
+uint32_t Timer::delta()
 {
 	const auto elapsed = elapsedTicks();
 	adjustStartTick(elapsed);
@@ -46,7 +46,7 @@ unsigned int Timer::delta()
 }
 
 
-void Timer::adjustStartTick(unsigned int ticksForward)
+void Timer::adjustStartTick(uint32_t ticksForward)
 {
 	mStartTick += ticksForward;
 }

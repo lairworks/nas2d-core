@@ -10,6 +10,7 @@
 
 #include "Sprite.h"
 
+#include "AnimationFrame.h"
 #include "ResourceCache.h"
 #include "../Math/Angle.h"
 #include "../Renderer/Renderer.h"

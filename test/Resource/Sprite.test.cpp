@@ -1,6 +1,7 @@
 #include "NAS2D/Resource/Sprite.h"
 
 #include "NAS2D/Duration.h"
+#include "NAS2D/Resource/AnimationFrame.h"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>

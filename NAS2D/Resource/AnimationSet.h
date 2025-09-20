@@ -11,7 +11,6 @@
 #pragma once
 
 #include "Image.h"
-#include "AnimationFrame.h"
 #include "../Duration.h"
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
@@ -23,6 +22,7 @@
 
 namespace NAS2D
 {
+	struct AnimationFrame;
 	template <typename Resource, typename... Params> class ResourceCache;
 
 

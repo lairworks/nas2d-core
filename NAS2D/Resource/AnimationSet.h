@@ -11,6 +11,7 @@
 #pragma once
 
 #include "Image.h"
+#include "AnimationFrame.h"
 #include "../Duration.h"
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
@@ -24,17 +25,6 @@ namespace NAS2D
 {
 	template <typename Resource, typename... Params>
 	class ResourceCache;
-
-
-	struct AnimationFrame
-	{
-		const Image& image;
-		Rectangle<int> bounds;
-		Vector<int> anchorOffset;
-		Duration frameDelay;
-
-		bool isStopFrame() const;
-	};
 
 
 	class AnimationSet

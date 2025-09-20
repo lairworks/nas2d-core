@@ -19,6 +19,9 @@ namespace NAS2D
 	inline bool operator<=(Duration duration1, Duration duration2) { return duration1.milliseconds <= duration2.milliseconds; }
 	inline bool operator>=(Duration duration1, Duration duration2) { return duration1.milliseconds >= duration2.milliseconds; }
 
+	inline Duration& operator+=(Duration& duration1, Duration duration2) { duration1.milliseconds += duration2.milliseconds; return duration1; }
+	inline Duration& operator-=(Duration& duration1, Duration duration2) { duration1.milliseconds -= duration2.milliseconds; return duration1; }
+
 	inline Duration operator+(Duration duration1, Duration duration2) { return Duration{duration1.milliseconds + duration2.milliseconds}; }
 	inline Duration operator-(Duration duration1, Duration duration2) { return Duration{duration1.milliseconds - duration2.milliseconds}; }
 

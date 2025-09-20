@@ -12,8 +12,6 @@
 
 #include "../Timer.h"
 #include "../Renderer/Color.h"
-#include "../Math/Point.h"
-#include "../Math/Vector.h"
 
 #include <vector>
 #include <string>
@@ -25,6 +23,8 @@ namespace NAS2D
 	struct AnimationFrame;
 	class AnimationSet;
 	class Angle;
+	template <typename BaseType> struct Point;
+	template <typename BaseType> struct Vector;
 
 
 	/**

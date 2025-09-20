@@ -14,6 +14,8 @@
 #include "AnimationSet.h"
 #include "ResourceCache.h"
 #include "../Math/Angle.h"
+#include "../Math/Point.h"
+#include "../Math/Vector.h"
 #include "../Renderer/Renderer.h"
 #include "../Duration.h"
 #include "../Utility.h"

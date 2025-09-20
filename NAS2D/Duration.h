@@ -3,7 +3,10 @@
 #include <cstdint>
 
 
-struct Duration
+namespace NAS2D
 {
-	uint32_t milliseconds;
-};
+	struct Duration
+	{
+		uint32_t milliseconds;
+	};
+}

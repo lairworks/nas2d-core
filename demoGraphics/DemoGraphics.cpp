@@ -115,7 +115,7 @@ NAS2D::State* DemoGraphics::update()
 
 	renderer.drawImage(mSlicedGear, {165, 30});
 
-	const auto angle = NAS2D::Angle::degrees(static_cast<float>(mTimer.tick() * 360 / 10 / 1000));
+	const auto angle = NAS2D::Angle::degrees(static_cast<float>(mTimer.elapsedTicks() * 360 / 10 / 1000));
 	renderer.drawImageRotated(mResizedGear, {198, 30}, angle);
 	renderer.drawImageRotated(mGear, {158, 60}, angle);
 	renderer.drawImageRotated(mGear, {219, 60}, -angle);

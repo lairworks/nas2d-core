@@ -10,9 +10,6 @@
 
 #pragma once
 
-#include "../Math/Vector.h"
-#include "../Math/Rectangle.h"
-
 #include <map>
 #include <vector>
 #include <string>
@@ -23,6 +20,8 @@ namespace NAS2D
 	struct Duration;
 	struct AnimationFrame;
 	class Image;
+	template <typename BaseType> struct Vector;
+	template <typename BaseType> struct Rectangle;
 	template <typename Resource, typename... Params> class ResourceCache;
 
 

@@ -21,6 +21,8 @@
 #include "../ParserHelper.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
+#include "../Math/Vector.h"
+#include "../Math/Rectangle.h"
 
 #include <tuple>
 #include <utility>

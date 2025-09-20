@@ -203,12 +203,12 @@ unsigned int Sprite::advanceByTimeDelta(unsigned int timeDelta)
 			return accumulator;
 		}
 
-		if (timeDelta - accumulator < frame.frameDelay)
+		if (timeDelta - accumulator < frame.frameDelay.milliseconds)
 		{
 			return accumulator;
 		}
 
-		accumulator += frame.frameDelay;
+		accumulator += frame.frameDelay.milliseconds;
 		mCurrentFrame++;
 		if (mCurrentFrame >= frames.size())
 		{

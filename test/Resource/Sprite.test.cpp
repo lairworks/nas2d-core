@@ -1,5 +1,7 @@
 #include "NAS2D/Resource/Sprite.h"
 
+#include "NAS2D/Duration.h"
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -22,8 +24,8 @@ namespace {
 		static constexpr NAS2D::Vector anchorOffset{0, 0};
 		uint32_t imageBuffer[imageSize.x * imageSize.y];
 		NAS2D::Image image{&imageBuffer, 4, imageSize};
-		NAS2D::AnimationSet::Frame frame{image, imageRect, anchorOffset, 2};
-		NAS2D::AnimationSet::Frame frameStop{image, imageRect, anchorOffset, 0};
+		NAS2D::AnimationSet::Frame frame{image, imageRect, anchorOffset, {2}};
+		NAS2D::AnimationSet::Frame frameStop{image, imageRect, anchorOffset, {0}};
 		NAS2D::AnimationSet testAnimationSet{{}, {{"defaultAction", {frame}}, {"frameStopAction", {frameStop}}}};
 		SpriteDerived sprite{testAnimationSet, "defaultAction"};
 	};

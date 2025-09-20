@@ -57,7 +57,7 @@ bool AnimationSet::Frame::isStopFrame() const
 	// Neither value makes sense as a delay, though the field is unsigned
 	// Using 0 would also help simplify some code, so makes the most sense
 	// Temporarily handle -1 for backwards compatibility during transition
-	return (frameDelay == 0) || (frameDelay == unsigned(-1));
+	return (frameDelay.milliseconds == 0) || (frameDelay.milliseconds == unsigned(-1));
 }
 
 
@@ -274,7 +274,7 @@ namespace
 			}
 
 			const auto anchorOffset = Vector{anchorx, anchory};
-			frameList.push_back(AnimationSet::Frame{image, frameRect, anchorOffset, delay});
+			frameList.push_back(AnimationSet::Frame{image, frameRect, anchorOffset, {delay}});
 		}
 
 		return frameList;

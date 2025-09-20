@@ -30,5 +30,5 @@ namespace NAS2D
 	inline Duration operator/(Duration duration, uint32_t scalar) { return Duration{duration.milliseconds / scalar}; }
 	inline uint32_t operator/(Duration duration, Duration duration2) { return duration.milliseconds / duration2.milliseconds; }
 
-	inline Duration operator%(Duration duration, uint32_t scalar) { return Duration{duration.milliseconds % scalar}; }
+	inline Duration operator%(Duration duration, Duration duration2) { return Duration{duration.milliseconds % duration2.milliseconds}; }
 }

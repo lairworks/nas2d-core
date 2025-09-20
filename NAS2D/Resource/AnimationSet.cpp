@@ -12,6 +12,7 @@
 #include "AnimationSet.h"
 
 #include "AnimationFrame.h"
+#include "Image.h"
 #include "ResourceCache.h"
 #include "../Utility.h"
 #include "../Filesystem.h"

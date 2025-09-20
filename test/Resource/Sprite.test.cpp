@@ -2,6 +2,7 @@
 
 #include "NAS2D/Duration.h"
 #include "NAS2D/Resource/AnimationFrame.h"
+#include "NAS2D/Resource/AnimationSet.h"
 #include "NAS2D/Resource/Image.h"
 
 #include <gtest/gtest.h>

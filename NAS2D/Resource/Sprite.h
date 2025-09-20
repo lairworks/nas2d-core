@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include "AnimationSet.h"
 #include "../Duration.h"
 #include "../Timer.h"
 #include "../Renderer/Color.h"
@@ -23,6 +22,8 @@
 
 namespace NAS2D
 {
+	struct AnimationFrame;
+	class AnimationSet;
 	class Angle;
 
 

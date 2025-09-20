@@ -14,6 +14,7 @@
 #include "AnimationFrame.h"
 #include "Image.h"
 #include "ResourceCache.h"
+#include "../Duration.h"
 #include "../Utility.h"
 #include "../Filesystem.h"
 #include "../ContainerUtils.h"

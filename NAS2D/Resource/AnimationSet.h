@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include "../Duration.h"
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 
@@ -21,6 +20,7 @@
 
 namespace NAS2D
 {
+	struct Duration;
 	struct AnimationFrame;
 	class Image;
 	template <typename Resource, typename... Params> class ResourceCache;

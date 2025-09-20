@@ -177,6 +177,7 @@
     <ClCompile Include="Renderer\RendererNull.cpp" />
     <ClCompile Include="Renderer\RendererOpenGL.cpp" />
     <ClCompile Include="Renderer\Window.cpp" />
+    <ClCompile Include="Resource\AnimationFrame.cpp" />
     <ClCompile Include="Resource\AnimationSet.cpp" />
     <ClCompile Include="Resource\Font.cpp" />
     <ClCompile Include="Resource\Image.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="Renderer\RendererOpenGL.h" />
     <ClInclude Include="Renderer\Window.h" />
     <ClInclude Include="Resource\ResourceCache.h" />
+    <ClInclude Include="Resource\AnimationFrame.h" />
     <ClInclude Include="Resource\AnimationSet.h" />
     <ClInclude Include="Resource\Font.h" />
     <ClInclude Include="Resource\Image.h" />

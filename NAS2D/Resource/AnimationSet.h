@@ -10,11 +10,6 @@
 
 #pragma once
 
-#include "Image.h"
-#include "../Duration.h"
-#include "../Math/Vector.h"
-#include "../Math/Rectangle.h"
-
 #include <map>
 #include <vector>
 #include <string>
@@ -22,25 +17,19 @@
 
 namespace NAS2D
 {
-	template <typename Resource, typename... Params>
-	class ResourceCache;
+	struct Duration;
+	struct AnimationFrame;
+	class Image;
+	template <typename BaseType> struct Vector;
+	template <typename BaseType> struct Rectangle;
+	template <typename Resource, typename... Params> class ResourceCache;
 
 
 	class AnimationSet
 	{
 	public:
-		struct Frame
-		{
-			const Image& image;
-			Rectangle<int> bounds;
-			Vector<int> anchorOffset;
-			Duration frameDelay;
-
-			bool isStopFrame() const;
-		};
-
 		using ImageSheets = std::map<std::string, std::string>;
-		using Actions = std::map<std::string, std::vector<Frame>>;
+		using Actions = std::map<std::string, std::vector<AnimationFrame>>;
 
 
 		explicit AnimationSet(std::string fileName);
@@ -48,7 +37,7 @@ namespace NAS2D
 		AnimationSet(ImageSheets imageSheets, Actions actions);
 
 		std::vector<std::string> actionNames() const;
-		const std::vector<Frame>& frames(const std::string& actionName) const;
+		const std::vector<AnimationFrame>& frames(const std::string& actionName) const;
 
 	private:
 		ImageSheets mImageSheets;

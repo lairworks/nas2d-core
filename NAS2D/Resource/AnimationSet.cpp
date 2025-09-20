@@ -11,13 +11,18 @@
 
 #include "AnimationSet.h"
 
+#include "AnimationFrame.h"
+#include "Image.h"
 #include "ResourceCache.h"
+#include "../Duration.h"
 #include "../Utility.h"
 #include "../Filesystem.h"
 #include "../ContainerUtils.h"
 #include "../ParserHelper.h"
 #include "../Version.h"
 #include "../Xml/Xml.h"
+#include "../Math/Vector.h"
+#include "../Math/Rectangle.h"
 
 #include <tuple>
 #include <utility>
@@ -47,17 +52,7 @@ namespace
 	std::tuple<ImageSheets, Actions> processXml(const std::string& filePath, ImageCache& imageCache);
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationSet::Frame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-}
-
-
-bool AnimationSet::Frame::isStopFrame() const
-{
-	// We want to redefine the sentinel value for stop frames from -1 to 0
-	// Neither value makes sense as a delay, though the field is unsigned
-	// Using 0 would also help simplify some code, so makes the most sense
-	// Temporarily handle -1 for backwards compatibility during transition
-	return (frameDelay.milliseconds == 0) || (frameDelay.milliseconds == unsigned(-1));
+	std::vector<AnimationFrame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
@@ -90,7 +85,7 @@ std::vector<std::string> AnimationSet::actionNames() const
 }
 
 
-const std::vector<AnimationSet::Frame>& AnimationSet::frames(const std::string& actionName) const
+const std::vector<AnimationFrame>& AnimationSet::frames(const std::string& actionName) const
 {
 	if (mActions.find(actionName) == mActions.end())
 	{
@@ -234,9 +229,9 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationSet::Frame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationFrame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
-		std::vector<AnimationSet::Frame> frameList;
+		std::vector<AnimationFrame> frameList;
 
 		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))
 		{
@@ -274,7 +269,7 @@ namespace
 			}
 
 			const auto anchorOffset = Vector{anchorx, anchory};
-			frameList.push_back(AnimationSet::Frame{image, frameRect, anchorOffset, {delay}});
+			frameList.push_back(AnimationFrame{image, frameRect, anchorOffset, {delay}});
 		}
 
 		return frameList;

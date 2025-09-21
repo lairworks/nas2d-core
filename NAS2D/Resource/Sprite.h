@@ -37,7 +37,6 @@ namespace NAS2D
 	class Sprite
 	{
 	public:
-		Sprite(const std::string& filePath, const std::string& initialAction);
 		Sprite(const AnimationSet& animationSet, const std::string& initialAction);
 		Sprite(const Sprite&) = default;
 		Sprite(Sprite&&) = default;

@@ -29,7 +29,11 @@ using namespace NAS2D;
 
 Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialAction) :
 	mAnimationSet{animationSet},
-	mCurrentAction{&mAnimationSet.frames(initialAction)}
+	mCurrentAction{&mAnimationSet.frames(initialAction)},
+	mCurrentFrame{0},
+	mPaused{false},
+	mTimer{},
+	mTintColor{Color::Normal}
 {
 }
 

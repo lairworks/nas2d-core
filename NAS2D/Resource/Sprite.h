@@ -20,7 +20,6 @@
 namespace NAS2D
 {
 	struct Duration;
-	struct AnimationFrame;
 	class AnimationSequence;
 	class AnimationSet;
 	class Angle;
@@ -70,12 +69,12 @@ namespace NAS2D
 
 	private:
 		const AnimationSet& mAnimationSet;
-		const AnimationSequence* mCurrentAction{nullptr};
-		std::size_t mCurrentFrame{0};
+		const AnimationSequence* mCurrentAction;
+		std::size_t mCurrentFrame;
 
-		bool mPaused{false};
-		Timer mTimer{};
+		bool mPaused;
+		Timer mTimer;
 
-		Color mTintColor{Color::Normal};
+		Color mTintColor;
 	};
 } // namespace

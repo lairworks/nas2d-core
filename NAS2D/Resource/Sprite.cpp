@@ -13,7 +13,6 @@
 #include "AnimationFrame.h"
 #include "AnimationSequence.h"
 #include "AnimationSet.h"
-#include "ResourceCache.h"
 #include "../Math/Angle.h"
 #include "../Math/Point.h"
 #include "../Math/Vector.h"
@@ -26,20 +25,6 @@
 
 
 using namespace NAS2D;
-
-
-namespace
-{
-	using AnimationCache = ResourceCache<AnimationSet, std::string>;
-	AnimationCache animationCache;
-}
-
-
-Sprite::Sprite(const std::string& filePath, const std::string& initialAction) :
-	mAnimationSet{animationCache.load(filePath)},
-	mCurrentAction{&mAnimationSet.frames(initialAction)}
-{
-}
 
 
 Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialAction) :

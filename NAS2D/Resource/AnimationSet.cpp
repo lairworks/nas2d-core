@@ -216,7 +216,7 @@ namespace
 
 			actions[actionName] = processFrames(imageSheets, action, imageCache);
 
-			if (actions[actionName].empty())
+			if (actions.at(actionName).empty())
 			{
 				throw std::runtime_error("Sprite Action contains no valid frames: " + actionName);
 			}

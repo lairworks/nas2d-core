@@ -38,6 +38,12 @@ Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialActio
 }
 
 
+const AnimationSet& Sprite::animationSet() const
+{
+	return mAnimationSet;
+}
+
+
 Vector<int> Sprite::size() const
 {
 	return (*mCurrentAction).frame(mCurrentFrame).bounds.size;

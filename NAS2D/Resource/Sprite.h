@@ -41,6 +41,8 @@ namespace NAS2D
 		Sprite& operator=(const Sprite&) = delete;
 		Sprite& operator=(Sprite&&) = delete;
 
+		const AnimationSet& animationSet() const;
+
 		Vector<int> size() const;
 		Point<int> origin(Point<int> point) const;
 

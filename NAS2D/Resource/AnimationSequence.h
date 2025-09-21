@@ -12,6 +12,7 @@ namespace NAS2D
 	{
 	public:
 		AnimationSequence(std::vector<AnimationFrame> frames);
+		AnimationSequence(const AnimationSequence&) = default;
 
 		bool empty() const;
 		std::size_t frameCount() const;

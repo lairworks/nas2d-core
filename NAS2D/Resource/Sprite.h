@@ -20,7 +20,6 @@
 namespace NAS2D
 {
 	struct Duration;
-	struct AnimationFrame;
 	class AnimationSequence;
 	class AnimationSet;
 	class Angle;

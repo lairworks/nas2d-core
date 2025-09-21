@@ -41,16 +41,15 @@ namespace NAS2D
 		Sprite& operator=(const Sprite&) = delete;
 		Sprite& operator=(Sprite&&) = delete;
 
+		const AnimationSet& animationSet() const;
+
 		Vector<int> size() const;
 		Point<int> origin(Point<int> point) const;
 
-		std::vector<std::string> actions() const;
-
-		void play(const std::string& action);
+		bool isPaused() const;
 		void pause();
 		void resume();
-		bool isPaused() const;
-
+		void play(const std::string& action);
 		void setFrame(std::size_t frameIndex);
 
 		void update();

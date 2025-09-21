@@ -38,6 +38,12 @@ Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialActio
 }
 
 
+const AnimationSet& Sprite::animationSet() const
+{
+	return mAnimationSet;
+}
+
+
 Vector<int> Sprite::size() const
 {
 	return (*mCurrentAction).frame(mCurrentFrame).bounds.size;
@@ -50,18 +56,9 @@ Point<int> Sprite::origin(Point<int> point) const
 }
 
 
-std::vector<std::string> Sprite::actions() const
+bool Sprite::isPaused() const
 {
-	return mAnimationSet.actionNames();
-}
-
-
-void Sprite::play(const std::string& action)
-{
-	mCurrentAction = &mAnimationSet.frames(action);
-	mCurrentFrame = 0;
-	mTimer.reset();
-	resume();
+	return mPaused || (*mCurrentAction).frame(mCurrentFrame).isStopFrame();
 }
 
 
@@ -77,9 +74,12 @@ void Sprite::resume()
 }
 
 
-bool Sprite::isPaused() const
+void Sprite::play(const std::string& action)
 {
-	return mPaused || (*mCurrentAction).frame(mCurrentFrame).isStopFrame();
+	mCurrentAction = &mAnimationSet.frames(action);
+	mCurrentFrame = 0;
+	mTimer.reset();
+	resume();
 }
 
 

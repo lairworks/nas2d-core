@@ -46,8 +46,6 @@ namespace NAS2D
 		Vector<int> size() const;
 		Point<int> origin(Point<int> point) const;
 
-		std::vector<std::string> actions() const;
-
 		void play(const std::string& action);
 		void pause();
 		void resume();

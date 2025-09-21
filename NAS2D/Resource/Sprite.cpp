@@ -56,12 +56,6 @@ Point<int> Sprite::origin(Point<int> point) const
 }
 
 
-std::vector<std::string> Sprite::actions() const
-{
-	return mAnimationSet.actionNames();
-}
-
-
 void Sprite::play(const std::string& action)
 {
 	mCurrentAction = &mAnimationSet.frames(action);

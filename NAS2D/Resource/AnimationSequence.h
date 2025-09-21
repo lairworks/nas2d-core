@@ -13,6 +13,7 @@ namespace NAS2D
 	public:
 		AnimationSequence(std::vector<AnimationFrame> frames);
 		AnimationSequence(const AnimationSequence&) = default;
+		AnimationSequence(AnimationSequence&&) = default;
 		~AnimationSequence();
 
 		bool empty() const;

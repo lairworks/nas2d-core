@@ -11,6 +11,7 @@
 #include "Sprite.h"
 
 #include "AnimationFrame.h"
+#include "AnimationSequence.h"
 #include "AnimationSet.h"
 #include "ResourceCache.h"
 #include "../Math/Angle.h"
@@ -50,13 +51,13 @@ Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialActio
 
 Vector<int> Sprite::size() const
 {
-	return (*mCurrentAction)[mCurrentFrame].bounds.size;
+	return (*mCurrentAction).frame(mCurrentFrame).bounds.size;
 }
 
 
 Point<int> Sprite::origin(Point<int> point) const
 {
-	return point - (*mCurrentAction)[mCurrentFrame].anchorOffset;
+	return point - (*mCurrentAction).frame(mCurrentFrame).anchorOffset;
 }
 
 
@@ -111,7 +112,7 @@ void Sprite::resume()
 
 bool Sprite::isPaused() const
 {
-	return mPaused || (*mCurrentAction)[mCurrentFrame].isStopFrame();
+	return mPaused || (*mCurrentAction).frame(mCurrentFrame).isStopFrame();
 }
 
 
@@ -122,7 +123,7 @@ bool Sprite::isPaused() const
  */
 void Sprite::setFrame(std::size_t frameIndex)
 {
-	mCurrentFrame = frameIndex % mCurrentAction->size();
+	mCurrentFrame = frameIndex % mCurrentAction->frameCount();
 }
 
 
@@ -134,7 +135,7 @@ void Sprite::update()
 
 void Sprite::draw(Point<float> position) const
 {
-	const auto& frame = (*mCurrentAction)[mCurrentFrame];
+	const auto& frame = (*mCurrentAction).frame(mCurrentFrame);
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
 	Utility<Renderer>::get().drawSubImage(frame.image, drawPosition, frameBounds, mTintColor);
@@ -143,7 +144,7 @@ void Sprite::draw(Point<float> position) const
 
 void Sprite::draw(Point<float> position, Angle rotation) const
 {
-	const auto& frame = (*mCurrentAction)[mCurrentFrame];
+	const auto& frame = (*mCurrentAction).frame(mCurrentFrame);
 	const auto drawPosition = position - frame.anchorOffset.to<float>();
 	const auto frameBounds = frame.bounds.to<float>();
 	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, rotation, mTintColor);
@@ -200,7 +201,7 @@ Duration Sprite::advanceByTimeDelta(Duration timeDelta)
 	const auto& frames = *mCurrentAction;
 	for (;;)
 	{
-		const auto& frame = frames[mCurrentFrame];
+		const auto& frame = frames.frame(mCurrentFrame);
 
 		if (frame.isStopFrame())
 		{
@@ -215,7 +216,7 @@ Duration Sprite::advanceByTimeDelta(Duration timeDelta)
 
 		accumulator += frame.frameDelay;
 		mCurrentFrame++;
-		if (mCurrentFrame >= frames.size())
+		if (mCurrentFrame >= frames.frameCount())
 		{
 			mCurrentFrame = 0;
 		}

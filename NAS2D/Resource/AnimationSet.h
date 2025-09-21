@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "AnimationSequence.h"
+
 #include <map>
 #include <vector>
 #include <string>
@@ -29,7 +31,7 @@ namespace NAS2D
 	{
 	public:
 		using ImageSheets = std::map<std::string, std::string>;
-		using Actions = std::map<std::string, std::vector<AnimationFrame>>;
+		using Actions = std::map<std::string, AnimationSequence>;
 
 
 		explicit AnimationSet(std::string fileName);
@@ -37,7 +39,7 @@ namespace NAS2D
 		AnimationSet(ImageSheets imageSheets, Actions actions);
 
 		std::vector<std::string> actionNames() const;
-		const std::vector<AnimationFrame>& frames(const std::string& actionName) const;
+		const AnimationSequence& frames(const std::string& actionName) const;
 
 	private:
 		ImageSheets mImageSheets;

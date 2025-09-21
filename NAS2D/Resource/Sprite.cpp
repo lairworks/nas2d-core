@@ -56,12 +56,9 @@ Point<int> Sprite::origin(Point<int> point) const
 }
 
 
-void Sprite::play(const std::string& action)
+bool Sprite::isPaused() const
 {
-	mCurrentAction = &mAnimationSet.frames(action);
-	mCurrentFrame = 0;
-	mTimer.reset();
-	resume();
+	return mPaused || (*mCurrentAction).frame(mCurrentFrame).isStopFrame();
 }
 
 
@@ -77,9 +74,12 @@ void Sprite::resume()
 }
 
 
-bool Sprite::isPaused() const
+void Sprite::play(const std::string& action)
 {
-	return mPaused || (*mCurrentAction).frame(mCurrentFrame).isStopFrame();
+	mCurrentAction = &mAnimationSet.frames(action);
+	mCurrentFrame = 0;
+	mTimer.reset();
+	resume();
 }
 
 

@@ -52,7 +52,7 @@ namespace
 	std::tuple<ImageSheets, Actions> processXml(const std::string& filePath, ImageCache& imageCache);
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-	std::vector<AnimationFrame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
+	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
@@ -85,7 +85,7 @@ std::vector<std::string> AnimationSet::actionNames() const
 }
 
 
-const std::vector<AnimationFrame>& AnimationSet::frames(const std::string& actionName) const
+const AnimationSequence& AnimationSet::frames(const std::string& actionName) const
 {
 	if (mActions.find(actionName) == mActions.end())
 	{
@@ -214,9 +214,9 @@ namespace
 				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
 			}
 
-			actions[actionName] = processFrames(imageSheets, action, imageCache);
+			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));
 
-			if (actions[actionName].empty())
+			if (actions.at(actionName).empty())
 			{
 				throw std::runtime_error("Sprite Action contains no valid frames: " + actionName);
 			}
@@ -229,7 +229,7 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationFrame> processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
+	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
 	{
 		std::vector<AnimationFrame> frameList;
 
@@ -272,7 +272,7 @@ namespace
 			frameList.push_back(AnimationFrame{image, frameRect, anchorOffset, {delay}});
 		}
 
-		return frameList;
+		return {frameList};
 	}
 
 }

@@ -138,6 +138,9 @@
     <ClCompile Include="Resource\AnimationFrame.cpp">
       <Filter>Source Files\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\AnimationSequence.cpp">
+      <Filter>Source Files\Resource</Filter>
+    </ClCompile>
     <ClCompile Include="Resource\AnimationSet.cpp">
       <Filter>Source Files\Resource</Filter>
     </ClCompile>
@@ -327,6 +330,9 @@
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Resource\AnimationFrame.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\AnimationSequence.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Resource\AnimationSet.h">

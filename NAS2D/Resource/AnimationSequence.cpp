@@ -14,6 +14,11 @@ AnimationSequence::AnimationSequence(std::vector<AnimationFrame> frames) :
 }
 
 
+AnimationSequence::~AnimationSequence()
+{
+}
+
+
 bool AnimationSequence::empty() const
 {
 	return mFrames.empty();

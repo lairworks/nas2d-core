@@ -214,7 +214,7 @@ namespace
 				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
 			}
 
-			actions[actionName] = processFrames(imageSheets, action, imageCache);
+			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));
 
 			if (actions.at(actionName).empty())
 			{

@@ -67,10 +67,6 @@ std::vector<std::string> Sprite::actions() const
  * \param	action	Name of the action to use for animation. Actions are not
  *			case sensitive. "Case", "caSe", "CASE", etc. will all be viewed
  *			as identical.
- *
- * \note	If the named action doesn't exist, a warning message will
- *			be written to the log and the default action will be used
- *			instead.
  */
 void Sprite::play(const std::string& action)
 {

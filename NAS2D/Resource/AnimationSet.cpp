@@ -132,7 +132,7 @@ namespace
 			}
 			if (version != SpriteVersion)
 			{
-				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SpriteVersion} + " Actual: " + versionString());
+				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SpriteVersion} + " Actual: " + version);
 			}
 
 			// Note:

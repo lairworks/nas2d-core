@@ -12,9 +12,9 @@
 
 #include "AnimationSequence.h"
 
-#include <map>
-#include <vector>
 #include <string>
+#include <vector>
+#include <map>
 
 
 namespace NAS2D

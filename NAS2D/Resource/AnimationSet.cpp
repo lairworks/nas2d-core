@@ -19,7 +19,6 @@
 #include "../Filesystem.h"
 #include "../ContainerUtils.h"
 #include "../ParserHelper.h"
-#include "../Version.h"
 #include "../Xml/Xml.h"
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"

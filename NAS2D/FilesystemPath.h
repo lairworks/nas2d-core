@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <string_view>
 #include <string>
 
 
@@ -11,6 +12,7 @@ namespace NAS2D
 	public:
 		FilesystemPath();
 		FilesystemPath(const char* path);
+		FilesystemPath(std::string_view path);
 		FilesystemPath(std::string path);
 
 		explicit operator const std::string&() const;

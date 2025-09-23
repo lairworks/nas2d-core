@@ -14,7 +14,6 @@
 
 #include <cstddef>
 #include <string_view>
-#include <string>
 #include <vector>
 
 
@@ -62,8 +61,8 @@ namespace NAS2D
 
 		static Font null();
 
-		Font(const std::string& filePath, unsigned int ptSize);
-		explicit Font(const std::string& filePath);
+		Font(std::string_view filePath, unsigned int ptSize);
+		explicit Font(std::string_view filePath);
 		Font(const Font& font) = delete;
 		Font& operator=(const Font& font) = delete;
 		~Font();

@@ -20,6 +20,12 @@ FilesystemPath::FilesystemPath(const char* path) :
 }
 
 
+FilesystemPath::FilesystemPath(std::string_view path) :
+	mPath{path}
+{
+}
+
+
 FilesystemPath::FilesystemPath(std::string path) :
 	mPath{std::move(path)}
 {

@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <string_view>
 #include <string>
 #include <map>
 
@@ -29,7 +30,7 @@ namespace NAS2D
 	class Music
 	{
 	public:
-		explicit Music(const std::string& filePath);
+		explicit Music(std::string_view filePath);
 
 		Music(const Music& rhs) = delete;
 		Music& operator=(const Music& rhs) = delete;

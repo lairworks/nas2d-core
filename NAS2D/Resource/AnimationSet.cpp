@@ -48,20 +48,20 @@ namespace
 	using Actions = AnimationSet::Actions;
 
 
-	std::tuple<ImageSheets, Actions> processXml(const std::string& filePath, ImageCache& imageCache);
+	std::tuple<ImageSheets, Actions> processXml(std::string_view filePath, ImageCache& imageCache);
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 }
 
 
-AnimationSet::AnimationSet(std::string fileName) :
-	AnimationSet{std::move(fileName), animationImageCache}
+AnimationSet::AnimationSet(std::string_view fileName) :
+	AnimationSet{fileName, animationImageCache}
 {
 }
 
 
-AnimationSet::AnimationSet(std::string fileName, ImageCache& imageCache) :
+AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
 	mImageSheets{},
 	mActions{}
 {
@@ -103,7 +103,7 @@ namespace
 	 *
 	 * \param filePath	File path of the sprite XML definition file.
 	 */
-	std::tuple<ImageSheets, Actions> processXml(const std::string& filePath, ImageCache& imageCache)
+	std::tuple<ImageSheets, Actions> processXml(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
 		{
@@ -111,7 +111,7 @@ namespace
 			const auto basePath = Filesystem::parentPath(filePath);
 
 			Xml::XmlDocument xmlDoc;
-			xmlDoc.parse(filesystem.readFile(filePath).c_str());
+			xmlDoc.parse(filesystem.readFile(VirtualPath{filePath}).c_str());
 
 			if (xmlDoc.error())
 			{

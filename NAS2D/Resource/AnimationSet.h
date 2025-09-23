@@ -12,6 +12,7 @@
 
 #include "AnimationSequence.h"
 
+#include <string_view>
 #include <string>
 #include <vector>
 #include <map>
@@ -30,8 +31,8 @@ namespace NAS2D
 		using Actions = std::map<std::string, AnimationSequence>;
 
 
-		explicit AnimationSet(std::string fileName);
-		AnimationSet(std::string fileName, ResourceCache<Image, std::string>& imageCache);
+		explicit AnimationSet(std::string_view fileName);
+		AnimationSet(std::string_view fileName, ResourceCache<Image, std::string>& imageCache);
 		AnimationSet(ImageSheets imageSheets, Actions actions);
 
 		std::vector<std::string> actionNames() const;

@@ -86,7 +86,7 @@ std::vector<std::string> AnimationSet::actionNames() const
 
 const AnimationSequence& AnimationSet::frames(const std::string& actionName) const
 {
-	if (mActions.find(actionName) == mActions.end())
+	if (!mActions.contains(actionName))
 	{
 		throw std::runtime_error("AnimationSet::frames called on undefined action: " + actionName);
 	}

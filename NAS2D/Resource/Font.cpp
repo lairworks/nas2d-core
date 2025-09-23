@@ -56,8 +56,8 @@ namespace
 	const int GlyphMatrixSize = 16;
 	const int Bits32 = 32;
 
-	Font::FontInfo load(const std::string& path, unsigned int ptSize);
-	Font::FontInfo loadBitmap(const std::string& path);
+	Font::FontInfo load(std::string_view path, unsigned int ptSize);
+	Font::FontInfo loadBitmap(std::string_view path);
 	unsigned int generateFontTexture(SDL_Surface* fontSurface, std::vector<Font::GlyphMetrics>& glyphMetricsList);
 	SDL_Surface* generateFontSurface(TTF_Font* font, Vector<int> characterSize);
 	Vector<int> maxCharacterDimensions(TTF_Font* font);
@@ -84,7 +84,7 @@ Font::Font() :
  * \param	filePath	Path to a font file.
  * \param	ptSize		Point size of the font. Defaults to 12pt.
  */
-Font::Font(const std::string& filePath, unsigned int ptSize) :
+Font::Font(std::string_view filePath, unsigned int ptSize) :
 	mFontInfo{load(filePath, ptSize)}
 {
 }
@@ -95,7 +95,7 @@ Font::Font(const std::string& filePath, unsigned int ptSize) :
  *
  * \param	filePath	Path to a font file.
  */
-Font::Font(const std::string& filePath) :
+Font::Font(std::string_view filePath) :
 	mFontInfo{loadBitmap(filePath)}
 {
 }
@@ -236,7 +236,7 @@ namespace
 	 * \param	path	Path to the TTF or OTF font file.
 	 * \param	ptSize	Point size to use when loading the font.
 	 */
-	Font::FontInfo load(const std::string& path, unsigned int ptSize)
+	Font::FontInfo load(std::string_view path, unsigned int ptSize)
 	{
 		if (TTF_WasInit() == 0)
 		{
@@ -282,7 +282,7 @@ namespace
 	 *
 	 * \param	path		Path to the image file.
 	 */
-	Font::FontInfo loadBitmap(const std::string& path)
+	Font::FontInfo loadBitmap(std::string_view path)
 	{
 		auto fontBuffer = Utility<Filesystem>::get().readFile(path);
 		if (fontBuffer.empty())

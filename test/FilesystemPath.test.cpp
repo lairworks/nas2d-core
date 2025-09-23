@@ -14,6 +14,11 @@ TEST(FilesystemPath, constructionConstCharStar) {
 	EXPECT_EQ("a/b/c/", path.string());
 }
 
+TEST(FilesystemPath, constructionStringView) {
+	const auto path = NAS2D::FilesystemPath{std::string_view{"a/b/c/"}};
+	EXPECT_EQ("a/b/c/", path.string());
+}
+
 TEST(FilesystemPath, constructionString) {
 	const auto path = NAS2D::FilesystemPath{std::string{"a/b/c/"}};
 	EXPECT_EQ("a/b/c/", path.string());

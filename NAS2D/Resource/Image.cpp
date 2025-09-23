@@ -45,7 +45,7 @@ namespace
 }
 
 
-SDL_Surface* Image::fileToSdlSurface(const std::string& filePath)
+SDL_Surface* Image::fileToSdlSurface(std::string_view filePath)
 {
 	const auto& data = Utility<Filesystem>::get().readFile(filePath);
 
@@ -90,7 +90,7 @@ SDL_Surface* Image::dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int
  *
  * \param filePath Path to an image file.
  */
-Image::Image(const std::string& filePath) :
+Image::Image(std::string_view filePath) :
 	Image{*fileToSdlSurface(filePath)}
 {
 }

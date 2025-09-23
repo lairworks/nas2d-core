@@ -11,6 +11,7 @@
 
 #include "../Math/Vector.h"
 
+#include <string_view>
 #include <string>
 
 
@@ -40,12 +41,12 @@ namespace NAS2D
 	class Image
 	{
 	protected:
-		static SDL_Surface* fileToSdlSurface(const std::string& filePath);
+		static SDL_Surface* fileToSdlSurface(std::string_view filePath);
 		static SDL_Surface* dataToSdlSurface(const std::string& data);
 		static SDL_Surface* dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int> size);
 
 	public:
-		explicit Image(const std::string& filePath);
+		explicit Image(std::string_view filePath);
 		Image(void* buffer, int bytesPerPixel, Vector<int> size);
 		Image(SDL_Surface& surface);
 

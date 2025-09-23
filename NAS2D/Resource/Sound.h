@@ -9,7 +9,7 @@
 // ==================================================================================
 #pragma once
 
-#include <string>
+#include <string_view>
 
 
 struct Mix_Chunk;
@@ -26,7 +26,7 @@ namespace NAS2D
 	class Sound
 	{
 	public:
-		explicit Sound(const std::string& filePath);
+		explicit Sound(std::string_view filePath);
 
 		Sound(const Sound& other) = delete;
 		Sound(Sound&& other) = delete;

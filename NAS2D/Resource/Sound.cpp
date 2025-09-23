@@ -30,7 +30,7 @@ using namespace NAS2D;
 /**
  * \param	filePath	File path of the sound file to load.
  */
-Sound::Sound(const std::string& filePath)
+Sound::Sound(std::string_view filePath)
 {
 	auto data = Utility<Filesystem>::get().readFile(filePath);
 	if (data.empty())

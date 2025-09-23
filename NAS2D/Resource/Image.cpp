@@ -58,9 +58,9 @@ SDL_Surface* Image::fileToSdlSurface(std::string_view filePath)
 }
 
 
-SDL_Surface* Image::dataToSdlSurface(const std::string& data)
+SDL_Surface* Image::dataToSdlSurface(std::string_view data)
 {
-	auto surface = IMG_Load_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
+	auto surface = IMG_Load_RW(SDL_RWFromConstMem(data.data(), static_cast<int>(data.size())), 1);
 	if (!surface)
 	{
 		throw std::runtime_error("Image failed to load: " + std::string{SDL_GetError()});

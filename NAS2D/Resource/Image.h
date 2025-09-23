@@ -12,7 +12,6 @@
 #include "../Math/Vector.h"
 
 #include <string_view>
-#include <string>
 
 
 struct SDL_Surface;
@@ -42,7 +41,7 @@ namespace NAS2D
 	{
 	protected:
 		static SDL_Surface* fileToSdlSurface(std::string_view filePath);
-		static SDL_Surface* dataToSdlSurface(const std::string& data);
+		static SDL_Surface* dataToSdlSurface(std::string_view data);
 		static SDL_Surface* dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int> size);
 
 	public:

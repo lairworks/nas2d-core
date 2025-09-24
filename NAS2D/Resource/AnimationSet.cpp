@@ -26,7 +26,6 @@
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 
-#include <tuple>
 #include <utility>
 
 
@@ -43,9 +42,14 @@ namespace
 	using ImageSheets = AnimationSet::ImageSheets;
 	using Actions = AnimationSet::Actions;
 
+	struct AnimationFileData
+	{
+		ImageSheets imageSheets;
+		Actions actions;
+	};
 
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
-	std::tuple<ImageSheets, Actions> processXml(std::string_view filePath, ImageCache& imageCache);
+	AnimationFileData processXml(std::string_view filePath, ImageCache& imageCache);
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
@@ -105,7 +109,7 @@ namespace
 	 *
 	 * \param filePath	File path of the sprite XML definition file.
 	 */
-	std::tuple<ImageSheets, Actions> processXml(std::string_view filePath, ImageCache& imageCache)
+	AnimationFileData processXml(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
 		{

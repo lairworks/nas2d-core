@@ -235,13 +235,13 @@ namespace
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
 			const auto sheetId = dictionary.get("sheetid");
-			const auto delay = dictionary.get<unsigned int>("delay", 0);
 			const auto x = dictionary.get<int>("x");
 			const auto y = dictionary.get<int>("y");
 			const auto width = dictionary.get<int>("width");
 			const auto height = dictionary.get<int>("height");
 			const auto anchorx = dictionary.get<int>("anchorx");
 			const auto anchory = dictionary.get<int>("anchory");
+			const auto delay = dictionary.get<unsigned int>("delay", 0);
 
 			if (sheetId.empty())
 			{

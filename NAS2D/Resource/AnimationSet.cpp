@@ -256,7 +256,7 @@ namespace
 			const auto& filePath = imageSheets.at(sheetId);
 			const auto& image = imageCache.load(filePath);
 
-			const auto frameRect = Rectangle<int>{{x, y}, {width, height}};
+			const auto frameRect = Rectangle{Point{x, y}, Vector{width, height}};
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{

@@ -56,7 +56,8 @@ namespace
 
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 	AnimationFileData processXml(std::string_view filePath, ImageCache& imageCache);
-	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element);
+	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 }
@@ -150,7 +151,7 @@ namespace
 			// Here instead of going through each element and calling a processing function to handle
 			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 			// image sheets anywhere in the sprite file.
-			auto imageSheets = processImageSheets(basePath, spriteElement, imageCache);
+			auto imageSheets = loadImages(processImageSheets(spriteElement), basePath, imageCache);
 			auto actions = processActions(imageSheets, spriteElement, imageCache);
 			return {
 				std::move(imageSheets),
@@ -172,17 +173,16 @@ namespace
 	 *			element in a sprite definition, these elements can appear
 	 *			anywhere in a Sprite XML definition.
 	 */
-	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element)
 	{
-		ImageSheets imageSheets;
-
+		std::vector<AnimationImageSheetReference> imageSheetReferences;
 		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
 			const auto dictionary = attributesToDictionary(*node);
-			const auto imageSheetReference = AnimationImageSheetReference{
+			const auto& imageSheetReference = imageSheetReferences.emplace_back(
 				dictionary.get("id"),
 				dictionary.get("src")
-			};
+			);
 
 			if (imageSheetReference.id.empty())
 			{
@@ -193,7 +193,16 @@ namespace
 			{
 				throwLoadError("Image sheet definition has `src` of length zero", node);
 			}
+		}
+		return imageSheetReferences;
+	}
 
+
+	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache)
+	{
+		ImageSheets imageSheets;
+		for (const auto& imageSheetReference : imageSheetReferences)
+		{
 			if (imageSheets.contains(imageSheetReference.id))
 			{
 				throw std::runtime_error("Image sheet redefinition: id: " + imageSheetReference.id);
@@ -203,7 +212,6 @@ namespace
 			imageSheets.try_emplace(imageSheetReference.id, imagePath);
 			imageCache.load(imagePath);
 		}
-
 		return imageSheets;
 	}
 

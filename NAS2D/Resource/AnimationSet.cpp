@@ -37,13 +37,6 @@ namespace
 	using ImageCache = ResourceCache<Image, std::string>;
 	ImageCache animationImageCache;
 
-
-	// Adds a row tag to the end of messages.
-	std::string endTag(int row)
-	{
-		return " (Line: " + std::to_string(row) + ")";
-	}
-
 	using ImageSheets = AnimationSet::ImageSheets;
 	using Actions = AnimationSet::Actions;
 
@@ -52,6 +45,7 @@ namespace
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
+	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlElement* element);
 }
 
 
@@ -169,17 +163,17 @@ namespace
 
 			if (id.empty())
 			{
-				throw std::runtime_error("Image sheet definition has `id` of length zero: " + endTag(node->row()));
+				throwLoadError("Image sheet definition has `id` of length zero: ", node);
 			}
 
 			if (src.empty())
 			{
-				throw std::runtime_error("Image sheet definition has `src` of length zero: " + endTag(node->row()));
+				throwLoadError("Image sheet definition has `src` of length zero: ", node);
 			}
 
 			if (imageSheets.contains(id))
 			{
-				throw std::runtime_error("Image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
+				throwLoadError("Image sheet redefinition: id: '" + id + "' ", node);
 			}
 
 			const auto imagePath = basePath + src;
@@ -206,11 +200,11 @@ namespace
 
 			if (actionName.empty())
 			{
-				throw std::runtime_error("Action definition has 'name' of length zero: " + endTag(action->row()));
+				throwLoadError("Action definition has 'name' of length zero: ", action);
 			}
 			if (actions.find(actionName) != actions.end())
 			{
-				throw std::runtime_error("Action redefinition: '" + actionName + "' " + endTag(action->row()));
+				throwLoadError("Action redefinition: '" + actionName + "' ", action);
 			}
 
 			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));
@@ -234,8 +228,6 @@ namespace
 
 		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))
 		{
-			int currentRow = frame->row();
-
 			const auto dictionary = attributesToDictionary(*frame);
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
@@ -250,12 +242,12 @@ namespace
 
 			if (sheetId.empty())
 			{
-				throw std::runtime_error("Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
+				throwLoadError("Frame definition has 'sheetid' of length zero: ", frame);
 			}
 			const auto iterator = imageSheets.find(sheetId);
 			if (iterator == imageSheets.end())
 			{
-				throw std::runtime_error("Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
+				throwLoadError("Frame definition references undefined imagesheet: '" + sheetId + "' ", frame);
 			}
 
 			const auto& image = imageCache.load(iterator->second);
@@ -264,7 +256,7 @@ namespace
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
-				throw std::runtime_error("Frame bounds exceeds image sheet bounds: " + endTag(currentRow));
+				throwLoadError("Frame bounds exceeds image sheet bounds: ", frame);
 			}
 
 			const auto anchorOffset = Vector{anchorx, anchory};
@@ -274,4 +266,9 @@ namespace
 		return {frameList};
 	}
 
+
+	void throwLoadError(std::string_view message, const Xml::XmlElement* element)
+	{
+		throw std::runtime_error(message + " (Line: " + std::to_string(element->row()) + ")");
+	}
 }

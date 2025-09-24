@@ -41,7 +41,7 @@ namespace
 	// Adds a row tag to the end of messages.
 	std::string endTag(int row)
 	{
-		return " (Row: " + std::to_string(row) + ")";
+		return " (Line: " + std::to_string(row) + ")";
 	}
 
 	using ImageSheets = AnimationSet::ImageSheets;

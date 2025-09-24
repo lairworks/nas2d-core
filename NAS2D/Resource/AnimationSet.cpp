@@ -266,7 +266,7 @@ namespace
 
 			if (!imageSheets.contains(sheetId))
 			{
-				throwLoadError("Frame definition references undefined imagesheet: " + sheetId, frame);
+				throw std::runtime_error("Frame definition references undefined imagesheet: " + sheetId);
 			}
 
 			const auto& filePath = imageSheets.at(sheetId);
@@ -275,7 +275,7 @@ namespace
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
-				throwLoadError("Frame bounds exceeds image sheet bounds: " + sheetId + " : " + stringFrom(frameRect), frame);
+				throw std::runtime_error("Frame bounds exceeds image sheet bounds: " + sheetId + " : " + stringFrom(frameRect));
 			}
 
 			frameList.push_back(AnimationFrame{image, frameRect, anchorOffset, {delay}});

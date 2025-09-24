@@ -235,12 +235,20 @@ namespace
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
 			const auto sheetId = dictionary.get("sheetid");
-			const auto x = dictionary.get<int>("x");
-			const auto y = dictionary.get<int>("y");
-			const auto width = dictionary.get<int>("width");
-			const auto height = dictionary.get<int>("height");
-			const auto anchorx = dictionary.get<int>("anchorx");
-			const auto anchory = dictionary.get<int>("anchory");
+			const auto frameRect = Rectangle{
+				Point{
+					dictionary.get<int>("x"),
+					dictionary.get<int>("y"),
+				},
+				Vector{
+					dictionary.get<int>("width"),
+					dictionary.get<int>("height"),
+				}
+			};
+			const auto anchorOffset = Vector{
+				dictionary.get<int>("anchorx"),
+				dictionary.get<int>("anchory"),
+			};
 			const auto delay = dictionary.get<unsigned int>("delay", 0);
 
 			if (sheetId.empty())
@@ -256,14 +264,12 @@ namespace
 			const auto& filePath = imageSheets.at(sheetId);
 			const auto& image = imageCache.load(filePath);
 
-			const auto frameRect = Rectangle{Point{x, y}, Vector{width, height}};
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
 				throwLoadError("Frame bounds exceeds image sheet bounds", frame);
 			}
 
-			const auto anchorOffset = Vector{anchorx, anchory};
 			frameList.push_back(AnimationFrame{image, frameRect, anchorOffset, {delay}});
 		}
 

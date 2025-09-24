@@ -121,11 +121,11 @@ namespace
 			const auto version = xmlRootElement->attribute("version");
 			if (version.empty())
 			{
-				throw std::runtime_error("No version specified");
+				throwLoadError("No version specified", xmlRootElement);
 			}
 			if (version != SpriteVersion)
 			{
-				throw std::runtime_error("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version);
+				throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, xmlRootElement);
 			}
 
 			// Note:

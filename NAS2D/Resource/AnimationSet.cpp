@@ -112,28 +112,28 @@ namespace
 				throw std::runtime_error("Malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 			}
 
-			const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
-			if (!xmlRootElement)
+			const auto* spriteElement = xmlDoc.firstChildElement("sprite");
+			if (!spriteElement)
 			{
 				throw std::runtime_error("Missing required <sprite> tag");
 			}
 
-			const auto version = xmlRootElement->attribute("version");
+			const auto version = spriteElement->attribute("version");
 			if (version.empty())
 			{
-				throwLoadError("No version specified", xmlRootElement);
+				throwLoadError("No version specified", spriteElement);
 			}
 			if (version != SpriteVersion)
 			{
-				throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, xmlRootElement);
+				throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, spriteElement);
 			}
 
 			// Note:
 			// Here instead of going through each element and calling a processing function to handle
 			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 			// image sheets anywhere in the sprite file.
-			auto imageSheets = processImageSheets(basePath, xmlRootElement, imageCache);
-			auto actions = processActions(imageSheets, xmlRootElement, imageCache);
+			auto imageSheets = processImageSheets(basePath, spriteElement, imageCache);
+			auto actions = processActions(imageSheets, spriteElement, imageCache);
 			return std::tuple{std::move(imageSheets), std::move(actions)};
 		}
 		catch (const std::runtime_error& error)

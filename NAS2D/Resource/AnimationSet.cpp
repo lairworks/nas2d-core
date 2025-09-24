@@ -56,6 +56,12 @@ namespace
 		Duration frameDelay;
 	};
 
+	struct AnimationAction
+	{
+		std::string name;
+		std::vector<AnimationFrameData> frames;
+	};
+
 	struct AnimationFileData
 	{
 		ImageSheets imageSheets;
@@ -66,7 +72,8 @@ namespace
 	AnimationFileData processXml(std::string_view filePath, ImageCache& imageCache);
 	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
-	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationAction> processActions(const Xml::XmlElement* element);
+	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 	std::vector<AnimationFrameData> processFrames(const Xml::XmlElement* element);
 	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 }
@@ -161,7 +168,7 @@ namespace
 			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 			// image sheets anywhere in the sprite file.
 			auto imageSheets = loadImages(processImageSheets(spriteElement), basePath, imageCache);
-			auto actions = processActions(imageSheets, spriteElement, imageCache);
+			auto actions = indexActions(processActions(spriteElement), imageSheets, imageCache);
 			return {
 				std::move(imageSheets),
 				std::move(actions)
@@ -229,32 +236,43 @@ namespace
 	 * Iterates through all elements of a Sprite XML definition looking
 	 * for 'action' elements and processes them.
 	 */
-	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationAction> processActions(const Xml::XmlElement* element)
 	{
-		Actions actions;
-
+		std::vector<AnimationAction> actionDefinitions;
 		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))
 		{
 			const auto dictionary = attributesToDictionary(*action);
-			const auto actionName = dictionary.get("name");
+			const auto& actionDefinition = actionDefinitions.emplace_back(
+				dictionary.get("name"),
+				processFrames(action)
+			);
 
-			if (actionName.empty())
+			if (actionDefinition.name.empty())
 			{
 				throwLoadError("Action definition has 'name' of length zero", action);
 			}
-			if (actions.contains(actionName))
+		}
+		return actionDefinitions;
+	}
+
+
+	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
+	{
+		Actions actions;
+		for (const auto& action : actionDefinitions)
+		{
+			if (actions.contains(action.name))
 			{
-				throw std::runtime_error("Action redefinition: " + actionName);
+				throw std::runtime_error("Action redefinition: " + action.name);
 			}
 
-			actions.try_emplace(actionName, buildAnimationSequences(processFrames(action), imageSheets, imageCache));
+			actions.try_emplace(action.name, buildAnimationSequences(action.frames, imageSheets, imageCache));
 
-			if (actions.at(actionName).empty())
+			if (actions.at(action.name).empty())
 			{
-				throw std::runtime_error("Action contains no valid frames: " + actionName);
+				throw std::runtime_error("Action contains no valid frames: " + action.name);
 			}
 		}
-
 		return actions;
 	}
 

@@ -169,12 +169,12 @@ namespace
 
 			if (id.empty())
 			{
-				throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row()));
+				throw std::runtime_error("Sprite image sheet definition has `id` of length zero: " + endTag(node->row()));
 			}
 
 			if (src.empty())
 			{
-				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
+				throw std::runtime_error("Sprite image sheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
 			if (imageSheets.contains(id))

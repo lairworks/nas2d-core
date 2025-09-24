@@ -184,7 +184,7 @@ namespace
 
 			if (imageSheets.contains(id))
 			{
-				throwLoadError("Image sheet redefinition: id: " + id, node);
+				throw std::runtime_error("Image sheet redefinition: id: " + id);
 			}
 
 			const auto imagePath = basePath + src;

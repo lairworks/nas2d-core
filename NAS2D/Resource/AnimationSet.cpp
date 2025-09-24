@@ -134,7 +134,7 @@ namespace
 			// image sheets anywhere in the sprite file.
 			auto imageSheets = processImageSheets(basePath, spriteElement, imageCache);
 			auto actions = processActions(imageSheets, spriteElement, imageCache);
-			return std::tuple{
+			return {
 				std::move(imageSheets),
 				std::move(actions)
 			};

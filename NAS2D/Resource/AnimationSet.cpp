@@ -163,17 +163,17 @@ namespace
 
 			if (id.empty())
 			{
-				throwLoadError("Image sheet definition has `id` of length zero: ", node);
+				throwLoadError("Image sheet definition has `id` of length zero", node);
 			}
 
 			if (src.empty())
 			{
-				throwLoadError("Image sheet definition has `src` of length zero: ", node);
+				throwLoadError("Image sheet definition has `src` of length zero", node);
 			}
 
 			if (imageSheets.contains(id))
 			{
-				throwLoadError("Image sheet redefinition: id: '" + id + "' ", node);
+				throwLoadError("Image sheet redefinition: id: " + id, node);
 			}
 
 			const auto imagePath = basePath + src;
@@ -200,11 +200,11 @@ namespace
 
 			if (actionName.empty())
 			{
-				throwLoadError("Action definition has 'name' of length zero: ", action);
+				throwLoadError("Action definition has 'name' of length zero", action);
 			}
 			if (actions.find(actionName) != actions.end())
 			{
-				throwLoadError("Action redefinition: '" + actionName + "' ", action);
+				throwLoadError("Action redefinition: " + actionName, action);
 			}
 
 			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));
@@ -242,12 +242,12 @@ namespace
 
 			if (sheetId.empty())
 			{
-				throwLoadError("Frame definition has 'sheetid' of length zero: ", frame);
+				throwLoadError("Frame definition has 'sheetid' of length zero", frame);
 			}
 			const auto iterator = imageSheets.find(sheetId);
 			if (iterator == imageSheets.end())
 			{
-				throwLoadError("Frame definition references undefined imagesheet: '" + sheetId + "' ", frame);
+				throwLoadError("Frame definition references undefined imagesheet: " + sheetId, frame);
 			}
 
 			const auto& image = imageCache.load(iterator->second);
@@ -256,7 +256,7 @@ namespace
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
-				throwLoadError("Frame bounds exceeds image sheet bounds: ", frame);
+				throwLoadError("Frame bounds exceeds image sheet bounds", frame);
 			}
 
 			const auto anchorOffset = Vector{anchorx, anchory};

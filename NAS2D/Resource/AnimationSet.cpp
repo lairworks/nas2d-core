@@ -67,7 +67,8 @@ namespace
 	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
+	std::vector<AnimationFrameData> processFrames(const Xml::XmlElement* element);
+	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 }
 
 
@@ -246,7 +247,7 @@ namespace
 				throw std::runtime_error("Action redefinition: " + actionName);
 			}
 
-			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));
+			actions.try_emplace(actionName, buildAnimationSequences(processFrames(action), imageSheets, imageCache));
 
 			if (actions.at(actionName).empty())
 			{
@@ -261,16 +262,15 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationFrameData> processFrames(const Xml::XmlElement* element)
 	{
-		std::vector<AnimationFrame> frameList;
-
+		std::vector<AnimationFrameData> frameDefinitions;
 		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))
 		{
 			const auto dictionary = attributesToDictionary(*frame);
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
-			const auto animationFrameData = AnimationFrameData{
+			const auto& animationFrameData = frameDefinitions.emplace_back(
 				dictionary.get("sheetid"),
 				Rectangle{
 					Point{
@@ -287,13 +287,22 @@ namespace
 					dictionary.get<int>("anchory"),
 				},
 				Duration{dictionary.get<unsigned int>("delay", 0)}
-			};
+			);
 
 			if (animationFrameData.id.empty())
 			{
 				throwLoadError("Frame definition has 'sheetid' of length zero", frame);
 			}
+		}
+		return frameDefinitions;
+	}
 
+
+	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
+	{
+		std::vector<AnimationFrame> frameList;
+		for (const auto& animationFrameData : frameDefinitions)
+		{
 			if (!imageSheets.contains(animationFrameData.id))
 			{
 				throw std::runtime_error("Frame definition references undefined imagesheet: " + animationFrameData.id);
@@ -310,7 +319,6 @@ namespace
 
 			frameList.push_back(AnimationFrame{image, animationFrameData.imageBounds, animationFrameData.anchorOffset, animationFrameData.frameDelay});
 		}
-
 		return {frameList};
 	}
 }

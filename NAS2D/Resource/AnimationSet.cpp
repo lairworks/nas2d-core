@@ -62,6 +62,12 @@ namespace
 		std::vector<AnimationFrameData> frames;
 	};
 
+	struct AnimationFileData
+	{
+		std::vector<AnimationImageSheetReference> imageSheetReferences;
+		std::vector<AnimationAction> actions;
+	};
+
 	struct AnimationFileIndexedData
 	{
 		ImageSheets imageSheets;
@@ -167,8 +173,12 @@ namespace
 			// Here instead of going through each element and calling a processing function to handle
 			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 			// image sheets anywhere in the sprite file.
-			auto imageSheets = loadImages(processImageSheets(spriteElement), basePath, imageCache);
-			auto actions = indexActions(processActions(spriteElement), imageSheets, imageCache);
+			const auto animationFileData = AnimationFileData{
+				processImageSheets(spriteElement),
+				processActions(spriteElement),
+			};
+			auto imageSheets = loadImages(animationFileData.imageSheetReferences, basePath, imageCache);
+			auto actions = indexActions(animationFileData.actions, imageSheets, imageCache);
 			return {
 				std::move(imageSheets),
 				std::move(actions)

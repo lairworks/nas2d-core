@@ -115,23 +115,23 @@ namespace
 
 			if (xmlDoc.error())
 			{
-				throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
+				throw std::runtime_error("Malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 			}
 
 			const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
 			if (!xmlRootElement)
 			{
-				throw std::runtime_error("Sprite file does not contain required <sprite> tag");
+				throw std::runtime_error("Missing required <sprite> tag");
 			}
 
 			const auto version = xmlRootElement->attribute("version");
 			if (version.empty())
 			{
-				throw std::runtime_error("Sprite file's root element does not specify a version");
+				throw std::runtime_error("No version specified");
 			}
 			if (version != SpriteVersion)
 			{
-				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SpriteVersion} + " Actual: " + version);
+				throw std::runtime_error("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version);
 			}
 
 			// Note:
@@ -144,7 +144,7 @@ namespace
 		}
 		catch (const std::runtime_error& error)
 		{
-			throw std::runtime_error("Error parsing Sprite file: " + filePath + "\nError: " + error.what());
+			throw std::runtime_error("Error loading Sprite file: " + filePath + "\n" + error.what());
 		}
 	}
 
@@ -169,17 +169,17 @@ namespace
 
 			if (id.empty())
 			{
-				throw std::runtime_error("Sprite image sheet definition has `id` of length zero: " + endTag(node->row()));
+				throw std::runtime_error("Image sheet definition has `id` of length zero: " + endTag(node->row()));
 			}
 
 			if (src.empty())
 			{
-				throw std::runtime_error("Sprite image sheet definition has `src` of length zero: " + endTag(node->row()));
+				throw std::runtime_error("Image sheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
 			if (imageSheets.contains(id))
 			{
-				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
+				throw std::runtime_error("Image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}
 
 			const auto imagePath = basePath + src;
@@ -206,18 +206,18 @@ namespace
 
 			if (actionName.empty())
 			{
-				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(action->row()));
+				throw std::runtime_error("Action definition has 'name' of length zero: " + endTag(action->row()));
 			}
 			if (actions.find(actionName) != actions.end())
 			{
-				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
+				throw std::runtime_error("Action redefinition: '" + actionName + "' " + endTag(action->row()));
 			}
 
 			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));
 
 			if (actions.at(actionName).empty())
 			{
-				throw std::runtime_error("Sprite Action contains no valid frames: " + actionName);
+				throw std::runtime_error("Action contains no valid frames: " + actionName);
 			}
 		}
 
@@ -250,12 +250,12 @@ namespace
 
 			if (sheetId.empty())
 			{
-				throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
+				throw std::runtime_error("Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
 			}
 			const auto iterator = imageSheets.find(sheetId);
 			if (iterator == imageSheets.end())
 			{
-				throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
+				throw std::runtime_error("Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
 			}
 
 			const auto& image = imageCache.load(iterator->second);
@@ -264,7 +264,7 @@ namespace
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
-				throw std::runtime_error("Sprite frame bounds exceeds image sheet bounds: " + endTag(currentRow));
+				throw std::runtime_error("Frame bounds exceeds image sheet bounds: " + endTag(currentRow));
 			}
 
 			const auto anchorOffset = Vector{anchorx, anchory};

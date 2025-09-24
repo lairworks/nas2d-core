@@ -76,6 +76,7 @@ namespace
 
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 	AnimationFileIndexedData processXml(std::string_view filePath, ImageCache& imageCache);
+	AnimationFileData readAnimationFileData(std::string_view fileData);
 	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	std::vector<AnimationAction> processActions(const Xml::XmlElement* element);
@@ -145,38 +146,7 @@ namespace
 			auto& filesystem = Utility<Filesystem>::get();
 			const auto basePath = Filesystem::parentPath(filePath);
 
-			Xml::XmlDocument xmlDoc;
-			xmlDoc.parse(filesystem.readFile(VirtualPath{filePath}).c_str());
-
-			if (xmlDoc.error())
-			{
-				throw std::runtime_error("Malformed XML: Line: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
-			}
-
-			const auto* spriteElement = xmlDoc.firstChildElement("sprite");
-			if (!spriteElement)
-			{
-				throw std::runtime_error("Missing required <sprite> tag");
-			}
-
-			const auto version = spriteElement->attribute("version");
-			if (version.empty())
-			{
-				throwLoadError("No version specified", spriteElement);
-			}
-			if (version != SpriteVersion)
-			{
-				throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, spriteElement);
-			}
-
-			// Note:
-			// Here instead of going through each element and calling a processing function to handle
-			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
-			// image sheets anywhere in the sprite file.
-			const auto animationFileData = AnimationFileData{
-				processImageSheets(spriteElement),
-				processActions(spriteElement),
-			};
+			const auto animationFileData = readAnimationFileData(filesystem.readFile(VirtualPath{filePath}));
 			auto imageSheets = loadImages(animationFileData.imageSheetReferences, basePath, imageCache);
 			auto actions = indexActions(animationFileData.actions, imageSheets, imageCache);
 			return {
@@ -188,6 +158,43 @@ namespace
 		{
 			throw std::runtime_error("Error loading Sprite file: " + filePath + "\n" + error.what());
 		}
+	}
+
+
+	AnimationFileData readAnimationFileData(std::string_view fileData)
+	{
+		Xml::XmlDocument xmlDoc;
+		xmlDoc.parse(fileData.data());
+
+		if (xmlDoc.error())
+		{
+			throw std::runtime_error("Malformed XML: Line: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
+		}
+
+		const auto* spriteElement = xmlDoc.firstChildElement("sprite");
+		if (!spriteElement)
+		{
+			throw std::runtime_error("Missing required <sprite> tag");
+		}
+
+		const auto version = spriteElement->attribute("version");
+		if (version.empty())
+		{
+			throwLoadError("No version specified", spriteElement);
+		}
+		if (version != SpriteVersion)
+		{
+			throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, spriteElement);
+		}
+
+		// Note:
+		// Here instead of going through each element and calling a processing function to handle
+		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
+		// image sheets anywhere in the sprite file.
+		return {
+			processImageSheets(spriteElement),
+			processActions(spriteElement),
+		};
 	}
 
 

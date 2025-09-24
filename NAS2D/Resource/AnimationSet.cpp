@@ -62,14 +62,14 @@ namespace
 		std::vector<AnimationFrameData> frames;
 	};
 
-	struct AnimationFileData
+	struct AnimationFileIndexedData
 	{
 		ImageSheets imageSheets;
 		Actions actions;
 	};
 
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
-	AnimationFileData processXml(std::string_view filePath, ImageCache& imageCache);
+	AnimationFileIndexedData processXml(std::string_view filePath, ImageCache& imageCache);
 	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	std::vector<AnimationAction> processActions(const Xml::XmlElement* element);
@@ -132,7 +132,7 @@ namespace
 	 *
 	 * \param filePath	File path of the sprite XML definition file.
 	 */
-	AnimationFileData processXml(std::string_view filePath, ImageCache& imageCache)
+	AnimationFileIndexedData processXml(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
 		{

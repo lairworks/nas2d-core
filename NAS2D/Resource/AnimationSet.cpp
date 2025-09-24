@@ -48,6 +48,14 @@ namespace
 		std::string filePath;
 	};
 
+	struct AnimationFrameData
+	{
+		std::string id;
+		Rectangle<int> imageBounds;
+		Vector<int> anchorOffset;
+		Duration frameDelay;
+	};
+
 	struct AnimationFileData
 	{
 		ImageSheets imageSheets;
@@ -262,43 +270,45 @@ namespace
 			const auto dictionary = attributesToDictionary(*frame);
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
-			const auto sheetId = dictionary.get("sheetid");
-			const auto frameRect = Rectangle{
-				Point{
-					dictionary.get<int>("x"),
-					dictionary.get<int>("y"),
+			const auto animationFrameData = AnimationFrameData{
+				dictionary.get("sheetid"),
+				Rectangle{
+					Point{
+						dictionary.get<int>("x"),
+						dictionary.get<int>("y"),
+					},
+					Vector{
+						dictionary.get<int>("width"),
+						dictionary.get<int>("height"),
+					}
 				},
 				Vector{
-					dictionary.get<int>("width"),
-					dictionary.get<int>("height"),
-				}
+					dictionary.get<int>("anchorx"),
+					dictionary.get<int>("anchory"),
+				},
+				Duration{dictionary.get<unsigned int>("delay", 0)}
 			};
-			const auto anchorOffset = Vector{
-				dictionary.get<int>("anchorx"),
-				dictionary.get<int>("anchory"),
-			};
-			const auto delay = dictionary.get<unsigned int>("delay", 0);
 
-			if (sheetId.empty())
+			if (animationFrameData.id.empty())
 			{
 				throwLoadError("Frame definition has 'sheetid' of length zero", frame);
 			}
 
-			if (!imageSheets.contains(sheetId))
+			if (!imageSheets.contains(animationFrameData.id))
 			{
-				throw std::runtime_error("Frame definition references undefined imagesheet: " + sheetId);
+				throw std::runtime_error("Frame definition references undefined imagesheet: " + animationFrameData.id);
 			}
 
-			const auto& filePath = imageSheets.at(sheetId);
+			const auto& filePath = imageSheets.at(animationFrameData.id);
 			const auto& image = imageCache.load(filePath);
 
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
-			if (!imageRect.contains(frameRect))
+			if (!imageRect.contains(animationFrameData.imageBounds))
 			{
-				throw std::runtime_error("Frame bounds exceeds image sheet bounds: " + sheetId + " : " + stringFrom(frameRect));
+				throw std::runtime_error("Frame bounds exceeds image sheet bounds: " + animationFrameData.id + " : " + stringFrom(animationFrameData.imageBounds));
 			}
 
-			frameList.push_back(AnimationFrame{image, frameRect, anchorOffset, {delay}});
+			frameList.push_back(AnimationFrame{image, animationFrameData.imageBounds, animationFrameData.anchorOffset, animationFrameData.frameDelay});
 		}
 
 		return {frameList};

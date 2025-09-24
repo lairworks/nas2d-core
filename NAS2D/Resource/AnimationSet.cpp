@@ -18,8 +18,11 @@
 #include "../Utility.h"
 #include "../Filesystem.h"
 #include "../ContainerUtils.h"
+#include "../StringFrom.h"
 #include "../ParserHelper.h"
-#include "../Xml/Xml.h"
+#include "../Xml/XmlNode.h"
+#include "../Xml/XmlElement.h"
+#include "../Xml/XmlDocument.h"
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 
@@ -41,11 +44,11 @@ namespace
 	using Actions = AnimationSet::Actions;
 
 
+	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 	std::tuple<ImageSheets, Actions> processXml(std::string_view filePath, ImageCache& imageCache);
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 }
 
 
@@ -91,6 +94,11 @@ const AnimationSequence& AnimationSet::frames(const std::string& actionName) con
 
 namespace
 {
+	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
+	{
+		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
+	}
+
 
 	/**
 	 * Parses a Sprite XML Definition File.
@@ -134,7 +142,10 @@ namespace
 			// image sheets anywhere in the sprite file.
 			auto imageSheets = processImageSheets(basePath, spriteElement, imageCache);
 			auto actions = processActions(imageSheets, spriteElement, imageCache);
-			return std::tuple{std::move(imageSheets), std::move(actions)};
+			return {
+				std::move(imageSheets),
+				std::move(actions)
+			};
 		}
 		catch (const std::runtime_error& error)
 		{
@@ -202,7 +213,7 @@ namespace
 			{
 				throwLoadError("Action definition has 'name' of length zero", action);
 			}
-			if (actions.find(actionName) != actions.end())
+			if (actions.contains(actionName))
 			{
 				throwLoadError("Action redefinition: " + actionName, action);
 			}
@@ -232,43 +243,44 @@ namespace
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
 			const auto sheetId = dictionary.get("sheetid");
+			const auto frameRect = Rectangle{
+				Point{
+					dictionary.get<int>("x"),
+					dictionary.get<int>("y"),
+				},
+				Vector{
+					dictionary.get<int>("width"),
+					dictionary.get<int>("height"),
+				}
+			};
+			const auto anchorOffset = Vector{
+				dictionary.get<int>("anchorx"),
+				dictionary.get<int>("anchory"),
+			};
 			const auto delay = dictionary.get<unsigned int>("delay", 0);
-			const auto x = dictionary.get<int>("x");
-			const auto y = dictionary.get<int>("y");
-			const auto width = dictionary.get<int>("width");
-			const auto height = dictionary.get<int>("height");
-			const auto anchorx = dictionary.get<int>("anchorx");
-			const auto anchory = dictionary.get<int>("anchory");
 
 			if (sheetId.empty())
 			{
 				throwLoadError("Frame definition has 'sheetid' of length zero", frame);
 			}
-			const auto iterator = imageSheets.find(sheetId);
-			if (iterator == imageSheets.end())
+
+			if (!imageSheets.contains(sheetId))
 			{
 				throwLoadError("Frame definition references undefined imagesheet: " + sheetId, frame);
 			}
 
-			const auto& image = imageCache.load(iterator->second);
+			const auto& filePath = imageSheets.at(sheetId);
+			const auto& image = imageCache.load(filePath);
 
-			const auto frameRect = Rectangle<int>{{x, y}, {width, height}};
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
-				throwLoadError("Frame bounds exceeds image sheet bounds", frame);
+				throwLoadError("Frame bounds exceeds image sheet bounds: " + sheetId + " : " + stringFrom(frameRect), frame);
 			}
 
-			const auto anchorOffset = Vector{anchorx, anchory};
 			frameList.push_back(AnimationFrame{image, frameRect, anchorOffset, {delay}});
 		}
 
 		return {frameList};
-	}
-
-
-	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
-	{
-		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
 	}
 }

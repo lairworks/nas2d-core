@@ -45,7 +45,7 @@ namespace
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlElement* element);
+	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 }
 
 
@@ -267,8 +267,8 @@ namespace
 	}
 
 
-	void throwLoadError(std::string_view message, const Xml::XmlElement* element)
+	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
 	{
-		throw std::runtime_error(message + " (Line: " + std::to_string(element->row()) + ")");
+		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
 	}
 }

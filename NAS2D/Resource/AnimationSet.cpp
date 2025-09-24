@@ -44,11 +44,11 @@ namespace
 	using Actions = AnimationSet::Actions;
 
 
+	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 	std::tuple<ImageSheets, Actions> processXml(std::string_view filePath, ImageCache& imageCache);
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 }
 
 
@@ -94,6 +94,11 @@ const AnimationSequence& AnimationSet::frames(const std::string& actionName) con
 
 namespace
 {
+	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
+	{
+		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
+	}
+
 
 	/**
 	 * Parses a Sprite XML Definition File.
@@ -277,11 +282,5 @@ namespace
 		}
 
 		return {frameList};
-	}
-
-
-	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
-	{
-		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
 	}
 }

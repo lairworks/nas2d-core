@@ -109,7 +109,7 @@ namespace
 
 			if (xmlDoc.error())
 			{
-				throw std::runtime_error("Malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
+				throw std::runtime_error("Malformed XML: Line: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 			}
 
 			const auto* spriteElement = xmlDoc.firstChildElement("sprite");

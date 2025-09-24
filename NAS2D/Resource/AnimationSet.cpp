@@ -20,7 +20,9 @@
 #include "../ContainerUtils.h"
 #include "../StringFrom.h"
 #include "../ParserHelper.h"
-#include "../Xml/Xml.h"
+#include "../Xml/XmlNode.h"
+#include "../Xml/XmlElement.h"
+#include "../Xml/XmlDocument.h"
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 

@@ -215,7 +215,7 @@ namespace
 			}
 			if (actions.contains(actionName))
 			{
-				throwLoadError("Action redefinition: " + actionName, action);
+				throw std::runtime_error("Action redefinition: " + actionName);
 			}
 
 			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));

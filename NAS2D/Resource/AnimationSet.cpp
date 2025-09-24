@@ -42,6 +42,12 @@ namespace
 	using ImageSheets = AnimationSet::ImageSheets;
 	using Actions = AnimationSet::Actions;
 
+	struct AnimationImageSheetReference
+	{
+		std::string id;
+		std::string filePath;
+	};
+
 	struct AnimationFileData
 	{
 		ImageSheets imageSheets;
@@ -173,26 +179,28 @@ namespace
 		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
 			const auto dictionary = attributesToDictionary(*node);
-			const auto id = dictionary.get("id");
-			const auto src = dictionary.get("src");
+			const auto imageSheetReference = AnimationImageSheetReference{
+				dictionary.get("id"),
+				dictionary.get("src")
+			};
 
-			if (id.empty())
+			if (imageSheetReference.id.empty())
 			{
 				throwLoadError("Image sheet definition has `id` of length zero", node);
 			}
 
-			if (src.empty())
+			if (imageSheetReference.filePath.empty())
 			{
 				throwLoadError("Image sheet definition has `src` of length zero", node);
 			}
 
-			if (imageSheets.contains(id))
+			if (imageSheets.contains(imageSheetReference.id))
 			{
-				throw std::runtime_error("Image sheet redefinition: id: " + id);
+				throw std::runtime_error("Image sheet redefinition: id: " + imageSheetReference.id);
 			}
 
-			const auto imagePath = basePath + src;
-			imageSheets.try_emplace(id, imagePath);
+			const auto imagePath = basePath + imageSheetReference.filePath;
+			imageSheets.try_emplace(imageSheetReference.id, imagePath);
 			imageCache.load(imagePath);
 		}
 

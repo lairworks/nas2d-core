@@ -18,6 +18,7 @@
 #include "../Utility.h"
 #include "../Filesystem.h"
 #include "../ContainerUtils.h"
+#include "../StringFrom.h"
 #include "../ParserHelper.h"
 #include "../Xml/Xml.h"
 #include "../Math/Vector.h"
@@ -267,7 +268,7 @@ namespace
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
-				throwLoadError("Frame bounds exceeds image sheet bounds", frame);
+				throwLoadError("Frame bounds exceeds image sheet bounds: " + sheetId + " : " + stringFrom(frameRect), frame);
 			}
 
 			frameList.push_back(AnimationFrame{image, frameRect, anchorOffset, {delay}});

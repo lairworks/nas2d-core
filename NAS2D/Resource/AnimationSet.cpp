@@ -177,7 +177,7 @@ namespace
 				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
 			}
 
-			if (imageSheets.find(id) != imageSheets.end())
+			if (imageSheets.contains(id))
 			{
 				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
 			}

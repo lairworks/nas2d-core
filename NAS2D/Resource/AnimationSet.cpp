@@ -206,7 +206,7 @@ namespace
 			{
 				throwLoadError("Action definition has 'name' of length zero", action);
 			}
-			if (actions.find(actionName) != actions.end())
+			if (actions.contains(actionName))
 			{
 				throwLoadError("Action redefinition: " + actionName, action);
 			}

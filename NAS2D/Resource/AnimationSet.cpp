@@ -37,13 +37,6 @@ namespace
 	using ImageCache = ResourceCache<Image, std::string>;
 	ImageCache animationImageCache;
 
-
-	// Adds a row tag to the end of messages.
-	std::string endTag(int row)
-	{
-		return " (Row: " + std::to_string(row) + ")";
-	}
-
 	using ImageSheets = AnimationSet::ImageSheets;
 	using Actions = AnimationSet::Actions;
 
@@ -52,6 +45,7 @@ namespace
 	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
 	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
 	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
+	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 }
 
 
@@ -115,36 +109,36 @@ namespace
 
 			if (xmlDoc.error())
 			{
-				throw std::runtime_error("Sprite file has malformed XML: Row: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
+				throw std::runtime_error("Malformed XML: Line: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
 			}
 
-			const auto* xmlRootElement = xmlDoc.firstChildElement("sprite");
-			if (!xmlRootElement)
+			const auto* spriteElement = xmlDoc.firstChildElement("sprite");
+			if (!spriteElement)
 			{
-				throw std::runtime_error("Sprite file does not contain required <sprite> tag");
+				throw std::runtime_error("Missing required <sprite> tag");
 			}
 
-			const auto version = xmlRootElement->attribute("version");
+			const auto version = spriteElement->attribute("version");
 			if (version.empty())
 			{
-				throw std::runtime_error("Sprite file's root element does not specify a version");
+				throwLoadError("No version specified", spriteElement);
 			}
 			if (version != SpriteVersion)
 			{
-				throw std::runtime_error("Sprite version mismatch. Expected: " + std::string{SpriteVersion} + " Actual: " + version);
+				throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, spriteElement);
 			}
 
 			// Note:
 			// Here instead of going through each element and calling a processing function to handle
 			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 			// image sheets anywhere in the sprite file.
-			auto imageSheets = processImageSheets(basePath, xmlRootElement, imageCache);
-			auto actions = processActions(imageSheets, xmlRootElement, imageCache);
+			auto imageSheets = processImageSheets(basePath, spriteElement, imageCache);
+			auto actions = processActions(imageSheets, spriteElement, imageCache);
 			return std::tuple{std::move(imageSheets), std::move(actions)};
 		}
 		catch (const std::runtime_error& error)
 		{
-			throw std::runtime_error("Error parsing Sprite file: " + filePath + "\nError: " + error.what());
+			throw std::runtime_error("Error loading Sprite file: " + filePath + "\n" + error.what());
 		}
 	}
 
@@ -169,17 +163,17 @@ namespace
 
 			if (id.empty())
 			{
-				throw std::runtime_error("Sprite imagesheet definition has `id` of length zero: " + endTag(node->row()));
+				throwLoadError("Image sheet definition has `id` of length zero", node);
 			}
 
 			if (src.empty())
 			{
-				throw std::runtime_error("Sprite imagesheet definition has `src` of length zero: " + endTag(node->row()));
+				throwLoadError("Image sheet definition has `src` of length zero", node);
 			}
 
-			if (imageSheets.find(id) != imageSheets.end())
+			if (imageSheets.contains(id))
 			{
-				throw std::runtime_error("Sprite image sheet redefinition: id: '" + id + "' " + endTag(node->row()));
+				throwLoadError("Image sheet redefinition: id: " + id, node);
 			}
 
 			const auto imagePath = basePath + src;
@@ -206,18 +200,18 @@ namespace
 
 			if (actionName.empty())
 			{
-				throw std::runtime_error("Sprite Action definition has 'name' of length zero: " + endTag(action->row()));
+				throwLoadError("Action definition has 'name' of length zero", action);
 			}
 			if (actions.find(actionName) != actions.end())
 			{
-				throw std::runtime_error("Sprite Action redefinition: '" + actionName + "' " + endTag(action->row()));
+				throwLoadError("Action redefinition: " + actionName, action);
 			}
 
 			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));
 
 			if (actions.at(actionName).empty())
 			{
-				throw std::runtime_error("Sprite Action contains no valid frames: " + actionName);
+				throw std::runtime_error("Action contains no valid frames: " + actionName);
 			}
 		}
 
@@ -234,8 +228,6 @@ namespace
 
 		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))
 		{
-			int currentRow = frame->row();
-
 			const auto dictionary = attributesToDictionary(*frame);
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
@@ -250,12 +242,12 @@ namespace
 
 			if (sheetId.empty())
 			{
-				throw std::runtime_error("Sprite Frame definition has 'sheetid' of length zero: " + endTag(currentRow));
+				throwLoadError("Frame definition has 'sheetid' of length zero", frame);
 			}
 			const auto iterator = imageSheets.find(sheetId);
 			if (iterator == imageSheets.end())
 			{
-				throw std::runtime_error("Sprite Frame definition references undefined imagesheet: '" + sheetId + "' " + endTag(currentRow));
+				throwLoadError("Frame definition references undefined imagesheet: " + sheetId, frame);
 			}
 
 			const auto& image = imageCache.load(iterator->second);
@@ -264,7 +256,7 @@ namespace
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
 			if (!imageRect.contains(frameRect))
 			{
-				throw std::runtime_error("Sprite frame bounds exceeds image sheet bounds: " + endTag(currentRow));
+				throwLoadError("Frame bounds exceeds image sheet bounds", frame);
 			}
 
 			const auto anchorOffset = Vector{anchorx, anchory};
@@ -274,4 +266,9 @@ namespace
 		return {frameList};
 	}
 
+
+	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
+	{
+		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
+	}
 }

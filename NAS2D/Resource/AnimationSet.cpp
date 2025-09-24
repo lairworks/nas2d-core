@@ -247,13 +247,14 @@ namespace
 			{
 				throwLoadError("Frame definition has 'sheetid' of length zero", frame);
 			}
-			const auto iterator = imageSheets.find(sheetId);
-			if (iterator == imageSheets.end())
+
+			if (!imageSheets.contains(sheetId))
 			{
 				throwLoadError("Frame definition references undefined imagesheet: " + sheetId, frame);
 			}
 
-			const auto& image = imageCache.load(iterator->second);
+			const auto& filePath = imageSheets.at(sheetId);
+			const auto& image = imageCache.load(filePath);
 
 			const auto frameRect = Rectangle<int>{{x, y}, {width, height}};
 			const auto imageRect = Rectangle{{0, 0}, image.size()};

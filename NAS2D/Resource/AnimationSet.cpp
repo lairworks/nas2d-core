@@ -75,7 +75,7 @@ namespace
 	};
 
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
-	AnimationFileIndexedData processXml(std::string_view filePath, ImageCache& imageCache);
+	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
 	AnimationFileData readAnimationFileData(std::string_view fileData);
 	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
@@ -96,7 +96,7 @@ AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
 	mImageSheets{},
 	mActions{}
 {
-	auto [imageSheets, actions] = processXml(fileName, imageCache);
+	auto [imageSheets, actions] = readAndIndexAnimationFile(fileName, imageCache);
 	mImageSheets = std::move(imageSheets);
 	mActions = std::move(actions);
 }
@@ -139,7 +139,7 @@ namespace
 	 *
 	 * \param filePath	File path of the sprite XML definition file.
 	 */
-	AnimationFileIndexedData processXml(std::string_view filePath, ImageCache& imageCache)
+	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
 		{

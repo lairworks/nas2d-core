@@ -26,7 +26,6 @@
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 
-#include <tuple>
 #include <utility>
 
 
@@ -43,12 +42,47 @@ namespace
 	using ImageSheets = AnimationSet::ImageSheets;
 	using Actions = AnimationSet::Actions;
 
+	struct AnimationImageSheetReference
+	{
+		std::string id;
+		std::string filePath;
+	};
+
+	struct AnimationFrameData
+	{
+		std::string id;
+		Rectangle<int> imageBounds;
+		Vector<int> anchorOffset;
+		Duration frameDelay;
+	};
+
+	struct AnimationAction
+	{
+		std::string name;
+		std::vector<AnimationFrameData> frames;
+	};
+
+	struct AnimationFileData
+	{
+		std::vector<AnimationImageSheetReference> imageSheetReferences;
+		std::vector<AnimationAction> actions;
+	};
+
+	struct AnimationFileIndexedData
+	{
+		ImageSheets imageSheets;
+		Actions actions;
+	};
 
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
-	std::tuple<ImageSheets, Actions> processXml(std::string_view filePath, ImageCache& imageCache);
-	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache);
-	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
-	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache);
+	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
+	AnimationFileData readAnimationFileData(std::string_view fileData);
+	std::vector<AnimationImageSheetReference> readImageSheetReferences(const Xml::XmlElement* element);
+	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
+	std::vector<AnimationAction> readActions(const Xml::XmlElement* element);
+	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
+	std::vector<AnimationFrameData> readFrames(const Xml::XmlElement* element);
+	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 }
 
 
@@ -62,7 +96,7 @@ AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
 	mImageSheets{},
 	mActions{}
 {
-	auto [imageSheets, actions] = processXml(fileName, imageCache);
+	auto [imageSheets, actions] = readAndIndexAnimationFile(fileName, imageCache);
 	mImageSheets = std::move(imageSheets);
 	mActions = std::move(actions);
 }
@@ -100,48 +134,16 @@ namespace
 	}
 
 
-	/**
-	 * Parses a Sprite XML Definition File.
-	 *
-	 * \param filePath	File path of the sprite XML definition file.
-	 */
-	std::tuple<ImageSheets, Actions> processXml(std::string_view filePath, ImageCache& imageCache)
+	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
 		{
 			auto& filesystem = Utility<Filesystem>::get();
 			const auto basePath = Filesystem::parentPath(filePath);
 
-			Xml::XmlDocument xmlDoc;
-			xmlDoc.parse(filesystem.readFile(VirtualPath{filePath}).c_str());
-
-			if (xmlDoc.error())
-			{
-				throw std::runtime_error("Malformed XML: Line: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
-			}
-
-			const auto* spriteElement = xmlDoc.firstChildElement("sprite");
-			if (!spriteElement)
-			{
-				throw std::runtime_error("Missing required <sprite> tag");
-			}
-
-			const auto version = spriteElement->attribute("version");
-			if (version.empty())
-			{
-				throwLoadError("No version specified", spriteElement);
-			}
-			if (version != SpriteVersion)
-			{
-				throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, spriteElement);
-			}
-
-			// Note:
-			// Here instead of going through each element and calling a processing function to handle
-			// it, we just iterate through all nodes to find sprite sheets. This allows us to define
-			// image sheets anywhere in the sprite file.
-			auto imageSheets = processImageSheets(basePath, spriteElement, imageCache);
-			auto actions = processActions(imageSheets, spriteElement, imageCache);
+			const auto animationFileData = readAnimationFileData(filesystem.readFile(VirtualPath{filePath}));
+			auto imageSheets = loadImages(animationFileData.imageSheetReferences, basePath, imageCache);
+			auto actions = indexActions(animationFileData.actions, imageSheets, imageCache);
 			return {
 				std::move(imageSheets),
 				std::move(actions)
@@ -154,133 +156,180 @@ namespace
 	}
 
 
-	/**
-	 * Iterates through all elements of a Sprite XML definition looking
-	 * for 'imagesheet' elements and processes them.
-	 *
-	 * \note	Since 'imagesheet' elements are processed before any other
-	 *			element in a sprite definition, these elements can appear
-	 *			anywhere in a Sprite XML definition.
-	 */
-	ImageSheets processImageSheets(const std::string& basePath, const Xml::XmlElement* element, ImageCache& imageCache)
+	AnimationFileData readAnimationFileData(std::string_view fileData)
 	{
-		ImageSheets imageSheets;
+		Xml::XmlDocument xmlDoc;
+		xmlDoc.parse(fileData.data());
 
+		if (xmlDoc.error())
+		{
+			throw std::runtime_error("Malformed XML: Line: " + std::to_string(xmlDoc.errorRow()) + " Column: " + std::to_string(xmlDoc.errorCol()) + " : " + xmlDoc.errorDesc());
+		}
+
+		const auto* spriteElement = xmlDoc.firstChildElement("sprite");
+		if (!spriteElement)
+		{
+			throw std::runtime_error("Missing required <sprite> tag");
+		}
+
+		const auto version = spriteElement->attribute("version");
+		if (version.empty())
+		{
+			throwLoadError("No version specified", spriteElement);
+		}
+		if (version != SpriteVersion)
+		{
+			throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, spriteElement);
+		}
+
+		return {
+			readImageSheetReferences(spriteElement),
+			readActions(spriteElement),
+		};
+	}
+
+
+	std::vector<AnimationImageSheetReference> readImageSheetReferences(const Xml::XmlElement* element)
+	{
+		std::vector<AnimationImageSheetReference> imageSheetReferences;
 		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))
 		{
 			const auto dictionary = attributesToDictionary(*node);
-			const auto id = dictionary.get("id");
-			const auto src = dictionary.get("src");
+			const auto& imageSheetReference = imageSheetReferences.emplace_back(
+				dictionary.get("id"),
+				dictionary.get("src")
+			);
 
-			if (id.empty())
+			if (imageSheetReference.id.empty())
 			{
 				throwLoadError("Image sheet definition has `id` of length zero", node);
 			}
 
-			if (src.empty())
+			if (imageSheetReference.filePath.empty())
 			{
 				throwLoadError("Image sheet definition has `src` of length zero", node);
 			}
+		}
+		return imageSheetReferences;
+	}
 
-			if (imageSheets.contains(id))
+
+	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache)
+	{
+		ImageSheets imageSheets;
+		for (const auto& imageSheetReference : imageSheetReferences)
+		{
+			if (imageSheets.contains(imageSheetReference.id))
 			{
-				throwLoadError("Image sheet redefinition: id: " + id, node);
+				throw std::runtime_error("Image sheet redefinition: id: " + imageSheetReference.id);
 			}
 
-			const auto imagePath = basePath + src;
-			imageSheets.try_emplace(id, imagePath);
+			const auto imagePath = basePath + imageSheetReference.filePath;
+			imageSheets.try_emplace(imageSheetReference.id, imagePath);
 			imageCache.load(imagePath);
 		}
-
 		return imageSheets;
 	}
 
 
-	/**
-	 * Iterates through all elements of a Sprite XML definition looking
-	 * for 'action' elements and processes them.
-	 */
-	Actions processActions(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationAction> readActions(const Xml::XmlElement* element)
 	{
-		Actions actions;
-
+		std::vector<AnimationAction> actionDefinitions;
 		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))
 		{
 			const auto dictionary = attributesToDictionary(*action);
-			const auto actionName = dictionary.get("name");
+			const auto& actionDefinition = actionDefinitions.emplace_back(
+				dictionary.get("name"),
+				readFrames(action)
+			);
 
-			if (actionName.empty())
+			if (actionDefinition.name.empty())
 			{
 				throwLoadError("Action definition has 'name' of length zero", action);
 			}
-			if (actions.contains(actionName))
+		}
+		return actionDefinitions;
+	}
+
+
+	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
+	{
+		Actions actions;
+		for (const auto& action : actionDefinitions)
+		{
+			if (actions.contains(action.name))
 			{
-				throwLoadError("Action redefinition: " + actionName, action);
+				throw std::runtime_error("Action redefinition: " + action.name);
 			}
 
-			actions.try_emplace(actionName, processFrames(imageSheets, action, imageCache));
+			actions.try_emplace(action.name, buildAnimationSequences(action.frames, imageSheets, imageCache));
 
-			if (actions.at(actionName).empty())
+			if (actions.at(action.name).empty())
 			{
-				throw std::runtime_error("Action contains no valid frames: " + actionName);
+				throw std::runtime_error("Action contains no valid frames: " + action.name);
 			}
 		}
-
 		return actions;
 	}
 
 
-	/**
-	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
-	 */
-	AnimationSequence processFrames(const ImageSheets& imageSheets, const Xml::XmlElement* element, ImageCache& imageCache)
+	std::vector<AnimationFrameData> readFrames(const Xml::XmlElement* element)
 	{
-		std::vector<AnimationFrame> frameList;
-
+		std::vector<AnimationFrameData> frameDefinitions;
 		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))
 		{
 			const auto dictionary = attributesToDictionary(*frame);
 			reportMissingOrUnexpected(dictionary.keys(), {"sheetid", "x", "y", "width", "height", "anchorx", "anchory"}, {"delay"});
 
-			const auto sheetId = dictionary.get("sheetid");
-			const auto frameRect = Rectangle{
-				Point{
-					dictionary.get<int>("x"),
-					dictionary.get<int>("y"),
+			const auto& animationFrameData = frameDefinitions.emplace_back(
+				dictionary.get("sheetid"),
+				Rectangle{
+					Point{
+						dictionary.get<int>("x"),
+						dictionary.get<int>("y"),
+					},
+					Vector{
+						dictionary.get<int>("width"),
+						dictionary.get<int>("height"),
+					}
 				},
 				Vector{
-					dictionary.get<int>("width"),
-					dictionary.get<int>("height"),
-				}
-			};
-			const auto anchorOffset = Vector{
-				dictionary.get<int>("anchorx"),
-				dictionary.get<int>("anchory"),
-			};
-			const auto delay = dictionary.get<unsigned int>("delay", 0);
+					dictionary.get<int>("anchorx"),
+					dictionary.get<int>("anchory"),
+				},
+				Duration{dictionary.get<unsigned int>("delay", 0)}
+			);
 
-			if (sheetId.empty())
+			if (animationFrameData.id.empty())
 			{
 				throwLoadError("Frame definition has 'sheetid' of length zero", frame);
 			}
+		}
+		return frameDefinitions;
+	}
 
-			if (!imageSheets.contains(sheetId))
+
+	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
+	{
+		std::vector<AnimationFrame> frameList;
+		for (const auto& animationFrameData : frameDefinitions)
+		{
+			if (!imageSheets.contains(animationFrameData.id))
 			{
-				throwLoadError("Frame definition references undefined imagesheet: " + sheetId, frame);
+				throw std::runtime_error("Frame definition references undefined imagesheet: " + animationFrameData.id);
 			}
 
-			const auto& filePath = imageSheets.at(sheetId);
+			const auto& filePath = imageSheets.at(animationFrameData.id);
 			const auto& image = imageCache.load(filePath);
 
 			const auto imageRect = Rectangle{{0, 0}, image.size()};
-			if (!imageRect.contains(frameRect))
+			if (!imageRect.contains(animationFrameData.imageBounds))
 			{
-				throwLoadError("Frame bounds exceeds image sheet bounds: " + sheetId + " : " + stringFrom(frameRect), frame);
+				throw std::runtime_error("Frame bounds exceeds image sheet bounds: " + animationFrameData.id + " : " + stringFrom(animationFrameData.imageBounds));
 			}
 
-			frameList.push_back(AnimationFrame{image, frameRect, anchorOffset, {delay}});
+			frameList.push_back(AnimationFrame{image, animationFrameData.imageBounds, animationFrameData.anchorOffset, animationFrameData.frameDelay});
 		}
-
 		return {frameList};
 	}
 }

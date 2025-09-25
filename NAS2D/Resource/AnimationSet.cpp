@@ -134,11 +134,6 @@ namespace
 	}
 
 
-	/**
-	 * Parses a Sprite XML Definition File.
-	 *
-	 * \param filePath	File path of the sprite XML definition file.
-	 */
 	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
@@ -187,10 +182,6 @@ namespace
 			throwLoadError("Unsupported version: Expected: " + std::string{SpriteVersion} + " Actual: " + version, spriteElement);
 		}
 
-		// Note:
-		// Here instead of going through each element and calling a processing function to handle
-		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
-		// image sheets anywhere in the sprite file.
 		return {
 			readImageSheetReferences(spriteElement),
 			readActions(spriteElement),
@@ -198,14 +189,6 @@ namespace
 	}
 
 
-	/**
-	 * Iterates through all elements of a Sprite XML definition looking
-	 * for 'imagesheet' elements and processes them.
-	 *
-	 * \note	Since 'imagesheet' elements are processed before any other
-	 *			element in a sprite definition, these elements can appear
-	 *			anywhere in a Sprite XML definition.
-	 */
 	std::vector<AnimationImageSheetReference> readImageSheetReferences(const Xml::XmlElement* element)
 	{
 		std::vector<AnimationImageSheetReference> imageSheetReferences;
@@ -249,10 +232,6 @@ namespace
 	}
 
 
-	/**
-	 * Iterates through all elements of a Sprite XML definition looking
-	 * for 'action' elements and processes them.
-	 */
 	std::vector<AnimationAction> readActions(const Xml::XmlElement* element)
 	{
 		std::vector<AnimationAction> actionDefinitions;
@@ -294,9 +273,6 @@ namespace
 	}
 
 
-	/**
-	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
-	 */
 	std::vector<AnimationFrameData> readFrames(const Xml::XmlElement* element)
 	{
 		std::vector<AnimationFrameData> frameDefinitions;

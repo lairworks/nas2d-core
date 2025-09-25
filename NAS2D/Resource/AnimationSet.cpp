@@ -84,51 +84,8 @@ namespace
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
-}
 
 
-AnimationSet::AnimationSet(std::string_view fileName) :
-	AnimationSet{fileName, animationImageCache}
-{
-}
-
-
-AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
-	mImageSheets{},
-	mActions{}
-{
-	auto [imageSheets, actions] = readAndIndexAnimationFile(fileName, imageCache);
-	mImageSheets = std::move(imageSheets);
-	mActions = std::move(actions);
-}
-
-
-AnimationSet::AnimationSet(ImageSheets imageSheets, Actions actions) :
-	mImageSheets{std::move(imageSheets)},
-	mActions{std::move(actions)}
-{
-}
-
-
-std::vector<std::string> AnimationSet::actionNames() const
-{
-	return getKeys(mActions);
-}
-
-
-const AnimationSequence& AnimationSet::frames(const std::string& actionName) const
-{
-	if (!mActions.contains(actionName))
-	{
-		throw std::runtime_error("AnimationSet::frames called on undefined action: " + actionName);
-	}
-
-	return mActions.at(actionName);
-}
-
-
-namespace
-{
 	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
 	{
 		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
@@ -333,4 +290,44 @@ namespace
 		}
 		return {frameList};
 	}
+}
+
+
+AnimationSet::AnimationSet(std::string_view fileName) :
+	AnimationSet{fileName, animationImageCache}
+{
+}
+
+
+AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
+	mImageSheets{},
+	mActions{}
+{
+	auto [imageSheets, actions] = readAndIndexAnimationFile(fileName, imageCache);
+	mImageSheets = std::move(imageSheets);
+	mActions = std::move(actions);
+}
+
+
+AnimationSet::AnimationSet(ImageSheets imageSheets, Actions actions) :
+	mImageSheets{std::move(imageSheets)},
+	mActions{std::move(actions)}
+{
+}
+
+
+std::vector<std::string> AnimationSet::actionNames() const
+{
+	return getKeys(mActions);
+}
+
+
+const AnimationSequence& AnimationSet::frames(const std::string& actionName) const
+{
+	if (!mActions.contains(actionName))
+	{
+		throw std::runtime_error("AnimationSet::frames called on undefined action: " + actionName);
+	}
+
+	return mActions.at(actionName);
 }

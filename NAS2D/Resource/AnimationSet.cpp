@@ -75,84 +75,20 @@ namespace
 	};
 
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
-	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
 	AnimationFileData readAnimationFileData(std::string_view fileData);
 	std::vector<AnimationImageSheetReference> readImageSheetReferences(const Xml::XmlElement* element);
-	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	std::vector<AnimationAction> readActions(const Xml::XmlElement* element);
-	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 	std::vector<AnimationFrameData> readFrames(const Xml::XmlElement* element);
+
+	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
+	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
+	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
-}
 
 
-AnimationSet::AnimationSet(std::string_view fileName) :
-	AnimationSet{fileName, animationImageCache}
-{
-}
-
-
-AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
-	mImageSheets{},
-	mActions{}
-{
-	auto [imageSheets, actions] = readAndIndexAnimationFile(fileName, imageCache);
-	mImageSheets = std::move(imageSheets);
-	mActions = std::move(actions);
-}
-
-
-AnimationSet::AnimationSet(ImageSheets imageSheets, Actions actions) :
-	mImageSheets{std::move(imageSheets)},
-	mActions{std::move(actions)}
-{
-}
-
-
-std::vector<std::string> AnimationSet::actionNames() const
-{
-	return getKeys(mActions);
-}
-
-
-const AnimationSequence& AnimationSet::frames(const std::string& actionName) const
-{
-	if (!mActions.contains(actionName))
-	{
-		throw std::runtime_error("AnimationSet::frames called on undefined action: " + actionName);
-	}
-
-	return mActions.at(actionName);
-}
-
-
-namespace
-{
 	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
 	{
 		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
-	}
-
-
-	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
-	{
-		try
-		{
-			auto& filesystem = Utility<Filesystem>::get();
-			const auto basePath = Filesystem::parentPath(filePath);
-
-			const auto animationFileData = readAnimationFileData(filesystem.readFile(VirtualPath{filePath}));
-			auto imageSheets = loadImages(animationFileData.imageSheetReferences, basePath, imageCache);
-			auto actions = indexActions(animationFileData.actions, imageSheets, imageCache);
-			return {
-				std::move(imageSheets),
-				std::move(actions)
-			};
-		}
-		catch (const std::runtime_error& error)
-		{
-			throw std::runtime_error("Error loading Sprite file: " + filePath + "\n" + error.what());
-		}
 	}
 
 
@@ -214,24 +150,6 @@ namespace
 	}
 
 
-	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache)
-	{
-		ImageSheets imageSheets;
-		for (const auto& imageSheetReference : imageSheetReferences)
-		{
-			if (imageSheets.contains(imageSheetReference.id))
-			{
-				throw std::runtime_error("Image sheet redefinition: id: " + imageSheetReference.id);
-			}
-
-			const auto imagePath = basePath + imageSheetReference.filePath;
-			imageSheets.try_emplace(imageSheetReference.id, imagePath);
-			imageCache.load(imagePath);
-		}
-		return imageSheets;
-	}
-
-
 	std::vector<AnimationAction> readActions(const Xml::XmlElement* element)
 	{
 		std::vector<AnimationAction> actionDefinitions;
@@ -249,27 +167,6 @@ namespace
 			}
 		}
 		return actionDefinitions;
-	}
-
-
-	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
-	{
-		Actions actions;
-		for (const auto& action : actionDefinitions)
-		{
-			if (actions.contains(action.name))
-			{
-				throw std::runtime_error("Action redefinition: " + action.name);
-			}
-
-			actions.try_emplace(action.name, buildAnimationSequences(action.frames, imageSheets, imageCache));
-
-			if (actions.at(action.name).empty())
-			{
-				throw std::runtime_error("Action contains no valid frames: " + action.name);
-			}
-		}
-		return actions;
 	}
 
 
@@ -309,6 +206,67 @@ namespace
 	}
 
 
+	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
+	{
+		try
+		{
+			auto& filesystem = Utility<Filesystem>::get();
+			const auto basePath = Filesystem::parentPath(filePath);
+
+			const auto animationFileData = readAnimationFileData(filesystem.readFile(VirtualPath{filePath}));
+			auto imageSheets = loadImages(animationFileData.imageSheetReferences, basePath, imageCache);
+			auto actions = indexActions(animationFileData.actions, imageSheets, imageCache);
+			return {
+				std::move(imageSheets),
+				std::move(actions)
+			};
+		}
+		catch (const std::runtime_error& error)
+		{
+			throw std::runtime_error("Error loading Sprite file: " + filePath + "\n" + error.what());
+		}
+	}
+
+
+	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache)
+	{
+		ImageSheets imageSheets;
+		for (const auto& imageSheetReference : imageSheetReferences)
+		{
+			if (imageSheets.contains(imageSheetReference.id))
+			{
+				throw std::runtime_error("Image sheet redefinition: id: " + imageSheetReference.id);
+			}
+
+			const auto imagePath = basePath + imageSheetReference.filePath;
+			imageSheets.try_emplace(imageSheetReference.id, imagePath);
+			imageCache.load(imagePath);
+		}
+		return imageSheets;
+	}
+
+
+	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
+	{
+		Actions actions;
+		for (const auto& action : actionDefinitions)
+		{
+			if (actions.contains(action.name))
+			{
+				throw std::runtime_error("Action redefinition: " + action.name);
+			}
+
+			actions.try_emplace(action.name, buildAnimationSequences(action.frames, imageSheets, imageCache));
+
+			if (actions.at(action.name).empty())
+			{
+				throw std::runtime_error("Action contains no valid frames: " + action.name);
+			}
+		}
+		return actions;
+	}
+
+
 	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
 	{
 		std::vector<AnimationFrame> frameList;
@@ -332,4 +290,44 @@ namespace
 		}
 		return {frameList};
 	}
+}
+
+
+AnimationSet::AnimationSet(std::string_view fileName) :
+	AnimationSet{fileName, animationImageCache}
+{
+}
+
+
+AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
+	mImageSheets{},
+	mActions{}
+{
+	auto [imageSheets, actions] = readAndIndexAnimationFile(fileName, imageCache);
+	mImageSheets = std::move(imageSheets);
+	mActions = std::move(actions);
+}
+
+
+AnimationSet::AnimationSet(ImageSheets imageSheets, Actions actions) :
+	mImageSheets{std::move(imageSheets)},
+	mActions{std::move(actions)}
+{
+}
+
+
+std::vector<std::string> AnimationSet::actionNames() const
+{
+	return getKeys(mActions);
+}
+
+
+const AnimationSequence& AnimationSet::frames(const std::string& actionName) const
+{
+	if (!mActions.contains(actionName))
+	{
+		throw std::runtime_error("AnimationSet::frames called on undefined action: " + actionName);
+	}
+
+	return mActions.at(actionName);
 }

@@ -77,7 +77,7 @@ namespace
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
 	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
 	AnimationFileData readAnimationFileData(std::string_view fileData);
-	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element);
+	std::vector<AnimationImageSheetReference> readImageSheetReferences(const Xml::XmlElement* element);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	std::vector<AnimationAction> processActions(const Xml::XmlElement* element);
 	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
@@ -192,7 +192,7 @@ namespace
 		// it, we just iterate through all nodes to find sprite sheets. This allows us to define
 		// image sheets anywhere in the sprite file.
 		return {
-			processImageSheets(spriteElement),
+			readImageSheetReferences(spriteElement),
 			processActions(spriteElement),
 		};
 	}
@@ -206,7 +206,7 @@ namespace
 	 *			element in a sprite definition, these elements can appear
 	 *			anywhere in a Sprite XML definition.
 	 */
-	std::vector<AnimationImageSheetReference> processImageSheets(const Xml::XmlElement* element)
+	std::vector<AnimationImageSheetReference> readImageSheetReferences(const Xml::XmlElement* element)
 	{
 		std::vector<AnimationImageSheetReference> imageSheetReferences;
 		for (const auto* node = element->firstChildElement("imagesheet"); node; node = node->nextSiblingElement("imagesheet"))

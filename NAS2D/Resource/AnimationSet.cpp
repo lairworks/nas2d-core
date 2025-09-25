@@ -79,7 +79,7 @@ namespace
 	AnimationFileData readAnimationFileData(std::string_view fileData);
 	std::vector<AnimationImageSheetReference> readImageSheetReferences(const Xml::XmlElement* element);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
-	std::vector<AnimationAction> processActions(const Xml::XmlElement* element);
+	std::vector<AnimationAction> readActions(const Xml::XmlElement* element);
 	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 	std::vector<AnimationFrameData> processFrames(const Xml::XmlElement* element);
 	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
@@ -193,7 +193,7 @@ namespace
 		// image sheets anywhere in the sprite file.
 		return {
 			readImageSheetReferences(spriteElement),
-			processActions(spriteElement),
+			readActions(spriteElement),
 		};
 	}
 
@@ -253,7 +253,7 @@ namespace
 	 * Iterates through all elements of a Sprite XML definition looking
 	 * for 'action' elements and processes them.
 	 */
-	std::vector<AnimationAction> processActions(const Xml::XmlElement* element)
+	std::vector<AnimationAction> readActions(const Xml::XmlElement* element)
 	{
 		std::vector<AnimationAction> actionDefinitions;
 		for (const auto* action = element->firstChildElement("action"); action; action = action->nextSiblingElement("action"))

@@ -81,7 +81,7 @@ namespace
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	std::vector<AnimationAction> readActions(const Xml::XmlElement* element);
 	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
-	std::vector<AnimationFrameData> processFrames(const Xml::XmlElement* element);
+	std::vector<AnimationFrameData> readFrames(const Xml::XmlElement* element);
 	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
 }
 
@@ -261,7 +261,7 @@ namespace
 			const auto dictionary = attributesToDictionary(*action);
 			const auto& actionDefinition = actionDefinitions.emplace_back(
 				dictionary.get("name"),
-				processFrames(action)
+				readFrames(action)
 			);
 
 			if (actionDefinition.name.empty())
@@ -297,7 +297,7 @@ namespace
 	/**
 	 * Parses through all <frame> tags within an <action> tag in a Sprite Definition.
 	 */
-	std::vector<AnimationFrameData> processFrames(const Xml::XmlElement* element)
+	std::vector<AnimationFrameData> readFrames(const Xml::XmlElement* element)
 	{
 		std::vector<AnimationFrameData> frameDefinitions;
 		for (const auto* frame = element->firstChildElement("frame"); frame; frame = frame->nextSiblingElement("frame"))

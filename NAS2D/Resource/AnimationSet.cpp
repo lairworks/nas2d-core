@@ -68,6 +68,12 @@ namespace
 		std::vector<AnimationAction> actions;
 	};
 
+	struct AnimationFile
+	{
+		std::string basePath;
+		AnimationFileData animationFileData;
+	};
+
 	struct AnimationFileIndexedData
 	{
 		ImageSheets imageSheets;
@@ -75,6 +81,7 @@ namespace
 	};
 
 	[[noreturn]] void throwLoadError(std::string_view message, const Xml::XmlNode* node);
+	AnimationFile readAnimationFile(std::string_view filePath);
 	AnimationFileData readAnimationFileData(std::string_view fileData);
 	std::vector<AnimationImageSheetReference> readImageSheetReferences(const Xml::XmlElement* element);
 	std::vector<AnimationAction> readActions(const Xml::XmlElement* element);
@@ -89,6 +96,16 @@ namespace
 	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
 	{
 		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
+	}
+
+
+	AnimationFile readAnimationFile(std::string_view filePath)
+	{
+		auto& filesystem = Utility<Filesystem>::get();
+		return {
+			Filesystem::parentPath(filePath),
+			readAnimationFileData(filesystem.readFile(VirtualPath{filePath})),
+		};
 	}
 
 
@@ -210,10 +227,7 @@ namespace
 	{
 		try
 		{
-			auto& filesystem = Utility<Filesystem>::get();
-			const auto basePath = Filesystem::parentPath(filePath);
-
-			const auto animationFileData = readAnimationFileData(filesystem.readFile(VirtualPath{filePath}));
+			const auto& [basePath, animationFileData] = readAnimationFile(filePath);
 			auto imageSheets = loadImages(animationFileData.imageSheetReferences, basePath, imageCache);
 			auto actions = indexActions(animationFileData.actions, imageSheets, imageCache);
 			return {

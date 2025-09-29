@@ -4,6 +4,7 @@
 #include "../Math/Vector.h"
 #include "../Math/Rectangle.h"
 
+#include <string_view>
 #include <string>
 #include <vector>
 
@@ -41,4 +42,7 @@ namespace NAS2D
 		std::string basePath;
 		AnimationFileData animationFileData;
 	};
+
+
+	AnimationFile loadAnimationFile(std::string_view filePath);
 }

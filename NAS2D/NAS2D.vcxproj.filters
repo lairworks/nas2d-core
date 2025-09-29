@@ -135,6 +135,9 @@
     <ClCompile Include="Renderer\Window.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\AnimationFile.cpp">
+      <Filter>Source Files\Resource</Filter>
+    </ClCompile>
     <ClCompile Include="Resource\AnimationFrame.cpp">
       <Filter>Source Files\Resource</Filter>
     </ClCompile>

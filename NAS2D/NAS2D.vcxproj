@@ -243,6 +243,7 @@
     <ClInclude Include="Renderer\RendererOpenGL.h" />
     <ClInclude Include="Renderer\Window.h" />
     <ClInclude Include="Resource\ResourceCache.h" />
+    <ClInclude Include="Resource\AnimationFile.h" />
     <ClInclude Include="Resource\AnimationFrame.h" />
     <ClInclude Include="Resource\AnimationSequence.h" />
     <ClInclude Include="Resource\AnimationSet.h" />

@@ -329,6 +329,9 @@
     <ClInclude Include="Renderer\Window.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\AnimationFile.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
     <ClInclude Include="Resource\AnimationFrame.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>

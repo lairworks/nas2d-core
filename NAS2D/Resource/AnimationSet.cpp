@@ -11,6 +11,7 @@
 
 #include "AnimationSet.h"
 
+#include "AnimationFile.h"
 #include "AnimationFrame.h"
 #include "Image.h"
 #include "ResourceCache.h"
@@ -43,37 +44,6 @@ namespace
 	using ImageSheets = AnimationSet::ImageSheets;
 	using Actions = AnimationSet::Actions;
 
-	struct AnimationImageSheetReference
-	{
-		std::string id;
-		std::string filePath;
-	};
-
-	struct AnimationFrameData
-	{
-		std::string id;
-		Rectangle<int> imageBounds;
-		Vector<int> anchorOffset;
-		Duration frameDelay;
-	};
-
-	struct AnimationAction
-	{
-		std::string name;
-		std::vector<AnimationFrameData> frames;
-	};
-
-	struct AnimationFileData
-	{
-		std::vector<AnimationImageSheetReference> imageSheetReferences;
-		std::vector<AnimationAction> actions;
-	};
-
-	struct AnimationFile
-	{
-		std::string basePath;
-		AnimationFileData animationFileData;
-	};
 
 	struct AnimationFileIndexedData
 	{

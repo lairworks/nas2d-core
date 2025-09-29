@@ -31,14 +31,16 @@ namespace NAS2D
 	};
 
 
-	struct RealPath : public FilesystemPath
+	class RealPath : public FilesystemPath
 	{
+	public:
 		using FilesystemPath::FilesystemPath;
 	};
 
 
-	struct VirtualPath : public FilesystemPath
+	class VirtualPath : public FilesystemPath
 	{
+	public:
 		using FilesystemPath::FilesystemPath;
 	};
 

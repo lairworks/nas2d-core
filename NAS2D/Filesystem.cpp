@@ -182,7 +182,7 @@ RealPath Filesystem::findInParents(const RealPath& path, const RealPath& startPa
 		const auto checkPath = currentPath / path.string();
 		if (std::filesystem::exists(std::string{checkPath}))
 		{
-			return checkPath.string();
+			return RealPath{checkPath.string()};
 		}
 	}
 	return {};
@@ -278,7 +278,7 @@ std::vector<VirtualPath> Filesystem::directoryList(const VirtualPath& dir, const
 				const auto& filePath = dirEntry.path().filename().generic_string();
 				if (hasFileSuffix(filePath, filter))
 				{
-					fileList.push_back(filePath);
+					fileList.push_back(VirtualPath{filePath});
 				}
 			}
 		}

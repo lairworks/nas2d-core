@@ -22,7 +22,7 @@ using namespace NAS2D;
 
 
 Music::Music(std::string_view filePath) :
-	mBuffer{Utility<Filesystem>::get().readFile(filePath)}
+	mBuffer{Utility<Filesystem>::get().readFile(VirtualPath{filePath})}
 {
 	if (mBuffer.empty())
 	{

@@ -47,7 +47,7 @@ namespace
 
 SDL_Surface* Image::fileToSdlSurface(std::string_view filePath)
 {
-	const auto& data = Utility<Filesystem>::get().readFile(filePath);
+	const auto& data = Utility<Filesystem>::get().readFile(VirtualPath{filePath});
 
 	if (data.size() == 0)
 	{

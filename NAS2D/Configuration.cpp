@@ -78,7 +78,7 @@ void Configuration::load(const std::string& filePath)
 		try
 		{
 			// Read in the Config File.
-			auto xmlData = filesystem.readFile(filePath);
+			auto xmlData = filesystem.readFile(VirtualPath{filePath});
 			loadData(xmlData);
 		}
 		catch (const std::runtime_error& e)

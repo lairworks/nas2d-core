@@ -32,7 +32,7 @@ using namespace NAS2D;
  */
 Sound::Sound(std::string_view filePath)
 {
-	auto data = Utility<Filesystem>::get().readFile(filePath);
+	auto data = Utility<Filesystem>::get().readFile(VirtualPath{filePath});
 	if (data.empty())
 	{
 		throw std::runtime_error("Sound file is empty: " + filePath);

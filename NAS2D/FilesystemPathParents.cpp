@@ -56,7 +56,7 @@ namespace NAS2D
 
 
 	FilesystemPathParents::Iterator::Iterator() :
-		FilesystemPathParents::Iterator::Iterator("", 0)
+		FilesystemPathParents::Iterator::Iterator(FilesystemPath{}, 0)
 	{
 	}
 

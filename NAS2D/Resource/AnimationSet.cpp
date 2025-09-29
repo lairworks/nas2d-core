@@ -95,7 +95,7 @@ namespace
 
 	void throwLoadError(std::string_view message, const Xml::XmlNode* node)
 	{
-		throw std::runtime_error(message + " (Line: " + std::to_string(node->row()) + ")");
+		throw std::runtime_error(std::string{message} + " (Line: " + std::to_string(node->row()) + ")");
 	}
 
 
@@ -237,7 +237,7 @@ namespace
 		}
 		catch (const std::runtime_error& error)
 		{
-			throw std::runtime_error("Error loading Sprite file: " + filePath + "\n" + error.what());
+			throw std::runtime_error("Error loading Sprite file: " + std::string{filePath} + "\n" + error.what());
 		}
 	}
 

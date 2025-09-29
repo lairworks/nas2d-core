@@ -27,6 +27,7 @@
 #include "../Math/Rectangle.h"
 
 #include <utility>
+#include <stdexcept>
 
 
 using namespace NAS2D;

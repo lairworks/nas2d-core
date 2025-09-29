@@ -35,13 +35,13 @@ Sound::Sound(std::string_view filePath)
 	auto data = Utility<Filesystem>::get().readFile(VirtualPath{filePath});
 	if (data.empty())
 	{
-		throw std::runtime_error("Sound file is empty: " + filePath);
+		throw std::runtime_error("Sound file is empty: " + std::string{filePath});
 	}
 
 	mMixChunk = Mix_LoadWAV_RW(SDL_RWFromConstMem(data.c_str(), static_cast<int>(data.size())), 1);
 	if (!mMixChunk)
 	{
-		throw std::runtime_error("Sound file could not be loaded: " + filePath + " : " + std::string{Mix_GetError()});
+		throw std::runtime_error("Sound file could not be loaded: " + std::string{filePath} + " : " + std::string{Mix_GetError()});
 	}
 }
 

@@ -51,7 +51,7 @@ SDL_Surface* Image::fileToSdlSurface(std::string_view filePath)
 
 	if (data.size() == 0)
 	{
-		throw std::runtime_error("Image file is empty: " + filePath);
+		throw std::runtime_error("Image file is empty: " + std::string{filePath});
 	}
 
 	return dataToSdlSurface(data);

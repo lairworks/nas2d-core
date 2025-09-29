@@ -26,7 +26,7 @@ Music::Music(std::string_view filePath) :
 {
 	if (mBuffer.empty())
 	{
-		throw std::runtime_error("Music file is empty: " + filePath);
+		throw std::runtime_error("Music file is empty: " + std::string{filePath});
 	}
 
 	mMusic = Mix_LoadMUS_RW(SDL_RWFromConstMem(mBuffer.c_str(), static_cast<int>(mBuffer.size())), 1);

@@ -249,7 +249,7 @@ namespace
 		auto fontBuffer = Utility<Filesystem>::get().readFile(VirtualPath{path});
 		if (fontBuffer.empty())
 		{
-			throw std::runtime_error("Font file is empty: " + path);
+			throw std::runtime_error("Font file is empty: " + std::string{path});
 		}
 
 		auto* font = TTF_OpenFontRW(SDL_RWFromConstMem(fontBuffer.c_str(), static_cast<int>(fontBuffer.size())), 1, static_cast<int>(ptSize));
@@ -287,7 +287,7 @@ namespace
 		auto fontBuffer = Utility<Filesystem>::get().readFile(VirtualPath{path});
 		if (fontBuffer.empty())
 		{
-			throw std::runtime_error("Font file is empty: " + path);
+			throw std::runtime_error("Font file is empty: " + std::string{path});
 		}
 
 		SDL_Surface* fontSurface = IMG_Load_RW(SDL_RWFromConstMem(fontBuffer.c_str(), static_cast<int>(fontBuffer.size())), 1);

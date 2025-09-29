@@ -179,7 +179,7 @@ RealPath Filesystem::findInParents(const RealPath& path, const RealPath& startPa
 {
 	for (const auto& currentPath : FilesystemPathParents(startPath, maxLevels))
 	{
-		const auto checkPath = currentPath / path.string();
+		const auto checkPath = currentPath / path;
 		if (std::filesystem::exists(std::string{checkPath}))
 		{
 			return RealPath{checkPath.string()};

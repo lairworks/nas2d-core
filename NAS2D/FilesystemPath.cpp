@@ -52,7 +52,7 @@ bool FilesystemPath::operator<(const FilesystemPath& other) const
 
 FilesystemPath FilesystemPath::operator/(const FilesystemPath& path) const
 {
-	return (std::filesystem::path{mPath} / std::filesystem::path{std::string{path}}).string();
+	return FilesystemPath{(std::filesystem::path{mPath} / std::filesystem::path{std::string{path}}).string()};
 }
 
 
@@ -73,7 +73,7 @@ std::size_t FilesystemPath::componentCount() const
 
 FilesystemPath FilesystemPath::absolute() const
 {
-	return std::filesystem::absolute(mPath).string();
+	return FilesystemPath{std::filesystem::absolute(mPath).string()};
 }
 
 
@@ -81,13 +81,13 @@ FilesystemPath FilesystemPath::parent() const
 {
 	// Keep the trailing "/" as part of the folder name
 	// This is contrary to how <filesystem> behaves, which strips the trailing "/"
-	return ((std::filesystem::path{mPath} / "").parent_path().remove_filename()).string();
+	return FilesystemPath{((std::filesystem::path{mPath} / "").parent_path().remove_filename()).string()};
 }
 
 
 FilesystemPath FilesystemPath::stem() const
 {
-	return std::filesystem::path{mPath}.stem().string();
+	return FilesystemPath{std::filesystem::path{mPath}.stem().string()};
 }
 
 

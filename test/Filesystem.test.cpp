@@ -76,11 +76,11 @@ TEST_F(Filesystem, findInParentsExist) {
 }
 
 TEST_F(Filesystem, findInParentsNotExist) {
-	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 0));
-	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 1));
-	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 2));
-	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 3));
-	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 4));
+	EXPECT_EQ(NAS2D::RealPath{""}, fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 0));
+	EXPECT_EQ(NAS2D::RealPath{""}, fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 1));
+	EXPECT_EQ(NAS2D::RealPath{""}, fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 2));
+	EXPECT_EQ(NAS2D::RealPath{""}, fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 3));
+	EXPECT_EQ(NAS2D::RealPath{""}, fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 4));
 }
 
 TEST_F(Filesystem, searchPath) {

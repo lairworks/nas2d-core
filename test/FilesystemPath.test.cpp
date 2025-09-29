@@ -41,8 +41,8 @@ TEST(FilesystemPath, operatorLess) {
 
 TEST(FilesystemPath, operatorSlash) {
 	const auto path = NAS2D::FilesystemPath{"a/b/c/"};
-	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/d/"}, path / "d/");
-	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/filename"}, path / "filename");
+	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/d/"}, path / NAS2D::FilesystemPath{"d/"});
+	EXPECT_EQ(NAS2D::FilesystemPath{"a/b/c/filename"}, path / NAS2D::FilesystemPath{"filename"});
 }
 
 TEST(FilesystemPath, isRelative) {
@@ -68,7 +68,7 @@ TEST(FilesystemPath, componentCountAbsolute) {
 }
 
 TEST(FilesystemPath, absoluteRelative) {
-	const auto path = NAS2D::FilesystemPath{"a"} / "filename";
+	const auto path = NAS2D::FilesystemPath{"a"} / NAS2D::FilesystemPath{"filename"};
 	const auto pathAbsolute = path.absolute();
 	EXPECT_THAT(pathAbsolute, testing::EndsWith(path));
 	EXPECT_NE(path, pathAbsolute);

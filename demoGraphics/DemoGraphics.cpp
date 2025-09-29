@@ -23,7 +23,7 @@ namespace
 		static const std::string fileName = "fonts/opensans.ttf";
 
 		const auto& filesystem = NAS2D::Utility<NAS2D::Filesystem>::get();
-		if (filesystem.exists(fileName))
+		if (filesystem.exists(NAS2D::VirtualPath{fileName}))
 		{
 			return NAS2D::Font{fileName, 16};
 		}

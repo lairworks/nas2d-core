@@ -196,7 +196,7 @@ DisplayDesc Window::getClosestMatchingDisplayMode(const DisplayDesc& preferredDi
 
 void Window::window_icon(const std::string& path)
 {
-	auto iconData = Utility<Filesystem>::get().readFile(path);
+	auto iconData = Utility<Filesystem>::get().readFile(VirtualPath{path});
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(iconData.c_str(), static_cast<int>(iconData.size())), 1);
 	if (!icon)
 	{
@@ -216,7 +216,7 @@ void Window::showSystemPointer(bool _b)
 
 void Window::addCursor(CursorId cursorId, const std::string& filePath, Vector<int> hotOffset)
 {
-	auto imageData = Utility<Filesystem>::get().readFile(filePath);
+	auto imageData = Utility<Filesystem>::get().readFile(VirtualPath{filePath});
 	if (imageData.size() == 0)
 	{
 		throw std::runtime_error("Cursor file is empty: " + filePath);

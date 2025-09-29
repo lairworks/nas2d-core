@@ -73,12 +73,12 @@ void Configuration::loadData(const std::string& fileData)
 void Configuration::load(const std::string& filePath)
 {
 	const auto& filesystem = Utility<Filesystem>::get();
-	if (filesystem.exists(filePath))
+	if (filesystem.exists(VirtualPath{filePath}))
 	{
 		try
 		{
 			// Read in the Config File.
-			auto xmlData = filesystem.readFile(filePath);
+			auto xmlData = filesystem.readFile(VirtualPath{filePath});
 			loadData(xmlData);
 		}
 		catch (const std::runtime_error& e)
@@ -105,7 +105,7 @@ void Configuration::save(const std::string& filePath) const
 {
 	try
 	{
-		Utility<Filesystem>::get().writeFile(filePath, saveData());
+		Utility<Filesystem>::get().writeFile(VirtualPath{filePath}, saveData());
 	}
 	catch (const std::runtime_error& e)
 	{

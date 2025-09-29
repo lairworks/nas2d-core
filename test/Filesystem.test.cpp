@@ -46,7 +46,7 @@ namespace {
 			fs(AppName, OrganizationName)
 		{
 			fs.mount(fs.basePath());
-			fs.mount(fs.findInParents("test/data/", fs.basePath()));
+			fs.mount(fs.findInParents(NAS2D::RealPath{"test/data/"}, fs.basePath()));
 			fs.mountReadWrite(fs.prefPath());
 		}
 
@@ -70,17 +70,17 @@ TEST_F(Filesystem, prefPath) {
 
 TEST_F(Filesystem, findInParentsExist) {
 	// Try to find the unit test project folder
-	const auto folder = "test/";
+	const auto folder = NAS2D::RealPath{"test/"};
 	EXPECT_THAT(fs.findInParents(folder, fs.basePath()), testing::EndsWith(folder));
 	EXPECT_THAT(fs.findInParents(folder, fs.basePath(), 4), testing::EndsWith(folder));
 }
 
 TEST_F(Filesystem, findInParentsNotExist) {
-	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 0));
-	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 1));
-	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 2));
-	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 3));
-	EXPECT_EQ("", fs.findInParents("FolderThatDoesNotExist/", fs.basePath(), 4));
+	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 0));
+	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 1));
+	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 2));
+	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 3));
+	EXPECT_EQ("", fs.findInParents(NAS2D::RealPath{"FolderThatDoesNotExist/"}, fs.basePath(), 4));
 }
 
 TEST_F(Filesystem, searchPath) {
@@ -93,31 +93,31 @@ TEST_F(Filesystem, searchPath) {
 }
 
 TEST_F(Filesystem, directoryList) {
-	auto pathList = fs.directoryList("");
+	auto pathList = fs.directoryList(NAS2D::VirtualPath{""});
 	EXPECT_LE(1u, pathList.size());
 	EXPECT_THAT(pathList, testing::Contains(NAS2D::VirtualPath{"file.txt"}));
 }
 
 TEST_F(Filesystem, directoryListWithFilter) {
-	auto pathList = fs.directoryList("", "txt");
+	auto pathList = fs.directoryList(NAS2D::VirtualPath{""}, "txt");
 	EXPECT_LE(1u, pathList.size());
 	EXPECT_THAT(pathList, testing::Contains(NAS2D::VirtualPath{"file.txt"}));
 }
 
 TEST_F(Filesystem, exists) {
-	EXPECT_TRUE(fs.exists("file.txt"));
+	EXPECT_TRUE(fs.exists(NAS2D::VirtualPath{"file.txt"}));
 }
 
 TEST_F(Filesystem, read) {
-	const auto data = fs.readFile("file.txt");
+	const auto data = fs.readFile(NAS2D::VirtualPath{"file.txt"});
 	EXPECT_THAT(data, testing::StartsWith("Test data"));
 
-	EXPECT_THROW(fs.readFile("FileDoesNotExist.txt"), std::runtime_error);
+	EXPECT_THROW(fs.readFile(NAS2D::VirtualPath{"FileDoesNotExist.txt"}), std::runtime_error);
 }
 
 // Test a few related methods. Some don't test well standalone.
 TEST_F(Filesystem, writeReadDeleteExists) {
-	const std::string testFilename = "TestFile.txt";
+	const auto testFilename = NAS2D::VirtualPath{"TestFile.txt"};
 	const std::string testData = "Test file contents";
 
 	EXPECT_NO_THROW(fs.writeFile(testFilename, testData));
@@ -137,8 +137,8 @@ TEST_F(Filesystem, writeReadDeleteExists) {
 }
 
 TEST_F(Filesystem, isDirectoryMakeDirectory) {
-	const std::string fileName = "file.txt";
-	const std::string folderName = "subfolder/";
+	const auto fileName = NAS2D::VirtualPath{"file.txt"};
+	const auto folderName = NAS2D::VirtualPath{"subfolder/"};
 
 	EXPECT_TRUE(fs.exists(fileName));
 	EXPECT_FALSE(fs.isDirectory(fileName));
@@ -153,8 +153,8 @@ TEST_F(Filesystem, isDirectoryMakeDirectory) {
 }
 
 TEST_F(Filesystem, mountUnmount) {
-	const auto extraMount = fs.findInParents("test/data/extraData/", fs.basePath());
-	const std::string extraFile = "extraFile.txt";
+	const auto extraMount = fs.findInParents(NAS2D::RealPath{"test/data/extraData/"}, fs.basePath());
+	const auto extraFile = NAS2D::VirtualPath{"extraFile.txt"};
 
 	EXPECT_FALSE(fs.exists(extraFile));
 	EXPECT_NO_THROW(fs.mount(extraMount));
@@ -164,5 +164,5 @@ TEST_F(Filesystem, mountUnmount) {
 	EXPECT_NO_THROW(fs.unmount(extraMount));
 	EXPECT_FALSE(fs.exists(extraFile));
 
-	EXPECT_THROW(fs.mount("nonExistentPath/"), std::runtime_error);
+	EXPECT_THROW(fs.mount(NAS2D::RealPath{"nonExistentPath/"}), std::runtime_error);
 }

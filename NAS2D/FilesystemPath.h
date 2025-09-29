@@ -31,6 +31,10 @@ namespace NAS2D
 	};
 
 
+	struct RealPath : public FilesystemPath {};
+	struct VirtualPath : public FilesystemPath {};
+
+
 	std::string operator+(const char* string, const FilesystemPath& path);
 	std::string operator+(const FilesystemPath& path, const char* string);
 }

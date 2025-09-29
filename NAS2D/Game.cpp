@@ -81,8 +81,8 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 	SDL_Init(0);
 
 	auto& fs = Utility<Filesystem>::init<Filesystem>(appName, organizationName);
-	fs.mountSoftFail(dataPath);
-	fs.mountSoftFail(fs.findInParents(dataPath, fs.basePath()));
+	fs.mountSoftFail(RealPath{dataPath});
+	fs.mountSoftFail(fs.findInParents(RealPath{dataPath}, fs.basePath()));
 	fs.mountReadWrite(fs.prefPath());
 
 	Configuration& configuration = Utility<Configuration>::init(defaultConfig());
@@ -127,7 +127,7 @@ Game::~Game()
  */
 void Game::mount(const std::string& path)
 {
-	Utility<Filesystem>::get().mount(path);
+	Utility<Filesystem>::get().mount(RealPath{path});
 }
 
 
@@ -141,7 +141,7 @@ void Game::mount(const std::string& path)
 void Game::mountFindFromBase(const std::string& path)
 {
 	auto& filesystem = Utility<Filesystem>::get();
-	filesystem.mount(filesystem.findInParents(path, filesystem.basePath()));
+	filesystem.mount(filesystem.findInParents(RealPath{path}, filesystem.basePath()));
 }
 
 

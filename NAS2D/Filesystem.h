@@ -19,10 +19,6 @@
 
 namespace NAS2D
 {
-	using RealPath = FilesystemPath;
-	using VirtualPath = FilesystemPath;
-
-
 	class Filesystem
 	{
 	public:

@@ -11,9 +11,9 @@ namespace NAS2D
 	{
 	public:
 		FilesystemPath();
-		FilesystemPath(const char* path);
-		FilesystemPath(std::string_view path);
-		FilesystemPath(std::string path);
+		explicit FilesystemPath(const char* path);
+		explicit FilesystemPath(std::string_view path);
+		explicit FilesystemPath(std::string path);
 
 		explicit operator const std::string&() const;
 		bool operator==(const FilesystemPath& other) const;
@@ -31,8 +31,16 @@ namespace NAS2D
 	};
 
 
-	struct RealPath : public FilesystemPath {};
-	struct VirtualPath : public FilesystemPath {};
+	struct RealPath : public FilesystemPath
+	{
+		using FilesystemPath::FilesystemPath;
+	};
+
+
+	struct VirtualPath : public FilesystemPath
+	{
+		using FilesystemPath::FilesystemPath;
+	};
 
 
 	std::string operator+(const char* string, const FilesystemPath& path);

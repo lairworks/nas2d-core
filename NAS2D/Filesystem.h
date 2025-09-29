@@ -19,10 +19,6 @@
 
 namespace NAS2D
 {
-	struct RealPath : public FilesystemPath {};
-	struct VirtualPath : public FilesystemPath {};
-
-
 	class Filesystem
 	{
 	public:

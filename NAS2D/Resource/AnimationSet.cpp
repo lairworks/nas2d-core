@@ -32,24 +32,16 @@ namespace
 	using Actions = AnimationSet::Actions;
 
 
-	struct AnimationFileIndexedData
-	{
-		Actions actions;
-	};
-
-
-	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
+	Actions readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
 	Actions indexActions(const AnimationFile& animationFile, ImageCache& imageCache);
 
 
-	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
+	Actions readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
 		{
 			const auto animationFile = AnimationFile{filePath};
-			return {
-				indexActions(animationFile, imageCache)
-			};
+			return indexActions(animationFile, imageCache);
 		}
 		catch (const std::runtime_error& error)
 		{
@@ -85,8 +77,7 @@ AnimationSet::AnimationSet(std::string_view fileName) :
 AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
 	mActions{}
 {
-	auto [actions] = readAndIndexAnimationFile(fileName, imageCache);
-	mActions = std::move(actions);
+	mActions = readAndIndexAnimationFile(fileName, imageCache);
 }
 
 

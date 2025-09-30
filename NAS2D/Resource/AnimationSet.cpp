@@ -50,11 +50,9 @@ namespace
 		try
 		{
 			const auto animationFile = AnimationFile{filePath};
-			auto imageSheets = loadImages(animationFile.imageSheetReferences(), animationFile.basePath(), imageCache);
-			auto actions = indexActions(animationFile, imageCache);
 			return {
-				std::move(imageSheets),
-				std::move(actions)
+				loadImages(animationFile.imageSheetReferences(), animationFile.basePath(), imageCache),
+				indexActions(animationFile, imageCache)
 			};
 		}
 		catch (const std::runtime_error& error)

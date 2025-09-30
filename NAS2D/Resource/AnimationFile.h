@@ -11,6 +11,12 @@
 
 namespace NAS2D
 {
+	class AnimationSequence;
+	class Image;
+	template <typename Resource, typename... Params> class ResourceCache;
+	using ImageCache = ResourceCache<Image, std::string>;
+
+
 	struct AnimationImageSheetReference
 	{
 		std::string id;
@@ -50,6 +56,17 @@ namespace NAS2D
 		const std::string& basePath() const;
 		const std::vector<AnimationImageSheetReference>& imageSheetReferences() const;
 		const std::vector<AnimationAction>& actions() const;
+
+		std::size_t imageSheetReferenceCount() const;
+		std::size_t actionCount() const;
+
+		std::size_t imageSheetReferenceIndex(const std::string& id) const;
+		std::size_t actionIndex(const std::string& name) const;
+
+		const AnimationImageSheetReference& imageSheetReference(std::size_t index) const;
+		const AnimationAction& action(std::size_t index) const;
+
+		AnimationSequence animationSequence(std::size_t actionIndex, ImageCache& imageCache) const;
 
 	private:
 		std::string mBasePath;

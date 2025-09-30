@@ -7,6 +7,7 @@
 #include "../Xml/XmlElement.h"
 #include "../Xml/XmlDocument.h"
 
+#include <utility>
 #include <stdexcept>
 
 
@@ -154,6 +155,43 @@ namespace
 		}
 		return frameDefinitions;
 	}
+}
+
+
+AnimationFile::AnimationFile(std::string_view filePath) :
+	AnimationFile{readAnimationFile(filePath)}
+{
+}
+
+
+AnimationFile::AnimationFile(std::string basePath, AnimationFileData animationFileData) :
+	mBasePath{std::move(basePath)},
+	mImageSheetReferences{std::move(animationFileData.imageSheetReferences)},
+	mActions{std::move(animationFileData.actions)}
+{
+}
+
+
+AnimationFile::~AnimationFile()
+{
+}
+
+
+const std::string& AnimationFile::basePath() const
+{
+	return mBasePath;
+}
+
+
+const std::vector<AnimationImageSheetReference>& AnimationFile::imageSheetReferences() const
+{
+	return mImageSheetReferences;
+}
+
+
+const std::vector<AnimationAction>& AnimationFile::actions() const
+{
+	return mActions;
 }
 
 

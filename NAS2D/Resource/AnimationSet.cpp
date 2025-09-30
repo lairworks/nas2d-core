@@ -41,6 +41,7 @@ namespace
 		Actions actions;
 	};
 
+
 	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
 	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
@@ -51,9 +52,9 @@ namespace
 	{
 		try
 		{
-			const auto& [basePath, animationFileData] = loadAnimationFile(filePath);
-			auto imageSheets = loadImages(animationFileData.imageSheetReferences, basePath, imageCache);
-			auto actions = indexActions(animationFileData.actions, imageSheets, imageCache);
+			const auto animationFile = AnimationFile{filePath};
+			auto imageSheets = loadImages(animationFile.imageSheetReferences(), animationFile.basePath(), imageCache);
+			auto actions = indexActions(animationFile.actions(), imageSheets, imageCache);
 			return {
 				std::move(imageSheets),
 				std::move(actions)

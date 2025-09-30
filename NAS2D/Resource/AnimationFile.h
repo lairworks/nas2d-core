@@ -37,10 +37,24 @@ namespace NAS2D
 		std::vector<AnimationAction> actions;
 	};
 
-	struct AnimationFile
+
+	class AnimationFile
 	{
-		std::string basePath;
-		AnimationFileData animationFileData;
+	public:
+		explicit AnimationFile(std::string_view filePath);
+		AnimationFile(std::string basePath, AnimationFileData animationFileData);
+		AnimationFile(const AnimationFile&) = default;
+		AnimationFile(AnimationFile&&) = default;
+		~AnimationFile();
+
+		const std::string& basePath() const;
+		const std::vector<AnimationImageSheetReference>& imageSheetReferences() const;
+		const std::vector<AnimationAction>& actions() const;
+
+	private:
+		std::string mBasePath;
+		std::vector<AnimationImageSheetReference> mImageSheetReferences;
+		std::vector<AnimationAction> mActions;
 	};
 
 

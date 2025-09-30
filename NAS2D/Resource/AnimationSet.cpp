@@ -16,8 +16,6 @@
 #include "Image.h"
 #include "ResourceCache.h"
 #include "../ContainerUtils.h"
-#include "../StringFrom.h"
-#include "../Math/Rectangle.h"
 
 #include <utility>
 #include <stdexcept>
@@ -41,19 +39,19 @@ namespace
 		Actions actions;
 	};
 
+
 	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
 	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
-	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
-	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache);
+	Actions indexActions(const AnimationFile& animationFile, ImageCache& imageCache);
 
 
 	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
 		{
-			const auto& [basePath, animationFileData] = loadAnimationFile(filePath);
-			auto imageSheets = loadImages(animationFileData.imageSheetReferences, basePath, imageCache);
-			auto actions = indexActions(animationFileData.actions, imageSheets, imageCache);
+			const auto animationFile = AnimationFile{filePath};
+			auto imageSheets = loadImages(animationFile.imageSheetReferences(), animationFile.basePath(), imageCache);
+			auto actions = indexActions(animationFile, imageCache);
 			return {
 				std::move(imageSheets),
 				std::move(actions)
@@ -84,49 +82,20 @@ namespace
 	}
 
 
-	Actions indexActions(const std::vector<AnimationAction>& actionDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
+	Actions indexActions(const AnimationFile& animationFile, ImageCache& imageCache)
 	{
 		Actions actions;
-		for (const auto& action : actionDefinitions)
+		for (std::size_t actionIndex = 0; actionIndex < animationFile.actionCount(); ++actionIndex)
 		{
+			const auto& action = animationFile.action(actionIndex);
 			if (actions.contains(action.name))
 			{
 				throw std::runtime_error("Action redefinition: " + action.name);
 			}
 
-			actions.try_emplace(action.name, buildAnimationSequences(action.frames, imageSheets, imageCache));
-
-			if (actions.at(action.name).empty())
-			{
-				throw std::runtime_error("Action contains no valid frames: " + action.name);
-			}
+			actions.try_emplace(action.name, animationFile.animationSequence(actionIndex, imageCache));
 		}
 		return actions;
-	}
-
-
-	AnimationSequence buildAnimationSequences(std::vector<AnimationFrameData> frameDefinitions, const ImageSheets& imageSheets, ImageCache& imageCache)
-	{
-		std::vector<AnimationFrame> frameList;
-		for (const auto& animationFrameData : frameDefinitions)
-		{
-			if (!imageSheets.contains(animationFrameData.id))
-			{
-				throw std::runtime_error("Frame definition references undefined imagesheet: " + animationFrameData.id);
-			}
-
-			const auto& filePath = imageSheets.at(animationFrameData.id);
-			const auto& image = imageCache.load(filePath);
-
-			const auto imageRect = Rectangle{{0, 0}, image.size()};
-			if (!imageRect.contains(animationFrameData.imageBounds))
-			{
-				throw std::runtime_error("Frame bounds exceeds image sheet bounds: " + animationFrameData.id + " : " + stringFrom(animationFrameData.imageBounds));
-			}
-
-			frameList.push_back(AnimationFrame{image, animationFrameData.imageBounds, animationFrameData.anchorOffset, animationFrameData.frameDelay});
-		}
-		return {frameList};
 	}
 }
 

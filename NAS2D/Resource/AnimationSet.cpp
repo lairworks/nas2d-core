@@ -26,10 +26,9 @@ using namespace NAS2D;
 
 namespace
 {
+	using Actions = AnimationSet::Actions;
 	using ImageCache = ResourceCache<Image, std::string>;
 	ImageCache animationImageCache;
-
-	using Actions = AnimationSet::Actions;
 
 
 	Actions readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);

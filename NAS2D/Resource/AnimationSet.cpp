@@ -75,9 +75,8 @@ AnimationSet::AnimationSet(std::string_view fileName) :
 
 
 AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
-	mActions{}
+	mActions{readAndIndexAnimationFile(fileName, imageCache)}
 {
-	mActions = readAndIndexAnimationFile(fileName, imageCache);
 }
 
 

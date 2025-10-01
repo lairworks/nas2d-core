@@ -65,6 +65,7 @@ namespace NAS2D
 
 		const AnimationImageSheetReference& imageSheetReference(std::size_t index) const;
 		const AnimationAction& action(std::size_t index) const;
+		const std::string& actionName(std::size_t index) const;
 
 		AnimationSequence animationSequence(std::size_t actionIndex, ImageCache& imageCache) const;
 

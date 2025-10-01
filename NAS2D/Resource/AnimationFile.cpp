@@ -250,6 +250,12 @@ const AnimationAction& AnimationFile::action(std::size_t index) const
 }
 
 
+const std::string& AnimationFile::actionName(std::size_t index) const
+{
+	return mActions.at(index).name;
+}
+
+
 AnimationSequence AnimationFile::animationSequence(std::size_t actionIndex, ImageCache& imageCache) const
 {
 	const auto& action = mActions.at(actionIndex);

@@ -54,13 +54,13 @@ namespace
 		Actions actions;
 		for (std::size_t actionIndex = 0; actionIndex < animationFile.actionCount(); ++actionIndex)
 		{
-			const auto& action = animationFile.action(actionIndex);
-			if (actions.contains(action.name))
+			const auto& actionName = animationFile.actionName(actionIndex);
+			if (actions.contains(actionName))
 			{
-				throw std::runtime_error("Action redefinition: " + action.name);
+				throw std::runtime_error("Action redefinition: " + actionName);
 			}
 
-			actions.try_emplace(action.name, animationFile.animationSequence(actionIndex, imageCache));
+			actions.try_emplace(actionName, animationFile.animationSequence(actionIndex, imageCache));
 		}
 		return actions;
 	}

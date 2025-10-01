@@ -1,5 +1,6 @@
 #include "AnimationFile.h"
 
+#include "AnimationFileData.h"
 #include "AnimationFrame.h"
 #include "AnimationSequence.h"
 #include "Image.h"
@@ -247,6 +248,12 @@ const AnimationImageSheetReference& AnimationFile::imageSheetReference(std::size
 const AnimationAction& AnimationFile::action(std::size_t index) const
 {
 	return mActions.at(index);
+}
+
+
+const std::string& AnimationFile::actionName(std::size_t index) const
+{
+	return mActions.at(index).name;
 }
 
 

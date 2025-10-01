@@ -335,6 +335,9 @@
     <ClInclude Include="Resource\AnimationFile.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\AnimationFileData.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
     <ClInclude Include="Resource\AnimationFrame.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>

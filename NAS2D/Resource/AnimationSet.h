@@ -27,19 +27,17 @@ namespace NAS2D
 	class AnimationSet
 	{
 	public:
-		using ImageSheets = std::map<std::string, std::string>;
 		using Actions = std::map<std::string, AnimationSequence>;
 
 
 		explicit AnimationSet(std::string_view fileName);
 		AnimationSet(std::string_view fileName, ResourceCache<Image, std::string>& imageCache);
-		AnimationSet(ImageSheets imageSheets, Actions actions);
+		AnimationSet(Actions actions);
 
 		std::vector<std::string> actionNames() const;
 		const AnimationSequence& frames(const std::string& actionName) const;
 
 	private:
-		ImageSheets mImageSheets;
 		Actions mActions;
 	};
 

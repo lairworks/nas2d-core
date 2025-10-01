@@ -26,59 +26,26 @@ using namespace NAS2D;
 
 namespace
 {
+	using Actions = AnimationSet::Actions;
 	using ImageCache = ResourceCache<Image, std::string>;
 	ImageCache animationImageCache;
 
-	using ImageSheets = AnimationSet::ImageSheets;
-	using Actions = AnimationSet::Actions;
 
-
-	struct AnimationFileIndexedData
-	{
-		ImageSheets imageSheets;
-		Actions actions;
-	};
-
-
-	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
-	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache);
+	Actions readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
 	Actions indexActions(const AnimationFile& animationFile, ImageCache& imageCache);
 
 
-	AnimationFileIndexedData readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
+	Actions readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
 	{
 		try
 		{
 			const auto animationFile = AnimationFile{filePath};
-			auto imageSheets = loadImages(animationFile.imageSheetReferences(), animationFile.basePath(), imageCache);
-			auto actions = indexActions(animationFile, imageCache);
-			return {
-				std::move(imageSheets),
-				std::move(actions)
-			};
+			return indexActions(animationFile, imageCache);
 		}
 		catch (const std::runtime_error& error)
 		{
 			throw std::runtime_error("Error loading Sprite file: " + std::string{filePath} + "\n" + error.what());
 		}
-	}
-
-
-	ImageSheets loadImages(const std::vector<AnimationImageSheetReference>& imageSheetReferences, const std::string& basePath, ImageCache& imageCache)
-	{
-		ImageSheets imageSheets;
-		for (const auto& imageSheetReference : imageSheetReferences)
-		{
-			if (imageSheets.contains(imageSheetReference.id))
-			{
-				throw std::runtime_error("Image sheet redefinition: id: " + imageSheetReference.id);
-			}
-
-			const auto imagePath = basePath + imageSheetReference.filePath;
-			imageSheets.try_emplace(imageSheetReference.id, imagePath);
-			imageCache.load(imagePath);
-		}
-		return imageSheets;
 	}
 
 
@@ -107,17 +74,12 @@ AnimationSet::AnimationSet(std::string_view fileName) :
 
 
 AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
-	mImageSheets{},
-	mActions{}
+	mActions{readAndIndexAnimationFile(fileName, imageCache)}
 {
-	auto [imageSheets, actions] = readAndIndexAnimationFile(fileName, imageCache);
-	mImageSheets = std::move(imageSheets);
-	mActions = std::move(actions);
 }
 
 
-AnimationSet::AnimationSet(ImageSheets imageSheets, Actions actions) :
-	mImageSheets{std::move(imageSheets)},
+AnimationSet::AnimationSet(Actions actions) :
 	mActions{std::move(actions)}
 {
 }

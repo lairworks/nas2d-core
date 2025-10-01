@@ -1,5 +1,6 @@
 #include "AnimationFile.h"
 
+#include "AnimationFileData.h"
 #include "AnimationFrame.h"
 #include "AnimationSequence.h"
 #include "Image.h"

@@ -1,9 +1,5 @@
 #pragma once
 
-#include "../Duration.h"
-#include "../Math/Vector.h"
-#include "../Math/Rectangle.h"
-
 #include <string_view>
 #include <string>
 #include <vector>
@@ -11,37 +7,13 @@
 
 namespace NAS2D
 {
+	struct AnimationImageSheetReference;
+	struct AnimationAction;
+	struct AnimationFileData;
 	class AnimationSequence;
 	class Image;
 	template <typename Resource, typename... Params> class ResourceCache;
 	using ImageCache = ResourceCache<Image, std::string>;
-
-
-	struct AnimationImageSheetReference
-	{
-		std::string id;
-		std::string filePath;
-	};
-
-	struct AnimationFrameData
-	{
-		std::string id;
-		Rectangle<int> imageBounds;
-		Vector<int> anchorOffset;
-		Duration frameDelay;
-	};
-
-	struct AnimationAction
-	{
-		std::string name;
-		std::vector<AnimationFrameData> frames;
-	};
-
-	struct AnimationFileData
-	{
-		std::vector<AnimationImageSheetReference> imageSheetReferences;
-		std::vector<AnimationAction> actions;
-	};
 
 
 	class AnimationFile

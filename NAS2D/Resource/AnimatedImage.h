@@ -17,9 +17,6 @@ namespace NAS2D
 	public:
 		explicit AnimatedImage(const AnimationSequence& animationSequence);
 
-		AnimatedImage(const AnimatedImage&) = default;
-		AnimatedImage& operator=(const AnimatedImage&) = default;
-
 		std::size_t frameCount() const;
 		std::size_t frameIndex() const;
 

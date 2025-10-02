@@ -53,8 +53,8 @@ namespace NAS2D
 		void setFrame(std::size_t frameIndex);
 
 		void update();
-		void draw(Point<float> position) const;
-		void draw(Point<float> position, Angle rotation) const;
+		void draw(Point<int> position) const;
+		void draw(Point<int> position, Angle rotation) const;
 
 		void alpha(uint8_t alpha);
 		uint8_t alpha() const;

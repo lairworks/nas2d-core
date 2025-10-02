@@ -93,13 +93,13 @@ void Sprite::update()
 }
 
 
-void Sprite::draw(Point<float> position) const
+void Sprite::draw(Point<int> position) const
 {
 	mAnimatedImage.draw(Utility<Renderer>::get(), position, mTintColor);
 }
 
 
-void Sprite::draw(Point<float> position, Angle rotation) const
+void Sprite::draw(Point<int> position, Angle rotation) const
 {
 	mAnimatedImage.draw(Utility<Renderer>::get(), position, mTintColor, rotation);
 }

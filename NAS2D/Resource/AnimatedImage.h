@@ -6,6 +6,7 @@
 namespace NAS2D
 {
 	struct Color;
+	struct AnimationFrame;
 	class AnimationSequence;
 	class Renderer;
 	class Angle;
@@ -16,6 +17,9 @@ namespace NAS2D
 	{
 	public:
 		explicit AnimatedImage(const AnimationSequence& animationSequence);
+
+		const AnimationSequence& sequence() const;
+		const AnimationFrame& frame() const;
 
 		std::size_t frameCount() const;
 		std::size_t frameIndex() const;

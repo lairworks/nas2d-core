@@ -24,6 +24,18 @@ AnimatedImage::AnimatedImage(const AnimationSequence& animationSequence) :
 }
 
 
+const AnimationSequence& AnimatedImage::sequence() const
+{
+	return *mAnimationSequence;
+}
+
+
+const AnimationFrame& AnimatedImage::frame() const
+{
+	return mAnimationSequence->frame(mFrameIndex);
+}
+
+
 std::size_t AnimatedImage::frameCount() const
 {
 	return mAnimationSequence->frameCount();

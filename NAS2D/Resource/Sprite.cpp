@@ -29,8 +29,7 @@ using namespace NAS2D;
 
 Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialAction) :
 	mAnimationSet{animationSet},
-	mCurrentAction{&mAnimationSet.frames(initialAction)},
-	mCurrentFrame{0},
+	mAnimatedImage{mAnimationSet.frames(initialAction)},
 	mPaused{false},
 	mTimer{},
 	mTintColor{Color::Normal}
@@ -46,19 +45,19 @@ const AnimationSet& Sprite::animationSet() const
 
 Vector<int> Sprite::size() const
 {
-	return (*mCurrentAction).frame(mCurrentFrame).bounds.size;
+	return mAnimatedImage.frame().bounds.size;
 }
 
 
 Point<int> Sprite::origin(Point<int> point) const
 {
-	return point - (*mCurrentAction).frame(mCurrentFrame).anchorOffset;
+	return point - mAnimatedImage.frame().anchorOffset;
 }
 
 
 bool Sprite::isPaused() const
 {
-	return mPaused || (*mCurrentAction).frame(mCurrentFrame).isStopFrame();
+	return mPaused || mAnimatedImage.frame().isStopFrame();
 }
 
 
@@ -76,8 +75,7 @@ void Sprite::resume()
 
 void Sprite::play(const std::string& action)
 {
-	mCurrentAction = &mAnimationSet.frames(action);
-	mCurrentFrame = 0;
+	mAnimatedImage = AnimatedImage{mAnimationSet.frames(action)};
 	mTimer.reset();
 	resume();
 }
@@ -85,7 +83,7 @@ void Sprite::play(const std::string& action)
 
 void Sprite::setFrame(std::size_t frameIndex)
 {
-	mCurrentFrame = frameIndex % mCurrentAction->frameCount();
+	mAnimatedImage.setFrame(frameIndex);
 }
 
 
@@ -97,19 +95,13 @@ void Sprite::update()
 
 void Sprite::draw(Point<float> position) const
 {
-	const auto& frame = (*mCurrentAction).frame(mCurrentFrame);
-	const auto drawPosition = position - frame.anchorOffset.to<float>();
-	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImage(frame.image, drawPosition, frameBounds, mTintColor);
+	mAnimatedImage.draw(Utility<Renderer>::get(), position, mTintColor);
 }
 
 
 void Sprite::draw(Point<float> position, Angle rotation) const
 {
-	const auto& frame = (*mCurrentAction).frame(mCurrentFrame);
-	const auto drawPosition = position - frame.anchorOffset.to<float>();
-	const auto frameBounds = frame.bounds.to<float>();
-	Utility<Renderer>::get().drawSubImageRotated(frame.image, drawPosition, frameBounds, rotation, mTintColor);
+	mAnimatedImage.draw(Utility<Renderer>::get(), position, mTintColor, rotation);
 }
 
 
@@ -146,10 +138,9 @@ Duration Sprite::advanceByTimeDelta(Duration timeDelta)
 		return accumulator;
 	}
 
-	const auto& frames = *mCurrentAction;
 	for (;;)
 	{
-		const auto& frame = frames.frame(mCurrentFrame);
+		const auto& frame = mAnimatedImage.frame();
 
 		if (frame.isStopFrame())
 		{
@@ -163,10 +154,6 @@ Duration Sprite::advanceByTimeDelta(Duration timeDelta)
 		}
 
 		accumulator += frame.frameDelay;
-		mCurrentFrame++;
-		if (mCurrentFrame >= frames.frameCount())
-		{
-			mCurrentFrame = 0;
-		}
+		mAnimatedImage.advanceFrame();
 	}
 }

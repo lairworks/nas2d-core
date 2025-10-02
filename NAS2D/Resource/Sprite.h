@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "AnimatedImage.h"
 #include "../Timer.h"
 #include "../Renderer/Color.h"
 
@@ -20,7 +21,6 @@
 namespace NAS2D
 {
 	struct Duration;
-	class AnimationSequence;
 	class AnimationSet;
 	class Angle;
 	template <typename BaseType> struct Point;
@@ -66,8 +66,7 @@ namespace NAS2D
 
 	private:
 		const AnimationSet& mAnimationSet;
-		const AnimationSequence* mCurrentAction;
-		std::size_t mCurrentFrame;
+		AnimatedImage mAnimatedImage;
 
 		bool mPaused;
 		Timer mTimer;

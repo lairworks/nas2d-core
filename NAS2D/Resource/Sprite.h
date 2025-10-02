@@ -14,7 +14,6 @@
 #include "../Timer.h"
 #include "../Renderer/Color.h"
 
-#include <vector>
 #include <string>
 
 

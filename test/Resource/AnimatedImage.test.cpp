@@ -56,3 +56,17 @@ TEST(AnimatedImage, animateFrameFrameStop) {
 	animatedImage.advanceFrame();
 	EXPECT_EQ(1, animatedImage.frameIndex());
 }
+
+TEST(AnimatedImage, setFrame) {
+	auto animatedImage = NAS2D::AnimatedImage{sequenceFrameFrameLoop};
+	animatedImage.setFrame(0);
+	EXPECT_EQ(0, animatedImage.frameIndex());
+	animatedImage.setFrame(1);
+	EXPECT_EQ(1, animatedImage.frameIndex());
+}
+
+TEST(AnimatedImage, setFrameWrap) {
+	auto animatedImage = NAS2D::AnimatedImage{sequenceFrameFrameLoop};
+	animatedImage.setFrame(2);
+	EXPECT_EQ(0, animatedImage.frameIndex());
+}

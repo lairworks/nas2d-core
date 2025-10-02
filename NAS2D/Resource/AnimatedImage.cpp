@@ -24,6 +24,18 @@ AnimatedImage::AnimatedImage(const AnimationSequence& animationSequence) :
 }
 
 
+const AnimationSequence& AnimatedImage::sequence() const
+{
+	return *mAnimationSequence;
+}
+
+
+const AnimationFrame& AnimatedImage::frame() const
+{
+	return mAnimationSequence->frame(mFrameIndex);
+}
+
+
 std::size_t AnimatedImage::frameCount() const
 {
 	return mAnimationSequence->frameCount();
@@ -33,6 +45,12 @@ std::size_t AnimatedImage::frameCount() const
 std::size_t AnimatedImage::frameIndex() const
 {
 	return mFrameIndex;
+}
+
+
+void AnimatedImage::setFrame(std::size_t frameIndex)
+{
+	mFrameIndex = frameIndex % mAnimationSequence->frameCount();
 }
 
 
@@ -48,13 +66,13 @@ void AnimatedImage::advanceFrame()
 }
 
 
-void AnimatedImage::draw(Renderer& renderer, Point<int> position)
+void AnimatedImage::draw(Renderer& renderer, Point<int> position) const
 {
 	draw(renderer, position, Color::White);
 }
 
 
-void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor)
+void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor) const
 {
 	const auto& frame = mAnimationSequence->frame(mFrameIndex);
 	const auto drawPosition = position - frame.anchorOffset;
@@ -63,7 +81,7 @@ void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColo
 }
 
 
-void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation)
+void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation) const
 {
 	const auto& frame = mAnimationSequence->frame(mFrameIndex);
 	const auto drawPosition = position - frame.anchorOffset;

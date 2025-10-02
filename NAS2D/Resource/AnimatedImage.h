@@ -6,6 +6,7 @@
 namespace NAS2D
 {
 	struct Color;
+	struct AnimationFrame;
 	class AnimationSequence;
 	class Renderer;
 	class Angle;
@@ -17,16 +18,18 @@ namespace NAS2D
 	public:
 		explicit AnimatedImage(const AnimationSequence& animationSequence);
 
-		AnimatedImage(const AnimatedImage&) = default;
-		AnimatedImage& operator=(const AnimatedImage&) = default;
+		const AnimationSequence& sequence() const;
+		const AnimationFrame& frame() const;
 
 		std::size_t frameCount() const;
 		std::size_t frameIndex() const;
 
+		void setFrame(std::size_t frameIndex);
 		void advanceFrame();
-		void draw(Renderer& renderer, Point<int> position);
-		void draw(Renderer& renderer, Point<int> position, Color tintColor);
-		void draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation);
+
+		void draw(Renderer& renderer, Point<int> position) const;
+		void draw(Renderer& renderer, Point<int> position, Color tintColor) const;
+		void draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation) const;
 
 	private:
 		const AnimationSequence* mAnimationSequence;

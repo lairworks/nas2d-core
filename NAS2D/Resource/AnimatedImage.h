@@ -24,6 +24,7 @@ namespace NAS2D
 		std::size_t frameCount() const;
 		std::size_t frameIndex() const;
 
+		void setFrame(std::size_t frameIndex);
 		void advanceFrame();
 		void draw(Renderer& renderer, Point<int> position);
 		void draw(Renderer& renderer, Point<int> position, Color tintColor);

@@ -48,6 +48,12 @@ std::size_t AnimatedImage::frameIndex() const
 }
 
 
+void AnimatedImage::setFrame(std::size_t frameIndex)
+{
+	mFrameIndex = frameIndex % mAnimationSequence->frameCount();
+}
+
+
 void AnimatedImage::advanceFrame()
 {
 	if (mAnimationSequence->frame(mFrameIndex).isStopFrame()) { return; }

@@ -26,9 +26,10 @@ namespace NAS2D
 
 		void setFrame(std::size_t frameIndex);
 		void advanceFrame();
-		void draw(Renderer& renderer, Point<int> position);
-		void draw(Renderer& renderer, Point<int> position, Color tintColor);
-		void draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation);
+
+		void draw(Renderer& renderer, Point<int> position) const;
+		void draw(Renderer& renderer, Point<int> position, Color tintColor) const;
+		void draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation) const;
 
 	private:
 		const AnimationSequence* mAnimationSequence;

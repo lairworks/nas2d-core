@@ -66,13 +66,13 @@ void AnimatedImage::advanceFrame()
 }
 
 
-void AnimatedImage::draw(Renderer& renderer, Point<int> position)
+void AnimatedImage::draw(Renderer& renderer, Point<int> position) const
 {
 	draw(renderer, position, Color::White);
 }
 
 
-void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor)
+void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor) const
 {
 	const auto& frame = mAnimationSequence->frame(mFrameIndex);
 	const auto drawPosition = position - frame.anchorOffset;
@@ -81,7 +81,7 @@ void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColo
 }
 
 
-void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation)
+void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation) const
 {
 	const auto& frame = mAnimationSequence->frame(mFrameIndex);
 	const auto drawPosition = position - frame.anchorOffset;

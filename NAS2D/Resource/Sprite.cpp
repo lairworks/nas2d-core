@@ -89,6 +89,7 @@ void Sprite::setFrame(std::size_t frameIndex)
 
 void Sprite::update()
 {
+	if (mPaused) { return; }
 	mTimer.adjustStartTick(advanceByTimeDelta(mTimer.elapsedTicks()));
 }
 
@@ -133,18 +134,12 @@ Duration Sprite::advanceByTimeDelta(Duration timeDelta)
 {
 	Duration accumulator{0};
 
-	if (mPaused)
-	{
-		return accumulator;
-	}
-
 	for (;;)
 	{
 		const auto& frame = mAnimatedImage.frame();
 
 		if (frame.isStopFrame())
 		{
-			mPaused = true;
 			return accumulator;
 		}
 

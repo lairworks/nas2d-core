@@ -90,7 +90,7 @@ void Sprite::setFrame(std::size_t frameIndex)
 void Sprite::update()
 {
 	if (mPaused) { return; }
-	mTimer.adjustStartTick(advanceByTimeDelta(mTimer.elapsedTicks()));
+	mTimer.adjustStartTick(mAnimatedImage.advanceFrame(mTimer.elapsedTicks()));
 }
 
 
@@ -127,28 +127,4 @@ void Sprite::color(Color color)
 Color Sprite::color() const
 {
 	return mTintColor;
-}
-
-
-Duration Sprite::advanceByTimeDelta(Duration timeDelta)
-{
-	Duration accumulator{0};
-
-	for (;;)
-	{
-		const auto& frame = mAnimatedImage.frame();
-
-		if (frame.isStopFrame())
-		{
-			return accumulator;
-		}
-
-		if (timeDelta - accumulator < frame.frameDelay)
-		{
-			return accumulator;
-		}
-
-		accumulator += frame.frameDelay;
-		mAnimatedImage.advanceFrame();
-	}
 }

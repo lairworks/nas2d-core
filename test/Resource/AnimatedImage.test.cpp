@@ -70,3 +70,12 @@ TEST(AnimatedImage, setFrameWrap) {
 	animatedImage.setFrame(2);
 	EXPECT_EQ(0, animatedImage.frameIndex());
 }
+
+TEST(AnimatedImage, advanceFrameTimeDelta) {
+	auto animatedImage = NAS2D::AnimatedImage{sequenceFrameFrameLoop};
+	EXPECT_EQ(NAS2D::Duration{0u}, animatedImage.advanceFrame(NAS2D::Duration{0u}));
+	EXPECT_EQ(NAS2D::Duration{0u}, animatedImage.advanceFrame(NAS2D::Duration{1u}));
+	EXPECT_EQ(NAS2D::Duration{2u}, animatedImage.advanceFrame(NAS2D::Duration{2u}));
+	EXPECT_EQ(NAS2D::Duration{2u}, animatedImage.advanceFrame(NAS2D::Duration{3u}));
+	EXPECT_EQ(NAS2D::Duration{4u}, animatedImage.advanceFrame(NAS2D::Duration{4u}));
+}

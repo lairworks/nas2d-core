@@ -60,9 +60,6 @@ namespace NAS2D
 		void color(Color color);
 		Color color() const;
 
-	protected:
-		Duration advanceByTimeDelta(Duration timeDelta);
-
 	private:
 		const AnimationSet& mAnimationSet;
 		AnimatedImage mAnimatedImage;

@@ -2,6 +2,7 @@
 
 #include "AnimationSequence.h"
 #include "AnimationFrame.h"
+#include "../Duration.h"
 #include "../Math/Point.h"
 #include "../Math/Angle.h"
 #include "../Renderer/Color.h"
@@ -62,6 +63,32 @@ void AnimatedImage::advanceFrame()
 	if (mFrameIndex >= mAnimationSequence->frameCount())
 	{
 		mFrameIndex = 0;
+	}
+}
+
+
+// Returns the `Duration` consumed by advancing frames
+// The final frame may be part way through it's `Duration` so does not consume it
+Duration AnimatedImage::advanceFrame(Duration timeDelta)
+{
+	Duration accumulator{0};
+
+	for (;;)
+	{
+		const auto& frame = this->frame();
+
+		if (frame.isStopFrame())
+		{
+			return accumulator;
+		}
+
+		if (timeDelta - accumulator < frame.frameDelay)
+		{
+			return accumulator;
+		}
+
+		accumulator += frame.frameDelay;
+		advanceFrame();
 	}
 }
 

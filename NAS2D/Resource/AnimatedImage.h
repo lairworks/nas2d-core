@@ -6,6 +6,7 @@
 namespace NAS2D
 {
 	struct Color;
+	struct Duration;
 	struct AnimationFrame;
 	class AnimationSequence;
 	class Renderer;
@@ -26,6 +27,7 @@ namespace NAS2D
 
 		void setFrame(std::size_t frameIndex);
 		void advanceFrame();
+		Duration advanceFrame(Duration timeDelta);
 
 		void draw(Renderer& renderer, Point<int> position) const;
 		void draw(Renderer& renderer, Point<int> position, Color tintColor) const;

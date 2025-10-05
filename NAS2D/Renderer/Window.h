@@ -41,7 +41,7 @@ namespace NAS2D
 		const std::string& title() const;
 		void title(const std::string& title);
 
-		virtual void window_icon(const std::string& path);
+		virtual void windowIcon(const std::string& path);
 
 		virtual void showSystemPointer(bool);
 		virtual void addCursor(CursorId cursorId, const std::string& filePath, Vector<int> hotOffset);

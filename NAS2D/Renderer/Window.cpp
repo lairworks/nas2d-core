@@ -194,7 +194,7 @@ DisplayDesc Window::getClosestMatchingDisplayMode(const DisplayDesc& preferredDi
 }
 
 
-void Window::window_icon(const std::string& path)
+void Window::windowIcon(const std::string& path)
 {
 	auto iconData = Utility<Filesystem>::get().readFile(VirtualPath{path});
 	SDL_Surface* icon = IMG_Load_RW(SDL_RWFromConstMem(iconData.c_str(), static_cast<int>(iconData.size())), 1);

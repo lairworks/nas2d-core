@@ -14,7 +14,7 @@ namespace {
 
 
 TEST(Delegate, DelegateCall) {
-	MockHandler handler{};
+	const MockHandler handler{};
 	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 	EXPECT_CALL(handler, MockMethod(0));
 	EXPECT_CALL(handler, MockMethod(1));

@@ -16,7 +16,6 @@
 
 namespace NAS2D
 {
-
 	template <typename Resource, typename... Params>
 	class ResourceCache
 	{
@@ -64,5 +63,4 @@ namespace NAS2D
 	private:
 		std::map<Key, Resource> cache{};
 	};
-
 } // namespace

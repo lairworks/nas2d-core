@@ -17,7 +17,6 @@ struct Mix_Chunk;
 
 namespace NAS2D
 {
-
 	/**
 	 *  Sound resource.
 	 *
@@ -42,5 +41,4 @@ namespace NAS2D
 	private:
 		Mix_Chunk* mMixChunk{nullptr};
 	};
-
 } // namespace

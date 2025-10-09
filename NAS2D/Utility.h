@@ -17,7 +17,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * Provides a simple interface to classes that should only be instantiated
 	 *			once globally for a NAS2D application.

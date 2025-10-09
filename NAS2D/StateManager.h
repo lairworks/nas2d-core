@@ -15,7 +15,6 @@
 
 namespace NAS2D
 {
-
 	class State;
 
 
@@ -46,5 +45,4 @@ namespace NAS2D
 		bool mActive;
 		bool mForceStopAudio = true;
 	};
-
 } // namespace

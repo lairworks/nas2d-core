@@ -72,5 +72,4 @@ namespace NAS2D
 		Renderer& renderer();
 		Mixer& mixer();
 	};
-
 } // namespace

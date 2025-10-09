@@ -13,7 +13,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * The State class operates within a StateManager as a separate unit of
 	 *			logic.
@@ -108,5 +107,4 @@ namespace NAS2D
 		 */
 		virtual State* update() = 0;
 	};
-
 } // namespace

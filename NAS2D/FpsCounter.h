@@ -11,7 +11,6 @@
 
 namespace NAS2D
 {
-
 	/**
 	 * Implements a basic FPS Counter.
 	 *
@@ -30,5 +29,4 @@ namespace NAS2D
 		unsigned int currentTick{0};
 		unsigned int fpsCountIndex{0};
 	};
-
 } // namespace

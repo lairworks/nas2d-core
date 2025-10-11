@@ -227,9 +227,6 @@
     <ClInclude Include="ContainerUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Documentation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Duration.h">
       <Filter>Header Files</Filter>
     </ClInclude>

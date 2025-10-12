@@ -25,6 +25,7 @@
 #pragma once
 
 #include <cstring>
+#include <utility>
 
 
 // Compiler identification. It's not easy to identify Visual C++ because many vendors
@@ -408,7 +409,7 @@ namespace NAS2D
 
 		RetType operator()(Params... params) const
 		{
-			return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(params...);
+			return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(std::forward<Params>(params)...);
 		}
 
 	private:
@@ -434,7 +435,7 @@ namespace NAS2D
 	private:
 		RetType InvokeStaticFunction(Params... params) const
 		{
-			return (*(m_Closure.GetStaticFunction()))(params...);
+			return (*(m_Closure.GetStaticFunction()))(std::forward<Params>(params)...);
 		}
 	};
 

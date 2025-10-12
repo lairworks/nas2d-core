@@ -80,11 +80,11 @@ TEST(Delegate, ForwardWithoutCopy) {
 	};
 
 	struct CopyReceiver {
-		int ReceiveCopy(CopyCounter copyCounter) { return copyCounter.numCopies; }
+		int receiveCopy(CopyCounter copyCounter) { return copyCounter.numCopies; }
 	};
 
 	CopyReceiver copyReceiver;
-	auto delegate = NAS2D::Delegate{&copyReceiver, &CopyReceiver::ReceiveCopy};
+	auto delegate = NAS2D::Delegate{&copyReceiver, &CopyReceiver::receiveCopy};
 
 	CopyCounter copyCounter;
 	EXPECT_EQ(1, delegate(copyCounter));

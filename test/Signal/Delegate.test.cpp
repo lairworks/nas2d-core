@@ -69,3 +69,24 @@ TEST(Delegate, LambdaVariableCapture) {
 	auto delegate = NAS2D::Delegate{&lambda, &decltype(lambda)::operator()};
 	EXPECT_EQ(42, delegate());
 }
+
+TEST(Delegate, ForwardWithoutCopy) {
+	struct CopyCounter {
+		int numCopies;
+
+		CopyCounter() noexcept : numCopies{} {}
+		CopyCounter(CopyCounter&& other) noexcept : numCopies{other.numCopies} {}
+		CopyCounter(const CopyCounter& other) noexcept : numCopies{other.numCopies + 1} {}
+	};
+
+	struct CopyReceiver {
+		int ReceiveCopy(CopyCounter copyCounter) { return copyCounter.numCopies; }
+	};
+
+	CopyReceiver copyReceiver;
+	auto delegate = NAS2D::Delegate{&copyReceiver, &CopyReceiver::ReceiveCopy};
+
+	CopyCounter copyCounter;
+	EXPECT_EQ(1, delegate(copyCounter));
+	EXPECT_EQ(0, delegate(CopyCounter{}));
+}

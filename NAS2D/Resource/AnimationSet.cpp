@@ -16,6 +16,7 @@
 #include "Image.h"
 #include "ResourceCache.h"
 #include "../ContainerUtils.h"
+#include "../Signal/Delegate.h"
 
 #include <utility>
 #include <stdexcept>
@@ -31,16 +32,16 @@ namespace
 	ImageCache animationImageCache;
 
 
-	Actions readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache);
-	Actions indexActions(const AnimationFile& animationFile, ImageCache& imageCache);
+	Actions readAndIndexAnimationFile(std::string_view filePath, ImageLoader imageLoader);
+	Actions indexActions(const AnimationFile& animationFile, ImageLoader imageLoader);
 
 
-	Actions readAndIndexAnimationFile(std::string_view filePath, ImageCache& imageCache)
+	Actions readAndIndexAnimationFile(std::string_view filePath, ImageLoader imageLoader)
 	{
 		try
 		{
 			const auto animationFile = AnimationFile{filePath};
-			return indexActions(animationFile, imageCache);
+			return indexActions(animationFile, imageLoader);
 		}
 		catch (const std::runtime_error& error)
 		{
@@ -49,7 +50,7 @@ namespace
 	}
 
 
-	Actions indexActions(const AnimationFile& animationFile, ImageCache& imageCache)
+	Actions indexActions(const AnimationFile& animationFile, ImageLoader imageLoader)
 	{
 		Actions actions;
 		for (std::size_t actionIndex = 0; actionIndex < animationFile.actionCount(); ++actionIndex)
@@ -60,7 +61,7 @@ namespace
 				throw std::runtime_error("Action redefinition: " + actionName);
 			}
 
-			actions.try_emplace(actionName, animationFile.animationSequence(actionIndex, imageCache));
+			actions.try_emplace(actionName, animationFile.animationSequence(actionIndex, imageLoader));
 		}
 		return actions;
 	}
@@ -74,7 +75,7 @@ AnimationSet::AnimationSet(std::string_view fileName) :
 
 
 AnimationSet::AnimationSet(std::string_view fileName, ImageCache& imageCache) :
-	mActions{readAndIndexAnimationFile(fileName, imageCache)}
+	mActions{readAndIndexAnimationFile(fileName, {&imageCache, &ImageCache::load})}
 {
 }
 

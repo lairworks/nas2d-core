@@ -12,8 +12,8 @@ namespace NAS2D
 	struct AnimationFileData;
 	class AnimationSequence;
 	class Image;
-	template <typename Resource, typename... Params> class ResourceCache;
-	using ImageCache = ResourceCache<Image, std::string>;
+	template <typename Signature> class Delegate;
+	using ImageLoader = Delegate<const Image&(std::string filePath)>;
 
 
 	class AnimationFile
@@ -39,7 +39,7 @@ namespace NAS2D
 		const AnimationAction& action(std::size_t index) const;
 		const std::string& actionName(std::size_t index) const;
 
-		AnimationSequence animationSequence(std::size_t actionIndex, ImageCache& imageCache) const;
+		AnimationSequence animationSequence(std::size_t actionIndex, ImageLoader& imageLoader) const;
 
 	private:
 		std::string mBasePath;

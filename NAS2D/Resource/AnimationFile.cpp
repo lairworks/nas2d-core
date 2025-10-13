@@ -4,7 +4,6 @@
 #include "AnimationFrame.h"
 #include "AnimationSequence.h"
 #include "Image.h"
-#include "ResourceCache.h"
 
 #include "../Utility.h"
 #include "../Filesystem.h"
@@ -12,6 +11,7 @@
 #include "../Xml/XmlNode.h"
 #include "../Xml/XmlElement.h"
 #include "../Xml/XmlDocument.h"
+#include "../Signal/Delegate.h"
 
 #include <utility>
 #include <stdexcept>
@@ -257,7 +257,7 @@ const std::string& AnimationFile::actionName(std::size_t index) const
 }
 
 
-AnimationSequence AnimationFile::animationSequence(std::size_t actionIndex, ImageCache& imageCache) const
+AnimationSequence AnimationFile::animationSequence(std::size_t actionIndex, ImageLoader& imageLoader) const
 {
 	const auto& action = mActions.at(actionIndex);
 	if (action.frames.empty())
@@ -269,8 +269,7 @@ AnimationSequence AnimationFile::animationSequence(std::size_t actionIndex, Imag
 	for (const auto& animationFrameData : action.frames)
 	{
 		const auto imageSheetIndex = imageSheetReferenceIndex(animationFrameData.id);
-		const auto& filePath = mBasePath + mImageSheetReferences[imageSheetIndex].filePath;
-		const auto& image = imageCache.load(filePath);
+		const auto& image = imageLoader(mBasePath + mImageSheetReferences[imageSheetIndex].filePath);
 
 		const auto imageRect = Rectangle{{0, 0}, image.size()};
 		if (!imageRect.contains(animationFrameData.imageBounds))

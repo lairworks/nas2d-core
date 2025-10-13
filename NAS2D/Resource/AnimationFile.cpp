@@ -269,8 +269,7 @@ AnimationSequence AnimationFile::animationSequence(std::size_t actionIndex, Imag
 	for (const auto& animationFrameData : action.frames)
 	{
 		const auto imageSheetIndex = imageSheetReferenceIndex(animationFrameData.id);
-		const auto& filePath = mBasePath + mImageSheetReferences[imageSheetIndex].filePath;
-		const auto& image = imageCache.load(filePath);
+		const auto& image = imageCache.load(mBasePath + mImageSheetReferences[imageSheetIndex].filePath);
 
 		const auto imageRect = Rectangle{{0, 0}, image.size()};
 		if (!imageRect.contains(animationFrameData.imageBounds))

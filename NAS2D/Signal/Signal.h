@@ -27,6 +27,8 @@
 
 #include "SignalSource.h"
 
+#include <utility>
+
 
 namespace NAS2D
 {
@@ -50,7 +52,7 @@ namespace NAS2D
 			}
 		}
 
-		void operator()(Params... params) const { emit(params...); }
+		void operator()(Params... params) const { emit(std::forward<Params>(params)...); }
 	};
 
 

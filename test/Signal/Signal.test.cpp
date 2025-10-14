@@ -9,6 +9,26 @@ namespace {
 	public:
 		MOCK_CONST_METHOD0(MockMethod, void());
 	};
+
+	struct CopyCounter {
+		int numCopies;
+
+		CopyCounter() noexcept : numCopies{} {}
+		CopyCounter(CopyCounter&& other) noexcept : numCopies{other.numCopies} {}
+		CopyCounter(const CopyCounter& other) noexcept : numCopies{other.numCopies + 1} {}
+	};
+
+	struct CopyReceiver {
+		int copyCount{};
+		NAS2D::Signal<CopyCounter> signal{};
+
+		CopyReceiver() { signal.connect({this, &CopyReceiver::receiveCopy}); }
+
+		void receiveCopy(CopyCounter copyCounter) { copyCount = copyCounter.numCopies; }
+
+		int emitAndCount(CopyCounter copyCounter) { signal.emit(std::move(copyCounter)); return copyCount; }
+		int callAndCount(CopyCounter copyCounter) { signal(std::move(copyCounter)); return copyCount; }
+	};
 }
 
 
@@ -53,4 +73,18 @@ TEST(Signal, DelegateWrappingSignal) {
 	auto delegateHandler = NAS2D::Delegate{&signal, &decltype(signal)::emit};
 
 	delegateHandler();
+}
+
+TEST(Signal, EmitParameterCopyLimit) {
+	CopyReceiver copyReceiver;
+	CopyCounter copyCounter;
+	EXPECT_LE(2, copyReceiver.callAndCount(copyCounter));
+	EXPECT_LE(1, copyReceiver.callAndCount(CopyCounter{}));
+}
+
+TEST(Signal, CallParameterCopyLimit) {
+	CopyReceiver copyReceiver;
+	CopyCounter copyCounter;
+	EXPECT_LE(2, copyReceiver.emitAndCount(copyCounter));
+	EXPECT_LE(1, copyReceiver.emitAndCount(CopyCounter{}));
 }

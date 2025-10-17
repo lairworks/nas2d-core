@@ -41,18 +41,18 @@ namespace NAS2D
 	/**
 	 * Basic integer division that rounds up to the nearest whole number.
 	 *
-	 * \param	to_divide	Number to be divided.
+	 * \param	dividend	Number to be divided.
 	 * \param	divisor		Divisor.
 	 *
 	 * \return	Returns the divided number rounded up to the nearest whole number.
 	 */
-	int divideUp(int to_divide, int divisor)
+	int divideUp(int dividend, int divisor)
 	{
 		if (divisor == 0)
 		{
-			throw std::domain_error("Division by zero: divideUp(to_divide, 0)");
+			throw std::domain_error("Division by zero: divideUp(dividend, 0)");
 		}
-		return (to_divide + (divisor - 1)) / divisor;
+		return (dividend + (divisor - 1)) / divisor;
 	}
 
 	/**

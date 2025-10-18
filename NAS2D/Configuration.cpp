@@ -53,7 +53,7 @@ bool Configuration::anyNonDefaultConfig() const
 
 
 /**
- * Reads a given XML configuration file.
+ * Parses XML configuration data.
  */
 void Configuration::loadData(const std::string& fileData)
 {

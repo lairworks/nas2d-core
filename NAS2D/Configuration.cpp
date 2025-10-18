@@ -54,8 +54,6 @@ bool Configuration::anyNonDefaultConfig() const
 
 /**
  * Reads a given XML configuration file.
- *
- * \param fileData	Name of an XML Configuration file to be read.
  */
 void Configuration::loadData(const std::string& fileData)
 {

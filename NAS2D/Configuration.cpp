@@ -65,8 +65,6 @@ void Configuration::loadData(const std::string& fileData)
 
 /**
  * Loads a configuration file.
- *
- * \param	filePath	A string indicating the file to load and process for configuration.
  */
 void Configuration::load(const std::string& filePath)
 {

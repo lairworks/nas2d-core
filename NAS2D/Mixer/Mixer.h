@@ -11,13 +11,13 @@
 #pragma once
 
 #include "../Duration.h"
-#include "../Signal/Delegate.h"
 
 
 namespace NAS2D
 {
 	class Sound;
 	class Music;
+	template <typename Signature> class Delegate;
 
 	// Volume level, valid values are in the range [0, 128]
 	using Volume = int;

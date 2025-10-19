@@ -10,6 +10,9 @@
 
 #include "MixerNull.h"
 
+#include "../Signal/Delegate.h"
+
+
 namespace NAS2D
 {
 

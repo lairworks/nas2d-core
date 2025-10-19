@@ -16,6 +16,7 @@
 #include "../Configuration.h"
 #include "../Utility.h"
 #include "../ContainerUtils.h"
+#include "../Signal/Delegate.h"
 
 #include <SDL2/SDL.h>
 

@@ -2,5 +2,5 @@
 	"project_dir": "NAS2D",
 	"include_dirs": ["/usr/include"],
 	"ignore_dirs": [],
-	"ignore_files": ["windows.h"]
+	"ignore_files": ["windows.h", "SDL2_image/SDL_image.h", "SDL2_mixer/SDL_mixer.h", "SDL2_ttf/SDL_ttf.h", "GLEW/GLEW.h"]
 }

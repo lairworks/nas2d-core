@@ -74,7 +74,7 @@ TEST(Signal, DelegateWrappingSignal) {
 	delegateHandler();
 }
 
-TEST(Signal, EmitParameterCopyLimit) {
+TEST(Signal, CallParameterCopyLimit) {
 	CopyReceiver copyReceiver;
 	CopyCounter copyCounter;
 	EXPECT_LE(2, copyReceiver.callAndCount(copyCounter));

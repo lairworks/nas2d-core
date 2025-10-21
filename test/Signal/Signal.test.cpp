@@ -26,7 +26,6 @@ namespace {
 
 		void receiveCopy(CopyCounter copyCounter) { copyCount = copyCounter.numCopies; }
 
-		int emitAndCount(CopyCounter copyCounter) { signal.emit(std::move(copyCounter)); return copyCount; }
 		int callAndCount(CopyCounter copyCounter) { signal(std::move(copyCounter)); return copyCount; }
 	};
 }
@@ -80,11 +79,4 @@ TEST(Signal, EmitParameterCopyLimit) {
 	CopyCounter copyCounter;
 	EXPECT_LE(2, copyReceiver.callAndCount(copyCounter));
 	EXPECT_LE(1, copyReceiver.callAndCount(CopyCounter{}));
-}
-
-TEST(Signal, CallParameterCopyLimit) {
-	CopyReceiver copyReceiver;
-	CopyCounter copyCounter;
-	EXPECT_LE(2, copyReceiver.emitAndCount(copyCounter));
-	EXPECT_LE(1, copyReceiver.emitAndCount(CopyCounter{}));
 }

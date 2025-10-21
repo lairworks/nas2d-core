@@ -253,5 +253,5 @@ void MixerSDL::removeMusicCompleteHandler(Delegate<void()> musicCompleteHandler)
 
 void MixerSDL::onMusicFinished()
 {
-	mMusicComplete.emit();
+	mMusicComplete();
 }

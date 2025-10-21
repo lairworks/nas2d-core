@@ -27,8 +27,6 @@
 
 #include "SignalSource.h"
 
-#include <utility>
-
 
 namespace NAS2D
 {
@@ -41,7 +39,7 @@ namespace NAS2D
 	class Signal : public SignalSource<Params...>
 	{
 	public:
-		void emit(Params... params) const
+		void operator()(Params... params) const
 		{
 			// Copy the callback list, in case a callback updates Signal connections
 			// Updated signal connections would invalidate iterators to the original list
@@ -51,8 +49,6 @@ namespace NAS2D
 				delegate(params...);
 			}
 		}
-
-		void operator()(Params... params) const { emit(std::forward<Params>(params)...); }
 	};
 
 

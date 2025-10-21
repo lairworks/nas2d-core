@@ -39,9 +39,9 @@ TEST(Signal, ConnectEmitDisconnect) {
 
 	EXPECT_CALL(handler, MockMethod()).Times(1);
 	signal.connect(delegate);
-	signal.emit();
+	signal();
 	signal.disconnect(delegate);
-	signal.emit();
+	signal();
 }
 
 TEST(Signal, MultiListener) {
@@ -55,7 +55,7 @@ TEST(Signal, MultiListener) {
 	EXPECT_CALL(handler2, MockMethod()).Times(1);
 	signal.connect(delegate1);
 	signal.connect(delegate2);
-	signal.emit();
+	signal();
 }
 
 TEST(Signal, DelegateWrappingSignal) {
@@ -70,7 +70,7 @@ TEST(Signal, DelegateWrappingSignal) {
 	signal.connect(delegate1);
 	signal.connect(delegate2);
 
-	auto delegateHandler = NAS2D::Delegate{&signal, &decltype(signal)::emit};
+	auto delegateHandler = NAS2D::Delegate{&signal, &decltype(signal)::operator()};
 
 	delegateHandler();
 }

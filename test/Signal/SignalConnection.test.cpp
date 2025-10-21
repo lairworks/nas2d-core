@@ -24,9 +24,9 @@ TEST(SignalConnection, Scope) {
 	{
 		// SignalConnection is only valid in this code block
 		auto connection = NAS2D::SignalConnection{signal, delegate};
-		signal.emit();
+		signal();
 	}
 
 	// Disconnected - No additional calls to MockMethod
-	signal.emit();
+	signal();
 }

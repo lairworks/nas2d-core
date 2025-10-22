@@ -257,6 +257,7 @@
     <ClInclude Include="Resource\Sprite.h" />
     <ClInclude Include="Signal/SignalConnection.h" />
     <ClInclude Include="Signal/Delegate.h" />
+    <ClInclude Include="Signal/Forward.h" />
     <ClInclude Include="Signal/Signal.h" />
     <ClInclude Include="Signal/SignalSource.h" />
     <ClInclude Include="State.h" />

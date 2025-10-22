@@ -24,8 +24,9 @@
 
 #pragma once
 
+#include "Forward.h"
+
 #include <cstring>
-#include <utility>
 
 
 // Compiler identification. It's not easy to identify Visual C++ because many vendors
@@ -409,7 +410,7 @@ namespace NAS2D
 
 		RetType operator()(Params... params) const
 		{
-			return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(std::forward<Params>(params)...);
+			return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(NAS2D::forward<Params>(params)...);
 		}
 
 	private:
@@ -435,7 +436,7 @@ namespace NAS2D
 	private:
 		RetType InvokeStaticFunction(Params... params) const
 		{
-			return (*(m_Closure.GetStaticFunction()))(std::forward<Params>(params)...);
+			return (*(m_Closure.GetStaticFunction()))(NAS2D::forward<Params>(params)...);
 		}
 	};
 

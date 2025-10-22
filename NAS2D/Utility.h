@@ -9,8 +9,9 @@
 // ==================================================================================
 #pragma once
 
+#include "Signal/Forward.h"
+
 #include <memory>
-#include <utility>
 #include <type_traits>
 #include <stdexcept>
 
@@ -131,7 +132,7 @@ namespace NAS2D
 		template <typename Type = T, typename... Args>
 		static Type& init(Args&&... args)
 		{
-			auto newInstance = std::make_unique<Type>(std::forward<Args>(args)...);
+			auto newInstance = std::make_unique<Type>(NAS2D::forward<Args>(args)...);
 			// The new instance may be a sub-type of T, so return as sub-type
 			auto typedNewInstance = newInstance.release();
 			mInstance.reset(typedNewInstance);

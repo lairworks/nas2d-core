@@ -371,6 +371,9 @@
     <ClInclude Include="Signal/Delegate.h">
       <Filter>Header Files\Signal</Filter>
     </ClInclude>
+    <ClInclude Include="Signal/Forward.h">
+      <Filter>Header Files\Signal</Filter>
+    </ClInclude>
     <ClInclude Include="Signal/Signal.h">
       <Filter>Header Files\Signal</Filter>
     </ClInclude>

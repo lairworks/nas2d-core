@@ -120,3 +120,16 @@ jobs:
     - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" check
     - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" demoGraphics
     - run: make package
+
+  linux-arm:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+    - run: sudo apt update && sudo apt --yes install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libgtest-dev libgmock-dev
+
+    - uses: actions/checkout@v4
+
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror"
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" test
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" check
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" demoGraphics

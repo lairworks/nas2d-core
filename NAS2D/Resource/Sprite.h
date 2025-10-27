@@ -69,4 +69,4 @@ namespace NAS2D
 
 		Color mTintColor;
 	};
-} // namespace
+}

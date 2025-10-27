@@ -15,9 +15,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * Always the top level node. A document binds together all the XML pieces.
@@ -68,5 +67,4 @@ private:
 	char padding[7];
 };
 
-} // namespace Xml
-} // namespace NAS2D
+}

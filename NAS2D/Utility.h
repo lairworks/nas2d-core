@@ -158,4 +158,4 @@ namespace NAS2D
 
 	template <typename T>
 	std::unique_ptr<T> Utility<T>::mInstance{};
-} // namespace
+}

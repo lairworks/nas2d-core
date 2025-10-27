@@ -43,4 +43,4 @@ namespace NAS2D
 	private:
 	};
 
-} // namespace NAS2D
+}

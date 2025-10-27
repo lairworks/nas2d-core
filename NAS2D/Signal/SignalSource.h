@@ -56,4 +56,4 @@ namespace NAS2D
 	protected:
 		std::vector<DelegateType> delegateList{};
 	};
-} // namespace
+}

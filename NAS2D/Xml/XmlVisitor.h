@@ -11,9 +11,8 @@
 // ==================================================================================
 #pragma once
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 class XmlAttribute;
 class XmlComment;
@@ -54,5 +53,4 @@ public:
 	virtual bool visit(const XmlUnknown&);
 };
 
-} // namespace Xml
-} // namespace NAS2D
+}

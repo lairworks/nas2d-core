@@ -17,9 +17,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * The parent class for everything in the DOM (Except for attributes).
@@ -170,5 +169,4 @@ private:
 };
 
 
-} // namespace Xml
-} // namespace NAS2D
+}

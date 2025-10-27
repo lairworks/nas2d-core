@@ -90,4 +90,4 @@ namespace NAS2D
 
 		SDL_GLContext sdlOglContext{};
 	};
-} // namespace NAS2D
+}

@@ -57,4 +57,4 @@ namespace NAS2D
 	extern template class Signal<int>;
 	extern template class Signal<int, int>;
 	extern template class Signal<int, int, int>;
-} // namespace
+}

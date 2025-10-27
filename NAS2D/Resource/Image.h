@@ -72,4 +72,4 @@ namespace NAS2D
 		mutable unsigned int mFrameBufferObjectId{0u};
 		Vector<int> mSize{0, 0};
 	};
-} // namespace
+}

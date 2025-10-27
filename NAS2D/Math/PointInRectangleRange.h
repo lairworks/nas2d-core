@@ -88,4 +88,4 @@ namespace NAS2D
 	template <typename BaseType>
 	PointInRectangleRange(Rectangle<BaseType>) -> PointInRectangleRange<BaseType>;
 
-} // namespace NAS2D
+}

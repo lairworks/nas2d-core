@@ -51,4 +51,4 @@ namespace NAS2D
 		return static_cast<OutputType>(((domainPoint2 - value) * rangePoint1 + (value - domainPoint1) * rangePoint2) / (domainPoint2 - domainPoint1));
 	}
 
-} // namespace NAS2D
+}

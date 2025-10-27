@@ -126,4 +126,4 @@ namespace NAS2D
 
 	extern template struct Point<int>;
 	extern template struct Point<float>;
-} // namespace NAS2D
+}

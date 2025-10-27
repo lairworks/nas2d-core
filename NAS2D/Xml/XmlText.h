@@ -16,9 +16,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * XML text.
@@ -70,5 +69,4 @@ private:
 	char padding[7]{};
 };
 
-} // namespace Xml
-} // namespace NAS2D
+}

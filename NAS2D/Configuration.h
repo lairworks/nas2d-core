@@ -49,4 +49,4 @@ namespace NAS2D
 		std::map<std::string, Dictionary> mLoadedSettings{};
 		std::map<std::string, Dictionary> mSettings{};
 	};
-} // namespace
+}

@@ -73,4 +73,4 @@ namespace NAS2D
 		return ++number;
 	}
 
-} // namespace
+}

@@ -14,9 +14,8 @@
 #include <string>
 #include <vector>
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 class XmlAttribute;
 class XmlComment;
@@ -130,5 +129,4 @@ private:
 	static bool condenseWhiteSpace;
 };
 
-} // namespace Xml
-} // namespace NAS2D
+}

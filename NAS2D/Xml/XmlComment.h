@@ -16,9 +16,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * A Comment in XML.
@@ -51,5 +50,4 @@ private:
 
 };
 
-} // namespace Xml
-} // namespace NAS2D
+}

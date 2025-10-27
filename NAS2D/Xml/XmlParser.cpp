@@ -96,9 +96,8 @@ namespace
 }
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 int XmlBase::isAlpha(unsigned char anyByte)
 {
@@ -1434,5 +1433,4 @@ const char* XmlText::parse(const char* p, void* data)
 }
 
 
-} // namespace Xml
-} // namespace NAS2D
+}

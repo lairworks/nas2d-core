@@ -145,4 +145,4 @@ namespace NAS2D
 		return !string.empty() && string.back() == end;
 	}
 
-} // namespace
+}

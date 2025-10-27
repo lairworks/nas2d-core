@@ -66,4 +66,4 @@ namespace NAS2D
 	protected:
 	};
 
-} // namespace
+}

@@ -70,5 +70,5 @@ private:
 	char padding[7]{};
 };
 
-} // namespace Xml
+}
 }

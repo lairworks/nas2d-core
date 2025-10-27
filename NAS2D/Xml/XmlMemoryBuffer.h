@@ -62,5 +62,5 @@ protected:
 	int _padding{};
 };
 
-} // namespace Xml
+}
 }

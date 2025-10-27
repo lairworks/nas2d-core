@@ -130,5 +130,5 @@ private:
 	static bool condenseWhiteSpace;
 };
 
-} // namespace Xml
+}
 }

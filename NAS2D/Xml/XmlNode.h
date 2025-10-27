@@ -170,5 +170,5 @@ private:
 };
 
 
-} // namespace Xml
+}
 }

@@ -88,5 +88,5 @@ private:
 	XmlAttribute* _next;
 };
 
-} // namespace Xml
+}
 }

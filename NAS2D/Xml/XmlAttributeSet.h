@@ -53,5 +53,5 @@ private:
 	XmlAttribute sentinel{};
 };
 
-} // namespace Xml
+}
 }

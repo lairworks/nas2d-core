@@ -58,5 +58,5 @@ protected:
 	void streamIn(std::istream& in, std::string& tag) override;
 };
 
-} // namespace Xml
+}
 }

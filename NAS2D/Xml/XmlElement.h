@@ -73,5 +73,5 @@ private:
 	XmlAttributeSet attributeSet{};
 };
 
-} // namespace Xml
+}
 }

@@ -54,5 +54,5 @@ public:
 	virtual bool visit(const XmlUnknown&);
 };
 
-} // namespace Xml
+}
 }

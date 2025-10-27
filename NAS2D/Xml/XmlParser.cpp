@@ -1434,5 +1434,5 @@ const char* XmlText::parse(const char* p, void* data)
 }
 
 
-} // namespace Xml
+}
 }

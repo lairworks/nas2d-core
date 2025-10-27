@@ -134,5 +134,5 @@ private:
 	XmlNode* node;
 };
 
-} // namespace Xml
+}
 }

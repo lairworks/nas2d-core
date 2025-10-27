@@ -16,9 +16,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * Used to manage a group of attributes.
@@ -53,5 +52,4 @@ private:
 	XmlAttribute sentinel{};
 };
 
-}
 }

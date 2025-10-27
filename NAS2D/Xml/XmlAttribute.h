@@ -15,9 +15,8 @@
 
 #include <string>
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * An XmlAttribute is a name-value pair. Elements have an arbitrary number of attributes,
@@ -88,5 +87,4 @@ private:
 	XmlAttribute* _next;
 };
 
-}
 }

@@ -18,9 +18,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * The XmlElement is a container class. It has a value, the element name, and can
@@ -73,5 +72,4 @@ private:
 	XmlAttributeSet attributeSet{};
 };
 
-}
 }

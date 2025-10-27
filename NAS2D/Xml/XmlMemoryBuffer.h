@@ -16,9 +16,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * Writes an XML Document to a memory buffer.
@@ -62,5 +61,4 @@ protected:
 	int _padding{};
 };
 
-}
 }

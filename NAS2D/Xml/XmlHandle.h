@@ -16,9 +16,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * An XmlHandle is a class that wraps a node pointer with null checks; this is
@@ -134,5 +133,4 @@ private:
 	XmlNode* node;
 };
 
-}
 }

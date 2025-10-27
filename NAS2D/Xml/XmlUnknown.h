@@ -16,9 +16,8 @@
 #include <string>
 
 
-namespace NAS2D
+namespace NAS2D::Xml
 {
-namespace Xml {
 
 /**
  * Any tag that's unrecogmized is saved as an unknown. It is a tag of text,
@@ -58,5 +57,4 @@ protected:
 	void streamIn(std::istream& in, std::string& tag) override;
 };
 
-}
 }

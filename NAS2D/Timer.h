@@ -54,4 +54,4 @@ namespace NAS2D
 		uint64_t mStartTick;
 	};
 
-} // namespace
+}

@@ -40,4 +40,4 @@ namespace NAS2D
 	private:
 		Actions mActions;
 	};
-} // namespace
+}

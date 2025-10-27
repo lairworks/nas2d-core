@@ -107,4 +107,4 @@ namespace NAS2D
 		 */
 		virtual State* update() = 0;
 	};
-} // namespace
+}

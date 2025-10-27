@@ -88,4 +88,4 @@ namespace NAS2D
 	private:
 		FontInfo mFontInfo;
 	};
-} // namespace
+}

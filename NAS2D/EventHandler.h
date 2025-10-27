@@ -156,4 +156,4 @@ namespace NAS2D
 
 		QuitSignal mQuitSignal{};
 	};
-} // namespace
+}

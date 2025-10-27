@@ -44,4 +44,4 @@ namespace NAS2D
 		const std::string mBuffer;
 		Mix_Music* mMusic{nullptr};
 	};
-} // namespace
+}

@@ -41,4 +41,4 @@ namespace NAS2D
 	private:
 		Mix_Chunk* mMixChunk{nullptr};
 	};
-} // namespace
+}

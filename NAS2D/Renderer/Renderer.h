@@ -75,4 +75,4 @@ namespace NAS2D
 		Renderer(const std::string& appTitle);
 	};
 
-} // namespace
+}

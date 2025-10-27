@@ -28,4 +28,4 @@ namespace NAS2D
 	bool endsWith(std::string_view string, std::string_view end) noexcept;
 	bool startsWith(std::string_view string, char start) noexcept;
 	bool endsWith(std::string_view string, char end) noexcept;
-} // namespace NAS2D
+}

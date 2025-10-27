@@ -70,4 +70,4 @@ namespace NAS2D
 	void MixerNull::removeMusicCompleteHandler(Delegate<void()> /*musicCompleteHandler*/)
 	{}
 
-} // namespace NAS2D
+}

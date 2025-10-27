@@ -95,4 +95,4 @@ namespace NAS2D
 	template <typename BaseType>
 	VectorSizeRange(Vector<BaseType>) -> VectorSizeRange<BaseType>;
 
-} // namespace NAS2D
+}

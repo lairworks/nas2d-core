@@ -44,4 +44,4 @@ namespace NAS2D
 	{
 		return VersionPatch;
 	}
-} // namespace NAS2D
+}

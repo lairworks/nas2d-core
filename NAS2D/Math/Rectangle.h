@@ -154,4 +154,4 @@ namespace NAS2D
 
 	extern template struct Rectangle<int>;
 	extern template struct Rectangle<float>;
-} // namespace NAS2D
+}

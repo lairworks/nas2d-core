@@ -69,4 +69,4 @@ private:
 };
 
 } // namespace Xml
-} // namespace NAS2D
+}

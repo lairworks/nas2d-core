@@ -33,4 +33,4 @@ namespace NAS2D
 	* Gets version patch.
 	*/
 	constexpr int versionPatch();
-} // namespace NAS2D
+}

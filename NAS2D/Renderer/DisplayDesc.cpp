@@ -51,4 +51,4 @@ namespace NAS2D
 		return (b < a);
 	}
 
-} // namespace NAS2D
+}

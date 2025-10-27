@@ -63,4 +63,4 @@ protected:
 };
 
 } // namespace Xml
-} // namespace NAS2D
+}

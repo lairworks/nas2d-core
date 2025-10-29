@@ -269,7 +269,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Version.h" />
-    <ClInclude Include="Xml\Xml.h" />
     <ClInclude Include="Xml\XmlAttribute.h" />
     <ClInclude Include="Xml\XmlAttributeSet.h" />
     <ClInclude Include="Xml\XmlBase.h" />

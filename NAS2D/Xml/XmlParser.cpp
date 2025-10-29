@@ -30,7 +30,13 @@
 // =
 // = 3. This notice may not be removed or altered from any source distribution.
 // ==================================================================================
-#include "Xml.h"
+#include "XmlBase.h"
+#include "XmlDocument.h"
+#include "XmlElement.h"
+#include "XmlText.h"
+#include "XmlComment.h"
+#include "XmlUnknown.h"
+#include "XmlAttribute.h"
 
 #include <cassert>
 #include <cstddef>

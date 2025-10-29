@@ -383,9 +383,6 @@
     <ClInclude Include="Signal/SignalSource.h">
       <Filter>Header Files\Signal</Filter>
     </ClInclude>
-    <ClInclude Include="Xml\Xml.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
     <ClInclude Include="Xml\XmlVisitor.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>

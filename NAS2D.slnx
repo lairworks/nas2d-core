@@ -1,0 +1,9 @@
+﻿<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="NAS2D\NAS2D.vcxproj" Id="3350562d-6204-42fc-898a-c85fd62e04e8" />
+  <Project Path="test\test.vcxproj" Id="78f02848-bacb-4ad3-985e-0eb0d5b3dd53" />
+  <Project Path="demoGraphics\demoGraphics.vcxproj" Id="bc10ce9a-9bda-4922-8c1f-f91c1e389483" />
+</Solution>

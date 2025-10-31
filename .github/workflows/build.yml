@@ -119,7 +119,6 @@ jobs:
     - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" test
     - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" check
     - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" demoGraphics
-    - run: make package
 
   linux-arm:
     runs-on: ubuntu-24.04-arm

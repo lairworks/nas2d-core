@@ -9,6 +9,7 @@
 // ==================================================================================
 
 #include "Application.h"
+
 #include "StateManager.h"
 #include "Configuration.h"
 #include "EventHandler.h"

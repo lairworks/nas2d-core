@@ -8,6 +8,7 @@
 // = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 
+#include "Application.h"
 #include "Configuration.h"
 #include "ContainerUtils.h"
 #include "Dictionary.h"
@@ -20,7 +21,6 @@
 #include "FilesystemPath.h"
 #include "FilesystemPathParents.h"
 #include "FpsCounter.h"
-#include "Application.h"
 #include "ParserHelper.h"
 #include "State.h"
 #include "StateManager.h"

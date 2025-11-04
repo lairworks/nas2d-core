@@ -43,7 +43,6 @@ namespace NAS2D
 	 *	try
 	 *	{
 	 *		Game game("My NAS2D Application", "ApplicationName", "OrganizationName");
-	 *		game.mount("gfx.zip");
 	 *		game.go(new MyState());
 	 *	}
 	 *	catch (const std::exception& exception)

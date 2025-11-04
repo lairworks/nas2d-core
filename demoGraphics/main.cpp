@@ -11,7 +11,7 @@
 #include "SdlVersionInfo.h"
 #include "DemoGraphics.h"
 
-#include <NAS2D/Game.h>
+#include <NAS2D/Application.h>
 #include <NAS2D/Utility.h>
 #include <NAS2D/Configuration.h>
 #include <NAS2D/Dictionary.h>
@@ -26,9 +26,9 @@ int main()
 
 	try
 	{
-		NAS2D::Game game("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks");
-		game.mountFindFromBase("demoGraphics/data/");
-		game.go(new DemoGraphics());
+		NAS2D::Application application("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks");
+		application.mountFindFromBase("demoGraphics/data/");
+		application.go(new DemoGraphics());
 	}
 	catch(std::exception& e)
 	{

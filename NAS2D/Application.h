@@ -26,13 +26,13 @@ namespace NAS2D
 	/**
 	 * A simple way to start a NAS2D application.
 	 *
-	 * The Game class is a simple way to quickly delve right into developing a NAS2D
+	 * The Application class is a simple way to quickly delve right into developing a NAS2D
 	 * application without having to worry about initializing the core utilities. It
 	 * also provides a method of mounting directories and/or archives to the file
 	 * system and provides a simple entry point that handles the main application
 	 * loop.
 	 *
-	 * Most NAS2D applications that use the Game object will look something like this:
+	 * Most NAS2D applications that use the Application object will look something like this:
 	 *
 	 * \code{.cpp}
 	 * #include "NAS2D.h"
@@ -42,7 +42,7 @@ namespace NAS2D
 	 * {
 	 *	try
 	 *	{
-	 *		Game game("My NAS2D Application", "ApplicationName", "OrganizationName");
+	 *		Application game("My NAS2D Application", "ApplicationName", "OrganizationName");
 	 *		game.go(new MyState());
 	 *	}
 	 *	catch (const std::exception& exception)
@@ -54,11 +54,11 @@ namespace NAS2D
 	 * }
 	 * \endcode
 	 */
-	class Game
+	class Application
 	{
 	public:
-		Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& configPath = "config.xml", const std::string& dataPath = "data");
-		~Game();
+		Application(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& configPath = "config.xml", const std::string& dataPath = "data");
+		~Application();
 
 		void mount(const std::string& path);
 		void mountFindFromBase(const std::string& path);

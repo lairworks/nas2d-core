@@ -8,7 +8,7 @@
 // = Acknowledgment of your use of NAS2D is appreciated but is not required.
 // ==================================================================================
 
-#include "Game.h"
+#include "Application.h"
 #include "StateManager.h"
 #include "Configuration.h"
 #include "EventHandler.h"
@@ -76,7 +76,7 @@ namespace
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
  * \param	dataPath	Initial data path. Defaults to 'data'.
  */
-Game::Game(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& configPath, const std::string& dataPath)
+Application::Application(const std::string& title, const std::string& appName, const std::string& organizationName, const std::string& configPath, const std::string& dataPath)
 {
 	SDL_Init(0);
 
@@ -106,7 +106,7 @@ Game::Game(const std::string& title, const std::string& appName, const std::stri
 /**
  * Stops all subsystems and cleans everything up.
  */
-Game::~Game()
+Application::~Application()
 {
 	// Destroy all of our various components in reverse order.
 	Utility<Mixer>::clear();
@@ -125,7 +125,7 @@ Game::~Game()
  *
  * \param path	Path to add to the search path.
  */
-void Game::mount(const std::string& path)
+void Application::mount(const std::string& path)
 {
 	Utility<Filesystem>::get().mount(RealPath{path});
 }
@@ -138,7 +138,7 @@ void Game::mount(const std::string& path)
  *
  * \param path	Path to add to the search path.
  */
-void Game::mountFindFromBase(const std::string& path)
+void Application::mountFindFromBase(const std::string& path)
 {
 	auto& filesystem = Utility<Filesystem>::get();
 	filesystem.mount(filesystem.findInParents(RealPath{path}, filesystem.basePath()));
@@ -153,13 +153,13 @@ void Game::mountFindFromBase(const std::string& path)
  * \warning	The State object becomes owned by the StateManager. Do not delete
  *			the State.
  */
-void Game::go(State* state)
+void Application::go(State* state)
 {
 	StateManager stateManager;
 
 	stateManager.setState(state);
 
-	// Game Loop
+	// Application Loop
 	while (stateManager.update())
 	{
 		Utility<Renderer>::get().update();
@@ -167,31 +167,31 @@ void Game::go(State* state)
 }
 
 
-Filesystem& Game::filesystem()
+Filesystem& Application::filesystem()
 {
 	return Utility<Filesystem>::get();
 }
 
 
-Configuration& Game::configuration()
+Configuration& Application::configuration()
 {
 	return Utility<Configuration>::get();
 }
 
 
-EventHandler& Game::eventHandler()
+EventHandler& Application::eventHandler()
 {
 	return Utility<EventHandler>::get();
 }
 
 
-Renderer& Game::renderer()
+Renderer& Application::renderer()
 {
 	return Utility<Renderer>::get();
 }
 
 
-Mixer& Game::mixer()
+Mixer& Application::mixer()
 {
 	return Utility<Mixer>::get();
 }

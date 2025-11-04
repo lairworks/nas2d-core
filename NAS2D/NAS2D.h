@@ -20,7 +20,7 @@
 #include "FilesystemPath.h"
 #include "FilesystemPathParents.h"
 #include "FpsCounter.h"
-#include "Game.h"
+#include "Application.h"
 #include "ParserHelper.h"
 #include "State.h"
 #include "StateManager.h"

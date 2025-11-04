@@ -42,8 +42,8 @@ namespace NAS2D
 	 * {
 	 *	try
 	 *	{
-	 *		Application game("My NAS2D Application", "ApplicationName", "OrganizationName");
-	 *		game.go(new MyState());
+	 *		Application application("My NAS2D Application", "ApplicationName", "OrganizationName");
+	 *		application.go(new MyState());
 	 *	}
 	 *	catch (const std::exception& exception)
 	 *	{

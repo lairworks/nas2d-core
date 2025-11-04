@@ -26,9 +26,9 @@ int main()
 
 	try
 	{
-		NAS2D::Application game("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks");
-		game.mountFindFromBase("demoGraphics/data/");
-		game.go(new DemoGraphics());
+		NAS2D::Application application("NAS2D Graphics Test", "NAS2D_GraphicsTest", "LairWorks");
+		application.mountFindFromBase("demoGraphics/data/");
+		application.go(new DemoGraphics());
 	}
 	catch(std::exception& e)
 	{

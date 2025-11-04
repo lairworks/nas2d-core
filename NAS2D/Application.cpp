@@ -70,7 +70,7 @@ namespace
  * Starts the engine by initializing all of the engine sub components and
  * setting up any default values should they be needed.
  *
- * \param	title	The title that should be used for the game window.
+ * \param	title	The title that should be used for the main window.
  * \param	appName	The name of the app (used to create an app data write path)
  * \param	organizationName	The name of the organization (used to create an app data write path)
  * \param	configPath	Path to the Config file. Defaults to 'config.xml'.
@@ -146,7 +146,7 @@ void Application::mountFindFromBase(const std::string& path)
 
 
 /**
- * Primes the EventHandler and StateManager and enters the main game loop.
+ * Primes the EventHandler and StateManager and enters the main event loop.
  *
  * \param state	A pointer to a State object.
  *

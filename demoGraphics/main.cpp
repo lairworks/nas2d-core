@@ -12,12 +12,8 @@
 #include "DemoGraphics.h"
 
 #include <NAS2D/Application.h>
-#include <NAS2D/Utility.h>
-#include <NAS2D/Configuration.h>
-#include <NAS2D/Dictionary.h>
 
 #include <iostream>
-#include <string>
 
 
 int main()

@@ -43,6 +43,6 @@ namespace NAS2D
 
 		std::unique_ptr<State> mActiveState;
 		bool mActive;
-		bool mForceStopAudio = true;
+		bool mForceStopAudio = false;
 	};
 }

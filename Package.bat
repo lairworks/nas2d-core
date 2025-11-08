@@ -8,7 +8,7 @@ set "ProjectName=NAS2D"
 set "OutputFolder=.build\"
 set "PackageFolder=%OutputFolder%Package\"
 
-if "%TargetPath%" == "" (set "TargetPath=%OutputFolder%%Configuration%_%Platform%_%ProjectName%\%ProjectName%.lib")
+if "%TargetPath%" == "" (set "TargetPath=%OutputFolder%%Configuration%_%Platform%\%ProjectName%\%ProjectName%.lib")
 
 for /f %%i in ('git describe --tags --dirty') do set Version=%%i
 

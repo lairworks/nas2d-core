@@ -19,18 +19,7 @@ namespace NAS2D
 	*/
 	const std::string versionString();
 
-	/**
-	* Gets version major.
-	*/
 	constexpr int versionMajor();
-
-	/**
-	* Gets version minor.
-	*/
 	constexpr int versionMinor();
-
-	/**
-	* Gets version patch.
-	*/
 	constexpr int versionPatch();
 }

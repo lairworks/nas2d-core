@@ -15,7 +15,7 @@
 namespace NAS2D
 {
 	/**
-	* Gets a string containing the version of NAS2D being used.
+	* Gets the NAS2D version string
 	*/
 	const std::string versionString();
 

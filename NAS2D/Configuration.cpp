@@ -147,7 +147,7 @@ void Configuration::load(const std::string& filePath)
  */
 std::string Configuration::saveData() const
 {
-	return formatXmlData(mSettings, "configuration", "Automatically generated Configuration file.");
+	return formatXmlData(mSettings, "configuration");
 }
 
 

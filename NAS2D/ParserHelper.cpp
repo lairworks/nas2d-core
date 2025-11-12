@@ -14,6 +14,9 @@
 #include "ContainerUtils.h"
 
 #include "Xml/XmlNode.h"
+#include "Xml/XmlElement.h"
+
+#include <stdexcept>
 
 
 namespace NAS2D

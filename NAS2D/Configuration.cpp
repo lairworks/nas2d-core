@@ -16,7 +16,6 @@
 
 #include "Xml/XmlDocument.h"
 #include "Xml/XmlMemoryBuffer.h"
-#include "Xml/XmlComment.h"
 #include "Xml/XmlElement.h"
 
 #include <algorithm>
@@ -59,14 +58,10 @@ namespace
 	}
 
 	template <typename Data, Xml::XmlElement* dataFormatter(const std::string& tagName, const Data& data) = dictionaryMapToElement>
-	std::string formatXmlData(const Data& data, const std::string& tagName, const std::string& comment = "")
+	std::string formatXmlData(const Data& data, const std::string& tagName)
 	{
 		Xml::XmlDocument doc;
 
-		if (!comment.empty())
-		{
-			doc.linkEndChild(new Xml::XmlComment(comment));
-		}
 		doc.linkEndChild(dataFormatter(tagName, data));
 
 		// Write out the XML file.
@@ -147,7 +142,7 @@ void Configuration::load(const std::string& filePath)
  */
 std::string Configuration::saveData() const
 {
-	return formatXmlData(mSettings, "configuration", "Automatically generated Configuration file.");
+	return formatXmlData(mSettings, "configuration");
 }
 
 

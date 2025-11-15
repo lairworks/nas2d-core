@@ -28,7 +28,6 @@ using namespace NAS2D;
 
 namespace
 {
-	template <typename ReturnType>
 	auto parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;
@@ -109,7 +108,7 @@ bool Configuration::anyNonDefaultConfig() const
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	mLoadedSettings = parseXmlFileData<decltype(mLoadedSettings)>(fileData, "configuration");
+	mLoadedSettings = parseXmlFileData(fileData, "configuration");
 	mSettings = mergeByKey(mDefaults, mLoadedSettings);
 }
 

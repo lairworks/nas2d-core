@@ -57,8 +57,7 @@ namespace
 		return fileFormatParser(*root);
 	}
 
-	template <typename Data>
-	std::string formatXmlData(const Data& data, const std::string& tagName)
+	std::string formatXmlData(const std::map<std::string, Dictionary>& data, const std::string& tagName)
 	{
 		Xml::XmlDocument doc;
 

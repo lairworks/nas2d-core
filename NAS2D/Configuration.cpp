@@ -57,12 +57,12 @@ namespace
 		return fileFormatParser(*root);
 	}
 
-	template <typename Data, Xml::XmlElement* dataFormatter(const std::string& tagName, const Data& data) = dictionaryMapToElement>
+	template <typename Data>
 	std::string formatXmlData(const Data& data, const std::string& tagName)
 	{
 		Xml::XmlDocument doc;
 
-		doc.linkEndChild(dataFormatter(tagName, data));
+		doc.linkEndChild(dictionaryMapToElement(tagName, data));
 
 		// Write out the XML file.
 		Xml::XmlMemoryBuffer buff;

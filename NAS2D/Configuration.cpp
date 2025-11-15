@@ -28,7 +28,7 @@ using namespace NAS2D;
 
 namespace
 {
-	template <typename ReturnType, ReturnType fileFormatParser(const Xml::XmlElement& element) = subTagsToDictionaryMap>
+	template <typename ReturnType>
 	auto parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;
@@ -54,7 +54,7 @@ namespace
 			}
 		}
 
-		return fileFormatParser(*root);
+		return subTagsToDictionaryMap(*root);
 	}
 
 	std::string formatXmlData(const std::map<std::string, Dictionary>& data, const std::string& tagName)

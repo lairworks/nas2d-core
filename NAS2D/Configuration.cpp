@@ -28,7 +28,6 @@ using namespace NAS2D;
 
 namespace
 {
-	template <typename ReturnType, ReturnType fileFormatParser(const Xml::XmlElement& element) = subTagsToDictionaryMap>
 	auto parseXmlFileData(const std::string& xmlString, const std::string& sectionName = "", const std::string& requiredVersion = "")
 	{
 		Xml::XmlDocument xmlDocument;
@@ -54,15 +53,14 @@ namespace
 			}
 		}
 
-		return fileFormatParser(*root);
+		return subTagsToDictionaryMap(*root);
 	}
 
-	template <typename Data, Xml::XmlElement* dataFormatter(const std::string& tagName, const Data& data) = dictionaryMapToElement>
-	std::string formatXmlData(const Data& data, const std::string& tagName)
+	std::string formatXmlData(const std::map<std::string, Dictionary>& data, const std::string& tagName)
 	{
 		Xml::XmlDocument doc;
 
-		doc.linkEndChild(dataFormatter(tagName, data));
+		doc.linkEndChild(dictionaryMapToElement(tagName, data));
 
 		// Write out the XML file.
 		Xml::XmlMemoryBuffer buff;
@@ -110,7 +108,7 @@ bool Configuration::anyNonDefaultConfig() const
 void Configuration::loadData(const std::string& fileData)
 {
 	// Start parsing through the Config.xml file.
-	mLoadedSettings = parseXmlFileData<decltype(mLoadedSettings)>(fileData, "configuration");
+	mLoadedSettings = parseXmlFileData(fileData, "configuration");
 	mSettings = mergeByKey(mDefaults, mLoadedSettings);
 }
 

@@ -35,6 +35,6 @@ TEST(Font, nullWidthChar) {
 
 TEST(Font, nullWidthBoundedSubstringLength) {
 	const auto font = NAS2D::Font::null();
-	EXPECT_EQ(0, font.widthBoundedSubstringLength("", 0));
-	EXPECT_EQ(0, font.widthBoundedSubstringLength("A", 0));
+	EXPECT_EQ(0u, font.widthBoundedSubstringLength("", 0));
+	EXPECT_EQ(0u, font.widthBoundedSubstringLength("A", 0));
 }

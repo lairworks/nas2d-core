@@ -234,8 +234,14 @@ namespace
 		case 2:
 			return *reinterpret_cast<const uint16_t*>(pixelAddress);
 		case 3: {
-			auto p = reinterpret_cast<const uint8_t*>(pixelAddress);
-			uint32_t p0 = p[0], p1 = p[1], p2 = p[2];
+			struct Color24
+			{
+				uint8_t red;
+				uint8_t green;
+				uint8_t blue;
+			};
+			auto& p = reinterpret_cast<const Color24&>(pixelAddress);
+			uint32_t p0 = p.red, p1 = p.green, p2 = p.blue;
 			return (isBigEndian) ? (p0 << 16 | p1 << 8 | p2) : (p0 | p1 << 8 | p2 << 16);
 		}
 		case 4:

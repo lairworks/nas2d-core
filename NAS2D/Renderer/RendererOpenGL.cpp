@@ -389,7 +389,7 @@ void RendererOpenGL::drawGradient(const Rectangle<float>& rect, Color c1, Color 
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 
-	GLfloat colorVertexArray[24];
+	std::array<GLfloat, 24> colorVertexArray;
 
 	colorVertexArray[0] = c1.red / 255.0f;
 	colorVertexArray[1] = c1.green / 255.0f;
@@ -424,7 +424,7 @@ void RendererOpenGL::drawGradient(const Rectangle<float>& rect, Color c1, Color 
 
 
 	const auto vertexArray = rectToQuad(rect);
-	glColorPointer(4, GL_FLOAT, 0, colorVertexArray);
+	glColorPointer(4, GL_FLOAT, 0, colorVertexArray.data());
 	drawTexturedQuad(0, vertexArray);
 
 	glEnable(GL_TEXTURE_2D);

@@ -40,7 +40,7 @@ jobs:
       - build-and-test
   build-linux-mingw:
     docker:
-      - image: ghcr.io/lairworks/build-env-nas2d-mingw:1.13
+      - image: ghcr.io/lairworks/build-env-nas2d-mingw:1.14
     environment:
       Toolchain: "mingw"
     steps:

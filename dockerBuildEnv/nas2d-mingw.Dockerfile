@@ -8,6 +8,7 @@ FROM ubuntu:24.04
 # The lsb-release package is used to install wine
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    g++-mingw-w64-x86-64-win32=13.2.0-* \
     mingw-w64=11.0.1-* \
     cmake=3.28.3-* \
     make=4.3-* \
@@ -151,6 +152,8 @@ ENV  CC=${CC64}
 ENV CPPFLAGS_EXTRA=-D"GLEW_STATIC"
 # Disable warnings for redundant declarations of intrinsics, triggered by SDL2
 ENV WARN_EXTRA=-Wno-redundant-decls
+# Set custom makefile parameter
+ENV Toolchain=mingw
 # Set a library search path to make rebuilding easier in a debug sessions
 ENV LDFLAGS_EXTRA="-L/usr/local/x86_64-w64-mingw32/lib"
 

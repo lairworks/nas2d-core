@@ -19,7 +19,6 @@
 
 namespace NAS2D
 {
-	struct Duration;
 	class AnimationSet;
 	class Angle;
 	template <typename BaseType> struct Point;

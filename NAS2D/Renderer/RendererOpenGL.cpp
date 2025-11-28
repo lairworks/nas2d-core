@@ -93,6 +93,12 @@ namespace
 RendererOpenGL::Options RendererOpenGL::ReadConfigurationOptions()
 {
 	const auto& configuration = Utility<Configuration>::get();
+	return ReadConfigurationOptions(configuration);
+}
+
+
+RendererOpenGL::Options RendererOpenGL::ReadConfigurationOptions(const Configuration& configuration)
+{
 	const auto& graphics = configuration["graphics"];
 	return {
 		{graphics.get<int>("screenwidth"), graphics.get<int>("screenheight")},

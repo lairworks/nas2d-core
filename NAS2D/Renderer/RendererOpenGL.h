@@ -19,6 +19,9 @@ using SDL_GLContext = void*;
 
 namespace NAS2D
 {
+	class Configuration;
+
+
 	class RendererOpenGL : public Renderer
 	{
 	public:
@@ -30,6 +33,7 @@ namespace NAS2D
 		};
 
 		static Options ReadConfigurationOptions();
+		static Options ReadConfigurationOptions(const Configuration& configuration);
 		static void WriteConfigurationOptions(const Options& options);
 
 		RendererOpenGL() = delete;

@@ -17,6 +17,8 @@
 
 namespace NAS2D
 {
+	class Configuration;
+
 
 	/**
 	 * SDL Mixer.
@@ -40,6 +42,7 @@ namespace NAS2D
 
 		static Options InvalidToDefault(const Options& options);
 		static Options ReadConfigurationOptions();
+		static Options ReadConfigurationOptions(const Configuration& configuration);
 		static void WriteConfigurationOptions(const Options& options);
 
 		MixerSDL();

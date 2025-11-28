@@ -80,6 +80,11 @@ MixerSDL::Options MixerSDL::InvalidToDefault(const Options& options)
 MixerSDL::Options MixerSDL::ReadConfigurationOptions()
 {
 	const auto& configuration = Utility<Configuration>::get();
+	return ReadConfigurationOptions(configuration);
+}
+
+MixerSDL::Options MixerSDL::ReadConfigurationOptions(const Configuration& configuration)
+{
 	const auto& audio = configuration["audio"];
 	return {
 		audio.get<int>("mixrate"),

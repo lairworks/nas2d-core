@@ -91,11 +91,13 @@ Application::Application(const std::string& title, const std::string& appName, c
 
 	Utility<EventHandler>::get();
 
-	Utility<Renderer>::init<RendererOpenGL>(title);
+	const auto rendererOptions = RendererOpenGL::ReadConfigurationOptions(configuration);
+	Utility<Renderer>::init<RendererOpenGL>(title, rendererOptions);
 
 	try
 	{
-		Utility<Mixer>::init<MixerSDL>();
+		const auto mixerOptions = MixerSDL::InvalidToDefault(MixerSDL::ReadConfigurationOptions(configuration));
+		Utility<Mixer>::init<MixerSDL>(mixerOptions);
 	}
 	catch (std::exception& /*exception*/)
 	{

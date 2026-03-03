@@ -257,7 +257,7 @@ const std::string& AnimationFile::actionName(std::size_t index) const
 }
 
 
-AnimationSequence AnimationFile::animationSequence(std::size_t actionIndex, ImageLoader& imageLoader) const
+AnimationSequence AnimationFile::animationSequence(std::size_t actionIndex, const ImageLoader& imageLoader) const
 {
 	const auto& action = mActions.at(actionIndex);
 	if (action.frames.empty())

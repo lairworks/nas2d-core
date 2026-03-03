@@ -39,7 +39,7 @@ namespace NAS2D
 		const AnimationAction& action(std::size_t index) const;
 		const std::string& actionName(std::size_t index) const;
 
-		AnimationSequence animationSequence(std::size_t actionIndex, ImageLoader& imageLoader) const;
+		AnimationSequence animationSequence(std::size_t actionIndex, const ImageLoader& imageLoader) const;
 
 	private:
 		std::string mBasePath;

@@ -36,7 +36,7 @@ namespace
 {
 	NAS2D::Dictionary defaultConfigGraphics()
 	{
-		return {{
+		return NAS2D::Dictionary{{
 			{"screenwidth", 1000},
 			{"screenheight", 700},
 			{"bitdepth", 32},
@@ -47,7 +47,7 @@ namespace
 
 	NAS2D::Dictionary defaultConfigAudio()
 	{
-		return {{
+		return NAS2D::Dictionary{{
 			{"mixer", "SDL"},
 			{"musicvolume", 100},
 			{"sfxvolume", 128},

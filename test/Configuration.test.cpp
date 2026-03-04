@@ -57,7 +57,7 @@ TEST(Configuration, loadData) {
 				},
 				{
 					"options",
-					{{
+					NAS2D::Dictionary{{
 						{"skip-splash", false},
 						{"maximized", true},
 						{"Key1", "Some string value"},

@@ -29,7 +29,7 @@ namespace NAS2D
 	{
 	public:
 		Window();
-		Window(const std::string& appTitle);
+		explicit Window(const std::string& appTitle);
 		Window(const Window&) = delete;
 		virtual ~Window();
 

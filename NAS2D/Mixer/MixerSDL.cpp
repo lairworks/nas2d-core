@@ -125,8 +125,8 @@ MixerSDL::MixerSDL(const Options& options)
 		throw std::runtime_error(std::string{"Error opening audio mixer: "} + Mix_GetError());
 	}
 
-	soundVolume(options.sfxVolume);
-	musicVolume(options.musicVolume);
+	MixerSDL::soundVolume(options.sfxVolume);
+	MixerSDL::musicVolume(options.musicVolume);
 
 	musicFinished = Delegate{this, &MixerSDL::onMusicFinished};
 	Mix_HookMusicFinished(&::onMusicFinished);

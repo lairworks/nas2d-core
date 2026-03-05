@@ -20,7 +20,7 @@ namespace {
 		NAS2D::Image image{&imageBuffer, 4, imageSize};
 		NAS2D::AnimationFrame frame{image, imageRect, anchorOffset, {2}};
 		NAS2D::AnimationFrame frameStop{image, imageRect, anchorOffset, {0}};
-		NAS2D::AnimationSet testAnimationSet{{{"defaultAction", {{frame}}}, {"frameStopAction", {{frameStop}}}}};
+		NAS2D::AnimationSet testAnimationSet{{{"defaultAction", NAS2D::AnimationSequence{{frame}}}, {"frameStopAction", NAS2D::AnimationSequence{{frameStop}}}}};
 		NAS2D::Sprite sprite{testAnimationSet, "defaultAction"};
 	};
 }

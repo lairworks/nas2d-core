@@ -9,7 +9,7 @@ namespace NAS2D
 	{
 	protected:
 		// Non-public constructor forces the use of static factory methods
-		constexpr Angle(float degrees) : degreeMeasure{degrees} {}
+		constexpr explicit Angle(float degrees) : degreeMeasure{degrees} {}
 
 		static constexpr float DegreeToRadians = std::numbers::pi_v<float> / 180;
 		static constexpr float RadiansToDegrees = 180 / std::numbers::pi_v<float>;

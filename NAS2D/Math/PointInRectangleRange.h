@@ -26,7 +26,7 @@ namespace NAS2D
 		class Iterator
 		{
 		public:
-			Iterator(const Rectangle<BaseType>& rect, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
+			explicit Iterator(const Rectangle<BaseType>& rect, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
 				mIterator(rect.size, initial),
 				mStartPoint(rect.position)
 			{}
@@ -66,7 +66,7 @@ namespace NAS2D
 		};
 
 
-		PointInRectangleRange(Rectangle<BaseType> rect) :
+		explicit PointInRectangleRange(Rectangle<BaseType> rect) :
 			mRect(rect)
 		{}
 

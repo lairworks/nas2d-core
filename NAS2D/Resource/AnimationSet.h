@@ -32,7 +32,7 @@ namespace NAS2D
 
 		explicit AnimationSet(std::string_view fileName);
 		AnimationSet(std::string_view fileName, ResourceCache<Image, std::string>& imageCache);
-		AnimationSet(Actions actions);
+		explicit AnimationSet(Actions actions);
 
 		std::vector<std::string> actionNames() const;
 		const AnimationSequence& frames(const std::string& actionName) const;

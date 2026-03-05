@@ -23,7 +23,7 @@ namespace NAS2D
 		class Iterator
 		{
 		public:
-			Iterator(const Vector<BaseType>& size, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
+			explicit Iterator(const Vector<BaseType>& size, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
 				mCurrent(initial),
 				mSize(size)
 			{}
@@ -73,7 +73,7 @@ namespace NAS2D
 		};
 
 
-		VectorSizeRange(Vector<BaseType> size) :
+		explicit VectorSizeRange(Vector<BaseType> size) :
 			mSize(size)
 		{}
 

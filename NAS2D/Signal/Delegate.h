@@ -392,7 +392,7 @@ namespace NAS2D
 			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
-		DelegateX(RetType (*function_to_bind)(Params...))
+		explicit DelegateX(RetType (*function_to_bind)(Params...))
 		{
 			Bind(function_to_bind);
 		}
@@ -463,7 +463,7 @@ namespace NAS2D
 			BaseType(pthis, function_to_bind)
 		{}
 
-		Delegate(RetType (*function_to_bind)(Params...)) :
+		explicit Delegate(RetType (*function_to_bind)(Params...)) :
 			BaseType(function_to_bind)
 		{}
 

@@ -10,7 +10,7 @@ namespace NAS2D
 	public:
 		class Iterator;
 
-		FilesystemPathParents(const FilesystemPath& folder);
+		explicit FilesystemPathParents(const FilesystemPath& folder);
 		FilesystemPathParents(const FilesystemPath& folder, std::size_t maxLevels);
 
 		std::size_t size() const;

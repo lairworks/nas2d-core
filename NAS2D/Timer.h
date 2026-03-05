@@ -40,7 +40,7 @@ namespace NAS2D
 		static uint64_t tick();
 
 		Timer();
-		Timer(uint64_t startTick);
+		explicit Timer(uint64_t startTick);
 
 		Timer(const Timer&) = default;
 		Timer& operator=(const Timer&) = default;

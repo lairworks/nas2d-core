@@ -586,7 +586,7 @@ void RendererOpenGL::initGL()
 
 	glTexCoordPointer(2, GL_FLOAT, 0, DefaultTextureCoords.data());
 
-	onResize(size());
+	RendererOpenGL::onResize(size());
 }
 
 

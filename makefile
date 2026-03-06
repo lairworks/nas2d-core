@@ -227,9 +227,11 @@ show-warnings:
 .PHONY: lint
 lint: cppcheck cppclean cppinclude
 
+CppCheckBuildDir := $(ROOTBUILDDIR)/cppcheck
 .PHONY: cppcheck
 cppcheck:
-	cppcheck --quiet "$(SRCDIR)"
+	@mkdir -p "$(CppCheckBuildDir)"
+	cppcheck --cppcheck-build-dir="$(CppCheckBuildDir)" --quiet "$(SRCDIR)"
 
 .PHONY: cppclean
 cppclean:

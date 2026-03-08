@@ -257,8 +257,8 @@ namespace NAS2D
 			return *this;
 		}
 
-		inline bool operator<(const DelegateMemento& right) { return IsLess(right); }
-		inline bool operator>(const DelegateMemento& right) { return right.IsLess(*this); }
+		inline bool operator<(const DelegateMemento& right) const { return IsLess(right); }
+		inline bool operator>(const DelegateMemento& right) const { return right.IsLess(*this); }
 	};
 
 

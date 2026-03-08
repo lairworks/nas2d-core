@@ -233,7 +233,6 @@ namespace NAS2D
 			m_pFunction = nullptr;
 		}
 
-	public:
 		inline bool IsEqual(const DelegateMemento& x) const
 		{
 			return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction;
@@ -248,7 +247,6 @@ namespace NAS2D
 		inline bool operator!() const { return !m_pthis && !m_pFunction; }
 		inline bool empty() const { return !m_pthis && !m_pFunction; }
 
-	public:
 		DelegateMemento& operator=(const DelegateMemento& right)
 		{
 			m_pthis = right.m_pthis;

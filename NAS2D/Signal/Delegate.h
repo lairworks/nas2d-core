@@ -355,7 +355,7 @@ namespace NAS2D
 		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
 		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }
 		bool operator<(const DelegateX& x) const { return m_Closure < x.m_Closure; }
-		bool operator>(const DelegateX& x) const { return x.m_Closure < m_Closure; }
+		bool operator>(const DelegateX& x) const { return m_Closure > x.m_Closure; }
 
 		template <typename X, typename Y>
 		DelegateX(Y* pthis, RetType (X::*function_to_bind)(Params...))

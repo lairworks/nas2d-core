@@ -240,15 +240,14 @@ namespace NAS2D
 
 		inline bool operator==(const DelegateMemento& x) const = default;
 
-		inline bool IsLess(const DelegateMemento& right) const
+		inline bool operator<(const DelegateMemento& right) const
 		{
 			if (m_pthis != right.m_pthis) return m_pthis < right.m_pthis;
 
 			return memcmp(&m_pFunction, &right.m_pFunction, sizeof(m_pFunction)) < 0;
 		}
 
-		inline bool operator<(const DelegateMemento& right) const { return IsLess(right); }
-		inline bool operator>(const DelegateMemento& right) const { return right.IsLess(*this); }
+		inline bool operator>(const DelegateMemento& right) const { return right < *this; }
 
 		inline bool operator!() const { return !m_pthis && !m_pFunction; }
 		inline bool empty() const { return !m_pthis && !m_pFunction; }

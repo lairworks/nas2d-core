@@ -31,7 +31,7 @@ TEST(Delegate, DelegateCallConst) {
 	delegate(1);
 }
 
-TEST(Delegate, CopyDelegate) {
+TEST(Delegate, CopyInitialize) {
 	const MockHandler handler{};
 	// Copy delegate (value copy, with value equal compare)
 	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};

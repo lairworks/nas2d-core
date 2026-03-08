@@ -469,7 +469,7 @@ namespace NAS2D
 
 		Delegate& operator=(const BaseType& x)
 		{
-			*static_cast<BaseType*>(this) = x;
+			BaseType::operator=(x);
 			return *this;
 		}
 	};

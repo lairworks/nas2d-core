@@ -80,7 +80,7 @@ namespace NAS2D
 		class GenericClass;
 #endif
 
-		static constexpr int SINGLE_MEMFUNCPTR_SIZE = sizeof(void(GenericClass::*)());
+		constexpr int memberFunctionPointerSize = sizeof(void(GenericClass::*)());
 
 		template <int N>
 		struct SimplifyMemFunc
@@ -94,7 +94,7 @@ namespace NAS2D
 		};
 
 		template <>
-		struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE>
+		struct SimplifyMemFunc<memberFunctionPointerSize>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
@@ -111,7 +111,7 @@ namespace NAS2D
 #ifdef FASTDLGT_MICROSOFT_MFP
 
 		template <>
-		struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + sizeof(int)>
+		struct SimplifyMemFunc<memberFunctionPointerSize + sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
@@ -150,7 +150,7 @@ namespace NAS2D
 
 
 		template <>
-		struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2 * sizeof(int)>
+		struct SimplifyMemFunc<memberFunctionPointerSize + 2 * sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
@@ -181,7 +181,7 @@ namespace NAS2D
 
 
 		template <>
-		struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3 * sizeof(int)>
+		struct SimplifyMemFunc<memberFunctionPointerSize + 3 * sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
@@ -466,12 +466,6 @@ namespace NAS2D
 		explicit Delegate(RetType (*function_to_bind)(Params...)) :
 			BaseType(function_to_bind)
 		{}
-
-		Delegate& operator=(const BaseType& x)
-		{
-			*static_cast<BaseType*>(this) = x;
-			return *this;
-		}
 	};
 
 	template <typename X, typename Y, typename RetType, typename... Params>

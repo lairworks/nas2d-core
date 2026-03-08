@@ -31,11 +31,20 @@ TEST(Delegate, DelegateCallConst) {
 	delegate(1);
 }
 
-TEST(Delegate, CopyDelegate) {
+TEST(Delegate, CopyInitialize) {
 	const MockHandler handler{};
 	// Copy delegate (value copy, with value equal compare)
 	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 	auto delegate2 = delegate1;
+	EXPECT_EQ(delegate1, delegate2);
+}
+
+TEST(Delegate, CopyAssign) {
+	const MockHandler handler{};
+	// Copy delegate (value copy, with value equal compare)
+	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+	auto delegate2 = NAS2D::Delegate<void(int)>{};
+	delegate2 = delegate1;
 	EXPECT_EQ(delegate1, delegate2);
 }
 

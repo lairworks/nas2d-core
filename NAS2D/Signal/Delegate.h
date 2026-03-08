@@ -302,7 +302,7 @@ namespace NAS2D
 
 			inline void CopyFrom(const DelegateMemento& right)
 			{
-				SetMementoFrom(right);
+				DelegateMemento::operator=(right);
 			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>

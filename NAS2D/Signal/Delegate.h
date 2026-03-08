@@ -251,7 +251,8 @@ namespace NAS2D
 	public:
 		DelegateMemento& operator=(const DelegateMemento& right)
 		{
-			SetMementoFrom(right);
+			m_pthis = right.m_pthis;
+			m_pFunction = right.m_pFunction;
 			return *this;
 		}
 
@@ -262,13 +263,6 @@ namespace NAS2D
 			m_pthis(right.m_pthis),
 			m_pFunction(right.m_pFunction)
 		{}
-
-	protected:
-		void SetMementoFrom(const DelegateMemento& right)
-		{
-			m_pFunction = right.m_pFunction;
-			m_pthis = right.m_pthis;
-		}
 	};
 
 

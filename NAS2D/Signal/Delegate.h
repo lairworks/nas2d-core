@@ -238,10 +238,8 @@ namespace NAS2D
 			m_pFunction = nullptr;
 		}
 
-		inline bool IsEqual(const DelegateMemento& x) const
-		{
-			return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction;
-		}
+		inline bool operator==(const DelegateMemento& x) const = default;
+
 		inline bool IsLess(const DelegateMemento& right) const
 		{
 			if (m_pthis != right.m_pthis) return m_pthis < right.m_pthis;
@@ -354,8 +352,8 @@ namespace NAS2D
 			return *this;
 		}
 
-		bool operator==(const DelegateX& x) const { return m_Closure.IsEqual(x.m_Closure); }
-		bool operator!=(const DelegateX& x) const { return !m_Closure.IsEqual(x.m_Closure); }
+		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
+		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }
 		bool operator<(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
 		bool operator>(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
 

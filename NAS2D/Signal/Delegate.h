@@ -227,6 +227,11 @@ namespace NAS2D
 			m_pFunction(nullptr)
 		{}
 
+		DelegateMemento(const DelegateMemento& right) :
+			m_pthis(right.m_pthis),
+			m_pFunction(right.m_pFunction)
+		{}
+
 		void clear()
 		{
 			m_pthis = nullptr;
@@ -256,11 +261,6 @@ namespace NAS2D
 
 		inline bool operator<(const DelegateMemento& right) { return IsLess(right); }
 		inline bool operator>(const DelegateMemento& right) { return right.IsLess(*this); }
-
-		DelegateMemento(const DelegateMemento& right) :
-			m_pthis(right.m_pthis),
-			m_pFunction(right.m_pFunction)
-		{}
 	};
 
 

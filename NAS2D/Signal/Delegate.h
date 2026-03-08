@@ -466,12 +466,6 @@ namespace NAS2D
 		explicit Delegate(RetType (*function_to_bind)(Params...)) :
 			BaseType(function_to_bind)
 		{}
-
-		Delegate& operator=(const BaseType& x)
-		{
-			BaseType::operator=(x);
-			return *this;
-		}
 	};
 
 	template <typename X, typename Y, typename RetType, typename... Params>

@@ -15,7 +15,7 @@ namespace {
 
 TEST(Delegate, DelegateCall) {
 	const MockHandler handler{};
-	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+	const auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 	EXPECT_CALL(handler, MockMethod(0));
 	EXPECT_CALL(handler, MockMethod(1));
 	delegate(0);
@@ -24,7 +24,7 @@ TEST(Delegate, DelegateCall) {
 
 TEST(Delegate, DelegateCallConst) {
 	const MockHandler handler{};
-	auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+	const auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 	EXPECT_CALL(handler, MockMethod(0));
 	EXPECT_CALL(handler, MockMethod(1));
 	delegate(0);
@@ -34,15 +34,15 @@ TEST(Delegate, DelegateCallConst) {
 TEST(Delegate, CopyInitialize) {
 	const MockHandler handler{};
 	// Copy delegate (value copy, with value equal compare)
-	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
-	auto delegate2 = delegate1;
+	const auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+	const auto delegate2 = delegate1;
 	EXPECT_EQ(delegate1, delegate2);
 }
 
 TEST(Delegate, CopyAssign) {
 	const MockHandler handler{};
 	// Copy delegate (value copy, with value equal compare)
-	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+	const auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 	auto delegate2 = NAS2D::Delegate<void(int)>{};
 	delegate2 = delegate1;
 	EXPECT_EQ(delegate1, delegate2);
@@ -51,16 +51,16 @@ TEST(Delegate, CopyAssign) {
 TEST(Delegate, DelegateEqual) {
 	const MockHandler handler{};
 	// Make identical delegates, which should compare equal
-	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
-	auto delegate2 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+	const auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+	const auto delegate2 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
 	EXPECT_EQ(delegate1, delegate2);
 }
 
 TEST(Delegate, DelegateNotEqualMethods) {
 	const MockHandler handler{};
 	// Different handler methods should compare not equal
-	auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
-	auto delegate2 = NAS2D::Delegate{&handler, &MockHandler::MockMethod2};
+	const auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+	const auto delegate2 = NAS2D::Delegate{&handler, &MockHandler::MockMethod2};
 	EXPECT_NE(delegate1, delegate2);
 }
 
@@ -68,14 +68,14 @@ TEST(Delegate, DelegateNotEqualObjects) {
 	const MockHandler handler1{};
 	const MockHandler handler2{};
 	// Different handler objects should compare not equal
-	auto delegate1 = NAS2D::Delegate{&handler1, &MockHandler::MockMethod};
-	auto delegate2 = NAS2D::Delegate{&handler2, &MockHandler::MockMethod};
+	const auto delegate1 = NAS2D::Delegate{&handler1, &MockHandler::MockMethod};
+	const auto delegate2 = NAS2D::Delegate{&handler2, &MockHandler::MockMethod};
 	EXPECT_NE(delegate1, delegate2);
 }
 
 TEST(Delegate, LambdaVariableCapture) {
 	const auto lambda = [](){ return 42; };
-	auto delegate = NAS2D::Delegate{&lambda, &decltype(lambda)::operator()};
+	const auto delegate = NAS2D::Delegate{&lambda, &decltype(lambda)::operator()};
 	EXPECT_EQ(42, delegate());
 }
 
@@ -93,7 +93,7 @@ TEST(Delegate, ForwardWithoutCopy) {
 	};
 
 	CopyReceiver copyReceiver;
-	auto delegate = NAS2D::Delegate{&copyReceiver, &CopyReceiver::receiveCopy};
+	const auto delegate = NAS2D::Delegate{&copyReceiver, &CopyReceiver::receiveCopy};
 
 	CopyCounter copyCounter;
 	EXPECT_EQ(1, delegate(copyCounter));

@@ -227,47 +227,36 @@ namespace NAS2D
 			m_pFunction(nullptr)
 		{}
 
+		DelegateMemento(const DelegateMemento& right) :
+			m_pthis(right.m_pthis),
+			m_pFunction(right.m_pFunction)
+		{}
+
 		void clear()
 		{
 			m_pthis = nullptr;
 			m_pFunction = nullptr;
 		}
 
-	public:
-		inline bool IsEqual(const DelegateMemento& x) const
-		{
-			return m_pthis == x.m_pthis && m_pFunction == x.m_pFunction;
-		}
-		inline bool IsLess(const DelegateMemento& right) const
+		inline bool operator==(const DelegateMemento& x) const = default;
+
+		inline bool operator<(const DelegateMemento& right) const
 		{
 			if (m_pthis != right.m_pthis) return m_pthis < right.m_pthis;
 
 			return memcmp(&m_pFunction, &right.m_pFunction, sizeof(m_pFunction)) < 0;
 		}
 
+		inline bool operator>(const DelegateMemento& right) const { return right < *this; }
+
 		inline bool operator!() const { return !m_pthis && !m_pFunction; }
 		inline bool empty() const { return !m_pthis && !m_pFunction; }
 
-	public:
 		DelegateMemento& operator=(const DelegateMemento& right)
 		{
-			SetMementoFrom(right);
-			return *this;
-		}
-
-		inline bool operator<(const DelegateMemento& right) { return IsLess(right); }
-		inline bool operator>(const DelegateMemento& right) { return right.IsLess(*this); }
-
-		DelegateMemento(const DelegateMemento& right) :
-			m_pthis(right.m_pthis),
-			m_pFunction(right.m_pFunction)
-		{}
-
-	protected:
-		void SetMementoFrom(const DelegateMemento& right)
-		{
-			m_pFunction = right.m_pFunction;
 			m_pthis = right.m_pthis;
+			m_pFunction = right.m_pFunction;
+			return *this;
 		}
 	};
 
@@ -300,10 +289,9 @@ namespace NAS2D
 				return CastMemFuncPtr<GenericMemFunc>(m_pFunction);
 			}
 
-			template <typename DerivedClass>
-			inline void CopyFrom(DerivedClass*, const DelegateMemento& right)
+			inline void CopyFrom(const DelegateMemento& right)
 			{
-				SetMementoFrom(right);
+				DelegateMemento::operator=(right);
 			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>
@@ -355,18 +343,18 @@ namespace NAS2D
 		using type = DelegateX;
 
 		DelegateX() { clear(); }
-		DelegateX(const DelegateX& x) { m_Closure.CopyFrom(this, x.m_Closure); }
+		DelegateX(const DelegateX& x) { m_Closure.CopyFrom(x.m_Closure); }
 
 		DelegateX& operator=(const DelegateX& x)
 		{
-			m_Closure.CopyFrom(this, x.m_Closure);
+			m_Closure.CopyFrom(x.m_Closure);
 			return *this;
 		}
 
-		bool operator==(const DelegateX& x) const { return m_Closure.IsEqual(x.m_Closure); }
-		bool operator!=(const DelegateX& x) const { return !m_Closure.IsEqual(x.m_Closure); }
-		bool operator<(const DelegateX& x) const { return m_Closure.IsLess(x.m_Closure); }
-		bool operator>(const DelegateX& x) const { return x.m_Closure.IsLess(m_Closure); }
+		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
+		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }
+		bool operator<(const DelegateX& x) const { return m_Closure < x.m_Closure; }
+		bool operator>(const DelegateX& x) const { return m_Closure > x.m_Closure; }
 
 		template <typename X, typename Y>
 		DelegateX(Y* pthis, RetType (X::*function_to_bind)(Params...))
@@ -431,7 +419,7 @@ namespace NAS2D
 		void clear() { m_Closure.clear(); }
 
 		const DelegateMemento& GetMemento() { return m_Closure; }
-		void SetMemento(const DelegateMemento& any) { m_Closure.CopyFrom(this, any); }
+		void SetMemento(const DelegateMemento& any) { m_Closure.CopyFrom(any); }
 
 	private:
 		RetType InvokeStaticFunction(Params... params) const

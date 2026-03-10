@@ -80,6 +80,13 @@ TEST(Delegate, BoolConversionTrue) {
 	if (delegate) { delegate(0); }
 }
 
+TEST(Delegate, BoolConversionFalse) {
+	const MockHandler handler{};
+	const auto delegate = NAS2D::Delegate<void(int)>{};
+	EXPECT_CALL(handler, MockMethod(0)).Times(0);
+	if (delegate) { delegate(0); }
+}
+
 TEST(Delegate, LambdaVariableCapture) {
 	const auto lambda = [](){ return 42; };
 	const auto delegate = NAS2D::Delegate{&lambda, &decltype(lambda)::operator()};

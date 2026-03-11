@@ -3,6 +3,8 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <type_traits>
+
 
 namespace {
 	class MockHandler {
@@ -85,6 +87,12 @@ TEST(Delegate, BoolConversionFalse) {
 	const auto delegate = NAS2D::Delegate<void(int)>{};
 	EXPECT_CALL(handler, MockMethod(0)).Times(0);
 	if (delegate) { delegate(0); }
+}
+
+TEST(Delegate, IntConversionFail) {
+	// Ensure there are no conversions to `int` (potentially through an implicit conversion to `bool`)
+	// This would allow code such as: if (delegate > 0)
+	EXPECT_FALSE((std::is_convertible_v<NAS2D::Delegate<void(int)>, int>));
 }
 
 TEST(Delegate, LambdaVariableCapture) {

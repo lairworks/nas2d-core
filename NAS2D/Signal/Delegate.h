@@ -401,16 +401,8 @@ namespace NAS2D
 			return (m_Closure.GetClosureThis()->*(m_Closure.GetClosureMemPtr()))(NAS2D::forward<Params>(params)...);
 		}
 
-	private:
-		using UselessTypedef = struct SafeBoolStruct
-		{
-			int a_data_pointer_to_this_is_0_on_buggy_compilers;
-			StaticFunctionPtr m_nonzero;
-		};
-		using unspecified_bool_type = StaticFunctionPtr SafeBoolStruct::*;
-
 	public:
-		operator unspecified_bool_type() const { return empty() ? nullptr : &SafeBoolStruct::m_nonzero; }
+		explicit operator bool() const { return !empty(); }
 
 		inline bool operator==(StaticFunctionPtr funcptr) { return m_Closure.IsEqualToStaticFuncPtr(funcptr); }
 		inline bool operator!=(StaticFunctionPtr funcptr) { return !m_Closure.IsEqualToStaticFuncPtr(funcptr); }

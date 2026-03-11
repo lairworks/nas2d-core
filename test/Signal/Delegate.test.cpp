@@ -95,6 +95,12 @@ TEST(Delegate, IntConversionFail) {
 	EXPECT_FALSE((std::is_convertible_v<NAS2D::Delegate<void(int)>, int>));
 }
 
+TEST(Delegate, ImplicitBoolConversionFail) {
+	// Ensure there are no implicit conversions to `bool`
+	// This is a stronger guarantee than the `int` conversion fail
+	EXPECT_FALSE((std::is_convertible_v<NAS2D::Delegate<void(int)>, bool>));
+}
+
 TEST(Delegate, LambdaVariableCapture) {
 	const auto lambda = [](){ return 42; };
 	const auto delegate = NAS2D::Delegate{&lambda, &decltype(lambda)::operator()};

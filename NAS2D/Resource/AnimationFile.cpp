@@ -259,14 +259,14 @@ const std::string& AnimationFile::actionName(std::size_t index) const
 
 AnimationSequence AnimationFile::animationSequence(std::size_t actionIndex, const ImageLoader& imageLoader) const
 {
-	const auto& action = mActions.at(actionIndex);
-	if (action.frames.empty())
+	const auto& animatedAction = mActions.at(actionIndex);
+	if (animatedAction.frames.empty())
 	{
-		throw std::runtime_error("Action contains no valid frames: " + action.name);
+		throw std::runtime_error("Action contains no valid frames: " + animatedAction.name);
 	}
 
 	std::vector<AnimationFrame> frameList;
-	for (const auto& animationFrameData : action.frames)
+	for (const auto& animationFrameData : animatedAction.frames)
 	{
 		const auto imageSheetIndex = imageSheetReferenceIndex(animationFrameData.id);
 		const auto& image = imageLoader(mBasePath + mImageSheetReferences[imageSheetIndex].filePath);

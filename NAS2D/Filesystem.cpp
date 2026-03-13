@@ -268,9 +268,9 @@ std::vector<VirtualPath> Filesystem::directoryList(const VirtualPath& dir, const
 {
 	std::vector<VirtualPath> fileList;
 
-	for (const auto& searchPath : mSearchPaths)
+	for (const auto& searchPathDir : mSearchPaths)
 	{
-		const auto dirPath = std::string{searchPath / dir};
+		const auto dirPath = std::string{searchPathDir / dir};
 		if (std::filesystem::is_directory(dirPath))
 		{
 			for (const auto& dirEntry : std::filesystem::directory_iterator(dirPath))

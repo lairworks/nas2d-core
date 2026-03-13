@@ -75,19 +75,19 @@ Duration AnimatedImage::advanceFrame(Duration timeDelta)
 
 	for (;;)
 	{
-		const auto& frame = this->frame();
+		const auto& animationFrame = this->frame();
 
-		if (frame.isStopFrame())
+		if (animationFrame.isStopFrame())
 		{
 			return accumulator;
 		}
 
-		if (timeDelta - accumulator < frame.frameDelay)
+		if (timeDelta - accumulator < animationFrame.frameDelay)
 		{
 			return accumulator;
 		}
 
-		accumulator += frame.frameDelay;
+		accumulator += animationFrame.frameDelay;
 		advanceFrame();
 	}
 }
@@ -101,17 +101,17 @@ void AnimatedImage::draw(Renderer& renderer, Point<int> position) const
 
 void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor) const
 {
-	const auto& frame = mAnimationSequence->frame(mFrameIndex);
-	const auto drawPosition = position - frame.anchorOffset;
-	const auto frameBounds = frame.bounds;
-	renderer.drawSubImage(frame.image, drawPosition, frameBounds, tintColor);
+	const auto& animationFrame = mAnimationSequence->frame(mFrameIndex);
+	const auto drawPosition = position - animationFrame.anchorOffset;
+	const auto frameBounds = animationFrame.bounds;
+	renderer.drawSubImage(animationFrame.image, drawPosition, frameBounds, tintColor);
 }
 
 
 void AnimatedImage::draw(Renderer& renderer, Point<int> position, Color tintColor, Angle rotation) const
 {
-	const auto& frame = mAnimationSequence->frame(mFrameIndex);
-	const auto drawPosition = position - frame.anchorOffset;
-	const auto frameBounds = frame.bounds;
-	renderer.drawSubImageRotated(frame.image, drawPosition, frameBounds, rotation, tintColor);
+	const auto& animationFrame = mAnimationSequence->frame(mFrameIndex);
+	const auto drawPosition = position - animationFrame.anchorOffset;
+	const auto frameBounds = animationFrame.bounds;
+	renderer.drawSubImageRotated(animationFrame.image, drawPosition, frameBounds, rotation, tintColor);
 }

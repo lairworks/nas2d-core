@@ -356,9 +356,9 @@ void Window::onResize(Vector<int> /*newSize*/)
 
 Vector<int> Window::getWindowClientArea() const noexcept
 {
-	Vector<int> size;
-	SDL_GetWindowSize(window, &size.x, &size.y);
-	return size;
+	Vector<int> clientAreaSize;
+	SDL_GetWindowSize(window, &clientAreaSize.x, &clientAreaSize.y);
+	return clientAreaSize;
 }
 
 

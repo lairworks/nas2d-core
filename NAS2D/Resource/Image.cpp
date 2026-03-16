@@ -240,7 +240,7 @@ namespace
 				uint8_t green;
 				uint8_t blue;
 			};
-			auto& p = reinterpret_cast<const Color24&>(pixelAddress);
+			auto& p = *reinterpret_cast<const Color24*>(pixelAddress);
 			uint32_t p0 = p.red, p1 = p.green, p2 = p.blue;
 			return (isBigEndian) ? (p0 << 16 | p1 << 8 | p2) : (p0 | p1 << 8 | p2 << 16);
 		}

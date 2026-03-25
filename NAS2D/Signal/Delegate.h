@@ -323,7 +323,7 @@ namespace NAS2D
 				}
 				else
 				{
-					return funcptr == reinterpret_cast<StaticFuncPtr>(GetStaticFunction());
+					return funcptr == GetStaticFunction();
 				}
 			}
 		};

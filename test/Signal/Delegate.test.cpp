@@ -127,3 +127,16 @@ TEST(Delegate, ForwardWithoutCopy) {
 	EXPECT_EQ(1, delegate(copyCounter));
 	EXPECT_EQ(0, delegate(CopyCounter{}));
 }
+
+TEST(Delegate, GetSetMemento) {
+	const MockHandler handler{};
+	const auto delegate1 = NAS2D::Delegate{&handler, &MockHandler::MockMethod};
+
+	NAS2D::Delegate<void(int)> delegate2;
+	delegate2.SetMemento(delegate1.GetMemento());
+
+	EXPECT_EQ(delegate1, delegate2);
+
+	EXPECT_CALL(handler, MockMethod(0)).Times(1);
+	delegate2(0);
+}

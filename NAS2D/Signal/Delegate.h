@@ -263,7 +263,7 @@ namespace NAS2D
 
 	namespace detail
 	{
-		template <typename GenericMemFunc, typename StaticFuncPtr, typename UnvoidStaticFuncPtr>
+		template <typename GenericMemFunc, typename StaticFuncPtr>
 		class ClosurePtr : public DelegateMemento
 		{
 		public:
@@ -309,10 +309,10 @@ namespace NAS2D
 				m_pthis = horrible_cast<GenericClass*>(function_to_bind);
 			}
 
-			inline UnvoidStaticFuncPtr GetStaticFunction() const
+			inline StaticFuncPtr GetStaticFunction() const
 			{
-				static_assert(sizeof(UnvoidStaticFuncPtr) != sizeof(this), "Can't use evil method");
-				return horrible_cast<UnvoidStaticFuncPtr>(this);
+				static_assert(sizeof(StaticFuncPtr) != sizeof(this), "Can't use evil method");
+				return horrible_cast<StaticFuncPtr>(this);
 			}
 
 			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr)
@@ -336,7 +336,7 @@ namespace NAS2D
 	private:
 		using StaticFunctionPtr = RetType (*)(Params...);
 		using GenericMemFn = RetType (detail::GenericClass::*)(Params...);
-		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, StaticFunctionPtr>;
+		using ClosureType = detail::ClosurePtr<GenericMemFn, StaticFunctionPtr>;
 		ClosureType m_Closure{};
 
 	public:

@@ -410,7 +410,7 @@ namespace NAS2D
 		inline bool empty() const { return !m_Closure; }
 		void clear() { m_Closure.clear(); }
 
-		const DelegateMemento& GetMemento() { return m_Closure; }
+		const DelegateMemento& GetMemento() const { return m_Closure; }
 		void SetMemento(const DelegateMemento& any) { m_Closure.CopyFrom(any); }
 
 	private:

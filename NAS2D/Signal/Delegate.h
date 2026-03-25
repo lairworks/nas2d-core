@@ -289,11 +289,6 @@ namespace NAS2D
 				return CastMemFuncPtr<GenericMemFunc>(m_pFunction);
 			}
 
-			inline void CopyFrom(const DelegateMemento& right)
-			{
-				DelegateMemento::operator=(right);
-			}
-
 			template <typename DerivedClass, typename ParentInvokerSig>
 			inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 			{
@@ -343,11 +338,11 @@ namespace NAS2D
 		using type = DelegateX;
 
 		DelegateX() { clear(); }
-		DelegateX(const DelegateX& x) { m_Closure.CopyFrom(x.m_Closure); }
+		DelegateX(const DelegateX& x) { m_Closure = x.m_Closure; }
 
 		DelegateX& operator=(const DelegateX& x)
 		{
-			m_Closure.CopyFrom(x.m_Closure);
+			m_Closure = x.m_Closure;
 			return *this;
 		}
 
@@ -409,9 +404,6 @@ namespace NAS2D
 		inline bool operator!() const { return !m_Closure; }
 		inline bool empty() const { return !m_Closure; }
 		void clear() { m_Closure.clear(); }
-
-		const DelegateMemento& GetMemento() { return m_Closure; }
-		void SetMemento(const DelegateMemento& any) { m_Closure.CopyFrom(any); }
 
 	private:
 		RetType InvokeStaticFunction(Params... params) const

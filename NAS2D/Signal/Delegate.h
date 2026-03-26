@@ -99,11 +99,7 @@ namespace NAS2D
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
 			{
-#if defined __DMC__
-				bound_func = horrible_cast<GenericMemFuncType>(function_to_bind);
-#else
 				bound_func = CastMemFuncPtr<GenericMemFuncType>(function_to_bind);
-#endif
 				return reinterpret_cast<GenericClass*>(pthis);
 			}
 		};

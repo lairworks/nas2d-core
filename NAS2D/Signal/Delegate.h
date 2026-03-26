@@ -252,12 +252,7 @@ namespace NAS2D
 		inline bool operator!() const { return !m_pthis && !m_pFunction; }
 		inline bool empty() const { return !m_pthis && !m_pFunction; }
 
-		DelegateMemento& operator=(const DelegateMemento& right)
-		{
-			m_pthis = right.m_pthis;
-			m_pFunction = right.m_pFunction;
-			return *this;
-		}
+		DelegateMemento& operator=(const DelegateMemento& right) = default;
 	};
 
 

@@ -204,7 +204,7 @@ namespace NAS2D
 					virtual_delta = u.s.vtordisp + *reinterpret_cast<const int*>(reinterpret_cast<const char*>(vtable) + u.s.vtable_index);
 				}
 				return reinterpret_cast<GenericClass*>(reinterpret_cast<char*>(pthis) + u.s.delta + virtual_delta);
-			};
+			}
 		};
 #endif
 	}

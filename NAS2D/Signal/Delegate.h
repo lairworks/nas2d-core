@@ -345,6 +345,12 @@ namespace NAS2D
 			Bind(function_to_bind);
 		}
 
+		DelegateX& operator=(RetType (*function_to_bind)(Params...))
+		{
+			Bind(function_to_bind);
+			return *this;
+		}
+
 		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
 		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }
 		bool operator<(const DelegateX& x) const { return m_Closure < x.m_Closure; }
@@ -360,12 +366,6 @@ namespace NAS2D
 		inline void Bind(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
 			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
-		}
-
-		DelegateX& operator=(RetType (*function_to_bind)(Params...))
-		{
-			Bind(function_to_bind);
-			return *this;
 		}
 
 		inline void Bind(RetType (*function_to_bind)(Params...))

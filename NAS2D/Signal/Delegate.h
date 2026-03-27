@@ -328,7 +328,7 @@ namespace NAS2D
 	public:
 		using type = DelegateX;
 
-		DelegateX() {}
+		DelegateX() = default;
 
 		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
 		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }

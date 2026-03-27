@@ -326,8 +326,6 @@ namespace NAS2D
 		ClosureType m_Closure{};
 
 	public:
-		using type = DelegateX;
-
 		DelegateX() = default;
 
 		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }

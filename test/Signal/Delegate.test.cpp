@@ -18,7 +18,7 @@ namespace {
 
 
 TEST(Delegate, CallStatic) {
-	const auto delegate = NAS2D::Delegate<int(int)>{&staticFunction};
+	const auto delegate = NAS2D::Delegate{&staticFunction};
 	EXPECT_EQ(0, delegate(0));
 	EXPECT_EQ(1, delegate(1));
 }

@@ -326,14 +326,7 @@ namespace NAS2D
 		ClosureType m_Closure{};
 
 	public:
-		using type = DelegateX;
-
-		DelegateX() { clear(); }
-
-		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
-		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }
-		bool operator<(const DelegateX& x) const { return m_Closure < x.m_Closure; }
-		bool operator>(const DelegateX& x) const { return m_Closure > x.m_Closure; }
+		DelegateX() = default;
 
 		template <typename X, typename Y>
 		DelegateX(Y* pthis, RetType (X::*function_to_bind)(Params...))
@@ -342,19 +335,7 @@ namespace NAS2D
 		}
 
 		template <typename X, typename Y>
-		inline void Bind(Y* pthis, RetType (X::*function_to_bind)(Params...))
-		{
-			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
-		}
-
-		template <typename X, typename Y>
 		DelegateX(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
-		{
-			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
-		}
-
-		template <typename X, typename Y>
-		inline void Bind(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
 			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
 		}
@@ -368,6 +349,23 @@ namespace NAS2D
 		{
 			Bind(function_to_bind);
 			return *this;
+		}
+
+		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
+		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }
+		bool operator<(const DelegateX& x) const { return m_Closure < x.m_Closure; }
+		bool operator>(const DelegateX& x) const { return m_Closure > x.m_Closure; }
+
+		template <typename X, typename Y>
+		inline void Bind(Y* pthis, RetType (X::*function_to_bind)(Params...))
+		{
+			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
+		}
+
+		template <typename X, typename Y>
+		inline void Bind(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
+		{
+			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
 		inline void Bind(RetType (*function_to_bind)(Params...))
@@ -405,7 +403,6 @@ namespace NAS2D
 	{
 	public:
 		using BaseType = DelegateX<RetType, Params...>;
-		using SelfType = Delegate;
 
 		Delegate() = default;
 

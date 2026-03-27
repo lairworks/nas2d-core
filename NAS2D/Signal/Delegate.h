@@ -403,7 +403,6 @@ namespace NAS2D
 	{
 	public:
 		using BaseType = DelegateX<RetType, Params...>;
-		using SelfType = Delegate;
 
 		Delegate() = default;
 

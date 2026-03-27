@@ -51,7 +51,7 @@ namespace NAS2D
 		inline OutputClass horrible_cast(const InputClass input)
 		{
 			horrible_union<OutputClass, InputClass> u;
-			static_assert(sizeof(InputClass) != sizeof(u) || sizeof(InputClass) != sizeof(OutputClass), "Can't use horrible cast");
+			static_assert(sizeof(InputClass) == sizeof(u) && sizeof(InputClass) == sizeof(OutputClass), "Can't use horrible cast");
 			u.in = input;
 			return u.out;
 		}
@@ -291,13 +291,13 @@ namespace NAS2D
 				{
 					bindmemfunc(pParent, static_function_invoker);
 				}
-				static_assert(sizeof(GenericClass*) != sizeof(function_to_bind), "Can't use evil method");
+				static_assert(sizeof(GenericClass*) == sizeof(function_to_bind), "Can't use evil method");
 				m_pthis = horrible_cast<GenericClass*>(function_to_bind);
 			}
 
 			inline StaticFuncPtr GetStaticFunction() const
 			{
-				static_assert(sizeof(StaticFuncPtr) != sizeof(this), "Can't use evil method");
+				static_assert(sizeof(StaticFuncPtr) == sizeof(this), "Can't use evil method");
 				return horrible_cast<StaticFuncPtr>(this);
 			}
 

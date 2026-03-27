@@ -328,19 +328,8 @@ namespace NAS2D
 	public:
 		DelegateX() = default;
 
-		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
-		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }
-		bool operator<(const DelegateX& x) const { return m_Closure < x.m_Closure; }
-		bool operator>(const DelegateX& x) const { return m_Closure > x.m_Closure; }
-
 		template <typename X, typename Y>
 		DelegateX(Y* pthis, RetType (X::*function_to_bind)(Params...))
-		{
-			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
-		}
-
-		template <typename X, typename Y>
-		inline void Bind(Y* pthis, RetType (X::*function_to_bind)(Params...))
 		{
 			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
 		}
@@ -351,15 +340,26 @@ namespace NAS2D
 			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
+		explicit DelegateX(RetType (*function_to_bind)(Params...))
+		{
+			Bind(function_to_bind);
+		}
+
+		bool operator==(const DelegateX& x) const { return m_Closure == x.m_Closure; }
+		bool operator!=(const DelegateX& x) const { return m_Closure != x.m_Closure; }
+		bool operator<(const DelegateX& x) const { return m_Closure < x.m_Closure; }
+		bool operator>(const DelegateX& x) const { return m_Closure > x.m_Closure; }
+
+		template <typename X, typename Y>
+		inline void Bind(Y* pthis, RetType (X::*function_to_bind)(Params...))
+		{
+			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
+		}
+
 		template <typename X, typename Y>
 		inline void Bind(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
 			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
-		}
-
-		explicit DelegateX(RetType (*function_to_bind)(Params...))
-		{
-			Bind(function_to_bind);
 		}
 
 		DelegateX& operator=(RetType (*function_to_bind)(Params...))

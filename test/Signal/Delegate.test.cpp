@@ -7,6 +7,8 @@
 
 
 namespace {
+	int staticFunction(int value) { return value; }
+
 	class MockHandler {
 	public:
 		MOCK_CONST_METHOD1(MockMethod, void(int value));
@@ -14,6 +16,12 @@ namespace {
 	};
 }
 
+
+TEST(Delegate, CallStatic) {
+	const auto delegate = NAS2D::Delegate<int(int)>{&staticFunction};
+	EXPECT_EQ(0, delegate(0));
+	EXPECT_EQ(1, delegate(1));
+}
 
 TEST(Delegate, DelegateCall) {
 	const MockHandler handler{};

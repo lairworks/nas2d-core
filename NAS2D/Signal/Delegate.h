@@ -259,13 +259,13 @@ namespace NAS2D
 		{
 		public:
 			template <typename X, typename XMemFunc>
-			inline void bindmemfunc(X* pthis, XMemFunc function_to_bind)
+			inline void bindMemFunc(X* pthis, XMemFunc function_to_bind)
 			{
 				m_pthis = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(pthis, function_to_bind, m_pFunction);
 			}
 
 			template <typename X, typename XMemFunc>
-			inline void bindconstmemfunc(const X* pthis, XMemFunc function_to_bind)
+			inline void bindConstMemFunc(const X* pthis, XMemFunc function_to_bind)
 			{
 				m_pthis = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(const_cast<X*>(pthis), function_to_bind, m_pFunction);
 			}
@@ -281,7 +281,7 @@ namespace NAS2D
 			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>
-			inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
+			inline void bindStaticFunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 			{
 				if (!function_to_bind)
 				{
@@ -289,7 +289,7 @@ namespace NAS2D
 				}
 				else
 				{
-					bindmemfunc(pParent, static_function_invoker);
+					bindMemFunc(pParent, static_function_invoker);
 				}
 				static_assert(sizeof(GenericClass*) == sizeof(function_to_bind), "Can't use evil method");
 				m_pthis = horrible_cast<GenericClass*>(function_to_bind);
@@ -331,13 +331,13 @@ namespace NAS2D
 		template <typename X, typename Y>
 		DelegateX(Y* pthis, RetType (X::*function_to_bind)(Params...))
 		{
-			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
+			m_Closure.bindMemFunc(static_cast<X*>(pthis), function_to_bind);
 		}
 
 		template <typename X, typename Y>
 		DelegateX(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
-			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
+			m_Closure.bindConstMemFunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
 		explicit DelegateX(RetType (*function_to_bind)(Params...))
@@ -359,18 +359,18 @@ namespace NAS2D
 		template <typename X, typename Y>
 		inline void Bind(Y* pthis, RetType (X::*function_to_bind)(Params...))
 		{
-			m_Closure.bindmemfunc(static_cast<X*>(pthis), function_to_bind);
+			m_Closure.bindMemFunc(static_cast<X*>(pthis), function_to_bind);
 		}
 
 		template <typename X, typename Y>
 		inline void Bind(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
-			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
+			m_Closure.bindConstMemFunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
 		inline void Bind(RetType (*function_to_bind)(Params...))
 		{
-			m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
+			m_Closure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
 		}
 
 		RetType operator()(Params... params) const

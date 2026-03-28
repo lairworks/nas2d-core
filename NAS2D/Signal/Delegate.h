@@ -265,7 +265,7 @@ namespace NAS2D
 			}
 
 			template <typename X, typename XMemFunc>
-			inline void bindconstmemfunc(const X* pthis, XMemFunc function_to_bind)
+			inline void bindConstMemFunc(const X* pthis, XMemFunc function_to_bind)
 			{
 				m_pthis = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(const_cast<X*>(pthis), function_to_bind, m_pFunction);
 			}
@@ -337,7 +337,7 @@ namespace NAS2D
 		template <typename X, typename Y>
 		DelegateX(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
-			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
+			m_Closure.bindConstMemFunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
 		explicit DelegateX(RetType (*function_to_bind)(Params...))
@@ -365,7 +365,7 @@ namespace NAS2D
 		template <typename X, typename Y>
 		inline void Bind(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
 		{
-			m_Closure.bindconstmemfunc(static_cast<const X*>(pthis), function_to_bind);
+			m_Closure.bindConstMemFunc(static_cast<const X*>(pthis), function_to_bind);
 		}
 
 		inline void Bind(RetType (*function_to_bind)(Params...))

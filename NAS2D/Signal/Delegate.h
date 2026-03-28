@@ -281,7 +281,7 @@ namespace NAS2D
 			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>
-			inline void bindstaticfunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
+			inline void bindStaticFunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
 			{
 				if (!function_to_bind)
 				{
@@ -370,7 +370,7 @@ namespace NAS2D
 
 		inline void Bind(RetType (*function_to_bind)(Params...))
 		{
-			m_Closure.bindstaticfunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
+			m_Closure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
 		}
 
 		RetType operator()(Params... params) const

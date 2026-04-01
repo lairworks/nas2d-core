@@ -259,15 +259,15 @@ namespace NAS2D
 		{
 		public:
 			template <typename X, typename XMemFunc>
-			inline void bindMemFunc(X* pthis, XMemFunc function_to_bind)
+			inline void bindMemFunc(X* pthis, XMemFunc targetMemberFunction)
 			{
-				mTargetObject = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(pthis, function_to_bind, mTargetFunction);
+				mTargetObject = SimplifyMemFunc<sizeof(targetMemberFunction)>::Convert(pthis, targetMemberFunction, mTargetFunction);
 			}
 
 			template <typename X, typename XMemFunc>
-			inline void bindConstMemFunc(const X* pthis, XMemFunc function_to_bind)
+			inline void bindConstMemFunc(const X* pthis, XMemFunc targetMemberFunction)
 			{
-				mTargetObject = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(const_cast<X*>(pthis), function_to_bind, mTargetFunction);
+				mTargetObject = SimplifyMemFunc<sizeof(targetMemberFunction)>::Convert(const_cast<X*>(pthis), targetMemberFunction, mTargetFunction);
 			}
 
 			inline GenericClass* GetClosureThis() const
@@ -281,9 +281,9 @@ namespace NAS2D
 			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>
-			inline void bindStaticFunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
+			inline void bindStaticFunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr targetStaticFunction)
 			{
-				if (!function_to_bind)
+				if (!targetStaticFunction)
 				{
 					mTargetFunction = nullptr;
 				}
@@ -291,8 +291,8 @@ namespace NAS2D
 				{
 					bindMemFunc(pParent, static_function_invoker);
 				}
-				static_assert(sizeof(GenericClass*) == sizeof(function_to_bind), "Can't use evil method");
-				mTargetObject = horrible_cast<GenericClass*>(function_to_bind);
+				static_assert(sizeof(GenericClass*) == sizeof(targetStaticFunction), "Can't use evil method");
+				mTargetObject = horrible_cast<GenericClass*>(targetStaticFunction);
 			}
 
 			inline StaticFuncPtr GetStaticFunction() const

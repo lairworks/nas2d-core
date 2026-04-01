@@ -329,25 +329,25 @@ namespace NAS2D
 		DelegateX() = default;
 
 		template <typename X, typename Y>
-		DelegateX(Y* targetObject, RetType (X::*function_to_bind)(Params...))
+		DelegateX(Y* targetObject, RetType (X::*targetMemberFunction)(Params...))
 		{
-			mClosure.bindMemFunc(static_cast<X*>(targetObject), function_to_bind);
+			mClosure.bindMemFunc(static_cast<X*>(targetObject), targetMemberFunction);
 		}
 
 		template <typename X, typename Y>
-		DelegateX(const Y* targetObject, RetType (X::*function_to_bind)(Params...) const)
+		DelegateX(const Y* targetObject, RetType (X::*targetMemberFunction)(Params...) const)
 		{
-			mClosure.bindConstMemFunc(static_cast<const X*>(targetObject), function_to_bind);
+			mClosure.bindConstMemFunc(static_cast<const X*>(targetObject), targetMemberFunction);
 		}
 
-		explicit DelegateX(RetType (*function_to_bind)(Params...))
+		explicit DelegateX(RetType (*targetStaticFunction)(Params...))
 		{
-			Bind(function_to_bind);
+			Bind(targetStaticFunction);
 		}
 
-		DelegateX& operator=(RetType (*function_to_bind)(Params...))
+		DelegateX& operator=(RetType (*targetStaticFunction)(Params...))
 		{
-			Bind(function_to_bind);
+			Bind(targetStaticFunction);
 			return *this;
 		}
 
@@ -357,20 +357,20 @@ namespace NAS2D
 		bool operator>(const DelegateX& x) const { return mClosure > x.mClosure; }
 
 		template <typename X, typename Y>
-		inline void Bind(Y* targetObject, RetType (X::*function_to_bind)(Params...))
+		inline void Bind(Y* targetObject, RetType (X::*targetMemberFunction)(Params...))
 		{
-			mClosure.bindMemFunc(static_cast<X*>(targetObject), function_to_bind);
+			mClosure.bindMemFunc(static_cast<X*>(targetObject), targetMemberFunction);
 		}
 
 		template <typename X, typename Y>
-		inline void Bind(const Y* targetObject, RetType (X::*function_to_bind)(Params...) const)
+		inline void Bind(const Y* targetObject, RetType (X::*targetMemberFunction)(Params...) const)
 		{
-			mClosure.bindConstMemFunc(static_cast<const X*>(targetObject), function_to_bind);
+			mClosure.bindConstMemFunc(static_cast<const X*>(targetObject), targetMemberFunction);
 		}
 
-		inline void Bind(RetType (*function_to_bind)(Params...))
+		inline void Bind(RetType (*targetStaticFunction)(Params...))
 		{
-			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
+			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, targetStaticFunction);
 		}
 
 		RetType operator()(Params... params) const

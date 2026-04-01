@@ -281,7 +281,7 @@ namespace NAS2D
 			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>
-			inline void bindStaticFunc(DerivedClass* pParent, ParentInvokerSig staticFunctionInvoker, StaticFuncPtr targetStaticFunction)
+			inline void bindStaticFunc(DerivedClass* targetObjectProxy, ParentInvokerSig staticFunctionInvoker, StaticFuncPtr targetStaticFunction)
 			{
 				if (!targetStaticFunction)
 				{
@@ -289,7 +289,7 @@ namespace NAS2D
 				}
 				else
 				{
-					bindMemFunc(pParent, staticFunctionInvoker);
+					bindMemFunc(targetObjectProxy, staticFunctionInvoker);
 				}
 				static_assert(sizeof(GenericClass*) == sizeof(targetStaticFunction), "Can't use evil method");
 				mTargetObject = horrible_cast<GenericClass*>(targetStaticFunction);

@@ -215,23 +215,23 @@ namespace NAS2D
 	protected:
 		using GenericMemFuncType = void (detail::GenericClass::*)();
 		detail::GenericClass* mTargetObject;
-		GenericMemFuncType m_pFunction;
+		GenericMemFuncType mTargetFunction;
 
 	public:
 		DelegateMemento() :
 			mTargetObject(nullptr),
-			m_pFunction(nullptr)
+			mTargetFunction(nullptr)
 		{}
 
 		DelegateMemento(const DelegateMemento& right) :
 			mTargetObject(right.mTargetObject),
-			m_pFunction(right.m_pFunction)
+			mTargetFunction(right.mTargetFunction)
 		{}
 
 		void clear()
 		{
 			mTargetObject = nullptr;
-			m_pFunction = nullptr;
+			mTargetFunction = nullptr;
 		}
 
 		inline bool operator==(const DelegateMemento& x) const = default;
@@ -240,13 +240,13 @@ namespace NAS2D
 		{
 			if (mTargetObject != right.mTargetObject) return mTargetObject < right.mTargetObject;
 
-			return memcmp(&m_pFunction, &right.m_pFunction, sizeof(m_pFunction)) < 0;
+			return memcmp(&mTargetFunction, &right.mTargetFunction, sizeof(mTargetFunction)) < 0;
 		}
 
 		inline bool operator>(const DelegateMemento& right) const { return right < *this; }
 
-		inline bool operator!() const { return !mTargetObject && !m_pFunction; }
-		inline bool empty() const { return !mTargetObject && !m_pFunction; }
+		inline bool operator!() const { return !mTargetObject && !mTargetFunction; }
+		inline bool empty() const { return !mTargetObject && !mTargetFunction; }
 
 		DelegateMemento& operator=(const DelegateMemento& right) = default;
 	};
@@ -261,13 +261,13 @@ namespace NAS2D
 			template <typename X, typename XMemFunc>
 			inline void bindMemFunc(X* pthis, XMemFunc function_to_bind)
 			{
-				mTargetObject = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(pthis, function_to_bind, m_pFunction);
+				mTargetObject = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(pthis, function_to_bind, mTargetFunction);
 			}
 
 			template <typename X, typename XMemFunc>
 			inline void bindConstMemFunc(const X* pthis, XMemFunc function_to_bind)
 			{
-				mTargetObject = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(const_cast<X*>(pthis), function_to_bind, m_pFunction);
+				mTargetObject = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(const_cast<X*>(pthis), function_to_bind, mTargetFunction);
 			}
 
 			inline GenericClass* GetClosureThis() const
@@ -277,7 +277,7 @@ namespace NAS2D
 
 			inline GenericMemFunc GetClosureMemPtr() const
 			{
-				return CastMemFuncPtr<GenericMemFunc>(m_pFunction);
+				return CastMemFuncPtr<GenericMemFunc>(mTargetFunction);
 			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>
@@ -285,7 +285,7 @@ namespace NAS2D
 			{
 				if (!function_to_bind)
 				{
-					m_pFunction = nullptr;
+					mTargetFunction = nullptr;
 				}
 				else
 				{

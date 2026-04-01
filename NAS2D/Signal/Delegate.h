@@ -259,15 +259,15 @@ namespace NAS2D
 		{
 		public:
 			template <typename X, typename XMemFunc>
-			inline void bindMemFunc(X* pthis, XMemFunc function_to_bind)
+			inline void bindMemFunc(X* targetObject, XMemFunc targetMemberFunction)
 			{
-				mTargetObject = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(pthis, function_to_bind, mTargetFunction);
+				mTargetObject = SimplifyMemFunc<sizeof(targetMemberFunction)>::Convert(targetObject, targetMemberFunction, mTargetFunction);
 			}
 
 			template <typename X, typename XMemFunc>
-			inline void bindConstMemFunc(const X* pthis, XMemFunc function_to_bind)
+			inline void bindConstMemFunc(const X* targetObject, XMemFunc targetMemberFunction)
 			{
-				mTargetObject = SimplifyMemFunc<sizeof(function_to_bind)>::Convert(const_cast<X*>(pthis), function_to_bind, mTargetFunction);
+				mTargetObject = SimplifyMemFunc<sizeof(targetMemberFunction)>::Convert(const_cast<X*>(targetObject), targetMemberFunction, mTargetFunction);
 			}
 
 			inline GenericClass* GetClosureThis() const
@@ -281,18 +281,18 @@ namespace NAS2D
 			}
 
 			template <typename DerivedClass, typename ParentInvokerSig>
-			inline void bindStaticFunc(DerivedClass* pParent, ParentInvokerSig static_function_invoker, StaticFuncPtr function_to_bind)
+			inline void bindStaticFunc(DerivedClass* targetObjectProxy, ParentInvokerSig staticFunctionInvoker, StaticFuncPtr targetStaticFunction)
 			{
-				if (!function_to_bind)
+				if (!targetStaticFunction)
 				{
 					mTargetFunction = nullptr;
 				}
 				else
 				{
-					bindMemFunc(pParent, static_function_invoker);
+					bindMemFunc(targetObjectProxy, staticFunctionInvoker);
 				}
-				static_assert(sizeof(GenericClass*) == sizeof(function_to_bind), "Can't use evil method");
-				mTargetObject = horrible_cast<GenericClass*>(function_to_bind);
+				static_assert(sizeof(GenericClass*) == sizeof(targetStaticFunction), "Can't use evil method");
+				mTargetObject = horrible_cast<GenericClass*>(targetStaticFunction);
 			}
 
 			inline StaticFuncPtr GetStaticFunction() const
@@ -329,25 +329,25 @@ namespace NAS2D
 		DelegateX() = default;
 
 		template <typename X, typename Y>
-		DelegateX(Y* pthis, RetType (X::*function_to_bind)(Params...))
+		DelegateX(Y* targetObject, RetType (X::*targetMemberFunction)(Params...))
 		{
-			mClosure.bindMemFunc(static_cast<X*>(pthis), function_to_bind);
+			mClosure.bindMemFunc(static_cast<X*>(targetObject), targetMemberFunction);
 		}
 
 		template <typename X, typename Y>
-		DelegateX(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
+		DelegateX(const Y* targetObject, RetType (X::*targetMemberFunction)(Params...) const)
 		{
-			mClosure.bindConstMemFunc(static_cast<const X*>(pthis), function_to_bind);
+			mClosure.bindConstMemFunc(static_cast<const X*>(targetObject), targetMemberFunction);
 		}
 
-		explicit DelegateX(RetType (*function_to_bind)(Params...))
+		explicit DelegateX(RetType (*targetStaticFunction)(Params...))
 		{
-			Bind(function_to_bind);
+			Bind(targetStaticFunction);
 		}
 
-		DelegateX& operator=(RetType (*function_to_bind)(Params...))
+		DelegateX& operator=(RetType (*targetStaticFunction)(Params...))
 		{
-			Bind(function_to_bind);
+			Bind(targetStaticFunction);
 			return *this;
 		}
 
@@ -357,20 +357,20 @@ namespace NAS2D
 		bool operator>(const DelegateX& x) const { return mClosure > x.mClosure; }
 
 		template <typename X, typename Y>
-		inline void Bind(Y* pthis, RetType (X::*function_to_bind)(Params...))
+		inline void Bind(Y* targetObject, RetType (X::*targetMemberFunction)(Params...))
 		{
-			mClosure.bindMemFunc(static_cast<X*>(pthis), function_to_bind);
+			mClosure.bindMemFunc(static_cast<X*>(targetObject), targetMemberFunction);
 		}
 
 		template <typename X, typename Y>
-		inline void Bind(const Y* pthis, RetType (X::*function_to_bind)(Params...) const)
+		inline void Bind(const Y* targetObject, RetType (X::*targetMemberFunction)(Params...) const)
 		{
-			mClosure.bindConstMemFunc(static_cast<const X*>(pthis), function_to_bind);
+			mClosure.bindConstMemFunc(static_cast<const X*>(targetObject), targetMemberFunction);
 		}
 
-		inline void Bind(RetType (*function_to_bind)(Params...))
+		inline void Bind(RetType (*targetStaticFunction)(Params...))
 		{
-			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, function_to_bind);
+			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, targetStaticFunction);
 		}
 
 		RetType operator()(Params... params) const
@@ -407,17 +407,17 @@ namespace NAS2D
 		Delegate() = default;
 
 		template <typename X, typename Y>
-		Delegate(Y* pthis, RetType (X::*function_to_bind)(Params...)) :
-			BaseType(pthis, function_to_bind)
+		Delegate(Y* targetObject, RetType (X::*targetMemberFunction)(Params...)) :
+			BaseType(targetObject, targetMemberFunction)
 		{}
 
 		template <typename X, typename Y>
-		Delegate(const Y* pthis, RetType (X::*function_to_bind)(Params...) const) :
-			BaseType(pthis, function_to_bind)
+		Delegate(const Y* targetObject, RetType (X::*targetMemberFunction)(Params...) const) :
+			BaseType(targetObject, targetMemberFunction)
 		{}
 
-		explicit Delegate(RetType (*function_to_bind)(Params...)) :
-			BaseType(function_to_bind)
+		explicit Delegate(RetType (*targetStaticFunction)(Params...)) :
+			BaseType(targetStaticFunction)
 		{}
 	};
 

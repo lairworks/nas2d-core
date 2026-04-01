@@ -407,13 +407,13 @@ namespace NAS2D
 		Delegate() = default;
 
 		template <typename X, typename Y>
-		Delegate(Y* pthis, RetType (X::*function_to_bind)(Params...)) :
-			BaseType(pthis, function_to_bind)
+		Delegate(Y* targetObject, RetType (X::*function_to_bind)(Params...)) :
+			BaseType(targetObject, function_to_bind)
 		{}
 
 		template <typename X, typename Y>
-		Delegate(const Y* pthis, RetType (X::*function_to_bind)(Params...) const) :
-			BaseType(pthis, function_to_bind)
+		Delegate(const Y* targetObject, RetType (X::*function_to_bind)(Params...) const) :
+			BaseType(targetObject, function_to_bind)
 		{}
 
 		explicit Delegate(RetType (*function_to_bind)(Params...)) :

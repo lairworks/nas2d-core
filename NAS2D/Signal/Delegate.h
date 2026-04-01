@@ -259,15 +259,15 @@ namespace NAS2D
 		{
 		public:
 			template <typename X, typename XMemFunc>
-			inline void bindMemFunc(X* pthis, XMemFunc targetMemberFunction)
+			inline void bindMemFunc(X* targetObject, XMemFunc targetMemberFunction)
 			{
-				mTargetObject = SimplifyMemFunc<sizeof(targetMemberFunction)>::Convert(pthis, targetMemberFunction, mTargetFunction);
+				mTargetObject = SimplifyMemFunc<sizeof(targetMemberFunction)>::Convert(targetObject, targetMemberFunction, mTargetFunction);
 			}
 
 			template <typename X, typename XMemFunc>
-			inline void bindConstMemFunc(const X* pthis, XMemFunc targetMemberFunction)
+			inline void bindConstMemFunc(const X* targetObject, XMemFunc targetMemberFunction)
 			{
-				mTargetObject = SimplifyMemFunc<sizeof(targetMemberFunction)>::Convert(const_cast<X*>(pthis), targetMemberFunction, mTargetFunction);
+				mTargetObject = SimplifyMemFunc<sizeof(targetMemberFunction)>::Convert(const_cast<X*>(targetObject), targetMemberFunction, mTargetFunction);
 			}
 
 			inline GenericClass* GetClosureThis() const

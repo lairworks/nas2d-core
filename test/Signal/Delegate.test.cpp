@@ -23,6 +23,11 @@ TEST(Delegate, CallStatic) {
 	EXPECT_EQ(1, delegate(1));
 }
 
+TEST(Delegate, StaticCompare) {
+	const auto delegate = NAS2D::Delegate{&staticFunction};
+	EXPECT_EQ(delegate, &staticFunction);
+}
+
 TEST(Delegate, DelegateCall) {
 	const MockHandler handler{};
 	const auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};

@@ -294,7 +294,7 @@ namespace NAS2D
 				return horrible_cast<StaticFuncPtr>(this);
 			}
 
-			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr)
+			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr) const
 			{
 				return (!funcptr) ? operator!() : (funcptr == GetStaticFunction());
 			}
@@ -345,8 +345,8 @@ namespace NAS2D
 		explicit operator bool() const { return !!mClosure; }
 		inline bool operator!() const { return !mClosure; }
 
-		inline bool operator==(StaticFunctionPtr funcptr) { return mClosure.IsEqualToStaticFuncPtr(funcptr); }
-		inline bool operator!=(StaticFunctionPtr funcptr) { return !mClosure.IsEqualToStaticFuncPtr(funcptr); }
+		inline bool operator==(StaticFunctionPtr funcptr) const { return mClosure.IsEqualToStaticFuncPtr(funcptr); }
+		inline bool operator!=(StaticFunctionPtr funcptr) const { return !mClosure.IsEqualToStaticFuncPtr(funcptr); }
 
 	private:
 		RetType InvokeStaticFunction(Params... params) const

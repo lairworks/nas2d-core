@@ -34,6 +34,12 @@ TEST(Delegate, StaticCompareFalse) {
 	EXPECT_NE(delegate, &staticFunctionOther);
 }
 
+TEST(Delegate, StaticCompareNull) {
+	const auto delegate = NAS2D::Delegate<int(int)>{};
+	EXPECT_EQ(delegate, nullptr);
+	EXPECT_NE(delegate, &staticFunction);
+}
+
 TEST(Delegate, DelegateCall) {
 	const MockHandler handler{};
 	const auto delegate = NAS2D::Delegate{&handler, &MockHandler::MockMethod};

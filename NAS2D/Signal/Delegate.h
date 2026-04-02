@@ -422,11 +422,11 @@ namespace NAS2D
 	};
 
 	template <typename X, typename Y, typename RetType, typename... Params>
-	Delegate(Y*, RetType (X::*func)(Params...)) -> Delegate<RetType(Params...)>;
+	Delegate(Y*, RetType (X::*)(Params...)) -> Delegate<RetType(Params...)>;
 
 	template <typename X, typename Y, typename RetType, typename... Params>
-	Delegate(Y*, RetType (X::*func)(Params...) const) -> Delegate<RetType(Params...)>;
+	Delegate(Y*, RetType (X::*)(Params...) const) -> Delegate<RetType(Params...)>;
 
 	template <typename RetType, typename... Params>
-	Delegate(RetType (*func)(Params...)) -> Delegate<RetType(Params...)>;
+	Delegate(RetType (*)(Params...)) -> Delegate<RetType(Params...)>;
 }

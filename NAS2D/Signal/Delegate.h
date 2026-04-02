@@ -228,11 +228,7 @@ namespace NAS2D
 			mTargetFunction(right.mTargetFunction)
 		{}
 
-		void clear()
-		{
-			mTargetObject = nullptr;
-			mTargetFunction = nullptr;
-		}
+		DelegateMemento& operator=(const DelegateMemento& right) = default;
 
 		inline bool operator==(const DelegateMemento& x) const = default;
 
@@ -248,7 +244,11 @@ namespace NAS2D
 		inline bool operator!() const { return !mTargetObject && !mTargetFunction; }
 		inline bool empty() const { return !mTargetObject && !mTargetFunction; }
 
-		DelegateMemento& operator=(const DelegateMemento& right) = default;
+		void clear()
+		{
+			mTargetObject = nullptr;
+			mTargetFunction = nullptr;
+		}
 	};
 
 

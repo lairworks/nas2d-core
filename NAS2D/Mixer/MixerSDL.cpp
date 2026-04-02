@@ -154,7 +154,7 @@ MixerSDL::~MixerSDL()
 	Mix_CloseAudio();
 
 	Mix_HookMusicFinished(nullptr);
-	musicFinished.clear();
+	musicFinished = {};
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }

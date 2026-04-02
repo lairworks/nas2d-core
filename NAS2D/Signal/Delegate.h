@@ -243,12 +243,6 @@ namespace NAS2D
 
 		inline bool operator!() const { return !mTargetObject && !mTargetFunction; }
 		inline bool empty() const { return !mTargetObject && !mTargetFunction; }
-
-		void clear()
-		{
-			mTargetObject = nullptr;
-			mTargetFunction = nullptr;
-		}
 	};
 
 
@@ -362,7 +356,6 @@ namespace NAS2D
 		inline bool operator!=(StaticFunctionPtr funcptr) { return !mClosure.IsEqualToStaticFuncPtr(funcptr); }
 		inline bool operator!() const { return !mClosure; }
 		inline bool empty() const { return !mClosure; }
-		void clear() { mClosure = {}; }
 
 	private:
 		RetType InvokeStaticFunction(Params... params) const

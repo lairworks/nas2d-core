@@ -85,7 +85,7 @@ void Fade::update()
 	if (currentDuration >= mDuration)
 	{
 		mDirection = FadeDirection::None;
-		if (!mOnFadeComplete.empty())
+		if (mOnFadeComplete)
 		{
 			mOnFadeComplete();
 		}

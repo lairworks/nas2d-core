@@ -228,13 +228,9 @@ namespace NAS2D
 			mTargetFunction(right.mTargetFunction)
 		{}
 
-		void clear()
-		{
-			mTargetObject = nullptr;
-			mTargetFunction = nullptr;
-		}
+		DelegateMemento& operator=(const DelegateMemento&) = default;
 
-		inline bool operator==(const DelegateMemento& x) const = default;
+		inline bool operator==(const DelegateMemento&) const = default;
 
 		inline bool operator<(const DelegateMemento& right) const
 		{
@@ -246,9 +242,6 @@ namespace NAS2D
 		inline bool operator>(const DelegateMemento& right) const { return right < *this; }
 
 		inline bool operator!() const { return !mTargetObject && !mTargetFunction; }
-		inline bool empty() const { return !mTargetObject && !mTargetFunction; }
-
-		DelegateMemento& operator=(const DelegateMemento& right) = default;
 	};
 
 
@@ -303,14 +296,7 @@ namespace NAS2D
 
 			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr)
 			{
-				if (!funcptr)
-				{
-					return empty();
-				}
-				else
-				{
-					return funcptr == GetStaticFunction();
-				}
+				return (!funcptr) ? operator!() : (funcptr == GetStaticFunction());
 			}
 		};
 	}
@@ -342,13 +328,7 @@ namespace NAS2D
 
 		explicit DelegateX(RetType (*targetStaticFunction)(Params...))
 		{
-			Bind(targetStaticFunction);
-		}
-
-		DelegateX& operator=(RetType (*targetStaticFunction)(Params...))
-		{
-			Bind(targetStaticFunction);
-			return *this;
+			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, targetStaticFunction);
 		}
 
 		bool operator==(const DelegateX& x) const { return mClosure == x.mClosure; }
@@ -356,36 +336,17 @@ namespace NAS2D
 		bool operator<(const DelegateX& x) const { return mClosure < x.mClosure; }
 		bool operator>(const DelegateX& x) const { return mClosure > x.mClosure; }
 
-		template <typename X, typename Y>
-		inline void Bind(Y* targetObject, RetType (X::*targetMemberFunction)(Params...))
-		{
-			mClosure.bindMemFunc(static_cast<X*>(targetObject), targetMemberFunction);
-		}
-
-		template <typename X, typename Y>
-		inline void Bind(const Y* targetObject, RetType (X::*targetMemberFunction)(Params...) const)
-		{
-			mClosure.bindConstMemFunc(static_cast<const X*>(targetObject), targetMemberFunction);
-		}
-
-		inline void Bind(RetType (*targetStaticFunction)(Params...))
-		{
-			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, targetStaticFunction);
-		}
-
 		RetType operator()(Params... params) const
 		{
 			return (mClosure.GetClosureThis()->*(mClosure.GetClosureMemPtr()))(NAS2D::forward<Params>(params)...);
 		}
 
 	public:
-		explicit operator bool() const { return !empty(); }
+		explicit operator bool() const { return !!mClosure; }
+		inline bool operator!() const { return !mClosure; }
 
 		inline bool operator==(StaticFunctionPtr funcptr) { return mClosure.IsEqualToStaticFuncPtr(funcptr); }
 		inline bool operator!=(StaticFunctionPtr funcptr) { return !mClosure.IsEqualToStaticFuncPtr(funcptr); }
-		inline bool operator!() const { return !mClosure; }
-		inline bool empty() const { return !mClosure; }
-		void clear() { mClosure.clear(); }
 
 	private:
 		RetType InvokeStaticFunction(Params... params) const
@@ -422,11 +383,11 @@ namespace NAS2D
 	};
 
 	template <typename X, typename Y, typename RetType, typename... Params>
-	Delegate(Y*, RetType (X::*func)(Params...)) -> Delegate<RetType(Params...)>;
+	Delegate(Y*, RetType (X::*)(Params...)) -> Delegate<RetType(Params...)>;
 
 	template <typename X, typename Y, typename RetType, typename... Params>
-	Delegate(Y*, RetType (X::*func)(Params...) const) -> Delegate<RetType(Params...)>;
+	Delegate(Y*, RetType (X::*)(Params...) const) -> Delegate<RetType(Params...)>;
 
 	template <typename RetType, typename... Params>
-	Delegate(RetType (*func)(Params...)) -> Delegate<RetType(Params...)>;
+	Delegate(RetType (*)(Params...)) -> Delegate<RetType(Params...)>;
 }

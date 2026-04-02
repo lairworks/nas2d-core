@@ -342,24 +342,13 @@ namespace NAS2D
 
 		explicit DelegateX(RetType (*targetStaticFunction)(Params...))
 		{
-			Bind(targetStaticFunction);
-		}
-
-		DelegateX& operator=(RetType (*targetStaticFunction)(Params...))
-		{
-			Bind(targetStaticFunction);
-			return *this;
+			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, targetStaticFunction);
 		}
 
 		bool operator==(const DelegateX& x) const { return mClosure == x.mClosure; }
 		bool operator!=(const DelegateX& x) const { return mClosure != x.mClosure; }
 		bool operator<(const DelegateX& x) const { return mClosure < x.mClosure; }
 		bool operator>(const DelegateX& x) const { return mClosure > x.mClosure; }
-
-		inline void Bind(RetType (*targetStaticFunction)(Params...))
-		{
-			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, targetStaticFunction);
-		}
 
 		RetType operator()(Params... params) const
 		{

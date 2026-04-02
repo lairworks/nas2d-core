@@ -228,9 +228,9 @@ namespace NAS2D
 			mTargetFunction(right.mTargetFunction)
 		{}
 
-		DelegateMemento& operator=(const DelegateMemento& right) = default;
+		DelegateMemento& operator=(const DelegateMemento&) = default;
 
-		inline bool operator==(const DelegateMemento& x) const = default;
+		inline bool operator==(const DelegateMemento&) const = default;
 
 		inline bool operator<(const DelegateMemento& right) const
 		{

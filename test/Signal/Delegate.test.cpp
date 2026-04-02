@@ -8,6 +8,7 @@
 
 namespace {
 	int staticFunction(int value) { return value; }
+	int staticFunctionOther(int value) { return value + 1; }
 
 	class MockHandler {
 	public:
@@ -21,6 +22,22 @@ TEST(Delegate, CallStatic) {
 	const auto delegate = NAS2D::Delegate{&staticFunction};
 	EXPECT_EQ(0, delegate(0));
 	EXPECT_EQ(1, delegate(1));
+}
+
+TEST(Delegate, StaticCompare) {
+	const auto delegate = NAS2D::Delegate{&staticFunction};
+	EXPECT_EQ(delegate, &staticFunction);
+}
+
+TEST(Delegate, StaticCompareFalse) {
+	const auto delegate = NAS2D::Delegate{&staticFunction};
+	EXPECT_NE(delegate, &staticFunctionOther);
+}
+
+TEST(Delegate, StaticCompareNull) {
+	const auto delegate = NAS2D::Delegate<int(int)>{};
+	EXPECT_EQ(delegate, nullptr);
+	EXPECT_NE(delegate, &staticFunction);
 }
 
 TEST(Delegate, DelegateCall) {

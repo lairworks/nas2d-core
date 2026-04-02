@@ -242,7 +242,6 @@ namespace NAS2D
 		inline bool operator>(const DelegateMemento& right) const { return right < *this; }
 
 		inline bool operator!() const { return !mTargetObject && !mTargetFunction; }
-		inline bool empty() const { return !mTargetObject && !mTargetFunction; }
 	};
 
 
@@ -297,7 +296,7 @@ namespace NAS2D
 
 			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr)
 			{
-				return (!funcptr) ? empty() : (funcptr == GetStaticFunction());
+				return (!funcptr) ? operator!() : (funcptr == GetStaticFunction());
 			}
 		};
 	}

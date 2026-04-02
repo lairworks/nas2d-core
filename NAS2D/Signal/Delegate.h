@@ -356,18 +356,6 @@ namespace NAS2D
 		bool operator<(const DelegateX& x) const { return mClosure < x.mClosure; }
 		bool operator>(const DelegateX& x) const { return mClosure > x.mClosure; }
 
-		template <typename X, typename Y>
-		inline void Bind(Y* targetObject, RetType (X::*targetMemberFunction)(Params...))
-		{
-			mClosure.bindMemFunc(static_cast<X*>(targetObject), targetMemberFunction);
-		}
-
-		template <typename X, typename Y>
-		inline void Bind(const Y* targetObject, RetType (X::*targetMemberFunction)(Params...) const)
-		{
-			mClosure.bindConstMemFunc(static_cast<const X*>(targetObject), targetMemberFunction);
-		}
-
 		inline void Bind(RetType (*targetStaticFunction)(Params...))
 		{
 			mClosure.bindStaticFunc(this, &DelegateX::InvokeStaticFunction, targetStaticFunction);

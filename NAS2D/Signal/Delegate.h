@@ -351,11 +351,11 @@ namespace NAS2D
 
 	public:
 		explicit operator bool() const { return !empty(); }
+		inline bool operator!() const { return !mClosure; }
+		inline bool empty() const { return !mClosure; }
 
 		inline bool operator==(StaticFunctionPtr funcptr) { return mClosure.IsEqualToStaticFuncPtr(funcptr); }
 		inline bool operator!=(StaticFunctionPtr funcptr) { return !mClosure.IsEqualToStaticFuncPtr(funcptr); }
-		inline bool operator!() const { return !mClosure; }
-		inline bool empty() const { return !mClosure; }
 
 	private:
 		RetType InvokeStaticFunction(Params... params) const

@@ -296,7 +296,7 @@ namespace NAS2D
 
 			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr) const
 			{
-				return (!funcptr) ? operator!() : (funcptr == GetStaticFunction());
+				return (!funcptr) ? operator!() : (funcptr == horrible_cast<StaticFuncPtr>(mTargetObject));
 			}
 		};
 	}

@@ -13,6 +13,10 @@
 
 using namespace NAS2D::Xml;
 
+
+XmlDocument::~XmlDocument() = default;
+
+
 XmlDocument::XmlDocument() :
 	XmlNode(XmlNode::NodeType::XML_DOCUMENT),
 	_errorId(XmlErrorCode::XML_NO_ERROR),

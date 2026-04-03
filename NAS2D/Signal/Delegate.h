@@ -50,10 +50,10 @@ namespace NAS2D
 		template <typename OutputType, typename InputType>
 		inline OutputType horribleCast(const InputType input)
 		{
-			HorribleUnion<OutputType, InputType> u;
-			static_assert(sizeof(InputType) == sizeof(u) && sizeof(InputType) == sizeof(OutputType), "Can't use horrible cast");
-			u.input = input;
-			return u.output;
+			HorribleUnion<OutputType, InputType> horribleUnion;
+			static_assert(sizeof(InputType) == sizeof(horribleUnion) && sizeof(InputType) == sizeof(OutputType), "Can't use horrible cast");
+			horribleUnion.input = input;
+			return horribleUnion.output;
 		}
 
 

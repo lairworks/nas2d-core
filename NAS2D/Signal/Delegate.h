@@ -86,7 +86,7 @@ namespace NAS2D
 		struct SimplifyMemFunc
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
-			inline static GenericClass* Convert(X* /*pthis*/, XFuncType /*function_to_bind*/, GenericMemFuncType& /*bound_func*/)
+			inline static GenericClass* Convert(X* /*pthis*/, XFuncType /*targetMemberFunction*/, GenericMemFuncType& /*bound_func*/)
 			{
 				static_assert(N > 100, "Unsupported member function pointer on this compiler");
 				return nullptr;
@@ -97,9 +97,9 @@ namespace NAS2D
 		struct SimplifyMemFunc<memberFunctionPointerSize>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
-			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
+			inline static GenericClass* Convert(X* pthis, XFuncType targetMemberFunction, GenericMemFuncType& bound_func)
 			{
-				bound_func = CastMemFuncPtr<GenericMemFuncType>(function_to_bind);
+				bound_func = CastMemFuncPtr<GenericMemFuncType>(targetMemberFunction);
 				return reinterpret_cast<GenericClass*>(pthis);
 			}
 		};
@@ -110,7 +110,7 @@ namespace NAS2D
 		struct SimplifyMemFunc<memberFunctionPointerSize + sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
-			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
+			inline static GenericClass* Convert(X* pthis, XFuncType targetMemberFunction, GenericMemFuncType& bound_func)
 			{
 				union
 				{
@@ -122,8 +122,8 @@ namespace NAS2D
 					} s;
 				} u;
 
-				static_assert(sizeof(function_to_bind) == sizeof(u.s), "Can't use horrible cast");
-				u.func = function_to_bind;
+				static_assert(sizeof(targetMemberFunction) == sizeof(u.s), "Can't use horrible cast");
+				u.func = targetMemberFunction;
 				bound_func = u.s.funcaddress;
 				return reinterpret_cast<GenericClass*>(reinterpret_cast<char*>(pthis) + u.s.delta);
 			}
@@ -149,7 +149,7 @@ namespace NAS2D
 		struct SimplifyMemFunc<memberFunctionPointerSize + 2 * sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
-			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
+			inline static GenericClass* Convert(X* pthis, XFuncType targetMemberFunction, GenericMemFuncType& bound_func)
 			{
 				union
 				{
@@ -158,7 +158,7 @@ namespace NAS2D
 					MicrosoftVirtualMFP s;
 				} u;
 
-				u.func = function_to_bind;
+				u.func = targetMemberFunction;
 				bound_func = CastMemFuncPtr<GenericMemFuncType>(u.s.codeptr);
 
 				union
@@ -167,7 +167,7 @@ namespace NAS2D
 					MicrosoftVirtualMFP s;
 				} u2;
 
-				static_assert(sizeof(function_to_bind) == sizeof(u.s) && sizeof(function_to_bind) == sizeof(u.ProbeFunc) && sizeof(u2.virtfunc) == sizeof(u2.s), "Can't use horrible cast");
+				static_assert(sizeof(targetMemberFunction) == sizeof(u.s) && sizeof(targetMemberFunction) == sizeof(u.ProbeFunc) && sizeof(u2.virtfunc) == sizeof(u2.s), "Can't use horrible cast");
 
 				u2.virtfunc = &GenericVirtualClass::GetThis;
 				u.s.codeptr = u2.s.codeptr;
@@ -180,7 +180,7 @@ namespace NAS2D
 		struct SimplifyMemFunc<memberFunctionPointerSize + 3 * sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
-			inline static GenericClass* Convert(X* pthis, XFuncType function_to_bind, GenericMemFuncType& bound_func)
+			inline static GenericClass* Convert(X* pthis, XFuncType targetMemberFunction, GenericMemFuncType& bound_func)
 			{
 				union
 				{
@@ -195,7 +195,7 @@ namespace NAS2D
 				} u;
 
 				static_assert(sizeof(XFuncType) != sizeof(u.s), "Can't use horrible cast");
-				u.func = function_to_bind;
+				u.func = targetMemberFunction;
 				bound_func = u.s.funcaddress;
 				int virtual_delta = 0;
 				if (u.s.vtable_index)

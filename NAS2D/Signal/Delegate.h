@@ -40,18 +40,18 @@ namespace NAS2D
 {
 	namespace detail
 	{
-		template <typename OutputClass, typename InputClass>
+		template <typename OutputType, typename InputType>
 		union horribleUnion
 		{
-			OutputClass out;
-			InputClass in;
+			OutputType out;
+			InputType in;
 		};
 
-		template <typename OutputClass, typename InputClass>
-		inline OutputClass horribleCast(const InputClass input)
+		template <typename OutputType, typename InputType>
+		inline OutputType horribleCast(const InputType input)
 		{
-			horribleUnion<OutputClass, InputClass> u;
-			static_assert(sizeof(InputClass) == sizeof(u) && sizeof(InputClass) == sizeof(OutputClass), "Can't use horrible cast");
+			horribleUnion<OutputType, InputType> u;
+			static_assert(sizeof(InputType) == sizeof(u) && sizeof(InputType) == sizeof(OutputType), "Can't use horrible cast");
 			u.in = input;
 			return u.out;
 		}

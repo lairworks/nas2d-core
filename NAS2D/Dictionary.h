@@ -22,7 +22,7 @@ namespace NAS2D
 	class Dictionary
 	{
 	public:
-		Dictionary() = default;
+		Dictionary();
 		explicit Dictionary(std::map<std::string, StringValue> initialEntries);
 
 		bool operator==(const Dictionary& other) const;

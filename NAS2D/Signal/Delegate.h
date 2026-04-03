@@ -284,13 +284,11 @@ namespace NAS2D
 				{
 					bindMemFunc(targetObjectProxy, staticFunctionInvoker);
 				}
-				static_assert(sizeof(GenericClass*) == sizeof(targetStaticFunction), "Can't use evil method");
 				mTargetObject = horrible_cast<GenericClass*>(targetStaticFunction);
 			}
 
 			inline StaticFuncPtr GetStaticFunction() const
 			{
-				static_assert(sizeof(StaticFuncPtr) == sizeof(this), "Can't use evil method");
 				return horrible_cast<StaticFuncPtr>(this);
 			}
 

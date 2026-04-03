@@ -40,31 +40,31 @@ namespace NAS2D
 {
 	namespace detail
 	{
-		template <typename OutputClass, typename InputClass>
-		union horrible_union
+		template <typename OutputType, typename InputType>
+		union HorribleUnion
 		{
-			OutputClass out;
-			InputClass in;
+			OutputType output;
+			InputType input;
 		};
 
-		template <typename OutputClass, typename InputClass>
-		inline OutputClass horrible_cast(const InputClass input)
+		template <typename OutputType, typename InputType>
+		inline OutputType horribleCast(const InputType input)
 		{
-			horrible_union<OutputClass, InputClass> u;
-			static_assert(sizeof(InputClass) == sizeof(u) && sizeof(InputClass) == sizeof(OutputClass), "Can't use horrible cast");
-			u.in = input;
-			return u.out;
+			HorribleUnion<OutputType, InputType> horribleUnion;
+			static_assert(sizeof(InputType) == sizeof(horribleUnion) && sizeof(InputType) == sizeof(OutputType), "Can't use horrible cast");
+			horribleUnion.input = input;
+			return horribleUnion.output;
 		}
 
 
 		template <typename GenericMemFuncType, typename XFuncType>
-		GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
+		GenericMemFuncType CastMemFuncPtr(XFuncType targetMemberFunction)
 		{
 #if __GNUC__
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wcast-function-type"
 #endif
-			return reinterpret_cast<GenericMemFuncType>(function_to_bind);
+			return reinterpret_cast<GenericMemFuncType>(targetMemberFunction);
 #if __GNUC__
 	#pragma GCC diagnostic pop
 #endif
@@ -284,17 +284,17 @@ namespace NAS2D
 				{
 					bindMemFunc(targetObjectProxy, staticFunctionInvoker);
 				}
-				mTargetObject = horrible_cast<GenericClass*>(targetStaticFunction);
+				mTargetObject = horribleCast<GenericClass*>(targetStaticFunction);
 			}
 
 			inline StaticFuncPtr GetStaticFunction() const
 			{
-				return horrible_cast<StaticFuncPtr>(this);
+				return horribleCast<StaticFuncPtr>(this);
 			}
 
 			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr) const
 			{
-				return (!funcptr) ? operator!() : (funcptr == horrible_cast<StaticFuncPtr>(mTargetObject));
+				return (!funcptr) ? operator!() : (funcptr == horribleCast<StaticFuncPtr>(mTargetObject));
 			}
 		};
 	}

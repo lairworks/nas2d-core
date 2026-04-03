@@ -24,6 +24,8 @@ namespace NAS2D::Xml
 class XmlDocument : public XmlNode
 {
 public:
+	~XmlDocument() override;
+
 	XmlDocument();
 	explicit XmlDocument(const std::string& documentName);
 

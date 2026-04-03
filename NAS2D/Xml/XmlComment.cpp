@@ -13,6 +13,10 @@
 
 using namespace NAS2D::Xml;
 
+
+XmlComment::~XmlComment() = default;
+
+
 XmlComment::XmlComment() : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {}
 

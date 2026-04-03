@@ -36,6 +36,7 @@ namespace NAS2D::Xml
 class XmlMemoryBuffer : public XmlVisitor
 {
 public:
+	~XmlMemoryBuffer() override;
 	XmlMemoryBuffer();
 
 	bool visitEnter(const XmlDocument&) override { return true; }

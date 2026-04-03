@@ -32,6 +32,8 @@ public:
 		XML_WRONG_TYPE
 	};
 
+	~XmlAttribute() override;
+
 	XmlAttribute();
 	XmlAttribute(const XmlAttribute&) = delete;
 	void operator=(const XmlAttribute& base) = delete;

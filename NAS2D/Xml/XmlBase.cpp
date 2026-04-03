@@ -16,9 +16,7 @@ using namespace NAS2D::Xml;
 bool XmlBase::condenseWhiteSpace = true;
 
 
-XmlBase::~XmlBase()
-{
-}
+XmlBase::~XmlBase() = default;
 
 
 /**

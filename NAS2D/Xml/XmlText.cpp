@@ -13,6 +13,10 @@
 
 using namespace NAS2D::Xml;
 
+
+XmlText::~XmlText() = default;
+
+
 XmlText::XmlText(const std::string& initValue) :
 	XmlNode(XmlNode::NodeType::XML_TEXT),
 	cdata(false)

@@ -21,8 +21,7 @@ XmlAttributeSet::XmlAttributeSet()
 }
 
 
-XmlAttributeSet::~XmlAttributeSet()
-{}
+XmlAttributeSet::~XmlAttributeSet() = default;
 
 
 /**

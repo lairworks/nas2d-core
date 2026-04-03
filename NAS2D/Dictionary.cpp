@@ -16,6 +16,13 @@
 
 namespace NAS2D
 {
+	Dictionary::Dictionary() = default;
+	Dictionary::~Dictionary() = default;
+
+	Dictionary::Dictionary(const Dictionary&) = default;
+	Dictionary& Dictionary::operator=(const Dictionary&) = default;
+
+
 	Dictionary::Dictionary(std::map<std::string, StringValue> initialEntries) :
 		mDictionary{std::move(initialEntries)}
 	{}

@@ -24,13 +24,13 @@ namespace NAS2D
 	class Configuration
 	{
 	public:
-		Configuration() = default;
+		Configuration();
 		explicit Configuration(std::map<std::string, Dictionary> defaults);
 		Configuration(const Configuration&) = delete;
 		Configuration& operator=(const Configuration&) = delete;
 		Configuration(Configuration&&) = delete;
 		Configuration& operator=(Configuration&&) = delete;
-		~Configuration() = default;
+		~Configuration();
 
 		const Dictionary& operator[](const std::string& key) const;
 		Dictionary& operator[](const std::string& key);

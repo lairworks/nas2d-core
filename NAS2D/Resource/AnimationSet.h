@@ -30,6 +30,8 @@ namespace NAS2D
 		using Actions = std::map<std::string, AnimationSequence>;
 
 
+		~AnimationSet();
+
 		explicit AnimationSet(std::string_view fileName);
 		AnimationSet(std::string_view fileName, ResourceCache<Image, std::string>& imageCache);
 		explicit AnimationSet(Actions actions);

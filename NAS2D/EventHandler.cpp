@@ -39,6 +39,10 @@ namespace NAS2D
 }
 
 
+EventHandler::EventHandler() = default;
+EventHandler::~EventHandler() = default;
+
+
 /**
  * Triggered whenever the application gains or loses focus.
  *

@@ -136,6 +136,9 @@ std::string Filesystem::extension(std::string_view filePath)
 }
 
 
+Filesystem::~Filesystem() = default;
+
+
 Filesystem::Filesystem(const std::string& appName, const std::string& organizationName) :
 	mBasePath{getBasePath()},
 	mPrefPath{getPrefPath(appName, organizationName)},

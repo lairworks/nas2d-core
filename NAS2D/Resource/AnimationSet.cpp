@@ -68,6 +68,9 @@ namespace
 }
 
 
+AnimationSet::~AnimationSet() = default;
+
+
 AnimationSet::AnimationSet(std::string_view fileName) :
 	AnimationSet{fileName, animationImageCache}
 {

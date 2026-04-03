@@ -71,6 +71,10 @@ namespace
 }
 
 
+Configuration::Configuration() = default;
+Configuration::~Configuration() = default;
+
+
 Configuration::Configuration(std::map<std::string, Dictionary> defaults) :
 	mDefaults{std::move(defaults)},
 	mSettings{mDefaults}

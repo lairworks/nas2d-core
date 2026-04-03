@@ -8,9 +8,8 @@
 using namespace NAS2D;
 
 
-RendererNull::~RendererNull()
-{
-}
+RendererNull::RendererNull() = default;
+RendererNull::~RendererNull() = default;
 
 
 void RendererNull::drawImage(const Image&, Point<float>, float, Color)

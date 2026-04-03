@@ -35,7 +35,7 @@ namespace NAS2D
 	class Renderer : public Window
 	{
 	public:
-		Renderer() = default;
+		Renderer();
 		~Renderer() override;
 
 		virtual void drawImage(const Image& image, Point<float> position, float scale = 1.0, Color color = Color::Normal) = 0;

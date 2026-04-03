@@ -25,6 +25,7 @@ namespace NAS2D::Xml
 class XmlComment : public XmlNode
 {
 public:
+	~XmlComment() override;
 	XmlComment();
 
 	explicit XmlComment(const std::string& commentValue);

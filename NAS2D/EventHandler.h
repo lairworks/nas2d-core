@@ -69,7 +69,7 @@ namespace NAS2D
 		using QuitSignal = Signal<>;
 
 	public:
-		virtual ~EventHandler() = default;
+		virtual ~EventHandler();
 
 		ActivateSignal::Source& activate();
 

@@ -820,3 +820,16 @@ bool XmlNode::hasChildren() const
 {
 	return _firstChild != nullptr;
 }
+
+
+const XmlDocument* XmlNode::toDocument() const { return nullptr; }
+const XmlElement* XmlNode::toElement() const { return nullptr; }
+const XmlComment* XmlNode::toComment() const { return nullptr; }
+const XmlUnknown* XmlNode::toUnknown() const { return nullptr; }
+const XmlText* XmlNode::toText() const { return nullptr; }
+
+XmlDocument* XmlNode::toDocument() { return nullptr; }
+XmlElement* XmlNode::toElement() { return nullptr; }
+XmlComment* XmlNode::toComment() { return nullptr; }
+XmlUnknown* XmlNode::toUnknown() { return nullptr; }
+XmlText* XmlNode::toText() { return nullptr; }

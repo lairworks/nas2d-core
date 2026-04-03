@@ -113,26 +113,26 @@ public:
 	XmlDocument* document();
 
 	/// Cast the XmlNode to a more derived type.
-	virtual const XmlDocument* toDocument() const { return nullptr; }
+	virtual const XmlDocument* toDocument() const;
 	/// Cast the XmlNode to a more derived type.
-	virtual const XmlElement* toElement() const { return nullptr; }
+	virtual const XmlElement* toElement() const;
 	/// Cast the XmlNode to a more derived type.
-	virtual const XmlComment* toComment() const { return nullptr; }
+	virtual const XmlComment* toComment() const;
 	/// Cast the XmlNode to a more derived type.
-	virtual const XmlUnknown* toUnknown() const { return nullptr; }
+	virtual const XmlUnknown* toUnknown() const;
 	/// Cast the XmlNode to a more derived type.
-	virtual const XmlText* toText() const { return nullptr; }
+	virtual const XmlText* toText() const;
 
 	/// Cast the XmlNode to a more derived type.
-	virtual XmlDocument* toDocument() { return nullptr; }
+	virtual XmlDocument* toDocument();
 	/// Cast the XmlNode to a more derived type.
-	virtual XmlElement* toElement() { return nullptr; }
+	virtual XmlElement* toElement();
 	/// Cast the XmlNode to a more derived type.
-	virtual XmlComment* toComment() { return nullptr; }
+	virtual XmlComment* toComment();
 	/// Cast the XmlNode to a more derived type.
-	virtual XmlUnknown* toUnknown() { return nullptr; }
+	virtual XmlUnknown* toUnknown();
 	/// Cast the XmlNode to a more derived type.
-	virtual XmlText* toText() { return nullptr; }
+	virtual XmlText* toText();
 
 	/**
 	 * Create an exact duplicate of this node and return it. The memory must be deleted by the caller.

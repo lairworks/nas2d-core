@@ -15,6 +15,10 @@
 
 using namespace NAS2D::Xml;
 
+
+XmlAttribute::~XmlAttribute() = default;
+
+
 XmlAttribute::XmlAttribute() :
 	XmlBase(),
 	_document(nullptr),

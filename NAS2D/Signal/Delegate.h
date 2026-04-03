@@ -48,7 +48,7 @@ namespace NAS2D
 		};
 
 		template <typename OutputClass, typename InputClass>
-		inline OutputClass horrible_cast(const InputClass input)
+		inline OutputClass horribleCast(const InputClass input)
 		{
 			horribleUnion<OutputClass, InputClass> u;
 			static_assert(sizeof(InputClass) == sizeof(u) && sizeof(InputClass) == sizeof(OutputClass), "Can't use horrible cast");
@@ -284,17 +284,17 @@ namespace NAS2D
 				{
 					bindMemFunc(targetObjectProxy, staticFunctionInvoker);
 				}
-				mTargetObject = horrible_cast<GenericClass*>(targetStaticFunction);
+				mTargetObject = horribleCast<GenericClass*>(targetStaticFunction);
 			}
 
 			inline StaticFuncPtr GetStaticFunction() const
 			{
-				return horrible_cast<StaticFuncPtr>(this);
+				return horribleCast<StaticFuncPtr>(this);
 			}
 
 			inline bool IsEqualToStaticFuncPtr(StaticFuncPtr funcptr) const
 			{
-				return (!funcptr) ? operator!() : (funcptr == horrible_cast<StaticFuncPtr>(mTargetObject));
+				return (!funcptr) ? operator!() : (funcptr == horribleCast<StaticFuncPtr>(mTargetObject));
 			}
 		};
 	}

@@ -4,6 +4,9 @@
 using namespace NAS2D::Xml;
 
 
+XmlVisitor::~XmlVisitor() = default;
+
+
 bool XmlVisitor::visitEnter(const XmlDocument&)
 {
 	return true;

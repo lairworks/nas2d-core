@@ -28,6 +28,8 @@ class XmlText : public XmlNode
 {
 	friend class XmlElement;
 public:
+	~XmlText() override;
+
 	/**
 	 * Constructor for text element. By default, it is treated as normal, encoded text.
 	 * If you want it be output as a CDATA text element, call \c CDATA(true).

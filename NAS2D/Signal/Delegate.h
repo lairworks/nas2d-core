@@ -43,8 +43,8 @@ namespace NAS2D
 		template <typename OutputType, typename InputType>
 		union HorribleUnion
 		{
-			OutputType out;
-			InputType in;
+			OutputType output;
+			InputType input;
 		};
 
 		template <typename OutputType, typename InputType>
@@ -52,8 +52,8 @@ namespace NAS2D
 		{
 			HorribleUnion<OutputType, InputType> u;
 			static_assert(sizeof(InputType) == sizeof(u) && sizeof(InputType) == sizeof(OutputType), "Can't use horrible cast");
-			u.in = input;
-			return u.out;
+			u.input = input;
+			return u.output;
 		}
 
 

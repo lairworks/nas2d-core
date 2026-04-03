@@ -41,7 +41,7 @@ namespace NAS2D
 	namespace detail
 	{
 		template <typename OutputClass, typename InputClass>
-		union horrible_union
+		union horribleUnion
 		{
 			OutputClass out;
 			InputClass in;
@@ -50,7 +50,7 @@ namespace NAS2D
 		template <typename OutputClass, typename InputClass>
 		inline OutputClass horrible_cast(const InputClass input)
 		{
-			horrible_union<OutputClass, InputClass> u;
+			horribleUnion<OutputClass, InputClass> u;
 			static_assert(sizeof(InputClass) == sizeof(u) && sizeof(InputClass) == sizeof(OutputClass), "Can't use horrible cast");
 			u.in = input;
 			return u.out;

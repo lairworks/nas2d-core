@@ -24,6 +24,10 @@ namespace NAS2D
 	public:
 		Dictionary();
 		explicit Dictionary(std::map<std::string, StringValue> initialEntries);
+		~Dictionary();
+
+		Dictionary(const Dictionary&);
+		Dictionary& operator=(const Dictionary&);
 
 		bool operator==(const Dictionary& other) const;
 		bool operator!=(const Dictionary& other) const;

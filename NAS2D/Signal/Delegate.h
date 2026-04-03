@@ -58,13 +58,13 @@ namespace NAS2D
 
 
 		template <typename GenericMemFuncType, typename XFuncType>
-		GenericMemFuncType CastMemFuncPtr(XFuncType function_to_bind)
+		GenericMemFuncType CastMemFuncPtr(XFuncType targetMemberFunction)
 		{
 #if __GNUC__
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wcast-function-type"
 #endif
-			return reinterpret_cast<GenericMemFuncType>(function_to_bind);
+			return reinterpret_cast<GenericMemFuncType>(targetMemberFunction);
 #if __GNUC__
 	#pragma GCC diagnostic pop
 #endif

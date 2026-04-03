@@ -39,6 +39,7 @@ namespace NAS2D
 }
 
 
+EventHandler::EventHandler() = default;
 EventHandler::~EventHandler() = default;
 
 

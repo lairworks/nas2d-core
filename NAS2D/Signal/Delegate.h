@@ -82,13 +82,13 @@ namespace NAS2D
 
 		constexpr int basicMemberFunctionPointerSize = sizeof(void(GenericClass::*)());
 
-		template <int N>
+		template <int memberFunctionPointerSize>
 		struct SimplifyMemFunc
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* /*targetObject*/, XFuncType /*targetMemberFunction*/, GenericMemFuncType& /*genericMemberFunction*/)
 			{
-				static_assert(N > 100, "Unsupported member function pointer on this compiler");
+				static_assert(memberFunctionPointerSize > 100, "Unsupported member function pointer on this compiler");
 				return nullptr;
 			}
 		};

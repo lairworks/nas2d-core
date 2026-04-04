@@ -88,7 +88,7 @@ namespace NAS2D
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* /*targetObject*/, XFuncType /*targetMemberFunction*/, GenericMemFuncType& /*genericMemberFunction*/)
 			{
-				static_assert(memberFunctionPointerSize > 100, "Unsupported member function pointer on this compiler");
+				static_assert(memberFunctionPointerSize < 0, "Unsupported member function pointer on this compiler");
 				return nullptr;
 			}
 		};

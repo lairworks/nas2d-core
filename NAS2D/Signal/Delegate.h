@@ -80,7 +80,7 @@ namespace NAS2D
 		class GenericClass;
 #endif
 
-		constexpr int memberFunctionPointerSize = sizeof(void(GenericClass::*)());
+		constexpr int basicMemberFunctionPointerSize = sizeof(void(GenericClass::*)());
 
 		template <int N>
 		struct SimplifyMemFunc
@@ -94,7 +94,7 @@ namespace NAS2D
 		};
 
 		template <>
-		struct SimplifyMemFunc<memberFunctionPointerSize>
+		struct SimplifyMemFunc<basicMemberFunctionPointerSize>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* targetObject, XFuncType targetMemberFunction, GenericMemFuncType& genericMemberFunction)
@@ -107,7 +107,7 @@ namespace NAS2D
 #ifdef FASTDLGT_MICROSOFT_MFP
 
 		template <>
-		struct SimplifyMemFunc<memberFunctionPointerSize + sizeof(int)>
+		struct SimplifyMemFunc<basicMemberFunctionPointerSize + sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* targetObject, XFuncType targetMemberFunction, GenericMemFuncType& genericMemberFunction)
@@ -146,7 +146,7 @@ namespace NAS2D
 
 
 		template <>
-		struct SimplifyMemFunc<memberFunctionPointerSize + 2 * sizeof(int)>
+		struct SimplifyMemFunc<basicMemberFunctionPointerSize + 2 * sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* targetObject, XFuncType targetMemberFunction, GenericMemFuncType& genericMemberFunction)
@@ -177,7 +177,7 @@ namespace NAS2D
 
 
 		template <>
-		struct SimplifyMemFunc<memberFunctionPointerSize + 3 * sizeof(int)>
+		struct SimplifyMemFunc<basicMemberFunctionPointerSize + 3 * sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* targetObject, XFuncType targetMemberFunction, GenericMemFuncType& genericMemberFunction)

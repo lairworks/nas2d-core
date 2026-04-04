@@ -80,21 +80,21 @@ namespace NAS2D
 		class GenericClass;
 #endif
 
-		constexpr int memberFunctionPointerSize = sizeof(void(GenericClass::*)());
+		constexpr int basicMemberFunctionPointerSize = sizeof(void(GenericClass::*)());
 
-		template <int N>
+		template <int memberFunctionPointerSize>
 		struct SimplifyMemFunc
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* /*targetObject*/, XFuncType /*targetMemberFunction*/, GenericMemFuncType& /*genericMemberFunction*/)
 			{
-				static_assert(N > 100, "Unsupported member function pointer on this compiler");
+				static_assert(memberFunctionPointerSize < 0, "Unsupported member function pointer on this compiler");
 				return nullptr;
 			}
 		};
 
 		template <>
-		struct SimplifyMemFunc<memberFunctionPointerSize>
+		struct SimplifyMemFunc<basicMemberFunctionPointerSize>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* targetObject, XFuncType targetMemberFunction, GenericMemFuncType& genericMemberFunction)
@@ -107,7 +107,7 @@ namespace NAS2D
 #ifdef FASTDLGT_MICROSOFT_MFP
 
 		template <>
-		struct SimplifyMemFunc<memberFunctionPointerSize + sizeof(int)>
+		struct SimplifyMemFunc<basicMemberFunctionPointerSize + sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* targetObject, XFuncType targetMemberFunction, GenericMemFuncType& genericMemberFunction)
@@ -146,7 +146,7 @@ namespace NAS2D
 
 
 		template <>
-		struct SimplifyMemFunc<memberFunctionPointerSize + 2 * sizeof(int)>
+		struct SimplifyMemFunc<basicMemberFunctionPointerSize + 2 * sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* targetObject, XFuncType targetMemberFunction, GenericMemFuncType& genericMemberFunction)
@@ -177,7 +177,7 @@ namespace NAS2D
 
 
 		template <>
-		struct SimplifyMemFunc<memberFunctionPointerSize + 3 * sizeof(int)>
+		struct SimplifyMemFunc<basicMemberFunctionPointerSize + 3 * sizeof(int)>
 		{
 			template <typename X, typename XFuncType, typename GenericMemFuncType>
 			inline static GenericClass* Convert(X* targetObject, XFuncType targetMemberFunction, GenericMemFuncType& genericMemberFunction)

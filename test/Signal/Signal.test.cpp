@@ -7,7 +7,7 @@
 namespace {
 	class MockHandler {
 	public:
-		MOCK_CONST_METHOD0(MockMethod, void());
+		MOCK_METHOD(void, MockMethod, (), (const));
 	};
 
 	struct CopyCounter {

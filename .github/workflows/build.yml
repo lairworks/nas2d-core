@@ -10,10 +10,11 @@ jobs:
       fail-fast: false
       matrix:
         platform: [x86, x64]
+        configuration: [Debug, Release]
     runs-on: windows-2025
     env:
       Platform: ${{ matrix.platform }}
-      Configuration: Release
+      Configuration: ${{ matrix.configuration }}
       VcpkgManifestInstall: false
 
     steps:
@@ -53,8 +54,8 @@ jobs:
       if: github.ref != format('refs/heads/{0}', github.event.repository.default_branch)
       with:
         path: .build
-        key: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ github.sha }}
-        restore-keys: buildCache-${{ runner.os }}-${{ matrix.platform }}-
+        key: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ matrix.configuration }}-${{ github.sha }}
+        restore-keys: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ matrix.configuration }}-
 
     - name: Set modification times
       if: ${{ hashFiles('.build/lastBuildSha.txt') != '' }}
@@ -93,14 +94,14 @@ jobs:
       uses: actions/cache/save@v5
       with:
         path: .build
-        key: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ github.sha }}
+        key: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ matrix.configuration }}-${{ github.sha }}
 
     - name: Test
       working-directory: ./test/
       run: ../.build/${{env.Configuration}}_${{env.Platform}}_test/test.exe
 
     - name: Package
-      run: ./Package.bat "${{env.Configuration}}" "${{matrix.platform}}"
+      run: ./Package.bat "${{env.Configuration}}" "${{env.Platform}}"
 
   linux:
     strategy:

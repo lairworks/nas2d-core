@@ -10,10 +10,11 @@ jobs:
       fail-fast: false
       matrix:
         platform: [x86, x64]
+        configuration: [Release]
     runs-on: windows-2025
     env:
       Platform: ${{ matrix.platform }}
-      Configuration: Release
+      Configuration: ${{ matrix.configuration }}
       VcpkgManifestInstall: false
 
     steps:

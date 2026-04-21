@@ -100,7 +100,7 @@ jobs:
       run: ../.build/${{env.Configuration}}_${{env.Platform}}_test/test.exe
 
     - name: Package
-      run: ./Package.bat "${{env.Configuration}}" "${{matrix.platform}}"
+      run: ./Package.bat "${{env.Configuration}}" "${{env.Platform}}"
 
   linux:
     strategy:

@@ -338,7 +338,7 @@ cache-list-branch:
 	$(GhCacheListBranch)
 
 cache-delete-main-stale:
-	$(GhCacheListMain) | jq '.[0:-2] | .[] .id' | $(GhCacheDeleteIds)
+	$(GhCacheListMain) | jq '.[0:-4] | .[] .id' | $(GhCacheDeleteIds)
 
 cache-delete-branch:
 	$(GhCacheListBranch) | jq '.id' | $(GhCacheDeleteIds)

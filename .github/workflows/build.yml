@@ -11,7 +11,7 @@ jobs:
       matrix:
         platform: [x86, x64]
         configuration: [Debug, Release]
-    runs-on: windows-2025
+    runs-on: windows-2025-vs2026
     env:
       Platform: ${{ matrix.platform }}
       Configuration: ${{ matrix.configuration }}

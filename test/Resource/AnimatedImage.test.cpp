@@ -13,17 +13,21 @@ namespace {
 	constexpr NAS2D::Vector imageSize{1, 1};
 	constexpr NAS2D::Rectangle imageRect{{0, 0}, imageSize};
 	constexpr NAS2D::Vector anchorOffset{0, 0};
-	uint32_t imageBuffer[imageSize.x * imageSize.y];
-	NAS2D::Image image{&imageBuffer, 4, imageSize};
-	NAS2D::AnimationFrame frame{image, imageRect, anchorOffset, {2}};
-	NAS2D::AnimationFrame frameStop{image, imageRect, anchorOffset, {0}};
-	NAS2D::AnimationSequence sequenceFrame{{frame}};
-	NAS2D::AnimationSequence sequenceFrameFrameLoop{{frame, frame}};
-	NAS2D::AnimationSequence sequenceFrameFrameStop{{frame, frameStop}};
+
+	class AnimatedImage : public ::testing::Test {
+	protected:
+		uint32_t imageBuffer[imageSize.x * imageSize.y];
+		const NAS2D::Image image{&imageBuffer, 4, imageSize};
+		const NAS2D::AnimationFrame frame{image, imageRect, anchorOffset, {2}};
+		const NAS2D::AnimationFrame frameStop{image, imageRect, anchorOffset, {0}};
+		const NAS2D::AnimationSequence sequenceFrame{{frame}};
+		const NAS2D::AnimationSequence sequenceFrameFrameLoop{{frame, frame}};
+		const NAS2D::AnimationSequence sequenceFrameFrameStop{{frame, frameStop}};
+	};
 }
 
 
-TEST(AnimatedImage, initReinit) {
+TEST_F(AnimatedImage, initReinit) {
 	auto animatedImage = NAS2D::AnimatedImage{sequenceFrame};
 	EXPECT_EQ(1u, animatedImage.frameCount());
 	EXPECT_EQ(0u, animatedImage.frameIndex());
@@ -32,14 +36,14 @@ TEST(AnimatedImage, initReinit) {
 	EXPECT_EQ(0u, animatedImage.frameIndex());
 }
 
-TEST(AnimatedImage, animateSingleFrameLoop) {
+TEST_F(AnimatedImage, animateSingleFrameLoop) {
 	auto animatedImage = NAS2D::AnimatedImage{sequenceFrame};
 	EXPECT_EQ(0u, animatedImage.frameIndex());
 	animatedImage.advanceFrame();
 	EXPECT_EQ(0u, animatedImage.frameIndex());
 }
 
-TEST(AnimatedImage, animateMultiFrameLoop) {
+TEST_F(AnimatedImage, animateMultiFrameLoop) {
 	auto animatedImage = NAS2D::AnimatedImage{sequenceFrameFrameLoop};
 	EXPECT_EQ(0u, animatedImage.frameIndex());
 	animatedImage.advanceFrame();
@@ -48,7 +52,7 @@ TEST(AnimatedImage, animateMultiFrameLoop) {
 	EXPECT_EQ(0u, animatedImage.frameIndex());
 }
 
-TEST(AnimatedImage, animateFrameFrameStop) {
+TEST_F(AnimatedImage, animateFrameFrameStop) {
 	auto animatedImage = NAS2D::AnimatedImage{sequenceFrameFrameStop};
 	EXPECT_EQ(0u, animatedImage.frameIndex());
 	animatedImage.advanceFrame();
@@ -57,7 +61,7 @@ TEST(AnimatedImage, animateFrameFrameStop) {
 	EXPECT_EQ(1u, animatedImage.frameIndex());
 }
 
-TEST(AnimatedImage, setFrame) {
+TEST_F(AnimatedImage, setFrame) {
 	auto animatedImage = NAS2D::AnimatedImage{sequenceFrameFrameLoop};
 	animatedImage.setFrame(0);
 	EXPECT_EQ(0u, animatedImage.frameIndex());
@@ -65,13 +69,13 @@ TEST(AnimatedImage, setFrame) {
 	EXPECT_EQ(1u, animatedImage.frameIndex());
 }
 
-TEST(AnimatedImage, setFrameWrap) {
+TEST_F(AnimatedImage, setFrameWrap) {
 	auto animatedImage = NAS2D::AnimatedImage{sequenceFrameFrameLoop};
 	animatedImage.setFrame(2);
 	EXPECT_EQ(0u, animatedImage.frameIndex());
 }
 
-TEST(AnimatedImage, advanceFrameTimeDelta) {
+TEST_F(AnimatedImage, advanceFrameTimeDelta) {
 	auto animatedImage = NAS2D::AnimatedImage{sequenceFrameFrameLoop};
 	EXPECT_EQ(NAS2D::Duration{0u}, animatedImage.advanceFrame(NAS2D::Duration{0u}));
 	EXPECT_EQ(NAS2D::Duration{0u}, animatedImage.advanceFrame(NAS2D::Duration{1u}));

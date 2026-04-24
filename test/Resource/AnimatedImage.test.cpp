@@ -17,12 +17,12 @@ namespace {
 	class AnimatedImage : public ::testing::Test {
 	protected:
 		uint32_t imageBuffer[imageSize.x * imageSize.y];
-		NAS2D::Image image{&imageBuffer, 4, imageSize};
-		NAS2D::AnimationFrame frame{image, imageRect, anchorOffset, {2}};
-		NAS2D::AnimationFrame frameStop{image, imageRect, anchorOffset, {0}};
-		NAS2D::AnimationSequence sequenceFrame{{frame}};
-		NAS2D::AnimationSequence sequenceFrameFrameLoop{{frame, frame}};
-		NAS2D::AnimationSequence sequenceFrameFrameStop{{frame, frameStop}};
+		const NAS2D::Image image{&imageBuffer, 4, imageSize};
+		const NAS2D::AnimationFrame frame{image, imageRect, anchorOffset, {2}};
+		const NAS2D::AnimationFrame frameStop{image, imageRect, anchorOffset, {0}};
+		const NAS2D::AnimationSequence sequenceFrame{{frame}};
+		const NAS2D::AnimationSequence sequenceFrameFrameLoop{{frame, frame}};
+		const NAS2D::AnimationSequence sequenceFrameFrameStop{{frame, frameStop}};
 	};
 }
 

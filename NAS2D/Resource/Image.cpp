@@ -81,7 +81,7 @@ SDL_Surface* Image::dataToSdlSurface(void* buffer, int bytesPerPixel, Vector<int
 		throw std::runtime_error("Image bit-depth unsupported with bytesPerPixel: " + std::to_string(bytesPerPixel));
 	}
 
-	auto* surface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, 0, 0, 0, 0, isBigEndian ? 0x000000FF : 0xFF000000);
+	auto* surface = SDL_CreateRGBSurfaceFrom(buffer, size.x, size.y, bytesPerPixel * 8, bytesPerPixel * size.x, 0, 0, 0, isBigEndian ? 0x000000FF : 0xFF000000);
 
 	if (!surface)
 	{

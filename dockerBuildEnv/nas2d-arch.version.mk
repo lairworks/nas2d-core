@@ -1,1 +1,1 @@
-ImageVersion_arch := 1.5
+ImageVersion_arch := 1.6

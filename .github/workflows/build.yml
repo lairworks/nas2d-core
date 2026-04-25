@@ -108,7 +108,7 @@ jobs:
       fail-fast: false
       matrix:
         image:
-        - "build-env-nas2d-arch:1.5"
+        - "build-env-nas2d-arch:1.6"
     runs-on: ubuntu-latest
     container:
       image: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}"

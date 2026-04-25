@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM archlinux:base-20240811.0.253648
+FROM archlinux:base-20260419.0.517065
 
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages
@@ -23,5 +23,7 @@ RUN pacman --sync --refresh --noconfirm \
     sdl2_mixer \
     sdl2_ttf \
   && rm -rf /var/cache/pacman/pkg
+
+RUN useradd --create-home user
 
 CMD ["make", "--keep-going", "check"]

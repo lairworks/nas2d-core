@@ -9,11 +9,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [x86, x64]
+        architecture:
+        # - { platform: ARM, image: windows-11-arm }
+        - { platform: ARM64, image: windows-11-arm }
+        - { platform: x86, image: windows-2025 }
+        - { platform: x64, image: windows-2025 }
         configuration: [Debug, Release]
-    runs-on: windows-2025
+    runs-on: ${{ matrix.architecture.image }}
     env:
-      Platform: ${{ matrix.platform }}
+      Platform: ${{ matrix.architecture.platform }}
       Configuration: ${{ matrix.configuration }}
       VcpkgManifestInstall: false
 

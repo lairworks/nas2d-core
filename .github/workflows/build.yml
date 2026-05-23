@@ -97,7 +97,7 @@ jobs:
         key: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ matrix.configuration }}-${{ github.sha }}
 
     - name: Test
-      working-directory: ./test/
+      working-directory: test/
       run: ../.build/${{env.Configuration}}_${{env.Platform}}_test/test.exe
 
     - name: Package

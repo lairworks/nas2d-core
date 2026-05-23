@@ -40,7 +40,7 @@ jobs:
       env:
         VcpkgManifestInstall: true
       run: |
-        msbuild . /target:VcpkgInstallManifestDependencies
+        msbuild /target:VcpkgInstallManifestDependencies
 
     - name: Save vcpkg dependency cache
       uses: actions/cache/save@v5
@@ -88,7 +88,7 @@ jobs:
 
     - name: Build
       run: |
-        msbuild . /maxCpuCount /warnAsError /property:RunCodeAnalysis=true
+        msbuild /maxCpuCount /warnAsError /property:RunCodeAnalysis=true
 
     - name: Save incremental build cache
       uses: actions/cache/save@v5
@@ -97,7 +97,7 @@ jobs:
         key: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ matrix.configuration }}-${{ github.sha }}
 
     - name: Test
-      working-directory: ./test/
+      working-directory: test/
       run: ../.build/${{env.Configuration}}_${{env.Platform}}_test/test.exe
 
     - name: Package

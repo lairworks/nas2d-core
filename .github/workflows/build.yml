@@ -37,7 +37,7 @@ jobs:
       id: cacheRestoreVcpkg
       with:
         path: vcpkg_installed
-        key: vcpkgCache-${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
+        key: vcpkgCache-${{ runner.os }}-${{ env.Platform }}-${{ hashFiles('vcpkg.json') }}
 
     - name: Install vcpkg dependencies
       if: steps.cacheRestoreVcpkg.outputs.cache-hit != 'true'
@@ -58,8 +58,8 @@ jobs:
       if: github.ref != format('refs/heads/{0}', github.event.repository.default_branch)
       with:
         path: .build
-        key: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ matrix.configuration }}-${{ github.sha }}
-        restore-keys: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ matrix.configuration }}-
+        key: buildCache-${{ runner.os }}-${{ env.Platform }}-${{ env.Configuration }}-${{ github.sha }}
+        restore-keys: buildCache-${{ runner.os }}-${{ env.Platform }}-${{ env.Configuration }}-
 
     - name: Set modification times
       if: ${{ hashFiles('.build/lastBuildSha.txt') != '' }}
@@ -98,7 +98,7 @@ jobs:
       uses: actions/cache/save@v5
       with:
         path: .build
-        key: buildCache-${{ runner.os }}-${{ matrix.platform }}-${{ matrix.configuration }}-${{ github.sha }}
+        key: buildCache-${{ runner.os }}-${{ env.Platform }}-${{ env.Configuration }}-${{ github.sha }}
 
     - name: Test
       working-directory: test/

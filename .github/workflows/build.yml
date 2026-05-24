@@ -101,8 +101,7 @@ jobs:
         key: buildCache-${{ runner.os }}-${{ env.Platform }}-${{ env.Configuration }}-${{ github.sha }}
 
     - name: Test
-      working-directory: test/
-      run: ../.build/${{env.Configuration}}_${{env.Platform}}_test/test.exe
+      run: msbuild /target:test:Run
 
     - name: Package
       run: ./Package.bat "${{env.Configuration}}" "${{env.Platform}}"

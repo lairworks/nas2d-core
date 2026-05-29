@@ -338,7 +338,7 @@ cache-list-branch:
 	$(GhCacheListBranch)
 
 cache-delete-main-stale:
-	$(GhCacheListMain) | jq '.[0:-6] | .[] .id' | $(GhCacheDeleteIds)
+	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"$(shell git rev-parse origin/main)\") | not) | .[] .id" | $(GhCacheDeleteIds)
 
 cache-delete-branch:
 	$(GhCacheListBranch) | jq '.id' | $(GhCacheDeleteIds)

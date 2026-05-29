@@ -346,7 +346,7 @@ cache-list-branch:
 	$(GhCacheListBranch)
 
 cache-delete-main-stale:
-	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"${GhMainSha}\") | not) | .[] .id" | $(GhCacheDeleteIds)
+	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"${GhMainSha}\") | not) | .id" | $(GhCacheDeleteIds)
 
 cache-delete-branch:
 	$(GhCacheListBranch) | jq '.id' | $(GhCacheDeleteIds)

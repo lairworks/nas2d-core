@@ -337,16 +337,16 @@ cache-list-main:
 	$(GhCacheListMain)
 
 cache-list-current:
-	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"${GitMainSha}\"))"
+	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"${GhMainSha}\"))"
 
 cache-list-stale:
-	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"${GitMainSha}\") | not)"
+	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"${GhMainSha}\") | not)"
 
 cache-list-branch:
 	$(GhCacheListBranch)
 
 cache-delete-main-stale:
-	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"${GitMainSha}\") | not) | .[] .id" | $(GhCacheDeleteIds)
+	$(GhCacheListMain) | jq ".[] | select(.key | endswith(\"${GhMainSha}\") | not) | .id" | $(GhCacheDeleteIds)
 
 cache-delete-branch:
 	$(GhCacheListBranch) | jq '.id' | $(GhCacheDeleteIds)

@@ -165,9 +165,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <OmitFramePointers>true</OmitFramePointers>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -187,9 +184,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <OmitFramePointers>true</OmitFramePointers>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -209,9 +203,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <OmitFramePointers>true</OmitFramePointers>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -231,9 +222,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <OmitFramePointers>true</OmitFramePointers>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>

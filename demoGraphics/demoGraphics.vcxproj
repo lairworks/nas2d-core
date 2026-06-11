@@ -36,7 +36,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BC10CE9A-9BDA-4922-8C1F-F91C1E389483}</ProjectGuid>
-    <RootNamespace>demographics</RootNamespace>
+    <RootNamespace>demoGraphics</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

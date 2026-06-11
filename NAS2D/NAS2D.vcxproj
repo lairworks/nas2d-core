@@ -90,8 +90,6 @@
       <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
-    <Link>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -104,8 +102,6 @@
       <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
-    <Link>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
@@ -118,8 +114,6 @@
       <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
-    <Link>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
@@ -132,8 +126,6 @@
       <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
     </ClCompile>
-    <Link>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

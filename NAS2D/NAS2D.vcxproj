@@ -69,8 +69,6 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <IntDir>$(ProjectDir)..\.build\$(Configuration)_$(PlatformShortName)\$(ProjectName)\Intermediate\</IntDir>
     <OutDir>$(ProjectDir)..\.build\$(Configuration)_$(PlatformShortName)\$(ProjectName)\</OutDir>

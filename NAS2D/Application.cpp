@@ -37,8 +37,8 @@ namespace
 	NAS2D::Dictionary defaultConfigGraphics()
 	{
 		return NAS2D::Dictionary{{
-			{"screenwidth", 1000},
-			{"screenheight", 700},
+			{"screenwidth", 1600},
+			{"screenheight", 900},
 			{"bitdepth", 32},
 			{"fullscreen", false},
 			{"vsync", true},

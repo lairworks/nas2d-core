@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <IntDir>$(ProjectDir)..\.build\Windows\$(PlatformShortName)\$(Configuration)\$(ProjectName)\Intermediate\</IntDir>
+    <OutDir>$(ProjectDir)..\.build\Windows\$(PlatformShortName)\$(Configuration)\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+</Project>

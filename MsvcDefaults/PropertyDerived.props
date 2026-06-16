@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <IntDir>$(ProjectDir)..\.build\Windows\$(PlatformShortName)\$(Configuration)\$(ProjectName)\Intermediate\</IntDir>
+    <OutDir>$(ProjectDir)..\.build\Windows\$(PlatformShortName)\$(Configuration)\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+
+  <Import Project="CompilerLinker.props" />
+</Project>

@@ -70,8 +70,8 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup>
-    <IntDir>$(ProjectDir)..\.build\$(PlatformShortName)_$(Configuration)\$(ProjectName)\Intermediate\</IntDir>
-    <OutDir>$(ProjectDir)..\.build\$(PlatformShortName)_$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(ProjectDir)..\.build\Windows\$(PlatformShortName)_$(Configuration)\$(ProjectName)\Intermediate\</IntDir>
+    <OutDir>$(ProjectDir)..\.build\Windows\$(PlatformShortName)_$(Configuration)\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>

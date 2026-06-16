@@ -11,6 +11,9 @@ all: nas2d test demoGraphics
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
+CURRENT_PLATFORM = $(shell uname -m)
+TARGET_PLATFORM ?= $(CURRENT_PLATFORM)
+
 # Toolchain: gcc, clang, mingw, (or blank for environment default)
 Toolchain ?=
 
@@ -65,7 +68,7 @@ RunPrefix := $($(TARGET_OS)RunPrefix)
 RunSuffixUnitTest := $($(TARGET_OS)RunSuffixUnitTest)
 
 ROOTBUILDDIR := .build
-BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(CONFIG)_Linux/
+BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(TARGET_OS)/$(TARGET_PLATFORM)/$(CONFIG)/
 
 
 ## NAS2D project ##
@@ -203,8 +206,7 @@ clean-all: | clean
 
 PACKAGEDIR := $(ROOTBUILDDIR)/package
 VERSION = $(shell git describe --tags --dirty)
-PLATFORM = $(TARGET_OS).x64
-PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(PLATFORM)-$(CONFIG).tar.gz
+PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(TARGET_OS)-$(TARGET_PLATFORM)-$(CONFIG).tar.gz
 Darwin_TAR_RENAME_FLAG := -s '!^$(SRCDIR)/!include/\0!'
 Linux_TAR_RENAME_FLAG := --transform='s/^$(SRCDIR)/include\/\0/'
 TAR_RENAME_FLAG := $($(CURRENT_OS)_TAR_RENAME_FLAG)

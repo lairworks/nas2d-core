@@ -203,7 +203,7 @@ clean-all: | clean
 
 PACKAGEDIR := $(ROOTBUILDDIR)/package
 VERSION = $(shell git describe --tags --dirty)
-PLATFORM = x64
+PLATFORM = $(shell uname -m)
 PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(TARGET_OS)-$(PLATFORM)-$(CONFIG).tar.gz
 Darwin_TAR_RENAME_FLAG := -s '!^$(SRCDIR)/!include/\0!'
 Linux_TAR_RENAME_FLAG := --transform='s/^$(SRCDIR)/include\/\0/'

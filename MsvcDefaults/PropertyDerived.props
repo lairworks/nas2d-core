@@ -7,4 +7,6 @@
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
+
+  <Import Project="CompilerLinker.props" />
 </Project>

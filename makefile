@@ -11,6 +11,9 @@ all: nas2d test demoGraphics
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
 
+CURRENT_PLATFORM = $(shell uname -m)
+TARGET_PLATFORM ?= $(CURRENT_PLATFORM)
+
 # Toolchain: gcc, clang, mingw, (or blank for environment default)
 Toolchain ?=
 
@@ -203,7 +206,6 @@ clean-all: | clean
 
 PACKAGEDIR := $(ROOTBUILDDIR)/package
 VERSION = $(shell git describe --tags --dirty)
-TARGET_PLATFORM = $(shell uname -m)
 PACKAGE_NAME = $(PACKAGEDIR)/nas2d-$(VERSION)-$(TARGET_OS)-$(TARGET_PLATFORM)-$(CONFIG).tar.gz
 Darwin_TAR_RENAME_FLAG := -s '!^$(SRCDIR)/!include/\0!'
 Linux_TAR_RENAME_FLAG := --transform='s/^$(SRCDIR)/include\/\0/'

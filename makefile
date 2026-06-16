@@ -300,8 +300,8 @@ install-dependencies-arch:
 ## MacOS ##
 .PHONY: install-dependencies-darwin
 install-dependencies-darwin:
-	xargs brew install < BrewDeps.txt || true
-	xargs brew link < BrewDeps.txt
+	xargs --verbose brew install < BrewDeps.txt || true
+	xargs --verbose brew link < BrewDeps.txt
 
 
 #### Docker related build rules ####

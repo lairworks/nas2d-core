@@ -300,7 +300,7 @@ install-dependencies-arch:
 ## MacOS ##
 .PHONY: install-dependencies-darwin
 install-dependencies-darwin:
-	xargs brew install < BrewDeps.txt
+	xargs brew install < BrewDeps.txt || true
 	xargs brew link < BrewDeps.txt
 
 

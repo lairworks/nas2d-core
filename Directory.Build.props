@@ -2,5 +2,6 @@
   <PropertyGroup>
     <ForceImportAfterCppDefaultProps>$(MSBuildThisFileDirectory)/MsvcDefaults/PropertyDefaults.props</ForceImportAfterCppDefaultProps>
     <ForceImportAfterCppProps>$(MSBuildThisFileDirectory)/MsvcDefaults/PropertyDerived.props</ForceImportAfterCppProps>
+    <ForceImportAfterCppTargets>$(MSBuildThisFileDirectory)/MsvcDefaults/TargetOverrides.targets</ForceImportAfterCppTargets>
   </PropertyGroup>
 </Project>

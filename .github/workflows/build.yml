@@ -92,7 +92,7 @@ jobs:
 
     - name: Build
       run: |
-        msbuild /maxCpuCount /warnAsError /property:RunCodeAnalysis=true
+        msbuild /maxCpuCount /warnAsError /property:RunCodeAnalysis=true /v:diag
 
     - name: Save incremental build cache
       uses: actions/cache/save@v5

@@ -1,5 +1,0 @@
-<Project>
-  <PropertyGroup Condition="'$(Language)'=='C++'">
-    <CAExcludePath>..\vcpkg_installed;$(CAExcludePath)</CAExcludePath>
-  </PropertyGroup>
-</Project>

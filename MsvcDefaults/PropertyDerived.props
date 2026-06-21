@@ -8,10 +8,5 @@
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
 
-  <PropertyGroup Label="AutoDetectGoogleTestUnitTestProject">
-    <IsGoogleTestUnitTestProject>false</IsGoogleTestUnitTestProject>
-    <IsGoogleTestUnitTestProject Condition="'$(AutoDetectGoogleTestUnitTestProject)' != 'false' AND $(MSBuildProjectName.StartsWith('test')) AND '$(ConfigurationType)' == 'Application'">true</IsGoogleTestUnitTestProject>
-  </PropertyGroup>
-
   <Import Project="CompilerLinker.props" />
 </Project>

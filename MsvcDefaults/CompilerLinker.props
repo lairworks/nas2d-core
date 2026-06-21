@@ -26,6 +26,9 @@
     <ClCompile>
       <AdditionalIncludeDirectories Condition="'$(ProjectAdditionalIncludeDirectories)' != ''">$(ProjectAdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <SubSystem Condition="'$(ProjectSubSystem)' != ''">$(ProjectSubSystem)</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
 
   <ItemDefinitionGroup Condition="'$(IsGoogleTestUnitTestProject)' == 'true'">

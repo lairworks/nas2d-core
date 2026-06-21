@@ -22,6 +22,12 @@
     </Link>
   </ItemDefinitionGroup>
 
+  <ItemDefinitionGroup Condition="'$(AddParentIncludePath)' == 'true'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
   <ItemDefinitionGroup Condition="'$(IsGoogleTestUnitTestProject)' == 'true'">
     <ClCompile>
       <AdditionalIncludeDirectories>..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

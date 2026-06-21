@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <PropertyGroup Label="AutoDetectGoogleTestUnitTestProject">
-    <IsGoogleTestUnitTestProject>false</IsGoogleTestUnitTestProject>
-    <IsGoogleTestUnitTestProject Condition="'$(AutoDetectGoogleTestUnitTestProject)' != 'false' AND $(MSBuildProjectName.StartsWith('test')) AND '$(ConfigurationType)' == 'Application'">true</IsGoogleTestUnitTestProject>
+    <ProjectIsGoogleTestUnitTest>false</ProjectIsGoogleTestUnitTest>
+    <ProjectIsGoogleTestUnitTest Condition="'$(AutoDetectGoogleTestUnitTestProject)' != 'false' AND $(MSBuildProjectName.StartsWith('test')) AND '$(ConfigurationType)' == 'Application'">true</ProjectIsGoogleTestUnitTest>
   </PropertyGroup>
 
   <Import Project="CompilerLinker.props" />

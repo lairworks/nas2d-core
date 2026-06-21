@@ -22,15 +22,6 @@
     </Link>
   </ItemDefinitionGroup>
 
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <AdditionalIncludeDirectories Condition="'$(ProjectAdditionalIncludeDirectories)' != ''">$(ProjectAdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <SubSystem Condition="'$(ProjectSubSystem)' != ''">$(ProjectSubSystem)</SubSystem>
-    </Link>
-  </ItemDefinitionGroup>
-
   <ItemDefinitionGroup Condition="'$(ProjectIsGoogleTestUnitTest)' == 'true'">
     <ClCompile>
       <PreprocessorDefinitions>GTEST_LINKED_AS_SHARED_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -38,6 +29,15 @@
     <Link>
       <AdditionalDependencies>gmock_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories Condition="'$(ProjectAdditionalIncludeDirectories)' != ''">$(ProjectAdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem Condition="'$(ProjectSubSystem)' != ''">$(ProjectSubSystem)</SubSystem>
     </Link>
   </ItemDefinitionGroup>
 </Project>

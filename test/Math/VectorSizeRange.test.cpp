@@ -54,13 +54,13 @@ TEST(VectorSizeRange, IterationSingle) {
 	EXPECT_EQ(fillByRangeFor(vectorRangeSingle), (Items{{0, 0}}));
 }
 
-TEST(VectorSizeRange, IterationMultiNoWrap) {
+TEST(VectorSizeRange, IterationMultiXOnly) {
 	using Items = std::vector<NAS2D::Vector<int>>;
 	const auto vectorRangeMultiWrap = NAS2D::VectorSizeRange{NAS2D::Vector{3, 1}};
 	EXPECT_EQ(fillByRangeFor(vectorRangeMultiWrap), (Items{{0, 0}, {1, 0}, {2, 0}}));
 }
 
-TEST(VectorSizeRange, IterationMultiWrap) {
+TEST(VectorSizeRange, IterationMultiXAndY) {
 	using Items = std::vector<NAS2D::Vector<int>>;
 	const auto vectorRangeMultiWrap = NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}};
 	EXPECT_EQ(fillByRangeFor(vectorRangeMultiWrap), (Items{{0, 0}, {1, 0}, {0, 1}, {1, 1}, {0, 2}, {1, 2}}));

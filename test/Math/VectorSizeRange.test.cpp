@@ -5,6 +5,31 @@
 #include <vector>
 
 
+TEST(VectorSizeRange, EmptyRangeBeginIsEnd) {
+	const auto vectorRangeEmpty = NAS2D::VectorSizeRange{NAS2D::Vector{0, 0}};
+	EXPECT_EQ(vectorRangeEmpty.begin(), vectorRangeEmpty.end());
+}
+
+TEST(VectorSizeRange, EndIsEnd) {
+	const auto vectorRangeSingleElement = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
+	EXPECT_EQ(vectorRangeSingleElement.end(), vectorRangeSingleElement.end());
+}
+
+TEST(VectorSizeRange, BeginToEnd) {
+	const auto vectorRangeSingleElement = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
+	EXPECT_EQ(vectorRangeSingleElement.end(), ++vectorRangeSingleElement.begin());
+}
+
+TEST(VectorSizeRange, BeginIsOrigin) {
+	EXPECT_EQ((NAS2D::Vector{0, 0}), (*NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}}.begin()));
+	EXPECT_EQ((NAS2D::Vector{0, 0}), (*NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}}.begin()));
+}
+
+TEST(VectorSizeRange, EndDecrementIsLast) {
+	EXPECT_EQ((NAS2D::Vector{0, 0}), (*--NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}}.end()));
+	EXPECT_EQ((NAS2D::Vector{1, 2}), (*--NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}}.end()));
+}
+
 TEST(VectorSizeRange, Iteration) {
 	using Items = std::vector<NAS2D::Vector<int>>;
 

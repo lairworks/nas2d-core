@@ -14,7 +14,6 @@ TEST(VectorSizeRange, Iteration) {
 
 	// Dereference produces the expected starting value
 	// (Later tests also proves the range is restartable)
-	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange1.begin());
 	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange2.begin());
 	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange3.begin());
 

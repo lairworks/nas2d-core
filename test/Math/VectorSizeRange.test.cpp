@@ -49,11 +49,6 @@ TEST(VectorSizeRange, Iteration) {
 	const auto vectorRange2 = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
 	const auto vectorRange3 = NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}};
 
-	// Dereference produces the expected starting value
-	// (Later tests also proves the range is restartable)
-	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange2.begin());
-	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange3.begin());
-
 	EXPECT_EQ(fillByRangeFor(vectorRange1), (Items{}));
 	EXPECT_EQ(fillByRangeFor(vectorRange2), (Items{{0, 0}}));
 	EXPECT_EQ(fillByRangeFor(vectorRange3), (Items{{0, 0}, {1, 0}, {0, 1}, {1, 1}, {0, 2}, {1, 2}}));

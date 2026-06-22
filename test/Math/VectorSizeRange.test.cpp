@@ -42,14 +42,20 @@ TEST(VectorSizeRange, EndDecrementIsLast) {
 	EXPECT_EQ((NAS2D::Vector{1, 2}), (*--NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}}.end()));
 }
 
-TEST(VectorSizeRange, Iteration) {
+TEST(VectorSizeRange, IterationEmpty) {
 	using Items = std::vector<NAS2D::Vector<int>>;
+	const auto vectorRangeEmpty = NAS2D::VectorSizeRange{NAS2D::Vector{0, 0}};
+	EXPECT_EQ(fillByRangeFor(vectorRangeEmpty), (Items{}));
+}
 
-	const auto vectorRange1 = NAS2D::VectorSizeRange{NAS2D::Vector{0, 0}};
-	const auto vectorRange2 = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
-	const auto vectorRange3 = NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}};
+TEST(VectorSizeRange, IterationSingle) {
+	using Items = std::vector<NAS2D::Vector<int>>;
+	const auto vectorRangeSingle = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
+	EXPECT_EQ(fillByRangeFor(vectorRangeSingle), (Items{{0, 0}}));
+}
 
-	EXPECT_EQ(fillByRangeFor(vectorRange1), (Items{}));
-	EXPECT_EQ(fillByRangeFor(vectorRange2), (Items{{0, 0}}));
-	EXPECT_EQ(fillByRangeFor(vectorRange3), (Items{{0, 0}, {1, 0}, {0, 1}, {1, 1}, {0, 2}, {1, 2}}));
+TEST(VectorSizeRange, IterationMultiWrap) {
+	using Items = std::vector<NAS2D::Vector<int>>;
+	const auto vectorRangeMultiWrap = NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}};
+	EXPECT_EQ(fillByRangeFor(vectorRangeMultiWrap), (Items{{0, 0}, {1, 0}, {0, 1}, {1, 1}, {0, 2}, {1, 2}}));
 }

@@ -5,6 +5,18 @@
 #include <vector>
 
 
+namespace {
+	template <typename BaseType>
+	auto fillByRangeFor(NAS2D::VectorSizeRange<BaseType> vectorRange) -> std::vector<NAS2D::Vector<BaseType>> {
+		std::vector<NAS2D::Vector<BaseType>> collection;
+		for (const auto vector : vectorRange) {
+			collection.push_back(vector);
+		}
+		return collection;
+	};
+}
+
+
 TEST(VectorSizeRange, EmptyRangeBeginIsEnd) {
 	const auto vectorRangeEmpty = NAS2D::VectorSizeRange{NAS2D::Vector{0, 0}};
 	EXPECT_EQ(vectorRangeEmpty.begin(), vectorRangeEmpty.end());
@@ -42,14 +54,6 @@ TEST(VectorSizeRange, Iteration) {
 	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange2.begin());
 	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange3.begin());
 
-	// Range-for syntax is supported
-	const auto fillByRangeFor = [](auto vectorRange) {
-		Items collection;
-		for (const auto vector : vectorRange) {
-			collection.push_back(vector);
-		}
-		return collection;
-	};
 	EXPECT_EQ(fillByRangeFor(vectorRange1), (Items{}));
 	EXPECT_EQ(fillByRangeFor(vectorRange2), (Items{{0, 0}}));
 	EXPECT_EQ(fillByRangeFor(vectorRange3), (Items{{0, 0}, {1, 0}, {0, 1}, {1, 1}, {0, 2}, {1, 2}}));

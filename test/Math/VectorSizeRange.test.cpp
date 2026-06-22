@@ -5,28 +5,69 @@
 #include <vector>
 
 
-TEST(VectorSizeRange, Iteration) {
-	using Items = std::vector<NAS2D::Vector<int>>;
-
-	const auto vectorRange1 = NAS2D::VectorSizeRange{NAS2D::Vector{0, 0}};
-	const auto vectorRange2 = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
-	const auto vectorRange3 = NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}};
-
-	// Dereference produces the expected starting value
-	// (Later tests also proves the range is restartable)
-	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange1.begin());
-	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange2.begin());
-	EXPECT_EQ((NAS2D::Vector{0, 0}), *vectorRange3.begin());
-
-	// Range-for syntax is supported
-	const auto fillByRangeFor = [](auto vectorRange) {
-		Items collection;
+namespace {
+	template <typename BaseType>
+	auto fillByRangeFor(NAS2D::VectorSizeRange<BaseType> vectorRange) -> std::vector<NAS2D::Vector<BaseType>> {
+		std::vector<NAS2D::Vector<BaseType>> collection;
 		for (const auto vector : vectorRange) {
 			collection.push_back(vector);
 		}
 		return collection;
 	};
-	EXPECT_EQ(fillByRangeFor(vectorRange1), (Items{}));
-	EXPECT_EQ(fillByRangeFor(vectorRange2), (Items{{0, 0}}));
-	EXPECT_EQ(fillByRangeFor(vectorRange3), (Items{{0, 0}, {1, 0}, {0, 1}, {1, 1}, {0, 2}, {1, 2}}));
+}
+
+
+TEST(VectorSizeRange, EmptyRangeBeginIsEnd) {
+	const auto vectorRangeEmpty = NAS2D::VectorSizeRange{NAS2D::Vector{0, 0}};
+	EXPECT_EQ(vectorRangeEmpty.begin(), vectorRangeEmpty.end());
+}
+
+TEST(VectorSizeRange, EndIsEnd) {
+	const auto vectorRangeSingleElement = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
+	EXPECT_EQ(vectorRangeSingleElement.end(), vectorRangeSingleElement.end());
+}
+
+TEST(VectorSizeRange, BeginToEnd) {
+	const auto vectorRangeSingleElement = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
+	EXPECT_EQ(vectorRangeSingleElement.end(), ++vectorRangeSingleElement.begin());
+}
+
+TEST(VectorSizeRange, BeginIsOrigin) {
+	EXPECT_EQ((NAS2D::Vector{0, 0}), (*NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}}.begin()));
+	EXPECT_EQ((NAS2D::Vector{0, 0}), (*NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}}.begin()));
+}
+
+TEST(VectorSizeRange, EndDecrementIsLast) {
+	EXPECT_EQ((NAS2D::Vector{0, 0}), (*--NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}}.end()));
+	EXPECT_EQ((NAS2D::Vector{1, 2}), (*--NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}}.end()));
+}
+
+TEST(VectorSizeRange, IterationEmpty) {
+	using Items = std::vector<NAS2D::Vector<int>>;
+	const auto vectorRangeEmpty = NAS2D::VectorSizeRange{NAS2D::Vector{0, 0}};
+	EXPECT_EQ(fillByRangeFor(vectorRangeEmpty), (Items{}));
+}
+
+TEST(VectorSizeRange, IterationSingle) {
+	using Items = std::vector<NAS2D::Vector<int>>;
+	const auto vectorRangeSingle = NAS2D::VectorSizeRange{NAS2D::Vector{1, 1}};
+	EXPECT_EQ(fillByRangeFor(vectorRangeSingle), (Items{{0, 0}}));
+}
+
+TEST(VectorSizeRange, IterationMultiXOnly) {
+	using Items = std::vector<NAS2D::Vector<int>>;
+	const auto vectorRangeMultiWrap = NAS2D::VectorSizeRange{NAS2D::Vector{3, 1}};
+	EXPECT_EQ(fillByRangeFor(vectorRangeMultiWrap), (Items{{0, 0}, {1, 0}, {2, 0}}));
+}
+
+TEST(VectorSizeRange, IterationMultiYOnly) {
+	using Items = std::vector<NAS2D::Vector<int>>;
+	const auto vectorRangeMultiWrap = NAS2D::VectorSizeRange{NAS2D::Vector{1, 3}};
+	EXPECT_EQ(fillByRangeFor(vectorRangeMultiWrap), (Items{{0, 0}, {0, 1}, {0, 2}}));
+}
+
+TEST(VectorSizeRange, IterationMultiXAndY) {
+	using Items = std::vector<NAS2D::Vector<int>>;
+	const auto vectorRangeMultiWrap = NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}};
+	EXPECT_EQ(fillByRangeFor(vectorRangeMultiWrap), (Items{{0, 0}, {1, 0}, {0, 1}, {1, 1}, {0, 2}, {1, 2}}));
 }

@@ -42,6 +42,36 @@ TEST(VectorSizeRange, EndDecrementIsLast) {
 	EXPECT_EQ((NAS2D::Vector{1, 2}), (*--NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}}.end()));
 }
 
+TEST(VectorSizeRange, IteratorIncrementXOnly) {
+	const auto vectorRange = NAS2D::VectorSizeRange{NAS2D::Vector{3, 1}};
+	auto iterator = vectorRange.begin();
+	EXPECT_EQ((NAS2D::Vector{0, 0}), *iterator);
+	EXPECT_EQ((NAS2D::Vector{1, 0}), *++iterator);
+	EXPECT_EQ((NAS2D::Vector{2, 0}), *++iterator);
+	EXPECT_EQ(vectorRange.end(), ++iterator);
+}
+
+TEST(VectorSizeRange, IteratorIncrementYOnly) {
+	const auto vectorRange = NAS2D::VectorSizeRange{NAS2D::Vector{1, 3}};
+	auto iterator = vectorRange.begin();
+	EXPECT_EQ((NAS2D::Vector{0, 0}), *iterator);
+	EXPECT_EQ((NAS2D::Vector{0, 1}), *++iterator);
+	EXPECT_EQ((NAS2D::Vector{0, 2}), *++iterator);
+	EXPECT_EQ(vectorRange.end(), ++iterator);
+}
+
+TEST(VectorSizeRange, IteratorIncrementXAndY) {
+	const auto vectorRange = NAS2D::VectorSizeRange{NAS2D::Vector{2, 3}};
+	auto iterator = vectorRange.begin();
+	EXPECT_EQ((NAS2D::Vector{0, 0}), *iterator);
+	EXPECT_EQ((NAS2D::Vector{1, 0}), *++iterator);
+	EXPECT_EQ((NAS2D::Vector{0, 1}), *++iterator);
+	EXPECT_EQ((NAS2D::Vector{1, 1}), *++iterator);
+	EXPECT_EQ((NAS2D::Vector{0, 2}), *++iterator);
+	EXPECT_EQ((NAS2D::Vector{1, 2}), *++iterator);
+	EXPECT_EQ(vectorRange.end(), ++iterator);
+}
+
 TEST(VectorSizeRange, IterationEmpty) {
 	using Items = std::vector<NAS2D::Vector<int>>;
 	const auto vectorRangeEmpty = NAS2D::VectorSizeRange{NAS2D::Vector{0, 0}};

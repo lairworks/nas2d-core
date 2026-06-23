@@ -26,56 +26,56 @@ namespace NAS2D
 		class Iterator
 		{
 		public:
-			explicit Iterator(const Rectangle<BaseType>& rect, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
+			constexpr explicit Iterator(const Rectangle<BaseType>& rect, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
 				mIterator(rect.size, initial),
 				mStartPoint(rect.position)
 			{}
-			Iterator(const Iterator& other) = default;
-			Iterator& operator=(const Iterator& other) = default;
+			constexpr Iterator(const Iterator& other) = default;
+			constexpr Iterator& operator=(const Iterator& other) = default;
 
-			Iterator& operator++()
+			constexpr Iterator& operator++()
 			{
 				++mIterator;
 				return *this;
 			}
 
-			Iterator& operator--()
+			constexpr Iterator& operator--()
 			{
 				--mIterator;
 				return *this;
 			}
 
-			bool operator==(const Iterator& other) const
+			constexpr bool operator==(const Iterator& other) const
 			{
 				return **this == *other;
 			}
 
-			bool operator!=(const Iterator& other) const
+			constexpr bool operator!=(const Iterator& other) const
 			{
 				return !(*this == other);
 			}
 
-			Point<BaseType> operator*() const
+			constexpr Point<BaseType> operator*() const
 			{
 				return mStartPoint + *mIterator;
 			}
 
 		private:
 			typename VectorSizeRange<BaseType>::Iterator mIterator;
-			const Point<BaseType> mStartPoint;
+			Point<BaseType> mStartPoint;
 		};
 
 
-		explicit PointInRectangleRange(Rectangle<BaseType> rect) :
+		constexpr explicit PointInRectangleRange(Rectangle<BaseType> rect) :
 			mRect(rect)
 		{}
 
-		Iterator begin() const
+		constexpr Iterator begin() const
 		{
 			return Iterator{mRect};
 		}
 
-		Iterator end() const
+		constexpr Iterator end() const
 		{
 			return Iterator{mRect, Vector<BaseType>{0, mRect.size.y}};
 		}

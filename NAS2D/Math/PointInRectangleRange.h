@@ -62,7 +62,7 @@ namespace NAS2D
 
 		private:
 			typename VectorSizeRange<BaseType>::Iterator mIterator;
-			const Point<BaseType> mStartPoint;
+			Point<BaseType> mStartPoint;
 		};
 
 

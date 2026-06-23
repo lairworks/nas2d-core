@@ -23,14 +23,14 @@ namespace NAS2D
 		class Iterator
 		{
 		public:
-			explicit Iterator(Vector<BaseType> size, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
+			constexpr explicit Iterator(Vector<BaseType> size, Vector<BaseType> initial = Vector<BaseType>{0, 0}) :
 				mCurrent(initial),
 				mSize(size)
 			{}
-			Iterator(const Iterator& other) = default;
-			Iterator& operator=(const Iterator& other) = default;
+			constexpr Iterator(const Iterator& other) = default;
+			constexpr Iterator& operator=(const Iterator& other) = default;
 
-			Iterator& operator++()
+			constexpr Iterator& operator++()
 			{
 				++mCurrent.x;
 				if (mCurrent.x >= mSize.x)
@@ -41,7 +41,7 @@ namespace NAS2D
 				return *this;
 			}
 
-			Iterator& operator--()
+			constexpr Iterator& operator--()
 			{
 				if (mCurrent.x <= 0)
 				{
@@ -52,17 +52,17 @@ namespace NAS2D
 				return *this;
 			}
 
-			bool operator==(const Iterator& other) const
+			constexpr bool operator==(const Iterator& other) const
 			{
 				return mCurrent == other.mCurrent;
 			}
 
-			bool operator!=(const Iterator& other) const
+			constexpr bool operator!=(const Iterator& other) const
 			{
 				return !(*this == other);
 			}
 
-			Vector<BaseType> operator*() const
+			constexpr Vector<BaseType> operator*() const
 			{
 				return mCurrent;
 			}
@@ -73,16 +73,16 @@ namespace NAS2D
 		};
 
 
-		explicit VectorSizeRange(Vector<BaseType> size) :
+		constexpr explicit VectorSizeRange(Vector<BaseType> size) :
 			mSize(size)
 		{}
 
-		Iterator begin() const
+		constexpr Iterator begin() const
 		{
 			return Iterator{mSize};
 		}
 
-		Iterator end() const
+		constexpr Iterator end() const
 		{
 			return Iterator{mSize, Vector<BaseType>{0, mSize.y}};
 		}

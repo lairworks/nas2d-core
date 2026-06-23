@@ -69,7 +69,7 @@ namespace NAS2D
 
 		private:
 			Vector<BaseType> mCurrent;
-			const Vector<BaseType> mSize;
+			Vector<BaseType> mSize;
 		};
 
 

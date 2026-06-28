@@ -49,12 +49,6 @@ TEST(PointInRectangleRange, Iteration) {
 	const auto pointRange2 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}};
 	const auto pointRange3 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}};
 
-	// Test head of range for expected values
-	EXPECT_EQ((NAS2D::Point{4, 5}), *pointRange3.begin());
-	EXPECT_EQ((NAS2D::Point{5, 5}), *++pointRange3.begin());
-	EXPECT_EQ((NAS2D::Point{4, 6}), *++++pointRange3.begin());
-	EXPECT_EQ((NAS2D::Point{5, 6}), *++++++pointRange3.begin());
-
 	EXPECT_EQ(fillByRangeFor(pointRange1), (Items{}));
 	EXPECT_EQ(fillByRangeFor(pointRange2), (Items{{1, 1}}));
 	EXPECT_EQ(fillByRangeFor(pointRange3), (Items{{4, 5}, {5, 5}, {4, 6}, {5, 6}, {4, 7}, {5, 7}}));

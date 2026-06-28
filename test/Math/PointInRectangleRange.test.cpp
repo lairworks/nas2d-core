@@ -5,6 +5,31 @@
 #include <vector>
 
 
+TEST(PointInRectangleRange, EmptyRangeBeginIsEnd) {
+	const auto pointRangeEmpty = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{0, 0}, {0, 0}}};
+	EXPECT_EQ(pointRangeEmpty.begin(), pointRangeEmpty.end());
+}
+
+TEST(PointInRectangleRange, EndIsEnd) {
+	const auto pointRangeSingleElement = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}};
+	EXPECT_EQ(pointRangeSingleElement.end(), pointRangeSingleElement.end());
+}
+
+TEST(PointInRectangleRange, BeginToEnd) {
+	const auto pointRangeSingleElement = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}};
+	EXPECT_EQ(pointRangeSingleElement.end(), ++pointRangeSingleElement.begin());
+}
+
+TEST(PointInRectangleRange, BeginIsOrigin) {
+	EXPECT_EQ((NAS2D::Point{1, 1}), (*NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}}.begin()));
+	EXPECT_EQ((NAS2D::Point{4, 5}), (*NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}}.begin()));
+}
+
+TEST(PointInRectangleRange, EndDecrementIsLast) {
+	EXPECT_EQ((NAS2D::Point{1, 1}), (*--NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}}.end()));
+	EXPECT_EQ((NAS2D::Point{5, 7}), (*--NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}}.end()));
+}
+
 TEST(PointInRectangleRange, Iteration) {
 	using Items = std::vector<NAS2D::Point<int>>;
 

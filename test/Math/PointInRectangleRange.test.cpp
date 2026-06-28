@@ -54,13 +54,13 @@ TEST(PointInRectangleRange, IterationSingle) {
 	EXPECT_EQ(fillByRangeFor(pointRangeSingle), (Items{{1, 1}}));
 }
 
-TEST(PointInRectangleRange, IterationMultiNoWrap) {
+TEST(PointInRectangleRange, IterationMultiXOnly) {
 	using Items = std::vector<NAS2D::Point<int>>;
 	const auto pointRangeMulti = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {3, 1}}};
 	EXPECT_EQ(fillByRangeFor(pointRangeMulti), (Items{{4, 5}, {5, 5}, {6, 5}}));
 }
 
-TEST(PointInRectangleRange, IterationMultiWrap) {
+TEST(PointInRectangleRange, IterationMultiXAndY) {
 	using Items = std::vector<NAS2D::Point<int>>;
 	const auto pointRangeMultiWrap = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}};
 	EXPECT_EQ(fillByRangeFor(pointRangeMultiWrap), (Items{{4, 5}, {5, 5}, {4, 6}, {5, 6}, {4, 7}, {5, 7}}));

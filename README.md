@@ -17,6 +17,22 @@ Officially, *NAS2D* is supported on Windows (Vista+) and MacOS X (10.8+). Binari
 
 *NAS2D* has been tested and works on Linux and BSD but there are no official maintainers for these platforms.
 
+
+## Dependencies
+
+Dependencies are managed using [Vcpkg](https://vcpkg.io/en/). Current dependencies can be found in [`vcpkg.json`](vcpkg.json).
+
+Vcpkg integrates with the Visual Studio build environment to download dependencies automatically as part of the build. It requires a one time setup using:
+```
+vcpkg integrate install
+```
+
+Vcpkg updates the `AdditionalIncludeDirectories` preprocessor setting so header files of dependencies can be found, and the `AdditionalDependencies` linker setting so the `.lib` files of dependencies can be found.
+
+If you see build errors about missing header files of dependencies, such as SDL, it's probably because `vcpkg integrate install` hasn't been run.
+
+If you wish to avoid using Vcpkg, then you'll need to download and update dependencies yourself, and ensure proper settings for `AdditionalIncludeDirectories` and `AdditionalDependencies`.
+
 ## NAS2D's History
 
 *NAS2D* was born from the development efforts of another LairWorks project, [The Legend of Mazzeroth](http://lom.lairworks.com). After several months of development it became clear that core code that *LoM* was built on didn't change very much. We cleaned it up, pulled it out of the LoM project, repackaged it and the first version of NAS2D was released.

@@ -5,6 +5,18 @@
 #include <vector>
 
 
+namespace {
+	template <typename BaseType>
+	auto fillByRangeFor(NAS2D::PointInRectangleRange<BaseType> pointRange) -> std::vector<NAS2D::Point<BaseType>> {
+		std::vector<NAS2D::Point<BaseType>> collection;
+		for (const auto point : pointRange) {
+			collection.push_back(point);
+		}
+		return collection;
+	};
+}
+
+
 TEST(PointInRectangleRange, EmptyRangeBeginIsEnd) {
 	const auto pointRangeEmpty = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{0, 0}, {0, 0}}};
 	EXPECT_EQ(pointRangeEmpty.begin(), pointRangeEmpty.end());
@@ -48,14 +60,6 @@ TEST(PointInRectangleRange, Iteration) {
 	EXPECT_EQ((NAS2D::Point{4, 6}), *++++pointRange3.begin());
 	EXPECT_EQ((NAS2D::Point{5, 6}), *++++++pointRange3.begin());
 
-	// Range-for syntax is supported
-	const auto fillByRangeFor = [](auto pointRange) {
-		Items collection;
-		for (const auto point : pointRange) {
-			collection.push_back(point);
-		}
-		return collection;
-	};
 	EXPECT_EQ(fillByRangeFor(pointRange1), (Items{}));
 	EXPECT_EQ(fillByRangeFor(pointRange2), (Items{{1, 1}}));
 	EXPECT_EQ(fillByRangeFor(pointRange3), (Items{{4, 5}, {5, 5}, {4, 6}, {5, 6}, {4, 7}, {5, 7}}));

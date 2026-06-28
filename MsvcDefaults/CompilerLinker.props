@@ -35,8 +35,10 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories Condition="'$(ProjectAdditionalIncludeDirectories)' != ''">$(ProjectAdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed Condition="'$(ProjectFavorSizeOrSpeed)' != ''">$(ProjectFavorSizeOrSpeed)</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
+      <AdditionalDependencies Condition="'$(ProjectAdditionalDependencies)' != ''">$(ProjectAdditionalDependencies);%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem Condition="'$(ProjectSubSystem)' != ''">$(ProjectSubSystem)</SubSystem>
     </Link>
   </ItemDefinitionGroup>

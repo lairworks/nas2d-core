@@ -49,11 +49,6 @@ TEST(PointInRectangleRange, Iteration) {
 	const auto pointRange2 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}};
 	const auto pointRange3 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}};
 
-	// Dereference produces the expected starting value
-	// (Later tests also proves the range is restartable)
-	EXPECT_EQ((NAS2D::Point{1, 1}), *pointRange2.begin());
-	EXPECT_EQ((NAS2D::Point{4, 5}), *pointRange3.begin());
-
 	// Test head of range for expected values
 	EXPECT_EQ((NAS2D::Point{4, 5}), *pointRange3.begin());
 	EXPECT_EQ((NAS2D::Point{5, 5}), *++pointRange3.begin());

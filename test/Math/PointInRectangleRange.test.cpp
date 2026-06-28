@@ -42,6 +42,36 @@ TEST(PointInRectangleRange, EndDecrementIsLast) {
 	EXPECT_EQ((NAS2D::Point{5, 7}), (*--NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}}.end()));
 }
 
+TEST(PointInRectangleRange, IteratorIncrementXOnly) {
+	const auto pointRange = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {3, 1}}};
+	auto iterator = pointRange.begin();
+	EXPECT_EQ((NAS2D::Point{4, 5}), *iterator);
+	EXPECT_EQ((NAS2D::Point{5, 5}), *++iterator);
+	EXPECT_EQ((NAS2D::Point{6, 5}), *++iterator);
+	EXPECT_EQ(pointRange.end(), ++iterator);
+}
+
+TEST(PointInRectangleRange, IteratorIncrementYOnly) {
+	const auto pointRange = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {1, 3}}};
+	auto iterator = pointRange.begin();
+	EXPECT_EQ((NAS2D::Point{4, 5}), *iterator);
+	EXPECT_EQ((NAS2D::Point{4, 6}), *++iterator);
+	EXPECT_EQ((NAS2D::Point{4, 7}), *++iterator);
+	EXPECT_EQ(pointRange.end(), ++iterator);
+}
+
+TEST(PointInRectangleRange, IteratorIncrementXAndY) {
+	const auto pointRange = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}};
+	auto iterator = pointRange.begin();
+	EXPECT_EQ((NAS2D::Point{4, 5}), *iterator);
+	EXPECT_EQ((NAS2D::Point{5, 5}), *++iterator);
+	EXPECT_EQ((NAS2D::Point{4, 6}), *++iterator);
+	EXPECT_EQ((NAS2D::Point{5, 6}), *++iterator);
+	EXPECT_EQ((NAS2D::Point{4, 7}), *++iterator);
+	EXPECT_EQ((NAS2D::Point{5, 7}), *++iterator);
+	EXPECT_EQ(pointRange.end(), ++iterator);
+}
+
 TEST(PointInRectangleRange, IterationEmpty) {
 	using Items = std::vector<NAS2D::Point<int>>;
 	const auto pointRangeEmpty = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{0, 0}, {0, 0}}};

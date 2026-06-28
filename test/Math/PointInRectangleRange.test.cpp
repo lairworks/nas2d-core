@@ -42,14 +42,20 @@ TEST(PointInRectangleRange, EndDecrementIsLast) {
 	EXPECT_EQ((NAS2D::Point{5, 7}), (*--NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}}.end()));
 }
 
-TEST(PointInRectangleRange, Iteration) {
+TEST(PointInRectangleRange, IterationEmpty) {
 	using Items = std::vector<NAS2D::Point<int>>;
+	const auto pointRangeEmpty = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{0, 0}, {0, 0}}};
+	EXPECT_EQ(fillByRangeFor(pointRangeEmpty), (Items{}));
+}
 
-	const auto pointRange1 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{0, 0}, {0, 0}}};
-	const auto pointRange2 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}};
-	const auto pointRange3 = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}};
+TEST(PointInRectangleRange, IterationSingle) {
+	using Items = std::vector<NAS2D::Point<int>>;
+	const auto pointRangeSingle = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{1, 1}, {1, 1}}};
+	EXPECT_EQ(fillByRangeFor(pointRangeSingle), (Items{{1, 1}}));
+}
 
-	EXPECT_EQ(fillByRangeFor(pointRange1), (Items{}));
-	EXPECT_EQ(fillByRangeFor(pointRange2), (Items{{1, 1}}));
-	EXPECT_EQ(fillByRangeFor(pointRange3), (Items{{4, 5}, {5, 5}, {4, 6}, {5, 6}, {4, 7}, {5, 7}}));
+TEST(PointInRectangleRange, IterationMultiWrap) {
+	using Items = std::vector<NAS2D::Point<int>>;
+	const auto pointRangeMultiWrap = NAS2D::PointInRectangleRange{NAS2D::Rectangle<int>{{4, 5}, {2, 3}}};
+	EXPECT_EQ(fillByRangeFor(pointRangeMultiWrap), (Items{{4, 5}, {5, 5}, {4, 6}, {5, 6}, {4, 7}, {5, 7}}));
 }

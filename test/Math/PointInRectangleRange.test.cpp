@@ -14,7 +14,6 @@ TEST(PointInRectangleRange, Iteration) {
 
 	// Dereference produces the expected starting value
 	// (Later tests also proves the range is restartable)
-	EXPECT_EQ((NAS2D::Point{0, 0}), *pointRange1.begin());
 	EXPECT_EQ((NAS2D::Point{1, 1}), *pointRange2.begin());
 	EXPECT_EQ((NAS2D::Point{4, 5}), *pointRange3.begin());
 

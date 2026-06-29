@@ -13,10 +13,9 @@ One of the primary goals of *NAS2D* was to be cross-platform. A lot of effort ha
 
 ## What Platforms are Supported
 
-Officially, *NAS2D* is supported on Windows (Vista+) and MacOS X (10.8+). Binaries, source code and IDE Project files are provided and maintained for these platforms.
+Automated builds are done for Windows, macOS, and Linux (Ubuntu and Arch). We provide Visual Studio project files for Windows, and a `makefile` based build for macOS and Linux. Dependencies are managed using platform specific tools: Vcpkg (Windows), Homebrew (macOS), apt (Ubuntu), pacman (Arch).
 
-*NAS2D* has been tested and works on Linux and BSD but there are no official maintainers for these platforms.
-
+We are not currently providing precompiled binaries of recent builds for any platform. A source build is the expected way to use NAS2D.
 
 ## Dependencies
 

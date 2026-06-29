@@ -17,7 +17,7 @@ Automated builds are done for Windows, macOS, and Linux (Ubuntu and Arch). We pr
 
 We are not currently providing precompiled binaries of recent builds for any platform. A source build is the expected way to use NAS2D.
 
-## Dependencies
+## Windows Dependencies
 
 Dependencies are managed using [Vcpkg](https://vcpkg.io/en/). Current dependencies can be found in [`vcpkg.json`](vcpkg.json).
 
@@ -31,6 +31,15 @@ Vcpkg updates the `AdditionalIncludeDirectories` preprocessor setting so header 
 If you see build errors about missing header files of dependencies, such as SDL, it's probably because `vcpkg integrate install` hasn't been run.
 
 If you wish to avoid using Vcpkg, then you'll need to download and update dependencies yourself, and ensure proper settings for `AdditionalIncludeDirectories` and `AdditionalDependencies`.
+
+## Linux and macOS Dependencies
+
+To install dependencies for a [`makefile`](makefile) based build, there is a helper target that attempts to detect the platform and install dependencies using an appropriate platform specific package manager:
+```sh
+make install-dependencies
+```
+
+Typically `sudo` is used to run the command with root privilege, which will be required to run the system package manager to install the dependencies.
 
 ## NAS2D's History
 

@@ -13,12 +13,11 @@ One of the primary goals of *NAS2D* was to be cross-platform. A lot of effort ha
 
 ## What Platforms are Supported
 
-Officially, *NAS2D* is supported on Windows (Vista+) and MacOS X (10.8+). Binaries, source code and IDE Project files are provided and maintained for these platforms.
+Automated builds are done for Windows, macOS, and Linux (Ubuntu and Arch). We provide Visual Studio project files for Windows, and a `makefile` based build for macOS and Linux. Dependencies are managed using platform specific tools: Vcpkg (Windows), Homebrew (macOS), apt (Ubuntu), pacman (Arch).
 
-*NAS2D* has been tested and works on Linux and BSD but there are no official maintainers for these platforms.
+We are not currently providing precompiled binaries of recent builds for any platform. A source build is the expected way to use NAS2D.
 
-
-## Dependencies
+## Windows Dependencies
 
 Dependencies are managed using [Vcpkg](https://vcpkg.io/en/). Current dependencies can be found in [`vcpkg.json`](vcpkg.json).
 
@@ -32,6 +31,15 @@ Vcpkg updates the `AdditionalIncludeDirectories` preprocessor setting so header 
 If you see build errors about missing header files of dependencies, such as SDL, it's probably because `vcpkg integrate install` hasn't been run.
 
 If you wish to avoid using Vcpkg, then you'll need to download and update dependencies yourself, and ensure proper settings for `AdditionalIncludeDirectories` and `AdditionalDependencies`.
+
+## Linux and macOS Dependencies
+
+To install dependencies for a [`makefile`](makefile) based build, there is a helper target that attempts to detect the platform and install dependencies using an appropriate platform specific package manager:
+```sh
+make install-dependencies
+```
+
+Typically `sudo` is used to run the command with root privilege, which will be required to run the system package manager to install the dependencies.
 
 ## NAS2D's History
 

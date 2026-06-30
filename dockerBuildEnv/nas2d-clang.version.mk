@@ -1,1 +1,1 @@
-ImageVersion_clang := 1.5
+ImageVersion_clang := 1.6

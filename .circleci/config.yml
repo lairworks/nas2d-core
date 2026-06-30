@@ -32,7 +32,7 @@ jobs:
       - build-and-test
   build-linux-clang:
     docker:
-      - image: ghcr.io/lairworks/build-env-nas2d-clang:1.5
+      - image: ghcr.io/lairworks/build-env-nas2d-clang:1.6
     environment:
       Toolchain: "clang"
     steps:

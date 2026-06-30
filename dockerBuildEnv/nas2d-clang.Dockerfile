@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:26.04
+FROM ubuntu:resolute-20260610
 
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages

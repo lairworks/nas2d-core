@@ -24,7 +24,7 @@ jobs:
       - build-and-test
   build-linux-gcc:
     docker:
-      - image: ghcr.io/lairworks/build-env-nas2d-gcc:1.6
+      - image: ghcr.io/lairworks/build-env-nas2d-gcc:1.7
     environment:
       Toolchain: "gcc"
     steps:

@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:24.04
+FROM ubuntu:resolute-20260610
 
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages
@@ -9,20 +9,20 @@ FROM ubuntu:24.04
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
-    mingw-w64=11.0.1-* \
-    cmake=3.28.3-* \
-    make=4.3-* \
-    binutils=2.42-* \
-    libgtest-dev=1.14.0-* \
-    libgmock-dev=1.14.0-* \
-    git=1:2.43.0-* \
-    ssh=1:9.6p1-* \
-    curl=8.5.0-* \
+    mingw-w64=13.0.0-* \
+    cmake=4.2.3-* \
+    make=4.4.1-* \
+    binutils=2.46-* \
+    libgtest-dev=1.17.0-* \
+    libgmock-dev=1.17.0-* \
+    git=1:2.53.0-* \
+    ssh=1:10.2p1-* \
+    curl=8.18.0-* \
     tar=1.35+* \
-    gzip=1.12-* \
+    gzip=1.14-* \
     bzip2=1.0.8-* \
-    gnupg=2.4.4-* \
-    lsb-release=12.0-* \
+    gnupg=2.4.8-* \
+    lsb-release=12.1-* \
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
@@ -45,9 +45,9 @@ RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
   dpkg --add-architecture i386 && \
   apt-get update && apt-get install -y --no-install-recommends \
-    wine=9.0~repack-4build3 \
-    wine64=9.0~repack-4build3 \
-    wine32:i386=9.0~repack-4build3 \
+    wine=10.0~repack-12ubuntu1 \
+    wine64=10.0~repack-12ubuntu1 \
+    wine32:i386=10.0~repack-12ubuntu1 \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages
@@ -93,15 +93,15 @@ RUN \
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
-RUN sdlVersion="2.32.0" && \
+RUN sdlVersion="2.32.10" && \
   curl https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2-${sdlVersion}/ cross && \
   rm -rf SDL2-${sdlVersion}/
-RUN sdlImageVersion="2.8.5" && \
+RUN sdlImageVersion="2.8.12" && \
   curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2_image-${sdlImageVersion}/ cross && \
   rm -rf SDL2_image-${sdlImageVersion}/
-RUN sdlMixerVersion="2.8.1" && \
+RUN sdlMixerVersion="2.8.2" && \
   curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2_mixer-${sdlMixerVersion}/ cross && \
   rm -rf SDL2_mixer-${sdlMixerVersion}/
@@ -110,7 +110,7 @@ RUN sdlTtfVersion="2.24.0" && \
   make -C SDL2_ttf-${sdlTtfVersion}/ cross && \
   rm -rf SDL2_ttf-${sdlTtfVersion}/
 # Install dependencies from source packages
-RUN glewVersion="2.2.0" && \
+RUN glewVersion="2.3.1" && \
   curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
   make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
   make -C glew-${glewVersion}/ distclean && \

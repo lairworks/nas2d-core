@@ -9,7 +9,6 @@ FROM ubuntu:resolute-20260610
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
-    mingw-w64=13.0.0-* \
     cmake=4.2.3-* \
     make=4.4.1-* \
     binutils=2.46-* \
@@ -31,56 +30,43 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 ENV TARGET_OS=Windows
 # Set architecture short names
 ENV ARCH64=x86_64-w64-mingw32
-ENV ARCH32=i686-w64-mingw32
 # Set compiler short names
 ENV CXX64=${ARCH64}-g++
 ENV  CC64=${ARCH64}-gcc
 ENV  LD64=${ARCH64}-ld
-ENV CXX32=${ARCH32}-g++
-ENV  CC32=${ARCH32}-gcc
-ENV  LD32=${ARCH32}-ld
 
 # Install wine so resulting unit test binaries can be run
 RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
   apt-get update && apt-get install -y --no-install-recommends \
-    wine=10.0~repack-12ubuntu1 \
     wine64=10.0~repack-12ubuntu1 \
   && rm -rf /var/lib/apt/lists/*
 
 # Set default install location for custom packages
 ENV INSTALL_PREFIX=/usr/local/
 ENV INSTALL64=${INSTALL_PREFIX}${ARCH64}/
-ENV INSTALL32=${INSTALL_PREFIX}${ARCH32}/
 
 # Create directories for local install of libraries
-RUN mkdir --parents "${INSTALL64}" "${INSTALL32}"
+RUN mkdir --parents "${INSTALL64}"
 
 # Download, compile, and install Google Test source package
 WORKDIR /tmp/gtest/
 RUN \
   cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH64}" && \
   cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH64}" && \
-  cmake -H/usr/src/googletest/ -B"${ARCH32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH32}" && \
-  cmake -H/usr/src/googletest/ -B"${ARCH32}" -DCMAKE_CXX_COMPILER="${CXX32}" -DCMAKE_C_COMPILER="${CC32}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH32}" && \
   cp --parents -r \
     "${ARCH64}/bin/" \
     "${ARCH64}/lib/" \
-    "${ARCH32}/bin/" \
-    "${ARCH32}/lib/" \
     "${INSTALL_PREFIX}" && \
   mkdir -p \
     "${INSTALL_PREFIX}share/mingw-w64/" \
-    "${INSTALL64}include/" \
-    "${INSTALL32}include/" && \
+    "${INSTALL64}include/" && \
   cp -r \
     /usr/src/googletest/googletest/include/ \
     /usr/src/googletest/googlemock/include/ \
     "${INSTALL_PREFIX}share/mingw-w64/" && \
   ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL64}include/" && \
   ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL64}include/" && \
-  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL32}include/" && \
-  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL32}include/" && \
   cp --parents -r \
     /usr/src/googletest/CMakeLists.txt \
     /usr/src/googletest/googletest/ \
@@ -111,21 +97,14 @@ RUN sdlTtfVersion="2.24.0" && \
 RUN glewVersion="2.3.1" && \
   curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
   make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
-  make -C glew-${glewVersion}/ distclean && \
-  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC32}" WARN="-Wno-cast-function-type" LD="${LD32}" LDFLAGS.EXTRA=-L"/usr/${ARCH32}/lib/" GLEW_DEST="${INSTALL32}" install && \
   rm -rf glew-${glewVersion}/ glew.*
 
 # Custom variables for install locations
 ENV INCLUDE64=${INSTALL64}include/
-ENV INCLUDE32=${INSTALL32}include/
 ENV LIB64=${INSTALL64}lib;/usr/${ARCH64}/lib
-ENV LIB32=${INSTALL32}lib;/usr/${ARCH32}/lib
 ENV BIN64=${INSTALL64}bin/
-ENV BIN32=${INSTALL32}bin/
 ENV PATH64="${PATH}:${BIN64}"
-ENV PATH32="${PATH}:${BIN32}"
 ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/13-win32/
-ENV WINEPATH32=${BIN32};/usr/lib/gcc/${ARCH32}/13-win32/
 
 # Setup compiler and tooling default folders
 ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"

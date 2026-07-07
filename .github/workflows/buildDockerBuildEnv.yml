@@ -12,6 +12,11 @@ on:
           - clang
           - gcc
           - mingw
+  workflow_call:
+    inputs:
+      buildEnv:
+        required: true
+        type: string
 
 jobs:
   dockerBuild:

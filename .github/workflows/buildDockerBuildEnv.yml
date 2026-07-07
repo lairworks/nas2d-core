@@ -24,6 +24,7 @@ jobs:
         - 'gcc'
         - 'mingw'
     env:
+      buildEnv: ${{ matrix.platform }}
       defaultBranch: ${{ github.event.repository.default_branch }}
 
     steps:
@@ -38,11 +39,11 @@ jobs:
         id: diff
         run: |
           set +e
-          git diff --exit-code --no-patch "origin/${defaultBranch}" dockerBuildEnv/nas2d-${{ matrix.platform }}.* ; echo "modified=$?" >> $GITHUB_OUTPUT
+          git diff --exit-code --no-patch "origin/${defaultBranch}" dockerBuildEnv/nas2d-${{ env.buildEnv }}.* ; echo "modified=$?" >> $GITHUB_OUTPUT
 
       - name: Docker build
         if: ${{ fromJSON(steps.diff.outputs.modified) }}
-        run: make build-image-${{ matrix.platform }}
+        run: make build-image-${{ env.buildEnv }}
 
       - name: Docker login
         if: ${{ fromJSON(steps.diff.outputs.modified) }}
@@ -50,4 +51,4 @@ jobs:
 
       - name: Docker push
         if: ${{ fromJSON(steps.diff.outputs.modified) }}
-        run: make push-image-${{ matrix.platform }}
+        run: make push-image-${{ env.buildEnv }}

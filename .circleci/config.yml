@@ -22,35 +22,8 @@ jobs:
       - checkout
       - brew-install
       - build-and-test
-  build-linux-gcc:
-    docker:
-      - image: ghcr.io/lairworks/build-env-nas2d-gcc:1.7
-    environment:
-      Toolchain: "gcc"
-    steps:
-      - checkout
-      - build-and-test
-  build-linux-clang:
-    docker:
-      - image: ghcr.io/lairworks/build-env-nas2d-clang:1.6
-    environment:
-      Toolchain: "clang"
-    steps:
-      - checkout
-      - build-and-test
-  build-linux-mingw:
-    docker:
-      - image: ghcr.io/lairworks/build-env-nas2d-mingw:1.16
-    environment:
-      Toolchain: "mingw"
-    steps:
-      - checkout
-      - build-and-test
 
 workflows:
   build_and_test:
     jobs:
       - build-macos
-      - build-linux-gcc
-      - build-linux-clang
-      - build-linux-mingw

@@ -106,6 +106,21 @@ jobs:
     - name: Package
       run: ./Package.bat "${{env.Configuration}}" "${{env.Platform}}"
 
+  macos:
+    runs-on: macos-26
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - run: make install-dependencies
+
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror"
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" test
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" check
+    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" demoGraphics
+
   linux:
     strategy:
       fail-fast: false

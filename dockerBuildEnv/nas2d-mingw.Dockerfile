@@ -127,8 +127,6 @@ ENV TARGET_OS=Windows
 # Set default extra C pre-processor flags
 # This makes proper rebuilding easier in a debug session
 ENV CPPFLAGS_EXTRA=-D"GLEW_STATIC"
-# Disable warnings for redundant declarations of intrinsics, triggered by SDL2
-ENV WARN_EXTRA=-Wno-redundant-decls
 # Set custom makefile parameter
 ENV Toolchain=mingw
 # Set a library search path to make rebuilding easier in a debug sessions

@@ -53,7 +53,6 @@ CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 
 # Target specific settings
 WindowsSpecialPreprocessorFlags = -DGLEW_STATIC
-WindowsSpecialWarnFlags = -Wno-redundant-decls
 WindowsExeSuffix := .exe
 WindowsRunPrefix := wine
 WindowsRunSuffixUnitTest := --gtest_color=yes | cat -

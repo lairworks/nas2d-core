@@ -122,9 +122,9 @@ ENV  CC=${CC64}
 # USER root
 
 # Set custom variables for build script convenience
-# Set custom makefile parameter
+# Activate appropriate Toolchain settings
 ENV Toolchain=mingw
-# Set a library search path to make rebuilding easier in a debug sessions
+# Set a library search path to use during linking
 ENV LDFLAGS_EXTRA="-L/usr/local/x86_64-w64-mingw32/lib"
 
 # Be explicit about the extra flags with the default command

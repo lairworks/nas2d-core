@@ -113,14 +113,6 @@ ENV WINEPATH="${WINEPATH64}"
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
 
-# Cache the result of `wineboot` for faster startup (or don't for smaller images)
-# USER user
-
-# Pre-setup Wine to save startup time later
-# RUN wineboot
-
-# USER root
-
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw

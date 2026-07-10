@@ -1,1 +1,1 @@
-ImageVersion_gcc := 1.7
+ImageVersion_gcc := 1.8

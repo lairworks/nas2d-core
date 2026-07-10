@@ -25,9 +25,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
-# Set custom variables for build script convenience
-# Set default target OS
-ENV TARGET_OS=Windows
 # Set architecture short names
 ENV ARCH64=x86_64-w64-mingw32
 # Set compiler short names
@@ -116,22 +113,10 @@ ENV WINEPATH="${WINEPATH64}"
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
 
-# Cache the result of `wineboot` for faster startup (or don't for smaller images)
-# USER user
-
-# Pre-setup Wine to save startup time later
-# RUN wineboot
-
-# USER root
-
-# Set default extra C pre-processor flags
-# This makes proper rebuilding easier in a debug session
-ENV CPPFLAGS_EXTRA=-D"GLEW_STATIC"
-# Disable warnings for redundant declarations of intrinsics, triggered by SDL2
-ENV WARN_EXTRA=-Wno-redundant-decls
-# Set custom makefile parameter
+# Set custom variables for build script convenience
+# Activate appropriate Toolchain settings
 ENV Toolchain=mingw
-# Set a library search path to make rebuilding easier in a debug sessions
+# Set a library search path to use during linking
 ENV LDFLAGS_EXTRA="-L/usr/local/x86_64-w64-mingw32/lib"
 
 # Be explicit about the extra flags with the default command

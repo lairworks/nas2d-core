@@ -31,4 +31,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsdl2-ttf-dev=2.24.0+* \
   && rm -rf /var/lib/apt/lists/*
 
+ENV Toolchain=clang
+
 CMD ["make", "--keep-going", "check"]

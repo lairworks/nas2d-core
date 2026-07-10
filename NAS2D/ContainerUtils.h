@@ -63,8 +63,7 @@ namespace NAS2D
 	template <typename Container, typename UnaryOperation>
 	auto mapToVector(const Container& container, UnaryOperation mapFunction)
 	{
-		using ResultType = decltype(mapFunction(*std::begin(container)));
-		using ElementType = std::remove_cvref_t<ResultType>;
+		using ElementType = std::remove_cvref_t<decltype(mapFunction(*std::begin(container)))>;
 
 		std::vector<ElementType> results;
 		results.reserve(std::size(container));

@@ -25,9 +25,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     ca-certificates=* \
   && rm -rf /var/lib/apt/lists/*
 
-# Set custom variables for build script convenience
-# Set default target OS
-ENV TARGET_OS=Windows
 # Set architecture short names
 ENV ARCH64=x86_64-w64-mingw32
 # Set compiler short names
@@ -124,6 +121,9 @@ ENV  CC=${CC64}
 
 # USER root
 
+# Set custom variables for build script convenience
+# Set default target OS
+ENV TARGET_OS=Windows
 # Set default extra C pre-processor flags
 # This makes proper rebuilding easier in a debug session
 ENV CPPFLAGS_EXTRA=-D"GLEW_STATIC"

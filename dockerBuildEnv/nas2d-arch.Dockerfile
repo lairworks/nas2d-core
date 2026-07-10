@@ -26,4 +26,8 @@ RUN pacman --sync --refresh --noconfirm \
 
 RUN useradd --create-home user
 
+# Set custom variables for build script convenience
+# Activate appropriate Toolchain settings
+ENV Toolchain=gcc
+
 CMD ["make", "--keep-going", "check"]

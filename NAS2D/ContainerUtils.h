@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <iterator>
 #include <numeric>
+#include <type_traits>
 
 
 namespace NAS2D
@@ -60,10 +61,9 @@ namespace NAS2D
 
 
 	template <typename Container, typename UnaryOperation>
-	auto mapToVector(const Container& container, UnaryOperation mapFunction)
+	auto mapToVector(const Container& container, UnaryOperation mapFunction) -> std::vector<std::remove_cvref_t<decltype(mapFunction(*std::begin(container)))>>
 	{
-		using ResultType = decltype(mapFunction(*std::begin(container)));
-		using ElementType = std::remove_cv_t<std::remove_reference_t<ResultType>>;
+		using ElementType = std::remove_cvref_t<decltype(mapFunction(*std::begin(container)))>;
 
 		std::vector<ElementType> results;
 		results.reserve(std::size(container));
@@ -96,7 +96,7 @@ namespace NAS2D
 	}
 
 	template <typename Container>
-	auto flatten(const Container& collectionOfCollection)
+	auto flatten(const Container& collectionOfCollection) -> typename Container::value_type
 	{
 		using InnerCollectionType = typename Container::value_type;
 

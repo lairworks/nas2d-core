@@ -122,8 +122,6 @@ ENV  CC=${CC64}
 # USER root
 
 # Set custom variables for build script convenience
-# Set default target OS
-ENV TARGET_OS=Windows
 # Set custom makefile parameter
 ENV Toolchain=mingw
 # Set a library search path to make rebuilding easier in a debug sessions

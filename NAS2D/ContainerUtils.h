@@ -96,7 +96,7 @@ namespace NAS2D
 	}
 
 	template <typename Container>
-	auto flatten(const Container& collectionOfCollection)
+	auto flatten(const Container& collectionOfCollection) -> typename Container::value_type
 	{
 		using InnerCollectionType = typename Container::value_type;
 

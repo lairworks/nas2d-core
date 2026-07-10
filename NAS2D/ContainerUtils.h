@@ -64,7 +64,7 @@ namespace NAS2D
 	auto mapToVector(const Container& container, UnaryOperation mapFunction)
 	{
 		using ResultType = decltype(mapFunction(*std::begin(container)));
-		using ElementType = std::remove_cv_t<std::remove_reference_t<ResultType>>;
+		using ElementType = std::remove_cvref_t<ResultType>;
 
 		std::vector<ElementType> results;
 		results.reserve(std::size(container));

@@ -55,7 +55,7 @@ CONFIG_CXX_FLAGS := $($(CONFIG)_CXX_FLAGS)
 WindowsSpecialPreprocessorFlags = -DGLEW_STATIC
 WindowsExeSuffix := .exe
 WindowsRunPrefix := wine
-WindowsRunSuffixUnitTest := --gtest_color=yes | cat -
+WindowsRunSuffixUnitTest := --gtest_color=yes > >(cat)
 
 DarwinIncludeSearchFlags = -isystem$(shell brew --prefix)/include
 
@@ -134,6 +134,7 @@ $(TESTOBJS): $(TESTINTDIR)/%.o : $(TESTDIR)/%.cpp $(TESTINTDIR)/%.dep
 
 
 .PHONY: check
+check: SHELL := bash
 check: | test
 	$(RunPrefix) $(TESTOUTPUT) $(GTEST_OPTIONS) $(RunSuffixUnitTest)
 

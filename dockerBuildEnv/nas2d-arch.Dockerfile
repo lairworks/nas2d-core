@@ -6,6 +6,7 @@ FROM archlinux:base-20260628.0.549485
 # Includes tools to build download, unpack, and build source packages
 # Includes tools needed for primary CircleCI containers
 RUN \
+  --mount=type=cache,target=/var/cache/pacman/pkg,sharing=locked \
   pacman --sync --refresh --noconfirm \
     gcc \
     make \
@@ -14,17 +15,16 @@ RUN \
     openssh \
     tar \
     gzip \
-    ca-certificates \
-  && rm -rf /var/cache/pacman/pkg
+    ca-certificates
 
 RUN \
+  --mount=type=cache,target=/var/cache/pacman/pkg,sharing=locked \
   pacman --sync --refresh --noconfirm \
     glew \
     sdl2 \
     sdl2_image \
     sdl2_mixer \
-    sdl2_ttf \
-  && rm -rf /var/cache/pacman/pkg
+    sdl2_ttf
 
 RUN useradd --create-home user
 

@@ -38,12 +38,15 @@ ENV CXX64=${ARCH64}-g++
 ENV  CC64=${ARCH64}-gcc
 ENV  LD64=${ARCH64}-ld
 
+# Install apt repository for wine
+RUN \
+  curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list
+
 # Install wine so resulting unit test binaries can be run
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
-  curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
-  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
   apt-get update && \
   apt-get install -y --no-install-recommends \
     wine=10.0~repack-12ubuntu1

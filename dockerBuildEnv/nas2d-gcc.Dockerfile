@@ -7,7 +7,9 @@ FROM ubuntu:resolute-20260610
 # Includes tools needed for primary CircleCI containers
 # Install latest available GCC compiler (which may not be the default)
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     g++=4:15.2.0-* \
     make=4.4.1-* \
     cmake=4.2.3-* \
@@ -24,7 +26,9 @@ ENV CXX=g++
 ENV  CC=gcc
 
 # Install NAS2D specific dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
     libglew-dev=2.2.0-* \
     libsdl2-dev=2.32.10+* \
     libsdl2-image-dev=2.8.8+* \

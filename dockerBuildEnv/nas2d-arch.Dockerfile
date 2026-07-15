@@ -5,7 +5,8 @@ FROM archlinux:base-20260628.0.549485
 # Install base development tools
 # Includes tools to build download, unpack, and build source packages
 # Includes tools needed for primary CircleCI containers
-RUN pacman --sync --refresh --noconfirm \
+RUN \
+  pacman --sync --refresh --noconfirm \
     gcc \
     make \
     gtest \
@@ -16,7 +17,8 @@ RUN pacman --sync --refresh --noconfirm \
     ca-certificates \
   && rm -rf /var/cache/pacman/pkg
 
-RUN pacman --sync --refresh --noconfirm \
+RUN \
+  pacman --sync --refresh --noconfirm \
     glew \
     sdl2 \
     sdl2_image \

@@ -7,7 +7,9 @@ FROM ubuntu:resolute-20260610
 # Includes tools needed for primary CircleCI containers
 # The lsb-release package is used to install wine
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
     cmake=4.2.3-* \
     make=4.4.1-* \
@@ -33,9 +35,11 @@ ENV  CC64=${ARCH64}-gcc
 ENV  LD64=${ARCH64}-ld
 
 # Install wine so resulting unit test binaries can be run
-RUN curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+RUN \
+  curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list && \
-  apt-get update && apt-get install -y --no-install-recommends \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
     wine=10.0~repack-12ubuntu1 \
   && rm -rf /var/lib/apt/lists/*
 

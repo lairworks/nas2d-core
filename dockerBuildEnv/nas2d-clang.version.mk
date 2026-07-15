@@ -1,1 +1,1 @@
-ImageVersion_clang := 1.7
+ImageVersion_clang := 2026-07-15

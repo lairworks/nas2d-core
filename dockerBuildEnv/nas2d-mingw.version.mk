@@ -1,1 +1,1 @@
-ImageVersion_mingw := 1.18
+ImageVersion_mingw := 2026-07-15

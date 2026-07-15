@@ -1,1 +1,1 @@
-ImageVersion_arch := 1.8
+ImageVersion_arch := 2026-07-15

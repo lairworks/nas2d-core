@@ -180,7 +180,7 @@ POSTCOMPILE = @mv -f $(@:.o=.d) $(@:.o=.dep) && touch $@
 
 lib%.a:
 	@mkdir -p "${@D}"
-	ar rcs $@ $^
+	$(AR) rcs $@ $^
 
 %.o:
 	@mkdir -p "${@D}"

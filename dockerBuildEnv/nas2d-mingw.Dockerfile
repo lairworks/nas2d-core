@@ -18,7 +18,6 @@ RUN \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
     cmake=4.2.3-* \
     make=4.4.1-* \
-    binutils=2.46-* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-* \
     git=1:2.53.0-* \
@@ -37,6 +36,8 @@ ENV ARCH64=x86_64-w64-mingw32
 ENV CXX64=${ARCH64}-g++
 ENV  CC64=${ARCH64}-gcc
 ENV  LD64=${ARCH64}-ld
+ENV  AR64=${ARCH64}-ar
+ENV  STRIP64=${ARCH64}-strip
 
 # Install apt repository for wine
 RUN \
@@ -59,10 +60,11 @@ ENV INSTALL64=${INSTALL_PREFIX}${ARCH64}/
 RUN mkdir --parents "${INSTALL64}"
 
 # Download, compile, and install Google Test source package
-WORKDIR /tmp/gtest/
 RUN \
-  cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON && make -C "${ARCH64}" && \
-  cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="${TARGET_OS}" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH64}" && \
+  mkdir --parents /tmp/gtest/ && \
+  cd /tmp/gtest/ && \
+  cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && make -C "${ARCH64}" && \
+  cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH64}" && \
   cp --parents -r \
     "${ARCH64}/bin/" \
     "${ARCH64}/lib/" \
@@ -105,7 +107,7 @@ RUN sdlTtfVersion="2.24.0" && \
 # Install dependencies from source packages
 RUN glewVersion="2.3.1" && \
   curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
-  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
+  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" AR="${AR64}" STRIP="${STRIP64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
   rm -rf glew-${glewVersion}/ glew.*
 
 # Custom variables for install locations
@@ -124,12 +126,14 @@ ENV WINEPATH="${WINEPATH64}"
 # Set default compiler
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
+ENV  AR=${AR64}
+ENV  STRIP=${STRIP64}
 
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw
 # Set a library search path to use during linking
-ENV LDFLAGS_EXTRA="-L/usr/local/x86_64-w64-mingw32/lib"
+ENV LDFLAGS_EXTRA="-L/usr/local/${ARCH64}/lib"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

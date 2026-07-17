@@ -130,7 +130,7 @@ ENV  CC=${CC64}
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw
 # Set a library search path to use during linking
-ENV LDFLAGS_EXTRA="-L/usr/local/x86_64-w64-mingw32/lib"
+ENV LDFLAGS_EXTRA="-L/usr/local/${ARCH64}/lib"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

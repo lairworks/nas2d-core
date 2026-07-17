@@ -18,7 +18,6 @@ RUN \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
     cmake=4.2.3-* \
     make=4.4.1-* \
-    binutils=2.46-* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-* \
     git=1:2.53.0-* \
@@ -37,6 +36,7 @@ ENV ARCH64=x86_64-w64-mingw32
 ENV CXX64=${ARCH64}-g++
 ENV  CC64=${ARCH64}-gcc
 ENV  LD64=${ARCH64}-ld
+ENV  AR64=${ARCH64}-ar
 
 # Install apt repository for wine
 RUN \
@@ -106,7 +106,7 @@ RUN sdlTtfVersion="2.24.0" && \
 # Install dependencies from source packages
 RUN glewVersion="2.3.1" && \
   curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
-  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
+  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" AR="${AR64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
   rm -rf glew-${glewVersion}/ glew.*
 
 # Custom variables for install locations
@@ -125,6 +125,7 @@ ENV WINEPATH="${WINEPATH64}"
 # Set default compiler
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
+ENV  AR=${AR64}
 
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings

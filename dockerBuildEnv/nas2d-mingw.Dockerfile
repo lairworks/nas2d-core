@@ -59,8 +59,9 @@ ENV INSTALL64=${INSTALL_PREFIX}${ARCH64}/
 RUN mkdir --parents "${INSTALL64}"
 
 # Download, compile, and install Google Test source package
-WORKDIR /tmp/gtest/
 RUN \
+  mkdir --parents /tmp/gtest/ && \
+  cd /tmp/gtest/ && \
   cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && make -C "${ARCH64}" && \
   cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_COMPILER="${CXX64}" -DCMAKE_C_COMPILER="${CC64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH64}" && \
   cp --parents -r \

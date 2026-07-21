@@ -38,6 +38,12 @@ ENV  LD64=${ARCH64}-ld
 ENV  AR64=${ARCH64}-ar
 ENV  STRIP64=${ARCH64}-strip
 
+# Set default compiler
+ENV CXX=${CXX64}
+ENV  CC=${CC64}
+ENV  AR=${AR64}
+ENV  STRIP=${STRIP64}
+
 # Install apt repository for wine
 RUN \
   curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
@@ -121,12 +127,6 @@ ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
 ENV LIBRARY_PATH="${LIB64}"
 ENV PATH="${PATH64}"
 ENV WINEPATH="${WINEPATH64}"
-
-# Set default compiler
-ENV CXX=${CXX64}
-ENV  CC=${CC64}
-ENV  AR=${AR64}
-ENV  STRIP=${STRIP64}
 
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings

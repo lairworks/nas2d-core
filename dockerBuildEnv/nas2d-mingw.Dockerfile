@@ -56,7 +56,7 @@ ENV INSTALL_PREFIX=/usr/local/
 ENV INSTALL64=${INSTALL_PREFIX}${ARCH}/
 
 # Custom variables for install locations
-ENV LIB64=${INSTALL64}lib;/usr/${ARCH}/lib
+ENV LIB64=${INSTALL64}lib
 ENV BIN64=${INSTALL64}bin/
 
 # Setup compiler and tooling default folders
@@ -122,7 +122,7 @@ RUN glewVersion="2.3.1" && \
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw
 # Set a library search path to use during linking
-ENV LDFLAGS_EXTRA="-L/usr/local/${ARCH}/lib"
+ENV LDFLAGS_EXTRA="-L${LIB64}"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

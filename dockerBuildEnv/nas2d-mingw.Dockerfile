@@ -126,7 +126,7 @@ RUN sdlTtfVersion="2.24.0" && \
 # Install dependencies from source packages
 RUN glewVersion="2.3.1" && \
   curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
-  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 WARN="-Wno-cast-function-type" GLEW_DEST="${INSTALL64}" install && \
+  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 WARN="-Wno-cast-function-type" install && \
   rm -rf glew-${glewVersion}/ glew.*
 
 # Set custom variables for build script convenience

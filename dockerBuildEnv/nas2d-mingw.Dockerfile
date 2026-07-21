@@ -41,6 +41,7 @@ ENV  STRIP64=${ARCH64}-strip
 # Set default compiler
 ENV CXX=${CXX64}
 ENV  CC=${CC64}
+ENV  LD=${LD64}
 ENV  AR=${AR64}
 ENV  STRIP=${STRIP64}
 

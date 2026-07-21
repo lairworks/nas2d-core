@@ -30,13 +30,13 @@ RUN \
     ca-certificates=*
 
 # Set architecture short names
-ENV ARCH64=x86_64-w64-mingw32
+ENV ARCH=x86_64-w64-mingw32
 # Set compiler short names
-ENV CXX64=${ARCH64}-g++
-ENV  CC64=${ARCH64}-gcc
-ENV  LD64=${ARCH64}-ld
-ENV  AR64=${ARCH64}-ar
-ENV  STRIP64=${ARCH64}-strip
+ENV CXX64=${ARCH}-g++
+ENV  CC64=${ARCH}-gcc
+ENV  LD64=${ARCH}-ld
+ENV  AR64=${ARCH}-ar
+ENV  STRIP64=${ARCH}-strip
 
 # Set default compiler
 ENV CXX=${CXX64}
@@ -60,14 +60,14 @@ RUN \
 
 # Set default install location for custom packages
 ENV INSTALL_PREFIX=/usr/local/
-ENV INSTALL64=${INSTALL_PREFIX}${ARCH64}/
+ENV INSTALL64=${INSTALL_PREFIX}${ARCH}/
 
 # Custom variables for install locations
 ENV INCLUDE64=${INSTALL64}include/
-ENV LIB64=${INSTALL64}lib;/usr/${ARCH64}/lib
+ENV LIB64=${INSTALL64}lib;/usr/${ARCH}/lib
 ENV BIN64=${INSTALL64}bin/
 ENV PATH64="${PATH}:${BIN64}"
-ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/13-win32/
+ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH}/13-win32/
 
 # Setup compiler and tooling default folders
 ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
@@ -81,11 +81,11 @@ RUN mkdir --parents "${INSTALL64}"
 RUN \
   mkdir --parents /tmp/gtest/ && \
   cd /tmp/gtest/ && \
-  cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && make -C "${ARCH64}" && \
-  cmake -H/usr/src/googletest/ -B"${ARCH64}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH64}" && \
+  cmake -H/usr/src/googletest/ -B"${ARCH}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && make -C "${ARCH}" && \
+  cmake -H/usr/src/googletest/ -B"${ARCH}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH}" && \
   cp --parents -r \
-    "${ARCH64}/bin/" \
-    "${ARCH64}/lib/" \
+    "${ARCH}/bin/" \
+    "${ARCH}/lib/" \
     "${INSTALL_PREFIX}" && \
   mkdir -p \
     "${INSTALL_PREFIX}share/mingw-w64/" \
@@ -132,7 +132,7 @@ RUN glewVersion="2.3.1" && \
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw
 # Set a library search path to use during linking
-ENV LDFLAGS_EXTRA="-L/usr/local/${ARCH64}/lib"
+ENV LDFLAGS_EXTRA="-L/usr/local/${ARCH}/lib"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

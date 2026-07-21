@@ -23,11 +23,11 @@ RUN \
     git=1:2.53.0-* \
     ssh=1:10.2p1-* \
     curl=8.18.0-* \
+    gnupg=2.4.8-* \
+    lsb-release=12.1-* \
     tar=1.35+* \
     gzip=1.14-* \
     bzip2=1.0.8-* \
-    gnupg=2.4.8-* \
-    lsb-release=12.1-* \
     ca-certificates=*
 
 # Set architecture short names

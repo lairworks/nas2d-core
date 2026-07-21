@@ -61,6 +61,19 @@ RUN \
 ENV INSTALL_PREFIX=/usr/local/
 ENV INSTALL64=${INSTALL_PREFIX}${ARCH64}/
 
+# Custom variables for install locations
+ENV INCLUDE64=${INSTALL64}include/
+ENV LIB64=${INSTALL64}lib;/usr/${ARCH64}/lib
+ENV BIN64=${INSTALL64}bin/
+ENV PATH64="${PATH}:${BIN64}"
+ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/13-win32/
+
+# Setup compiler and tooling default folders
+ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
+ENV LIBRARY_PATH="${LIB64}"
+ENV PATH="${PATH64}"
+ENV WINEPATH="${WINEPATH64}"
+
 # Create directories for local install of libraries
 RUN mkdir --parents "${INSTALL64}"
 
@@ -114,19 +127,6 @@ RUN glewVersion="2.3.1" && \
   curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
   make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 CC="${CC64}" AR="${AR64}" STRIP="${STRIP64}" WARN="-Wno-cast-function-type" LD="${LD64}" LDFLAGS.EXTRA=-L"/usr/${ARCH64}/lib/" GLEW_DEST="${INSTALL64}" install && \
   rm -rf glew-${glewVersion}/ glew.*
-
-# Custom variables for install locations
-ENV INCLUDE64=${INSTALL64}include/
-ENV LIB64=${INSTALL64}lib;/usr/${ARCH64}/lib
-ENV BIN64=${INSTALL64}bin/
-ENV PATH64="${PATH}:${BIN64}"
-ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/13-win32/
-
-# Setup compiler and tooling default folders
-ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
-ENV LIBRARY_PATH="${LIB64}"
-ENV PATH="${PATH64}"
-ENV WINEPATH="${WINEPATH64}"
 
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings

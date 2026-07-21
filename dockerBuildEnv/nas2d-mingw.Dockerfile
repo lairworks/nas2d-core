@@ -38,6 +38,8 @@ ENV  LD=${ARCH}-ld
 ENV  AR=${ARCH}-ar
 ENV  STRIP=${ARCH}-strip
 
+ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${ARCH}/13-win32/
+
 # Install apt repository for wine
 RUN \
   curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
@@ -60,7 +62,7 @@ ENV INSTALL_PREFIX_ARCH_BIN=${INSTALL_PREFIX_ARCH}bin/
 # Setup compiler and tooling default folders
 ENV CPLUS_INCLUDE_PATH="${INSTALL_PREFIX_ARCH}include/"
 ENV PATH="${PATH}:${INSTALL_PREFIX_ARCH_BIN}"
-ENV WINEPATH="${INSTALL_PREFIX_ARCH_BIN};/usr/lib/gcc/${ARCH}/13-win32/"
+ENV WINEPATH="${INSTALL_PREFIX_ARCH_BIN};${GCC_RUNTIME_PATH}"
 
 # Create directories for local install of libraries
 RUN mkdir --parents "${INSTALL_PREFIX_ARCH}"

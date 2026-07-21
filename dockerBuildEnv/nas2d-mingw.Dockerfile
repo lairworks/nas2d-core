@@ -71,7 +71,6 @@ ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH64}/13-win32/
 
 # Setup compiler and tooling default folders
 ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
-ENV LIBRARY_PATH="${LIB64}"
 ENV PATH="${PATH64}"
 ENV WINEPATH="${WINEPATH64}"
 

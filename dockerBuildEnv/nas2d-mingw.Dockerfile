@@ -31,19 +31,12 @@ RUN \
 
 # Set architecture short names
 ENV ARCH=x86_64-w64-mingw32
-# Set compiler short names
-ENV CXX64=${ARCH}-g++
-ENV  CC64=${ARCH}-gcc
-ENV  LD64=${ARCH}-ld
-ENV  AR64=${ARCH}-ar
-ENV  STRIP64=${ARCH}-strip
-
-# Set default compiler
-ENV CXX=${CXX64}
-ENV  CC=${CC64}
-ENV  LD=${LD64}
-ENV  AR=${AR64}
-ENV  STRIP=${STRIP64}
+# Set default compiler tools
+ENV CXX=${ARCH}-g++
+ENV  CC=${ARCH}-gcc
+ENV  LD=${ARCH}-ld
+ENV  AR=${ARCH}-ar
+ENV  STRIP=${ARCH}-strip
 
 # Install apt repository for wine
 RUN \

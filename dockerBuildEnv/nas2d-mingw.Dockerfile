@@ -56,7 +56,7 @@ ENV INSTALL_PREFIX=/usr/local/
 ENV INSTALL64=${INSTALL_PREFIX}${ARCH}/
 
 # Custom variables for install locations
-ENV LIB64=${INSTALL64}lib
+ENV LIB64=${INSTALL64}lib/
 ENV BIN64=${INSTALL64}bin/
 
 # Setup compiler and tooling default folders

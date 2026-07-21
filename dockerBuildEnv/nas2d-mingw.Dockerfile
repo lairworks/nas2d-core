@@ -16,8 +16,8 @@ RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
-    cmake=4.2.3-* \
     make=4.4.1-* \
+    cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-* \
     git=1:2.53.0-* \

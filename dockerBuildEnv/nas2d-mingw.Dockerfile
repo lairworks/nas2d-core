@@ -27,7 +27,6 @@ RUN \
     lsb-release=12.1-* \
     tar=1.35+* \
     gzip=1.14-* \
-    bzip2=1.0.8-* \
     ca-certificates=*
 
 # Set architecture short names

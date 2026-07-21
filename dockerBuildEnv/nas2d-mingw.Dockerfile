@@ -56,16 +56,13 @@ ENV INSTALL_PREFIX=/usr/local/
 ENV INSTALL64=${INSTALL_PREFIX}${ARCH}/
 
 # Custom variables for install locations
-ENV INCLUDE64=${INSTALL64}include/
 ENV LIB64=${INSTALL64}lib;/usr/${ARCH}/lib
 ENV BIN64=${INSTALL64}bin/
-ENV PATH64="${PATH}:${BIN64}"
-ENV WINEPATH64=${BIN64};/usr/lib/gcc/${ARCH}/13-win32/
 
 # Setup compiler and tooling default folders
-ENV CPLUS_INCLUDE_PATH="${INCLUDE64}"
-ENV PATH="${PATH64}"
-ENV WINEPATH="${WINEPATH64}"
+ENV CPLUS_INCLUDE_PATH="${INSTALL64}include/"
+ENV PATH="${PATH}:${BIN64}"
+ENV WINEPATH="${BIN64};/usr/lib/gcc/${ARCH}/13-win32/"
 
 # Create directories for local install of libraries
 RUN mkdir --parents "${INSTALL64}"

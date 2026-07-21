@@ -51,21 +51,19 @@ RUN \
   apt-get install -y --no-install-recommends \
     wine=10.0~repack-12ubuntu1
 
-# Set default install location for custom packages
+# Set default install location for source built packages
 ENV INSTALL_PREFIX=/usr/local/
-ENV INSTALL64=${INSTALL_PREFIX}${ARCH}/
-
-# Custom variables for install locations
-ENV LIB64=${INSTALL64}lib/
-ENV BIN64=${INSTALL64}bin/
+ENV INSTALL_PREFIX_ARCH=${INSTALL_PREFIX}${ARCH}/
+ENV INSTALL_PREFIX_ARCH_LIB=${INSTALL_PREFIX_ARCH}lib/
+ENV INSTALL_PREFIX_ARCH_BIN=${INSTALL_PREFIX_ARCH}bin/
 
 # Setup compiler and tooling default folders
-ENV CPLUS_INCLUDE_PATH="${INSTALL64}include/"
-ENV PATH="${PATH}:${BIN64}"
-ENV WINEPATH="${BIN64};/usr/lib/gcc/${ARCH}/13-win32/"
+ENV CPLUS_INCLUDE_PATH="${INSTALL_PREFIX_ARCH}include/"
+ENV PATH="${PATH}:${INSTALL_PREFIX_ARCH_BIN}"
+ENV WINEPATH="${INSTALL_PREFIX_ARCH_BIN};/usr/lib/gcc/${ARCH}/13-win32/"
 
 # Create directories for local install of libraries
-RUN mkdir --parents "${INSTALL64}"
+RUN mkdir --parents "${INSTALL_PREFIX_ARCH}"
 
 # Download, compile, and install Google Test source package
 RUN \
@@ -79,13 +77,13 @@ RUN \
     "${INSTALL_PREFIX}" && \
   mkdir -p \
     "${INSTALL_PREFIX}share/mingw-w64/" \
-    "${INSTALL64}include/" && \
+    "${INSTALL_PREFIX_ARCH}include/" && \
   cp -r \
     /usr/src/googletest/googletest/include/ \
     /usr/src/googletest/googlemock/include/ \
     "${INSTALL_PREFIX}share/mingw-w64/" && \
-  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL64}include/" && \
-  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL64}include/" && \
+  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL_PREFIX_ARCH}include/" && \
+  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL_PREFIX_ARCH}include/" && \
   cp --parents -r \
     /usr/src/googletest/CMakeLists.txt \
     /usr/src/googletest/googletest/ \
@@ -122,7 +120,7 @@ RUN glewVersion="2.3.1" && \
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw
 # Set a library search path to use during linking
-ENV LDFLAGS_EXTRA="-L${LIB64}"
+ENV LDFLAGS_EXTRA="-L${INSTALL_PREFIX_ARCH_LIB}"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

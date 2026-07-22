@@ -85,11 +85,6 @@ RUN \
     "${INSTALL_PREFIX}share/mingw-w64/" && \
   ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL_PREFIX_ARCH}include/" && \
   ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL_PREFIX_ARCH}include/" && \
-  cp --parents -r \
-    /usr/src/googletest/CMakeLists.txt \
-    /usr/src/googletest/googletest/ \
-    /usr/src/googletest/googlemock/ \
-    "${INSTALL_PREFIX}src/" && \
   rm -rf /tmp/gtest/
 
 # Install NAS2D specific dependencies

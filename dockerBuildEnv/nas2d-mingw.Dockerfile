@@ -72,7 +72,6 @@ RUN \
   mkdir --parents /tmp/gtest/ && \
   cd /tmp/gtest/ && \
   cmake -H/usr/src/googletest/ -B"${ARCH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && make -C "${ARCH}" && \
-  cmake -H/usr/src/googletest/ -B"${ARCH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH}" && \
   cp --parents -r \
     "${ARCH}/bin/" \
     "${ARCH}/lib/" \

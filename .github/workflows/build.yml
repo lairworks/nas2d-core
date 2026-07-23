@@ -129,7 +129,7 @@ jobs:
         - "build-env-nas2d-arch:2026-07-15"
         - "build-env-nas2d-clang:2026-07-15"
         - "build-env-nas2d-gcc:2026-07-15"
-        - "build-env-nas2d-mingw:2026-07-20"
+        - "build-env-nas2d-mingw:2026-07-21"
     runs-on: ubuntu-latest
     container:
       image: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}"

@@ -66,11 +66,9 @@ ENV WINEPATH="${INSTALL_PREFIX_ARCH_BIN};${GCC_RUNTIME_PATH}"
 
 # Download, compile, and install Google Test source package
 RUN \
-  mkdir --parents /tmp/gtest/ && \
-  cd /tmp/gtest/ && \
-  cmake -B"${ARCH}" -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX_ARCH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
-  cmake --build "${ARCH}" && \
-  cmake --install "${ARCH}" && \
+  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX_ARCH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
+  cmake --build /tmp/gtest/ && \
+  cmake --install /tmp/gtest/ && \
   rm -rf /tmp/gtest/
 
 # Install NAS2D specific dependencies

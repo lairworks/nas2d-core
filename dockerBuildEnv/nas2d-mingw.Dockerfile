@@ -64,33 +64,11 @@ ENV CPLUS_INCLUDE_PATH="${INSTALL_PREFIX_ARCH}include/"
 ENV PATH="${PATH}:${INSTALL_PREFIX_ARCH_BIN}"
 ENV WINEPATH="${INSTALL_PREFIX_ARCH_BIN};${GCC_RUNTIME_PATH}"
 
-# Create directories for local install of libraries
-RUN mkdir --parents "${INSTALL_PREFIX_ARCH}"
-
 # Download, compile, and install Google Test source package
 RUN \
-  mkdir --parents /tmp/gtest/ && \
-  cd /tmp/gtest/ && \
-  cmake -H/usr/src/googletest/ -B"${ARCH}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && make -C "${ARCH}" && \
-  cmake -H/usr/src/googletest/ -B"${ARCH}" -DCMAKE_CXX_FLAGS="-std=c++20" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON -DBUILD_SHARED_LIBS=ON && make -C "${ARCH}" && \
-  cp --parents -r \
-    "${ARCH}/bin/" \
-    "${ARCH}/lib/" \
-    "${INSTALL_PREFIX}" && \
-  mkdir -p \
-    "${INSTALL_PREFIX}share/mingw-w64/" \
-    "${INSTALL_PREFIX_ARCH}include/" && \
-  cp -r \
-    /usr/src/googletest/googletest/include/ \
-    /usr/src/googletest/googlemock/include/ \
-    "${INSTALL_PREFIX}share/mingw-w64/" && \
-  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL_PREFIX_ARCH}include/" && \
-  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL_PREFIX_ARCH}include/" && \
-  cp --parents -r \
-    /usr/src/googletest/CMakeLists.txt \
-    /usr/src/googletest/googletest/ \
-    /usr/src/googletest/googlemock/ \
-    "${INSTALL_PREFIX}src/" && \
+  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX_ARCH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
+  cmake --build /tmp/gtest/ && \
+  cmake --install /tmp/gtest/ && \
   rm -rf /tmp/gtest/
 
 # Install NAS2D specific dependencies

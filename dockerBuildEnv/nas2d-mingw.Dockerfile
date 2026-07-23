@@ -71,21 +71,9 @@ RUN mkdir --parents "${INSTALL_PREFIX_ARCH}"
 RUN \
   mkdir --parents /tmp/gtest/ && \
   cd /tmp/gtest/ && \
-  cmake -B"${ARCH}" -S/usr/src/googletest/ -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
+  cmake -B"${ARCH}" -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX_ARCH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
   cmake --build "${ARCH}" && \
-  cp --parents -r \
-    "${ARCH}/bin/" \
-    "${ARCH}/lib/" \
-    "${INSTALL_PREFIX}" && \
-  mkdir -p \
-    "${INSTALL_PREFIX}share/mingw-w64/" \
-    "${INSTALL_PREFIX_ARCH}include/" && \
-  cp -r \
-    /usr/src/googletest/googletest/include/ \
-    /usr/src/googletest/googlemock/include/ \
-    "${INSTALL_PREFIX}share/mingw-w64/" && \
-  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gtest/" "${INSTALL_PREFIX_ARCH}include/" && \
-  ln -sf "${INSTALL_PREFIX}share/mingw-w64/include/gmock/" "${INSTALL_PREFIX_ARCH}include/" && \
+  cmake --install "${ARCH}" && \
   rm -rf /tmp/gtest/
 
 # Install NAS2D specific dependencies

@@ -64,9 +64,6 @@ ENV CPLUS_INCLUDE_PATH="${INSTALL_PREFIX_ARCH}include/"
 ENV PATH="${PATH}:${INSTALL_PREFIX_ARCH_BIN}"
 ENV WINEPATH="${INSTALL_PREFIX_ARCH_BIN};${GCC_RUNTIME_PATH}"
 
-# Create directories for local install of libraries
-RUN mkdir --parents "${INSTALL_PREFIX_ARCH}"
-
 # Download, compile, and install Google Test source package
 RUN \
   mkdir --parents /tmp/gtest/ && \

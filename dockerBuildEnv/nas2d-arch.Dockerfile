@@ -3,8 +3,6 @@
 FROM archlinux:base-20260628.0.549485
 
 # Install base development tools
-# Includes tools to build download, unpack, and build source packages
-# Includes tools needed for primary CircleCI containers
 RUN \
   --mount=type=cache,target=/var/cache/pacman/pkg,sharing=locked \
   pacman --sync --refresh --noconfirm \
@@ -12,7 +10,6 @@ RUN \
     make \
     gtest \
     git \
-    openssh \
     tar \
     gzip \
     ca-certificates

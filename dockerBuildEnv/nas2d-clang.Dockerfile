@@ -6,8 +6,6 @@ FROM ubuntu:resolute-20260610
 RUN rm /etc/apt/apt.conf.d/docker-clean
 
 # Install base development tools
-# Includes tools to build download, unpack, and build source packages
-# Includes tools needed for primary CircleCI containers
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -20,7 +18,6 @@ RUN \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-* \
     git=1:2.53.0-* \
-    ssh=1:10.2p1-* \
     tar=1.35+* \
     gzip=1.14-* \
     ca-certificates=*

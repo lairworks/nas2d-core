@@ -6,8 +6,6 @@ FROM ubuntu:resolute-20260610
 RUN rm /etc/apt/apt.conf.d/docker-clean
 
 # Install base development tools
-# Includes tools to build download, unpack, and build source packages
-# Includes tools needed for primary CircleCI containers
 # The lsb-release package is used to install wine
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN \
@@ -21,7 +19,6 @@ RUN \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-* \
     git=1:2.53.0-* \
-    ssh=1:10.2p1-* \
     curl=8.18.0-* \
     gnupg=2.4.8-* \
     lsb-release=12.1-* \

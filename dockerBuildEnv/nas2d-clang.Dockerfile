@@ -16,11 +16,7 @@ RUN \
     clang=1:21.1.6-* \
     cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
-    libgmock-dev=1.17.0-* \
-    git=1:2.53.0-* \
-    tar=1.35+* \
-    gzip=1.14-* \
-    ca-certificates=*
+    libgmock-dev=1.17.0-*
 
 ENV CXX=clang++
 ENV  CC=clang

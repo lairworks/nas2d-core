@@ -17,11 +17,7 @@ RUN \
     make=4.4.1-* \
     cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
-    libgmock-dev=1.17.0-* \
-    git=1:2.53.0-* \
-    tar=1.35+* \
-    gzip=1.14-* \
-    ca-certificates=*
+    libgmock-dev=1.17.0-*
 
 ENV CXX=g++
 ENV  CC=gcc

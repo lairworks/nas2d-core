@@ -6,7 +6,6 @@ FROM ubuntu:resolute-20260610
 RUN rm /etc/apt/apt.conf.d/docker-clean
 
 # Install base development tools
-# The lsb-release package is used to install wine
 # Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \

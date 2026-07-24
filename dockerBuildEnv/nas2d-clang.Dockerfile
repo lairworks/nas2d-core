@@ -14,7 +14,6 @@ RUN \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     build-essential=12.12* \
     clang=1:21.1.6-* \
-    cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-*
 

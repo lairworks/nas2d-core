@@ -15,7 +15,6 @@ RUN \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     g++=4:15.2.0-* \
     make=4.4.1-* \
-    cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-*
 

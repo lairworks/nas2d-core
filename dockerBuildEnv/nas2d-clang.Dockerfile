@@ -12,8 +12,8 @@ RUN \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    build-essential=12.12* \
     clang=1:21.1.6-* \
+    make=4.4.1-* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-*
 

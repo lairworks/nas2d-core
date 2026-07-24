@@ -8,11 +8,7 @@ RUN \
   pacman --sync --refresh --noconfirm \
     gcc \
     make \
-    gtest \
-    git \
-    tar \
-    gzip \
-    ca-certificates
+    gtest
 
 RUN \
   --mount=type=cache,target=/var/cache/pacman/pkg,sharing=locked \

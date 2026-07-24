@@ -18,7 +18,6 @@ RUN \
     cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-* \
-    git=1:2.53.0-* \
     curl=8.18.0-* \
     gnupg=2.4.8-* \
     lsb-release=12.1-* \

@@ -6,12 +6,11 @@ FROM ubuntu:resolute-20260610
 RUN rm /etc/apt/apt.conf.d/docker-clean
 
 # Install base development tools
-# Set DEBIAN_FRONTEND to prevent tzdata package install from prompting for timezone
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  apt-get install -y --no-install-recommends \
     clang=1:21.1.6-* \
     make=4.4.1-* \
     libgtest-dev=1.17.0-* \

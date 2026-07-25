@@ -23,9 +23,7 @@ RUN \
     gzip=1.14-* \
     ca-certificates=*
 
-# Set architecture short names
 ARG ARCH=x86_64-w64-mingw32
-# Set default compiler tools
 ENV \
   CXX=${ARCH}-g++ \
   CC=${ARCH}-gcc \

@@ -26,11 +26,12 @@ RUN \
 # Set architecture short names
 ARG ARCH=x86_64-w64-mingw32
 # Set default compiler tools
-ENV CXX=${ARCH}-g++
-ENV  CC=${ARCH}-gcc
-ENV  LD=${ARCH}-ld
-ENV  AR=${ARCH}-ar
-ENV  STRIP=${ARCH}-strip
+ENV \
+  CXX=${ARCH}-g++ \
+  CC=${ARCH}-gcc \
+  LD=${ARCH}-ld \
+  AR=${ARCH}-ar \
+  STRIP=${ARCH}-strip
 
 ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${ARCH}/13-win32/
 

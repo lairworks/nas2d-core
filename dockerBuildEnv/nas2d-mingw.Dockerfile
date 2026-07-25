@@ -47,8 +47,7 @@ RUN \
     wine=10.0~repack-12ubuntu1
 
 # Set default install location for source built packages
-ARG INSTALL_PREFIX=/usr/local/
-ARG INSTALL_PREFIX_ARCH=${INSTALL_PREFIX}${ARCH}/
+ARG INSTALL_PREFIX_ARCH=/usr/local/${ARCH}/
 ARG INSTALL_PREFIX_ARCH_LIB=${INSTALL_PREFIX_ARCH}lib/
 ARG INSTALL_PREFIX_ARCH_BIN=${INSTALL_PREFIX_ARCH}bin/
 

@@ -24,7 +24,7 @@ RUN \
     ca-certificates=*
 
 # Set architecture short names
-ENV ARCH=x86_64-w64-mingw32
+ARG ARCH=x86_64-w64-mingw32
 # Set default compiler tools
 ENV CXX=${ARCH}-g++
 ENV  CC=${ARCH}-gcc

@@ -54,7 +54,6 @@ ARG INSTALL_PREFIX_ARCH_BIN=${INSTALL_PREFIX_ARCH}bin/
 # Setup compiler and tooling default folders
 ENV \
   CPLUS_INCLUDE_PATH="${INSTALL_PREFIX_ARCH}include/" \
-  PATH="${INSTALL_PREFIX_ARCH_BIN}:${PATH}" \
   WINEPATH="${INSTALL_PREFIX_ARCH_BIN};${GCC_RUNTIME_PATH}"
 
 # Download, compile, and install Google Test source package

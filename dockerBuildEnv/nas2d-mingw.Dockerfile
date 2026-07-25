@@ -49,12 +49,11 @@ RUN \
 # Set default install location for source built packages
 ARG INSTALL_PREFIX_ARCH=/usr/local/${ARCH}/
 ARG INSTALL_PREFIX_ARCH_LIB=${INSTALL_PREFIX_ARCH}lib/
-ARG INSTALL_PREFIX_ARCH_BIN=${INSTALL_PREFIX_ARCH}bin/
 
 # Setup compiler and tooling default folders
 ENV \
   CPLUS_INCLUDE_PATH="${INSTALL_PREFIX_ARCH}include/" \
-  WINEPATH="${INSTALL_PREFIX_ARCH_BIN};${GCC_RUNTIME_PATH}"
+  WINEPATH="${INSTALL_PREFIX_ARCH}bin/;${GCC_RUNTIME_PATH}"
 
 # Download, compile, and install Google Test source package
 RUN \

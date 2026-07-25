@@ -48,7 +48,6 @@ RUN \
 
 # Set default install location for source built packages
 ARG INSTALL_PREFIX_ARCH=/usr/local/${ARCH}/
-ARG INSTALL_PREFIX_ARCH_LIB=${INSTALL_PREFIX_ARCH}lib/
 
 # Setup compiler and tooling default folders
 ENV \
@@ -91,7 +90,7 @@ RUN glewVersion="2.3.1" && \
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw
 # Set a library search path to use during linking
-ENV LDFLAGS_EXTRA="-L${INSTALL_PREFIX_ARCH_LIB}"
+ENV LDFLAGS_EXTRA="-L${INSTALL_PREFIX_ARCH}lib/"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

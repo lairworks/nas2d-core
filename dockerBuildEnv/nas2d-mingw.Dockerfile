@@ -59,7 +59,7 @@ RUN \
   cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
   cmake --build /tmp/gtest/ && \
   cmake --install /tmp/gtest/ && \
-  rm -rf /tmp/gtest/
+  rm --force --recursive /tmp/gtest/
 
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
@@ -68,28 +68,28 @@ RUN sdlVersion="2.32.10" && \
   curl --fail https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | \
   tar --extract --gunzip && \
   make --directory SDL2-${sdlVersion}/ cross && \
-  rm -rf SDL2-${sdlVersion}/
+  rm --force --recursive SDL2-${sdlVersion}/
 RUN sdlImageVersion="2.8.12" && \
   curl --fail https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | \
   tar --extract --gunzip && \
   make --directory SDL2_image-${sdlImageVersion}/ cross && \
-  rm -rf SDL2_image-${sdlImageVersion}/
+  rm --force --recursive SDL2_image-${sdlImageVersion}/
 RUN sdlMixerVersion="2.8.2" && \
   curl --fail https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | \
   tar --extract --gunzip && \
   make --directory SDL2_mixer-${sdlMixerVersion}/ cross && \
-  rm -rf SDL2_mixer-${sdlMixerVersion}/
+  rm --force --recursive SDL2_mixer-${sdlMixerVersion}/
 RUN sdlTtfVersion="2.24.0" && \
   curl --fail https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | \
   tar --extract --gunzip && \
   make --directory SDL2_ttf-${sdlTtfVersion}/ cross && \
-  rm -rf SDL2_ttf-${sdlTtfVersion}/
+  rm --force --recursive SDL2_ttf-${sdlTtfVersion}/
 # Install dependencies from source packages
 RUN glewVersion="2.3.1" && \
   curl --fail --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | \
   tar --extract --gunzip && \
   make --directory glew-${glewVersion}/ SYSTEM=linux-mingw64 install && \
-  rm -rf glew-${glewVersion}/ glew.*
+  rm --force --recursive glew-${glewVersion}/ glew.*
 
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings

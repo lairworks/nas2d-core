@@ -12,6 +12,7 @@ RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
+    mingw-w64-tools \
     make=4.4.1-* \
     cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
@@ -23,14 +24,13 @@ RUN \
     gzip=1.14-* \
     ca-certificates=*
 
-# Set architecture short names
-ENV ARCH=x86_64-w64-mingw32
-# Set default compiler tools
-ENV CXX=${ARCH}-g++
-ENV  CC=${ARCH}-gcc
-ENV  LD=${ARCH}-ld
-ENV  AR=${ARCH}-ar
-ENV  STRIP=${ARCH}-strip
+ARG ARCH=x86_64-w64-mingw32
+ENV \
+  CXX=${ARCH}-g++ \
+  CC=${ARCH}-gcc \
+  LD=${ARCH}-ld \
+  AR=${ARCH}-ar \
+  STRIP=${ARCH}-strip
 
 ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${ARCH}/13-win32/
 
@@ -48,19 +48,14 @@ RUN \
     wine=10.0~repack-12ubuntu1
 
 # Set default install location for source built packages
-ENV INSTALL_PREFIX=/usr/local/
-ENV INSTALL_PREFIX_ARCH=${INSTALL_PREFIX}${ARCH}/
-ENV INSTALL_PREFIX_ARCH_LIB=${INSTALL_PREFIX_ARCH}lib/
-ENV INSTALL_PREFIX_ARCH_BIN=${INSTALL_PREFIX_ARCH}bin/
+ARG LOCAL_PACKAGE_PATH=/usr/local/${ARCH}/
 
 # Setup compiler and tooling default folders
-ENV CPLUS_INCLUDE_PATH="${INSTALL_PREFIX_ARCH}include/"
-ENV PATH="${PATH}:${INSTALL_PREFIX_ARCH_BIN}"
-ENV WINEPATH="${INSTALL_PREFIX_ARCH_BIN};${GCC_RUNTIME_PATH}"
+ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"
 
 # Download, compile, and install Google Test source package
 RUN \
-  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX_ARCH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
+  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
   cmake --build /tmp/gtest/ && \
   cmake --install /tmp/gtest/ && \
   rm -rf /tmp/gtest/
@@ -93,8 +88,6 @@ RUN glewVersion="2.3.1" && \
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw
-# Set a library search path to use during linking
-ENV LDFLAGS_EXTRA="-L${INSTALL_PREFIX_ARCH_LIB}"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

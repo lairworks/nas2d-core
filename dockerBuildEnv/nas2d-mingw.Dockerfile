@@ -51,8 +51,7 @@ RUN \
 ARG INSTALL_PREFIX_ARCH=/usr/local/${ARCH}/
 
 # Setup compiler and tooling default folders
-ENV \
-  WINEPATH="${INSTALL_PREFIX_ARCH}bin/;${GCC_RUNTIME_PATH}"
+ENV WINEPATH="${INSTALL_PREFIX_ARCH}bin/;${GCC_RUNTIME_PATH}"
 
 # Download, compile, and install Google Test source package
 RUN \

@@ -32,6 +32,8 @@ ENV \
   STRIP=${TARGET_TRIPLET}-strip
 
 ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${TARGET_TRIPLET}/13-win32/
+# Set default install location for source built packages
+ENV LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
 
 # Install apt repository for wine
 RUN \
@@ -47,9 +49,6 @@ RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends \
     wine=10.0~repack-12ubuntu1
-
-# Set default install location for source built packages
-ENV LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
 
 # Setup compiler and tooling default folders
 ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"

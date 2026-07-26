@@ -19,25 +19,29 @@ RUN \
     libgmock-dev=1.17.0-* \
     curl=8.18.0-* \
     gnupg=2.4.8-* \
-    lsb-release=12.1-* \
     tar=1.35+* \
     gzip=1.14-* \
     ca-certificates=*
 
-ARG ARCH=x86_64-w64-mingw32
+ENV TARGET_TRIPLET=x86_64-w64-mingw32
 ENV \
-  CXX=${ARCH}-g++ \
-  CC=${ARCH}-gcc \
-  LD=${ARCH}-ld \
-  AR=${ARCH}-ar \
-  STRIP=${ARCH}-strip
+  CXX=${TARGET_TRIPLET}-g++ \
+  CC=${TARGET_TRIPLET}-gcc \
+  LD=${TARGET_TRIPLET}-ld \
+  AR=${TARGET_TRIPLET}-ar \
+  STRIP=${TARGET_TRIPLET}-strip
 
-ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${ARCH}/13-win32/
+# Custom variables describing the cross compile environment
+ENV \
+  GCC_RUNTIME_PATH=/usr/lib/gcc/${TARGET_TRIPLET}/13-win32/ \
+  LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
 
 # Install apt repository for wine
 RUN \
-  curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
-  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list
+  curl --fail --location https://dl.winehq.org/wine-builds/winehq.key | \
+  gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+  . /etc/os-release && \
+  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/wine.list
 
 # Install wine so resulting unit test binaries can be run
 RUN \
@@ -47,43 +51,45 @@ RUN \
   apt-get install -y --no-install-recommends \
     wine=10.0~repack-12ubuntu1
 
-# Set default install location for source built packages
-ARG LOCAL_PACKAGE_PATH=/usr/local/${ARCH}/
-
 # Setup compiler and tooling default folders
 ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"
 
 # Download, compile, and install Google Test source package
 RUN \
-  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
+  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -DCMAKE_BUILD_TYPE=Release -Dgtest_disable_pthreads=ON && \
   cmake --build /tmp/gtest/ && \
   cmake --install /tmp/gtest/ && \
-  rm -rf /tmp/gtest/
+  rm --force --recursive /tmp/gtest/
 
 # Install NAS2D specific dependencies
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
 RUN sdlVersion="2.32.10" && \
-  curl https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | tar -xz && \
-  make -C SDL2-${sdlVersion}/ cross && \
-  rm -rf SDL2-${sdlVersion}/
+  curl --fail https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | \
+  tar --extract --gunzip && \
+  make --directory SDL2-${sdlVersion}/ cross && \
+  rm --force --recursive SDL2-${sdlVersion}/
 RUN sdlImageVersion="2.8.12" && \
-  curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | tar -xz && \
-  make -C SDL2_image-${sdlImageVersion}/ cross && \
-  rm -rf SDL2_image-${sdlImageVersion}/
+  curl --fail https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | \
+  tar --extract --gunzip && \
+  make --directory SDL2_image-${sdlImageVersion}/ cross && \
+  rm --force --recursive SDL2_image-${sdlImageVersion}/
 RUN sdlMixerVersion="2.8.2" && \
-  curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | tar -xz && \
-  make -C SDL2_mixer-${sdlMixerVersion}/ cross && \
-  rm -rf SDL2_mixer-${sdlMixerVersion}/
+  curl --fail https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | \
+  tar --extract --gunzip && \
+  make --directory SDL2_mixer-${sdlMixerVersion}/ cross && \
+  rm --force --recursive SDL2_mixer-${sdlMixerVersion}/
 RUN sdlTtfVersion="2.24.0" && \
-  curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | tar -xz && \
-  make -C SDL2_ttf-${sdlTtfVersion}/ cross && \
-  rm -rf SDL2_ttf-${sdlTtfVersion}/
+  curl --fail https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | \
+  tar --extract --gunzip && \
+  make --directory SDL2_ttf-${sdlTtfVersion}/ cross && \
+  rm --force --recursive SDL2_ttf-${sdlTtfVersion}/
 # Install dependencies from source packages
 RUN glewVersion="2.3.1" && \
-  curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
-  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 install && \
-  rm -rf glew-${glewVersion}/ glew.*
+  curl --fail --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | \
+  tar --extract --gunzip && \
+  make --directory glew-${glewVersion}/ SYSTEM=linux-mingw64 install && \
+  rm --force --recursive glew-${glewVersion}/ glew.*
 
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings

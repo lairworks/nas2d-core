@@ -23,7 +23,7 @@ RUN \
     gzip=1.14-* \
     ca-certificates=*
 
-ARG TARGET_TRIPLET=x86_64-w64-mingw32
+ENV TARGET_TRIPLET=x86_64-w64-mingw32
 ENV \
   CXX=${TARGET_TRIPLET}-g++ \
   CC=${TARGET_TRIPLET}-gcc \
@@ -49,7 +49,7 @@ RUN \
     wine=10.0~repack-12ubuntu1
 
 # Set default install location for source built packages
-ARG LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
+ENV LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
 
 # Setup compiler and tooling default folders
 ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"

@@ -56,7 +56,7 @@ ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"
 
 # Download, compile, and install Google Test source package
 RUN \
-  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
+  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -DCMAKE_BUILD_TYPE=Release -Dgtest_disable_pthreads=ON && \
   cmake --build /tmp/gtest/ && \
   cmake --install /tmp/gtest/ && \
   rm --force --recursive /tmp/gtest/

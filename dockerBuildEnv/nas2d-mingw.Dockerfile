@@ -31,9 +31,10 @@ ENV \
   AR=${TARGET_TRIPLET}-ar \
   STRIP=${TARGET_TRIPLET}-strip
 
-ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${TARGET_TRIPLET}/13-win32/
-# Set default install location for source built packages
-ENV LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
+# Custom variables describing the cross compile environment
+ENV \
+  GCC_RUNTIME_PATH=/usr/lib/gcc/${TARGET_TRIPLET}/13-win32/ \
+  LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
 
 # Install apt repository for wine
 RUN \

@@ -35,7 +35,7 @@ ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${ARCH}/13-win32/
 
 # Install apt repository for wine
 RUN \
-  curl --location https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+  curl --fail --location https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
   . /etc/os-release && \
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/wine.list
 
@@ -64,24 +64,24 @@ RUN \
 WORKDIR /tmp/
 # Install SDL libraries from binary packages
 RUN sdlVersion="2.32.10" && \
-  curl https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | tar -xz && \
+  curl --fail https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2-${sdlVersion}/ cross && \
   rm -rf SDL2-${sdlVersion}/
 RUN sdlImageVersion="2.8.12" && \
-  curl https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | tar -xz && \
+  curl --fail https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2_image-${sdlImageVersion}/ cross && \
   rm -rf SDL2_image-${sdlImageVersion}/
 RUN sdlMixerVersion="2.8.2" && \
-  curl https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | tar -xz && \
+  curl --fail https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2_mixer-${sdlMixerVersion}/ cross && \
   rm -rf SDL2_mixer-${sdlMixerVersion}/
 RUN sdlTtfVersion="2.24.0" && \
-  curl https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | tar -xz && \
+  curl --fail https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | tar -xz && \
   make -C SDL2_ttf-${sdlTtfVersion}/ cross && \
   rm -rf SDL2_ttf-${sdlTtfVersion}/
 # Install dependencies from source packages
 RUN glewVersion="2.3.1" && \
-  curl --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
+  curl --fail --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar -xz && \
   make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 install && \
   rm -rf glew-${glewVersion}/ glew.*
 

@@ -19,7 +19,6 @@ RUN \
     libgmock-dev=1.17.0-* \
     curl=8.18.0-* \
     gnupg=2.4.8-* \
-    lsb-release=12.1-* \
     tar=1.35+* \
     gzip=1.14-* \
     ca-certificates=*
@@ -37,7 +36,8 @@ ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${ARCH}/13-win32/
 # Install apt repository for wine
 RUN \
   curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
-  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/wine.list
+  . /etc/os-release && \
+  echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/wine.list
 
 # Install wine so resulting unit test binaries can be run
 RUN \

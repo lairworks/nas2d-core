@@ -35,7 +35,7 @@ ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${ARCH}/13-win32/
 
 # Install apt repository for wine
 RUN \
-  curl -L https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+  curl --location https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
   . /etc/os-release && \
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/wine.list
 

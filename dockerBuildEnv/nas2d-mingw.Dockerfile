@@ -48,14 +48,14 @@ RUN \
     wine=10.0~repack-12ubuntu1
 
 # Set default install location for source built packages
-ARG INSTALL_PREFIX_ARCH=/usr/local/${ARCH}/
+ARG LOCAL_PACKAGE_PATH=/usr/local/${ARCH}/
 
 # Setup compiler and tooling default folders
-ENV WINEPATH="${INSTALL_PREFIX_ARCH}bin/;${GCC_RUNTIME_PATH}"
+ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"
 
 # Download, compile, and install Google Test source package
 RUN \
-  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX_ARCH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
+  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -Dgtest_disable_pthreads=ON && \
   cmake --build /tmp/gtest/ && \
   cmake --install /tmp/gtest/ && \
   rm -rf /tmp/gtest/

@@ -12,6 +12,7 @@ RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
+    mingw-w64-tools \
     make=4.4.1-* \
     cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
@@ -89,8 +90,6 @@ RUN glewVersion="2.3.1" && \
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings
 ENV Toolchain=mingw
-# Set a library search path to use during linking
-ENV LDFLAGS_EXTRA="-L${INSTALL_PREFIX_ARCH}lib/"
 
 # Be explicit about the extra flags with the default command
 CMD ["make", "--keep-going", "check"]

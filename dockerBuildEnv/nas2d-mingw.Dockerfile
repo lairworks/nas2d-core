@@ -65,24 +65,24 @@ WORKDIR /tmp/
 # Install SDL libraries from binary packages
 RUN sdlVersion="2.32.10" && \
   curl --fail https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | tar --extract --gunzip && \
-  make -C SDL2-${sdlVersion}/ cross && \
+  make --directory SDL2-${sdlVersion}/ cross && \
   rm -rf SDL2-${sdlVersion}/
 RUN sdlImageVersion="2.8.12" && \
   curl --fail https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | tar --extract --gunzip && \
-  make -C SDL2_image-${sdlImageVersion}/ cross && \
+  make --directory SDL2_image-${sdlImageVersion}/ cross && \
   rm -rf SDL2_image-${sdlImageVersion}/
 RUN sdlMixerVersion="2.8.2" && \
   curl --fail https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | tar --extract --gunzip && \
-  make -C SDL2_mixer-${sdlMixerVersion}/ cross && \
+  make --directory SDL2_mixer-${sdlMixerVersion}/ cross && \
   rm -rf SDL2_mixer-${sdlMixerVersion}/
 RUN sdlTtfVersion="2.24.0" && \
   curl --fail https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | tar --extract --gunzip && \
-  make -C SDL2_ttf-${sdlTtfVersion}/ cross && \
+  make --directory SDL2_ttf-${sdlTtfVersion}/ cross && \
   rm -rf SDL2_ttf-${sdlTtfVersion}/
 # Install dependencies from source packages
 RUN glewVersion="2.3.1" && \
   curl --fail --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | tar --extract --gunzip && \
-  make -C glew-${glewVersion}/ SYSTEM=linux-mingw64 install && \
+  make --directory glew-${glewVersion}/ SYSTEM=linux-mingw64 install && \
   rm -rf glew-${glewVersion}/ glew.*
 
 # Set custom variables for build script convenience

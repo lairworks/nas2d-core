@@ -23,15 +23,15 @@ RUN \
     gzip=1.14-* \
     ca-certificates=*
 
-ARG ARCH=x86_64-w64-mingw32
+ARG TARGET_TRIPLET=x86_64-w64-mingw32
 ENV \
-  CXX=${ARCH}-g++ \
-  CC=${ARCH}-gcc \
-  LD=${ARCH}-ld \
-  AR=${ARCH}-ar \
-  STRIP=${ARCH}-strip
+  CXX=${TARGET_TRIPLET}-g++ \
+  CC=${TARGET_TRIPLET}-gcc \
+  LD=${TARGET_TRIPLET}-ld \
+  AR=${TARGET_TRIPLET}-ar \
+  STRIP=${TARGET_TRIPLET}-strip
 
-ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${ARCH}/13-win32/
+ENV GCC_RUNTIME_PATH=/usr/lib/gcc/${TARGET_TRIPLET}/13-win32/
 
 # Install apt repository for wine
 RUN \
@@ -49,7 +49,7 @@ RUN \
     wine=10.0~repack-12ubuntu1
 
 # Set default install location for source built packages
-ARG LOCAL_PACKAGE_PATH=/usr/local/${ARCH}/
+ARG LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
 
 # Setup compiler and tooling default folders
 ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"

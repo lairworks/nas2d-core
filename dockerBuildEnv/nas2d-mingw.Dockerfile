@@ -118,7 +118,7 @@ RUN \
 
 FROM dependencies
 
-COPY --from=googletest /staging/googletest ${LOCAL_PACKAGE_PATH}
+COPY --link --from=googletest /staging/googletest ${LOCAL_PACKAGE_PATH}
 
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings

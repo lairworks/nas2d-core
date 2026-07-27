@@ -13,15 +13,7 @@ RUN \
   apt-get install -y --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
     mingw-w64-tools \
-    make=4.4.1-* \
-    cmake=4.2.3-* \
-    libgtest-dev=1.17.0-* \
-    libgmock-dev=1.17.0-* \
-    curl=8.18.0-* \
-    gnupg=2.4.8-* \
-    tar=1.35+* \
-    gzip=1.14-* \
-    ca-certificates=*
+    make=4.4.1-*
 
 ENV TARGET_TRIPLET=x86_64-w64-mingw32
 ENV \
@@ -35,6 +27,17 @@ ENV \
 ENV \
   GCC_RUNTIME_PATH=/usr/lib/gcc/${TARGET_TRIPLET}/13-win32/ \
   LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
+
+RUN \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    curl=8.18.0-* \
+    gnupg=2.4.8-* \
+    tar=1.35+* \
+    gzip=1.14-* \
+    ca-certificates=*
 
 # Install apt repository for wine
 RUN \
@@ -53,6 +56,15 @@ RUN \
 
 # Setup compiler and tooling default folders
 ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"
+
+RUN \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    cmake=4.2.3-* \
+    libgtest-dev=1.17.0-* \
+    libgmock-dev=1.17.0-*
 
 # Download, compile, and install Google Test source package
 RUN \

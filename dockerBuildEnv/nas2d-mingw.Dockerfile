@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:resolute-20260610
+FROM ubuntu:resolute-20260610 AS build-tools
 
 # Remove automatic apt package cleanup so a local cache mount can be used
 RUN rm /etc/apt/apt.conf.d/docker-clean
@@ -87,6 +87,11 @@ RUN \
 # Setup compiler and tooling default folders
 ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"
 
+
+# ----
+
+FROM build-tools AS googletest
+
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
@@ -100,8 +105,15 @@ RUN \
 RUN \
   cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -DCMAKE_BUILD_TYPE=Release -Dgtest_disable_pthreads=ON && \
   cmake --build /tmp/gtest/ && \
-  cmake --install /tmp/gtest/ && \
+  cmake --install /tmp/gtest/ --prefix=/staging/googletest && \
   rm --force --recursive /tmp/gtest/
+
+
+# ----
+
+FROM build-tools
+
+COPY --from=googletest /staging/googletest ${LOCAL_PACKAGE_PATH}
 
 # Set custom variables for build script convenience
 # Activate appropriate Toolchain settings

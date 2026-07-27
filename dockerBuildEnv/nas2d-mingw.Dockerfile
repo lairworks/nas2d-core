@@ -28,6 +28,11 @@ ENV \
   GCC_RUNTIME_PATH=/usr/lib/gcc/${TARGET_TRIPLET}/13-win32/ \
   LOCAL_PACKAGE_PATH=/usr/local/${TARGET_TRIPLET}/
 
+
+# ----
+
+FROM build-tools AS dependencies
+
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
@@ -111,7 +116,7 @@ RUN \
 
 # ----
 
-FROM build-tools
+FROM dependencies
 
 COPY --from=googletest /staging/googletest ${LOCAL_PACKAGE_PATH}
 

@@ -104,7 +104,7 @@ FROM build-tools
 # Install apt repository for wine
 RUN \
   --mount=type=bind,from=wine-apt-repo-key,source=/tmp,target=/wine-key \
-  cp /wine-key/apt.wine.gpg /etc/apt/keyrings/ && \
+  install -D --mode=644 /wine-key/apt.wine.gpg /etc/apt/keyrings/ && \
   . /etc/os-release && \
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/wine.list
 

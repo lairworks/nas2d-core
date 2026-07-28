@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.17
+
 # See Docker section of makefile in root project folder for usage commands.
 
 ARG baseImage=ubuntu:resolute-20260610

@@ -77,16 +77,6 @@ RUN make --directory /glew-package/glew-${glewVersion}/ SYSTEM=linux-mingw64 DES
 
 FROM build-tools AS dependencies
 
-RUN \
-  --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
-  apt-get update && \
-  apt-get install -y --no-install-recommends \
-    curl=8.18.0-* \
-    tar=1.35+* \
-    gzip=1.14-* \
-    ca-certificates=*
-
 # Install SDL libraries from binary packages
 RUN \
   --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \

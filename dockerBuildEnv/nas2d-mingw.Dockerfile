@@ -31,6 +31,22 @@ ENV \
 
 # ----
 
+FROM ubuntu:resolute-20260610 AS wine-apt-repo-key
+
+RUN \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    gnupg=2.4.8-*
+
+ADD https://dl.winehq.org/wine-builds/winehq.key /tmp/winehq.key
+
+RUN gpg --output /tmp/apt.wine.gpg --dearmor /tmp/winehq.key
+
+
+# ----
+
 FROM build-tools AS dependencies
 
 RUN \
@@ -39,7 +55,6 @@ RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends \
     curl=8.18.0-* \
-    gnupg=2.4.8-* \
     tar=1.35+* \
     gzip=1.14-* \
     ca-certificates=*
@@ -76,8 +91,8 @@ RUN glewVersion="2.3.1" && \
 
 # Install apt repository for wine
 RUN \
-  curl --fail --location https://dl.winehq.org/wine-builds/winehq.key | \
-  gpg --dearmor > /etc/apt/keyrings/apt.wine.gpg - && \
+  --mount=type=bind,from=wine-apt-repo-key,source=/tmp,target=/wine-key \
+  cp /wine-key/apt.wine.gpg /etc/apt/keyrings/ && \
   . /etc/os-release && \
   echo "deb [signed-by=/etc/apt/keyrings/apt.wine.gpg] https://dl.winehq.org/wine-builds/ubuntu/ ${UBUNTU_CODENAME} main" > /etc/apt/sources.list.d/wine.list
 

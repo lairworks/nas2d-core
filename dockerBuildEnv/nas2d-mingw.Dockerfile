@@ -96,7 +96,7 @@ RUN \
 
 # ----
 
-FROM build-tools AS dependencies
+FROM build-tools
 
 # Install apt repository for wine
 RUN \
@@ -132,11 +132,6 @@ RUN \
 
 # Install dependencies from source packages
 COPY --link --from=glew /glew /
-
-
-# ----
-
-FROM dependencies
 
 COPY --link --from=googletest /staging/googletest ${LOCAL_PACKAGE_PATH}
 

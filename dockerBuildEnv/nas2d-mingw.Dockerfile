@@ -47,6 +47,23 @@ RUN gpg --output /tmp/apt.wine.gpg --dearmor /tmp/winehq.key
 
 # ----
 
+FROM ubuntu:resolute-20260610 AS sdl-packages
+
+ARG sdlVersion=2.32.10
+ADD --unpack=true https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz /sdl-packages
+
+ARG sdlImageVersion=2.8.12
+ADD --unpack=true https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz /sdl-packages
+
+ARG sdlMixerVersion=2.8.2
+ADD --unpack=true https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz /sdl-packages
+
+ARG sdlTtfVersion=2.24.0
+ADD --unpack=true https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz /sdl-packages
+
+
+# ----
+
 FROM build-tools AS dependencies
 
 RUN \
@@ -59,29 +76,20 @@ RUN \
     gzip=1.14-* \
     ca-certificates=*
 
-# Install NAS2D specific dependencies
-WORKDIR /tmp/
 # Install SDL libraries from binary packages
-RUN sdlVersion="2.32.10" && \
-  curl --fail https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz | \
-  tar --extract --gunzip && \
-  make --directory SDL2-${sdlVersion}/ cross && \
-  rm --force --recursive SDL2-${sdlVersion}/
-RUN sdlImageVersion="2.8.12" && \
-  curl --fail https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz | \
-  tar --extract --gunzip && \
-  make --directory SDL2_image-${sdlImageVersion}/ cross && \
-  rm --force --recursive SDL2_image-${sdlImageVersion}/
-RUN sdlMixerVersion="2.8.2" && \
-  curl --fail https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz | \
-  tar --extract --gunzip && \
-  make --directory SDL2_mixer-${sdlMixerVersion}/ cross && \
-  rm --force --recursive SDL2_mixer-${sdlMixerVersion}/
-RUN sdlTtfVersion="2.24.0" && \
-  curl --fail https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz | \
-  tar --extract --gunzip && \
-  make --directory SDL2_ttf-${sdlTtfVersion}/ cross && \
-  rm --force --recursive SDL2_ttf-${sdlTtfVersion}/
+RUN \
+  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
+  make --directory /sdl-packages/SDL2-*/ cross
+RUN \
+  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
+  make --directory /sdl-packages/SDL2_image-*/ cross
+RUN \
+  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
+  make --directory /sdl-packages/SDL2_mixer-*/ cross
+RUN \
+  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
+  make --directory /sdl-packages/SDL2_ttf-*/ cross
+
 # Install dependencies from source packages
 RUN glewVersion="2.3.1" && \
   curl --fail --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | \

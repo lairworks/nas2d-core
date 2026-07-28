@@ -75,6 +75,27 @@ RUN make --directory /glew-package/glew-${glewVersion}/ SYSTEM=linux-mingw64 DES
 
 # ----
 
+FROM build-tools AS googletest
+
+RUN \
+  --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    cmake=4.2.3-* \
+    libgtest-dev=1.17.0-* \
+    libgmock-dev=1.17.0-*
+
+# Download, compile, and install Google Test source package
+RUN \
+  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -DCMAKE_BUILD_TYPE=Release -Dgtest_disable_pthreads=ON && \
+  cmake --build /tmp/gtest/ && \
+  cmake --install /tmp/gtest/ --prefix=/staging/googletest && \
+  rm --force --recursive /tmp/gtest/
+
+
+# ----
+
 FROM build-tools AS dependencies
 
 # Install apt repository for wine
@@ -111,27 +132,6 @@ RUN \
 
 # Install dependencies from source packages
 COPY --link --from=glew /glew /
-
-
-# ----
-
-FROM build-tools AS googletest
-
-RUN \
-  --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
-  apt-get update && \
-  apt-get install -y --no-install-recommends \
-    cmake=4.2.3-* \
-    libgtest-dev=1.17.0-* \
-    libgmock-dev=1.17.0-*
-
-# Download, compile, and install Google Test source package
-RUN \
-  cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -DCMAKE_BUILD_TYPE=Release -Dgtest_disable_pthreads=ON && \
-  cmake --build /tmp/gtest/ && \
-  cmake --install /tmp/gtest/ --prefix=/staging/googletest && \
-  rm --force --recursive /tmp/gtest/
 
 
 # ----

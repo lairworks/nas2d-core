@@ -40,7 +40,7 @@ RUN \
   apt-get install -y --no-install-recommends \
     gnupg=2.4.8-*
 
-ADD https://dl.winehq.org/wine-builds/winehq.key /tmp/winehq.key
+ADD --link https://dl.winehq.org/wine-builds/winehq.key /tmp/winehq.key
 
 RUN gpg --output /tmp/apt.wine.gpg --dearmor /tmp/winehq.key
 
@@ -50,16 +50,16 @@ RUN gpg --output /tmp/apt.wine.gpg --dearmor /tmp/winehq.key
 FROM ubuntu:resolute-20260610 AS sdl-packages
 
 ARG sdlVersion=2.32.10
-ADD --unpack=true https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz /sdl-packages
+ADD --link --unpack=true https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz /sdl-packages
 
 ARG sdlImageVersion=2.8.12
-ADD --unpack=true https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz /sdl-packages
+ADD --link --unpack=true https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-${sdlImageVersion}-mingw.tar.gz /sdl-packages
 
 ARG sdlMixerVersion=2.8.2
-ADD --unpack=true https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz /sdl-packages
+ADD --link --unpack=true https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-${sdlMixerVersion}-mingw.tar.gz /sdl-packages
 
 ARG sdlTtfVersion=2.24.0
-ADD --unpack=true https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz /sdl-packages
+ADD --link --unpack=true https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-${sdlTtfVersion}-mingw.tar.gz /sdl-packages
 
 
 # ----
@@ -67,7 +67,7 @@ ADD --unpack=true https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel
 FROM build-tools AS glew
 
 ARG glewVersion=2.3.1
-ADD --unpack=true https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz /glew-package
+ADD --link --unpack=true https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz /glew-package
 
 RUN make --directory /glew-package/glew-${glewVersion}/ SYSTEM=linux-mingw64
 RUN make --directory /glew-package/glew-${glewVersion}/ SYSTEM=linux-mingw64 DESTDIR=/glew install

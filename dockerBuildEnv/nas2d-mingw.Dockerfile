@@ -2,13 +2,16 @@
 
 # See Docker section of makefile in root project folder for usage commands.
 
-ARG baseImage=ubuntu:resolute-20260610
 
-
-FROM ${baseImage} AS build-tools
+FROM ubuntu:resolute-20260610 AS base-image
 
 # Remove automatic apt package cleanup so a local cache mount can be used
 RUN rm /etc/apt/apt.conf.d/docker-clean
+
+
+# ----
+
+FROM base-image AS build-tools
 
 # Install base development tools
 RUN \
@@ -36,7 +39,7 @@ ENV \
 
 # ----
 
-FROM ${baseImage} AS wine-apt-repo-key
+FROM base-image AS wine-apt-repo-key
 
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \

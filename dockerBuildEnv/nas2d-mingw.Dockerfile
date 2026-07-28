@@ -1,6 +1,9 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM ubuntu:resolute-20260610 AS build-tools
+ARG baseImage=ubuntu:resolute-20260610
+
+
+FROM ${baseImage} AS build-tools
 
 # Remove automatic apt package cleanup so a local cache mount can be used
 RUN rm /etc/apt/apt.conf.d/docker-clean
@@ -31,7 +34,7 @@ ENV \
 
 # ----
 
-FROM ubuntu:resolute-20260610 AS wine-apt-repo-key
+FROM ${baseImage} AS wine-apt-repo-key
 
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -47,7 +50,7 @@ RUN gpg --output /tmp/apt.wine.gpg --dearmor /tmp/winehq.key
 
 # ----
 
-FROM ubuntu:resolute-20260610 AS sdl-packages
+FROM ${baseImage} AS sdl-packages
 
 ARG sdlVersion=2.32.10
 ADD --link --unpack=true https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz /sdl-packages

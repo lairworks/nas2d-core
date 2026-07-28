@@ -64,6 +64,17 @@ ADD --unpack=true https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel
 
 # ----
 
+FROM build-tools AS glew
+
+ARG glewVersion=2.3.1
+ADD --unpack=true https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz /glew-package
+
+RUN make --directory /glew-package/glew-${glewVersion}/ SYSTEM=linux-mingw64
+RUN make --directory /glew-package/glew-${glewVersion}/ SYSTEM=linux-mingw64 DESTDIR=/glew install
+
+
+# ----
+
 FROM build-tools AS dependencies
 
 RUN \
@@ -91,11 +102,7 @@ RUN \
   make --directory /sdl-packages/SDL2_ttf-*/ cross
 
 # Install dependencies from source packages
-RUN glewVersion="2.3.1" && \
-  curl --fail --location https://github.com/nigels-com/glew/releases/download/glew-${glewVersion}/glew-${glewVersion}.tgz | \
-  tar --extract --gunzip && \
-  make --directory glew-${glewVersion}/ SYSTEM=linux-mingw64 install && \
-  rm --force --recursive glew-${glewVersion}/ glew.*
+COPY --link --from=glew /glew /
 
 # Install apt repository for wine
 RUN \

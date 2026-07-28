@@ -77,23 +77,6 @@ RUN make --directory /glew-package/glew-${glewVersion}/ SYSTEM=linux-mingw64 DES
 
 FROM build-tools AS dependencies
 
-# Install SDL libraries from binary packages
-RUN \
-  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
-  make --directory /sdl-packages/SDL2-*/ cross
-RUN \
-  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
-  make --directory /sdl-packages/SDL2_image-*/ cross
-RUN \
-  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
-  make --directory /sdl-packages/SDL2_mixer-*/ cross
-RUN \
-  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
-  make --directory /sdl-packages/SDL2_ttf-*/ cross
-
-# Install dependencies from source packages
-COPY --link --from=glew /glew /
-
 # Install apt repository for wine
 RUN \
   --mount=type=bind,from=wine-apt-repo-key,source=/tmp,target=/wine-key \
@@ -111,6 +94,23 @@ RUN \
 
 # Setup compiler and tooling default folders
 ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"
+
+# Install SDL libraries from binary packages
+RUN \
+  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
+  make --directory /sdl-packages/SDL2-*/ cross
+RUN \
+  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
+  make --directory /sdl-packages/SDL2_image-*/ cross
+RUN \
+  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
+  make --directory /sdl-packages/SDL2_mixer-*/ cross
+RUN \
+  --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
+  make --directory /sdl-packages/SDL2_ttf-*/ cross
+
+# Install dependencies from source packages
+COPY --link --from=glew /glew /
 
 
 # ----

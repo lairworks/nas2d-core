@@ -89,7 +89,7 @@ RUN \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-*
 
-# Download, compile, and install Google Test source package
+# Compile Google Test from source package and install to staging area
 RUN \
   cmake -B/tmp/gtest/ -S/usr/src/googletest/ -DCMAKE_INSTALL_PREFIX="${LOCAL_PACKAGE_PATH}" -DCMAKE_SYSTEM_NAME="Windows" -DCMAKE_BUILD_TYPE=Release -Dgtest_disable_pthreads=ON && \
   cmake --build /tmp/gtest/ && \
@@ -116,7 +116,7 @@ RUN \
   apt-get install -y --no-install-recommends \
     wine=10.0~repack-12ubuntu1
 
-# Setup compiler and tooling default folders
+# Set PATH for wine environment
 ENV WINEPATH="${LOCAL_PACKAGE_PATH}bin/;${GCC_RUNTIME_PATH}"
 
 # Install SDL libraries from binary packages
@@ -133,7 +133,6 @@ RUN \
   --mount=type=bind,from=sdl-packages,source=/sdl-packages,target=/sdl-packages \
   make --directory /sdl-packages/SDL2_ttf-*/ cross
 
-# Install dependencies from source packages
 COPY --link --from=glew /glew /
 
 COPY --link --from=googletest /staging/googletest ${LOCAL_PACKAGE_PATH}

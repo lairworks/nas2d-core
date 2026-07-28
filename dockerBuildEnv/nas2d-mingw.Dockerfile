@@ -50,7 +50,7 @@ RUN gpg --output /tmp/apt.wine.gpg --dearmor /tmp/winehq.key
 
 # ----
 
-FROM ${baseImage} AS sdl-packages
+FROM scratch AS sdl-packages
 
 ARG sdlVersion=2.32.10
 ADD --link --unpack=true https://libsdl.org/release/SDL2-devel-${sdlVersion}-mingw.tar.gz /sdl-packages

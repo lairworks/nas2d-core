@@ -9,13 +9,15 @@ DockerRunFlags = --volume ${CURDIR}:/code --workdir=/code --rm --tty ${DockerAdd
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository ?= ghcr.io/lairworks
 
-include $(wildcard ${DockerBuildEnvFolder}/*/version.mk)
+DockerVersionFiles := $(wildcard ${DockerBuildEnvFolder}/*/version.mk)
+
+include ${DockerVersionFiles}
 
 DockerImageName = ${DockerRepository}/build-env-nas2d-$*
 DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
 DockerImageNameLatest = ${DockerImageName}:latest
 
-DockerEnvironments := gcc clang mingw arch
+DockerEnvironments := $(patsubst ${DockerBuildEnvFolder}/%/version.mk,%,${DockerVersionFiles})
 
 DockerBuildRules := $(addprefix build-image-, ${DockerEnvironments})
 DockerPushRules := $(addprefix push-image-, ${DockerEnvironments})

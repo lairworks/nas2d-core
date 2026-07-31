@@ -15,11 +15,13 @@ DockerImageName = ${DockerRepository}/build-env-nas2d-$*
 DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
 DockerImageNameLatest = ${DockerImageName}:latest
 
-DockerBuildRules := build-image-gcc build-image-clang build-image-mingw build-image-arch
-DockerPushRules := push-image-gcc push-image-clang push-image-mingw push-image-arch
-DockerRunRules := run-image-gcc run-image-clang run-image-mingw run-image-arch
-DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw debug-image-arch
-DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-image-mingw root-debug-image-arch
+DockerEnvironments := gcc clang mingw arch
+
+DockerBuildRules := $(addprefix build-image-, ${DockerEnvironments})
+DockerPushRules := $(addprefix push-image-, ${DockerEnvironments})
+DockerRunRules := $(addprefix run-image-, ${DockerEnvironments})
+DockerDebugRules := $(addprefix debug-image-, ${DockerEnvironments})
+DockerDebugRootRules := $(addprefix root-debug-image-, ${DockerEnvironments})
 
 .PHONY: ${DockerBuildRules} ${DockerPushRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules}
 

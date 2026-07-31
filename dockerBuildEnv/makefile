@@ -13,10 +13,8 @@ DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
 DockerImageNameLatest = ${DockerImageName}:latest
 
 DockerVersionFiles := $(wildcard ${DockerBuildEnvFolder}/*/version.mk)
-
-include ${DockerVersionFiles}
-
 DockerEnvironments := $(patsubst ${DockerBuildEnvFolder}/%/version.mk,%,${DockerVersionFiles})
+include ${DockerVersionFiles}
 
 DockerBuildRules := $(addprefix build-image-, ${DockerEnvironments})
 DockerPushRules := $(addprefix push-image-, ${DockerEnvironments})

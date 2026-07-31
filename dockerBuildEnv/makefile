@@ -9,9 +9,7 @@ DockerRunFlags = --volume ${CURDIR}:/code --workdir=/code --rm --tty ${DockerAdd
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository ?= ghcr.io/lairworks
 
-include $(wildcard ${DockerBuildEnvFolder}/nas2d-*.version.mk)
-
-DockerFileName = ${DockerBuildEnvFolder}/nas2d-$*.Dockerfile
+include $(wildcard ${DockerBuildEnvFolder}/*/version.mk)
 
 DockerImageName = ${DockerRepository}/build-env-nas2d-$*
 DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
@@ -26,7 +24,7 @@ DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-i
 .PHONY: ${DockerBuildRules} ${DockerPushRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules}
 
 ${DockerBuildRules}: build-image-%:
-	docker build ${DockerBuildEnvFolder}/ --file ${DockerFileName} --tag ${DockerImageNameTagged} --tag ${DockerImageNameLatest}
+	docker build ${DockerBuildEnvFolder}/$*/ --tag ${DockerImageNameTagged} --tag ${DockerImageNameLatest}
 
 ${DockerPushRules}: push-image-%:
 	docker push ${DockerImageNameTagged}

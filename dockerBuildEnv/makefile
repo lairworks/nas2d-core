@@ -8,14 +8,13 @@ DockerBuildEnvFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 DockerRunFlags = --volume ${CURDIR}:/code --workdir=/code --rm --tty ${DockerAdditionalFlags}
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository ?= ghcr.io/lairworks
+DockerImageName = ${DockerRepository}/build-env-nas2d-$*
+DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
+DockerImageNameLatest = ${DockerImageName}:latest
 
 DockerVersionFiles := $(wildcard ${DockerBuildEnvFolder}/*/version.mk)
 
 include ${DockerVersionFiles}
-
-DockerImageName = ${DockerRepository}/build-env-nas2d-$*
-DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
-DockerImageNameLatest = ${DockerImageName}:latest
 
 DockerEnvironments := $(patsubst ${DockerBuildEnvFolder}/%/version.mk,%,${DockerVersionFiles})
 

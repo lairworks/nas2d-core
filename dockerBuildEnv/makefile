@@ -8,25 +8,24 @@ DockerBuildEnvFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 DockerRunFlags = --volume ${CURDIR}:/code --workdir=/code --rm --tty ${DockerAdditionalFlags}
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerRepository ?= ghcr.io/lairworks
-
-include $(wildcard ${DockerBuildEnvFolder}/nas2d-*.version.mk)
-
-DockerFileName = ${DockerBuildEnvFolder}/nas2d-$*.Dockerfile
-
 DockerImageName = ${DockerRepository}/build-env-nas2d-$*
 DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
 DockerImageNameLatest = ${DockerImageName}:latest
 
-DockerBuildRules := build-image-gcc build-image-clang build-image-mingw build-image-arch
-DockerPushRules := push-image-gcc push-image-clang push-image-mingw push-image-arch
-DockerRunRules := run-image-gcc run-image-clang run-image-mingw run-image-arch
-DockerDebugRules := debug-image-gcc debug-image-clang debug-image-mingw debug-image-arch
-DockerDebugRootRules := root-debug-image-gcc root-debug-image-clang root-debug-image-mingw root-debug-image-arch
+DockerVersionFiles := $(wildcard ${DockerBuildEnvFolder}/*/version.mk)
+DockerEnvironments := $(patsubst ${DockerBuildEnvFolder}/%/version.mk,%,${DockerVersionFiles})
+include ${DockerVersionFiles}
+
+DockerBuildRules := $(addprefix build-image-, ${DockerEnvironments})
+DockerPushRules := $(addprefix push-image-, ${DockerEnvironments})
+DockerRunRules := $(addprefix run-image-, ${DockerEnvironments})
+DockerDebugRules := $(addprefix debug-image-, ${DockerEnvironments})
+DockerDebugRootRules := $(addprefix root-debug-image-, ${DockerEnvironments})
 
 .PHONY: ${DockerBuildRules} ${DockerPushRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules}
 
 ${DockerBuildRules}: build-image-%:
-	docker build ${DockerBuildEnvFolder}/ --file ${DockerFileName} --tag ${DockerImageNameTagged} --tag ${DockerImageNameLatest}
+	docker build ${DockerBuildEnvFolder}/$*/ --tag ${DockerImageNameTagged} --tag ${DockerImageNameLatest}
 
 ${DockerPushRules}: push-image-%:
 	docker push ${DockerImageNameTagged}

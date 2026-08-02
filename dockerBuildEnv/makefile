@@ -25,17 +25,18 @@ DockerDebugRootRules := $(addprefix root-debug-image-, ${DockerEnvironments})
 .PHONY: ${DockerBuildRules} ${DockerPushRules} ${DockerRunRules} ${DockerDebugRules} ${DockerDebugRootRules}
 
 ${DockerBuildRules}: build-image-%:
-	docker build ${DockerBuildEnvFolder}/$*/ --tag ${DockerImageNameTagged} --tag ${DockerImageNameLatest}
+	docker build ${DockerBuildEnvFolder}/$*/ --tag ${DockerImageNameLatest}
 
 ${DockerPushRules}: push-image-%:
+	docker tag ${DockerImageNameLatest} ${DockerImageNameTagged}
 	docker push ${DockerImageNameTagged}
 	docker push ${DockerImageNameLatest}
 
 ${DockerRunRules}: run-image-%:
-	docker run ${DockerRunFlags} ${DockerUserFlags} ${DockerImageNameTagged}
+	docker run ${DockerRunFlags} ${DockerUserFlags} ${DockerImageNameLatest}
 
 ${DockerDebugRules}: debug-image-%:
-	docker run ${DockerRunFlags} --interactive ${DockerUserFlags} ${DockerImageNameTagged} bash
+	docker run ${DockerRunFlags} --interactive ${DockerUserFlags} ${DockerImageNameLatest} bash
 
 ${DockerDebugRootRules}: root-debug-image-%:
-	docker run ${DockerRunFlags} --interactive ${DockerImageNameTagged} bash
+	docker run ${DockerRunFlags} --interactive ${DockerImageNameLatest} bash

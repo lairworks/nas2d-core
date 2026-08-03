@@ -12,6 +12,11 @@ on:
           - clang
           - gcc
           - mingw
+      multiPlatform:
+        description: Multi-platform build
+        required: true
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       buildEnv:
@@ -27,7 +32,28 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Setup Docker
+        if: ${{ inputs.multiPlatform }}
+        uses: docker/setup-docker-action@v5
+        with:
+          daemon-config: |
+            {
+              "debug": true,
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
+
+      - name: Set up QEMU
+        if: ${{ inputs.multiPlatform }}
+        uses: docker/setup-qemu-action@v4
+
+      - name: Docker build (multi-platform)
+        if: ${{ inputs.multiPlatform }}
+        run: make multi-build-image-${{ env.buildEnv }}
+
       - name: Docker build
+        if: ${{ !inputs.multiPlatform }}
         run: make build-image-${{ env.buildEnv }}
 
       - name: Docker login

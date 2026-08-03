@@ -145,10 +145,11 @@ jobs:
 
   linux-arm:
     runs-on: ubuntu-24.04-arm
+    container:
+      image: "ghcr.io/${{ github.repository_owner }}/build-env-nas2d-gcc:2026-07-24"
+      options: --user=1001:1001
 
     steps:
-    - run: sudo apt update && sudo apt --yes install libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libglew-dev libgtest-dev libgmock-dev
-
     - uses: actions/checkout@v6
 
     - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror"

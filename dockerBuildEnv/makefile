@@ -7,6 +7,7 @@ DockerBuildEnvFolder := $(abspath $(dir $(lastword ${MAKEFILE_LIST})))
 
 DockerRunFlags = --volume ${CURDIR}:/code --workdir=/code --rm --tty ${DockerAdditionalFlags}
 DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
+DockerMultiPlatformFlags = --platform linux/amd64,linux/arm64
 DockerRepository ?= ghcr.io/lairworks
 DockerImageName = ${DockerRepository}/build-env-nas2d-$*
 DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
@@ -17,6 +18,7 @@ DockerEnvironments := $(patsubst ${DockerBuildEnvFolder}/%/version.mk,%,${Docker
 include ${DockerVersionFiles}
 
 DockerBuildRules := $(addprefix build-image-, ${DockerEnvironments})
+DockerMultiBuildRules := $(addprefix multi-build-image-, ${DockerEnvironments})
 DockerPushRules := $(addprefix push-image-, ${DockerEnvironments})
 DockerRunRules := $(addprefix run-image-, ${DockerEnvironments})
 DockerDebugRules := $(addprefix debug-image-, ${DockerEnvironments})
@@ -26,6 +28,9 @@ DockerDebugRootRules := $(addprefix root-debug-image-, ${DockerEnvironments})
 
 ${DockerBuildRules}: build-image-%:
 	docker build ${DockerBuildEnvFolder}/$*/ --tag ${DockerImageNameLatest}
+
+${DockerMultiBuildRules}: multi-build-image-%:
+	docker build ${DockerBuildEnvFolder}/$*/ --tag ${DockerImageNameLatest} ${DockerMultiPlatformFlags}
 
 ${DockerPushRules}: push-image-%:
 	docker tag ${DockerImageNameLatest} ${DockerImageNameTagged}

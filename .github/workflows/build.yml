@@ -137,6 +137,8 @@ jobs:
           runner: ubuntu-24.04-arm
         - image: build-env-nas2d-gcc:2026-07-24
           runner: ubuntu-24.04-arm
+        - image: build-env-nas2d-mingw:2026-07-28
+          runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
     container:
       image: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}"

@@ -130,23 +130,14 @@ jobs:
         - build-env-nas2d-clang:2026-07-24
         - build-env-nas2d-gcc:2026-07-24
         - build-env-nas2d-mingw:2026-07-28
-    runs-on: ubuntu-latest
+        runner:
+        - ubuntu-latest
+        include:
+        - image: build-env-nas2d-gcc:2026-07-24
+          runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     container:
       image: "ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}"
-      options: --user=1001:1001
-
-    steps:
-    - uses: actions/checkout@v6
-
-    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror"
-    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" test
-    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" check
-    - run: make --keep-going --jobs 16 CXXFLAGS_EXTRA="-Werror" demoGraphics
-
-  linux-arm:
-    runs-on: ubuntu-24.04-arm
-    container:
-      image: "ghcr.io/${{ github.repository_owner }}/build-env-nas2d-gcc:2026-07-24"
       options: --user=1001:1001
 
     steps:

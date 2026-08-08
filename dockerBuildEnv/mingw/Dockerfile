@@ -3,7 +3,7 @@
 # See Docker section of makefile in root project folder for usage commands.
 
 
-FROM ubuntu:resolute-20260610 AS base-image
+FROM ubuntu:resolute-20260724.1 AS base-image
 
 # Remove automatic apt package cleanup so a local cache mount can be used
 RUN rm /etc/apt/apt.conf.d/docker-clean

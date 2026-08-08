@@ -126,16 +126,16 @@ jobs:
       fail-fast: false
       matrix:
         image:
-        - build-env-nas2d-arch:2026-07-24
-        - build-env-nas2d-clang:2026-07-24
-        - build-env-nas2d-gcc:2026-07-24
-        - build-env-nas2d-mingw:2026-07-28
+        - build-env-nas2d-arch:2026-08-08
+        - build-env-nas2d-clang:2026-08-08
+        - build-env-nas2d-gcc:2026-08-08
+        - build-env-nas2d-mingw:2026-08-08
         runner:
         - ubuntu-latest
         include:
-        - image: build-env-nas2d-clang:2026-07-24
+        - image: build-env-nas2d-clang:2026-08-08
           runner: ubuntu-24.04-arm
-        - image: build-env-nas2d-gcc:2026-07-24
+        - image: build-env-nas2d-gcc:2026-08-08
           runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
     container:

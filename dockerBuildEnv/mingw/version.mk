@@ -1,1 +1,1 @@
-ImageVersion_mingw := 2026-07-28
+ImageVersion_mingw := 2026-08-08

@@ -1,6 +1,6 @@
 # See Docker section of makefile in root project folder for usage commands.
 
-FROM archlinux:base-20260628.0.549485
+FROM archlinux:base-20260802.0.566770
 
 # Install base development tools
 RUN \

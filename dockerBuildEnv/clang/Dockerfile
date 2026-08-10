@@ -13,6 +13,8 @@ RUN \
   apt-get install -y --no-install-recommends \
     clang=1:21.1.6-* \
     make=4.4.1-* \
+    git=1:2.53.0-* \
+    ca-certificates=* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-*
 

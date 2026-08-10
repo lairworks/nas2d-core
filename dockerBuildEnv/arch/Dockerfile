@@ -8,6 +8,8 @@ RUN \
   pacman --sync --refresh --noconfirm \
     gcc \
     make \
+    git \
+    ca-certificates \
     gtest
 
 RUN \

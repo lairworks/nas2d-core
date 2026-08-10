@@ -21,7 +21,9 @@ RUN \
   apt-get install -y --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
     mingw-w64-tools \
-    make=4.4.1-*
+    make=4.4.1-* \
+    git=1:2.53.0-* \
+    ca-certificates=*
 
 ENV TARGET_TRIPLET=x86_64-w64-mingw32
 ENV \

@@ -18,7 +18,7 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
     g++-mingw-w64-x86-64-win32=13.2.0-* \
     mingw-w64-tools \
     make=4.4.1-* \
@@ -47,7 +47,7 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
     gnupg=2.4.8-*
 
 ADD --link https://dl.winehq.org/wine-builds/winehq.key /tmp/winehq.key
@@ -91,7 +91,7 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
     cmake=4.2.3-* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-*
@@ -120,7 +120,7 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
     wine=10.0~repack-12ubuntu1
 
 # Set PATH for wine environment

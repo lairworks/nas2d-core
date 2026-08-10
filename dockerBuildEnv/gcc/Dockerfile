@@ -10,7 +10,7 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
     g++=4:15.2.0-* \
     make=4.4.1-* \
     git=1:2.53.0-* \
@@ -26,7 +26,7 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
     libglew-dev=2.2.0-* \
     libsdl2-dev=2.32.10+* \
     libsdl2-image-dev=2.8.8+* \

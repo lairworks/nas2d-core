@@ -10,9 +10,11 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends --quiet \
     clang=1:21.1.6-* \
     make=4.4.1-* \
+    git=1:2.53.0-* \
+    ca-certificates=* \
     libgtest-dev=1.17.0-* \
     libgmock-dev=1.17.0-*
 
@@ -24,7 +26,7 @@ RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
   apt-get update && \
-  apt-get install -y --no-install-recommends \
+  DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends --quiet \
     libglew-dev=2.2.0-* \
     libsdl2-dev=2.32.10+* \
     libsdl2-image-dev=2.8.8+* \

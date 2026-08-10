@@ -1,1 +1,1 @@
-ImageVersion_gcc := 2026-08-08
+ImageVersion_gcc := 2026-08-09

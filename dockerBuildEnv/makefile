@@ -10,12 +10,11 @@ DockerUserFlags = --user="$(shell id --user):$(shell id --group)"
 DockerMultiPlatformFlags = --platform linux/amd64,linux/arm64
 DockerRepository ?= ghcr.io/lairworks
 DockerImageName = ${DockerRepository}/build-env-nas2d-$*
-DockerImageNameTagged = ${DockerImageName}:${ImageVersion_$*}
+DockerImageNameTagged = ${DockerImageName}:$(shell cat ${DockerBuildEnvFolder}/$*/version)
 DockerImageNameLatest = ${DockerImageName}:latest
 
-DockerVersionFiles := $(wildcard ${DockerBuildEnvFolder}/*/version.mk)
-DockerEnvironments := $(patsubst ${DockerBuildEnvFolder}/%/version.mk,%,${DockerVersionFiles})
-include ${DockerVersionFiles}
+DockerDockerfiles := $(wildcard ${DockerBuildEnvFolder}/*/Dockerfile)
+DockerEnvironments := $(patsubst ${DockerBuildEnvFolder}/%/Dockerfile,%,${DockerDockerfiles})
 
 DockerBuildRules := $(addprefix build-image-, ${DockerEnvironments})
 DockerMultiBuildRules := $(addprefix multi-build-image-, ${DockerEnvironments})

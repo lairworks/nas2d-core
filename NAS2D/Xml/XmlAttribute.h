@@ -37,7 +37,7 @@ public:
 	XmlAttribute();
 	XmlAttribute(const XmlAttribute&) = delete;
 	void operator=(const XmlAttribute& base) = delete;
-	XmlAttribute(const std::string& name, std::string& value);
+	XmlAttribute(const std::string& name, const std::string& value);
 
 	const std::string& name() const;
 	const std::string& value() const;

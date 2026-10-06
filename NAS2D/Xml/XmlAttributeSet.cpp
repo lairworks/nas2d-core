@@ -59,7 +59,7 @@ void XmlAttributeSet::remove(XmlAttribute* attribute)
 }
 
 
-XmlAttribute* XmlAttributeSet::find(const std::string& name) const
+XmlAttribute* XmlAttributeSet::find(std::string_view name) const
 {
 	for (XmlAttribute* node = sentinel._next; node != &sentinel; node = node->_next)
 	{
@@ -72,7 +72,7 @@ XmlAttribute* XmlAttributeSet::find(const std::string& name) const
 }
 
 
-XmlAttribute* XmlAttributeSet::findOrCreate(const std::string& _name)
+XmlAttribute* XmlAttributeSet::findOrCreate(std::string_view _name)
 {
 	XmlAttribute* attrib = find(_name);
 	if (!attrib)

@@ -13,6 +13,7 @@
 
 #include "XmlNode.h"
 
+#include <string_view>
 #include <string>
 
 
@@ -34,7 +35,7 @@ public:
 	 * Constructor for text element. By default, it is treated as normal, encoded text.
 	 * If you want it be output as a CDATA text element, call \c CDATA(true).
 	 */
-	explicit XmlText(const std::string& initValue);
+	explicit XmlText(std::string_view initValue);
 
 	XmlText(const XmlText& copy);
 	XmlText& operator=(const XmlText& base);

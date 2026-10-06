@@ -14,6 +14,7 @@
 #include "XmlBase.h"
 #include "XmlVisitor.h"
 
+#include <string_view>
 #include <string>
 
 
@@ -50,7 +51,7 @@ public:
 	~XmlNode() override;
 
 	const std::string& value() const;
-	void value(const std::string& value);
+	void value(std::string_view value);
 
 	void clear();
 
@@ -63,19 +64,19 @@ public:
 
 	const XmlNode* firstChild() const;
 	XmlNode* firstChild();
-	const XmlNode* firstChild(const std::string& value) const;
-	XmlNode* firstChild(const std::string& value);
+	const XmlNode* firstChild(std::string_view value) const;
+	XmlNode* firstChild(std::string_view value);
 
 	const XmlNode* lastChild() const;
 	XmlNode* lastChild();
-	const XmlNode* lastChild(const std::string& value) const;
-	XmlNode* lastChild(const std::string& _value);
+	const XmlNode* lastChild(std::string_view value) const;
+	XmlNode* lastChild(std::string_view _value);
 
 	const XmlNode* iterateChildren(const XmlNode* previous) const;
 	XmlNode* iterateChildren(const XmlNode* previous);
 
-	const XmlNode* iterateChildren(const std::string& value, const XmlNode* previous) const;
-	XmlNode* iterateChildren(const std::string& value, const XmlNode* previous);
+	const XmlNode* iterateChildren(std::string_view value, const XmlNode* previous) const;
+	XmlNode* iterateChildren(std::string_view value, const XmlNode* previous);
 
 	XmlNode* insertEndChild(const XmlNode& addThis);
 	XmlNode* linkEndChild(XmlNode* addThis);
@@ -88,26 +89,26 @@ public:
 	const XmlNode* previousSibling() const;
 	XmlNode* previousSibling();
 
-	const XmlNode* previousSibling(const std::string&) const;
-	XmlNode* previousSibling(const std::string& prev);
+	const XmlNode* previousSibling(std::string_view) const;
+	XmlNode* previousSibling(std::string_view prev);
 
 	const XmlNode* nextSibling() const;
 	XmlNode* nextSibling();
 
-	const XmlNode* nextSibling(const std::string&) const;
-	XmlNode* nextSibling(const std::string& next);
+	const XmlNode* nextSibling(std::string_view) const;
+	XmlNode* nextSibling(std::string_view next);
 
 	const XmlElement* nextSiblingElement() const;
 	XmlElement* nextSiblingElement();
 
-	const XmlElement* nextSiblingElement(const std::string&) const;
-	XmlElement* nextSiblingElement(const std::string& next);
+	const XmlElement* nextSiblingElement(std::string_view) const;
+	XmlElement* nextSiblingElement(std::string_view next);
 
 	const XmlElement* firstChildElement() const;
 	XmlElement* firstChildElement();
 
-	const XmlElement* firstChildElement(const std::string& value) const;
-	XmlElement* firstChildElement(const std::string& value);
+	const XmlElement* firstChildElement(std::string_view value) const;
+	XmlElement* firstChildElement(std::string_view value);
 
 	const XmlDocument* document() const;
 	XmlDocument* document();

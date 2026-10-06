@@ -22,7 +22,7 @@
 using namespace NAS2D::Xml;
 
 
-inline void indent(int depth, const std::string& indent, std::string& buffer)
+inline void indent(int depth, std::string_view indent, std::string& buffer)
 {
 	for (int i = 0; i < depth; ++i)
 	{
@@ -31,7 +31,7 @@ inline void indent(int depth, const std::string& indent, std::string& buffer)
 }
 
 
-inline void line_break(const std::string& linebreak, std::string& buffer)
+inline void line_break(std::string_view linebreak, std::string& buffer)
 {
 	buffer += linebreak;
 }

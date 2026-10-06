@@ -15,6 +15,7 @@
 #include "XmlAttributeSet.h"
 #include "XmlNode.h"
 
+#include <string_view>
 #include <string>
 
 
@@ -29,18 +30,18 @@ namespace NAS2D::Xml
 class XmlElement : public XmlNode
 {
 public:
-	explicit XmlElement(const std::string& _value);
+	explicit XmlElement(std::string_view _value);
 	XmlElement(const XmlElement& copy);
 	~XmlElement() override;
 
 	XmlElement& operator=(const XmlElement& base);
 
-	void removeAttribute(const std::string& name);
+	void removeAttribute(std::string_view name);
 
-	std::string attribute(const std::string& name) const;
-	void attribute(const std::string& name, int i);
-	void attribute(const std::string& name, double d);
-	void attribute(const std::string& name, const std::string& s);
+	std::string attribute(std::string_view name) const;
+	void attribute(std::string_view name, int i);
+	void attribute(std::string_view name, double d);
+	void attribute(std::string_view name, std::string_view s);
 
 	const XmlAttribute* firstAttribute() const;
 	XmlAttribute* firstAttribute();

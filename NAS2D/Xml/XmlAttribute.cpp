@@ -35,7 +35,7 @@ XmlAttribute::XmlAttribute() :
  * \param	name	Name of the attribute.
  * \param	value	Value of the attribute.
  */
-XmlAttribute::XmlAttribute(const std::string& name, const std::string& value) :
+XmlAttribute::XmlAttribute(std::string_view name, std::string_view value) :
 	XmlBase(),
 	_document(nullptr),
 	_name(name),
@@ -258,7 +258,7 @@ const std::string& XmlAttribute::value() const
  *
  * \param name	A \c std::string containing the name to set.
  */
-void XmlAttribute::name(const std::string& name)
+void XmlAttribute::name(std::string_view name)
 {
 	_name = name;
 }
@@ -269,7 +269,7 @@ void XmlAttribute::name(const std::string& name)
  *
  * \param value	A \c std::string containing the value to set.
  */
-void XmlAttribute::value(const std::string& value)
+void XmlAttribute::value(std::string_view value)
 {
 	_value = value;
 }

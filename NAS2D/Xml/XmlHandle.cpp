@@ -79,7 +79,7 @@ XmlHandle XmlHandle::firstChild() const
  *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-XmlHandle XmlHandle::firstChild(const std::string& value) const
+XmlHandle XmlHandle::firstChild(std::string_view value) const
 {
 	if (node)
 	{
@@ -124,7 +124,7 @@ XmlHandle XmlHandle::firstChildElement() const
  *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-XmlHandle XmlHandle::firstChildElement(const std::string& value) const
+XmlHandle XmlHandle::firstChildElement(std::string_view value) const
 {
 	if (node)
 	{
@@ -203,7 +203,7 @@ XmlHandle XmlHandle::child(int index) const
  *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-XmlHandle XmlHandle::child(const std::string& value, int index) const
+XmlHandle XmlHandle::child(std::string_view value, int index) const
 {
 	if (node)
 	{
@@ -288,7 +288,7 @@ XmlHandle XmlHandle::childElement(int index) const
  *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-XmlHandle XmlHandle::childElement(const std::string& value, int count) const
+XmlHandle XmlHandle::childElement(std::string_view value, int count) const
 {
 	if (node)
 	{

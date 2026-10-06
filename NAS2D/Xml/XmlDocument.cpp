@@ -26,7 +26,7 @@ XmlDocument::XmlDocument() :
 }
 
 
-XmlDocument::XmlDocument(const std::string& documentName) :
+XmlDocument::XmlDocument(std::string_view documentName) :
 	XmlNode(XmlNode::NodeType::XML_DOCUMENT),
 	_errorId(XmlErrorCode::XML_NO_ERROR),
 	_error(false)

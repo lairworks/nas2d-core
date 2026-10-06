@@ -13,7 +13,7 @@
 
 #include "XmlNode.h"
 
-#include <string>
+#include <string_view>
 
 
 namespace NAS2D::Xml
@@ -113,14 +113,14 @@ public:
 	XmlHandle& operator=(const XmlHandle& ref);
 
 	XmlHandle firstChild() const;
-	XmlHandle firstChild(const std::string& value) const;
+	XmlHandle firstChild(std::string_view value) const;
 	XmlHandle firstChildElement() const;
-	XmlHandle firstChildElement(const std::string& value) const;
+	XmlHandle firstChildElement(std::string_view value) const;
 
-	XmlHandle child(const std::string& value, int index) const;
+	XmlHandle child(std::string_view value, int index) const;
 	XmlHandle child(int index) const;
 
-	XmlHandle childElement(const std::string& value, int index) const;
+	XmlHandle childElement(std::string_view value, int index) const;
 	XmlHandle childElement(int index) const;
 
 	// Cast to type functions.

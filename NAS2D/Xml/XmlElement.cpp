@@ -21,7 +21,7 @@
 using namespace NAS2D::Xml;
 
 
-XmlElement::XmlElement(const std::string& value) :
+XmlElement::XmlElement(std::string_view value) :
 	XmlNode(XmlNode::NodeType::XML_ELEMENT)
 {
 	_value = value;
@@ -69,7 +69,7 @@ void XmlElement::clearThis()
  * \returns The value of the named attribute or an empty string if
  *			the attribute wasn't found.
  */
-std::string XmlElement::attribute(const std::string& name) const
+std::string XmlElement::attribute(std::string_view name) const
 {
 	const XmlAttribute* node = attributeSet.find(name);
 	if (node)
@@ -89,7 +89,7 @@ std::string XmlElement::attribute(const std::string& name) const
  * \param name	Name of the attribute to find.
  * \param i		\c int value to set to the attribute.
  */
-void XmlElement::attribute(const std::string& name, int i)
+void XmlElement::attribute(std::string_view name, int i)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 
@@ -108,7 +108,7 @@ void XmlElement::attribute(const std::string& name, int i)
  * \param name	Name of the attribute to find.
  * \param d		\c double value to set to the attribute.
  */
-void XmlElement::attribute(const std::string& name, double d)
+void XmlElement::attribute(std::string_view name, double d)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 	if (attrib)
@@ -126,7 +126,7 @@ void XmlElement::attribute(const std::string& name, double d)
  * \param name	Name of the attribute to find.
  * \param s		String value to set to the attribute.
  */
-void XmlElement::attribute(const std::string& name, const std::string& s)
+void XmlElement::attribute(std::string_view name, std::string_view s)
 {
 	XmlAttribute* attrib = attributeSet.findOrCreate(name);
 	if (attrib)
@@ -264,7 +264,7 @@ std::string XmlElement::getText() const
  *
  * \param name	Name of the attribute to delete.
  */
-void XmlElement::removeAttribute(const std::string& name)
+void XmlElement::removeAttribute(std::string_view name)
 {
 	XmlAttribute* node = attributeSet.find(name);
 	if (node)

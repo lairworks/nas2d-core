@@ -78,7 +78,7 @@ void XmlNode::copyTo(XmlNode* target) const
  *
  * \param	value	\c std::string containing the value to set.
  */
-void XmlNode::value(const std::string& value)
+void XmlNode::value(std::string_view value)
 {
 	_value = value;
 }
@@ -334,7 +334,7 @@ bool XmlNode::removeChild(XmlNode* node)
  *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-const XmlNode* XmlNode::firstChild(const std::string& value) const
+const XmlNode* XmlNode::firstChild(std::string_view value) const
 {
 	const XmlNode* node = nullptr;
 	for (node = _firstChild; node; node = node->_next)
@@ -358,7 +358,7 @@ const XmlNode* XmlNode::firstChild(const std::string& value) const
  *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-const XmlNode* XmlNode::lastChild(const std::string& value) const
+const XmlNode* XmlNode::lastChild(std::string_view value) const
 {
 	const XmlNode* node = nullptr;
 	for (node = _lastChild; node; node = node->_prev)
@@ -375,7 +375,7 @@ const XmlNode* XmlNode::lastChild(const std::string& value) const
 /**
  * The last child of this node matching 'value'.
  *
- * \note Non-const version. See XmlNode::lastChild(const std::string&)
+ * \note Non-const version. See XmlNode::lastChild(std::string_view)
  *
  * \param value Value of the node to look for.
  *
@@ -384,7 +384,7 @@ const XmlNode* XmlNode::lastChild(const std::string& value) const
  *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-XmlNode* XmlNode::lastChild(const std::string& value)
+XmlNode* XmlNode::lastChild(std::string_view value)
 {
 	return const_cast<XmlNode*> ((const_cast<const XmlNode*>(this))->lastChild(value));
 }
@@ -454,7 +454,7 @@ XmlNode* XmlNode::iterateChildren(const XmlNode* previous)
  * \returns	Pointer to the next child of the node. Will return \c nullptr
  *			when there are no children left.
  */
-const XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode* previous) const
+const XmlNode* XmlNode::iterateChildren(std::string_view value, const XmlNode* previous) const
 {
 	if (!previous)
 	{
@@ -469,7 +469,7 @@ const XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode*
 
 
 /**
- * Non-const version of XmlNode::iterateChildren(const std::string&, const XmlNode*) const.
+ * Non-const version of XmlNode::iterateChildren(std::string_view, const XmlNode*) const.
  *
  * \param value		Value of the node to search against.
  * \param previous	Pointer to the previous child of the node and finds
@@ -479,9 +479,9 @@ const XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode*
  * \returns	Pointer to the next child of the node. Will return \c nullptr
  *			when there are no children left.
  *
- * \see See XmlNode::iterateChildren(const std::string&, const XmlNode*) const
+ * \see See XmlNode::iterateChildren(std::string_view, const XmlNode*) const
  */
-XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode* previous)
+XmlNode* XmlNode::iterateChildren(std::string_view value, const XmlNode* previous)
 {
 	return const_cast<XmlNode*>((const_cast<const XmlNode*>(this))->iterateChildren(value, previous));
 }
@@ -492,7 +492,7 @@ XmlNode* XmlNode::iterateChildren(const std::string& value, const XmlNode* previ
  *
  * \see See XmlNode::value() for possible meanings of 'value'.
  */
-const XmlNode* XmlNode::nextSibling(const std::string& value) const
+const XmlNode* XmlNode::nextSibling(std::string_view value) const
 {
 	const XmlNode* node = nullptr;
 	for (node = _next; node; node = node->_next)
@@ -509,7 +509,7 @@ const XmlNode* XmlNode::nextSibling(const std::string& value) const
 /**
  * Navigate to a sibling node with a given value.
  */
-XmlNode* XmlNode::nextSibling(const std::string& next)
+XmlNode* XmlNode::nextSibling(std::string_view next)
 {
 	return const_cast<XmlNode*>((const_cast<const XmlNode*>(this))->nextSibling(next));
 }
@@ -518,7 +518,7 @@ XmlNode* XmlNode::nextSibling(const std::string& next)
 /**
  * Navigate to a sibling node.
  */
-const XmlNode* XmlNode::previousSibling(const std::string& value) const
+const XmlNode* XmlNode::previousSibling(std::string_view value) const
 {
 	const XmlNode* node = nullptr;
 	for (node = _prev; node; node = node->_prev)
@@ -535,7 +535,7 @@ const XmlNode* XmlNode::previousSibling(const std::string& value) const
 /**
  * Navigate to a sibling node.
  */
-XmlNode* XmlNode::previousSibling(const std::string& prev)
+XmlNode* XmlNode::previousSibling(std::string_view prev)
 {
 	return const_cast<XmlNode*>((const_cast<const XmlNode*>(this))->previousSibling(prev));
 }
@@ -571,7 +571,7 @@ XmlElement* XmlNode::firstChildElement()
 /**
  * Convenience function to get through elements.
  */
-const XmlElement* XmlNode::firstChildElement(const std::string& value) const
+const XmlElement* XmlNode::firstChildElement(std::string_view value) const
 {
 	const XmlNode* node = nullptr;
 
@@ -589,7 +589,7 @@ const XmlElement* XmlNode::firstChildElement(const std::string& value) const
 /**
  * Convenience function to get through elements.
  */
-XmlElement* XmlNode::firstChildElement(const std::string& value)
+XmlElement* XmlNode::firstChildElement(std::string_view value)
 {
 	return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->firstChildElement(value));
 }
@@ -634,7 +634,7 @@ XmlElement* XmlNode::nextSiblingElement()
  *
  * \return \c nullptr if there is not another element.
  */
-const XmlElement* XmlNode::nextSiblingElement(const std::string& value) const
+const XmlElement* XmlNode::nextSiblingElement(std::string_view value) const
 {
 	const XmlNode* node = nullptr;
 
@@ -656,7 +656,7 @@ const XmlElement* XmlNode::nextSiblingElement(const std::string& value) const
  *
  * \return \c nullptr if there is not another element.
  */
-XmlElement* XmlNode::nextSiblingElement(const std::string& next)
+XmlElement* XmlNode::nextSiblingElement(std::string_view next)
 {
 	return const_cast<XmlElement*>((const_cast<const XmlNode*>(this))->nextSiblingElement(next));
 }
@@ -736,7 +736,7 @@ XmlNode* XmlNode::firstChild()
 /**
  * The first child of this node with the matching 'value'. Will be \c nullptr if none found.
  */
-XmlNode* XmlNode::firstChild(const std::string& value)
+XmlNode* XmlNode::firstChild(std::string_view value)
 {
 	return const_cast<XmlNode*> ((const_cast<const XmlNode*>(this))->firstChild(value));
 }

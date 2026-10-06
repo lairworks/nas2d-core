@@ -13,7 +13,7 @@
 
 #include "XmlAttribute.h"
 
-#include <string>
+#include <string_view>
 
 
 namespace NAS2D::Xml
@@ -45,8 +45,8 @@ public:
 	const XmlAttribute* last() const { return (sentinel._prev == &sentinel) ? nullptr : sentinel._prev; }
 	XmlAttribute* last() { return (sentinel._prev == &sentinel) ? nullptr : sentinel._prev; }
 
-	XmlAttribute* find(const std::string& _name) const;
-	XmlAttribute* findOrCreate(const std::string& _name);
+	XmlAttribute* find(std::string_view _name) const;
+	XmlAttribute* findOrCreate(std::string_view _name);
 
 private:
 	XmlAttribute sentinel{};

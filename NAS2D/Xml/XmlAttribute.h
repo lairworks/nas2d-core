@@ -13,6 +13,7 @@
 
 #include "XmlBase.h"
 
+#include <string_view>
 #include <string>
 
 namespace NAS2D::Xml
@@ -37,7 +38,7 @@ public:
 	XmlAttribute();
 	XmlAttribute(const XmlAttribute&) = delete;
 	void operator=(const XmlAttribute& base) = delete;
-	XmlAttribute(const std::string& name, std::string& value);
+	XmlAttribute(std::string_view name, std::string_view value);
 
 	const std::string& name() const;
 	const std::string& value() const;
@@ -51,8 +52,8 @@ public:
 	QueryResult queryIntValue(int& i) const;
 	QueryResult queryDoubleValue(double& d) const;
 
-	void name(const std::string& name);
-	void value(const std::string& value);
+	void name(std::string_view name);
+	void value(std::string_view value);
 
 	const XmlAttribute* next() const;
 	XmlAttribute* next();
@@ -64,7 +65,7 @@ public:
 	bool operator<(const XmlAttribute& rhs) const { return _name < rhs._name; }
 	bool operator>(const XmlAttribute& rhs) const { return _name > rhs._name; }
 
-	bool operator==(const std::string& rhs) const { return rhs == _name; }
+	bool operator==(std::string_view rhs) const { return rhs == _name; }
 
 	/**
 	 * Attribute parsing starts: first letter of the name

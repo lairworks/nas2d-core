@@ -12,6 +12,7 @@
 
 #include "XmlNode.h"
 
+#include <string_view>
 #include <string>
 
 
@@ -27,7 +28,7 @@ public:
 	~XmlDocument() override;
 
 	XmlDocument();
-	explicit XmlDocument(const std::string& documentName);
+	explicit XmlDocument(std::string_view documentName);
 
 	XmlDocument(const XmlDocument& copy);
 	XmlDocument& operator=(const XmlDocument& copy);

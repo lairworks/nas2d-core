@@ -13,6 +13,7 @@
 
 #include "XmlNode.h"
 
+#include <string_view>
 #include <string>
 
 
@@ -28,7 +29,7 @@ public:
 	~XmlComment() override;
 	XmlComment();
 
-	explicit XmlComment(const std::string& commentValue);
+	explicit XmlComment(std::string_view commentValue);
 	XmlComment(const XmlComment& copy);
 	XmlComment& operator=(const XmlComment& base);
 

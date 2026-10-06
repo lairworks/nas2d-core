@@ -26,7 +26,7 @@ XmlComment::XmlComment() : XmlNode(XmlNode::NodeType::XML_COMMENT)
  *
  * \param	commentValue	Reference to a \c std::string with the value to use for the comment.
  */
-XmlComment::XmlComment(const std::string& commentValue) : XmlNode(XmlNode::NodeType::XML_COMMENT)
+XmlComment::XmlComment(std::string_view commentValue) : XmlNode(XmlNode::NodeType::XML_COMMENT)
 {
 	value(commentValue);
 }

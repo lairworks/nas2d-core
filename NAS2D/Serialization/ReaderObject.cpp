@@ -43,6 +43,12 @@ namespace
 }
 
 
+ReaderObject::ReaderObject(const Xml::XmlElement& element) :
+	mElement{element}
+{
+}
+
+
 ReaderScalar ReaderObject::scalar(std::string_view name) const
 {
 	return ReaderScalar{findScalarValue(mElement, name)};

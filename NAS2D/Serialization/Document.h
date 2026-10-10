@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.h"
+#include "UserDefined.h"
 #include "ReaderObject.h"
 #include "WriterObject.h"
 

@@ -8,12 +8,12 @@
 namespace NAS2D
 {
 	template<typename ElementType>
-	std::vector<ElementType> read(ReaderArray& reader)
+	std::vector<ElementType> readType(ReaderArray& reader)
 	{
 		std::vector<ElementType> collection;
 		while(reader.hasNext())
 		{
-			collection.push_back(reader.read<ElementType>());
+			collection.push_back(reader.readType<ElementType>());
 		}
 		return collection;
 	}

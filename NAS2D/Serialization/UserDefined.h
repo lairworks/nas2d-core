@@ -6,13 +6,13 @@
 namespace NAS2D
 {
 	template<typename Type>
-	Type read(ReaderScalar& reader) = delete;
+	Type readType(ReaderScalar&& reader) = delete;
 
 	template<typename Type>
-	Type read(ReaderObject& reader) = delete;
+	Type readType(ReaderObject&& reader) = delete;
 
 	template<typename Type>
-	Type read(ReaderArray& reader) = delete;
+	Type readType(ReaderArray&& reader) = delete;
 
 
 	template<typename Type>

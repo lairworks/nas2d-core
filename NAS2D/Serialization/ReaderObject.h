@@ -27,15 +27,15 @@ namespace NAS2D
 		{
 			if constexpr (hasReadScalar<Type>)
 			{
-				return read<Type>(scalar(name));
+				return readType<Type>(scalar(name));
 			}
 			else if constexpr (hasReadObject<Type>)
 			{
-				return read<Type>(object(name));
+				return readType<Type>(object(name));
 			}
 			else if constexpr (hasReadArray<Type>)
 			{
-				return read<Type>(array(name));
+				return readType<Type>(array(name));
 			}
 			else
 			{

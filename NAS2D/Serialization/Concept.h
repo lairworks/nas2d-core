@@ -6,13 +6,13 @@
 namespace NAS2D
 {
 	template<typename Type>
-	concept hasReadScalar = requires(const ReaderScalar& reader) { read<Type>(reader); };
+	concept hasReadScalar = requires(const ReaderScalar& reader) { readType<Type>(reader); };
 
 	template<typename Type>
-	concept hasReadObject = requires(const ReaderObject& reader) { read<Type>(reader); };
+	concept hasReadObject = requires(const ReaderObject& reader) { readType<Type>(reader); };
 
 	template<typename Type>
-	concept hasReadArray = requires(const ReaderArray& reader) { read<Type>(reader); };
+	concept hasReadArray = requires(const ReaderArray& reader) { readType<Type>(reader); };
 
 
 	template<typename Type>

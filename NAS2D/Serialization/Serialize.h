@@ -6,16 +6,16 @@
 namespace NAS2D
 {
 	template<typename Type>
-	Type read(std::string_view xmlData, std::string_view rootElementName)
+	Type readFileData(std::string_view xmlData, std::string_view rootElementName)
 	{
 		const Document document{xmlData};
 
-		return document.read<Type>(rootElementName);
+		return document.readRootObject<Type>(rootElementName);
 	}
 
 
 	template<typename Type>
-	std::string write(std::string_view rootElementName, const Type& value)
+	std::string writeFileData(std::string_view rootElementName, const Type& value)
 	{
 		const Document document{rootElementName, value};
 

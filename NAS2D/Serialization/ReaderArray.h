@@ -26,7 +26,7 @@ namespace NAS2D
 		{
 			if constexpr(hasReadObject<Type>)
 			{
-				return read<Type>(object());
+				return readType<Type>(object());
 			}
 			else
 			{

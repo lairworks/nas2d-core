@@ -39,9 +39,9 @@ namespace NAS2D
 		~Document();
 
 		template<typename Type>
-		Type read(std::string_view rootElementName) const
+		Type readRootObject(std::string_view rootElementName) const
 		{
-			return read<Type>(getRootObject(rootElementName));
+			return readType<Type>(getRootObject(rootElementName));
 		}
 
 		std::string asString() const;

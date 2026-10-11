@@ -75,7 +75,7 @@ void XmlElement::clearThis()
  * \returns The value of the named attribute or an empty string if
  *			the attribute wasn't found.
  */
-std::string XmlElement::attribute(std::string_view name) const
+const std::string& XmlElement::attribute(std::string_view name) const
 {
 	const XmlAttribute* node = attributeSet.find(name);
 	if (node)
@@ -250,7 +250,7 @@ XmlNode* XmlElement::clone() const
 	return clone;
 }
 
-std::string XmlElement::getText() const
+const std::string& XmlElement::getText() const
 {
 	const XmlNode* child = this->firstChild();
 	if (child)

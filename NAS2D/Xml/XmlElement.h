@@ -38,7 +38,7 @@ public:
 
 	void removeAttribute(std::string_view name);
 
-	std::string attribute(std::string_view name) const;
+	const std::string& attribute(std::string_view name) const;
 	void attribute(std::string_view name, int i);
 	void attribute(std::string_view name, double d);
 	void attribute(std::string_view name, std::string_view s);
@@ -52,7 +52,7 @@ public:
 	XmlNode* clone() const override;
 
 	// Convenience function for easy access to the text inside an element
-	std::string getText() const;
+	const std::string& getText() const;
 
 	void write(std::string& buf, int depth) const override;
 

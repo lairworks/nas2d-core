@@ -21,6 +21,12 @@
 using namespace NAS2D::Xml;
 
 
+namespace
+{
+	const std::string emptyString{};
+}
+
+
 XmlElement::XmlElement(std::string_view value) :
 	XmlNode(XmlNode::NodeType::XML_ELEMENT)
 {
@@ -77,7 +83,7 @@ std::string XmlElement::attribute(std::string_view name) const
 		return node->value();
 	}
 
-	return "";
+	return emptyString;
 }
 
 
@@ -256,7 +262,7 @@ std::string XmlElement::getText() const
 		}
 	}
 
-	return std::string();
+	return emptyString;
 }
 
 /**

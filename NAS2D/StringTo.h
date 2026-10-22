@@ -11,7 +11,7 @@ namespace NAS2D
 	template <typename T>
 	T stringTo(const std::string& value)
 	{
-		if constexpr (std::is_same_v<T, std::string> || std::is_same_v<T, const char*>)
+		if constexpr (std::is_same_v<T, std::string>)
 		{
 			return value;
 		}

@@ -80,7 +80,7 @@ namespace NAS2D
 		}
 		else
 		{
-			static_assert(true, "Unsupported type");
+			static_assert(false, "Unsupported type");
 		}
 	}
 }

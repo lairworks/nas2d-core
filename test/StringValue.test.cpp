@@ -34,6 +34,7 @@ TEST(StringValue, Constructor) {
 
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::StringValue{0.0}.value, testing::StartsWith("0.0"));
+	EXPECT_THAT(NAS2D::StringValue{0.5}.value, testing::StartsWith("0.5"));
 }
 
 TEST(StringValue, OperatorComparison) {
@@ -67,6 +68,7 @@ TEST(StringValue, OperatorConversion) {
 	EXPECT_EQ(0, int{NAS2D::StringValue{0}});
 	EXPECT_EQ(1, int{NAS2D::StringValue{1}});
 	EXPECT_EQ(0.0, double{NAS2D::StringValue{0.0}});
+	EXPECT_EQ(0.5, double{NAS2D::StringValue{0.5}});
 }
 
 TEST(StringValue, to) {
@@ -76,6 +78,7 @@ TEST(StringValue, to) {
 	EXPECT_EQ(0, NAS2D::StringValue{0}.to<int>());
 	EXPECT_EQ(1, NAS2D::StringValue{1}.to<int>());
 	EXPECT_EQ(0.0, NAS2D::StringValue{0.0}.to<double>());
+	EXPECT_EQ(0.5, NAS2D::StringValue{0.5}.to<double>());
 }
 
 TEST(StringValue, from) {
@@ -86,4 +89,5 @@ TEST(StringValue, from) {
 	EXPECT_EQ("0", s.from<int>(0).value);
 	EXPECT_EQ("1", s.from<int>(1).value);
 	EXPECT_THAT(s.from<double>(0.0).value, testing::StartsWith("0.0"));
+	EXPECT_THAT(s.from<double>(0.5).value, testing::StartsWith("0.5"));
 }

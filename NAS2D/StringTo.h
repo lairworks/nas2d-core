@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
+#include <charconv>
 #include <type_traits>
-#include <limits>
+#include <system_error>
 #include <stdexcept>
 
 
@@ -20,63 +21,25 @@ namespace NAS2D
 			return value == "true" || value == "1" ? true : value == "false" || value == "0" ? false
 				: throw std::invalid_argument("Value must be 'true' or 'false': " + std::string{value});
 		}
-		else if constexpr (std::is_same_v<T, long double>)
+		else if constexpr (std::is_arithmetic_v<T>)
 		{
-			return std::stold(value);
-		}
-		else if constexpr (std::is_same_v<T, double>)
-		{
-			return std::stod(value);
-		}
-		else if constexpr (std::is_same_v<T, float>)
-		{
-			return std::stof(value);
-		}
-		else if constexpr (std::is_same_v<T, long long>)
-		{
-			return std::stoll(value);
-		}
-		else if constexpr (std::is_same_v<T, long>)
-		{
-			return std::stol(value);
-		}
-		else if constexpr (std::is_same_v<T, int>)
-		{
-			return std::stoi(value);
-		}
-		else if constexpr (std::is_same_v<T, unsigned long long>)
-		{
-			return std::stoull(value);
-		}
-		else if constexpr (std::is_same_v<T, unsigned long>)
-		{
-			return std::stoul(value);
-		}
-		else if constexpr (std::is_integral_v<T> && std::is_signed_v<T>)
-		{
-			const auto integerValue = std::stoi(value);
-			if constexpr (
-				std::numeric_limits<int>::max() > std::numeric_limits<T>::max() || std::numeric_limits<int>::min() < std::numeric_limits<T>::min()
-			)
+			T result{};
+			const auto [end, errorCode] = std::from_chars(value.data(), value.data() + value.size(), result);
+
+			if (errorCode == std::errc::invalid_argument)
 			{
-				if (integerValue > std::numeric_limits<T>::max() || integerValue < std::numeric_limits<T>::min())
-				{
-					throw std::out_of_range("Value out of range: " + value);
-				}
+				throw std::invalid_argument("Invalid arithmetic value: " + value);
 			}
-			return static_cast<T>(integerValue);
-		}
-		else if constexpr (std::is_integral_v<T> && std::is_unsigned_v<T>)
-		{
-			const auto integerValue = std::stoul(value);
-			if constexpr (std::numeric_limits<unsigned long>::max() > std::numeric_limits<T>::max())
+			if (errorCode == std::errc::result_out_of_range)
 			{
-				if (integerValue > std::numeric_limits<T>::max())
-				{
-					throw std::out_of_range("Value out of range: " + value);
-				}
+				throw std::out_of_range("Value out of range: " + value);
 			}
-			return static_cast<T>(integerValue);
+			if (end != value.data() + value.size())
+			{
+				throw std::invalid_argument("Unexpected characters trailing arithmetic value: " + value + " (" + std::string{end} + ")");
+			}
+
+			return result;
 		}
 		else
 		{

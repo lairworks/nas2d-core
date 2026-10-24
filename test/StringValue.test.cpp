@@ -66,7 +66,7 @@ TEST(StringValue, OperatorConversion) {
 	EXPECT_EQ(-1, int{NAS2D::StringValue{-1}});
 	EXPECT_EQ(0, int{NAS2D::StringValue{0}});
 	EXPECT_EQ(1, int{NAS2D::StringValue{1}});
-	EXPECT_EQ(0.0, int{NAS2D::StringValue{0.0}});
+	EXPECT_EQ(0.0, double{NAS2D::StringValue{0.0}});
 }
 
 TEST(StringValue, to) {

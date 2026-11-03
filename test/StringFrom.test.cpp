@@ -91,10 +91,18 @@ TEST(StringFrom, integerLongLongUnsigned) {
 	EXPECT_EQ("1", NAS2D::stringFrom(1ull));
 }
 
-TEST(StringFrom, floatingPoint) {
+TEST(StringFrom, floatingPointFloat) {
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
+}
+
+TEST(StringFrom, floatingPointDouble) {
+	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));
+}
+
+TEST(StringFrom, floatingPointLongDouble) {
+	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
 }
 

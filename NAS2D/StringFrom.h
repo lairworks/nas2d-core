@@ -32,14 +32,14 @@ namespace NAS2D
 	template <typename BaseType>
 	std::string stringFrom(Point<BaseType> point)
 	{
-		return "(" + std::to_string(point.x) + ", " + std::to_string(point.y) + ")";
+		return "(" + stringFrom(point.x) + ", " + stringFrom(point.y) + ")";
 	}
 
 
 	template <typename BaseType>
 	std::string stringFrom(Vector<BaseType> vector)
 	{
-		return "(" + std::to_string(vector.x) + ", " + std::to_string(vector.y) + ")";
+		return "(" + stringFrom(vector.x) + ", " + stringFrom(vector.y) + ")";
 	}
 
 

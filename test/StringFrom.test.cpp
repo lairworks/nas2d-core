@@ -94,16 +94,22 @@ TEST(StringFrom, integerLongLongUnsigned) {
 TEST(StringFrom, floatingPointFloat) {
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
+	EXPECT_THAT(NAS2D::stringFrom(0.5f), testing::StartsWith("0.5"));
+	EXPECT_THAT(NAS2D::stringFrom(1.0f), testing::StartsWith("1.0"));
 }
 
 TEST(StringFrom, floatingPointDouble) {
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));
+	EXPECT_THAT(NAS2D::stringFrom(0.5), testing::StartsWith("0.5"));
+	EXPECT_THAT(NAS2D::stringFrom(1.0), testing::StartsWith("1.0"));
 }
 
 TEST(StringFrom, floatingPointLongDouble) {
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
+	EXPECT_THAT(NAS2D::stringFrom(0.5l), testing::StartsWith("0.5"));
+	EXPECT_THAT(NAS2D::stringFrom(1.0l), testing::StartsWith("1.0"));
 }
 
 TEST(StringFrom, point) {

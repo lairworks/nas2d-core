@@ -20,7 +20,7 @@ TEST(StringTo, boolean) {
 	EXPECT_EQ(true, NAS2D::stringTo<bool>("1"));
 }
 
-TEST(StringTo, intChar) {
+TEST(StringTo, integerChar) {
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::min() - 1)), std::out_of_range);
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::max() + 1)), std::out_of_range);
 	EXPECT_THROW(NAS2D::stringTo<char>(""), std::invalid_argument);
@@ -32,7 +32,7 @@ TEST(StringTo, intChar) {
 	EXPECT_EQ(unsignedChar{0}, NAS2D::stringTo<unsignedChar>("0"));
 }
 
-TEST(StringTo, intShort) {
+TEST(StringTo, integerShort) {
 	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::min() - 1)), std::out_of_range);
 	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::max() + 1)), std::out_of_range);
 	EXPECT_THROW(NAS2D::stringTo<short>(""), std::invalid_argument);
@@ -42,7 +42,7 @@ TEST(StringTo, intShort) {
 	EXPECT_EQ(unsignedShort{0}, NAS2D::stringTo<unsignedShort>("0"));
 }
 
-TEST(StringTo, intInt) {
+TEST(StringTo, integerInt) {
 	EXPECT_THROW(NAS2D::stringTo<int>(""), std::invalid_argument);
 	EXPECT_EQ(int{-1}, NAS2D::stringTo<int>("-1"));
 	EXPECT_EQ(int{0}, NAS2D::stringTo<int>("0"));
@@ -50,7 +50,7 @@ TEST(StringTo, intInt) {
 	EXPECT_EQ(unsignedInt{0}, NAS2D::stringTo<unsignedInt>("0"));
 }
 
-TEST(StringTo, intLong) {
+TEST(StringTo, integerLong) {
 	EXPECT_THROW(NAS2D::stringTo<long>(""), std::invalid_argument);
 	EXPECT_EQ(long{-1}, NAS2D::stringTo<long>("-1"));
 	EXPECT_EQ(long{0}, NAS2D::stringTo<long>("0"));
@@ -58,7 +58,7 @@ TEST(StringTo, intLong) {
 	EXPECT_EQ(unsignedLong{0}, NAS2D::stringTo<unsignedLong>("0"));
 }
 
-TEST(StringTo, intLongLong) {
+TEST(StringTo, integerLongLong) {
 	using longLong = long long;
 	EXPECT_THROW(NAS2D::stringTo<longLong>(""), std::invalid_argument);
 	EXPECT_EQ(longLong{-1}, NAS2D::stringTo<longLong>("-1"));

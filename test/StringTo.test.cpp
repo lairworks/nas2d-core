@@ -85,11 +85,17 @@ TEST(StringTo, integerLongLongUnsigned) {
 	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>("0"));
 }
 
-TEST(StringTo, floatingPoint) {
+TEST(StringTo, floatingPointFloat) {
 	EXPECT_THROW(NAS2D::stringTo<float>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);
-	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
 	EXPECT_EQ(0.0f, NAS2D::stringTo<float>("0.0"));
+}
+
+TEST(StringTo, floatingPointDouble) {
+	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);
 	EXPECT_EQ(0.0, NAS2D::stringTo<double>("0.0"));
+}
+
+TEST(StringTo, floatingPointLongDouble) {
+	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
 	EXPECT_EQ(0.0l, NAS2D::stringTo<long double>("0.0"));
 }

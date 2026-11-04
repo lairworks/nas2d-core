@@ -27,8 +27,11 @@ TEST(StringTo, integerCharErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<char>(""), std::invalid_argument);
 }
 
-TEST(StringTo, integerCharErrorOutOfRange) {
+TEST(StringTo, integerCharErrorOutOfRangeNegative) {
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::min() - 1)), std::out_of_range);
+}
+
+TEST(StringTo, integerCharErrorOutOfRange) {
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::max() + 1)), std::out_of_range);
 }
 

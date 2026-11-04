@@ -11,7 +11,7 @@ TEST(StringTo, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>(std::string{"SomeStringValue"}));
 }
 
-TEST(StringTo, booleanError) {
+TEST(StringTo, booleanErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<bool>(""), std::invalid_argument);
 	EXPECT_THROW(NAS2D::stringTo<bool>("random text"), std::invalid_argument);
 }
@@ -23,10 +23,13 @@ TEST(StringTo, boolean) {
 	EXPECT_EQ(true, NAS2D::stringTo<bool>("1"));
 }
 
-TEST(StringTo, integerCharError) {
+TEST(StringTo, integerCharErrorInvalid) {
+	EXPECT_THROW(NAS2D::stringTo<char>(""), std::invalid_argument);
+}
+
+TEST(StringTo, integerCharErrorOutOfRange) {
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::min() - 1)), std::out_of_range);
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::max() + 1)), std::out_of_range);
-	EXPECT_THROW(NAS2D::stringTo<char>(""), std::invalid_argument);
 }
 
 TEST(StringTo, integerChar) {
@@ -44,10 +47,13 @@ TEST(StringTo, integerCharUnsigned) {
 	EXPECT_EQ(unsignedChar{0}, NAS2D::stringTo<unsignedChar>("0"));
 }
 
-TEST(StringTo, integerShortError) {
+TEST(StringTo, integerShortErrorInvalid) {
+	EXPECT_THROW(NAS2D::stringTo<short>(""), std::invalid_argument);
+}
+
+TEST(StringTo, integerShortErrorOutOfRange) {
 	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::min() - 1)), std::out_of_range);
 	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::max() + 1)), std::out_of_range);
-	EXPECT_THROW(NAS2D::stringTo<short>(""), std::invalid_argument);
 }
 
 TEST(StringTo, integerShort) {
@@ -60,7 +66,7 @@ TEST(StringTo, integerShortUnsigned) {
 	EXPECT_EQ(unsignedShort{0}, NAS2D::stringTo<unsignedShort>("0"));
 }
 
-TEST(StringTo, integerIntError) {
+TEST(StringTo, integerIntErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<int>(""), std::invalid_argument);
 }
 
@@ -74,7 +80,7 @@ TEST(StringTo, integerIntUnsigned) {
 	EXPECT_EQ(unsignedInt{0}, NAS2D::stringTo<unsignedInt>("0"));
 }
 
-TEST(StringTo, integerLongError) {
+TEST(StringTo, integerLongErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<long>(""), std::invalid_argument);
 }
 
@@ -88,7 +94,7 @@ TEST(StringTo, integerLongUnsigned) {
 	EXPECT_EQ(unsignedLong{0}, NAS2D::stringTo<unsignedLong>("0"));
 }
 
-TEST(StringTo, integerLongLongError) {
+TEST(StringTo, integerLongLongErrorInvalid) {
 	using longLong = long long;
 	EXPECT_THROW(NAS2D::stringTo<longLong>(""), std::invalid_argument);
 }
@@ -104,7 +110,7 @@ TEST(StringTo, integerLongLongUnsigned) {
 	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>("0"));
 }
 
-TEST(StringTo, floatingPointFloatError) {
+TEST(StringTo, floatingPointFloatErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<float>(""), std::invalid_argument);
 }
 
@@ -114,7 +120,7 @@ TEST(StringTo, floatingPointFloat) {
 	EXPECT_EQ(1.0f, NAS2D::stringTo<float>("1.0"));
 }
 
-TEST(StringTo, floatingPointDoubleError) {
+TEST(StringTo, floatingPointDoubleErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);
 }
 
@@ -124,7 +130,7 @@ TEST(StringTo, floatingPointDouble) {
 	EXPECT_EQ(1.0, NAS2D::stringTo<double>("1.0"));
 }
 
-TEST(StringTo, floatingPointLongDoubleError) {
+TEST(StringTo, floatingPointLongDoubleErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
 }
 

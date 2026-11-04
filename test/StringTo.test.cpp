@@ -28,7 +28,32 @@ TEST(StringTo, integerCharErrorInvalid) {
 }
 
 TEST(StringTo, integerCharErrorOutOfRangeNegative) {
-	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::min() - 1)), std::out_of_range);
+	// Whether `char` is signed or unsigned is implementation defined
+	if constexpr (std::numeric_limits<char>::is_signed)
+	{
+		// For signed implementations, a value too far negative is out of range
+		EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::min() - 1)), std::out_of_range);
+	}
+	else
+	{
+		// For unsigned implementations, we leave it unspecified if a negative value is out of range or invalid
+		// The '-' character may be considered invalid for an unsigned type
+		try
+		{
+			NAS2D::stringTo<char>("-1");
+			FAIL() << "Expected exception but got none";
+		}
+		catch (const std::out_of_range&) {} // Acceptable
+		catch (const std::invalid_argument&) {} // Acceptable
+		catch (const std::exception& error)
+		{
+			FAIL() << "Unexpected exception type: " << error.what();
+		}
+		catch (...)
+		{
+			FAIL() << "Unexpected exception of non-standard type";
+		}
+	}
 }
 
 TEST(StringTo, integerCharErrorOutOfRange) {

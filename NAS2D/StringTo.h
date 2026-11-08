@@ -15,9 +15,13 @@ namespace NAS2D
 		std::from_chars(value.data(), value.data() + value.size(), result);
 	};
 
+	template <typename T>
+	concept useLongDoubleFallback = std::is_same_v<T, long double> && !hasFromChars<T>;
+
 
 	template <typename T>
 	T stringTo(const std::string& value)
+		requires (!useLongDoubleFallback<T>)
 	{
 		if constexpr (std::is_same_v<T, std::string>)
 		{
@@ -27,10 +31,6 @@ namespace NAS2D
 		{
 			return value == "true" || value == "1" ? true : value == "false" || value == "0" ? false
 				: throw std::invalid_argument("Value must be 'true' or 'false': " + value);
-		}
-		else if constexpr (std::is_same_v<T, long double> && !hasFromChars<long double>)
-		{
-			return std::stold(value);
 		}
 		else if constexpr (std::is_arithmetic_v<T>)
 		{
@@ -56,5 +56,12 @@ namespace NAS2D
 		{
 			static_assert(false, "Unsupported type");
 		}
+	}
+
+	template <typename T>
+	T stringTo(const std::string& value)
+		requires useLongDoubleFallback<T>
+	{
+		return std::stold(value);
 	}
 }

@@ -3,6 +3,7 @@
 #include <string_view>
 #include <string>
 #include <charconv>
+#include <utility>
 #include <type_traits>
 #include <system_error>
 #include <stdexcept>
@@ -59,6 +60,7 @@ namespace NAS2D
 		}
 	}
 
+
 	template <typename T>
 	T stringTo(const std::string& value)
 		requires useLongDoubleFallback<T>
@@ -78,5 +80,20 @@ namespace NAS2D
 		requires useLongDoubleFallback<T>
 	{
 		return stringTo<T>(std::string{value});
+	}
+
+
+	template <typename T>
+	T stringTo(std::string&& value)
+		requires std::is_same_v<T, std::string>
+	{
+		return std::move(value);
+	}
+
+	template <typename T, std::size_t stringLiteralSize>
+	T stringTo(const char (&value)[stringLiteralSize])
+		requires std::is_same_v<T, std::string>
+	{
+		return stringTo<T>(std::string_view{value});
 	}
 }

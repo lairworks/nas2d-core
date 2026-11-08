@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string_view>
 #include <string>
 #include <charconv>
 #include <type_traits>
@@ -20,17 +21,17 @@ namespace NAS2D
 
 
 	template <typename T>
-	T stringTo(const std::string& value)
+	T stringTo(std::string_view value)
 		requires (!useLongDoubleFallback<T>)
 	{
 		if constexpr (std::is_same_v<T, std::string>)
 		{
-			return value;
+			return std::string{value};
 		}
 		else if constexpr (std::is_same_v<T, bool>)
 		{
 			return value == "true" || value == "1" ? true : value == "false" || value == "0" ? false
-				: throw std::invalid_argument("Value must be 'true' or 'false': " + value);
+				: throw std::invalid_argument("Value must be 'true' or 'false': " + std::string{value});
 		}
 		else if constexpr (std::is_arithmetic_v<T>)
 		{
@@ -39,15 +40,15 @@ namespace NAS2D
 
 			if (errorCode == std::errc::invalid_argument)
 			{
-				throw std::invalid_argument("Invalid arithmetic value: " + value);
+				throw std::invalid_argument("Invalid arithmetic value: " + std::string{value});
 			}
 			if (errorCode == std::errc::result_out_of_range)
 			{
-				throw std::out_of_range("Value out of range: " + value);
+				throw std::out_of_range("Value out of range: " + std::string{value});
 			}
 			if (end != value.data() + value.size())
 			{
-				throw std::invalid_argument("Unexpected characters trailing arithmetic value: '" + value + "' ('" + std::string(end, value.data() + value.size()) + "')");
+				throw std::invalid_argument("Unexpected characters trailing arithmetic value: '" + std::string{value} + "' ('" + std::string(end, value.data() + value.size()) + "')");
 			}
 
 			return result;

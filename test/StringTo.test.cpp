@@ -9,6 +9,7 @@
 
 TEST(StringTo, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>("SomeStringValue"));
+	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>(std::string_view{"SomeStringValue"}));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>(std::string{"SomeStringValue"}));
 }
 
@@ -22,6 +23,11 @@ TEST(StringTo, boolean) {
 	EXPECT_EQ(true, NAS2D::stringTo<bool>("true"));
 	EXPECT_EQ(false, NAS2D::stringTo<bool>("0"));
 	EXPECT_EQ(true, NAS2D::stringTo<bool>("1"));
+
+	EXPECT_EQ(false, NAS2D::stringTo<bool>(std::string_view{"false"}));
+	EXPECT_EQ(true, NAS2D::stringTo<bool>(std::string_view{"true"}));
+	EXPECT_EQ(false, NAS2D::stringTo<bool>(std::string_view{"0"}));
+	EXPECT_EQ(true, NAS2D::stringTo<bool>(std::string_view{"1"}));
 }
 
 TEST(StringTo, integerCharErrorInvalid) {
@@ -63,17 +69,24 @@ TEST(StringTo, integerCharErrorOutOfRange) {
 
 TEST(StringTo, integerChar) {
 	EXPECT_EQ(char{0}, NAS2D::stringTo<char>("0"));
+
+	EXPECT_EQ(char{0}, NAS2D::stringTo<char>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerCharSigned) {
 	using signedChar = signed char;
 	EXPECT_EQ(signedChar{-1}, NAS2D::stringTo<signedChar>("-1"));
 	EXPECT_EQ(signedChar{0}, NAS2D::stringTo<signedChar>("0"));
+
+	EXPECT_EQ(signedChar{-1}, NAS2D::stringTo<signedChar>(std::string_view{"-1"}));
+	EXPECT_EQ(signedChar{0}, NAS2D::stringTo<signedChar>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerCharUnsigned) {
 	using unsignedChar = unsigned char;
 	EXPECT_EQ(unsignedChar{0}, NAS2D::stringTo<unsignedChar>("0"));
+
+	EXPECT_EQ(unsignedChar{0}, NAS2D::stringTo<unsignedChar>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerShortErrorInvalid) {
@@ -88,11 +101,16 @@ TEST(StringTo, integerShortErrorOutOfRange) {
 TEST(StringTo, integerShort) {
 	EXPECT_EQ(short{-1}, NAS2D::stringTo<short>("-1"));
 	EXPECT_EQ(short{0}, NAS2D::stringTo<short>("0"));
+
+	EXPECT_EQ(short{-1}, NAS2D::stringTo<short>(std::string_view{"-1"}));
+	EXPECT_EQ(short{0}, NAS2D::stringTo<short>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerShortUnsigned) {
 	using unsignedShort = unsigned short;
 	EXPECT_EQ(unsignedShort{0}, NAS2D::stringTo<unsignedShort>("0"));
+
+	EXPECT_EQ(unsignedShort{0}, NAS2D::stringTo<unsignedShort>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerIntErrorInvalid) {
@@ -102,11 +120,16 @@ TEST(StringTo, integerIntErrorInvalid) {
 TEST(StringTo, integerInt) {
 	EXPECT_EQ(int{-1}, NAS2D::stringTo<int>("-1"));
 	EXPECT_EQ(int{0}, NAS2D::stringTo<int>("0"));
+
+	EXPECT_EQ(int{-1}, NAS2D::stringTo<int>(std::string_view{"-1"}));
+	EXPECT_EQ(int{0}, NAS2D::stringTo<int>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerIntUnsigned) {
 	using unsignedInt = unsigned int;
 	EXPECT_EQ(unsignedInt{0}, NAS2D::stringTo<unsignedInt>("0"));
+
+	EXPECT_EQ(unsignedInt{0}, NAS2D::stringTo<unsignedInt>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerLongErrorInvalid) {
@@ -116,11 +139,16 @@ TEST(StringTo, integerLongErrorInvalid) {
 TEST(StringTo, integerLong) {
 	EXPECT_EQ(long{-1}, NAS2D::stringTo<long>("-1"));
 	EXPECT_EQ(long{0}, NAS2D::stringTo<long>("0"));
+
+	EXPECT_EQ(long{-1}, NAS2D::stringTo<long>(std::string_view{"-1"}));
+	EXPECT_EQ(long{0}, NAS2D::stringTo<long>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerLongUnsigned) {
 	using unsignedLong = unsigned long;
 	EXPECT_EQ(unsignedLong{0}, NAS2D::stringTo<unsignedLong>("0"));
+
+	EXPECT_EQ(unsignedLong{0}, NAS2D::stringTo<unsignedLong>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerLongLongErrorInvalid) {
@@ -132,11 +160,15 @@ TEST(StringTo, integerLongLong) {
 	using longLong = long long;
 	EXPECT_EQ(longLong{-1}, NAS2D::stringTo<longLong>("-1"));
 	EXPECT_EQ(longLong{0}, NAS2D::stringTo<longLong>("0"));
+
+	EXPECT_EQ(longLong{-1}, NAS2D::stringTo<longLong>(std::string_view{"-1"}));
+	EXPECT_EQ(longLong{0}, NAS2D::stringTo<longLong>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerLongLongUnsigned) {
 	using unsignedLongLong = unsigned long long;
 	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>("0"));
+	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>(std::string_view{"0"}));
 }
 
 TEST(StringTo, floatingPointFloatErrorInvalid) {
@@ -147,6 +179,10 @@ TEST(StringTo, floatingPointFloat) {
 	EXPECT_EQ(0.0f, NAS2D::stringTo<float>("0.0"));
 	EXPECT_EQ(0.5f, NAS2D::stringTo<float>("0.5"));
 	EXPECT_EQ(1.0f, NAS2D::stringTo<float>("1.0"));
+
+	EXPECT_EQ(0.0f, NAS2D::stringTo<float>(std::string_view{"0.0"}));
+	EXPECT_EQ(0.5f, NAS2D::stringTo<float>(std::string_view{"0.5"}));
+	EXPECT_EQ(1.0f, NAS2D::stringTo<float>(std::string_view{"1.0"}));
 }
 
 TEST(StringTo, floatingPointDoubleErrorInvalid) {
@@ -157,6 +193,10 @@ TEST(StringTo, floatingPointDouble) {
 	EXPECT_EQ(0.0, NAS2D::stringTo<double>("0.0"));
 	EXPECT_EQ(0.5, NAS2D::stringTo<double>("0.5"));
 	EXPECT_EQ(1.0, NAS2D::stringTo<double>("1.0"));
+
+	EXPECT_EQ(0.0, NAS2D::stringTo<double>(std::string_view{"0.0"}));
+	EXPECT_EQ(0.5, NAS2D::stringTo<double>(std::string_view{"0.5"}));
+	EXPECT_EQ(1.0, NAS2D::stringTo<double>(std::string_view{"1.0"}));
 }
 
 TEST(StringTo, floatingPointLongDoubleErrorInvalid) {
@@ -167,4 +207,9 @@ TEST(StringTo, floatingPointLongDouble) {
 	EXPECT_EQ(0.0l, NAS2D::stringTo<long double>("0.0"));
 	EXPECT_EQ(0.5l, NAS2D::stringTo<long double>("0.5"));
 	EXPECT_EQ(1.0l, NAS2D::stringTo<long double>("1.0"));
+
+	// This may create a temporary `std::string` object on some platforms
+	EXPECT_EQ(0.0l, NAS2D::stringTo<long double>(std::string_view{"0.0"}));
+	EXPECT_EQ(0.5l, NAS2D::stringTo<long double>(std::string_view{"0.5"}));
+	EXPECT_EQ(1.0l, NAS2D::stringTo<long double>(std::string_view{"1.0"}));
 }

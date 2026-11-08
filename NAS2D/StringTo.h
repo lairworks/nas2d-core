@@ -65,4 +65,18 @@ namespace NAS2D
 	{
 		return std::stold(value);
 	}
+
+	template <typename T>
+	T stringTo(std::string_view value)
+		requires useLongDoubleFallback<T>
+	{
+		return stringTo<T>(std::string{value});
+	}
+
+	template <typename T, std::size_t stringLiteralSize>
+	T stringTo(const char (&value)[stringLiteralSize])
+		requires useLongDoubleFallback<T>
+	{
+		return stringTo<T>(std::string{value});
+	}
 }

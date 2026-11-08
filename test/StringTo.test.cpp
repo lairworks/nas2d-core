@@ -208,7 +208,8 @@ TEST(StringTo, floatingPointLongDouble) {
 	EXPECT_EQ(0.5l, NAS2D::stringTo<long double>("0.5"));
 	EXPECT_EQ(1.0l, NAS2D::stringTo<long double>("1.0"));
 
-	// Intentionally omit `std::string_view` tests
-	// This case may use a separate overload that requires a `const std::string&`
-	// Not all environments support `std::string_view` with this overload
+	// This may create a temporary `std::string` object on some platforms
+	EXPECT_EQ(0.0l, NAS2D::stringTo<long double>(std::string_view{"0.0"}));
+	EXPECT_EQ(0.5l, NAS2D::stringTo<long double>(std::string_view{"0.5"}));
+	EXPECT_EQ(1.0l, NAS2D::stringTo<long double>(std::string_view{"1.0"}));
 }

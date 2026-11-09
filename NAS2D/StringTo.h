@@ -25,7 +25,11 @@ namespace NAS2D
 	T stringTo(std::string_view value)
 		requires (!useLongDoubleFallback<T>)
 	{
-		if constexpr (std::is_same_v<T, std::string>)
+		if constexpr (std::is_same_v<T, std::string_view>)
+		{
+			return value;
+		}
+		else if constexpr (std::is_same_v<T, std::string>)
 		{
 			return std::string{value};
 		}
@@ -62,6 +66,12 @@ namespace NAS2D
 
 
 	template <typename T>
+	T stringTo(std::string&& value)
+		requires std::is_same_v<T, std::string_view>
+	= delete;
+
+
+	template <typename T>
 	T stringTo(const std::string& value)
 		requires useLongDoubleFallback<T>
 	{
@@ -75,13 +85,6 @@ namespace NAS2D
 		return stringTo<T>(std::string{value});
 	}
 
-	template <typename T, std::size_t stringLiteralSize>
-	T stringTo(const char (&value)[stringLiteralSize])
-		requires useLongDoubleFallback<T>
-	{
-		return stringTo<T>(std::string{value});
-	}
-
 
 	template <typename T>
 	T stringTo(std::string&& value)
@@ -90,9 +93,9 @@ namespace NAS2D
 		return std::move(value);
 	}
 
+
 	template <typename T, std::size_t stringLiteralSize>
 	T stringTo(const char (&value)[stringLiteralSize])
-		requires std::is_same_v<T, std::string>
 	{
 		return stringTo<T>(std::string_view{value});
 	}

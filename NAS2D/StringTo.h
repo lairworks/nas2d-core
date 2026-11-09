@@ -79,7 +79,7 @@ namespace NAS2D
 	T stringTo(const char (&value)[stringLiteralSize])
 		requires useLongDoubleFallback<T>
 	{
-		return stringTo<T>(std::string{value});
+		return stringTo<T>(std::string_view{value});
 	}
 
 

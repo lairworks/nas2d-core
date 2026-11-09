@@ -25,7 +25,11 @@ namespace NAS2D
 	T stringTo(std::string_view value)
 		requires (!useLongDoubleFallback<T>)
 	{
-		if constexpr (std::is_same_v<T, std::string>)
+		if constexpr (std::is_same_v<T, std::string_view>)
+		{
+			return value;
+		}
+		else if constexpr (std::is_same_v<T, std::string>)
 		{
 			return std::string{value};
 		}
@@ -59,6 +63,12 @@ namespace NAS2D
 			static_assert(false, "Unsupported type");
 		}
 	}
+
+
+	template <typename T>
+	T stringTo(std::string&& value)
+		requires std::is_same_v<T, std::string_view>
+	= delete;
 
 
 	template <typename T>

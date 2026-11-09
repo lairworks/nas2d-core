@@ -7,6 +7,17 @@
 #include <limits>
 
 
+TEST(StringTo, stringView) {
+	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string_view>("SomeStringValue"));
+	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string_view>(std::string_view{"SomeStringValue"}));
+	// No conversion from temporary `std::string` as that would result in a dangling pointer
+	// The overload is deleted to cause a compile error if this happens by accident
+
+	// The following case is allowed, and there is no dangling pointer in the string_view
+	std::string notTemporaryString{"SomeStringValue"};
+	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string_view>(notTemporaryString));
+}
+
 TEST(StringTo, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>(std::string_view{"SomeStringValue"}));

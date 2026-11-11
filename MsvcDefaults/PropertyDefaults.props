@@ -3,6 +3,10 @@
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Platform)'=='ARM' OR '$(Platform)'=='ARM64'">
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
 

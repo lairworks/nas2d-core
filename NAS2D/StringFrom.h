@@ -24,10 +24,6 @@ namespace NAS2D
 		{
 			return std::string{value};
 		}
-		else if constexpr (std::is_convertible_v<T, std::string>)
-		{
-			return value;
-		}
 		else if constexpr (std::is_same_v<T, bool>)
 		{
 			return value ? "true" : "false";
@@ -35,6 +31,10 @@ namespace NAS2D
 		else if constexpr (std::is_arithmetic_v<T>)
 		{
 			return std::to_string(value);
+		}
+		else if constexpr (std::is_convertible_v<T, std::string>)
+		{
+			return value;
 		}
 		else
 		{

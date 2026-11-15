@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include <type_traits>
 
 
@@ -14,7 +15,11 @@ namespace NAS2D
 	template <typename T>
 	std::string stringFrom(T value)
 	{
-		if constexpr (std::is_convertible_v<T, std::string>)
+		if constexpr (std::is_same_v<T, std::string>)
+		{
+			return std::move(value);
+		}
+		else if constexpr (std::is_convertible_v<T, std::string>)
 		{
 			return value;
 		}

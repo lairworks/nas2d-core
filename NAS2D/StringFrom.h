@@ -26,6 +26,10 @@ namespace NAS2D
 		{
 			return std::to_string(value);
 		}
+		else
+		{
+			static_assert(false, "Unsupported type");
+		}
 	}
 
 

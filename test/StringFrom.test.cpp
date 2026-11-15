@@ -10,22 +10,6 @@
 #include <string>
 
 
-TEST(StringFrom, implicitConversion) {
-	class ImplicitStringConversionTestFixture
-	{
-	public:
-		std::string data;
-
-		operator std::string() const
-		{
-			return data;
-		}
-	};
-
-	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
-	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
-}
-
 TEST(StringFrom, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
@@ -111,6 +95,22 @@ TEST(StringFrom, floatingPointLongDouble) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5l), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0l), testing::StartsWith("1.0"));
+}
+
+TEST(StringFrom, implicitConversion) {
+	class ImplicitStringConversionTestFixture
+	{
+	public:
+		std::string data;
+
+		operator std::string() const
+		{
+			return data;
+		}
+	};
+
+	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
+	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
 }
 
 TEST(StringFrom, point) {

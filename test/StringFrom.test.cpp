@@ -12,12 +12,15 @@
 
 
 TEST(StringFrom, string) {
-	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
 }
 
 TEST(StringFrom, stringView) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string_view{"SomeStringValue"}));
+}
+
+TEST(StringFrom, stringLiteral) {
+	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 }
 
 TEST(StringFrom, boolean) {

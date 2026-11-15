@@ -10,8 +10,7 @@
 #include <string>
 
 
-namespace
-{
+TEST(StringFrom, implicitConversion) {
 	class ImplicitStringConversionTestFixture
 	{
 	public:
@@ -22,10 +21,7 @@ namespace
 			return data;
 		}
 	};
-}
 
-
-TEST(StringFrom, implicitConversion) {
 	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
 	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
 }

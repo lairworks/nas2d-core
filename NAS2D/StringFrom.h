@@ -22,7 +22,7 @@ namespace NAS2D
 		{
 			return value ? "true" : "false";
 		}
-		else
+		else if constexpr (std::is_arithmetic_v<T>)
 		{
 			return std::to_string(value);
 		}

@@ -2,6 +2,7 @@
 
 #include "NAS2D/Math/Point.h"
 #include "NAS2D/Math/Vector.h"
+#include "NAS2D/Math/Rectangle.h"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -123,4 +124,10 @@ TEST(StringFrom, vector) {
 	EXPECT_EQ("(0, 0)", NAS2D::stringFrom(NAS2D::Vector{0, 0}));
 	EXPECT_EQ("(1, 0)", NAS2D::stringFrom(NAS2D::Vector{1, 0}));
 	EXPECT_EQ("(0, 1)", NAS2D::stringFrom(NAS2D::Vector{0, 1}));
+}
+
+TEST(StringFrom, rectangle) {
+	EXPECT_EQ("((0, 0), (0, 0))", NAS2D::stringFrom(NAS2D::Rectangle{NAS2D::Point{0, 0}, NAS2D::Vector{0, 0}}));
+	EXPECT_EQ("((1, 0), (2, 0))", NAS2D::stringFrom(NAS2D::Rectangle{NAS2D::Point{1, 0}, NAS2D::Vector{2, 0}}));
+	EXPECT_EQ("((0, 1), (0, 2))", NAS2D::stringFrom(NAS2D::Rectangle{NAS2D::Point{0, 1}, NAS2D::Vector{0, 2}}));
 }

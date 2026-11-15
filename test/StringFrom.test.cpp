@@ -6,6 +6,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <string_view>
 #include <string>
 
 
@@ -32,6 +33,10 @@ TEST(StringFrom, implicitConversion) {
 TEST(StringFrom, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
+}
+
+TEST(StringFrom, stringView) {
+	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string_view{"SomeStringValue"}));
 }
 
 TEST(StringFrom, boolean) {

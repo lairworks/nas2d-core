@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string_view>
 #include <string>
 #include <utility>
 #include <type_traits>
@@ -18,6 +19,10 @@ namespace NAS2D
 		if constexpr (std::is_same_v<T, std::string>)
 		{
 			return std::move(value);
+		}
+		else if constexpr (std::is_same_v<T, std::string_view>)
+		{
+			return std::string{value};
 		}
 		else if constexpr (std::is_convertible_v<T, std::string>)
 		{

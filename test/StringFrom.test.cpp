@@ -2,36 +2,22 @@
 
 #include "NAS2D/Math/Point.h"
 #include "NAS2D/Math/Vector.h"
+#include "NAS2D/Math/Rectangle.h"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <string_view>
 #include <string>
 
-
-namespace
-{
-	class ImplicitStringConversionTestFixture
-	{
-	public:
-		std::string data;
-
-		operator std::string() const
-		{
-			return data;
-		}
-	};
-}
-
-
-TEST(StringFrom, implicitConversion) {
-	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
-	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
-}
 
 TEST(StringFrom, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
+}
+
+TEST(StringFrom, stringView) {
+	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string_view{"SomeStringValue"}));
 }
 
 TEST(StringFrom, boolean) {
@@ -112,6 +98,22 @@ TEST(StringFrom, floatingPointLongDouble) {
 	EXPECT_THAT(NAS2D::stringFrom(1.0l), testing::StartsWith("1.0"));
 }
 
+TEST(StringFrom, implicitConversion) {
+	class ImplicitStringConversionTestFixture
+	{
+	public:
+		std::string data;
+
+		operator std::string() const
+		{
+			return data;
+		}
+	};
+
+	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
+	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
+}
+
 TEST(StringFrom, point) {
 	EXPECT_EQ("(0, 0)", NAS2D::stringFrom(NAS2D::Point{0, 0}));
 	EXPECT_EQ("(1, 0)", NAS2D::stringFrom(NAS2D::Point{1, 0}));
@@ -122,4 +124,10 @@ TEST(StringFrom, vector) {
 	EXPECT_EQ("(0, 0)", NAS2D::stringFrom(NAS2D::Vector{0, 0}));
 	EXPECT_EQ("(1, 0)", NAS2D::stringFrom(NAS2D::Vector{1, 0}));
 	EXPECT_EQ("(0, 1)", NAS2D::stringFrom(NAS2D::Vector{0, 1}));
+}
+
+TEST(StringFrom, rectangle) {
+	EXPECT_EQ("((0, 0), (0, 0))", NAS2D::stringFrom(NAS2D::Rectangle{NAS2D::Point{0, 0}, NAS2D::Vector{0, 0}}));
+	EXPECT_EQ("((1, 0), (2, 0))", NAS2D::stringFrom(NAS2D::Rectangle{NAS2D::Point{1, 0}, NAS2D::Vector{2, 0}}));
+	EXPECT_EQ("((0, 1), (0, 2))", NAS2D::stringFrom(NAS2D::Rectangle{NAS2D::Point{0, 1}, NAS2D::Vector{0, 2}}));
 }

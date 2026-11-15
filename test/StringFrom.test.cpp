@@ -12,12 +12,15 @@
 
 
 TEST(StringFrom, string) {
-	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
 }
 
 TEST(StringFrom, stringView) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string_view{"SomeStringValue"}));
+}
+
+TEST(StringFrom, stringLiteral) {
+	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 }
 
 TEST(StringFrom, boolean) {
@@ -56,7 +59,7 @@ TEST(StringFrom, integerInt) {
 }
 
 TEST(StringFrom, integerIntUnsigned) {
-	EXPECT_EQ("1", NAS2D::stringFrom(1u));
+	EXPECT_EQ("0", NAS2D::stringFrom(0u));
 }
 
 TEST(StringFrom, integerLong) {
@@ -65,7 +68,7 @@ TEST(StringFrom, integerLong) {
 }
 
 TEST(StringFrom, integerLongUnsigned) {
-	EXPECT_EQ("1", NAS2D::stringFrom(1ul));
+	EXPECT_EQ("0", NAS2D::stringFrom(0ul));
 }
 
 TEST(StringFrom, integerLongLong) {
@@ -74,7 +77,7 @@ TEST(StringFrom, integerLongLong) {
 }
 
 TEST(StringFrom, integerLongLongUnsigned) {
-	EXPECT_EQ("1", NAS2D::stringFrom(1ull));
+	EXPECT_EQ("0", NAS2D::stringFrom(0ull));
 }
 
 TEST(StringFrom, floatingPointFloat) {

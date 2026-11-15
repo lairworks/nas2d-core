@@ -14,7 +14,7 @@ namespace NAS2D
 	template <typename T>
 	std::string stringFrom(T value)
 	{
-		if constexpr (std::is_convertible<T, std::string>::value)
+		if constexpr (std::is_convertible_v<T, std::string>)
 		{
 			return value;
 		}

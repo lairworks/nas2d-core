@@ -58,8 +58,7 @@ TEST(StringTo, integerLongErrorInvalid) {
 }
 
 TEST(StringTo, integerLongLongErrorInvalid) {
-	using longLong = long long;
-	EXPECT_THROW(NAS2D::stringTo<longLong>(""), std::invalid_argument);
+	EXPECT_THROW(NAS2D::stringTo<long long>(""), std::invalid_argument);
 }
 
 

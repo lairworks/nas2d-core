@@ -138,6 +138,7 @@ TEST(StringTo, integerLongUnsigned) {
 TEST(StringTo, integerLongLongUnsigned) {
 	using unsignedLongLong = unsigned long long;
 	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>("0"));
+
 	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>(std::string_view{"0"}));
 }
 

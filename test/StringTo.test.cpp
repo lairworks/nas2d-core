@@ -96,6 +96,11 @@ TEST(StringTo, integerCharErrorOutOfRange) {
 	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::max() + 1)), std::out_of_range);
 }
 
+TEST(StringTo, integerShortErrorOutOfRange) {
+	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::min() - 1)), std::out_of_range);
+	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::max() + 1)), std::out_of_range);
+}
+
 TEST(StringTo, integerChar) {
 	EXPECT_EQ(char{0}, NAS2D::stringTo<char>("0"));
 
@@ -116,11 +121,6 @@ TEST(StringTo, integerCharUnsigned) {
 	EXPECT_EQ(unsignedChar{0}, NAS2D::stringTo<unsignedChar>("0"));
 
 	EXPECT_EQ(unsignedChar{0}, NAS2D::stringTo<unsignedChar>(std::string_view{"0"}));
-}
-
-TEST(StringTo, integerShortErrorOutOfRange) {
-	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::min() - 1)), std::out_of_range);
-	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::max() + 1)), std::out_of_range);
 }
 
 TEST(StringTo, integerShort) {

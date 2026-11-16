@@ -187,6 +187,14 @@ TEST(StringTo, floatingPointFloatErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<float>(""), std::invalid_argument);
 }
 
+TEST(StringTo, floatingPointDoubleErrorInvalid) {
+	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);
+}
+
+TEST(StringTo, floatingPointLongDoubleErrorInvalid) {
+	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
+}
+
 TEST(StringTo, floatingPointFloat) {
 	EXPECT_EQ(0.0f, NAS2D::stringTo<float>("0.0"));
 	EXPECT_EQ(0.5f, NAS2D::stringTo<float>("0.5"));
@@ -197,10 +205,6 @@ TEST(StringTo, floatingPointFloat) {
 	EXPECT_EQ(1.0f, NAS2D::stringTo<float>(std::string_view{"1.0"}));
 }
 
-TEST(StringTo, floatingPointDoubleErrorInvalid) {
-	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);
-}
-
 TEST(StringTo, floatingPointDouble) {
 	EXPECT_EQ(0.0, NAS2D::stringTo<double>("0.0"));
 	EXPECT_EQ(0.5, NAS2D::stringTo<double>("0.5"));
@@ -209,10 +213,6 @@ TEST(StringTo, floatingPointDouble) {
 	EXPECT_EQ(0.0, NAS2D::stringTo<double>(std::string_view{"0.0"}));
 	EXPECT_EQ(0.5, NAS2D::stringTo<double>(std::string_view{"0.5"}));
 	EXPECT_EQ(1.0, NAS2D::stringTo<double>(std::string_view{"1.0"}));
-}
-
-TEST(StringTo, floatingPointLongDoubleErrorInvalid) {
-	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
 }
 
 TEST(StringTo, floatingPointLongDouble) {

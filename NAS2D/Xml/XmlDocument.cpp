@@ -19,8 +19,7 @@ XmlDocument::~XmlDocument() = default;
 
 XmlDocument::XmlDocument() :
 	XmlNode(XmlNode::NodeType::XML_DOCUMENT),
-	_errorId(XmlErrorCode::XML_NO_ERROR),
-	_error(false)
+	_errorId(XmlErrorCode::XML_NO_ERROR)
 {
 	clearError();
 }
@@ -28,8 +27,7 @@ XmlDocument::XmlDocument() :
 
 XmlDocument::XmlDocument(std::string_view documentName) :
 	XmlNode(XmlNode::NodeType::XML_DOCUMENT),
-	_errorId(XmlErrorCode::XML_NO_ERROR),
-	_error(false)
+	_errorId(XmlErrorCode::XML_NO_ERROR)
 {
 	_value = documentName;
 	clearError();

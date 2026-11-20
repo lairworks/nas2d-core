@@ -134,9 +134,9 @@ TEST(Delegate, LambdaVariableCapture) {
 
 TEST(Delegate, ForwardWithoutCopy) {
 	struct CopyCounter {
-		int numCopies;
+		int numCopies{};
 
-		CopyCounter() noexcept : numCopies{} {}
+		CopyCounter() noexcept {}
 		CopyCounter(CopyCounter&& other) noexcept : numCopies{other.numCopies} {}
 		CopyCounter(const CopyCounter& other) noexcept : numCopies{other.numCopies + 1} {}
 	};

@@ -19,7 +19,6 @@ XmlText::~XmlText() = default;
 
 XmlText::XmlText(std::string_view initValue) :
 	XmlNode(XmlNode::NodeType::XML_TEXT),
-	cdata(false)
 {
 	value(initValue);
 }

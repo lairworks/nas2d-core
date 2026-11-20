@@ -32,7 +32,7 @@ namespace NAS2D
 		Mixer() = default;
 		Mixer(const Mixer&) = default;
 		Mixer(Mixer&&) = default;
-		virtual ~Mixer();
+		virtual ~Mixer() = default;
 
 		Mixer& operator=(const Mixer&) = default;
 		Mixer& operator=(Mixer&&) = default;

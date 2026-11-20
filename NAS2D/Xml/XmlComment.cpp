@@ -67,7 +67,7 @@ void XmlComment::write(std::string& buf, int depth) const
  */
 XmlNode* XmlComment::clone() const
 {
-	XmlComment* clone = new XmlComment();
+	auto* clone = new XmlComment();
 	if (!clone) { return nullptr; }
 
 	copyTo(clone);

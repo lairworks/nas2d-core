@@ -49,7 +49,7 @@ void XmlUnknown::write(std::string& buf, int depth) const
 
 XmlNode* XmlUnknown::clone() const
 {
-	XmlUnknown* clone = new XmlUnknown();
+	auto* clone = new XmlUnknown();
 
 	if (!clone)
 	{

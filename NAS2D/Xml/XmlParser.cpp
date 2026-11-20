@@ -160,7 +160,7 @@ void XmlParsingData::stamp(const char* now)
 	while (p < now)
 	{
 		// Treat p as unsigned, so we have a happy compiler.
-		const unsigned char* pU = reinterpret_cast<const unsigned char*>(p);
+		const auto* pU = reinterpret_cast<const unsigned char*>(p);
 
 		// Code contributed by Fletcher Dunn: (modified by lee)
 		switch (*pU)
@@ -576,7 +576,7 @@ void XmlDocument::streamIn(std::istream& in, std::string& tag)
 
 	while (in.good())
 	{
-		int tagIndex = static_cast<int>(tag.length());
+		auto tagIndex = static_cast<int>(tag.length());
 		while (in.good() && in.peek() != '>')
 		{
 			int c = in.get();
@@ -838,7 +838,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 
 			assert(in.peek() == '<');
 
-			int tagIndex = static_cast<int>(tag.length());
+			auto tagIndex = static_cast<int>(tag.length());
 
 			bool closingTag = false;
 			bool firstCharFound = false;
@@ -1023,7 +1023,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			return nullptr;
 		}
 		// Try to read an attribute:
-		XmlAttribute* attrib = new XmlAttribute();
+		auto* attrib = new XmlAttribute();
 		if (!attrib)
 		{
 			return nullptr;

@@ -71,7 +71,7 @@ void XmlDocument::copyTo(XmlDocument* target) const
 
 XmlNode* XmlDocument::clone() const
 {
-	XmlDocument* clone = new XmlDocument();
+	auto* clone = new XmlDocument();
 	if (!clone) { return nullptr; }
 
 	copyTo(clone);

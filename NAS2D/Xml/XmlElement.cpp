@@ -157,14 +157,14 @@ void XmlElement::write(std::string& buf, int depth) const
 
 	buf += "<" + _value;
 
-	const XmlAttribute* attrib;
+	const XmlAttribute* attrib{nullptr};
 	for (attrib = attributeSet.first(); attrib; attrib = attrib->next())
 	{
 		buf += " ";
 		attrib->write(buf, depth);
 	}
 
-	XmlNode* node;
+	XmlNode* node{nullptr};
 	if (!_firstChild)
 	{
 		buf += " />";
@@ -240,14 +240,14 @@ bool XmlElement::accept(void* visitor) const
  */
 XmlNode* XmlElement::clone() const
 {
-	XmlElement* clone = new XmlElement(value());
-	if (!clone)
+	auto* cloned = new XmlElement(value());
+	if (!cloned)
 	{
 		return nullptr;
 	}
 
-	copyTo(clone);
-	return clone;
+	copyTo(cloned);
+	return cloned;
 }
 
 const std::string& XmlElement::getText() const

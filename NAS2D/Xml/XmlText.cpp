@@ -66,10 +66,10 @@ void XmlText::copyTo(XmlText* target) const
 
 XmlNode* XmlText::clone() const
 {
-	XmlText* clone = new XmlText("");
-	copyTo(clone);
+	auto* cloned = new XmlText("");
+	copyTo(cloned);
 
-	return clone;
+	return cloned;
 }
 
 

@@ -321,7 +321,6 @@ const char* XmlBase::getEntity(const char* p, char* value, std::size_t* length)
 {
 	// Presume an entity, and pull it out.
 	std::string ent;
-	int i;
 	*length = 0;
 
 	if (*(p + 1) && *(p + 1) == '#' && *(p + 2))
@@ -390,7 +389,7 @@ const char* XmlBase::getEntity(const char* p, char* value, std::size_t* length)
 	}
 
 	// Now try to match it.
-	for (i = 0; i < NUM_ENTITY; ++i)
+	for (int i = 0; i < NUM_ENTITY; ++i)
 	{
 		if (strncmp(entity[i].str, p, entity[i].strLength) == 0)
 		{
@@ -503,7 +502,7 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 		// Keep all the white space.
 		while (p && *p && !stringEqual(p, endTag, caseInsensitive))
 		{
-			std::size_t len;
+			std::size_t len{0u};
 			char cArr[4] = { 0, 0, 0, 0 };
 			p = getChar(p, cArr, &len);
 			text->append(cArr, len);
@@ -536,7 +535,7 @@ const char* XmlBase::readText(const char* p, std::string* text, bool trimWhiteSp
 					(*text) += ' ';
 					whitespace = false;
 				}
-				std::size_t len;
+				std::size_t len{0u};
 				char cArr[4] = { 0, 0, 0, 0 };
 				p = getChar(p, cArr, &len);
 				if (len == 1)
@@ -740,7 +739,7 @@ XmlNode* XmlNode::identify(const char* p)
 		#ifdef DEBUG_PARSER
 		TIXML_LOG("XML parsing CDATA\n");
 		#endif
-		XmlText* text = new XmlText("");
+		auto* text = new XmlText("");
 		text->CDATA(true);
 		returnNode = text;
 	}
@@ -1070,7 +1069,7 @@ const char* XmlElement::readValue(const char* p, void* data)
 		if (*p != '<')
 		{
 			// Take what we have, make a text element.
-			XmlText* textNode = new XmlText("");
+			auto* textNode = new XmlText("");
 
 			if (!textNode)
 			{
@@ -1291,7 +1290,7 @@ const char* XmlAttribute::parse(const char* p, void* data)
 		return nullptr;
 	}
 
-	const char* end;
+	const char* end{nullptr};
 	const char SINGLE_QUOTE = '\'';
 	const char DOUBLE_QUOTE = '\"';
 

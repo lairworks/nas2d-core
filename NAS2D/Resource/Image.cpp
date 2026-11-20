@@ -264,13 +264,13 @@ namespace
 	 */
 	unsigned int generateFbo(unsigned int textureId, Vector<int> imageSize)
 	{
-		unsigned int framebuffer;
+		unsigned int framebuffer{};
 		glGenFramebuffers(1, &framebuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
 		if (textureId == 0)
 		{
-			unsigned int textureColorbuffer;
+			unsigned int textureColorbuffer{};
 			glGenTextures(1, &textureColorbuffer);
 			glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
 			const auto textureFormat = (isBigEndian) ? GL_BGRA : GL_RGBA;

@@ -662,7 +662,7 @@ XmlElement* XmlNode::nextSiblingElement(std::string_view next)
  */
 const XmlDocument* XmlNode::document() const
 {
-	const XmlNode* node;
+	const XmlNode* node{nullptr};
 
 	for (node = this; node; node = node->_parent)
 	{

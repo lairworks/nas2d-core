@@ -69,28 +69,22 @@ namespace NAS2D
 
 	std::pair<std::string, std::string> splitOnFirst(const std::string& string, char delimiter)
 	{
-		const auto delimiterLocation = string.find_first_of(delimiter);
-		if (delimiterLocation == std::string::npos)
+		const auto delimiterLocation = string.find_first_of(delimiter)
+		if(delimiterLocation == std::string::npos)
 		{
 			return std::make_pair(string, std::string{});
 		}
-		else
-		{
-			return std::make_pair(string.substr(0, delimiterLocation), string.substr(delimiterLocation + 1));
-		}
+        return std::make_pair(string.substr(0, delimiterLocation), string.substr(delimiterLocation + 1));
 	}
 
 	std::pair<std::string, std::string> splitOnLast(const std::string& string, char delimiter)
 	{
 		const auto delimiterLocation = string.find_last_of(delimiter);
-		if (delimiterLocation == std::string::npos)
+		if(delimiterLocation == std::string::npos)
 		{
 			return std::make_pair(std::string{}, string);
 		}
-		else
-		{
-			return std::make_pair(string.substr(0, delimiterLocation), string.substr(delimiterLocation + 1));
-		}
+        return std::make_pair(string.substr(0, delimiterLocation), string.substr(delimiterLocation + 1));
 	}
 
 	std::string join(const std::vector<std::string>& strings, std::string_view delimiter)

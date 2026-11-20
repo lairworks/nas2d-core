@@ -111,10 +111,7 @@ int XmlBase::isAlpha(unsigned char anyByte)
 	{
 		return isalpha(anyByte);
 	}
-	else
-	{
-		return 1; // What else to do? The unicode set is huge...get the english ones right.
-	}
+	return 1; // What else to do? The unicode set is huge...get the english ones right.
 }
 
 
@@ -124,10 +121,7 @@ int XmlBase::isAlphaNum(unsigned char anyByte)
 	{
 		return isalnum(anyByte);
 	}
-	else
-	{
-		return 1; // What else to do? The unicode set is huge...get the english ones right.
-	}
+	return 1; // What else to do? The unicode set is huge...get the english ones right.
 }
 
 
@@ -429,7 +423,7 @@ const char* XmlBase::getChar(const char* p, char* _value, std::size_t* length)
 		*_value = *p;
 		return p + 1;
 	}
-	else if (*length)
+	if (*length)
 	{
 		//strncpy( _value, p, *length ); // lots of compilers don't like this function (unsafe),
 		// and the null terminator isn't needed
@@ -440,11 +434,8 @@ const char* XmlBase::getChar(const char* p, char* _value, std::size_t* length)
 
 		return p + (*length);
 	}
-	else
-	{
-		// Not valid text.
-		return nullptr;
-	}
+	// Not valid text.
+	return nullptr;
 }
 
 
@@ -815,7 +806,7 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 		// All good!
 		return;
 	}
-	else if (tag.at(tag.length() - 1) == '>')
+	if (tag.at(tag.length() - 1) == '>')
 	{
 		// There is more. Could be:
 		//		text
@@ -918,19 +909,16 @@ void XmlElement::streamIn(std::istream & in, std::string & tag)
 				// We are done, once we've found our closing tag.
 				return;
 			}
-			else
-			{
-				// If not a closing tag, id it, and stream.
-				const char* tagloc = tag.c_str() + tagIndex;
-				XmlNode* node = identify(tagloc);
-				if (!node) { return; }
+			// If not a closing tag, id it, and stream.
+			const char* tagloc = tag.c_str() + tagIndex;
+			XmlNode* node = identify(tagloc);
+			if (!node) { return; }
 
-				node->streamIn(in, tag);
-				delete node;
-				node = nullptr;
+			node->streamIn(in, tag);
+			delete node;
+			node = nullptr;
 
-				// No return: go around from the beginning: text, closing tag, or node.
-			}
+			// No return: go around from the beginning: text, closing tag, or node.
 		}
 	}
 }
@@ -1000,7 +988,7 @@ const char* XmlElement::parse(const char* p, void* data)
 			}
 			return (p + 1);
 		}
-		else if (*p == '>')
+		if (*p == '>')
 		{
 			// Done with attributes (if there were any.) Read the value -- which
 			// can include other elements -- read the end tag, and return.
@@ -1031,44 +1019,38 @@ const char* XmlElement::parse(const char* p, void* data)
 				if (doc) { doc->error(XmlErrorCode::XML_ERROR_READING_END_TAG, p, data); }
 				return nullptr;
 			}
-			else
-			{
-				if (doc) { doc->error(XmlErrorCode::XML_ERROR_READING_END_TAG, p, data); }
-				return nullptr;
-			}
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_READING_END_TAG, p, data); }
+			return nullptr;
 		}
-		else
+		// Try to read an attribute:
+		XmlAttribute* attrib = new XmlAttribute();
+		if (!attrib)
 		{
-			// Try to read an attribute:
-			XmlAttribute* attrib = new XmlAttribute();
-			if (!attrib)
-			{
-				return nullptr;
-			}
-
-			attrib->document(doc);
-			pErr = p;
-			p = attrib->parse(p, data);
-
-			if (!p || !*p)
-			{
-				if (doc) doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, pErr, data);
-				delete attrib;
-				return nullptr;
-			}
-
-			// Handle the strange case of double attributes:
-			XmlAttribute* node = attributeSet.find(attrib->name());
-
-			if (node)
-			{
-				if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, pErr, data); }
-				delete attrib;
-				return nullptr;
-			}
-
-			attributeSet.add(attrib);
+			return nullptr;
 		}
+
+		attrib->document(doc);
+		pErr = p;
+		p = attrib->parse(p, data);
+
+		if (!p || !*p)
+		{
+			if (doc) doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, pErr, data);
+			delete attrib;
+			return nullptr;
+		}
+
+		// Handle the strange case of double attributes:
+		XmlAttribute* node = attributeSet.find(attrib->name());
+
+		if (node)
+		{
+			if (doc) { doc->error(XmlErrorCode::XML_ERROR_PARSING_ELEMENT, pErr, data); }
+			delete attrib;
+			return nullptr;
+		}
+
+		attributeSet.add(attrib);
 	}
 
 	return p;
@@ -1124,18 +1106,15 @@ const char* XmlElement::readValue(const char* p, void* data)
 			{
 				return p;
 			}
+			XmlNode* node = identify(p);
+			if (node)
+			{
+				p = node->parse(p, data);
+				linkEndChild(node);
+			}
 			else
 			{
-				XmlNode* node = identify(p);
-				if (node)
-				{
-					p = node->parse(p, data);
-					linkEndChild(node);
-				}
-				else
-				{
-					return nullptr;
-				}
+				return nullptr;
 			}
 		}
 		pWithWhiteSpace = p;
@@ -1422,20 +1401,17 @@ const char* XmlText::parse(const char* p, void* data)
 		p = readText(p, &dummy, false, endTag, false);
 		return p;
 	}
-	else
+	bool ignoreWhite = true;
+
+	const char* end = "<";
+	p = readText(p, &_value, ignoreWhite, end, false);
+	if (p && *p)
 	{
-		bool ignoreWhite = true;
-
-		const char* end = "<";
-		p = readText(p, &_value, ignoreWhite, end, false);
-		if (p && *p)
-		{
-			// don't truncate the '<'
-			return p - 1;
-		}
-
-		return nullptr;
+		// don't truncate the '<'
+		return p - 1;
 	}
+
+	return nullptr;
 }
 
 

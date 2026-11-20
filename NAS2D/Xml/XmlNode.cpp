@@ -134,11 +134,11 @@ XmlNode* XmlNode::linkEndChild(XmlNode* node)
 	{
 		return nullptr;
 	}
-	else if (node->_parent != nullptr && node->_parent != this)
+	if (node->_parent != nullptr && node->_parent != this)
 	{
 		return nullptr;
 	}
-	else if (node->document() != nullptr && node->document() != this->document())
+	if (node->document() != nullptr && node->document() != this->document())
 	{
 		return nullptr;
 	}
@@ -415,11 +415,8 @@ const XmlNode* XmlNode::iterateChildren(const XmlNode* previous) const
 	{
 		return firstChild();
 	}
-	else
-	{
-		//assert(previous->parent == this);
-		return previous->nextSibling();
-	}
+	//assert(previous->parent == this);
+	return previous->nextSibling();
 }
 
 

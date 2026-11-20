@@ -32,20 +32,9 @@ TEST(StringFrom, integerChar) {
 	EXPECT_EQ("0", NAS2D::stringFrom(char{0}));
 }
 
-TEST(StringFrom, integerCharSigned) {
-	using signedChar = signed char;
-	EXPECT_EQ("-1", NAS2D::stringFrom(signedChar{-1}));
-	EXPECT_EQ("0", NAS2D::stringFrom(signedChar{0}));
-}
-
 TEST(StringFrom, integerCharUnsigned) {
 	using unsignedChar = unsigned char;
 	EXPECT_EQ("0", NAS2D::stringFrom(unsignedChar{0}));
-}
-
-TEST(StringFrom, integerShort) {
-	EXPECT_EQ("-1", NAS2D::stringFrom(short{-1}));
-	EXPECT_EQ("0", NAS2D::stringFrom(short{0}));
 }
 
 TEST(StringFrom, integerShortUnsigned) {
@@ -53,13 +42,32 @@ TEST(StringFrom, integerShortUnsigned) {
 	EXPECT_EQ("0", NAS2D::stringFrom(unsignedShort{0}));
 }
 
+TEST(StringFrom, integerIntUnsigned) {
+	EXPECT_EQ("0", NAS2D::stringFrom(0u));
+}
+
+TEST(StringFrom, integerLongUnsigned) {
+	EXPECT_EQ("0", NAS2D::stringFrom(0ul));
+}
+
+TEST(StringFrom, integerLongLongUnsigned) {
+	EXPECT_EQ("0", NAS2D::stringFrom(0ull));
+}
+
+TEST(StringFrom, integerCharSigned) {
+	using signedChar = signed char;
+	EXPECT_EQ("-1", NAS2D::stringFrom(signedChar{-1}));
+	EXPECT_EQ("0", NAS2D::stringFrom(signedChar{0}));
+}
+
+TEST(StringFrom, integerShort) {
+	EXPECT_EQ("-1", NAS2D::stringFrom(short{-1}));
+	EXPECT_EQ("0", NAS2D::stringFrom(short{0}));
+}
+
 TEST(StringFrom, integerInt) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1));
 	EXPECT_EQ("0", NAS2D::stringFrom(0));
-}
-
-TEST(StringFrom, integerIntUnsigned) {
-	EXPECT_EQ("0", NAS2D::stringFrom(0u));
 }
 
 TEST(StringFrom, integerLong) {
@@ -67,17 +75,9 @@ TEST(StringFrom, integerLong) {
 	EXPECT_EQ("0", NAS2D::stringFrom(0l));
 }
 
-TEST(StringFrom, integerLongUnsigned) {
-	EXPECT_EQ("0", NAS2D::stringFrom(0ul));
-}
-
 TEST(StringFrom, integerLongLong) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1ll));
 	EXPECT_EQ("0", NAS2D::stringFrom(0ll));
-}
-
-TEST(StringFrom, integerLongLongUnsigned) {
-	EXPECT_EQ("0", NAS2D::stringFrom(0ull));
 }
 
 TEST(StringFrom, floatingPointFloat) {

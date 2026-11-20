@@ -38,7 +38,6 @@ Fade::Fade(Color fadeColor, DelegateType onFadeComplete) :
 	mFadeColor{fadeColor.alphaFade(alphaOpaque)},
 	mDirection{FadeDirection::None},
 	mDuration{},
-	mFadeTimer{},
 	mOnFadeComplete{onFadeComplete}
 {
 }

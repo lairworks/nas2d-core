@@ -143,7 +143,6 @@ Filesystem::Filesystem(const std::string& appName, const std::string& organizati
 	mBasePath{getBasePath()},
 	mPrefPath{getPrefPath(appName, organizationName)},
 	mWritePath{},
-	mSearchPaths{}
 {
 }
 

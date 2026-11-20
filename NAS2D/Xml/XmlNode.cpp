@@ -15,7 +15,6 @@
 using namespace NAS2D::Xml;
 
 XmlNode::XmlNode() :
-	XmlBase(),
 	_parent(nullptr),
 	_firstChild(nullptr),
 	_lastChild(nullptr),
@@ -31,7 +30,6 @@ XmlNode::XmlNode() :
  * \param	type	Type of the node. See XmlNode::NodeType.
  */
 XmlNode::XmlNode(NodeType type) :
-	XmlBase(),
 	_parent(nullptr),
 	_firstChild(nullptr),
 	_lastChild(nullptr),

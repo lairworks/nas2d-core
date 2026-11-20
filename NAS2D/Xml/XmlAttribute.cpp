@@ -20,10 +20,7 @@ XmlAttribute::~XmlAttribute() = default;
 
 
 XmlAttribute::XmlAttribute() :
-	XmlBase(),
 	_document(nullptr),
-	_name(),
-	_value(),
 	_prev(nullptr),
 	_next(nullptr)
 {}
@@ -36,7 +33,6 @@ XmlAttribute::XmlAttribute() :
  * \param	value	Value of the attribute.
  */
 XmlAttribute::XmlAttribute(std::string_view name, std::string_view value) :
-	XmlBase(),
 	_document(nullptr),
 	_name(name),
 	_value(value),

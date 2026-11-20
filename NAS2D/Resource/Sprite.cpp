@@ -31,7 +31,6 @@ Sprite::Sprite(const AnimationSet& animationSet, const std::string& initialActio
 	mAnimationSet{animationSet},
 	mAnimatedImage{mAnimationSet.frames(initialAction)},
 	mPaused{false},
-	mTimer{},
 	mTintColor{Color::Normal}
 {
 }

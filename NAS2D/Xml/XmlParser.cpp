@@ -389,14 +389,14 @@ const char* XmlBase::getEntity(const char* p, char* value, std::size_t* length)
 	}
 
 	// Now try to match it.
-	for (int i = 0; i < NUM_ENTITY; ++i)
+	for (const auto& e : entity)
 	{
-		if (strncmp(entity[i].str, p, entity[i].strLength) == 0)
+		if (strncmp(e.str, p, e.strLength) == 0)
 		{
-			assert(strlen(entity[i].str) == entity[i].strLength);
-			*value = entity[i].chr;
+			assert(strlen(e.str) == e.strLength);
+			*value = e.chr;
 			*length = 1;
-			return (p + entity[i].strLength);
+			return (p + e.strLength);
 		}
 	}
 

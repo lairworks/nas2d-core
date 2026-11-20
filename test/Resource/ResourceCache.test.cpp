@@ -15,8 +15,8 @@ TEST(ResourceCache, load) {
 			return string == other.string && value == other.value;
 		}
 	private:
-		std::string string;
-		int value;
+		std::string string{};
+		int value{0};
 	};
 
 	NAS2D::ResourceCache<MockResource, std::string, int> cache;

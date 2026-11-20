@@ -67,7 +67,7 @@ private:
 	XmlBase::ParseLocation _errorLocation{};
 	std::string _errorDesc{};
 	bool _error{};
-	char padding[7];
+	char padding[7]{};
 };
 
 }

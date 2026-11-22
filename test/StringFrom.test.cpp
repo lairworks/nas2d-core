@@ -9,6 +9,7 @@
 
 #include <string_view>
 #include <string>
+#include <limits>
 
 
 TEST(StringFrom, string) {
@@ -35,49 +36,89 @@ TEST(StringFrom, integerChar) {
 TEST(StringFrom, integerCharUnsigned) {
 	using unsignedChar = unsigned char;
 	EXPECT_EQ("0", NAS2D::stringFrom(unsignedChar{0}));
+
+	constexpr unsignedChar max = std::numeric_limits<unsignedChar>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerShortUnsigned) {
 	using unsignedShort = unsigned short;
 	EXPECT_EQ("0", NAS2D::stringFrom(unsignedShort{0}));
+
+	constexpr unsignedShort max = std::numeric_limits<unsignedShort>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerIntUnsigned) {
 	EXPECT_EQ("0", NAS2D::stringFrom(0u));
+
+	constexpr unsigned int max = std::numeric_limits<unsigned int>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerLongUnsigned) {
 	EXPECT_EQ("0", NAS2D::stringFrom(0ul));
+
+	constexpr unsigned long max = std::numeric_limits<unsigned long>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerLongLongUnsigned) {
 	EXPECT_EQ("0", NAS2D::stringFrom(0ull));
+
+	constexpr unsigned long long max = std::numeric_limits<unsigned long long>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerCharSigned) {
 	using signedChar = signed char;
 	EXPECT_EQ("-1", NAS2D::stringFrom(signedChar{-1}));
 	EXPECT_EQ("0", NAS2D::stringFrom(signedChar{0}));
+
+	constexpr signedChar min = std::numeric_limits<signedChar>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
+	constexpr signedChar max = std::numeric_limits<signedChar>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerShort) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(short{-1}));
 	EXPECT_EQ("0", NAS2D::stringFrom(short{0}));
+
+	constexpr short min = std::numeric_limits<short>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
+	constexpr short max = std::numeric_limits<short>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerInt) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1));
 	EXPECT_EQ("0", NAS2D::stringFrom(0));
+
+	constexpr int min = std::numeric_limits<int>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
+	constexpr int max = std::numeric_limits<int>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerLong) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1l));
 	EXPECT_EQ("0", NAS2D::stringFrom(0l));
+
+	constexpr long min = std::numeric_limits<long>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
+	constexpr long max = std::numeric_limits<long>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, integerLongLong) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1ll));
 	EXPECT_EQ("0", NAS2D::stringFrom(0ll));
+
+	constexpr long long min = std::numeric_limits<long long>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
+	constexpr long long max = std::numeric_limits<long long>::max();
+	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
 TEST(StringFrom, floatingPointFloat) {
@@ -85,6 +126,16 @@ TEST(StringFrom, floatingPointFloat) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5f), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0f), testing::StartsWith("1.0"));
+
+	using Limits = std::numeric_limits<float>;
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
+	if constexpr (Limits::has_denorm != std::denorm_absent) {
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
+	}
 }
 
 TEST(StringFrom, floatingPointDouble) {
@@ -92,6 +143,16 @@ TEST(StringFrom, floatingPointDouble) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0), testing::StartsWith("1.0"));
+
+	using Limits = std::numeric_limits<double>;
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
+	if constexpr (Limits::has_denorm != std::denorm_absent) {
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
+	}
 }
 
 TEST(StringFrom, floatingPointLongDouble) {
@@ -99,6 +160,16 @@ TEST(StringFrom, floatingPointLongDouble) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5l), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0l), testing::StartsWith("1.0"));
+
+	using Limits = std::numeric_limits<long double>;
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
+	if constexpr (Limits::has_denorm != std::denorm_absent) {
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
+	}
 }
 
 TEST(StringFrom, implicitConversion) {

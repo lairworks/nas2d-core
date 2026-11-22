@@ -126,6 +126,16 @@ TEST(StringFrom, floatingPointFloat) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5f), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0f), testing::StartsWith("1.0"));
+
+	using Limits = std::numeric_limits<float>;
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
+	if constexpr (Limits::has_denorm != std::denorm_absent) {
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
+	}
 }
 
 TEST(StringFrom, floatingPointDouble) {
@@ -133,6 +143,16 @@ TEST(StringFrom, floatingPointDouble) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0), testing::StartsWith("1.0"));
+
+	using Limits = std::numeric_limits<double>;
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
+	if constexpr (Limits::has_denorm != std::denorm_absent) {
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
+	}
 }
 
 TEST(StringFrom, floatingPointLongDouble) {
@@ -140,6 +160,16 @@ TEST(StringFrom, floatingPointLongDouble) {
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5l), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0l), testing::StartsWith("1.0"));
+
+	using Limits = std::numeric_limits<long double>;
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
+	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
+	if constexpr (Limits::has_denorm != std::denorm_absent) {
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
+	}
 }
 
 TEST(StringFrom, implicitConversion) {

@@ -7,6 +7,15 @@
 #include <string>
 
 
+namespace {
+	template <typename TypeParam>
+	void testIntegerSigned() {
+		EXPECT_EQ("-1", NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("-1")));
+		EXPECT_EQ("0", NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("0")));
+	}
+}
+
+
 TEST(StringTwoWayToFrom, string) {
 	EXPECT_EQ("Some string value", NAS2D::stringFrom<std::string>(NAS2D::stringTo<std::string>("Some string value")));
 }
@@ -16,10 +25,8 @@ TEST(StringTwoWayToFrom, boolean) {
 	EXPECT_EQ("true", NAS2D::stringFrom<bool>(NAS2D::stringTo<bool>("true")));
 }
 
-TEST(StringTwoWayToFrom, integer) {
-	using TypeParam = int;
-	EXPECT_EQ("-1", NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("-1")));
-	EXPECT_EQ("0", NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("0")));
+TEST(StringTwoWayToFrom, integerSignedInt) {
+	testIntegerSigned<int>();
 }
 
 TEST(StringTwoWayToFrom, floatingPoint) {

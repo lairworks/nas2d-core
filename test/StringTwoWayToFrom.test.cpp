@@ -96,6 +96,7 @@ TEST(StringTwoWayToFrom, integerUnsignedLongLong) {
 
 
 TEST(StringTwoWayToFrom, floatingPoint) {
-	EXPECT_THAT(NAS2D::stringFrom<float>(NAS2D::stringTo<float>("-1.0")), testing::StartsWith("-1.0"));
-	EXPECT_THAT(NAS2D::stringFrom<float>(NAS2D::stringTo<float>("1.0")), testing::StartsWith("1.0"));
+	using TypeParam = float;
+	EXPECT_THAT(NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("-1.0")), testing::StartsWith("-1.0"));
+	EXPECT_THAT(NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("1.0")), testing::StartsWith("1.0"));
 }

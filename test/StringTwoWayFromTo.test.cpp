@@ -35,6 +35,13 @@ namespace {
 		EXPECT_EQ(one, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(one)));
 		EXPECT_EQ(max, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(max)));
 	}
+
+	template <typename TypeParam>
+	void testFloatingPoint() {
+		EXPECT_EQ(-1, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(-1)));
+		EXPECT_EQ(0, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(0)));
+		EXPECT_EQ(1, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(1)));
+	}
 }
 
 
@@ -102,9 +109,6 @@ TEST(StringTwoWayFromTo, integerUnsignedLongLong) {
 }
 
 
-TEST(StringTwoWayFromTo, floatingPoint) {
-	using TypeParam = float;
-	EXPECT_EQ(-1, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(-1)));
-	EXPECT_EQ(0, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(0)));
-	EXPECT_EQ(1, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(1)));
+TEST(StringTwoWayFromTo, floatingPointFloat) {
+	testFloatingPoint<float>();
 }

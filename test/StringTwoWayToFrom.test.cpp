@@ -20,6 +20,15 @@ namespace {
 		EXPECT_EQ("0", NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("0")));
 		EXPECT_EQ(max, NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>(max)));
 	}
+
+	template <typename TypeParam>
+	void testIntegerUnsigned() {
+		using Limits = std::numeric_limits<TypeParam>;
+		const auto max = std::to_string(Limits::max());
+
+		EXPECT_EQ("0", NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("0")));
+		EXPECT_EQ(max, NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>(max)));
+	}
 }
 
 
@@ -51,6 +60,27 @@ TEST(StringTwoWayToFrom, integerSignedLong) {
 
 TEST(StringTwoWayToFrom, integerSignedLongLong) {
 	testIntegerSigned<long long>();
+}
+
+
+TEST(StringTwoWayToFrom, integerUnsignedChar) {
+	testIntegerUnsigned<unsigned char>();
+}
+
+TEST(StringTwoWayToFrom, integerUnsignedShort) {
+	testIntegerUnsigned<unsigned short>();
+}
+
+TEST(StringTwoWayToFrom, integerUnsignedInt) {
+	testIntegerUnsigned<unsigned int>();
+}
+
+TEST(StringTwoWayToFrom, integerUnsignedLong) {
+	testIntegerUnsigned<unsigned long>();
+}
+
+TEST(StringTwoWayToFrom, integerUnsignedLongLong) {
+	testIntegerUnsigned<unsigned long long>();
 }
 
 

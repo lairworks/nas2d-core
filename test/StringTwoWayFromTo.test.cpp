@@ -34,9 +34,27 @@ TEST(StringTwoWayFromTo, boolean) {
 	EXPECT_EQ(true, NAS2D::stringTo<bool>(NAS2D::stringFrom<bool>(true)));
 }
 
+
+TEST(StringTwoWayFromTo, integerSignedChar) {
+	testIntegerSigned<signed char>();
+}
+
+TEST(StringTwoWayFromTo, integerSignedShort) {
+	testIntegerSigned<short>();
+}
+
 TEST(StringTwoWayFromTo, integerSignedInt) {
 	testIntegerSigned<int>();
 }
+
+TEST(StringTwoWayFromTo, integerSignedLong) {
+	testIntegerSigned<long>();
+}
+
+TEST(StringTwoWayFromTo, integerSignedLongLong) {
+	testIntegerSigned<long long>();
+}
+
 
 TEST(StringTwoWayFromTo, floatingPoint) {
 	EXPECT_EQ(-1, NAS2D::stringTo<float>(NAS2D::stringFrom<float>(-1)));

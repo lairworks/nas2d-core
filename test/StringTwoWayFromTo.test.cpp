@@ -5,14 +5,22 @@
 #include <gmock/gmock.h>
 
 #include <string>
+#include <limits>
 
 
 namespace {
 	template <typename TypeParam>
 	void testIntegerSigned() {
+		using Limits = std::numeric_limits<TypeParam>;
+
+		constexpr auto min = Limits::min();
+		constexpr auto max = Limits::max();
+
+		EXPECT_EQ(min, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(min)));
 		EXPECT_EQ(-1, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(-1)));
 		EXPECT_EQ(0, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(0)));
 		EXPECT_EQ(1, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(1)));
+		EXPECT_EQ(max, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(max)));
 	}
 }
 

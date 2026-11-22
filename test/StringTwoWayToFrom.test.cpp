@@ -42,6 +42,17 @@ TEST(StringTwoWayToFrom, boolean) {
 }
 
 
+TEST(StringTwoWayToFrom, integerChar) {
+	using TypeParam = char;
+	using Limits = std::numeric_limits<TypeParam>;
+	const auto min = std::to_string(Limits::min());
+	const auto max = std::to_string(Limits::max());
+
+	EXPECT_EQ(min, NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>(min)));
+	EXPECT_EQ(max, NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>(max)));
+}
+
+
 TEST(StringTwoWayToFrom, integerSignedChar) {
 	testIntegerSigned<signed char>();
 }

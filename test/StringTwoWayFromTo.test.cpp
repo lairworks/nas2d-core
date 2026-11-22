@@ -17,9 +17,10 @@ TEST(StringTwoWayFromTo, boolean) {
 }
 
 TEST(StringTwoWayFromTo, integer) {
-	EXPECT_EQ(-1, NAS2D::stringTo<int>(NAS2D::stringFrom<int>(-1)));
-	EXPECT_EQ(0, NAS2D::stringTo<int>(NAS2D::stringFrom<int>(0)));
-	EXPECT_EQ(1, NAS2D::stringTo<int>(NAS2D::stringFrom<int>(1)));
+	using TypeParam = int;
+	EXPECT_EQ(-1, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(-1)));
+	EXPECT_EQ(0, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(0)));
+	EXPECT_EQ(1, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(1)));
 }
 
 TEST(StringTwoWayFromTo, floatingPoint) {

@@ -75,6 +75,8 @@ TEST(StringFrom, integerCharSigned) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(signedChar{-1}));
 	EXPECT_EQ("0", NAS2D::stringFrom(signedChar{0}));
 
+	constexpr signedChar min = std::numeric_limits<signedChar>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	constexpr signedChar max = std::numeric_limits<signedChar>::max();
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
@@ -83,6 +85,8 @@ TEST(StringFrom, integerShort) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(short{-1}));
 	EXPECT_EQ("0", NAS2D::stringFrom(short{0}));
 
+	constexpr short min = std::numeric_limits<short>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	constexpr short max = std::numeric_limits<short>::max();
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
@@ -91,6 +95,8 @@ TEST(StringFrom, integerInt) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1));
 	EXPECT_EQ("0", NAS2D::stringFrom(0));
 
+	constexpr int min = std::numeric_limits<int>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	constexpr int max = std::numeric_limits<int>::max();
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
@@ -99,6 +105,8 @@ TEST(StringFrom, integerLong) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1l));
 	EXPECT_EQ("0", NAS2D::stringFrom(0l));
 
+	constexpr long min = std::numeric_limits<long>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	constexpr long max = std::numeric_limits<long>::max();
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
@@ -107,6 +115,8 @@ TEST(StringFrom, integerLongLong) {
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1ll));
 	EXPECT_EQ("0", NAS2D::stringFrom(0ll));
 
+	constexpr long long min = std::numeric_limits<long long>::min();
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	constexpr long long max = std::numeric_limits<long long>::max();
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }

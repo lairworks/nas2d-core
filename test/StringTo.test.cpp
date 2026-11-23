@@ -86,6 +86,18 @@ TEST(StringTo, integerErrorInvalidLongLong) {
 	testArithmeticErrorInvalid<long long>();
 }
 
+TEST(StringTo, floatingPointErrorInvalidFloat) {
+	testArithmeticErrorInvalid<float>();
+}
+
+TEST(StringTo, floatingPointErrorInvalidDouble) {
+	testArithmeticErrorInvalid<double>();
+}
+
+TEST(StringTo, floatingPointErrorInvalidLongDouble) {
+	testArithmeticErrorInvalid<long double>();
+}
+
 
 TEST(StringTo, integerCharErrorOutOfRangeNegative) {
 	// Whether `char` is signed or unsigned is implementation defined
@@ -172,19 +184,6 @@ TEST(StringTo, integerSignedLong) {
 
 TEST(StringTo, integerSignedLongLong) {
 	testIntegerSigned<long long>();
-}
-
-
-TEST(StringTo, floatingPointErrorInvalidFloat) {
-	testArithmeticErrorInvalid<float>();
-}
-
-TEST(StringTo, floatingPointErrorInvalidDouble) {
-	testArithmeticErrorInvalid<double>();
-}
-
-TEST(StringTo, floatingPointErrorInvalidLongDouble) {
-	testArithmeticErrorInvalid<long double>();
 }
 
 

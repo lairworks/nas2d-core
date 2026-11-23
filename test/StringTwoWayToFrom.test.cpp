@@ -33,6 +33,8 @@ namespace {
 	template <typename TypeParam>
 	void testFloatingPoint() {
 		EXPECT_THAT(NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("-1.0")), testing::StartsWith("-1.0"));
+		EXPECT_THAT(NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("-0.0")), testing::StartsWith("-0.0"));
+		EXPECT_THAT(NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("0.0")), testing::StartsWith("0.0"));
 		EXPECT_THAT(NAS2D::stringFrom<TypeParam>(NAS2D::stringTo<TypeParam>("1.0")), testing::StartsWith("1.0"));
 	}
 }

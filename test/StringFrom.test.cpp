@@ -54,7 +54,7 @@ TEST(StringFrom, integerIntUnsigned) {
 	using TypeParam = unsigned int;
 	constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
 
-	EXPECT_EQ("0", NAS2D::stringFrom(0u));
+	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
@@ -62,7 +62,7 @@ TEST(StringFrom, integerLongUnsigned) {
 	using TypeParam = unsigned long;
 	constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
 
-	EXPECT_EQ("0", NAS2D::stringFrom(0ul));
+	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
@@ -70,7 +70,7 @@ TEST(StringFrom, integerLongLongUnsigned) {
 	using TypeParam = unsigned long long;
 	constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
 
-	EXPECT_EQ("0", NAS2D::stringFrom(0ull));
+	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 

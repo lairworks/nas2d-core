@@ -10,6 +10,19 @@
 
 namespace {
 	template <typename TypeParam>
+	void testIntegerUnsigned() {
+		using Limits = std::numeric_limits<TypeParam>;
+
+		constexpr auto zero = TypeParam{0};
+		constexpr auto one = TypeParam{1};
+		constexpr auto max = Limits::max();
+
+		EXPECT_EQ(zero, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(zero)));
+		EXPECT_EQ(one, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(one)));
+		EXPECT_EQ(max, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(max)));
+	}
+
+	template <typename TypeParam>
 	void testIntegerSigned() {
 		using Limits = std::numeric_limits<TypeParam>;
 
@@ -24,16 +37,11 @@ namespace {
 	}
 
 	template <typename TypeParam>
-	void testIntegerUnsigned() {
-		using Limits = std::numeric_limits<TypeParam>;
-
-		constexpr auto zero = TypeParam{0};
-		constexpr auto one = TypeParam{1};
-		constexpr auto max = Limits::max();
-
-		EXPECT_EQ(zero, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(zero)));
-		EXPECT_EQ(one, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(one)));
-		EXPECT_EQ(max, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(max)));
+	void testFloatingPoint() {
+		EXPECT_EQ(TypeParam{-1.0L}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{-1.0L})));
+		EXPECT_EQ(TypeParam{-0.0L}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{-0.0L})));
+		EXPECT_EQ(TypeParam{0.0L}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{0.0L})));
+		EXPECT_EQ(TypeParam{1.0L}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{1.0L})));
 	}
 }
 
@@ -60,27 +68,6 @@ TEST(StringTwoWayFromTo, integerChar) {
 }
 
 
-TEST(StringTwoWayFromTo, integerSignedChar) {
-	testIntegerSigned<signed char>();
-}
-
-TEST(StringTwoWayFromTo, integerSignedShort) {
-	testIntegerSigned<short>();
-}
-
-TEST(StringTwoWayFromTo, integerSignedInt) {
-	testIntegerSigned<int>();
-}
-
-TEST(StringTwoWayFromTo, integerSignedLong) {
-	testIntegerSigned<long>();
-}
-
-TEST(StringTwoWayFromTo, integerSignedLongLong) {
-	testIntegerSigned<long long>();
-}
-
-
 TEST(StringTwoWayFromTo, integerUnsignedChar) {
 	testIntegerUnsigned<unsigned char>();
 }
@@ -102,8 +89,35 @@ TEST(StringTwoWayFromTo, integerUnsignedLongLong) {
 }
 
 
-TEST(StringTwoWayFromTo, floatingPoint) {
-	EXPECT_EQ(-1, NAS2D::stringTo<float>(NAS2D::stringFrom<float>(-1)));
-	EXPECT_EQ(0, NAS2D::stringTo<float>(NAS2D::stringFrom<float>(0)));
-	EXPECT_EQ(1, NAS2D::stringTo<float>(NAS2D::stringFrom<float>(1)));
+TEST(StringTwoWayFromTo, integerSignedChar) {
+	testIntegerSigned<signed char>();
+}
+
+TEST(StringTwoWayFromTo, integerSignedShort) {
+	testIntegerSigned<short>();
+}
+
+TEST(StringTwoWayFromTo, integerSignedInt) {
+	testIntegerSigned<int>();
+}
+
+TEST(StringTwoWayFromTo, integerSignedLong) {
+	testIntegerSigned<long>();
+}
+
+TEST(StringTwoWayFromTo, integerSignedLongLong) {
+	testIntegerSigned<long long>();
+}
+
+
+TEST(StringTwoWayFromTo, floatingPointFloat) {
+	testFloatingPoint<float>();
+}
+
+TEST(StringTwoWayFromTo, floatingPointDouble) {
+	testFloatingPoint<double>();
+}
+
+TEST(StringTwoWayFromTo, floatingPointLongDouble) {
+	testFloatingPoint<long double>();
 }

@@ -81,10 +81,9 @@ TEST(StringFrom, integerCharSigned) {
 	constexpr TypeParam min = Limits::min();
 	constexpr TypeParam max = Limits::max();
 
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
 	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
@@ -95,10 +94,9 @@ TEST(StringFrom, integerShort) {
 	constexpr TypeParam min = Limits::min();
 	constexpr TypeParam max = Limits::max();
 
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
 	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
@@ -109,10 +107,9 @@ TEST(StringFrom, integerInt) {
 	constexpr TypeParam min = Limits::min();
 	constexpr TypeParam max = Limits::max();
 
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1));
 	EXPECT_EQ("0", NAS2D::stringFrom(0));
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
@@ -123,10 +120,9 @@ TEST(StringFrom, integerLong) {
 	constexpr TypeParam min = Limits::min();
 	constexpr TypeParam max = Limits::max();
 
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1l));
 	EXPECT_EQ("0", NAS2D::stringFrom(0l));
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 
@@ -137,10 +133,9 @@ TEST(StringFrom, integerLongLong) {
 	constexpr TypeParam min = Limits::min();
 	constexpr TypeParam max = Limits::max();
 
+	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ("-1", NAS2D::stringFrom(-1ll));
 	EXPECT_EQ("0", NAS2D::stringFrom(0ll));
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 }
 

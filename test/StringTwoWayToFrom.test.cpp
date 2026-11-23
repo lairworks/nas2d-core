@@ -104,3 +104,11 @@ TEST(StringTwoWayToFrom, integerUnsignedLongLong) {
 TEST(StringTwoWayToFrom, floatingPoint) {
 	testFloatingPoint<float>();
 }
+
+TEST(StringTwoWayToFrom, floatingPointDouble) {
+	testFloatingPoint<double>();
+}
+
+TEST(StringTwoWayToFrom, floatingPointLongDouble) {
+	testFloatingPoint<long double>();
+}

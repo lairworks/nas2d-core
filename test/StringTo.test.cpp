@@ -109,38 +109,38 @@ TEST(StringTo, integerChar) {
 
 
 TEST(StringTo, integerUnsignedChar) {
-	using unsignedChar = unsigned char;
-	EXPECT_EQ(unsignedChar{0}, NAS2D::stringTo<unsignedChar>("0"));
+	using TypeParam = unsigned char;
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
 
-	EXPECT_EQ(unsignedChar{0}, NAS2D::stringTo<unsignedChar>(std::string_view{"0"}));
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerUnsignedShort) {
-	using unsignedShort = unsigned short;
-	EXPECT_EQ(unsignedShort{0}, NAS2D::stringTo<unsignedShort>("0"));
+	using TypeParam = unsigned short;
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
 
-	EXPECT_EQ(unsignedShort{0}, NAS2D::stringTo<unsignedShort>(std::string_view{"0"}));
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerUnsignedInt) {
-	using unsignedInt = unsigned int;
-	EXPECT_EQ(unsignedInt{0}, NAS2D::stringTo<unsignedInt>("0"));
+	using TypeParam = unsigned int;
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
 
-	EXPECT_EQ(unsignedInt{0}, NAS2D::stringTo<unsignedInt>(std::string_view{"0"}));
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerUnsignedLong) {
-	using unsignedLong = unsigned long;
-	EXPECT_EQ(unsignedLong{0}, NAS2D::stringTo<unsignedLong>("0"));
+	using TypeParam = unsigned long;
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
 
-	EXPECT_EQ(unsignedLong{0}, NAS2D::stringTo<unsignedLong>(std::string_view{"0"}));
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
 }
 
 TEST(StringTo, integerUnsignedLongLong) {
-	using unsignedLongLong = unsigned long long;
-	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>("0"));
+	using TypeParam = unsigned long long;
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
 
-	EXPECT_EQ(unsignedLongLong{0}, NAS2D::stringTo<unsignedLongLong>(std::string_view{"0"}));
+	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
 }
 
 

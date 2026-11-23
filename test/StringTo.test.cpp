@@ -10,6 +10,11 @@
 
 namespace {
 	template <typename TypeParam>
+	void testArithmeticErrorInvalid() {
+		EXPECT_THROW(NAS2D::stringTo<TypeParam>(""), std::invalid_argument);
+	}
+
+	template <typename TypeParam>
 	void testIntegerUnsigned() {
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
 
@@ -62,23 +67,23 @@ TEST(StringTo, boolean) {
 }
 
 TEST(StringTo, integerErrorInvalidChar) {
-	EXPECT_THROW(NAS2D::stringTo<char>(""), std::invalid_argument);
+	testArithmeticErrorInvalid<char>();
 }
 
 TEST(StringTo, integerErrorInvalidShort) {
-	EXPECT_THROW(NAS2D::stringTo<short>(""), std::invalid_argument);
+	testArithmeticErrorInvalid<short>();
 }
 
 TEST(StringTo, integerErrorInvalidInt) {
-	EXPECT_THROW(NAS2D::stringTo<int>(""), std::invalid_argument);
+	testArithmeticErrorInvalid<int>();
 }
 
 TEST(StringTo, integerErrorInvalidLong) {
-	EXPECT_THROW(NAS2D::stringTo<long>(""), std::invalid_argument);
+	testArithmeticErrorInvalid<long>();
 }
 
 TEST(StringTo, integerErrorInvalidLongLong) {
-	EXPECT_THROW(NAS2D::stringTo<long long>(""), std::invalid_argument);
+	testArithmeticErrorInvalid<long long>();
 }
 
 
@@ -171,15 +176,15 @@ TEST(StringTo, integerSignedLongLong) {
 
 
 TEST(StringTo, floatingPointErrorInvalidFloat) {
-	EXPECT_THROW(NAS2D::stringTo<float>(""), std::invalid_argument);
+	testArithmeticErrorInvalid<float>();
 }
 
 TEST(StringTo, floatingPointErrorInvalidDouble) {
-	EXPECT_THROW(NAS2D::stringTo<double>(""), std::invalid_argument);
+	testArithmeticErrorInvalid<double>();
 }
 
 TEST(StringTo, floatingPointErrorInvalidLongDouble) {
-	EXPECT_THROW(NAS2D::stringTo<long double>(""), std::invalid_argument);
+	testArithmeticErrorInvalid<long double>();
 }
 
 

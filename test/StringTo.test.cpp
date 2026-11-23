@@ -15,6 +15,15 @@ namespace {
 
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
 	}
+
+	template <typename TypeParam>
+	void testIntegerSigned() {
+		EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>("-1"));
+		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
+
+		EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>(std::string_view{"-1"}));
+		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	}
 }
 
 
@@ -141,48 +150,23 @@ TEST(StringTo, integerUnsignedLongLong) {
 
 
 TEST(StringTo, integerSignedChar) {
-	using TypeParam = signed char;
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>("-1"));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>(std::string_view{"-1"}));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerSigned<signed char>();
 }
 
 TEST(StringTo, integerSignedShort) {
-	using TypeParam = short;
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>("-1"));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>(std::string_view{"-1"}));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerSigned<short>();
 }
 
 TEST(StringTo, integerSignedInt) {
-	using TypeParam = int;
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>("-1"));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>(std::string_view{"-1"}));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerSigned<int>();
 }
 
 TEST(StringTo, integerSignedLong) {
-	using TypeParam = long;
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>("-1"));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>(std::string_view{"-1"}));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerSigned<long>();
 }
 
 TEST(StringTo, integerSignedLongLong) {
-	using TypeParam = long long;
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>("-1"));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>(std::string_view{"-1"}));
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerSigned<long long>();
 }
 
 

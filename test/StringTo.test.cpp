@@ -8,6 +8,16 @@
 #include <cmath>
 
 
+namespace {
+	template <typename TypeParam>
+	void testIntegerUnsigned() {
+		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
+
+		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	}
+}
+
+
 TEST(StringTo, stringView) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string_view>("SomeStringValue"));
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string_view>(std::string_view{"SomeStringValue"}));
@@ -110,38 +120,23 @@ TEST(StringTo, integerChar) {
 
 
 TEST(StringTo, integerUnsignedChar) {
-	using TypeParam = unsigned char;
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerUnsigned<unsigned char>();
 }
 
 TEST(StringTo, integerUnsignedShort) {
-	using TypeParam = unsigned short;
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerUnsigned<unsigned short>();
 }
 
 TEST(StringTo, integerUnsignedInt) {
-	using TypeParam = unsigned int;
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerUnsigned<unsigned int>();
 }
 
 TEST(StringTo, integerUnsignedLong) {
-	using TypeParam = unsigned long;
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerUnsigned<unsigned long>();
 }
 
 TEST(StringTo, integerUnsignedLongLong) {
-	using TypeParam = unsigned long long;
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	testIntegerUnsigned<unsigned long long>();
 }
 
 

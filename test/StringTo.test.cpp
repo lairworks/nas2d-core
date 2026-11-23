@@ -5,6 +5,7 @@
 
 #include <string>
 #include <limits>
+#include <cmath>
 
 
 TEST(StringTo, stringView) {
@@ -200,6 +201,8 @@ TEST(StringTo, floatingPointLongDoubleErrorInvalid) {
 
 
 TEST(StringTo, floatingPointFloat) {
+	EXPECT_TRUE(std::signbit(NAS2D::stringTo<float>("-0.0")));
+
 	EXPECT_EQ(0.0f, NAS2D::stringTo<float>("0.0"));
 	EXPECT_EQ(0.5f, NAS2D::stringTo<float>("0.5"));
 	EXPECT_EQ(1.0f, NAS2D::stringTo<float>("1.0"));
@@ -210,6 +213,8 @@ TEST(StringTo, floatingPointFloat) {
 }
 
 TEST(StringTo, floatingPointDouble) {
+	EXPECT_TRUE(std::signbit(NAS2D::stringTo<double>("-0.0")));
+
 	EXPECT_EQ(0.0, NAS2D::stringTo<double>("0.0"));
 	EXPECT_EQ(0.5, NAS2D::stringTo<double>("0.5"));
 	EXPECT_EQ(1.0, NAS2D::stringTo<double>("1.0"));
@@ -220,6 +225,8 @@ TEST(StringTo, floatingPointDouble) {
 }
 
 TEST(StringTo, floatingPointLongDouble) {
+	EXPECT_TRUE(std::signbit(NAS2D::stringTo<long double>("-0.0")));
+
 	EXPECT_EQ(0.0l, NAS2D::stringTo<long double>("0.0"));
 	EXPECT_EQ(0.5l, NAS2D::stringTo<long double>("0.5"));
 	EXPECT_EQ(1.0l, NAS2D::stringTo<long double>("1.0"));

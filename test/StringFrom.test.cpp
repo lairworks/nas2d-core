@@ -10,6 +10,7 @@
 #include <string_view>
 #include <string>
 #include <limits>
+#include <cmath>
 
 
 TEST(StringFrom, string) {
@@ -122,6 +123,8 @@ TEST(StringFrom, integerLongLong) {
 }
 
 TEST(StringFrom, floatingPointFloat) {
+	EXPECT_THAT(NAS2D::stringFrom(-0.0f), testing::StartsWith("-0.0"));
+
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0f), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5f), testing::StartsWith("0.5"));
@@ -139,6 +142,8 @@ TEST(StringFrom, floatingPointFloat) {
 }
 
 TEST(StringFrom, floatingPointDouble) {
+	EXPECT_THAT(NAS2D::stringFrom(-0.0), testing::StartsWith("-0.0"));
+
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5), testing::StartsWith("0.5"));
@@ -156,6 +161,8 @@ TEST(StringFrom, floatingPointDouble) {
 }
 
 TEST(StringFrom, floatingPointLongDouble) {
+	EXPECT_THAT(NAS2D::stringFrom(-0.0l), testing::StartsWith("-0.0"));
+
 	// Ignore precision beyond one decimal place
 	EXPECT_THAT(NAS2D::stringFrom(0.0l), testing::StartsWith("0.0"));
 	EXPECT_THAT(NAS2D::stringFrom(0.5l), testing::StartsWith("0.5"));

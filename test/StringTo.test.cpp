@@ -192,13 +192,13 @@ TEST(StringTo, floatingPointFloat) {
 
 	EXPECT_TRUE(std::signbit(NAS2D::stringTo<TypeParam>("-0.0")));
 
-	EXPECT_EQ(TypeParam{0.0f}, NAS2D::stringTo<TypeParam>("0.0"));
-	EXPECT_EQ(TypeParam{0.5f}, NAS2D::stringTo<TypeParam>("0.5"));
-	EXPECT_EQ(TypeParam{1.0f}, NAS2D::stringTo<TypeParam>("1.0"));
+	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>("0.0"));
+	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>("0.5"));
+	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>("1.0"));
 
-	EXPECT_EQ(TypeParam{0.0f}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
-	EXPECT_EQ(TypeParam{0.5f}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
-	EXPECT_EQ(TypeParam{1.0f}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
+	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
+	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
+	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
 }
 
 TEST(StringTo, floatingPointDouble) {
@@ -206,13 +206,13 @@ TEST(StringTo, floatingPointDouble) {
 
 	EXPECT_TRUE(std::signbit(NAS2D::stringTo<TypeParam>("-0.0")));
 
-	EXPECT_EQ(TypeParam{0.0}, NAS2D::stringTo<TypeParam>("0.0"));
-	EXPECT_EQ(TypeParam{0.5}, NAS2D::stringTo<TypeParam>("0.5"));
-	EXPECT_EQ(TypeParam{1.0}, NAS2D::stringTo<TypeParam>("1.0"));
+	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>("0.0"));
+	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>("0.5"));
+	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>("1.0"));
 
-	EXPECT_EQ(TypeParam{0.0}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
-	EXPECT_EQ(TypeParam{0.5}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
-	EXPECT_EQ(TypeParam{1.0}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
+	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
+	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
+	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
 }
 
 TEST(StringTo, floatingPointLongDouble) {

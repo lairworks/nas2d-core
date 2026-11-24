@@ -99,6 +99,7 @@ TEST(StringFrom, integerSignedLongLong) {
 }
 
 TEST(StringFrom, floatingPointFloat) {
+	using TypeParam = float;
 	EXPECT_THAT(NAS2D::stringFrom(-0.0f), testing::StartsWith("-0.0"));
 
 	// Ignore precision beyond one decimal place
@@ -106,7 +107,7 @@ TEST(StringFrom, floatingPointFloat) {
 	EXPECT_THAT(NAS2D::stringFrom(0.5f), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0f), testing::StartsWith("1.0"));
 
-	using Limits = std::numeric_limits<float>;
+	using Limits = std::numeric_limits<TypeParam>;
 	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
 	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
 	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
@@ -118,6 +119,7 @@ TEST(StringFrom, floatingPointFloat) {
 }
 
 TEST(StringFrom, floatingPointDouble) {
+	using TypeParam = double;
 	EXPECT_THAT(NAS2D::stringFrom(-0.0), testing::StartsWith("-0.0"));
 
 	// Ignore precision beyond one decimal place
@@ -125,7 +127,7 @@ TEST(StringFrom, floatingPointDouble) {
 	EXPECT_THAT(NAS2D::stringFrom(0.5), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0), testing::StartsWith("1.0"));
 
-	using Limits = std::numeric_limits<double>;
+	using Limits = std::numeric_limits<TypeParam>;
 	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
 	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
 	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
@@ -137,6 +139,7 @@ TEST(StringFrom, floatingPointDouble) {
 }
 
 TEST(StringFrom, floatingPointLongDouble) {
+	using TypeParam = long double;
 	EXPECT_THAT(NAS2D::stringFrom(-0.0l), testing::StartsWith("-0.0"));
 
 	// Ignore precision beyond one decimal place
@@ -144,7 +147,7 @@ TEST(StringFrom, floatingPointLongDouble) {
 	EXPECT_THAT(NAS2D::stringFrom(0.5l), testing::StartsWith("0.5"));
 	EXPECT_THAT(NAS2D::stringFrom(1.0l), testing::StartsWith("1.0"));
 
-	using Limits = std::numeric_limits<long double>;
+	using Limits = std::numeric_limits<TypeParam>;
 	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
 	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
 	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));

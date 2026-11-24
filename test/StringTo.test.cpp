@@ -62,6 +62,7 @@ TEST(StringTo, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringTo<std::string>(std::string{"SomeStringValue"}));
 }
 
+
 TEST(StringTo, booleanErrorInvalid) {
 	EXPECT_THROW(NAS2D::stringTo<bool>(""), std::invalid_argument);
 	EXPECT_THROW(NAS2D::stringTo<bool>("random text"), std::invalid_argument);
@@ -78,6 +79,7 @@ TEST(StringTo, boolean) {
 	EXPECT_EQ(false, NAS2D::stringTo<bool>(std::string_view{"0"}));
 	EXPECT_EQ(true, NAS2D::stringTo<bool>(std::string_view{"1"}));
 }
+
 
 TEST(StringTo, integerErrorInvalidChar) {
 	testArithmeticErrorInvalid<char>();
@@ -149,6 +151,7 @@ TEST(StringTo, integerShortErrorOutOfRange) {
 	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::min() - 1)), std::out_of_range);
 	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::max() + 1)), std::out_of_range);
 }
+
 
 TEST(StringTo, integerChar) {
 	using TypeParam = char;

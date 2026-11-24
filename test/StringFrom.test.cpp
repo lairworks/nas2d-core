@@ -69,14 +69,17 @@ TEST(StringFrom, stringLiteral) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom("SomeStringValue"));
 }
 
+
 TEST(StringFrom, boolean) {
 	EXPECT_EQ("false", NAS2D::stringFrom(false));
 	EXPECT_EQ("true", NAS2D::stringFrom(true));
 }
 
+
 TEST(StringFrom, integerChar) {
 	EXPECT_EQ("0", NAS2D::stringFrom(char{0}));
 }
+
 
 TEST(StringFrom, integerUnsignedChar) {
 	testIntegerUnsigned<unsigned char>();
@@ -98,6 +101,7 @@ TEST(StringFrom, integerUnsignedLongLong) {
 	testIntegerUnsigned<unsigned long long>();
 }
 
+
 TEST(StringFrom, integerSignedChar) {
 	testIntegerSigned<signed char>();
 }
@@ -118,6 +122,7 @@ TEST(StringFrom, integerSignedLongLong) {
 	testIntegerSigned<long long>();
 }
 
+
 TEST(StringFrom, floatingPointFloat) {
 	testFloatingPoint<float>();
 }
@@ -129,6 +134,7 @@ TEST(StringFrom, floatingPointDouble) {
 TEST(StringFrom, floatingPointLongDouble) {
 	testFloatingPoint<long double>();
 }
+
 
 TEST(StringFrom, implicitConversion) {
 	class ImplicitStringConversionTestFixture
@@ -145,6 +151,7 @@ TEST(StringFrom, implicitConversion) {
 	ImplicitStringConversionTestFixture implicitStringConversionTestFixture{"testString"};
 	EXPECT_EQ("testString", NAS2D::stringFrom(implicitStringConversionTestFixture));
 }
+
 
 TEST(StringFrom, point) {
 	EXPECT_EQ("(0, 0)", NAS2D::stringFrom(NAS2D::Point{0, 0}));

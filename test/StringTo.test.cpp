@@ -196,8 +196,10 @@ TEST(StringTo, integerShortErrorOutOfRange) {
 TEST(StringTo, integerChar) {
 	using TypeParam = char;
 	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
+	EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>("1"));
 
 	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>(std::string_view{"1"}));
 }
 
 

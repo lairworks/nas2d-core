@@ -20,8 +20,10 @@ namespace {
 	template <typename TypeParam>
 	void testIntegerUnsigned() {
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
+		EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>("1"));
 
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+		EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>(std::string_view{"1"}));
 	}
 
 	template <typename TypeParam>

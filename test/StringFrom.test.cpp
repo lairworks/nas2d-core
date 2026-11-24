@@ -21,6 +21,19 @@ namespace {
 		EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
 		EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 	}
+
+	template <typename TypeParam>
+	void testIntegerSigned() {
+		using Limits = std::numeric_limits<TypeParam>;
+
+		constexpr TypeParam min = Limits::min();
+		constexpr TypeParam max = Limits::max();
+
+		EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
+		EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
+		EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
+		EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	}
 }
 
 
@@ -66,68 +79,23 @@ TEST(StringFrom, integerUnsignedLongLong) {
 }
 
 TEST(StringFrom, integerSignedChar) {
-	using TypeParam = signed char;
-	using Limits = std::numeric_limits<TypeParam>;
-
-	constexpr TypeParam min = Limits::min();
-	constexpr TypeParam max = Limits::max();
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
-	EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerSigned<signed char>();
 }
 
 TEST(StringFrom, integerSignedShort) {
-	using TypeParam = short;
-	using Limits = std::numeric_limits<TypeParam>;
-
-	constexpr TypeParam min = Limits::min();
-	constexpr TypeParam max = Limits::max();
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
-	EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerSigned<short>();
 }
 
 TEST(StringFrom, integerSignedInt) {
-	using TypeParam = int;
-	using Limits = std::numeric_limits<TypeParam>;
-
-	constexpr TypeParam min = Limits::min();
-	constexpr TypeParam max = Limits::max();
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
-	EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerSigned<int>();
 }
 
 TEST(StringFrom, integerSignedLong) {
-	using TypeParam = long;
-	using Limits = std::numeric_limits<TypeParam>;
-
-	constexpr TypeParam min = Limits::min();
-	constexpr TypeParam max = Limits::max();
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
-	EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerSigned<long>();
 }
 
 TEST(StringFrom, integerSignedLongLong) {
-	using TypeParam = long long;
-	using Limits = std::numeric_limits<TypeParam>;
-
-	constexpr TypeParam min = Limits::min();
-	constexpr TypeParam max = Limits::max();
-
-	EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
-	EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerSigned<long long>();
 }
 
 TEST(StringFrom, floatingPointFloat) {

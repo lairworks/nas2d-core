@@ -103,7 +103,7 @@ TEST(StringTwoWayToFrom, integerSignedLongLong) {
 }
 
 
-TEST(StringTwoWayToFrom, floatingPoint) {
+TEST(StringTwoWayToFrom, floatingPointFloat) {
 	testFloatingPoint<float>();
 }
 

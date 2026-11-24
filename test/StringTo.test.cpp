@@ -3,9 +3,12 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <string_view>
 #include <string>
 #include <limits>
 #include <cmath>
+#include <exception>
+#include <stdexcept>
 
 
 namespace {
@@ -34,13 +37,13 @@ namespace {
 	void testFloatingPoint() {
 		EXPECT_TRUE(std::signbit(NAS2D::stringTo<TypeParam>("-0.0")));
 
-		EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>("0.0"));
-		EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>("0.5"));
-		EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>("1.0"));
+		EXPECT_EQ(TypeParam{0.0L}, NAS2D::stringTo<TypeParam>("0.0"));
+		EXPECT_EQ(TypeParam{0.5L}, NAS2D::stringTo<TypeParam>("0.5"));
+		EXPECT_EQ(TypeParam{1.0L}, NAS2D::stringTo<TypeParam>("1.0"));
 
-		EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
-		EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
-		EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
+		EXPECT_EQ(TypeParam{0.0L}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
+		EXPECT_EQ(TypeParam{0.5L}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
+		EXPECT_EQ(TypeParam{1.0L}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
 	}
 }
 

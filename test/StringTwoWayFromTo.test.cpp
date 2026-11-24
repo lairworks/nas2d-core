@@ -38,10 +38,10 @@ namespace {
 
 	template <typename TypeParam>
 	void testFloatingPoint() {
-		EXPECT_EQ(TypeParam{-1.0l}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{-1.0l})));
-		EXPECT_EQ(TypeParam{-0.0l}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{-0.0l})));
-		EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{0.0l})));
-		EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{1.0l})));
+		EXPECT_EQ(TypeParam{-1.0L}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{-1.0L})));
+		EXPECT_EQ(TypeParam{-0.0L}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{-0.0L})));
+		EXPECT_EQ(TypeParam{0.0L}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{0.0L})));
+		EXPECT_EQ(TypeParam{1.0L}, NAS2D::stringTo<TypeParam>(NAS2D::stringFrom<TypeParam>(TypeParam{1.0L})));
 	}
 }
 

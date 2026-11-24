@@ -38,9 +38,10 @@ namespace {
 
 	template <typename TypeParam>
 	void testFloatingPoint() {
-		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.0L}), testing::StartsWith("-0.0"));
-
 		// Ignore precision beyond one decimal place
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-1.0L}), testing::StartsWith("-1.0"));
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.5L}), testing::StartsWith("-0.5"));
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.0L}), testing::StartsWith("-0.0"));
 		EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.0L}), testing::StartsWith("0.0"));
 		EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.5L}), testing::StartsWith("0.5"));
 		EXPECT_THAT(NAS2D::stringFrom(TypeParam{1.0L}), testing::StartsWith("1.0"));

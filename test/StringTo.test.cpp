@@ -221,11 +221,11 @@ TEST(StringTo, integerCharErrorOutOfRangeNegative) {
 	}
 }
 
-TEST(StringTo, integerCharErrorOutOfRange) {
+TEST(StringTo, integerErrorOutOfRangeChar) {
 	testArithmeticErrorOverflow<char>();
 }
 
-TEST(StringTo, integerShortErrorOutOfRange) {
+TEST(StringTo, integerErrorOutOfRangeSignedShort) {
 	testArithmeticErrorOverflow<short>();
 }
 

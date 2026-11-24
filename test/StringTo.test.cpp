@@ -101,19 +101,43 @@ TEST(StringTo, integerErrorInvalidChar) {
 	testArithmeticErrorInvalid<char>();
 }
 
-TEST(StringTo, integerErrorInvalidShort) {
+TEST(StringTo, integerUnsignedErrorInvalidChar) {
+	testArithmeticErrorInvalid<unsigned char>();
+}
+
+TEST(StringTo, integerUnsignedErrorInvalidShort) {
+	testArithmeticErrorInvalid<unsigned short>();
+}
+
+TEST(StringTo, integerUnsignedErrorInvalidInt) {
+	testArithmeticErrorInvalid<unsigned int>();
+}
+
+TEST(StringTo, integerUnsignedErrorInvalidLong) {
+	testArithmeticErrorInvalid<unsigned long>();
+}
+
+TEST(StringTo, integerUnsignedErrorInvalidLongLong) {
+	testArithmeticErrorInvalid<unsigned long long>();
+}
+
+TEST(StringTo, integerSignedErrorInvalidChar) {
+	testArithmeticErrorInvalid<signed char>();
+}
+
+TEST(StringTo, integerSignedErrorInvalidShort) {
 	testArithmeticErrorInvalid<short>();
 }
 
-TEST(StringTo, integerErrorInvalidInt) {
+TEST(StringTo, integerSignedErrorInvalidInt) {
 	testArithmeticErrorInvalid<int>();
 }
 
-TEST(StringTo, integerErrorInvalidLong) {
+TEST(StringTo, integerSignedErrorInvalidLong) {
 	testArithmeticErrorInvalid<long>();
 }
 
-TEST(StringTo, integerErrorInvalidLongLong) {
+TEST(StringTo, integerSignedErrorInvalidLongLong) {
 	testArithmeticErrorInvalid<long long>();
 }
 

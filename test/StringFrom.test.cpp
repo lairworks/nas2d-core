@@ -18,6 +18,7 @@ namespace {
 		constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
 
 		EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
+		EXPECT_EQ("1", NAS2D::stringFrom(TypeParam{1}));
 		EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 	}
 

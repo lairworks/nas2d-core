@@ -34,6 +34,26 @@ namespace {
 		EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
 		EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 	}
+
+	template <typename TypeParam>
+	void testFloatingPoint() {
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.0l}), testing::StartsWith("-0.0"));
+
+		// Ignore precision beyond one decimal place
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.0l}), testing::StartsWith("0.0"));
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.5l}), testing::StartsWith("0.5"));
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{1.0l}), testing::StartsWith("1.0"));
+
+		using Limits = std::numeric_limits<TypeParam>;
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
+		if constexpr (Limits::has_denorm != std::denorm_absent) {
+			EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
+			EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
+		}
+	}
 }
 
 
@@ -99,63 +119,15 @@ TEST(StringFrom, integerSignedLongLong) {
 }
 
 TEST(StringFrom, floatingPointFloat) {
-	using TypeParam = float;
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.0l}), testing::StartsWith("-0.0"));
-
-	// Ignore precision beyond one decimal place
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.0l}), testing::StartsWith("0.0"));
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.5l}), testing::StartsWith("0.5"));
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{1.0l}), testing::StartsWith("1.0"));
-
-	using Limits = std::numeric_limits<TypeParam>;
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
-	if constexpr (Limits::has_denorm != std::denorm_absent) {
-		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
-		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
-	}
+	testFloatingPoint<float>();
 }
 
 TEST(StringFrom, floatingPointDouble) {
-	using TypeParam = double;
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.0l}), testing::StartsWith("-0.0"));
-
-	// Ignore precision beyond one decimal place
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.0l}), testing::StartsWith("0.0"));
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.5l}), testing::StartsWith("0.5"));
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{1.0l}), testing::StartsWith("1.0"));
-
-	using Limits = std::numeric_limits<TypeParam>;
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
-	if constexpr (Limits::has_denorm != std::denorm_absent) {
-		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
-		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
-	}
+	testFloatingPoint<double>();
 }
 
 TEST(StringFrom, floatingPointLongDouble) {
-	using TypeParam = long double;
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.0l}), testing::StartsWith("-0.0"));
-
-	// Ignore precision beyond one decimal place
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.0l}), testing::StartsWith("0.0"));
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.5l}), testing::StartsWith("0.5"));
-	EXPECT_THAT(NAS2D::stringFrom(TypeParam{1.0l}), testing::StartsWith("1.0"));
-
-	using Limits = std::numeric_limits<TypeParam>;
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
-	EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
-	if constexpr (Limits::has_denorm != std::denorm_absent) {
-		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
-		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
-	}
+	testFloatingPoint<long double>();
 }
 
 TEST(StringFrom, implicitConversion) {

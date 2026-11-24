@@ -8,7 +8,7 @@
 using namespace NAS2D;
 
 
-FilesystemPath::FilesystemPath() :
+FilesystemPath::FilesystemPath()
 {
 }
 

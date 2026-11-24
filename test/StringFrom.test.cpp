@@ -79,7 +79,12 @@ TEST(StringFrom, boolean) {
 
 
 TEST(StringFrom, integerChar) {
-	EXPECT_EQ("0", NAS2D::stringFrom(char{0}));
+	using TypeParam = char;
+	if constexpr (std::numeric_limits<TypeParam>::is_signed) {
+		testIntegerSigned<TypeParam>();
+	} else {
+		testIntegerUnsigned<TypeParam>();
+	}
 }
 
 

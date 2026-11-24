@@ -29,6 +29,19 @@ namespace {
 		EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>(std::string_view{"-1"}));
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
 	}
+
+	template <typename TypeParam>
+	void testFloatingPoint() {
+		EXPECT_TRUE(std::signbit(NAS2D::stringTo<TypeParam>("-0.0")));
+
+		EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>("0.0"));
+		EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>("0.5"));
+		EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>("1.0"));
+
+		EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
+		EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
+		EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
+	}
 }
 
 
@@ -188,44 +201,13 @@ TEST(StringTo, integerSignedLongLong) {
 
 
 TEST(StringTo, floatingPointFloat) {
-	using TypeParam = float;
-
-	EXPECT_TRUE(std::signbit(NAS2D::stringTo<TypeParam>("-0.0")));
-
-	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>("0.0"));
-	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>("0.5"));
-	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>("1.0"));
-
-	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
-	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
-	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
+	testFloatingPoint<float>();
 }
 
 TEST(StringTo, floatingPointDouble) {
-	using TypeParam = double;
-
-	EXPECT_TRUE(std::signbit(NAS2D::stringTo<TypeParam>("-0.0")));
-
-	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>("0.0"));
-	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>("0.5"));
-	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>("1.0"));
-
-	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
-	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
-	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
+	testFloatingPoint<double>();
 }
 
 TEST(StringTo, floatingPointLongDouble) {
-	using TypeParam = long double;
-
-	EXPECT_TRUE(std::signbit(NAS2D::stringTo<TypeParam>("-0.0")));
-
-	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>("0.0"));
-	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>("0.5"));
-	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>("1.0"));
-
-	// This may create a temporary `std::string` object on some platforms
-	EXPECT_EQ(TypeParam{0.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
-	EXPECT_EQ(TypeParam{0.5l}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
-	EXPECT_EQ(TypeParam{1.0l}, NAS2D::stringTo<TypeParam>(std::string_view{"1.0"}));
+	testFloatingPoint<long double>();
 }

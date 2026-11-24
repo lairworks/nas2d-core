@@ -49,12 +49,10 @@ namespace {
 		using Limits = std::numeric_limits<TypeParam>;
 		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::max()));
 		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
+		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
 		EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::min()));
 		EXPECT_NO_THROW(NAS2D::stringFrom(Limits::lowest()));
-		if constexpr (Limits::has_denorm != std::denorm_absent) {
-			EXPECT_NO_THROW(NAS2D::stringFrom(Limits::denorm_min()));
-			EXPECT_NO_THROW(NAS2D::stringFrom(-Limits::denorm_min()));
-		}
 	}
 }
 

@@ -15,6 +15,7 @@ namespace {
 	template <typename TypeParam>
 	void testArithmeticErrorInvalid() {
 		EXPECT_THROW(NAS2D::stringTo<TypeParam>(""), std::invalid_argument);
+		EXPECT_THROW(NAS2D::stringTo<TypeParam>("NonArithmeticInput"), std::invalid_argument);
 	}
 
 	template <typename TypeParam>

@@ -48,7 +48,7 @@ DemoGraphics::DemoGraphics() :
 	mResizedGear{mGear.resized(mGear.size() / 2)},
 	mSlicedGear{mGear.sliced({{mGear.size().x / 5, 0}, mGear.size() * 2 / 5})},
 	mDxImage{"Test_DirectX.png"},
-	mOglImage{"Test_OpenGL.png"},
+	mOglImage{"Test_OpenGL.png"}
 {}
 
 DemoGraphics::~DemoGraphics()

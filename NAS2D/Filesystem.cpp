@@ -142,7 +142,7 @@ Filesystem::~Filesystem() = default;
 Filesystem::Filesystem(const std::string& appName, const std::string& organizationName) :
 	mBasePath{getBasePath()},
 	mPrefPath{getPrefPath(appName, organizationName)},
-	mWritePath{},
+	mWritePath{}
 {
 }
 

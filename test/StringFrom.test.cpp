@@ -32,6 +32,7 @@ namespace {
 		EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 		EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
 		EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
+		EXPECT_EQ("1", NAS2D::stringFrom(TypeParam{1}));
 		EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 	}
 

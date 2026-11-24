@@ -18,6 +18,7 @@ namespace {
 		constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
 
 		EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
+		EXPECT_EQ("1", NAS2D::stringFrom(TypeParam{1}));
 		EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 	}
 
@@ -31,14 +32,16 @@ namespace {
 		EXPECT_EQ(std::to_string(min), NAS2D::stringFrom(min));
 		EXPECT_EQ("-1", NAS2D::stringFrom(TypeParam{-1}));
 		EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
+		EXPECT_EQ("1", NAS2D::stringFrom(TypeParam{1}));
 		EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
 	}
 
 	template <typename TypeParam>
 	void testFloatingPoint() {
-		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.0L}), testing::StartsWith("-0.0"));
-
 		// Ignore precision beyond one decimal place
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-1.0L}), testing::StartsWith("-1.0"));
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.5L}), testing::StartsWith("-0.5"));
+		EXPECT_THAT(NAS2D::stringFrom(TypeParam{-0.0L}), testing::StartsWith("-0.0"));
 		EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.0L}), testing::StartsWith("0.0"));
 		EXPECT_THAT(NAS2D::stringFrom(TypeParam{0.5L}), testing::StartsWith("0.5"));
 		EXPECT_THAT(NAS2D::stringFrom(TypeParam{1.0L}), testing::StartsWith("1.0"));
@@ -76,7 +79,12 @@ TEST(StringFrom, boolean) {
 
 
 TEST(StringFrom, integerChar) {
-	EXPECT_EQ("0", NAS2D::stringFrom(char{0}));
+	using TypeParam = char;
+	if constexpr (std::numeric_limits<TypeParam>::is_signed) {
+		testIntegerSigned<TypeParam>();
+	} else {
+		testIntegerUnsigned<TypeParam>();
+	}
 }
 
 

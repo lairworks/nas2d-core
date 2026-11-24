@@ -15,31 +15,82 @@ namespace {
 	template <typename TypeParam>
 	void testArithmeticErrorInvalid() {
 		EXPECT_THROW(NAS2D::stringTo<TypeParam>(""), std::invalid_argument);
+		EXPECT_THROW(NAS2D::stringTo<TypeParam>("NonArithmeticInput"), std::invalid_argument);
+	}
+
+	template <typename TypeParam>
+	void testArithmeticErrorOverflowTight() {
+		using Limits = std::numeric_limits<TypeParam>;
+
+		using SubtractionType = decltype(Limits::min() - 1);
+		using AdditionType = decltype(Limits::max() + 1);
+
+		if constexpr (Limits::is_signed && std::numeric_limits<SubtractionType>::min() < Limits::min()) {
+			EXPECT_THROW(NAS2D::stringTo<TypeParam>(std::to_string(Limits::min() - 1)), std::out_of_range);
+		}
+		if constexpr (std::numeric_limits<AdditionType>::max() > Limits::max()) {
+			EXPECT_THROW(NAS2D::stringTo<TypeParam>(std::to_string(Limits::max() + 1)), std::out_of_range);
+		}
+	}
+
+	template <typename TypeParam>
+	void testArithmeticErrorOverflowLoose() {
+		using Limits = std::numeric_limits<TypeParam>;
+
+		if constexpr (Limits::is_signed) {
+			// Rather than increment a value and deal with potential overflow, we add an extra digit
+			const auto overflowString = std::to_string(Limits::min()) + "9";
+			EXPECT_THROW(NAS2D::stringTo<TypeParam>(overflowString), std::out_of_range);
+		}
+
+		{
+			// Rather than increment a value and deal with potential overflow, we add an extra digit
+			const auto overflowString = std::to_string(Limits::max()) + "9";
+			EXPECT_THROW(NAS2D::stringTo<TypeParam>(overflowString), std::out_of_range);
+		}
+	}
+
+	template <typename TypeParam>
+	void testArithmeticErrorOverflow() {
+		testArithmeticErrorOverflowTight<TypeParam>();
+		testArithmeticErrorOverflowLoose<TypeParam>();
 	}
 
 	template <typename TypeParam>
 	void testIntegerUnsigned() {
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
+		EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>("1"));
 
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+		EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>(std::string_view{"1"}));
 	}
 
 	template <typename TypeParam>
 	void testIntegerSigned() {
 		EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>("-1"));
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
+		EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>("1"));
 
 		EXPECT_EQ(TypeParam{-1}, NAS2D::stringTo<TypeParam>(std::string_view{"-1"}));
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+		EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>(std::string_view{"1"}));
 	}
 
 	template <typename TypeParam>
 	void testFloatingPoint() {
 		EXPECT_TRUE(std::signbit(NAS2D::stringTo<TypeParam>("-0.0")));
 
+		EXPECT_EQ(TypeParam{-1.0L}, NAS2D::stringTo<TypeParam>("-1.0"));
+		EXPECT_EQ(TypeParam{-0.5L}, NAS2D::stringTo<TypeParam>("-0.5"));
+		EXPECT_EQ(TypeParam{-0.0L}, NAS2D::stringTo<TypeParam>("-0.0"));
+
 		EXPECT_EQ(TypeParam{0.0L}, NAS2D::stringTo<TypeParam>("0.0"));
 		EXPECT_EQ(TypeParam{0.5L}, NAS2D::stringTo<TypeParam>("0.5"));
 		EXPECT_EQ(TypeParam{1.0L}, NAS2D::stringTo<TypeParam>("1.0"));
+
+		EXPECT_EQ(TypeParam{-1.0L}, NAS2D::stringTo<TypeParam>(std::string_view{"-1.0"}));
+		EXPECT_EQ(TypeParam{-0.5L}, NAS2D::stringTo<TypeParam>(std::string_view{"-0.5"}));
+		EXPECT_EQ(TypeParam{-0.0L}, NAS2D::stringTo<TypeParam>(std::string_view{"-0.0"}));
 
 		EXPECT_EQ(TypeParam{0.0L}, NAS2D::stringTo<TypeParam>(std::string_view{"0.0"}));
 		EXPECT_EQ(TypeParam{0.5L}, NAS2D::stringTo<TypeParam>(std::string_view{"0.5"}));
@@ -88,19 +139,43 @@ TEST(StringTo, integerErrorInvalidChar) {
 	testArithmeticErrorInvalid<char>();
 }
 
-TEST(StringTo, integerErrorInvalidShort) {
+TEST(StringTo, integerUnsignedErrorInvalidChar) {
+	testArithmeticErrorInvalid<unsigned char>();
+}
+
+TEST(StringTo, integerUnsignedErrorInvalidShort) {
+	testArithmeticErrorInvalid<unsigned short>();
+}
+
+TEST(StringTo, integerUnsignedErrorInvalidInt) {
+	testArithmeticErrorInvalid<unsigned int>();
+}
+
+TEST(StringTo, integerUnsignedErrorInvalidLong) {
+	testArithmeticErrorInvalid<unsigned long>();
+}
+
+TEST(StringTo, integerUnsignedErrorInvalidLongLong) {
+	testArithmeticErrorInvalid<unsigned long long>();
+}
+
+TEST(StringTo, integerSignedErrorInvalidChar) {
+	testArithmeticErrorInvalid<signed char>();
+}
+
+TEST(StringTo, integerSignedErrorInvalidShort) {
 	testArithmeticErrorInvalid<short>();
 }
 
-TEST(StringTo, integerErrorInvalidInt) {
+TEST(StringTo, integerSignedErrorInvalidInt) {
 	testArithmeticErrorInvalid<int>();
 }
 
-TEST(StringTo, integerErrorInvalidLong) {
+TEST(StringTo, integerSignedErrorInvalidLong) {
 	testArithmeticErrorInvalid<long>();
 }
 
-TEST(StringTo, integerErrorInvalidLongLong) {
+TEST(StringTo, integerSignedErrorInvalidLongLong) {
 	testArithmeticErrorInvalid<long long>();
 }
 
@@ -146,21 +221,58 @@ TEST(StringTo, integerCharErrorOutOfRangeNegative) {
 	}
 }
 
-TEST(StringTo, integerCharErrorOutOfRange) {
-	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::max() + 1)), std::out_of_range);
+TEST(StringTo, integerErrorOutOfRangeChar) {
+	testArithmeticErrorOverflow<char>();
 }
 
-TEST(StringTo, integerShortErrorOutOfRange) {
-	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::min() - 1)), std::out_of_range);
-	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::max() + 1)), std::out_of_range);
+TEST(StringTo, integerErrorOutOfRangeUnsignedChar) {
+	testArithmeticErrorOverflow<unsigned char>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeUnsignedShort) {
+	testArithmeticErrorOverflow<unsigned short>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeUnsignedInt) {
+	testArithmeticErrorOverflow<unsigned int>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeUnsignedLong) {
+	testArithmeticErrorOverflow<unsigned long>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeUnsignedLongLong) {
+	testArithmeticErrorOverflow<unsigned long long>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedChar) {
+	testArithmeticErrorOverflow<signed char>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedShort) {
+	testArithmeticErrorOverflow<short>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedInt) {
+	testArithmeticErrorOverflow<int>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedLong) {
+	testArithmeticErrorOverflow<long>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedLongLong) {
+	testArithmeticErrorOverflow<long long>();
 }
 
 
 TEST(StringTo, integerChar) {
 	using TypeParam = char;
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
-
-	EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>(std::string_view{"0"}));
+	if constexpr (std::numeric_limits<TypeParam>::is_signed) {
+		testIntegerSigned<TypeParam>();
+	} else {
+		testIntegerUnsigned<TypeParam>();
+	}
 }
 
 

@@ -225,8 +225,44 @@ TEST(StringTo, integerErrorOutOfRangeChar) {
 	testArithmeticErrorOverflow<char>();
 }
 
+TEST(StringTo, integerErrorOutOfRangeUnsignedChar) {
+	testArithmeticErrorOverflow<unsigned char>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeUnsignedShort) {
+	testArithmeticErrorOverflow<unsigned short>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeUnsignedInt) {
+	testArithmeticErrorOverflow<unsigned int>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeUnsignedLong) {
+	testArithmeticErrorOverflow<unsigned long>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeUnsignedLongLong) {
+	testArithmeticErrorOverflow<unsigned long long>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedChar) {
+	testArithmeticErrorOverflow<signed char>();
+}
+
 TEST(StringTo, integerErrorOutOfRangeSignedShort) {
 	testArithmeticErrorOverflow<short>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedInt) {
+	testArithmeticErrorOverflow<int>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedLong) {
+	testArithmeticErrorOverflow<long>();
+}
+
+TEST(StringTo, integerErrorOutOfRangeSignedLongLong) {
+	testArithmeticErrorOverflow<long long>();
 }
 
 

@@ -15,18 +15,18 @@
 #include "EventHandler.h"
 #include "Filesystem.h"
 #include "Utility.h"
-#include "Version.h"
+//#include "Version.h"
 
 #include "Mixer/MixerNull.h"
 #include "Mixer/MixerSDL.h"
 #include "Renderer/RendererOpenGL.h"
-#include "Renderer/RendererNull.h"
+//#include "Renderer/RendererNull.h"
 
 #include <SDL2/SDL.h>
 
-#include <stdexcept>
+//#include <stdexcept>
 #include <string>
-#include <map>
+//#include <map>
 
 
 using namespace NAS2D;

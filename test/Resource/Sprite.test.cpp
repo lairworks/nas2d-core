@@ -1,6 +1,6 @@
 #include "NAS2D/Resource/Sprite.h"
 
-#include "NAS2D/Duration.h"
+//#include "NAS2D/Duration.h"
 #include "NAS2D/Resource/AnimationFrame.h"
 #include "NAS2D/Resource/AnimationSequence.h"
 #include "NAS2D/Resource/AnimationSet.h"

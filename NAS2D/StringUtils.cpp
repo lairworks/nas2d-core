@@ -13,7 +13,7 @@
 
 #include <algorithm>
 #include <cctype>
-#include <numeric>
+//#include <numeric>
 #include <utility>
 
 

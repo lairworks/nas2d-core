@@ -25,7 +25,7 @@
 #include <SDL2/SDL_ttf.h>
 #endif
 
-#include <cmath>
+//#include <cmath>
 #include <algorithm>
 #include <cstddef>
 #include <stdexcept>

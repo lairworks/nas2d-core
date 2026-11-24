@@ -20,8 +20,8 @@
 #include "../Duration.h"
 #include "../Utility.h"
 
-#include <utility>
-#include <stdexcept>
+//#include <utility>
+//#include <stdexcept>
 
 
 using namespace NAS2D;

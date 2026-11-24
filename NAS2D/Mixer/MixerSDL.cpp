@@ -16,7 +16,7 @@
 #include "../Configuration.h"
 #include "../Utility.h"
 #include "../ContainerUtils.h"
-#include "../Signal/Delegate.h"
+//#include "../Signal/Delegate.h"
 
 #include <SDL2/SDL.h>
 
@@ -27,7 +27,7 @@
 #endif
 
 #include <array>
-#include <algorithm>
+//#include <algorithm>
 #include <stdexcept>
 #include <string>
 

@@ -1,13 +1,15 @@
 #include "NAS2D/StringFrom.h"
 
+#include "NAS2D/Math/Rectangle.h"
+
+//TODO: Duplicate includes from Rectangle. Refactor Rectangle to not pull them in as well.
 #include "NAS2D/Math/Point.h"
 #include "NAS2D/Math/Vector.h"
-#include "NAS2D/Math/Rectangle.h"
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include <string_view>
+//#include <string_view>
 #include <string>
 
 

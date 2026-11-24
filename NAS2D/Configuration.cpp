@@ -18,7 +18,7 @@
 #include "Xml/XmlMemoryBuffer.h"
 #include "Xml/XmlElement.h"
 
-#include <algorithm>
+//#include <algorithm>
 #include <utility>
 #include <stdexcept>
 

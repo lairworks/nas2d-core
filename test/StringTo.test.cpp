@@ -3,9 +3,12 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <string_view>
 #include <string>
 #include <limits>
 #include <cmath>
+#include <exception>
+#include <stdexcept>
 
 
 namespace {

@@ -19,6 +19,15 @@ namespace {
 	}
 
 	template <typename TypeParam>
+	void testArithmeticErrorOverflowTight() {
+		using Limits = std::numeric_limits<TypeParam>;
+		if constexpr (Limits::is_signed) {
+			EXPECT_THROW(NAS2D::stringTo<TypeParam>(std::to_string(Limits::min() - 1)), std::out_of_range);
+		}
+		EXPECT_THROW(NAS2D::stringTo<TypeParam>(std::to_string(Limits::max() + 1)), std::out_of_range);
+	}
+
+	template <typename TypeParam>
 	void testIntegerUnsigned() {
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
 		EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>("1"));
@@ -184,12 +193,11 @@ TEST(StringTo, integerCharErrorOutOfRangeNegative) {
 }
 
 TEST(StringTo, integerCharErrorOutOfRange) {
-	EXPECT_THROW(NAS2D::stringTo<char>(std::to_string(std::numeric_limits<char>::max() + 1)), std::out_of_range);
+	testArithmeticErrorOverflowTight<char>();
 }
 
 TEST(StringTo, integerShortErrorOutOfRange) {
-	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::min() - 1)), std::out_of_range);
-	EXPECT_THROW(NAS2D::stringTo<short>(std::to_string(std::numeric_limits<short>::max() + 1)), std::out_of_range);
+	testArithmeticErrorOverflowTight<short>();
 }
 
 

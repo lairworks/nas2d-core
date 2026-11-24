@@ -21,10 +21,16 @@ namespace {
 	template <typename TypeParam>
 	void testArithmeticErrorOverflowTight() {
 		using Limits = std::numeric_limits<TypeParam>;
-		if constexpr (Limits::is_signed) {
+
+		using SubtractionType = decltype(Limits::min() - 1);
+		using AdditionType = decltype(Limits::max() + 1);
+
+		if constexpr (Limits::is_signed && std::numeric_limits<SubtractionType>::min() < Limits::min()) {
 			EXPECT_THROW(NAS2D::stringTo<TypeParam>(std::to_string(Limits::min() - 1)), std::out_of_range);
 		}
-		EXPECT_THROW(NAS2D::stringTo<TypeParam>(std::to_string(Limits::max() + 1)), std::out_of_range);
+		if constexpr (std::numeric_limits<AdditionType>::max() > Limits::max()) {
+			EXPECT_THROW(NAS2D::stringTo<TypeParam>(std::to_string(Limits::max() + 1)), std::out_of_range);
+		}
 	}
 
 	template <typename TypeParam>

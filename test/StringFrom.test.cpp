@@ -13,6 +13,17 @@
 #include <cmath>
 
 
+namespace {
+	template <typename TypeParam>
+	void testIntegerUnsigned() {
+		constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
+
+		EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
+		EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	}
+}
+
+
 TEST(StringFrom, string) {
 	EXPECT_EQ("SomeStringValue", NAS2D::stringFrom(std::string{"SomeStringValue"}));
 }
@@ -35,43 +46,23 @@ TEST(StringFrom, integerChar) {
 }
 
 TEST(StringFrom, integerUnsignedChar) {
-	using TypeParam = unsigned char;
-	constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
-
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerUnsigned<unsigned char>();
 }
 
 TEST(StringFrom, integerUnsignedShort) {
-	using TypeParam = unsigned short;
-	constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
-
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerUnsigned<unsigned short>();
 }
 
 TEST(StringFrom, integerUnsignedInt) {
-	using TypeParam = unsigned int;
-	constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
-
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerUnsigned<unsigned int>();
 }
 
 TEST(StringFrom, integerUnsignedLong) {
-	using TypeParam = unsigned long;
-	constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
-
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerUnsigned<unsigned long>();
 }
 
 TEST(StringFrom, integerUnsignedLongLong) {
-	using TypeParam = unsigned long long;
-	constexpr TypeParam max = std::numeric_limits<TypeParam>::max();
-
-	EXPECT_EQ("0", NAS2D::stringFrom(TypeParam{0}));
-	EXPECT_EQ(std::to_string(max), NAS2D::stringFrom(max));
+	testIntegerUnsigned<unsigned long long>();
 }
 
 TEST(StringFrom, integerSignedChar) {

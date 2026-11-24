@@ -34,6 +34,29 @@ namespace {
 	}
 
 	template <typename TypeParam>
+	void testArithmeticErrorOverflowLoose() {
+		using Limits = std::numeric_limits<TypeParam>;
+
+		if constexpr (Limits::is_signed) {
+			// Rather than increment a value and deal with potential overflow, we add an extra digit
+			const auto overflowString = std::to_string(Limits::min()) + "9";
+			EXPECT_THROW(NAS2D::stringTo<TypeParam>(overflowString), std::out_of_range);
+		}
+
+		{
+			// Rather than increment a value and deal with potential overflow, we add an extra digit
+			const auto overflowString = std::to_string(Limits::max()) + "9";
+			EXPECT_THROW(NAS2D::stringTo<TypeParam>(overflowString), std::out_of_range);
+		}
+	}
+
+	template <typename TypeParam>
+	void testArithmeticErrorOverflow() {
+		testArithmeticErrorOverflowTight<TypeParam>();
+		testArithmeticErrorOverflowLoose<TypeParam>();
+	}
+
+	template <typename TypeParam>
 	void testIntegerUnsigned() {
 		EXPECT_EQ(TypeParam{0}, NAS2D::stringTo<TypeParam>("0"));
 		EXPECT_EQ(TypeParam{1}, NAS2D::stringTo<TypeParam>("1"));
@@ -199,11 +222,11 @@ TEST(StringTo, integerCharErrorOutOfRangeNegative) {
 }
 
 TEST(StringTo, integerCharErrorOutOfRange) {
-	testArithmeticErrorOverflowTight<char>();
+	testArithmeticErrorOverflow<char>();
 }
 
 TEST(StringTo, integerShortErrorOutOfRange) {
-	testArithmeticErrorOverflowTight<short>();
+	testArithmeticErrorOverflow<short>();
 }
 
 

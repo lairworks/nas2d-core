@@ -7,6 +7,9 @@
 .PHONY: all
 all: nas2d test demoGraphics
 
+# Toolchain: default, gcc, clang, mingw
+Toolchain ?= default
+
 # Determine OS (Linux, Darwin, ...)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
 TARGET_OS ?= $(CURRENT_OS)
@@ -14,16 +17,15 @@ TARGET_OS ?= $(CURRENT_OS)
 CURRENT_PLATFORM = $(shell uname -m)
 TARGET_PLATFORM ?= $(CURRENT_PLATFORM)
 
-# Toolchain: gcc, clang, mingw, (or blank for environment default)
-Toolchain ?=
-
-PkgConfig := pkg-config
-WarnFlags := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2
+defaultCXX := $(CXX)
+defaultWarnFlags := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2
+defaultPkgConfig := pkg-config
+defaultTARGET_OS := $(TARGET_OS)
 
 gccCXX := g++
-gccWarnFlags := $(WarnFlags) -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++
-gccPkgConfig := $(PkgConfig)
-gccTARGET_OS := $(TARGET_OS)
+gccWarnFlags := $(defaultWarnFlags) -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++
+gccPkgConfig := $(defaultPkgConfig)
+gccTARGET_OS := $(defaultTARGET_OS)
 
 clangCXX := clang++
 clangWarnNotInterested := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
@@ -31,11 +33,11 @@ clangWarnAllowed := -Wno-padded -Wno-cast-function-type-strict
 clangWarnKnown := -Wno-unsafe-buffer-usage -Wno-global-constructors -Wno-exit-time-destructors -Wno-unused-member-function
 clangWarnShow := -Weverything $(clangWarnNotInterested)
 clangWarnFlags := $(clangWarnShow) $(clangWarnAllowed) $(clangWarnKnown)
-clangPkgConfig := $(PkgConfig)
-clangTARGET_OS := $(TARGET_OS)
+clangPkgConfig := $(defaultPkgConfig)
+clangTARGET_OS := $(defaultTARGET_OS)
 
 mingwCXX := x86_64-w64-mingw32-g++
-mingwWarnFlags := $(WarnFlags)
+mingwWarnFlags := $(defaultWarnFlags)
 mingwPkgConfig := x86_64-w64-mingw32-pkg-config
 mingwTARGET_OS := Windows
 
@@ -67,7 +69,7 @@ RunPrefix := $($(TARGET_OS)RunPrefix)
 RunSuffixUnitTest := $($(TARGET_OS)RunSuffixUnitTest)
 
 ROOTBUILDDIR := .build
-BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(TARGET_OS)/$(TARGET_PLATFORM)/$(CONFIG)/
+BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(TARGET_OS)/$(TARGET_PLATFORM)/$(Toolchain)/$(CONFIG)/
 
 
 ## NAS2D project ##
@@ -75,7 +77,8 @@ BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(TARGET_OS)/$(TARGET_PLATFORM)/$(CONFIG)/
 SRCDIR := NAS2D
 BINDIR := lib
 INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
-OUTPUT := $(BINDIR)/libnas2d.a
+OUTPUT := $(BUILDDIRPREFIX)nas2d/libnas2d.a
+OUTPUT_LINK := $(BINDIR)/libnas2d.a
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
@@ -98,7 +101,11 @@ LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
 
 .PHONY: nas2d
-nas2d: $(OUTPUT)
+nas2d: $(OUTPUT_LINK)
+
+$(OUTPUT_LINK): $(OUTPUT)
+	@mkdir -p "${@D}"
+	@ln -sf ../$(OUTPUT) $(OUTPUT_LINK)
 
 $(OUTPUT): $(OBJS)
 $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.dep
@@ -198,7 +205,7 @@ clean:
 	-rm --force --recursive $(INTDIR)
 clean-all: | clean
 	-rm --force --recursive $(ROOTBUILDDIR)
-	-rm --force $(OUTPUT)
+	-rm --force $(OUTPUT_LINK)
 	-rm --force --dir $(BINDIR)
 
 

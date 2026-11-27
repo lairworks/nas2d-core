@@ -7,8 +7,8 @@
 .PHONY: all
 all: nas2d test demoGraphics
 
-# Toolchain: gcc, clang, mingw, (or blank for environment default)
-Toolchain ?=
+# Toolchain: default, gcc, clang, mingw
+Toolchain ?= default
 
 # Determine OS (Linux, Darwin, ...)
 CURRENT_OS := $(shell uname 2>/dev/null || echo Unknown)
@@ -17,15 +17,15 @@ TARGET_OS ?= $(CURRENT_OS)
 CURRENT_PLATFORM = $(shell uname -m)
 TARGET_PLATFORM ?= $(CURRENT_PLATFORM)
 
-CXX := $(CXX)
-WarnFlags := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2
-PkgConfig := pkg-config
-TARGET_OS := $(TARGET_OS)
+defaultCXX := $(CXX)
+defaultWarnFlags := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2
+defaultPkgConfig := pkg-config
+defaultTARGET_OS := $(TARGET_OS)
 
 gccCXX := g++
-gccWarnFlags := $(WarnFlags) -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++
-gccPkgConfig := $(PkgConfig)
-gccTARGET_OS := $(TARGET_OS)
+gccWarnFlags := $(defaultWarnFlags) -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++
+gccPkgConfig := $(defaultPkgConfig)
+gccTARGET_OS := $(defaultTARGET_OS)
 
 clangCXX := clang++
 clangWarnNotInterested := -Wno-c++98-compat-pedantic -Wno-pre-c++17-compat
@@ -33,11 +33,11 @@ clangWarnAllowed := -Wno-padded -Wno-cast-function-type-strict
 clangWarnKnown := -Wno-unsafe-buffer-usage -Wno-global-constructors -Wno-exit-time-destructors -Wno-unused-member-function
 clangWarnShow := -Weverything $(clangWarnNotInterested)
 clangWarnFlags := $(clangWarnShow) $(clangWarnAllowed) $(clangWarnKnown)
-clangPkgConfig := $(PkgConfig)
-clangTARGET_OS := $(TARGET_OS)
+clangPkgConfig := $(defaultPkgConfig)
+clangTARGET_OS := $(defaultTARGET_OS)
 
 mingwCXX := x86_64-w64-mingw32-g++
-mingwWarnFlags := $(WarnFlags)
+mingwWarnFlags := $(defaultWarnFlags)
 mingwPkgConfig := x86_64-w64-mingw32-pkg-config
 mingwTARGET_OS := Windows
 

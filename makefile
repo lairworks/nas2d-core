@@ -17,8 +17,8 @@ TARGET_OS ?= $(CURRENT_OS)
 CURRENT_PLATFORM = $(shell uname -m)
 TARGET_PLATFORM ?= $(CURRENT_PLATFORM)
 
-PkgConfig := pkg-config
 WarnFlags := -Wall -Wextra -Wpedantic -Wzero-as-null-pointer-constant -Wnull-dereference -Wold-style-cast -Wcast-qual -Wcast-align -Wdouble-promotion -Wshadow -Wnon-virtual-dtor -Woverloaded-virtual -Wmissing-declarations -Wmissing-include-dirs -Winvalid-pch -Wmissing-format-attribute -Wredundant-decls -Wformat=2
+PkgConfig := pkg-config
 
 gccCXX := g++
 gccWarnFlags := $(WarnFlags) -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -Weffc++

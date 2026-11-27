@@ -77,7 +77,8 @@ BUILDDIRPREFIX := $(ROOTBUILDDIR)/$(TARGET_OS)/$(TARGET_PLATFORM)/$(Toolchain)/$
 SRCDIR := NAS2D
 BINDIR := lib
 INTDIR := $(BUILDDIRPREFIX)nas2d/intermediate
-OUTPUT := $(BINDIR)/libnas2d.a
+OUTPUT := $(BUILDDIRPREFIX)nas2d/libnas2d.a
+OUTPUT_LINK := $(BINDIR)/libnas2d.a
 SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 OBJS := $(patsubst $(SRCDIR)/%.cpp,$(INTDIR)/%.o,$(SRCS))
 
@@ -100,7 +101,11 @@ LDLIBS := $(LDLIBS_EXTRA) -lstdc++ $(SDL_LIBS) $(OpenGL_LIBS)
 PROJECT_FLAGS = $(CPPFLAGS) $(CXXFLAGS)
 
 .PHONY: nas2d
-nas2d: $(OUTPUT)
+nas2d: $(OUTPUT_LINK)
+
+$(OUTPUT_LINK): $(OUTPUT)
+	@mkdir -p "${@D}"
+	@ln -sf ../$(OUTPUT) $(OUTPUT_LINK)
 
 $(OUTPUT): $(OBJS)
 $(OBJS): $(INTDIR)/%.o : $(SRCDIR)/%.cpp $(INTDIR)/%.dep
@@ -200,7 +205,7 @@ clean:
 	-rm --force --recursive $(INTDIR)
 clean-all: | clean
 	-rm --force --recursive $(ROOTBUILDDIR)
-	-rm --force $(OUTPUT)
+	-rm --force $(OUTPUT_LINK)
 	-rm --force --dir $(BINDIR)
 
 
